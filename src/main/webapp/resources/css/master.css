@@ -1,0 +1,579 @@
+  @import "newfont.css";	
+  
+  
+  /* For add , edit page  */
+  label{
+  font-family:'Montserrat', sans-serif;
+  font-size:14px;
+  font-weight: 1200;
+  
+  }
+  
+ /*  input{
+  	font-weight: bold;
+  } */
+  
+ 
+ /*  th{
+   font-family:'Muli', sans-serif;
+   font-weight: 1200;
+   background-color: #002a73;
+   
+  }
+  
+  td{
+   font-family:'Manrope', sans-serif;
+   font-weight:800;
+   font-size: 1rem;
+  }   
+  
+  
+  
+  
+  
+  table{
+	border-color: black; 
+ }
+  
+
+  
+  /*  For buttons(add, edit and delete)*/
+  
+  #aedbtn{
+   font-family:'Quicksand', sans-serif;
+       font-weight:800;
+
+  }
+  
+  .breadcrumb-item{
+  
+      font-family:'Quicksand', sans-serif;
+       font-weight:800;
+          font-size: 14px;
+       
+  }
+ 
+/*  dashboard buttons*/
+
+#dashboard{
+	font-family:'Muli', sans-serif;
+       font-weight:800;
+          font-size: 18px;
+	
+}
+
+/* Main Header */
+
+.content-header>h5{font-family:'Muli', sans-serif;font-size: 20px}
+
+
+
+
+
+
+/*  css for Buttons*/
+
+
+
+
+.add{
+	 font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #428bca;
+       border-color: #428bca;
+       color:white;
+       padding: 4px 13px;
+              text-transform: uppercase;
+       
+
+}
+
+.add:hover{
+	background-color: #505bda;
+}
+
+.addbasic{
+	 font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #428bca;
+       border-color: #428bca;
+}
+
+.addbasic:hover{
+	background-color: #505bda;
+}
+
+.addedit{
+	 font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #ff4d00;
+       border-color: #ff4d00; 
+}
+.addedit:hover{
+	     	background-color: #ff5200;
+}
+
+.edit{
+	 font-family:'Montserrat', sans-serif;
+       font-weight:800 !important;
+       color:black;
+       background-color: orange;
+        padding: 4px 13px;
+		border-color: orange; 
+      
+}
+
+.revise{
+	 font-family:'Montserrat', sans-serif;
+       font-weight:800 !important;
+       color:black;
+       background-color: #FF7800;
+        padding: 4px 13px;
+		border-color: #FF7800; 
+      
+}
+
+
+
+.editbasic{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+        background-color: #f0ad4e;
+       border-color:#f0ad4e; 
+       color: black;     
+}
+.editbasic:hover{
+	  background-color: #f3c623;
+}
+
+.delete{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+      padding: 4px 13px; 
+}
+
+.prints{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+padding: 4px 13px;
+        background-color: purple;
+       border-color: purple;
+       color: white;
+}
+.prints:hover{
+	    background-color: #6a097d;
+	
+}
+
+.submit{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: green;
+       border-color: green;
+       color:white;
+       padding: 4px 13px;
+       text-transform: uppercase;
+      
+}
+.submit:hover{
+	background-color: #004a2f;
+}
+
+.back{
+	
+	font-family:'Montserrat', sans-serif;
+       font-weight:800 !important;
+       background-color: #17a2b8;
+       border-color: #17a2b8;
+       padding: 4px 13px;
+       color:white;      
+        text-transform: uppercase;
+       
+}
+.back:hover{
+	       background-color: #6886c5;
+	
+}
+
+
+
+.itemspec{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #be9fe1;
+       border-color: #be9fe1;
+       color:black;
+}
+.itemspec:hover{
+	background-color: #916dd5;
+}
+
+.parameter{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #6c757d;
+       border-color:#6c757d;
+
+}
+.parameter:hover{
+	background-color: black;
+}
+
+.viewall{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #937d14;
+       border-color:#937d14 ;
+       padding: 4px 13px;
+       color:white;
+}
+.viewall:hover{
+	       background-color: #7d5a5a;
+	
+}
+
+.preview{
+		font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #d291bc;
+       border-color:#d291bc; 
+       padding: 4px 13px;
+       color:black;
+}
+.preview:hover{
+	       background-color: #957dad;
+	
+}
+
+.revoke{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #b80d57;
+       border-color:#b80d57; 
+       padding: 4px 13px;
+       color:white;
+}
+.revoke:hover{
+	background-color: #d63447;
+}
+
+.roleform{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #30475e;
+       border-color:#30475e; 
+}
+.roleform:hover{
+	  background-color: #522d5b;	
+}
+
+.reset{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #fa163f;
+       border-color:#fa163f; 
+       padding: 4px 13px;
+       
+}
+
+
+.save{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+       background-color: #81b214;
+       border-color:#81b214; 
+       padding: 4px 13px;
+       color:black;
+       
+}
+
+.reset:hover{
+	       background-color: #ff5d6c;
+	}
+	
+.upload{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+        width:7%;
+        background-color:#32407b;
+       border-color:#32407b; 
+       
+}
+.upload:hover{
+	        background-color: #151965;
+	}
+	
+.cfcommit{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+        background-color:#216583;
+       border-color:#216583; 
+}
+.cfcommit:hover{
+	        background-color:#293462;
+}
+
+.cfdemand{
+	font-family:'Montserrat', sans-serif;
+       font-weight:800;
+        background-color:#3161a3;
+       border-color:#3161a3; 
+       color:white;
+}
+.cfdemand:hover{
+	        background-color:#293462;
+}
+
+.pdfreport{
+	  
+        background-color:#eb4559;
+       border-color:#eb4559; 
+	height:2.5rem;
+}
+.pdfreport:hover{
+	        background-color:#dd2c00;
+	}
+	
+.excelreport{
+	
+        background-color:#0c9463;
+       border-color:#0c9463; 
+	height:2.5rem;
+}
+.excelreport:hover{
+	        background-color:#1f6650;
+	}
+
+.view{
+	font-family:'Montserrat', sans-serif;
+	background-color: #0275d8;
+	color:white;
+	font-weight: 800 !important;
+}
+
+
+/* Data Table */
+
+#myTable thead{
+	font-family:'Lato', sans-serif;
+	height:2.5rem;
+}
+
+#myTable tbody{
+	font-family:'Lato', sans-serif;
+}
+
+#myTable tbody td{
+	font-family:'Lato', sans-serif;
+	padding-bottom:0.30rem !important;
+	padding-top: 0.30rem !important;
+}
+
+#myTable thead th{
+	font-family:'Lato', sans-serif;
+	padding-bottom:0.45rem !important;
+	padding-top: 0.45rem !important;
+}
+
+
+/* Normal Table */
+
+
+.table thead{
+	font-family:'Lato', sans-serif;
+	height:2.5rem;
+}
+
+.table tbody{
+	font-family:'Lato', sans-serif;
+}
+
+.table tbody td{
+	font-family:'Lato', sans-serif;
+	padding-bottom:0.30rem !important;
+	padding-top: 0.30rem !important;
+}
+
+.table thead th{
+	font-family:'Lato', sans-serif;
+	padding-bottom:0.45rem !important;
+	padding-top: 0.45rem !important;
+}
+
+.wrap{
+	text-align: left;
+	overflow-wrap: break-word;
+	word-break: break-all;
+	white-space: normal;
+}
+
+.editbox{
+font-family:'Muli', sans-serif;
+font-size: 20px;
+font-weight: 1200;
+}
+
+.fa-exclamation-triangle{
+	color:#ffa931;
+}
+
+.fa-trash-o{
+	color:#c70039;
+}
+
+.alert{
+	width:60%;
+	
+}
+
+.fa-trash{
+	color: #ec0101;
+}
+
+.fa-trash:hover{
+	color:#ff4b5c;
+}
+
+.fa-pencil-square-o{
+	color:orange;
+}
+
+.fa-pencil-square-o:hover{
+	color:#ff5722;
+}
+
+.fa-download{
+	color:green;
+}
+
+.fa-download:hover{
+	color:#206a5d;
+}
+
+.card-header{
+	color:#145374; 
+	/* color:black; */
+	background-color: #C4DDFF;
+	font-family: Muli;
+	margin-left: 0%;
+	width:100%;
+}
+
+/* write vertical text in table */
+
+.header-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-row span {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    width: 27px;
+    border-left: 1px solid white;
+        padding: 4px 0px;
+
+}
+
+.table-gantt {
+  border: 1px solid white;
+  border-spacing: 0px;
+  font-weight: 100;
+}
+
+.table-gantt td {
+  border: 1px solid white;
+  width: 20px;
+}
+
+
+/* navbar css */
+
+.navbar{
+	padding: 0.15rem 1rem;
+}
+
+.custom-button{
+  background-color: #007bff;
+  color:white;
+  font-family:'Lato', sans-serif;
+}
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgb(255 255 255 / 25%);
+}
+
+
+ #module{
+  font-family:'Lato', sans-serif;
+  }
+
+/* Datatable color */
+
+.dataTable thead tr{
+	background-color: #055C9D;
+    color: white;
+}
+
+.dataTable thead tr th{
+	font-weight: 100 !important;
+}
+
+.text-white{
+	font-size: 20px;
+}
+
+.mandatory{
+	color: red;
+}
+
+.completed{
+	color: green;
+	font-weight: 700;
+}
+
+.briefactive{
+	color: blue;
+	font-weight: 700;
+}
+
+.inprogress{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.assigned{
+	color: brown;
+	font-weight: 700;
+}
+
+.notyet{
+	color: purple;
+	font-weight: 700;
+}
+
+.ongoing{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.completed{
+	color: green;
+	font-weight: 700;
+}
+
+.delay{
+	color: maroon;
+	font-weight: 700;
+}
+
+.completeddelay{
+	color:#BABD42;
+	font-weight: 700;
+}
+
+.inactive{
+	color: red;
+	font-weight: 700;
+}

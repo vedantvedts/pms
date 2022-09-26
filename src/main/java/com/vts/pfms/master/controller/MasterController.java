@@ -1,0 +1,912 @@
+package com.vts.pfms.master.controller;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.Gson;
+import com.vts.pfms.master.dto.DivisionEmployeeDto;
+import com.vts.pfms.master.dto.LabMasterAdd;
+import com.vts.pfms.master.dto.OfficerMasterAdd;
+import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.MilestoneActivityType;
+import com.vts.pfms.master.service.MasterService;
+
+
+@Controller
+public class MasterController {
+	
+	@Autowired
+	MasterService service;
+	
+	
+	private static final Logger logger=LogManager.getLogger(MasterController.class);
+	
+	@RequestMapping(value="Officer.htm", method=RequestMethod.GET)
+	public String OfficerList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerList "+UserId);
+		String empType=req.getParameter("empType");
+        req.setAttribute("OfficerList", service.OfficerList());         
+		return "master/OfficerMasterList";
+	}
+	
+	
+	@RequestMapping(value="OfficerAdd.htm", method=RequestMethod.POST)
+	public String OfficerAdd(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerAdd.htm "+UserId);
+		
+		try {
+			req.setAttribute("DesignationList", service.DesignationList());
+			req.setAttribute("OfficerDivisionList", service.OfficerDivisionList());
+			req.setAttribute("LabList", service.LabList());
+			return "master/OfficerMasterAdd";
+	
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerAdd.htm "+UserId , e);
+			return "static/Error";
+		}
+	}
+	
+	 @RequestMapping(value = "EmpNoCheck.htm", method = RequestMethod.GET)
+	 public @ResponseBody String EmpNoCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	 {
+		String UserId=(String)ses.getAttribute("Username");
+		int len=0;
+		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
+		try
+		{	 
+			List<Object[]> DisDesc = null;
+			String empno=req.getParameter("empno");					
+			DisDesc= service.empNoCheckAjax(empno);
+			len=DisDesc.size();
+		}
+		catch (Exception e) {
+				e.printStackTrace(); logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
+		}
+		 
+		  return String.valueOf(len);
+		  
+	}
+	 
+	 
+	 @RequestMapping(value = "ExpEmpNoCheck.htm", method = RequestMethod.GET)
+	 public @ResponseBody String ExpEmpNoCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	 {
+		String UserId=(String)ses.getAttribute("Username");
+		int len=0;
+		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
+		try
+		{	 
+			List<Object[]> DisDesc = null;
+			String empno=req.getParameter("empno");	
+			DisDesc= service.extEmpNoCheckAjax(empno);
+			len=DisDesc.size();
+		}
+		catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
+		}
+		 
+		  return String.valueOf(len);
+		  
+	}
+	
+	
+	@RequestMapping(value="Officer.htm", method=RequestMethod.POST)
+	public String OfficerListAddEdit(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside Officer.htm "+UserId);
+		
+		try {
+			String Option=req.getParameter("sub");
+			String OfficerId=req.getParameter("Did");		
+			if(Option.equalsIgnoreCase("edit")) 
+			{		
+				req.setAttribute("OfficerEditData", service.OfficerEditData(OfficerId).get(0));
+				req.setAttribute("DesignationList", service.DesignationList());
+				req.setAttribute("OfficerDivisionList", service.OfficerDivisionList());
+				req.setAttribute("LabList", service.LabList());	
+				return "master/OfficerMasterEdit";
+			}
+			else if(Option.equalsIgnoreCase("updateSeniority")) 
+			{
+				req.setAttribute("officersDetalis",service.getOfficerDetalis(OfficerId));
+				return "master/UpdateSeniority";
+			}
+			else if(Option.equalsIgnoreCase("delete")) 
+			{	
+				int count= service.OfficerMasterDelete(OfficerId, UserId);
+				if(count>0) {
+					redir.addAttribute("result", "Officer Deleted Successfully ");
+				}else {
+				    redir.addAttribute("resultfail","Officer Delete Unsuccessful");
+				}	
+			}
+		
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside Officer.htm "+UserId , e);
+			return "static/Error";
+		}
+		
+		return "redirect:/Officer.htm";
+	}
+	
+	
+	
+	
+	@RequestMapping (value="OfficerMasterAddSubmit.htm", method=RequestMethod.POST)
+	public String OfficerAddSubmit (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception{
+		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerAddSubmit "+UserId);
+	    Integer labid= Integer.parseInt(ses.getAttribute("labid").toString());
+		try {
+			String EmpNo=req.getParameter("EmpNo");
+			List<String> EmpNoCheck=service.EmpNoCheck();
+			boolean check=EmpNoCheck.contains(EmpNo);			
+			if(check) {
+				redir.addAttribute("resultfail","Emp No Already Exists" );
+				return "redirect:/Officer.htm";
+			}			
+			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setLabId(req.getParameter("labId"));
+			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			String name=req.getParameter("EmpName");			
+			String words[]=name.split("\\s");  
+		    String capitalizeWord="";  
+		    for(String w:words){  
+		        String first=w.substring(0,1);  
+		        String afterfirst=w.substring(1);  
+		        capitalizeWord+=first.toUpperCase()+afterfirst+" ";  
+		    }	
+			name = name.substring(0,1).toUpperCase() + name.substring(1);
+			officermasteradd.setEmpName(capitalizeWord);
+			officermasteradd.setDesignation(req.getParameter("Designation"));
+			officermasteradd.setExtNo(req.getParameter("ExtNo"));
+			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setDivision(req.getParameter("Division"));
+			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
+			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
+			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setSrNo("0");
+			long count=0;
+			
+			try {
+				count= service.OfficerMasterInsert(officermasteradd, UserId);	
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return "redirect:/Officer.htm";
+			}
+			if(count>0) {
+				redir.addAttribute("result", "Officer Added Successfully ");
+			}else {
+				redir.addAttribute("resultfail", "Officer Add Unsuccessful");
+			}
+		}
+		catch (Exception e){			
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerAddSubmit "+UserId , e);
+			return "static/Error";
+		}
+		return "redirect:/Officer.htm";
+	}
+	
+
+	@RequestMapping (value="OfficerMasterEditSubmit.htm", method=RequestMethod.POST)
+	public String OfficerMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
+		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerMasterEditSubmit "+UserId);
+		try {
+			
+			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setLabId(req.getParameter("labId"));
+			officermasteradd.setEmpNo(req.getParameter("EmpNo"));
+			officermasteradd.setEmpName(req.getParameter("EmpName"));
+			officermasteradd.setDesignation(req.getParameter("Designation"));
+			officermasteradd.setExtNo(req.getParameter("ExtNo"));
+			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setDivision(req.getParameter("Division"));
+			officermasteradd.setEmpId(req.getParameter("OfficerId"));
+			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
+			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
+		
+			int count= service.OfficerMasterUpdate(officermasteradd, UserId);				
+			
+			if(count>0) {
+				redir.addAttribute("result", "Officer Edited Successfully ");
+			}
+			else {			
+				redir.addAttribute("resultfail", "Officer Edit Unsuccessful");
+			}
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerMasterEditSubmit "+UserId , e);
+			return "static/Error";
+		}		
+		return "redirect:/Officer.htm";
+	}
+	
+	
+	
+	@RequestMapping(value="UpdateSenioritySubmit",method=RequestMethod.POST)
+	public String updateSenoSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside UpdateSenioritySubmit "+UserId);
+		String empid= req.getParameter("empid");
+		String newSeniorityNumber=req.getParameter("UpdatedSrNo");
+        int result= service.updateSeniorityNumber(empid,newSeniorityNumber);
+		   if(result>0) {
+				redir.addAttribute("result", "Officer Edited Successfully ");
+			}
+			else {
+				redir.addAttribute("resultfail", "Officer Edit Unsuccessful");
+			}
+			
+		return "redirect:/Officer.htm";
+	 }
+
+	@RequestMapping(value="OfficerExtList.htm", method=RequestMethod.GET)
+	public String OfficerExtList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
+
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerExtList "+UserId);
+		try {
+	
+		     req.setAttribute("OfficerList", service.ExternalOfficerList());
+			     
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExtList.htm "+UserId , e);
+			return "static/Error";
+		}
+         
+		return "master/OfficerExtList";
+	}
+	
+	@RequestMapping(value="OfficerExtAdd.htm", method=RequestMethod.POST)
+	public String OfficerExtAdd(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerExtAdd.htm "+UserId);
+		
+		try {
+			List<Object[]> OfficerDivisionList = service.OfficerDivisionList();
+			req.setAttribute("DesignationList", service.DesignationList());
+			req.setAttribute("OfficerDivisionList", OfficerDivisionList);
+			req.setAttribute("LabList", service.LabList());
+			
+			return "master/OfficerExtAdd";
+	
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExtAdd.htm "+UserId , e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping (value="OfficerExtAddSubmit.htm", method=RequestMethod.POST)
+	public String OfficerExtAddSubmit (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception
+	{
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerExtAddSubmit.htm "+UserId);
+		try {
+			String EmpNo=req.getParameter("EmpNo");
+			List<String> EmpNoCheck=service.EmpExtNoCheck();
+			boolean check=EmpNoCheck.contains(EmpNo);			
+			if(check) {
+				redir.addAttribute("resultfail","Emp No Already Exists" );
+				return "redirect:/OfficerExtList.htm";
+			}			
+			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setLabId(req.getParameter("labId"));
+			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			String name=req.getParameter("EmpName");			
+			String words[]=name.split("\\s");  
+		    String capitalizeWord="";  
+		    for(String w:words){  
+		        String first=w.substring(0,1);  
+		        String afterfirst=w.substring(1);  
+		        capitalizeWord+=first.toUpperCase()+afterfirst+" ";  
+		    }	
+			name = name.substring(0,1).toUpperCase() + name.substring(1);
+			officermasteradd.setEmpName(capitalizeWord);
+			officermasteradd.setDesignation(req.getParameter("Designation"));
+			officermasteradd.setExtNo(req.getParameter("ExtNo"));
+			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setDivision(req.getParameter("Division"));
+			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
+			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
+			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setSrNo("0");
+			long count=0;
+			
+			try {
+				count= service.OfficerExtInsert(officermasteradd, UserId);	
+			}
+			catch(Exception e){
+				e.printStackTrace();
+				return "redirect:/OfficerExtList.htm";
+			}
+			if(count>0) {
+				redir.addAttribute("result", "External Officer Added Successfully ");
+			}else {
+				redir.addAttribute("resultfail", "External Officer Add Unsuccessful");
+			}
+			return "redirect:/OfficerExtList.htm";
+		}
+		catch (Exception e){			
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExtAddSubmit.htm "+UserId , e);
+			return "static/Error";
+		}
+		
+	}
+	
+	@RequestMapping(value="OfficerExtEdit.htm", method=RequestMethod.POST)
+	public String OfficerExtEdit(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerExtEdit.htm "+UserId);
+		
+		try {
+			String Option=req.getParameter("sub");
+			String OfficerId=req.getParameter("Did");		
+			if(Option.equalsIgnoreCase("edit")) 
+			{		
+				req.setAttribute("OfficerEditData", service.ExternalOfficerEditData(OfficerId).get(0));
+				req.setAttribute("DesignationList", service.DesignationList());
+				req.setAttribute("OfficerDivisionList", service.OfficerDivisionList());
+				req.setAttribute("LabList", service.LabList());	
+				return "master/OfficerExtEdit";
+			}
+			else if(Option.equalsIgnoreCase("delete")) 
+			{	
+				int count= service.OfficerExtDelete(OfficerId, UserId);
+				if(count>0) {
+					redir.addAttribute("result", "External Officer Deleted Successfully ");
+				}else {
+				    redir.addAttribute("resultfail","External Officer Delete Unsuccessful");
+				}	
+			}
+		
+		}catch (Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExtEdit.htm "+UserId , e);
+			return "static/Error";
+		}
+		
+		return "redirect:/OfficerExtList.htm";
+	}
+	
+	@RequestMapping (value="OfficerExtEditSubmit.htm", method=RequestMethod.POST)
+	public String OfficerExtEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
+		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside OfficerExtEditSubmit.htm "+UserId);
+		try {
+			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setLabId(req.getParameter("labId"));
+			officermasteradd.setEmpNo(req.getParameter("EmpNo"));
+			officermasteradd.setEmpName(req.getParameter("EmpName"));
+			officermasteradd.setDesignation(req.getParameter("Designation"));
+			officermasteradd.setExtNo(req.getParameter("ExtNo"));
+			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
+			officermasteradd.setEmail(req.getParameter("Email"));
+			officermasteradd.setDivision(req.getParameter("Division"));
+			officermasteradd.setEmpId(req.getParameter("OfficerId"));
+			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
+			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));		
+			int count= service.OfficerExtUpdate(officermasteradd, UserId);							
+			if(count>0) {
+				redir.addAttribute("result", "External Officer Edited Successfully ");
+			}
+			else {			
+				redir.addAttribute("resultfail", "External Officer Edit Unsuccessful");
+			}
+			return "redirect:/OfficerExtList.htm";
+		}
+		catch (Exception e){
+			
+			e.printStackTrace();
+			logger.error(new Date() +" Inside OfficerExtEditSubmit.htm "+UserId , e);
+			return "static/Error";
+		}		
+		
+	}
+	
+	@RequestMapping(value="DivisionEmployee.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String DivisionEmployee(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DivisionEmployee.htm "+UserId);
+		try {
+		String divisionid=req.getParameter("divisionid");
+		
+		if(divisionid==null)
+		{			
+			Map md=model.asMap();
+			divisionid=(String)md.get("divisionid");
+		}
+		
+		List<Object[]>  divisionlist =service.DivisionList();
+		if(divisionlist==null || divisionlist.size()==0)
+		{
+			redir.addAttribute("resultfail", "No Divisions Found");
+			return "redirect:/MainDashBoard.htm";
+		}
+		if(divisionid==null)
+		{
+			divisionid =divisionlist.get(0)[0].toString();
+		}		
+		req.setAttribute("divisiondata", service.DivisionData(divisionid));
+		req.setAttribute("divisionlist", divisionlist);
+		req.setAttribute("divisionemplist", service.DivisionEmpList(divisionid));	
+		req.setAttribute("empoyeelist",service.DivisionNonEmpList(divisionid));
+		return "master/DivisionAssign";
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DivisionEmployee "+UserId , e);
+			return "static/Error";
+		}
+	 }
+	
+	
+	@RequestMapping(value="DivsionEmployeeRevoke.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String DivsionEmployeeRevoke(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DivsionEmployeeRevoke.htm "+UserId);
+		try {
+			String divisionid=req.getParameter("divisionid");
+			String divisionempid=req.getParameter("divisionempid");
+			DivisionEmployeeDto dto=new DivisionEmployeeDto();
+			dto.setDivisionEmployeeId(divisionempid);
+			dto.setModifiedBy(UserId);
+			int ret=service.DivsionEmployeeRevoke(dto);
+			
+			if(ret>0) {
+				redir.addAttribute("result", "Employee Revoke Successfully ");
+			}
+			else {
+				redir.addAttribute("resultfail", "Employee Revoke Unsuccessful");
+			}
+			
+			redir.addFlashAttribute("divisionid",divisionid);
+			return "redirect:/DivisionEmployee.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DivsionEmployeeRevoke.htm "+UserId , e);
+			return "static/Error";
+		}
+		
+	}
+
+	
+	@RequestMapping(value="DivisionAssignSubmit.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String DivisionAssignSubmit(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DivisionAssignSubmit.htm "+UserId);
+		try {
+			String divisionid=req.getParameter("divisionid");
+			String employeeid[]=req.getParameterValues("employeeid");
+			
+			DivisionEmployeeDto dto=new DivisionEmployeeDto();
+			dto.setDivisionId(divisionid);
+			dto.setEmpId(employeeid);
+			dto.setCreatedBy(UserId);
+			long ret=service.DivisionAssignSubmit(dto);
+
+			if(ret>0) {
+				redir.addAttribute("result", "Employee Assigned Successfully ");
+			}
+			else {
+				redir.addAttribute("resultfail", "Employee Assign Unsuccessful");
+			}
+			
+			
+			redir.addFlashAttribute("divisionid",divisionid);
+			return "redirect:/DivisionEmployee.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DivisionAssignSubmit.htm "+UserId , e);
+			return "static/Error";
+		}		
+	}
+	
+	
+	@RequestMapping(value="MilestoneActivityTypes.htm",method= {RequestMethod.POST,RequestMethod.GET})
+	public String MilestoneActivityTypes(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{		
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside DivisionAssignSubmit.htm "+UserId);
+		try {		
+			
+			
+			req.setAttribute("activitylist", service.ActivityList());
+			return "master/MilestoneActivityType";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DivisionAssignSubmit.htm "+UserId , e);
+			return "static/Error";
+		}		
+	}
+	
+	 @RequestMapping(value = "AddActivityCheck.htm", method = RequestMethod.GET)
+	  public @ResponseBody String AddActivityCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	  {
+		String UserId=(String)ses.getAttribute("Username");
+		Object[] DisDesc = null;
+		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
+		try
+		{	  
+			String activitytype=req.getParameter("activitytype");					
+			DisDesc= service.ActivityNameCheck(activitytype);
+		}
+		catch (Exception e) {
+				e.printStackTrace(); logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
+		}
+		  Gson json = new Gson();
+		  return json.toJson(DisDesc); 
+		  
+	}
+	
+	 @RequestMapping(value="ActivityAddSubmit.htm",method= {RequestMethod.POST})
+		public String ActivityAddSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception 
+		{		
+			String UserId= (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside ActivityAddSubmit.htm "+UserId);
+			try {		
+							
+				String activitytype=req.getParameter("activitytype");
+				
+				MilestoneActivityType model =new MilestoneActivityType();
+				model.setActivityType(activitytype);
+				model.setCreatedBy(UserId);
+				long count =service.ActivityAddSubmit(model);
+				
+				if(count>0) {
+					redir.addAttribute("result", "Activity Type Added Successfully ");
+				}
+				else {
+					redir.addAttribute("resultfail", "Activity Type Adding Unsuccessful");
+				}
+							
+				return "redirect:/MilestoneActivityTypes.htm";
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ActivityAddSubmit.htm "+UserId , e);
+				return "static/Error";
+			}		
+		}
+	 
+	 @RequestMapping(value="GroupMaster.htm",method= {RequestMethod.GET})
+		public String GroupMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+			
+			String UserId= (String)ses.getAttribute("Username");
+			logger.info(new Date() +" Inside DivisionEmployee.htm "+UserId);
+			try 
+			{
+//				String groupid=req.getParameter("groupid");
+				
+				
+				
+				
+				req.setAttribute("groupslist",service.GroupsList() );
+				return "master/GroupsList";
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside DivisionEmployee "+UserId , e);
+				return "static/Error";
+			}
+		 }
+	 
+	 @RequestMapping (value="GroupMaster.htm", method= RequestMethod.POST)
+		public String GroupMaster(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+			
+			String Userid = (String) ses.getAttribute("Username");
+			String Option= req.getParameter("sub");
+			
+			
+			logger.info(new Date() +"Inside DivisionMasterAddEdit "+ Userid);	
+
+			try {
+				
+			if(Option.equalsIgnoreCase("add")) {
+				
+				req.setAttribute("groupheadlist",service.GroupHeadList());
+				
+				return "master/GroupMasterAdd";
+			}
+			
+			
+			else if(Option.equalsIgnoreCase("edit")) {
+				
+				String groupid=req.getParameter("groupid");
+				req.setAttribute("groupsdata", service.GroupsData(groupid));
+				req.setAttribute("groupheadlist",service.GroupHeadList());
+				
+				return "master/GroupMasterEdit";
+			}
+			
+			}
+			catch(Exception e){
+				
+				redir.addAttribute("resultfail", "Technical Issue");
+				logger.error(new Date() +" Inside ItemDetailsIUpdate "+ Userid, e);
+
+			}
+			
+			return "redirect:/GroupMaster.htm";	
+		}
+	  @RequestMapping(value = "GroupMasterAddSubmit.htm",method=RequestMethod.POST )
+			public String GroupMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+		    	String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside Rtmddo "+UserId);		
+				try {				
+					String groupCode=req.getParameter("gCode");
+					String groupName=req.getParameter("gName");
+					String GroupHeadName=req.getParameter("ghempid");
+			
+					DivisionGroup dgm=new DivisionGroup();
+					dgm.setGroupCode(groupCode);
+					dgm.setGroupName(groupName);
+					dgm.setGroupHeadId(Long.parseLong(GroupHeadName));
+					dgm.setCreatedBy(UserId);
+					
+					long count=service.GroupAddSubmit(dgm);
+					if (count > 0) {
+						redir.addAttribute("result", "Group Added Successfully");
+					} else {
+						redir.addAttribute("resultfail", "Group Adding Unsuccessfully");
+					}
+
+					return "redirect:/GroupMaster.htm";
+				}
+				catch (Exception e) {
+						e.printStackTrace();
+						logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+						return "static/Error";
+				}
+		    }
+	 
+	  
+	  
+	  @RequestMapping (value="GroupMasterEditSubmit.htm" , method=RequestMethod.POST)
+
+		public String GroupMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+		{
+			
+			String Userid = (String) ses.getAttribute("Username");
+			
+			logger.info(new Date() +" Inside DivisionMasterEdit "+Userid );
+			
+			try {
+				
+			DivisionGroup model= new DivisionGroup();
+			model.setGroupCode(req.getParameter("groupcode"));
+			model.setGroupName(req.getParameter("groupname"));
+			model.setGroupHeadId(Long.parseLong(req.getParameter("ghempid")));
+			model.setGroupId(Long.parseLong(req.getParameter("groupid")));                 
+			model.setIsActive(Integer.valueOf(req.getParameter("isActive")));
+			model.setModifiedBy(Userid);    
+			    
+			   
+                    
+			int count = service.GroupMasterUpdate(model);
+			
+			if(count > 0 ) {
+				redir.addAttribute("result", "Group Edited Successfully");
+			}
+			
+			else {
+				redir.addAttribute("result ", "Group Edit Unsuccessful");
+			}
+			
+			}
+			catch(Exception e){
+				
+				e.printStackTrace();
+				redir.addAttribute("resultfail", "Technical Issue");
+				logger.error(new Date() +" Inside DivisionMasterEdit "+Userid , e);
+			}
+			
+			return "redirect:/GroupMaster.htm";
+		}
+	  
+	  
+	 
+	  @RequestMapping(value = "groupAddCheck.htm", method = RequestMethod.GET)
+	  public @ResponseBody String DivisionAddCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+	  {
+		String UserId=(String)ses.getAttribute("Username");
+		Object[] DisDesc = null;
+		logger.info(new Date() +"Inside DivisionAddCheck.htm "+UserId);
+		try
+		{	  
+			String gCode=req.getParameter("gcode");
+			DisDesc =service.GroupAddCheck(gCode);
+		}
+		catch (Exception e) {
+				e.printStackTrace(); logger.error(new Date() +"Inside DivisionAddCheck.htm "+UserId,e);
+		}
+		  Gson json = new Gson();
+		  return json.toJson(DisDesc); 
+	}
+	  
+	  @RequestMapping (value= "LabDetails.htm", method= RequestMethod.GET)
+		public String LabMasterList(HttpServletRequest req,HttpSession ses) throws Exception{
+			
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +" Inside LabMasterList " +  UserId );			
+			req.setAttribute("labmasterdata", service.LabMasterList());			
+			return "master/LabDetails";
+		}
+	  @RequestMapping (value="LabDetails.htm" , method= RequestMethod.POST)
+		public String LabMasterAddEdit(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+			
+			String Option =req.getParameter("sub");
+			String LabId= req.getParameter("Did");
+			String Userid= (String) ses.getAttribute("Username");
+			
+			logger.info(new Date() +" Inside LabMasterAddEdit "+Userid);
+
+			try {
+			if(Option.equalsIgnoreCase("add")) {
+				
+				req.setAttribute("employeelist", service.EmployeeList());
+				return "master/LabMasterAdd";
+			}
+			
+			else if(Option.equalsIgnoreCase("edit")) {
+				
+				req.setAttribute("LabMasterEditData", service.LabMasterEditData(LabId).get(0));
+				req.setAttribute("employeelist", service.EmployeeList());
+				req.setAttribute("lablist", service.LabsList() );
+				return "master/LabMasterEdit";
+			}
+			}
+			catch(Exception e){
+				
+				redir.addAttribute("resultfail", "Technical Issue");
+				logger.error(new Date() +" Inside LabMasterAddEdit "+Userid , e);
+
+			}
+			
+			return "redirect:/LabDetails.htm";
+		}
+		
+	  
+	@RequestMapping(value="LabMasterEditSubmit.htm" , method= RequestMethod.POST)
+	public String LabMasterEdit (HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception //,@RequestPart ("LabLogo") MultipartFile LabLogo 
+	{		
+		String Userid= (String) ses.getAttribute("Username");
+		logger.info(new Date() +" Inside LabMasterEdit "+Userid);
+			
+		try {
+			LabMasterAdd labmasteredit = new LabMasterAdd();
+			
+			labmasteredit.setLabCode(req.getParameter("LabCode").trim());
+			labmasteredit.setLabName(req.getParameter("LabName"));
+			labmasteredit.setLabUnitCode(req.getParameter("LabUnitCode"));
+			labmasteredit.setLabAddress(req.getParameter("LabAddress"));
+			labmasteredit.setLabCity(req.getParameter("LabCity"));
+			labmasteredit.setLabPin(req.getParameter("LabPin"));
+			labmasteredit.setLabMasterId(req.getParameter("LabMasterId"));
+			labmasteredit.setLabTelephone(req.getParameter("LabTelephone"));
+			labmasteredit.setLabFaxNo(req.getParameter("LabFaxNo"));
+			labmasteredit.setLabEmail(req.getParameter("LabEmail"));
+			labmasteredit.setLabAuthority(req.getParameter("LabAuthority"));
+			labmasteredit.setLabAuthorityId(req.getParameter("LabAuthorityName"));
+			labmasteredit.setLabRfpEmail(req.getParameter("LabRFPEmail"));
+			String[] labid=req.getParameter("labid").split(",");
+			labmasteredit.setLabId(labid[0]);
+			labmasteredit.setClusterId(labid[1]);
+			int count = service.LabMasterUpdate(labmasteredit,Userid);
+			
+				if(count > 0) {
+					redir.addAttribute("result" , "Lab Details Edited Successfully ");
+				}
+				else {
+					redir.addAttribute("resultfail", "Lab Details Edit Unsuccessful");
+				}
+			}
+			catch (Exception e)
+			{				
+				e.printStackTrace();
+				redir.addAttribute("resultfail", "Technical Issue");
+				logger.error(new Date() +" Inside LabMasterEdit "+Userid , e);				
+			}			
+			return "redirect:/LabDetails.htm";
+		}
+	  
+	@RequestMapping(value = "FeedBack.htm", method = RequestMethod.GET)
+	public String FeedBack(HttpServletRequest req, HttpSession ses) throws Exception {
+
+		
+		return "master/FeedBack";
+	}
+	
+	@RequestMapping(value = "FeedBackAdd.htm", method = RequestMethod.POST)
+	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir)	throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		Long EmpId = (Long) ses.getAttribute("EmpId");
+		String Feedback=req.getParameter("Feedback");
+		
+		if(Feedback.trim().equalsIgnoreCase("")) {			
+			redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
+			return "redirect:/FeedBack.htm";
+		}
+		Long Feedbackid=service.FeedbackInsert(Feedback, UserId, EmpId);
+		
+		if (Feedbackid>0) {
+			redir.addAttribute("result", " Feedback Add Successful");
+		} else {
+			redir.addAttribute("resultfail", "Feedback Add UnSuccessful");
+		}
+		return "redirect:/MainDashBoard.htm";
+	}
+	
+	
+	
+	@RequestMapping(value = "FeedBackList.htm")
+	public String FeedbackList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		
+		req.setAttribute("FeedbackList", service.FeedbackList());
+		return "master/FeedbackList";
+	}
+	
+	
+	
+	
+	
+	 @RequestMapping(value = "FeedbackContent.htm", method = RequestMethod.GET)
+	  public @ResponseBody String FeedbackContent(HttpSession ses, HttpServletRequest req) throws Exception 
+	  {
+		String UserId=(String)ses.getAttribute("Username");
+		Object[] arr = null;
+		logger.info(new Date() +"Inside FeedbackContent.htm "+UserId);
+		try
+		{	  
+			String feedbackid=req.getParameter("feedbackid");					
+			arr= service.FeedbackContent(feedbackid);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside FeedbackContent.htm "+UserId,e);
+		}
+		  Gson json = new Gson();
+		  return json.toJson(arr); 
+		  
+	}
+
+}

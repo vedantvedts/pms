@@ -1,0 +1,3171 @@
+package com.vts.pfms.committee.service;
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.dao.CommitteeDao;
+import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
+import com.vts.pfms.committee.dto.CommitteeDto;
+import com.vts.pfms.committee.dto.CommitteeInvitationDto;
+import com.vts.pfms.committee.dto.CommitteeMainDto;
+import com.vts.pfms.committee.dto.CommitteeMembersDto;
+import com.vts.pfms.committee.dto.CommitteeMembersEditDto;
+import com.vts.pfms.committee.dto.CommitteeMinutesAttachmentDto;
+import com.vts.pfms.committee.dto.CommitteeMinutesDetailsDto;
+import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
+import com.vts.pfms.committee.dto.CommitteeScheduleDto;
+import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
+import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
+import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
+import com.vts.pfms.committee.model.CommitteeDivision;
+import com.vts.pfms.committee.model.CommitteeInitiation;
+import com.vts.pfms.committee.model.CommitteeInvitation;
+import com.vts.pfms.committee.model.CommitteeMain;
+import com.vts.pfms.committee.model.CommitteeMeetingApproval;
+import com.vts.pfms.committee.model.CommitteeMember;
+import com.vts.pfms.committee.model.CommitteeMemberRep;
+import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
+import com.vts.pfms.committee.model.CommitteeProject;
+import com.vts.pfms.committee.model.CommitteeSchedule;
+import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
+import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
+import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
+import com.vts.pfms.committee.model.CommitteeSubSchedule;
+import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.print.model.MinutesActionList;
+import com.vts.pfms.print.model.MinutesFinanceList;
+import com.vts.pfms.print.model.MinutesLastPmrc;
+import com.vts.pfms.print.model.MinutesMileActivity;
+import com.vts.pfms.print.model.MinutesProcurementList;
+import com.vts.pfms.print.model.MinutesSubMile;
+
+@Service
+public class CommitteeServiceImpl implements CommitteeService{
+
+	@Autowired CommitteeDao dao;
+	
+	@Autowired 	private JavaMailSender javaMailSender;
+	
+	@Autowired	BCryptPasswordEncoder encoder;
+
+	FormatConverter fc=new FormatConverter();
+	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();  //new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private  SimpleDateFormat sdf= fc.getRegularDateFormat();     //new SimpleDateFormat("dd-MM-yyyy");
+	private  SimpleDateFormat sdf2=	fc.getDateMonthShortName();   //new SimpleDateFormat("dd-MMM-yyyy");
+	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
+	private static final Logger logger=LogManager.getLogger(CommitteeServiceImpl.class);
+	
+	@Override
+	public long CommitteeAdd(CommitteeDto committeeDto) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAdd");	
+		long count=0;
+		String name=committeeDto.getCommitteeName(); 
+		String sname=committeeDto.getCommitteeShortName();
+		List<Object[]> CommitteeNamesCheck=dao.CommitteeNamesCheck(name,sname,committeeDto.getIsGlobal());
+		
+		if(CommitteeNamesCheck.get(0)[1]!=null || CommitteeNamesCheck.get(0)[0]!=null)
+		{
+			if(Long.parseLong(CommitteeNamesCheck.get(0)[1].toString())>0)
+			{
+				return -2;
+			} 
+			if(Long.parseLong(CommitteeNamesCheck.get(0)[0].toString())>0)
+			{
+				return -1;
+			}			
+		}
+		
+		Committee committeeModel=new Committee();
+		
+		committeeModel.setCommitteeName(name);
+		committeeModel.setCommitteeShortName(sname);
+		committeeModel.setCommitteeType(committeeDto.getCommitteeType());
+		committeeModel.setProjectApplicable(committeeDto.getProjectApplicable());
+		
+		committeeModel.setTechNonTech(committeeDto.getTechNonTech());
+		committeeModel.setPeriodicNon(committeeDto.getPeriodicNon());
+		committeeModel.setPeriodicDuration(Integer.parseInt(committeeDto.getPeriodicDuration()));
+		committeeModel.setGuidelines(committeeDto.getGuidelines());
+		committeeModel.setDescription(committeeDto.getDescription());
+		committeeModel.setTermsOfReference(committeeDto.getTermsOfReference());
+		committeeModel.setIsGlobal(Long.parseLong(committeeDto.getIsGlobal()));
+		committeeModel.setCreatedBy(committeeDto.getCreatedBy());
+		committeeModel.setCreatedDate(sdf1.format(new Date()));
+		committeeModel.setIsActive(1);
+		
+		count = dao.CommitteeNewAdd(committeeModel);
+		
+		return count;
+		
+	}
+	
+	@Override
+	public Object[]CommitteeNamesCheck(String name,String sname, String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeNamesCheck");	
+		return dao.CommitteeNamesCheck(name,sname,projectid).get(0);
+	}
+		
+		
+	
+	@Override
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeListActive");	
+		return dao.CommitteeListActive(isglobal,Projectapplicable); 
+	}
+	
+	@Override
+	public Object[] CommitteeDetails(String committeeid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeDetails");	
+		return dao.CommitteeDetails(committeeid);
+	}
+	
+	@Override
+	public long CommitteeEditSubmit(CommitteeDto committeeDto) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeEditSubmit");	
+		String name=committeeDto.getCommitteeName(); 
+		String sname=committeeDto.getCommitteeShortName();
+		
+		
+		long committeeid=committeeDto.getCommitteeId();
+		String shortname=committeeDto.getCommitteeShortName();
+		String fullname=committeeDto.getCommitteeName();
+		List<Object[]> CommitteeList=(List<Object[]>)dao.CommitteeListActive(committeeDto.getIsGlobal(),committeeDto.getProjectApplicable());
+		for(int i=0;i<CommitteeList.size();i++)
+		{
+			if(Long.parseLong(CommitteeList.get(i)[0].toString())!=committeeid)
+			{
+				if(CommitteeList.get(i)[1].toString().equals(shortname))
+				{
+					return -1;
+				}
+				if(CommitteeList.get(i)[2].toString().equals(fullname))
+				{
+					return -2;
+				}
+			}
+		}
+		
+		Committee committeemodel=new Committee();
+		
+		committeemodel.setCommitteeId(committeeid);
+		committeemodel.setCommitteeName(name);
+		committeemodel.setCommitteeShortName(sname);
+		committeemodel.setCommitteeType(committeeDto.getCommitteeType());
+		committeemodel.setProjectApplicable(committeeDto.getProjectApplicable());
+		
+		committeemodel.setTechNonTech(committeeDto.getTechNonTech());
+		committeemodel.setPeriodicNon(committeeDto.getPeriodicNon());
+		committeemodel.setPeriodicDuration(Integer.parseInt(committeeDto.getPeriodicDuration()));
+		committeemodel.setGuidelines(committeeDto.getGuidelines());
+		committeemodel.setDescription(committeeDto.getDescription());
+		committeemodel.setTermsOfReference(committeeDto.getTermsOfReference());
+		committeemodel.setIsGlobal(Long.parseLong(committeeDto.getIsGlobal()));
+		committeemodel.setModifiedBy(committeeDto.getModifiedBy());
+		committeemodel.setModifiedDate(sdf1.format(new Date()));
+		
+		return dao.CommitteeEditSubmit(committeemodel);	
+	}	
+	
+	
+	@Override
+	public List<Object[]> EmployeeList(String LabCode) throws Exception {
+		logger.info(new Date() +"Inside EmployeeList");	
+		return dao.EmployeeList(LabCode);
+	}
+	
+	@Override
+	public Object[] CommitteeName(String CommitteeId) throws Exception {
+		logger.info(new Date() +"Inside CommitteeName");	
+		return dao.CommitteeName(CommitteeId);
+	}
+
+
+	@Override
+	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception {
+		logger.info(new Date() +"Inside CommitteeDetailsSubmit");
+		CommitteeMain committeemain= new CommitteeMain();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate fromDate = LocalDate.parse(committeemaindto.getValidFrom(), formatter);
+		LocalDate toDate=fromDate.plusYears(5).minusDays(1);
+		
+		committeemain.setValidFrom(java.sql.Date.valueOf(fromDate));
+		committeemain.setValidTo(java.sql.Date.valueOf(toDate));
+		committeemain.setCreatedBy(committeemaindto.getCreatedBy());
+		committeemain.setCreatedDate(sdf1.format(new Date()));
+		committeemain.setCommitteeId(Long.parseLong(committeemaindto.getCommitteeId()));
+		committeemain.setProjectId(Long.parseLong(committeemaindto.getProjectId()));
+		committeemain.setInitiationId(Long.parseLong(committeemaindto.getInitiationId()));
+		committeemain.setDivisionId(Long.parseLong(committeemaindto.getDivisionId()));
+		committeemain.setPreApproved(committeemaindto.getPreApproved());
+		if(committeemaindto.getPreApproved().equalsIgnoreCase("N")) {
+			committeemain.setStatus("P");
+			committeemain.setIsActive(0);
+		}else if(committeemaindto.getPreApproved().equalsIgnoreCase("Y"))
+		{
+			committeemain.setStatus("A");
+			committeemain.setIsActive(1);
+		}
+		if( committeemaindto.getPreApproved().equalsIgnoreCase("Y")) {
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindto.getCommitteeId(),committeemaindto.getProjectId(),committeemaindto.getDivisionId(),committeemaindto.getInitiationId());		
+			if(lastcommitteeid!=0 )
+			{
+				CommitteeMain committeemain1= new CommitteeMain();
+				
+				committeemain1.setModifiedBy(committeemaindto.getCreatedBy());
+				committeemain1.setModifiedDate(sdf1.format(new Date()));
+				committeemain1.setValidTo(java.sql.Date.valueOf(fromDate.minusDays(1).toString()));
+				committeemain1.setCommitteeMainId(lastcommitteeid);
+					
+				dao.UpdateCommitteemainValidto(committeemain1);
+			}		
+		}
+		long mainid= dao.CommitteeDetailsSubmit(committeemain);		
+		
+		for(int i=1;i<=3;i++) 
+		{
+			CommitteeMember committeemember = new CommitteeMember(); 
+			committeemember.setCommitteeMainId(mainid);
+			if(i==1) 
+			{
+				committeemember.setEmpId(Long.parseLong(committeemaindto.getChairperson()));
+				committeemember.setLabId(Long.parseLong(committeemaindto.getCpLabId()));
+				committeemember.setMemberType("CC");
+			}else if(i==2)
+			{
+				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
+				committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
+				committeemember.setMemberType("CS");
+			}
+			else if(i==3)
+			{
+				if( Long.parseLong(committeemaindto.getProxySecretary())>0) 
+				{
+					committeemember.setEmpId(Long.parseLong(committeemaindto.getProxySecretary()) );
+					committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
+					committeemember.setMemberType("PS");
+				}
+				else 
+				{
+					continue;
+				}
+			}
+			committeemember.setCreatedBy(committeemaindto.getCreatedBy());			
+			committeemember.setCreatedDate(sdf1.format(new Date()));
+			committeemember.setIsActive(1);
+			dao.CommitteeMainMembersAdd(committeemember);
+		}		
+		
+		String[] reps=committeemaindto.getReps();
+		if(mainid>0 && reps!=null) {
+					
+			for(int i=0;i<reps.length;i++ ) 
+			{
+				CommitteeMemberRep repmems=new CommitteeMemberRep();
+				repmems.setCommitteeMainId(mainid);
+				repmems.setRepId(Integer.parseInt(reps[i]));
+				repmems.setCreatedBy(committeemaindto.getCreatedBy());
+				repmems.setCreatedDate(sdf1.format(new Date()));
+				repmems.setIsActive(1);			
+				dao.CommitteeRepMembersSubmit(repmems);
+			}
+		}
+		
+		if(committeemaindto.getPreApproved().equalsIgnoreCase("N"))
+		{
+			CommitteeConstitutionApproval approval=new CommitteeConstitutionApproval();
+			approval.setCommitteeMainId(mainid);
+			approval.setConstitutionStatus("CCR");
+	//		approval.setRemarks(dto.getRemarks());
+			approval.setActionBy(committeemaindto.getCreatedBy());
+			approval.setActionDate(sdf1.format(new Date()));
+			approval.setEmpid(Long.parseLong(committeemaindto.getCreatedByEmpid()));
+			approval.setEmpLabid(Long.parseLong(committeemaindto.getCreatedByEmpidLabid()));
+			approval.setConstitutedBy(Long.parseLong(committeemaindto.getCreatedByEmpid()));
+			approval.setApprovalAuthority("0");
+			dao.CommitteeConstitutionApprovalAdd(approval);
+		}
+		return mainid;
+	}
+
+	@Override
+	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception {
+		logger.info(new Date() +"Inside LastCommitteeId");
+		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid );
+	}
+	
+	@Override
+	public List<Object[]> CommitteeMainList() throws Exception {
+		logger.info(new Date() +"Inside CommitteeMainList");
+		return dao.CommitteeMainList();
+	}
+	
+	@Override
+	public List<Object[]> CommitteeNonProjectList() throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeNonProjectList");
+		return dao.CommitteeNonProjectList();
+	}
+
+
+	
+	@Override
+	public List<Object[]> EmployeeListWithoutMembers(String committeemainid, String LabCode) throws Exception
+	{
+		logger.info(new Date() +"Inside EmployeeListWithoutMembers");
+		List<Object[]> employeelist= dao.EmployeeListWithoutMembers(committeemainid,LabCode);
+		return employeelist;
+	}
+	
+	@Override
+	public int CommitteeMemberDelete(String committeememberid, String modifiedby)throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMemberDelete");
+		CommitteeMember committeemember=new CommitteeMember();
+		committeemember.setCommitteeMemberId(Long.parseLong(committeememberid));
+		committeemember.setModifiedBy(modifiedby);
+		committeemember.setModifiedDate(sdf1.format(new Date()));
+		
+		return dao.CommitteeMemberDelete(committeemember);
+	}
+	
+	@Override
+	public long CommitteeMainMembersAddSubmit(String committeemainid, String[] Member,String userid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMainMembersAddSubmit");
+		long count=0;
+		for(int i=0;i< Member.length;i++)
+		{
+			CommitteeMember  committeemember=new CommitteeMember();
+			committeemember.setCommitteeMainId(Long.parseLong(committeemainid));
+			committeemember.setCreatedBy(userid);
+			committeemember.setCreatedDate(sdf1.format(new Date()));
+			committeemember.setEmpId(Long.parseLong(Member[i]));
+			committeemember.setIsActive(1);
+			count=dao.CommitteeMainMembersAdd(committeemember);
+		}
+		return count;
+	}
+	
+	@Override
+	public List<Object[]> EmployeeListNoMembers(String labid, String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside EmployeeListNoMembers");
+		List<Object[]> employeelist= dao.ChairpersonEmployeeList( labid, committeemainid);	
+		return employeelist;
+	}
+
+	@Override
+	public long CommitteeScheduleAddSubmit(CommitteeScheduleDto committeescheduledto)throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleAddSubmit");
+		CommitteeSchedule committeeschedule=new  CommitteeSchedule(); 
+		
+			
+		committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
+		committeeschedule.setProjectId(Long.parseLong(committeescheduledto.getProjectId()));
+		committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
+		committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
+		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
+		committeeschedule.setCreatedDate(sdf1.format(new Date()));
+		committeeschedule.setScheduleSub("N");		
+		committeeschedule.setIsActive(1);
+		committeeschedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
+		committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
+		committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
+		committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
+		
+		String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
+		String LabName=dao.LabDetails()[1].toString();
+		BigInteger SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
+		String ProjectName=null;
+		if(Long.parseLong(committeescheduledto.getProjectId())>0) 
+		{
+			ProjectName=dao.projectdetails(committeescheduledto.getProjectId())[4].toString();
+		}
+		else if(Long.parseLong(committeescheduledto.getDivisionId())>0) 
+		{
+			ProjectName="DIV";
+		}
+		else if(Long.parseLong(committeescheduledto.getInitiationId())>0) 
+		{
+			ProjectName="INI";
+		}
+		else
+		{
+			ProjectName="GEN";
+		}
+		Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
+		committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+SerialNo.add(new BigInteger("1")));
+		return dao.CommitteeScheduleAddSubmit(committeeschedule);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeScheduleListNonProject(String committeeid)throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleListNonProject");
+		return dao.CommitteeScheduleListNonProject(committeeid);
+	}
+
+	@Override
+	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeScheduleEditData");
+		return dao.CommitteeScheduleEditData(CommitteeScheduleId);
+	}
+	
+	@Override
+	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception {
+
+		logger.info(new Date() +"Inside AgendaReturnData");
+		return dao.AgendaReturnData(CommitteeScheduleId);
+	}
+
+	@Override
+	public List<Object[]> ProjectList() throws Exception {
+		
+		logger.info(new Date() +"Inside ProjectList");
+		return dao.ProjectList();
+	}
+	
+	@Override
+	public Long CommitteeAgendaSubmit(List<CommitteeScheduleAgendaDto> scheduleagendadtos) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeAgendaSubmit");
+		long ret=0;
+		
+		String committeescheduleid=scheduleagendadtos.get(0).getScheduleId();
+		for(int i=0;i<scheduleagendadtos.size();i++) {
+			
+			CommitteeScheduleAgenda scheduleagenda=new CommitteeScheduleAgenda();
+//			CommitteeSchedulesAttachment attachment = new CommitteeSchedulesAttachment();
+			
+			scheduleagenda.setScheduleId(Long.parseLong(scheduleagendadtos.get(i).getScheduleId()));
+			scheduleagenda.setScheduleSubId(Long.parseLong(scheduleagendadtos.get(i).getScheduleSubId()));
+			scheduleagenda.setAgendaItem(scheduleagendadtos.get(i).getAgendaItem());
+			scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadtos.get(i).getPresenterId()));
+			scheduleagenda.setDuration(Integer.parseInt(scheduleagendadtos.get(i).getDuration()));
+			scheduleagenda.setProjectId(Long.parseLong(scheduleagendadtos.get(i).getProjectId()));
+			scheduleagenda.setRemarks(scheduleagendadtos.get(i).getRemarks());
+			scheduleagenda.setCreatedBy(scheduleagendadtos.get(i).getCreatedBy());
+			scheduleagenda.setCreatedDate(sdf1.format(new Date()));
+			scheduleagenda.setIsActive(Integer.parseInt(scheduleagendadtos.get(i).getIsActive()));
+//			if(scheduleagendadtos.get(i).getDocId()!=null) {
+//				scheduleagenda.setDocId(Long.parseLong(scheduleagendadtos.get(i).getDocId()));
+//			}else
+//			{
+//				scheduleagenda.setDocId(0);
+//			}			
+
+			List<Object[]> agendapriority=dao.CommitteeScheduleAgendaPriority(committeescheduleid);
+			
+			
+			if(agendapriority.size()==0)
+			{
+				scheduleagenda.setAgendaPriority(1);
+			}
+			else if((Integer)agendapriority.get(0)[2]==0)
+			{
+				scheduleagenda.setAgendaPriority(1);
+			}else {
+				scheduleagenda.setAgendaPriority(((Integer)agendapriority.get(0)[2])+1);	
+			}
+			
+			ret= dao.CommitteeAgendaSubmit(scheduleagenda);
+			
+			if(scheduleagendadtos.get(i).getDocLinkIds()!=null) {
+				List<String> docids = Arrays.asList(scheduleagendadtos.get(i).getDocLinkIds());
+				List<String> existingdocids = new ArrayList<String>();
+				for(int j=0; j<docids.size();j++) {
+					if(!existingdocids.contains(docids.get(j))) 
+					{
+						CommitteeScheduleAgendaDocs doc= new CommitteeScheduleAgendaDocs();
+						doc.setAgendaId(ret);
+						doc.setFileDocId(Long.parseLong(docids.get(j)));
+						doc.setIsActive(1);
+						doc.setCreatedBy(scheduleagendadtos.get(i).getCreatedBy());
+						doc.setCreatedDate(sdf1.format(new Date()));
+						dao.AgendaDocLinkAdd(doc);
+						existingdocids.add(String.valueOf(docids.get(j)));
+					}
+				}
+			}
+		
+		}
+		return ret;
+	}
+
+
+	@Override
+	public Long CommitteeScheduleAgendaEdit(CommitteeScheduleAgendaDto scheduleagendadto,String attachmentid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleAgendaEdit");
+		CommitteeScheduleAgenda scheduleagenda=new CommitteeScheduleAgenda();
+//		CommitteeSchedulesAttachment attachment = new CommitteeSchedulesAttachment();
+		
+		scheduleagenda.setScheduleAgendaId(Long.parseLong(scheduleagendadto.getScheduleAgendaId()));
+		scheduleagenda.setAgendaItem(scheduleagendadto.getAgendaItem());
+		scheduleagenda.setProjectId(Long.parseLong(scheduleagendadto.getProjectId()));
+		scheduleagenda.setRemarks(scheduleagendadto.getRemarks());
+		scheduleagenda.setModifiedBy(scheduleagendadto.getModifiedBy());
+		scheduleagenda.setModifiedDate(sdf1.format(new Date()));
+		scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadto.getPresenterId()));
+		scheduleagenda.setDuration(Integer.parseInt(scheduleagendadto.getDuration()));
+		
+//		if(scheduleagendadto.getDocId()!=null) {
+//			scheduleagenda.setDocId(Long.parseLong(scheduleagendadto.getDocId()));
+//		}else
+//		{
+//			scheduleagenda.setDocId(0);
+//		}		
+		
+		
+		
+		if(scheduleagendadto.getDocLinkIds()!=null) {
+			List<String> docids = Arrays.asList(scheduleagendadto.getDocLinkIds());
+			List<String> existingdocids = dao.AgendaAddedDocLinkIdList(scheduleagendadto.getScheduleAgendaId()) ;
+			for(int j=0; j<docids.size();j++) {
+				if(!existingdocids.contains(docids.get(j)) && !docids.get(j).equalsIgnoreCase("")) 
+				{
+					CommitteeScheduleAgendaDocs doc= new CommitteeScheduleAgendaDocs();
+					doc.setAgendaId(Long.parseLong(scheduleagendadto.getScheduleAgendaId()));
+					doc.setFileDocId(Long.parseLong(docids.get(j)));
+					doc.setIsActive(1);
+					doc.setCreatedBy(scheduleagendadto.getCreatedBy());
+					doc.setCreatedDate(sdf1.format(new Date()));
+					dao.AgendaDocLinkAdd(doc);
+					existingdocids.add(docids.get(j));
+				}
+			}
+		}
+		
+		
+		long ret=0;
+		ret=dao.CommitteeScheduleAgendaUpdate(scheduleagenda);
+		
+//		if(scheduleagendadto.getAgendaAttachment().length!=0 && attachmentid.equals("null"))
+//		{
+//			attachment.setScheduleAgendaId(Long.parseLong(scheduleagendadto.getScheduleAgendaId()));
+//			attachment.setAgendaAttachment(scheduleagendadto.getAgendaAttachment());
+//			attachment.setModifiedBy(scheduleagendadto.getCreatedBy());
+//			attachment.setModifiedDate(sdf1.format(new Date()));
+//			attachment.setAttachmentName(scheduleagendadto.getAttachmentName());
+//			
+//			ret=dao.CommitteeAgendaAttachment(attachment);
+//		}
+//		else if(scheduleagendadto.getAgendaAttachment().length!=0 && !attachmentid.equals("null")) 
+//		{		
+//			attachment.setAgendaAttachment(scheduleagendadto.getAgendaAttachment());
+//			attachment.setAttachmentName(scheduleagendadto.getAttachmentName());
+//			attachment.setModifiedBy(scheduleagendadto.getModifiedBy());
+//			attachment.setModifiedDate(sdf1.format(new Date()));
+//			attachment.setScheduleAttachmentId(Long.parseLong(attachmentid));
+//			ret=0;
+//			ret=dao.CommitteeScheduleAgendaAttachUpdate(attachment);
+//		}
+		
+		return ret;
+	}
+
+
+	@Override
+	public Long CommitteeAgendaPriorityUpdate(String[] agendaid,String[] priority) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAgendaPriorityUpdate");
+			long ret=0;
+			for(int i=0;i<agendaid.length;i++)
+			{
+				dao.CommitteeAgendaPriorityUpdate(agendaid[i],priority[i]);
+			}
+			return ret;
+	
+	}
+
+	@Override
+	public int CommitteeAgendaDelete(String committeescheduleagendaid, String attachmentid,String Modifiedby, String  scheduleid,String AgendaPriority) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAgendaDelete");
+		List<Object[]> agendaslistafter=dao.CommitteeScheduleGetAgendasAfter(scheduleid,AgendaPriority);
+		
+		if(agendaslistafter.size()!=0) 
+		{
+			for(Object[] obj : agendaslistafter )
+			{
+				
+				dao.CommitteeAgendaPriorityUpdate(obj[0].toString(),String.valueOf((Integer)obj[1]-1));
+				
+			}
+		}
+		
+		
+		dao.AgendaDocUnlink(committeescheduleagendaid, Modifiedby, sdf1.format(new Date()));
+		
+//		if(!attachmentid.equals("null")) 
+//		{
+//			dao.CommitteeAgendaAttachmentDelete(attachmentid);
+//		}
+		
+		return dao.CommitteeAgendaDelete(committeescheduleagendaid,Modifiedby,sdf1.format(new Date()));
+		
+	}
+
+//	@Override
+//	public List<Object[]> CommitteeAgendaList1(String CommitteeScheduleId) throws Exception 
+//	{
+//		logger.info(new Date() +"Inside CommitteeAgendaList");
+//		return dao.CommitteeAgendaList(CommitteeScheduleId);
+//	}
+	
+	@Override
+	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception 
+	{		
+		logger.info(new Date() +"Inside AgendaList");
+		return dao.AgendaList(CommitteeScheduleId);
+	}
+
+//	@Override
+//	public CommitteeSchedulesAttachment CommitteeAgendaAttachDownload(String CommitteeAttachmentId) throws Exception {
+//
+//		logger.info(new Date() +"Inside CommitteeAgendaAttachDownload");
+//		return dao.CommitteeAgendaAttachDownload(CommitteeAttachmentId);
+//	}
+
+	@Override 
+	public Long CommitteeScheduleUpdate(CommitteeScheduleDto committeescheduledto) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeScheduleUpdate");
+		String meetingid = dao.CommitteeScheduleData(committeescheduledto.getScheduleId().toString())[12].toString();
+		CommitteeSchedule committeeschedule=new  CommitteeSchedule();
+		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
+		committeeschedule.setScheduleStartTime(committeescheduledto.getScheduleStartTime());
+		committeeschedule.setScheduleId(committeescheduledto.getScheduleId());
+		committeeschedule.setModifiedBy(committeescheduledto.getCreatedBy());
+		committeeschedule.setModifiedDate(sdf1.format(new Date()));
+		
+		String[] strarr=meetingid.split("/");
+		meetingid=strarr[0].toString().trim() +"/"+strarr[1].toString().trim() +"/"+strarr[2].toString().trim() +"/"+sdf2.format(committeeschedule.getScheduleDate()).toString().toUpperCase().replace("-", "")+"/"+strarr[4].toString().trim() ;
+		committeeschedule.setMeetingId(meetingid);
+		return dao.CommitteeScheduleUpdate(committeeschedule);
+	}
+
+	@Override
+	public List<Object[]> CommitteeMinutesSpecList(String CommitteeScheduleId) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeMinutesSpecList");
+		return dao.CommitteeMinutesSpecList(CommitteeScheduleId);
+	}
+
+	@Override
+	public Long CommitteeMinutesInsert(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeMinutesInsert");
+		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
+		committeeminutesdetails.setScheduleId(Long.parseLong(committeeminutesdetailsdto.getScheduleId()));
+		committeeminutesdetails.setScheduleSubId(Long.parseLong(committeeminutesdetailsdto.getScheduleSubId()));
+		committeeminutesdetails.setMinutesId(Long.parseLong(committeeminutesdetailsdto.getMinutesId()));
+		committeeminutesdetails.setMinutesSubId(Long.parseLong(committeeminutesdetailsdto.getMinutesSubId()));
+		committeeminutesdetails.setMinutesSubOfSubId(Long.parseLong(committeeminutesdetailsdto.getMinutesSubOfSubId()));
+		committeeminutesdetails.setDetails(committeeminutesdetailsdto.getDetails());
+		committeeminutesdetails.setIDARCK(committeeminutesdetailsdto.getIDARCK());
+		committeeminutesdetails.setCreatedBy(committeeminutesdetailsdto.getCreatedBy());
+		committeeminutesdetails.setCreatedDate(sdf1.format(new Date()));
+		
+		if(committeeminutesdetailsdto.getRemarks()=="" ) {
+			
+			committeeminutesdetails.setRemarks("Nil");
+			
+		}else {
+			
+			committeeminutesdetails.setRemarks(committeeminutesdetailsdto.getRemarks());
+		}
+		
+		
+
+		return dao.CommitteeMinutesInsert(committeeminutesdetails);
+	}
+
+	@Override
+	public Object[] CommitteeMinutesSpecDesc(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeMinutesSpecDesc");
+		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
+		
+		committeeminutesdetails.setMinutesId(Long.parseLong(committeeminutesdetailsdto.getMinutesId()));
+		committeeminutesdetails.setMinutesSubId(Long.parseLong(committeeminutesdetailsdto.getMinutesSubId()));
+		committeeminutesdetails.setMinutesSubOfSubId(Long.parseLong(committeeminutesdetailsdto.getMinutesSubOfSubId()));
+
+		return dao.CommitteeMinutesSpecDesc(committeeminutesdetails);
+	}
+	
+	@Override
+	public Object[] CommitteeMinutesSpecEdit(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeMinutesSpecEdit");
+		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
+		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
+		
+		return dao.CommitteeMinutesSpecEdit(committeeminutesdetails);
+	}
+	
+	@Override
+	public Long CommitteeMinutesUpdate(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeMinutesUpdate");
+		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
+		committeeminutesdetails.setScheduleId(Long.parseLong(committeeminutesdetailsdto.getScheduleId()));
+		committeeminutesdetails.setScheduleSubId(Long.parseLong(committeeminutesdetailsdto.getScheduleSubId()));
+		committeeminutesdetails.setMinutesId(Long.parseLong(committeeminutesdetailsdto.getMinutesId()));
+		committeeminutesdetails.setDetails(committeeminutesdetailsdto.getDetails());
+		committeeminutesdetails.setIDARCK(committeeminutesdetailsdto.getIDARCK());
+		committeeminutesdetails.setModifiedBy(committeeminutesdetailsdto.getModifiedBy());
+		committeeminutesdetails.setModifiedDate(sdf1.format(new Date()));
+		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
+		committeeminutesdetails.setRemarks(committeeminutesdetailsdto.getRemarks());
+
+		return dao.CommitteeMinutesUpdate(committeeminutesdetails);
+	}
+	
+	
+	@Override
+	public long CommitteeSubScheduleSubmit(CommitteeSubScheduleDto committeesubscheduledto) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeSubScheduleSubmit");
+		CommitteeSubSchedule committeesubschedule=new CommitteeSubSchedule();
+		committeesubschedule.setScheduleId(Long.parseLong(committeesubscheduledto.getScheduleId()));
+		committeesubschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeesubscheduledto.getScheduleDate()).getTime()));
+		committeesubschedule.setScheduleStartTime(committeesubscheduledto.getScheduleStartTime());
+		committeesubschedule.setCreatedBy(committeesubscheduledto.getCreatedBy());
+		committeesubschedule.setCreatedDate(sdf1.format(new Date()));
+		committeesubschedule.setScheduleFlag("N");
+		committeesubschedule.setIsActive(1);		
+		
+		return dao.CommitteeSubScheduleSubmit(committeesubschedule);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeSubScheduleList(String scheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeSubScheduleList");
+		return dao.CommitteeSubScheduleList(scheduleid);
+	}
+
+
+	@Override
+	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleMinutes");
+		return dao.CommitteeScheduleMinutes(scheduleid);
+	}
+
+
+
+	@Override
+	public List<Object[]> CommitteeMinutesSpecdetails()throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMinutesSpecdetails");
+		return dao.CommitteeMinutesSpecdetails();
+	}
+
+	@Override
+	public List<Object[]> CommitteeMinutesSub()throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMinutesSub");
+		return dao.CommitteeMinutesSub();
+	}
+
+	@Override
+	public List<Object[]> CommitteeAttendance(String CommitteeScheduleId) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeAttendance");
+		return dao.CommitteeAttendance(CommitteeScheduleId);
+	}
+
+	
+	@Override
+	public int MeetingAgendaApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingAgendaApproval");
+		CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
+		CommitteeSchedule schedule= new CommitteeSchedule();
+		
+		
+		List<PfmsNotification> notifications=new ArrayList<PfmsNotification>();
+		String Status=null;
+		if(Option.equalsIgnoreCase("Agenda Approval")) {
+			Status="MAF";
+		}else {
+			Status="MAS";
+		}
+		
+		approval.setScheduleId(Long.parseLong(CommitteeScheduleId));
+		approval.setEmpId(Long.parseLong(EmpId));
+		approval.setMeetingStatus(Status);
+		approval.setActionBy(UserId);
+		approval.setActionDate(sdf1.format(new Date()));
+		
+		schedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
+		schedule.setScheduleFlag("MAF");
+		schedule.setModifiedBy(UserId);
+		schedule.setModifiedDate(sdf1.format(new Date()));
+		
+		
+		
+		Object[] CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CC");
+		if(CommitteMainData!=null && CommitteMainData.length>0)
+		{
+			PfmsNotification cpnotification= new PfmsNotification();
+			cpnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			cpnotification.setNotificationby(Long.parseLong(EmpId));
+			cpnotification.setNotificationDate(sdf1.format(new Date()));
+			cpnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			cpnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
+			cpnotification.setCreatedBy(UserId);
+			cpnotification.setCreatedDate(sdf1.format(new Date()));
+			cpnotification.setIsActive(1);
+			cpnotification.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			cpnotification.setStatus(Status);				
+			notifications.add(cpnotification);
+		}	
+		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CS");
+		if(CommitteMainData!=null && CommitteMainData.length>0)
+		{
+			PfmsNotification msnotification= new PfmsNotification();			
+			msnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			msnotification.setNotificationby(Long.parseLong(EmpId));
+			msnotification.setNotificationDate(sdf1.format(new Date()));
+			msnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			msnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
+			msnotification.setCreatedBy(UserId);
+			msnotification.setCreatedDate(sdf1.format(new Date()));
+			msnotification.setIsActive(1);
+			msnotification.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			msnotification.setStatus(Status);			
+			notifications.add(msnotification);		
+		}
+		
+		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"PS");
+		if(CommitteMainData!=null && CommitteMainData.length>0 )
+		{
+			PfmsNotification psnotification= new PfmsNotification();
+			psnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			psnotification.setNotificationby(Long.parseLong(EmpId));
+			psnotification.setNotificationDate(sdf1.format(new Date()));
+			psnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			psnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
+			psnotification.setCreatedBy(UserId);
+			psnotification.setCreatedDate(sdf1.format(new Date()));
+			psnotification.setIsActive(1);
+			psnotification.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			psnotification.setStatus(Status);			
+			notifications.add(psnotification);		
+		}
+		
+		return dao.MeetingAgendaApproval(approval,schedule,notifications);
+	}
+
+	@Override
+	public List<Object[]> MeetingApprovalAgendaList(String EmpId) throws Exception 
+	{
+		logger.info(new Date() +"Inside MeetingApprovalAgendaList");
+		return dao.MeetingApprovalAgendaList(EmpId);
+	}
+	
+
+	@Override
+	public int MeetingAgendaApprovalSubmit(String ScheduleId, String Remarks, String UserId, String EmpId,String Option) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingAgendaApprovalSubmit");
+		CommitteeSchedule schedule= new CommitteeSchedule();
+		CommitteeMeetingApproval approval = new CommitteeMeetingApproval();
+		PfmsNotification notification=new PfmsNotification();
+		
+		schedule.setScheduleId(Long.parseLong(ScheduleId));
+		schedule.setModifiedBy(UserId);
+		schedule.setModifiedDate(sdf1.format(new Date()));
+		
+		approval.setScheduleId(Long.parseLong(ScheduleId));
+		approval.setEmpId(Long.parseLong(EmpId));
+		approval.setRemarks(Remarks);
+		approval.setActionBy(UserId);
+		approval.setActionDate(sdf1.format(new Date()));
+		
+		
+		Object[] CommitteeScheduleData=dao.CommitteeScheduleData(ScheduleId);
+		
+		Object[] NotificationData=dao.NotificationData(ScheduleId,EmpId,"MAF");
+		if(NotificationData!=null) {
+			notification.setEmpId(Long.parseLong(NotificationData[1].toString()));
+		}else {
+			notification.setEmpId(Long.parseLong("0"));
+		}
+		notification.setNotificationby(Long.parseLong(EmpId));
+		notification.setNotificationDate(sdf1.format(new Date()));
+		notification.setScheduleId(Long.parseLong(ScheduleId));
+		notification.setCreatedBy(UserId);
+		notification.setCreatedDate(sdf1.format(new Date()));
+		notification.setIsActive(1);
+		notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+Long.parseLong(ScheduleId));
+		
+		if(Option.equalsIgnoreCase("approve")) {
+			schedule.setScheduleFlag("MAA");
+			approval.setMeetingStatus("MAA");
+			notification.setNotificationMessage("Agenda Approved for " + CommitteeScheduleData[8].toString());
+			notification.setStatus("MAA");
+		}
+		if(Option.equalsIgnoreCase("return")) {
+			schedule.setScheduleFlag("MAR");
+			approval.setMeetingStatus("MAR");
+			notification.setNotificationMessage("Agenda Returned for " + CommitteeScheduleData[8].toString());
+			notification.setStatus("MAR");
+		}
+		
+		return dao.MeetingAgendaApprovalSubmit(schedule,approval,notification);
+	}
+	
+	
+	
+	@Override
+	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleData");
+		return dao.CommitteeScheduleData(committeescheduleid);
+	}
+	
+	@Override
+	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleDataPro");
+		return dao.CommitteeScheduleDataPro(committeescheduleid, projectid);
+	}
+
+
+	@Override
+	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAtendance");
+		return dao.CommitteeAtendance(committeescheduleid);
+	}
+	
+	
+	@Override
+	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside EmployeeListNoInvitedMembers");
+		return dao.EmployeeListNoInvitedMembers(scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> ExternalMembersNotInvited(String scheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside ExternalMembersWithoutInvited");
+		return dao.ExternalMembersNotInvited(scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside ExternalMembersNotAddedCommittee");
+		return dao.ExternalMembersNotAddedCommittee(committeemainid);		
+	}
+	
+	@Override
+	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeInvitationCreate");
+		ArrayList<String> al=new ArrayList<String>();
+		ArrayList<String> labidcheck=new ArrayList<String>();
+		long ret=0;
+		long slno=1;
+		Object[] maxslno=dao.InvitationMaxSerialNo(committeeinvitationdto.getCommitteeScheduleId());
+		if(maxslno[1]!=null && Long.parseLong(maxslno[1].toString())>0) {
+			slno=Long.parseLong(maxslno[1].toString())+1;
+		}
+		
+		for(int i=0;i<committeeinvitationdto.getEmpIdList().size();i++) {
+			
+			CommitteeInvitation committeeinvitation= new CommitteeInvitation();
+			
+			String MemberType[]=committeeinvitationdto.getEmpIdList().get(i).split(",");
+			committeeinvitation.setCommitteeScheduleId(Long.parseLong(committeeinvitationdto.getCommitteeScheduleId()));
+			
+			committeeinvitation.setCreatedBy(committeeinvitationdto.getCreatedBy());
+			committeeinvitation.setAttendance("P");
+			committeeinvitation.setCreatedDate(sdf1.format(new Date()));
+			committeeinvitation.setEmpId(Long.parseLong(MemberType[0]));
+			if(committeeinvitationdto.getReptype()!= null &&!committeeinvitationdto.getReptype().equals("0")) {
+				committeeinvitation.setMemberType(committeeinvitationdto.getReptype());
+			}else {
+				committeeinvitation.setMemberType(MemberType[1]);
+			}
+			committeeinvitation.setDesigId(MemberType[2]);
+			
+			if(!committeeinvitationdto.getLabId().isEmpty()) {
+				committeeinvitation.setLabId(Long.parseLong(committeeinvitationdto.getLabId().get(i)));
+			}
+			if(dao.CommitteeInvitationCheck(committeeinvitation).size()>0)
+			{
+				continue;
+			}
+			
+			committeeinvitation.setSerialNo(slno);
+			
+			slno++;
+//			labidcheck.add(committeeinvitationdto.getLabId().get(i));
+//			al.add(MemberType[0]);
+			ret=dao.CommitteeInvitationCreate(committeeinvitation);
+			
+			
+			
+			
+		}
+		
+		return ret; 
+	}
+
+	@Override
+	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeInvitationDelete");
+		
+		
+			List<Object[]> serialnoafter=dao.CommitteeInvitationSerialNoAfter(committeeinvitationid);
+			for(Object[] obj : serialnoafter)
+			{
+				dao.CommitteeInvitationSerialNoUpdate(obj[0].toString(), Long.parseLong(obj[1].toString())-1 );
+			}
+			
+		long count=dao.CommitteeInvitationDelete(committeeinvitationid);
+		return count;
+	}
+
+
+	@Override
+	public Long CommitteeAttendanceToggle(String InvitationId) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeAttendanceToggle");
+		List<String> AttendanceList=dao.CommitteeAttendanceList(InvitationId);
+		
+		String Value=null;
+		
+		for(int i=0; i<AttendanceList.size();i++ ) {
+			 Value=AttendanceList.get(i);	
+		}
+		
+		long ret=dao.CommitteeAttendanceUpdate(InvitationId,Value);
+			
+		return ret;
+	}
+
+
+
+	@Override
+	public Long ScheduleMinutesUnitUpdate(CommitteeMinutesDetailsDto detailsdto) throws Exception {
+		
+		logger.info(new Date() +"Inside ScheduleMinutesUnitUpdate");
+		CommitteeScheduleMinutesDetails minutesdetails = new CommitteeScheduleMinutesDetails();
+		minutesdetails.setScheduleId(Long.parseLong(detailsdto.getScheduleId()));
+		minutesdetails.setScheduleSubId(1);
+		minutesdetails.setMinutesId(Long.parseLong(detailsdto.getMinutesId()));
+		minutesdetails.setMinutesSubId(Long.parseLong(detailsdto.getMinutesSubId()));
+		minutesdetails.setMinutesSubOfSubId(Long.parseLong(detailsdto.getMinutesSubOfSubId()));
+		minutesdetails.setCreatedBy(detailsdto.getCreatedBy());
+		minutesdetails.setCreatedDate(sdf1.format(new Date()));
+		
+		return dao.ScheduleMinutesUnitUpdate(minutesdetails);
+	}
+
+	@Override
+	public List<Object[]> MinutesUnitList(String CommitteeScheudleId) throws Exception {
+
+		logger.info(new Date() +"Inside MinutesUnitList");
+		return dao.MinutesUnitList(CommitteeScheudleId);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeAgendaPresenter(String scheduleid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAgendaPresenter");
+		return dao.CommitteeAgendaPresenter(scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> PresenterRemovalEmpList(List<Object[]> Employeelist, List<Object[]> PresenterList) throws Exception
+	{
+		logger.info(new Date() +"Inside PresenterRemovalEmpList");
+		for(int i=0;i<Employeelist.size();i++)
+		{
+			for(int j=0;j<PresenterList.size();j++)
+			{
+				if(Employeelist.get(i)[0].toString().equals(PresenterList.get(j)[0].toString()))
+				{
+					Employeelist.remove(i);						
+				}
+			}
+		}
+		return Employeelist;
+	}
+
+	
+	
+	
+	@Override 
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception
+	{
+		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
+		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype);  
+		return projectidlist;
+	}
+	
+
+	
+	@Override
+	public Object[] projectdetails(String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside projectdetails");
+		return dao.projectdetails(projectid);
+	}
+	
+	@Override
+	public List<Object[]> ProjectScheduleListAll(String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectScheduleListAll");
+		return dao.ProjectScheduleListAll(projectid);
+	}
+	@Override
+	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectApplicableCommitteeList");
+		return dao.ProjectApplicableCommitteeList(projectid);
+	}
+	@Override
+	public  int UpdateComitteeMainid(String committeemainid, String scheduleid ) throws Exception
+	{
+		logger.info(new Date() +"Inside UpdateComitteeMainid");
+		return dao.UpdateComitteeMainid(committeemainid, scheduleid);
+	}
+	@Override
+	public List<Object[]> ProjectCommitteeScheduleListAll(String projectid,String committeeid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectCommitteeScheduleListAll");
+		return dao.ProjectCommitteeScheduleListAll(projectid, committeeid);
+	}
+	
+	@Override
+	public  List<Object[]> ChaipersonEmailId(String CommitteeMainId) throws Exception {
+
+		logger.info(new Date() +"Inside ChaipersonEmailId");
+		return dao.ChaipersonEmailId(CommitteeMainId);
+	}
+	
+	@Override
+	public Object[] ProjectDirectorEmail(String ProjectId) throws Exception {
+
+		logger.info(new Date() +"Inside ProjectDirectorEmail");
+		return dao.ProjectDirectorEmail(ProjectId);
+	}
+	
+	@Override
+	public Object[] RtmddoEmail() throws Exception {
+
+		logger.info(new Date() +"Inside RtmddoEmail");
+		return dao.RtmddoEmail();
+	}
+
+	@Override
+	public String UpdateOtp(CommitteeScheduleDto committeescheduledto) throws Exception {
+
+		logger.info(new Date() +"Inside UpdateOtp");
+		CommitteeSchedule schedule=new CommitteeSchedule();
+		schedule.setKickOffOtp(committeescheduledto.getKickOffOtp());
+		schedule.setScheduleId(committeescheduledto.getScheduleId());
+		schedule.setScheduleFlag(committeescheduledto.getScheduleFlag());
+		
+		return dao.UpdateOtp(schedule);
+
+	}
+
+	@Override
+	public String KickOffOtp(String CommitteeScheduleId) throws Exception {
+
+		logger.info(new Date() +"Inside KickOffOtp");
+		return dao.KickOffOtp(CommitteeScheduleId);
+	}
+
+	
+
+	@Override
+	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception {
+
+		logger.info(new Date() +"Inside UserSchedulesList");
+		return dao.UserSchedulesList(EmpId,"%"+MeetingId+"%");
+	}
+	
+	@Override
+	public List<Object[]> MeetingSearchList(String MeetingId) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingSearchList");
+		return dao.MeetingSearchList("%"+MeetingId+"%");
+
+	}
+
+	@Override
+	public long ProjectCommitteeAdd(String ProjectId, String[] Committee, String UserId) throws Exception {
+
+		logger.info(new Date() +"Inside ProjectCommitteeAdd");
+		long count=0;
+		for(int i=0;i<Committee.length;i++) {
+			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
+			CommitteeProject committeeproject=new CommitteeProject();
+			committeeproject.setProjectId(Long.parseLong(ProjectId));
+			committeeproject.setCommitteeId(Long.parseLong(Committee[i]));
+			committeeproject.setCreatedBy(UserId);
+			committeeproject.setCreatedDate(sdf1.format(new Date()));
+			committeeproject.setDescription(committeedata[10].toString());
+			committeeproject.setTermsOfReference(committeedata[11].toString());
+			count=dao.ProjectCommitteeAdd(committeeproject);
+		}
+				
+		return count;
+	}
+	
+	
+	@Override
+	public long InitiationCommitteeAdd(String initiation, String[] Committee, String UserId) throws Exception {
+
+		logger.info(new Date() +"Inside InitiationCommitteeAdd");
+		long count=0;
+		for(int i=0;i<Committee.length;i++) {
+			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
+			CommitteeInitiation model=new CommitteeInitiation(); 
+			model.setInitiationId(Long.parseLong(initiation));
+			model.setCommitteeId(Long.parseLong(Committee[i]));
+			model.setAutoSchedule("N");
+			model.setCreatedBy(UserId);
+			model.setCreatedDate(sdf1.format(new Date()));
+			model.setDescription(committeedata[10].toString());
+			model.setTermsOfReference(committeedata[11].toString());
+			count=dao.InitiationCommitteeAdd(model);
+		}
+				
+		return count;
+	}
+
+
+	@Override
+	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception {
+
+		logger.info(new Date() +"Inside ProjectMasterList");
+		return dao.ProjectMasterList(ProjectId);
+	}
+
+	@Override
+	public long ProjectCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
+
+		logger.info(new Date() +"Inside ProjectCommitteeDelete");
+		long count=0;
+		for(int i=0;i<CommitteeProject.length;i++) {
+			CommitteeProject committeeproject=new CommitteeProject();
+			committeeproject.setCommitteeProjectId(Long.parseLong(CommitteeProject[i]));		
+			count=dao.ProjectCommitteeDelete(committeeproject);
+		}				
+		return count;
+		
+	}
+	
+	@Override
+	public Object[] LabDetails()throws Exception
+	{
+		logger.info(new Date() +"Inside LabDetails");
+		return dao.LabDetails();
+	}
+
+
+
+	@Override
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception {
+		logger.info(new Date() +"Inside ProjectCommitteeList");
+		return dao.ProjectCommitteesListNotAdded(projectid);		
+	}
+
+
+
+	@Override
+	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String divisionid,String initiationid,String projectstatus) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeAutoScheduleList");
+		return dao.CommitteeAutoScheduleList(ProjectId,divisionid,initiationid,projectstatus);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String committeeid, String divisionid , String initiationid,String projectstatus) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeAutoScheduleList");
+		return dao.CommitteeAutoScheduleList(ProjectId, committeeid,divisionid,initiationid,projectstatus);
+	}
+	
+	@Override
+	public Object[] CommitteeLastScheduleDate(String committeeid) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeLastScheduleDate");
+		return dao.CommitteeLastScheduleDate(committeeid);
+	}
+
+	@Override
+	public int CommitteeProjectUpdate(String ProjectId, String CommitteeId) throws Exception {
+
+		logger.info(new Date() +"Inside CommitteeProjectUpdate");
+		return dao.CommitteeProjectUpdate(ProjectId,CommitteeId);
+	}
+
+
+	@Override
+	public int UpdateMeetingVenue(CommitteeScheduleDto csdto) throws Exception
+	{
+		logger.info(new Date() +"Inside UpdateMeetingVenue");
+		return dao.UpdateMeetingVenue(csdto);
+	}
+
+	@Override
+	public long MinutesAttachmentAdd(CommitteeMinutesAttachmentDto dto) throws Exception 
+	{
+		logger.info(new Date() +"Inside MinutesAttachmentAdd");
+		CommitteeMinutesAttachment attachment= new CommitteeMinutesAttachment();
+		attachment.setScheduleId(Long.parseLong(dto.getScheduleId()));
+		attachment.setMinutesAttachment(dto.getMinutesAttachment());
+		attachment.setAttachmentName(dto.getAttachmentName());
+		attachment.setCreatedBy(dto.getCreatedBy());
+		attachment.setCreatedDate(sdf1.format(new Date()));		
+		if(dto.getMinutesAttachmentId()!=null)
+		{
+			dao.MinutesAttachmentDelete(dto.getMinutesAttachmentId());
+		}		
+		return dao.MinutesAttachmentAdd(attachment);		
+	}
+	
+	@Override
+	public int MinutesAttachmentDelete(String  attachmentid) throws Exception
+	{
+		logger.info(new Date() +"Inside MinutesAttachmentDelete");
+		return dao.MinutesAttachmentDelete(attachmentid);
+	}	
+	@Override
+	public List<Object[]> MinutesAttachmentList(String scheduleid ) throws Exception 
+	{
+		logger.info(new Date() +"Inside MinutesAttachmentList");
+		return dao.MinutesAttachmentList(scheduleid);
+	}	
+	@Override
+	public CommitteeMinutesAttachment MinutesAttachDownload(String attachmentid) throws Exception 
+	{
+		logger.info(new Date() +"Inside MinutesAttachDownload");
+		return dao.MinutesAttachDownload(attachmentid);
+	}	
+	@Override
+	public List<Object[]> PfmsCategoryList() throws Exception 
+	{
+		logger.info(new Date() +"Inside PfmsCategoryList");
+		return dao.PfmsCategoryList();
+	}
+	
+	@Override
+	public int MeetingMinutesApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception 
+	{
+		logger.info(new Date() +"Inside MeetingMinutesApproval");
+		CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
+		CommitteeSchedule schedule= new CommitteeSchedule();
+	
+		List<Object[]> AllActionAssignedCheck=dao.AllActionAssignedCheck(CommitteeScheduleId);
+		for(Object[] obj:AllActionAssignedCheck)
+		{
+			if(obj[3]==null) {
+				return -1;
+			}
+		}
+		
+		String Status=null;
+		if(Option.equalsIgnoreCase("Minutes Approval")) {
+			Status="MMF";
+		}else {
+			Status="MMS";
+		}
+		
+		approval.setScheduleId(Long.parseLong(CommitteeScheduleId));
+		approval.setEmpId(Long.parseLong(EmpId));
+		approval.setMeetingStatus(Status);
+		approval.setActionBy(UserId);
+		approval.setActionDate(sdf1.format(new Date()));
+		
+		schedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
+		schedule.setScheduleFlag("MMF");
+		schedule.setModifiedBy(UserId);
+		schedule.setModifiedDate(sdf1.format(new Date()));
+		
+		Object[] CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CC");
+		if(CommitteMainData!=null )
+		{
+			PfmsNotification notificationcp= new PfmsNotification();
+			String ChairpersonId=CommitteMainData[0].toString();
+			notificationcp.setEmpId(Long.parseLong(ChairpersonId));
+			notificationcp.setNotificationby(Long.parseLong(EmpId));
+			notificationcp.setNotificationDate(sdf1.format(new Date()));
+			notificationcp.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
+			notificationcp.setNotificationUrl("MeetingApprovalAgenda.htm");
+			notificationcp.setCreatedBy(UserId);
+			notificationcp.setCreatedDate(sdf1.format(new Date()));
+			notificationcp.setIsActive(1);
+			notificationcp.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			notificationcp.setStatus(Status);
+			dao.MeetingMinutesApprovalNotification(notificationcp);
+		}
+		
+		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CS");
+		if(CommitteMainData!=null )
+		{
+			String secretary=CommitteMainData[0].toString();
+			PfmsNotification notificationms= new PfmsNotification();
+			notificationms.setEmpId(Long.parseLong(secretary));
+			notificationms.setNotificationby(Long.parseLong(EmpId));
+			notificationms.setNotificationDate(sdf1.format(new Date()));
+			notificationms.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
+			notificationms.setNotificationUrl("MeetingApprovalAgenda.htm");
+			notificationms.setCreatedBy(UserId);
+			notificationms.setCreatedDate(sdf1.format(new Date()));
+			notificationms.setIsActive(1);
+			notificationms.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			notificationms.setStatus(Status);
+			dao.MeetingMinutesApprovalNotification(notificationms);
+		}
+		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"PS");
+		if(CommitteMainData!=null )
+		{
+			String secretary=CommitteMainData[0].toString();
+			PfmsNotification notificationps= new PfmsNotification();
+			notificationps.setEmpId(Long.parseLong(secretary));
+			notificationps.setNotificationby(Long.parseLong(EmpId));
+			notificationps.setNotificationDate(sdf1.format(new Date()));
+			notificationps.setNotificationMessage("Minutes Pending Approval For " + CommitteMainData[2].toString() );
+			notificationps.setNotificationUrl("MeetingApprovalAgenda.htm");
+			notificationps.setCreatedBy(UserId);
+			notificationps.setCreatedDate(sdf1.format(new Date()));
+			notificationps.setIsActive(1);
+			notificationps.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			notificationps.setStatus(Status);
+			dao.MeetingMinutesApprovalNotification(notificationps);
+		}
+		
+		return dao.MeetingMinutesApproval(approval,schedule);
+	}
+
+	@Override
+	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingApprovalMinutesList");
+		return dao.MeetingApprovalMinutesList(EmpId);
+	}
+
+
+	@Override
+	public int MeetingMinutesApprovalSubmit(String ScheduleId, String Remarks, String UserId, String EmpId,String Option) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingMinutesApprovalSubmit");
+		CommitteeSchedule schedule= new CommitteeSchedule();
+		CommitteeMeetingApproval approval = new CommitteeMeetingApproval();
+		PfmsNotification notification=new PfmsNotification();
+		
+		schedule.setScheduleId(Long.parseLong(ScheduleId));
+		schedule.setModifiedBy(UserId);
+		schedule.setModifiedDate(sdf1.format(new Date()));
+		
+		approval.setScheduleId(Long.parseLong(ScheduleId));
+		approval.setEmpId(Long.parseLong(EmpId));
+		approval.setRemarks(Remarks);
+		approval.setActionBy(UserId);
+		approval.setActionDate(sdf1.format(new Date()));
+		
+		Object[] NotificationData=dao.NotificationData(ScheduleId,EmpId,"MMF");
+		Object[] CommitteeScheduleData=dao.CommitteeScheduleData(ScheduleId);
+		
+		if(NotificationData!=null) {
+			notification.setEmpId(Long.parseLong(NotificationData[1].toString()));
+		}else {
+			notification.setEmpId(Long.parseLong("0"));
+		}
+		notification.setNotificationby(Long.parseLong(EmpId));
+		notification.setNotificationDate(sdf1.format(new Date()));
+		notification.setScheduleId(Long.parseLong(ScheduleId));
+		notification.setCreatedBy(UserId);
+		notification.setCreatedDate(sdf1.format(new Date()));
+		notification.setIsActive(1);
+		notification.setNotificationUrl("CommitteeScheduleView.htm?scheduleid="+Long.parseLong(ScheduleId));
+		try {
+			if(Option.equalsIgnoreCase("approve")) {
+				schedule.setScheduleFlag("MMA");
+				approval.setMeetingStatus("MMA");
+				notification.setNotificationMessage("Minutes Approved for " + CommitteeScheduleData[8].toString());
+				notification.setStatus("MMA");
+			}
+			if(Option.equalsIgnoreCase("return")) {
+				schedule.setScheduleFlag("MMR");
+				approval.setMeetingStatus("MMR");
+				notification.setNotificationMessage("Minutes Returned for " + CommitteeScheduleData[8].toString());
+				notification.setStatus("MMR");
+			}
+		}catch (Exception e) {
+			
+		}
+		return dao.MeetingMinutesApprovalSubmit(schedule,approval,notification);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception {
+		 
+		logger.info(new Date() +"Inside CommitteeAllAttendance");
+		return dao.CommitteeAllAttendance(CommitteeScheduleId);
+	}
+
+	@Override
+	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception {
+
+		logger.info(new Date() +"Inside MeetingReports");
+		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype);
+	}
+
+	@Override
+	public List<Object[]> MeetingReportListAll(String fdate, String tdate, String ProjectId) throws Exception {
+		
+		logger.info(new Date() +"Inside MeetingReportListAll");
+		return dao.MeetingReportListAll(fdate,tdate,ProjectId);
+	}
+	
+	@Override
+	public List<Object[]> MeetingReportListEmp(String fdate, String tdate, String ProjectId, String EmpId)	throws Exception {		
+		logger.info(new Date() +"Inside MeetingReportListEmp");
+		return dao.MeetingReportListEmp(fdate,tdate,ProjectId,EmpId);
+	}
+	
+	
+	@Override
+	public Object[] KickOffMeeting(HttpServletRequest req,RedirectAttributes redir) throws Exception
+	{
+		logger.info(new Date() +"Inside KickOffMeeting");
+		String CommitteeMainId=req.getParameter("committeemainid");
+		String CommitteeScheduleId=req.getParameter("committeescheduleid");
+		String Option=req.getParameter("sub");
+		SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+		DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		
+		Object[] scheduledata=dao.CommitteeScheduleData(CommitteeScheduleId);
+		LocalDate scheduledate=LocalDate.parse(scheduledata[2].toString(),dtf);
+	
+		if(LocalDate.now().isAfter(scheduledate))
+		{			
+			
+			CommitteeSchedule committeeschedule=new CommitteeSchedule(); 
+			committeeschedule.setKickOffOtp(null);
+			committeeschedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			committeeschedule.setScheduleFlag("MKV");
+			String  ret=dao.UpdateOtp(committeeschedule);
+			if (Integer.parseInt(ret)>0) {
+				redir.addAttribute("result", "Meeting Kick Off Successful");
+			} else {
+				redir.addAttribute("result", "Meeting Kick Off UnSuccessful");
+			}	
+			Object[] returnobj=new Object[2];
+			returnobj[0]=req;
+			returnobj[1]=redir;
+			return returnobj;
+			
+		}else if(!Option.equalsIgnoreCase("Validate")) 
+		{		
+			List<Object[]> Email=dao.ChaipersonEmailId(CommitteeMainId);
+			Random random = new Random(); 
+			int otp=random.nextInt(9000) + 1000;
+			System.out.println(otp);
+			CharSequence cs = String.valueOf(otp);
+			String Otp=encoder.encode(cs);
+			CommitteeSchedule committeeschedule=new CommitteeSchedule(); 
+			committeeschedule.setKickOffOtp(Otp);
+			committeeschedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
+			committeeschedule.setScheduleFlag("MKO");
+			
+			 	
+			MimeMessage msg = javaMailSender.createMimeMessage();
+			
+			ArrayList<String> emails= new ArrayList<String>();
+			for(Object[] obj : Email)
+			{
+				if(obj[0]!=null) {
+					
+					emails.add(obj[0].toString());
+				}
+			}
+			     
+			if(Email.get(0)[1].toString().equalsIgnoreCase("0")) 
+			{
+				Object[] RtmddoEmail=dao.RtmddoEmail();
+					if(RtmddoEmail!=null) {
+						emails.add(RtmddoEmail[0].toString());
+					}
+			}
+				
+				
+			String [] ToEmail = emails.toArray(new String[emails.size()]);
+			
+			if (ToEmail.length>0) 
+			{
+				MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+				helper.setTo(ToEmail);
+				helper.setSubject(req.getParameter("committeeshortname") + " Meeting OTP ");
+				helper.setText(String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone." , true);				
+				try
+				{
+					javaMailSender.send(msg);
+				}catch (Exception e) {
+					logger.error(new Date() +" EMAIL CREDENTIALS NOT AUTHORIZED ", e);
+				}
+				dao.UpdateOtp(committeeschedule);
+				redir.addAttribute("result", " OTP Sent to Successfully !! ");
+				redir.addFlashAttribute("otp", String.valueOf(otp));
+			}else
+			{
+				redir.addAttribute("resultfail", "Email-ids' Not Found");
+			}
+ 
+		 }
+
+		 else {
+		 
+			 if(req.getParameter("otpvalue")!=null) {
+			 
+			 String OtpDb=dao.KickOffOtp(CommitteeScheduleId);
+
+		 		if(encoder.matches( req.getParameter("otpvalue"),OtpDb)) {
+		 			
+		 			CommitteeSchedule committeescheduledto=new CommitteeSchedule(); 
+				 	committeescheduledto.setKickOffOtp(OtpDb);
+				 	committeescheduledto.setScheduleId(Long.parseLong(CommitteeScheduleId));
+				 	committeescheduledto.setScheduleFlag("MKV");
+				 	String Validate=dao.UpdateOtp(committeescheduledto);
+				 	
+				 	if (Validate !=null) {
+						redir.addAttribute("result", " OTP Validated Successfully ");
+					} else {
+						redir.addAttribute("result", " OTP Not Matched");
+					}	
+				 	
+			 	}else {
+			 		
+			 		redir.addAttribute("resultfail", " OTP Not Matched");
+			 	}
+			 }
+		 }
+		 Object[] returnobj=new Object[2];
+		 returnobj[0]=req;
+		 returnobj[1]=redir;
+		 return returnobj;
+		 
+	}
+	
+	@Override
+	public int UpdateCommitteeInvitationEmailSent(String scheduleid)throws Exception
+	{
+		logger.info(new Date() +"Inside UpdateCommitteeInvitationEmailSent");
+		return dao.UpdateCommitteeInvitationEmailSent(scheduleid);
+	}
+	
+//	@Override
+//	public Object[] SendInvitationLetter(HttpServletRequest req,RedirectAttributes redir) throws Exception
+//	{
+//		logger.info(new Date() +"Inside SendInvitationLetter");
+//		 List<Object[]> committeeinvitedlist=dao.CommitteeAtendance(req.getParameter("scheduleid"));
+//		 Object[] scheduledata=dao.CommitteeScheduleEditData(req.getParameter("scheduleid"));
+//		 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+//		 ArrayList<String> emails= new ArrayList<String>();
+//
+//		 for(Object[] obj : committeeinvitedlist) {
+//			 
+//			 if(!obj[3].toString().equalsIgnoreCase("E") && obj[9].toString().equals("N") ) {				 
+//				 emails.add(obj[8].toString());		
+//			 }
+//		 }
+//		 
+//		 
+//		 String ProjectName="General Type";
+//		 if(!scheduledata[9].toString().equalsIgnoreCase("0")) {
+//			 
+//			ProjectName= dao.projectdetails(scheduledata[9].toString())[1].toString();
+//			 
+//		 }
+//		 
+//		 String [] Email = emails.toArray(new String[emails.size()]);
+//		 
+//		 MimeMessage msg = javaMailSender.createMimeMessage();
+//		 MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+//		 helper.setTo(Email);
+//		 String Message="<p>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + "(" + scheduledata[8] + ")" +"</b> committee of <b>"+ ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
+//		 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
+//		 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
+//		 		 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + sdf.format(scheduledata[2])  + "</td></tr>"
+//		 		 
+//		 		 +"<tr>"
+//				 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Time : </td>"
+//				 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + scheduledata[3]  + "</td></tr>"
+//				 +"<tr>"
+//				 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Venue</td>"
+//				 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\">"+ scheduledata[12] +"</td>"
+//				 +"</tr>"				 
+//				 ;
+//				 
+//		 
+//		 helper.setSubject( scheduledata[8] + " " +" Committee Invitation Letter");
+//		 helper.setText( Message , true);
+//		 javaMailSender.send(msg); 
+//			     
+//		 if (Email.length>0) {
+//			 dao.UpdateCommitteeInvitationEmailSent(req.getParameter("scheduleid"));
+//			redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
+//		 } 
+//	 redir.addFlashAttribute("committeescheduleid",req.getParameter("scheduleid"));
+//	 Object[] returnobj=new Object[2];
+//	 returnobj[0]=req;
+//	 returnobj[1]=redir;
+//	 return returnobj;	 
+//	}
+	
+	@Override
+	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception {
+		logger.info(new Date() +"Inside MinutesViewAllActionList");
+		return dao.MinutesViewAllActionList( scheduleid); 
+	}
+	
+//	@Override
+//	public List<Object[]> NonProjectCommitteesList() throws Exception {		
+//		logger.info(new Date() +"Inside NonProjectCommitteesList");
+//		return dao.NonProjectCommitteesList();
+//	}
+
+	@Override
+	public List<Object[]> ProjectCommitteesList() throws Exception {
+		logger.info(new Date() +"Inside ProjectCommitteesList");
+		return dao.ProjectCommitteesList();
+		
+	}
+
+	@Override
+	public List<Object[]> ExpertList() throws Exception {
+		logger.info(new Date() +"Inside ExpertList");
+		return dao.ExpertList();
+	}
+
+	@Override
+	public List<Object[]> ClusterLabList() throws Exception {
+		logger.info(new Date() +"Inside ClusterLabList");
+		
+		return dao.ClusterLabList();
+	}
+
+
+	@Override
+	public List<Object[]> ExternalEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+		logger.info(new Date() +"Inside ExternalEmployeeListFormation");
+		
+		
+		Object[] labdata=dao.LabDetails();
+		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
+			return dao.InternalEmployeeListFormation(LabId,committeemainid);
+		}else {
+			return dao.ExternalEmployeeListFormation(LabId,committeemainid);
+		}	
+	}
+	
+	
+	@Override
+	public List<Object[]> ChairpersonEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
+		
+		Object[] labdata=dao.LabDetails();
+		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
+			return dao.ChairpersonEmployeeList(LabId,committeemainid);
+		}else {
+			return dao.ChairpersonExternalEmployeeList(LabId,committeemainid);
+		}
+		
+		
+	}
+	
+	
+	
+	
+	@Override
+	public List<Object[]> ExternalEmployeeListInvitations(String LabId,String scheduleid) throws Exception {
+		logger.info(new Date() +"Inside ExternalEmployeeListInvitations");		
+		return dao.ExternalEmployeeListInvitations(LabId,scheduleid);
+	}
+
+
+	@Override
+	public long CommitteeMembersInsert(CommitteeMembersDto dto) throws Exception {
+		
+		logger.info(new Date() +"Inside CommitteeMembersInsert");
+		long count=0;
+		
+		ArrayList<String> emplist=new ArrayList<String>();
+		ArrayList<String> lablist=new ArrayList<String>();
+		ArrayList<String> membertype=new ArrayList<String>();
+		
+		if (dto.getInternalMembers()!=null) {
+
+			for(int i=0;i<dto.getInternalMembers().length;i++) {
+				
+				lablist.add(dto.getInternalLabId());
+				membertype.add("CI");
+			}
+			
+			emplist.addAll(Arrays.asList(dto.getInternalMembers()));
+		}
+		
+		if (dto.getExternalMember() != null) {
+
+			for(int i=0;i<dto.getExternalMember().length;i++) {
+				
+				lablist.add(dto.getLabId());
+				membertype.add("CW");
+			}
+
+			emplist.addAll(Arrays.asList(dto.getExternalMember()));
+		}
+		if (dto.getExpertMember() != null) {
+			
+			for(int i=0;i<dto.getExpertMember().length;i++) {
+				
+				lablist.add("0");
+				membertype.add("CO");
+			}
+			emplist.addAll(Arrays.asList(dto.getExpertMember()));
+		}
+		
+		
+		for(int i=0;i< emplist.size();i++)
+		{
+			CommitteeMember  committeemember=new CommitteeMember();
+			committeemember.setCommitteeMainId(Long.parseLong(dto.getCommitteeMainId()));			
+			committeemember.setEmpId(Long.parseLong(emplist.get(i)));
+			committeemember.setLabId(Long.parseLong(lablist.get(i)));
+			committeemember.setMemberType(membertype.get(i));
+			committeemember.setCreatedBy(dto.getCreatedBy());
+			committeemember.setCreatedDate(sdf1.format(new Date()));
+			committeemember.setIsActive(1);
+			count=dao.CommitteeMainMembersAdd(committeemember);
+		}		
+		
+		return count;
+	}
+
+	
+	
+	@Override
+	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception {
+		logger.info(new Date() +"Inside CommitteeAllMembers");
+		return dao.CommitteeAllMembers(committeemainid);
+	}
+	
+	@Override
+	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectBasedMeetingStatusCount");
+		return dao.ProjectBasedMeetingStatusCount(projectid);
+	}
+	
+		
+	@Override
+	public List<Object[]> allprojectdetailsList() throws Exception {
+		logger.info(new Date() +"Inside allprojectdetailsList");        
+		return dao.allprojectdetailsList();
+	}
+	
+	@Override
+	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid,String statustype) throws Exception
+	{
+		logger.info(new Date() +"Inside PfmsMeetingStatusWiseReport");   
+		return dao.PfmsMeetingStatusWiseReport(projectid, statustype);
+	}
+	
+	@Override
+	public List<Object[]> ProjectCommitteeFormationCheckList(String projectid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectCommitteeFormationCheckList");   
+		return dao.ProjectCommitteeFormationCheckList(projectid);
+	}
+	
+	@Override
+	public Object[] ProjectCommitteeDescriptionTOR(String projectid,String Committeeid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOR");   
+		return dao.ProjectCommitteeDescriptionTOR(projectid, Committeeid);	
+	}
+	
+	@Override
+	public Object[] DivisionCommitteeDescriptionTOR(String divisionid,String Committeeid) throws Exception
+	{	
+		logger.info(new Date() +"Inside DivisionCommitteeDescriptionTOR");   
+		return dao.DivisionCommitteeDescriptionTOR(divisionid, Committeeid);	
+	}
+
+	@Override
+	public int ProjectCommitteeDescriptionTOREdit( CommitteeProject  committeeproject ) throws Exception
+	{	
+		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOREdit");
+		committeeproject.setModifiedDate(sdf1.format(new Date()));
+		return dao.ProjectCommitteeDescriptionTOREdit(committeeproject);
+	}
+	
+	
+	@Override
+	public int DivisionCommitteeDescriptionTOREdit(CommitteeDivision committeedivision) throws Exception
+	{	
+		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOREdit");
+		committeedivision.setModifiedDate(sdf1.format(new Date()));
+		return dao.DivisionCommitteeDescriptionTOREdit(committeedivision);
+	}
+
+	@Override
+	public long CommitteePreviousAgendaAdd(String scheduleidto,String[] fromagendaids,String userid) throws Exception {
+		logger.info(new Date() +"Inside CommitteePreviousAgendaAdd");
+		long count=0;
+		for(int i=0;i<fromagendaids.length;i++)
+		{			
+			Object[] scheduletodata = dao.CommitteeScheduleEditData(scheduleidto);
+			CommitteeScheduleAgenda scheduleagendafrom=dao.CommitteePreviousAgendaGet(fromagendaids[i]);
+			CommitteeScheduleAgenda scheduleagendato=new CommitteeScheduleAgenda();			
+			scheduleagendato.setScheduleId(Long.parseLong(scheduleidto));
+			scheduleagendato.setScheduleSubId(scheduleagendafrom.getScheduleSubId());
+			scheduleagendato.setAgendaItem(scheduleagendafrom.getAgendaItem());
+			scheduleagendato.setPresenterId(scheduleagendafrom.getPresenterId());
+			scheduleagendato.setDuration(scheduleagendafrom.getDuration());
+			scheduleagendato.setProjectId(Long.parseLong(scheduletodata[9].toString()));
+			scheduleagendato.setRemarks(scheduleagendafrom.getRemarks());
+			scheduleagendato.setCreatedBy(userid);
+			scheduleagendato.setCreatedDate(sdf1.format(new Date()));
+			
+			scheduleagendato.setIsActive(1);
+			
+
+			List<Object[]> agendapriority=dao.CommitteeScheduleAgendaPriority(scheduleidto);
+			
+			
+			if(agendapriority.size()==0)
+			{
+				scheduleagendato.setAgendaPriority(1);
+			}
+			else if((Integer)agendapriority.get(0)[2]==0)
+			{
+				scheduleagendato.setAgendaPriority(1);
+			}else {
+				scheduleagendato.setAgendaPriority(((Integer)agendapriority.get(0)[2])+1);	
+			}
+			
+			
+			count=dao.CommitteeAgendaSubmit(scheduleagendato);
+		}		
+		return count;
+	}
+
+	@Override
+	public int ScheduleMinutesUnitUpdate(String UnitId, String Unit, String UserId) throws Exception {
+		
+		logger.info(new Date() +"Inside ScheduleMinutesUnitUpdate");
+		String dt=sdf3.format(new Date());
+		return dao.ScheduleMinutesUnitUpdate(UnitId, Unit, UserId,dt);
+	}
+	
+	@Override
+	public List<Object[]> divisionList() throws Exception {
+		logger.info(new Date() +"Inside divisionList");
+		return dao.divisionList();
+		
+	}
+	
+	
+	@Override
+	public List<Object[]> LoginDivisionList(String empid) throws Exception {
+		logger.info(new Date() +"Inside LoginDivisionList");
+		return dao.LoginDivisionList(empid);
+	}
+	
+	@Override
+	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteedivisionAssigned");
+		return dao.CommitteedivisionAssigned(divisionid);
+		
+	}
+	
+	@Override
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteedivisionNotAssigned");
+		return dao.CommitteedivisionNotAssigned(divisionid);
+	}
+	
+	@Override
+	public long DivisionCommitteeAdd(String divisionid, String[] Committee, String UserId) throws Exception 
+	{
+		logger.info(new Date() +"Inside DivisionCommitteeAdd");
+		long count=0;
+		for(int i=0;i<Committee.length;i++) {
+			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
+			CommitteeDivision committeeproject=new CommitteeDivision();
+			committeeproject.setDivisionId(Long.parseLong(divisionid));
+			committeeproject.setCommitteeId(Long.parseLong(Committee[i]));
+			committeeproject.setCreatedBy(UserId);
+			committeeproject.setCreatedDate(sdf1.format(new Date()));
+			committeeproject.setDescription(committeedata[10].toString());
+			committeeproject.setTermsOfReference(committeedata[11].toString());
+			count=dao.DivisionCommitteeAdd(committeeproject);
+		}
+				
+		return count;
+	}
+	
+	
+	@Override
+	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception
+	{
+		logger.info(new Date() +"Inside DivisionCommitteeFormationCheckList");   
+		return dao.DivisionCommitteeFormationCheckList(divisionid);
+	}
+	
+	@Override
+	public long DivisionCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
+
+		logger.info(new Date() +"Inside DivisionCommitteeDelete");
+		long count=0;
+		for(int i=0;i<CommitteeProject.length;i++) {
+			CommitteeDivision committeedivision=new CommitteeDivision();
+			committeedivision.setCommitteeDivisionId(Long.parseLong(CommitteeProject[i]));		
+			count=dao.DivisionCommitteeDelete(committeedivision);
+			
+		}				
+		return count;
+		
+	}
+	
+	@Override
+	public  Object[] DivisionData(String divisionid) throws Exception
+	{
+		logger.info(new Date() +"Inside DivisionData");
+		return dao.DivisionData(divisionid);
+	}
+	
+	
+	@Override
+	public List<Object[]> DivisionScheduleListAll(String divisionid) throws Exception
+	{
+		logger.info(new Date() +"Inside DivisionScheduleListAll");
+		return dao.DivisionScheduleListAll(divisionid);
+	}
+	
+	@Override
+	public List<Object[]> DivisionCommitteeScheduleList(String divisionid,String committeeid) throws Exception
+	{
+		logger.info(new Date() +"Inside DivisionCommitteeScheduleList");
+		return dao.DivisionCommitteeScheduleList(divisionid, committeeid);
+	}
+	
+	
+	@Override
+	public List<Object[]> DivisionCommitteeMainList(String divisionid) throws Exception 
+	{
+		logger.info(new Date() +"Inside DivisionCommitteeMainList");
+		return dao.DivisionCommitteeMainList(divisionid);
+	}
+	
+	
+	@Override
+	public List<Object[]> DivisionMasterList(String divisionid) throws Exception 
+	{
+		logger.info(new Date() +"Inside DivisionMasterList");
+		return dao.DivisionMasterList(divisionid);
+	}
+		
+	@Override
+	public List<Object[]> DivCommitteeAutoScheduleList(String divisionid) throws Exception 
+	{		
+		logger.info(new Date() +"Inside DivCommitteeAutoScheduleList");
+		return dao.DivCommitteeAutoScheduleList(divisionid);
+	}
+
+	@Override
+	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
+		logger.info(new Date() +"Inside CommitteeActionList");
+		return dao.CommitteeActionList(EmpId);
+	}
+	
+	
+	@Override
+	public int CommitteeDivisionUpdate(String divisionid, String CommitteeId) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeDivisionUpdate");
+		return dao.CommitteeDivisionUpdate(divisionid, CommitteeId);
+	}
+
+	@Override
+	public List<Object[]> MinutesOutcomeList() throws Exception {
+		
+		return dao.MinutesOutcomeList();
+	}
+
+		
+	
+	@Override
+	public List<Object[]> InitiatedProjectDetailsList()throws Exception
+	{
+		logger.info(new Date() +"Inside InitiatedProjectDetailsList");
+		return dao.InitiatedProjectDetailsList();
+	}
+
+	@Override
+	public List<Object[]> InitiationMasterList(String initiationid) throws Exception {
+		logger.info(new Date() +"Inside InitiationMasterList");
+		return dao.InitiationMasterList(initiationid);
+	}
+	
+	@Override
+	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception
+	{
+		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
+		return dao.InitiationCommitteeFormationCheckList(initiationid);
+	}
+
+	@Override
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception 
+	{
+		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
+		return dao.InitiationCommitteesListNotAdded(initiationid);
+	}
+	
+	@Override
+	public Long InvitationSerialnoUpdate(String[] newslno,String[] invitationid) throws Exception
+	{
+		logger.info(new Date() +"Inside InvitationSerialnoUpdate");
+			long ret=0;
+			for(int i=0;i<invitationid.length;i++)
+			{
+				dao.InvitationSerialnoUpdate(invitationid[i],newslno[i]);
+			}
+			return ret;
+	
+	}
+	
+	@Override
+	public List<Object[]> CommitteeRepList() throws Exception
+	{
+		logger.info(new Date() +"Inside CommittRepList");
+		return dao.CommitteeRepList();
+	}
+	
+	@Override
+	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMemberRepList");
+		return dao.CommitteeMemberRepList(committeemainid);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeRepNotAddedList");
+		return dao.CommitteeRepNotAddedList(committeemainid);
+	}
+	
+	@Override
+	public long CommitteeRepMemberAdd(String[] repids, String committeemainid, String createdby ) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeRepMemberAdd");
+		long count=0;
+		for(int i=0;i<repids.length;i++ ) 
+		{
+			CommitteeMemberRep repmems=new CommitteeMemberRep();
+			repmems.setCommitteeMainId(Long.parseLong(committeemainid));
+			repmems.setRepId(Integer.parseInt(repids[i]));
+			repmems.setCreatedBy(createdby);
+			repmems.setCreatedDate(sdf1.format(new Date()));
+			repmems.setIsActive(1);			
+			count=dao.CommitteeRepMembersSubmit(repmems);
+		}
+		
+		return count;
+	}
+	
+	@Override
+	public int CommitteeMemberRepDelete(String memberrepid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeRepNotAddedList");
+		return dao.CommitteeMemberRepDelete(memberrepid);
+		
+	}
+	
+	
+	@Override
+	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeAllMembersList");
+		return dao.CommitteeAllMembersList(committeemainid);		
+	}
+	
+	@Override
+	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception {
+		logger.info(new Date() +"Inside CommitteeMemberUpdate");
+		model.setModifiedDate(sdf1.format(new Date()));
+		return dao.CommitteeMemberUpdate(model);		
+	}
+	
+	@Override
+	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception {	
+		logger.info(new Date() +"Inside CommitteeMainMemberUpdate");
+		
+		int ret=0;
+		CommitteeMember model=new CommitteeMember();
+		
+		model.setModifiedBy(dto.getModifiedBy());
+		model.setModifiedDate(sdf1.format(new Date()));
+		
+		model.setCommitteeMemberId(Long.parseLong(dto.getChairpersonmemid()));
+		model.setLabId(Long.parseLong(dto.getCplabid()));
+		model.setEmpId(Long.parseLong(dto.getChairperson()));
+		
+		ret=dao.CommitteeMemberUpdate(model);		
+		
+		model.setCommitteeMemberId(Long.parseLong(dto.getSecretarymemid()));
+		model.setLabId(Long.parseLong(dto.getSeslabid()));
+		model.setEmpId(Long.parseLong(dto.getSecretary()));
+		
+		ret=dao.CommitteeMemberUpdate(model);
+		
+		if(dto.getProxysecretarymemid()!=null){
+			
+			
+			model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
+			model.setLabId(Long.parseLong(dto.getSeslabid()));
+			model.setEmpId(Long.parseLong(dto.getProxysecretary()));
+			
+			ret=dao.CommitteeMemberUpdate(model);
+		}else {
+			
+			if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
+			{
+				CommitteeMember newmodel=new CommitteeMember();
+				newmodel.setLabId(Long.parseLong(dto.getSeslabid()));
+				newmodel.setEmpId(Long.parseLong(dto.getProxysecretary()));
+				newmodel.setMemberType("PS");
+				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+				newmodel.setCreatedBy(dto.getModifiedBy());
+				newmodel.setCreatedDate(sdf1.format(new Date()));
+				newmodel.setIsActive(1);
+				dao.CommitteeMainMembersAdd(newmodel);
+			}
+			if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())==0)
+			{
+				model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
+				dao.CommitteeMemberDelete(model);
+			}
+		}
+		
+		return ret;
+		
+	}
+	
+	
+	@Override
+	public Object[] CommitteMainData(String committeemainid) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteMainData");
+		return dao.CommitteMainData(committeemainid);
+	}
+	
+	@Override
+	public long InitiationCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
+
+		logger.info(new Date() +"Inside InitiationCommitteeDelete");
+		long count=0;
+		for(int i=0;i<CommitteeProject.length;i++) {
+			CommitteeInitiation model=new CommitteeInitiation();
+			model.setCommitteeInitiationId(Long.parseLong(CommitteeProject[i]));		
+			count=dao.InitiationCommitteeDelete(model);
+		}				
+		return count;
+		
+	}
+	@Override
+	public Object[] Initiationdetails(String initiationid) throws Exception
+	{	
+		logger.info(new Date() +"Inside Initiationdetails");
+		return dao.Initiationdetails(initiationid);
+
+	}
+	
+	@Override
+	public Object[] InitiationCommitteeDescriptionTOR(String initiationid,String Committeeid) throws Exception
+	{	
+		logger.info(new Date() +"Inside InitiationCommitteeDescriptionTOR");
+		return dao.InitiationCommitteeDescriptionTOR(initiationid, Committeeid);
+
+	}
+	
+	@Override
+	public int InitiationCommitteeDescriptionTOREdit(CommitteeInitiation committeeinitiation) throws Exception
+	{	
+		logger.info(new Date() +"Inside InitiationCommitteeDescriptionTOREdit");
+		committeeinitiation.setModifiedDate(sdf1.format(new Date()));
+		return dao.InitiationCommitteeDescriptionTOREdit(committeeinitiation);
+	}
+	
+	@Override
+	public List<Object[]> InitiaitionMasterList(String initiationid) throws Exception 
+	{
+		logger.info(new Date() +"Inside InitiaitionMasterList");
+		return dao.InitiaitionMasterList(initiationid);
+	}
+	@Override
+	public int CommitteeInitiationUpdate(String initiationid, String CommitteeId) throws Exception 
+	{
+		logger.info(new Date() +"Inside CommitteeInitiationUpdate");
+		return dao.CommitteeInitiationUpdate(initiationid,CommitteeId);
+	}
+	
+	@Override
+	public List<Object[]> InitiationCommitteeMainList(String initiationid) throws Exception 
+	{
+		logger.info(new Date() +"Inside InitiationCommitteeMainList");
+		return dao.InitiationCommitteeMainList(initiationid);
+	}
+	@Override
+	public List<Object[]> InitiationScheduleListAll(String initiationid) throws Exception
+	{
+		logger.info(new Date() +"Inside InitiationCommitteeMainList");
+		return dao.InitiationScheduleListAll(initiationid);
+	}
+	
+	@Override
+	public List<Object[]> InitiationCommitteeScheduleList(String initiationid,String committeeid) throws Exception
+	{
+		logger.info(new Date() +"Inside InitiationCommitteeScheduleList");
+		return dao.InitiationCommitteeScheduleList(initiationid, committeeid);
+	}
+	@Override
+	public Object[] ProposedCommitteeMainId(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside ProposedCommitteeMainId");
+		return dao.ProposedCommitteeMainId(committeemainid);
+	}
+	
+	@Override
+	public Object[] GetProposedCommitteeMainId(String committeeid,String projectid,String divisionid,String initiationid) throws Exception
+	{
+		logger.info(new Date() +"Inside GetProposedCommitteeMainId");
+		return dao.GetProposedCommitteeMainId(committeeid, projectid, divisionid, initiationid);		
+	}
+	
+	@Override
+	public Object[] CommitteeMainApprovalData(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMainApprovalData");
+		return dao.CommitteeMainApprovalData(committeemainid);
+	}
+	
+
+	@Override
+	public List<Object[]> ApprovalStatusList(String committeemainid ) throws Exception
+	{
+		logger.info(new Date() +"Inside ApprovalStatusList");
+		return dao.ApprovalStatusList(committeemainid);
+	}
+	
+	@Override
+	public long CommitteeMainApprove(CommitteeConstitutionApprovalDto dto ) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMainApprove");
+		int ret=0;		
+		String operation=dto.getOperation();
+		Object[] oldapprovaldata=dao.CommitteeMainApprovalData(dto.getCommitteeMainId());
+		String constatusid=oldapprovaldata[5].toString();
+		String approvalauth=oldapprovaldata[6].toString();
+		CommitteeConstitutionApproval approval=new CommitteeConstitutionApproval();		
+		
+		if(dto.getRemarks()==null || dto.getRemarks().equals(""))
+		{
+			dto.setRemarks("NIL");
+		}
+		
+		approval.setCommitteeMainId(Long.parseLong(dto.getCommitteeMainId()));	
+		approval.setActionBy(dto.getActionBy());
+		approval.setActionDate(sdf1.format(new Date()));
+		approval.setRemarks(dto.getRemarks());
+		//approval.setEmpid(Long.parseLong(dto.getEmpid()));
+		//approval.setEmpLabid(Long.parseLong(dto.getEmpLabid()));
+		approval.setApprovalAuthority(dto.getApprovalAuthority());
+		Object[] notificationemployee = null;
+		String notificationempid="";
+		if(constatusid.equals("CCR") ) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="CFW";
+				notificationemployee=dao.CommitteeMainApprovalDoData(dto.getCommitteeMainId());
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+				
+			}
+		}
+		else if(constatusid.equals("CFW")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDO";
+				notificationemployee=dao.DoRtmdAdEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+								
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDO";	
+				notificationemployee=dao.ComConstitutionEmpdetails(dto.getCommitteeMainId());
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+			}
+		}
+		else if(constatusid.equals("RDO")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDT";				
+				notificationemployee=dao.DirectorEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTR";
+				notificationemployee=dao.CommitteeMainApprovalDoData(dto.getCommitteeMainId());
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+			}
+		}
+		else if(constatusid.equals("RDT")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="ADR";
+				if(!approvalauth.equals(constatusid)) {
+					constatusid="RDR";
+				}
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDR";
+				notificationemployee=dao.DoRtmdAdEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+			}
+		}
+		else if(constatusid.equals("RDR")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="ADG";
+				if(!approvalauth.equals(constatusid)) {
+					constatusid="RDG";
+				}
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDG";
+			}
+		}
+		else if(constatusid.equals("RDG")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="ASC";
+				
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTSC";
+			}
+		}
+		else if(constatusid.equals("RTSC")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDG";
+				
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDG";
+			}
+		}
+		
+		else if(constatusid.equals("RTDG")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDR";
+				
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDR";
+				notificationemployee=dao.DoRtmdAdEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}
+			}
+		}
+		else if(constatusid.equals("RTDR")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDT";
+				/* dao.updatecommitteeapprovalauthority(approval); */
+				notificationemployee=dao.DirectorEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}	
+				
+				
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTR";
+				notificationemployee=dao.CommitteeMainApprovalDoData(dto.getCommitteeMainId());
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}	
+			}
+		}
+		else if(constatusid.equals("RTR"))
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="RDO";
+				notificationemployee=dao.DoRtmdAdEmpData();
+				if(notificationemployee!=null) {
+					notificationempid=	notificationemployee[0].toString();
+				}			
+			}
+			else if(operation.equalsIgnoreCase("return"))
+			{
+				constatusid="RTDO";
+				notificationempid=dao.ComConstitutionEmpdetails(dto.getCommitteeMainId())[0].toString();
+			}
+		}
+		else if(constatusid.equals("RTDO")) 
+		{
+			if(operation.equalsIgnoreCase("approve"))
+			{
+				constatusid="CFW";
+				notificationempid=dao.CommitteeMainApprovalDoData(dto.getCommitteeMainId())[0].toString();
+				
+			}			
+		}		
+			
+		
+		approval.setConstitutionStatus(constatusid);
+		
+		if((notificationempid==null || notificationempid.equals("") || Long.parseLong(notificationempid)==0 ) && !(approvalauth.equals(constatusid)) )
+		{
+			return -1;
+		}
+		if(constatusid.equalsIgnoreCase("RDT"))
+		{
+			dao.updatecommitteeapprovalauthority(approval);
+		}
+		CommitteeConstitutionHistory transaction=new CommitteeConstitutionHistory();
+		transaction.setConstitutionApprovalId(Long.parseLong(oldapprovaldata[0].toString()));
+		transaction.setCommitteeMainId(Long.parseLong(dto.getCommitteeMainId()));
+		transaction.setRemarks(dto.getRemarks());
+		transaction.setActionByLabid(Long.parseLong(dto.getEmpLabid()));
+		transaction.setActionByEmpid(Long.parseLong(dto.getEmpid()));
+		transaction.setActionDate(sdf1.format(new Date()));
+		transaction.setConstitutionStatus(constatusid);
+		dao.ConstitutionApprovalHistoryAdd(transaction);
+		
+		
+		
+		
+		if(approvalauth.equals(constatusid))
+		{
+			Object[] committeemaindata=dao.CommitteMainData(dto.getCommitteeMainId());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			LocalDate fromDate = LocalDate.parse(committeemaindata[6].toString());
+			
+			long lastcommitteeid=dao.LastCommitteeId(committeemaindata[1].toString(),committeemaindata[2].toString(),committeemaindata[3].toString(),committeemaindata[4].toString());	
+			if(lastcommitteeid!=0)
+			{
+				CommitteeMain committeemain1= new CommitteeMain();
+				committeemain1.setModifiedBy(dto.getActionBy());
+				committeemain1.setModifiedDate(sdf1.format(new Date()));
+				committeemain1.setValidTo(java.sql.Date.valueOf(fromDate.minusDays(1).toString()));
+				committeemain1.setCommitteeMainId(lastcommitteeid);					
+				dao.UpdateCommitteemainValidto(committeemain1);
+			}
+			dto.setActionDate(sdf1.format(new Date()));
+			dao.NewCommitteeMainIsActiveUpdate(dto);
+		}
+		long schid=0;
+		
+		if(notificationempid!=null && !notificationempid.equals("")) 
+		{
+			PfmsNotification notification= new PfmsNotification();
+			notification.setNotificationby(Long.parseLong(dto.getEmpid()));
+			notification.setEmpId(Long.parseLong(notificationempid));
+			Object[] ConStatusdetail=dao.CommitteeConStatusDetails(constatusid);
+			notification.setNotificationMessage("Action Pending For Committee Constitution "+ConStatusdetail[0]);
+			notification.setNotificationUrl("CommitteeMainApprovalList.htm");
+			notification.setNotificationDate(sdf1.format(new Date()));
+			notification.setCreatedBy(dto.getActionBy());
+			notification.setCreatedDate(sdf1.format(new Date()));
+			notification.setIsActive(1);
+			notification.setScheduleId(schid);
+			notification.setStatus("MAR");
+			dao.MeetingMinutesApprovalNotification(notification);
+		}
+		ret=dao.CommitteeApprovalUpdate(approval);		
+		return ret;
+	}
+	
+	
+	@Override
+	public List<Object[]> ProposedCommitteList() throws Exception
+	{
+		logger.info(new Date() +"Inside ProposedCommitteList");
+		return dao.ProposedCommitteList();
+	}
+	
+	@Override
+	public List<Object[]> ProposedCommitteesApprovalList(String loginid,String EmpId) throws Exception
+	{
+		logger.info(new Date() +"Inside ProposedCommitteList");
+		
+		List<Object[]> ProposedCommitteesApprovalList=new ArrayList<Object[]>(); 
+		Object[] logindata=dao.LoginData(loginid);
+		
+		String logintype=logindata[4].toString();
+		ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList(logintype, EmpId));
+//		
+//		if(logintype.equals("G") || logintype.equals("J") || logintype.equals("T") )
+//		{
+//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DO", EmpId));
+//		}
+//		
+//		if(rtmddo!=null)
+//		{
+//			if(rtmddo[1].toString().equals(logindata[2].toString()))
+//			{
+//				ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("RT", EmpId));
+//			}
+//		}
+//		
+//		if(logintype.equals("Z"))
+//		{
+//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DR", EmpId));
+//		}
+//		if(logintype.equals("A"))
+//		{
+//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("A", EmpId));
+//		}
+		
+		return ProposedCommitteesApprovalList;
+	}
+	
+	@Override
+	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside ComConstitutionApprovalHistory");
+		return dao.ComConstitutionApprovalHistory(committeemainid);
+	}
+	
+	
+	@Override
+	public List<Object[]>  ConstitutionApprovalFlow(String committeemainid) throws Exception
+	{
+		logger.info(new Date() +"Inside ConstitutionApprovalFlow");
+		List<Object[]> list=new ArrayList<Object[]>();
+		
+		Object[] temp=dao.ComConstitutionEmpdetails(committeemainid);
+		if(temp!=null) {
+			list.add(temp);
+		}
+		temp=dao.CommitteeMainApprovalDoData(committeemainid);
+		
+		if(temp!=null) {
+			list.add(temp);
+		}
+		list.add(dao.DoRtmdAdEmpData());
+		
+		temp=dao.DirectorEmpData();
+		if(temp!=null) {
+			list.add(temp);
+		}
+		return list;
+	}
+	
+	@Override
+	public int  CommitteeMinutesDelete(String scheduleminutesid) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMinutesDelete");
+		return dao.CommitteeMinutesDelete(scheduleminutesid);
+	}
+	
+	@Override
+	public int  CommitteeScheduleDelete(CommitteeScheduleDto dto) throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeScheduleDelete");
+		dto.setModifiedDate(sdf1.format(new Date()));
+		dao.CommitteeScheduleAgendaDelete(dto);
+		dao.CommitteeScheduleInvitationDelete(dto);
+		return dao.CommitteeScheduleDelete(dto);
+	}
+	
+	@Override
+	public int  ScheduleCommitteeEmpCheck(EmpAccessCheckDto dto) throws Exception
+	{
+		logger.info(new Date() +"Inside ScheduleCommitteeEmpCheck");
+		String logintype = dto.getLogintype();
+		String scheduleid = dto.getScheduleid();
+		String empid = dto.getEmpid();
+		Object Committeemainid = dto.getCommitteemainid();
+		int committeecons = dto.getCommitteecons();
+		String confidential = dto.getConfidential();
+		int useraccess=0;
+		
+		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H") );
+		ArrayList<String> memtypes=new ArrayList<String>( Arrays.asList("CS","CC","PS") );
+			if(logintypes.contains(logintype)) 
+			{
+				useraccess=2;
+				return useraccess;
+			}
+			if( committeecons>0 )
+			{
+				List<Object[]> ScheduleCommEmpCheck = dao.ScheduleCommitteeEmpCheck(scheduleid, empid);
+				if(ScheduleCommEmpCheck.size()>0)
+				{
+					useraccess=2;
+					return useraccess;
+				}
+			}
+			if( useraccess==0 )
+			{
+				List<Object[]> ScheduleCommEmpCheck = dao.ScheduleCommitteeEmpinvitedCheck(scheduleid, empid);
+				
+				if(ScheduleCommEmpCheck.size()>0)
+				{
+					if(confidential.equals("1") || confidential.equals("2")) 
+					{
+						if(memtypes.contains(ScheduleCommEmpCheck.get(0)[2].toString())) {
+							useraccess=2;
+							return useraccess;
+						}
+					}else
+					{
+						useraccess=2;
+						return useraccess;
+					}
+				}
+			}
+			
+			
+		
+		return useraccess;		
+	}
+	
+	@Override
+	public List<Object[]> EmpScheduleData(String empid,String scheduleid) throws Exception 
+	{
+		logger.info(new Date() +"Inside ScheduleCommitteeEmpCheck");
+		return dao.EmpScheduleData(empid, scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> DefaultAgendaList(String committeeid) throws Exception 
+	{
+		logger.info(new Date() +"Inside DefaultAgendaList");
+		return dao.DefaultAgendaList(committeeid);
+	}
+	
+	@Override
+	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
+		logger.info(new Date()  +"Inside ProcurementStatusList");
+		return dao.ProcurementStatusList(projectid);
+	}
+	
+	@Override
+	public List<Object[]> ActionPlanSixMonths(String projectid)throws Exception
+	{
+		
+		logger.info(new Date()  +"Inside ActionPlanThreeMonths");
+	
+//			List<Object[]> main=dao.MilestoneActivityList(projectid);
+//			List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
+//			List<Object[]> MilestoneActivityB=new ArrayList<Object[]>();
+//			List<Object[]> MilestoneActivityC=new ArrayList<Object[]>();
+//			List<Object[]> MilestoneActivityD=new ArrayList<Object[]>();
+//			List<Object[]> MilestoneActivityE=new ArrayList<Object[]>();
+//			
+//				for(Object[] objmain:main ) {
+//					List<Object[]>  MilestoneActivityA1=dao.MilestoneActivityLevel(objmain[0].toString(),"1");
+//					MilestoneActivityA.addAll(MilestoneActivityA1);
+//					
+//					for(Object[] obj:MilestoneActivityA1) {
+//						List<Object[]>  MilestoneActivityB1=dao.MilestoneActivityLevel(obj[0].toString(),"2");
+//						MilestoneActivityB.addAll(MilestoneActivityB1);
+//						
+//						for(Object[] obj1:MilestoneActivityB1) {
+//							List<Object[]>  MilestoneActivityC1=dao.MilestoneActivityLevel(obj1[0].toString(),"3");
+//							MilestoneActivityC.addAll(MilestoneActivityC1);
+//							
+//							for(Object[] obj2:MilestoneActivityC1) {
+//								List<Object[]>  MilestoneActivityD1=dao.MilestoneActivityLevel(obj2[0].toString(),"4");
+//								MilestoneActivityD.addAll( MilestoneActivityD1);
+//								
+//								for(Object[] obj3:MilestoneActivityD1) {
+//									List<Object[]>  MilestoneActivityE1=dao.MilestoneActivityLevel(obj3[0].toString(),"5");
+//									MilestoneActivityE.addAll( MilestoneActivityE1);
+//								}
+//							}
+//						}
+//					}
+//				}
+//				
+//				List<Object[]> MilestoneActivityAll=new ArrayList<Object[]>();
+//				MilestoneActivityAll.addAll(main);
+//				MilestoneActivityAll.addAll(MilestoneActivityA);
+//				MilestoneActivityAll.addAll(MilestoneActivityB);
+//				MilestoneActivityAll.addAll(MilestoneActivityC);
+//				MilestoneActivityAll.addAll(MilestoneActivityC);
+//				MilestoneActivityAll.addAll(MilestoneActivityE);
+//				
+		return dao.ActionPlanSixMonths(projectid);
+	}
+	
+
+	@Override 
+	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception 
+	{
+		logger.info(new Date() +"Inside LastPMRCActions");
+		return dao.LastPMRCActions(scheduleid,isFrozen);
+	}
+	
+	@Override
+	public List<Object[]> CommitteeMinutesSpecNew()throws Exception
+	{
+		logger.info(new Date() +"Inside CommitteeMinutesSpecNew");
+		return dao.CommitteeMinutesSpecNew();
+	}
+	
+	@Override 
+	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception {
+		logger.info(new Date() +"Inside MilestoneSubsystems");
+		return dao.MilestoneSubsystems(projectid);
+	}
+	
+	@Override 
+	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid,String rtype) throws Exception 
+	{
+		logger.info(new Date() +"Inside EmployeeScheduleReports");
+		LocalDate fromdate=null;  
+		LocalDate todate=null;
+		String rtype1=rtype.toLowerCase();
+		
+			
+		if(req.getParameter(rtype1+"fromdate")!=null && rtype.equalsIgnoreCase("D")) 
+		{
+			fromdate= todate =LocalDate.parse(sdf3.format(sdf.parse(req.getParameter((rtype1+"fromdate")))));
+		}
+		else if(req.getParameter(rtype1+"fromdate")!=null &&  rtype.equalsIgnoreCase("W"))
+		{
+			fromdate=LocalDate.parse(sdf3.format(sdf.parse(req.getParameter((rtype1+"fromdate")))));
+			todate=LocalDate.parse(sdf3.format(sdf.parse(req.getParameter(rtype1+"todate"))));
+		}
+		else if(req.getParameter(rtype1+"fromdate")!=null &&  rtype.equalsIgnoreCase("M"))
+		{
+			
+			String month = req.getParameter((rtype1+"fromdate")).split("-")[0];
+			String year= req.getParameter((rtype1+"fromdate")).split("-")[1];
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+			fromdate = LocalDate.parse(month+" 01, "+year, formatter);
+						
+			todate = fromdate.plusMonths(1).withDayOfMonth(1).minusDays(1);
+			
+			ArrayList<LocalDate> monthdays = new ArrayList<LocalDate>();
+			for(LocalDate fromdate1 = LocalDate.parse(fromdate.toString());fromdate1.isBefore(todate)|| fromdate1.isEqual(todate) ; fromdate1=fromdate1.plusDays(1)) 
+			{
+				monthdays.add(LocalDate.parse(fromdate1.toString()));
+			}
+			req.setAttribute("monthdays", monthdays);
+									
+		}
+		else if(rtype.equalsIgnoreCase("D")) 
+		{
+			todate=fromdate=LocalDate.now();
+		}
+		else if(rtype.equalsIgnoreCase("W")) 
+		{
+			LocalDate today = LocalDate.now();			
+		    // Go backward to get Monday
+		    LocalDate monday = today;
+		    while (monday.getDayOfWeek() != DayOfWeek.MONDAY)
+		    {
+		      monday = monday.minusDays(1);
+		    }
+		    // Go forward to get Sunday
+		    LocalDate sunday = today;
+		    while (sunday.getDayOfWeek() != DayOfWeek.SUNDAY)
+		    {
+		    	sunday = sunday.plusDays(1);
+		    }
+		    fromdate=monday.minusDays(1);
+		    todate=sunday.minusDays(1);
+		}
+		else if(rtype.equalsIgnoreCase("M")) // month dates
+		{
+			fromdate = LocalDate.now().withDayOfMonth(1);
+			todate = LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1);
+			
+			ArrayList<LocalDate> monthdays = new ArrayList<LocalDate>();
+			for(LocalDate fromdate1 = LocalDate.parse(fromdate.toString());fromdate1.isBefore(todate)|| fromdate1.isEqual(todate) ; fromdate1=fromdate1.plusDays(1)) 
+			{
+				monthdays.add(LocalDate.parse(fromdate1.toString()));
+			}
+			req.setAttribute("monthdays", monthdays);
+					
+		}
+		req.setAttribute("fromdate", fromdate);
+		req.setAttribute("todate", todate);
+		return dao.EmployeeScheduleReports(empid, fromdate.toString(), todate.toString());
+	}
+	
+	@Override
+	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
+	{
+		logger.info(new Date() +"Inside EmployeeDropdown");
+		return dao.EmployeeDropdown(empid, logintype, projectid);
+	}
+	@Override
+	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	{
+		logger.info(new Date() +"Inside FileRepMasterListAll");
+		return dao.FileRepMasterListAll(projectid);
+	}
+	
+	@Override
+	public Object[] AgendaDocLinkDownload(String filerepid)throws Exception
+	{
+		logger.info(new Date() +"Inside AgendaDocLinkDownload");
+		return dao.AgendaDocLinkDownload(filerepid);
+	}
+	
+	@Override
+	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception {
+		return dao.AgendaLinkedDocList(scheduleid);
+	}
+	
+	@Override
+	public int AgendaUnlinkDoc(CommitteeScheduleAgendaDocs agendadoc) throws Exception 
+	{
+		agendadoc.setModifiedDate(sdf1.format(new Date()));
+		
+		if(dao.AgendaUnlinkDoc(agendadoc)!=null) {
+			return 1;
+		}else {
+			return 0;
+		}
+		 
+	}
+	
+	@Override
+	public int PreDefAgendaEdit(CommitteeScheduleAgenda agenda) throws Exception 
+	{
+		agenda.setModifiedDate(sdf1.format(new Date()));
+		return dao.PreDefAgendaEdit(agenda);
+	}
+	
+	@Override
+	public long PreDefAgendaAdd(CommitteeScheduleAgenda agenda) throws Exception 
+	{
+		agenda.setCreatedDate(sdf1.format(new Date()));
+		agenda.setProjectId(0L);
+		agenda.setPresenterId(0L);
+		agenda.setScheduleId(0L);
+		agenda.setScheduleSubId(0L);		
+		return dao.PreDefAgendaAdd(agenda);
+	}
+	
+	@Override
+	public int PreDefAgendaDelete(String agendaid) throws Exception 
+	{
+		return dao.PreDefAgendaDelete(agendaid);
+	}
+	
+	@Override
+	public int MeetingNo(Object[] scheduledata) throws Exception 
+	{
+		int count=0;
+		if(scheduledata[21].toString().equalsIgnoreCase("P")) {
+			String scheduledate = scheduledata[2].toString(); 
+			String projectid = scheduledata[9].toString();
+			String committeeid = scheduledata[0].toString();
+			count= dao.CommProScheduleList(projectid, committeeid,scheduledate);
+			
+			
+		}
+		return count;
+	}
+
+	@Override
+	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception {
+		finance.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesFinance(finance);
+	}
+
+	@Override
+	public long getLastPmrcId(String projectid, String committeeid, String scheduleId) throws Exception {
+		
+		return dao.getLastPmrcId(projectid, committeeid, scheduleId);
+	}
+
+	@Override
+	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception {
+        procure.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesProcurement(procure);
+	}
+
+	@Override
+	public long insertMinutesAction(MinutesActionList action) throws Exception {
+	    action.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesAction(action);
+	}
+
+	@Override
+	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception {
+		lastpmrc.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesLastPmrc(lastpmrc);
+	}
+
+	@Override
+	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception {
+		Mile.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesMileActivity(Mile);
+		
+	}
+
+	@Override
+	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception {
+		submile.setCreatedDate(sdf1.format(new Date()));
+		return dao.insertMinutesSubMile(submile);
+	}
+
+	@Override
+	public int updateMinutesFrozen(String schduleid) throws Exception {
+		
+		return dao.updateMinutesFrozen(schduleid);
+	}
+
+	@Override
+	public List<ProjectFinancialDetails> getMinutesFinance(String scheduleid) throws Exception {
+		List<ProjectFinancialDetails> finlist=new ArrayList<ProjectFinancialDetails>();
+		for(MinutesFinanceList list:dao.getMinutesFinance(scheduleid)) {
+			ProjectFinancialDetails finance=new ProjectFinancialDetails();
+			finance.setBudgetHeadDescription(list.getBudgetHeadDescription());
+			finance.setBudgetHeadId(list.getBudgetHeadId());
+			finance.setFeBalance(list.getFeBalance());
+			finance.setFeDipl(list.getFeDipl());
+			finance.setFeExpenditure(list.getFeExpenditure());
+			finance.setFeOutCommitment(list.getFeOutCommitment());
+            finance.setFeSanction(list.getFeSanction());
+            finance.setProjectId(list.getProjectId());
+            finance.setReBalance(list.getReBalance());
+            finance.setReDipl(list.getReDipl());
+            finance.setReExpenditure(list.getFeExpenditure());
+            finance.setReOutCommitment(list.getReOutCommitment());
+	        finance.setReSanction(list.getReSanction());
+	        finance.setTotalSanction(list.getTotalSanction());
+            finlist.add(finance);
+		}
+		
+		return finlist;
+	}
+
+	@Override
+	public List<Object[]> getMinutesAction(String scheduleid) throws Exception {
+		
+		return dao.getMinutesAction(scheduleid);
+	}
+
+	@Override
+	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
+		
+		return dao.getMinutesProcure(scheduleid);
+	}
+
+	@Override
+	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
+		
+		return dao.getMinutesMile(scheduleid);
+	}
+
+	@Override
+	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception {
+		
+		return dao.getMinutesSubMile(scheduleid);
+	}
+	
+	@Override
+	public List<Object[]> ClusterList() throws Exception {
+		
+		return dao.ClusterList();
+	}
+	
+}

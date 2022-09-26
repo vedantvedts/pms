@@ -1,0 +1,81 @@
+package com.vts.pfms.admin.dao;
+
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.util.List;
+
+import com.vts.pfms.admin.dto.EmployeeDesigDto;
+import com.vts.pfms.admin.model.DivisionMaster;
+import com.vts.pfms.admin.model.EmployeeDesig;
+import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
+import com.vts.pfms.admin.model.PfmsRtmddo;
+import com.vts.pfms.login.Login;
+import com.vts.pfms.login.PfmsLoginRole;
+import com.vts.pfms.master.model.DivisionEmployee;
+
+public interface AdminDao {
+
+	public List<Object[]> LoginTypeList() throws Exception;
+	public List<Object[]> EmployeeList() throws Exception;
+	public List<Object[]> RoleList()throws Exception;
+	public List<Object[]> EmployeeList1()throws Exception;
+	public Long UserManagerInsert(Login login,DivisionEmployee logindivision )throws Exception;
+	public int UserManagerUpdate(Login login )throws Exception;
+	public List<Object[]> LoginTypeList1()throws Exception;
+	public Long LoginTypeAddSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception;
+	public Long LoginTypeRevoke(Login login) throws Exception;
+	public List<Object[]> LoginTypeEditData(String LoginId) throws Exception;
+	public Long LoginTypeEditSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception;
+	public List<Object[]> NotificationList(String EmpId) throws Exception;
+	public List<Object[]> EmployeeListAll() throws Exception;
+	public List<Object[]> Rtmddo() throws Exception;
+	public long RtmddoInsert(PfmsRtmddo rtmddo)throws Exception;
+	public int RtmddoUpdate(String type)throws Exception;
+	
+	public List<Object[]> GetExpertList() throws Exception;
+	public List<Object[]> GetDesignation() throws Exception;
+	public int abilityOfexpertNo( String p0) throws Exception;
+	public int abilityOfextensionNo( String p0) throws Exception;
+	public Long addExpert( Expert p0) throws Exception;
+	public Long ExpertRevoke( Expert p0) throws Exception;
+	public List<Object[]> getEditDetails(final String p0) throws Exception;
+	public int checkAbility2( String p0, final String p1) throws Exception;
+    public  Long editExpert( Expert p0) throws Exception;
+	public List<Object[]> AuditStampingList(String loginid,LocalDate Fromdate,LocalDate Todate)  throws Exception ;
+	public List<Object[]> UsernameList() throws Exception ;
+	public List<Object[]> DivisionList()throws Exception;
+	public Login UserManagerEditData(Long LoginId )throws Exception;
+	public int UserManagerDelete(Login login )throws Exception;
+	public List<Object[]> UserManagerList()throws Exception;
+	public int UserNamePresentCount(String UserName )throws Exception;
+	public Long pfmsRoleInsert(PfmsLoginRole pfmsrole)throws Exception ;
+	public Object checkUser(Long loginId)throws Exception ;
+	public Long updatePfmsLoginRole(Long parseLong, Long parseLong2)throws Exception ;
+	public List<Object[]> presentEmpList()throws Exception ;
+	public List<Object[]> DesignationList() throws Exception;
+	public Object[] DesignationData(String desigid) throws Exception;
+	public long DesignationEditSubmit(EmployeeDesigDto dto) throws Exception;
+	public long DesignationAddSubmit(EmployeeDesig model) throws Exception;
+	public Object[] DesignationCodeCheck(String desigcode) throws Exception;
+	public Object[] DesignationCheck(String designation) throws Exception;
+	public Object[] DesignationCodeEditCheck(String desigcode, String desigid) throws Exception;
+	public Object[] DesignationEditCheck(String designation, String desigid) throws Exception;
+	public List<Object[]> DivisionMasterList()throws Exception;
+    public List<Object[]> DivisionGroupList() throws Exception;
+	public List<Object[]> DivisionHeadList() throws Exception;
+	public List<Object[]> DivisionMasterEditData(String DivisionId) throws Exception;
+	public List<Object[]> DivisionAddCheck(String dCode,String dName) throws Exception;
+	public long DivisionAddSubmit(DivisionMaster model) throws Exception;
+	public int DivisionMasterUpdate(DivisionMaster divisionmaster) throws Exception;
+	public List<Object[]> DesigupdateAndGetList(Long desigid, String newSeniorityNumber) throws Exception;
+	public int updateAllDesigSeniority(Long desigid, Long srno) throws Exception;
+	public List<Object[]> LoginTypeRoles() throws Exception;
+	public List<Object[]> FormDetailsList(String LoginType,String ModuleId) throws Exception;
+	public List<Object[]> FormModulesList() throws Exception;
+	public List<BigInteger> FormRoleActiveList(String formroleaccessid) throws Exception;
+	public Long FormRoleActive(String formroleaccessid,Long Value ) throws Exception;
+	public Object[] EmployeeData(String empid) throws Exception;
+	public List<Object[]> LoginEditEmpList() throws Exception;
+	public long GetExpertsCount() throws Exception;
+  }

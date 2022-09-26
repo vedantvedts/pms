@@ -1,0 +1,281 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<title>PROJECT COST  ADD</title>
+<style type="text/css">
+
+.input-group-text{
+font-weight: bold;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+b{
+	font-family: 'Lato',sans-serif;
+}
+
+.fa-trash{
+	color: #ec0101;
+}
+
+.fa-pencil-square-o{
+	color:orange;
+}
+
+.form-group {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+
+</style>
+</head>
+<body>
+<%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+String IntiationId=(String) request.getAttribute("IntiationId");
+Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
+List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
+Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMonth");
+%>
+
+
+<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+	%><center>
+	<div class="alert alert-danger" role="alert">
+                     <%=ses1 %>
+                    </div></center>
+	<%}if(ses!=null){ %>
+	<center>
+	<div class="alert alert-success" role="alert" >
+                     <%=ses %>
+                   </div></center>
+                    <%} %>
+
+
+
+
+
+
+
+    <div class="container">
+<div class="row" style="">
+
+<div class="col-md-12">
+
+ <div class="card shadow-nohover" >
+  <div class="card-header">
+ <div class="row" >
+
+
+<div class="col-md-4" ><h3> Schedule</h3></div>
+<div class="col-md-8" >
+ <b style="color: green; float: right;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Total Months :&nbsp;<%=ProjectDetailes[9] %>	</b>
+ </div>
+
+ 
+ 	
+ 	</div>
+  </div>
+        
+        <div class="card-body">
+        
+         
+                        <table  class="table table-bordered table-hover table-striped table-condensed ">
+                                    
+                                    <%if(ScheduleList.size()!=0){ %>    
+                                        <thead>
+                                         
+                                            <tr>
+                                                <th >Milestone</th>
+                                                <th >Milestone Activity</th>
+                                                <th >Milestone Month</th>
+                                                 <th >Remarks</th>
+                                                <th >Link</th> 
+                                            </tr>
+                                        </thead>
+                                       <%} %>
+                                        
+	    	<tbody>
+									    <%int count=0;
+									    for(Object[] 	obj:ScheduleList){ count++;%>
+								<form action="ProjectScheduleEditSubmit.htm" method="POST"  >
+									<tr>
+								
+				                    		
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+				                     <input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
+				                      <input type="hidden" name="initiationscheduleid" value="<%=obj[3] %>" /> 	
+				                      	
+									 	<td>MILESTONE-<%=obj[0] %></td> 
+									 	<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>"></td> 
+									   	<td style="width: 200px;"><input type="number" class="form-control form-control" name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2] %>"></td>
+									   	<td><input type="text" class="form-control form-control" name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]%>"></td>
+									<td  style="width: 150px;">
+							
+									<button class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit this Schedule?');"></button>
+										<%if(count==ScheduleList.size()){ %> 
+										&nbsp;
+										<button class="fa fa-trash btn " type="submit" formaction="ProjectScheduleDeleteSubmit.htm" onclick="return confirm('Are You Sure To Delete this Schedule?');"></button>
+										<%} %>										
+									</td>
+											
+				
+   
+								 	</tr>
+</form>
+									    <%} %>
+									    </tbody>
+	    
+                                    </table>
+        
+				
+				
+				
+ 	
+        
+        
+        
+        
+        
+        <form action="ProjectScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" >
+      
+
+		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+													<thead>  
+													<tr><th style="width: 500px;"><div style=" ">Milestone Activity</div></th><th><div style="">Milestone Month</div></th>
+													<th style=" "><div style="">Remarks</div></th>
+													<th><div style="margin-bottom: -10px;"><i class="btn btn-sm fa fa-plus" style="color: green;"  onclick="MilestoneAdd()"></i></div></th></tr>
+													<input type="hidden"  id="MilestoneAdd" value="1" />
+													<tr>
+														<td style="width: 400px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required"></td>                                                       
+														<td style="width: 200px;"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
+														<td style="width: 400px;"><input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required"></td>
+														<td style="width: 100px;"><i class="btn btn-sm fa fa-minus" style="color: red;" onclick="MilestoneSub()"></i></td>
+													</tr>
+													</thead>
+													</table>
+
+
+          
+         <hr>
+         
+        <div class="form-group">
+<center>
+
+ <input type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub" onclick="return confirm('Are You Sure To Add New Schedule(s) ?');">
+ <input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
+</center>
+</div>
+
+	<input type="hidden" name="${_csrf.parameterName}"
+				value="${_csrf.token}" /> 
+				
+		<input type="hidden" name="IntiationId"
+				value="<%=IntiationId %>" /> 		
+				
+ 	</form>
+        
+     </div>`     
+        
+
+
+
+
+
+
+
+
+        </div>
+</div>
+</div>
+
+
+
+
+	
+<script type="text/javascript">
+
+var ProjectScheduleMonth="<%=ProjectScheduleMonth%>";
+
+
+
+
+
+
+
+
+
+
+var TotalMilestoneMonth="<%=ProjectDetailes[9] %>";
+
+
+function MilestoneAdd(){
+	 
+	 var $MilestoneAdd = $("#MilestoneAdd").val(); 
+	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><i class='btn btn-sm fa fa-minus' style='color: red;' onclick='MilestoneSub("+$MilestoneAdd+")'></i></td></tr>");
+	 FimRowId=$MilestoneAdd+1;
+	 $("#MilestoneAdd").val($MilestoneAdd+1); 
+	 
+
+	 
+}
+
+
+function MilestoneSub(rowcount){
+	 
+	  var rowcountid="#"+rowcount;
+
+	 $(rowcountid).remove();
+}
+
+
+
+/* function Add(myfrm1){
+
+    
+    var fieldvalues = $("input[name='MilestoneMonth']")
+  .map(function(){return $(this).val();}).get();
+    
+    var MilestoneMonth=0;
+    for (var i = 0; i < fieldvalues.length; i++) {
+    	MilestoneMonth=Number(MilestoneMonth)+Number(fieldvalues[i]);
+    } 
+var TotalMilestoneMonthadd=Number(ProjectScheduleMonth)+Number(MilestoneMonth);
+
+
+    if(TotalMilestoneMonth>=TotalMilestoneMonthadd){
+    	
+    	
+    }else{
+    	 alert("Total Month Should Be "+TotalMilestoneMonth);	   
+		 event.preventDefault();
+			return false;
+    }
+    
+  return true;
+} */
+
+
+
+</script>
+<div class="modal" id="loader">
+					<!-- Place at bottom of page -->
+				</div>
+</body>
+</html>

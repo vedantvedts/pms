@@ -1,0 +1,320 @@
+<%@page import="java.time.LocalTime"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"
+	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+	
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+	<title>PFMS</title>
+<jsp:include page="../static/header.jsp"></jsp:include>
+
+
+<style>
+
+.control-label{
+	font-weight: bold !important;
+}
+
+
+.table thead th{
+	
+	vertical-align: middle !important;
+}
+
+.header{
+        position:sticky;
+        top: 0 ;
+        background-color: #346691;
+    }
+    
+    .table button{
+    	background-color: background !important;
+    	font-size: 12px;
+    }
+    
+ label{
+ 	font-size: 15px !important;
+ }
+ 
+</style>
+
+</head>
+<body>
+
+
+<%
+
+List<Object[]> LoginTypeRoles=(List<Object[]>) request.getAttribute("LoginTypeRoles");
+List<Object[]> FormDetailsList=(List<Object[]>) request.getAttribute("FormDetailsList");
+List<Object[]> FormModulesList=(List<Object[]>) request.getAttribute("FormModulesList");
+String logintype=(String)request.getAttribute("logintype");
+String moduleid=(String)request.getAttribute("moduleid");
+
+%>
+
+<%String ses=(String)request.getParameter("result"); 
+String ses1=(String)request.getParameter("resultfail");
+if(ses1!=null){
+%>
+	<center>
+	
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</center>
+	<%}if(ses!=null){ %>
+	<center>
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+
+	</center>
+	<%} %>
+
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">	
+			<div class="card shadow-nohover">
+				
+				<div class="card-header">
+					
+					<form class="" method="post" action="Role.htm" id="myform">
+					
+						<div class="row">
+		
+							<div class="col-md-6">
+								<h3 class="control-label" > Forms List</h3>
+							</div>
+		
+							<div class="col-sm-1half">	
+								<h5 class="control-label" > Role : </h5>
+							</div>		
+								
+							<div class="col-md-2">			
+										 <select class="form-control" id="logintype" required="required" name="logintype" onchange='submitForm();' >
+						   						<% for (Object[] obj : LoginTypeRoles) {%>
+												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]%></option>
+												<%} %>
+						  				</select>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								
+							</div>
+							
+							<div class="col-sm-1half">	
+								<h5 class="control-label" > Module : </h5> 						
+							</div>
+							
+							<div class="col-md-2">	
+	
+										 <select class="form-control" id="moduleid" required="required" name="moduleid" onchange='submitForm();' >
+										 		<option value="A" >All </option>
+						   						<% for (Object[] obj : FormModulesList) {%>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(moduleid)){ %>selected<% } %> ><%=obj[1]%></option>
+												<%} %>
+						  				</select>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+						
+							</div>
+							
+						</div>
+					
+					</form>
+					
+				</div>
+			
+			<!-- card header -->
+				
+
+				<div class="card-body"> 
+
+			           
+			         <div class="table-responsive-sm" style="height: 31rem;overflow: auto;">
+						<table	class=" scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm ">
+					        <thead style="background-color: #055C9D;color: white">
+					          <tr>
+			                	<th >SN</th>
+			                    <th >Form Name</th>
+			                    <th >Access</th>
+			                </tr>
+					        </thead>
+        
+					         <tbody>
+							<% 
+								if(FormDetailsList.size()>0){
+									int count=1;
+										for(Object[] 	obj:FormDetailsList){ %>
+													   
+								<tr>
+									<td ><%=count %></td>
+									<td><%=obj[2] %></td>
+										<td>
+											<input name="access"  onchange="FormNameEdit(<%=obj[0]%>)"  type="checkbox"  <%if(obj[1].toString().equalsIgnoreCase("A")){ %> disabled <%} %> <%if((obj[3]).toString().equalsIgnoreCase("1")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="105" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> Active" data-off="<i class='fa fa-times' aria-hidden='true'></i> Inactive" >
+											<input 	type="hidden" name="sample" value="attendance<%=count %>" >	
+											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+									</td>
+
+								</tr>
+ 												
+ 								<%count++;}}else{ %>
+ 												
+ 								<tr>
+ 									<td colspan="3" style="text-align: center">No Forms Assigned</td>
+ 																						
+ 								</tr>
+ 												
+ 								<%} %>
+ 												
+							</tbody>
+      				
+      				</table>
+	           
+			      </div>
+			     
+			    </div> 
+
+			</div> <!-- card end -->
+			
+			
+
+			
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+<script type='text/javascript'> 
+function submitForm()
+{ 
+  document.getElementById('myform').submit(); 
+} 
+
+function FormNameEdit(id){
+		 $.ajax({
+
+			type : "GET",
+			url : "FormRoleActive.htm",
+			data : {
+						formroleaccessid : id
+				   },
+			datatype : 'json',
+			success : function(result) {
+
+			var result = JSON.parse(result);
+	
+			var values = Object.keys(result).map(function(e) {
+		 				 return result[e]
+		  
+							});
+				}
+				   
+			});
+	 
+}
+
+
+
+
+
+</script>
+
+
+
+
+
+<script>
+function deleteConfirm() {
+var checkedValue=$("input[name='committeedivisionid']:checked").val();	
+
+  if(checkedValue>0){
+	  var txt;
+	  var r = confirm("Are You Sure To Remove ?");
+	  if (r == true) {
+	    return true;
+	  } else {
+	    return false;
+	  }  
+  }else{
+	  alert("Please Select Checkbox");
+	  return false;
+  }
+  
+}
+
+
+function submitChecked() {
+	var checkedValue=$("input[name='committeeid']:checked").val();	
+	  if(checkedValue>0){
+		  var txt;
+		  var r = confirm("Are You Sure To Add !");
+		  if (r == true) {
+		    return true;
+		  } else {
+		    return false;
+		  } 
+		  
+		 
+	  }else{
+		  alert("Please Select Checkbox");
+		  return false;
+	  }
+	  
+	}
+
+
+</script>
+
+
+
+<script type="text/javascript">
+
+function Add(myfrm1){
+	
+	event.preventDefault();
+	
+	var date=$("#startdate").val();
+	var time=$("#starttime").val();
+	
+	bootbox.confirm({ 
+ 		
+	    size: "large",
+		message: "<center></i>&nbsp;&nbsp;&nbsp;&nbsp;<b class='editbox'>Are You Sure To Add Schedule on "+date+" &nbsp;("+ time +") ?</b></center>",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	            className: 'btn-success'
+	        },
+	        cancel: {
+	            label: 'No',
+	            className: 'btn-danger'
+	        }
+	    },
+	    callback: function(result){ 
+	 
+	    	if(result){
+	    	
+	    		$("sub").value;
+	         $("#myfrm1").submit(); 
+	    	}
+	    	else{
+	    		event.preventDefault();
+	    	}
+	    } 
+	}) 
+	
+	
+}	
+   
+</script>
+
+
+</body>
+</html>

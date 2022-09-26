@@ -1,0 +1,1459 @@
+package com.vts.pfms.milestone.service;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.vts.pfms.FormatConverter;
+import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.milestone.dao.MilestoneDao;
+import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
+import com.vts.pfms.milestone.dto.FileProjectDocDto;
+import com.vts.pfms.milestone.dto.FileUploadDto;
+import com.vts.pfms.milestone.dto.MileEditDto;
+import com.vts.pfms.milestone.dto.MilestoneActivityDto;
+import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
+import com.vts.pfms.milestone.model.ActivityTransaction;
+import com.vts.pfms.milestone.model.FileDocAmendment;
+import com.vts.pfms.milestone.model.FileDocMaster;
+import com.vts.pfms.milestone.model.FileProjectDoc;
+import com.vts.pfms.milestone.model.FileRepMaster;
+import com.vts.pfms.milestone.model.FileRepNew;
+import com.vts.pfms.milestone.model.FileRepUploadNew;
+import com.vts.pfms.milestone.model.MilestoneActivity;
+import com.vts.pfms.milestone.model.MilestoneActivityLevel;
+import com.vts.pfms.milestone.model.MilestoneActivityRev;
+import com.vts.pfms.milestone.model.MilestoneActivitySub;
+import com.vts.pfms.milestone.model.MilestoneActivitySubRev;
+import com.vts.pfms.milestone.model.MilestoneSchedule;
+
+@Service
+public class MilestoneServiceImpl implements MilestoneService {
+
+	@Autowired
+	MilestoneDao dao;
+	FormatConverter fc=new FormatConverter();
+	private static final Logger logger=LogManager.getLogger(MilestoneServiceImpl.class);
+	@Value("${File_Path}")
+    private String FilePath;
+	
+	@Override
+	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
+		
+		return dao.MilestoneActivityList(ProjectId);
+	}
+
+	@Override
+	public List<Object[]> ProjectList() throws Exception {
+		
+		return dao.ProjectList();
+	}
+
+	@Override
+	public List<Object[]> EmployeeList() throws Exception 
+	{		
+		return dao.EmployeeList();
+	}
+
+	@Override
+	public long MilestoneActivityInsert(MilestoneActivityDto dto) throws Exception {
+		MilestoneActivity Milestone=new MilestoneActivity();
+		Milestone.setProjectId(Long.parseLong(dto.getProjectId()));
+		Milestone.setActivityType(Long.parseLong(dto.getActivityType()));
+		Milestone.setActivityName(dto.getActivityName());
+		Milestone.setActivityStatusId(0);
+		Milestone.setMilestoneNo(dao.MilestoneCount(dto.getProjectId())+1);
+		Milestone.setStartDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getStartDate()).getTime()));
+		Milestone.setEndDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getEndDate()).getTime()));
+		Milestone.setOrgStartDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getStartDate()).getTime()));
+		Milestone.setOrgEndDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getEndDate()).getTime()));
+		Milestone.setOicEmpId(Long.parseLong(dto.getOicEmpId()));
+		Milestone.setOicEmpId1(Long.parseLong(dto.getOicEmpId1()));
+		Milestone.setCreatedBy(dto.getCreatedBy());
+		Milestone.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		Milestone.setProgressStatus(0);
+		Milestone.setWeightage(0);
+		Milestone.setIsActive(1);
+		return dao.MilestoneActivity(Milestone);
+	}
+
+	@Override
+	public List<Object[]> MilestoneActivity(String MilestoneActivityId) throws Exception {
+		
+		return dao.MilestoneActivity(MilestoneActivityId);
+	}
+
+	@Override
+	public long MilestoneActivityLevelInsert(MilestoneActivityDto dto) throws Exception {
+		MilestoneActivityLevel Milestone=new MilestoneActivityLevel();
+		Milestone.setParentActivityId(Long.parseLong(dto.getActivityId()));
+		Milestone.setActivityLevelId(Long.parseLong(dto.getLevelId()));
+		Milestone.setActivityName(dto.getActivityName());
+		Milestone.setActivityType(Long.parseLong(dto.getActivityType()));
+		Milestone.setActivityStatusId(0);
+		Milestone.setStartDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getStartDate()).getTime()));
+		Milestone.setEndDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getEndDate()).getTime()));
+		Milestone.setOrgStartDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getStartDate()).getTime()));
+		Milestone.setOrgEndDate(new java.sql.Date(fc.getRegularDateFormat().parse(dto.getEndDate()).getTime()));
+		Milestone.setOicEmpId(Long.parseLong(dto.getOicEmpId()));
+		Milestone.setOicEmpId1(Long.parseLong(dto.getOicEmpId1()));
+		Milestone.setRevision(Long.parseLong("0"));
+		Milestone.setWeightage(0);
+		Milestone.setCreatedBy(dto.getCreatedBy());
+		Milestone.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		Milestone.setProgressStatus(0);
+		Milestone.setWeightage(0);
+		Milestone.setIsActive(1);
+		return dao.MilestoneActivityLevelInsert(Milestone);
+	}
+	
+
+	@Override
+	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
+		
+		return dao.MilestoneActivityLevel(MilestoneActivityId,LevelId);
+	}
+
+
+
+	@Override
+	public int MilestoneRevisionCount(String MileActivityId) throws Exception {
+		int count=0;
+		try
+		{
+			count=dao.MilestoneRevisionCount(MileActivityId)+1;
+		}catch (Exception e) {
+			logger.info(new Date() +"Inside  MilestoneRevisionCount",e);
+			count=0;
+		}
+		return count;
+	}
+
+	@Override
+	public long MilestoneActivityRevision(MilestoneActivityDto dto) throws Exception {
+		long count=1;
+		MilestoneActivity getMA=dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
+		MilestoneActivityRev MaRev=new MilestoneActivityRev();
+		MaRev.setActivityName(getMA.getActivityName());
+		MaRev.setActivityStatusId(getMA.getActivityStatusId());
+		MaRev.setMilestoneActivityId(getMA.getMilestoneActivityId());
+		MaRev.setStartDate(getMA.getStartDate());
+		MaRev.setEndDate(getMA.getEndDate());
+		MaRev.setOicEmpId(getMA.getOicEmpId());
+		MaRev.setOicEmpId1(getMA.getOicEmpId1());
+		MaRev.setProgressStatus(getMA.getProgressStatus());
+		MaRev.setWeightage(getMA.getWeightage());
+		MaRev.setRevisionNo(Integer.parseInt(dto.getRevisionNo()));
+		MaRev.setStatusRemarks(getMA.getStatusRemarks());
+		MaRev.setCreatedBy(getMA.getCreatedBy());
+		MaRev.setCreatedDate(getMA.getCreatedDate());
+		MaRev.setIsActive(1);
+		long rev=dao.MilestoneActivityRev(MaRev);
+		if(rev>0) {
+    	List<MilestoneActivityLevel> listA=dao.ActivityLevelList(Long.parseLong(dto.getActivityId()),count);
+		for(MilestoneActivityLevel MileA:listA) {
+		MilestoneActivitySubRev SubA=new MilestoneActivitySubRev();
+		SubA.setActivityName(MileA.getActivityName());
+		SubA.setActivityId(MileA.getActivityId());
+		SubA.setOicEmpId(MileA.getOicEmpId());
+		SubA.setOicEmpId1(MileA.getOicEmpId1());
+		SubA.setActivityType(MileA.getActivityType());
+		SubA.setActivityStatusId(MileA.getActivityStatusId());
+		SubA.setProgressStatus(MileA.getProgressStatus());
+		SubA.setWeightage(MileA.getWeightage());
+		SubA.setRevision(Long.parseLong(dto.getRevisionNo()));
+		SubA.setStartDate(MileA.getStartDate());
+		SubA.setEndDate(MileA.getEndDate());
+		SubA.setCreatedBy(MileA.getCreatedBy());
+		SubA.setCreatedDate(MileA.getCreatedDate());
+		SubA.setIsActive(1);
+		dao.MilestoneActivitySubRev(SubA);
+		List<MilestoneActivityLevel> listB=dao.ActivityLevelList(MileA.getActivityId(),count+1);
+		for(MilestoneActivityLevel MileB:listB) {
+		MilestoneActivitySubRev SubB=new MilestoneActivitySubRev();
+		SubB.setActivityName(MileB.getActivityName());
+		SubB.setActivityId(MileB.getActivityId());
+		SubB.setOicEmpId(MileB.getOicEmpId());
+		SubB.setOicEmpId1(MileB.getOicEmpId1());
+		SubB.setActivityType(MileB.getActivityType());
+		SubB.setActivityStatusId(MileB.getActivityStatusId());
+		SubB.setProgressStatus(MileB.getProgressStatus());
+		SubB.setWeightage(MileB.getWeightage());
+		SubB.setRevision(Long.parseLong(dto.getRevisionNo()));
+		SubB.setStartDate(MileB.getStartDate());
+		SubB.setEndDate(MileB.getEndDate());
+		SubB.setCreatedBy(MileB.getCreatedBy());
+		SubB.setCreatedDate(MileB.getCreatedDate());
+		SubB.setIsActive(1);
+		dao.MilestoneActivitySubRev(SubB);
+		List<MilestoneActivityLevel> listC=dao.ActivityLevelList(MileB.getActivityId(),count+2);
+		for(MilestoneActivityLevel MileC:listC) {
+		MilestoneActivitySubRev SubC=new MilestoneActivitySubRev();
+		SubC.setActivityName(MileC.getActivityName());
+		SubC.setActivityId(MileC.getActivityId());
+		SubC.setOicEmpId(MileC.getOicEmpId());
+		SubC.setOicEmpId1(MileC.getOicEmpId1());
+		SubC.setActivityType(MileC.getActivityType());
+		SubC.setActivityStatusId(MileC.getActivityStatusId());
+		SubC.setProgressStatus(MileC.getProgressStatus());
+		SubC.setWeightage(MileC.getWeightage());
+		SubC.setRevision(Long.parseLong(dto.getRevisionNo()));
+		SubC.setStartDate(MileC.getStartDate());
+		SubC.setEndDate(MileC.getEndDate());
+		SubC.setCreatedBy(MileC.getCreatedBy());
+		SubC.setCreatedDate(MileC.getCreatedDate());
+		SubC.setIsActive(1);
+		dao.MilestoneActivitySubRev(SubC);
+		List<MilestoneActivityLevel> listD=dao.ActivityLevelList(MileC.getActivityId(),count+3);
+		for(MilestoneActivityLevel MileD:listD) {
+		MilestoneActivitySubRev SubD=new MilestoneActivitySubRev();
+		SubD.setActivityName(MileD.getActivityName());
+		SubD.setActivityId(MileD.getActivityId());
+		SubD.setOicEmpId(MileD.getOicEmpId());
+		SubD.setOicEmpId1(MileD.getOicEmpId1());
+		SubD.setActivityType(MileD.getActivityType());
+		SubD.setActivityStatusId(MileD.getActivityStatusId());
+		SubD.setProgressStatus(MileD.getProgressStatus());
+		SubD.setWeightage(MileD.getWeightage());
+		SubD.setRevision(Long.parseLong(dto.getRevisionNo()));
+		SubD.setStartDate(MileD.getStartDate());
+		SubD.setEndDate(MileD.getEndDate());
+		SubD.setCreatedBy(MileD.getCreatedBy());
+		SubD.setCreatedDate(MileD.getCreatedDate());
+		SubD.setIsActive(1);
+		dao.MilestoneActivitySubRev(SubD);
+		List<MilestoneActivityLevel> listE=dao.ActivityLevelList(MileD.getActivityId(),count+4);
+		for(MilestoneActivityLevel MileE:listE) {
+		MilestoneActivitySubRev SubE=new MilestoneActivitySubRev();
+		SubE.setActivityName(MileE.getActivityName());
+		SubE.setActivityId(MileE.getActivityId());
+		SubE.setOicEmpId(MileE.getOicEmpId());
+		SubE.setOicEmpId1(MileE.getOicEmpId1());
+		SubE.setActivityType(MileE.getActivityType());
+		SubE.setActivityStatusId(MileE.getActivityStatusId());
+		SubE.setProgressStatus(MileE.getProgressStatus());
+		SubE.setWeightage(MileE.getWeightage());
+		SubE.setRevision(Long.parseLong(dto.getRevisionNo()));
+		SubE.setStartDate(MileE.getStartDate());
+		SubE.setEndDate(MileE.getEndDate());
+		SubE.setCreatedBy(MileE.getCreatedBy());
+		SubE.setCreatedDate(MileE.getCreatedDate());
+		SubE.setIsActive(1);
+		dao.MilestoneActivitySubRev(SubE);
+		
+		    dao.RevLevelUpdate(MileE.getActivityId().toString(), dto.getRevisionNo());
+		    }
+		    dao.RevLevelUpdate(MileD.getActivityId().toString(), dto.getRevisionNo());
+		    }
+			dao.RevLevelUpdate(MileC.getActivityId().toString(), dto.getRevisionNo());
+			}
+			dao.RevLevelUpdate(MileB.getActivityId().toString(), dto.getRevisionNo());
+			}
+			dao.RevLevelUpdate(MileA.getActivityId().toString(), dto.getRevisionNo());
+			}
+			dao.RevMainUpdate(dto.getActivityId(), dto.getRevisionNo());
+     	}
+		
+		return rev;
+	}
+
+	@Override
+	public List<Object[]> MilestoneActivityEdit(MileEditDto dto) throws Exception {
+		logger.info(new Date() +"Inside  MilestoneActivityEdit");
+		List<Object[]> MileEditData=new ArrayList<Object[]>();
+		if("M".equalsIgnoreCase(dto.getActivityType())) {
+			MileEditData=dao.MilestoneActivityData(dto.getMilestoneActivityId());
+		}
+        if(!"M".equalsIgnoreCase(dto.getActivityType())) {
+        	MileEditData=dao.ActivityLevelData(dto.getActivityId());
+		}
+        
+		return MileEditData;
+	}
+
+	@Override
+	public List<Object[]> ActivityTypeList() throws Exception {
+		
+		return dao.ActivityTypeList();
+	}
+
+	@Override
+	public int MilestoneActivityUpdate(MileEditDto dto) throws Exception {
+		logger.info(new Date() +"Inside  MilestoneActivityUpdate");
+		int result=0;
+		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
+		Date fdate = fc.getRegularDateFormat().parse(dto.getStartDate());
+		Date tdate = fc.getRegularDateFormat().parse(dto.getEndDate());
+		dto.setEndDate(fc.getSqlDateFormat().format(tdate));
+		dto.setStartDate(fc.getSqlDateFormat().format(fdate));
+		if("0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
+			result=dao.MilestoneActivityMainUpdate(dto);
+		}
+		 if("0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
+			  result=dao.ActivityLevelFullEdit(dto);
+			}
+	 
+       if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&"M".equalsIgnoreCase(dto.getActivityType())) {
+    	   result=dao.MilestoneActivityUpdate(dto);
+		}
+		  if(!"0".equalsIgnoreCase(dto.getRevisionNo())&&!"M".equalsIgnoreCase(dto.getActivityType())) {
+			  result=dao.ActivityLevelEditUpdate(dto);
+			}
+
+		return result;
+	}
+
+	@Override
+	public List<Object[]> ActivityCompareMAin(String ActivityId, String Rev,String Rev1) throws Exception {
+		
+		return dao.ActivityCompareMAin(ActivityId, Rev,Rev1);
+	}
+
+	
+
+	@Override
+	public List<Object[]> MilestoneActivityEmpIdList(String EmpId) throws Exception {
+		
+		return dao.MilestoneActivityEmpIdList(EmpId);
+	}
+
+	@Override
+	public List<Object[]> StatusList() throws Exception {
+	
+		return dao.StatusList();
+	}
+	
+	@Override
+	public int ActivityProgressUpdate(MileEditDto dto) throws Exception {
+		logger.info(new Date() +"Inside  ActivityProgressUpdate");
+		int result=0;
+		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
+		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
+		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
+		//Date fdate = fc.getRegularDateFormat().parse(dto.getDateOfCompletion());
+		dto.setDateOfCompletion(fc.getSqlDateFormat().format(new Date()));
+		if(enddate.after(new Date())) {
+		dto.setActivityStatusId("3");
+		}else {
+			dto.setActivityStatusId("5");
+		}
+		}
+		else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
+			dto.setActivityStatusId("1");
+		}else {
+			if(enddate.after(new Date())) {
+				dto.setActivityStatusId("2");
+				}else {
+					dto.setActivityStatusId("4");
+				}
+			}
+		if("M".equalsIgnoreCase(dto.getActivityType())) {
+			result=dao.ActivityProgressMainUpdate(dto);
+		}
+
+		  if(!"M".equalsIgnoreCase(dto.getActivityType())) {
+			  result=dao.ActivityProgressUpdateLevel(dto);
+			}
+
+	        if(result>0) {
+	        	String dt=fc.getRegularDateFormat().format(new Date());
+	        	MilestoneActivitySub attach=new MilestoneActivitySub();
+	        	attach.setActivityId(Long.parseLong(dto.getActivityId()));
+	        	attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
+	        	attach.setProgressDate(new java.sql.Date(fc.getRegularDateFormat().parse(dt).getTime()));
+				attach.setAttachName(dto.getFileNamePath());
+				attach.setAttachFile(dto.getFilePath());
+				attach.setCreatedBy(dto.getCreatedBy());
+				attach.setRemarks(dto.getStatusRemarks());
+				attach.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				attach.setIsActive(1);
+				dao.MilestoneActivitySubInsert(attach);
+				List<Object[]> BaselineMain=dao.BaseLineMain(dto.getMilestoneActivityId());
+				double TotalA=0.00;
+				for(Object[] objMain:BaselineMain) {
+					List<Object[]> BaselineA=dao.BaseLineLevel(objMain[0].toString(),"1");
+					for(Object[] objA:BaselineA) {
+						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+						for(Object[] objB:BaselineB) {
+							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+							
+								for(Object[] objC:BaselineC) {
+										List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+										for(Object[] objD:BaselineD) {
+											List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
+											if(BaselineE.size()>0) {
+												double ProgressD=0.00;
+												for(Object[] objE:BaselineE) {
+												ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
+												
+												}
+												// status for D
+												String StatusD="1";
+												Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
+												if(Math.round(ProgressD)>=100) {
+													ProgressD=100.00;
+													if(enddateD.after(new Date())) {
+														StatusD="3";
+													}else {
+														StatusD="5";
+													}
+													}
+													else if(Math.round(ProgressD)==0) {
+														StatusD="1";
+													}else {
+														if(enddateD.after(new Date())) {
+															StatusD="2";
+															}else {
+																StatusD="4";
+															}
+														}
+				                                 // dao D update
+												dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD));
+												
+											}
+											
+											}
+										
+									
+									
+								}	
+							
+							}
+							
+							
+						
+						}
+					
+				
+				}
+				//C
+				for(Object[] objMain:BaselineMain) {
+					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+					for(Object[] objA:BaselineA) {
+						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+						for(Object[] objB:BaselineB) {
+							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+							for(Object[] objC:BaselineC) {
+								List<Object[]> BaselineD=dao.BaseLineLevel(objC[0].toString(),"4");
+						if(BaselineD.size()>0) {
+							double ProgressC=0.00;
+						for(Object[] objD:BaselineD) {
+							
+								
+								double ED=(Double.parseDouble(objD[3].toString())/100)*Double.parseDouble(objD[2].toString());
+								ProgressC+=ED;
+								
+								
+							
+							}
+						
+						// status for C
+						String StatusC="1";
+						Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressC)>=100) {
+							ProgressC=100.00;
+							if(enddateC.after(new Date())) {
+								 StatusC="3";
+							}else {
+								 StatusC="5";
+							}
+							}
+							else if(Math.round(ProgressC)==0) {
+								 StatusC="1";
+							}else {
+								if(enddateC.after(new Date())) {
+									 StatusC="2";
+									}else {
+										 StatusC="4";
+									}
+								}
+						      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC));
+						      
+                             // dao C update
+						}
+							}
+						}
+						}
+					
+				
+				}
+				//B
+				for(Object[] objMain:BaselineMain) {
+					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+					for(Object[] objA:BaselineA) {
+						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+						for(Object[] objB:BaselineB) {
+							List<Object[]> BaselineC=dao.BaseLineLevel(objB[0].toString(),"3");
+						if(BaselineC.size()>0) {
+							double ProgressB=0.00;
+						for(Object[] objC:BaselineC) {
+							
+								
+								double EC=(Double.parseDouble(objC[3].toString())/100)*Double.parseDouble(objC[2].toString());
+								ProgressB+=EC;
+								
+								
+							
+							}
+						
+						// status for B
+						String StatusB="1";
+						Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressB)>=100) {
+							ProgressB=100.00;
+							if(enddateB.after(new Date())) {
+								 StatusB="3";
+							}else {
+								 StatusB="5";
+							}
+							}
+							else if(Math.round(ProgressB)==0) {
+								 StatusB="1";
+							}else {
+								if(enddateB.after(new Date())) {
+									 StatusB="2";
+									}else {
+										 StatusB="4";
+									}
+								}
+						      dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB));
+						      
+                             // dao B update
+						}
+						
+						}
+						}
+					
+				
+				}
+				//A
+				for(Object[] objMain:BaselineMain) {
+					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+					for(Object[] objA:BaselineA) {
+						List<Object[]> BaselineB=dao.BaseLineLevel(objA[0].toString(),"2");
+						if(BaselineB.size()>0) {
+							double ProgressA=0.00;
+						for(Object[] objB:BaselineB) {
+							
+								double EB=(Double.parseDouble(objB[3].toString())/100)*Double.parseDouble(objB[2].toString());
+								
+								ProgressA+=EB;
+								
+								
+							
+							}
+						
+						// status for A
+						String StatusA="1";
+						Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
+						if(Math.round(ProgressA)>=100) {
+							ProgressA=100.00;
+							if(enddateA.after(new Date())) {
+								 StatusA="3";
+							}else {
+								 StatusA="5";
+							}
+							}
+							else if(Math.round(ProgressA)==0) {
+								 StatusA="1";
+							}else {
+								if(enddateA.after(new Date())) {
+									 StatusA="2";
+									}else {
+										 StatusA="4";
+									}
+								}
+						      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA));
+						      
+                             // dao A update
+						}
+						
+						
+						}
+					
+				
+				}
+				for(Object[] objMain:BaselineMain) {
+					List<Object[]> BaselineA=dao.BaseLineLevel(dto.getMilestoneActivityId(),"1");
+					for(Object[] objA:BaselineA) {
+							TotalA+=(Double.parseDouble(objA[3].toString())/100)*Double.parseDouble(objA[2].toString());
+						}
+					
+					// status for Main
+					String StatusMain="1";
+					Date enddateMain = fc.getSqlDateFormat().parse(dto.getEndDate());
+					if(Math.round(TotalA)>=100) {
+						TotalA=100.00;
+						if(enddateMain.after(new Date())) {
+							StatusMain="3";
+						}else {
+							StatusMain="5";
+						}
+						}
+						else if(Math.round(TotalA)==0) {
+							StatusMain="1";
+						}else {
+							if(enddateMain.after(new Date())) {
+								StatusMain="2";
+								}else {
+									StatusMain="4";
+								}
+							}
+					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA));
+					// dao upadate main
+				}
+			}else {
+				result=0;
+			}   
+		return result;
+	}
+
+	@Override
+	public List<Object[]> MilestoneReportsList(String ProjectId) throws Exception {
+		logger.info(new Date() +"Inside  MilestoneReportsList");
+		return dao.MilestoneReportsList(ProjectId);
+	}
+	
+	@Override
+	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
+		logger.info(new Date() +"Inside  MilestoneTotalWeightage");
+		
+		return dao.MilestoneTotalWeightage(MilestoneActivityId);
+	}
+	@Override
+	public List<Object[]> MilestoneActivitySub(MileEditDto dto) throws Exception {
+		logger.info(new Date() +"Inside  MilestoneActivitySub");
+		List<Object[]> MileSubata=new ArrayList<Object[]>();
+		if(dto.getActivityType().equals("M")) {
+			//MileSubata=dao.MilestoneActivitySub(dto.getActivityId(),"M");
+		}else {
+			MileSubata=dao.MilestoneActivitySub(dto.getActivityId(),"A");
+		}
+		return MileSubata;
+	}
+
+	@Override
+	public com.vts.pfms.milestone.model.MilestoneActivitySub ActivityAttachmentDownload(String ActivitySubId)
+			throws Exception {
+		
+		return dao.ActivityAttachmentDownload(Long.parseLong(ActivitySubId));
+	}
+
+
+	@Override
+	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
+		
+		return dao.ProjectDetails(ProjectId);
+	}
+
+	@Override
+	public List<Object[]> MilestoneActivityAssigneeList(String ProjectId, String EmpId) throws Exception {
+		
+		return dao.MilestoneActivityAssigneeList(ProjectId, EmpId);
+	}
+
+	@Override
+	public List<Object[]> ProjectAssigneeList(String EmpId) throws Exception {
+		
+		return dao.ProjectAssigneeList(EmpId);
+	}
+
+	@Override
+	public int MilestoneActivityAssign(MilestoneActivityDto dto) throws Exception {
+		int result=0;
+		dto.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		 String dt=fc.getSqlDateFormat().format(new Date());
+		 
+		if(dto.getActivityType().equalsIgnoreCase("Accept")) {
+			int tot=MileActivityAssignCheck(dto);
+			if(tot==0) {
+		  result=dao.MilestoneActivityAccept(dto, dt);	
+		  if(result>0) {
+			  
+			  long count=1;
+			  MilestoneActivity getMA=dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
+				MilestoneActivityRev MaRev=new MilestoneActivityRev();
+				MaRev.setActivityName(getMA.getActivityName());
+				MaRev.setActivityStatusId(getMA.getActivityStatusId());
+				MaRev.setMilestoneActivityId(getMA.getMilestoneActivityId());
+				MaRev.setStartDate(getMA.getStartDate());
+				MaRev.setEndDate(getMA.getEndDate());
+				MaRev.setOicEmpId(getMA.getOicEmpId());
+				MaRev.setOicEmpId1(getMA.getOicEmpId1());
+				MaRev.setProgressStatus(getMA.getProgressStatus());
+				MaRev.setWeightage(getMA.getWeightage());
+				MaRev.setRevisionNo(1);
+				MaRev.setStatusRemarks(getMA.getStatusRemarks());
+				MaRev.setCreatedBy(getMA.getCreatedBy());
+				MaRev.setCreatedDate(getMA.getCreatedDate());
+				MaRev.setIsActive(1);
+				long rev=dao.MilestoneActivityRev(MaRev);
+				if(rev>0) {
+					
+					List<MilestoneActivityLevel> listA=dao.ActivityLevelList(Long.parseLong(dto.getActivityId()),count);
+					for(MilestoneActivityLevel MileA:listA) {
+					MilestoneActivitySubRev SubA=new MilestoneActivitySubRev();
+					SubA.setActivityName(MileA.getActivityName());
+					SubA.setActivityId(MileA.getActivityId());
+					SubA.setOicEmpId(MileA.getOicEmpId());
+					SubA.setOicEmpId1(MileA.getOicEmpId1());
+					SubA.setActivityType(MileA.getActivityType());
+					SubA.setActivityStatusId(MileA.getActivityStatusId());
+					SubA.setProgressStatus(MileA.getProgressStatus());
+					SubA.setWeightage(MileA.getWeightage());
+					SubA.setRevision(count);
+					SubA.setStartDate(MileA.getStartDate());
+					SubA.setEndDate(MileA.getEndDate());
+					SubA.setCreatedBy(MileA.getCreatedBy());
+					SubA.setCreatedDate(MileA.getCreatedDate());
+					SubA.setIsActive(1);
+					dao.MilestoneActivitySubRev(SubA);
+					List<MilestoneActivityLevel> listB=dao.ActivityLevelList(MileA.getActivityId(),count+1);
+					for(MilestoneActivityLevel MileB:listB) {
+					MilestoneActivitySubRev SubB=new MilestoneActivitySubRev();
+					SubB.setActivityName(MileB.getActivityName());
+					SubB.setActivityId(MileB.getActivityId());
+					SubB.setOicEmpId(MileB.getOicEmpId());
+					SubB.setOicEmpId1(MileB.getOicEmpId1());
+					SubB.setActivityType(MileB.getActivityType());
+					SubB.setActivityStatusId(MileB.getActivityStatusId());
+					SubB.setProgressStatus(MileB.getProgressStatus());
+					SubB.setWeightage(MileB.getWeightage());
+					SubB.setRevision(count);
+					SubB.setStartDate(MileB.getStartDate());
+					SubB.setEndDate(MileB.getEndDate());
+					SubB.setCreatedBy(MileB.getCreatedBy());
+					SubB.setCreatedDate(MileB.getCreatedDate());
+					SubB.setIsActive(1);
+					dao.MilestoneActivitySubRev(SubB);
+					List<MilestoneActivityLevel> listC=dao.ActivityLevelList(MileB.getActivityId(),count+2);
+					for(MilestoneActivityLevel MileC:listC) {
+					MilestoneActivitySubRev SubC=new MilestoneActivitySubRev();
+					SubC.setActivityName(MileC.getActivityName());
+					SubC.setActivityId(MileC.getActivityId());
+					SubC.setOicEmpId(MileC.getOicEmpId());
+					SubC.setOicEmpId1(MileC.getOicEmpId1());
+					SubC.setActivityType(MileC.getActivityType());
+					SubC.setActivityStatusId(MileC.getActivityStatusId());
+					SubC.setProgressStatus(MileC.getProgressStatus());
+					SubC.setWeightage(MileC.getWeightage());
+					SubC.setRevision(count);
+					SubC.setStartDate(MileC.getStartDate());
+					SubC.setEndDate(MileC.getEndDate());
+					SubC.setCreatedBy(MileC.getCreatedBy());
+					SubC.setCreatedDate(MileC.getCreatedDate());
+					SubC.setIsActive(1);
+					dao.MilestoneActivitySubRev(SubC);
+					List<MilestoneActivityLevel> listD=dao.ActivityLevelList(MileC.getActivityId(),count+3);
+					for(MilestoneActivityLevel MileD:listD) {
+					MilestoneActivitySubRev SubD=new MilestoneActivitySubRev();
+					SubD.setActivityName(MileD.getActivityName());
+					SubD.setActivityId(MileD.getActivityId());
+					SubD.setOicEmpId(MileD.getOicEmpId());
+					SubD.setOicEmpId1(MileD.getOicEmpId1());
+					SubD.setActivityType(MileD.getActivityType());
+					SubD.setActivityStatusId(MileD.getActivityStatusId());
+					SubD.setProgressStatus(MileD.getProgressStatus());
+					SubD.setWeightage(MileD.getWeightage());
+					SubD.setRevision(count);
+					SubD.setStartDate(MileD.getStartDate());
+					SubD.setEndDate(MileD.getEndDate());
+					SubD.setCreatedBy(MileD.getCreatedBy());
+					SubD.setCreatedDate(MileD.getCreatedDate());
+					SubD.setIsActive(1);
+					dao.MilestoneActivitySubRev(SubD);
+					List<MilestoneActivityLevel> listE=dao.ActivityLevelList(MileD.getActivityId(),count+4);
+					for(MilestoneActivityLevel MileE:listE) {
+					MilestoneActivitySubRev SubE=new MilestoneActivitySubRev();
+					SubE.setActivityName(MileE.getActivityName());
+					SubE.setActivityId(MileE.getActivityId());
+					SubE.setOicEmpId(MileE.getOicEmpId());
+					SubE.setOicEmpId1(MileE.getOicEmpId1());
+					SubE.setActivityType(MileE.getActivityType());
+					SubE.setActivityStatusId(MileE.getActivityStatusId());
+					SubE.setProgressStatus(MileE.getProgressStatus());
+					SubE.setWeightage(MileE.getWeightage());
+					SubE.setRevision(count);
+					SubE.setStartDate(MileE.getStartDate());
+					SubE.setEndDate(MileE.getEndDate());
+					SubE.setCreatedBy(MileE.getCreatedBy());
+					SubE.setCreatedDate(MileE.getCreatedDate());
+					SubE.setIsActive(1);
+					dao.MilestoneActivitySubRev(SubE);
+					
+					dao.RevLevelUpdate(MileE.getActivityId().toString(), "1");
+				    }
+				    dao.RevLevelUpdate(MileD.getActivityId().toString(),"1");
+				    }
+					dao.RevLevelUpdate(MileC.getActivityId().toString(),"1");
+					}
+					dao.RevLevelUpdate(MileB.getActivityId().toString(),"1");
+					}
+					dao.RevLevelUpdate(MileA.getActivityId().toString(), "1");
+					}
+					dao.RevMainUpdate(dto.getActivityId(), "1");
+				}
+				ActivityTransaction Trans=new ActivityTransaction();
+				Trans.setMilestoneActivityId(Long.parseLong(dto.getActivityId()));
+				Trans.setSentBy(Long.parseLong(dto.getOicEmpId()));
+				Trans.setStatus("Y");
+				Trans.setActionDate(new java.sql.Date(fc.getSqlDateFormat().parse(dt).getTime()));
+				Trans.setCreatedBy(dto.getCreatedBy());
+				Trans.setCreatedDate(dto.getCreatedDate());
+				Trans.setIsActive(1);
+				dao.ActivityTransactionInsert(Trans);
+				
+		  }
+			}else {
+				result=4;
+			}
+		}else if(dto.getActivityType().equalsIgnoreCase("Back")) 
+		{
+			result=dao.MilestoneActivityBack(dto);
+			ActivityTransaction Trans=new ActivityTransaction();
+			Trans.setMilestoneActivityId(Long.parseLong(dto.getActivityId()));
+			Trans.setSentBy(Long.parseLong(dto.getOicEmpId()));
+			Trans.setStatus("B");
+			Trans.setRemarks(dto.getStatusRemarks());
+			Trans.setActionDate(new java.sql.Date(fc.getSqlDateFormat().parse(dt).getTime()));
+			Trans.setCreatedBy(dto.getCreatedBy());
+			Trans.setCreatedDate(dto.getCreatedDate());
+			Trans.setIsActive(1);
+			dao.ActivityTransactionInsert(Trans);
+			
+			
+		}else {
+			int tot=MileActivityAssignCheck(dto);
+			if(tot==0) {
+			result=dao.MilestoneActivityAssign(dto);
+			ActivityTransaction Trans=new ActivityTransaction();
+			Trans.setMilestoneActivityId(Long.parseLong(dto.getActivityId()));
+			Trans.setSentBy(Long.parseLong(dto.getOicEmpId()));
+			Trans.setStatus("A");
+			Trans.setActionDate(new java.sql.Date(fc.getSqlDateFormat().parse(dt).getTime()));
+			Trans.setCreatedBy(dto.getCreatedBy());
+			Trans.setCreatedDate(dto.getCreatedDate());
+			Trans.setIsActive(1);
+			dao.ActivityTransactionInsert(Trans);
+			if(result>0) {
+				MilestoneActivity activity = dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
+				
+				PfmsNotification OIC1notification =new PfmsNotification();
+				OIC1notification.setEmpId(activity.getOicEmpId());
+				OIC1notification.setNotificationMessage("Action Pending On Milestone Assigned ");
+				OIC1notification.setNotificationUrl("M-A-AssigneeList.htm?ProjectId="+activity.getProjectId());
+				OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				OIC1notification.setNotificationby(Long.parseLong(dto.getOicEmpId()));
+				OIC1notification.setIsActive(1);
+				OIC1notification.setScheduleId(0L);
+				OIC1notification.setStatus("MAR");
+				OIC1notification.setCreatedBy(dto.getCreatedBy());
+				OIC1notification.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				
+				dao.PfmsNotificationAdd(OIC1notification);
+				
+				PfmsNotification OIC2notification =new PfmsNotification();
+				OIC2notification.setEmpId(activity.getOicEmpId1());
+				OIC2notification.setNotificationMessage("Action Pending On Milestone Assigned ");
+				OIC2notification.setNotificationUrl("M-A-AssigneeList.htm?ProjectId="+activity.getProjectId());
+				OIC2notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				OIC2notification.setNotificationby(Long.parseLong(dto.getOicEmpId()));
+				OIC2notification.setIsActive(1);
+				OIC2notification.setScheduleId(0L);
+				OIC2notification.setStatus("MAR");
+				OIC2notification.setCreatedBy(dto.getCreatedBy());
+				OIC2notification.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				
+				dao.PfmsNotificationAdd(OIC2notification);
+			}
+			
+			}else {
+				result=tot;
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Object[]> ActionList(String actiontype, String activityid) throws Exception {
+		
+		return dao.ActionList(actiontype, activityid);
+	}
+
+	@Override
+	public int WeightageSum(String Id, String ActivityId, String ActivityType,String LevelId) throws Exception {
+		int result=0;
+		if("M".equalsIgnoreCase(ActivityType)) {
+			result=dao.ActivityMainSum(Id, ActivityId);
+		}
+		if(!"M".equalsIgnoreCase(ActivityType)) {
+			result=dao.ActivityLevelSum(Id, ActivityId,LevelId);
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public List<Object[]> FileDeatils(String FileId) throws Exception {
+		return dao.FileDeatils(FileId);
+	}
+
+
+	@Override
+	public List<Object[]> MilestoneScheduleList(String ProjectId) throws Exception {
+
+		return dao.MilestoneScheduleList(ProjectId);
+	}
+
+	@Override
+	public long MilestoneScheduleInsert(MilestoneScheduleDto maindto) throws Exception {
+
+		MilestoneSchedule Milestone=new MilestoneSchedule();
+		
+		try {
+			
+			Milestone.setProjectId(Long.parseLong(maindto.getProjectId()));
+			Milestone.setMilestoneNo(dao.MilestoneScheduleCount(maindto.getProjectId())+1);
+			Milestone.setActivityType(Long.parseLong(maindto.getActivityType()));
+			Milestone.setActivityName(maindto.getActivityName());
+			Milestone.setOrgStartDate(new java.sql.Date(fc.getRegularDateFormat().parse(maindto.getStartDate()).getTime()));
+			Milestone.setOrgEndDate(new java.sql.Date(fc.getRegularDateFormat().parse(maindto.getEndDate()).getTime()));
+			Milestone.setRevisionNo(0);
+			Milestone.setCreatedBy(maindto.getCreatedBy());
+			Milestone.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			Milestone.setActivityStatusId(0);
+			Milestone.setProgressStatus(0);
+			Milestone.setWeightage(0);
+			Milestone.setIsActive(1);
+			
+		}
+		catch(Exception e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+		
+		return dao.MilestoneScheduleInsert(Milestone);
+	}
+
+	@Override
+	public List<Object[]> MilestoneExcel(String ProjectId) throws Exception {
+	
+		
+		List<Object[]> main=dao.MilestoneActivityListNew(ProjectId);
+		List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
+		List<Object[]> MilestoneActivityB=new ArrayList<Object[]>();
+		List<Object[]> MilestoneActivityC=new ArrayList<Object[]>();
+		List<Object[]> MilestoneActivityD=new ArrayList<Object[]>();
+		List<Object[]> MilestoneActivityE=new ArrayList<Object[]>();
+		
+			for(Object[] objmain:main ) {
+				List<Object[]>  MilestoneActivityA1=dao.MilestoneActivityLevelExcel(objmain[0].toString(),"1");
+				MilestoneActivityA.addAll(MilestoneActivityA1);
+				
+				for(Object[] obj:MilestoneActivityA1) {
+					List<Object[]>  MilestoneActivityB1=dao.MilestoneActivityLevelExcel(obj[0].toString(),"2");
+					MilestoneActivityB.addAll(MilestoneActivityB1);
+					
+					for(Object[] obj1:MilestoneActivityB1) {
+						List<Object[]>  MilestoneActivityC1=dao.MilestoneActivityLevelExcel(obj1[0].toString(),"3");
+						MilestoneActivityC.addAll(MilestoneActivityC1);
+						
+						for(Object[] obj2:MilestoneActivityC1) {
+							List<Object[]>  MilestoneActivityD1=dao.MilestoneActivityLevelExcel(obj2[0].toString(),"4");
+							MilestoneActivityD.addAll( MilestoneActivityD1);
+							
+							for(Object[] obj3:MilestoneActivityD1) {
+								List<Object[]>  MilestoneActivityE1=dao.MilestoneActivityLevelExcel(obj3[0].toString(),"5");
+								MilestoneActivityE.addAll( MilestoneActivityE1);
+							}
+						}
+					}
+				}
+			}
+		
+			List<Object[]> milestoneactivityall = new ArrayList<Object[]>();
+			
+			milestoneactivityall.addAll(main);
+			milestoneactivityall.addAll(MilestoneActivityA);
+			milestoneactivityall.addAll(MilestoneActivityB);
+			milestoneactivityall.addAll(MilestoneActivityC);
+			milestoneactivityall.addAll(MilestoneActivityD);
+			milestoneactivityall.addAll(MilestoneActivityE);
+			
+			
+			
+			
+			
+			return milestoneactivityall; //dao.MilestoneExcel(ProjectId);
+	}
+
+	@Override
+	public List<Object[]> MainSystem(String projectid) throws Exception {
+		
+		return dao.MainSystem(projectid);
+	}
+
+	@Override
+	public long RepMasterInsert(com.vts.pfms.milestone.model.FileRepMaster fileRepo) throws Exception {
+		long pi=0;
+		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		fileRepo.setIsActive(1);
+		fileRepo.setParentLevelId(pi);
+		fileRepo.setLevelId(pi+1);
+		return dao.RepMasterInsert(fileRepo);
+	}
+
+	@Override
+	public List<Object[]> MainSystemLevel(String ParentId) throws Exception {	
+		return dao.MainSystemLevel(ParentId);
+	}
+
+	@Override
+	public long FileRepMasterSubInsert(FileRepMaster fileRepo) throws Exception {
+		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		fileRepo.setIsActive(1);
+		return dao.RepMasterInsert(fileRepo);
+	}
+	
+	@Override 
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception
+	{
+		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
+		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype);  
+		return projectidlist;
+	}
+	
+	
+
+	@Override
+	public List<Object[]> ProjectEmpList(String projectid)throws Exception
+	{
+		logger.info(new Date() +"Inside ProjectEmpList"); 
+		return dao.ProjectEmpList(projectid);
+	}
+	
+	@Override
+	public List<Object[]> AllEmpNameDesigList()throws Exception
+	{
+		logger.info(new Date() +"Inside AllEmpNameDesigList"); 
+		return dao.AllEmpNameDesigList();
+	}
+
+	@Override
+	public List<Object[]> ActivityLevelCompare(String ActivityId, String Rev, String Rev1, String LevelId)throws Exception {		
+		return dao.ActivityLevelCompare(ActivityId, Rev, Rev1, LevelId);
+	}
+
+	@Override
+	public List<Object[]> ProjectEmpListEdit(String projectid, String id) throws Exception {
+		
+		return dao.ProjectEmpListEdit(projectid, id);
+	}
+	
+	@Override
+	public List<Object[]> DocumentTypeList(String ProjectId) throws Exception 
+	{		
+		return dao.DocumentTypeList(ProjectId);
+	}
+	
+	@Override
+	public List<Object[]> DocumentTitleList(String ProjectId,String Sub) throws Exception {
+		
+		return dao.DocumentTitleList(ProjectId,Sub);
+	}
+	
+	@Override
+	public List<Object[]> DocumentStageList(String documenttype,String levelid) throws Exception {
+		
+		return dao.DocumentStageList(documenttype,levelid);
+	}
+	
+	@Override
+	public long FileSubInsertNew(FileRepNew fileRepo) throws Exception {
+	
+		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		fileRepo.setIsActive(1);
+		return dao.FileSubInsertNew(fileRepo);
+	}
+	
+	@Override
+	public long FileUploadNew(FileUploadDto dto) throws Exception {
+	
+		long count=0;
+	
+		 try {
+				String[] Dir=dto.getPathName().split("/");
+				String FullDir=FilePath+"\\P"+dto.getProjectId()+"\\";
+				for (int i = 0; i < Dir.length; i++) {
+					FullDir=FullDir.concat(Dir[i]+"\\");
+					File theDir = new File(FullDir);
+					 if (!theDir.exists()){
+					     theDir.mkdirs();
+					 }
+				}
+
+			long rev=1;
+			Zipper zip=new Zipper();
+
+			 String Pass=dao.FilePass(dto.getUserId());
+			 long version=Long.parseLong(dto.getVer());
+			 long release=Long.parseLong(dto.getRel());
+			 
+			 FileRepUploadNew upload=new FileRepUploadNew();
+			 upload.setFileName(dto.getFileNamePath());
+			 upload.setFilePass(Pass);
+			 upload.setReleaseDoc(release);
+			 upload.setVersionDoc(version);
+			 upload.setFileRepId(Long.parseLong(dto.getFileId()));
+			 upload.setFilePath(FullDir);
+			 upload.setFileNameUi(dto.getFileName());
+			 upload.setDescription(dto.getDescription());
+			 upload.setCreatedBy(dto.getUserId());
+			 upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			 upload.setIsActive(1);
+			 
+			 count=dao.FileUploadInsertNew(upload);
+			 
+			 Long Rev=Long.parseLong(dto.getRel());
+			 Long Ver=Long.parseLong(dto.getVer());
+			 if(count>0) {
+				
+	         zip.pack(dto.getFileNamePath(),dto.getIS(),FullDir,dto.getFileName()+Ver+"-"+Rev,Pass);
+	        
+	         count=dao.FileRepRevUpdate(dto.getFileId(),release,version);
+	         
+	        
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+		   count=0;
+		}
+
+		return count;
+	}
+
+	@Override
+	public List<Object[]> VersionCheckList(String ProjectId, String SubsystemL1,String documenttitle) throws Exception {
+		return dao.VersionCheckList(ProjectId,SubsystemL1,documenttitle);
+	}
+
+	
+	@Override
+	public List<Object[]> FileHistoryList(String filerepid) throws Exception 
+	{
+		return dao.FileHistoryList(filerepid);
+	}
+	
+	@Override
+	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	{
+		return dao.FileRepMasterListAll( projectid);
+	}
+	
+	@Override
+	public List<Object[]> FileDocMasterListAll(String projectid)throws Exception
+	{
+		return dao.FileDocMasterListAll(projectid);
+	}
+	
+	@Override
+	public long ProjectDocumetsAdd(FileProjectDocDto dto)throws Exception
+	{
+		logger.info(new Date() +"Inside  ProjectDocumetsSubmit");
+		long count=0;
+		for(String FileUploadMasterId:dto.getFileUploadMasterId()) 
+		{
+			FileProjectDoc model=new FileProjectDoc();
+			model.setProjectid(Long.parseLong(dto.getProjectid()));
+			model.setCreatedBy(dto.getCreatedBy());
+			model.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			model.setIsActive(1);		
+			model.setFileUploadMasterId(Long.parseLong(FileUploadMasterId.split("_")[0]));
+			model.setParentLevelid(Long.parseLong(FileUploadMasterId.split("_")[1]));
+			count=dao.ProjectDocumetsAdd(model);
+		}
+		return count;
+	}
+	
+	@Override
+	public List<Object[]> DocumentAmendment(String FileRepUploadId) throws Exception {
+		return dao.DocumentAmendment(FileRepUploadId);
+	}
+	
+	@Override
+	public long FileAmmendUploadNew(FileDocAmendmentDto dto) throws Exception 
+	{
+		long count=0;
+		try 
+		{
+			String FullDir=FilePath+"P"+dto.getProjectId()+"\\Amendments\\";
+			File theDir = new File(FullDir);
+			if (!theDir.exists()){
+			    theDir.mkdirs();
+			}
+				
+			Zipper zip=new Zipper();
+			
+			List<Object[]> amendmentslist = dao.DocumentAmendment(dto.getFileRepUploadId());
+			
+			FileDocAmendment model=new FileDocAmendment();
+			model.setFileName("Amendment");
+			model.setFileRepUploadId(Long.parseLong(dto.getFileRepUploadId()));
+			model.setDescription(dto.getDescription());
+			model.setFilePass(dao.FilePass(dto.getCreatedBy()));
+			model.setFilePath(FullDir);
+			model.setAmendmentName(dto.getFileName());
+			if(amendmentslist!=null && amendmentslist.size()>0) {
+				model.setAmendVersion(Integer.parseInt(amendmentslist.get(0)[4].toString())+1);
+			}else
+			{
+				model.setAmendVersion(1);
+			}
+			model.setCreatedBy(dto.getCreatedBy());
+			model.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+			count =dao.DocumetAmmendAdd(model);
+			
+	
+	
+			if(count>0) {
+				zip.pack(dto.getFileName(),dto.getInStream(),FullDir,model.getFileName()+dto.getFileRepUploadId()+"-"+model.getAmendVersion(),model.getFilePass());
+			}
+
+	 }catch (Exception e) {
+		 e.printStackTrace();
+		 count=0;
+	 }
+		return count;
+	}
+	
+	
+	@Override
+	public Object[] DocumentAmendmentData(String docammendmentid) throws Exception {
+		return dao.DocumentAmendmentData(docammendmentid);
+	}
+	@Override
+	public Object[] RepMasterData(String filerepmasterid) throws Exception {
+		return dao.RepMasterData(filerepmasterid);
+	}
+	
+	@Override
+	public List<Object[]> RepMasterAllDocLists(String filerepmasterid) throws Exception {
+		return dao.RepMasterAllDocLists(filerepmasterid);
+	}
+	
+	@Override
+	public List<Object[]> MainSystem1(String filerepmasterid) throws Exception
+ 	{
+		return dao.MainSystem1(filerepmasterid);
+ 	}
+	
+	@Override
+	public int fileRepMasterEditSubmit(String filerepmasterid,String levelname) throws Exception
+ 	{
+		return dao.fileRepMasterEditSubmit(filerepmasterid, levelname);
+ 	}
+	
+	@Override
+	public List<FileDocMaster> fileDocMasterList() throws Exception
+ 	{
+		return dao.fileDocMasterList();
+ 	}
+	
+	@Override
+	public long FileDocMasterAdd(FileDocMaster docmaster) throws Exception
+	{
+		docmaster.setIsActive(1);
+		docmaster.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		return dao.FileDocMasterAdd(docmaster);
+	}
+	@Override
+	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname) throws Exception
+ 	{
+		return dao.FileLevelSublevelNameCheck(levelname);
+ 	}
+	
+	@Override
+	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid ) throws Exception
+ 	{
+		return dao.fileNameCheck(levelname, shortname, docid,parentlevelid);
+ 	}
+	
+	@Override
+	public void excelCellValuesSet(Sheet sheet,Object[] hlo, CellStyle  wrapname,int rowcount) throws Exception
+ 	{
+		SimpleDateFormat sdf=fc.getRegularDateFormat();
+		SimpleDateFormat sdf1=fc.getSqlDateFormat();
+		Row row1 = sheet.createRow(rowcount);
+			
+		Cell cell1 = row1.createCell(0);
+			
+		Cell cell2 = row1.createCell(1);
+		
+			switch (hlo[16].toString())
+			{
+				case  "0":
+				{
+					cell1.setCellValue("M-"+hlo[0].toString());
+					break;
+				}
+				case  "1":
+				{
+					cell1.setCellValue("M-A-"+hlo[0].toString());
+					cell2.setCellValue("M-"+hlo[1].toString());
+					break;
+				}
+				case  "2":
+				{
+					cell1.setCellValue("M-B-"+hlo[0].toString());
+					cell2.setCellValue("M-A-"+hlo[1].toString());
+					break;
+				}
+				case  "3":
+				{
+					cell1.setCellValue("M-C-"+hlo[0].toString());
+					cell2.setCellValue("M-B-"+hlo[1].toString());
+					break;
+				}
+				case  "4":
+				{
+					cell1.setCellValue("M-D-"+hlo[0].toString());
+					cell2.setCellValue("M-C-"+hlo[1].toString());
+					break;
+				}
+				case  "5":
+				{
+					cell1.setCellValue("M-E-"+hlo[0].toString());
+					cell2.setCellValue("M-D-"+hlo[1].toString());
+					break;
+				}
+			}
+		
+		cell1.setCellStyle(wrapname);
+		cell2.setCellStyle(wrapname);
+		
+		
+		
+		Cell cell3 = row1.createCell(2);
+		cell3.setCellValue(hlo[4].toString());
+		cell3.setCellStyle(wrapname);
+
+		Cell cell4 = row1.createCell(3);
+		cell4.setCellValue(hlo[12].toString());
+		cell4.setCellStyle(wrapname);
+
+		Cell cell5 = row1.createCell(4);
+		cell5.setCellValue(hlo[8].toString());
+		cell5.setCellStyle(wrapname);
+
+		Cell cell6 = row1.createCell(5);
+		cell6.setCellValue(hlo[5].toString());
+		cell6.setCellStyle(wrapname);
+
+		Cell cell7 = row1.createCell(6);
+		cell7.setCellValue(hlo[6].toString());
+		cell7.setCellStyle(wrapname);
+		
+		Cell cell8 = row1.createCell(7);
+		cell8.setCellValue(sdf.format(sdf1.parse( hlo[2].toString())));
+		cell8.setCellStyle(wrapname);
+		
+		Cell cell9 = row1.createCell(8);
+		cell9.setCellValue(sdf.format(sdf1.parse( hlo[3].toString())));
+		cell9.setCellStyle(wrapname);
+		
+		Cell cell10 = row1.createCell(9);
+		cell10.setCellValue( hlo[14].toString());
+		cell10.setCellStyle(wrapname);
+ 	}
+
+	@Override
+	public int MilestoneRemarkUpdate(MilestoneActivityDto dto) throws Exception {
+
+		return dao.MilestoneRemarkUpdate(dto);
+	}
+
+	@Override
+	public int MileActivityAssignCheck(MilestoneActivityDto dto) throws Exception {
+		int Total=0;
+			List<Object[]> BaselineA=dao.WeightageLevel(dto.getActivityId(),"1");
+			if(BaselineA.size()>0){
+				int TotalA=0;
+			for(Object[] objA:BaselineA) {
+				
+				List<Object[]> BaselineB=dao.WeightageLevel(objA[0].toString(),"2");
+				if(BaselineB.size()>0){
+					int TotalB=0;
+				for(Object[] objB:BaselineB) {
+					
+					List<Object[]> BaselineC=dao.WeightageLevel(objB[0].toString(),"3");
+					if(BaselineC.size()>0){
+						int TotalC=0;
+						for(Object[] objC:BaselineC) {
+								List<Object[]> BaselineD=dao.WeightageLevel(objC[0].toString(),"4");
+								if(BaselineD.size()>0){
+									int TotalD=0;
+								for(Object[] objD:BaselineD) {
+									List<Object[]> BaselineE=dao.WeightageLevel(objD[0].toString(),"5");
+									if(BaselineE.size()>0){
+										int TotalE=0;
+									if(BaselineE.size()>0) {
+										for(Object[] objE:BaselineE) {
+										TotalE+=Integer.parseInt(objE[3].toString());
+										}
+									}
+								    if(TotalE<100) {
+								    	return Total=2;
+								    }
+								}
+									TotalD+=Integer.parseInt(objD[3].toString());
+								}
+							    if(TotalD<100) {
+							    	return Total=2;
+							    }
+						}
+							
+							
+								TotalC+=Integer.parseInt(objC[3].toString());
+						}
+					    if(TotalC<100) {
+					    	return Total=2;
+					    }	
+				}
+						TotalB+=Integer.parseInt(objB[3].toString());
+				}
+			    if(TotalB<100) {
+			      return	Total=2;
+			    }
+					
+				}	
+				TotalA+=Integer.parseInt(objA[3].toString());
+				}
+			    if(TotalA<100) {
+			      return	Total=2;
+			    }
+			}else {
+				Total=3;
+			}
+
+		return Total;
+	}
+}

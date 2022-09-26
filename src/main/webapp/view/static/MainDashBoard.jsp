@@ -1,0 +1,3769 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
+<%@ page import="java.time.LocalDate"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.text.ParseException,java.math.BigInteger"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@page import="com.vts.pfms.master.dto.ProjectSanctionDetailsMaster"%>
+<%@page import="com.vts.pfms.IndianRupeeFormat" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>PMS HOME</title>
+
+<jsp:include page="../static/header.jsp"></jsp:include>
+
+<spring:url value="/resources/css/newfont.css" var="NewFontCss" />
+<link href="${NewFontCss}" rel="stylesheet" /> 
+
+<spring:url value="/resources/css/master.css" var="masterCss" />
+<link href="${masterCss}" rel="stylesheet" />
+
+<spring:url value="/resources/css/masterdashboard.css" var="masterdashboardCss" />
+<link href="${masterdashboardCss}" rel="stylesheet" />
+
+
+<style type="text/css">
+
+ 	#wrapper{
+		background-image: url("view/images/pfmsbg.png") !important;
+		background-repeat: no-repeat;
+		background-size: auto 100%;
+		width: 100%;
+	}
+	
+	.myschedule{
+		background-image: url("view/images/myschedule.png") !important;
+		background-repeat: no-repeat;
+		background-position: left;
+		background-position-x: 5px;
+    	padding-left: 16px;
+	}
+	
+	.gantt{
+	background-image: url("view/images/gantt.png");
+	background-repeat: no-repeat;
+	background-position: left;
+	background-position-x: 5px;
+    padding-left: 16px;
+}
+
+.approval{
+	margin-left: -0.75rem !important;
+    margin-top: -.15rem !important;
+}
+
+.badge-today{
+	font-size: 65% !important;
+}
+
+.btn1{
+	border-top-left-radius: 5px !important;
+	border-bottom-left-radius: 5px !important;
+}
+
+.btn2{
+	
+    border-left: 1px solid black;
+}
+
+.btn3{
+	border-left: 1px solid black;
+}
+.btn4{
+	margin: 0px 10px;
+	color:green !important;
+}
+.meeting thead tr td{
+	font-family: 'Muli',sans-serif;
+	font-size: 16px !important
+}
+
+.small-list{
+	margin: 0px !important;
+	font-size: 11px;
+	text-align: left;
+	padding: 0px !important;
+}
+
+.small-list li{
+	display: inline-block;
+}
+
+.overall-card{
+	box-shadow: 5px 10px 11px -3px rgb(0 0 0 / 20%);
+    border: none;
+}
+
+.yellow{
+	color: #ffc107;
+}
+
+.red{
+	color:#dc3545!important;
+}
+
+.green{
+	color:#28a745!important;
+}
+
+.blue{
+	color:#007bff!important;
+}
+
+.small-list span{
+	font-size: 12px;
+	 text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.overall-card{
+	background: #005C97;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to left, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to left, #363795, #005C97); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	color:white;
+}
+
+.small-list{
+	font-size: 14px;
+}
+
+.overall-card h3{
+	line-height: inherit;
+}
+
+@media  screen and (max-width: 1565px){
+	
+	.health-title{
+		    margin-bottom: 12px !important;
+    		font-size: 20px !important;
+	}
+}
+
+/* Project Details Graph Css */
+
+.highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+#fixed-table tbody .custom-td{
+	padding-left : 1.5rem !important;
+}
+
+.overall-card .card-body{
+	padding: 0.8rem 1rem !important;
+}
+
+.tableFixHead          { overflow: auto;  }
+.tableFixHead thead td { position: sticky; top: 0; z-index: 1; }
+.tableFixHead thead td {background-color: #1363DF}
+
+.progress {
+	height : 1.3rem !important;
+	cursor:pointer;
+}
+
+
+.flex-container-new {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+}  
+
+.health-circle {
+    display: inline-block;
+    height: 22px;
+    width: 22px;
+    line-height: 22px;
+    border-radius: 50px;
+    color: white;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.modal-hr{
+	margin: 0px 10px -10px 10px !important;
+}
+
+.modal-list{
+	font-size: 14px;
+	text-align: left;
+	padding: 0px !important;
+	margin-bottom: 5px;
+}
+
+.modal-list li{
+	display: inline-block;
+}
+
+.modal-list li .modal-span{
+	font-size: 2rem;
+	padding: 0px 7px;
+}
+
+.modal-list li .modal-text{
+	font-size: 1rem;
+	vertical-align: text-bottom;
+	font-family: Lato;
+}
+
+
+@media screen and (max-width:1380px){
+	.tableprojectname{
+		font-size: 12px !important;
+	}
+
+}
+
+.changes-btn:hover{
+	background-color: #A6D1E6 !important;
+}
+
+.changes-btn{
+	background-color: rgba(255, 255, 255, 0.08888) !important;
+	border: 1px solid rgba(0,0,0,.125);
+	padding: 0px 7px !important;
+}
+
+.changes-font{
+	font-size: 0.7rem !important;
+}
+
+.changes-badge{
+	top:-8px !important;
+}
+
+</style>
+
+</head>
+
+<body>
+<%
+
+/* List<Object[]> loginTypeList=(List<Object[]>)request.getAttribute("loginTypeList");
+String LoginAs=(String)session.getAttribute("LoginAs");
+Object[] DashboardDemandCount=(Object[])request.getAttribute("DashboardDemandCount"); */
+
+String Username =(String)session.getAttribute("Username");  
+List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
+List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist");
+List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
+List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
+Integer selfremindercount=(Integer)request.getAttribute("selfremindercount");  
+Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").toString());
+List<Object[]> notiecList =(List<Object[]>)request.getAttribute("NotiecList");
+Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
+
+Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount");
+
+List<ProjectSanctionDetailsMaster>  budgetlist=(List<ProjectSanctionDetailsMaster>)request.getAttribute("budgetlist");
+String empNo=(String)session.getAttribute("empNo"); 
+String ibasUri=(String)request.getAttribute("ibasUri");
+List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> ProjectMeetingCount=(List<Object[]>)request.getAttribute("ProjectMeetingCount");
+Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount");
+List<Object[]> ganttchartlist=(List<Object[]>)request.getAttribute("ganttchartlist");
+String interval =(String)request.getAttribute("interval");
+String error = (String) request.getAttribute("errorMsg");
+List<Object[]> MyTaskList=(List<Object[]>)request.getAttribute("mytasklist");
+List<Object[]> approvallist=(List<Object[]>)request.getAttribute("approvallist");
+List<Object[]> mytaskdetails=(List<Object[]>)request.getAttribute("mytaskdetails");
+List<Object[]> dashboardactionpdc=(List<Object[]>)request.getAttribute("dashboardactionpdc");
+ArrayList<String> loginlist=new ArrayList<String>(Arrays.asList("L","A","Y","P","Z","E","Q")); 
+SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");  
+String TodayDate = formatter.format(new Date()).toString().replace("/", "-") ;
+List<Object[]> QuickLinkList=(List<Object[]>)request.getAttribute("QuickLinkList");
+List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
+Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealthtotal"); 
+//Object[] ChangesTotalData =(Object[])request.getAttribute("changestotalcount");
+ 
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf=fc.getRegularDateFormat();
+SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+IndianRupeeFormat nfc=new IndianRupeeFormat();
+
+
+String logintype="U";
+
+String View="";
+if(logintype!=null ){
+	logintype=(String)request.getAttribute("logintype"); 
+	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") ){
+		logintype="A";
+	}
+}
+
+String LoginTypes[] = {"A","P","E","Z","Y","Q"}  ;
+int ProjectCount = 0;
+
+%>
+<%
+ String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	
+ if(ses1!=null){
+	%>	
+	
+<center><div class="alert alert-danger" role="alert"><%=ses1 %></div></center>
+	
+	<%}
+ 
+ if(ses!=null){ %>
+	
+<center><div class="alert alert-success" role="alert" ><%=ses %></div></center>
+                    
+   <%} %>
+
+
+
+<div class="container-fluid" >
+
+
+<!-------------------- Main Row------------------------------------ ------------>
+		<div class="row">
+	
+<!-------------------- Main row col-md-9------------------------------------ -->			
+			<div class="col-md-9" >
+			
+			
+<!-------------------- Nested row ------------------------------------------ -->				
+				<div class="row">
+			      
+			     
+<!-------------------- Nested row Schedule Start ------------------------------------------ -->	
+
+			      <div class="col-4 col-md-3" >
+
+
+			      	 <%if(ProjectList!=null){ %>
+						
+						 <div class="row" style="display: none" id="projectname" >
+							
+							<div class="col-md-12" align="center">
+								
+								<!-- <div id="carouselExampleSlidesOnly" class="carousel slide carousel-interval"  data-ride="carousel"  > -->	
+								<!-- Uncomment the above line to add carousel -->
+								<div id="carouselExampleSlidesOnly" class=""  data-ride=""  >
+						
+									<div class="carousel-inner">	
+									
+										<%	for (Object[] obj : ProjectList) { %>
+									
+										 <div class="carousel-item" id="projectname<%=obj[0]%>">
+										 
+										 	<div class="row" style="margin:0px !important">
+						
+												<div class="col-md-12" style="text-transform: uppercase;font-size: 22px; ">
+												
+													<%=obj[4] %>
+												
+													<br><br>
+													<%-- <%if(obj[0].toString().equalsIgnoreCase("0")){ %>
+														<br>
+													 <%}%> --%>
+													
+													
+													<!-- Name of the employee  -->
+													<%-- <%if(!obj[0].toString().equalsIgnoreCase("0")){ %>
+														<span style="font-size: 15px;text-transform: capitalize;"><%=obj[5] %></span>
+													<%} %> --%>
+													
+												</div>
+		
+											</div>
+										 
+										 </div>
+									
+										<%} %>
+									
+									</div>
+						
+								</div>
+							
+							</div>
+	
+					</div> 
+	
+				 <%} %> 
+			      
+			      
+				      <div class="card" style="background: transparent;display: none" id="todayschedules">
+							
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								
+								<span style="color:white">Today's Schedule <span class="badge badge-today badge-success" style="position: absolute;top: 0px;"></span> </span> 
+								
+
+					 	  		<form class=" form-inline" method="post" action="MySchedules.htm" id="myform" >
+											<input  class="btn btn-primary myschedule" type="submit" name="sub" value=" &nbsp;&nbsp;" style="background-color: #23689b;font-size: 0.875rem;border: 2px solid lightslategrey" >
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								</form>
+						
+							</nav>	
+							
+							<div class="card-body" style="padding: 0.5rem 0.5rem 0rem 0.5rem;" >
+								<div  style="color:black ">
+								<!-- <span style="color:#23689b">Today's Schedule </span>	 --> 		    
+
+								    <div style="height:6.2rem ;overflow-y: hidden ; ">
+								    
+								     <div id="carouselExampleControls5" class="carousel vert slide" data-ride="carousel" data-interval="5000">
+								       
+										<div class="carousel-inner">
+																        
+											<% 
+											int count=0;
+											if(todayschedulelist.size()>0){
+										  for(Object[] obj : todayschedulelist){
+											  	if(!obj[6].toString().equalsIgnoreCase("E")){
+											  		if(obj[3].toString().equalsIgnoreCase(TodayDate)){
+											  		
+											  		%>
+																        
+												<div class="carousel-item action" id="schedule" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;overflow: hidden">
+																            
+														<ul style="padding: 0px;margin-bottom: 5px !important">	
+															<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 10px 0px !important;">
+																	            	
+																 <a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " style="color:black" >
+									               
+													                <i class="fa fa-arrow-right faa-pulse animated faa-fast" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i> 
+															    	<%=obj[7] %> -
+															    	<i class="fa fa-clock-o" aria-hidden="true"></i> <%=obj[4] %> &nbsp;&nbsp;
+					
+															    </a>
+																				    
+														 	</li>
+														</ul>
+								
+												</div>
+								
+																			
+												<%count++; }} }}%>
+								
+												<%if(count==0) {%>
+												
+													<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
+													
+												<%} %>
+											
+											</div>
+																        
+										</div>									 
+								    
+								    </div>
+			
+								</div>
+					 	  </div>
+					 	  
+					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+					 	  	
+					 	  	<a class="navbar-brand" href="MySchedules.htm" style="color:black;">Upcoming Schedule</a><span class="badge <%if(todayschedulelist.size()-count> 0) {%>  badge-danger <%} else { %> badge-success <%} %>badge-counter"><%if(todayschedulelist.size()-count >0){%> <%=todayschedulelist.size()-count %><%} %></span>
+					
+					 	  </div>
+					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+					 	  	
+					 	  	<%-- <a class="navbar-brand" style="color:black">Reminders</a>
+					 	  		<a class="btn btn-primary" href="ActionSelfReminderAdd.htm" style="margin-left: 20px;" >
+									<img src="view/images/reminder2.png"/>
+									<span class="badge badge-danger badge-counter"><%=selfremindercount %></span>
+								</a> --%>
+					 	  
+					 	  	<a class="navbar-brand"  href="ActionSelfReminderAdd.htm" style="color:black;">My Reminders</a><span class="badge <%if(selfremindercount> 0) {%>  badge-danger <%} %> badge-counter"><%if(selfremindercount >0){%><%=selfremindercount %><%} %></span>
+					 	  </div>
+					
+					</div> 
+					
+					
+					<div  style="display: none" id="projectdetails1">
+					 
+					 	 <%if(ProjectList!=null){ %>
+						
+						 <div class="row" style="" >
+							
+							<div class="col-md-12" align="center">
+								
+								<!-- <div id=carouselprojectdetailsSlidesOnly class="carousel slide carousel-interval"  data-ride="carousel"  >	 -->
+								<!-- Uncomment the above line to add carousel -->
+								
+								<div id=carouselprojectdetailsSlidesOnly class=""  data-ride=""  >	
+									<div class="carousel-inner">	
+									
+										<%	for (Object[] obj : ProjectList) { %>
+									
+										 <div class="carousel-item" id="projectdetailsname<%=obj[0]%>">
+										 
+										 	<div class="row" style="margin:0px !important">
+						
+												<div class="col-md-12" style="text-align: right;">
+													
+													<%if(!obj[8].toString().equals("0")){ %>
+													
+													<h6>Project Code : </h6>
+													<h6>Project Name : </h6>
+													<br>
+													<h6>Sanction Date : </h6>
+													<h6>PDC : </h6>
+													<h6>PMRC Due On : </h6>
+													<h6>EB Due On : </h6>
+
+													<%}else{ %>
+													
+													<br><br><br><br><br><br><br>
+													
+													<%} %>
+													
+													<br><br>
+													
+												</div>
+		
+											</div>
+										 
+										 </div>
+									
+										<%} %>
+									
+									</div>
+						
+								</div>
+							
+							</div>
+	
+					</div> 
+	
+				 <%} %>
+					 </div>
+					 
+					 	
+				<!-- Below 2 divs are for overall tab -->
+					 	
+				<div style="display: none" class="overallheader">
+					
+			          	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
+			          	<button type="button" class="btn " style="background-color: #145374;color: white;font-size: 13px" onclick="ChangesForm('A')" ><i class="fa fa-arrows-alt" aria-hidden="true"></i> Changes</button>
+			          	  <button type="button"  onclick="ChangesForm('T')" class="btn changes-btn" ><span class="navbar-brand changes-font"  style="color:black;">Today</span>
+			          	  	<span class="badge changes-badge badge-danger badge-counter" id="todaychangescount">
+			          	  		<%-- <%= ((Number)ChangesTotalData[0]).intValue() + ((Number)ChangesTotalData[3]).intValue() + ((Number)ChangesTotalData[6]).intValue() + ((Number)ChangesTotalData[9]).intValue()  %> --%>
+			          	  		<%=ProjectHealthTotalData[26] %>
+			          	  	</span></button>
+						  <button type="button" onclick="ChangesForm('W')" class="btn changes-btn"><span class="navbar-brand changes-font"  style="color:black;">Week</span>
+						  	<span class="badge  changes-badge badge-danger badge-counter" id="weeklychangescount">
+						  		<%-- <%= ((Number)ChangesTotalData[1]).intValue() + ((Number)ChangesTotalData[4]).intValue() + ((Number)ChangesTotalData[7]).intValue() + ((Number)ChangesTotalData[10]).intValue()  %> --%>
+						  		<%=ProjectHealthTotalData[27] %>
+						  	</span></button>
+						  <button type="button" onclick="ChangesForm('M')" class="btn changes-btn"><span class="navbar-brand changes-font"  style="color:black;">Month</span>
+						  <span class="badge changes-badge badge-danger badge-counter" id="monthlychangescount">
+						  		<%-- <%= ((Number)ChangesTotalData[2]).intValue() + ((Number)ChangesTotalData[5]).intValue() + ((Number)ChangesTotalData[8]).intValue() + ((Number)ChangesTotalData[11]).intValue()  %> --%>
+						  		<%=ProjectHealthTotalData[28] %>
+						  </span></button>
+						</div>
+						
+						<%-- <h4 style="color: #145374;text-align: left" id="projecttitle" class="health-title"> Project Count : <%=ProjectCount %></h4> --%>
+						<!-- <hr style="margin: 3px 0px 9px 0px !important;color: transparent">  -->
+				</div>
+					 
+					 
+				<div class="card overall-card" id="overallcard1" style="display:none">
+					<div class="card-content">
+				    	<div class="card-body">
+				    	<div class="row">
+				    		<div class="col-md-6">
+				    			<h6 class="text-left">PMRC </h6>
+				    			<h6 class="text-left" id="meetingsvaluepmrc" style="margin-bottom: 2px !important"><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}if(ProjectHealthTotalData[2] !=null){%>/<%=ProjectHealthTotalData[2] %><%} %></h6>
+				    		</div>
+				    		<div class="col-md-6">
+				    			<h6 class="text-left">EB </h6>
+ 				    			<h6 class="text-left" id="meetingsvalueeb" style="margin-bottom: 2px !important"><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}if(ProjectHealthTotalData[5] !=null){%>/<%=ProjectHealthTotalData[5] %><%} %></h6>
+ 				    		</div>
+				    	</div>
+				        	
+				         </div>
+				     </div>
+				 </div>		  
+					
+					
+					
+			   </div>
+			      
+<!-------------------- Nested row Schedule End ------------------------------------------ -->
+			     
+
+			      <div class="col-4 col-md-3" >
+			      
+			      		<%if(ProjectList!=null){ %>
+						
+						 <div class="row">
+							
+							<div class="col-md-12" style="display: none" id="projectdropdown" >
+		
+								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  s>
+																
+									<option value="" disabled="disabled" selected="selected" hidden="true">--Choose Project--</option>
+											<%	for (Object[] obj2 : ProjectList) { %>
+											
+													<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]%></option>
+													
+											<%} %>
+								</select>
+								<br><br>
+								
+						    </div>
+						
+						</div> 
+						
+				 	<%} %> 
+
+		<!------------------------------------------ Approvals Start-----------------------------------------------------  -->				
+							
+						<div class="card" style="background: transparent;display: none" id="approvalblock">
+						
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								<a class="navbar-brand" style="color:white"; >To be Approved By Me</a>
+							</nav>					
+											
+							<div id="carouselExampleControls8" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
+								
+								<div class="carousel-inner">
+
+									<% int approvalcount=0;
+										for(Object[] obj : approvallist){ %>
+
+										<%if((obj[0]).toString().equalsIgnoreCase("DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
+									
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="ProjectApprovalPd.htm" style="color:black;" id="" >Initiation (DO)
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i> 
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span> 
+										</a>
+										
+										
+									</div>
+									
+										<%approvalcount++; }} %>
+										
+										<%if((obj[0]).toString().equalsIgnoreCase("RTMD-DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
+									
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="ProjectApprovalRtmddo.htm" style="color:black" id="" >Initiation (P&C-DO)
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+									</div>
+									
+										<%approvalcount++;} }%>
+										
+										<%if((obj[0]).toString().equalsIgnoreCase("AD")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
+										
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="ProjectApprovalAd.htm" style="color:black" id="" >Initiation (AD)
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+									</div>
+									
+										<%approvalcount++;} }%>
+										
+										<%if((obj[0]).toString().equalsIgnoreCase("TCM")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
+									
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="ProjectApprovalTcc.htm" style="color:black" id="" >Initiation (TCM)
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+									</div> 
+										
+										<%approvalcount++;}} %>
+										
+										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
+									
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="MeetingApprovalAgenda.htm" style="color:black" id="" >Meeting
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+									</div> 
+										
+										<%approvalcount++;}} %>
+										
+										<%if((obj[0]).toString().equalsIgnoreCase("Committee")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
+									
+									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" href="CommitteeMainApprovalList.htm" style="color:black" id="" >Committee
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
+									</div> 
+										
+										<%approvalcount++;}} %>
+										
+									
+									<%} %>
+						
+									
+									<%if(approvalcount==0){ %>
+									
+										<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand"  style="color:black" id="" >No Approvals</a>
+										
+									</div> 
+									
+									<%} %>
+									
+									
+									<!-- <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
+										<a class="navbar-brand" style="color:black;" id="" >Committee</a>
+										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+										<span class="badge badge-danger badge-counter approval" id="">1</span>
+									</div>  -->
+										    
+								</div>
+								
+							</div> 
+							
+						</div>
+							
+						
+			<!------------------------------------------ Approvals End-----------------------------------------------------  -->				
+						
+					<div  style="display: none" id="projectdetails2">
+					 
+					 	<%if(ProjectList!=null){ %>
+						
+						 <div class="row" style="" >
+							
+							<div class="col-md-12" align="center">
+								
+							<!--<div id=carouselprojectdetailsSlides2Only class="carousel slide carousel-interval"  data-ride="carousel"  >	 -->
+								<div id=carouselprojectdetailsSlides2Only class=""  data-ride=""  >	
+								
+						
+									<div class="carousel-inner">	
+									
+										<%	for (Object[] obj : ProjectList) { %>
+										
+										
+									
+										 <div class="carousel-item" id="projectinfo<%=obj[0]%>">
+										 
+										 	<div class="row" style="margin:0px !important">
+						
+												<div class="col-md-12" style="text-align: left;">
+													<h6><%if(!obj[0].toString().equals("0")){%><%=obj[4]%><%} %></h6>
+													<%if(!obj[0].toString().equals("0")){ if(obj[1].toString().chars().count()>17){ %>
+														<div style="font-size: 12px;margin-bottom: 0px !important;min-height: 48px"><%=obj[1]%></div>
+													<%}else{ %>
+														<h6><%=obj[1]%><br><br></h6>
+													<%} %>
+													<%} %>
+													<h6><%if(!obj[12].toString().equals("0")){%><%= sdf.format(sdf1.parse( obj[12].toString()))%><%}else{ %><%} %></h6>
+													<h6><%if(!obj[9].toString().equals("0")){%><%= sdf.format(sdf1.parse( obj[9].toString()))%><%}else{ %><%} %></h6>
+													<h6><%if(obj[15]!=null){%><%= sdf.format(sdf1.parse( obj[15].toString()))%><%}else{ %>-<%} %></h6>
+													<h6><%if(obj[16]!=null){%><%= sdf.format(sdf1.parse( obj[16].toString()))%><%}else{ %>-<%} %></h6>
+												</div>
+		
+											</div>
+										 
+										 </div>
+									
+										<%} %>
+									
+									</div>
+						
+								</div>
+							
+							</div>
+	
+					</div> 
+	
+				 <%} %>
+					 
+					 
+					 </div>
+					 
+					 <div style="display: none" class="overallheader">
+						<h2 style="color: transparent">.</h2>
+					</div>
+						
+					 <div class="card overall-card" id="overallcard2" style="display: none">
+				          <div class="card-content">
+					    	<div class="card-body">
+					            <div class="row">
+					            	<div class="col-md-8"  style="padding-right:0px !important">
+					            		<h6 class="text-left">Milestone</h6>
+					            		<ul class="small-list">
+					            			<li><span class="green">&#x220E;</span>&nbsp;C&nbsp;</li>
+						                 	<li><span class="yellow">&#x220E;</span>&nbsp;D&nbsp;</li>
+						                 	<li><span class="red">&#x220E;</span>&nbsp;P&nbsp;</li>
+					                 	</ul>
+					                 	
+					            	</div>
+					            	<div class="col-md-4"  style="padding-right:0px !important">
+					            		<h5 class="text-left" id="milestonevalue" style="margin-bottom: 5px !important"><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%}if(ProjectHealthTotalData[9] !=null){%>/<%=ProjectHealthTotalData[9] %><%} %></h5>
+					            		<h6 id="milestonepercentage" style="margin-bottom: 0px !important"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%}%>%</h6>
+					            	</div>
+					            </div>
+					         </div>
+				     	  </div>
+				      </div>	
+				
+			      </div>
+			      
+
+<!---------------------------------- Project Details Start -----------------------------------------------------  -->
+					
+					
+					 
+					 
+					 
+				<!---------------------------------- Project Details Start -----------------------------------------------------  -->
+					 
+
+
+			      		
+		      
+<!-------------------- Nested row Budget Start ------------------------------------------ -->				      
+			      
+			  <div class="col-4 col-md-6">
+			  
+			  <%if(error!=null){ %>
+			  
+			  	<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=error %></h4>
+			  
+			     <%} %> 
+			      
+			      <% if(!logintype.equalsIgnoreCase("U")){ %>
+			 			 
+			 <%if(budgetlist!=null && budgetlist.size()>0){ %>	
+				
+				<div class="card-body" style="padding: 0.4rem !important;display:none" align="center" id="financialdata"  > 
+					
+					<!-- <div id="carouselExampleControls" class="carousel slide carousel-interval"  data-ride="carousel"  > -->
+					<!-- Uncomment the above line to add carousel -->
+					<div id="carouselExampleControls" class=""  data-ride=""  >		
+					
+							<div class="carousel-inner">					
+							
+							<div style="background-color: white;">
+									
+									<%long i=0;
+									for(ProjectSanctionDetailsMaster obj : budgetlist){
+										%>
+										<%-- <%if(i==0){ %>
+											
+								<div class="carousel-item active" style="border-radius: 15px;padding-bottom: 10px;"  >	 --%>	
+										
+										<%-- <%}else{ %> --%>
+											 
+											 <div class="carousel-item" style="border-radius: 15px;padding-bottom: 10px;" id="chart<%=obj.getProjectid()%>"> 
+										
+									<%-- 	<%} %> --%>
+										
+										
+										<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+										
+											<a class="navbar-brand" >Financial Performance</a>
+										  <form class="form-inline" target="_blank" method="post" id="ibasform" action="<%=ibasUri%>/loginFromPfms">
+										    <input type="hidden" name="loginType" value="<%=logintype%>">
+											<input type="hidden" name="empNo" value="<%=empNo%>">
+											<input type="hidden" name="ProjectId" value="<%=obj.getProjectid()%>">
+											<input type="hidden" name="ProjectCode" value="<%=obj.getProjectCode()%>">
+											<input type="hidden" name="Expenditure" value="<%=obj.getExpAmt()%>">
+											<input type="hidden" name="Commitment" value="<%=obj.getOsComAmt()%>">
+											<input type="hidden" name="Dipl" value="<%=obj.getDipl()%>">
+											<input type="hidden" name="BalAmt" value="<%=obj.getBalAmt()%>">
+											<input type="hidden" name="asOndate" value="<%=obj.getAsOnDate()%>">
+										    
+										    <button type="submit" class="btn btn-sm" style="float: right;background-color: #23689b;color: white" ><img src="view/images/projecticon.png"/> &nbsp;Project Details</button>
+										  
+										  </form>
+										</nav>
+										
+										
+										<div class="" id="container<%=obj.getSno()%>" style="height: 12rem;"></div>
+											<div>
+												<table>
+													<tr>
+														<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold; ">SANC	</span></td>
+											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold; ">EXP</span></td>
+											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">OS</span></td>
+											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">DIPL</span></td>
+											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">BAL</span></td>	       			
+											       	</tr>
+													<tr>
+														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #f7be16; "  ><%=obj.getSancAmt() %> L </button></td>
+														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #ac0d0d;color:white; "><%=obj.getExpAmt() %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #fb7813;color:white; "><%=obj.getOsComAmt() %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #0e49b5;color:white; "><%=obj.getDipl() %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #06623b;color:white; "><%=obj.getBalAmt() %> L</button></td>					
+											       	</tr>
+												</table>
+											</div>	
+										</div> 
+									<% i++;
+									} %>
+									
+							
+							</div>
+							
+						</div>
+						
+						
+						</div>
+						
+						
+					</div>
+				
+				
+				<%for(ProjectSanctionDetailsMaster obj : budgetlist){ %>
+				
+				
+				<%-- <input type="hidden" id="projectIdD" value="<%=obj.getProjectid()%>"> --%>
+				
+					<script>
+					
+					
+					
+					anychart.onDocumentReady(function () {
+
+					    // create data
+					    var data = [
+					      {x: "EXP ", value: <%=obj.getExpAmt()%>, fill : "#ac0d0d"},
+					      {x: "OS ", value: <%=obj.getOsComAmt()%> , fill : "#fb7813"},
+					      {x: "DIPL ", value: <%=obj.getDipl()%> , fill : "#0e49b5"},
+					      {x: "BAL  ", value: <%=obj.getBalAmt()%>, fill : "#06623b"},
+					      
+					    ];
+					    
+					    // create a chart and set the data
+					    var chart = anychart.pie3d(data);
+					    
+					    var legend= chart.legend();
+					    //legend.enabled(false);
+					    //legend.position("right");
+					    
+					    legend.positionMode("inside");
+						// set position and alignement
+						legend.position("center");
+						legend.align("right");
+						legend.itemsLayout("vertical");
+					    
+					    
+					 	
+					    var tooltip = chart.tooltip();
+
+					    tooltip.enabled(true);
+					    tooltip.fontColor('white');
+					    tooltip.fontWeight(600);
+					    tooltip.background('black');
+					    tooltip.titleFormat('{%x}');
+					    tooltip.format('Amount : {%value} Lakhs \n Percentage : {%yPercentOfTotal} %');
+					    
+					   /*  var credits = chart.credits();
+					    credits.alt("VTS"); */
+					 
+					  /*   chart.labels().position("outside"); */
+					 				    
+					    chart.startAngle(90);
+					    
+					    // set the chart title
+					    <%-- chart.title('<%=obj.getProjectCode()%> (SANC : <%=obj.getSancAmt()%>L)'); --%>
+
+					    // set the container id
+					    chart.container('container<%=obj.getSno()%>');
+
+					    // initiate drawing the chart
+					    chart.draw();
+					    
+					});				
+						
+					
+					
+					
+					</script>
+				<%} %>
+				
+			<%} %>	 
+			
+			<%} %>
+		       
+		       
+		       <!------------------------------------------------------- My Tasks start-------------------------------------------------------------  -->
+		      
+		   <!--    <a  href="ProjectHealthUpdate.htm"  class="btn " id="force-btn" style="display: none">Force Update</a> -->
+		      
+		       <div class="card" style="background: transparent;display:none" id="mytasks">
+						
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								<a class="navbar-brand" style="color:white"; >My Tasks</a>
+							</nav>					
+											
+								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
+									<div class="carousel-inner">
+									   
+										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
+													<tr>
+														<td style="padding : 5px 15px 5px 15px;"></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">Missed PDC</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">In Progress</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Today PDC</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
+													</tr>
+				
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Action</td>
+														
+														<%for(Object[] obj : MyTaskList){
+														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
+														
+														<td><button type="button" onclick="actionformtask('E','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" onclick="actionformtask('T','N')"  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+														
+														<%}} %>
+														
+													</tr>
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meeting</td>
+														
+														<%for(Object[] obj : MyTaskList){
+														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
+														
+														<td><button type="button" onclick="actionformtask('E','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" onclick="actionformtask('T','S')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+														
+														<%}} %>
+														
+													<tr>
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestone</td>
+														
+														<%for(Object[] obj : MyTaskList){
+														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
+														
+														<td><button type="button" onclick="actionformtask('E','A')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" onclick="actionformtask('T','A')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+														
+														<%}} %>
+														
+													</tr>
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Fracas</td>
+														
+														<%for(Object[] obj : MyTaskList){
+														  	if(obj[0].toString().equalsIgnoreCase("Fracas")){ %>
+														
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+													
+														<%}} %>
+													
+													</tr>
+													
+													
+				
+													
+												 </table>
+								
+										  </div>
+				
+									</div> 
+							
+							</div> 
+
+						<div class="row" >
+							<div class="col-md-6">
+								<div style="display: none" class="overallheader">
+									<h4 style="color: #145374;margin-bottom: 7px" id="projecttitle" class="health-title"> PROJECT HEALTH</h4>
+									<hr style="margin: 3px 0px 9px 0px !important">
+								</div>
+								<div class="card overall-card" id="overallcard3" style="display: none">
+						          <div class="card-content">
+						            <div class="card-body" >
+							            <div class="row">
+							            	<div class="col-md-8" style="padding-right:0px !important" >
+							            		<h6 class="text-left">Action</h6>
+							            		<ul class="small-list">
+									                 	<li><span class="green">&#x220E;</span> C&nbsp;</li>
+									                 	<li><span class="yellow">&#x220E;</span> D&nbsp;</li>
+									                 	<li><span class="blue">&#x220E;</span> F&nbsp;</li>
+									                 	<li><span class="red">&#x220E;</span> P&nbsp;</li>
+								                 </ul>
+							            	</div>
+							            	<div class="col-md-4" style="padding-right:2px !important;padding-left:2px !important">
+								            	<h5 class="text-left" id="actionvalue"><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%}if(ProjectHealthTotalData[15] !=null){%>/<%=ProjectHealthTotalData[15] %><%} %></h5>
+							            	</div>
+							            </div>
+					         		</div>
+						          </div>
+				        		</div>
+							</div>
+							<div class="col-md-6">
+								<div style="display: none" class="overallheader">
+									<h2 style="color: transparent">. </h2>
+								</div>
+								<div class="card overall-card" id="overallcard4" style="display: none">
+						          <div class="card-content">
+						            <div class="card-body">
+							            <div class="row">
+							            	<div class="col-md-8">
+							            		<h6 class="text-left">Risks</h6>
+							            		 <ul class="small-list">
+								            		 <li><span class="green">&#x220E;</span>&nbsp;C&nbsp; </li>
+								            		 <li><span class="yellow">&#x220E;</span>&nbsp;D&nbsp; </li>
+										             <li><span class="red">&#x220E;</span>&nbsp;P&nbsp; </li>
+									                 	
+								                 </ul>
+							            	</div>
+							            	<div class="col-md-4" style="padding-right:0px !important">
+								                <h5 class="text-left" id="risksvalue"><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%}if(ProjectHealthTotalData[18] !=null){%>/<%=ProjectHealthTotalData[18] %><%} %></h5>
+							            	</div>
+							            </div>
+					         		</div>
+						          </div>
+				        		</div>
+							</div>
+						</div>
+
+		       		       <!------------------------------------------------------- My Tasks end-------------------------------------------------------------  -->
+
+			</div>
+			
+
+<!-------------------- Nested row Budget End ------------------------------------------ -->	
+			      
+			      
+			      
+<!-------------------- Nested row Gantt Chart start  removal------------------------------------------ -->		
+	      
+	      
+			      <div class="col-md-12">
+			      
+			      	<%if(ProjectList!=null){ %>
+	
+						<div class="card" style="background: transparent;display: none" id="ganttchart">
+				
+							<!-- <div id="carouselExampleControls2" class="carousel slide carousel-interval" data-ride="carousel"  > -->
+							<!-- Uncomment the above line to add carousel -->	
+							<div id="carouselExampleControls2" class="" data-ride=""  >
+							
+							
+								<div class="carousel-inner">
+								
+			                     <!--  <div class="carousel-item " id="Mil0">
+				                      	<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+											<a class="navbar-brand" style="color:white"; >Gantt Chart</a>
+											<a href="ProjectBriefingPaper.htm" class="btn btn-primary navbar-brand text-white" style="background-color: #23689b;color:white" ><img src="view/images/camera.png"/> Project Snapshot </a>
+										</nav>
+											
+										<div style="font-size: 20px">
+											<br>
+											No Gantt Chart For General
+											<br><br>
+										</div>
+										 	    		
+			                      </div>  -->
+			                      
+								 <%if(ProjectList!=null) {for(Object[] obj1 : ProjectList){ 
+								 if(!"0".equalsIgnoreCase(obj1[0].toString())){
+								 %>
+			
+								    <div class="carousel-item " style="overflow-y: auto;" id="Mil<%=obj1[0]%>">
+								    
+									    <nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+											<!-- <a class="navbar-brand" style="color:white"; >Milestone Schedules</a> -->
+												<form class="form-inline" method="post" action="GanttChart.htm" id="myform" >
+													<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=obj1[0] %>" /> 
+								 					<input  class="btn btn-primary gantt navbar-brand text-white" id="gantt" type="submit" name="sub" value=" &nbsp;&nbsp;&nbsp; Gantt Chart" style="background-color: #23689b;color:white" > 
+								 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+								 				</form>
+								 				
+
+												<%if(!obj1[0].toString().equalsIgnoreCase("0")){ %>
+														<span style="font-size: 15px;text-transform: capitalize;color:white"><%=obj1[14] %> (<%=obj1[11] %>)</span>
+												<%} %>
+												
+								 				
+								 				<form method="post" action="ProjectBriefingPaper.htm">
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+													<button  class="btn btn-primary navbar-brand text-white" style="background-color: #23689b;color:white" ><img src="view/images/camera.png"/> Project Snapshot </button>
+													<input type="hidden" name="projectid" value="<%=obj1[0] %>" />
+												</form>
+								 			<!-- <a href="ProjectBriefingPaper.htm" class="btn btn-primary navbar-brand text-white" style="background-color: #23689b;color:white" ><img src="view/images/camera.png"/> Project Snapshot </a> -->
+								 				
+										</nav> 
+						
+
+					   				<div class="flex-container" id="containers<%=obj1[0] %>" style="height:13.5rem" ></div>
+
+									   
+									</div>
+			
+								 <%} } } %>
+			
+									  </div>
+								</div> 
+			
+							</div>
+							
+							
+					<%if(ProjectList!=null){for(Object[] obj1 : ProjectList){%> 
+					
+						<script>
+								      
+
+						anychart.onDocumentReady(function () {
+
+
+								    	  var data = [
+								    		  
+								    		  
+								    		  
+								    		  <%
+								    		  
+								    		  
+								    		  for(Object[] obj : ganttchartlist){
+								    			  if(obj1[0].toString().equalsIgnoreCase(obj[1].toString())){
+								    			  %>	
+								    		  
+								    		  {
+								    		    id: "<%=obj[3]%>",
+								    		    name: "<%=obj[2]%>",
+								    		    <%if(!obj[9].toString().equalsIgnoreCase("0")){%>
+								    		   	baselineStart: "<%=obj[6]%>",
+								    		    baselineEnd: "<%=obj[7]%>", 
+								    		    <%}%>
+								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
+								    		    actualStart: "<%=obj[4]%>",
+								    		    actualEnd: "<%=obj[5]%>",
+								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+								    		    rowHeight: "35",
+								    		   
+								    		  },
+								    		  
+								    		  <%}}%>
+								    	
+								    		  ];
+								    		    
+								    		 
+								    	// create a data tree
+								    		var treeData = anychart.data.tree(data, "as-tree");
+								
+								    		// create a chart
+								    		var chart = anychart.ganttProject();
+								
+								    		// set the data
+								    		chart.data(treeData);   
+								  
+								        	// set the container id
+								        	
+								        	chart.container("containers<%=obj1[0]%>");  
+								        	
+
+								        	// initiate drawing the chart
+								        	chart.draw();    
+									
+								        	 // fit elements to the width of the timeline
+								        	chart.fitAll(); 
+								        
+								        	 
+								        	 /* ToolTip */
+								        	chart.getTimeline().tooltip().useHtml(true);    
+									        chart.getTimeline().tooltip().format(
+									          "<span style='font-weight:600;font-size:10pt;text-align:left'> Actual : " +
+									          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
+									          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
+									          "<span style='font-weight:600;font-size:10pt;text-align:left'> Revised : " +
+									          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
+									          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
+									          "Progress: {%progress}<br>" 
+									          
+									        ); 
+									        
+									        
+								        	 
+								        	 
+								        	 
+								        /* Hover */
+								        
+								        chart.rowHoverFill("#8fd6e1 0.3");
+								        chart.rowSelectedFill("#8fd6e1 0.3");
+								        chart.rowStroke("0.5 #64b5f6");
+								        chart.columnStroke("0.5 #64b5f6");
+								        
+								        chart.defaultRowHeight(35);
+								     	chart.headerHeight(90);
+								     	
+								     	/* Hiding the middle column */
+								     	chart.splitterPosition("17.4%");
+								     	
+								     	var dataGrid = chart.dataGrid();
+								     	dataGrid.rowEvenFill("gray 0.3");
+								     	dataGrid.rowOddFill("gray 0.1");
+								     	dataGrid.rowHoverFill("#ffd54f 0.3");
+								     	dataGrid.rowSelectedFill("#ffd54f 0.3");
+								     	dataGrid.columnStroke("2 #64b5f6");
+								     	dataGrid.headerFill("#64b5f6 0.2");
+								     	
+								     
+								     	/* Title */
+								     	var column_1 = chart.dataGrid().column(0);
+								     	column_1.title().enabled(false);
+								     	
+								     	var column_2 = chart.dataGrid().column(1);
+								     	column_2.title().text("Activity");
+								     	column_2.title().fontColor("#145374");
+								     	column_2.title().fontWeight(600);
+								     	
+								     	chart.dataGrid().column(0).width(20);
+
+								     	var column_1 = chart.dataGrid().column(1);
+								     	column_1.labels().fontWeight(600);
+								     	column_1.labels().useHtml(true);
+								     	column_1.labels().fontColor("#055C9D");
+
+									    chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+	
+									    chart.dataGrid().tooltip().useHtml(true);    	
+									    
+								     	/* Header */
+								     	var header = chart.getTimeline().header();
+								     	header.level(0).fill("#64b5f6 0.2");
+								     	header.level(0).stroke("#64b5f6");
+								     	header.level(0).fontColor("#145374");
+								     	header.level(0).fontWeight(600);
+								     	
+								     	/* Marker */
+								     	var marker_1 = chart.getTimeline().lineMarker(0);
+								     	marker_1.value("current");
+								     	marker_1.stroke("2 #dd2c00");
+								     	
+								     	/* Progress */
+								     	var timeline = chart.getTimeline();
+								     	
+								     	timeline.tasks().labels().useHtml(true);
+								     	 timeline.tasks().labels().format(function() {
+								     	  if (this.progress == 1) {
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	  } else {
+								     	    return "<span style='color:black;font-weight:bold'>" +
+								     	           Math.round(this.progress * 100) + "</span>%";
+								     	  }
+								     	}); 
+
+								       
+								      } );    
+	
+								    </script>	
+							
+							
+						<%} } %>
+
+			<%} %> 
+
+			</div>
+			
+			
+				<!------------------------------------ Upcoming Schedules Start ------------------------------------------------------------------ -->
+			
+	
+		       <div class="col-md-4">
+		       
+		       <br>	
+		       <div class="card" style="background: transparent;display: none" id="upcomingschedules">
+						
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								<a class="navbar-brand" style="color:white"; >Upcoming Schedule Details</a>
+							</nav>					
+											
+								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
+								
+									<table class="table meeting "  ">	
+										<thead>												
+											<tr>
+												<td ><span style="font-size :15px;font-weight: bold; "></span></td>
+												<td ><span style="font-size :15px;font-weight: bold; ">Date</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Time</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Committee</span></td>
+												<!-- <td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td> -->
+											</tr>
+										</thead>
+										
+										<%
+										int newsize=0;
+										if(todayschedulelist.size()!=0){
+											int count1=1;
+											for(Object[] obj : todayschedulelist) {
+												if(!obj[3].toString().equalsIgnoreCase(TodayDate)){	%>
+							
+										<tbody>
+										
+											<tr>
+												<%-- <td><%=count1 %></td> --%>
+												<td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " ><i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td><%=sdf.format(obj[3]) %></td>
+												<td><%=obj[4] %></td>
+												<td><%=obj[7] %></td>
+												<%-- <td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " class="badge badge-info" style="font-family: 'Muli'">Details</a></td> --%>
+											</tr>
+											
+											<%count1++;newsize++;}}} %>
+											
+											<%if(newsize==0){%>
+												<tr>
+												<td colspan="5">
+													<br>
+														<h6 align="center">No Upcoming Schedules</h6>
+													<br>
+												</td>	
+												<tr>
+											<%} %>
+											
+										</tbody>
+											
+											
+									</table>				
+				
+								</div> 
+							
+							</div> 
+							
+					</div>		
+					
+					
+	<!------------------------------------ Upcoming Schedules End ------------------------------------------------------------------ -->
+			
+					
+	<!------------------------------------ My Task Details Start------------------------------------------------------------------ -->				
+					
+					<div class="col-md-8">
+		       
+		       		<br>	
+		       	
+		       		 <div class="card" style="background: transparent;display:none" id="mytaskdetails">
+						
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								<a class="navbar-brand" style="color:white"; >My Task Details</a>
+							</nav>					
+											
+								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
+								
+									<table class="table meeting " >	
+										<thead>												
+											<tr>
+												<td ><span style="font-size :15px;font-weight: bold; "></span></td>
+												<td ><span style="font-size :15px;font-weight: bold; ">Action Item</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;">PDC </span></td>
+												<!-- <td ><span style="font-size :15px;font-weight: bold;  ">Progress</span></td> -->
+												<td ><span style="font-size :15px;font-weight: bold;  ">Assigned By</span></td>
+												
+												
+											</tr>
+										</thead>
+										
+										<%
+										int newsizefortask=0;
+										if(mytaskdetails.size()!=0){
+											int count1=1;
+											for(Object[] obj : mytaskdetails) {
+												if(obj[11].toString().equalsIgnoreCase("A")){
+												
+												%>
+							
+										<tbody>
+										
+											<tr>
+												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td style="text-align:justify; "><%=obj[2] %></td>
+												<td style="width:100px""><%=sdf.format(obj[4]) %></td>
+												<%-- <td><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></td> --%>
+												<td><%=obj[12] %></td>
+
+												<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
+												
+														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
+		                                                <input type="hidden" name="ActionLinkId" value="<%=obj[15]%>"/>
+														<input type="hidden" name="ActionNo" value="<%=obj[1]%>"/>
+		 												<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+		 												<input type="hidden" name="fracasassignid" value="<%=obj[0]%>"/>
+		 												
+		 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		 												
+		 												
+												
+												</form> 
+												
+												
+												
+												<!-- <td><a href="javascript:void(0)" onclick="location.href='AssigneeList.htm' " class="badge badge-info" style="font-family: 'Muli'">Details</a></td> -->
+											</tr>
+											
+											<%count1++;newsizefortask++;}}} %>
+											
+											<%if(newsizefortask==0){%>
+												<tr>
+												<td colspan="5">
+													<br>
+														<h6 align="center">No Task Details</h6>
+													<br>
+												</td>	
+												<tr>
+											<%} %>
+											
+										</tbody>
+											
+											
+									</table>	
+									
+												
+				
+								</div> 
+							
+							</div> 
+							
+							<!-- New Button Group -->
+							
+							<%if(QuickLinkList.size()>0){ %>
+							<div class="multi-button" id="quicklinks" style="display: none">
+									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
+									  
+									  <%for(Object[] obj : QuickLinkList){ %>
+									  	<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>
+									  <%} %>
+									  <!-- <a class="button" href="ProjectBriefingPaper.htm" id="cut"><span>Briefing Paper &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>
+									  <a class="button" href="CommitteeAutoSchedule.htm" id="cut"><span>Project Meeting &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>
+									  <a class="button" id="cut"><span>Minutes &nbsp;<i class="fa fa-book" aria-hidden="true"></i></span></a> -->
+							</div>
+							<%} %>
+		
+					</div>
+		 
+			
+		<!------------------------------------ My Task Details End ------------------------------------------------------------------ -->
+			
+<!-------------------- Nested row Gantt Chart End ------------------------------------------ -->		   
+			 
+			      
+		</div>
+<!-------------------- Nested row End ------------------------------------------ -->		
+		    
+		    
+		</div>  
+<!------- Main row col-md-9 end -------------------->
+		  	
+	
+	
+<!------- Main row col-md-3 Start -------------------->
+		  <div class="col-md-3" >
+		  	
+		  	
+		 <!------- Toggle Button  --------------------> 	
+		  	
+		  	
+		  <div style="float: right;padding:5px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
+		  	 <div class="btn-group "> 
+		  	 	<form action="ProjectHealthUpdate.htm" method="get">
+		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh"><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		        </form>
+		        <button class="btn btn1">Action</button>
+		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%>   ">Project</button>
+		        <button class="btn btn3"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
+		      </div>
+		  </div>	
+		  
+
+			<!------- Main row Notice Start -------------------->
+		  		<div class="card notice col-12 "  style="margin-top: 4px;"  >
+					
+					<div class="card-body"  style="background-color : #0000 ;padding-bottom: 5px !important;display: none" id="noticeboard" >
+						<span class="side-stick"></span>
+						<div class="side-stick-right "  style="max-width: 10%;" > 
+							
+							<table>
+								<%if(noticeElib>0){%> 	
+									<tr>
+										<td style="padding: 5px;"> <a  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ><i class="fa fa-plus-square fa-lg" style="color: #ec524b" aria-hidden="true"></i> </a></td>
+									</tr>
+									<tr>
+										<td style="padding: 5px;"> <a  href="IndividualNoticeList.htm" ><i class="fa fa-file-text fa-lg "  style="color: #7868e6 "  aria-hidden="true">  </i></a> </td>
+									</tr>
+								<%} %>
+								<%if(notice!=null&& notice.size()>1){%> 
+										<%-- <button type="button" class="btn" data-toggle="modal" style="margin-left: 50px;" data-target="#exampleModal1" data-whatever="@mdo"><%if(notice!=null){ %> <%=notice.size()-1%> more <%} %></button> --%>
+									<tr>
+									
+										<!-- Notice List Button -->
+									
+										<%-- <td style="padding: 5px;"> 
+											<a class=""  data-toggle="modal"  data-target="#exampleModal1" data-whatever="@mdo" >
+												<i class="fa fa-envelope fa-lg"  style="color: #f0a500 " aria-hidden="true"></i> <!-- fa-bullhorn  -->
+												<span class="badge badge-danger badge-counter" style="margin-left: -13px;" ><%if(notice!=null && notice.size()<99 ){ %> <%=notice.size()-1%><%}else if(notice!=null && notice.size()>99 ){ %>99+ <%} %></span>
+											</a>
+										</td> --%>
+									</tr>
+									
+										     	<%} %>
+							</table>
+						</div>
+						
+						<div style="max-width: 90%;" >
+ 							<blink>	<h5 style="color: #e84545;">Notice</h5></blink>
+							
+							<div id="carouselExampleControls6" class="carousel vert slide" data-ride="carousel" data-interval="5000">
+								       
+								    <div class="carousel-inner">
+								        
+								        	<% if(notice.size()>0){
+										  for(Object[] obj : notice){
+											  	%>
+								        
+								            <div class="carousel-item " id="notice" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;">
+								            
+											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1] %> <%} %> </p>
+												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[8]%> <%} %> </p> 
+
+								            </div>
+
+											
+											<%} }else{%>
+
+										 	<p style="font-weight: lighter; font-size: 12px;" align="right" > No Notice. </p> 
+										 	
+										 <%} %> 
+			
+								      </div>
+								        
+							</div> 
+						
+						</div>
+										
+					</div>
+				</div>
+				
+<!------- Main row Notice End -------------------->
+							
+							
+<!------- Main row Activity Start -------------------->
+
+				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;" id="mainactivitystatus" >
+							
+						<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display: none" id="activitystatusheader">
+								    Activity Status 
+						</div>
+						
+						<div class="card-body" style="padding: 0px;">
+							
+							<%if(!logintype.equalsIgnoreCase("U") ) {%>
+							
+							<!-- <div id="carouselExampleControls3" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
+							<!-- Uncomment the above line to add carousel -->	
+							<div id="carouselExampleControls3" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
+									
+									<div class="carousel-inner" style="display: none" id="activitystatus">
+									
+											<%if(actionscount!=null){									
+												if(loginlist.contains(logintype))
+												    { %>	
+										    
+										    	<%if(ProjectList!=null){ %>
+									   				 <%for(Object[] obj : ProjectList){ %>
+										    
+										    
+										<div class="carousel-item "  id="act<%=obj[0]%>">
+									    
+										    	<table class="table" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
+													<tr>
+																		<td style="padding : 5px 15px 5px 15px;"></td>
+													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">P</span></td>
+													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">F</span></td>
+													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">C</span></td>
+													       				<td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">D</span></td>	       			
+													       			</tr>
+				
+													<%if(actionscount!=null){ %>	
+															
+													<%for(Object[] obj2 : actionscount){ %>
+				
+														<%if(obj[0].toString().equalsIgnoreCase(obj2[4].toString())) { %>
+																						
+													<tr>
+																		<td  style="padding : 5px 0px 5px 0px;text-align: left" >Action Items</td>
+																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[0] %> </button></td>
+															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[1] %> </button></td>
+															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[2] %> </button></td>
+															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[3] %> </button></td>					
+													       			</tr>
+													       			 <tr>
+																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestones</td>
+																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0</button></td>					
+													       			</tr>
+													       			<tr>
+																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Activity</td>
+																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
+															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
+													       			</tr>
+													       			<tr>
+																		<td  style="padding : 5px 0px 5px 0px;text-align: left">Risks</td>
+																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
+															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
+													       			</tr>
+													       			<tr>
+																		<td  style="padding : 5px 0px 5px 0px;text-align: left;">Issues</td>
+																	   	<td><button type="button" onclick="submitForm('P','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; ">0</button></td>
+															            <td><button type="button" onclick="submitForm('F','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('Y','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; ">0 </button></td>
+															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
+													       			</tr> 
+												       	
+													<%}%>
+				
+													<%} %>
+													
+													<%} %>
+				
+													
+												 </table>
+										    </div>
+										    
+										    <%}} %>
+										    
+										    
+										    
+										    <%} %>
+										    
+										    <%} else{ %>
+										    
+										    
+										    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none;margin: 19%">
+										    		No Activities
+										    	</div>
+										    
+										    <%} %>
+										    
+										  </div>
+										  
+				
+								</div> 
+								
+							<%} %>	
+								
+								
+								<!-- end of carousel --> 
+								
+
+							<!------------------------------------------ Review Block Start ---------------------------------------------------------------  -->
+
+		   					<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader">
+								<span style="font-size:12px ">Review - Pending with My  Approver</span>
+							</div>	
+		   
+								<div style="margin-top:5px;display:none" id="review">
+									
+									 <!-- <div align="center"> Action Items</div> -->		
+													
+													<!-- Actions Start -->
+													
+											<div style="  <%if(logintype.equalsIgnoreCase("U")){ %>   max-height:9rem <%}else{ %> max-height:9rem  <%} %>;overflow-y: auto ; ">
+																				
+															<ul style="padding: 0px">	 
+																					  
+																<% int formcount=1;
+																	if(dashboardactionpdc.size()>0){
+																  for(Object[] obj : dashboardactionpdc){
+																	  if(obj[15].toString().equalsIgnoreCase("A")){
+																	  	%>
+																  
+																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
+																    	
+																    	<form name="Action<%=formcount%>" id="Action<%=formcount%>" action="<%=obj[7] %>" method="POST" >
+																    	
+																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
+		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
+																			<input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
+																			<input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
+																			<input type="hidden" name="Assignee" value="<%=obj[11] %>" />
+																			<input type="hidden" name="fracasassignid" value="<%=obj[10]%>"/>
+																			
+																			
+		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																    		
+																    	
+																    	</form>
+																    	
+																    	
+
+																    	<a href="javascript:actionform(<%=formcount%>)" class="btn btn-sm" style=" border-radius: 3px; 
+																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
+																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
+																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #00917c; <%} %>
+																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
+																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
+																    	<!-- <i class="fa fa-arrow-right" aria-hidden="true" style="color: #1687a7;font-size: 1.00 rem !important"></i>  -->
+																    		<%=obj[11] %> <br> <%=obj[0] %> &nbsp;&nbsp;
+																		    		
+																    	</a> 
+																    	
+																    	
+														   			 </li>
+														   			 
+													
+																 <%formcount++;}} }else{%>
+																 	
+																 	<br>
+																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
+																 	</li>
+																 
+																 <%} %> 
+		 
+													 	 </ul> 
+													 	 
+													</div>
+										
+				 				</div>   
+				 				
+				 				
+				 				<!--  Second Review Except User---------------- -->
+				 		<%-- 	 <%if(!logintype.equalsIgnoreCase("U")){ %>	 --%>
+				 				
+				 			<br>	
+				 			<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader2">
+							<span style="font-size:12px ">Review - Pending with Me</span>
+							</div>	
+		   					
+		   
+								<div style="margin-top:5px;display:none" id="review2">
+				
+													
+											<div style="max-height:9rem ;overflow-y: auto ; ">
+																				
+															<ul style="padding: 0px">	 
+																					  
+																<% int formcount1=55;
+																	if(dashboardactionpdc.size()>0){
+																  for(Object[] obj : dashboardactionpdc){
+																	  if(obj[15].toString().equalsIgnoreCase("G")){
+																	  	%>
+																  
+																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
+																    	
+																    	<form name="Action<%=formcount1%>" id="Action<%=formcount1%>" action="<%=obj[7] %>" method="POST" >
+																    	
+																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
+		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
+																			<input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
+																			<input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
+																			<input type="hidden" name="Assignee" value="<%=obj[11] %>" />
+																			<input type="hidden" name="fracasassignid" value="<%=obj[10]%>"/>
+																			<input type="hidden" name="forceclose" value="N"/>
+																			
+		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																    		
+																    	
+																    	</form>
+																    	
+																    	
+
+																    	<a href="javascript:actionform(<%=formcount1%>)" class="btn btn-sm" style=" border-radius: 3px; 
+																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
+																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
+																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #00917c; <%} %>
+																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
+																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
+																    		<%=obj[1] %> <br> <%=obj[0] %> &nbsp;&nbsp;
+																		    		
+																    	</a> 
+																    	
+																    	
+														   			 </li>
+														   			 
+														   			 
+														   			 
+														   			 
+													
+																 <%formcount1++;} }}else{%>
+																 	
+																 	<br>
+																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
+																 	</li>
+																 
+																 <% } %> 
+		 
+													 	 </ul> 
+													 	 
+													</div>
+													
+										<!-- Actions Flow End -->
+				 				</div> <br>  
+				 			
+				 		<%-- <%} %>	 --%><!-- Closing of condition for second review block -->
+				 				
+				 				
+				<!------------------------------------------ Review Block End ---------------------------------------------------------------  -->
+				 	
+				 
+				 				
+			<!------------------------------- Closing if loop of action items ------------------------------------------------->
+		
+					 </div>	
+				</div>
+			<!------------------ Activity Card End  ------------------------>
+
+					<div class="card overall-card" id="overallcard5" style="display: none;margin-top: -3px">
+				          <div class="card-content">
+				            <div class="card-body" >
+								<div class="row">
+							     	<div class="col-md-7" style="padding-right: 0px !important" >
+							       		
+							       		<form action="ProjectHoaUpdate.htm" method="get">
+									       <h6 class="text-left" style="margin-bottom: 3px !important;">Finance 
+									       	<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 17px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+									    </form>
+							       		<ul class="small-list">
+								           	<li><span class="green">&#x220E;</span> E</li>
+								           	<li><span class="yellow">&#x220E;</span> O/S</li>
+								           	<li><span class="blue">&#x220E;</span> D</li>
+								           	<li><span class="red">&#x220E;</span> B</li>
+							           	</ul>
+							       	</div>
+							       	<div class="col-md-5" style="padding-right: 0px !important">
+							       		<h6 class="text-left" >&#8377; <span id="financevalue"><%if(ProjectHealthTotalData[23]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[23].toString() ))))%><%} %></span> </h6>
+							      	</div>
+							     </div>
+					         </div>
+				          </div>
+				        </div>
+
+
+
+
+
+						<!-- Meeting box for admin ----------------------------------------------------- -->
+				 				
+				 			<div class="card" style="background: transparent;margin-top:1%;display: none"  id="meetingblock">
+						
+							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								<a class="navbar-brand" style="color:white"; >Meetings</a>
+							</nav>					
+											
+								<!-- <div id="carouselExampleControls1" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
+								<!-- Uncomment the above line to add carousel -->
+								<div id="carouselExampleControls1" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
+									<div class="carousel-inner">
+									
+										<%if(ProjectList!=null){ %>
+									    <%for(Object[] obj : ProjectList){
+									    	%>
+										    
+									    <div class="carousel-item" id="Meeting<%=obj[0]%>" <%if(obj[0].toString().equals("0")){ %> style="display: none" <%} %>>
+				
+				
+										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
+													<tr>
+														<td style="padding : 5px 15px 5px 15px;"></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">To Be Held</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Held</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Rem</span></td>
+													</tr>
+				
+													<%if(ProjectMeetingCount!=null ){ %>	
+															
+													<%for(Object[] obj2 : ProjectMeetingCount){ %>
+				
+														<%if(obj[0].toString().equalsIgnoreCase(obj2[9].toString())) { %>
+																						
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">EB</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2);" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2] %></button></td>
+													</tr>
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">PMRC</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1);" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5] %></button></td>
+													<tr>
+													<tr>
+														<td  style="padding : 5px 0px 5px 0px;text-align: left">Others</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7] %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','all');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8] %></button></td>
+													</tr>
+													
+													<%}%>
+				
+													<%} %>
+													
+													<%} %>
+				
+													
+												 </table>
+										    </div>
+										    
+										    <%} %>
+										    
+										    <%} else{ %>
+										    
+										    
+										    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none; ">
+										    		No Meetings
+										    	</div>
+										    
+										    <%} %>
+										    
+										  </div>
+				
+									</div> 
+							
+							</div>
+				 				
+				 				
+			 				
+				 	<!------------------------------- Closing Meeting for Admin ------------------------------------------------->	
+		
+
+
+
+			</div>
+			
+<!------- Main row col-md-3 End -------------------->
+	
+	
+		</div>
+<!------- Main row End -------------------->
+
+
+
+</div>
+<!-- container-fluid end -->
+
+
+
+<!-- ------------------------------------------------------------- NOTICE MODELS  ------------------------------------------------------------------------------------ -->		
+					
+					
+					<!-- Modal for Notice List -->
+					
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header ">
+					        <h5 class="modal-title" id="exampleModalLabel">Add Notice</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      <form action="NoticeAddSubmit.htm" method="POST" name="myfrm" id="noticeForm">
+					          	<div class="row">
+					                            <div class="col-md-2"></div>
+														<div class="col-md-4">
+															<div class="form-group">
+																<label class="control-label">From </label>
+																 <input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" id="fdate" name="fdate"  required="required">
+															</div>
+														</div>
+					
+														<div class="col-md-4">
+															<div class="form-group">
+																<label class="control-label">To </label> 
+																<input  class="form-control"  data-date-format="dd/mm/yyyy" readonly="readonly" id="tdate" name="tdate"  required="required">
+															</div>
+														</div>
+								</div>					 
+					                                     <div class="col-md-12">
+															<div class="form-group">
+																<label class="control-label">Notice</label> 
+															    <textarea class="form-control" name="noticeFiled" id="noticeText" style="height: 9rem;" maxlength="255"  placeholder="Enter Notice here with max 255 characters" required="required"></textarea>
+															</div>
+														</div>       
+														<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							</form>
+					      </div>
+					      <div class="modal-footer">
+					       
+					            <input type="submit" class="btn btn-primary btn-sm submit " formaction="NoticeAddSubmit.htm"
+															id="sub" value="SUBMIT" name="sub" onclick="addNoticeForm()">
+					        
+					   
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					
+<!-- ------------------------------------------------------------- NOTICE MODELS  ------------------------------------------------------------------------------------ -->		
+
+
+<!-- ****************************************************************** OVERALL MODULE ********************************************************************************* -->
+
+			<div class="card" style="background: transparent;display:none;margin: -15px 10px" id="overalltable">
+		
+								<div id="overalldiv" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
+								
+									<table class="table meeting tableFixHead  " id="fixed-table" style="table-layout: fixed"> 
+										<thead style=" background: #1363DF; color: white;">												
+											<tr>
+												<td style="width:4%">
+													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+												</td>
+												<td style="width:15%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
+												<!-- <td colspan="2" style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">Meetings </span></td> -->
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+											</tr>
+										</thead>
+										
+										<tbody>
+										
+											<%for(Object[] obj : ProjectHealthData){
+												
+												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) {
+												
+													if(obj[2].equals(obj2[0])){
+													 
+												%>
+										
+											<tr>
+												<td><a href="javascript:ProjectDetails('<%=obj[2]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td   style="font-weight: 800; font-size:1rem;text-align:left;
+												
+														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>color: green<%} 
+														else if(obj[45].toString().equalsIgnoreCase("IN")){%>color: #007bff <%} 
+														else if(obj[45].toString().equalsIgnoreCase("IAF")){%>color: #1F4690 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("HLS")){%>color: #8E3200 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("OH")){%>color: #EE5007 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>color: #231955 <%} 
+														else {%>color:black <%} }else{ %>color:black <%}%>">
+												
+												<div data-toggle="tooltip" 
+													title="<%if(obj[45]!=null) { if(obj[45].toString().equalsIgnoreCase("IA")){%>Indian Army<%}
+													else if(obj[45].toString().equalsIgnoreCase("IN")){%>Indian Navy <%} 
+													else if(obj[45].toString().equalsIgnoreCase("IAF")){%>Indian Air Force<%} 
+													else if(obj[45].toString().equalsIgnoreCase("HLS")){%>Home Land Security <%} 
+													else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>DRDO <%} 
+													else if(obj[45].toString().equalsIgnoreCase("OH")){%>Others <%} 
+													else {%> -  <%} }else{ %>-<%}%>">
+												
+														  &#11044;&nbsp; <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+														  	<%if(obj[46]!=null){%><%=obj[46] %><%}else {%>-<%} %> /
+														  	<%if(obj[3]!=null){%><%=obj[3] %><%}else {%>-<%} %> /
+														  	<%if(obj[44]!=null){%><%=obj[44] %><%}else {%>-<%} %>
+														  	</span> 	
+												
+													</div>
+												
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[8].toString())>0){ %>
+														
+														<div class="row">
+															<div class="col-md-11">
+															    <div class="progress"  >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> / <%=obj[8] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[6]%> / <%=obj[8] %>" ></div>
+																</div>
+														  	</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[7].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[7].toString())>25) && (Integer.parseInt(obj[7].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[7].toString())>50) && (Integer.parseInt(obj[7].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[7].toString())>75) && (Integer.parseInt(obj[7].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[7] %></span>
+															</div>
+														</div>
+						
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[13].toString())>0){ %>
+														<div class="row">
+															<div class="col-md-11">
+																<div class="progress" >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[9]%> / <%=obj[13] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;" data-toggle="tooltip" title="EB Pending :  <%=obj[11]%> / <%=obj[13] %>" ></div>
+																</div>
+															</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[12].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[12].toString())>25) && (Integer.parseInt(obj[12].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[12].toString())>50) && (Integer.parseInt(obj[12].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[12].toString())>75) && (Integer.parseInt(obj[12].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[12] %></span>
+															</div>
+														</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[20].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirect('mil','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[19]%>%" data-toggle="tooltip" title="Completed : <%=obj[18]%> / <%=obj[20] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[17]%>%" data-toggle="tooltip" title="Delayed : <%=obj[16]%> / <%=obj[20] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[15]%>%" data-toggle="tooltip" title="Pending : <%=obj[14]%> / <%=obj[20] %>" ></div>															  
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[15].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[15].toString())>25) && (Integer.parseInt(obj[15].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[15].toString())>50) && (Integer.parseInt(obj[15].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[15].toString())>75) && (Integer.parseInt(obj[15].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[15] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[29].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[28]%>%" data-toggle="tooltip" title="Completed : <%=obj[27]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[26]%>%" data-toggle="tooltip" title="Delayed : <%=obj[25]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[24]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[23]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[22]%>%" data-toggle="tooltip" title="Pending : <%=obj[21]%> / <%=obj[29]%>" ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+															<span class="health-circle" style="<%if(Integer.parseInt(obj[22].toString())<=25){%> background-color:green <%}%>
+																									   <%if( (Integer.parseInt(obj[22].toString())>25) && (Integer.parseInt(obj[22].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																									   <%if( (Integer.parseInt(obj[22].toString())>50) && (Integer.parseInt(obj[22].toString())<=75)){%> background-color: #EE5007 <%}%>
+																									   <%if( (Integer.parseInt(obj[22].toString())>75) && (Integer.parseInt(obj[22].toString())<=100)){%> background-color:red <%}%>
+															"><%=obj[22] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[34].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[31]%>%" data-toggle="tooltip" title="Completed : <%=obj[30]%> / <%=obj[34] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Pending : <%=obj[32]%> / <%=obj[34] %>" ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[33].toString())<=25){%> background-color:green <%}%>
+																										   <%if( (Integer.parseInt(obj[33].toString())>25) && (Integer.parseInt(obj[33].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																										   <%if( (Integer.parseInt(obj[33].toString())>50) && (Integer.parseInt(obj[33].toString())<=75)){%> background-color: #EE5007 <%}%>
+																										   <%if( (Integer.parseInt(obj[33].toString())>75) && (Integer.parseInt(obj[33].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[33] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%
+													BigInteger number = new BigInteger(obj[43].toString());
+													if(number.compareTo(new BigInteger("0")) >0){ %>
+													<div class="row">
+														<div class="col-md-10">
+															<div class="progress" onclick="overallfinance()">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> " ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																	<span class="health-circle" style="<%if(Integer.parseInt(obj[36].toString())<=25){%> background-color:green <%}%>
+																											   <%if( (Integer.parseInt(obj[36].toString())>25) && (Integer.parseInt(obj[36].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																											   <%if( (Integer.parseInt(obj[36].toString())>50) && (Integer.parseInt(obj[36].toString())<=75)){%> background-color: #EE5007 <%}%>
+																											   <%if( (Integer.parseInt(obj[36].toString())>75) && (Integer.parseInt(obj[36].toString())<=100)){%> background-color:red <%}%>
+																	"><%=obj[36] %></span>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+														</div>
+													</div>
+													
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+											</tr> 
+											
+											<%  ProjectCount++; } }  } } %>
+											
+										</tbody>
+											
+											
+									</table>	
+									
+												
+				
+								</div> 
+							
+							</div> 
+
+
+	<!-- ******************************************************** OVERALL MODULE END ************************************************************** -->
+
+	<!-- ******************************************************** INDIVIDUAL PROJECT DETAILS ******************************************* -->
+	
+	<div class="card" style="background: white;display:none;margin: -15px 10px" id="projectgraph">
+		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden ">
+			<div  style="float: right;margin: 10px">
+				<button class="btn btn-sm back" onclick="overalldetails('A')">Details</button>
+				<br>
+				<button class="btn btn-sm back" style="margin-top: 10px;padding: 3px 19px;" onclick="overalldoc()"><i class="fa fa-file-text-o" aria-hidden="true"></i> DOC </button>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh"></div>
+					</figure>
+				</div>
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh2"></div>
+					</figure>
+				</div>
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh3"></div>
+					</figure>
+				</div>
+				<!-- <div class="col-md-1">
+					<button class="btn btn-sm back" style="float: right;margin: 10px" onclick="overalldetails('A')">Details</button>
+					<button class="btn btn-sm back" style="float: right;margin: 10px" onclick="overalldetails('A')">DOC</button>
+				</div> -->
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh4"></div>
+					</figure>
+				</div>
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh5"></div>
+					</figure>
+				</div>
+				<div class="col-md-4">
+ 					<figure class="highcharts-figure">
+						<div id="containerh6"></div>
+					</figure>
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>		
+
+	<!-- ************************Informative Modal********************* -->
+
+
+	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				      
+				<div class="modal-header ">
+					<h5 class="modal-title" id="exampleModalLabel" style="color:#145374">Colour Coding Summary</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+			        </button>
+			  	</div>
+					      
+				<div class="modal-body">
+						
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Project </p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">Indian Army</span></li>
+						           	<li><span class="modal-span" style="color:#007bff">&#8226;</span><span class="modal-text">Indian Navy</span></li>
+						           	<li><span class="modal-span" style="color:#1F4690">&#8226;</span><span class="modal-text">Indian Air Forces</span></li>
+						           	<li><span class="modal-span" style="color:#8E3200">&#8226;</span><span class="modal-text">Home Land Security</span></li>
+						           	<li><span class="modal-span" style="color:#231955">&#8226;</span><span class="modal-text">DRDO</span></li>
+						           	<li><span class="modal-span" style="color:#EE5007">&#8226;</span><span class="modal-text">Others</span></li>
+					            </ul>
+							</div>
+					</div>	
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Project Health (Pending %)</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">0-25%</span></li>
+						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">25-50%</span></li>
+						           	<li><span class="modal-span" style="color:#EE5007">&#8226;</span><span class="modal-text">50-75%</span></li>
+						           	<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">75-100%</span></li>
+					            </ul>
+							</div>
+					</div>		
+
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Milestone</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+									<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
+									<li><span class="modal-span yellow" >&#8226;</span><span class="modal-text">Delayed</span></li>
+						          	<li><span class="modal-span red" >&#8226;</span><span class="modal-text">Pending</span></li>
+					            </ul>
+							</div>
+					</div>		
+					
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Action</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						           	<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
+						           	<li><span class="modal-span yellow" >&#8226;</span><span class="modal-text">Delayed</span></li>
+						           	<li><span class="modal-span blue" >&#8226;</span><span class="modal-text">Forwarded</span></li>
+						           	<li><span class="modal-span red" >&#8226;</span><span class="modal-text">Pending</span></li>
+					            </ul>
+							</div>
+					</div>
+					
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Risks</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+									<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
+									<li><span class="modal-span yellow" >&#8226;</span><span class="modal-text">Delayed</span></li>
+						          	<li><span class="modal-span red" >&#8226;</span><span class="modal-text">Pending</span></li>
+					            </ul>
+							</div>
+					</div>
+					
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Finance</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						          	<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Expenditure</span></li>
+						           	<li><span class="modal-span yellow" >&#8226;</span><span class="modal-text">O/S</span></li>
+						           	<li><span class="modal-span blue" >&#8226;</span><span class="modal-text">DIPL</span></li>
+						           	<li><span class="modal-span red" >&#8226;</span><span class="modal-text">Balance</span></li>
+					            </ul>
+							</div>
+					</div>
+				
+					          
+				</div>
+				
+					      
+			</div>
+		</div>
+	</div>
+
+
+
+	<form method="post" action="ActionWiseAllReport.htm" name="dateform" id="dateform">                                                    	
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 													
+		<input type="hidden" name="ActionType"  id="TypeId" />
+		<input type="hidden" name="ProjectId"	id="Id"/>		
+	</form>
+	
+	<form method="post" action="CommitteeAutoScheduleList.htm" name="committeeform" id="committeeform">                                                    	
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 	
+		<input type="hidden" name="projectid"  id="projectidauto" />	
+		<input type="hidden" name="projectstatus"  id="projectstatus" />	
+		<input type="hidden" name="committeeid"  id="committeeid" />	
+		<input type="hidden" name="divisionid"	value="D" /> 
+		<input type="hidden" name="initiationid" value="0" /> 													
+	</form>
+	
+	<form method="post" action="NonProjectCommitteeAutoSchedule.htm" name="committeegeneralform" id="committeegeneralform">                                                    	
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 	
+		<input type="hidden" name="committeeid" value="A"  id="committeeid" />	
+		<input type="hidden" name="dashboardlink" value="dashboard" id="dashboardlink" />
+	</form>
+	
+	<form method="post" action="ActionReportSubmit.htm" name="mytaskactionform" id="mytaskactionform">                                                    	
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 	
+		<input type="hidden" name="Term"  id="term" />	
+		<input type="hidden" name="Type"  id="type" />
+	</form> 
+	
+	<form method="POST"  action="MilestoneActivityList.htm" name="milestoneform" id="milestoneform">
+		<input type="hidden" name="ProjectId" id="projectIdMil" />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	</form>
+	
+	<form method="POST"  action="ActionPDReports.htm" name="actionredirectform" id="actionredirectform">
+		<input type="hidden" name="ProjectId" id="projectIdAction" />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	</form>
+	
+	<form method="POST"  action="ProjectRisk.htm" name="projectriskform" id="projectriskform">
+		<input type="hidden" name="projectid" id="projectIdRisk" />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	</form>
+	
+	<form method="POST"  action="TestingFileRepo.htm" name="docrepoform" id="docrepoform">
+		<input type="hidden" name="projectid" id="projectiddoc" />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	</form>
+	
+	<form method="POST"  action="ChangesinProject.htm" name="changesform" id="changesform">
+		<input type="hidden" name="projectid" id="projectidchanges" value="A" />
+		<input type="hidden" name="interval" id="intervalchanges" value="T" />
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+	</form>
+
+
+<script type="text/javascript">
+
+function ChangesForm(value){
+	
+	$('#intervalchanges').val(value);
+	$('#changesform').submit();
+}
+
+
+function overallmeetingredirect(projectid,committeeid,projectstatus){
+	
+	$('#projectstatus').val(projectstatus);
+	$('#committeeid').val(committeeid);
+	$('#projectidauto').val(projectid);
+	$('#committeeform').submit();
+}
+
+function overallcommonredirect(form,projectid){
+		
+	if(form=='mil'){
+		$('#projectIdMil').val(projectid);
+		$('#milestoneform').submit();	
+	}
+	
+	if(form=='action'){
+		$('#projectIdAction').val(projectid);
+		$('#actionredirectform').submit();
+	}
+	
+	if(form=='risk'){
+		$('#projectIdRisk').val(projectid);
+		$('#projectriskform').submit();
+	}
+	
+}
+
+function overallfinance(){
+	
+	$('#ibasform').submit();
+	
+}
+
+function overalldoc(){
+	$('#docrepoform').submit();
+}
+
+ $(document).ready(function(){
+	
+	 var logintype= '<%=(String)request.getAttribute("logintype")%>';
+		if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){
+			$('.btn3').click();
+		} else{
+			$('.btn1').click();
+		}
+		
+	 
+ })
+ 
+ </script>
+
+
+
+<script type="text/javascript">
+
+function ProjectDetails(value){
+	
+	$("#overalltable").css("display","none");
+	$('#projectgraph').css("display","block");
+	
+	$('#projectiddoc').val(value);
+	$('#projectidchanges').val(value);
+	/* individualprojectdetails(value); */
+	charts(value);
+	
+}
+
+function overalldetails(value){
+	
+	$("#overalltable").css("display","block");
+	$('#projectgraph').css("display","none");
+	$('#projectidchanges').val("A");
+	
+	/* individualprojectdetails(value); */
+	charts(value);
+	
+}
+
+$('.progress-bar[data-toggle="tooltip"]').tooltip({
+    animated: 'fade',
+    placement: 'bottom'
+});
+
+$('.btn-toggle').click(function() {
+	
+    $(this).find('.btn').toggleClass('active');  
+    
+    if ($(this).find('.btn-success').length>0) {
+    	
+    	$(this).find('.btn').toggleClass('btn-success');
+    }
+    
+    $(this).find('.btn').toggleClass('btn-default');
+    
+    
+});
+
+/* $('.btn1').css('background-color','green');
+$('.btn1').css('color','white'); */
+
+$('.btn4').hide(); 
+
+ $('.btn1').click(function(){
+	$('.btn4').hide();
+	$('.btn1').css('background-color','green');
+	$('.btn1').css('color','white');
+	$('.btn2').css('background-color','white');
+	$('.btn2').css('color','black');
+	$('.btn3').css('background-color','white');
+	$('.btn3').css('color','black');
+	$("#projectname").css("display","none");
+	$("#projectdropdown").css("display","none");
+	$("#financialdata").css("display","none");
+	$("#financialdataerror").css("display","none");
+	$("#ganttchart").css("display","none");
+	$("#activitystatusheader").css("display","none");
+	$("#activitystatus").css("display","none");
+	$("#meetingblock").css("display","none");
+	$("#projectdetails1").css("display","none");
+	$("#projectdetails2").css("display","none");
+	$("#overalltable").css("display","none");
+	$("#force-btn").css("display","none");
+	$("#overallcard1").css("display","none");
+	$("#overallcard2").css("display","none");
+	$("#overallcard3").css("display","none");
+	$("#overallcard4").css("display","none");
+	$("#overallcard5").css("display","none");
+	$(".overallheader").css("display","none");
+	$('#projectgraph').css("display","none");
+	
+	$("#todayschedules").css("display","block");
+	$("#quicklinks").css("display","block");
+	$("#approvalblock").css("display","block");
+	$("#mytasks").css("display","block");
+	$("#upcomingschedules").css("display","block");
+	$("#mytaskdetails").css("display","block");
+	$("#noticeboard").css("display","block");
+	$("#review").css("display","block");
+	$("#reviewheader").css("display","block");
+	$("#review2").css("display","block");
+	$("#reviewheader2").css("display","block");
+	$("#mainactivitystatus").css("display","block");
+	
+	
+	
+}) 
+
+$('.btn2').click(function(){
+	$('.btn4').hide();
+	$('.btn2').css('background-color','green');
+	$('.btn2').css('color','white');
+	$('.btn1').css('background-color','white');
+	$('.btn1').css('color','black');
+	$('.btn3').css('background-color','white');
+	$('.btn3').css('color','black');
+	$("#projectname").css("display","block");
+	$("#projectdropdown").css("display","block");
+	$("#financialdata").css("display","block");
+	$("#financialdataerror").css("display","block");
+	$("#ganttchart").css("display","block");
+	$("#activitystatusheader").css("display","block");
+	$("#activitystatus").css("display","block");
+	$("#meetingblock").css("display","block");
+	$("#projectdetails1").css("display","block");
+	$("#projectdetails2").css("display","block");
+	$('#mainactivitystatus').css("display","block");	
+
+	$("#todayschedules").css("display","none");
+	$("#quicklinks").css("display","none");
+	$("#approvalblock").css("display","none");
+	$("#mytasks").css("display","none");
+	$("#upcomingschedules").css("display","none");
+	$("#mytaskdetails").css("display","none");
+	$("#noticeboard").css("display","none");
+	$("#review").css("display","none");
+	$("#reviewheader").css("display","none");
+	$("#review2").css("display","none");
+	$("#reviewheader2").css("display","none");
+	$("#overalltable").css("display","none");
+	$("#force-btn").css("display","none");
+	$("#overallcard1").css("display","none");
+	$("#overallcard2").css("display","none");
+	$("#overallcard3").css("display","none");
+	$("#overallcard4").css("display","none");
+	$("#overallcard5").css("display","none");
+	$(".overallheader").css("display","none");
+	$('#projectgraph').css("display","none");
+	
+	
+	
+})
+
+$('.btn3').click(function(){
+	$('.btn4').show();
+	$('.btn4').css('background-color','white');
+	$('.btn4').css('color','black');
+	$('.btn3').css('background-color','green');
+	$('.btn3').css('color','white');
+	$('.btn1').css('background-color','white');
+	$('.btn1').css('color','black');
+	$('.btn2').css('background-color','white');
+	$('.btn2').css('color','black');
+	
+	$("#overalltable").css("display","block");
+	$("#force-btn").css("display","block");
+	$("#overallcard1").css("display","block");
+	$("#overallcard2").css("display","block");
+	$("#overallcard3").css("display","block");
+	$("#overallcard4").css("display","block");
+	$("#overallcard5").css("display","block");
+	$(".overallheader").css("display","block");
+
+	$("#todayschedules").css("display","none");
+	$("#quicklinks").css("display","none");
+	$("#approvalblock").css("display","none");
+	$("#mytasks").css("display","none");
+	$("#upcomingschedules").css("display","none");
+	$("#mytaskdetails").css("display","none");
+	$("#noticeboard").css("display","none");
+	$("#review").css("display","none");
+	$("#reviewheader").css("display","none");
+	$("#review2").css("display","none");
+	$("#reviewheader2").css("display","none");
+	$("#projectname").css("display","none");
+	$("#projectdropdown").css("display","none");
+	$("#financialdata").css("display","none");
+	$("#financialdataerror").css("display","none");
+	$("#ganttchart").css("display","none");
+	$("#activitystatusheader").css("display","none");
+	$("#activitystatus").css("display","none");
+	$("#meetingblock").css("display","none");
+	$("#projectdetails1").css("display","none");
+	$("#projectdetails2").css("display","none");
+	$('#mainactivitystatus').css("display","none");	
+	$('#projectgraph').css("display","none");
+	
+	<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
+	document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
+	
+})
+
+$(document).ready(function(){
+
+	if(<%=count%>>0 ){
+		$(".badge-today").text(<%=count%>);
+		
+		$(".badge-today").addClass('badge-danger');
+	}
+	
+	/* $(".badge-today").addClass('badge-success'); */
+	
+	var height = $(window).height();
+	$('#overalldiv').css('max-height', (height-280)+'px' );
+	
+})
+
+function actionformtask(term,type){
+	
+	$('#term').val(term);
+	$('#type').val(type);
+	 
+	$('#mytaskactionform').submit();
+	
+}
+
+	function actionform(mainid){
+				
+		$('#Action'+mainid).submit();
+		
+	}
+	
+	
+	function MyTaskDetails(mainid){
+		
+		$('#MyTaskDetails'+mainid).submit();
+	}
+
+
+	$('#actionsubmit').on('click',function(){
+		
+		$('#actionform').submit();
+		
+	})
+
+
+     $(".action").each(function() {
+        var i = $(this).next();
+        i.length || (i = $(this).siblings(":first")),
+          i.children(":first-child").clone().appendTo($(this));
+        
+        for (var n = 0; n < 1; n++)(i = i.next()).length ||
+          (i = $(this).siblings(":first")),
+          i.children(":first-child").clone().appendTo($(this))
+    }) 
+
+
+
+function dropdown(){
+
+
+	var val=$('#projectid').val();
+
+	$('.carousel').carousel('pause'); 
+	$('.carousel-item').removeClass('active');
+	
+	$('#Mil'+val).addClass('active');
+	$('#Meeting'+val).addClass('active');
+	$('#chart'+val).addClass('active');
+	$('#act'+val).addClass('active');
+	$('#projectname'+val).addClass('active');
+	$('#schedule').addClass('active');
+	$('#notice').addClass('active');
+	$('#actions').addClass('active');
+	$('.vert').carousel('cycle'); 
+	$('#projectinfo'+val).addClass('active');
+	$('#projectdetailsname'+val).addClass('active'); 
+
+	
+}
+
+		
+	$('.carousel-interval').on('slide.bs.carousel', function(ev) {
+	    // get the direction, based on the event which occurs
+	    var dir = ev.direction == 'right' ? 'prev' : 'next';
+	    // get synchronized non-sliding carousels, and make'em sliding
+	    $('.carousel-interval').not('.sliding').addClass('sliding').carousel(dir);
+	});
+	$('.carousel-interval').on('slid.bs.carousel', function(ev) {
+	    // remove .sliding class, to allow the next move
+	    $('.carousel-interval').removeClass('sliding');
+	});
+	
+	
+	$(document).ready(function(){
+	     $(".carousel-interval").carousel({
+	         interval : <%=interval%>,
+	         pause: false
+	     });
+	     
+	     
+	     
+	});
+	
+
+</script>
+
+
+
+
+<script>
+
+$(document).ready(function () {
+	  $('#carouselExampleControls').find('.carousel-item').first().addClass('active');
+	});
+
+
+$(document).ready(function () {
+	  $('#carouselExampleControls1').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselExampleControls2').find('.carousel-item').first().addClass('active');
+	});
+
+$(document).ready(function () {
+	  $('#carouselExampleControls3').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselExampleControls5').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselExampleControls6').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselExampleControls7').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselExampleControls8').find('.carousel-item').first().addClass('active');
+	});
+	
+	
+$(document).ready(function () {
+	  $('#carouselExampleSlidesOnly').find('.carousel-item').first().addClass('active');
+	});
+
+
+$(document).ready(function () {
+	  $('#carouselprojectdetailsSlidesOnly').find('.carousel-item').first().addClass('active');
+	});
+	
+$(document).ready(function () {
+	  $('#carouselprojectdetailsSlides2Only').find('.carousel-item').first().addClass('active');
+	});
+
+
+function submitForm(type,id)
+{ 
+
+   $("#TypeId").val(type);
+   $("#Id").val(id);
+   
+   document.getElementById('dateform').submit(); 
+} 
+
+function CommitteeForm(id,comid)
+{ 
+	if(id==0){
+		
+		document.getElementById('committeegeneralform').submit();
+		
+	}
+	else{
+	$("#projectidauto").val(id);
+	$("#committeeid").val(comid);
+	document.getElementById('committeeform').submit(); 
+	}
+} 
+
+
+	function addNoticeForm() {
+		var message = $('textarea#noticeText').val();
+	
+		if ((message.length)>0){
+			if (confirm('Are You Sure to Add this Notice')) {
+				document.getElementById("noticeForm").submit();
+			}
+		}else{
+			alert("Notice Field cannot be empty!");
+		}
+	}
+
+	/* window.setTimeout(function(){
+	
+	 $(".animate").fadeTo(500,0).slideUp(500,function(){
+	 $(this).remove();
+	 })
+	 },3000) */
+
+	/* window.setTimeout(function(){
+	 document.getElementById("title").style.display = "block";
+	 document.getElementById("schedules").style.display = "block";
+	 },4000) */
+	 
+</script>	
+	<script type="text/javascript">
+
+var fromDate=null;
+$("#fdate").change(function(){
+	
+	 fromDate = $("#fdate").val();
+
+
+$('#tdate').daterangepicker({
+
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	"minDate":fromDate,
+	
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+		
+});
+});
+$('#fdate').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	"minDate":new Date(),
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
+
+
+</script>
+<script>
+//document.getElementById("brandname").style.marginLeft = "-20%";
+var projectId=$("#projectIdD").val();
+
+var Overall="<%=(String)request.getParameter("Overall")%>"
+if(Overall=='Overall'){
+	$('.btn3').click();
+}
+
+
+
+</script>
+
+
+
+
+
+<script>
+
+function charts(value){
+	
+$projectid=value;
+	
+	$
+		
+		.ajax({
+		
+			type:"GET",
+			url:"IndividualProjectDetails.htm",
+			data : {
+				
+				ProjectId : $projectid
+				
+			},
+			datatype : 'json',
+			success : function(result) {
+
+				var result = JSON.parse(result);
+				var values = Object.values(result).map(function(key, value) {
+					  return result[key,value]
+					});
+			
+				
+				/* logic to print the project wise data in card */	
+				
+				document.getElementById('financevalue').innerHTML = values[23].toLocaleString('en-IN');
+				document.getElementById('risksvalue').innerHTML = values[16] + ' / ' + values[18];
+				document.getElementById('actionvalue').innerHTML = values[14] + ' / ' + values[15];
+				document.getElementById('milestonevalue').innerHTML = values[8] + ' / ' + values[9];
+				
+				if(values[10]!=null)
+				document.getElementById('milestonepercentage').innerHTML = values[10] + '%';
+				else
+				document.getElementById('milestonepercentage').innerHTML = 'Nil'; 
+				
+				
+				
+				var s=  values[0] + '/' + values[2]
+				document.getElementById('meetingsvaluepmrc').innerHTML = s;
+				var t=  values[3] + '/' + values[5]
+				document.getElementById('meetingsvalueeb').innerHTML = t;
+				
+				if(values[24]!='A')
+				document.getElementById('projecttitle').innerHTML = 'Project : ' + values[25];
+				else
+				<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
+				document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
+				
+				
+				
+				<!-- ******************************************* Project Details Graph Script ******************************************************* -->
+				
+				Highcharts.chart('containerh', {
+				    chart: {
+				        type: 'bar',
+				        height: (12 / 16 * 100) + '%' 
+				    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Meeting Data',
+				       	style : {
+						        	fontWeight: 'bold'
+						}
+				    },
+				    subtitle: {
+				        text: ''
+				    },
+				    xAxis: {
+				        categories: ['PMRC', 'EB'],
+				        title: {
+				            text: null
+				        },
+				        labels: {
+				            overflow: 'justify',
+				            style : {
+				            	fontWeight: 'bold',
+					        	
+							}
+				        }
+				    },
+				    yAxis: {
+				        min: 0,
+				        title: {
+				            text: 'Meeting (count)',
+				            align: 'high'
+				        },
+				        labels: {
+				            overflow: 'justify',
+				            style : {
+				            	fontWeight: 'bold',
+					        	
+							}
+				        }
+				    },
+				    tooltip: {
+				        valueSuffix: ''
+				    },
+				    plotOptions: {
+				        bar: {
+				            dataLabels: {
+				                enabled: true
+				            }
+				        }
+				    },
+				    colors: [
+				    	'#28a745',
+				        '#dc3545',
+				        
+				    ],
+				    credits: {
+				        enabled: false
+				    },
+				    series: meetingdata(),
+				 
+				    
+				});		
+
+				function meetingdata(){
+					
+					let meetingdata=[];
+					if(parseInt(values[2])>0 || parseInt(values[5])>0){
+						meetingdata=[
+							{
+						        name: 'Held',
+						        data: [parseInt(values[0]), parseInt(values[3]),]
+						    }, {
+						        name: 'Pending',
+						        data: [parseInt(values[1]), parseInt(values[4]),]
+						    },
+							
+						]
+					}
+					return meetingdata;
+					
+				}
+				
+				/********************************************** Milestone ****************************************************/
+
+				Highcharts.chart('containerh2', {
+				    chart: {
+				        type: 'pie',
+				        options3d: {
+				            enabled: true,
+				            alpha: 45
+				        },
+				        height: (12 / 16 * 100) + '%' 
+				    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Milestone',
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+				    subtitle: {
+				        text: ''
+				    },
+				    plotOptions: {
+				        pie: {
+				            innerSize: 100,
+				            depth: 15
+				        }
+				    },
+				    colors: [
+				        '#ffc107',
+				        '#dc3545',
+				        '#28a745'
+				    ],
+				    series: [{
+				        name: 'Milestone',
+				        data: miletsonedata(),
+				    
+				    }],
+				    credits: {
+				        enabled: false
+				    },
+				});
+				
+				function miletsonedata(){
+					let miletsonedata=[];
+					
+					if(parseInt(values[9])>0){
+						miletsonedata=[ 
+							['Pending', parseInt(values[6])],
+				            ['Delayed', parseInt(values[7])],
+				            ['Completed', parseInt(values[8])],
+				            ]
+					}
+					
+					return miletsonedata;
+				}
+
+				/********************************************** Action ****************************************************/
+
+				Highcharts.chart('containerh3', {
+				    chart: {
+				        type: 'pie',
+				        options3d: {
+				            enabled: true,
+				            alpha: 45
+				        },
+				        height: (12 / 16 * 100) + '%' 
+				    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Action',
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+				    subtitle: {
+				        text: ''
+				    },
+				    plotOptions: {
+				        pie: {
+				            innerSize: 100,
+				            depth: 45
+				        }
+				    },
+				    colors: [
+				        '#ffc107',
+				        '#dc3545',
+				        '#28a745',
+				        '#007bff'
+				    ],
+				    series: [{
+				        name: 'Action',
+				        data: actiondata(),
+				    }],
+				    credits: {
+				        enabled: false
+				    },
+				});
+				
+				function actiondata(){
+					let actiondata=[];
+					
+					if(parseInt(values[15])>0){
+						actiondata=[
+							 	['Pending', parseInt(values[11])],
+					            ['Delayed', parseInt(values[13])],
+					            ['Completed', parseInt(values[14])],
+					            ['Forwarded', parseInt(values[12])],
+							
+						]
+					}
+					
+					return actiondata;
+				}
+				
+				/*************************************************************** Risk *****************************************************  */
+
+				Highcharts.chart('containerh4', {
+				    chart: {
+				        type: 'column',
+				        height: (12 / 16 * 100) + '%' 
+				    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Risks',
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+				    subtitle: {
+				        text: ''
+				    },
+				    xAxis: {
+				        categories: [
+				            'Risk',
+				        ],
+				        crosshair: true
+				    },
+				    yAxis: {
+				        min: 0,
+				        title: {
+				            text: 'Count'
+				        }
+				    },
+				    tooltip: {
+				        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+				        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+				            '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+				        footerFormat: '</table>',
+				        shared: true,
+				        useHTML: true
+				    },
+				    plotOptions: {
+				        column: {
+				            pointPadding: 0.2,
+				            borderWidth: 0
+				        }
+				    },
+				    colors: [
+				    	'#28a745',
+				        '#dc3545',
+				        
+				    ],
+				    series: riskdata(),
+				    credits: {
+				        enabled: false
+				    },
+				});
+				
+				function riskdata(){
+					let riskdata=[];
+					if(parseInt(values[18])>0){
+						riskdata=[
+							{
+						        name: 'Completed',
+						        data: [parseInt(values[16])]
+
+						    },
+							{
+						        name: 'Pending',
+						        data: [parseInt(values[17])]
+
+						    }, 
+						]
+						
+						
+					}
+					return riskdata;
+					
+				}
+
+
+				/**************************************** Finance ******************************************* */
+				
+				$(function () {
+				
+				var TotalFinanceValue =0;
+				if(parseInt(values[23])>0){
+					 TotalFinanceValue = 'Total Finance Value : ' + parseInt(values[23]).toLocaleString('en-IN', {
+					    maximumFractionDigits: 0,
+					    style: 'currency',
+					    currency: 'INR'
+					});	
+				}
+				
+					
+				 Highcharts.setOptions({
+			      lang: {
+			        thousandsSep: ','
+			      }
+				});
+				
+				Highcharts.chart('containerh5', {
+				    chart: {
+				        type: 'pie',
+				        height: (12 / 16 * 100) + '%' 
+				    },
+				    exporting: {
+				        buttons: {
+				          contextButton: {
+				            menuItems: [
+				              'printChart',
+				              'downloadPNG',
+				              'downloadJPEG',
+				              'downloadPDF',
+				              'downloadCSV',
+				              'downloadXLS',
+				              'viewData'
+				            ]
+				          }
+				        }
+
+				      },
+				    title: {
+				        text: 'Finance',
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+				    subtitle: {
+				        text: TotalFinanceValue ,
+				        style : {
+				        	fontWeight: 'bold'
+				        }
+				    },
+
+				    accessibility: {
+				        announceNewData: {
+				            enabled: true
+				        },
+				        point: {
+				            valueSuffix: ''
+				        }
+				    },
+
+				    plotOptions: {
+				        series: {
+				            dataLabels: {
+				                enabled: true,
+				                 formatter: function() {
+				                    return '<p>&#8377;</p>'+ Highcharts.numberFormat(this.y, 0);
+				                } 
+				                /* format: '{point.name}: {point.y:.1f}' */
+				            }
+				        }
+				    },
+				    
+				    
+				    
+				    colors: [
+				        '#ffc107',
+				        '#28a745',
+				        '#dc3545',
+				        '#007bff'
+				    ],
+				    tooltip: {
+				        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>&#8377; {point.y:.2f}</b><br/>'
+				    },
+				    
+				    series: [
+				    	{
+				            name: "Finance",
+				            colorByPoint: true,
+				           
+				            data:   generatedata(),
+		
+				        } 
+				       
+				    ],
+				    
+				    credits: {
+				        enabled: false
+				    },
+
+				},
+
+		);
+				
+				});
+			  
+		function  generatedata(){
+			
+			let financedata=[];
+			
+			if(parseInt(values[23])>0){
+				
+				financedata = [
+					
+					{
+	                    name: "O/S",
+	                    y: parseInt(values[20]),
+	                    drilldown: "O/S"
+	                },
+	                {
+	                    name: "Expenditure",
+	                    y: parseInt(values[19]),
+	                    drilldown: "Expenditure"
+	                },
+	                {
+	                    name: "Balance",
+	                    y: parseInt(values[22]),
+	                    drilldown: "Balance"
+	                },
+	                {
+	                    name: "DIPL",
+	                    y: parseInt(values[21]),
+	                    drilldown: "DIPL"
+	                }, 
+					
+				]
+				
+			}
+			
+			return financedata;
+		}			
+				
+		
+		/**************************************** Document  ******************************************* */
+		
+
+			Highcharts.chart('containerh6', {
+			    chart: {
+			        type: 'variablepie',
+			        height: (12 / 16 * 100) + '%' 
+			    },
+			    title: {
+			        text: 'Document Statistics',
+			        style : {
+			        	fontWeight: 'bold'
+			        }
+			    },
+			    colors: [
+			        '#ffc107',
+			        '#28a745',
+			        '#dc3545',
+			        '#007bff'
+			    ],
+			    tooltip: {
+			        headerFormat: '',
+			        pointFormat: '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
+			            'Area (square km): <b>{point.y}</b><br/>' +
+			            'Population density (people per square km): <b>{point.z}</b><br/>'
+			    },
+			    series: [{
+			        minPointSize: 10,
+			        innerSize: '20%',
+			        zMin: 0,
+			        name: 'countries',
+			        data: [{
+			            name: 'Prepared',
+			            y: 505370,
+			            z: 92.9
+			        }, {
+			            name: 'Approved',
+			            y: 551500,
+			            z: 118.7
+			        }, {
+			            name: 'Pending',
+			            y: 312685,
+			            z: 124.6
+			        }, {
+			            name: 'Reviewed',
+			            y: 78867,
+			            z: 137.5
+			        }, ]
+			    }],
+			    
+			    credits: {
+			        enabled: false
+			    },
+			    
+			    
+			    
+			});
+
+
+		}
+		
+		})
+		
+				
+				
+		$
+		.ajax({
+		
+			type:"GET",
+			url:"ChangesDataTotalCount.htm",
+			data :{
+				
+				ProjectId : $projectid
+				
+			},
+			datatype : 'json',
+			success : function(result){
+				
+				var result = JSON.parse(result);
+				var values = Object.values(result).map(function(key,value){
+					
+					return result[key,value]
+				})
+				
+				document.getElementById('todaychangescount').innerHTML = values[0] + values[3] + values[6] + values[9] ;
+				document.getElementById('weeklychangescount').innerHTML = values[1] + values[4] + values[7] + values[10] ;
+				document.getElementById('monthlychangescount').innerHTML = values[2] + values[5] + values[8] + values[11] ;
+				
+				
+			}
+
+		})
+		
+			
+		
+		
+		
+		
+		
+		
+
+}
+
+
+
+</script>
+
+
+
+
+
+</body>
+
+
+</html> 

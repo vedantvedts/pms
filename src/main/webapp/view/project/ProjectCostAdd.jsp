@@ -1,0 +1,372 @@
+<%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+
+<title>PROJECT COST  ADD</title>
+<style type="text/css">
+
+.input-group-text{
+font-weight: bold;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+b{
+	font-family: 'Lato',sans-serif;
+}
+      label{
+      	font-size:14px;
+      	
+      }
+      
+      
+      .table thead tr th{
+background-color: aliceblue;
+text-align: left;
+
+}
+.table thead tr td{
+background-color: #f9fae1;
+
+}
+</style>
+</head>
+<body>
+<%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+String IntiationId=(String) request.getAttribute("IntiationId");
+List<Object[]> ItemList=(List<Object[]>)request.getAttribute("ItemList");
+List<Object[]> BudgetHead=(List<Object[]>)request.getAttribute("BudgetHead");
+Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
+Double TotalIntiationCost=(Double)request.getAttribute("TotalIntiationCost");
+Map<String,List<Object[]>> BudgetItemMap=(Map<String,List<Object[]>>)request.getAttribute("BudgetItemMap");
+Map<String,List<Object[]>> BudgetItemMapList=(Map<String,List<Object[]>>)request.getAttribute("BudgetItemMapList");
+NFormatConvertion nfc=new NFormatConvertion();
+%>
+
+
+<%
+ String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){ %>
+	
+	<div align="center">
+		<div class="alert alert-danger" role="alert">
+	           <%=ses1 %>
+	    </div>
+    </div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert" >
+	          <%=ses %>
+		</div>
+    </div>
+<%} %>
+
+
+
+<div class="container-fluid">
+	
+	<div class="row" style="">
+		<div class="col-md-12">
+
+ 			<div class="card shadow-nohover" >
+		  		
+		  		<div class="card-header">
+		  			<div class="row" >
+		  				<div class="col-md-3"><h3>Cost </h3></div>
+						<div class="col-md-9 " style="float: right;">
+		 					<form action="ProjectCostAddSubmit.htm" method="POST" name="myfrm3" id="myfrm3" >
+		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
+		   
+								<%--    || &nbsp;&nbsp;&nbsp;&nbsp;Cost Utilized:&nbsp;<%=nfc.convert(TotalIntiationCost) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remaining Cost :&nbsp;<%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())-TotalIntiationCost) %><%}else{ %><%=TotalIntiationCost %><%} %> --%>  
+								 	
+		  	 	 				<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" style="float: right" >
+		  						</b>
+		  						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+								<input type="hidden" name="IntiationId"	value="<%=IntiationId %>" /> 		
+		 					</form>
+		 				</div>
+		 			</div>
+		  		</div>
+        
+        
+        		<div class="card-body">
+        
+               		<form action="ProjectCostAddSubmit.htm" method="POST" name="myfrm" id="myfrm" >
+ 
+                		<div class="row" >
+                
+					       <div class="col-md-2 ">
+					       		<div class="form-group">
+					            	<label class="control-label">Budget Head </label>
+										 <select class="custom-select" id="BudgetHead" required="required" name="BudgetHead">
+										    <option disabled="true"  selected value="">Choose...</option>
+										    <% for (Object[] obj : BudgetHead) {%>
+										<option value="<%=obj[0]%>"><%=obj[1]%></option>
+										<%} %>
+										  </select>
+					             </div>
+					       </div>        
+                
+                
+		                  <div class="col-md-4 ">
+		                        <div class="form-group">
+		                            <label class="control-label">Item</label>
+										 <select class="custom-select" id="Item" required="required" name="Item">
+										    <option disabled="true"  selected value="">Choose...</option>
+										
+										  </select>
+		                        </div>
+		                   </div>  
+                    
+     
+		                    <div class="col-md-3 ">
+		                        <div class="form-group lab_count">
+		                            <label class="control-label">Item Detail</label>
+		   								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required">                      </div>
+		                    </div> 
+          
+			               <div class="col-md-2 ">
+			               		<div class="form-group">
+			                            <label class="control-label">Cost</label>
+			  								<input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" required="required" min="1">
+			                     </div>
+			               </div> 
+                 
+			              <div class="col-md-1 " style="margin-top: 35px;">
+			              	 <button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub"  onclick="return confirm('Are You Sure To Add ?');"> SUBMIT</button>
+ 			              </div>      
+                                     
+                		</div>
+          
+         				<hr>
+         				
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+						<input type="hidden" name="IntiationId"	value="<%=IntiationId %>" /> 		
+				
+ 					</form> 
+
+                    <table class="table table-bordered table-hover  table-condensed ">
+                    	<thead>
+                        	<tr>
+                            	<th >Item</th>
+                                <th >Item Detail</th>
+                                <th >Cost</th>
+                                <th >Edit&nbsp;|&nbsp;Delete</th>
+                             </tr>
+                        </thead>
+                                        
+	    				<tbody>
+	    	
+				    	<%Double totalcost=0.0;
+				    	for(Map.Entry<String, List<Object[]>> entry:BudgetItemMapList.entrySet()){ %>
+	    	
+	    					<tr>
+	    						<td>
+	    							<b><%=entry.getKey()%></b>
+	    						</td>
+	    					</tr>
+	    			    	<%Double cost=0.0;
+									    for(Object[] 	obj:entry.getValue()){ 
+							%>
+							
+							
+							
+								<tr>
+								<form action="ProjectCostEditSubmit.htm" method="POST" name="myfrm<%=obj[0] %>" id="myfrm<%=obj[0] %>" >	
+									
+		 							<td style="width: 400px;">
+		 								
+		 								<select class="custom-select" id="Item" required="required" name="Item" >
+									    	<option disabled="true"  selected value="">Choose...</option>
+												<% for (Object[] obj2 : BudgetItemMap.get(entry.getKey())) {%>
+												<option value="<%=obj2[0]%>" <%if(obj[3].toString().equalsIgnoreCase(obj2[1].toString())){ %> selected="selected" <%} %>><%=obj2[1]%></option>
+												<%} %>
+	 							 		</select>
+	 							 		
+	 							 	</td>
+	 							 	
+									<td style="width: 550px;">
+					   					<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required" value="<%=obj[4] %>">                     
+									</td>
+									<td style="text-align: right">
+										<input type="number" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" min="1" required="required" value="<%=obj[5].toString().split("\\.")[0] %>" style="text-align:right;">
+									<td>
+							    
+							 			
+							 			<button type="submit"  class="fa fa-pencil-square-o btn  " onclick="EditCost('myfrm<%=obj[0] %>')" ></button>&nbsp;&nbsp;		
+									 
+										<button type="submit" class="fa fa-trash btn " formaction="ProjectCostDeleteSubmit.htm" onclick="return confirm('Are You Sure To Delete? ');"></button>			    
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+						
+										<input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
+		          						<input type="hidden" name="InitiationCostId"	value="<%=obj[0] %>" /> 
+	          						
+	          	            		</td>
+	          	            		</form>
+								</tr>
+								
+							
+								<% cost=cost+Double.parseDouble(obj[5].toString()) ; } %>
+								
+								
+	    					<tr>
+	    						<td colspan="2" align="right">
+	    							<b style="color: green;"> <%=entry.getKey() %> Cost</b>
+	    						</td>
+	    						<td  align="right">
+	    							<b style="color: green; text-align: right;">&#8377; <%=nfc.convert(cost) %></b>
+	    						</td>
+	    						<td></td>
+	    					</tr>
+	    	
+	    				
+	    						<%totalcost=totalcost+cost;} %>
+	    	
+							<tr>
+								<td colspan="2" align="right">
+									<b style="color: green;"> Total Cost</b>
+								</td>
+								<td>
+									<b style="color: green;">&#8377;<%=nfc.convert(totalcost) %></b>
+								</td>
+								<td></td>
+							</tr>
+								
+								
+							
+	    				</table>
+  
+    		 		</div>  <!-- card-body -->
+        		</div>
+			</div>
+		</div>
+
+</div>
+  
+
+	
+<script type="text/javascript">
+
+
+<%-- var TotalProjectCost="<%=ProjectDetailes[8] %>";
+var TotalIntiationCost="<%=TotalIntiationCost %>";
+
+
+function Add(myfrm){
+	var newcost=0;
+	var Cost = $("#Cost").val();
+
+
+	newcost=Number(TotalIntiationCost)+Number(Cost)
+
+	 
+ 	 if(TotalProjectCost<newcost){
+		  bootbox.alert("Cost Is More Than Project Cost");
+	 event.preventDefault();
+	return false;
+	} 
+	  
+	
+
+		 
+	
+		  return true;
+	 
+			
+	} --%>
+	
+
+	
+
+	function EditCost(formn){
+		
+		 event.preventDefault();
+			
+		 var ret=confirm('Are you Sure To Update ?');
+		 if(ret ){
+	 		 var input= $("<input>").attr("type","hidden").attr("name","totalcost").val("<%=totalcost%>");
+			 
+			 $("#"+formn).append(input);
+			 $("#"+formn).submit();
+		 }
+
+	}
+
+
+
+$(document)
+.on(
+		"change",
+		"#BudgetHead",
+
+		function() {		
+			
+			
+      var $BudgetHead = $("#BudgetHead").val();      
+      
+			 $("#Item").find('option').remove();
+			
+			
+			$
+					.ajax({
+
+						type : "GET",
+						url : "BudgetItemList.htm",
+						data : {
+							BudgetHead : $BudgetHead
+						},
+						datatype : 'json',
+						success : function(result) {
+
+							var result = JSON.parse(result);
+						
+							
+							var values = Object.keys(result).map(function(e) {
+							  return result[e]
+							})
+							
+							var s = '';
+							/* var t=''; */
+							for (i = 0; i < values.length; i++) {
+								s += '<option value="'+values[i][0]+'_'+values[i][2]+'">'
+										+values[i][1]
+										+ '</option>';
+								/* t += '<option value="'+values[i][2]+'"></option>'; */
+							}
+							$('#Item').html(s);
+							/* $('#ReFe').html(t); */
+						
+							
+							
+						}
+					});
+
+		});
+
+
+
+
+
+
+</script>
+<div class="modal" id="loader">
+					<!-- Place at bottom of page -->
+				</div>
+</body>
+</html>

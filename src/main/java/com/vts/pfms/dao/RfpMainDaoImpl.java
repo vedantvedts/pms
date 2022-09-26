@@ -1,0 +1,485 @@
+package com.vts.pfms.dao;
+
+import java.math.BigInteger;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Repository;
+
+import com.vts.pfms.login.ProjectHoa;
+import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.model.LoginStamping;
+import com.vts.pfms.model.Notice;
+import com.vts.pfms.model.ProjectHoaChanges;
+import com.vts.pfms.project.model.ProjectHealth;
+
+@Transactional
+@Repository
+public class RfpMainDaoImpl implements RfpMainDao {
+
+	private static final String DASHBOARDFORMURLLIST = "select a.formdispname,a.formurl,a.formcolor from form_detail a,form_role_access b,login c where c.loginid=:loginid and a.formmoduleid=:formmoduleid AND b.formroleid=c.formroleid AND a.formdetailid=b.formdetailid AND a.isactive='1' AND b.isactive='1' ORDER BY a.FormSerialNo  ";
+	private static final String USERMANAGELIST = "select a.loginid, a.username, b.divisionname,c.formrolename  from login a , division_master b , formrole c where a.divisionid=b.divisionid and a.formroleid=c.formroleid and a.isactive=1";
+	private static final String LASTLOGINEMPID = "select a.auditstampingid from  auditstamping a where a.auditstampingid=(select max(b.auditstampingid) from auditstamping b WHERE b.loginid=:loginid)";
+	private static final String LOGINSTAMPINGUPDATE="update auditstamping set logouttype=:logouttype,logoutdatetime=:logoutdatetime where auditstampingid=:auditstampingid";
+	private static final String DESGID="select desigid from employee where  empid=:empid";
+	private static final String LABDETAILS="select labmasterid, labcode, labname, lablogo from lab_master";
+	
+	private static final String NOTICEEDITDATA="SELECT * FROM pfms_notice WHERE NoticeId=:NOTICEID AND IsActive=1" ;
+	private static final String SELFACTIONSLIST="SELECT ActionId,EmpId,ActionItem,ActionDate,ActionTime,ActionType FROM pfms_action_self WHERE isactive='1'AND actiondate=CURDATE() AND empid=:empid ORDER BY createddate ASC";	
+	private static final String NOTICEDATEWOSE= "SELECT noticeid, notice, fromdate,todate,noticeby,createdby,createddate FROM pfms_notice WHERE NoticeBy=:EMPID AND IsActive=1 AND ( (FromDate BETWEEN :FROMDATE AND :TODATE) OR  (todate BETWEEN :FROMDATE  AND :TODATE )   OR( fromdate < :FROMDATE  AND todate > :TODATE  ))";
+	private static final String REVOKENOTICE="UPDATE pfms_notice SET isactive=:isactive WHERE NoticeId=:NOTICEID";
+	private static final String EDITNOTICE="UPDATE pfms_notice SET Notice=:NOTICE,FromDate=:FROMDATE,ToDate=:TODATE, NoticeBy=:NOTICEBY WHERE NoticeId=:NOTICEID";
+	private static final String NOTICELIST="SELECT * FROM pfms_notice WHERE NoticeBy=:empid AND IsActive=1 AND MONTH(CreatedDate) = MONTH(CURRENT_DATE())";
+	private static final String NOTICE="SELECT n.*, e.EmpName FROM pfms_notice n, employee e   WHERE   DATE(NOW()) >=n.FromDate AND DATE(NOW()) <= n.ToDate AND e.EmpId=n.NoticeBy AND n.IsActive=1 ORDER BY n.NoticeId DESC";	
+	private static final String getEmpNoQuery="SELECT empno FROM employee WHERE empid =:empid";	
+	private static final String PROJECTLIST="SELECT a.projectid AS id,a.projectcode,a.projectname,a.projectmainid,a.projecttype,b.empname AS 'project_director',b.mobileno,'General' AS 'empid',a.sanctiondate,a.pdc FROM project_master a , employee b WHERE a.projectdirector=b.empid AND a.isactive=1 UNION SELECT 0 AS id,'General' AS projectcode,'General' AS projectname,'General' AS projectmainid,'General' AS projecttype,'-' AS projectdirector,0 AS mobileno ,'General' AS 'empid',0 AS sanctiondate, 0 AS pdc FROM DUAL ORDER BY id";
+	private static final String QUATERS="SELECT a.sanctiondate, a.pdc, TIMESTAMPDIFF(YEAR,a.sanctiondate,a.pdc)+1 FROM project_master a WHERE a.projectid=:projectid";
+	private static final String MILEQUATER="CALL Pfms_Milestone_Quarter(:proid,:Quater,:yr)"; 
+	private static final String GANTTCHARTLIST="SELECT milestoneactivityid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,progressstatus,revisionno FROM milestone_activity WHERE isactive=1 ";
+	private static final String PROJECTHEALTHDATA ="CALL Project_Health_Get_Data()";
+	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype )";
+	private static final String PROJECTHEALTHINSERTDATA="CALL Project_Health_Insert_Data(:projectid)";
+	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
+	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
+	private static final String CHANGESTOTALCOUNTDATA="CALL Project_Changes_Count_Data(:projectid) ";
+	private static final String MEETINGCHANGES="CALL Project_Changes_Meeting_Data(:projectid,:term)";
+	private static final String MILESTONECHANGES="SELECT c.activityname AS 'Main Activity ', b.activityname AS 'Sub Activity',a.progress,a.progressdate,a.attachname,a.remarks, c.projectid,e.empname,f.desigcode, a.createddate FROM milestone_activity_sub a , milestone_activity_level b ,milestone_activity c ,login d, employee e,employee_desig f WHERE a.isactive=1 AND a.activityid=b.activityid AND b.parentactivityid = c.milestoneactivityid AND CASE WHEN :projectid='A' THEN 1=1 ELSE c.projectid=:projectid END AND e.desigid=f.desigid AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.createdby=d.username AND d.empid=e.empid  AND c.projectid<>0 ORDER BY createddate DESC";
+	private static final String ACTIONCHANGES="SELECT b.projectid,b.actionmainid,b.actionno,b.actionitem,a.progress, a.progressdate,a.remarks,d.empname,a.createddate,e.desigcode FROM action_sub a, action_main b ,login c, employee d,employee_desig e WHERE a.actionmainid=b.actionmainid AND CASE WHEN :projectid='A' THEN 1=1 ELSE b.projectid=:projectid END AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.createdby=c.username AND c.empid=d.empid AND d.desigid=e.desigid AND b.projectid<>0 ORDER BY createddate DESC";
+	private static final String RISKCHANGES="SELECT a.projectid,b.actionno,a.description,a.severity,a.probability,a.mitigationplans,a.revisionno,a.revisiondate,a.createddate,c.empname,e.desigcode FROM pfms_risk_rev a, action_main b,employee c,login d,employee_desig e WHERE CASE WHEN :projectid='A' THEN 1=1 ELSE a.projectid=:projectid END AND a.createdby=d.username AND c.empid=d.empid AND c.desigid=e.desigid AND a.actionmainid=b.actionmainid AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.projectid<>0 ORDER BY createddate DESC";
+	private static final String FINANCEDATAPARTA="SELECT pftsfileid,projectid,demandno,demanddate,estimatedcost,itemnomenclature FROM pfts_file WHERE isactive=1 AND CASE WHEN :projectid='A' THEN 1=1 ELSE projectid=:projectid END";
+	private static final String PROJECTHOACHANGESDELETE="DELETE FROM project_hoa_changes where projectid=:projectid";
+	
+	
+	@PersistenceContext
+	EntityManager manager;
+
+	
+	@Override
+	public List<String> getEmpNo(long empId) throws Exception {
+		Query query = manager.createNativeQuery(getEmpNoQuery);
+		query.setParameter("empid", empId);
+		List<String> empnoList = query.getResultList();
+		return empnoList;
+	}
+	
+	@Override
+	public List<Object[]> DashBoardFormUrlList(int FormModuleId, int loginId) throws Exception {
+
+		Query query = manager.createNativeQuery(DASHBOARDFORMURLLIST);
+		query.setParameter("loginid", loginId);
+		query.setParameter("formmoduleid", FormModuleId);
+		List<Object[]> DashBoardFormUrlList = query.getResultList();
+		return DashBoardFormUrlList;
+	}
+
+	@Override
+	public List<Object[]> UserManagerList() throws Exception {
+		Query query = manager.createNativeQuery(USERMANAGELIST);
+
+		List<Object[]> UserManagerList = query.getResultList();
+		return UserManagerList;
+	}
+
+	@Override
+	public Long LoginStampingInsert(LoginStamping Stamping) throws Exception {
+
+		manager.persist(Stamping);
+
+		manager.flush();
+
+		return Stamping.getAuditStampingId();
+	}
+
+	@Override
+	public Long LastLoginStampingId(String LoginId) throws Exception {
+		Query query = manager.createNativeQuery(LASTLOGINEMPID);
+		query.setParameter("loginid", LoginId);
+		BigInteger LastLoginStampingId = (BigInteger) query.getSingleResult();
+		return LastLoginStampingId.longValue();
+	}
+
+	@Override
+	public int LoginStampingUpdate(LoginStamping Stamping) throws Exception {
+		Query query = manager.createNativeQuery(LOGINSTAMPINGUPDATE);
+		query.setParameter("logouttype", Stamping.getLogOutType());
+		query.setParameter("logoutdatetime", Stamping.getLogOutDateTime());
+		query.setParameter("auditstampingid", Stamping.getAuditStampingId());		
+		int LoginStampingUpdate = (int) query.executeUpdate();
+		return  LoginStampingUpdate;
+	}
+	
+	
+	@Override
+	public LabMaster LabDetailes() throws Exception {
+		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
+		return LabDetailes;
+	}
+	
+	@Override
+	public List<Object[]> LabDetails() throws Exception {
+		
+		Query query=manager.createNativeQuery(LABDETAILS);
+		List<Object[]> LabDetails=(List<Object[]>)query.getResultList();
+		
+		return LabDetails;
+	}
+
+	@Override
+	public String DesgId(String Empid) throws Exception {
+		Query query = manager.createNativeQuery(DESGID);
+		query.setParameter("empid", Empid);
+		BigInteger DesgId = (BigInteger) query.getSingleResult();
+		return DesgId.toString();
+	}
+	
+
+	
+
+	@Override
+	public List<Object[]> getIndividualNoticeList(String userId)throws Exception{
+		
+		Query query = manager.createNativeQuery(NOTICELIST);
+		query.setParameter("empid", userId);
+		List<Object[]> NoticeList=(List<Object[]>)query.getResultList();
+		
+		return NoticeList;		
+	}
+
+	@Override
+	public Long addNotice(Notice notice)throws Exception{
+		
+		manager.persist(notice);
+		manager.flush();
+		
+		return notice.getNoticeId();
+	}
+	
+
+	
+	@Override
+	public List<Object[]> AllActionsCount(String empid,String ProjectId) throws Exception {
+		
+		Query query=manager.createNativeQuery("CALL Pfms_All_Actions_Count (:empid,:projectid)");	
+		query.setParameter("empid", empid);
+		query.setParameter("projectid", ProjectId);
+
+		List<Object[]> AllActionsCount=(List<Object[]>)query.getResultList();	
+		return AllActionsCount;
+	}
+	
+	@Override
+	public List<Object[]> GetNotice()throws Exception{
+		
+		Query query = manager.createNativeQuery(NOTICE);
+
+		List<Object[]> NoticeList=(List<Object[]>)query.getResultList();
+		
+		return NoticeList;	
+	}
+
+	@Override
+	public List<Object[]> getAllNotice()throws Exception{
+		
+		Query query = manager.createNativeQuery(NOTICE);
+	
+		List<Object[]> NoticeList=(List<Object[]>)query.getResultList();
+		
+		return NoticeList;	
+		
+	}
+	
+	@Override
+    public List<Object> GetNoticeEligibility(String empId)throws Exception{
+		
+		Query query=manager.createNativeQuery("CALL Pfms_Notice_Eligibility(:EMPID)");	
+		query.setParameter("EMPID",empId);
+		List<Object> NoticeList=(List<Object>)query.getResultList();
+
+		return NoticeList;	
+    }
+	
+	
+	@Override
+    public List<Object> SelfActionsList(String empId)throws Exception {
+		
+		Query query=manager.createNativeQuery(SELFACTIONSLIST);	
+		query.setParameter("empid",empId);
+		List<Object> SelfActionsList=(List<Object>)query.getResultList();
+
+		return SelfActionsList;	
+    }
+
+	@Override
+	public List<Object[]> getIndividualNoticeList(String empId, java.sql.Date fdate, java.sql.Date tdate)throws Exception{
+		
+		Query query=manager.createNativeQuery(NOTICEDATEWOSE);	
+		query.setParameter("EMPID",empId);
+		query.setParameter("FROMDATE", fdate);
+		query.setParameter("TODATE", tdate);
+		List<Object[]> SelfActionsList=(List<Object[]>)query.getResultList();
+
+		return SelfActionsList;	
+		
+	}
+	
+	@Override
+	public List<Object[]> getnoticeEditData(String noticeId)throws Exception{
+		Query query=manager.createNativeQuery(NOTICEEDITDATA);
+		query.setParameter("NOTICEID", noticeId);
+		List<Object[]> EditData=(List<Object[]>)query.getResultList();
+        return EditData;
+	}
+	
+	
+	@Override
+	public int noticeDelete(String noticeId)throws Exception{
+		
+		Query query=manager.createNativeQuery(REVOKENOTICE);
+		query.setParameter("NOTICEID",noticeId);
+		query.setParameter("isactive",0);
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+		
+	}
+	
+	 
+	
+	@Override
+	public int editNotice(Notice notice)throws Exception{
+		
+		Query query=manager.createNativeQuery(EDITNOTICE);
+		query.setParameter("NOTICEID",notice.getNoticeId());
+		query.setParameter("NOTICE", notice.getNotice());
+		query.setParameter("FROMDATE",notice.getFromDate());
+		query.setParameter("TODATE",notice.getToDate());
+		query.setParameter("NOTICEBY", notice.getNoticeBy());
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+		
+	}
+	
+	@Override
+	public List<Object[]> ProjectBudgets() throws Exception {
+		Query query=manager.createNativeQuery("CALL Pfms_Dashboard_Finance();");
+		List<Object[]> ProjectsBudgets=(List<Object[]>)query.getResultList();
+		return ProjectsBudgets;
+	}
+	
+	
+	@Override
+	public Object[] AllSchedulesCount(String loginid) throws Exception {
+		Query query=manager.createNativeQuery("CALL Pfms_All_Meetings_Count(:loginid);");
+		query.setParameter("loginid",loginid);
+		Object[] AllSchedulesCount=(Object[])query.getSingleResult();
+		return AllSchedulesCount;
+	}
+
+	@Override
+	public List<Object[]> ProjectMeetingCount(String ProjectId) throws Exception {
+		Query query=manager.createNativeQuery("CALL Pfms_All_Meetings_Count(:ProjectId);");
+		query.setParameter("ProjectId",ProjectId);
+		List<Object[]> ProjectMeetingCount=(List<Object[]>)query.getResultList();
+		return ProjectMeetingCount;
+	}
+
+	@Override
+	public List<Object[]> ProjectList() throws Exception {
+		
+		Query query=manager.createNativeQuery(PROJECTLIST);
+
+		return (List<Object[]>) query.getResultList();
+	}
+
+
+	@Override
+	public List<Object[]> ProjectEmployeeList(String empid,String logintype) throws Exception {
+		
+		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList (:empid,:logintype)");
+		//Query query=manager.createNativeQuery(PROJECTEMPLOYEELIST);
+		query.setParameter("empid",empid);
+		query.setParameter("logintype", logintype);
+		List<Object[]> ProjectEmployeeList=(List<Object[]>)query.getResultList();
+		return ProjectEmployeeList;
+	}
+	
+	@Override
+	public List<Object[]> ProjectQuaters(String ProjectId) throws Exception {
+
+		Query query=manager.createNativeQuery(QUATERS);
+		query.setParameter("projectid",ProjectId);
+		List<Object[]> ProjectQuaters=(List<Object[]>)query.getResultList();
+		return ProjectQuaters;
+	}
+
+	@Override
+	public List<Object[]> MileQuaters(String ProjectId, int Quater, int year) throws Exception {
+		Query query=manager.createNativeQuery(MILEQUATER);
+		query.setParameter("proid",ProjectId);
+		query.setParameter("Quater",Quater);
+		query.setParameter("yr",year);
+		List<Object[]> ProjectQuaters=(List<Object[]>)query.getResultList();
+		return ProjectQuaters;
+	}
+	
+	@Override
+	public List<Object[]> GanttChartList() throws Exception {
+		
+		Query query = manager.createNativeQuery(GANTTCHARTLIST);
+		//query.setParameter("projectid", ProjectId);
+		List<Object[]> GanttChartList= query.getResultList();
+		return GanttChartList;
+	}
+	
+	@Override
+	public List<Object[]> ProjectHealthData() throws Exception {
+		
+		Query query = manager.createNativeQuery(PROJECTHEALTHDATA);
+		List<Object[]> ProjectHealthData= query.getResultList();
+		return ProjectHealthData;
+	}
+	
+	@Override
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType) throws Exception {
+		
+		Query query = manager.createNativeQuery(PROJECTTOTALHEALTHDATA);
+		query.setParameter("projectid", ProjectId);
+		query.setParameter("empid", EmpId);
+		query.setParameter("logintype", LoginType);
+		Object[] ProjectHealthTotalData= (Object[])query.getSingleResult();
+		return ProjectHealthTotalData;
+	}
+
+	@Override
+	public long ProjectHealthInsert(ProjectHealth health) throws Exception {
+		manager.persist(health);
+
+		manager.flush();
+
+		return health.getProjectHealthId();
+	}
+	@Override
+	public Object[] ProjectHealthInsertData(String projectId) throws Exception {
+		
+		Query query = manager.createNativeQuery(PROJECTHEALTHINSERTDATA);
+		query.setParameter("projectid", projectId);
+		Object[] ProjectHealthTotalData= (Object[])query.getSingleResult();
+		return ProjectHealthTotalData;
+	}
+
+	@Override
+	public int ProjectHealthDelete(String projectId) throws Exception {
+		Query query = manager.createNativeQuery(PROJECTHEALTHDELETE);
+		query.setParameter("projectid", projectId);
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+	}
+	
+	@Override
+	public long ProjectHoaUpdate(ProjectHoa hoa)throws Exception{
+		
+		manager.merge(hoa);
+		manager.flush();
+		
+		return hoa.getProjectHoaId();
+	}
+	
+	@Override
+	public int ProjectHoaDelete() throws Exception{
+		
+		Query query = manager.createNativeQuery(PROJECTHOADELETE);
+
+		return query.executeUpdate();
+	}
+	
+	@Override
+	public Object[] ChangesTotalCountData(String ProjectId) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(CHANGESTOTALCOUNTDATA);
+		query.setParameter("projectid", ProjectId);
+		return (Object[]) query.getSingleResult();
+		
+	}
+	
+	@Override
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(MEETINGCHANGES);
+		query.setParameter("projectid", ProjectId);
+		query.setParameter("term", Interval);
+		return (List<Object[]>) query.getResultList();
+		
+	}
+	
+	@Override
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(MILESTONECHANGES);
+		query.setParameter("projectid", ProjectId);
+		query.setParameter("term", Interval);
+		return (List<Object[]>) query.getResultList();
+		
+	}
+	
+	@Override
+	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(ACTIONCHANGES);
+		query.setParameter("projectid", ProjectId);
+		query.setParameter("term", Interval);
+		return (List<Object[]>) query.getResultList();
+		
+	}
+	
+	@Override
+	public List<Object[]> RiskChanges(String ProjectId,String Interval) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(RISKCHANGES);
+		query.setParameter("projectid", ProjectId);
+		query.setParameter("term", Interval);
+		return (List<Object[]>) query.getResultList();
+		
+	}
+	
+	
+	@Override
+	public List<Object[]> FinanceDataPartA(String ProjectId,String Interval) throws Exception
+	{
+		
+		Query query = manager.createNativeQuery(FINANCEDATAPARTA);
+		query.setParameter("projectid", ProjectId);
+		//query.setParameter("term", Interval);
+		return (List<Object[]>) query.getResultList();
+		
+	}
+	
+	@Override
+	public int ProjectHoaChangesDelete(String projectId) throws Exception {
+		Query query = manager.createNativeQuery(PROJECTHOACHANGESDELETE);
+		query.setParameter("projectid", projectId);
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+	}
+	
+	@Override
+	public long ProjectHoaChangesInsert(ProjectHoaChanges changes)throws Exception{
+		
+		manager.merge(changes);
+		manager.flush();
+		
+		return 0L;
+	}
+}
+

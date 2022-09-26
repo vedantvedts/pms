@@ -1,0 +1,386 @@
+<%@page import="com.vts.pfms.FormatConverter"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.math.BigDecimal"%> 
+<%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+    
+   
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+
+<title>Briefing </title>
+
+
+ <style type="text/css">
+ 
+ p{
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+  label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+  
+ td
+ {
+ 	padding-top: 5px;
+ 	padding-bottom: 5px;
+ }
+ th
+ {
+ 	
+ 	text-align: center;
+ 	
+ }
+ 
+
+.table .font{
+	  font-family:'Muli', sans-serif !important;
+	  font-style: normal;
+	  font-size: 13px;
+	  font-weight: 400 !important;
+	 
+}
+
+.table button {
+    background-color: Transparent !important;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    text-align: left !important;
+}
+.table td{
+	padding:5px ;
+}
+ 
+ 
+  
+ .textcenter{
+ 	
+ 	text-align: center;
+ }
+ .border
+ {
+ 	border: 1px solid black;
+ }
+ .textleft{
+ 	text-align: left;
+ }
+
+
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+</style>
+
+
+<meta charset="ISO-8859-1">
+
+</head>
+<body >
+<%
+
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf=fc.getRegularDateFormat();
+SimpleDateFormat sdf1=fc.getSqlDateFormat();
+
+SimpleDateFormat sdf2=new SimpleDateFormat("dd-MM-yyyy");
+
+List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
+String projectid=(String)request.getAttribute("projectid");
+Object[] riskdata=(Object[] )request.getAttribute("riskdata");
+
+Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
+
+List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
+%>
+<%String ses=(String)request.getParameter("result"); 
+String ses1=(String)request.getParameter("resultfail");
+if(ses1!=null){
+%>
+	<center>
+	
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</center>
+	<%}if(ses!=null){ %>
+	<center>
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+
+	</center>
+	<%} %>
+
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card shadow-nohover">
+					<div class="col-md-12">
+					<div class="row card-header">
+			   			<div class="col-md-6">
+			   			<%if(riskmatrixdata==null){ %>
+							<h3>Add Risk Data</h3>
+						<%}else{ %>
+							<h3>Risk Data </h3>
+						<%} %>
+						</div>
+						<div class="col-md-6 justify-content-end" >
+						</div>
+					 </div>
+				</div>	 
+				<%if(Long.parseLong(projectid)>=0){ %>
+					<div class="card-body">	
+						<div class="row">		
+						   <div class="col-md-12">
+							<%if(riskmatrixdata==null){ %>
+							    <form method="post" action="ProjectRiskDataSubmit.htm" >
+							    	<table  style="border-collapse: collapse; border: 0px; width:70%; ">
+							    		<tr>
+								    		<td style="width: 30%">	
+								    				<label ><b>Project : </b></label> 	
+								    				<%if(Long.parseLong(projectid)==0){ %>
+								    					General
+								    				<%}else if(Long.parseLong(projectid)>0){ 					    					
+														for(Object[] obj : projectslist){ %>
+															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+														} 
+													}%>						    			
+								    		</td>
+								    		<td style="width: 50%">
+							    					<label ><b>Description : </b></label> <%=riskdata[1] %> 
+								    		</td>
+								    		
+								    		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
+							    			<td style="width: 20%">
+							    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%> 
+								    		</td>
+								    		<%}else{ %>
+								    		<td style="width: 10%">
+							    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[6])%> 
+								    		</td>
+								    		<td style="width: 10%">
+							    					<label ><b>PDC Org : </b></label> <%=sdf2.format(riskdata[5])%> 
+								    		</td>
+								    		
+								    		<%} %>
+								    		
+								    	</tr>
+							    		<tr>
+							    			<td>
+							    				<label ><b>Severity </b>  </label>
+							    			</td> 
+							    			<td >
+									    		<input class="form-control" type="text" name="severity"  required maxlength="200" >							    				
+							    			</td>
+							    		</tr>
+							    		<tr>
+							    			<td>
+							    				<label ><b>Probability </b>  </label>
+							    			</td> 
+							    			<td >	
+									    		<input class="form-control" type="text" name="probability"  required maxlength="200" >							    				
+							    			</td>
+							    		</tr>
+							    		<tr>
+							    			<td>
+							    				<label ><b>Mitigation Plans</b>  </label> 
+							    			</td> 
+							    			<td >
+									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="200">							    				
+							    			</td>
+							    		</tr>						
+							    		<tr>
+							    			<td colspan="2" class="center">
+							    				<button type="submit" class="btn btn-sm submit" style="margin-top: 15px;" >SUBMIT</button>
+							    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');" >BACK</button>
+							    			</td>
+							    		</tr>	    		
+									</table>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							    	
+							    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
+							  </form>
+							  <%}else{ %>
+							  		 <form method="post" action="ProjectRiskDataEdit.htm" id="editrevform" >
+								    	<table  style="border-collapse: collapse; border: 0px; width:70%; ">
+								    		<tr>
+								    			<td>	
+								    				<label ><b>Project : </b></label> 							    					
+													<%for(Object[] obj : projectslist){ %>
+														<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} %> 
+													<%} %>						    			
+								    			</td>
+								    			<td>
+								    					<label ><b>Description : </b></label>
+								    					<%=riskdata[1] %> 	
+								    			</td>
+								    			<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
+								    			<td >
+								    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%> 
+									    		</td>
+									    		<%}else{ %>
+									    		<td >
+								    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[6])%> 
+									    		</td>
+									    		<td ">
+								    					<label ><b>PDC Org : </b></label> <%=sdf2.format(riskdata[5])%> 
+									    		</td>
+									    		
+									    		<%} %>
+								    			
+								    		<tr>
+								    		<tr>
+								    			<td>
+								    				<label ><b>Severity </b></label>
+								    			</td> 
+								    			<td>
+										    		<input class="form-control" type="text" name="severity" value="<%=riskmatrixdata[4].toString() %>" required maxlength="200" >							    				
+								    			</td>
+								    		</tr>
+								    		<tr>
+								    			<td>
+								    				<label ><b>Probability </b></label> 
+								    			</td> 
+								    			<td>
+										    		<input class="form-control" type="text" name="probability" value="<%=riskmatrixdata[5].toString() %>" required maxlength="200">							    				
+								    			</td>
+								    		</tr>
+								    		<tr>
+								    			<td>
+								    				<label ><b>Mitigation Plans</b></label> 
+								    			</td> 
+								    			<td>
+										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6].toString() %>"  required maxlength="200" >							    				
+								    			</td>
+								    		</tr>						
+								    		<tr>
+									    		<td colspan="2" class="center" >
+									    			<%if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
+									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
+									    			<%} %>
+									    				<button type="button" class="btn btn-sm submit"  style="margin-top: 15px;" onclick="return appendrev('editrevform');" >REVISE</button>
+									    			
+									    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');"  >BACK</button>
+									    		</td>
+									    	</tr>	    		
+										</table>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										<input type="hidden" name="riskid" value="<%=riskmatrixdata[0]%>"/>
+										<input type="hidden" name="revisionno" value="<%=riskmatrixdata[7]%>"/>
+								    	<%-- <input type="hidden" name="projectid" value="<%=projectid%>"/> --%>
+								    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
+								  </form>
+								  
+							   <%} %>
+							</div>
+						</div>
+					</div>
+				<%} %>
+				</div>
+				
+				<form action="ProjectRisk.htm" method="post" id="backfrm">
+					<input type="hidden" name="projectid" value="<%=projectid%>"/>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				</form>
+				
+<!--  ----------------------------------  revision data  ---------------------------------  -->
+				<br>
+			<%if(projectriskmatrixrevlist.size()>0){ %>
+				<div class="card shadow-nohover">
+					 <div class="col-md-12">
+						<div class="row card-header">
+				   			<div class="col-md-6">
+								<h3>Revision History </h3>
+							</div>
+						</div>
+					</div>
+				<div class="card-body">					
+						
+						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >		
+							<thead>
+								<tr>
+									<th>Revision No</th>
+									<th>Description</th>
+									<th>Severity</th> 
+									<th>Probability</th>	
+									<th>Mitigation Plans</th>							
+								 	<th> Revision Date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%for(Object[] obj : projectriskmatrixrevlist){ %>
+									<tr>
+										<td class="center"><%=Long.parseLong(obj[7].toString()) %></td>
+										<td class="center"><%=obj[3] %></td>
+										<td class="center"><%=obj[4] %></td>
+										<td class="center"><%=obj[5] %></td>
+										<td class="center"><%=obj[6] %></td>
+										<td class="center"><%=sdf.format(sdf1.parse(obj[8].toString()) )%></td>
+									</tr>
+								<%} %>
+							</tbody>
+						</table>
+					
+				<%} %>
+	<!--  ----------------------------------  revision data  ---------------------------------  -->	
+					
+					</div>
+			</div>
+		</div>
+	
+	</div>
+</div>
+<script type="text/javascript">
+
+function submitForm(frmid)
+{ 
+  document.getElementById(frmid).submit(); 
+} 
+</script>
+
+
+	
+
+<script type="text/javascript">
+function appendrev(frmid){
+	 
+	      $("<input />").attr("type", "hidden")
+	          .attr("name", "rev")
+	          .attr("value", "1")
+	          .appendTo('#'+frmid);
+	     if(confirm('Are You Sure To Revise?')){
+	    	 $('#'+frmid).submit();
+	     }
+	}
+	
+	
+	
+
+$(document).ready(function(){
+	  $("#myTable").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple"
+	
+});
+  });
+</script>
+
+
+</body>
+</html>
