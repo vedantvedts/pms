@@ -232,10 +232,12 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public Object[] LabDetails(String labcode) throws Exception {
 		logger.info(new Date() +"Inside Project Details");
-		Query query=manager.createNativeQuery(LABDETAILS);
+		
 		try {
-		Object[] ProjectList=(Object[])query.getSingleResult();	
+		Query query=manager.createNativeQuery(LABDETAILS);
 		query.setParameter("labcode", labcode);
+		Object[] ProjectList=(Object[])query.getSingleResult();	
+		
 		return ProjectList;
 		}
 		catch (Exception e) {

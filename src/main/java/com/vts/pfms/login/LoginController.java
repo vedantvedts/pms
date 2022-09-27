@@ -184,6 +184,7 @@ public class LoginController {
     long LoginId=Repository.findByUsername(req.getUserPrincipal().getName()).getLoginId();
     Object[] empdetails = headerservice.EmployeeDetailes(String.valueOf(LoginId)).get(0);
     
+    System.out.println(empdetails[3].toString());
     System.out.println(headerservice.LabDetails(empdetails[3].toString())[0].toString() +"as");
     
     ses.setAttribute("Username",req.getUserPrincipal().getName());
@@ -212,7 +213,7 @@ public class LoginController {
      String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
      ses.setAttribute("empNo", empNo);
       }catch (Exception e) {
-    	
+    	e.printStackTrace();
     	 logger.error(new Date() +" Login Problem Occures When Login By "+req.getUserPrincipal().getName(), e);
      }
      
