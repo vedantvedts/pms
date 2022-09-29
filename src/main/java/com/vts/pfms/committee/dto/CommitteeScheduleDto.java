@@ -4,6 +4,7 @@ public class CommitteeScheduleDto
 {
 	
 	private Long ScheduleId;
+	private String LabCode;
 	private Long CommitteeId;
 	private Long CommitteeMainId;
 	private String ScheduleDate;
@@ -32,6 +33,12 @@ public class CommitteeScheduleDto
 	}
 	public void setPMRCDecisions(String pMRCDecisions) {
 		PMRCDecisions = pMRCDecisions;
+	}
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
 	}
 	public String getReferrence() {
 		return Referrence;
