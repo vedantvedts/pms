@@ -41,7 +41,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String MILEQUATER="CALL Pfms_Milestone_Quarter(:proid,:Quater,:yr)"; 
 	private static final String GANTTCHARTLIST="SELECT milestoneactivityid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,progressstatus,revisionno FROM milestone_activity WHERE isactive=1 ";
 	private static final String PROJECTHEALTHDATA ="CALL Project_Health_Get_Data()";
-	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype )";
+	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype,:labcode )";
 	private static final String PROJECTHEALTHINSERTDATA="CALL Project_Health_Insert_Data(:projectid)";
 	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
 	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
@@ -346,12 +346,14 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType) throws Exception {
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode) throws Exception {
 		
 		Query query = manager.createNativeQuery(PROJECTTOTALHEALTHDATA);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("empid", EmpId);
 		query.setParameter("logintype", LoginType);
+		query.setParameter("labcode", LabCode);
+		 	
 		Object[] ProjectHealthTotalData= (Object[])query.getSingleResult();
 		return ProjectHealthTotalData;
 	}

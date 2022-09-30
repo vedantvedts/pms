@@ -573,9 +573,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 
 	@Override
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType) throws Exception{
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode) throws Exception{
 		
-		return dao.ProjectHealthTotalData(ProjectId,EmpId,LoginType);
+		return dao.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode);
 	}
 
 
@@ -588,7 +588,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 		        dao.ProjectHealthDelete(obj[0].toString());
 				Object[] data=dao.ProjectHealthInsertData(obj[0].toString());
 				ProjectHealth health=new ProjectHealth();
-				health.setLabId(Long.parseLong(data[0].toString()));
+				health.setLabCode(data[0].toString());
 				health.setProjectId(Long.parseLong(data[1].toString()));
 				health.setProjectShortName(data[2].toString());
 				health.setPMRCHeld(Long.parseLong(data[3].toString()));

@@ -278,6 +278,142 @@
 	top:-8px !important;
 }
 
+/* DG Dashboard */
+
+
+.circular-progress .progress {
+  width: 110px;
+  height: 110px !important ;
+  background: none;
+  position: relative;
+  margin-bottom: 10px
+}
+
+.circular-progress .progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 15px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.circular-progress .progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.circular-progress .progress .progress-left {
+  left: 0;
+}
+
+.circular-progress .progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 15px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.circular-progress .progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.circular-progress .progress .progress-right {
+  right: 0;
+}
+
+.circular-progress .progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.circular-progress .progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.detailscard{
+	background-color: rgba(0,0,0,.08) !important;
+	border: none !important;
+}
+
+.detailscard .card-body{
+	padding:0.5rem !important;	
+}
+	
+.detailscard hr{
+	margin: 10px !important;
+}
+
+.detailscard h5{
+	margin: 0px !important;
+}
+.countstable , .normalfont{
+	font-family: 'Lato';
+	font-weight: 700;
+}
+
+@media screen and (max-width:1400px){
+	.circular-progress .progress{
+		width:75px;
+		height:75px;
+	}
+	
+	.circular-progress .progress-value .h4{
+		font-size: 12px;
+	}
+	
+	.circular-progress .progress .progress-bar {
+		border-width:7px;
+	}
+	
+	.circular-progress .progress::after {
+		border-width: 7px;	
+	}
+	
+	.bigcount h1{
+		font-size: 1.5rem !important;
+	}
+	
+	.normalfont{
+		font-size: 12px !important;
+	}
+	
+	.bigcount h4{
+		font-size: 1rem !important;
+	}
+	
+}
+.bigcount h1{
+	margin-bottom: -7px;
+}
+	
+.bigcount h4,h3{
+	margin-bottom: -4px;
+}
+
+
+
 </style>
 
 </head>
@@ -338,8 +474,9 @@ if(logintype!=null ){
 	}
 }
 
-String LoginTypes[] = {"A","P","E","Z","Y","Q"}  ;
+String LoginTypes[] = {"A","P","E","Z","Y","Q","X"}  ;
 int ProjectCount = 0;
+
 
 %>
 <%
@@ -608,7 +745,7 @@ int ProjectCount = 0;
 				</div>
 					 
 					 
-				<div class="card overall-card" id="overallcard1" style="display:none">
+				<div class="card overall-card normal-dashboard" id="overallcard1" style="display:none">
 					<div class="card-content">
 				    	<div class="card-body">
 				    	<div class="row">
@@ -824,7 +961,7 @@ int ProjectCount = 0;
 						<h2 style="color: transparent">.</h2>
 					</div>
 						
-					 <div class="card overall-card" id="overallcard2" style="display: none">
+					 <div class="card overall-card normal-dashboard" id="overallcard2" style="display: none">
 				          <div class="card-content">
 					    	<div class="card-body">
 					            <div class="row">
@@ -1128,7 +1265,7 @@ int ProjectCount = 0;
 									<h4 style="color: #145374;margin-bottom: 7px" id="projecttitle" class="health-title"> PROJECT HEALTH</h4>
 									<hr style="margin: 3px 0px 9px 0px !important">
 								</div>
-								<div class="card overall-card" id="overallcard3" style="display: none">
+								<div class="card overall-card normal-dashboard" id="overallcard3" style="display: none">
 						          <div class="card-content">
 						            <div class="card-body" >
 							            <div class="row">
@@ -1153,7 +1290,7 @@ int ProjectCount = 0;
 								<div style="display: none" class="overallheader">
 									<h2 style="color: transparent">. </h2>
 								</div>
-								<div class="card overall-card" id="overallcard4" style="display: none">
+								<div class="card overall-card normal-dashboard" id="overallcard4" style="display: none">
 						          <div class="card-content">
 						            <div class="card-body">
 							            <div class="row">
@@ -1617,10 +1754,11 @@ int ProjectCount = 0;
 		  	 <div class="btn-group "> 
 		  	 	<form action="ProjectHealthUpdate.htm" method="get">
 		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh"><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		        	<!-- <button type="button" class="btn btn5" data-toggle="tooltip" data-placement="top" title="Refresh"></button> -->
 		        </form>
 		        <button class="btn btn1">Action</button>
 		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%>   ">Project</button>
-		        <button class="btn btn3"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
+		        <button class="btn <%if (logintype.equalsIgnoreCase("X") ){%>btn5<%} else {%>btn3<%} %>"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
 		      </div>
 		  </div>	
 		  
@@ -1698,7 +1836,7 @@ int ProjectCount = 0;
 							
 <!------- Main row Activity Start -------------------->
 
-				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;" id="mainactivitystatus" >
+				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;display:none" id="mainactivitystatus" >
 							
 						<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display: none" id="activitystatusheader">
 								    Activity Status 
@@ -1968,7 +2106,7 @@ int ProjectCount = 0;
 				</div>
 			<!------------------ Activity Card End  ------------------------>
 
-					<div class="card overall-card" id="overallcard5" style="display: none;margin-top: -3px">
+					<div class="card overall-card normal-dashboard" id="overallcard5" style="display: none;margin-top: -3px">
 				          <div class="card-content">
 				            <div class="card-body" >
 								<div class="row">
@@ -2553,6 +2691,251 @@ int ProjectCount = 0;
 	</div>
 
 
+	<!-- *************************************** DG View Start ****************************************************** -->
+	
+	<div style="display:none" id="dgdashboard">
+	
+		<div class="container-fluid">
+	
+		<div class="card-deck">
+		  <div class="card detailscard">
+		    <div class="card-body">
+		      <h5 class="card-title"><img src="view/images/discuss.png" /> Meeting</h5>
+		      <hr>
+		      <div class="row">
+		      	<div class="col-md-6 circular-progress">
+		      		 <div class="progress " data-value='<%=(ProjectHealthTotalData[29] )%>'>
+			          <span class="progress-left">
+			                        <span class="progress-bar border-danger"></span>
+			          </span>
+			          <span class="progress-right">
+			                        <span class="progress-bar border-danger"></span>
+			          </span>
+			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[29] )%>%</div>
+			          </div>
+			        </div>
+			        <div><h5 style="margin-bottom: 5px">PMRC</h5></div>
+			        <hr>
+			        <table class="countstable">
+			        	<tr>
+			        		<td>Held : </td>
+			        		<td><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        	</tr>
+			        	<%-- <tr>
+			        		<td>Held : </td>
+			        		<td><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}else{ %> - <%} %></td>
+			        	</tr> --%>
+			        </table>
+		      	</div>
+		      	<div class="col-md-6 circular-progress">
+		      		 <div class="progress" data-value='<%=(ProjectHealthTotalData[30] )%>'>
+			          <span class="progress-left">
+			                        <span class="progress-bar border-success "></span>
+			          </span>
+			          <span class="progress-right">
+			                        <span class="progress-bar border-success"></span>
+			          </span>
+			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[30] )%>%</div>
+			          </div>
+			        </div>
+			        <div><h5 style="margin-bottom: 5px">EB</h5></div>
+			        <hr>
+			        <table class="countstable">
+			        	<tr>
+			        		<td>Held : </td>
+			        		<td><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+			        	</tr>
+			        	<!-- <tr>
+			        		<td>Held : </td>
+			        		<td> 100</td>
+			        	</tr> -->
+			        </table>
+		      	</div>
+		      </div>
+		    </div>
+		    
+		  </div>
+		  <div class="card detailscard">
+		    <div class="card-body">
+		      <h5 class="card-title"><img src="view/images/goal.png" /> Milestone</h5>
+		      <hr>
+		      <div class="row">
+		      	<div class="col-md-6 circular-progress">
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>'>
+			          <span class="progress-left">
+			                        <span class="progress-bar border-info"></span>
+			          </span>
+			          <span class="progress-right">
+			                        <span class="progress-bar border-info"></span>
+			          </span>
+			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>%</div>
+			          </div>
+			     	</div>
+		      	</div>
+		      	<div class="col-md-6">
+		      		<div class="bigcount">
+		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
+		      			<p class="normalfont">Completed</p>
+		      		</div>
+		      		<div class="bigcount">
+		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
+		      			<p class="normalfont">Total</p>
+		      		</div>
+		      	</div>
+		      </div>
+		    </div>
+		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+				  <thead>
+				  	<tr>
+				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td ><%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Pending</th>
+				      <th scope="col" >Delayed</th>
+				    </tr>
+				  </tbody>
+			</table>
+		  </div>
+		  <div class="card detailscard">
+		    <div class="card-body">
+		      <h5 class="card-title"><img src="view/images/action1.png" /> Action</h5>
+		      <hr>
+		      <div class="row">
+		      	<div class="col-md-6 circular-progress">
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[31] !=null){%><%=ProjectHealthTotalData[31] %><%} %>'>
+			          <span class="progress-left">
+			                        <span class="progress-bar border-primary"></span>
+			          </span>
+			          <span class="progress-right">
+			                        <span class="progress-bar border-primary"></span>
+			          </span>
+			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[31] !=null){%><%=ProjectHealthTotalData[31] %><%} %>%</div>
+			          </div>
+			     	</div>
+		      	</div>
+		      	<div class="col-md-6">
+		      		<div class="bigcount">
+		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%} %></h1>
+		      			<p class="normalfont">Completed</p>
+		      		</div>
+		      		<div class="bigcount">
+		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=ProjectHealthTotalData[15] %><%} %></h4>
+		      			<p class="normalfont">Total</p>
+		      		</div>
+		      	</div>
+		      </div>
+		    </div>
+		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+				  <thead>
+				  	<tr>
+				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[13] !=null){%><%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[12] !=null){%><%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td><%if(ProjectHealthTotalData[11] !=null){%><%=ProjectHealthTotalData[11] %><%} %></td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Delayed</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Forwarded</th>
+				      <th scope="col">Pending</th>
+				    </tr>
+				  </tbody>
+			</table>
+		  </div>
+		  <div class="card detailscard">
+		    <div class="card-body">
+		      <h5 class="card-title"><img src="view/images/risk 1.png" /> Risk</h5>
+		      <hr>
+		      <div class="row">
+		      	<div class="col-md-6 circular-progress">
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[32] !=null){%><%=ProjectHealthTotalData[32] %><%} %>'>
+			          <span class="progress-left">
+			                        <span class="progress-bar border-danger"></span>
+			          </span>
+			          <span class="progress-right">
+			                        <span class="progress-bar border-danger"></span>
+			          </span>
+			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[32] !=null){%><%=ProjectHealthTotalData[32] %><%} %>%</div>
+			          </div>
+			     	</div>
+		      	</div>
+		      	<div class="col-md-6">
+		      		<div class="bigcount">
+		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
+		      			<p class="normalfont">Completed</p>
+		      		</div>
+		      		<div class="bigcount">
+		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
+		      			<p class="normalfont">Total</p>
+		      		</div>
+		      	</div>
+		      </div>
+		    </div>
+		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+				  <thead>
+				  	<tr>
+				  		<td style="border-right:1px solid darkgrey;">-</td>
+				  		<td><%if(ProjectHealthTotalData[17] !=null){%><%=ProjectHealthTotalData[17] %><%} %></td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Delayed</th>
+				      <th scope="col">Pending</th>
+				    </tr>
+				  </tbody>
+			</table>
+		  </div>
+		  <div class="card detailscard">
+		    <div class="card-body">
+		      <h5 class="card-title"><img src="view/images/rupee.png" /> Finance</h5>
+		      <hr>
+		      <div>
+		      	<div class="bigcount">
+		      			<h3 style="color:#CD1818">&#8377;<%if(ProjectHealthTotalData[22]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[22].toString() ))))%><%} %></h3>
+		      			<p class="normalfont">Balance</p>
+		      	</div>
+		      	<div class="bigcount">
+		      			<h4>&#8377;<%if(ProjectHealthTotalData[23]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[23].toString() ))))%><%} %></h4>
+		      			<p class="normalfont">Total</p>
+		      	</div>
+		      </div>
+		    </div>
+		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;font-size: 14px">
+				  <thead>
+				  	<tr>
+				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[19]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[19].toString() ))))%><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[20]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[20].toString() ))))%><%} %></td>
+				  		<td ><%if(ProjectHealthTotalData[21]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[21].toString() ))))%><%} %></td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Exp</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">O/S</th>
+				      <th scope="col" >Dipl</th>
+				    </tr>
+				  </tbody>
+			</table>
+		  </div>	 
+	
+		</div>
+		</div>
+	
+	</div>
+	
+	
+	<!-- *************************************** DG View End ****************************************************** -->
+
+
 
 	<form method="post" action="ActionWiseAllReport.htm" name="dateform" id="dateform">                                                    	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 													
@@ -2610,6 +2993,36 @@ int ProjectCount = 0;
 
 <script type="text/javascript">
 
+$(function() {
+
+	  $(".progress").each(function() {
+
+	    var value = $(this).attr('data-value');
+	    var left = $(this).find('.progress-left .progress-bar');
+	    var right = $(this).find('.progress-right .progress-bar');
+
+	    if (value > 0) {
+	      if (value <= 50) {
+	        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+	      } else {
+	        right.css('transform', 'rotate(180deg)')
+	        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+	      }
+	    }
+
+	  })
+
+	  function percentageToDegrees(percentage) {
+
+	    return percentage / 100 * 360
+
+	  }
+
+	});
+
+
+
+
 function ChangesForm(value){
 	
 	$('#intervalchanges').val(value);
@@ -2655,10 +3068,14 @@ function overalldoc(){
 }
 
  $(document).ready(function(){
-	
+
 	 var logintype= '<%=(String)request.getAttribute("logintype")%>';
-		if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){
-			$('.btn3').click();
+	 
+	 	if(logintype=='X'){
+	 		$('.btn5').click();
+	 	}
+	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){		
+				$('.btn3').click();
 		} else{
 			$('.btn1').click();
 		}
@@ -2760,7 +3177,7 @@ $('.btn4').hide();
 	$("#reviewheader2").css("display","block");
 	$("#mainactivitystatus").css("display","block");
 	
-	
+	$('#dgdashboard').css("display","none");
 	
 }) 
 
@@ -2772,6 +3189,9 @@ $('.btn2').click(function(){
 	$('.btn1').css('color','black');
 	$('.btn3').css('background-color','white');
 	$('.btn3').css('color','black');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
+	
 	$("#projectname").css("display","block");
 	$("#projectdropdown").css("display","block");
 	$("#financialdata").css("display","block");
@@ -2805,7 +3225,7 @@ $('.btn2').click(function(){
 	$(".overallheader").css("display","none");
 	$('#projectgraph').css("display","none");
 	
-	
+	$('#dgdashboard').css("display","none");
 	
 })
 
@@ -2856,7 +3276,58 @@ $('.btn3').click(function(){
 	<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
 	document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
 	
+	$('#dgdashboard').css("display","none");
+	
 })
+
+$('.btn5').click(function(){
+	
+	
+	$('.btn5').css('background-color','green');
+	$('.btn5').css('color','white');
+	$('.btn1').css('background-color','white');
+	$('.btn1').css('color','black');
+	$('.btn2').css('background-color','white');
+	$('.btn2').css('color','black');
+	
+	$('#dgdashboard').css("display","block");
+
+	$("#todayschedules").css("display","none");
+	$("#quicklinks").css("display","none");
+	$("#approvalblock").css("display","none");
+	$("#mytasks").css("display","none");
+	$("#upcomingschedules").css("display","none");
+	$("#mytaskdetails").css("display","none");
+	$("#noticeboard").css("display","none");
+	$("#review").css("display","none");
+	$("#reviewheader").css("display","none");
+	$("#review2").css("display","none");
+	$("#reviewheader2").css("display","none");
+	$("#projectname").css("display","none");
+	$("#projectdropdown").css("display","none");
+	$("#financialdata").css("display","none");
+	$("#financialdataerror").css("display","none");
+	$("#ganttchart").css("display","none");
+	$("#activitystatusheader").css("display","none");
+	$("#activitystatus").css("display","none");
+	$("#meetingblock").css("display","none");
+	$("#projectdetails1").css("display","none");
+	$("#projectdetails2").css("display","none");
+	$('#mainactivitystatus').css("display","none");	
+	$('#projectgraph').css("display","none");
+	$("#overalltable").css("display","none");
+	$("#force-btn").css("display","none");
+	$("#overallcard1").css("display","none");
+	$("#overallcard2").css("display","none");
+	$("#overallcard3").css("display","none");
+	$("#overallcard4").css("display","none");
+	$("#overallcard5").css("display","none");
+	$(".overallheader").css("display","none");
+	$('#projectgraph').css("display","none");
+	
+})
+
+
 
 $(document).ready(function(){
 
@@ -3102,10 +3573,15 @@ $('#fdate').daterangepicker({
 <script>
 //document.getElementById("brandname").style.marginLeft = "-20%";
 var projectId=$("#projectIdD").val();
-
 var Overall="<%=(String)request.getParameter("Overall")%>"
+var logintype="<%=logintype%>";
+
 if(Overall=='Overall'){
-	$('.btn3').click();
+	if( logintype == 'X'){
+		$('.btn5').click();
+	}else{
+		$('.btn3').click();
+	}
 }
 
 
@@ -3744,14 +4220,7 @@ $projectid=value;
 			}
 
 		})
-		
-			
-		
-		
-		
-		
-		
-		
+
 
 }
 
