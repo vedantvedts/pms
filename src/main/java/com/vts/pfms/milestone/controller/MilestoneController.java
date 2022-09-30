@@ -108,6 +108,7 @@ public class MilestoneController {
 		String UserId = (String) ses.getAttribute("Username");
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
 		try {
 	        String ProjectId=req.getParameter("ProjectId");
@@ -115,7 +116,7 @@ public class MilestoneController {
 				Map md=model.asMap();
 				ProjectId=(String)md.get("ProjectId");
 			}	
-	        List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype);
+	        List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	        
 	        if(projlist.size()==0) 
 	        {				
@@ -185,6 +186,7 @@ public class MilestoneController {
 	public String MilestoneActivityAssigneeList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside M-A-AssigneeList.htm "+UserId);		
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -194,7 +196,7 @@ public class MilestoneController {
 				Map md=model.asMap();
 				ProjectId=(String)md.get("ProjectId");
 			}	
-	        List<Object[] > projlist=service.LoginProjectDetailsList(EmpId,"A");
+	        List<Object[] > projlist=service.LoginProjectDetailsList(EmpId,"A",LabCode);
 	        if(ProjectId==null) {
 	        	try {
 	        		Object[] pro=projlist.get(0);
@@ -1261,6 +1263,7 @@ public class MilestoneController {
 	 		String Logintype= (String)ses.getAttribute("LoginType");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	 		String UserId = (String) ses.getAttribute("Username");
+	 		String LabCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside TestingFileRepo.htm "+UserId);
 			try {
 				String ProjectId=req.getParameter("projectid");
@@ -1297,7 +1300,7 @@ public class MilestoneController {
 				req.setAttribute("doclev3", doclev3);
 				req.setAttribute("GlobalFileSize", GlobalFileSize);
 				req.setAttribute("ProjectId", ProjectId);
-				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype));
+				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 				req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(ProjectId));
 			}
 			catch (Exception e) {
@@ -1906,10 +1909,11 @@ public class MilestoneController {
 			String UserId = (String) ses.getAttribute("Username");
 			String Logintype= (String)ses.getAttribute("LoginType");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileRepMaster.htm "+UserId);
 			
 			try {
-				List<Object[] > projectslist= service.LoginProjectDetailsList(EmpId,Logintype);				
+				List<Object[] > projectslist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);				
 				String projectid=req.getParameter("projectid");
 				Map md = model.asMap();
 				if(projectid==null) {		
@@ -2139,6 +2143,7 @@ public class MilestoneController {
 			String UserId = (String) ses.getAttribute("Username");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
+			String LabCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside ProjectDocumets.htm "+UserId);
 			try {
 				String projectid=req.getParameter("projectid");
@@ -2151,7 +2156,7 @@ public class MilestoneController {
 				}
 				req.setAttribute("DocumentTypeList",service.DocumentTypeList(projectid));
 				req.setAttribute("projectid", projectid);
-				req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId, Logintype));
+				req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId, Logintype ,LabCode));
 				return "filerepo/ProjectDocument";
 			}
 			catch (Exception e) {

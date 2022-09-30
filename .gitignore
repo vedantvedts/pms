@@ -20,7 +20,9 @@ dist/
 *.jar
 
 # Maven
-target/
+/target/
+*/target/**
+**/META-INF/
 dist/
 
 # JetBrains IDE

@@ -61,7 +61,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMEMBERDELETE ="UPDATE committee_member SET isactive=0, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE committeememberid=:committeememberid";
 	private static final String COMMITTEESCHEDULELIST="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=0 AND cs.committeeid=:committeeid AND cs.projectid=0 AND cs.divisionid=0 AND cs.initiationid=0 AND cs.isactive=1 ";
 	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid,c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,d.category ,a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen FROM committee_schedule a,committee b ,committee_meeting_status c, pfms_security_classification d WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND a.confidential=d.categoryid";
-	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
+	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1 and labcode=:labcode";
 	private static final String AGENDALIST = "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,a.agendapriority,a.presenterid ,j.empname,h.designation,a.duration,j.desigid  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a  WHERE a.projectid=b.projectid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND j.desigid=h.desigid  UNION   SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,(SELECT labcode FROM lab_master) AS projectname, '0' AS projectid,a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,j.empname,h.designation,a.duration,j.desigid  FROM employee j,employee_desig h, committee_schedules_agenda a   WHERE a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid=0 AND a.presenterid=j.empid AND j.desigid=h.desigid ORDER BY 9   ";
 	private static final String COMMITTEESCHEDULEUPDATE="UPDATE committee_schedule SET scheduledate=:scheduledate,schedulestarttime=:schedulestarttime,modifiedby=:modifiedby,modifieddate=:modifieddate, meetingid=:meetingid WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESPECLIST="SELECT a.minutesid,a.scheduleminutesid,a.schedulesubid,a.minutessubid,a.minutessubofsubid,a.details,a.scheduleid,a.idarck,b.outcomename FROM committee_schedules_minutes_details a,committee_schedules_minutes_outcome b WHERE a.idarck=b.idarck and a.scheduleid=:scheduleid";
@@ -437,10 +437,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 
 	@Override
-	public List<Object[]> ProjectList() throws Exception {
+	public List<Object[]> ProjectList(String LabCode) throws Exception {
 
 		logger.info(new java.util.Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTLIST);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();
 		return ProjectList;
 	}
@@ -1083,11 +1084,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> MeetingSearchList(String MeetingId) throws Exception {
+	public List<Object[]> MeetingSearchList(String MeetingId ) throws Exception {
 
 		logger.info(new java.util.Date() +"Inside MeetingSearchList");
 		Query query=manager.createNativeQuery(MEETINGSEARCHLIST);
-		query.setParameter("meetingid",MeetingId);	
+		query.setParameter("meetingid",MeetingId);
+		
 		return (List<Object[]>) query.getResultList();
 	}
 	

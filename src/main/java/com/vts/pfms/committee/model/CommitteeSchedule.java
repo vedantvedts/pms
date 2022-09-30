@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long ScheduleId;
+		private String LabCode;
 		private Long CommitteeId;
 		private Long CommitteeMainId;
 		private Date ScheduleDate;
@@ -44,6 +45,12 @@ import javax.persistence.Entity;
 		}
 		public void setMeetingId(String meetingId) {
 			MeetingId = meetingId;
+		}
+		public String getLabCode() {
+			return LabCode;
+		}
+		public void setLabCode(String labCode) {
+			LabCode = labCode;
 		}
 		public long getProjectId() {
 			return ProjectId;
