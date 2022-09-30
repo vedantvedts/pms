@@ -143,6 +143,7 @@ public class CommitteeController {
 	public String CommitteeAddPage(HttpServletRequest req, HttpSession ses) throws Exception
 	{	
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeAdd.htm "+UserId);
 		String projectid=req.getParameter("projectid");
 		String projectappliacble=req.getParameter("projectappliacble");
@@ -153,7 +154,7 @@ public class CommitteeController {
 		}		
 		req.setAttribute("projectid",projectid);
 		req.setAttribute("projectappliacble",projectappliacble);
-		req.setAttribute("projectslist",service.ProjectList());		
+		req.setAttribute("projectslist",service.ProjectList(LabCode));		
 		return "committee/CommitteeAdd";
 	}
 	
@@ -231,6 +232,7 @@ public class CommitteeController {
 	public String CommitteeList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");		
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeList.htm "+UserId);
 		try {		
 			String projectid=req.getParameter("projectid");
@@ -262,7 +264,7 @@ public class CommitteeController {
 			List<Object[]> committeelist=null;			
 			committeelist= service.CommitteeListActive(projectid,projectappliacble);			
 			req.setAttribute("projectappliacble",projectappliacble);
-			req.setAttribute("projectslist",service.ProjectList());
+			req.setAttribute("projectslist",service.ProjectList(LabCode));
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("committeelist",committeelist);
 			return "committee/CommitteeList";
@@ -279,7 +281,7 @@ public class CommitteeController {
 	{
 		String UserId = (String) ses.getAttribute("Username");		
 		logger.info(new Date() +"Inside CommitteeEdit.htm "+UserId);
-		
+		String LabCode =(String) ses.getAttribute("labcode");
 		try {
 			String committeeid=req.getParameter("committeeid");
 			Object[] CommitteeDetails=service.CommitteeDetails(committeeid);			
@@ -289,7 +291,7 @@ public class CommitteeController {
 				req.setAttribute("projectdetails",service.projectdetails(projectid));
 			}
 			req.setAttribute("committeedetails",CommitteeDetails );	
-			req.setAttribute("projectslist",service.ProjectList());		
+			req.setAttribute("projectslist",service.ProjectList(LabCode));		
 			return "committee/CommitteeEdit";
 		}
 		catch (Exception e) {
@@ -419,7 +421,7 @@ public class CommitteeController {
 				return "redirect:/MainDashBoard.htm";
 			}
 			
-			List<Object[]> projectdetailslist=service.ProjectList();
+			List<Object[]> projectdetailslist=service.ProjectList(LabCode);
 			if(Long.parseLong(projectid)>0 && (projectdetailslist.size()==0 || projectdetailslist==null) && !projectid.equals("0")) 
 			{
 				redir.addAttribute("resultfail", "No Project is Assigned To You.");
@@ -791,6 +793,7 @@ public class CommitteeController {
 			String initiationid=req.getParameter("initiationid");
 			
 			CommitteeScheduleDto committeescheduledto=new CommitteeScheduleDto(); 
+			committeescheduledto.setLabCode((String) ses.getAttribute("labcode"));
 			committeescheduledto.setCommitteeId(Long.parseLong(req.getParameter("committeeid")));
 			committeescheduledto.setScheduleDate(req.getParameter("startdate"));
 			committeescheduledto.setScheduleStartTime(req.getParameter("starttime"));
@@ -896,6 +899,7 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeScheduleAgenda.htm "+UserId);
 		try
 		{
+			
 			String CommitteeScheduleId= null;			
 			if (req.getParameter("scheduleid") != null) 
 			{
@@ -912,7 +916,7 @@ public class CommitteeController {
 			String projectid = scheduledata[9].toString();
 			
 			req.setAttribute("scheduledata",scheduledata);
-			req.setAttribute("projectlist", service.ProjectList());
+			req.setAttribute("projectlist", service.ProjectList(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("labdata", service.LabDetails());			
@@ -1669,6 +1673,7 @@ public class CommitteeController {
 	public String CommitteeInvitations(Model model, HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir,HttpSession ses) throws Exception 
 	{
 		String UserId=(String)ses.getAttribute("Username");
+
 		logger.info(new Date() +"Inside CommitteeInvitations.htm "+UserId);
 		try
 		{
@@ -1678,8 +1683,8 @@ public class CommitteeController {
 				Map md = model.asMap();
 				committeescheduleid = (String) md.get("committeescheduleid");
 			}
-			
-			Object[] committeescheduledata =service.CommitteeScheduleData(committeescheduleid);
+			System.out.println(committeescheduleid);
+			Object[] committeescheduledata =service.CommitteeScheduleData(committeescheduleid );
 			
 			String committeeid=committeescheduledata[7].toString();
 			String projectid=committeescheduledata[11].toString();
@@ -3243,6 +3248,7 @@ public class CommitteeController {
 	@RequestMapping(value = "MeetingSearch.htm")
 	public String ActionSearch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
+		
 		logger.info(new Date() +"Inside MeetingSearch.htm "+UserId);
 		try
 		{
@@ -3255,7 +3261,7 @@ public class CommitteeController {
 		
 			if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A") ) {
 				
-				req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search")));
+				req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ));
 				
 			}
 			else {
@@ -4399,6 +4405,7 @@ public class CommitteeController {
 	 public String AgendasFromPreviousMeetingsAdd(HttpServletRequest req,HttpServletResponse res,HttpSession ses,RedirectAttributes redir)
 	 {
 		 	String UserId =(String)ses.getAttribute("Username");
+		 
 			logger.info(new Date() +"Inside AgendasFromPreviousMeetingsAdd.htm "+UserId);		
 			try {
 				String scheduleidto = req.getParameter("scheduleidto");
@@ -4408,7 +4415,7 @@ public class CommitteeController {
 				
 				if(search!=null)
 				{
-					req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search")));					
+					req.setAttribute("meetingsearch", service.MeetingSearchList(search));					
 				}
 				
 				if(scheduleidfrom!=null)
@@ -4460,7 +4467,7 @@ public class CommitteeController {
 	 
 	@RequestMapping(value = "NonProjectCommitteeAutoSchedule.htm")
 	public String NonProjectCommitteeAutoSchedule(Model model,HttpServletRequest req,HttpServletResponse res,HttpSession ses,RedirectAttributes redir)
-	{
+	{	
 		String UserId =(String)ses.getAttribute("Username");
 		
 		logger.info(new Date() +"Inside NonProjectCommitteeAutoSchedule.htm "+UserId);		
