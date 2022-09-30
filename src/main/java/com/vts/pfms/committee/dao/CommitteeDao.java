@@ -52,7 +52,7 @@ public interface CommitteeDao {
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid) throws Exception;
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> ProjectList() throws Exception;
+	public List<Object[]> ProjectList(String LabCode) throws Exception;
 	public Long CommitteeAgendaSubmit(CommitteeScheduleAgenda scheduleagenda) throws Exception;
 	public Long CommitteeScheduleUpdate(CommitteeSchedule committeeschedule) throws Exception;
 	public List<Object[]> CommitteeMinutesSpecList(String CommitteeScheduleId) throws Exception;
@@ -106,7 +106,7 @@ public interface CommitteeDao {
 
 
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception;
-	public List<Object[]> MeetingSearchList(String MeetingId) throws Exception;
+	public List<Object[]> MeetingSearchList(String MeetingId ) throws Exception;
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception;
 	public Object[] LabDetails() throws Exception;
 	

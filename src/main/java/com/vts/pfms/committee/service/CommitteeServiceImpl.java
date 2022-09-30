@@ -415,7 +415,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside CommitteeScheduleAddSubmit");
 		CommitteeSchedule committeeschedule=new  CommitteeSchedule(); 
 		
-			
+		committeeschedule.setLabCode(committeescheduledto.getLabCode());	
 		committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
 		committeeschedule.setProjectId(Long.parseLong(committeescheduledto.getProjectId()));
 		committeeschedule.setCreatedBy(committeescheduledto.getCreatedBy());
@@ -476,10 +476,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> ProjectList() throws Exception {
+	public List<Object[]> ProjectList(String LabCode) throws Exception {
 		
 		logger.info(new Date() +"Inside ProjectList");
-		return dao.ProjectList();
+		return dao.ProjectList(LabCode);
 	}
 	
 	@Override
@@ -1255,10 +1255,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> MeetingSearchList(String MeetingId) throws Exception {
+	public List<Object[]> MeetingSearchList(String MeetingId ) throws Exception {
 
 		logger.info(new Date() +"Inside MeetingSearchList");
-		return dao.MeetingSearchList("%"+MeetingId+"%");
+		return dao.MeetingSearchList("%"+MeetingId+"%" );
 
 	}
 

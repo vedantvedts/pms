@@ -54,7 +54,7 @@ public interface CommitteeService {
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid) throws Exception;
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> ProjectList() throws Exception;
+	public List<Object[]> ProjectList(String LabCode) throws Exception;
 	//public long CommitteeMainEdit(CommitteeMainDto committeemaindto) throws Exception;
  	public Long CommitteeAgendaSubmit(List<CommitteeScheduleAgendaDto> scheduleagendadtos) throws Exception;
 	public int CommitteeAgendaDelete(String committeescheduleagendaid, String attachmentid,String Modifiedby, String  scheduleid,String AgendaPriority) throws Exception;
@@ -108,7 +108,7 @@ public interface CommitteeService {
 
 	
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception;
-	public List<Object[]> MeetingSearchList(String MeetingId) throws Exception;
+	public List<Object[]> MeetingSearchList(String MeetingId ) throws Exception;
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception;
 	public Object[] LabDetails() throws Exception;
 	

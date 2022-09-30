@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -1483,6 +1484,7 @@ public class PrintController {
 	    		Object[] prodetails=service.ProjectDataDetails(proid);
 	    		projectdatadetails.add(prodetails);
 	    		
+	   
 	    		
 	    		String[] pdfs=new String[4];
 				if(prodetails!=null && prodetails.length>0)
@@ -1491,8 +1493,10 @@ public class PrintController {
 					if(prodetails[3]!=null) {
 						try {
 							//config
-							pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[3])));
-						}catch (Exception e) {
+							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[3]))) {
+								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[3])));
+							}
+						}catch ( FileNotFoundException  e) {
 							e.printStackTrace();
 							pdfs[0]=null;
 						}
@@ -1500,33 +1504,43 @@ public class PrintController {
 					if(prodetails[5]!=null) {
 						try {
 								//producttree
-							pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[5])));
-						}catch (Exception e) {
+							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[5]))) {
+								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[5])));
+							}
+						}catch (FileNotFoundException e) {
 							pdfs[1]=null;
 						}
 					}
 					if(prodetails[6]!=null) {
 						try {
 								//pearlimg
-							pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[6])));
-						}catch (Exception e) {
+							
+							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[6]))) {
+								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[6])));
+							}
+						
+						}catch (FileNotFoundException e) {
 							pdfs[2]=null;
 						}
 					}
 					if(prodetails[4]!=null) {
 						try {
 							//Sysspecs
+							
+							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[4]))) {
 								pdfs[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[4])));
-							}catch (Exception e) {
+						}
+						
+							}catch (FileNotFoundException e) {
 								e.printStackTrace();
 								pdfs[3]=null;
 							}
 					}
 						
 				}
-				
 				pdffiles.add(pdfs);
 				
+	    		
 	    		
 	    		
 		/* -------------------------------------------------------------------------------------------------------------- */  		
