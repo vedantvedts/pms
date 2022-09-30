@@ -228,7 +228,7 @@ public class LoginController {
     	String LoginType=(String)ses.getAttribute("LoginType");
     	String LoginId=String.valueOf(ses.getAttribute("LoginId"));
     	String empNo=(String)ses.getAttribute("empNo"); 
-    	
+    	String LabCode  = (String)ses.getAttribute("labcode");
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
 			ProjectId=req.getParameter("projectid");
@@ -313,9 +313,9 @@ public class LoginController {
 					}
 
 					//req.setAttribute("AllSchedulesCount", rfpmainservice.AllSchedulesCount(LoginType,LoginId));
-			    	req.setAttribute("actionscount",rfpmainservice.AllActionsCount(LoginType,EmpId,LoginId));
-			    	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,EmpId));
-			    	req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType,EmpId));
+			    	req.setAttribute("actionscount",rfpmainservice.AllActionsCount(LoginType,EmpId,LoginId,LabCode));
+			    	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,EmpId,LabCode));
+			    	req.setAttribute("ProjectMeetingCount", rfpmainservice.ProjectMeetingCount(LoginType,EmpId,LabCode));
 			    	req.setAttribute("ganttchartlist", rfpmainservice.GanttChartList());
 
 					/*
@@ -745,6 +745,7 @@ public class LoginController {
     	try {
     	String Empid= ses.getAttribute("EmpId").toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
+    	String LabCode=(String)ses.getAttribute("labcode");
     	String ProjectId = "A";
     	String Interval = "T";
     	String ActiveTab = "all-tab_alltab";
@@ -763,7 +764,7 @@ public class LoginController {
     	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval);
     	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval) ;
     	
-    	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,Empid));
+    	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,Empid,LabCode));
     	req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
     	req.setAttribute("meetingchangesdata", MeetingChangesData);
     	req.setAttribute("milestonechangesdata", MilestoneChangesData);

@@ -54,7 +54,7 @@ public interface ActionService {
 	public List<Object[]> getMeetingAlertList() throws Exception;
 	public List<Object[]> getMeetingToday(String empid) throws Exception;
 	public List<Object[]> getMeetingTommo(String empid) throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype , String LabCode) throws Exception;
 	public List<Object[]> AllEmpNameDesigList() throws Exception;
 	public List<Object[]> ProjectEmpList(String projectid) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype,String projectid) throws Exception;

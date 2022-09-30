@@ -1683,7 +1683,7 @@ public class CommitteeController {
 				Map md = model.asMap();
 				committeescheduleid = (String) md.get("committeescheduleid");
 			}
-			System.out.println(committeescheduleid);
+			
 			Object[] committeescheduledata =service.CommitteeScheduleData(committeescheduleid );
 			
 			String committeeid=committeescheduledata[7].toString();
@@ -1691,7 +1691,7 @@ public class CommitteeController {
 			String divisionid=committeescheduledata[13].toString();
 			String initiationid=committeescheduledata[14].toString();
 			
-			List<Object[]>committeeinvitedlist = service.CommitteeAtendance(committeescheduleid);
+			List<Object[]> committeeinvitedlist = service.CommitteeAtendance(committeescheduleid);
 						
 			if(committeeinvitedlist.size()==0) 
 			{	
@@ -1718,7 +1718,8 @@ public class CommitteeController {
 				return "committee/CommitteeInvitation";
 			}
 			else
-			{				
+			{
+				System.out.println(committeescheduledata[1].toString() +"        Committees");
 				List<Object[]> EmployeeList = service.EmployeeListNoInvitedMembers(committeescheduleid);
 				List<Object[]> ExpertList = service.ExternalMembersNotInvited(committeescheduleid);
 	
@@ -2254,6 +2255,7 @@ public class CommitteeController {
 	{		
 		
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBasedSchedule.htm "+UserId);
 		try {
 			String Logintype= (String)ses.getAttribute("LoginType");
@@ -2262,7 +2264,7 @@ public class CommitteeController {
 			String committeeid=req.getParameter("committeeid");
 			
 			String loginid= ses.getAttribute("LoginId").toString();
-			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype);
+			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
 			if(projectdetailslist.size()==0) 
 			{				
@@ -2553,6 +2555,7 @@ public class CommitteeController {
 	{
 		String UserId=(String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMaster.htm "+UserId);
 		try {
 			String LoginType=(String)ses.getAttribute("LoginType");
@@ -2564,7 +2567,7 @@ public class CommitteeController {
 			String loginid= ses.getAttribute("LoginId").toString();
 			List<Object[]> projectdetailslist=null;
 			
-			projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType);
+			projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 			
 			
 			if(projectdetailslist.size()==0) {				
@@ -2670,7 +2673,7 @@ public class CommitteeController {
 	public String CommitteeAutoSchedule(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
 		
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeAutoSchedule.htm "+UserId);
 		try
 		{	
@@ -2678,7 +2681,7 @@ public class CommitteeController {
 			String LoginType=(String)ses.getAttribute("LoginType");
 				
 			List<Object[]> projectdetailslist=null;
-			projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType);
+			projectdetailslist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 			
 			if(projectdetailslist.size()==0) {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -2836,6 +2839,7 @@ public class CommitteeController {
 	public String CommitteeAutoScheduleList( Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeAutoScheduleList.htm "+UserId);
 		try
 		{
@@ -2844,7 +2848,7 @@ public class CommitteeController {
 				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				String LoginType=(String)ses.getAttribute("LoginType");
 				List<Object[]> projectdetailslist = null; 
-				projectdetailslist= service.LoginProjectDetailsList(EmpId, LoginType);
+				projectdetailslist= service.LoginProjectDetailsList(EmpId, LoginType,LabCode);
 				if(projectdetailslist.size()==0) {				
 					redir.addAttribute("resultfail", "No Project is Assigned to you.");
 					return "redirect:/MainDashBoard.htm";
@@ -3248,7 +3252,7 @@ public class CommitteeController {
 	@RequestMapping(value = "MeetingSearch.htm")
 	public String ActionSearch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
-		
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingSearch.htm "+UserId);
 		try
 		{
@@ -3261,7 +3265,7 @@ public class CommitteeController {
 		
 			if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A") ) {
 				
-				req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ));
+				req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ,LabCode));
 				
 			}
 			else {
@@ -3846,6 +3850,7 @@ public class CommitteeController {
 	public String MeetingReports(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingReports.htm "+UserId);		
 		 try 
 		 {
@@ -3870,7 +3875,7 @@ public class CommitteeController {
 			
 			req.setAttribute("initiationlist",service.InitiatedProjectDetailsList());
 			req.setAttribute("divisionlist",service.LoginDivisionList(EmpId)); 
-			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType));
+			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
 			req.setAttribute("Term", term);
 			req.setAttribute("typeid", typeid);
 			req.setAttribute("projectid",projectid );
@@ -4111,7 +4116,7 @@ public class CommitteeController {
 		req.setAttribute("fdate",fdate);
 		
 		String loginid= ses.getAttribute("LoginId").toString();
-		req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType));
+		req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
 		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		req.setAttribute("Project",Project);
 		req.setAttribute("Employee", Emp);
@@ -4154,7 +4159,7 @@ public class CommitteeController {
 		req.setAttribute("fdate",fdate);
 		
 		String loginid= ses.getAttribute("LoginId").toString();
-		req.setAttribute("ProjectList", service.LoginProjectDetailsList(loginid,LoginType));
+		req.setAttribute("ProjectList", service.LoginProjectDetailsList(loginid,LoginType,LabCode));
 		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		req.setAttribute("Project",Project);
 		req.setAttribute("Employee", Emp);
@@ -4228,6 +4233,7 @@ public class CommitteeController {
 		
 		String UserId =(String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingsStatusReports.htm "+UserId);		
 		try {
 			String projectid=req.getParameter("projectid");
@@ -4245,7 +4251,7 @@ public class CommitteeController {
 			} 
 			else if(Logintype.equals("P"))
 			{
-				List<Object[]> projectlist= service.LoginProjectDetailsList(EmpId,Logintype);
+				List<Object[]> projectlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 				if(projectlist.size()==0) {
 					
 					redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -4405,7 +4411,7 @@ public class CommitteeController {
 	 public String AgendasFromPreviousMeetingsAdd(HttpServletRequest req,HttpServletResponse res,HttpSession ses,RedirectAttributes redir)
 	 {
 		 	String UserId =(String)ses.getAttribute("Username");
-		 
+		 	String LabCode =(String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside AgendasFromPreviousMeetingsAdd.htm "+UserId);		
 			try {
 				String scheduleidto = req.getParameter("scheduleidto");
@@ -4415,7 +4421,7 @@ public class CommitteeController {
 				
 				if(search!=null)
 				{
-					req.setAttribute("meetingsearch", service.MeetingSearchList(search));					
+					req.setAttribute("meetingsearch", service.MeetingSearchList(search,LabCode));					
 				}
 				
 				if(scheduleidfrom!=null)

@@ -298,12 +298,13 @@ public class RfpMainDaoImpl implements RfpMainDao {
 
 
 	@Override
-	public List<Object[]> ProjectEmployeeList(String empid,String logintype) throws Exception {
+	public List<Object[]> ProjectEmployeeList(String empid,String logintype,String LabCode) throws Exception {
 		
-		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList (:empid,:logintype)");
+		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList (:empid,:logintype,:labcode)");
 		//Query query=manager.createNativeQuery(PROJECTEMPLOYEELIST);
 		query.setParameter("empid",empid);
 		query.setParameter("logintype", logintype);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> ProjectEmployeeList=(List<Object[]>)query.getResultList();
 		return ProjectEmployeeList;
 	}

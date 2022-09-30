@@ -44,7 +44,7 @@ public interface RfpMainDao {
 	public List<Object[]> ProjectMeetingCount(String ProjectId) throws Exception;
 	List<String> getEmpNo(long empId) throws Exception;
 	public List<Object[]> ProjectList() throws Exception;
-	public List<Object[]> ProjectEmployeeList(String empid,String logintype) throws Exception;
+	public List<Object[]> ProjectEmployeeList(String empid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> ProjectQuaters(String ProjectId)throws Exception;
 	public List<Object[]> MileQuaters(String ProjectId,int Quater,int year )throws Exception;
 	public List<Object[]> GanttChartList()  throws Exception;

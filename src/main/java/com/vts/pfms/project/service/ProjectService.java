@@ -131,7 +131,7 @@ public interface ProjectService {
  	public PfmsInitiationAuthorityFile ProjectAuthorityDownload(String AuthorityFileId) throws Exception;
  	public Long ProjectAuthorityUpdate(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto,PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto,String UserId) throws Exception;
 	public List<Object[]> getProjectCatSecDetalis(String projectmainId)throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public List<Object[]> ProjectApprovalFlowEmpData(String empid) throws Exception;
 	public List<Object[]> ProjectMainList() throws Exception;
 	public long ProjectMainToMaster(String projectmainid, String user) throws Exception;

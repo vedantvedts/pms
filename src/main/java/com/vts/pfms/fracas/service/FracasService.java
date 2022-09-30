@@ -27,6 +27,6 @@ public interface FracasService {
 	public int FracasSubDelete(String fracassubid,String fracasattachid ) throws Exception;
 	public int FracasMainDelete(PfmsFracasMainDto dto) throws Exception;
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 
 }

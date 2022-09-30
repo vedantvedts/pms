@@ -97,7 +97,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 
-	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId) throws Exception 
+	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId,String LabCode) throws Exception 
 	{		
 
 //		List<Object[]> ProjectList= dao.ProjectList();
@@ -114,7 +114,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 //			ProjectList=dao.ProjectEmployeeList(empid);
 //	     }
 		
-		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,logintype);
+		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,logintype,LabCode);
 
 		for(Object[] obj : ProjectList) {
 			
@@ -416,7 +416,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	
 	@Override
-	public List<Object[]> ProjectMeetingCount(String LoginType,String empid) throws Exception {
+	public List<Object[]> ProjectMeetingCount(String LoginType,String empid,String labcode) throws Exception {
 
 //		List<Object[]> ProjectList = null;
 //
@@ -431,7 +431,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 //			ProjectList=dao.ProjectEmployeeList(empid);
 //	     }
 		
-		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType);
+		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType,labcode);
 		
 		List<Object[]> al= new ArrayList<Object[]>();
     	
@@ -446,7 +446,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public List<Object[]> ProjectList(String LoginType,String empid) throws Exception {
+	public List<Object[]> ProjectList(String LoginType,String empid,String labcode) throws Exception {
 
 //		List<Object[]> ProjectList=null;
 //
@@ -461,7 +461,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 //			ProjectList=dao.ProjectEmployeeList(empid);
 //	     }
 		
-		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType);
+		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType,labcode);
 		
 		return ProjectList;
 	}

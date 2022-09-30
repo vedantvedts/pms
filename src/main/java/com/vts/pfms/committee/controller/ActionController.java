@@ -78,6 +78,7 @@ public class ActionController {
 	public String ActionLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ActionLaunch.htm "+UserId);		
 		try {
 			
@@ -85,7 +86,7 @@ public class ActionController {
 			String loginid= ses.getAttribute("LoginId").toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
 			
-			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype));
+			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
 			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList());
@@ -721,6 +722,7 @@ public class ActionController {
 			public String ActionReports(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {
 				String UserId =(String)ses.getAttribute("Username");
+				String LabCode = (String)ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ActionReports.htm "+UserId);		
 				try {
 					String Logintype= (String)ses.getAttribute("LoginType");
@@ -729,7 +731,7 @@ public class ActionController {
 				req.setAttribute("Term", "A");
 				req.setAttribute("Project", "A");
 				req.setAttribute("Type", "A");
-				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype));
+				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 				req.setAttribute("StatusList", service.ActionReports(EmpId,"A","A","A"));	
 
 				}
@@ -830,6 +832,7 @@ public class ActionController {
 				
 				String UserId =(String)ses.getAttribute("Username");
 				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String LabCode = (String)ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ActionPDReports.htm "+UserId);		
 				try {
 					String ProjectId=req.getParameter("ProjectId");
@@ -840,7 +843,7 @@ public class ActionController {
 					String loginid= ses.getAttribute("LoginId").toString();
 					String Logintype= (String)ses.getAttribute("LoginType");	
 					
-					req.setAttribute("StatusList", service.LoginProjectDetailsList(EmpId,Logintype));					
+					req.setAttribute("StatusList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));					
 					req.setAttribute("ProjectId",ProjectId);
 				}
 				catch (Exception e) {
@@ -903,6 +906,7 @@ public class ActionController {
 						throws Exception {
 					String UserId =(String)ses.getAttribute("Username");
 					String Logintype= (String)ses.getAttribute("LoginType");
+					String LabCode = (String)ses.getAttribute("labcode");
 					logger.info(new Date() +"Inside ActionPdcReport.htm "+UserId);		
 					try {
 					
@@ -928,7 +932,7 @@ public class ActionController {
 					req.setAttribute("fdate",fdate);
 					
 					String loginid= ses.getAttribute("LoginId").toString();
-					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype));
+					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
 					req.setAttribute("EmployeeList", service.EmployeeList());
 					req.setAttribute("Project",Project);
 					req.setAttribute("Employee", Emp);

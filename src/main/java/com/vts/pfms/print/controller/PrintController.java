@@ -353,6 +353,7 @@ public class PrintController {
 	public void ProjectBriefingDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefingDownload.htm "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
@@ -362,7 +363,7 @@ public class PrintController {
 
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
@@ -855,6 +856,7 @@ public class PrintController {
 	public String ProjectBriefing(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
 	    try {    	
 	    	
@@ -871,7 +873,7 @@ public class PrintController {
 
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	if(projectslist.size()==0) 
 	        {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -1394,13 +1396,14 @@ public class PrintController {
 	public String ProjectBriefingPaper(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
 	    try {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid= req.getParameter("committeeid");
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	if(projectslist.size()==0 && projectid==null) 
 	        {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -1640,7 +1643,7 @@ public class PrintController {
     		try {
     	        //String ProjectId=req.getParameter("projectid");
     	       
-    	        List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype);
+    	        List<Object[] > projlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
     	        
     	        if(projlist.size()==0) 
     	        {				
@@ -1720,6 +1723,7 @@ public class PrintController {
 	public String AnnualMeetingSchedules(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside AnnualMeetingSchedules.htm "+UserId);		
 	    try {   
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -1729,7 +1733,7 @@ public class PrintController {
 			  yeart=fc.getCurrentYear();
 			}
 			req.setAttribute("year",yeart);
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	req.setAttribute("projectslist",projectslist);
 	    	return "print/AnnualMeetingSchedules";
 	    }
@@ -1764,6 +1768,7 @@ public class PrintController {
 	@PostMapping(value = "ProjectBriefingFreeze.htm")
 	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
@@ -1775,7 +1780,7 @@ public class PrintController {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
@@ -2188,6 +2193,7 @@ public class PrintController {
 	
 	public void freezeBriefingPaperAfterKickoff(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
@@ -2199,7 +2205,7 @@ public class PrintController {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
+	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();

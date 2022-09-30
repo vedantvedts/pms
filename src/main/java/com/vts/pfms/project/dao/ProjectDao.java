@@ -143,7 +143,7 @@ public interface ProjectDao {
 	public Long ProjectAuthorityUpdate(PfmsInitiationAuthority pfmsauthority) throws Exception;
 	public Long AuthorityFileUpdate(PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception;
 	public List<Object[]> getProjectCatSecDetalis(Long projectId)throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid, String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid, String Logintype ,String LabCode) throws Exception;
 	public List<Object[]> DoRtmdAdEmpData() throws Exception;
 	public Object[] DirectorEmpData() throws Exception;
 	public Object[] EmpDivHeadData(String empid) throws Exception;

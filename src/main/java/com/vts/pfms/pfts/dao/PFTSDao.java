@@ -15,7 +15,7 @@ public interface PFTSDao {
 	public List<Object[]> getStatusList(String fileid)throws Exception;
 	public int upadteDemandFile(String fileId, String statusId, Date eventDateSql, String update,String remarks)throws Exception;
 	public int updateCostOnDemand(String orderNo, String oderCostD, String fileId, Date dpDateSql)throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public int FileInActive(String fileId, String userId)throws Exception;
 	public Long addDemandfileOrder(PftsFileOrder pfo)throws Exception;
 }
