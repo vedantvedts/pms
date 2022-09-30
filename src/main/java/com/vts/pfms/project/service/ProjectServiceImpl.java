@@ -1741,10 +1741,10 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 
 		@Override
-		public List<Object[]> LoginProjectDetailsList(String empid,String Logintype)throws Exception
+		public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 		{
 			logger.info(new Date() +"Inside LoginProjectDetailsList");
-			return dao.LoginProjectDetailsList(empid,Logintype);
+			return dao.LoginProjectDetailsList(empid,Logintype,LabCode);
 		}
 		
 		@Override

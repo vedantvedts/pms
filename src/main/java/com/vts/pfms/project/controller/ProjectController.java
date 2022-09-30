@@ -2331,6 +2331,7 @@ public class ProjectController {
 		String Username = (String) ses .getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
 		String ProjectId=null; 
 		logger.info(new Date() +"Inside ProjectAssign "+Username);
 		try {
@@ -2345,7 +2346,7 @@ public class ProjectController {
 		    	ProjectId=RedirData;
 		    }
 		}
-		List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId,Logintype);
+		List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 		if(ProjectId==null) {
 	
 			ProjectId=ProjectList.get(0)[0].toString();
@@ -2452,6 +2453,7 @@ public class ProjectController {
 		String Username = (String) ses .getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LoginType=(String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectData.htm "+Username);
 		try 
 		{
@@ -2462,7 +2464,7 @@ public class ProjectController {
 				Map md=model.asMap();
 				projectid=(String)md.get("projectid");				
 			}	
-			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,LoginType);
+			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,LoginType,LabCode);
 			
 			  if(projectlist.size()==0) 
 		        {				
@@ -2723,6 +2725,7 @@ public class ProjectController {
 		String Username = (String) ses .getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LoginType=(String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataRevList.htm "+Username);
 		try 
 		{			
@@ -2766,7 +2769,7 @@ public class ProjectController {
 			req.setAttribute("projectdatarevid",projectdatarevid);
 			req.setAttribute("projectdatarevlist",ProjectDataRevList);
 			req.setAttribute("projectdatarevdata", projectdatarevdata);
-			req.setAttribute("projectlist",service.LoginProjectDetailsList(EmpId,LoginType));
+			req.setAttribute("projectlist",service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
 			req.setAttribute("projectid", projectid);
 			return "project/ProjectDataRevView";
 		}
@@ -2829,6 +2832,7 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectRisk.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRisk(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectRisk.htm "+Username);
 		try 
 		{			
@@ -2840,7 +2844,7 @@ public class ProjectController {
 				Map md=model.asMap();
 				projectid=(String)md.get("projectid");				
 			}	
-			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype);
+			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
 			if(projectlist.size()==0) 
 		    {	
@@ -3136,12 +3140,13 @@ public class ProjectController {
 		String Username = (String) ses .getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMasterRev.htm "+Username);
 		try 
 		{	
 			String projectid=req.getParameter("ProjectId");
 			req.setAttribute("projectid", projectid);
-			req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId,Logintype));			
+			req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));			
 			req.setAttribute("ProjectMasterRevList", service.ProjectRevList(projectid));
 			return "project/ProjectMasterRevView";
 		}

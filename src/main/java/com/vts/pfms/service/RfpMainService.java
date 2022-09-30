@@ -23,7 +23,7 @@ public interface RfpMainService {
 	public Long addNotice(Notice notice)throws Exception;
 
 
-	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId) throws Exception;
+	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId,String LabCode) throws Exception;
 
 
 
@@ -38,8 +38,8 @@ public interface RfpMainService {
 	public List<Object[]> ProjectBudgets() throws Exception;
 	public Object[] AllSchedulesCount(String LoginType,String loginid) throws Exception;
 	
-	public List<Object[]> ProjectMeetingCount(String LoginType,String empid) throws Exception;
-	public List<Object[]> ProjectList(String LoginType,String LoginId) throws Exception;
+	public List<Object[]> ProjectMeetingCount(String LoginType,String empid,String LabCode) throws Exception;
+	public List<Object[]> ProjectList(String LoginType,String LoginId,String labcode) throws Exception;
 	public ArrayList<String> ProjectQuaters(String ProjectId)throws Exception;
 	public String getEmpNo(long empId) throws Exception;
 	public List<Object[]> GanttChartList() throws Exception;

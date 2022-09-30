@@ -60,9 +60,10 @@ public class PFTSController {
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String projectId =req.getParameter("projectid");		
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
 		try {
-			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype);
+			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
 			if(projectlist.size()==0) 
 		    {				

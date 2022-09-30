@@ -29,7 +29,7 @@ public interface PrintDao {
 	public List<Object[]> OldPMRCIssuesList(String projectid) throws Exception;
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception;
 	public List<Object[]> RiskMatirxData(String projectid) throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public Object[] LastPMRCDecisions(String committeeid, String projectid) throws Exception;
 	public List<Object[]> ActionPlanSixMonths(String projectid, int interval) throws Exception;
 	public List<Object[]> LastPMRCActions1(String projectid, String committeeid) throws Exception;

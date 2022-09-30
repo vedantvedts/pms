@@ -531,9 +531,9 @@ public class ActionServiceImpl implements ActionService {
 	}
 	
 	@Override
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype)throws Exception
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 	{
-		return dao.LoginProjectDetailsList(empid,Logintype);
+		return dao.LoginProjectDetailsList(empid,Logintype,LabCode);
 	}
 
 	@Override

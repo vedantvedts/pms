@@ -12,7 +12,7 @@ import com.vts.pfms.milestone.model.FileRepMaster;
 
 public interface DocumentDao {
 
-	public List<Object[]> LoginProjectsList(String empid, String Logintype) throws Exception;
+	public List<Object[]> LoginProjectsList(String empid, String Logintype,String LabCode) throws Exception;
 	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
 	public List<Object[]> DocParentLevelList(String projectid) throws Exception;
 	public List<Object[]> ProjectDocAssignedList(String projectid) throws Exception;

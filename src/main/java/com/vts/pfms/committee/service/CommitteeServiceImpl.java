@@ -1163,10 +1163,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	
 	@Override 
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
-		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype);  
+		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype,LabCode);  
 		return projectidlist;
 	}
 	
@@ -1255,10 +1255,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> MeetingSearchList(String MeetingId ) throws Exception {
+	public List<Object[]> MeetingSearchList(String MeetingId ,String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside MeetingSearchList");
-		return dao.MeetingSearchList("%"+MeetingId+"%" );
+		return dao.MeetingSearchList("%"+MeetingId+"%" ,LabCode);
 
 	}
 

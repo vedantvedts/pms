@@ -62,6 +62,7 @@ public class DocumentController {
  		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
  		String UserId = (String) ses.getAttribute("Username");
+ 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectSystems.htm "+UserId);
 		try {
 			String projectid=req.getParameter("projectid");
@@ -89,7 +90,7 @@ public class DocumentController {
 			req.setAttribute("systemids", systemids);
 			
 			req.setAttribute("projectid", projectid);
-			req.setAttribute("ProjectList", service.LoginProjectsList(EmpId, Logintype));
+			req.setAttribute("ProjectList", service.LoginProjectsList(EmpId, Logintype,LabCode));
 			req.setAttribute("filerepmasterlistall", service.FileRepMasterListAll(projectid));
 			
 			return "documents/ProjectSystem";
@@ -107,6 +108,7 @@ public class DocumentController {
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside DocumentTemplate.htm "+UserId);		
 		try {			
 			String projectid=req.getParameter("projectid");
@@ -121,7 +123,7 @@ public class DocumentController {
 			req.setAttribute("parentlist",service.DocParentLevelList(projectid)) ;
 			req.setAttribute("assignedlist",service.ProjectDocAssignedList(projectid));			
 			req.setAttribute("projectid", projectid);
-			req.setAttribute("projectslist", service.LoginProjectsList(EmpId, Logintype));
+			req.setAttribute("projectslist", service.LoginProjectsList(EmpId, Logintype,LabCode));
 			
 			String l1id=req.getParameter("l1id");
 			String l2id=req.getParameter("l2id");

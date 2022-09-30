@@ -34,9 +34,9 @@ public class DocumentServiceImpl implements DocumentService {
 //	private  SimpleDateFormat sdf=  fc.getRegularDateFormat();                               // new SimpleDateFormat("dd-MM-yyyy");
 	
 	@Override
-	public List<Object[]> LoginProjectsList(String empid,String Logintype)throws Exception
+	public List<Object[]> LoginProjectsList(String empid,String Logintype ,String labcode)throws Exception
 	{
-		return dao.LoginProjectsList(empid, Logintype);
+		return dao.LoginProjectsList(empid, Logintype , labcode);
 	}
 	
 	@Override

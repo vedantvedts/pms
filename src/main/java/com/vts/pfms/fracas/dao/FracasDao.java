@@ -36,6 +36,6 @@ public interface FracasDao {
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception;
 	public int FracasAttachDelete(String fracasattachid) throws Exception;
 	public long FRACASNotificationInsert(PfmsNotification notification) throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 
 }

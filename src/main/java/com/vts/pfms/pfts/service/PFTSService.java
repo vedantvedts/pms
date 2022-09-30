@@ -15,6 +15,6 @@ public interface PFTSService {
 	public List<Object[]> getStatusList(String fileid)throws Exception;
 	public int upadteDemandFile(String fileId, String statusId, String eventDate,String remarks)throws Exception;
 	public long updateCostOnDemand(List<DemandOrderDetails> dd ,String fileId,String userid)throws Exception;
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype) throws Exception;
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public int FileInActive(String fileId, String userId)throws Exception;
 }

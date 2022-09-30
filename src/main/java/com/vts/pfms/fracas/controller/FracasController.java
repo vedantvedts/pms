@@ -44,13 +44,14 @@ public class FracasController {
 	public String FracasMainItemsList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) //,@RequestPart("FileAttach") MultipartFile[] FileAttach
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside FracasMainAdd.htm "+UserId);
 		try
 		{
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
 			String projectid=req.getParameter("projectid");
-			List<Object[]> projectslist=service.LoginProjectDetailsList(EmpId,Logintype);
+			List<Object[]> projectslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
 			if(projectslist.size()==0) {
 				

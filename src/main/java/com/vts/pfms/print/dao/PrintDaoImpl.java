@@ -130,12 +130,13 @@ public class PrintDaoImpl implements PrintDao {
 	
 	
 	@Override
-	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype)throws Exception
+	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
-		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype);");
+		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
 		return LoginProjectIdList;
 	}

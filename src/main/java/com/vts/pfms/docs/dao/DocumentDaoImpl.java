@@ -37,12 +37,13 @@ public class DocumentDaoImpl implements DocumentDao
 	private static final Logger logger=LogManager.getLogger(DocumentDaoImpl.class);
 	
 	@Override
-	public List<Object[]> LoginProjectsList(String empid,String Logintype)throws Exception
+	public List<Object[]> LoginProjectsList(String empid,String Logintype,String LabCode)throws Exception
 	{
 		logger.info(new Date() +"Inside LoginProjectDetailsList");
-		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype);");
+		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
 		return LoginProjectIdList;
 	}
