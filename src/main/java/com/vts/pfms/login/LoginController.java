@@ -235,6 +235,7 @@ public class LoginController {
     	
     	logger.info(new Date() +"Inside MainDashBoard.htm ");
 	      try {    
+	    	  
 			     req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
 			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
 			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
