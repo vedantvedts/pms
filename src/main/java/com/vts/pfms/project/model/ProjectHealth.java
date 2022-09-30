@@ -18,7 +18,7 @@ public class ProjectHealth {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private long ProjectHealthId;
-		private long LabId;
+		private String LabCode;
 		private long ProjectId;
 		private String ProjectShortName;
 		private String ProjectCode;

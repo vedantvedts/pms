@@ -49,6 +49,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
 import com.vts.pfms.milestone.service.MilestoneService;
@@ -70,9 +71,8 @@ public class LoginController {
 	
 	@Autowired
 	HeaderService headerservice;
-	
-	
-	
+
+
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
@@ -203,9 +203,6 @@ public class LoginController {
   	ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
  	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()));
  	ses.setAttribute("clusterid", headerservice.LabDetails(empdetails[3].toString())[1].toString());
-
- 	
- 	
   	
     req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
@@ -228,6 +225,7 @@ public class LoginController {
     	String LoginType=(String)ses.getAttribute("LoginType");
     	String LoginId=String.valueOf(ses.getAttribute("LoginId"));
     	String empNo=(String)ses.getAttribute("empNo"); 
+    	String LabCode=(String) ses.getAttribute("labcode");
     	
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
@@ -256,7 +254,9 @@ public class LoginController {
 			     req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId,LoginType));
 			     req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
 			     req.setAttribute("projecthealthdata", rfpmainservice.ProjectHealthData());
-			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType));
+			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode));
+ 
+			
 			    // req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
 
 //			     if(LoginType.equalsIgnoreCase("P") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("Q") )
@@ -348,10 +348,11 @@ public class LoginController {
 	 	String UserId =(String)ses.getAttribute("Username");
 	 	String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
+    	String LabCode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside IndividualProjectDetails.htm "+UserId);		
 		try {
 			
-			IndividualProjectDetails = rfpmainservice.ProjectHealthTotalData(req.getParameter("ProjectId"),EmpId,LoginType);
+			IndividualProjectDetails = rfpmainservice.ProjectHealthTotalData(req.getParameter("ProjectId"),EmpId,LoginType,LabCode);
 		
 		}
 		catch (Exception e) {
