@@ -188,14 +188,13 @@ public interface CommitteeDao {
 	public List<Object[]> CommitteeInvitationSerialNoAfter(String committeeinvitationid) throws Exception;
 	public int CommitteeInvitationSerialNoUpdate(String committeeinvitationid, long serialno) throws Exception;
 	public int InvitationSerialnoUpdate(String agendaid, String agendapriority) throws Exception;
-	public List<Object[]> InternalEmployeeListFormation(String LabId, String committeemainid) throws Exception;
+	public List<Object[]> InternalEmployeeListFormation(String labcode, String committeemainid) throws Exception;
 	public List<Object[]> CommitteeRepList() throws Exception;
 	public long CommitteeRepMembersSubmit(CommitteeMemberRep memreps) throws Exception;
 	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception;
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception;
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception;
-	public List<Object[]> ChairpersonEmployeeList(String LabId, String committeemainid) throws Exception;
-	public List<Object[]> ChairpersonExternalEmployeeList(String LabId, String committeemainid) throws Exception;
+	public List<Object[]> ChairpersonEmployeeList(String LabCode, String committeemainid) throws Exception;
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception;
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid, String Labode) throws Exception;
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
@@ -277,6 +276,10 @@ public interface CommitteeDao {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;
 	public List<Object[]> ClusterList() throws Exception;
+	public List<Object[]> ChairpersonLabsList(String ClusterId) throws Exception;
+	public List<Object[]> DGEmpData(String ClusterId) throws Exception;
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 
 
 }

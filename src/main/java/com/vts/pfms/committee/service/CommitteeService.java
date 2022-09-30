@@ -189,7 +189,7 @@ public interface CommitteeService {
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception;
 	public long CommitteeRepMemberAdd(String[] repids, String committeemainid, String createdby) throws Exception;
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception;
-	public List<Object[]> ChairpersonEmployeeListFormation(String LabId, String committeemainid) throws Exception;
+	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode, String committeemainid) throws Exception;
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception;
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
 	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception;
@@ -252,6 +252,8 @@ public interface CommitteeService {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;   
 	public List<Object[]> ClusterList() throws Exception;
+	public List<Object[]> ChairpersonLabsListFormation(String clusterid,String committeemainid) throws Exception;
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
     
 }
 

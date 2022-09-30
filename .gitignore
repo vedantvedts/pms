@@ -20,7 +20,7 @@ dist/
 *.jar
 
 # Maven
-target/
+target/classes/
 dist/
 
 # JetBrains IDE

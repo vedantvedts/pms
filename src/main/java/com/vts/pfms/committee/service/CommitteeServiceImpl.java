@@ -211,7 +211,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 
 	@Override
-	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception {
+	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception 
+	{
 		logger.info(new Date() +"Inside CommitteeDetailsSubmit");
 		CommitteeMain committeemain= new CommitteeMain();
 		
@@ -252,27 +253,50 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		long mainid= dao.CommitteeDetailsSubmit(committeemain);		
 		
-		for(int i=1;i<=3;i++) 
+		for(int i=1;i<=4;i++) 
 		{
 			CommitteeMember committeemember = new CommitteeMember(); 
 			committeemember.setCommitteeMainId(mainid);
 			if(i==1) 
 			{
+				
 				committeemember.setEmpId(Long.parseLong(committeemaindto.getChairperson()));
-				committeemember.setLabId(Long.parseLong(committeemaindto.getCpLabId()));
+				if(committeemaindto.getCpClusterid().equalsIgnoreCase("E")) 
+				{
+					committeemember.setLabCode("@EXP");
+				}
+				else
+				{
+					committeemember.setLabCode(committeemaindto.getCpLabCode());
+				}
+					
 				committeemember.setMemberType("CC");
-			}else if(i==2)
+			}
+			else if(i==2)
 			{
-				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
-				committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
-				committeemember.setMemberType("CS");
+				if( Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
+				{
+					committeemember.setEmpId(Long.parseLong(committeemaindto.getCo_Chairperson()));
+					committeemember.setLabCode(committeemaindto.getLabCode());
+					committeemember.setMemberType("CH");
+				}
+				else 
+				{
+					continue;
+				}
 			}
 			else if(i==3)
+			{
+				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
+				committeemember.setLabCode(committeemaindto.getLabCode());
+				committeemember.setMemberType("CS");
+			}
+			else if(i==4)
 			{
 				if( Long.parseLong(committeemaindto.getProxySecretary())>0) 
 				{
 					committeemember.setEmpId(Long.parseLong(committeemaindto.getProxySecretary()) );
-					committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
+					committeemember.setLabCode(committeemaindto.getLabCode());
 					committeemember.setMemberType("PS");
 				}
 				else 
@@ -1795,36 +1819,42 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.ClusterLabList();
 	}
 
+	@Override
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception 
+	{
+		return dao.ClusterLabs(LabCode);
+	}
 
 	@Override
-	public List<Object[]> ExternalEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+	public List<Object[]> ExternalEmployeeListFormation(String CpLabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ExternalEmployeeListFormation");
+		return dao.InternalEmployeeListFormation(CpLabCode,committeemainid);
 		
+	}
+	
+	@Override
+	public List<Object[]> ChairpersonLabsListFormation(String clusterid,String committeemainid) throws Exception 
+	{
+		logger.info(new Date() +"Inside ChairpersonLabsListFormation");		
 		
-		Object[] labdata=dao.LabDetails();
-		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
-			return dao.InternalEmployeeListFormation(LabId,committeemainid);
-		}else {
-			return dao.ExternalEmployeeListFormation(LabId,committeemainid);
-		}	
+		if(clusterid!=null && clusterid.equalsIgnoreCase("E")) 
+		{
+			return dao.ClusterExpertsList(committeemainid);
+		}
+		
+		if(clusterid!=null && clusterid.equalsIgnoreCase("S")) 
+		{
+			clusterid = "8";
+		} 
+		return dao.ChairpersonLabsList(clusterid);
 	}
 	
 	
 	@Override
-	public List<Object[]> ChairpersonEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
-		
-		Object[] labdata=dao.LabDetails();
-		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
-			return dao.ChairpersonEmployeeList(LabId,committeemainid);
-		}else {
-			return dao.ChairpersonExternalEmployeeList(LabId,committeemainid);
-		}
-		
-		
+		return dao.ChairpersonEmployeeList(LabCode,committeemainid);
 	}
-	
-	
 	
 	
 	@Override
@@ -1844,32 +1874,22 @@ public class CommitteeServiceImpl implements CommitteeService{
 		ArrayList<String> lablist=new ArrayList<String>();
 		ArrayList<String> membertype=new ArrayList<String>();
 		
-		if (dto.getInternalMembers()!=null) {
+		if (dto.getMembers()!=null) {
 
-			for(int i=0;i<dto.getInternalMembers().length;i++) {
+			for(int i=0;i<dto.getMembers().length;i++) {
 				
-				lablist.add(dto.getInternalLabId());
+				lablist.add(dto.getMembersLabId());
 				membertype.add("CI");
 			}
 			
-			emplist.addAll(Arrays.asList(dto.getInternalMembers()));
+			emplist.addAll(Arrays.asList(dto.getMembers()));
 		}
 		
-		if (dto.getExternalMember() != null) {
-
-			for(int i=0;i<dto.getExternalMember().length;i++) {
-				
-				lablist.add(dto.getLabId());
-				membertype.add("CW");
-			}
-
-			emplist.addAll(Arrays.asList(dto.getExternalMember()));
-		}
 		if (dto.getExpertMember() != null) {
 			
 			for(int i=0;i<dto.getExpertMember().length;i++) {
 				
-				lablist.add("0");
+				lablist.add("@EXP");
 				membertype.add("CO");
 			}
 			emplist.addAll(Arrays.asList(dto.getExpertMember()));
@@ -1881,7 +1901,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			CommitteeMember  committeemember=new CommitteeMember();
 			committeemember.setCommitteeMainId(Long.parseLong(dto.getCommitteeMainId()));			
 			committeemember.setEmpId(Long.parseLong(emplist.get(i)));
-			committeemember.setLabId(Long.parseLong(lablist.get(i)));
+			committeemember.setLabCode(lablist.get(i));
 			committeemember.setMemberType(membertype.get(i));
 			committeemember.setCreatedBy(dto.getCreatedBy());
 			committeemember.setCreatedDate(sdf1.format(new Date()));
@@ -2256,37 +2276,95 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside CommitteeMainMemberUpdate");
 		
 		int ret=0;
+		// Update Chairperson
 		CommitteeMember model=new CommitteeMember();
-		
 		model.setModifiedBy(dto.getModifiedBy());
 		model.setModifiedDate(sdf1.format(new Date()));
-		
 		model.setCommitteeMemberId(Long.parseLong(dto.getChairpersonmemid()));
-		model.setLabId(Long.parseLong(dto.getCplabid()));
+		if(dto.getCpClusterId().equalsIgnoreCase("E")) {
+			model.setLabCode("@EXP");
+		}else
+		{
+			model.setLabCode(dto.getCpLabCode());
+		}
 		model.setEmpId(Long.parseLong(dto.getChairperson()));
-		
 		ret=dao.CommitteeMemberUpdate(model);		
+				
+		// Update or Remove or add  co-chairperson based on update
+		model=new CommitteeMember();
 		
+		if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())==0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			dao.CommitteeMemberDelete(model);
+		}
+		else if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())>0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			model.setLabCode(dto.getSesLabCode());
+			model.setEmpId(Long.parseLong(dto.getCo_chairperson()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			ret=dao.CommitteeMemberUpdate(model);
+		}
+		else if(dto.getComemberid()==null && Long.parseLong(dto.getCo_chairperson())>0)
+		{
+				CommitteeMember newmodel=new CommitteeMember();
+				newmodel.setLabCode(dto.getSesLabCode());
+				newmodel.setEmpId(Long.parseLong(dto.getCo_chairperson()));
+				newmodel.setMemberType("CH");
+				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+				newmodel.setCreatedBy(dto.getModifiedBy());
+				newmodel.setCreatedDate(sdf1.format(new Date()));
+				newmodel.setIsActive(1);
+				dao.CommitteeMainMembersAdd(newmodel);
+		}
+			
+		
+		if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())==0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			dao.CommitteeMemberDelete(model);
+		}
+		
+		
+		// Update Member Secretary
+		model=new CommitteeMember();
+		model.setModifiedBy(dto.getModifiedBy());
+		model.setModifiedDate(sdf1.format(new Date()));
 		model.setCommitteeMemberId(Long.parseLong(dto.getSecretarymemid()));
-		model.setLabId(Long.parseLong(dto.getSeslabid()));
+		model.setLabCode(dto.getSesLabCode());
 		model.setEmpId(Long.parseLong(dto.getSecretary()));
+		ret=dao.CommitteeMemberUpdate(model); 
 		
-		ret=dao.CommitteeMemberUpdate(model);
 		
-		if(dto.getProxysecretarymemid()!=null){
-			
-			
+		// Update, remove or add Proxy member Secretary based on update
+		model=new CommitteeMember();
+		
+		if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())==0)
+		{
 			model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
-			model.setLabId(Long.parseLong(dto.getSeslabid()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			dao.CommitteeMemberDelete(model);
+		}
+		else if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())>0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
+			model.setLabCode(dto.getSesLabCode());
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
 			model.setEmpId(Long.parseLong(dto.getProxysecretary()));
 			
 			ret=dao.CommitteeMemberUpdate(model);
-		}else {
-			
-			if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
-			{
+		}
+		else if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
+		{
+			System.out.println("inside proxy add");
 				CommitteeMember newmodel=new CommitteeMember();
-				newmodel.setLabId(Long.parseLong(dto.getSeslabid()));
+				newmodel.setLabCode(dto.getSesLabCode());
 				newmodel.setEmpId(Long.parseLong(dto.getProxysecretary()));
 				newmodel.setMemberType("PS");
 				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
@@ -2294,13 +2372,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 				newmodel.setCreatedDate(sdf1.format(new Date()));
 				newmodel.setIsActive(1);
 				dao.CommitteeMainMembersAdd(newmodel);
-			}
-			if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())==0)
-			{
-				model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
-				dao.CommitteeMemberDelete(model);
-			}
 		}
+			
+		
+		
 		
 		return ret;
 		

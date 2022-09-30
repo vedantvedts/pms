@@ -86,7 +86,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String MINUTESUNITLIST="SELECT a.unitname,a.minutesspecunitid,b.minutesid,b.minutessubid,b.minutessubofsubid FROM committee_schedules_minutes_unit a,committee_schedules_minutes_details b WHERE a.minutesspecunitid= b.minutesunitid AND b.scheduleid=:committeescheduleid AND b.statusflag='I'";	
 	private static final String COMMITTEEAGENDAPRESENTER="SELECT a.presenterid ,b.empname, c.designation FROM committee_schedules_agenda a, employee b, employee_desig c WHERE a.presenterid=b.empid AND b.desigid=c.desigid AND a.scheduleid=:scheduleid GROUP BY 1";
-	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS') AND committeemainid=:committeemainid AND labid=(SELECT labid FROM lab_master)) UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS') AND committeemainid=:committeemainid AND labid NOT IN (SELECT labid FROM lab_master))UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
+	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labid=(SELECT labid FROM lab_master)) UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labid NOT IN (SELECT labid FROM lab_master))UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
 	private static final String PROJECTDIRECTOREMAIL="SELECT d.email,d.empname FROM employee d,project_master e WHERE projectid=:projectid AND e.projectdirector=d.empid";
 	private static final String RTMDDOEMAIL="SELECT a.email,a.empname FROM employee a,pfms_rtmddo b WHERE a.empid=b.empid AND b.isactive=1 AND b.type='DO-RTMD' ";
 	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
@@ -120,7 +120,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String MINUTESVIEWALLACTIONLIST="CALL Pfms_Meeting_Action_List(:scheduleid)";
 	private static final String MEETINGSEARCHLIST="SELECT '0' committeemainid, 0 AS empid,a.scheduleid,a.scheduledate,a.schedulestarttime,a.scheduleflag,'NA' AS membertype ,a.meetingid,b.committeename,b.committeeshortname, a.meetingvenue FROM committee_schedule a,committee b WHERE a.committeeid=b.committeeid AND a.meetingid LIKE :meetingid AND a.isactive=1 ";
 	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
-	private static final String EXTERNALMEMBERSNOTADDEDCOMMITTEE="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labid=0 AND committeemainid=:committeemainid)";
+	private static final String EXTERNALMEMBERSNOTADDEDCOMMITTEE="SELECT a.expertid,a.expertname,b.designation  FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP' AND committeemainid=:committeemainid);";
 	private static final String EXTERNALEMPLOYEELISTFORMATION="SELECT a.empid, a.empname,a.empno,b.designation FROM employee_external a,employee_desig b WHERE a.labid>0 AND a.labid=:labid AND a.desigid=b.desigid AND a.empid NOT IN (SELECT  empid FROM committee_member   WHERE isactive=1  AND labid=:labid AND committeemainid=:committeemainid)   ";
 	private static final String EXTERNALEMPLOYEELISTINVITATIONS =" SELECT a.empid, a.empname,a.empno,b.designation, a.desigid FROM employee_external a,employee_desig b  WHERE labid=:labid AND a.desigid=b.desigid AND a.empid NOT IN (SELECT empid  FROM committee_schedules_invitation WHERE  committeescheduleid=:scheduleid AND labid=:labid)  ";
 	private static final String EMPLOYEELISTNOINVITEDMEMBERS="SELECT a.empid,a.empname,b.designation,a.desigid FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN ( SELECT c.empid FROM committee_schedules_invitation c WHERE c.committeescheduleid=:scheduleid AND c.labid IN (SELECT labid FROM lab_master)) ORDER BY a.srno=0,a.srno";
@@ -145,7 +145,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEINVITATIONSERIALNOAFTER="SELECT committeeInvitationid, serialno FROM committee_schedules_invitation WHERE serialno> (SELECT serialno FROM committee_schedules_invitation WHERE committeeInvitationid=:committeeinvitationid ) AND committeescheduleid=(SELECT committeescheduleid FROM committee_schedules_invitation WHERE committeeInvitationid=:committeeinvitationid )  ";
 	private static final String COMMITTEEINVITATIONSERIALNOUPDATE="UPDATE committee_schedules_invitation  SET serialno=:serialno WHERE committeeInvitationid=:committeeinvitationid";
 	private static final String COMMITTEELASTSCHEDULEDATE="SELECT MAX(scheduledate),scheduleid FROM committee_schedule WHERE committeeid=:committeeid AND isactive=1";
-	private static final String INTERNALEMPLOYEELISTFORMATION = "SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.desigid=b.desigid AND a.empid NOT IN (SELECT  empid FROM committee_member   WHERE isactive=1  AND labid=:labid AND committeemainid=:committeemainid)  ORDER BY a.srno=0,a.srno ";
+	private static final String INTERNALEMPLOYEELISTFORMATION = "SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.desigid=b.desigid AND labcode=:labcode AND a.empid NOT IN (SELECT  empid FROM committee_member   WHERE isactive=1  AND labcode=:labcode AND committeemainid=:committeemainid)  ORDER BY a.srno=0,a.srno ";
 	private static final String DIVISIONDATA = "SELECT divisionid, divisioncode,divisionname,divisionheadid,groupid FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVISIONCOMMITTEEMAINLIST ="SELECT  b.committeeid,a.Divisionid, a.autoschedule,b.committeeshortname,b.committeename FROM committee_Division a,committee b WHERE a.committeeid=b.committeeid AND b.projectapplicable='N' AND a.Divisionid = :divisionid";
 	private static final String DIVISIONCOMMITTEESCHEDULELIST = "SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=:divisionid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
@@ -158,14 +158,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String DIVCOMMITTEEAUTOSCHEDULELIST="SELECT a.scheduledate,a.schedulestarttime,b.committeename,b.committeeshortname,a.scheduleid  FROM committee_schedule a,committee b  WHERE a.committeeid=b.committeeid AND a.divisionid=:divisionid AND a.isactive=1 ORDER BY a.scheduledate ";
 	private static final String DIVISIONMASTERLIST="SELECT b.committeename,b.committeeshortname,b.committeeid,a.committeedivisionid,b.periodicnon,b.periodicduration,a.autoschedule FROM committee_division a,committee b  WHERE a.committeeid=b.committeeid AND a.divisionid=:divisionid";
 	private static final String DIVISIONSCHEDULELISTALL = "SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.initiationid=0 AND cs.projectid=0 AND cs.divisionid=:divisionid AND cs.isactive=1 ";
-	private static final String CHAIRPERSONEMPLOYEELISTFORMATION="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.empid NOT IN (SELECT  empid FROM committee_member WHERE isactive=1  AND labid=(SELECT labid FROM lab_master) AND committeemainid=:committeemainid AND membertype NOT IN ('CC','CS','PS'))  ";
-	private static final String CHAIRPERSONEXTERNALEMPLOYEELIST = "SELECT a.empid, a.empname,a.empno,b.designation FROM employee_external a,employee_desig b WHERE a.isactive=1 AND a.labid=:labid AND a.desigid=b.desigid AND a.empid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1  AND labid=:labid AND committeemainid=:committeemainid AND membertype NOT IN ('CC','CS','PS'))  ";
+	private static final String CHAIRPERSONEMPLOYEELISTFORMATION="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode AND a.empid NOT IN (SELECT  empid FROM committee_member WHERE isactive=1  AND labcode IN (SELECT labcode FROM lab_master) AND committeemainid=:committeemainid AND membertype NOT IN ('CC','CS','PS','CH'))  ";
+//	private static final String CHAIRPERSONEXTERNALEMPLOYEELIST = "SELECT a.empid, a.empname,a.empno,b.designation FROM employee_external a,employee_desig b WHERE a.isactive=1 AND a.labid=:labid AND a.desigid=b.desigid AND a.empid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1  AND labid=:labid AND committeemainid=:committeemainid AND membertype NOT IN ('CC','CS','PS','CH'))  ";
 	private static final String COMMITTEEMEMBERREPDELETE ="DELETE FROM committee_member_rep WHERE memberrepid=:memberrepid";
 	private static final String COMMITTEEREPNOTADDEDLIST="SELECT repid, repcode , repname FROM committee_rep WHERE repid NOT IN (SELECT repid FROM committee_member_rep WHERE committeemainid=:committeemainid)"; 
 	private static final String COMMITTEEMEMBERREPLIST="SELECT cmr.memberrepid,cmr.repid, cr.repcode, cr.repname FROM committee_rep cr, committee_member_rep cmr WHERE cmr.repid=cr.repid AND cmr.committeemainid=:committeemainid"; 
 	private static final String COMMITTREPLIST="SELECT repid, repcode , repname FROM committee_rep"; 
-	private static final String EMPLOYEELISTWITHOUTMEMBERS="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN (SELECT empid FROM committee_member WHERE labid=(SELECT labid FROM lab_master where labcode=:labcode) AND committeemainid=:committeemainid AND isactive=1) AND labcode=:labcode ORDER BY a.srno=0,a.srno";
-	private static final String COMMITTEEMEMBERUPDATE="UPDATE committee_member SET labid=:labid,empid=:empid,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE committeememberid=:committeememberid";
+	private static final String EMPLOYEELISTWITHOUTMEMBERS="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN (SELECT empid FROM committee_member WHERE labcode=(SELECT labcode FROM lab_master WHERE labcode=:labcode) AND committeemainid=:committeemainid AND isactive=1) AND labcode=:labcode ORDER BY a.srno=0,a.srno;";
+	private static final String COMMITTEEMEMBERUPDATE="UPDATE committee_member SET labcode=:labcode,empid=:empid,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE committeememberid=:committeememberid";
 	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
 	private static final  String INITIATIONCOMMITTEEDELETE= "DELETE FROM committee_initiation WHERE CommitteeInitiationId=:committeeinitiationid";
 	private static final String INITIATIONDETAILS ="SELECT InitiationId,ProjectShortName,ProjectTitle FROM pfms_initiation WHERE InitiationId=:initiationid";
@@ -196,8 +196,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEESCHEDULEDELETE ="UPDATE committee_schedule SET modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=0 WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESCHEDULEAGENDADELETE ="UPDATE committee_schedules_agenda SET isactive=0, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
 	private static final String COMMITTEESCHEDULEINVITATIONDELETE ="DELETE FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid ";
-	private static final String SCHEDULECOMMITTEEEMPCHECK ="SELECT cm.committeemainid,cme.empid FROM committee_schedule cs,committee_main cm,committee_member cme WHERE cs.committeeid=cm.committeeid AND cs.projectid=cm.projectid 	AND cs.divisionid=cm.divisionid AND cs.initiationid=cm.initiationid AND cm.isactive=1 AND cm.committeemainid=cme.committeemainid 	AND cme.labid IN (SELECT labid FROM lab_master) AND cme.membertype IN ('CC','CS','PS') AND cme.isactive=1 AND cs.scheduleid=:scheduleid AND cme.empid=:empid";
-	private static final String SCHEDULECOMMITTEEEMPINVITEDCHECK ="SELECT csi.committeescheduleid, csi.empid, csi.membertype ,cms.meetingstatusid FROM committee_schedules_invitation csi ,committee_schedule cs, committee_meeting_status cms WHERE csi.labid IN (SELECT labid FROM lab_master) AND csi.committeescheduleid=cs.scheduleid  AND cs.scheduleflag=cms.meetingstatus AND   CASE WHEN cms.meetingstatusid < 7  	THEN  csi.membertype IN ('CC','CS','PS') 	 WHEN  cms.meetingstatusid >= 7  THEN  csi.membertype IN ('CC','CS','PS','CI','P','I') 	END AND csi.empid =:empid AND csi.committeescheduleid=:scheduleid";
+	private static final String SCHEDULECOMMITTEEEMPCHECK ="SELECT cm.committeemainid,cme.empid FROM committee_schedule cs,committee_main cm,committee_member cme WHERE cs.committeeid=cm.committeeid AND cs.projectid=cm.projectid 	AND cs.divisionid=cm.divisionid AND cs.initiationid=cm.initiationid AND cm.isactive=1 AND cm.committeemainid=cme.committeemainid 	AND cme.labid IN (SELECT labid FROM lab_master) AND cme.membertype IN ('CC','CS','PS','CH') AND cme.isactive=1 AND cs.scheduleid=:scheduleid AND cme.empid=:empid";
+	private static final String SCHEDULECOMMITTEEEMPINVITEDCHECK ="SELECT csi.committeescheduleid, csi.empid, csi.membertype ,cms.meetingstatusid FROM committee_schedules_invitation csi ,committee_schedule cs, committee_meeting_status cms WHERE csi.labid IN (SELECT labid FROM lab_master) AND csi.committeescheduleid=cs.scheduleid  AND cs.scheduleflag=cms.meetingstatus AND   CASE WHEN cms.meetingstatusid < 7  	THEN  csi.membertype IN ('CC','CS','PS','CH') 	 WHEN  cms.meetingstatusid >= 7  THEN  csi.membertype IN ('CC','CS','PS','CH','CI','P','I') 	END AND csi.empid =:empid AND csi.committeescheduleid=:scheduleid";
 	private static final String EMPSCHEDULEDATA="SELECT cs1.scheduleid,cs1.meetingid,cs1.scheduledate,csi.membertype,cs1.committeemainid,cs1.schedulestarttime FROM committee_schedule cs1, committee_schedules_invitation csi WHERE csi.labid IN (SELECT labid FROM lab_master) AND cs1.scheduleid=csi.committeescheduleid AND csi.empid=:empid AND cs1.scheduledate=(SELECT cs2.scheduledate FROM committee_schedule cs2 WHERE cs2.scheduleid=:scheduleid) AND cs1.scheduleid  <> :scheduleid";
 	private static final String ALLACTIONASSIGNEDCHECK="SELECT csm.scheduleminutesid AS 'csmid',csm.scheduleid ,csm.idarck,am.assignee, am.scheduleminutesid AS 'ammid' FROM committee_schedules_minutes_details csm LEFT JOIN action_main am ON csm.scheduleminutesid=am.scheduleminutesid  WHERE csm.idarck IN ('A','I','K') AND csm.scheduleid=:scheduleid";
 	private static final String DEFAULTAGENDALIST="SELECT csa.scheduleagendaid,csa.agendapriority,csa.agendaitem,csa.remarks,csa.duration,csa.committeeid FROM committee_schedules_agenda csa WHERE csa.scheduleid=0 AND csa.committeeid=:committeeid";
@@ -1119,6 +1119,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		logger.info(new java.util.Date() +"Inside ProjectCommitteeAdd");
 		manager.persist(committeeproject);
 		manager.flush();
+		"abc".substring(1);
 		return  committeeproject.getCommitteeProjectId();
 	}
 
@@ -1501,6 +1502,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
 		return ClusterLabList;
 	}
+	
+	private static final String CLUSTERLABS="SELECT cl.labid,cl.clusterid,cl.labname,cl.labcode FROM cluster_lab cl, cluster_lab cl2 WHERE cl2.clusterid=cl.clusterid AND  cl2.labcode=:LabCode ";
+	
+	@Override
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception 
+	{
+		logger.info(new java.util.Date() +"Inside ClusterLabs");
+		Query query=manager.createNativeQuery(CLUSTERLABS);
+		query.setParameter("LabCode", LabCode );
+		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
+		return ClusterLabList;
+	}
 
 	
 	@Override
@@ -1517,11 +1530,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	
 	@Override
-	public List<Object[]> InternalEmployeeListFormation(String LabId ,String committeemainid) throws Exception {
+	public List<Object[]> InternalEmployeeListFormation(String labcode ,String committeemainid) throws Exception {
 		
 		logger.info(new java.util.Date() +"Inside InternalEmployeeListFormation");
 		Query query=manager.createNativeQuery(INTERNALEMPLOYEELISTFORMATION);
-		query.setParameter("labid", LabId);
+		query.setParameter("labcode", labcode);
 		query.setParameter("committeemainid", committeemainid);
 		List<Object[]> ExternalEmployeeList=(List<Object[]>)query.getResultList();
 		return ExternalEmployeeList;
@@ -1530,28 +1543,77 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	
 	@Override
-	public List<Object[]> ChairpersonEmployeeList(String LabId ,String committeemainid) throws Exception {
-		
+	public List<Object[]> ChairpersonEmployeeList(String LabCode ,String committeemainid) throws Exception 
+	{
 		logger.info(new java.util.Date() +"Inside ChairpersonEmployeeListFormation");
 		Query query=manager.createNativeQuery(CHAIRPERSONEMPLOYEELISTFORMATION);
-		
+		query.setParameter("labcode", LabCode);
 		query.setParameter("committeemainid", committeemainid);
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
 	
-	
-	
+	private static final String CHAIRPERSONLABSLIST ="SELECT labid,clusterid,labname,labcode FROM cluster_lab  WHERE clusterid=:ClusterId ";
 	@Override
-	public List<Object[]> ChairpersonExternalEmployeeList(String LabId ,String committeemainid) throws Exception {
-		
-		logger.info(new java.util.Date() +"Inside ChairpersonExternalEmployeeList");
-		Query query=manager.createNativeQuery(CHAIRPERSONEXTERNALEMPLOYEELIST);
-		query.setParameter("labid", LabId);
-		query.setParameter("committeemainid", committeemainid);
-		List<Object[]> ExternalEmployeeList=(List<Object[]>)query.getResultList();
-		return ExternalEmployeeList;
+	public List<Object[]> ChairpersonLabsList(String ClusterId) throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside ChairpersonLabsList");
+		try {
+			Query query=manager.createNativeQuery(CHAIRPERSONLABSLIST);
+			query.setParameter("ClusterId", ClusterId);
+			List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
+			return ChairpersonEmployeeListFormation;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new java.util.Date() +" Inside ChairpersonLabsList DAO "+ e);
+			return new ArrayList<Object[]>();
+		}
 	}
+	
+	
+	private static final String DGEMPDATA ="SELECT e.empid,e.empno,e.empname,e.labcode,c.clustershortname FROM lab_master lm, cluster c, employee e WHERE lm.labcode = c.clustershortname AND e.empid=lm.labauthorityid";
+	@Override
+	public List<Object[]> DGEmpData(String ClusterId) throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside DGEmpData");
+		try {
+			Query query=manager.createNativeQuery(DGEMPDATA);
+			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
+			return DGEmpData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertno,e.expertname,'@EXP' AS labcode FROM expert e WHERE e.isactive=1  AND e.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP' AND committeemainid=:committeemainid AND membertype IN ('CH','CO')); ";
+	@Override
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside DGEmpData");
+		try {
+			Query query=manager.createNativeQuery(CLUSTEREXPERTSLIST);
+			query.setParameter("committeemainid", committeemainid);
+			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
+			return DGEmpData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+//	@Override
+//	public List<Object[]> ChairpersonExternalEmployeeList(String LabId ,String committeemainid) throws Exception {
+//		
+//		logger.info(new java.util.Date() +"Inside ChairpersonExternalEmployeeList");
+//		Query query=manager.createNativeQuery(CHAIRPERSONEXTERNALEMPLOYEELIST);
+//		query.setParameter("labid", LabId);
+//		query.setParameter("committeemainid", committeemainid);
+//		List<Object[]> ExternalEmployeeList=(List<Object[]>)query.getResultList();
+//		return ExternalEmployeeList;
+//	}
 	
 	
 	@Override
@@ -2048,7 +2110,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		logger.info(new java.util.Date() +"Inside CommitteeMemberUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEMEMBERUPDATE);
 		query.setParameter("committeememberid", model.getCommitteeMemberId());
-		query.setParameter("labid", model.getLabId());
+		query.setParameter("labcode", model.getLabCode());
 		query.setParameter("empid", model.getEmpId());
 		query.setParameter("modifiedby", model.getModifiedBy());
 		query.setParameter("modifieddate", model.getModifiedDate());

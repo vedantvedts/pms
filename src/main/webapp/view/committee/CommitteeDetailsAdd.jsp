@@ -56,22 +56,27 @@ String seslabid=(String)session.getAttribute("labid");
 List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
 Object[] initiationdata=(Object[]) request.getAttribute("initiationdata");
 
+
 String divisionid = (String)request.getAttribute("divisionid");
 String projectid = (String)request.getAttribute("projectid");
 String initiationid = (String)request.getAttribute("initiationid");
+
+String clusterid = (String)request.getAttribute("clusterid");
+String LabCode = (String)request.getAttribute("LabCode");
+
 %>
 
 <%
 	if(ses1!=null && noactive==null){
-	%><center>
+	%><div align="center">
 	<div class="alert alert-danger" role="alert">
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null && noactive==null){ %>
-	<center>
+	<div align="center">
 	<div class="alert alert-success" role="alert" >
                      <%=ses %>
-                   </div></center>
+                   </div></div>
 <%} %>
 
 
@@ -165,11 +170,11 @@ String initiationid = (String)request.getAttribute("initiationid");
 						 <div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 8px !important">Level</label>
-				  				<select class=" form-control selectdee" id="level" name="level" required="required" style="margin-top: -5px" >
-									<option disabled="true"  selected value="" >Choose...</option>
+				  				<select class=" form-control selectdee" id="level" name="CpClusterid" required="required" style="margin-top: -5px" onchange="ChairpersonClusterLabs()" >
+									<option disabled="disabled"  selected value="" >Choose...</option>
 									<option value="S" > Head Quarters </option>
 									<%	for (Object[] obj  : clusterlist) {%>
-								     	<option value="<%=obj[0]%>" ><%=obj[2] %> </option>
+								     	<option value="<%=obj[0]%>" <%if(clusterid.equalsIgnoreCase(obj[0].toString())){ %>selected <%} %> ><%=obj[2] %> </option>
 									<% } %>
 									<option value="E"> Expert</option>
 								</select>				  					
@@ -178,17 +183,16 @@ String initiationid = (String)request.getAttribute("initiationid");
 	                    <div class="col-md-8 ">
 	                    	<table class="" style="width:100%">
 	                        <tr >
-								<td style="width:35%; border:0:">
+								<td style="width:35%; border:0:" >
+									<div id="cplab-col" >
 									<label class="control-label" style="margin-bottom: 4px !important">Lab</label>
-									 <div class="input select">
-									 	
-										 <select class="form-control selectdee" name="cplabid" tabindex="-1" required style="width: 200px" id="cplabid" onchange="chairpersonfetch()">
-											<option disabled="true"  selected value="">Lab Name</option>
-										    <% for (Object[] obj : clusterlablist) {%>
-											    <option <%if(seslabid.equals(obj[0].toString())){ %> selected <%} %>value="<%=obj[0]%>"><%=obj[3]%></option>
-										    <%} %>
+									<div class="input select" >
+										 	
+										<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required style="width: 200px" id="CpLabCode" onchange="ChaippersonEmpList()">
+											<option disabled="disabled"  selected value="">Choose ...</option>
+										   
 										</select>
-												
+										</div>	
 									</div>
 								</td>										
 								<td style="border:0;">
@@ -211,7 +215,7 @@ String initiationid = (String)request.getAttribute("initiationid");
 				            	<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson </label>
 
 									<select class=" form-control selectdee" id="cochairperson" name="cochairperson" required="required" style="margin-top: -5px" >
-										<option disabled="true"  selected value="" >Choose...</option>
+										<option  selected value="0">Choose...</option>
 										<%	for (Object[] obj  : EmployeeList) {%>
 									     	<option value="<%=obj[0]%>" ><%=obj[1]%> (<%=obj[2] %>) </option>
 										<% } %>
@@ -264,31 +268,26 @@ String initiationid = (String)request.getAttribute("initiationid");
                 		<div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 4px !important">Is Pre-Approved</label>
-				    				
-				  					<select class="form-control selectdee"  name="preApproved" style="margin-top: -5px"  >
-										<option   value="N" selected >No</option>
-										<option   value="Y">Yes</option>
-									</select>			  					
+				  				<select class="form-control selectdee"  name="preApproved" style="margin-top: -5px" >
+									<option   value="Y" selected >Yes</option>
+									<option   value="N">No</option>
+								</select>			  					
 				        	</div>
 				        </div>
                 	
                 	</div>
                 	
-			        <div class="form-group" align="center">
-			        	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-			        	
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									<%if(Long.parseLong(projectid)>0){ %>
-										<input type="hidden" name="id" value="P">
-									<%}else{ %>
-										<input type="hidden" name="id" value="N">
-									<%} %>	
-			 			<button type="submit" class="btn btn-primary btn-sm submit " onclick="Add('myfrm')" >SUBMIT</button>
-		 </form>
-			 			<button type="button" class="btn btn-primary btn-sm back" onclick="submitForm('backfrm');">BACK</button>	
-		
-			        </div>
-			       
+				       <div class="form-group" align="center">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<%if(Long.parseLong(projectid)>0){ %>
+								<input type="hidden" name="id" value="P">
+							<%}else{ %>
+								<input type="hidden" name="id" value="N">
+							<%} %>	
+				 			<button type="submit" class="btn btn-primary btn-sm submit " onclick="Add('myfrm')" >SUBMIT</button>
+				 			<button type="button" class="btn btn-primary btn-sm back" onclick="submitForm('backfrm');">BACK</button>	
+				       </div>
+			      </form> 
 	    				
 	    				<%if(Long.parseLong(divisionid)==0 && Long.parseLong(projectid)==0 && Long.parseLong(initiationid)==0){ %>
 							<form method="post" action="CommitteeList.htm" name="backfrm" id="backfrm">
@@ -322,7 +321,7 @@ String initiationid = (String)request.getAttribute("initiationid");
         	</div>
 		</div>
 	</div>
-
+</div>
 </body>
 
 
@@ -331,25 +330,89 @@ String initiationid = (String)request.getAttribute("initiationid");
 
  $(document).ready(function(){	
 	 
-		chairpersonfetch();
-		
+	 ChairpersonClusterLabs();
+	
 }); 	
-		function chairpersonfetch(){
+ 
+ 
+ 
+ 
+ function ChairpersonClusterLabs(){
+		
+		$('#chairperson').val("");
+		
+			var $ClustreId = $('#level').val();
+		
+			console.log( $ClustreId==='S' );
+					if($ClustreId!=null){
+			
+								$.ajax({
+	
+									type : "GET",
+									url : "ChairpersonLabsListFormation.htm",
+									data : {
+										ClustreId : $ClustreId,										
+										   },
+									datatype : 'json',
+									success : function(result) {
+	
+									var result = JSON.parse(result);
+							
+									var values = Object.keys(result).map(function(e) {
+								 				 return result[e]
+								  
+													});
+									if( $ClustreId==='E')
+									{
+										var s = '';
+										s += '<option disabled="disabled" selected value="">Choose ...</option>';
+										 for (i = 0; i < values.length; i++) {
+											
+											s += '<option value="'+values[i][0]+'">' +values[i][2]+'</option>';
+											
+										} 
+										$('#CpLabCode').attr("required", false);
+										$('#chairperson').html(s);
+										$('#cplab-col').hide();
+									}
+									else
+									{
+										var s = '';
+										s += '<option disabled="disabled" selected value="">Choose ...</option>';
+										 for (i = 0; i < values.length; i++) {
+											
+											s += '<option value="'+values[i][3]+'">' +values[i][3]+'</option>';
+										} 
+										$('#CpLabCode').attr("required", true);
+										$('#chairperson').html('');
+										$('#CpLabCode').html(s);
+										$('#cplab-col').show();
+									}
+							
+							
+						}
+					});
+	
+			}
+}
+	
+ 
+		function ChaippersonEmpList(){
 		
 			$('#chairperson').val("");
 			
-				var $LabId = $('#cplabid').val();
+				var $LabCode = $('#CpLabCode').val();
 			
-				console.log( $LabId );
-						if($LabId!=""){
+				console.log( $LabCode );
+						if($LabCode!=""){
 				
 									$.ajax({
 		
 										type : "GET",
 										url : "ChairpersonEmployeeListFormation.htm",
 										data : {
-													LabId : $LabId,
-													committeemainid : '0'
+											CpLabCode : $LabCode,
+											committeemainid : '0'
 											   },
 										datatype : 'json',
 										success : function(result) {
@@ -361,26 +424,23 @@ String initiationid = (String)request.getAttribute("initiationid");
 									  
 														});
 								
-								var s = '';
-								s += '<option value="">'
-									+"--Select--"+ '</option>';
-								 for (i = 0; i < values.length; i++) {
-									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
-											+ '</option>';
-								} 
-								 
-								$('#chairperson').html(s);
-								
-								
-								//$('.items1').select2("destroy");  
-								
-							}
-						});
+											var s = '';
+											s += '<option value="">Choose ...</option>';
+											 for (i = 0; i < values.length; i++) {
+												
+												s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+											} 
+											 
+											$('#chairperson').html(s);
+											
+											
+											
+											
+										}
+									});
 		
 		}
-			}
+	}
 		
 		
 		
@@ -403,11 +463,30 @@ function Add(myfrm){
     var fieldvalues = $("select[name='Member']").map(function(){return $(this).val();}).get();
     
     var $chairperson = $("#chairperson").val();
+    var $cplabCode = $('#CpLabCode').val();
+    var $ClustreId = $('#level').val();
+    var $LabClusterId = '<%=clusterid%>';
+    var $LabCode = '<%=LabCode%>';
+    
+    
+    var $cochairperson = $("#cochairperson").val();
     var $secretary = $("#secretary").val();
     var $proxysecretary=$("#proxysecretary").val();
-    if($('#cplabid').val()=='<%=seslabid%>'){
+    
+    
+    
+    
+    
+    if($ClustreId===$LabClusterId && $LabCode === $cplabCode){
 		if($chairperson==$secretary){
 			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
+			 event.preventDefault();
+				return false;
+		}
+		
+		if($cochairperson == $chairperson)
+		{
+			alert("Chairperson and Co-Chairperson Should Not Be The Same Person ");	   
 			 event.preventDefault();
 				return false;
 		}
@@ -419,6 +498,8 @@ function Add(myfrm){
 				return false;
 		}
 	}
+    
+    
 	if($proxysecretary==$secretary)
 	{
 		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   

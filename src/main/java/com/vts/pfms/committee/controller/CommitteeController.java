@@ -33,7 +33,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -135,7 +134,6 @@ public class CommitteeController {
 	
 	@Autowired
 	PrintController pt;
-	
 	
 	private static final Logger logger=LogManager.getLogger(CommitteeController.class);
 	
@@ -386,7 +384,8 @@ public class CommitteeController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
-				
+		String clusterid =(String) ses.getAttribute("clusterid");
+		
 		logger.info(new Date() +"Inside CommitteeDetails.htm "+UserId);
 		try
 		{
@@ -437,7 +436,8 @@ public class CommitteeController {
 			req.setAttribute("divisionslist",service.divisionList());			
 			req.setAttribute("initiationdata", service.Initiationdetails(initiationid));
 			req.setAttribute("clusterlist", service.ClusterList());
-			
+			req.setAttribute("clusterid", clusterid);
+			req.setAttribute("LabCode", LabCode);
 			return "committee/CommitteeDetailsAdd";
 		}
 		catch (Exception e) {
@@ -448,11 +448,12 @@ public class CommitteeController {
 	}
 	
 	@RequestMapping(value="CommitteeDetailsSubmit.htm",method=RequestMethod.POST)
-	public String CommitteeDetailsSubmit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception{
-		
+	public String CommitteeDetailsSubmit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
+	{
 		String Username=(String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String LabId =(String)ses.getAttribute("labid");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeDetailsSubmit.htm "+Username);
 		try
 		{
@@ -463,7 +464,7 @@ public class CommitteeController {
 			committeemaindto.setSecretary(req.getParameter("Secretary"));
 			committeemaindto.setProxySecretary(req.getParameter("proxysecretary"));
 			committeemaindto.setCreatedBy(Username);
-			committeemaindto.setCpLabId(req.getParameter("cplabid"));
+			committeemaindto.setCpLabCode(req.getParameter("CpLabCode"));
 			committeemaindto.setDivisionId(req.getParameter("divisionid"));
 			committeemaindto.setProjectId(req.getParameter("projectid"));
 			committeemaindto.setInitiationId(req.getParameter("initiationid"));
@@ -471,6 +472,9 @@ public class CommitteeController {
 			committeemaindto.setCreatedByEmpid(EmpId);	
 			committeemaindto.setCreatedByEmpidLabid(LabId);
 			committeemaindto.setPreApproved(req.getParameter("preApproved"));
+			committeemaindto.setLabCode(LabCode);
+			committeemaindto.setCo_Chairperson(req.getParameter("cochairperson"));
+			committeemaindto.setCpClusterid(req.getParameter("CpClusterid"));
 			
 			long mainid =service.CommitteeDetailsSubmit(committeemaindto);
 			
@@ -509,8 +513,8 @@ public class CommitteeController {
 	public String CommitteeMainMembers(Model model,HttpServletRequest req,RedirectAttributes redir,HttpSession ses) throws Exception 
 	{			
 		String Username=(String)ses.getAttribute("Username");
-		String LabId =(String)ses.getAttribute("labid");
 		String LabCode = (String)ses.getAttribute("labcode");
+		String clusterid =(String) ses.getAttribute("clusterid");
 		logger.info(new Date() +"Inside CommitteeMainMembers.htm "+Username);
 		try
 		{		
@@ -580,21 +584,30 @@ public class CommitteeController {
 			
 			committeemainid=committeedata[0].toString();	
 			List<Object[]> employeelist=service.EmployeeListWithoutMembers(committeemainid,LabCode);
-			List<Object[]> employeelist1=service.EmployeeListNoMembers(LabId,committeemainid);					
+			List<Object[]> employeelist1=service.EmployeeListNoMembers(LabCode,committeemainid);					
 			List<Object[]> ExpertList = service.ExternalMembersNotAddedCommittee(committeemainid); 
 			Object[] proposedcommitteemainid =  service.ProposedCommitteeMainId(committeemainid);
-			
-			req.setAttribute("committeemembersall",service.CommitteeAllMembersList(committeemainid));
+			List<Object[]> committeemembersall= service.CommitteeAllMembersList(committeemainid);
+			Object[] chairperson =null;
+			for(int i=0;i<committeemembersall.size();i++)
+			{	
+				if(committeemembersall.get(i)[8].toString().equalsIgnoreCase("CC")){
+					chairperson=committeemembersall.get(i);
+				}
+			}
+			String CpLabCode = chairperson[9].toString();
+			req.setAttribute("committeemembersall",committeemembersall);
 			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeemainid));
 			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeemainid));
 			req.setAttribute("employeelist", employeelist);
 			req.setAttribute("employeelist1", employeelist1);	
 			req.setAttribute("committeedata", committeedata);			
 			req.setAttribute("expertlist", ExpertList);
-			req.setAttribute("clusterlablist", service.ClusterLabList());
+			req.setAttribute("clusterlablist_CP", service.ClusterLabs(CpLabCode));
 			req.setAttribute("divisionid", divisionid);
 			req.setAttribute("proposedcommitteemainid",proposedcommitteemainid );
 			req.setAttribute("committeeapprovaldata",service.CommitteeMainApprovalData(committeemainid));
+			req.setAttribute("clusterlist", service.ClusterList());
 			
 			if( Long.parseLong(projectid)>0) {
 				req.setAttribute("projectdata", service.projectdetails(projectid));
@@ -605,6 +618,10 @@ public class CommitteeController {
 			if(Long.parseLong(initiationid)>0) {
 				req.setAttribute("initiationdata", service.Initiationdetails(initiationid) );
 			}
+			
+			req.setAttribute("clusterlablist_mem", service.ClusterLabList());
+			req.setAttribute("clusterid", clusterid);
+			req.setAttribute("LabCode", LabCode);
 			
 			return "committee/CommitteeMembers";
 		}
@@ -624,10 +641,9 @@ public class CommitteeController {
 		{	
 			CommitteeMembersDto dto=new CommitteeMembersDto();
 			dto.setCommitteeMainId(req.getParameter("committeemainid"));
-			dto.setInternalMembers(req.getParameterValues("Member"));
-			dto.setInternalLabId(req.getParameter("internallabid"));
-			dto.setExternalMember(req.getParameterValues("externalmember"));
-			dto.setLabId(req.getParameter("LabId"));
+			dto.setMembercluster(req.getParameter("member_cluster"));
+			dto.setMembers(req.getParameterValues("member_empid"));
+			dto.setMembersLabId(req.getParameter("mem_labcode"));
 			dto.setExpertMember(req.getParameterValues("expertmember"));
 			dto.setCreatedBy(Username);
 			
@@ -1261,14 +1277,16 @@ public class CommitteeController {
 			dto.setChairperson(req.getParameter("chairperson"));
 			dto.setSecretary(req.getParameter("Secretary"));
 			dto.setProxysecretary(req.getParameter("proxysecretary"));
-			dto.setSeslabid((String)ses.getAttribute("labid"));
-			dto.setCplabid(req.getParameter("cplabid"));
+			dto.setSesLabCode((String) ses.getAttribute("labcode"));
+			dto.setCpLabCode(req.getParameter("CpLabCode"));
 			dto.setCommitteemainid(req.getParameter("committeemainid"));
 			dto.setChairpersonmemid(req.getParameter("cpmemberid"));
 			dto.setSecretarymemid(req.getParameter("msmemberid"));
 			dto.setProxysecretarymemid(req.getParameter("psmemberid"));			
 			dto.setModifiedBy(Username);		
-			
+			dto.setCo_chairperson(req.getParameter("co_chairperson"));
+			dto.setComemberid(req.getParameter("comemberid"));
+			dto.setCpClusterId(req.getParameter("CpClusterId"));
 			
 			long count =service.CommitteeMainMemberUpdate(dto);		
 			
@@ -4179,20 +4197,11 @@ public class CommitteeController {
 
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside ExternalEmployeeListFormation "+ UserId);
-		String LabCode = req.getParameter("LabId").split(",")[0];
-		String ClusterId = req.getParameter("LabId").split(",")[1];
-		String OwnClusterId = (String)ses.getAttribute("clusterid");
 		
 		List<Object[]> ExternalEmployeeList= new ArrayList<Object[]>();
 		
-		if(ClusterId.equalsIgnoreCase(OwnClusterId)) {
+		ExternalEmployeeList = service.ExternalEmployeeListFormation(req.getParameter("CpLabCode"),req.getParameter("committeemainid"));
 			
-			//ExternalEmployeeList= service.EmployeeListWithoutMembers(committeemainid,LabCode);
-			
-		}else {
-			ExternalEmployeeList = service.ExternalEmployeeListFormation(req.getParameter("LabId"),req.getParameter("committeemainid"));
-			
-		}
 		Gson json = new Gson();
 		return json.toJson(ExternalEmployeeList);	
 	}
@@ -4202,9 +4211,19 @@ public class CommitteeController {
 
 		String UserId = (String)ses.getAttribute("Username");
 		logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);		
-		List<Object[]> ExternalEmployeeList = service.ChairpersonEmployeeListFormation(req.getParameter("LabId"),req.getParameter("committeemainid"));
+		List<Object[]> ExternalEmployeeList = service.ChairpersonEmployeeListFormation(req.getParameter("CpLabCode"),req.getParameter("committeemainid"));
 		Gson json = new Gson();
 		return json.toJson(ExternalEmployeeList);	
+	}
+	
+	@RequestMapping(value = "ChairpersonLabsListFormation.htm", method = RequestMethod.GET)
+	public @ResponseBody String ChairpersonLabsListFormation(HttpServletRequest req,HttpSession ses) throws Exception {
+
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside ChairpersonLabsListFormation "+ UserId);		
+		List<Object[]> ClusterLabslist = service.ChairpersonLabsListFormation(req.getParameter("ClustreId"),req.getParameter("committeemainid"));
+		Gson json = new Gson();
+		return json.toJson(ClusterLabslist);	
 	}
 	
 	@RequestMapping(value = "ExternalEmployeeListInvitations.htm", method = RequestMethod.GET)
