@@ -244,6 +244,7 @@ ul, #myUL {
 										<th>Agenda Item</th>
 										<th>Reference</th>
 										<th>Remarks</th>
+										<th>Lab</th>
 										<th>Presenter</th>
 										<th>Duration </th>
 										<!-- <th>Attachment</th> -->
@@ -282,7 +283,12 @@ ul, #myUL {
 											<%} %>
 										</td>		
 						         		<td  width="20%"><input type="text" name="remarks" class="form-control item_name child" maxlength="255" required="required" /></td>      
-						         		                                      
+						         		 <td width="10%">
+						         		 		<select class="form-control items " name="presenterid" required="required" style=" font-weight: bold; text-align-last: left; width: 100px;" data-live-search="true" data-container="body">
+											 	<option disabled selected value="">Choose...</option>
+								          						
+											</select>
+						         		 </td>                          
 						         		<td width="15%" >						         		
 											<select class="form-control items " name="presenterid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 											 	<option disabled selected value="">Choose...</option>
@@ -825,8 +831,15 @@ function setagendaattachval(attachid, attchName)
 	{
 		let agendano=$('#agendano').val();
 		let html= $("#attachlistdiv_"+agendano).html();
-		html += '<tr id="a_'+agendano+'"><td>'+attchName+'</td><td style="width:1% ;white-space: nowrap;">';
-		html += '<button type="button" onclick="$(this).parent(\'td\').parent(\'tr\').remove();" > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
+		let attname ;
+		if(attchName.length>5){
+			attname = attchName.substring(0, 5).concat("...");
+		}else{
+			attname=attchName;
+		}
+		 console.log(attchName);
+		html += '<tr id="a_'+agendano+'"><td title='+attchName+'>'+attname+'</td><td style="width:1% ;white-space: nowrap;">';
+		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
 		
 		html += '</tr>';

@@ -349,9 +349,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> CommitteeMainList() throws Exception {
+	public List<Object[]> CommitteeMainList(String labcode) throws Exception {
 		logger.info(new Date() +"Inside CommitteeMainList");
-		return dao.CommitteeMainList();
+		return dao.CommitteeMainList(labcode);
 	}
 	
 	@Override

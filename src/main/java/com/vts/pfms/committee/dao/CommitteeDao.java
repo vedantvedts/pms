@@ -44,7 +44,7 @@ public interface CommitteeDao {
 	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception;
 	public Object[] CommitteeDetails(String committeeid) throws Exception;
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception;
-	public List<Object[]> CommitteeMainList() throws Exception;
+	public List<Object[]> CommitteeMainList(String labcode) throws Exception;
 	public int CommitteeMemberDelete(CommitteeMember committeemember) throws Exception;
 	public Long CommitteeMainMembersAdd(CommitteeMember  committeemember)throws Exception;
 	

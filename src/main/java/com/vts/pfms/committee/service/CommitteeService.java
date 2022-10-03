@@ -44,7 +44,7 @@ public interface CommitteeService {
 	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception;
 	public Object[] CommitteeDetails(String committeeid) throws Exception;
 	public long CommitteeEditSubmit(CommitteeDto committeeDto) throws Exception;
-	public List<Object[]> CommitteeMainList() throws Exception;
+	public List<Object[]> CommitteeMainList(String labcode) throws Exception;
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid,String LabCode) throws Exception;
 	public int CommitteeMemberDelete(String committeememberid, String modifiedby)throws Exception;
 	public List<Object[]> EmployeeListNoMembers(String labid, String committeemainid) throws Exception;

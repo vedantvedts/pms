@@ -755,10 +755,12 @@ public class CommitteeController {
 	public String MasterScheduleListSelect(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MasterScheduleListSelect.htm "+UserId);
 		try
 		{		
-			List<Object[]> committeeactivelist=service.CommitteeMainList();
+			
+			List<Object[]> committeeactivelist=service.CommitteeMainList(labcode);
 			if(committeeactivelist.size()==0)
 			{
 				redir.addAttribute("resultfail", "No Committee is Constituted, Constitute a Non-Project Committee ");
@@ -776,6 +778,7 @@ public class CommitteeController {
 	public String CommitteeScheduleList(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeScheduleList.htm "+UserId);
 		try
 		{
@@ -787,7 +790,7 @@ public class CommitteeController {
 				req.setAttribute("committeedetails",service.CommitteeDetails(committeeid));
 				req.setAttribute("committeeschedulelist",service.CommitteeScheduleListNonProject(committeeid) );
 			}		
-			req.setAttribute("CommitteeList", service.CommitteeMainList());
+			req.setAttribute("CommitteeList", service.CommitteeMainList(labcode));
 			return "committee/CommitteeScheduleSelect";
 		}
 		catch (Exception e) {
@@ -913,8 +916,7 @@ public class CommitteeController {
 	public String CommitteeScheduleAgenda(Model model,HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		System.out.println(UserId);
-		String LabCode =(String) ses.getAttribute("labcode");
+		String LabCode =ses.getAttribute("labcode").toString().trim();
 		logger.info(new Date() +"Inside CommitteeScheduleAgenda.htm "+UserId);
 		try
 		{
@@ -933,7 +935,7 @@ public class CommitteeController {
 			List<Object[]> committeeagendalist = service.AgendaList(CommitteeScheduleId);
 			
 			String projectid = scheduledata[9].toString();
-			System.out.println(LabCode+" LABCODE");
+			
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", service.ProjectList(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
@@ -1964,6 +1966,7 @@ public class CommitteeController {
 		
 		String UserId=(String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MeetingApprovalAgendaDetails.htm "+UserId);
 		try
 		{		
@@ -1974,7 +1977,7 @@ public class CommitteeController {
 			req.setAttribute("committeename", req.getParameter("committeename"));			
 			req.setAttribute("agendalist",  service.AgendaList(ScheduleId));			
 			req.setAttribute("scheduledata",ScheduletData);			
-			req.setAttribute("committeedata", service.CommitteeMainList() );			
+			req.setAttribute("committeedata", service.CommitteeMainList(labcode) );			
 			req.setAttribute("invitedlist",service.CommitteeAtendance(ScheduleId));
 			req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(ScheduleId));
 		}
@@ -4497,7 +4500,7 @@ public class CommitteeController {
 	public String NonProjectCommitteeAutoSchedule(Model model,HttpServletRequest req,HttpServletResponse res,HttpSession ses,RedirectAttributes redir)
 	{	
 		String UserId =(String)ses.getAttribute("Username");
-		
+		String labcode = (String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside NonProjectCommitteeAutoSchedule.htm "+UserId);		
 		try {
 			String fromdate=req.getParameter("fromdate");			
@@ -4558,7 +4561,7 @@ public class CommitteeController {
 			}
 
 			req.setAttribute("committeeid", committeeid);
-			req.setAttribute("committeelist", service.CommitteeMainList());
+			req.setAttribute("committeelist", service.CommitteeMainList(labcode));
 			req.setAttribute("dashboard", Dashboard);
 			req.setAttribute("startdate",service.CommitteeLastScheduleDate(committeeid));
 			req.setAttribute("CommitteeAutoScheduleList", service.CommitteeAutoScheduleList("0", committeeid,"0","0"));
