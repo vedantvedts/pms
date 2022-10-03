@@ -911,6 +911,7 @@ public class CommitteeController {
 	public String CommitteeScheduleAgenda(Model model,HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		System.out.println(UserId);
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeScheduleAgenda.htm "+UserId);
 		try
@@ -930,7 +931,7 @@ public class CommitteeController {
 			List<Object[]> committeeagendalist = service.AgendaList(CommitteeScheduleId);
 			
 			String projectid = scheduledata[9].toString();
-			
+			System.out.println(LabCode+" LABCODE");
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", service.ProjectList(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
@@ -1791,11 +1792,11 @@ public class CommitteeController {
 				
 				if(req.getParameterValues("internalmember")!=null && req.getParameterValues("internalmember").length!=0) {
 					String members[] =req.getParameterValues("internalmember");
-					String labid =req.getParameter("internallabid");
+					String labcode =req.getParameter("internallabcode");
 					emplist.addAll(Arrays.asList(members));
 					for(String member : members )
 					{
-						lablist.add(labid);
+						lablist.add(labcode);
 					}
 				}
 				

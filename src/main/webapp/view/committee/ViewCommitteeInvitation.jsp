@@ -65,7 +65,7 @@ h5,h6{
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 
-	String seslabid=(String)session.getAttribute("labid");
+	String labcode=(String)session.getAttribute("labcode");
 	List<Object[]> ExpertList=(List<Object[]>) request.getAttribute("ExpertList");
 	List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
 	List<Object[]> committeeinvitedlist=(List<Object[]>)request.getAttribute("committeeinvitedlist");
@@ -691,7 +691,7 @@ h5,h6{
 										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
 										    	<%} %>
 											</select>
-											<input type="hidden" name="internallabid" value="<%=seslabid %>" />
+											<input type="hidden" name="internallabcode" value="<%=labcode %>" />
 										</div>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 	 									<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
@@ -730,7 +730,7 @@ h5,h6{
 											<select class="form-control selectdee" name="externallabid" tabindex="-1"  style="" id="LabId" onchange="employeename()" required>
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {
-													if(!seslabid.equals(obj[0].toString())){%>
+													if(!labcode.equals(obj[3].toString())){%>
 														<option value="<%=obj[0]%>"><%=obj[3]%></option>
 													<%} 
 													}%>
