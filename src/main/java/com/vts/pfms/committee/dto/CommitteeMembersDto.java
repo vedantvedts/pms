@@ -7,10 +7,11 @@ public class CommitteeMembersDto {
 
 	
 	private String CommitteeMainId;
-	private String Members[];
-	private String MembersLabId;	
-	private String membercluster;
-	private String ExpertMember[];
+	private String[] InternalMemberIds;
+	private String InternalLabCode;
+	private String[] ExternalMemberIds;
+	private String ExternalLabCode;
+	private String[] ExpertMemberIds;
 	private String CreatedBy;
 	
 	

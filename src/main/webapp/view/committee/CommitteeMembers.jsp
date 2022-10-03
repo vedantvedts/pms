@@ -57,7 +57,6 @@
 <body>
 
 <%
-String seslabid=(String)session.getAttribute("labid");
 
 
 Object[] projectdata=(Object[])request.getAttribute("projectdata"); 
@@ -302,11 +301,11 @@ String ses=(String)request.getParameter("result");
 												int count = 1;
 												for (int i=0;i<committeemembersall.size();i++) {
 													Object[] obj=committeemembersall.get(i);
-													if(obj[7].toString().equalsIgnoreCase(seslabid)){
+													if(obj[9].toString().equalsIgnoreCase(LabCode)){
 											%>
 											
 											<tr>
-												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9]%>)</td>
+												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
 												<td>
 													<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -334,13 +333,13 @@ String ses=(String)request.getParameter("result");
 							<h5 style="color: #FF5733">External Members (Within DRDO)</h5>
 								<hr>
 							
-							 <table border="">
+							 <table border="0">
 	
 								<tbody>
 									<%int count = 1;
 										for (int i=0;i<committeemembersall.size();i++) {
 											Object[] obj=committeemembersall.get(i);
-											if(Long.parseLong(obj[7].toString())>0 && !obj[7].toString().equalsIgnoreCase(seslabid) ){
+											if(Long.parseLong(obj[7].toString())>0 && !obj[9].toString().equalsIgnoreCase(LabCode) ){
 									%>
 									
 									<tr>
@@ -382,7 +381,7 @@ String ses=(String)request.getParameter("result");
 											if(Long.parseLong(obj[7].toString())==0){
 									%>
 								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9] %>)</td>
+									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
 									<td>
 										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -543,7 +542,7 @@ String ses=(String)request.getParameter("result");
 														<tr class="tr_clone">
 															<td>
 																<div class="input select">
-																	<select class="form-control selectdee " name="Member" id="Member"  data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
+																	<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 													                <%for(Object[] obj:EmployeeList){ %>																							
 																		<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
 																	<%} %>
@@ -582,11 +581,11 @@ String ses=(String)request.getParameter("result");
 												<tr class="tr_clone1">
 													<td style="width:30%">
 														 <div class="input select">
-															 <select class="form-control selectdee" name="Ext_LabId" tabindex="-1" required style="" id="Ext_LabId" onchange="employeename()">
+															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required style="" id="Ext_LabCode" onchange="employeename()">
 																<option disabled="true"  selected value="">Lab Name</option>
 																    <% for (Object[] obj : clusterlablist_mem) {
-																    if(!seslabid.equals(obj[0].toString())){%>
-																    <option value="<%=obj[3]%>,<%=obj[1]%>"><%=obj[3]%></option>
+																    if(!LabCode.equals(obj[3].toString())){%>
+																    <option value="<%=obj[3]%>"><%=obj[3]%></option>
 																    <%}
 																    }%>
 															</select>
@@ -595,7 +594,7 @@ String ses=(String)request.getParameter("result");
 													</td>										
 													<td style="width:70%">
 														<div class="input select">
-															<select class="form-control selectdee" name="ExternalMember" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
+															<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
 
 															</select>															
 														</div>														
@@ -628,7 +627,7 @@ String ses=(String)request.getParameter("result");
 												<tr class="tr_clone2">
 													<td >
 														<div class="input select ">
-															<select class="selectdee" name="expertmember"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
+															<select class="selectdee" name="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 												            	<%for(Object[] obj:expertlist){ %>																									
 																	<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
 																													
@@ -751,7 +750,7 @@ function employeename(){
 
 	$('#ExternalMember').val("");
 	
-		var $CpLabCode  = $('#Ext_LabId').val()
+		var $CpLabCode  = $('#Ext_LabCode').val()
 		
 			if($CpLabCode !=""){
 				$.ajax({
@@ -770,7 +769,7 @@ function employeename(){
 		 					return result[e]
 							  
 						});
-						
+						console.log(values.length);
 						var s = '';
 						s += '<option value="">--Select--</option>';
 						for (i = 0; i < values.length; i++) 
@@ -941,7 +940,6 @@ function MemberLabsfetch(){
  $(document).ready(function(){	
 	 
 		chairpersonfetch('0');
-		employeename();
 		<%if(CpClusterid.equalsIgnoreCase("E")){ %>
 		chairpersonLabsfetch(0)
 		<%}%>

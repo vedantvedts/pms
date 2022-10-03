@@ -34,6 +34,5 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="/pfms"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

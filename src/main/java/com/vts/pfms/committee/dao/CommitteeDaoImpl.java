@@ -434,7 +434,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> AgendaReturnData=(List<Object[]>)query.getResultList();
 		return AgendaReturnData;
 	}
-
+  
 
 	@Override
 	public List<Object[]> ProjectList(String LabCode) throws Exception {

@@ -430,7 +430,6 @@ public class CommitteeController {
 			req.setAttribute("committeereplist", service.CommitteeRepList());
 			req.setAttribute("committeedata", service.CommitteeName(CommitteeId));
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
-			req.setAttribute("clusterlablist", service.ClusterLabList());
 			req.setAttribute("projectlist", projectdetailslist);
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("projectid", projectid);
@@ -438,6 +437,7 @@ public class CommitteeController {
 			req.setAttribute("divisionslist",service.divisionList());			
 			req.setAttribute("initiationdata", service.Initiationdetails(initiationid));
 			req.setAttribute("clusterlist", service.ClusterList());
+			
 			req.setAttribute("clusterid", clusterid);
 			req.setAttribute("LabCode", LabCode);
 			return "committee/CommitteeDetailsAdd";
@@ -643,10 +643,12 @@ public class CommitteeController {
 		{	
 			CommitteeMembersDto dto=new CommitteeMembersDto();
 			dto.setCommitteeMainId(req.getParameter("committeemainid"));
-			dto.setMembercluster(req.getParameter("member_cluster"));
-			dto.setMembers(req.getParameterValues("member_empid"));
-			dto.setMembersLabId(req.getParameter("mem_labcode"));
-			dto.setExpertMember(req.getParameterValues("expertmember"));
+			dto.setInternalMemberIds(req.getParameterValues("InternalMemberIds"));
+			dto.setInternalLabCode(req.getParameter("InternalLabCode"));
+			dto.setExternalMemberIds(req.getParameterValues("ExternalMemberIds"));
+			dto.setExternalLabCode(req.getParameter("Ext_LabCode"));
+			dto.setExpertMemberIds(req.getParameterValues("ExpertMemberIds"));
+			
 			dto.setCreatedBy(Username);
 			
 			long count=service.CommitteeMembersInsert(dto);

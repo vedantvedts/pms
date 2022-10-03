@@ -47,12 +47,10 @@ alert('<%=ses1%>');
 List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("employeelist");
 Object[] committeedata=(Object[]) request.getAttribute("committeedata");
 List<Object[]> projectlist=(List<Object[]>) request.getAttribute("projectlist");
-List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlablist");
 List<Object[]> clusterlist=(List<Object[]>) request.getAttribute("clusterlist");
 String committeemainid1 = (String)request.getAttribute("committeemainid");
 
 List<Object[]> divisionslist=(List<Object[]>) request.getAttribute("divisionslist");
-String seslabid=(String)session.getAttribute("labid");
 List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
 Object[] initiationdata=(Object[]) request.getAttribute("initiationdata");
 
@@ -396,7 +394,6 @@ String LabCode = (String)request.getAttribute("LabCode");
 			}
 }
 	
- 
 		function ChaippersonEmpList(){
 		
 			$('#chairperson').val("");

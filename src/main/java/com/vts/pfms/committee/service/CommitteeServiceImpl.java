@@ -1829,7 +1829,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public List<Object[]> ExternalEmployeeListFormation(String CpLabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ExternalEmployeeListFormation");
 		return dao.InternalEmployeeListFormation(CpLabCode,committeemainid);
-		
 	}
 	
 	@Override
@@ -1874,25 +1873,38 @@ public class CommitteeServiceImpl implements CommitteeService{
 		ArrayList<String> lablist=new ArrayList<String>();
 		ArrayList<String> membertype=new ArrayList<String>();
 		
-		if (dto.getMembers()!=null) {
+		if (dto.getInternalMemberIds()!=null) 
+		{
 
-			for(int i=0;i<dto.getMembers().length;i++) {
+			for(int i=0;i<dto.getInternalMemberIds().length;i++) {
 				
-				lablist.add(dto.getMembersLabId());
+				lablist.add(dto.getInternalLabCode());
 				membertype.add("CI");
 			}
 			
-			emplist.addAll(Arrays.asList(dto.getMembers()));
+			emplist.addAll(Arrays.asList(dto.getInternalMemberIds()));
 		}
 		
-		if (dto.getExpertMember() != null) {
+		if (dto.getExternalMemberIds()!=null) 
+		{
+
+			for(int i=0;i<dto.getExternalMemberIds().length;i++) {
+				
+				lablist.add(dto.getExternalLabCode());
+				membertype.add("CW");
+			}
 			
-			for(int i=0;i<dto.getExpertMember().length;i++) {
+			emplist.addAll(Arrays.asList(dto.getExternalMemberIds()));
+		}
+		
+		if (dto.getExpertMemberIds() != null) {
+			
+			for(int i=0;i<dto.getExpertMemberIds().length;i++) {
 				
 				lablist.add("@EXP");
 				membertype.add("CO");
 			}
-			emplist.addAll(Arrays.asList(dto.getExpertMember()));
+			emplist.addAll(Arrays.asList(dto.getExpertMemberIds()));
 		}
 		
 		
