@@ -37,11 +37,11 @@ public interface CommitteeService {
 	
 	public List<Object[]> EmployeeList(String labcode) throws Exception;
 	public List<Object[]> ExpertList() throws Exception;
-	public List<Object[]> ClusterLabList() throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
 	public Object[] CommitteeName(String CommitteeId) throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto)throws Exception;
 	public long CommitteeAdd(CommitteeDto committeeDto) throws Exception;
-	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception;
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception;
 	public Object[] CommitteeDetails(String committeeid) throws Exception;
 	public long CommitteeEditSubmit(CommitteeDto committeeDto) throws Exception;
 	public List<Object[]> CommitteeMainList(String labcode) throws Exception;
@@ -156,7 +156,7 @@ public interface CommitteeService {
 	public int ProjectCommitteeDescriptionTOREdit(CommitteeProject committeeproject) throws Exception;
 	//public List<Object[]> CommitteeAgendaListByMeetingId(String meetingid) throws Exception;
 	public long CommitteePreviousAgendaAdd(String scheduleidto, String[] fromagendaids, String userid) throws Exception;
-	public Object[] CommitteeNamesCheck(String name, String sname,String projectid) throws Exception;
+	public Object[] CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
 	//public List<Object[]> ChairpersonEmployeeList() throws Exception;
 	public List<Object[]> divisionList() throws Exception;
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception;
@@ -252,8 +252,9 @@ public interface CommitteeService {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;   
 	public List<Object[]> ClusterList() throws Exception;
-	public List<Object[]> ChairpersonLabsListFormation(String clusterid,String committeemainid) throws Exception;
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
     
 }
 

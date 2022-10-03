@@ -39,15 +39,14 @@ public interface CommitteeDao {
 	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception;
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception;
 	public long CommitteeNewAdd(Committee committeeModel) throws Exception;
-	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid) throws Exception;
+	public List<Object[]> CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
 	public List<Object[]> CommitteeListAll() throws Exception;
-	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception;
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception;
 	public Object[] CommitteeDetails(String committeeid) throws Exception;
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception;
 	public List<Object[]> CommitteeMainList(String labcode) throws Exception;
 	public int CommitteeMemberDelete(CommitteeMember committeemember) throws Exception;
 	public Long CommitteeMainMembersAdd(CommitteeMember  committeemember)throws Exception;
-	
 	public long CommitteeScheduleAddSubmit(CommitteeSchedule committeeschedule) throws Exception;
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid) throws Exception;
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception;
@@ -85,7 +84,7 @@ public interface CommitteeDao {
 	public Long CommitteeAttendanceUpdate(String InvitationId, String Value) throws Exception;
 	public long CommitteeInvitationCreate(CommitteeInvitation committeeinvitation) throws Exception;
 	public List<Object[]> ExpertList() throws Exception;
-	public List<Object[]> ClusterLabList() throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
 	public long ScheduleMinutesUnitUpdate(CommitteeScheduleMinutesDetails minutesdetails ) throws Exception;
 	public List<Object[]> MinutesUnitList(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> CommitteeAgendaPresenter(String scheduleid) throws Exception;
@@ -276,10 +275,10 @@ public interface CommitteeDao {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;
 	public List<Object[]> ClusterList() throws Exception;
-	public List<Object[]> ChairpersonLabsList(String ClusterId) throws Exception;
 	public List<Object[]> DGEmpData(String ClusterId) throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 
 
 }

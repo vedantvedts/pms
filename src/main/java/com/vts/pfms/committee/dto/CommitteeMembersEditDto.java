@@ -10,7 +10,6 @@ public class CommitteeMembersEditDto {
 	private String secretary;
 	private String proxysecretary;
 	private String sesLabCode;
-	private String CpClusterId;
 	private String CpLabCode;
 	private String committeemainid;
 	private String chairpersonmemid;

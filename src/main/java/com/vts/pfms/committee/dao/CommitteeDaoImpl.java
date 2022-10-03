@@ -52,9 +52,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String LASTCOMMITTEEID="SELECT committeemainid FROM committee_main WHERE isactive=1 and committeeid=:committeeid AND projectid=:projectid and divisionid=:divisionid AND InitiationId=:initiationid ";
 	private static final String UPDATECOMMITTEEVALIDTO="UPDATE committee_main SET isactive=0,Status='E',validto=:validto ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE committeemainid=:lastcommitteeid";
 	private static final String COMMITTEENAME="SELECT committeeid,committeename,committeeshortname,projectapplicable,periodicduration,isglobal FROM committee WHERE  committeeid=:committeeid";
-	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 ";
+	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 AND labcode=:labcode ";
 	private static final String COMMITTEELISTALL="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive FROM committee";
-	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable";
+	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable  AND labcode=:labcode ;";
 	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)";
 	private static final String COMMITTEEEDITSUBMIT="UPDATE committee SET CommitteeShortName=:committeeshortname ,  CommitteeName=:committeename , CommitteeType=:committeetype , ProjectApplicable=:projectapplicable ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate,PeriodicDuration=:periodicduration,TechNonTech=:technontech,Guidelines=:guidelines,PeriodicNon=:periodicnon,Description=:description,TermsOfReference=:termsofreference,isglobal=:isglobal WHERE committeeid=:committeeid";
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND b.labcode=:labcode" ;
@@ -223,13 +223,14 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 
 	@Override
-	public List<Object[]> CommitteeNamesCheck(String name,String sname,String projectid) throws Exception
+	public List<Object[]> CommitteeNamesCheck(String name,String sname,String projectid,String LabCode) throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside CommitteeNamesCheck");
 		Query query=manager.createNativeQuery(COMMITTEENAMESCHECK);		
 		query.setParameter("committeeshortname", sname);
 		query.setParameter("committeename", name);
-
+		query.setParameter("labcode", LabCode);
+		
 		List<Object[]> CommitteeNamesCheck=(List<Object[]>)query.getResultList();
 
 		return CommitteeNamesCheck;
@@ -247,12 +248,13 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> CommitteeListActive(String isglobal,String projectapplicable) throws Exception
+	public List<Object[]> CommitteeListActive(String isglobal,String projectapplicable, String LabCode) throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside CommitteeListActive");
 		Query query=manager.createNativeQuery(COMMITTEELISTACTIVE);
 		query.setParameter("isglobal", isglobal);
 		query.setParameter("projectapplicable", projectapplicable);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> CommitteeListActives=(List<Object[]>)query.getResultList();		
 		return CommitteeListActives;
 	}
@@ -262,13 +264,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	{
 		logger.info(new java.util.Date() +"Inside CommitteeDetails");
 		Query query=manager.createNativeQuery(COMMITTEEDETAILS);
-		query.setParameter("committeeid", committeeid);
-		
-		Object[] CommitteeDetails=(Object[])query.getResultList().get(0);
-		
+		query.setParameter("committeeid", committeeid);		
+		Object[] CommitteeDetails = (Object[])query.getResultList().get(0);		
 		return CommitteeDetails;
 	}
-	
 	
 	@Override
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception
@@ -1499,7 +1498,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> ClusterLabList() throws Exception 
+	public List<Object[]> AllLabList() throws Exception 
 	{
 		logger.info(new java.util.Date() +"Inside ClusterLabList");
 		Query query=manager.createNativeQuery(CLUSTERLABLIST);
@@ -1557,21 +1556,15 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return ChairpersonEmployeeListFormation;
 	}
 	
-	private static final String CHAIRPERSONLABSLIST ="SELECT labid,clusterid,labname,labcode FROM cluster_lab  WHERE clusterid=:ClusterId ";
+	private static final String LABINFOCLUSTERLAB = "SELECT labid,clusterid,labname,labcode FROM cluster_lab WHERE labcode =:labcode";
 	@Override
-	public List<Object[]> ChairpersonLabsList(String ClusterId) throws Exception
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ChairpersonLabsList");
-		try {
-			Query query=manager.createNativeQuery(CHAIRPERSONLABSLIST);
-			query.setParameter("ClusterId", ClusterId);
-			List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
-			return ChairpersonEmployeeListFormation;
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside ChairpersonLabsList DAO "+ e);
-			return new ArrayList<Object[]>();
-		}
+		logger.info(new java.util.Date() +"Inside LabInfoClusterLab");
+		Query query=manager.createNativeQuery(LABINFOCLUSTERLAB);
+		query.setParameter("labcode", LabCode);
+		Object[] LabInfoClusterLab=(Object[])query.getSingleResult();
+		return LabInfoClusterLab;
 	}
 	
 	
@@ -1591,7 +1584,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 	}
 	
-	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertno,e.expertname,'@EXP' AS labcode FROM expert e WHERE e.isactive=1  AND e.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP' AND committeemainid=:committeemainid AND membertype IN ('CH','CO')); ";
+	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1  AND e.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP' AND committeemainid=:committeemainid AND membertype IN ('CH','CO')); ";
 	@Override
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception
 	{

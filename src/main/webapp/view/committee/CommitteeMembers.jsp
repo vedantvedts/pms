@@ -67,7 +67,7 @@ List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("employeelist")
 List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("employeelist1");
 
 List<Object[]> clusterlist=(List<Object[]>) request.getAttribute("clusterlist");
-List<Object[]> clusterlablist_CP=(List<Object[]>) request.getAttribute("clusterlablist_CP");
+List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
 List<Object[]> expertlist=(List<Object[]>) request.getAttribute("expertlist");
 
 Object[] initiationdata=(Object[])request.getAttribute("initiationdata");
@@ -92,15 +92,7 @@ if(proposedcommitteemainid!=null)
 }
 List<Object[]> committeerepnotaddedlist=(List<Object[]>)request.getAttribute("committeerepnotaddedlist");
 List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("committeeMemberreplist");
-String CpClusterid="";
-if(clusterlablist_CP.size()>0){
- CpClusterid =  clusterlablist_CP.get(0)[1].toString();
-}else
-{
-	CpClusterid = "E";
-}
 
-List<Object[]> clusterlablist_mem=(List<Object[]>) request.getAttribute("clusterlablist_mem");
 String LabClusterid = (String)request.getAttribute("clusterid");
 String LabCode = (String)request.getAttribute("LabCode");
 %>
@@ -140,7 +132,7 @@ for(int i=0;i<committeemembersall.size();i++)
 		break;
 	}
 }
-
+String CpLabCode = chairperson[9].toString();
 %>
 
 <%
@@ -188,29 +180,17 @@ String ses=(String)request.getParameter("result");
 						  <form action="CommitteeMainEditSubmit.htm" method="post" id="committeeeditfrm">				
 							 <div class="row">							
 								<div class="col-md-6" style="margin-top:5px; ">									 
-					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson</label>
+					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
 					                    	<table style="width:100%">
 					                        <tr >
-					                        	<td style="width:25%; border:0:">
-					                        		 <div class="input select">
-										            	
-										  				<select class=" form-control selectdee" id="level" name="CpClusterId" required="required" style="margin-top: -5px" onchange="chairpersonLabsfetch(1)" >
-															<option disabled="disabled"  selected value="" >Cluster</option>
-															<option value="S" > Head Quarters </option>
-															<%	for (Object[] obj  : clusterlist) {%>
-														     	<option value="<%=obj[0]%>" <%if(CpClusterid.equalsIgnoreCase(obj[0].toString())){ %>selected <%} %> ><%=obj[2] %> </option>
-															<% } %>
-															<option value="E" <%if(CpClusterid.equalsIgnoreCase("E")){ %>selected <%} %> > Expert</option>
-														</select>				  					
-										        	</div>
-					                        	</td>
 												<td style="width:25%; border:0:">
 													 <div class="input select" id="cplab-col">
 														<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
-														    <% for (Object[] obj : clusterlablist_CP) {%>
+														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
 														    <%} %>
+														    <option <%if(chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
 																
 													</div>
@@ -227,7 +207,22 @@ String ses=(String)request.getParameter("result");
 										</table>
 								</div>
 							
-							<div class="col-md-3">
+							
+								<div class="col-md-3">
+									<div class="form-group">
+										<label class="control-label">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
+										<select class="form-control selectdee" id="secretary" required="required" name="Secretary"style="margin-top: -5px">
+				    						<option disabled="true"  selected value="" >Choose...</option>
+				    						<% for (Object[] obj : EmployeeList1) {%>
+												<option value="<%=obj[0]%>" <%if(secretary!=null && secretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
+											<%} %>
+				  						</select>
+				  						<%if(secretary!=null){ %>
+				  						<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
+				  						<%} %>	
+									</div>
+								</div>
+								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Co-Chairperson</label>
 										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
@@ -241,23 +236,6 @@ String ses=(String)request.getParameter("result");
 				  						<%} %>	
 									</div>
 								</div>
-								
-							
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="control-label">Member Secretary</label>
-										<select class="form-control selectdee" id="secretary" required="required" name="Secretary"style="margin-top: -5px">
-				    						<option disabled="true"  selected value="" >Choose...</option>
-				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(secretary!=null && secretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
-											<%} %>
-				  						</select>
-				  						<%if(secretary!=null){ %>
-				  						<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
-				  						<%} %>	
-									</div>
-								</div>
-
 							 
 							
 								<div class="col-md-3">
@@ -583,7 +561,7 @@ String ses=(String)request.getParameter("result");
 														 <div class="input select">
 															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required style="" id="Ext_LabCode" onchange="employeename()">
 																<option disabled="true"  selected value="">Lab Name</option>
-																    <% for (Object[] obj : clusterlablist_mem) {
+																    <% for (Object[] obj : AllLabList) {
 																    if(!LabCode.equals(obj[3].toString())){%>
 																    <option value="<%=obj[3]%>"><%=obj[3]%></option>
 																    <%}
@@ -872,66 +850,6 @@ function replacerepdd(){
 	});
 }
 
-/* 
-function MemberLabsfetch(){
-	
-	$('#chairperson').val("");
-		var $ClustreId = $('#member_cluster').val();
-	
-				if($ClustreId!=null){
-		
-							$.ajax({
-
-								type : "GET",
-								url : "ChairpersonLabsListFormation.htm",
-								data : {
-									ClustreId : $ClustreId,										
-									   },
-								datatype : 'json',
-								success : function(result) {
-
-								var result = JSON.parse(result);
-						
-								var values = Object.keys(result).map(function(e) {
-							 				 return result[e]
-							  
-												});
-								if( $ClustreId==='E')
-								{
-									var s = '';
-									s += '<option disabled="disabled" selected value="">Choose ...</option>';
-									 for (i = 0; i < values.length; i++) {
-										
-										s += '<option value="'+values[i][0]+'">' +values[i][2]+'</option>';
-										
-									} 
-									
-									$('#ExternalMember').html(s);
-									$('#mem_lab_col').hide();
-								}
-								else
-								{
-									var s = '';
-									s += '<option disabled="disabled" selected value="">Choose ...</option>';
-									 for (i = 0; i < values.length; i++) {
-										
-										s += '<option value="'+values[i][3]+'">' +values[i][3]+'</option>';
-									} 
-									$('#ExternalMember').html('');
-									$('#mem_labcode').html(s);
-									$('#mem_lab_col').show();
-								}
-						
-						
-					}
-				});
-
-		}
-}
-
- */
-
-
 </script>
 
 
@@ -939,10 +857,8 @@ function MemberLabsfetch(){
 
  $(document).ready(function(){	
 	 
-		chairpersonfetch('0');
-		<%if(CpClusterid.equalsIgnoreCase("E")){ %>
-		chairpersonLabsfetch(0)
-		<%}%>
+	chairpersonfetch('0');
+		
 }); 
 
 	
@@ -980,7 +896,7 @@ function MemberLabsfetch(){
 								if(hint=='0' && $CpLabCode =='<%=chairperson[9]%>'){
 									$('#chairperson').val('<%=chairperson[5]%>');
 								}
-								//$('.items1').select2("destroy");							
+															
 							}
 						});
 		
@@ -990,72 +906,6 @@ function MemberLabsfetch(){
 </script>
 
 <script>
-
-
-
-
-function chairpersonLabsfetch(hint){
-		
-		$('#chairperson').val("");
-			var $ClustreId = $('#level').val();
-		
-					if($ClustreId!=null){
-			
-								$.ajax({
-	
-									type : "GET",
-									url : "ChairpersonLabsListFormation.htm",
-									data : {
-										ClustreId : $ClustreId,				
-										committeemainid : '<%= committeemainid %>',
-										   },
-									datatype : 'json',
-									success : function(result) {
-	
-									var result = JSON.parse(result);
-							
-									var values = Object.keys(result).map(function(e) {
-								 				 return result[e]
-								  
-													});
-									if( $ClustreId==='E')
-									{
-										var s = '';
-										s += '<option disabled="disabled" selected value="">Choose ...</option>';
-										 for (i = 0; i < values.length; i++) {
-											
-											s += '<option value="'+values[i][0]+'">' +values[i][2]+'</option>';
-											
-										} 
-										 $('#CpLabCode').attr("required", false);
-										$('#chairperson').html(s);
-										$('#cplab-col').hide();
-										if(hint==0 ){
-											$('#chairperson').val('<%=chairperson[5]%>');
-										}
-									}
-									else
-									{
-										var s = '';
-										s += '<option disabled="disabled" selected value="">Choose ...</option>';
-										 for (i = 0; i < values.length; i++) {
-											
-											s += '<option value="'+values[i][3]+'">' +values[i][3]+'</option>';
-										} 
-										 $('#CpLabCode').attr("required", true);
-										$('#chairperson').html('');
-										$('#CpLabCode').html(s);
-										$('#cplab-col').show();
-									}
-									
-									
-							
-						}
-					});
-	
-			}
-}
-	
 
 function Add(myfrm){
 
