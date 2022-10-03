@@ -854,7 +854,8 @@ function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
 <script type="text/javascript">
 
 
-function doclist(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev,ele){	
+function doclist(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev,ele)
+{	
 	var $proid=$('#ProjectId').val();
 	var $slevel='0';	
 	var $proname=$('#projectname').val();

@@ -91,7 +91,7 @@ public class DocumentController {
 			
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("ProjectList", service.LoginProjectsList(EmpId, Logintype,LabCode));
-			req.setAttribute("filerepmasterlistall", service.FileRepMasterListAll(projectid));
+			req.setAttribute("filerepmasterlistall", service.FileRepMasterListAll(projectid,LabCode));
 			
 			return "documents/ProjectSystem";
 		}
@@ -120,8 +120,8 @@ public class DocumentController {
 				projectid="0";
 			}
 			
-			req.setAttribute("parentlist",service.DocParentLevelList(projectid)) ;
-			req.setAttribute("assignedlist",service.ProjectDocAssignedList(projectid));			
+			req.setAttribute("parentlist",service.DocParentLevelList(projectid,LabCode)) ;
+			req.setAttribute("assignedlist",service.ProjectDocAssignedList(projectid,LabCode));			
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("projectslist", service.LoginProjectsList(EmpId, Logintype,LabCode));
 			

@@ -21,12 +21,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -81,14 +78,11 @@ import com.vts.pfms.milestone.dto.FileUploadDto;
 import com.vts.pfms.milestone.dto.MileEditDto;
 import com.vts.pfms.milestone.dto.MilestoneActivityDto;
 import com.vts.pfms.milestone.dto.MilestoneScheduleDto;
-import com.vts.pfms.milestone.model.FileDocAmendment;
 import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.milestone.model.FileRepMaster;
 import com.vts.pfms.milestone.model.FileRepNew;
 import com.vts.pfms.milestone.model.MilestoneActivitySub;
 import com.vts.pfms.milestone.service.MilestoneService;
-
-import net.lingala.zip4j.exception.ZipException;
 
 
 @Controller
@@ -1301,7 +1295,7 @@ public class MilestoneController {
 				req.setAttribute("GlobalFileSize", GlobalFileSize);
 				req.setAttribute("ProjectId", ProjectId);
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
-				req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(ProjectId));
+				req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(ProjectId,LabCode ));
 			}
 			catch (Exception e) {
 				e.printStackTrace();  
@@ -1931,7 +1925,7 @@ public class MilestoneController {
 			   req.setAttribute("FromName",FromName);
 			   req.setAttribute("projectslist", projectslist);
 			   req.setAttribute("projectid",projectid);		
-			   req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(projectid));
+			   req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(projectid,LabCode));
 			}		
 			catch (Exception e) {
 				
@@ -1948,13 +1942,12 @@ public class MilestoneController {
 		public String FileMasterSubAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
-
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileMasterSubAdd.htm "+UserId);
 			
 			try {
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				
 				 FileRepMaster fileRepo=new FileRepMaster();
+				 fileRepo.setLabCode(LabCode);
 				 fileRepo.setProjectId(Long.parseLong(req.getParameter("projectid")));
 				 fileRepo.setLevelName(req.getParameter("MasterSubName").trim());
 				 fileRepo.setParentLevelId(Long.parseLong(req.getParameter("FileMasterId")));
@@ -1983,13 +1976,12 @@ public class MilestoneController {
 		public String FileRepMasterAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
-
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileRepMasterAdd.htm "+UserId);
 			
 			try {
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				
 				 FileRepMaster fileRepo=new FileRepMaster();
+				 fileRepo.setLabCode(LabCode);
 				 fileRepo.setLevelName(req.getParameter("MasterName").trim());
 				 fileRepo.setProjectId(Long.parseLong(req.getParameter("projectid")));
 				 fileRepo.setCreatedBy(UserId);
@@ -2055,14 +2047,13 @@ public class MilestoneController {
 		@RequestMapping(value = "AllFilesList.htm", method = RequestMethod.GET)
 		public @ResponseBody String AllFilesList(HttpServletRequest req,HttpSession ses) throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside AllFilesList.htm"+UserId);
 			List<Object[]> DocumentTitleList=new ArrayList<Object[]>();
 			try {				
 				String ProjectId=req.getParameter("projectid");
-				String MainSystem=req.getParameter("mainsystem");
 				String Sub=req.getParameter("subid");
-				DocumentTitleList=service.DocumentTitleList(ProjectId,Sub);
+				DocumentTitleList=service.DocumentTitleList(ProjectId,Sub,LabCode);
 			}
 			catch (Exception e) {
 				
@@ -2074,7 +2065,8 @@ public class MilestoneController {
 		}
 		
 		@RequestMapping(value = "FileHistoryList.htm", method = RequestMethod.GET)
-		public @ResponseBody String FileHistoryList(HttpServletRequest req,HttpSession ses) throws Exception {
+		public @ResponseBody String FileHistoryList(HttpServletRequest req,HttpSession ses) throws Exception 
+		{
 			String UserId = (String) ses.getAttribute("Username");
 
 			logger.info(new Date() +"Inside FileHistoryList.htm"+UserId);
@@ -2095,7 +2087,8 @@ public class MilestoneController {
 		@RequestMapping(value = "FileHistoryListAjax.htm", method = RequestMethod.GET)
 		public @ResponseBody String FileHistoryListAjax(HttpServletRequest req,HttpSession ses) throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-
+			String LabCode = (String) ses.getAttribute("labcode");
+			
 			logger.info(new Date() +"Inside FileHistoryListAjax.htm"+UserId);
 			List<Object[]> FileHistoryList=new ArrayList<Object[]>();
 			try {				
@@ -2105,7 +2098,7 @@ public class MilestoneController {
 				MainSystem=req.getParameter("mainsystemval");				
 				SubLevelValue=req.getParameter("sublevel");				
 				String Sub = req.getParameter("s"+SubLevelValue);													
-				FileHistoryList=service.DocumentTitleList(ProjectId,Sub);
+				FileHistoryList=service.DocumentTitleList(ProjectId,Sub,LabCode);
 			}
 			catch (Exception e) 
 			{				
@@ -2121,11 +2114,12 @@ public class MilestoneController {
 		public @ResponseBody String FileDocMasterListAll(HttpServletRequest req,HttpSession ses) throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileDocMasterListAll.htm"+UserId);
 			List<Object[]> FileDocMasterListAll=new ArrayList<Object[]>();
 			try 
 			{	String projectid=req.getParameter("projectid");		
-				FileDocMasterListAll= service.FileDocMasterListAll(projectid);
+				FileDocMasterListAll= service.FileDocMasterListAll(projectid,LabCode);
 			}
 			catch (Exception e) 
 			{
@@ -2154,7 +2148,7 @@ public class MilestoneController {
 				if(projectid==null){
 					projectid="0";
 				}
-				req.setAttribute("DocumentTypeList",service.DocumentTypeList(projectid));
+				req.setAttribute("DocumentTypeList",service.DocumentTypeList(projectid, LabCode));
 				req.setAttribute("projectid", projectid);
 				req.setAttribute("projectslist", service.LoginProjectDetailsList(EmpId, Logintype ,LabCode));
 				return "filerepo/ProjectDocument";
@@ -2543,9 +2537,10 @@ public class MilestoneController {
 		@RequestMapping(value = "FileListInRepo.htm", method = RequestMethod.GET)
 		public String FileListInRepo(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileListInRepo "+UserId);		
 			try {
-				req.setAttribute("docmasterlist", service.fileDocMasterList());
+				req.setAttribute("docmasterlist", service.fileDocMasterList(LabCode));
 				return "filerepo/DocumentsList";
 			}
 			catch (Exception e) 
@@ -2559,9 +2554,11 @@ public class MilestoneController {
 		@RequestMapping(value = "FileLevelSubLevelAdd.htm", method = RequestMethod.POST)
 		public String FileLevelSubLevelAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileLevelSubLevelAdd.htm "+UserId);		
 			try {
 				FileDocMaster docmaster = new FileDocMaster();
+				docmaster.setLabCode(LabCode);
 				docmaster.setLevelId(Integer.parseInt(req.getParameter("levelid")));
 				docmaster.setParentLevelId(Integer.parseInt(req.getParameter("parentlevel")));
 				docmaster.setLevelName(req.getParameter("levelname").trim());
@@ -2590,10 +2587,11 @@ public class MilestoneController {
 		public @ResponseBody String FileLevelSublevelNameCheck(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileLevelSublevelNameCheck.htm "+UserId);
 			
 			String levelname= req.getParameter("levelname");			
-			List<FileDocMaster> FileLevelSublevelName = service.FileLevelSublevelNameCheck(levelname);
+			List<FileDocMaster> FileLevelSublevelName = service.FileLevelSublevelNameCheck(levelname.trim(),LabCode);
 			
 			return String.valueOf(FileLevelSublevelName.size());
 		}
@@ -2602,14 +2600,15 @@ public class MilestoneController {
 		public @ResponseBody String FileNameCheck(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside FileLevelSublevelNameCheck.htm "+UserId);
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside FileNameCheck.htm "+UserId);
 			
 			String levelname= req.getParameter("levelname");
 			String shortname= req.getParameter("shortname"); 
 			String docid= req.getParameter("docid");
 			String parentlevelid= req.getParameter("parentlevelid");
 			
-			Object[] FileLevelSublevelName = service.fileNameCheck(levelname, shortname, docid,parentlevelid);
+			Object[] FileLevelSublevelName = service.fileNameCheck(levelname.trim(), shortname.trim(), docid.trim(),parentlevelid,LabCode);
 			
 			Gson json = new Gson();
 			return json.toJson(FileLevelSublevelName);
@@ -2618,9 +2617,11 @@ public class MilestoneController {
 		@RequestMapping(value = "FileNameAdd.htm", method = RequestMethod.POST)
 		public String FileNameAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileNameAdd.htm "+UserId);		
 			try {
 				FileDocMaster docmaster = new FileDocMaster();
+				docmaster.setLabCode(LabCode);
 				docmaster.setLevelId(3);
 				docmaster.setParentLevelId(Integer.parseInt(req.getParameter("parentlevel")));
 				docmaster.setLevelName(req.getParameter("levelname").trim());
@@ -2650,10 +2651,11 @@ public class MilestoneController {
 		public @ResponseBody String FileRepMasterListAllAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside FileLevelSublevelNameCheck.htm "+UserId);
+			String LabCode =(String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside FileRepMasterListAllAjax.htm "+UserId);
 			
 			String projectid= req.getParameter("projectid");	
-			List<Object[]> FileLevelSublevelName = service.FileRepMasterListAll(projectid);
+			List<Object[]> FileLevelSublevelName = service.FileRepMasterListAll(projectid,LabCode);
 			
 			Gson json = new Gson();
 			return json.toJson(FileLevelSublevelName);

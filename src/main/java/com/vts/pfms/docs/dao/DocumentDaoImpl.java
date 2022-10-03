@@ -48,39 +48,42 @@ public class DocumentDaoImpl implements DocumentDao
 		return LoginProjectIdList;
 	}
 	
-	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid ORDER BY parentlevelid ";
+	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid AND LabCode=:LabCode ORDER BY parentlevelid ";
 	
 	@Override
-	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new Date() +"Inside FileRepMasterListAll");
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
 		query.setParameter("projectid", projectid);
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		return FileRepMasterListAll;
 	}
 	
 	
-	private static final String DOCPARENTLEVELLIST ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid ) )  UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid ) ";
+	private static final String DOCPARENTLEVELLIST ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:labcode ) )  UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:labcode ) ";
 	
 	@Override
-	public List<Object[]> DocParentLevelList(String projectid)throws Exception
+	public List<Object[]> DocParentLevelList(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside DocParentLevelList");
 		Query query=manager.createNativeQuery(DOCPARENTLEVELLIST);
 		query.setParameter("projectid", projectid);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> DocParentLevelList=(List<Object[]>)query.getResultList();
 		return DocParentLevelList;
 	}
 	
-	private static final String PROJECTDOCASSIGNEDLIST ="SELECT  dm.fileuploadmasterid,dm.parentlevelid,levelid,dm.levelname,dm.docid,dm.docshortname ,pd.projectdocid FROM file_project_doc pd, file_doc_master dm WHERE  pd.isactive=1 AND dm.isactive=1 AND pd.fileuploadmasterid = dm.fileuploadmasterid AND dm.levelid=3 AND pd.projectid=:projectid";
+	private static final String PROJECTDOCASSIGNEDLIST ="SELECT  dm.fileuploadmasterid,dm.parentlevelid,levelid,dm.levelname,dm.docid,dm.docshortname ,pd.projectdocid FROM file_project_doc pd, file_doc_master dm WHERE  pd.isactive=1 AND dm.isactive=1 AND pd.fileuploadmasterid = dm.fileuploadmasterid AND dm.levelid=3 AND pd.projectid=:projectid AND dm.LabCode =:LabCode ";
 	
 	@Override
-	public List<Object[]> ProjectDocAssignedList(String projectid)throws Exception
+	public List<Object[]> ProjectDocAssignedList(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside ProjectDocAssignedList");
 		Query query=manager.createNativeQuery(PROJECTDOCASSIGNEDLIST);
 		query.setParameter("projectid", projectid);
+		query.setParameter("LabCode", LabCode );
 		List<Object[]> ProjectDocAssignedList=(List<Object[]>)query.getResultList();
 		return ProjectDocAssignedList;
 	}
