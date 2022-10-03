@@ -87,7 +87,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		long count=0;
 		String name=committeeDto.getCommitteeName(); 
 		String sname=committeeDto.getCommitteeShortName();
-		List<Object[]> CommitteeNamesCheck=dao.CommitteeNamesCheck(name,sname,committeeDto.getIsGlobal());
+		List<Object[]> CommitteeNamesCheck=dao.CommitteeNamesCheck(name,sname,committeeDto.getIsGlobal(),committeeDto.getLabCode());
 		
 		if(CommitteeNamesCheck.get(0)[1]!=null || CommitteeNamesCheck.get(0)[0]!=null)
 		{
@@ -103,6 +103,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		Committee committeeModel=new Committee();
 		
+		committeeModel.setLabCode(committeeDto.getLabCode());
 		committeeModel.setCommitteeName(name);
 		committeeModel.setCommitteeShortName(sname);
 		committeeModel.setCommitteeType(committeeDto.getCommitteeType());
@@ -126,19 +127,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public Object[]CommitteeNamesCheck(String name,String sname, String projectid) throws Exception
+	public Object[]CommitteeNamesCheck(String name,String sname, String projectid,String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteeNamesCheck");	
-		return dao.CommitteeNamesCheck(name,sname,projectid).get(0);
+		return dao.CommitteeNamesCheck(name,sname,projectid,LabCode).get(0);
 	}
 		
 		
 	
 	@Override
-	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteeListActive");	
-		return dao.CommitteeListActive(isglobal,Projectapplicable); 
+		return dao.CommitteeListActive(isglobal,Projectapplicable,LabCode); 
 	}
 	
 	@Override
@@ -159,7 +160,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		long committeeid=committeeDto.getCommitteeId();
 		String shortname=committeeDto.getCommitteeShortName();
 		String fullname=committeeDto.getCommitteeName();
-		List<Object[]> CommitteeList=(List<Object[]>)dao.CommitteeListActive(committeeDto.getIsGlobal(),committeeDto.getProjectApplicable());
+		List<Object[]> CommitteeList=(List<Object[]>)dao.CommitteeListActive(committeeDto.getIsGlobal(),committeeDto.getProjectApplicable(),committeeDto.getLabCode());
 		for(int i=0;i<CommitteeList.size();i++)
 		{
 			if(Long.parseLong(CommitteeList.get(i)[0].toString())!=committeeid)
@@ -259,17 +260,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeemember.setCommitteeMainId(mainid);
 			if(i==1) 
 			{
-				
 				committeemember.setEmpId(Long.parseLong(committeemaindto.getChairperson()));
-				if(committeemaindto.getCpClusterid().equalsIgnoreCase("E")) 
-				{
-					committeemember.setLabCode("@EXP");
-				}
-				else
-				{
-					committeemember.setLabCode(committeemaindto.getCpLabCode());
-				}
-					
+				committeemember.setLabCode(committeemaindto.getCpLabCode());
 				committeemember.setMemberType("CC");
 			}
 			else if(i==2)
@@ -1813,10 +1805,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> ClusterLabList() throws Exception {
+	public List<Object[]> AllLabList() throws Exception {
 		logger.info(new Date() +"Inside ClusterLabList");
 		
-		return dao.ClusterLabList();
+		return dao.AllLabList();
 	}
 
 	@Override
@@ -1832,21 +1824,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> ChairpersonLabsListFormation(String clusterid,String committeemainid) throws Exception 
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside ChairpersonLabsListFormation");		
-		
-		if(clusterid!=null && clusterid.equalsIgnoreCase("E")) 
-		{
-			return dao.ClusterExpertsList(committeemainid);
-		}
-		
-		if(clusterid!=null && clusterid.equalsIgnoreCase("S")) 
-		{
-			clusterid = "8";
-		} 
-		return dao.ChairpersonLabsList(clusterid);
+		return dao.ClusterExpertsList(committeemainid);
 	}
+
 	
 	
 	@Override
@@ -1855,6 +1837,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.ChairpersonEmployeeList(LabCode,committeemainid);
 	}
 	
+	@Override
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
+	{
+		return dao.LabInfoClusterLab(LabCode);
+	}
 	
 	@Override
 	public List<Object[]> ExternalEmployeeListInvitations(String LabId,String scheduleid) throws Exception {
@@ -2293,12 +2280,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 		model.setModifiedBy(dto.getModifiedBy());
 		model.setModifiedDate(sdf1.format(new Date()));
 		model.setCommitteeMemberId(Long.parseLong(dto.getChairpersonmemid()));
-		if(dto.getCpClusterId().equalsIgnoreCase("E")) {
-			model.setLabCode("@EXP");
-		}else
-		{
-			model.setLabCode(dto.getCpLabCode());
-		}
+		
+		model.setLabCode(dto.getCpLabCode());
+		
 		model.setEmpId(Long.parseLong(dto.getChairperson()));
 		ret=dao.CommitteeMemberUpdate(model);		
 				

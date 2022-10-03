@@ -45,15 +45,15 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	<center>
+	<div align="center">
 	<div class="alert alert-danger" role="alert" >
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></center>
+                   </div></div>
                     <%} %>
     <br />
     
@@ -80,7 +80,10 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="row">							
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Committee Code</label>
+										<label class="control-label">
+											Committee Code
+											<span class="mandatory" style="color: red;">*</span>
+										</label>
 										<input class="form-control" type="text" name="committeeshortname" id="committeeshortname" required maxlength="6">
 									</div>
 								</div>
@@ -88,7 +91,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Committee Name</label>
+										<label class="control-label">Committee Name<span class="mandatory" style="color: red;">*</span></label>
 										<input class="form-control" type="text" name="committeename" id="committeename" required maxlength="255">
 									</div>
 								</div>
@@ -96,7 +99,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-4">
 								<div class="form-group">
-									<label class="control-label">Committee Type</label>
+									<label class="control-label">Committee Type<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="ctype" required="required" name="committeetype" style="margin-top: -5px">
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="S">Standard</option>
@@ -111,7 +114,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 						<div class="row">
 						 <div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">Project Applicable</label>
+									<label class="control-label">Project Applicable<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="proapplicable" required="required" name="projectapplicable" style="margin-top: -5px">
 										<option disabled="true"  selected value="">Choose...</option>
 										<%if(projectappliacble.equals("P")){ %>
@@ -127,7 +130,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">Tech / Non-Tech</label>
+									<label class="control-label">Tech / Non-Tech<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="technontech" required="required" name="technontech" style="margin-top: -5px">
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="T">Technical</option>
@@ -138,7 +141,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">Periodic / Non-Periodic</label>
+									<label class="control-label">Periodic / Non-Periodic<span class="mandatory" style="color: red;">*</span></label>
 									<select class="custom-select" id="periodic" required="required" name="periodic" style="margin-top: -5px" >
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="P">Periodic</option>
@@ -149,7 +152,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-3" style="display: none" id="periodicduration">
 								<div class="form-group">
-									<label class="control-label">Periodic Duration (Days)</label>
+									<label class="control-label">Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
 									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
 								</div>
 							</div>
@@ -161,7 +164,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-12">								
 								<div class="form-group">
-									<label class="control-label">Guidelines</label>
+									<label class="control-label">Guidelines<span class="mandatory" style="color: red;">*</span></label>
 									<input class="form-control" type="text" name="guidelines" id="guidelines"  required maxlength="255">
 								</div>
 
@@ -171,7 +174,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Description</label>
+									<label class="control-label">Description<span class="mandatory" style="color: red;">*</span></label>
 									<textarea class="form-control"  id="description" name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"></textarea>
 								</div>
 
@@ -179,7 +182,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Terms Of Reference </label>
+									<label class="control-label">Terms Of Reference <span class="mandatory" style="color: red;">*</span></label>
 									<textarea class="form-control" id="TOR"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"></textarea>
 								</div>
 
