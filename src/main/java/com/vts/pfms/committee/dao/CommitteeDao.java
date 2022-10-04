@@ -194,6 +194,7 @@ public interface CommitteeDao {
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception;
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception;
 	public List<Object[]> ChairpersonEmployeeList(String LabCode, String committeemainid) throws Exception;
+	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception;
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception;
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid, String Labode) throws Exception;
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
@@ -277,6 +278,7 @@ public interface CommitteeDao {
 	public List<Object[]> ClusterList() throws Exception;
 	public List<Object[]> DGEmpData(String ClusterId) throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
+	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 

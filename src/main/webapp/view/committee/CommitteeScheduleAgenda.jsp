@@ -181,7 +181,7 @@ ul, #myUL {
   <%
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-
+  List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> projectlist=  (List<Object[]> ) request.getAttribute("projectlist");
   List<Object[]> committeeagendalist =  (List<Object[]>)request.getAttribute("committeeagendalist");
@@ -272,7 +272,7 @@ ul, #myUL {
 											    	<option value="0"><%=labdata[1] %>(GEN)</option>		
 												</select>
 											<%}else{ %>									
-												<select class="form-control child items" name="projectid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												<select class="form-control items" name="projectid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 																							
 									        		<option disabled  selected value="">Choose...</option>
 									        		<option value="0"><%=labdata[1] %>(GEN)</option>
@@ -283,18 +283,24 @@ ul, #myUL {
 											<%} %>
 										</td>		
 						         		<td  width="20%"><input type="text" name="remarks" class="form-control item_name child" maxlength="255" required="required" /></td>      
-						         		 <td width="10%">
-						         		 		<select class="form-control items " name="presenterid" required="required" style=" font-weight: bold; text-align-last: left; width: 100px;" data-live-search="true" data-container="body">
+						         		 
+						         		 <td>
+						         		 <select class="form-control items CsLabCode CsLabCode-0" name="CsLabCode"   required="required" style="width: 200px" onchange="committeAgenda('1','0')"  data-live-search="true" data-container="body">
+															<option disabled="disabled"  selected value="">Lab Name</option>
+														    <% for (Object[] obj : AllLabList) {%>
+															    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <%} %>
+														    <option value="@EXP">Expert</option>
+														</select>
+						         		 
+						         		 </td>
+						         		         	                             
+						         		<td width="15%">						         		
+											<select class="form-control items presenterid presenterid-0" name="presenterid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 											 	<option disabled selected value="">Choose...</option>
-		                                       						          						
-											</select>
-						         		 </td>                          
-						         		<td width="15%" >						         		
-											<select class="form-control items " name="presenterid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
-											 	<option disabled selected value="">Choose...</option>
-								          		<% for (Object[] obj : employeelist) {%>						    				 	
+								          		<%-- <% for (Object[] obj : employeelist) {%>						    				 	
 							     					<option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>)</option>
-							    				<%} %>					
+							    				<%} %>	 --%>				
 											</select>
 										</td>		
 										<td  width="10%">
@@ -682,7 +688,7 @@ ul, #myUL {
 
 <script>
 function editsubmit(agendaid) {
-	console.log(agendaid);
+	
 	var attacharr = [];
 	
 	
@@ -690,7 +696,7 @@ function editsubmit(agendaid) {
 	$('input[name="editattachid_'+agendaid+'"').each(function() {
 		attacharr.push($(this).val());
 	});
-	console.log(attacharr);
+	
 	
 	
 	return false;
@@ -763,14 +769,14 @@ function submitForm1(msg,frmid)
 $('.edititemsdd').select2();
 $('.items').select2();
 
-var count=0;
+var count=1;
 $("table").on('click','.tr_clone_addbtn' ,function() {
    $('.items').select2("destroy");        
    var $tr = $('.tr_clone').last('.tr_clone');
    var $clone = $tr.clone();
    $tr.after($clone);
    $('.items').select2();
-   $clone.find('.items' ).select2('val', '');    
+   $clone.find('.items' ).select2('val', ''); 
    $clone.find("input").val("").end();
  
   count++;
@@ -782,7 +788,8 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
   $clone.find(".hidden").prop("id", 'attachid_'+count).prop("name", 'attachid_'+count).val("").end();
   $clone.find(".attachlist").prop("id","attachlistdiv_"+count).html("").end();
   $clone.find(".attachname").prop("id", 'attachname_'+count).html("").end();
- 
+  $clone.find('.items presenterid' ).attr('id', 'select'+count);
+  
 });
 
 $("table").on('click','.tr_clone_sub' ,function() {
@@ -837,8 +844,8 @@ function setagendaattachval(attachid, attchName)
 		}else{
 			attname=attchName;
 		}
-		 console.log(attchName);
-		html += '<tr id="a_'+agendano+'"><td title='+attchName+'>'+attname+'</td><td style="width:1% ;white-space: nowrap;">';
+		 
+		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td style="width:1% ;white-space: nowrap;">';
 		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
 		
@@ -1192,6 +1199,53 @@ var filexcount=0;
 		}
 		
 	}					
+</script>
+	
+<script type="text/javascript">
+
+ $(document).ready(function(){	
+	 
+	 committeAgenda('0','0');
+		
+}); 
+
+	
+		function committeAgenda(hint,count){
+			
+			$('.presenterid-'+count).val("");
+				var $CsLabCode = $('.CsLabCode-'+count).val();
+						if($CsLabCode !=""){
+				
+						$.ajax({		
+							type : "GET",
+							url : "CommitteeAgendaPresenterList.htm",
+							data : {
+								CsLabCode : $CsLabCode,
+								
+								   },
+							datatype : 'json',
+							success : function(result) {
+		
+							var result = JSON.parse(result);	
+							var values = Object.keys(result).map(function(e) {
+										 return result[e]
+									  
+							});
+								
+					var s = '';
+						s += '<option value="">'+"--Select--"+ '</option>';
+								 for (i = 0; i < values.length; i++) {									
+									s += '<option value="'+values[i][0]+'">'
+											+values[i][1] + " (" +values[i][3]+")" 
+											+ '</option>';
+								} 
+								 
+								$('.presenterid-'+count).html(s);
+							}
+						});
+		}
+	}
+		
 </script>
 	
 

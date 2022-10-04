@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.sun.xml.bind.annotation.OverrideAnnotationOf;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.model.Committee;
@@ -1555,6 +1556,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
+	private static final String PRESENETERFORCOMMITTE="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode AND a.empid NOT IN (SELECT  empid FROM committee_member WHERE isactive=1  AND labcode IN (SELECT labcode FROM lab_master) AND membertype NOT IN ('CC','CS','PS','CH'))";
+	@Override
+	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside PreseneterForCommitteSchedule");
+		Query query=manager.createNativeQuery(PRESENETERFORCOMMITTE);
+		query.setParameter("labcode", LabCode);
+		List<Object[]> result=(List<Object[]>)query.getResultList();
+		return result;
+	}
+	
+	
 	
 	private static final String LABINFOCLUSTERLAB = "SELECT labid,clusterid,labname,labcode FROM cluster_lab WHERE labcode =:labcode";
 	@Override
@@ -1599,6 +1612,24 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
 			return new ArrayList<Object[]>();
 		}
+	}
+	
+	private static final String CELISTFORCOMMITTESCHEDULE="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1  AND e.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP'  AND membertype IN ('CH','CO')); ";
+	@Override
+	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside ClusterExpertsListForCommitteeSchdule");
+		try {
+			Query query=manager.createNativeQuery(CELISTFORCOMMITTESCHEDULE);
+		
+			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
+			return DGEmpData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new java.util.Date() +" Inside ClusterExpertsListForCommitteeSchdule DAO "+ e);
+			return new ArrayList<Object[]>();
+		}
+		
 	}
 	
 //	@Override

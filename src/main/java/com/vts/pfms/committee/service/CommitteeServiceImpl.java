@@ -1829,13 +1829,25 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.ClusterExpertsList(committeemainid);
 	}
 
-	
+	@Override
+	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception
+	{
+		return dao.ClusterExpertsListForCommitteeSchdule();
+	}
 	
 	@Override
 	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
 		return dao.ChairpersonEmployeeList(LabCode,committeemainid);
 	}
+	
+	@Override
+	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
+	{
+		logger.info(new Date() +"Inside PreseneterForCommitteSchedule");		
+		return dao.PreseneterForCommitteSchedule(LabCode);
+	}
+	
 	
 	@Override
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception 

@@ -937,7 +937,7 @@ public class CommitteeController {
 			List<Object[]> committeeagendalist = service.AgendaList(CommitteeScheduleId);
 			
 			String projectid = scheduledata[9].toString();
-			
+			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", service.ProjectList(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
@@ -964,6 +964,44 @@ public class CommitteeController {
 			return "static/Error";
 		}
 	}
+	
+
+@RequestMapping(value = "CommitteeAgendaPresenterList.htm", method = RequestMethod.GET)
+	public @ResponseBody String CommitteeAgendaPresenterList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String clusterid =(String) ses.getAttribute("clusterid");
+		logger.info(new Date() +" Inside CommitteeAgendaPresenterList.htm"+ UserId);
+		
+		List<Object[]> EmployeeList = new ArrayList<Object[]>();
+		
+		try {
+			String CsLabCode =req.getParameter("CsLabCode");
+			
+			if(CsLabCode.trim().equalsIgnoreCase("@EXP")) 
+			{
+				EmployeeList = service.ClusterExpertsListForCommitteeSchdule();
+			}
+			else
+			{
+				String CsLabClusterId = service.LabInfoClusterLab(CsLabCode)[1].toString(); 
+				
+				if(Long.parseLong(clusterid) == Long.parseLong(CsLabClusterId)) 
+				{
+					EmployeeList = service.PreseneterForCommitteSchedule(CsLabCode.trim());
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CommitteeAgendaPresenterList.htm "+UserId, e);
+		}
+		
+		Gson json = new Gson();
+		return json.toJson(EmployeeList);	
+	}
+	
+	
 	
 	@RequestMapping(value="AgendaUnlinkDoc.htm",method= RequestMethod.GET)
 	public @ResponseBody String AgendaUnlinkDoc(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
