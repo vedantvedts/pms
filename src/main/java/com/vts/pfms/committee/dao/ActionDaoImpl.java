@@ -1,6 +1,7 @@
 package com.vts.pfms.committee.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -694,5 +695,55 @@ public class ActionDaoImpl implements ActionDao{
 		return 0;
 		
 	}
+	
+	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
+	
+	@Override
+	public List<Object[]> AllLabList() throws Exception 
+	{
+		logger.info(new java.util.Date() +"Inside ClusterLabList");
+		Query query=manager.createNativeQuery(CLUSTERLABLIST);
+		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
+		return ClusterLabList;
+	}
+	
+	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1 ";
+	@Override
+	public List<Object[]> ClusterExpertsList() throws Exception
+	{
+		logger.info(new java.util.Date() +"Inside DGEmpData");
+		try {
+			Query query=manager.createNativeQuery(CLUSTEREXPERTSLIST);
+			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
+			return DGEmpData;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	private static final String LABINFOCLUSTERLAB = "SELECT labid,clusterid,labname,labcode FROM cluster_lab WHERE labcode =:labcode";
+	@Override
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
+	{
+		logger.info(new java.util.Date() +"Inside LabInfoClusterLab");
+		Query query=manager.createNativeQuery(LABINFOCLUSTERLAB);
+		query.setParameter("labcode", LabCode);
+		Object[] LabInfoClusterLab=(Object[])query.getSingleResult();
+		return LabInfoClusterLab;
+	}
+	
+	private static final String LABEMPLOYEELIST="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode ;";
+	@Override
+	public List<Object[]> LabEmployeeList(String LabCode) throws Exception 
+	{
+		logger.info(new java.util.Date() +"Inside LabEmployeeList");
+		Query query=manager.createNativeQuery(LABEMPLOYEELIST);
+		query.setParameter("labcode", LabCode);
+		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
+		return ChairpersonEmployeeListFormation;
+	}
+	
 	
 }

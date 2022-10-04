@@ -68,5 +68,9 @@ public interface ActionDao {
 	public int AssigneeSeenUpdate(String EmpId) throws Exception;
 	public Object[] ActionDetailsAjax(String actionid) throws Exception;
 	public int ActionMainEdit(ActionMain main) throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
+	public List<Object[]> ClusterExpertsList() throws Exception;
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
+	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
 	
  }

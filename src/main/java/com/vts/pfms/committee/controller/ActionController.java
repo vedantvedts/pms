@@ -81,15 +81,16 @@ public class ActionController {
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ActionLaunch.htm "+UserId);		
 		try {
-			
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-			String loginid= ses.getAttribute("LoginId").toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
 			
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
-			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
+//			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList());
+			req.setAttribute("AllLabList", service.AllLabList());
+			req.setAttribute("LabCode", LabCode);
+			
 		
 		}
 		catch (Exception e) {
@@ -99,6 +100,39 @@ public class ActionController {
 		return "action/ActionLaunch";
 	}
 	
+	@RequestMapping(value = "ActionAssigneeEmployeeList.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionAssigneeEmployeeList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String clusterid =(String) ses.getAttribute("clusterid");
+		logger.info(new Date() +" Inside ActionAssigneeEmployeeList.htm"+ UserId);
+		
+		List<Object[]> EmployeeList = new ArrayList<Object[]>();
+		
+		try {
+			String CpLabCode =req.getParameter("LabCode");
+			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
+			{
+				EmployeeList = service.ClusterExpertsList();
+			}
+			else
+			{
+				String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+				
+				if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
+				{
+					EmployeeList = service.LabEmployeeList(CpLabCode.trim());
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionAssigneeEmployeeList.htm "+UserId, e);
+		}
+		
+		Gson json = new Gson();
+		return json.toJson(EmployeeList);	
+	}
 	
 	@RequestMapping(value = "ActionDetailsAjax.htm", method = RequestMethod.GET)
 	public @ResponseBody String ActionDetailsAjax(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -124,29 +158,28 @@ public class ActionController {
 		logger.info(new Date() +"Inside ActionSubmit.htm "+UserId);		
 		try {
 			
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		
-		ActionMainDto mainDto=new ActionMainDto();
-		mainDto.setActionItem(req.getParameter("Item"));
-		mainDto.setActionLinkId(req.getParameter("OldActionNo"));
-		mainDto.setProjectId(req.getParameter("Project"));
-		mainDto.setActionDate(req.getParameter("DateCompletion"));
-		mainDto.setAssigneeList(req.getParameterValues("Assignee"));
-		mainDto.setScheduleMinutesId("0");
-		mainDto.setType(req.getParameter("Type"));
-		mainDto.setActionType("N");
-		mainDto.setActivityId("0");
-		mainDto.setAssignor(EmpId);
-		mainDto.setCreatedBy(UserId);
-		mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-		long count =service.ActionMainInsert(mainDto);
-
-		if (count > 0) {
-			redir.addAttribute("result", "Action Added Successfully");
-		} else {
-			redir.addAttribute("resultfail", "Action Add Unsuccessful");
-		}
+			ActionMainDto mainDto=new ActionMainDto();
+			mainDto.setActionItem(req.getParameter("Item"));
+			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
+			mainDto.setProjectId(req.getParameter("Project"));
+			mainDto.setActionDate(req.getParameter("DateCompletion"));
+			mainDto.setAssigneeList(req.getParameterValues("Assignee"));
+			mainDto.setScheduleMinutesId("0");
+			mainDto.setType(req.getParameter("Type"));
+			mainDto.setActionType("N");
+			mainDto.setActivityId("0");
+			mainDto.setAssignor(EmpId);
+			mainDto.setCreatedBy(UserId);
+			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			long count =service.ActionMainInsert(mainDto);
+	
+			if (count > 0) {
+				redir.addAttribute("result", "Action Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Action Add Unsuccessful");
+			}
 		
 		}
 		catch (Exception e) {
