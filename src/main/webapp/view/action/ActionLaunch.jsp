@@ -200,6 +200,7 @@
 											<%for(Object[] lab : AllLabList){ %>
 												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
 											<%} %>
+											<option value="@EXP">Expert</option>
 										</select>
 										</div></div>
 										<div class="col-sm-4" align="left"  >
