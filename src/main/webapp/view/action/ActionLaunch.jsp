@@ -470,7 +470,6 @@ function AssigneeEmpList(){
  			},
  			datatype : 'json',
  			success : function(result) {
- 				
  				var result = JSON.parse(result);
  				
  				var values = Object.keys(result).map(function(e) {
