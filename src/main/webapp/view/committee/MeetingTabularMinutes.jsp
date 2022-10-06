@@ -176,6 +176,7 @@ p{
 <!-- ------------------------------------------------------- members --------------------------------- -->
 <%if(invitedlist.size()>0){ %>
 <% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
+//ArrayList<String> addlmembertypes=new ArrayList<String>(Arrays.asList("W","E","I","P")); %>
 
 <% 
 int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
