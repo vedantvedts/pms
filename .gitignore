@@ -20,9 +20,13 @@ dist/
 *.jar
 
 # Maven
+<<<<<<< HEAD
+target/classes/
+=======
 /target/
 */target/**
 **/META-INF/
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
 dist/
 
 # JetBrains IDE

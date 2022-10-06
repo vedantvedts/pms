@@ -1,294 +1,291 @@
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<jsp:include page="../static/header.jsp"></jsp:include>
-<script src="./resources/js/multiselect.js"></script>
-<link href="./resources/css/multiselect.css" rel="stylesheet"/>
- 
-<title>New Action</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
+	pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<jsp:include page="../static/header.jsp"></jsp:include>
+		<script src="./resources/js/multiselect.js"></script>
+		<link href="./resources/css/multiselect.css" rel="stylesheet"/>
+		
+		<title>New Action</title>
+		<style type="text/css">
+			label{
+				font-weight: bold;
+				font-size: 13px;
+			}
+			body{
+				background-color: #f2edfa;
+				overflow-x:hidden !important; 
+			}
+			h6{
+				text-decoration: none !important;
+			}
+			.multiselect-container>li>a>label {
+				padding: 4px 20px 3px 20px;
+			}
+			.cc-rockmenu {
+				color:fff;
+				padding:0px 5px;
+				font-family: 'Lato',sans-serif;
+			}
 
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
+			.cc-rockmenu .rolling {
+				display: inline-block;
+				cursor:pointer;
+				width: 34px;
+				height: 30px;
+				text-align:left;
+				overflow: hidden;
+				transition: all 0.3s ease-out;
+				white-space: nowrap;
+				
+			}
+			.cc-rockmenu .rolling:hover {
+				width: 120px;
+			}
+			.cc-rockmenu .rolling .rolling_icon {
+				float:left;
+				z-index: 9;
+				display: inline-block;
+				width: 28px;
+				height: 52px;
+				box-sizing: border-box;
+				margin: 0 5px 0 0;
+			}
+			.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+				width: 312px;
+			}
+
+			.cc-rockmenu .rolling i.fa {
+				font-size: 20px;
+				padding: 6px;
+			}
+			.cc-rockmenu .rolling span {
+				display: block;
+				font-weight: bold;
+				padding: 0px 0;
+				font-size: 14px;
+				font-family: 'Muli',sans-serif;
+			}
+
+			.cc-rockmenu .rolling p {
+				margin:0;
+			}
+
+			.width{
+				width:150px !important;
+			}
+			.talign{
+				style="text-align: center;"
+			}
+		</style>
+	</head>
+	
+	<body>
+		<%
+		
+
+		List<Object[]> AllLabList=(List<Object[]>)request.getAttribute("AllLabList");
+		List<Object[]> AssignedList=(List<Object[]>)request.getAttribute("AssignedList");
+		SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+		List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+		
+		List<Object[]> EmpListmodal=(List<Object[]>)request.getAttribute("EmployeeListModal");
+		
+		String LabCode =(String)request.getAttribute("LabCode");
+		
+	%>
 
 
-.cc-rockmenu .rolling:hover {
-  width: 120px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
 
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 0px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:150px !important;
-}
-.talign{
-	style="text-align: center;"
-}
-</style>
-</head>
- 
-<body>
-  <%
-  
-
-  List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmployeeList");
-  List<Object[]> AssignedList=(List<Object[]>)request.getAttribute("AssignedList");
-  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-  List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
-  
-  List<Object[]> EmpListmodal=(List<Object[]>)request.getAttribute("EmployeeListModal");
- %>
-
-
-
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
+	<%String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+	<div align="center">
+		<div class="alert alert-danger" role="alert" >
+			<%=ses1 %>
+		</div></div>
+		<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert"  >
+				<%=ses %>
+			</div></div>
+			<%} %>
 
 
-    
-    
+			<div class="container-fluid">
 
+				<div class="container" style="margin-bottom:20px;">
+					
+					
+					<div class="card" style=" ">
+						
+						
+						
+						<div class="card-header" style="background-color: #055C9D;">
+							<div class="row"> 
 
-<div class="container-fluid">
+								<div class="col-sm-7" align="left"  >
+									<h3 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left">New Action For  Assignee 
 
-	<div class="container" style="margin-bottom:20px;">
-  
-		
-    		<div class="card" style=" ">
-    	
-    	
-    	
-	    		<div class="card-header" style="background-color: #055C9D;">
-	    		    <div class="row"> 
-
-                   <div class="col-sm-7" align="left"  >
-      				<h3 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left">New Action For  Assignee 
-
-      				 </h3>
-  	                   </div>     
-  	                   <div class="col-sm-5" align="left"  >       
-  	                    <div class="input-group">
-																	<input type="text" class="form-control"
-																		placeholder="Search Action Id to Link Old Action" name="ItemDescription"
-																		id="ItemDescriptionSearch">
-																	<div class="input-group-append">
-																		<button class="btn btn-secondary" type="button"
-																			style="font-size: 10px;"
-																			id="ItemDescriptionSearchBtn">
-																			<i class="fa fa-search"></i>
-																		</button>
-																	</div>
-																</div>
-																</div>
-																</div>
-      			</div>
-      		
-      		
-	      		<div class="card-body">
-	      			<form method="post"  action="ActionSubmit.htm" >
-	        
-	        	
-	          				<div class="row"> 
-
-<div class="col-sm-6" align="left"  >
-<div class="form-group">
-<label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
-</label><br>
-<input class="form-control " type="text"name="Item"   style="width:100% " maxlength="1000" required="required">
-</div>
-</div>
-
-  <div class="col-sm-2" align="left"  >
-   <div class="form-group">
-<label  >PDC: <span class="mandatory" style="color: red;">* </span>
-</label>
-<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >
-
-</div>
-</div>
-
- <div class="col-sm-4" align="left"  >
-		 <label > Type : 
-		</label><br>
-			<select class="form-control selectdee " name="Project"  required="required"  data-live-search="true" id="projectid" onchange="changeempdd()" >                                                     
-			     <option value="0" >General</option>	
-				 <% for(Object[] obj:ProjectList){ %>
-					<option value="<%=obj[0] %>" ><%=obj[4] %></option>	
-				<%} %>
-			</select>	
-		 </div>
-
-
-</div>
-	          		
-
-	 
-<div class="row" align="center">
-
-
- <div class="col-sm-4" align="left"  >
-   <div class="form-group">
-<label > Assignee : 
-</label>
-<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
-<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
-</div>
-<br>
-<select class="form-control selectdee " name="Assignee" id="Assignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" multiple>
-                                                            <%for(Object[] obj:EmpList){ %>	
-																	
-															<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-																	
-															<%} %>
-															</select>
-
-</div>
-</div>
-
-
-		
-		  <div class="col-sm-4" align="left"  >
-		  <label > Action Type : 
-		</label><br>
-		  <select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" >                                                     
-		                                                         	  <option value="A" >Action</option>	
-		                                                            <option value="I" >Issue</option>
-		                                                           <option value="K" >Risk</option>
-																</select>	
-		 </div>
-		 <div class="col-sm-4" align="left"  >
-		   <div class="form-group" id="OldList">
-		<label > Old Action Id : 
-		</label><br>
-		<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " >
-		                                                       
-																	</select>
-		
-		</div>
-		
-		<b id="Message" style="font-size:14px;color: maroon " ></b>
-		
-		</div>
-		</div>	
-		<div class="row" align="center">
-			<div class="col-sm-4" align="left"  ></div>
-			<div class="col-sm-4" align="center"  ><br>
-						            	<input type="submit" id="submit" class="btn  btn-sm submit" style="margin-top: 10px;" onclick="return confirm('Are you sure To Submit?')" value="SUBMIT"/>
-			          					<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
-			          				
-			        			
-			        		
-					        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
-					       
-			</div>			  
-		</div>			    
-	      			</form>
-	    		</div>
-    		</div>
-   	</div>   
-</div>
-   
-   
-   
-   
-   <div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card shadow-nohover">
-				
-					<h3 class="card-header">Assigned List</h3>
+									</h3>
+								</div>     
+								<div class="col-sm-5" align="left"  >       
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">
+										<div class="input-group-append">
+											<button class="btn btn-secondary" type="button" style="font-size: 10px;" id="ItemDescriptionSearchBtn">
+												<i class="fa fa-search"></i>
+											</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					
 					<div class="card-body">
+						<form method="post"  action="ActionSubmit.htm" >
+							<div class="row"> 
+								<div class="col-sm-6" align="left"  >
+									<div class="form-group">
+										<label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
+										</label><br>
+										<input class="form-control " type="text"name="Item"   style="width:100% " maxlength="1000" required="required">
+									</div>
+								</div>
 
-						<div class="data-table-area mg-b-15">
-							<div class="container-fluid">
+								<div class="col-sm-2" align="left"  >
+									<div class="form-group">
+										<label  >PDC: <span class="mandatory" style="color: red;">* </span>
+										</label>
+										<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >
+
+									</div>
+								</div>
+
+								<div class="col-sm-4" align="left"  >
+									<label > Type : 
+									</label><br>
+									<select class="form-control selectdee " name="Project"  required="required"  data-live-search="true" id="projectid" onchange="changeempdd()" >                                                     
+										<option value="0" >General</option>	
+										<% for(Object[] obj:ProjectList){ %>
+										<option value="<%=obj[0] %>" ><%=obj[4] %></option>	
+										<%} %>
+									</select>	
+								</div>
 
 
-								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-									<div class="sparkline13-list">
+							</div>
+							
 
-										<div class="sparkline13-graph">
-											<div class="datatable-dashv1-list custom-datatable-overright">
-												<div id="toolbar">
-													<select class="form-control dt-tb">
-														<option value="">Export Basic</option>
-														<option value="all">Export All</option>
-														<option value="selected">Export Selected</option>
-													</select>
-												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
+							
+							<div class="row" align="center">
+
+
+								<div class="col-sm-2" align="left"  >
+									<div class="form-group">
+										<label > Lab : </label>
+										
+										<!-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+											<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
+										</div> -->
+										<br>
+										<select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
+											<%for(Object[] lab : AllLabList){ %>
+												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+											<%} %>
+											<option value="@EXP">Expert</option>
+										</select>
+										</div></div>
+										<div class="col-sm-4" align="left"  >
+									<div class="form-group">
+										<label > Assignee : </label>
+										<select class="form-control selectdee " name="Assignee" id="Assignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" multiple>
+											<%-- <%for(Object[] obj:EmpList){ %>	
+											
+											<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+											
+											<%} %> --%>
+										</select>
+
+									</div>
+								</div>
+
+
+								
+								<div class="col-sm-2" align="left"  >
+									<label > Action Type : 
+									</label><br>
+									<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" >                                                     
+										<option value="A" >Action</option>	
+										<option value="I" >Issue</option>
+										<option value="K" >Risk</option>
+									</select>	
+								</div>
+								<div class="col-sm-4" align="left"  >
+									<div class="form-group" id="OldList">
+										<label > Old Action Id : 
+										</label><br>
+										<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " >
+											
+										</select>
+									</div>
+									<b id="Message" style="font-size:14px;color: maroon " ></b>
+								</div>
+							</div>	
+							<div class="row" align="center">
+								<div class="col-sm-4" align="left"  ></div>
+								<div class="col-sm-4" align="center"  ><br>
+									<input type="submit" id="submit" class="btn  btn-sm submit" style="margin-top: 10px;" onclick="return confirm('Are you sure To Submit?')" value="SUBMIT"/>
+									<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
+									
+									
+									
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+									
+								</div>			  
+							</div>			    
+						</form>
+					</div>
+				</div>
+			</div>   
+		</div>
+		
+		
+		
+		
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card shadow-nohover">
+						
+						<h3 class="card-header">Assigned List</h3>
+						
+						<div class="card-body">
+
+							<div class="data-table-area mg-b-15">
+								<div class="container-fluid">
+
+
+									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										<div class="sparkline13-list">
+
+											<div class="sparkline13-graph">
+												<div class="datatable-dashv1-list custom-datatable-overright">
+													<div id="toolbar">
+														<select class="form-control dt-tb">
+															<option value="">Export Basic</option>
+															<option value="all">Export All</option>
+															<option value="selected">Export Selected</option>
+														</select>
+													</div>
+													<table id="table" data-toggle="table" data-pagination="true"
 													data-search="true" data-show-columns="true"
 													data-show-pagination-switch="true" data-show-refresh="true"
 													data-key-events="true" data-show-toggle="true"
@@ -302,353 +299,472 @@ h6{
 															<th style="text-align: left;">Action Item</th>
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>									
-														 	<th>Assignee</th>	
-														 	<th class="width-115px">Progress</th>
-														 	<th >Is Seen</th>
-														 	<th >Action</th>
+															<th>Assignee</th>	
+															<th class="width-115px">Progress</th>
+															<th >Is Seen</th>
+															<th >Action</th>
 														</tr>
 													</thead>
 													<tbody>
 														<%int  count=1;
-															
-														 	if(AssignedList!=null&&AssignedList.size()>0){
-															for(Object[] obj: AssignedList){ %>
-														<tr>
-															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
-															<td class="width-30px"><%=sdf.format(obj[4])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td style="width:18% !important; "><%=obj[1]%>, <%=obj[2]%></td>
-															<td style="width:8% !important; "><%if(obj[11]!=null){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[11]%>
-															</div> 
-															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																Not Yet Started .
-															</div>
-															</div> <%} %></td>
-															<td class="talign">
 														
-																	<%if(obj[14].toString().equals("1")){ %>
+														if(AssignedList!=null&&AssignedList.size()>0){
+															for(Object[] obj: AssignedList){ %>
+															<tr>
+																<td style="width:1% !important; " class="center"><%=count %></td>
+																<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
+																<td class="width-30px"><%=sdf.format(obj[4])%></td>
+																<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
+																<td style="width:18% !important; "><%=obj[1]%>, <%=obj[2]%></td>
+																<td style="width:8% !important; "><%if(obj[11]!=null){ %>
+																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																			<%=obj[11]%>
+																		</div> 
+																	</div> <%}else{ %>
+																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																			Not Yet Started .
+																		</div>
+																	</div> <%} %></td>
+																	<td class="talign">
+																		
+																		<%if(obj[14].toString().equals("1")){ %>
 																		<p style="color: green;">Seen</p>																		
-																	<%}else if(obj[14].toString().equals("0")){ %>
+																		<%}else if(obj[14].toString().equals("0")){ %>
 																		<p style="color: red; font-weight: bold;">UnSeen</p>
-																	<%} %>
-														</td>
-															
-														<td  class="left width" >		
-														 <form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
-															<button  class="editable-click" name="sub" value="C">  
-																<div class="cc-rockmenu">
-											                      <div class="rolling">
-											                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
-											                        <span>Actions</span>
-											                      </div>
-											                     </div> 
-															</button>
-															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-														    <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
-														 </form> 
-														<br>
-														<%if(obj[11]==null){ %>	
-															
-															
-																<button type="button" onclick="Actioneditmodal('<%=obj[0]%>'); ">
-																	<div class="cc-rockmenu">
-											                    	  <div class="rolling">
-																		<figure class="rolling_icon"><img src="view/images/edit.png"></figure>
-																		 <span>Edit</span>
-																	  </div>
-																	</div>
-																</button>  
-												            
-                                                        <%} %>
-											         		
-														</td>
-													</tr>
-												<% count++; } }else{%>
-												<tr>
-													<td colspan="6" style="text-align: center">No List Found</td>
-												</tr>
-												<%} %>
-												</tbody>
-												</table>
-												
-												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+																		<%} %>
+																	</td>
+																	
+																	<td  class="left width" >		
+																		<form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+																			<button  class="editable-click" name="sub" value="C">  
+																				<div class="cc-rockmenu">
+																					<div class="rolling">
+																						<figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
+																						<span>Actions</span>
+																					</div>
+																				</div> 
+																			</button>
+																			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+																			<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																		</form> 
+																		<br>
+																		<%if(obj[11]==null){ %>	
+																		
+																		
+																		<button type="button" onclick="Actioneditmodal('<%=obj[0]%>'); ">
+																			<div class="cc-rockmenu">
+																				<div class="rolling">
+																					<figure class="rolling_icon"><img src="view/images/edit.png"></figure>
+																					<span>Edit</span>
+																				</div>
+																			</div>
+																		</button>  
+																		
+																		<%} %>
+																		
+																	</td>
+																</tr>
+																<% count++; } }else{%>
+																<tr>
+																	<td colspan="6" style="text-align: center">No List Found</td>
+																</tr>
+																<%} %>
+															</tbody>
+														</table>
+														
+														<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 
 
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+
 							</div>
+							
 						</div>
 
+						
 					</div>
-		
+
 				</div>
 
-	
+			</div>
+			
+			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="newfilemodal">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Action Edit</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" align="center">
+							<form action="ActionEditSubmit.htm" method="post" autocomplete="off" id="editform" >
+								<table style="width: 100% ; padding: 15px;">
+									<tr >
+										<th style="padding: 10px 0px; width: 20% ;"> Action Item </th>
+										<td style="padding: 10px 0px; "> 
+											<textarea name="actionitem" class="form-control" id="modalactionitem" maxlength="500" required="required" rows="4" cols="60"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<th>Lab</th>
+										<td>
+										<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" style=" width: 100% !important ;" onchange="AssigneeEmpListForEdit(0);" >
+											<%for(Object[] lab : AllLabList){%>
+												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+											<%}%>
+											<option value="@EXP">Expert</option>
+										</select>
+										</td>
+									</tr>
+									<tr>
+										<th style="padding: 10px 0px; width: 20% ;" >Assignee</th>
+										<td style="padding: 10px 0px; width: 50% !important ;" >
+											<select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
+												<%-- <%for(Object[] obj:EmpListmodal){ %>	
+												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+												<%} %> --%>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th style="padding: 10px 0px; width: 20% ;"> PDC </th>
+										<td style="padding: 10px 0px;  width: 30% ; "  >
+											<input type="text" name="newPDC" value="" class="form-control" id="modalipdc1"  readonly required >
+											<input type="text" name="newPDC1" value="" class="form-control" id="modalipdc2"  readonly required onclick="alert('PDC Revision Limit Exceded !!');">
+										</td>
+									</tr>
+								</table>
+								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn"  >SUBMIT</button>
+								
+								<input type="hidden" name="actionmainid" id="modalactionmainid" value="">
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							</form>
+						</div>
+						
+					</div>
+				</div>
 			</div>
 
-		</div>
 
-	</div>
-   
-<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="newfilemodal">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Action Edit</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" align="center">
-       <form action="ActionEditSubmit.htm" method="post" autocomplete="off" id="editform" >
-       		<table style="width: 100% ; padding: 15px;">
-	       		<tr >
-		       		<th style="padding: 10px 0px; width: 20% ;"> Action Item </th>
-		       		<td style="padding: 10px 0px; "> 
-						<textarea name="actionitem" class="form-control" id="modalactionitem" maxlength="500" required="required" rows="4" cols="60"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th style="padding: 10px 0px; width: 20% ;" >Assignee</th>
-					<td style="padding: 10px 0px; width: 50% !important ;" >
-						<select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
-                            <%for(Object[] obj:EmpListmodal){ %>	
-								<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-							<%} %>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th style="padding: 10px 0px; width: 20% ;"> PDC </th>
-					<td style="padding: 10px 0px;  width: 30% ; "  >
-						<input type="text" name="newPDC" value="" class="form-control" id="modalipdc1"  readonly required >
-						<input type="text" name="newPDC1" value="" class="form-control" id="modalipdc2"  readonly required onclick="alert('PDC Revision Limit Exceded !!');">
-					</td>
-				</tr>
-			</table>
-			<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn"  >SUBMIT</button>
-			
-			<input type="hidden" name="actionmainid" id="modalactionmainid" value="">
-			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-		</form>
-      </div>
-     
-    </div>
-  </div>
-</div>
 
- <script type="text/javascript">
- function Actioneditmodal($actionid)
- {
-	 
-	 $.ajax({		
-			type : "GET",
-			url : "ActionDetailsAjax.htm",
-			data : {
-				actionid : $actionid
-				   },
-			datatype : 'json',
-			success : function(result) {
 
-			var result = JSON.parse(result);
-				
-			
-			$('#modalactionitem').html(result[1]);
-			$('#modalassignee').val(result[2]).trigger('change');
-			$('#modalactionmainid').val(result[0]);
-			
-			if(result[4]<2){
-				
-				$('#modalipdc1').show();
-				$('#modalipdc2').hide();
-				
-				$('#modalipdc1').daterangepicker({
+<script type="text/javascript">
+ $(document).ready(function(){	
+ 	
+	 AssigneeEmpList();
+ }); 	
+ 
+
+function AssigneeEmpList(){
+ 	
+ 	$('#Assignee').val("");
+ 	
+ 	var $AssigneeLabCode = $('#AssigneeLabCode').val();
+ 	
+ 
+ 	if($AssigneeLabCode!=""){
+ 		
+ 		$.ajax({
+ 			
+ 			type : "GET",
+ 			url : "ActionAssigneeEmployeeList.htm",
+ 			data : {
+ 				LabCode : $AssigneeLabCode,
+ 				
+ 			},
+ 			datatype : 'json',
+ 			success : function(result) {
+ 				var result = JSON.parse(result);
+ 				
+ 				var values = Object.keys(result).map(function(e) {
+ 					return result[e]
+ 					
+ 				});
+ 				
+ 				var s = '';
+ 				s += '<option value="">Choose ...</option>';
+ 				if($AssigneeLabCode == '@EXP'){
+ 					
+ 				}
+ 				for (i = 0; i < values.length; i++) 
+ 				{
+ 					
+ 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+ 				} 
+ 				
+ 				$('#Assignee').html(s);
+ 				
+ 				
+ 				
+ 				
+ 			}
+ 		});
+ 		
+ 	}
+ }
+ 
+
+ 
+ 
+</script>
+
+
+
+			<script type="text/javascript">
+				function Actioneditmodal($actionid)
+				{
 					
+					$.ajax({		
+						type : "GET",
+						url : "ActionDetailsAjax.htm",
+						data : {
+							actionid : $actionid
+						},
+						datatype : 'json',
+						success : function(result) {
+
+								
+							var result = JSON.parse(result);
+							
+							$('#modalactionitem').html(result[1]);
+							$('#modalactionmainid').val(result[0]);
+							$('#modelAssigneelabcode').val(result[5]).trigger('change');
+							AssigneeEmpListForEdit(result[2]);
+							$('#modalassignee').val(''+result[2]).trigger('change');
+							
+							if(result[4]<2){
+								
+								$('#modalipdc1').show();
+								$('#modalipdc2').hide();
+								
+								$('#modalipdc1').daterangepicker({
+									
+									"singleDatePicker" : true,
+									"linkedCalendars" : false,
+									"showCustomRangeLabel" : true,
+									"startDate" : result[3],
+									"cancelClass" : "btn-default",
+									showDropdowns : true,
+									locale : {
+										format : 'DD-MM-YYYY'
+									},
+									
+								});
+								
+							}else
+							{
+								$('#modalipdc1').hide();
+								$('#modalipdc2').show();	
+								$('#modalipdc2').val(result[3]);
+							}
+							$('#newfilemodal').modal('toggle');
+							
+							
+						}
+					});
+					
+					
+				}
+
+				
+			</script>
+
+
+			<script type="text/javascript">
+
+
+				function changeempdd()
+				{
+					if (document.getElementById('allempcheckbox').checked) 
+					{
+						employeefetch('A');
+					} else {
+						
+						employeefetch($('#projectid').val());
+					}
+				}
+				
+				function employeefetch(ProID){
+					
+					
+					$.ajax({		
+						type : "GET",
+						url : "ProjectEmpListFetchAction.htm",
+						data : {
+							projectid : ProID
+						},
+						datatype : 'json',
+						success : function(result) {
+							
+							var result = JSON.parse(result);
+							
+							var values = Object.keys(result).map(function(e) {
+								return result[e]
+								
+							});
+							
+							var s = '';
+							s += '<option value="">'+"--Select--"+ '</option>';
+							for (i = 0; i < values.length; i++) {									
+								s += '<option value="'+values[i][0]+'">'
+								+values[i][1] + " (" +values[i][2]+")" 
+								+ '</option>';
+							} 
+							
+							$('#Assignee').html(s);
+							
+						}
+					});
+					
+					
+				}
+				
+			</script>
+			
+
+
+
+			<script>
+				$('#DateCompletion').daterangepicker({
 					"singleDatePicker" : true,
 					"linkedCalendars" : false,
 					"showCustomRangeLabel" : true,
-					 "startDate" : result[3],
+					/* "minDate" : new Date(), */
 					"cancelClass" : "btn-default",
 					showDropdowns : true,
 					locale : {
 						format : 'DD-MM-YYYY'
-					},
-				
+					}
 				});
-			
-			}else
-			{
-				$('#modalipdc1').hide();
-				$('#modalipdc2').show();	
-				$('#modalipdc2').val(result[3]);
-			}
-			$('#newfilemodal').modal('toggle');
-			
+				$(function() {
+					$('#chkveg').multiselect({
+						includeSelectAllOption: true
+					});
+				});
 				
-			}
-		});
-	 
-	 
- }
-
- 
- </script>
-
-
-<script type="text/javascript">
-
-
-function changeempdd()
-{
-  if (document.getElementById('allempcheckbox').checked) 
-  {
-    employeefetch('A');
-  } else {
-	  
-	  employeefetch($('#projectid').val());
-  }
-}
-	
-	function employeefetch(ProID){
-			
 				
-						$.ajax({		
+				
+				$("#OldList").hide();
+
+				
+				$("#ItemDescriptionSearchBtn").click(function(){
+					$('#OldActionNoId').empty();
+					var $ItemSearch = $("#ItemDescriptionSearch").val();
+					$("#loader ").show(); 
+					
+					
+					
+					if ($ItemSearch === ""){
+						alert("Search Content Requried");
+						$("#loader ").hide();
+					}else{
+						
+						$
+						.ajax({
+
 							type : "GET",
-							url : "ProjectEmpListFetchAction.htm",
+							url : "ActionNoSearch.htm",
 							data : {
-								projectid : ProID
-								   },
+								ActionSearch : $ItemSearch
+							},
 							datatype : 'json',
 							success : function(result) {
-		
-							var result = JSON.parse(result);
+
+								var result = JSON.parse(result);
+								var values = Object.values(result).map(function(key, value) {
+									return result[key,value]
+								});
+								var size = Object.keys(values).length;
+								var s = '';
 								
-							var values = Object.keys(result).map(function(e) {
-										 return result[e]
-									  
-							});
+								if(size==0){
+									document.getElementById('Message').innerHTML = " * Old Action Number doesn't Exist. Please Reset "; 
+								}
+								if(size!=0){
+									document.getElementById('Message').innerHTML = " "; 
+								}
 								
-					var s = '';
-						s += '<option value="">'+"--Select--"+ '</option>';
-								 for (i = 0; i < values.length; i++) {									
-									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][2]+")" 
-											+ '</option>';
-								} 
-								 
-								$('#Assignee').html(s);
+								$("#OldList").show(); 
+								$("#OldActionNoId").prop("disable",false);
+								$("#OldActionNoId").empty();
+								$.each(values, function(key, value) {   
+									$('#OldActionNoId')   
+									.append($("<option></option>")
+										.attr("value", value[0])
+										.text(value[1]+", "+value[2])); 
+								});
 								
+								$("#loader ").hide(); 
 							}
-						});
-		
-		
-	}
-		
-</script>
-  
-
-
-
-<script>
-	$('#DateCompletion').daterangepicker({
-			"singleDatePicker" : true,
-			"linkedCalendars" : false,
-			"showCustomRangeLabel" : true,
-			/* "minDate" : new Date(), */
-			"cancelClass" : "btn-default",
-			showDropdowns : true,
-			locale : {
-				format : 'DD-MM-YYYY'
-			}
-		});
-	$(function() {
-		  $('#chkveg').multiselect({
-		    includeSelectAllOption: true
-		  });
-	});
-		
-	
-	
-	$("#OldList").hide();
-
-	
-	$("#ItemDescriptionSearchBtn").click(function(){
-		   $('#OldActionNoId').empty();
-		var $ItemSearch = $("#ItemDescriptionSearch").val();
-		  $("#loader ").show(); 
-		
-		
-		
-		  if ($ItemSearch === ""){
-			 alert("Search Content Requried");
-			 $("#loader ").hide();
-		  }else{
-					  
-			  $
-				.ajax({
-
-					type : "GET",
-					url : "ActionNoSearch.htm",
-					data : {
-						ActionSearch : $ItemSearch
-					},
-					datatype : 'json',
-					success : function(result) {
-
-						var result = JSON.parse(result);
-						var values = Object.values(result).map(function(key, value) {
-							  return result[key,value]
-							});
-						var size = Object.keys(values).length;
-						var s = '';
+						}); 
 						
-						if(size==0){
-							document.getElementById('Message').innerHTML = " * Old Action Number doesn't Exist. Please Reset "; 
-						}
-						if(size!=0){
-							document.getElementById('Message').innerHTML = " "; 
-						}
 						
-						 $("#OldList").show(); 
-					     $("#OldActionNoId").prop("disable",false);
-					    $("#OldActionNoId").empty();
-					     $.each(values, function(key, value) {   
-					         $('#OldActionNoId')   
-					             .append($("<option></option>")
-					                        .attr("value", value[0])
-					                        .text(value[1]+", "+value[2])); 
-					    });
-					    
-						$("#loader ").hide(); 
+						
 					}
 				}); 
-			  
-			  
-			  
-		  }
-		}); 
-	
-	
-	function resetSubmit(){
-		event.preventDefault();
-		 $("#OldList").hide(); 
-	     $("#OldActionNoId").prop("disable",true);
-	     document.getElementById('Message').innerHTML = " "; 
+				
+				
+				function resetSubmit(){
+					event.preventDefault();
+					$("#OldList").hide(); 
+					$("#OldActionNoId").prop("disable",true);
+					document.getElementById('Message').innerHTML = " "; 
 
-	}
-		
+				}
 	
-	
-	</script>  
+				function AssigneeEmpListForEdit(empid){
+
+					
+				 	var $AssigneeLabCode =  $('#modelAssigneelabcode').val(); 
+
+				 	if($AssigneeLabCode!=""){
+				 		
+				 		$.ajax({
+				 			
+				 			type : "GET",
+				 			url : "ActionAssigneeEmployeeList.htm",
+				 			data : {
+				 				LabCode : $AssigneeLabCode,
+				 				
+				 			},
+				 			datatype : 'json',
+				 			success : function(result) {
+				 				var result = JSON.parse(result);
+				 				
+				 				var values = Object.keys(result).map(function(e) {
+				 					return result[e]
+				 					
+				 				});
+				 				
+				 				var s = '';
+				 				s += '<option value="">Choose ...</option>';
+				 				if($AssigneeLabCode == '@EXP'){
+				 					
+				 				}
+				 				for (i = 0; i < values.length; i++) 
+				 				{
+
+				 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+				 				} 
+				 				
+				 				$('#modalassignee').html(s);
+				 				$('#modalassignee').val(''+empid).trigger('change');
+				 			}
+				 		});
+				 		
+				 	}
+				 }			
+
+			</script>  
 
 
-</body>
-</html>
+		</body>
+		</html>

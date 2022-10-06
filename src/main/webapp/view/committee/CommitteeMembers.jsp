@@ -57,7 +57,6 @@
 <body>
 
 <%
-String seslabid=(String)session.getAttribute("labid");
 
 
 Object[] projectdata=(Object[])request.getAttribute("projectdata"); 
@@ -67,8 +66,8 @@ Object[] proposedcommitteemainid=(Object[])request.getAttribute("proposedcommitt
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("employeelist");
 List<Object[]> EmployeeList1=(List<Object[]>)request.getAttribute("employeelist1");
 
-
-List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlablist");
+List<Object[]> clusterlist=(List<Object[]>) request.getAttribute("clusterlist");
+List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
 List<Object[]> expertlist=(List<Object[]>) request.getAttribute("expertlist");
 
 Object[] initiationdata=(Object[])request.getAttribute("initiationdata");
@@ -76,6 +75,7 @@ Object[] approvaldata=(Object[])request.getAttribute("committeeapprovaldata");
 
 List<Object[]> committeemembersall=(List<Object[]>)request.getAttribute("committeemembersall");
 Object[] chairperson=null;
+Object[] co_chairperson=null;
 Object[] secretary =null;
 Object[] proxysecretary=null;
 
@@ -92,29 +92,48 @@ if(proposedcommitteemainid!=null)
 }
 List<Object[]> committeerepnotaddedlist=(List<Object[]>)request.getAttribute("committeerepnotaddedlist");
 List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("committeeMemberreplist");
+
+String LabClusterid = (String)request.getAttribute("clusterid");
+String LabCode = (String)request.getAttribute("LabCode");
 %>
 
 
-<%for(int i=0;i<committeemembersall.size();i++)
+
+<%
+for(int i=0;i<committeemembersall.size();i++)
 {	
 	if(committeemembersall.get(i)[8].toString().equalsIgnoreCase("CC")){
-		chairperson=committeemembersall.get(i);
+		chairperson = committeemembersall.get(i);
 		committeemembersall.remove(i);
+		break;
 	}
 }
-for(int i=0;i<committeemembersall.size();i++){
+for(int i=0;i<committeemembersall.size();i++)
+{
 	if(committeemembersall.size()>0 && committeemembersall.get(i)[8].toString().equalsIgnoreCase("CS")){
-		secretary=committeemembersall.get(i);
+		secretary = committeemembersall.get(i);
 		committeemembersall.remove(i);
+		break;
 	}
 }
-for(int i=0;i<committeemembersall.size();i++){
+for(int i=0;i<committeemembersall.size();i++)
+{
 	if(committeemembersall.size()>0 && committeemembersall.get(i)[8].toString().equalsIgnoreCase("PS")){
-		proxysecretary=committeemembersall.get(i);
+		proxysecretary = committeemembersall.get(i);
 		committeemembersall.remove(i);
+		break;
 	}
-
-}%>
+}
+for(int i=0;i<committeemembersall.size();i++)
+{
+	if(committeemembersall.size()>0 && committeemembersall.get(i)[8].toString().equalsIgnoreCase("CH")){
+		co_chairperson = committeemembersall.get(i);
+		committeemembersall.remove(i);
+		break;
+	}
+}
+String CpLabCode = chairperson[9].toString();
+%>
 
 <%
 String ses=(String)request.getParameter("result"); 
@@ -155,28 +174,30 @@ String ses=(String)request.getParameter("result");
 						
 						</div>
 					</div>
+					
 <!-- ---------------------------------------------------------------------committee main members ---------------------------------------------- -->
 					<div class="card-body">	
 						  <form action="CommitteeMainEditSubmit.htm" method="post" id="committeeeditfrm">				
 							 <div class="row">							
-								<div class="col-md-5" style="margin-top:5px; ">									 
-					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson</label>
+								<div class="col-md-6" style="margin-top:5px; ">									 
+					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
 					                    	<table style="width:100%">
 					                        <tr >
 												<td style="width:25%; border:0:">
-													 <div class="input select">
-														<select class="form-control selectdee" name="cplabid" tabindex="-1" required style="width: 200px" id="cplabid" onchange="chairpersonfetch('1')">
-															<option disabled="true"  selected value="">Lab Name</option>
-														    <% for (Object[] obj : clusterlablist) {%>
-															    <option <%if(chairperson[7].toString().equals(obj[0].toString())){ %>selected <%} %>value="<%=obj[0]%>"><%=obj[3]%></option>
+													 <div class="input select" id="cplab-col">
+														<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
+															<option disabled="disabled"  selected value="">Lab Name</option>
+														    <% for (Object[] obj : AllLabList) {%>
+															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
 														    <%} %>
+														    <option <%if(chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
 														</select>
 																
 													</div>
 												</td>										
 												<td style="border:0;">
 												<div class="input select">
-														<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true"   data-placeholder="Select Chairperson" >
+														<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" >
 												             
 														</select>	
 														<input type="hidden" name="cpmemberid" value="<%=chairperson[0]%>"> 										
@@ -189,7 +210,7 @@ String ses=(String)request.getParameter("result");
 							
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Member Secretary</label>
+										<label class="control-label">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
 										<select class="form-control selectdee" id="secretary" required="required" name="Secretary"style="margin-top: -5px">
 				    						<option disabled="true"  selected value="" >Choose...</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
@@ -201,7 +222,20 @@ String ses=(String)request.getParameter("result");
 				  						<%} %>	
 									</div>
 								</div>
-
+								<div class="col-md-3">
+									<div class="form-group">
+										<label class="control-label">Co-Chairperson</label>
+										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
+				    						<option selected value="0" >None</option>
+				    						<% for (Object[] obj : EmployeeList1) {%>
+												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
+											<%} %>
+				  						</select>
+				  						<%if(co_chairperson!=null){ %>
+				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
+				  						<%} %>	
+									</div>
+								</div>
 							 
 							
 								<div class="col-md-3">
@@ -224,13 +258,13 @@ String ses=(String)request.getParameter("result");
 					              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
 									<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
 									<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-				                	<button class=" btn btn-primary btn-sm submit" type="button"  onclick="Add('committeeeditfrm')" >SUBMIT</button>
+				                	<button class=" btn btn-primary btn-sm submit" type="submit"  onclick="Add('committeeeditfrm')" >SUBMIT</button>
 				                	<%} %>
 				              </div> 
 			              </div>
 						</form>
 				<br>
-<!-- 	------------------------------------------------------------------------------- internal and external members----------------------------------------------------------
+<!-- 	------------------------------------------------------------------------------- internal and Expert Members----------------------------------------------------------
  -->			<%if(committeemembersall.size()>0 ){ %>
  					<hr  style="padding-top: 5px;padding-bottom: 5px;">
  				<%} %>
@@ -245,7 +279,7 @@ String ses=(String)request.getParameter("result");
 												int count = 1;
 												for (int i=0;i<committeemembersall.size();i++) {
 													Object[] obj=committeemembersall.get(i);
-													if(obj[7].toString().equalsIgnoreCase(seslabid)){
+													if(obj[9].toString().equalsIgnoreCase(LabCode)){
 											%>
 											
 											<tr>
@@ -269,21 +303,21 @@ String ses=(String)request.getParameter("result");
 									</table>						
 									<br>	
 									<%} %>
-								</div>					 	
+								</div>		 		 	
 					<%if(committeemembersall.size()>0){ %>
 					
-						<div  class="col-md-4">
+				 		<div  class="col-md-4">
 						
 							<h5 style="color: #FF5733">External Members (Within DRDO)</h5>
 								<hr>
 							
-							 <table border='0'>
+							 <table border="0">
 	
 								<tbody>
 									<%int count = 1;
 										for (int i=0;i<committeemembersall.size();i++) {
 											Object[] obj=committeemembersall.get(i);
-											if(Long.parseLong(obj[7].toString())>0 && !obj[7].toString().equalsIgnoreCase(seslabid) ){
+											if(Long.parseLong(obj[7].toString())>0 && !obj[9].toString().equalsIgnoreCase(LabCode) ){
 									%>
 									
 									<tr>
@@ -307,14 +341,14 @@ String ses=(String)request.getParameter("result");
 							</table>						
 							<br>	
 							
-					</div>
+					</div> 
 					<%} %>
 					
 					<%if(committeemembersall.size()>0){ %>
 					
 					<div  class="col-md-4">
 						
-						<h5 style="color: #FF5733">External Member (Outside DRDO)</h5>
+						<h5 style="color: #FF5733">Expert Members (Outside DRDO)</h5>
 							<hr>						
 						 <table border='0'>
 
@@ -325,7 +359,7 @@ String ses=(String)request.getParameter("result");
 											if(Long.parseLong(obj[7].toString())==0){
 									%>
 								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9] %>)</td>
+									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
 									<td>
 										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -433,9 +467,7 @@ String ses=(String)request.getParameter("result");
 							<table align="center">
 							
 								<tr>
-									<!-- <td>				
-			 							<a class="btn btn-primary btn-sm back" type="button" href="CommitteeMainApprovalList.htm" >BACK</a> 						
-			 						</td> -->
+									
 			 						<td>				
 			 							<button class="btn btn-primary btn-sm back" type="button"  onclick="submitForm('backfrm');">BACK</button> 						
 			 						</td>
@@ -468,11 +500,12 @@ String ses=(String)request.getParameter("result");
 	 				
 		      
 <!-- ------------------------------------- add new members ---------------------------------------------------------------- -->
-<!-- -------------------------------------- Internal members -------------------------------------------- -->
+
 						<div class="row">
 							<div class="col-md-6" style="margin-left: 15px;">
 								<label  style="margin-bottom: 4px !important" for="repids"> Add More Members</label>
 								<hr>
+<!-- -------------------------------------- Internal members -------------------------------------------- -->
 								<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >				
 										
 										<div class="row">				
@@ -487,12 +520,12 @@ String ses=(String)request.getParameter("result");
 														<tr class="tr_clone">
 															<td>
 																<div class="input select">
-																	<select class="form-control selectdee " name="Member" id="Member"  data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
+																	<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
 													                <%for(Object[] obj:EmployeeList){ %>																							
 																		<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>																				
 																	<%} %>
 																	</select>
-																<input type="hidden" name="internallabid" value="<%=seslabid%>"> 	
+																<input type="hidden" name="InternalLabCode" value="<%=LabCode%>"> 	
 																</div>
 															</td>
 														</tr>																
@@ -510,6 +543,8 @@ String ses=(String)request.getParameter("result");
 									</div>
 							</form>
 	<!-- --------------------------------------Internal members -------------------------------------------- -->
+	
+	
 	<!-- --------------------------------------External MembersWithin DRDO -------------------------------------------- -->
 							<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >							
 								<div class="row">				
@@ -524,11 +559,11 @@ String ses=(String)request.getParameter("result");
 												<tr class="tr_clone1">
 													<td style="width:30%">
 														 <div class="input select">
-															 <select class="form-control selectdee" name="LabId" tabindex="-1" required style="" id="LabId" onchange="employeename()">
+															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required style="" id="Ext_LabCode" onchange="employeename()">
 																<option disabled="true"  selected value="">Lab Name</option>
-																    <% for (Object[] obj : clusterlablist) {
-																    if(!seslabid.equals(obj[0].toString())){%>
-																    <option value="<%=obj[3]%>,<%=obj[1]%>"><%=obj[3]%></option>
+																    <% for (Object[] obj : AllLabList) {
+																    if(!LabCode.equals(obj[3].toString())){%>
+																    <option value="<%=obj[3]%>"><%=obj[3]%></option>
 																    <%}
 																    }%>
 															</select>
@@ -537,7 +572,7 @@ String ses=(String)request.getParameter("result");
 													</td>										
 													<td style="width:70%">
 														<div class="input select">
-															<select class="form-control selectdee" name="externalmember" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
+															<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
 
 															</select>															
 														</div>														
@@ -563,14 +598,14 @@ String ses=(String)request.getParameter("result");
 										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
 											<thead>  
 												<tr>
-													<th>External Members (Outside DRDO)</th>
+													<th>Expert Member (Outside DRDO)</th>
 												</tr>
 											</thead>								
 											<tbody>
 												<tr class="tr_clone2">
 													<td >
 														<div class="input select ">
-															<select class="selectdee" name="expertmember"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
+															<select class="selectdee" name="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
 												            	<%for(Object[] obj:expertlist){ %>																									
 																	<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
 																													
@@ -649,11 +684,12 @@ String ses=(String)request.getParameter("result");
 										</div>
 									</div>	
 								</div>
+								
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>					
+		</div>					
 				
 <!-- --------------------------------------External Members Outside DRDO -------------------------------------------- -->
 				
@@ -678,11 +714,61 @@ String ses=(String)request.getParameter("result");
 							<input type="hidden" name="initiationid" value="<%=initiationid %>">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
 						</form>	      		
-		      		<%} %>
+		      		<% } %>
 		<div class="modal" id="loader">
 			<!-- Place at bottom of page -->
 		</div>
 </div>
+
+<script type="text/javascript">
+
+
+
+function employeename(){
+
+	$('#ExternalMember').val("");
+	
+		var $CpLabCode  = $('#Ext_LabCode').val()
+		
+			if($CpLabCode !=""){
+				$.ajax({
+
+					type : "GET",
+					url : "ExternalEmployeeListFormation.htm",
+					data : {
+						CpLabCode : $CpLabCode ,
+						committeemainid : '<%=committeemainid%>'
+					   },
+					datatype : 'json',
+					success : function(result) {
+						var result = JSON.parse(result);
+						
+						var values = Object.keys(result).map(function(e) {
+		 					return result[e]
+							  
+						});
+						console.log(values.length);
+						var s = '';
+						s += '<option value="">--Select--</option>';
+						for (i = 0; i < values.length; i++) 
+						{
+							s += '<option value="'+values[i][0]+'">' +values[i][1] + " (" +values[i][3]+")"  + '</option>';
+						} 
+						 
+						$('#ExternalMember').html(s);
+						
+					}
+				});
+
+}
+	}
+	
+	
+
+</script>
+
+
+
 <script type="text/javascript">
 function submitForm1(myform)
 { 
@@ -714,7 +800,6 @@ function memberrepdelete(memrepid){
 						datatype : 'json',
 						success : function(result) {
 						var result = JSON.parse(result);
-						console.log(result);
 						
 							if(result===1)
 							{
@@ -765,34 +850,29 @@ function replacerepdd(){
 	});
 }
 
-
-
-
 </script>
-
-
 
 
 <script type="text/javascript">
 
  $(document).ready(function(){	
 	 
-		chairpersonfetch('0');
+	chairpersonfetch('0');
 		
 }); 
 
 	
 		function chairpersonfetch(hint){
 			$('#chairperson').val("");
-				var $LabId = $('#cplabid').val();
-						if($LabId!=""){
+				var $CpLabCode = $('#CpLabCode').val();
+						if($CpLabCode !=""){
 				
 						$.ajax({		
 							type : "GET",
 							url : "ChairpersonEmployeeListFormation.htm",
 							data : {
-										LabId : $LabId,
-										committeemainid : '<%=committeemainid%>'
+								CpLabCode : $CpLabCode,
+								committeemainid : '<%= committeemainid %>',
 								   },
 							datatype : 'json',
 							success : function(result) {
@@ -813,10 +893,10 @@ function replacerepdd(){
 								} 
 								 
 								$('#chairperson').html(s);
-								if(hint=='0' && $LabId==<%=chairperson[7]%>){
+								if(hint=='0' && $CpLabCode =='<%=chairperson[9]%>'){
 									$('#chairperson').val('<%=chairperson[5]%>');
 								}
-								//$('.items1').select2("destroy");							
+															
 							}
 						});
 		
@@ -826,94 +906,92 @@ function replacerepdd(){
 </script>
 
 <script>
-function employeename(){
-
-	$('#ExternalMember').val("");
-	
-		var $LabId = $('#LabId').val()
-		
-	
-		
-				if($LabId!=""){
-		
-							$
-								.ajax({
-
-								type : "GET",
-								url : "ExternalEmployeeListFormation.htm",
-								data : {
-											LabId : $LabId,
-											committeemainid : '<%=committeemainid%>'
-									   },
-								datatype : 'json',
-								success : function(result) {
-
-								var result = JSON.parse(result);
-						
-								var values = Object.keys(result).map(function(e) {
-							 				 return result[e]
-							  
-												});
-						
-						var s = '';
-						s += '<option value="">'
-							+"--Select--"+ '</option>';
-						 for (i = 0; i < values.length; i++) {
-							
-							s += '<option value="'+values[i][0]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
-									+ '</option>';
-						} 
-						 
-						$('#ExternalMember').html(s);
-						
-						
-						//$('.items1').select2("destroy");  
-						
-						
-						
-						
-					}
-				});
-
-}
-	}
-	
 
 function Add(myfrm){
 
     
-  
+    var fieldvalues = $("select[name='Member']").map(function(){return $(this).val();}).get();
+    
     var $chairperson = $("#chairperson").val();
+    var $cplabCode = $('#CpLabCode').val();
+    var $ClustreId = $('#level').val();
+    var $LabClusterId = '<%=LabClusterid%>';
+    var $LabCode = '<%=LabCode%>';
+    
+    
+    var $cochairperson = $("#co_chairperson").val();
     var $secretary = $("#secretary").val();
     var $proxysecretary=$("#proxysecretary").val();
     
     
-    if($('#cplabid').val()=='<%=seslabid%>'){
+    if($ClustreId===$LabClusterId && $LabCode === $cplabCode){
 		if($chairperson==$secretary){
 			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
 			 event.preventDefault();
 				return false;
 		}
+		
+		if($cochairperson == $chairperson)
+		{
+			alert("Chairperson and Co-Chairperson Should Not Be The Same Person ");	   
+			 event.preventDefault();
+				return false;
+		}
+		
 		if($proxysecretary==$chairperson)
 		{
 			alert("Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
 			 event.preventDefault();
 				return false;
 		}
-    }
+	}
+    
+    if($cochairperson==$secretary)
+	{
+		alert("Co-Chairperson and Member Secretary Should Not Be The Same Person ");	   
+		 event.preventDefault();
+			return false;
+	}
+	
+	if($cochairperson==$proxysecretary && $cochairperson!=='0' &&  $proxysecretary!=='0')
+	{
+		alert("Co-Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
+		 event.preventDefault();
+			return false;
+	}
+    
 	if($proxysecretary==$secretary)
 	{
 		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
 	}
-    
 	
-	    
-    var ret= confirm('Are you Sure to Edit this Constitute?');
-	if(ret){
-		$("#"+myfrm).submit();
+	
+    
+    for (var i = 0; i < fieldvalues.length; i++) {
+    	
+    	if($chairperson==fieldvalues[i]){
+    		 alert("Chairperson Should Not Be A Member ");	   
+    		 event.preventDefault();
+    			return false;
+    	}
+    	
+    	if($secretary==fieldvalues[i]){
+   		 alert("Member Secretary Should Not Be A Member ");	   
+   		 event.preventDefault();
+   			return false;
+ 	  	}
+    	
+    	if($proxysecretary==fieldvalues[i]){
+      		 alert("Proxy Member Secretary Should Not Be A Member ");	   
+      		 event.preventDefault();
+      			return false;
+    	  	}
+    	
+   } 
+    
+	if(confirm('Are you Sure to Update this Committee?')){
 		return true;
 	}else{
 		event.preventDefault();
@@ -921,6 +999,8 @@ function Add(myfrm){
 
   return true;
 }
+
+ 
 
 </script>		
 </body>

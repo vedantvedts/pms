@@ -28,9 +28,6 @@ public class ActionServiceImpl implements ActionService {
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-	private  SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
-	private  SimpleDateFormat sdf4=new SimpleDateFormat("ddMMMyyyy");
-	private  SimpleDateFormat month=new SimpleDateFormat("MM");
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
 	
 	@Autowired
@@ -113,7 +110,9 @@ public class ActionServiceImpl implements ActionService {
 		actionmain.setActionDate(main.getMeetingDate());
 		actionmain.setEndDate(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
 		actionmain.setPDCOrg(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionmain.setAssigneeLabCode(main.getAssigneeLabCode());
 		actionmain.setAssignee(Long.parseLong(main.getAssigneeList()[i]));
+		actionmain.setAssignorLabCode(main.getAssignorLabCode());
 		actionmain.setAssignor(Long.parseLong(main.getAssignor()));
 		actionmain.setRevision(0);
 		actionmain.setProjectId(Long.parseLong(main.getProjectId()));
@@ -571,5 +570,29 @@ public class ActionServiceImpl implements ActionService {
 	{
 		logger.info(new Date() +"Inside ActionMainEdit"); 
 		return dao.ActionMainEdit(main);
+	}
+	
+	@Override
+	public List<Object[]> AllLabList() throws Exception 
+	{
+		return dao.AllLabList();
+	}
+	
+	@Override
+	public List<Object[]> ClusterExpertsList() throws Exception
+	{
+		return dao.ClusterExpertsList();
+	}
+	
+	@Override
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
+	{
+		return dao.LabInfoClusterLab(LabCode);
+	}
+	
+	@Override
+	public List<Object[]> LabEmployeeList(String LabCode) throws Exception {
+		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
+		return dao.LabEmployeeList(LabCode);
 	}
 }

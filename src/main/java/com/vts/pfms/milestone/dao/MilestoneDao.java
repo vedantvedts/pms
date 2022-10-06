@@ -82,18 +82,18 @@ public interface MilestoneDao {
     public long RepMasterInsert(FileRepMaster RepMaster)throws Exception;
     public List<Object[]> MainSystemLevel(String ParentId)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype, String LabCode) throws Exception;
-	public List<Object[]> ProjectEmpList(String projectid) throws Exception;
-	public List<Object[]> AllEmpNameDesigList() throws Exception;
+	public List<Object[]> ProjectEmpList(String projectid, String Labcode) throws Exception;
+	public List<Object[]> AllEmpNameDesigList(String labcode) throws Exception;
 	public List<Object[]> ProjectEmpListEdit(String projectid,String id)throws Exception;
-	public List<Object[]> DocumentTypeList(String ProjectId) throws Exception;
-	public List<Object[]> DocumentTitleList(String ProjectId,String Sub) throws Exception;
+	public List<Object[]> DocumentTypeList(String ProjectId,String LabCode) throws Exception;
+	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception;
 	public List<Object[]> DocumentStageList(String documenttype,String levelid) throws Exception;
 	public long FileSubInsertNew(FileRepNew fileRepo)throws Exception;
 	public long FileUploadInsertNew(FileRepUploadNew fileRepUplod) throws Exception;
 	public List<Object[]> VersionCheckList(String ProjectId, String SubsystemId,String documenttitle) throws Exception;
 	public List<Object[]> FileHistoryList(String filerepid) throws Exception;
-	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
-	public List<Object[]> FileDocMasterListAll(String projectid) throws Exception;
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode ) throws Exception;
+	public List<Object[]> FileDocMasterListAll(String projectid,String LabCode) throws Exception;
 	public long ProjectDocumetsAdd(FileProjectDoc model) throws Exception;
 	public List<Object[]> DocumentAmendment(String FileRepUploadId) throws Exception;
 	public long DocumetAmmendAdd(FileDocAmendment model) throws Exception;
@@ -102,13 +102,13 @@ public interface MilestoneDao {
 	public List<Object[]> RepMasterAllDocLists(String filerepmasterid) throws Exception;
 	public List<Object[]> MainSystem1(String filerepmasterid) throws Exception;
 	public int fileRepMasterEditSubmit(String filerepmasterid, String levelname) throws Exception;
-	public List<FileDocMaster> fileDocMasterList() throws Exception;
+	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception;
 	public long FileDocMasterAdd(FileDocMaster model) throws Exception;
-	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname) throws Exception;
-	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid) throws Exception;
+	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid,String LabCode) throws Exception;
 	public long PfmsNotificationAdd(PfmsNotification notification) throws Exception;
 	public List<Object[]> MilestoneActivityLevelExcel(String MilestoneActivityId, String LevelId) throws Exception;
 	public List<Object[]> MilestoneActivityListNew(String ProjectId) throws Exception;
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto)throws Exception;
+	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname, String LabCode) throws Exception;
 
 }

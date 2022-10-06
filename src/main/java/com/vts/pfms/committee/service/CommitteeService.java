@@ -37,14 +37,14 @@ public interface CommitteeService {
 	
 	public List<Object[]> EmployeeList(String labcode) throws Exception;
 	public List<Object[]> ExpertList() throws Exception;
-	public List<Object[]> ClusterLabList() throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
 	public Object[] CommitteeName(String CommitteeId) throws Exception;
 	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto)throws Exception;
 	public long CommitteeAdd(CommitteeDto committeeDto) throws Exception;
-	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception;
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception;
 	public Object[] CommitteeDetails(String committeeid) throws Exception;
 	public long CommitteeEditSubmit(CommitteeDto committeeDto) throws Exception;
-	public List<Object[]> CommitteeMainList() throws Exception;
+	public List<Object[]> CommitteeMainList(String labcode) throws Exception;
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid,String LabCode) throws Exception;
 	public int CommitteeMemberDelete(String committeememberid, String modifiedby)throws Exception;
 	public List<Object[]> EmployeeListNoMembers(String labid, String committeemainid) throws Exception;
@@ -84,7 +84,7 @@ public interface CommitteeService {
  	
  	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception;
  	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception;
-	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid) throws Exception;
+	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception;
 	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception;
 	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception;
 	public Long CommitteeAttendanceToggle(String InvitationId) throws Exception;
@@ -147,7 +147,7 @@ public interface CommitteeService {
 	public long CommitteeMembersInsert(CommitteeMembersDto dto) throws Exception;
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception;
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception;
-	public List<Object[]> ExternalEmployeeListInvitations(String LabId, String scheduleid) throws Exception;
+	public List<Object[]> ExternalEmployeeListInvitations(String labcode, String scheduleid) throws Exception;
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;
 	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid, String statustype) throws Exception;
@@ -156,7 +156,7 @@ public interface CommitteeService {
 	public int ProjectCommitteeDescriptionTOREdit(CommitteeProject committeeproject) throws Exception;
 	//public List<Object[]> CommitteeAgendaListByMeetingId(String meetingid) throws Exception;
 	public long CommitteePreviousAgendaAdd(String scheduleidto, String[] fromagendaids, String userid) throws Exception;
-	public Object[] CommitteeNamesCheck(String name, String sname,String projectid) throws Exception;
+	public Object[] CommitteeNamesCheck(String name, String sname,String projectid,String LabCode) throws Exception;
 	//public List<Object[]> ChairpersonEmployeeList() throws Exception;
 	public List<Object[]> divisionList() throws Exception;
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception;
@@ -189,7 +189,8 @@ public interface CommitteeService {
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception;
 	public long CommitteeRepMemberAdd(String[] repids, String committeemainid, String createdby) throws Exception;
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception;
-	public List<Object[]> ChairpersonEmployeeListFormation(String LabId, String committeemainid) throws Exception;
+	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode, String committeemainid) throws Exception;
+	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception;
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception;
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception;
 	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception;
@@ -229,7 +230,7 @@ public interface CommitteeService {
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid, String rtype) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype, String projectid) throws Exception;
-	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode) throws Exception;
 	public Object[] AgendaDocLinkDownload(String filerepid) throws Exception;
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
@@ -252,6 +253,10 @@ public interface CommitteeService {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;   
 	public List<Object[]> ClusterList() throws Exception;
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
+	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
     
 }
 

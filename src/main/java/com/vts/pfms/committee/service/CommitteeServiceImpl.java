@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -87,7 +88,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		long count=0;
 		String name=committeeDto.getCommitteeName(); 
 		String sname=committeeDto.getCommitteeShortName();
-		List<Object[]> CommitteeNamesCheck=dao.CommitteeNamesCheck(name,sname,committeeDto.getIsGlobal());
+		List<Object[]> CommitteeNamesCheck=dao.CommitteeNamesCheck(name,sname,committeeDto.getIsGlobal(),committeeDto.getLabCode());
 		
 		if(CommitteeNamesCheck.get(0)[1]!=null || CommitteeNamesCheck.get(0)[0]!=null)
 		{
@@ -103,6 +104,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		Committee committeeModel=new Committee();
 		
+		committeeModel.setLabCode(committeeDto.getLabCode());
 		committeeModel.setCommitteeName(name);
 		committeeModel.setCommitteeShortName(sname);
 		committeeModel.setCommitteeType(committeeDto.getCommitteeType());
@@ -126,19 +128,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public Object[]CommitteeNamesCheck(String name,String sname, String projectid) throws Exception
+	public Object[]CommitteeNamesCheck(String name,String sname, String projectid,String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteeNamesCheck");	
-		return dao.CommitteeNamesCheck(name,sname,projectid).get(0);
+		return dao.CommitteeNamesCheck(name,sname,projectid,LabCode).get(0);
 	}
 		
 		
 	
 	@Override
-	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable) throws Exception
+	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteeListActive");	
-		return dao.CommitteeListActive(isglobal,Projectapplicable); 
+		return dao.CommitteeListActive(isglobal,Projectapplicable,LabCode); 
 	}
 	
 	@Override
@@ -159,7 +161,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		long committeeid=committeeDto.getCommitteeId();
 		String shortname=committeeDto.getCommitteeShortName();
 		String fullname=committeeDto.getCommitteeName();
-		List<Object[]> CommitteeList=(List<Object[]>)dao.CommitteeListActive(committeeDto.getIsGlobal(),committeeDto.getProjectApplicable());
+		List<Object[]> CommitteeList=(List<Object[]>)dao.CommitteeListActive(committeeDto.getIsGlobal(),committeeDto.getProjectApplicable(),committeeDto.getLabCode());
 		for(int i=0;i<CommitteeList.size();i++)
 		{
 			if(Long.parseLong(CommitteeList.get(i)[0].toString())!=committeeid)
@@ -211,7 +213,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 
 	@Override
-	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception {
+	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception 
+	{
 		logger.info(new Date() +"Inside CommitteeDetailsSubmit");
 		CommitteeMain committeemain= new CommitteeMain();
 		
@@ -252,27 +255,41 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		long mainid= dao.CommitteeDetailsSubmit(committeemain);		
 		
-		for(int i=1;i<=3;i++) 
+		for(int i=1;i<=4;i++) 
 		{
 			CommitteeMember committeemember = new CommitteeMember(); 
 			committeemember.setCommitteeMainId(mainid);
 			if(i==1) 
 			{
 				committeemember.setEmpId(Long.parseLong(committeemaindto.getChairperson()));
-				committeemember.setLabId(Long.parseLong(committeemaindto.getCpLabId()));
+				committeemember.setLabCode(committeemaindto.getCpLabCode());
 				committeemember.setMemberType("CC");
-			}else if(i==2)
+			}
+			else if(i==2)
 			{
-				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
-				committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
-				committeemember.setMemberType("CS");
+				if( Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
+				{
+					committeemember.setEmpId(Long.parseLong(committeemaindto.getCo_Chairperson()));
+					committeemember.setLabCode(committeemaindto.getLabCode());
+					committeemember.setMemberType("CH");
+				}
+				else 
+				{
+					continue;
+				}
 			}
 			else if(i==3)
+			{
+				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
+				committeemember.setLabCode(committeemaindto.getLabCode());
+				committeemember.setMemberType("CS");
+			}
+			else if(i==4)
 			{
 				if( Long.parseLong(committeemaindto.getProxySecretary())>0) 
 				{
 					committeemember.setEmpId(Long.parseLong(committeemaindto.getProxySecretary()) );
-					committeemember.setLabId(Long.parseLong(dao.LabDetails()[13].toString()));
+					committeemember.setLabCode(committeemaindto.getLabCode());
 					committeemember.setMemberType("PS");
 				}
 				else 
@@ -325,9 +342,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> CommitteeMainList() throws Exception {
+	public List<Object[]> CommitteeMainList(String labcode) throws Exception {
 		logger.info(new Date() +"Inside CommitteeMainList");
-		return dao.CommitteeMainList();
+		return dao.CommitteeMainList(labcode);
 	}
 	
 	@Override
@@ -465,23 +482,26 @@ public class CommitteeServiceImpl implements CommitteeService{
 		long ret=0;
 		
 		String committeescheduleid=scheduleagendadtos.get(0).getScheduleId();
-		for(int i=0;i<scheduleagendadtos.size();i++) {
-			
+		
+		Iterator<CommitteeScheduleAgendaDto> iterator = scheduleagendadtos.iterator();
+		
+		while(iterator.hasNext()) {
+			CommitteeScheduleAgendaDto AgendaDto = iterator.next();
 			CommitteeScheduleAgenda scheduleagenda=new CommitteeScheduleAgenda();
 //			CommitteeSchedulesAttachment attachment = new CommitteeSchedulesAttachment();
-			
-			scheduleagenda.setScheduleId(Long.parseLong(scheduleagendadtos.get(i).getScheduleId()));
-			scheduleagenda.setScheduleSubId(Long.parseLong(scheduleagendadtos.get(i).getScheduleSubId()));
-			scheduleagenda.setAgendaItem(scheduleagendadtos.get(i).getAgendaItem());
-			scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadtos.get(i).getPresenterId()));
-			scheduleagenda.setDuration(Integer.parseInt(scheduleagendadtos.get(i).getDuration()));
-			scheduleagenda.setProjectId(Long.parseLong(scheduleagendadtos.get(i).getProjectId()));
-			scheduleagenda.setRemarks(scheduleagendadtos.get(i).getRemarks());
-			scheduleagenda.setCreatedBy(scheduleagendadtos.get(i).getCreatedBy());
+			scheduleagenda.setPresentorLabCode(AgendaDto.getPresentorLabCode());
+			scheduleagenda.setScheduleId(Long.parseLong(AgendaDto.getScheduleId()));
+			scheduleagenda.setScheduleSubId(Long.parseLong(AgendaDto.getScheduleSubId()));
+			scheduleagenda.setAgendaItem(AgendaDto.getAgendaItem());
+			scheduleagenda.setPresenterId(Long.parseLong(AgendaDto.getPresenterId()));
+			scheduleagenda.setDuration(Integer.parseInt(AgendaDto.getDuration()));
+			scheduleagenda.setProjectId(Long.parseLong(AgendaDto.getProjectId()));
+			scheduleagenda.setRemarks(AgendaDto.getRemarks());
+			scheduleagenda.setCreatedBy(AgendaDto.getCreatedBy());
 			scheduleagenda.setCreatedDate(sdf1.format(new Date()));
-			scheduleagenda.setIsActive(Integer.parseInt(scheduleagendadtos.get(i).getIsActive()));
-//			if(scheduleagendadtos.get(i).getDocId()!=null) {
-//				scheduleagenda.setDocId(Long.parseLong(scheduleagendadtos.get(i).getDocId()));
+			scheduleagenda.setIsActive(Integer.parseInt(AgendaDto.getIsActive()));
+//			if(AgendaDto.getDocId()!=null) {
+//				scheduleagenda.setDocId(Long.parseLong(AgendaDto.getDocId()));
 //			}else
 //			{
 //				scheduleagenda.setDocId(0);
@@ -503,8 +523,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 			
 			ret= dao.CommitteeAgendaSubmit(scheduleagenda);
 			
-			if(scheduleagendadtos.get(i).getDocLinkIds()!=null) {
-				List<String> docids = Arrays.asList(scheduleagendadtos.get(i).getDocLinkIds());
+			if(AgendaDto.getDocLinkIds()!=null) {
+				List<String> docids = Arrays.asList(AgendaDto.getDocLinkIds());
 				List<String> existingdocids = new ArrayList<String>();
 				for(int j=0; j<docids.size();j++) {
 					if(!existingdocids.contains(docids.get(j))) 
@@ -513,7 +533,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 						doc.setAgendaId(ret);
 						doc.setFileDocId(Long.parseLong(docids.get(j)));
 						doc.setIsActive(1);
-						doc.setCreatedBy(scheduleagendadtos.get(i).getCreatedBy());
+						doc.setCreatedBy(AgendaDto.getCreatedBy());
 						doc.setCreatedDate(sdf1.format(new Date()));
 						dao.AgendaDocLinkAdd(doc);
 						existingdocids.add(String.valueOf(docids.get(j)));
@@ -539,6 +559,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		scheduleagenda.setRemarks(scheduleagendadto.getRemarks());
 		scheduleagenda.setModifiedBy(scheduleagendadto.getModifiedBy());
 		scheduleagenda.setModifiedDate(sdf1.format(new Date()));
+		scheduleagenda.setPresentorLabCode(scheduleagendadto.getPresentorLabCode());
 		scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadto.getPresenterId()));
 		scheduleagenda.setDuration(Integer.parseInt(scheduleagendadto.getDuration()));
 		
@@ -548,8 +569,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 //		{
 //			scheduleagenda.setDocId(0);
 //		}		
-		
-		
 		
 		if(scheduleagendadto.getDocLinkIds()!=null) {
 			List<String> docids = Arrays.asList(scheduleagendadto.getDocLinkIds());
@@ -812,7 +831,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	
 	@Override
-	public int MeetingAgendaApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception {
+	public int MeetingAgendaApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception 
+	{
 
 		logger.info(new Date() +"Inside MeetingAgendaApproval");
 		CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
@@ -839,15 +859,14 @@ public class CommitteeServiceImpl implements CommitteeService{
 		schedule.setModifiedDate(sdf1.format(new Date()));
 		
 		
-		
-		Object[] CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CC");
-		if(CommitteMainData!=null && CommitteMainData.length>0)
+		Object[] CommitteMainMembersData=dao.CommitteMainMembersData(CommitteeScheduleId,"CC");
+		if(CommitteMainMembersData!=null && CommitteMainMembersData.length > 0)
 		{
 			PfmsNotification cpnotification= new PfmsNotification();
-			cpnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			cpnotification.setEmpId(Long.parseLong(CommitteMainMembersData[0].toString()));
 			cpnotification.setNotificationby(Long.parseLong(EmpId));
 			cpnotification.setNotificationDate(sdf1.format(new Date()));
-			cpnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			cpnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainMembersData[2].toString() );
 			cpnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
 			cpnotification.setCreatedBy(UserId);
 			cpnotification.setCreatedDate(sdf1.format(new Date()));
@@ -856,14 +875,14 @@ public class CommitteeServiceImpl implements CommitteeService{
 			cpnotification.setStatus(Status);				
 			notifications.add(cpnotification);
 		}	
-		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"CS");
-		if(CommitteMainData!=null && CommitteMainData.length>0)
+		CommitteMainMembersData=dao.CommitteMainMembersData(CommitteeScheduleId,"CS");
+		if(CommitteMainMembersData!=null && CommitteMainMembersData.length>0)
 		{
 			PfmsNotification msnotification= new PfmsNotification();			
-			msnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			msnotification.setEmpId(Long.parseLong(CommitteMainMembersData[0].toString()));
 			msnotification.setNotificationby(Long.parseLong(EmpId));
 			msnotification.setNotificationDate(sdf1.format(new Date()));
-			msnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			msnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainMembersData[2].toString() );
 			msnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
 			msnotification.setCreatedBy(UserId);
 			msnotification.setCreatedDate(sdf1.format(new Date()));
@@ -873,14 +892,14 @@ public class CommitteeServiceImpl implements CommitteeService{
 			notifications.add(msnotification);		
 		}
 		
-		CommitteMainData=dao.CommitteMainMembersData(CommitteeScheduleId,"PS");
-		if(CommitteMainData!=null && CommitteMainData.length>0 )
+		CommitteMainMembersData=dao.CommitteMainMembersData(CommitteeScheduleId,"PS");
+		if(CommitteMainMembersData!=null && CommitteMainMembersData.length>0 )
 		{
 			PfmsNotification psnotification= new PfmsNotification();
-			psnotification.setEmpId(Long.parseLong(CommitteMainData[0].toString()));
+			psnotification.setEmpId(Long.parseLong(CommitteMainMembersData[0].toString()));
 			psnotification.setNotificationby(Long.parseLong(EmpId));
 			psnotification.setNotificationDate(sdf1.format(new Date()));
-			psnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainData[2].toString() );
+			psnotification.setNotificationMessage("Agenda Pending Approval For " + CommitteMainMembersData[2].toString() );
 			psnotification.setNotificationUrl("MeetingApprovalAgenda.htm");
 			psnotification.setCreatedBy(UserId);
 			psnotification.setCreatedDate(sdf1.format(new Date()));
@@ -978,10 +997,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	
 	@Override
-	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid) throws Exception
+	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside EmployeeListNoInvitedMembers");
-		return dao.EmployeeListNoInvitedMembers(scheduleid);
+		return dao.EmployeeListNoInvitedMembers(scheduleid,LabCode);
 	}
 	
 	@Override
@@ -1002,16 +1021,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception 
 	{
 		logger.info(new Date() +"Inside CommitteeInvitationCreate");
-		ArrayList<String> al=new ArrayList<String>();
-		ArrayList<String> labidcheck=new ArrayList<String>();
 		long ret=0;
 		long slno=1;
 		Object[] maxslno=dao.InvitationMaxSerialNo(committeeinvitationdto.getCommitteeScheduleId());
-		if(maxslno[1]!=null && Long.parseLong(maxslno[1].toString())>0) {
+		if(maxslno[1]!=null && Long.parseLong(maxslno[1].toString())>0) 
+		{
 			slno=Long.parseLong(maxslno[1].toString())+1;
 		}
 		
-		for(int i=0;i<committeeinvitationdto.getEmpIdList().size();i++) {
+		for(int i=0;i<committeeinvitationdto.getEmpIdList().size();i++) 
+		{
 			
 			CommitteeInvitation committeeinvitation= new CommitteeInvitation();
 			
@@ -1022,30 +1041,32 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeinvitation.setAttendance("P");
 			committeeinvitation.setCreatedDate(sdf1.format(new Date()));
 			committeeinvitation.setEmpId(Long.parseLong(MemberType[0]));
-			if(committeeinvitationdto.getReptype()!= null &&!committeeinvitationdto.getReptype().equals("0")) {
+			if(committeeinvitationdto.getReptype()!= null && !committeeinvitationdto.getReptype().equals("0")) 
+			{
 				committeeinvitation.setMemberType(committeeinvitationdto.getReptype());
-			}else {
+			}
+			else 
+			{
 				committeeinvitation.setMemberType(MemberType[1]);
 			}
 			committeeinvitation.setDesigId(MemberType[2]);
 			
-			if(!committeeinvitationdto.getLabId().isEmpty()) {
-				committeeinvitation.setLabId(Long.parseLong(committeeinvitationdto.getLabId().get(i)));
+			if(!committeeinvitationdto.getLabCodeList().isEmpty()) {
+				committeeinvitation.setMemberLabCode(committeeinvitationdto.getLabCodeList().get(i));
 			}
+			
+			// Check weather this employee is already invited as committee member 
 			if(dao.CommitteeInvitationCheck(committeeinvitation).size()>0)
 			{
 				continue;
 			}
-			
-			committeeinvitation.setSerialNo(slno);
-			
-			slno++;
-//			labidcheck.add(committeeinvitationdto.getLabId().get(i));
-//			al.add(MemberType[0]);
-			ret=dao.CommitteeInvitationCreate(committeeinvitation);
-			
-			
-			
+			else
+			{
+				committeeinvitation.setSerialNo(slno);
+				
+				slno++;
+				ret=dao.CommitteeInvitationCreate(committeeinvitation);
+			}
 			
 		}
 		
@@ -1789,48 +1810,60 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> ClusterLabList() throws Exception {
+	public List<Object[]> AllLabList() throws Exception {
 		logger.info(new Date() +"Inside ClusterLabList");
 		
-		return dao.ClusterLabList();
+		return dao.AllLabList();
 	}
 
+	@Override
+	public List<Object[]> ClusterLabs(String LabCode) throws Exception 
+	{
+		return dao.ClusterLabs(LabCode);
+	}
 
 	@Override
-	public List<Object[]> ExternalEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+	public List<Object[]> ExternalEmployeeListFormation(String CpLabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ExternalEmployeeListFormation");
-		
-		
-		Object[] labdata=dao.LabDetails();
-		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
-			return dao.InternalEmployeeListFormation(LabId,committeemainid);
-		}else {
-			return dao.ExternalEmployeeListFormation(LabId,committeemainid);
-		}	
+		return dao.InternalEmployeeListFormation(CpLabCode,committeemainid);
 	}
 	
+	@Override
+	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception
+	{
+		return dao.ClusterExpertsList(committeemainid);
+	}
+
+	@Override
+	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception
+	{
+		return dao.ClusterExpertsListForCommitteeSchdule();
+	}
 	
 	@Override
-	public List<Object[]> ChairpersonEmployeeListFormation(String LabId,String committeemainid) throws Exception {
+	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode,String committeemainid) throws Exception {
 		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
-		
-		Object[] labdata=dao.LabDetails();
-		if(LabId.equalsIgnoreCase(labdata[13].toString())) {
-			return dao.ChairpersonEmployeeList(LabId,committeemainid);
-		}else {
-			return dao.ChairpersonExternalEmployeeList(LabId,committeemainid);
-		}
-		
-		
+		return dao.ChairpersonEmployeeList(LabCode,committeemainid);
+	}
+	
+	@Override
+	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
+	{
+		logger.info(new Date() +"Inside PreseneterForCommitteSchedule");		
+		return dao.PreseneterForCommitteSchedule(LabCode);
 	}
 	
 	
-	
+	@Override
+	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
+	{
+		return dao.LabInfoClusterLab(LabCode);
+	}
 	
 	@Override
-	public List<Object[]> ExternalEmployeeListInvitations(String LabId,String scheduleid) throws Exception {
+	public List<Object[]> ExternalEmployeeListInvitations(String labcode,String scheduleid) throws Exception {
 		logger.info(new Date() +"Inside ExternalEmployeeListInvitations");		
-		return dao.ExternalEmployeeListInvitations(LabId,scheduleid);
+		return dao.ExternalEmployeeListInvitations(labcode,scheduleid);
 	}
 
 
@@ -1844,35 +1877,38 @@ public class CommitteeServiceImpl implements CommitteeService{
 		ArrayList<String> lablist=new ArrayList<String>();
 		ArrayList<String> membertype=new ArrayList<String>();
 		
-		if (dto.getInternalMembers()!=null) {
+		if (dto.getInternalMemberIds()!=null) 
+		{
 
-			for(int i=0;i<dto.getInternalMembers().length;i++) {
+			for(int i=0;i<dto.getInternalMemberIds().length;i++) {
 				
-				lablist.add(dto.getInternalLabId());
+				lablist.add(dto.getInternalLabCode());
 				membertype.add("CI");
 			}
 			
-			emplist.addAll(Arrays.asList(dto.getInternalMembers()));
+			emplist.addAll(Arrays.asList(dto.getInternalMemberIds()));
 		}
 		
-		if (dto.getExternalMember() != null) {
+		if (dto.getExternalMemberIds()!=null) 
+		{
 
-			for(int i=0;i<dto.getExternalMember().length;i++) {
+			for(int i=0;i<dto.getExternalMemberIds().length;i++) {
 				
-				lablist.add(dto.getLabId());
+				lablist.add(dto.getExternalLabCode());
 				membertype.add("CW");
 			}
-
-			emplist.addAll(Arrays.asList(dto.getExternalMember()));
-		}
-		if (dto.getExpertMember() != null) {
 			
-			for(int i=0;i<dto.getExpertMember().length;i++) {
+			emplist.addAll(Arrays.asList(dto.getExternalMemberIds()));
+		}
+		
+		if (dto.getExpertMemberIds() != null) {
+			
+			for(int i=0;i<dto.getExpertMemberIds().length;i++) {
 				
-				lablist.add("0");
+				lablist.add("@EXP");
 				membertype.add("CO");
 			}
-			emplist.addAll(Arrays.asList(dto.getExpertMember()));
+			emplist.addAll(Arrays.asList(dto.getExpertMemberIds()));
 		}
 		
 		
@@ -1881,7 +1917,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			CommitteeMember  committeemember=new CommitteeMember();
 			committeemember.setCommitteeMainId(Long.parseLong(dto.getCommitteeMainId()));			
 			committeemember.setEmpId(Long.parseLong(emplist.get(i)));
-			committeemember.setLabId(Long.parseLong(lablist.get(i)));
+			committeemember.setLabCode(lablist.get(i));
 			committeemember.setMemberType(membertype.get(i));
 			committeemember.setCreatedBy(dto.getCreatedBy());
 			committeemember.setCreatedDate(sdf1.format(new Date()));
@@ -2256,37 +2292,92 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside CommitteeMainMemberUpdate");
 		
 		int ret=0;
+		// Update Chairperson
 		CommitteeMember model=new CommitteeMember();
-		
 		model.setModifiedBy(dto.getModifiedBy());
 		model.setModifiedDate(sdf1.format(new Date()));
-		
 		model.setCommitteeMemberId(Long.parseLong(dto.getChairpersonmemid()));
-		model.setLabId(Long.parseLong(dto.getCplabid()));
+		
+		model.setLabCode(dto.getCpLabCode());
+		
 		model.setEmpId(Long.parseLong(dto.getChairperson()));
-		
 		ret=dao.CommitteeMemberUpdate(model);		
+				
+		// Update or Remove or add  co-chairperson based on update
+		model=new CommitteeMember();
 		
+		if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())==0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			dao.CommitteeMemberDelete(model);
+		}
+		else if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())>0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			model.setLabCode(dto.getSesLabCode());
+			model.setEmpId(Long.parseLong(dto.getCo_chairperson()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			ret=dao.CommitteeMemberUpdate(model);
+		}
+		else if(dto.getComemberid()==null && Long.parseLong(dto.getCo_chairperson())>0)
+		{
+				CommitteeMember newmodel=new CommitteeMember();
+				newmodel.setLabCode(dto.getSesLabCode());
+				newmodel.setEmpId(Long.parseLong(dto.getCo_chairperson()));
+				newmodel.setMemberType("CH");
+				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
+				newmodel.setCreatedBy(dto.getModifiedBy());
+				newmodel.setCreatedDate(sdf1.format(new Date()));
+				newmodel.setIsActive(1);
+				dao.CommitteeMainMembersAdd(newmodel);
+		}
+			
+		
+		if(dto.getComemberid()!=null && Long.parseLong(dto.getCo_chairperson())==0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getComemberid()));
+			dao.CommitteeMemberDelete(model);
+		}
+		
+		
+		// Update Member Secretary
+		model=new CommitteeMember();
+		model.setModifiedBy(dto.getModifiedBy());
+		model.setModifiedDate(sdf1.format(new Date()));
 		model.setCommitteeMemberId(Long.parseLong(dto.getSecretarymemid()));
-		model.setLabId(Long.parseLong(dto.getSeslabid()));
+		model.setLabCode(dto.getSesLabCode());
 		model.setEmpId(Long.parseLong(dto.getSecretary()));
+		ret=dao.CommitteeMemberUpdate(model); 
 		
-		ret=dao.CommitteeMemberUpdate(model);
 		
-		if(dto.getProxysecretarymemid()!=null){
-			
-			
+		// Update, remove or add Proxy member Secretary based on update
+		model=new CommitteeMember();
+		
+		if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())==0)
+		{
 			model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
-			model.setLabId(Long.parseLong(dto.getSeslabid()));
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
+			dao.CommitteeMemberDelete(model);
+		}
+		else if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())>0)
+		{
+			model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
+			model.setLabCode(dto.getSesLabCode());
+			model.setModifiedBy(dto.getModifiedBy());
+			model.setModifiedDate(sdf1.format(new Date()));
 			model.setEmpId(Long.parseLong(dto.getProxysecretary()));
 			
 			ret=dao.CommitteeMemberUpdate(model);
-		}else {
-			
-			if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
-			{
+		}
+		else if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
+		{
+			System.out.println("inside proxy add");
 				CommitteeMember newmodel=new CommitteeMember();
-				newmodel.setLabId(Long.parseLong(dto.getSeslabid()));
+				newmodel.setLabCode(dto.getSesLabCode());
 				newmodel.setEmpId(Long.parseLong(dto.getProxysecretary()));
 				newmodel.setMemberType("PS");
 				newmodel.setCommitteeMainId(Long.parseLong(dto.getCommitteemainid()));
@@ -2294,13 +2385,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 				newmodel.setCreatedDate(sdf1.format(new Date()));
 				newmodel.setIsActive(1);
 				dao.CommitteeMainMembersAdd(newmodel);
-			}
-			if(dto.getProxysecretarymemid()!=null && Long.parseLong(dto.getProxysecretary())==0)
-			{
-				model.setCommitteeMemberId(Long.parseLong(dto.getProxysecretarymemid()));
-				dao.CommitteeMemberDelete(model);
-			}
 		}
+			
+		
+		
 		
 		return ret;
 		
@@ -2994,10 +3082,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.EmployeeDropdown(empid, logintype, projectid);
 	}
 	@Override
-	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new Date() +"Inside FileRepMasterListAll");
-		return dao.FileRepMasterListAll(projectid);
+		return dao.FileRepMasterListAll(projectid,LabCode);
 	}
 	
 	@Override

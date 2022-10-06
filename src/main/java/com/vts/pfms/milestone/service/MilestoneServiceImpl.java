@@ -1044,17 +1044,17 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 
 	@Override
-	public List<Object[]> ProjectEmpList(String projectid)throws Exception
+	public List<Object[]> ProjectEmpList(String projectid,String Labcode)throws Exception
 	{
 		logger.info(new Date() +"Inside ProjectEmpList"); 
-		return dao.ProjectEmpList(projectid);
+		return dao.ProjectEmpList(projectid , Labcode);
 	}
 	
 	@Override
-	public List<Object[]> AllEmpNameDesigList()throws Exception
+	public List<Object[]> AllEmpNameDesigList( String labcode)throws Exception
 	{
 		logger.info(new Date() +"Inside AllEmpNameDesigList"); 
-		return dao.AllEmpNameDesigList();
+		return dao.AllEmpNameDesigList(labcode);
 	}
 
 	@Override
@@ -1069,15 +1069,15 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 	
 	@Override
-	public List<Object[]> DocumentTypeList(String ProjectId) throws Exception 
+	public List<Object[]> DocumentTypeList(String ProjectId,String LabCode) throws Exception 
 	{		
-		return dao.DocumentTypeList(ProjectId);
+		return dao.DocumentTypeList(ProjectId,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> DocumentTitleList(String ProjectId,String Sub) throws Exception {
+	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception {
 		
-		return dao.DocumentTitleList(ProjectId,Sub);
+		return dao.DocumentTitleList(ProjectId,Sub,LabCode);
 	}
 	
 	@Override
@@ -1164,15 +1164,15 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 	
 	@Override
-	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode )throws Exception
 	{
-		return dao.FileRepMasterListAll( projectid);
+		return dao.FileRepMasterListAll( projectid, LabCode );
 	}
 	
 	@Override
-	public List<Object[]> FileDocMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileDocMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		return dao.FileDocMasterListAll(projectid);
+		return dao.FileDocMasterListAll(projectid, LabCode);
 	}
 	
 	@Override
@@ -1273,9 +1273,9 @@ public class MilestoneServiceImpl implements MilestoneService {
  	}
 	
 	@Override
-	public List<FileDocMaster> fileDocMasterList() throws Exception
+	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception
  	{
-		return dao.fileDocMasterList();
+		return dao.fileDocMasterList(LabCode);
  	}
 	
 	@Override
@@ -1286,15 +1286,15 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.FileDocMasterAdd(docmaster);
 	}
 	@Override
-	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname) throws Exception
+	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname,String LabCode) throws Exception
  	{
-		return dao.FileLevelSublevelNameCheck(levelname);
+		return dao.FileLevelSublevelNameCheck(levelname, LabCode);
  	}
 	
 	@Override
-	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid ) throws Exception
+	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid,String LabCode ) throws Exception
  	{
-		return dao.fileNameCheck(levelname, shortname, docid,parentlevelid);
+		return dao.fileNameCheck(levelname, shortname, docid,parentlevelid,LabCode);
  	}
 	
 	@Override

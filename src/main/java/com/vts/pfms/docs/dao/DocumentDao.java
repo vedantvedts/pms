@@ -13,9 +13,9 @@ import com.vts.pfms.milestone.model.FileRepMaster;
 public interface DocumentDao {
 
 	public List<Object[]> LoginProjectsList(String empid, String Logintype,String LabCode) throws Exception;
-	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
-	public List<Object[]> DocParentLevelList(String projectid) throws Exception;
-	public List<Object[]> ProjectDocAssignedList(String projectid) throws Exception;
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode) throws Exception;
+	public List<Object[]> DocParentLevelList(String projectid,String LabCode) throws Exception;
+	public List<Object[]> ProjectDocAssignedList(String projectid,String LabCode) throws Exception;
 	public List<PfmsDocTemplate> PfmsDocTemplateList(String projectid,String fileuploadmasterid) throws Exception;
 	public Object[] DocMasterDataPdocId(String projectid, String fileuploadmasterid) throws Exception;
 	public long TemplateItemNameEdit(PfmsDocTemplate item) throws Exception;

@@ -9,7 +9,9 @@ public class ActionMainDto {
 	private String ActionDate;
 	private String StartDate;
 	private String EndDate;
+	private String AssignorLabCode;
 	private String Assignor;
+	private String AssigneeLabCode;
 	private String Assignee;
 	private String ActionItem;
 	private String ProjectId;
@@ -169,6 +171,18 @@ public class ActionMainDto {
 	}
 	public void setScheduleId(String scheduleId) {
 		ScheduleId = scheduleId;
+	}
+	public String getAssignorLabCode() {
+		return AssignorLabCode;
+	}
+	public void setAssignorLabCode(String assignorLabCode) {
+		AssignorLabCode = assignorLabCode;
+	}
+	public String getAssigneeLabCode() {
+		return AssigneeLabCode;
+	}
+	public void setAssigneeLabCode(String assigneeLabCode) {
+		AssigneeLabCode = assigneeLabCode;
 	}
 	
 }

@@ -175,8 +175,33 @@ p{
  <h1 class="break"></h1> 
 <!-- ------------------------------------------------------- members --------------------------------- -->
 <%if(invitedlist.size()>0){ %>
-<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
+<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
 //ArrayList<String> addlmembertypes=new ArrayList<String>(Arrays.asList("W","E","I","P")); %>
+
+<% 
+int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
+int j=0;
+for(Object[] temp : invitedlist){
+
+	if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
+	{ 
+		memPresent++;
+	}
+	else if(temp[4].toString().equals("A") &&  membertypes.contains( temp[3].toString()) )
+	{
+		memAbscent++;
+	}
+	else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
+	{ 
+		ParPresent++;
+	}
+	else if( temp [4].toString().equals("A") && !membertypes.contains( temp[3].toString()) )
+	{ 
+		parAbscent++;
+	}
+}
+%>
+
 
 <div style="align : center;">
 <h2>ATTENDANCE</h2>
@@ -184,9 +209,10 @@ p{
 	 <tr>
 		 <th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Present</th>
 	 </tr>
-	 <% int j=0;
-	
-	
+	 
+	 <%if(memPresent > 0){ %>
+	 
+	 <% 
 	 	for(int i=0;i<invitedlist.size();i++)
 		{
 	 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
@@ -201,6 +227,7 @@ p{
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -216,8 +243,9 @@ p{
 	 <%}
 	 } %>
 	 
+	 <% } %>
 	 
-	 
+	 <%if(memAbscent > 0){ %>
 	 	
 	  	<tr >
 			<th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Absent</th>
@@ -238,6 +266,7 @@ p{
 	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -257,10 +286,13 @@ p{
 	 <%if(count==0){ %>
 	 	<tr><th colspan="3" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th></tr>
 	 <%} %>
-	 <tr  >
-		 
+	
+	<%} %>
+	
+	 <%if(ParPresent > 0){ %>
+	
+	 <tr>
 		 <th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants </th>
-		 
 	 </tr>
 	 
 	 <%
@@ -281,6 +313,7 @@ p{
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -300,6 +333,10 @@ p{
 	  {%>
 		 	<tr><th colspan="3" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th> </tr>
 	  <%}%>
+	  <% } %>
+	  
+	  <%if(parAbscent > 0){ %>
+	  
 	 <tr >
 			<th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants Absent</th>
 		</tr>
@@ -319,6 +356,7 @@ p{
 	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -340,7 +378,7 @@ p{
 	 <%} %>
 	
 	
-	 
+	 <%} %>
 
 	  
 	 <tr> <td></td>	</tr>

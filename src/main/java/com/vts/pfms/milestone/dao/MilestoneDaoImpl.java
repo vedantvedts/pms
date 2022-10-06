@@ -72,7 +72,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String SUBDATA="FROM MilestoneActivitySub WHERE ActivitySubId=:id"; 
 	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MAASSIGNEELIST="CALL Pfms_Milestone_Oic_List(:ProjectId,:empid)";
-	private static final String PROJECTEMPLIST="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
+	private static final String PROJECTEMPLIST="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid AND a.labcode=:labcode ORDER BY a.srno=0,a.srno";
 	private static final String PROJECTEMPLISTEDIT="SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid  union SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND a.empid=:id ORDER BY srno";
 	private static final String PROJECTASSINEE="SELECT DISTINCT(a.projectid),a.projectcode,a.projectname FROM project_master a,milestone_activity b WHERE a.projectid=b.projectid and (b.oicempid=:empid or b.oicempid1=:empid) and   a.isactive='1'";
 	private static final String ASSIGNUPDATE="UPDATE milestone_activity SET isaccepted='A',ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
@@ -91,7 +91,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
    
     private static final String FILEREPREV="UPDATE file_rep_new SET ReleaseDoc=:release,VersionDoc=:version where filerepid=:id";
     private static final String FILEDETAILS="SELECT * FROM(SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND b.filerepuploadid=:fileid)AS a JOIN (SELECT MAX(DocAmendmentId) AS 'AmendmentDocId' FROM file_doc_amendment WHERE FileRepUploadId=:fileid ) AS b  ";
-    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , e.empname, ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
+    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , e.empname, ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid and e.labcode=:labcode ";
 	
     private static final String MILESTONESCHEDULELIST="SELECT milestonescheduleid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,statusremarks FROM milestone_schedule WHERE isactive=1 AND projectid=:projectid";
     private static final String MILESTONESCHEDULECOUNT="SELECT COUNT(*) FROM milestone_schedule WHERE isactive='1' AND projectid=:projectid";
@@ -99,13 +99,13 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String MAINSYSTEM="SELECT a.filerepmasterid, a.parentlevelid, a.levelid,  a.levelname FROM file_rep_master a WHERE a.levelid='1' AND projectid=:projectid";
     private static final String MAINSYSTEMLEVEL="SELECT a.filerepmasterid, a.parentlevelid, a.levelid,  a.levelname FROM file_rep_master a WHERE a.parentlevelid=:parentid ";
 	private static final String MILELEVEL="FROM MilestoneActivityLevel WHERE  ParentActivityId=:Id AND ActivityLevelId=:LevelId";
-	private static final String DOCUMENTTYPELIST="SELECT fdm.fileuploadmasterid,fdm.parentlevelid,fdm.levelid,fdm.levelname,fdm.docshortname,'1' AS 'added' FROM file_doc_master fdm, file_project_doc fpd WHERE fdm.isactive=1 AND fpd.fileuploadmasterid=fdm.fileuploadmasterid AND fpd.projectid=:projectid UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docshortname,'0' AS 'added' FROM file_doc_master WHERE isactive=1  AND  fileuploadmasterid NOT IN (SELECT fileuploadmasterid FROM file_project_doc WHERE projectid=:projectid) ORDER BY 1 ";
-	private static final String DOCUMENTTITLELIST="CALL Pfms_FileRepo_Doc (:projectid,:sub)";
+	private static final String DOCUMENTTYPELIST="SELECT fdm.fileuploadmasterid,fdm.parentlevelid,fdm.levelid,fdm.levelname,fdm.docshortname,'1' AS 'added' FROM file_doc_master fdm, file_project_doc fpd WHERE fdm.isactive=1 AND fpd.fileuploadmasterid=fdm.fileuploadmasterid AND fpd.projectid=:projectid AND LabCode=:LabCode UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docshortname,'0' AS 'added' FROM file_doc_master WHERE isactive=1  AND LabCode=:LabCode AND  fileuploadmasterid NOT IN (SELECT fileuploadmasterid FROM file_project_doc WHERE projectid=:projectid  AND LabCode=:LabCode ) ORDER BY 1 ";
+	private static final String DOCUMENTTITLELIST="CALL Pfms_FileRepo_Doc (:projectid,:sub,:LabCode)";
 	private static final String VERSIONCHECKLIST="SELECT b.filerepuploadid,b.filenameui,b.ReleaseDoc,b.filerepid, b.versionDoc FROM file_rep_new a,file_rep_upload b WHERE a.projectid=:projectid AND  a.subl1=:subsysteml1 AND a.documentid=:documenttitle  AND a.filerepid=b.filerepid ORDER BY b.filerepuploadid DESC LIMIT 1 "; 
 	private static final String DOCUMENTSTAGELIST="SELECT a.fileuploadmasterid,a.parentlevelid,a.levelid,a.levelname FROM file_doc_master a WHERE a.isactive=1 AND a.levelid=:levelid AND a.parentlevelid=:documenttype";
 	private static final String FILEHISTORYLIST="SELECT fru.filerepuploadid,frn.filerepid,fdm.docid,fdm.levelname,fru.versiondoc,fru.releasedoc,CAST(DATE_FORMAT(fru.createddate,'%d-%m-%Y') AS CHAR) AS 'createddate' FROM  file_rep_new frn,file_rep_upload fru,file_doc_master fdm WHERE frn.filerepid=fru.filerepid AND frn.documentid=fdm.fileuploadmasterid AND frn.filerepid=:filerepid ORDER BY fru.versiondoc DESC,fru.releasedoc DESC ";
-	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid ORDER BY parentlevelid ";
-	private static final String FILEDOCMASTERLISTALL ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid ) )  UNION SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid ) ";
+	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid AND LabCode=:LabCode ORDER BY parentlevelid ";
+	private static final String FILEDOCMASTERLISTALL ="SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1  AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_doc_master WHERE isactive=1 AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode ) )  UNION  SELECT fileuploadmasterid,parentlevelid,levelid,levelname,docid,docshortname FROM file_doc_master WHERE isactive=1 AND labcode=:LabCode AND fileuploadmasterid IN (SELECT parentlevelid FROM file_project_doc   WHERE projectid=:projectid AND labcode=:LabCode) ";
 	private static final String PROJECTDOCUMETSADD ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE FileRepUploadId=:FileRepUploadId ORDER BY AmendVersion DESC";
 	private static final String DOCUMENTAMENDMENTDATA ="SELECT DocAmendmentId,FileRepUploadId,FileName,Description,AmendVersion,FilePath,FilePass,Amendmentname FROM file_doc_amendment WHERE DocAmendmentId=:docammendmentid ORDER BY AmendVersion DESC";
 	
@@ -834,11 +834,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 
 	@Override
-	public List<Object[]> ProjectEmpList(String projectid)throws Exception
+	public List<Object[]> ProjectEmpList(String projectid ,String Labcode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside ProjectEmpList");
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
 		query.setParameter("projectid", projectid);
+		query.setParameter("labcode", Labcode);
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
 		return ProjectEmpList;
 	}
@@ -855,10 +856,11 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 	
 	@Override
-	public List<Object[]> AllEmpNameDesigList()throws Exception
+	public List<Object[]> AllEmpNameDesigList(String labcode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside AllEmpNameDesigList");
 		Query query=manager.createNativeQuery(ALLEMPNAMEDESIGLIST);
+		query.setParameter("labcode", labcode);
 		List<Object[]> AllEmpNameDesigList=(List<Object[]>)query.getResultList();
 		return AllEmpNameDesigList;
 	}
@@ -874,22 +876,24 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 	
 	@Override
-	public List<Object[]> DocumentTypeList(String projectid)throws Exception
+	public List<Object[]> DocumentTypeList(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside DocumentTypeList");
 		Query query=manager.createNativeQuery(DOCUMENTTYPELIST);
 		query.setParameter("projectid",projectid);
+		query.setParameter("LabCode",LabCode);
 		List<Object[]> DocumentTypeList=(List<Object[]>)query.getResultList();
 		return DocumentTypeList;
 	}
 	
 	@Override
-	public List<Object[]> DocumentTitleList(String ProjectId,String Sub) throws Exception {
-		
+	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception 
+	{
 		logger.info(new java.util.Date() +"Inside DocumentStageList");
 		Query query=manager.createNativeQuery(DOCUMENTTITLELIST);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("sub", Sub);
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> DocumentStageList=(List<Object[]>)query.getResultList();
 		return DocumentStageList;
 	}
@@ -951,11 +955,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	
 	@Override
-	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode )throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside FileRepMasterListAll");
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
 		query.setParameter("projectid", projectid);
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
 		return FileRepMasterListAll;
 	}
@@ -963,11 +968,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	
 	@Override
-	public List<Object[]> FileDocMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileDocMasterListAll(String projectid,String LabCode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside FileDocMasterListAll");
 		Query query=manager.createNativeQuery(FILEDOCMASTERLISTALL);
 		query.setParameter("projectid", projectid);
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> FileDocMasterListAll=(List<Object[]>)query.getResultList();
 		return FileDocMasterListAll;
 	}
@@ -1065,16 +1071,14 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		}
 	}
 	
+	private static final String FILEDOCMASTERLIST ="FROM FileDocMaster WHERE IsActive= 1 AND LabCode = :LabCode ";
 	@Override
-	public List<FileDocMaster> fileDocMasterList() throws Exception
+	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception
  	{
 		logger.info(new Date() +"Inside fileDocMasterList");
-		CriteriaBuilder cb = manager.getCriteriaBuilder();
-	    CriteriaQuery<FileDocMaster> cq = cb.createQuery(FileDocMaster.class);
-	    Root<FileDocMaster> rootEntry = cq.from(FileDocMaster.class);
-	    CriteriaQuery<FileDocMaster> all = cq.select(rootEntry).where(cb.equal(rootEntry.get("IsActive"), 1));
-	    TypedQuery<FileDocMaster> allQuery = manager.createQuery(all);
-	    return allQuery.getResultList();
+		Query query = manager.createQuery(FILEDOCMASTERLIST);
+		query.setParameter("LabCode", LabCode);
+		return (List<FileDocMaster>)query.getResultList();
 		
 	}
 	
@@ -1087,23 +1091,31 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		return model.getFileUploadMasterId();
 	}
 	
+	private static final String FILELEVELSUBLEVELNAMECHECK = "FROM FileDocMaster where IsActive=1 AND (LevelId=1 OR LevelId=2) AND LevelName=:LevelName AND LabCode=:LabCode";
 	@Override
-	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname) throws Exception
+	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname,String LabCode) throws Exception
  	{
 		logger.info(new Date() +"Inside FileLevelSublevelNameCheck");
-		CriteriaBuilder cb = manager.getCriteriaBuilder();
-	    CriteriaQuery<FileDocMaster> cq = cb.createQuery(FileDocMaster.class);
-	    Root<FileDocMaster> rootEntry = cq.from(FileDocMaster.class);
-	    Predicate p1=cb.equal(rootEntry.get("LevelId"), 1);
-	    Predicate p2=cb.equal(rootEntry.get("LevelId"), 2);
-	    CriteriaQuery<FileDocMaster> all = cq.select(rootEntry).where(cb.equal(rootEntry.get("LevelName"), levelname),cb.or(p1,p2));
-	    TypedQuery<FileDocMaster> allQuery = manager.createQuery(all);
-	    return allQuery.getResultList();
+//		CriteriaBuilder cb = manager.getCriteriaBuilder();
+//	    CriteriaQuery<FileDocMaster> cq = cb.createQuery(FileDocMaster.class);
+//	    Root<FileDocMaster> rootEntry = cq.from(FileDocMaster.class);
+//	    Predicate p1=cb.equal(rootEntry.get("LevelId"), 1);
+//	    Predicate p2=cb.equal(rootEntry.get("LevelId"), 2);
+//	    Predicate p3=cb.equal(rootEntry.get("LabCode"), LabCode);
+//	    CriteriaQuery<FileDocMaster> all = cq.select(rootEntry).where(cb.equal(rootEntry.get("LevelName"), levelname),cb.or(p1,p2),p3);
+//	    TypedQuery<FileDocMaster> allQuery = manager.createQuery(all);
+//	    return allQuery.getResultList();
+		
+		Query query = manager.createQuery(FILELEVELSUBLEVELNAMECHECK);
+		query.setParameter("LevelName", levelname);
+		query.setParameter("LabCode", LabCode);
+		return (List<FileDocMaster>) query.getResultList();
+		
 	}
 	
-	private static final String FILENAMECHECK = "SELECT (SELECT COUNT(levelname)  FROM file_doc_master WHERE levelname=:levelname AND levelid=3 AND parentlevelid =:parentlevelid ) AS 'levelname' , (SELECT COUNT(DocShortName) FROM file_doc_master WHERE DocShortName=:shortname AND levelid=3 )AS 'DocShortName' , (SELECT COUNT(DocId)  FROM file_doc_master WHERE DocId=:docid AND levelid=3  ) AS 'DocId' FROM DUAL";
+	private static final String FILENAMECHECK = "SELECT (SELECT COUNT(levelname)  FROM file_doc_master WHERE levelname=:levelname AND levelid=3 AND parentlevelid =:parentlevelid  AND LabCode=:LabCode ) AS 'levelname' ,  (SELECT COUNT(DocShortName) FROM file_doc_master WHERE DocShortName=:shortname AND levelid=3 AND LabCode=:LabCode )AS 'DocShortName' , (SELECT COUNT(DocId)  FROM file_doc_master WHERE DocId=:docid AND levelid=3 AND LabCode=:LabCode   ) AS 'DocId' FROM DUAL";
 	@Override
-	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid ) throws Exception
+	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid,String LabCode ) throws Exception
  	{
 		logger.info(new Date() +"Inside MainSystem1");
 		Query query=manager.createNativeQuery(FILENAMECHECK);
@@ -1111,7 +1123,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("shortname", shortname);
 		query.setParameter("docid", docid);
 		query.setParameter("parentlevelid", parentlevelid);
-		
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
 		if(MainSystem.size()>0) {
 			return MainSystem.get(0);
@@ -1158,4 +1170,5 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		int result=query.executeUpdate();
 		return result;
 	}
+
 }

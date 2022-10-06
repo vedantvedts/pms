@@ -65,7 +65,7 @@ h5,h6{
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 
-	String seslabid=(String)session.getAttribute("labid");
+	String labcode=(String)session.getAttribute("labcode");
 	List<Object[]> ExpertList=(List<Object[]>) request.getAttribute("ExpertList");
 	List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
 	List<Object[]> committeeinvitedlist=(List<Object[]>)request.getAttribute("committeeinvitedlist");
@@ -75,9 +75,15 @@ h5,h6{
 	List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlablist");
 	List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
 	int pscount=0;
+	int CoChair=0;
 	String labid=(String)request.getAttribute("labid");
 	LocalDate scheduledate=LocalDate.parse(committeescheduledata[2].toString());
-	LocalDate todaydate=LocalDate.now();	%>		
+	LocalDate todaydate=LocalDate.now();	
+	
+	ArrayList<String> InvitedList = new ArrayList<String>();
+	
+	
+	%>		
 		
 	<%String ses = (String) request.getParameter("result");
 		String ses1 = (String) request.getParameter("resultfail");
@@ -129,12 +135,16 @@ h5,h6{
 									<% for(Object[] committeeinvited:committeeinvitedlist )												
 										{%>												
 											<%if(committeeinvited[3].toString().equals("CC"))
-											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)</td>
+											{ %>
+												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>) (<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
+												
+												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
+												
+												
 											<%} 
 											break;} 											
 									}%>														
@@ -152,24 +162,31 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("CS"))
 											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)</td>
+												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 											<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
+												
+												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 											<%} 
 											} 	
 											if(committeeinvited[3].toString().equals("PS"))
 											{
 												pscount++;
 											}
+											else if( committeeinvited[3].toString().equals("CH"))
+											{
+												CoChair++;
+											}
 										}%>		
 								</tr>
 							</table>
 													
 						</div>
+						<%if(pscount>0){ %>
 						<div class="col-md-4">
-							<%if(pscount>0){ %>
+							
 							<table>
 								<tr>
 									<td><label class="control-label"> Member Secretary (Proxy)  </label></td>
@@ -179,18 +196,47 @@ h5,h6{
 										{%>												
 											<%if(committeeinvited[3].toString().equals("PS"))
 											{%>
-												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)</td>
+												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
+												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 											<%} 
 											break;} 											
 									}%>											
 								</tr>
 							</table>
-							<%} %>																	
-						</div>						
+						</div>	
+						<%} %>
+						
+						<%if(CoChair>0){ %>
+						<div class="col-md-4">
+							
+							<table>
+								<tr>
+									<td><label class="control-label"> Co-Chairperson  </label></td>
+								</tr>
+								<tr>										
+									<% for(Object[] committeeinvited:committeeinvitedlist )												
+										{%>												
+											<%if(committeeinvited[3].toString().equals("CH"))
+											{%>
+												<td><%=committeeinvited[6]%> (<%= committeeinvited[7]%>)(<%= committeeinvited[11]%>) </td>
+												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
+												<td style="padding-left: 10px">
+											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+												</td>
+												
+												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
+												
+											<%} 
+											break;} 											
+									}%>											
+								</tr>
+							</table>
+						</div>	
+					<%} %>					
 					</div>
 					<br> 
 					
@@ -207,13 +253,14 @@ h5,h6{
 												if(obj[3].toString().equals("CI")){								
 											%>
 											<tr>			
-												<td class="tdclass"><%=memberscount%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>)</td>
+												<td class="tdclass"><%=memberscount%> )</td> <td> <%=obj[6]%> (<%=obj[7]%>) (<%=obj[11]%>)</td>
 												<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
 															<td style="padding-left: 10px">
 														 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 															</td>
 														<%} %>			
 											</tr>
+											<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 											<%	memberscount++; }}	%>		
 											
 										</tbody>
@@ -243,6 +290,8 @@ h5,h6{
 									<%} %>
 			
 									</tr>
+									
+									<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 								<%	externalcount++; }}	%>		
 											
 							</tbody>					
@@ -272,6 +321,7 @@ h5,h6{
 									<%} %>
 			
 									</tr>
+									<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 								<%	outsidemember++; }}	%>		
 											
 							</tbody>	
@@ -315,7 +365,7 @@ h5,h6{
 										&emsp; :&emsp;
 									</td>
 									<td> 
-										<%=obj[10]%> (<%=obj[11]%>)	
+										<%=obj[10]%> (<%=obj[11]%>)	(<%=obj[14]%>)	
 									</td>
 									
 									
@@ -323,24 +373,26 @@ h5,h6{
 										<% int count=0;
  										for(int i=0;i<committeeinvitedlist.size();i++)
 										{ 	 
-											ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));									
-											if(membertypes.contains(committeeinvitedlist.get(i)[3].toString()) && committeeinvitedlist.get(i)[0].equals(obj[9]))
+ 											ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","I","P"));									
+											if( (membertypes.contains(committeeinvitedlist.get(i)[3].toString()) && committeeinvitedlist.get(i)[0].equals(obj[9])))
 											{	
-												count++;
+												if(!InvitedList.contains(obj[9]+"_"+obj[14])){
+													count++;
+												}
 												if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													
 													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 													
 												<%} 
+												
 											}
 										}
 										if(count==0){ %>
 										
 											<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
-												<!-- <button><i class="fa fa-check" aria-hidden="true" style="color: green" ></i></button> -->
-												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" > <i class="fa fa-plus-square" style="color: green;margin: 1px;" aria-hidden="true"></i> </button>											
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square" style="color: green;margin: 1px;" aria-hidden="true"></i> </button>											
 												<input type="hidden" name="internalmember" value="<%=obj[9]%>,P,<%=obj[13]%>">
-												<input type="hidden" name="internallabid" value="<%=labid %>" />	
+												<input type="hidden" name="internallabcode" value="<%=obj[14] %>" />	
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">																						
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 											</form>
@@ -358,7 +410,7 @@ h5,h6{
 					
 							<table >
 							<% int repcount=1;
-							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","P","I","W","E"));
+							ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","CW","CO","P","I","W","E"));
 							for(int i=0;i<committeeinvitedlist.size();i++)
 							{								
 								if(!membertypes.contains(committeeinvitedlist.get(i)[3].toString()))
@@ -375,7 +427,7 @@ h5,h6{
 												<input type="hidden" name="committeeinvitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
 												<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
 											</form>		
-										<%} %>										
+										<% } %>										
 										<td>										
 											<form action="MeetingInvitationLetter.htm" method="Post" target="_blank">
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -558,7 +610,7 @@ h5,h6{
 								{%>		
 										
 										<tr>
-										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)</td> 
+										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)(<%=committeeinvitedlist.get(i)[11]%>)</td> 
 										<td style="padding-left: 30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){ %>
@@ -628,8 +680,8 @@ h5,h6{
 											
 							 		</td>
 							 		<td>
-							 		<button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
-									<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button>
+								 		<button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
+										<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button>
 							 		
 							 		</td>
 							 	</tr>
@@ -691,7 +743,7 @@ h5,h6{
 										       			<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
 										    	<%} %>
 											</select>
-											<input type="hidden" name="internallabid" value="<%=seslabid %>" />
+											<input type="hidden" name="internallabcode" value="<%=labcode %>" />
 										</div>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 	 									<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
@@ -727,11 +779,11 @@ h5,h6{
 								<tr class="tr_clone1">
 									<td style="width:30%">							
 										<div class="input select">
-											<select class="form-control selectdee" name="externallabid" tabindex="-1"  style="" id="LabId" onchange="employeename()" required>
+											<select class="form-control selectdee" name="externallabid" tabindex="-1"  style="" id="LabCode" onchange="employeename()" required>
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {
-													if(!seslabid.equals(obj[0].toString())){%>
-														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+													if(!labcode.equals(obj[3].toString())){%>
+														<option value="<%=obj[3]%>"><%=obj[3]%></option>
 													<%} 
 													}%>
 											</select>
@@ -776,19 +828,18 @@ h5,h6{
 								</thead>
 								<tr class="tr_clone2">
 									<td >
-									
 										<div class="input select external">
 											<select  class= "form-control selectdee" name="expertmember" id=""   data-live-search="true"   data-placeholder="Select Members" multiple required>
 												<% for (Object[] obj : ExpertList) {%>
 											       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
 											    <%} %>
 											</select>
-											<input type="hidden" name="expertlabid" value="0" />
+											<input type="hidden" name="expertlabid" value="@EXP" />
 										</div>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
-		 								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
-		 								<input type="hidden" name="rep" id="rep3" value="0" />				
-									
+			 							<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
+			 							<input type="hidden" name="rep" id="rep3" value="0" />				
+			 						</td>
 								</tr>
 							</table>
 							
@@ -866,10 +917,10 @@ function employeename(){
 
 	$('#ExternalMemberLab').val("");
 	
-		var $LabId = $('#LabId').val();
+		var $LabCode = $('#LabCode').val();
 	
 		
-				if($LabId!=""){
+				if($LabCode!=""){
 		
 							$
 								.ajax({
@@ -877,7 +928,7 @@ function employeename(){
 								type : "GET",
 								url : "ExternalEmployeeListInvitations.htm",
 								data : {
-											LabId : $LabId,
+											LabCode : $LabCode,
 											scheduleid : '<%=committeescheduleid %>' 	
 									   },
 								datatype : 'json',
@@ -932,7 +983,7 @@ function employeename(){
 						/* $('#internalmember').val('').trigger("change");
 						$('#ExternalMemberLab').val('').trigger("change");
 						$('#expertmember').val('').trigger("change");
-						$('#LabId').val('').trigger("change");  */
+						$('#LabCode').val('').trigger("change");  */
 						
 						//document.getElementById('additionalmemadd').style.visibility = 'visible';
 						//document.getElementById('repselect').style.visibility = 'visible';
@@ -953,7 +1004,7 @@ function employeename(){
 					 	/* $('#internalmember').val('').trigger("change");
 						$('#ExternalMemberLab').val('').trigger("change");
 						$('#expertmember').val('').trigger("change");
-						$('#LabId').val('').trigger("change");  */
+						$('#LabCode').val('').trigger("change");  */
 						
 						//document.getElementById('additionalmemadd').style.visibility = 'visible';
 
@@ -981,7 +1032,9 @@ function employeename(){
 			$('#rep3').val(reptype);
 		}
 			
-					
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
 </script>
 
 </body>

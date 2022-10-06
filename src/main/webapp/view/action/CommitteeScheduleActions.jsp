@@ -210,6 +210,7 @@ Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeesche
 List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
 List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmployeeList");
 
+List<Object[]> Alllablist = (List<Object[]>)request.getAttribute("AllLabList");
 String projectid=committeescheduleeditdata[9].toString();
 
 String GenId="GenAdd";
@@ -395,7 +396,7 @@ if(MinutesBack==null){
 </div>
 </div>
 <div class="col-md-1"  align="left"></div>
-<div class="col-md-1"  align="left"></div>
+
   <div class="col-sm-3" align="left"  >
    <div class="form-group">
 <label  >PDC: <span class="mandatory" style="color: red;">* </span>
@@ -406,13 +407,24 @@ if(MinutesBack==null){
 
 </div>
 </div>
-
-
-
- <div class="col-sm-7" align="left"  >
+<div class="col-sm-3" align="left"  >
    <div class="form-group">
-<label > Assignee : 
+<label  >Lab: <span class="mandatory" style="color: red;">* </span>
 </label>
+<select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
+			<%for(Object[] lab : Alllablist){%>
+					<option value="<%=lab[3] %>"><%=lab[3] %></option>
+			<%}%>
+			<option value="@EXP">Expert</option>
+	</select>
+
+</div>
+</div>
+
+
+ <div class="col-sm-5" align="left"  >
+   <div class="form-group">
+<label> Assignee : </label>
 <%if(Long.parseLong(projectid)>0){ %>
 	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 		<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
@@ -422,12 +434,12 @@ if(MinutesBack==null){
 <select class="form-control selectdee" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
                                                              
 
-                                                            <%for(Object[] obj:EmpList){ %>	
+                                                           <%--  <%for(Object[] obj:EmpList){ %>	
 																	
 															<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
 																	
-															<%} %>
-															</select>
+															<%} %> --%>
+</select>
 
 </div>
 </div>
@@ -498,23 +510,27 @@ if(MinutesBack==null){
 
 function changeempdd()
 {
+	var $labcode = $('#AssigneeLabCode').val();
+	
+	console.log($labcode);
   if (document.getElementById('allempcheckbox').checked) 
   {
-    employeefetch(0);
+    employeefetch(0 , $labcode);
   } else {
-	  employeefetch(<%=committeescheduleeditdata[9]%>);
+	  employeefetch(<%=committeescheduleeditdata[9]%> , $labcode);
   }
 }
 
 	
-	function employeefetch(ProID){
+	function employeefetch(ProID,labcode){
 			
 				
 						$.ajax({		
 							type : "GET",
 							url : "ProjectEmpListFetch.htm",
 							data : {
-								projectid : ProID
+								projectid : ProID,
+								labCode   : labcode
 								   },
 							datatype : 'json',
 							success : function(result) {
@@ -525,7 +541,7 @@ function changeempdd()
 										 return result[e]
 									  
 							});
-								
+								console.log(values);
 					var s = '';
 						s += '<option value="">'+"--Select--"+ '</option>';
 								 for (i = 0; i < values.length; i++) {									
@@ -825,6 +841,57 @@ $(document).ready(function(){
 	 $("#"+genid).click();
 
 	});   
+   
+   
+$(document).ready(function(){
+	 AssigneeEmpList();
+}); 	
+
+
+function AssigneeEmpList(){
+	
+	$('#Assignee').val("");
+	
+	var $AssigneeLabCode = $('#AssigneeLabCode').val();
+	let projectid = <%=committeescheduleeditdata[9]%> ;
+
+	if($AssigneeLabCode!=""){
+		
+		$.ajax({
+			
+			type : "GET",
+			url : "ActionAssigneeEmployeeList.htm",
+			data : {
+				LabCode : $AssigneeLabCode,
+				proid    : projectid
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				var values = Object.keys(result).map(function(e) {
+					return result[e]
+					
+				});
+				
+				var s = '';
+				s += '<option value="">Choose ...</option>';
+				if($AssigneeLabCode == '@EXP'){
+					
+				}
+				for (i = 0; i < values.length; i++) 
+				{
+					
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+				} 
+				
+				$('#Assignee').html(s);
+
+			}
+		});
+	}
+}  
+   
    
 
 </script>

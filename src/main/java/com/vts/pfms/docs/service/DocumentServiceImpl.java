@@ -40,22 +40,22 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 	
 	@Override
-	public List<Object[]> FileRepMasterListAll(String projectid)throws Exception
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		return dao.FileRepMasterListAll( projectid);
+		return dao.FileRepMasterListAll( projectid, LabCode);
 	}
 	
 	
 	@Override
-	public List<Object[]> DocParentLevelList(String projectid)throws Exception
+	public List<Object[]> DocParentLevelList(String projectid,String LabCode)throws Exception
 	{
-		return dao.DocParentLevelList(projectid);
+		return dao.DocParentLevelList(projectid, LabCode);
 	}
 		
 	@Override
-	public List<Object[]> ProjectDocAssignedList(String projectid)throws Exception
+	public List<Object[]> ProjectDocAssignedList(String projectid,String LabCode)throws Exception
 	{
-		return dao.ProjectDocAssignedList(projectid);
+		return dao.ProjectDocAssignedList(projectid, LabCode);
 	}
 	@Override
 	public List<PfmsDocTemplate> PfmsDocTemplateList(String projectid,String fileuploadmasterid) throws Exception

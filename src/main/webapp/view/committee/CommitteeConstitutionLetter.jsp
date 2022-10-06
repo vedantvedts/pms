@@ -104,6 +104,7 @@ String initiationid=committeemaindata[4].toString() ;
 				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px">&nbsp; 
 				
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
+				else if(member[8].toString().equals("CH")){ %>Co-Chairperson<%} 
 		 		else if(member[8].toString().equals("CS")){ %>Member Secretary<%} 
 		 		else if(member[8].toString().equals("PS")){ %>Member Secretary (Proxy)<%} 
 		 		else if(member[8].toString().equals("CI")){ %>Internal Member<%} 
