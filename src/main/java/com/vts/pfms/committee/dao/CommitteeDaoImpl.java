@@ -88,7 +88,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String MINUTESUNITLIST="SELECT a.unitname,a.minutesspecunitid,b.minutesid,b.minutessubid,b.minutessubofsubid FROM committee_schedules_minutes_unit a,committee_schedules_minutes_details b WHERE a.minutesspecunitid= b.minutesunitid AND b.scheduleid=:committeescheduleid AND b.statusflag='I'";	
 	private static final String COMMITTEEAGENDAPRESENTER="SELECT a.presenterid ,b.empname, c.designation FROM committee_schedules_agenda a, employee b, employee_desig c WHERE a.presenterid=b.empid AND b.desigid=c.desigid AND a.scheduleid=:scheduleid GROUP BY 1";
-	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labid=(SELECT labid FROM lab_master)) UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labid NOT IN (SELECT labid FROM lab_master))UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
+	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode IN (SELECT LabCode FROM lab_master))  UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode NOT IN (SELECT labcode FROM lab_master)) UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
 	private static final String PROJECTDIRECTOREMAIL="SELECT d.email,d.empname FROM employee d,project_master e WHERE projectid=:projectid AND e.projectdirector=d.empid";
 	private static final String RTMDDOEMAIL="SELECT a.email,a.empname FROM employee a,pfms_rtmddo b WHERE a.empid=b.empid AND b.isactive=1 AND b.type='DO-RTMD' ";
 	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
@@ -117,7 +117,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String PROJECTCATEGORYLIST="select categoryid,category from pfms_security_classification";
 	private static final String COMMITTEEALLATTENDANCE="SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.empno,b.empname,c.designation,b.email,'organization' FROM committee_schedules_invitation a,employee b,employee_desig c WHERE a.empid = b.empid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype IN ('CC','CS','C','I' ) UNION SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.expertno,b.expertname,c.designation,b.email,b.organization FROM committee_schedules_invitation a,expert b,employee_desig c WHERE a.empid = b.expertid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype = 'E' ORDER BY FIELD(4,'CC','CS','C','I' ,'E')ASC";
 	private static final String MEETINGREPORTTOTAL="SELECT a.meetingid,a.scheduledate,a.schedulestarttime,a.projectid,b.committeename,a.meetingvenue,a.scheduleid FROM committee_schedule a,committee b WHERE a.scheduledate BETWEEN :fdate AND :tdate AND (CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END) AND a.committeeid=b.committeeid AND a.isactive=1 ";
-	private static final String PROJECTCOMMITTEESLISTNOTADDED="SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference FROM committee a WHERE a.projectapplicable='P' AND isglobal IN (0,:projectid)  AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_project b WHERE b.projectId = :projectid)  ORDER BY a.committeeid,a.committeeshortname";
+	private static final String PROJECTCOMMITTEESLISTNOTADDED="SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference FROM committee a WHERE a.projectapplicable='P' AND isglobal IN (0,:projectid)  AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_project b WHERE b.projectId = :projectid) AND a.labcode=:LabCode  ORDER BY a.committeeid,a.committeeshortname";
 	private static final String PROJECTCOMMITTEESLIST="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference FROM committee WHERE projectapplicable='P' AND isactive=1";
 	private static final String MINUTESVIEWALLACTIONLIST="CALL Pfms_Meeting_Action_List(:scheduleid)";
 	private static final String MEETINGSEARCHLIST="SELECT '0' committeemainid, 0 AS empid,a.scheduleid,a.scheduledate,a.schedulestarttime,a.scheduleflag,'NA' AS membertype ,a.meetingid,b.committeename,b.committeeshortname, a.meetingvenue FROM committee_schedule a,committee b WHERE a.committeeid=b.committeeid AND a.meetingid LIKE :meetingid AND a.isactive=1 and a.labcode=:labcode";
@@ -137,7 +137,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String DIVISIONCOMMITTEEDESCRIPTIONTOREDIT="UPDATE committee_division SET description=:description  , termsofreference = :termsofreference ,modifiedby= :modifiedby ,modifieddate=:modifieddate WHERE committeedivisionid=:committeedivisionid";
 	private static final String DIVISIONLIST = "SELECT divisionid, divisioncode,divisionname,divisionheadid,groupid FROM division_master";
 	private static final String COMMITTEEDIVISIONASSIGNED = "SELECT b.committeename,b.committeeshortname,b.committeeid,a.committeedivisionid,b.periodicnon,b.periodicduration,a.autoschedule  FROM committee_division a,committee b WHERE a.committeeid=b.committeeid AND a.divisionid=:divisionid";
-	private static final String COMMITTEEDIVISIONNOTASSIGNED = "SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference  FROM committee a WHERE a.projectapplicable='N' AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_division b WHERE b.divisionid = :divisionid )   ORDER BY a.committeeid,a.committeeshortname ";
+	private static final String COMMITTEEDIVISIONNOTASSIGNED = "SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference  FROM committee a WHERE a.projectapplicable='N' AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_division b WHERE b.divisionid = :divisionid ) AND a.labcode=:LabCode  ORDER BY a.committeeid,a.committeeshortname ";
 	private static final String DIVISIONCOMMITTEEFORMATIONCHECKLIST = "SELECT a.committeedivisionid,b.committeemainid FROM committee_division a LEFT JOIN  committee_main b ON a.Divisionid = b.Divisionid AND b.divisionid>0 AND a.committeeid = b.committeeid AND b.isactive=1 WHERE a.Divisionid =:divisionid";
 	private static final String DIVISIONCOMMITTEEDELETE="DELETE FROM committee_division WHERE committeedivisionid=:committeedivisionid";
 	private static final String COMMITTEEACTIONDATA="CALL Pfms_Action_List(:scheduleid)";
@@ -153,7 +153,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String DIVISIONCOMMITTEESCHEDULELIST = "SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=:divisionid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
 	private static final String INITIATIONMASTERLIST="SELECT b.committeename,b.committeeshortname,b.committeeid,a.CommitteeInitiationId,b.periodicnon,b.periodicduration,a.autoschedule  FROM committee_initiation a,committee b WHERE a.committeeid=b.committeeid AND a.initiationid=:initiationid";
 	private static final String INITIATIONCOMMITTEEFORMATIONCHECKLIST="SELECT a.CommitteeInitiationId,b.committeemainid FROM committee_initiation a LEFT JOIN committee_main b ON a.initiationid = b.initiationid AND a.committeeid = b.committeeid AND b.isactive=1 WHERE a.initiationid =:initiationid";
-	private static final String INITIATIONCOMMITTEESLISTNOTADDED="SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference FROM committee a WHERE a.projectapplicable='P'  AND isglobal=0 AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_initiation b WHERE b.initiationid = :initiationid)  ORDER BY a.committeeid,a.committeeshortname";
+	private static final String INITIATIONCOMMITTEESLISTNOTADDED="SELECT a.committeeid,a.committeeshortname,a.committeename,a.CommitteeType,a.projectapplicable,a.isactive,a.periodicnon,a.periodicduration,a.TechNonTech,a.Guidelines,a.Description,a.TermsOfReference FROM committee a WHERE a.projectapplicable='P'  AND isglobal=0 AND a.committeeid NOT IN ( SELECT b.CommitteeId FROM committee_initiation b WHERE b.initiationid = :initiationid) AND a.labcode=:LabCode  ORDER BY a.committeeid,a.committeeshortname";
 	private static final String INVITATIONSERIALNOUPDATE="UPDATE committee_schedules_invitation SET SerialNo=:newslno  WHERE CommitteeInvitationId=:invitationid";
 	private static final String INITIATEDPROJECTDETAILSLIST="SELECT a.initiationid, a.projecttitle, a.divisionid, a.categoryid, a.projectshortname, a.projecttypeid FROM pfms_initiation a";
 	private static final String COMMITTEEDIVISIONUPDATE="UPDATE committee_division SET autoschedule='Y' WHERE divisionid=:divisionid AND committeeid=:committeeid";
@@ -1490,10 +1490,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception {
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
 		logger.info(new java.util.Date() +"Inside ProjectCommitteesListNotAdded");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESLISTNOTADDED);
 		query.setParameter("projectid", projectid );
+		query.setParameter("LabCode", LabCode );
 		List<Object[]>  ProjectCommitteesListNotAdded=(List<Object[]> )query.getResultList();
 		return ProjectCommitteesListNotAdded;
 	}
@@ -1860,11 +1861,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	
 	@Override
-	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside CommitteedivisionNotAssigned");
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONNOTASSIGNED);
 		query.setParameter("divisionid", divisionid);	
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> CommitteedivisionNotAssigned=(List<Object[]>)query.getResultList();	
 		return CommitteedivisionNotAssigned;
 		
@@ -2050,10 +2052,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	
 	@Override
-	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception {
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception {
 		logger.info(new java.util.Date() +"Inside InitiationCommitteesListNotAdded");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEESLISTNOTADDED);
 		query.setParameter("initiationid", initiationid );
+		query.setParameter("LabCode", LabCode );
 		List<Object[]>  InitiationCommitteesListNotAdded=(List<Object[]> )query.getResultList();
 		return InitiationCommitteesListNotAdded;
 	}

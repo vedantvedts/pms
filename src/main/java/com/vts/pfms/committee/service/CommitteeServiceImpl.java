@@ -1333,9 +1333,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 
 	@Override
-	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception {
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
 		logger.info(new Date() +"Inside ProjectCommitteeList");
-		return dao.ProjectCommitteesListNotAdded(projectid);		
+		return dao.ProjectCommitteesListNotAdded(projectid, LabCode);		
 	}
 
 
@@ -2068,10 +2068,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteedivisionNotAssigned");
-		return dao.CommitteedivisionNotAssigned(divisionid);
+		return dao.CommitteedivisionNotAssigned(divisionid,  LabCode );
 	}
 	
 	@Override
@@ -2205,10 +2205,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception 
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception 
 	{
 		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
-		return dao.InitiationCommitteesListNotAdded(initiationid);
+		return dao.InitiationCommitteesListNotAdded(initiationid, LabCode);
 	}
 	
 	@Override

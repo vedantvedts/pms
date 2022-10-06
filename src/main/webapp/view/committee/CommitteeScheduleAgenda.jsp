@@ -181,21 +181,25 @@ ul, #myUL {
   <%
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
+  
+  Object[] labdata=(Object[])request.getAttribute("labdata");
+  String filesize=  (String)request.getAttribute("filesize");
+  
   List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> projectlist=  (List<Object[]> ) request.getAttribute("projectlist");
   List<Object[]> committeeagendalist =  (List<Object[]>)request.getAttribute("committeeagendalist");
-  List<Object[]> employeelist=(List<Object[]>)request.getAttribute("employeelist");
+  List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
+  List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
+  List<Object[]> LabEmpList=(List<Object[]>)request.getAttribute("LabEmpList");
+  String LabCode=  (String)request.getAttribute("LabCode");
+  
   String scheduleid=scheduledata[6].toString();
   String projectid=scheduledata[9].toString();
   String divisionid=scheduledata[16].toString();
   String initiationid=scheduledata[17].toString();
-  Object[] labdata=(Object[])request.getAttribute("labdata");
-  String filesize=  (String)request.getAttribute("filesize");
-  List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
+  
 
-  List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
- 
  %>
  
  
@@ -286,7 +290,7 @@ ul, #myUL {
 						         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_0"  required="required" style="width: 200px" onchange="AgendaPresentors('0')"  data-live-search="true" data-container="body">
 												<option disabled="disabled"  selected value="">Lab Name</option>
 											    <% for (Object[] obj : AllLabList) {%>
-												    <option value="<%=obj[3]%>"><%=obj[3]%></option>
+												    <option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]%></option>
 											    <%} %>
 											    <option value="@EXP">Expert</option>
 											</select>
@@ -295,8 +299,10 @@ ul, #myUL {
 						         		         	                             
 						         		<td width="15%">						         		
 											<select class="form-control items presenterid" name="presenterid" id="presenterid_0"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
-											 	<option disabled selected value="">Choose...</option>
-								          					
+								        		<option disabled="disabled" selected value="">Choose...</option>
+										        <% for(Object[] emp : LabEmpList){ %>
+										        	<option value="<%=emp[0] %>"><%=emp[1] %>(<%=emp[3] %>)</option>
+										        <%} %>
 											</select>
 										</td>		
 										<td  width="10%">

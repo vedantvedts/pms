@@ -874,16 +874,38 @@ public class CommitteeController {
 			String ProjectId[]=req.getParameterValues("projectid");
 			String Remarks[]= req.getParameterValues("remarks");
 			String presenters[]=req.getParameterValues("presenterid");
+			String PresLabCode[]=req.getParameterValues("PresLabCode");
 			
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
+
+			for(String str : defagendaid) {
+				System.out.println(str);
+			}
+			System.out.println("_______________________________________");
+			for(String str : defagendaid1) {
+				System.out.println(str);
+			}
+			
 			for(int i=0;i<defagendaid1.size();i++) 
 			{
+				System.out.println("hidden  :"+defagendaid1.get(i));
+				if(defagendaid.contains(defagendaid1.get(i))) 
+				{
+					System.out.println(true);
+				}
+			}
+			for(int i=0;i<defagendaid1.size();i++) 
+			{
+//				System.out.println("hidden  :"+defagendaid1.get(i));
+//				System.out.println(defagendaid.contains(defagendaid1.get(i)));
+//				System.out.println("i  ="+i);
 				if(defagendaid.contains(defagendaid1.get(i))) 
 				{
 					CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
 					scheduleagendadto.setScheduleId(req.getParameter("scheduleid"));
 					scheduleagendadto.setScheduleSubId("1");
 					scheduleagendadto.setAgendaItem(AgendaItem[i]);
+					scheduleagendadto.setPresentorLabCode(PresLabCode[i]);
 					scheduleagendadto.setPresenterId(presenters[i]);
 					scheduleagendadto.setDuration(Duration[i]);
 					scheduleagendadto.setProjectId(ProjectId[i]);
@@ -941,20 +963,21 @@ public class CommitteeController {
 			req.setAttribute("scheduledata",scheduledata);
 			req.setAttribute("projectlist", service.ProjectList(LabCode));
 			req.setAttribute("committeeagendalist", committeeagendalist);
-			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("labdata", service.LabDetails());			
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("filerepmasterlistall",service.FileRepMasterListAll(projectid,LabCode));
 			req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(CommitteeScheduleId));
 			
+			req.setAttribute("LabCode",LabCode);
+			req.setAttribute("LabEmpList",service.PreseneterForCommitteSchedule(LabCode.trim()));
+			
 			if(AgendaCommitteeIds.contains(scheduledata[0].toString()) && committeeagendalist.size()==0 && req.getParameter("skip")==null)
 			{
 				List<Object[]> defAgendaList = service.DefaultAgendaList(scheduledata[0].toString());
-//				if(defAgendaList.size()>0) {
-					req.setAttribute("defAgendaList",defAgendaList);
-					return "committee/ScheduleDefaultAgendas";
-//				}				
+				req.setAttribute("defAgendaList",defAgendaList);
+				
+				return "committee/ScheduleDefaultAgendas";
 			}
 			return "committee/CommitteeScheduleAgenda";
 		}
@@ -2325,7 +2348,6 @@ public class CommitteeController {
 			String projectid=req.getParameter("projectid");
 			String committeeid=req.getParameter("committeeid");
 			
-			String loginid= ses.getAttribute("LoginId").toString();
 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
 			if(projectdetailslist.size()==0) 
@@ -2368,12 +2390,11 @@ public class CommitteeController {
 			req.setAttribute("ProjectsList",projectdetailslist);
 			req.setAttribute("projapplicommitteelist",projapplicommitteelist);
 		}			
-		catch (Exception e) {
-				e.printStackTrace(); 
+		catch (Exception e) 
+		{
+			e.printStackTrace(); 
 			logger.error(new Date() +"Inside ProjectBasedSchedule.htm "+UserId,e);
 		}
-
-			
 		return "committee/CommitteeProjectSchedule";
 	}
 	
@@ -2648,7 +2669,7 @@ public class CommitteeController {
 			req.setAttribute("Projectdetails",projectdetailslist.get(0));
 			req.setAttribute("ProjectsList",projectdetailslist);
 			req.setAttribute("projectmasterlist",projectmasterlist);
-			req.setAttribute("committeelist", service.ProjectCommitteesListNotAdded(projectid));
+			req.setAttribute("committeelist", service.ProjectCommitteesListNotAdded(projectid, LabCode));
 		}
 		catch (Exception e) 
 		{
@@ -4646,6 +4667,7 @@ public class CommitteeController {
 	public String DivisionCommitteeMaster( Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside DivisionCommitteeMaster.htm "+UserId);
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();		
@@ -4673,7 +4695,7 @@ public class CommitteeController {
 			req.setAttribute("projectid","0");
 			req.setAttribute("divisionlist",divisionlist);
 			req.setAttribute("CommitteedivisionAssigned",CommitteedivisionAssigned);
-			req.setAttribute("CommitteedivisionNotAssigned", service.CommitteedivisionNotAssigned(divisionid));
+			req.setAttribute("CommitteedivisionNotAssigned", service.CommitteedivisionNotAssigned(divisionid, LabCode ));
 		}
 			
 		catch (Exception e) {
@@ -4971,6 +4993,7 @@ public class CommitteeController {
 	public String InitiationCommitteeMaster( Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside InitiationCommitteeMaster.htm "+UserId);
 		try {
 			String initiationid= "1";                 //req.getParameter("initiationid");
@@ -4992,7 +5015,7 @@ public class CommitteeController {
 			req.setAttribute("Projectdetails",projectdetailslist.get(0));
 			req.setAttribute("ProjectsList",projectdetailslist);
 			req.setAttribute("projectmasterlist",projectmasterlist);
-			req.setAttribute("committeelist", service.InitiationCommitteesListNotAdded(initiationid));
+			req.setAttribute("committeelist", service.InitiationCommitteesListNotAdded(initiationid,LabCode));
 			return "committee/CommitteeInitiationMaster";
 		}
 		catch (Exception e) {

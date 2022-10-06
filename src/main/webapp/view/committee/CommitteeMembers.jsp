@@ -914,8 +914,6 @@ function Add(myfrm){
     
     var $chairperson = $("#chairperson").val();
     var $cplabCode = $('#CpLabCode').val();
-    var $ClustreId = $('#level').val();
-    var $LabClusterId = '<%=LabClusterid%>';
     var $LabCode = '<%=LabCode%>';
     
     
@@ -924,7 +922,7 @@ function Add(myfrm){
     var $proxysecretary=$("#proxysecretary").val();
     
     
-    if($ClustreId===$LabClusterId && $LabCode === $cplabCode){
+    if( $LabCode === $cplabCode){
 		if($chairperson==$secretary){
 			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
 			 event.preventDefault();
@@ -948,24 +946,25 @@ function Add(myfrm){
     
     if($cochairperson==$secretary)
 	{
-		alert("Co-Chairperson and Member Secretary Should Not Be The Same Person ");	   
+		alert("Member Secretary and Co-Chairperson Should Not Be The Same Person ");	   
+		 event.preventDefault();
+			return false;
+	}
+    if($proxysecretary==$secretary)
+	{
+		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
 	}
 	
-	if($cochairperson==$proxysecretary && $cochairperson!=='0' &&  $proxysecretary!=='0')
+	if($cochairperson!=='0' &&  $proxysecretary!=='0' && $cochairperson==$proxysecretary )
 	{
 		alert("Co-Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
 	}
     
-	if($proxysecretary==$secretary)
-	{
-		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   
-		 event.preventDefault();
-			return false;
-	}
+	
 	
 	
     

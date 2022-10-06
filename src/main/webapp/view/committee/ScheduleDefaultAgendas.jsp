@@ -156,36 +156,36 @@ ul, #myUL {
 
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> projectlist=  (List<Object[]> ) request.getAttribute("projectlist");
-  List<Object[]> employeelist=(List<Object[]>)request.getAttribute("employeelist");
-  
   List<Object[]> defagendalist=(List<Object[]>)request.getAttribute("defAgendaList");
+  List<Object[]> LabEmpList=(List<Object[]>)request.getAttribute("LabEmpList");
   
   String projectid=scheduledata[9].toString();
   String divisionid=scheduledata[16].toString();
   String initiationid=scheduledata[17].toString();
   Object[] labdata=(Object[])request.getAttribute("labdata");
   String filesize=  (String)request.getAttribute("filesize");
+  String LabCode=  (String)request.getAttribute("LabCode");
   
   
   List<Object[]> filerepmasterlistall=(List<Object[]>) request.getAttribute("filerepmasterlistall");
-
+  List<Object[]> AllLabList=(List<Object[]>) request.getAttribute("AllLabList");
   
   
  %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+ 
+<% 
+	String ses=(String)request.getParameter("result"); 
+ 	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null)
+	{ %>
+		<div align="center">	
+			<div class="alert alert-danger" role="alert" >  <%=ses1 %>  </div>
+		</div>
+	<%} if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert"  >  <%=ses %> </div>
+	     </div>
+   <%} %>
 
     <br />
     
@@ -193,7 +193,6 @@ ul, #myUL {
 
 
 <div class="container-fluid">
-	<!-- <div class="container" style="margin-bottom:20px;">  -->
 	<div style="margin-bottom:20px;"> 
   
 		<div id="error"></div>
@@ -225,22 +224,27 @@ ul, #myUL {
 										<th>Agenda Item</th>
 										<th>Reference</th>
 										<th>Remarks</th>
+										<th>Lab</th>
 										<th>Presenter</th>
 										<th>Duration </th>
 										<th>Attachment</th> 
 									</tr>
+								</thead>
+								<tbody>
 										<%if(defagendalist.size()>0){
 											for(Object[] agenda:defagendalist){ %>
 											<tr>
-												<td align="center">
+												<td width="5%" align="center">
 													<input type="checkbox" class="" name="defagendaid" id="defagendaid_<%=agenda[0] %>" checked="checked"  value="<%=agenda[0]%>" onchange="selectCheck('<%=agenda[0]%>')">
 													<input type="hidden" name="defagendaid1" value="<%=agenda[0]%>" >
 												</td>	
+												
 												<td width="20%">
 													<input type="hidden" name="agendaitem" id="agendaitem_<%=agenda[0] %>" class="form-control item_name child" value="<%=agenda[2] %>" required="required" />
 													<span><%=agenda[2] %></span>
 												</td>
-												<td width="15%">
+												
+												<td width="13%">
 													<%if(Long.parseLong(projectid) > 0) {%>
 														<select class="form-control child  items" name="projectid"  required="required" id="projectid_<%=agenda[0] %>" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
 														     <% for (Object[] obj : projectlist) {
@@ -267,13 +271,24 @@ ul, #myUL {
 								         		<td  width="20%">
 								         			<input type="text" name="remarks" id="remarks_<%=agenda[0]%>" class="form-control item_name child" maxlength="255" required="required" value="<%=agenda[3] %>" />
 								         		</td>      
+								         		
+								         		<td width="10%">
+								         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=agenda[0]%>"  required="required" style="width: 200px" onchange="AgendaPresentors('<%=agenda[0]%>')"  data-live-search="true" data-container="body">
+													    <% for (Object[] obj : AllLabList) {%>
+														    <option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3]%></option>
+													    <%} %>
+													    <option value="@EXP">Expert</option>
+													</select>
+								         		 
+								         		</td>
+						         		 
 								         		<td  width="15%"> 
 								         		
 													<select class="form-control items " name="presenterid" id="presenterid_<%=agenda[0] %>" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" >
 														<option disabled="disabled" selected value="">Choose...</option>
-										          		<% for (Object[] obj : employeelist) {%>						    				 	
-									     					<option value="<%=obj[0]%>"><%=obj[1]%> (<%=obj[2] %>)</option>
-									    				<%} %>					
+										          		<% for(Object[] emp : LabEmpList){ %>
+										          			<option value="<%=emp[0] %>"><%=emp[1] %>(<%=emp[3] %>)</option>
+										          		<%} %>
 													</select>
 													
 												</td>		
@@ -306,7 +321,7 @@ ul, #myUL {
 										</tr>
 										
 										<%} %>
-								</thead>
+								</tbody>
 							</table>
 							
 							
@@ -555,41 +570,77 @@ ul, #myUL {
 <input type="hidden" id="agendano" value="" />
 
 
-
-
-
-						<script type="text/javascript">
-							
-								function selectCheck(id)
-								{
-									if($('#defagendaid_'+id).is(':checked')) 
-									{
-										console.log('cheked '+id);
-										$('#agendaitem_'+id).attr('required','required');
-										$('#projectid_'+id).attr('required','required');
-										$('#remarks_'+id).attr('required','required');
-										$('#presenterid_'+id).attr('required','required');
-										$('#duration_'+id).attr('required','required');
-										
-										$('#presenterid_'+id+' option[value=""]' ).attr('disabled','disabled');
-									}
-									else if(!$('#defagendaid_'+id).is(':checked'))
-									{
-										console.log('uncheked '+id);
-										$('#agendaitem_'+id).removeAttr('required');
-										$('#projectid_'+id).removeAttr('required');
-										$('#remarks_'+id).removeAttr('required');
-										$('#presenterid_'+id).removeAttr('required');
-										$('#duration_'+id).removeAttr('required');
-										
-										$('#presenterid_'+id+' option[value=""]' ).removeAttr('disabled');
-										
-										
-									}
-									
-								}
+<script type="text/javascript">
+	function AgendaPresentors($AddrowId){
+			
+	$('#presenterid_'+$AddrowId).val("");
+		var $PresLabCode = $('#PresLabCode_'+$AddrowId).val();
+				if($PresLabCode !=""){
+				$.ajax({		
+					type : "GET",
+					url : "CommitteeAgendaPresenterList.htm",
+					data : {
+						PresLabCode : $PresLabCode,
+						
+						   },
+					datatype : 'json',
+					success : function(result) {
+	
+					var result = JSON.parse(result);	
+					var values = Object.keys(result).map(function(e) {
+								 return result[e]
+								  
+					});
 								
-							</script>
+			var s = '';
+				s += '<option value="" selected disabled>Choose...</option>';
+					for (i = 0; i < values.length; i++) 
+					{									
+						s += '<option value="'+values[i][0]+'">'+values[i][1] + " (" +values[i][3]+")" + '</option>';
+					} 
+								 
+					$('#presenterid_'+$AddrowId).html(s);
+				}
+			});
+		}
+	}
+	
+</script>
+
+
+<script type="text/javascript">
+							
+		function selectCheck(id)
+		{
+			if($('#defagendaid_'+id).is(':checked')) 
+			{
+				$('#agendaitem_'+id).attr('required','required');
+				$('#projectid_'+id).attr('required','required');
+				$('#remarks_'+id).attr('required','required');
+				$('#PresLabCode_'+id).attr('required','required');
+				$('#presenterid_'+id).attr('required','required');
+				$('#duration_'+id).attr('required','required');
+				$('#duration_'+id).attr({"min" : 1 });
+				$('#presenterid_'+id+' option[value=""]' ).attr('disabled','disabled');
+			}
+			else if(!$('#defagendaid_'+id).is(':checked'))
+			{
+				console.log('uncheked '+id);
+				$('#agendaitem_'+id).removeAttr('required');
+				$('#projectid_'+id).removeAttr('required');
+				$('#remarks_'+id).removeAttr('required');
+				$('#PresLabCode_'+id).removeAttr('required');
+				$('#presenterid_'+id).removeAttr('required');
+				$('#duration_'+id).removeAttr('required');
+				$('#duration_'+id).attr({"min" : 0 });
+				$('#presenterid_'+id+' option[value=""]' ).removeAttr('disabled');
+										
+										
+			}
+										
+	}
+								
+</script>
 
 <script type="text/javascript">
 function editcheck(editfileid)
@@ -660,7 +711,6 @@ var filexcount=0;
 		
 	}					
 </script>
-	
 		
 <script type='text/javascript'> 
 function submitForm(frmid)

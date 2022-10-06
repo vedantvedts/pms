@@ -59,7 +59,6 @@ String divisionid = (String)request.getAttribute("divisionid");
 String projectid = (String)request.getAttribute("projectid");
 String initiationid = (String)request.getAttribute("initiationid");
 
-String clusterid = (String)request.getAttribute("clusterid");
 String LabCode = (String)request.getAttribute("LabCode");
 
 %>
@@ -395,8 +394,6 @@ function Add(myfrm){
     
     var $chairperson = $("#chairperson").val();
     var $cplabCode = $('#CpLabCode').val();
-    var $ClustreId = $('#level').val();
-    var $LabClusterId = '<%=clusterid%>';
     var $LabCode = '<%=LabCode%>';
     
     
@@ -408,7 +405,8 @@ function Add(myfrm){
     
     
     
-    if($ClustreId===$LabClusterId && $LabCode === $cplabCode){
+    if( $LabCode === $cplabCode)
+    {
 		if($chairperson==$secretary){
 			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
 			 event.preventDefault();
@@ -422,6 +420,8 @@ function Add(myfrm){
 				return false;
 		}
 		
+		
+		
 		if($proxysecretary==$chairperson)
 		{
 			alert("Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
@@ -430,14 +430,28 @@ function Add(myfrm){
 		}
 	}
     
+    if($secretary==$cochairperson)
+	{
+		alert("Member Secretary and Co-Chairperson Should Not Be The Same Person ");	   
+		 event.preventDefault();
+			return false;
+	}
     
-	if($proxysecretary==$secretary)
+	if($secretary == $proxysecretary)
 	{
 		alert("Member Secretary and Proxy Member Secretary Should Not Be The Same Person ");	   
 		 event.preventDefault();
 			return false;
 	}
     
+	if($cochairperson!=='0' && $proxysecretary!=='0' && $cochairperson == $proxysecretary)
+	{
+		alert("Co-Chairperson and Proxy Member Secretary Should Not Be The Same Person ");	   
+		 event.preventDefault();
+			return false;
+	}
+	
+	
     for (var i = 0; i < fieldvalues.length; i++) {
     	
     	if($chairperson==fieldvalues[i]){
