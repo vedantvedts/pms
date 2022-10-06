@@ -84,7 +84,7 @@ public interface CommitteeService {
  	
  	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception;
  	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception;
-	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid) throws Exception;
+	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception;
 	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception;
 	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception;
 	public Long CommitteeAttendanceToggle(String InvitationId) throws Exception;
@@ -147,7 +147,7 @@ public interface CommitteeService {
 	public long CommitteeMembersInsert(CommitteeMembersDto dto) throws Exception;
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception;
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception;
-	public List<Object[]> ExternalEmployeeListInvitations(String LabId, String scheduleid) throws Exception;
+	public List<Object[]> ExternalEmployeeListInvitations(String labcode, String scheduleid) throws Exception;
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;
 	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid, String statustype) throws Exception;
@@ -230,7 +230,7 @@ public interface CommitteeService {
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid, String rtype) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype, String projectid) throws Exception;
-	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode) throws Exception;
 	public Object[] AgendaDocLinkDownload(String filerepid) throws Exception;
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;

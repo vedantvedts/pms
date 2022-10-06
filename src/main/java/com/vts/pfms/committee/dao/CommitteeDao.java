@@ -148,8 +148,8 @@ public interface CommitteeDao {
 	public List<Object[]> ExternalEmployeeListFormation(String LabId,String committeemainid) throws Exception;
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception;
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception;
-	public List<Object[]> ExternalEmployeeListInvitations(String LabId, String scheduleid) throws Exception;
-	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid) throws Exception;
+	public List<Object[]> ExternalEmployeeListInvitations(String labcode, String scheduleid) throws Exception;
+	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception;
 	public List<Object[]> ExternalMembersNotInvited(String scheduleid) throws Exception;
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;
@@ -248,7 +248,7 @@ public interface CommitteeDao {
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(String empid, String fromdate, String todate) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype, String projectid) throws Exception;
-	public List<Object[]> FileRepMasterListAll(String projectid) throws Exception;
+	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode) throws Exception;
 	public Object[] AgendaDocLinkDownload(String filerepid) throws Exception;
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception;
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId, String LevelId) throws Exception;

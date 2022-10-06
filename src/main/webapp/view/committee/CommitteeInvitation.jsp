@@ -57,8 +57,6 @@ h5,h6{
 		SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		String committeescheduleid=(String)request.getAttribute("committeescheduleid");
-		List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
-		List<Object[]> ExpertList=(List<Object[]>) request.getAttribute("ExpertList");
 		Object[] committeescheduledata=(Object[])request.getAttribute("committeescheduledata");
 		String Committeeid=committeescheduledata[7].toString();
 		List<Object[]> agendalist=(List<Object[]>) request.getAttribute("agendalist");
@@ -72,20 +70,21 @@ h5,h6{
 		String ses = (String) request.getParameter("result");
 	String ses1 = (String) request.getParameter("resultfail");
 	if (ses1 != null) {
-	%><center>
+	%>
+	<div align="center">
 		<div class="alert alert-danger" role="alert">
 			<%=ses1%>
 		</div>
-	</center>
+	</div>
 	<%
 		}
 	if (ses != null) {
 	%>
-	<center>
+	<div align="center">
 		<div class="alert alert-success" role="alert">
 			<%=ses%>
 		</div>
-	</center>
+	</div>
 	<%
 		}
 	%>
@@ -122,10 +121,10 @@ h5,h6{
 											<%for(int i=0;i<committeeallmemberlist.size();i++){
 												Object[] obj=committeeallmemberlist.get(i);
 												if(obj[8].toString().equalsIgnoreCase("CC")){%>
-												<td><%=obj[2]%> (<%= obj[4]%>)
+												<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
 													<input type="hidden" name="chairperson" value="<%=obj[5]%>,CC,<%=obj[3]%>">
 													<input type="hidden" name="empid" value="<%=obj[5]%>,CC,<%=obj[3]%>">
-													<input type="hidden" name="labid" value="<%=obj[7] %>" />
+													<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 												</td>
 											<%	committeeallmemberlist.remove(i);
 												break;}
@@ -145,9 +144,9 @@ h5,h6{
 												<%for(int i=0;i<committeeallmemberlist.size();i++){
 													Object[] obj=committeeallmemberlist.get(i);
 													if(obj[8].toString().equalsIgnoreCase("CS")){%>
-													<td><%=obj[2]%> (<%= obj[4]%>)
+													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CS,<%=obj[3]%>">
-														<input type="hidden" name="labid" value="<%=obj[7] %>" />
+														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>
 												<%	committeeallmemberlist.remove(i);
 													break;}
@@ -156,7 +155,28 @@ h5,h6{
 										</table>
 														
 									</div>
-									<div class="col-md-4"></div>									
+									<div class="col-md-4">
+										<table>
+											<tr>
+												<td><label class="control-label">Co-Chairperson  </label></td>
+												
+											</tr>
+											<tr>
+											
+												<%for(int i=0;i<committeeallmemberlist.size();i++){
+													Object[] obj=committeeallmemberlist.get(i);
+													if(obj[8].toString().equalsIgnoreCase("CH")){%>
+													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
+														<input type="hidden" name="empid" value="<%=obj[5]%>,CH,<%=obj[3]%>">
+														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
+													</td>
+												<%	committeeallmemberlist.remove(i);
+													break;}
+												}%>									
+											</tr>
+										</table>
+														
+									</div>				
 								</div>
 					
 					<br>
@@ -180,9 +200,9 @@ h5,h6{
 														%>
 														<tr>
 														<td class="tdclass"><%=count%> )</td> 
-														<td><%=obj[2]%> (<%= obj[4]%>)
+														<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
 															<input type="hidden" name="empid" value="<%=obj[5]%>,CI,<%=obj[3]%>">
-															<input type="hidden" name="labid" value="<%=obj[7] %>" />
+															<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 														</td>						
 														
 																																		
@@ -216,7 +236,7 @@ h5,h6{
 													<td class="tdclass"><%=count1%> )</td> 
 													<td><%=obj[2]%> (<%= obj[4]%>)(<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CW,<%=obj[3]%>">
-														<input type="hidden" name="labid" value="<%=obj[7] %>" />
+														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
 												</tr>
 															
@@ -250,7 +270,7 @@ h5,h6{
 													<td class="tdclass"><%=count2%> )</td> 
 													<td><%=obj[2]%> (<%= obj[4]%>) (<%= obj[9]%>)
 														<input type="hidden" name="empid" value="<%=obj[5]%>,CO,<%=obj[3]%>">
-														<input type="hidden" name="labid" value="<%=obj[7] %>" />
+														<input type="hidden" name="Labcode" value="<%=obj[9] %>" />
 													</td>						
 																																										
 												</tr>
@@ -287,15 +307,15 @@ h5,h6{
 											<label class="control-label"> <%=count4%>)</label>
 										</td>
 										<td>
-											<label class="control-label"><%=obj[10] %> </label>
+											<label class="control-label"><%=obj[3] %> </label>
 										</td>
 										<td>
 											&emsp; :&emsp;
 										</td>
 										<td>
-											<%=obj[10]%> (<%=obj[11]%>) 
+											<%=obj[10]%> (<%=obj[11]%>) (<%=obj[14]%>) 
 											<input type="hidden" name="empid" value="<%=obj[9]%>,P,<%=obj[13] %>">
-											<input type="hidden" name="labid" value="<%=labid %>" />	
+											<input type="hidden" name="Labcode" value="<%=obj[14] %>" />	
 										</td>
 											
 									</tr>

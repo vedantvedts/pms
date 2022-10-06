@@ -59,9 +59,10 @@ String committeescheduleid=(String)request.getAttribute("committeescheduleid");
 Object[] committeescheduledata=(Object[])request.getAttribute("committeescheduledata");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]> clusterlablist=(List<Object[]>) request.getAttribute("clusterlablist");
-String seslabid=(String)session.getAttribute("labid");
 
 List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committeereplist");
+
+String LabCode=(String) request.getAttribute("LabCode");
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -135,6 +136,7 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 									<td> 
 										<%  if(obj[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 											else if(obj[3].toString().equalsIgnoreCase("CS") ){	 %> Member Secretary<%}
+											else if(obj[3].toString().equalsIgnoreCase("CH") ){	 %> Co-Chairperson<%}
 											else if(obj[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary (Proxy) <%}
 											else if(obj[3].toString().equalsIgnoreCase("CI")){   %> Internal<%}
 											else if(obj[3].toString().equalsIgnoreCase("CW")){	 %> External(<%=obj[11] %>)<%}
@@ -147,16 +149,13 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 										%>
 										
 									</td>
-									<td><%=obj[6] %> (<%=obj[7]%>)</td>        
+									<td><%=obj[6] %> (<%=obj[7]%>)(<%=obj[11]%>)</td>        
 									
 									<td>
-										<%--  <form  id="myForm<%=count %>" action="AttendanceToggle.htm" > --%> 
 											<input name="attendance"  onchange="FormNameEdit(<%=obj[1]%>)"  type="checkbox" <%if((obj[4]).toString().equalsIgnoreCase("P")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-user' aria-hidden='true'></i> Present" data-off="<i class='fa fa-user-times' aria-hidden='true'></i> Absent" >
-											<%-- <input 	type="hidden" name="invitationid" value="<%=obj[1]%>" > --%>
 											<input 	type="hidden" name="sample" value="attendance<%=count %>" >	
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 											<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
-										 <!-- </form>  -->
 									</td>
 										
 								</tr>
@@ -240,7 +239,7 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 									       		<option value="<%=obj[0]%>,I,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
 									    	<%} %>
 										</select>
-										<input type="hidden" name="InternalLabId" value="<%=seslabid %>" />
+										<input type="hidden" name="InternalLabId" value="<%=LabCode %>" />
 									</div>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
  								<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid %>">
@@ -275,11 +274,11 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 						<tr>
 							<td style="width:30%">							
 								<div class="input select">
-									<select class="form-control selectdee" name="LabId" tabindex="-1"   id="LabId" onchange="employeename()" required>
+									<select class="form-control selectdee" name="LabId" tabindex="-1"   id="LabCode" onchange="employeename()" required>
 										<option disabled="true"  selected value="">Lab Name</option>
 											<% for (Object[] obj : clusterlablist) {
-											if(!seslabid.equals(obj[0].toString())){%>
-												<option value="<%=obj[0]%>"><%=obj[3]%></option>
+											if(!LabCode.equals(obj[3].toString())){%>
+												<option value="<%=obj[3]%>"><%=obj[3]%></option>
 											<%} 
 											}%>
 									</select>
@@ -331,7 +330,7 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 									       	<option value="<%=obj[0]%>,E,<%=obj[3]%>"><%=obj[1]%> ( <%=obj[2] %> ) </option>
 									    <%} %>
 									</select>
-									<input type="hidden" name="LabId1" value="0" />
+									<input type="hidden" name="LabId1" value="@EXP" />
 									<input type="hidden" name="rep" id="rep3" value="0" />
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
@@ -380,7 +379,7 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 						$('#internalmember').val('').trigger("change");
 						$('#ExternalMemberLab').val('').trigger("change");
 						$('#expertmember').val('').trigger("change");
-						$('#LabId').val('').trigger("change");
+						$('#LabCode').val('').trigger("change");
 						
 						document.getElementById('additionalmemadd').style.visibility = 'visible';
 						document.getElementById('repselect').style.visibility = 'visible';
@@ -394,7 +393,7 @@ List<Object[]> committeereplist=(List<Object[]>) request.getAttribute("committee
 						$('#internalmember').val('').trigger("change");
 						$('#ExternalMemberLab').val('').trigger("change");
 						$('#expertmember').val('').trigger("change");
-						$('#LabId').val('').trigger("change");
+						$('#LabCode').val('').trigger("change");
 						
 						document.getElementById('additionalmemadd').style.visibility = 'visible';
 						$("#reptype").val("0").change();						
@@ -483,10 +482,10 @@ function employeename(){
 
 	$('#ExternalMemberLab').val("");
 	
-		var $LabId = $('#LabId').val();
+		var $LabCode = $('#LabCode').val();
 	
 		
-				if($LabId!=""){
+				if($LabCode!=""){
 		
 							$
 								.ajax({
@@ -494,7 +493,7 @@ function employeename(){
 								type : "GET",
 								url : "ExternalEmployeeListInvitations.htm",
 								data : {
-											LabId : $LabId,
+											LabCode : $LabCode,
 											scheduleid : '<%=committeescheduleid %>' 	
 									   },
 								datatype : 'json',
