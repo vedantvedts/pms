@@ -72,7 +72,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String SUBDATA="FROM MilestoneActivitySub WHERE ActivitySubId=:id"; 
 	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MAASSIGNEELIST="CALL Pfms_Milestone_Oic_List(:ProjectId,:empid)";
-	private static final String PROJECTEMPLIST="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
+	private static final String PROJECTEMPLIST="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND pe.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid AND a.labcode=:labcode ORDER BY a.srno=0,a.srno";
 	private static final String PROJECTEMPLISTEDIT="SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid  union SELECT a.empid,a.empname,b.designation,a.srno as srno FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND a.empid=:id ORDER BY srno";
 	private static final String PROJECTASSINEE="SELECT DISTINCT(a.projectid),a.projectcode,a.projectname FROM project_master a,milestone_activity b WHERE a.projectid=b.projectid and (b.oicempid=:empid or b.oicempid1=:empid) and   a.isactive='1'";
 	private static final String ASSIGNUPDATE="UPDATE milestone_activity SET isaccepted='A',ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE milestoneactivityid=:id";
@@ -91,7 +91,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
    
     private static final String FILEREPREV="UPDATE file_rep_new SET ReleaseDoc=:release,VersionDoc=:version where filerepid=:id";
     private static final String FILEDETAILS="SELECT * FROM(SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND b.filerepuploadid=:fileid)AS a JOIN (SELECT MAX(DocAmendmentId) AS 'AmendmentDocId' FROM file_doc_amendment WHERE FileRepUploadId=:fileid ) AS b  ";
-    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , e.empname, ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
+    private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid , e.empname, ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid and e.labcode=:labcode ";
 	
     private static final String MILESTONESCHEDULELIST="SELECT milestonescheduleid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,statusremarks FROM milestone_schedule WHERE isactive=1 AND projectid=:projectid";
     private static final String MILESTONESCHEDULECOUNT="SELECT COUNT(*) FROM milestone_schedule WHERE isactive='1' AND projectid=:projectid";
@@ -834,11 +834,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 
 	@Override
-	public List<Object[]> ProjectEmpList(String projectid)throws Exception
+	public List<Object[]> ProjectEmpList(String projectid ,String Labcode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside ProjectEmpList");
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
 		query.setParameter("projectid", projectid);
+		query.setParameter("labcode", Labcode);
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
 		return ProjectEmpList;
 	}
@@ -855,10 +856,11 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 	
 	@Override
-	public List<Object[]> AllEmpNameDesigList()throws Exception
+	public List<Object[]> AllEmpNameDesigList(String labcode)throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside AllEmpNameDesigList");
 		Query query=manager.createNativeQuery(ALLEMPNAMEDESIGLIST);
+		query.setParameter("labcode", labcode);
 		List<Object[]> AllEmpNameDesigList=(List<Object[]>)query.getResultList();
 		return AllEmpNameDesigList;
 	}

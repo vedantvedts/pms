@@ -1044,17 +1044,17 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 
 	@Override
-	public List<Object[]> ProjectEmpList(String projectid)throws Exception
+	public List<Object[]> ProjectEmpList(String projectid,String Labcode)throws Exception
 	{
 		logger.info(new Date() +"Inside ProjectEmpList"); 
-		return dao.ProjectEmpList(projectid);
+		return dao.ProjectEmpList(projectid , Labcode);
 	}
 	
 	@Override
-	public List<Object[]> AllEmpNameDesigList()throws Exception
+	public List<Object[]> AllEmpNameDesigList( String labcode)throws Exception
 	{
 		logger.info(new Date() +"Inside AllEmpNameDesigList"); 
-		return dao.AllEmpNameDesigList();
+		return dao.AllEmpNameDesigList(labcode);
 	}
 
 	@Override

@@ -100,6 +100,44 @@ public class ActionController {
 		return "action/ActionLaunch";
 	}
 	
+	@RequestMapping(value = "ActionAssigneeEmpList.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionAssigneeEmpList(HttpServletRequest req,HttpSession ses) throws Exception 
+	{
+		String UserId = (String)ses.getAttribute("Username");
+		String clusterid =(String) ses.getAttribute("clusterid");
+		logger.info(new Date() +" Inside ActionAssigneeEmployeeList.htm"+ UserId);
+		
+		List<Object[]> EmployeeList = new ArrayList<Object[]>();
+		
+		try {
+			String CpLabCode = req.getParameter("LabCode");
+			
+			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
+			{
+				EmployeeList = service.ClusterExpertsList();
+			}
+			else
+			{
+				String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+				
+				if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
+				{
+					EmployeeList = service.LabEmployeeList(CpLabCode.trim());
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionAssigneeEmployeeList.htm "+UserId, e);
+		}
+		
+		Gson json = new Gson();
+		return json.toJson(EmployeeList);	
+	}
+	
+	
+	
+	
 	@RequestMapping(value = "ActionAssigneeEmployeeList.htm", method = RequestMethod.GET)
 	public @ResponseBody String ActionAssigneeEmployeeList(HttpServletRequest req,HttpSession ses) throws Exception 
 	{
@@ -110,7 +148,9 @@ public class ActionController {
 		List<Object[]> EmployeeList = new ArrayList<Object[]>();
 		
 		try {
-			String CpLabCode =req.getParameter("LabCode");
+			String CpLabCode = req.getParameter("LabCode");
+			String projectid = req.getParameter("proid");
+			System.out.println(projectid+"        fgdfhgfghfghfghfghfgh");
 			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 			{
 				EmployeeList = service.ClusterExpertsList();
@@ -166,11 +206,13 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("Project"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
 			mainDto.setAssigneeList(req.getParameterValues("Assignee"));
+			mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			mainDto.setScheduleMinutesId("0");
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setActionType("N");
 			mainDto.setActivityId("0");
 			mainDto.setAssignor(EmpId);
+			mainDto.setAssignorLabCode(ses.getAttribute("labcode").toString());
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			long count =service.ActionMainInsert(mainDto);
@@ -600,6 +642,7 @@ public class ActionController {
 			req.setAttribute("minutesback", MinutesBack);
 			req.setAttribute("specname", specname);
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+			req.setAttribute("AllLabList", service.AllLabList());
 			if(Long.parseLong(projectid)>0)
 			{
 				req.setAttribute("EmployeeList", service.ProjectEmpList(projectid));
@@ -1882,8 +1925,9 @@ public class ActionController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionEditSubmit.htm "+UserId);		
 		try {
-			
+			System.out.println(req.getParameter("modelAssigneeLabCode"));
 			ActionMain main=new ActionMain();
+			main.setAssigneeLabCode(req.getParameter("modelAssigneeLabCode"));
 			main.setActionMainId(Long.parseLong(req.getParameter("actionmainid")));
 			main.setActionItem(req.getParameter("actionitem"));
 			main.setAssignee(Long.parseLong(req.getParameter("Assignee")));
@@ -1891,6 +1935,7 @@ public class ActionController {
 			
 			
 			int count =service.ActionMainEdit(main);
+			System.out.println(req.getParameter("newPDC"));
 			if(count>0) {
 				service.ActionExtendPdc(req.getParameter("actionmainid"),req.getParameter("newPDC"), UserId);
 			}

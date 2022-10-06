@@ -82,8 +82,8 @@ public interface MilestoneDao {
     public long RepMasterInsert(FileRepMaster RepMaster)throws Exception;
     public List<Object[]> MainSystemLevel(String ParentId)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype, String LabCode) throws Exception;
-	public List<Object[]> ProjectEmpList(String projectid) throws Exception;
-	public List<Object[]> AllEmpNameDesigList() throws Exception;
+	public List<Object[]> ProjectEmpList(String projectid, String Labcode) throws Exception;
+	public List<Object[]> AllEmpNameDesigList(String labcode) throws Exception;
 	public List<Object[]> ProjectEmpListEdit(String projectid,String id)throws Exception;
 	public List<Object[]> DocumentTypeList(String ProjectId,String LabCode) throws Exception;
 	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception;

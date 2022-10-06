@@ -21,7 +21,9 @@ public class ActionMain {
 	private Date PDC1;
 	private Date PDC2;
 	private int Revision;
+	private String AssignorLabCode;
 	private Long Assignor;
+	private String AssigneeLabCode;
 	private Long Assignee;
 	private String ActionItem;
 	private Long ProjectId;
@@ -59,7 +61,18 @@ public class ActionMain {
 		ActionMainId = actionMainId;
 	}
 	
-	
+	public String getAssignorLabCode() {
+		return AssignorLabCode;
+	}
+	public void setAssignorLabCode(String assignorLabCode) {
+		AssignorLabCode = assignorLabCode;
+	}
+	public String getAssigneeLabCode() {
+		return AssigneeLabCode;
+	}
+	public void setAssigneeLabCode(String assigneeLabCode) {
+		AssigneeLabCode = assigneeLabCode;
+	}
 	public String getActionNo() {
 		return ActionNo;
 	}
