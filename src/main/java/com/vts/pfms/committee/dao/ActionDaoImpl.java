@@ -34,7 +34,7 @@ public class ActionDaoImpl implements ActionDao{
 	//isseen column has been removed  04-08-2021
 	//private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS remarks,a.revision FROM action_main a,  employee ab ,employee_desig dc WHERE a.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.assignor=:empid and a.actionflag<>'Y'";
 	private static final String ASSIGNEELIST="SELECT a.actionmainid,b.empname,c.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.remarks,a.actionlinkid,a.actionno FROM  action_main a, employee b ,employee_desig c WHERE a.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (a.assignee=:empid OR a.assignor=:empid) and a.actionflag in ('N','B') order by a.enddate desc";
-	private static final String ASSIGNEEDATA="SELECT a.actionmainid,b.empname,c.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.scheduleminutesid,a.actionlinkid,a.actionno,a.revision,d.empname AS 'assignee',a.actiontype,pdcorg,pdc1,pdc2 FROM  action_main a, employee b ,employee_desig c ,employee d WHERE a.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid and a.actionflag<>'Y' AND a.actionmainid=:mainid AND a.assignee=d.empid";
+	private static final String ASSIGNEEDATA="SELECT a.actionmainid,b.empname,c.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.scheduleminutesid,a.actionlinkid,a.actionno,a.revision,d.empname AS 'assignee',a.actiontype,pdcorg,pdc1,pdc2 ,assignorlabcode,assigneelabcode FROM  action_main a, employee b ,employee_desig c ,employee d WHERE a.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid and a.actionflag<>'Y' AND a.actionmainid=:mainid AND a.assignee=d.empid";
     private static final String SUBLIST="SELECT a.actionsubid,a.actionmainid,a.progress,a.progressdate,a.remarks,b.attachname,b.actionattach,b.actionattachid FROM action_sub a, action_attachment b WHERE a.actionsubid=b.actionsubid AND a.actionmainid=:mainid ";
 	private static final String SUBDELETE="delete from action_sub where actionsubid=:subid";
 	private static final String MAINUPDATE="UPDATE action_main SET actionflag=:flag,actionstatus=:status,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionmainid=:mainid";
@@ -666,7 +666,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String  ACTIONDETAILSAJAX = "SELECT actionmainid,actionitem, assignee,CAST( DATE_FORMAT(enddate,'%d-%m-%Y') AS CHAR) AS 'enddate',revision FROM action_main WHERE actionmainid=:actionid";
+	private static final String  ACTIONDETAILSAJAX = "SELECT actionmainid,actionitem, assignee,CAST( DATE_FORMAT(enddate,'%d-%m-%Y') AS CHAR) AS 'enddate',revision ,assigneelabcode FROM action_main WHERE actionmainid=:actionid";
 	
 	@Override
 	public Object[] ActionDetailsAjax(String actionid) throws Exception
@@ -689,6 +689,7 @@ public class ActionDaoImpl implements ActionDao{
 		ActionMain detach = manager.find(ActionMain.class, main.getActionMainId());
 		detach.setActionItem(main.getActionItem());
 		detach.setAssignee(main.getAssignee());
+		detach.setAssigneeLabCode(main.getAssigneeLabCode());
 		if(manager.merge(detach)!=null) {
 			return 1;
 		}

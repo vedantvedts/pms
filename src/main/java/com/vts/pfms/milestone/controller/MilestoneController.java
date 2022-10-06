@@ -254,10 +254,11 @@ public class MilestoneController {
 	public String MilestoneActivityAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);
 		try {
 	        String ProjectId=req.getParameter("ProjectId");
-			req.setAttribute("EmployeeList", service.ProjectEmpList(ProjectId));
+			req.setAttribute("EmployeeList", service.ProjectEmpList(ProjectId , LabCode));
 			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
 			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 			req.setAttribute("ProjectId", ProjectId);
@@ -911,7 +912,7 @@ public class MilestoneController {
 	public String MileActivityUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-
+		String Labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside M-A-Update.htm "+UserId);
 		
 		try {
@@ -923,7 +924,7 @@ public class MilestoneController {
 			mainDto.setActivityType(req.getParameter("ActivityType"));
 			
 			req.setAttribute("StatusList", service.StatusList());
-			req.setAttribute("EmpList", service.ProjectEmpList(req.getParameter("ProjectId")));
+			req.setAttribute("EmpList", service.ProjectEmpList(req.getParameter("ProjectId") ,Labcode));
 			req.setAttribute("EditData", service.MilestoneActivityEdit(mainDto).get(0));
 			req.setAttribute("EditMain", mainDto);
 			req.setAttribute("SubList", service.MilestoneActivitySub(mainDto));
@@ -995,6 +996,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MA-UpdateRedirect.htm", method = RequestMethod.GET)
 	public String UpdateRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside UpdateRedirect.htm "+UserId);		
 		try {
 			  
@@ -1017,7 +1019,7 @@ public class MilestoneController {
 					mainDto.setActivityType(Type);
 					mainDto.setProjectId(Project);
 					req.setAttribute("StatusList", service.StatusList());
-					req.setAttribute("EmpList", service.ProjectEmpList(Project));
+					req.setAttribute("EmpList", service.ProjectEmpList(Project , LabCode));
 					req.setAttribute("EditData", service.MilestoneActivityEdit(mainDto).get(0));
 					req.setAttribute("EditMain", mainDto);
 					req.setAttribute("SubList", service.MilestoneActivitySub(mainDto));
@@ -2009,14 +2011,16 @@ public class MilestoneController {
 
 			String UserId = (String)ses.getAttribute("Username");
 			logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);	
-			String projectid=req.getParameter("projectid");
+			String projectid = req.getParameter("projectid");
+			String LabCode = req.getParameter("labCode");
+			System.out.println(LabCode);
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)
 			{
-				EmployeeList=service.ProjectEmpList(projectid);
+				EmployeeList=service.ProjectEmpList(projectid , LabCode);
 			}else if(Long.parseLong(projectid)==0)
 			{
-				EmployeeList=service.AllEmpNameDesigList();
+				EmployeeList=service.AllEmpNameDesigList(LabCode);
 			}
 			Gson json = new Gson();
 			return json.toJson(EmployeeList);	
@@ -2028,6 +2032,7 @@ public class MilestoneController {
 			String UserId = (String)ses.getAttribute("Username");
 			logger.info(new Date() +" Inside ProjectEmpListEdit "+ UserId);	
 			String projectid=req.getParameter("projectid");
+			String labcode = req.getParameter("labcode");
 			String empid=req.getParameter("EmpId");
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)
@@ -2035,7 +2040,7 @@ public class MilestoneController {
 				EmployeeList=service.ProjectEmpListEdit(projectid,empid);
 			}else if(Long.parseLong(projectid)==0)
 			{
-				EmployeeList=service.AllEmpNameDesigList();
+				EmployeeList=service.AllEmpNameDesigList(labcode);
 			}
 			
 			Gson json = new Gson();

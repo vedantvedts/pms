@@ -110,7 +110,9 @@ public class ActionServiceImpl implements ActionService {
 		actionmain.setActionDate(main.getMeetingDate());
 		actionmain.setEndDate(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
 		actionmain.setPDCOrg(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionmain.setAssigneeLabCode(main.getAssigneeLabCode());
 		actionmain.setAssignee(Long.parseLong(main.getAssigneeList()[i]));
+		actionmain.setAssignorLabCode(main.getAssignorLabCode());
 		actionmain.setAssignor(Long.parseLong(main.getAssignor()));
 		actionmain.setRevision(0);
 		actionmain.setProjectId(Long.parseLong(main.getProjectId()));

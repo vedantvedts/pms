@@ -414,12 +414,23 @@
 										</td>
 									</tr>
 									<tr>
+										<th>Lab</th>
+										<td>
+										<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" style=" width: 100% !important ;" onchange="AssigneeEmpListForEdit(0);" >
+											<%for(Object[] lab : AllLabList){%>
+												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+											<%}%>
+											<option value="@EXP">Expert</option>
+										</select>
+										</td>
+									</tr>
+									<tr>
 										<th style="padding: 10px 0px; width: 20% ;" >Assignee</th>
 										<td style="padding: 10px 0px; width: 50% !important ;" >
 											<select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
-												<%for(Object[] obj:EmpListmodal){ %>	
+												<%-- <%for(Object[] obj:EmpListmodal){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-												<%} %>
+												<%} %> --%>
 											</select>
 										</td>
 									</tr>
@@ -520,12 +531,14 @@ function AssigneeEmpList(){
 						datatype : 'json',
 						success : function(result) {
 
+								
 							var result = JSON.parse(result);
 							
-							
 							$('#modalactionitem').html(result[1]);
-							$('#modalassignee').val(result[2]).trigger('change');
 							$('#modalactionmainid').val(result[0]);
+							$('#modelAssigneelabcode').val(result[5]).trigger('change');
+							AssigneeEmpListForEdit(result[2]);
+							$('#modalassignee').val(''+result[2]).trigger('change');
 							
 							if(result[4]<2){
 								
@@ -706,9 +719,50 @@ function AssigneeEmpList(){
 					document.getElementById('Message').innerHTML = " "; 
 
 				}
-				
-				
-				
+	
+				function AssigneeEmpListForEdit(empid){
+
+					
+				 	var $AssigneeLabCode =  $('#modelAssigneelabcode').val(); 
+
+				 	if($AssigneeLabCode!=""){
+				 		
+				 		$.ajax({
+				 			
+				 			type : "GET",
+				 			url : "ActionAssigneeEmployeeList.htm",
+				 			data : {
+				 				LabCode : $AssigneeLabCode,
+				 				
+				 			},
+				 			datatype : 'json',
+				 			success : function(result) {
+				 				var result = JSON.parse(result);
+				 				
+				 				var values = Object.keys(result).map(function(e) {
+				 					return result[e]
+				 					
+				 				});
+				 				
+				 				var s = '';
+				 				s += '<option value="">Choose ...</option>';
+				 				if($AssigneeLabCode == '@EXP'){
+				 					
+				 				}
+				 				for (i = 0; i < values.length; i++) 
+				 				{
+
+				 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+				 				} 
+				 				
+				 				$('#modalassignee').html(s);
+				 				$('#modalassignee').val(''+empid).trigger('change');
+				 			}
+				 		});
+				 		
+				 	}
+				 }			
+
 			</script>  
 
 

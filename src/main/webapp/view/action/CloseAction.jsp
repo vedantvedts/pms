@@ -126,13 +126,13 @@ h6{
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[12] %>
+	      									<%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[1]%>
+	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
 	      								</td>	
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>

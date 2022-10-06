@@ -816,7 +816,7 @@ public class CommitteeController {
 			String initiationid=req.getParameter("initiationid");
 			
 			CommitteeScheduleDto committeescheduledto=new CommitteeScheduleDto(); 
-			committeescheduledto.setLabCode((String) ses.getAttribute("labcode"));
+			committeescheduledto.setLabCode( ses.getAttribute("labcode").toString().trim());
 			committeescheduledto.setCommitteeId(Long.parseLong(req.getParameter("committeeid")));
 			committeescheduledto.setScheduleDate(req.getParameter("startdate"));
 			committeescheduledto.setScheduleStartTime(req.getParameter("starttime"));
