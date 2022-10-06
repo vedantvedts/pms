@@ -567,15 +567,15 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public List<Object[]> ProjectHealthData() throws Exception{
+	public List<Object[]> ProjectHealthData(String LabCode) throws Exception{
 		
-		return dao.ProjectHealthData();
+		return dao.ProjectHealthData(LabCode);
 	}
 
 	@Override
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode) throws Exception{
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode,String IsAll) throws Exception{
 		
-		return dao.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode);
+		return dao.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,IsAll);
 	}
 
 

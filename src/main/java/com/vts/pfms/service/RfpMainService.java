@@ -43,8 +43,8 @@ public interface RfpMainService {
 	public ArrayList<String> ProjectQuaters(String ProjectId)throws Exception;
 	public String getEmpNo(long empId) throws Exception;
 	public List<Object[]> GanttChartList() throws Exception;
-	public List<Object[]> ProjectHealthData() throws Exception;
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId,String LoginType,String LabCode) throws Exception;
+	public List<Object[]> ProjectHealthData(String LabCode) throws Exception;
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId,String LoginType,String LabCode,String IsAll) throws Exception;
 	public long ProjectHealthUpdate(String EmpId,String UserName)throws Exception;
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa, String Username) throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;

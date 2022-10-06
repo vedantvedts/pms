@@ -48,8 +48,8 @@ public interface RfpMainDao {
 	public List<Object[]> ProjectQuaters(String ProjectId)throws Exception;
 	public List<Object[]> MileQuaters(String ProjectId,int Quater,int year )throws Exception;
 	public List<Object[]> GanttChartList()  throws Exception;
-	public List<Object[]> ProjectHealthData() throws Exception;
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode)  throws Exception;
+	public List<Object[]> ProjectHealthData(String LabCode) throws Exception;
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode,String IsAll)  throws Exception;
 	public long ProjectHealthInsert(ProjectHealth health)throws Exception;
 	public Object[] ProjectHealthInsertData(String projectId) throws Exception;
 	public int ProjectHealthDelete(String projectId)throws Exception;
