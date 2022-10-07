@@ -2007,6 +2007,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagendato.setScheduleId(Long.parseLong(scheduleidto));
 			scheduleagendato.setScheduleSubId(scheduleagendafrom.getScheduleSubId());
 			scheduleagendato.setAgendaItem(scheduleagendafrom.getAgendaItem());
+			scheduleagendato.setPresentorLabCode(scheduleagendafrom.getPresentorLabCode());
 			scheduleagendato.setPresenterId(scheduleagendafrom.getPresenterId());
 			scheduleagendato.setDuration(scheduleagendafrom.getDuration());
 			scheduleagendato.setProjectId(Long.parseLong(scheduletodata[9].toString()));
@@ -2015,10 +2016,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagendato.setCreatedDate(sdf1.format(new Date()));
 			
 			scheduleagendato.setIsActive(1);
-			
 
 			List<Object[]> agendapriority=dao.CommitteeScheduleAgendaPriority(scheduleidto);
-			
 			
 			if(agendapriority.size()==0)
 			{
