@@ -40,8 +40,8 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String QUATERS="SELECT a.sanctiondate, a.pdc, TIMESTAMPDIFF(YEAR,a.sanctiondate,a.pdc)+1 FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MILEQUATER="CALL Pfms_Milestone_Quarter(:proid,:Quater,:yr)"; 
 	private static final String GANTTCHARTLIST="SELECT milestoneactivityid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,progressstatus,revisionno FROM milestone_activity WHERE isactive=1 ";
-	private static final String PROJECTHEALTHDATA ="CALL Project_Health_Get_Data()";
-	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype,:labcode )";
+	private static final String PROJECTHEALTHDATA ="CALL Project_Health_Get_Data(:labcode)";
+	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype,:labcode,:isall )";
 	private static final String PROJECTHEALTHINSERTDATA="CALL Project_Health_Insert_Data(:projectid)";
 	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
 	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
@@ -338,21 +338,23 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public List<Object[]> ProjectHealthData() throws Exception {
+	public List<Object[]> ProjectHealthData(String LabCode) throws Exception {
 		
 		Query query = manager.createNativeQuery(PROJECTHEALTHDATA);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> ProjectHealthData= query.getResultList();
 		return ProjectHealthData;
 	}
 	
 	@Override
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode) throws Exception {
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode,String IsAll) throws Exception {
 		
 		Query query = manager.createNativeQuery(PROJECTTOTALHEALTHDATA);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("empid", EmpId);
 		query.setParameter("logintype", LoginType);
 		query.setParameter("labcode", LabCode);
+		query.setParameter("isall", IsAll);
 		 	
 		Object[] ProjectHealthTotalData= (Object[])query.getSingleResult();
 		return ProjectHealthTotalData;
