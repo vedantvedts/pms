@@ -495,7 +495,10 @@ if(logintype!=null ){
 
 String LoginTypes[] = {"A","P","E","Z","Y","Q","X"}  ;
 int ProjectCount = 0;
+
 List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("projecthealthtotaldg");
+String IsDG = (String)request.getAttribute("IsDG");
+
 
 %>
 <%
@@ -1776,8 +1779,8 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 		        	<!-- <button type="button" class="btn btn5" data-toggle="tooltip" data-placement="top" title="Refresh"></button> -->
 		        </form>
 		        <button class="btn btn1">Action</button>
-		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%>   ">Project</button>
-		        <button class="btn <%if (logintype.equalsIgnoreCase("X") ){%>btn5<%} else {%>btn3<%} %>"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
+		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%><%if (IsDG.equalsIgnoreCase("Yes") ){%>display:none<%} %>">Project</button>
+		        <button class="btn <%if (IsDG.equalsIgnoreCase("Yes") ){%>btn5<%} else {%>btn3<%} %>"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
 		      </div>
 		  </div>	
 		  
@@ -3352,12 +3355,15 @@ function overalldoc(){
 
  $(document).ready(function(){
 
-	 var logintype= '<%=(String)request.getAttribute("logintype")%>';
+	var logintype = '<%=(String)request.getAttribute("logintype")%>'
 	 
-	 	if(logintype=='X'){
+	 var DG= '<%=IsDG%>';
+	 
+	 	if(DG=='Yes'){
 	 		$('.btn5').click();
 	 	}
-	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){		
+	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){	
+	 			console.log("inside");
 				$('.btn3').click();
 		} else{
 			$('.btn1').click();
@@ -3435,6 +3441,9 @@ $('.btn4').hide();
 	$('.btn2').css('color','black');
 	$('.btn3').css('background-color','white');
 	$('.btn3').css('color','black');
+	$('.btn5').css('background-color','white');
+	$('.btn5').css('color','black');
+	
 	$("#projectname").css("display","none");
 	$("#projectdropdown").css("display","none");
 	$("#financialdata").css("display","none");
@@ -3613,8 +3622,11 @@ $('.btn5').click(function(){
 	$("#overallcard3").css("display","none");
 	$("#overallcard4").css("display","none");
 	$("#overallcard5").css("display","none");
-	$(".overallheader").css("display","none");
+	$(".overallheader").css("display","block");
 	$('#projectgraph').css("display","none");
+	
+	document.getElementById('projecttitle').innerHTML = 'LAB HEALTH ';
+	
 	
 })
 
@@ -3865,10 +3877,10 @@ $('#fdate').daterangepicker({
 //document.getElementById("brandname").style.marginLeft = "-20%";
 var projectId=$("#projectIdD").val();
 var Overall="<%=(String)request.getParameter("Overall")%>"
-var logintype="<%=logintype%>";
+var DG="<%=IsDG%>";
 
 if(Overall=='Overall'){
-	if( logintype == 'X'){
+	if( DG == 'Yes'){
 		$('.btn5').click();
 	}else{
 		$('.btn3').click();
