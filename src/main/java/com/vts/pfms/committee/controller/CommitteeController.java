@@ -1883,17 +1883,16 @@ public class CommitteeController {
 				}
 			}
 			CommitteeInvitationDto committeeinvitationdto = new CommitteeInvitationDto();
-	
+
 			committeeinvitationdto.setCommitteeScheduleId(committeescheduleid);
 			committeeinvitationdto.setCreatedBy(UserId);
 			committeeinvitationdto.setEmpIdList(emplist);
-			//committeeinvitationdto.setCommitteeScheduleId(req.getParameter("scheduleid"));
 			committeeinvitationdto.setLabCodeList(labCodelist);
 			committeeinvitationdto.setReptype(reptype);
 			
 		
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
-	
+			
 			if (count > 0) {				
 				
 				redir.addAttribute("result", " Member(s) Invited Successfully");

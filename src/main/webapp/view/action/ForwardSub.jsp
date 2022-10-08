@@ -77,7 +77,7 @@ h6{
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
       				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=actionno %>
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[12] %> </span>
+					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)</span>
       				 </h6>
       			</div>
       		
@@ -102,13 +102,13 @@ h6{
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[12] %>
+	      									<%=Assignee[12] %>&nbsp;(<%=Assignee[18] %>)
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[1]%>
+	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
 	      								</td>	
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
