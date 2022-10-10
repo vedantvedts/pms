@@ -857,6 +857,7 @@ public class AdminController {
 				req.setAttribute("FormModulesList", service.FormModulesList());
 				req.setAttribute("logintype", req.getParameter("logintype"));
 				req.setAttribute("moduleid", req.getParameter("moduleid"));
+				req.setAttribute("AllLabsList", service.AllLabList());
 			}
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +" Inside LoginTypeList.htm "+UserId, e);

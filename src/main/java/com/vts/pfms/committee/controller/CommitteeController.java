@@ -1514,7 +1514,8 @@ public class CommitteeController {
 	}
 	
 	@RequestMapping(value="CommitteeMinutesSubmit.htm", method=RequestMethod.POST)
-	public String CommitteeMinutesSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+	public String CommitteeMinutesSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
 		
 		String UserId=(String)ses.getAttribute("Username");
 
@@ -1535,14 +1536,12 @@ public class CommitteeController {
 			committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
 			committeeminutesdetailsdto.setCreatedBy(UserId);
 			committeeminutesdetailsdto.setRemarks(req.getParameter("remarks"));
+			committeeminutesdetailsdto.setAgendaSubHead(req.getParameter("OutComeAirHead"));
 			
 			long count = service.CommitteeMinutesInsert(committeeminutesdetailsdto);
 	
 			String SpecName = req.getParameter("specname");
 			String CommitteeName= req.getParameter("committeename");
-			
-			
-			
 			
 			if (count > 0) {
 				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
@@ -1883,17 +1882,16 @@ public class CommitteeController {
 				}
 			}
 			CommitteeInvitationDto committeeinvitationdto = new CommitteeInvitationDto();
-	
+
 			committeeinvitationdto.setCommitteeScheduleId(committeescheduleid);
 			committeeinvitationdto.setCreatedBy(UserId);
 			committeeinvitationdto.setEmpIdList(emplist);
-			//committeeinvitationdto.setCommitteeScheduleId(req.getParameter("scheduleid"));
 			committeeinvitationdto.setLabCodeList(labCodelist);
 			committeeinvitationdto.setReptype(reptype);
 			
 		
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
-	
+			
 			if (count > 0) {				
 				
 				redir.addAttribute("result", " Member(s) Invited Successfully");

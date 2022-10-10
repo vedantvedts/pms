@@ -1,3 +1,5 @@
+<%@page import="java.awt.Container"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -80,12 +82,13 @@ h5,h6{
 	LocalDate scheduledate=LocalDate.parse(committeescheduledata[2].toString());
 	LocalDate todaydate=LocalDate.now();	
 	
-	ArrayList<String> InvitedList = new ArrayList<String>();
+	List<String> InvitedList = new ArrayList<String>();
+	committeeinvitedlist.stream().map(obj -> InvitedList.add(obj[0].toString()+"_"+obj[11].toString())).collect(Collectors.toList());;
 	
 	
 	%>		
 		
-	<%String ses = (String) request.getParameter("result");
+	<%	String ses = (String) request.getParameter("result");
 		String ses1 = (String) request.getParameter("resultfail");
 		if (ses1 != null) { %>
 	<div align="center">
@@ -142,7 +145,6 @@ h5,h6{
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
 												
-												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 												
 												
 											<%} 
@@ -168,7 +170,6 @@ h5,h6{
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
 												
-												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 											<%} 
 											} 	
 											if(committeeinvited[3].toString().equals("PS"))
@@ -201,7 +202,6 @@ h5,h6{
 												<td style="padding-left: 10px">
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
-												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 											<%} 
 											break;} 											
 									}%>											
@@ -228,7 +228,6 @@ h5,h6{
 											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
 												</td>
 												
-												<% InvitedList.add(committeeinvited[0]+"_"+committeeinvited[11]); %>
 												
 											<%} 
 											break;} 											
@@ -260,7 +259,6 @@ h5,h6{
 															</td>
 														<%} %>			
 											</tr>
-											<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 											<%	memberscount++; }}	%>		
 											
 										</tbody>
@@ -291,7 +289,6 @@ h5,h6{
 			
 									</tr>
 									
-									<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 								<%	externalcount++; }}	%>		
 											
 							</tbody>					
@@ -321,7 +318,6 @@ h5,h6{
 									<%} %>
 			
 									</tr>
-									<% InvitedList.add(obj[0]+"_"+obj[11]); %>
 								<%	outsidemember++; }}	%>		
 											
 							</tbody>	
@@ -373,12 +369,11 @@ h5,h6{
 										<% int count=0;
  										for(int i=0;i<committeeinvitedlist.size();i++)
 										{ 	 
+ 											count=0;
  											ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CH","CI","I","P"));									
 											if( (membertypes.contains(committeeinvitedlist.get(i)[3].toString()) && committeeinvitedlist.get(i)[0].equals(obj[9])))
 											{	
-												if(!InvitedList.contains(obj[9]+"_"+obj[14])){
-													count++;
-												}
+												
 												if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													
 													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
@@ -386,6 +381,14 @@ h5,h6{
 												<%} 
 												
 											}
+											for(String str : InvitedList)
+											{
+												if(str.equalsIgnoreCase(obj[9]+"_"+obj[14])){
+													count++;
+													break;
+												}
+											}
+											
 										}
 										if(count==0){ %>
 										

@@ -474,110 +474,110 @@ for(Object[] temp : invitedlist){
 			else if (committeemin[0].toString().equals("3") ) 
 			{						
 				%>
-						<div align="center">
-							<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">
-								<tr>
-									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
-								</tr>
-							</table>	
-								
-					
-						<%if(agendas.size()!=0)
-						{
-							int agendaid = 1;
-							for (Object[] agenda : agendas) 
-							{	int brcount=0;							
-						%>
-								    <table style="margin-top: 00px; width: 660px; font-size: 16px; border-collapse: collapse;">
-										<tr>								
-											<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]%></td>
-										</tr>
-								<%
-									int index = 1;
-									for (Object[] minssub : committeeminutessub) 
-									{
-								%>				
-										<tr >
-											<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]%></th>
-										</tr>								
-								<%
-										int count=0;
-										int count1=0;
-										int index1=0;
-										for (Object[] speclist : speclists) 
-										{
-											if (agenda[0].toString().equals(speclist[6].toString()) && minssub[0].toString().equals(speclist[5].toString())) 
-											{
-												count++; 
-													index1++;						
-											%>						
-																			
-												<%	if(speclist[5].toString().equals("7") )
-												{%>	
-												<%-- <tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
-												</tr> --%>
-												<tr >
-													<td style="text-align: left; padding:0px 0px 0px 30px;">
-														<%=speclist[1]%>
-													</td>
-												</tr>					
-												<%}else if(speclist[5].toString().equals("8")){
-												%>
-												<%-- <tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
-												</tr> --%>
-												<tr >
-													<td style="text-align: left;padding:0px 0px 0px 30px;">
-														<%=speclist[1]%>
-													</td>	
-												</tr>	
-												<%}else if(speclist[5].toString().equals("9")){
-												%>
-													<tr >
-														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]%></th>
-													</tr>	
-													<tr >
-														<td style="text-align: left;padding:0px 0px 0px 30px;">
-															<%=speclist[1]%>
-														</td>	
-													</tr>	
-																						
-												<%}
-											
-											}
-										}
-									if (count == 0)
-									{%>
-									<tr style="page-break-after: ;">
-									<td style="text-align: left;"><div style="padding-left: 30px"><p>NIL</p></div>
-									</td>	
-									</tr>								
-									<%}%>
-									
-								
-								
-								<%index++;
-								} 
-								agendaid++;
-								
-							}%>
-							
-							  
+				<div align="center">
+					<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">
+						<tr>
+							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
+						</tr>
+					</table>	
 						
-						<%}else{%>
-							<tr>
+			
+				<%if(agendas.size()!=0)
+				{
+					int agendaid = 1;
+					for (Object[] agenda : agendas) 
+					{	int brcount=0;							
+				%>
+						    <table style="margin-top: 00px; width: 660px; font-size: 16px; border-collapse: collapse;">
+								<tr>								
+									<td colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid%>.&nbsp;&nbsp;&nbsp;<%=agenda[3]%></td>
+								</tr>
+						<%
+							int index = 1;
+							for (Object[] minssub : committeeminutessub) 
+							{
+						%>				
+								<tr >
+									<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index%>.&nbsp;&nbsp;&nbsp;<%=minssub[1]%></th>
+								</tr>								
+						<%
+								int count=0;
+								int count1=0;
+								int index1=0;
+								for (Object[] speclist : speclists) 
+								{
+									if (agenda[0].toString().equals(speclist[6].toString()) && minssub[0].toString().equals(speclist[5].toString())) 
+									{
+										count++; 
+											index1++;						
+									%>						
+																	
+										<%	if(speclist[5].toString().equals("7") )
+										{%>	
+										<tr >
+												<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
+										</tr>
+										<tr >
+											<td style="text-align: left; padding:0px 0px 0px 30px;">
+												<%=speclist[1]%>
+											</td>
+										</tr>					
+										<%}else if(speclist[5].toString().equals("8")){
+										%>
+										<tr >
+												<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
+										</tr>
+										<tr >
+											<td style="text-align: left;padding:0px 0px 0px 30px;">
+												<%=speclist[1]%>
+											</td>	
+										</tr>	
+										<%}else if(speclist[5].toString().equals("9")){
+										%>
+											<tr >
+												<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[9]%></th>
+											</tr>	
+											<tr >
+												<td style="text-align: left;padding:0px 0px 0px 30px;">
+													<%=speclist[1]%>
+												</td>	
+											</tr>	
+																				
+										<%}
+									
+									}
+								}
+							if (count == 0)
+							{%>
+							<tr style="page-break-after: ;">
 							<td style="text-align: left;"><div style="padding-left: 30px"><p>NIL</p></div>
-							</td>
-							</tr>
+							</td>	
+							</tr>								
+							<%}%>
 							
-						<%}%>
-						</table>
-					</div>
-				<!-- <div class="break"></div>  -->
-	<!-- ----------------------------------------------agenda end------------------------------------------- -->
+						
+						
+						<%index++;
+						} 
+						agendaid++;
+						
+					}%>
+					
+					  
 				
-			<%}else if (committeemin[0].toString().equals("4") || committeemin[0].toString().equals("5") || committeemin[0].toString().equals("6")) { %>
+				<%}else{%>
+					<tr>
+					<td style="text-align: left;"><div style="padding-left: 30px"><p>NIL</p></div>
+					</td>
+					</tr>
+					
+				<%}%>
+				</table>
+			</div>
+		<!-- <div class="break"></div>  -->
+<!-- ----------------------------------------------agenda end------------------------------------------- -->
+		
+	<%}else if (committeemin[0].toString().equals("4") || committeemin[0].toString().equals("5") || committeemin[0].toString().equals("6")) { %>
 			
 			<div align="center">
 				<table style="margin-top: 0px;; width: 650px; font-size: 16px; border-collapse: collapse;">

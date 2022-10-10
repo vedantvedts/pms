@@ -589,11 +589,12 @@ public class LoginController {
 				redir.addAttribute("result", "Project Health Updated Successfully ");
 			}
 			
-		     }
-		else {
+		}
+		else 
+		{
 			
 			redir.addAttribute("resultfail","Project Health Update Unsuccessful");
-		  }
+		}
     	  return "redirect:/MainDashBoard.htm";
     	
     }

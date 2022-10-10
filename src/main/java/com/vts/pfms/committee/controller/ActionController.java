@@ -590,6 +590,7 @@ public class ActionController {
 			
 				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				
+				
 				req.setAttribute("ActionList", service.ActionList(EmpId));
 			
 			}
@@ -610,6 +611,7 @@ public class ActionController {
 			
 			
 		 	String UserId = (String) ses.getAttribute("Username");
+		 	String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeAction.htm "+UserId);		
 			try {
 			
@@ -643,6 +645,7 @@ public class ActionController {
 			req.setAttribute("specname", specname);
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
 			req.setAttribute("AllLabList", service.AllLabList());
+			req.setAttribute("labcode", LabCode);
 			if(Long.parseLong(projectid)>0)
 			{
 				req.setAttribute("EmployeeList", service.ProjectEmpList(projectid));
@@ -669,6 +672,7 @@ public class ActionController {
 				throws Exception {
 			
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeActionSubmit.htm "+UserId);		
 			try {
 			
@@ -680,11 +684,13 @@ public class ActionController {
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
 			mainDto.setAssigneeList(req.getParameterValues("Assignee"));
+			mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setActionType("S");
 			mainDto.setActivityId("0");
 			mainDto.setAssignor(EmpId);
+			mainDto.setAssignorLabCode(LabCode);
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(req.getParameter("meetingdate"));
 			mainDto.setScheduleId(req.getParameter("ScheduleId"));
@@ -1257,6 +1263,7 @@ public class ActionController {
 	public String MilActionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MilActionSubmit.htm "+UserId);		
 		try {
 		
@@ -1272,6 +1279,8 @@ public class ActionController {
 		mainDto.setActionDate(req.getParameter("DateCompletion"));
 		mainDto.setAssigneeList(req.getParameterValues("Assignee"));
 		mainDto.setScheduleMinutesId(req.getParameter("MilestoneActivityId"));
+		mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+		mainDto.setAssignorLabCode(LabCode);
 		mainDto.setActionType("A");
 		mainDto.setActivityId(req.getParameter("ActivityId"));
 		mainDto.setType("A");

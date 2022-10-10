@@ -78,4 +78,5 @@ public interface AdminDao {
 	public Object[] EmployeeData(String empid) throws Exception;
 	public List<Object[]> LoginEditEmpList() throws Exception;
 	public long GetExpertsCount() throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
   }

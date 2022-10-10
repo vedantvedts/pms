@@ -1,4 +1,3 @@
-
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -210,14 +209,8 @@ display: inline-block;
     background-color: red;
 }
 
-
-
-
-
-		</style>
-    </head>
- 
- 
+	</style>
+</head>
 <body>
 
 <%
@@ -578,8 +571,13 @@ if(formname!=null){
 	
 	<!-- ******** sub row 1 start *****  -->
 	
-	 <div class="row">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+
+<!-- --------------------------------------------------  Dinesh  Start  --------------------------------------------------------------------------------------- -->
+	
+	
+	
+	<div class="row">  
+   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
 		
 		<div class="panel panel-info">
 		
@@ -589,192 +587,109 @@ if(formname!=null){
 	           <span  style="font-size:14px">3.<%=unitcount %>.1. Presentation </span>
 	        </h4>
 	        
-	
-	  	
-	   <%int unitcount11=1; 	long unit11=1; String Unit11=null; int countloop11=100; int form11=1458;int collapse11=140;String temp11=null;int form20=5000;
-
+	       	<div style="float: right !important; margin-top:-20px; " > 
+	       		<%int collapseP=481; %>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseP%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Pre<%=scheduleagendaid %>5"></i></a>
+	       	</div>
+	       	
+	    </div>
+	      
+	  	<div id="<%=collapseP%><%= collapse %>" class="panel-collapse collapse in">
+	  
+	  <% int unitcount11=1; 	long unit11=1; String Unit11=null; int countloop11=100; int form11=1458;int collapse11=140;String temp11=null;int form20=5000; int Presentationcount=0; 
+	  
+	  /* int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700; */
+	  
+	   if(!dis.isEmpty()){
+			for(Object[] hlod:dis){
+				 if("3".equalsIgnoreCase(hlod[0].toString()) &&  temp.equalsIgnoreCase(hlod[3].toString()) && "7".equalsIgnoreCase(hlod[4].toString()))
+				 {
 		
-		   %>
+	   %>
 	   
-	  						<div   style="float: right !important; margin-top:-23px; ">
-								 	<table style="text-align: center;" >
-						     			<thead>
-							             	<tr>
-							                 	<th ></th>       
-							             	</tr>
-							         	 </thead>
-							         	<tbody>
-							         	
-							         	
-								 <%
-								 	if(!dis.isEmpty()){
-										for(Object[] hlo:dis){
-											 if("3".equalsIgnoreCase(hlo[0].toString())&&temp.equalsIgnoreCase(hlo[3].toString())&&"7".equalsIgnoreCase(hlo[4].toString())){
-											       %>
-						      	
-						      				<tr>
-						
-									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
-									      			<form  id="myForm<%=temp %>P<%=form11 %>" action="MinutesSpecEdit.htm" method="post">
-									                	
-									                		<input type="hidden" name="specname" value="Agenda-Presentation">
-									                		<input type="hidden" name="scheduleid"	value="<%=hlo[6] %>" />
-															<input type="hidden" name="minutesid"	value="<%=hlo[0] %>" />
-															<input type="hidden" name="scheduleminutesid" 	value="<%=hlo[1] %>" /> 
-										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
-									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>P<%=form20 %>" />
-						
-									          				<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>P<%=form20 %>"  name="sub" onclick="FormNameEdit('myForm<%=temp %>P<%=form11 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
-									       			</form>	
-									       			
-									      		</td>
-									      		
-						      				</tr>
-						      	
-						       				 <%}}}%> 
-						       				
-						       			</tbody>
-						      	
-						      		</table>
-	      							<br>
-	      		
-	       						</div>
-	       			
-	       						
-	       					    <div style="float: right !important; margin-top:-25px; " >
+	  			<div class="row">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. <%=hlod[9] %></span>  </h4>
+	          				
+		       						<div   style="float: right !important; margin-top:-23px; ">
+									 	<table style="text-align: center;" >
+							     			<thead>
+								             	<tr>
+								                 	<th ></th>       
+								             	</tr>
+								         	 </thead>
+								         	<tbody>
+							      				<tr>
+										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      			<form  id="myForm<%=temp %>R<%=form11 %>" action="MinutesSpecEdit.htm" method="post">
+										                	
+										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
+										                		<input type="hidden" name="scheduleid"	value="<%=hlod[6] %>" />
+																<input type="hidden" name="minutesid"	value="<%=hlod[0] %>" />
+																<input type="hidden" name="scheduleminutesid" 	value="<%=hlod[1] %>" /> 
+											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form20 %>" />
+							
+										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" onclick="FormNameEditB('myForm<%=temp %>R<%=form11 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			
+										       			</form>
+										      		</td>
+										      		
+							      				</tr>
+							      	
+							       				
+							       				
+							       			</tbody>
+							      	
+							      		</table>
+		      							<br>
+		      		
+		       						</div>
+	           				</div>
+	  					</div>
+					</div>
+				</div>
 				
-									<form  id="myForm<%=form6 %><%=temp %>P<%=form20 %>"  action="ItemSpecAdd.htm" method="post" 
-			
-										<%
-								 	if(!dis.isEmpty()){
-										for(Object[] hlo:dis){
-											 if("3".equalsIgnoreCase(hlo[0].toString())&&temp.equalsIgnoreCase(hlo[3].toString())&&"7".equalsIgnoreCase(hlo[4].toString())){
-											       %>hidden="hidden" 
-													        <%}}}%>  
-													        >
-						
-										<input type="hidden" name="specname" value="Agenda-Presentation">
-										<input class="form-control" type="hidden" name="agendasubid" value="7" readonly="readonly">
-										<input class="form-control" type="hidden" name="minutesid" value="3" readonly="readonly">
-										<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">					
-										<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>P<%=form20 %>" />
-										
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										
-										<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" value="ADD" onclick="FormName('myForm<%=form6 %><%=temp %>P<%=form20 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	<%unitcount11++;countloop++;form11++;form20++;unit11++;  Presentationcount++;}}}%>
+	   <div class="row">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>D<%=form20 %>">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
+	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						
+	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
+	          						
+	          						</div>
+	          						<div style="margin-top:-26px; float: right;">
+	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form20 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form20 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						
+
+	        					    </div>
+	        					    <input type="hidden" name="specname" value="Agenda-<%=Unit %>-Outcomes">
+	        					    <input class="form-control" type="hidden" name="agendasubid" value="7" readonly="readonly">
+									<input class="form-control" type="hidden" name="minutesid" value="3" readonly="readonly">
+									<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">
+	        					    <input class="form-control" type="hidden" name="committeescheduleid" value="<%=committscheduleid %>" readonly="readonly">
+								    <input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form20 %>" />
+								    <input type="hidden" name="unitid" value="<%=temp %>" />
+								    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+								    <input class="form-control" type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
+								    <input class="form-control" type="hidden" name="unit1" value="#5Pre<%=scheduleagendaid %>" readonly="readonly">
 									
-									</form>
-				
-	   							</div>
+	       						</form>
 	       					    
-
-	<%%>
-	   
+	           				</div>
+	  					</div>
+					</div>
+				</div>
 	    
-	</div>		
-	  			
-	</div>
-	</div>
-	</div>
-
-	
-	
-	<!-- ********* sub row 1 end ********* -->
-	
-
-	
-	<!-- ******** sub row 2 start *****  -->
-	
-	 <div class="row">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
-		
-		<div class="panel panel-info">
-		
-		<div class="panel-heading">
-	    	
-	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.2. Discussion </span>
-	        </h4>
-	        
-
-	  	
-	   <%int unitcount12=1; long unit12=1; String Unit12=null; int countloop12=100; int form12=3455;int collapse12=140;String temp12=null;int form19=650; %>
-	   
-	       						<div   style="float: right !important; margin-top:-23px; ">
-								 	<table style="text-align: center;" >
-						     			<thead>
-							             	<tr>
-							                 	<th ></th>       
-							             	</tr>
-							         	 </thead>
-							         	<tbody>
-							         	
-							         	
-								 <%
-								 	if(!dis.isEmpty()){
-										for(Object[] hlo:dis){
-											 if("3".equalsIgnoreCase(hlo[0].toString())&&temp.equalsIgnoreCase(hlo[3].toString())&&"8".equalsIgnoreCase(hlo[4].toString())){
-											       %>
-						      	
-						      				<tr>
-						
-									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
-									      			<form  id="myForm<%=temp %>D<%=form12 %>" action="MinutesSpecEdit.htm" method="post">
-									                	
-									                		<input type="hidden" name="specname" value="Agenda-Discussion">
-									                		<input type="hidden" name="scheduleid"	value="<%=hlo[6] %>" />
-															<input type="hidden" name="minutesid"	value="<%=hlo[0] %>" />
-															<input type="hidden" name="scheduleminutesid" 	value="<%=hlo[1] %>" /> 
-										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
-									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>D<%=form19 %>" />
-						
-									          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>D<%=form19 %>"  name="sub" onclick="FormNameEdit('myForm<%=temp %>D<%=form12 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
-									          			
-									       			</form>
-									      		</td>
-									      		
-						      				</tr>
-						      	
-						       				 <%}}}%> 
-						       				
-						       			</tbody>
-						      	
-						      		</table>
-	      							<br>
-	      		
-	       						</div>
-	       			
-	       						
-	       					    <div style="float: right !important; margin-top:-25px; " >
-				
-									<form  id="myForm<%=form6 %><%=temp %>D<%=form19 %>"  action="ItemSpecAdd.htm" method="post" 
 			
-										<%
-								 	if(!dis.isEmpty()){
-										for(Object[] hlo:dis){
-											 if("3".equalsIgnoreCase(hlo[0].toString())&&temp.equalsIgnoreCase(hlo[3].toString())&&"8".equalsIgnoreCase(hlo[4].toString())){
-											       %>hidden="hidden" 
-													        <%}}}%>  
-													        >
-						
-										<input type="hidden" name="specname" value="Agenda-Discussion">
-										<input class="form-control" type="hidden" name="agendasubid" value="8" readonly="readonly">
-										<input class="form-control" type="hidden" name="minutesid" value="3" readonly="readonly">
-										<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">										<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>D<%=form19 %>" />
-										
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormName('myForm<%=form6 %><%=temp %>D<%=form19 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-									
-									</form>
-				
-	   							</div>
-	       					    
-	    
-				
-	<%unitcount12++;countloop++;form12++;form19++;unit12++;%>
-	   
-	    
-				
 	  			
 	
 	     </div>   <!-- Agenda collapse end -->     
@@ -784,6 +699,132 @@ if(formname!=null){
 	
 	</div><!-- row end -->
 	
+	
+	
+	 <div class="row">  
+   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+		
+		<div class="panel panel-info">
+			
+		<div class="panel-heading">
+	    	
+	    	<h4 class="panel-title">
+	           <span  style="font-size:14px">3.<%=unitcount %>.2. Discussions </span>
+	        </h4>
+	        
+	       	<div style="float: right !important; margin-top:-20px; " > 
+	       		<%int collapseD=483; %>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseD%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Dis<%=scheduleagendaid %>5"></i></a>
+	       	</div>
+	       	
+	    </div>
+	      
+	  	<div id="<%=collapseD%><%= collapse %>" class="panel-collapse collapse in">
+	  
+	  <%int unitcount12=1; long unit12=1; String Unit12=null; int countloop12=100; int form12=3455;int collapse12=140;String temp12=null;int form19=650; int discussionscount=0; 
+	  
+	  /* int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700; */
+	  
+	   if(!dis.isEmpty()){
+			for(Object[] hlod:dis){
+				 if("3".equalsIgnoreCase(hlod[0].toString()) &&  temp.equalsIgnoreCase(hlod[3].toString()) && "8".equalsIgnoreCase(hlod[4].toString()))
+				 {
+		
+	   %>
+	   
+	  			<div class="row">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. <%=hlod[9] %></span>  </h4>
+	          				
+		       						<div   style="float: right !important; margin-top:-23px; ">
+									 	<table style="text-align: center;" >
+							     			<thead>
+								             	<tr>
+								                 	<th ></th>       
+								             	</tr>
+								         	 </thead>
+								         	<tbody>
+							      				<tr>
+										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      			<form  id="myForm<%=temp %>R<%=form12 %>" action="MinutesSpecEdit.htm" method="post">
+										                	
+										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
+										                		<input type="hidden" name="scheduleid"	value="<%=hlod[6] %>" />
+																<input type="hidden" name="minutesid"	value="<%=hlod[0] %>" />
+																<input type="hidden" name="scheduleminutesid" 	value="<%=hlod[1] %>" /> 
+											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form19 %>" />
+							
+										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" onclick="FormNameEditB('myForm<%=temp %>R<%=form12 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			
+										       			</form>
+										      		</td>
+										      		
+							      				</tr>
+							      	
+							       				
+							       				
+							       			</tbody>
+							      	
+							      		</table>
+		      							<br>
+		      		
+		       						</div>
+	           				</div>
+	  					</div>
+					</div>
+				</div>
+				
+	<%unitcount12++;countloop++;form12++;form19++;unit12++;  discussionscount++;}}}%>
+	   <div class="row">  
+	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	     				<div class="panel panel-info">
+	      					<div class="panel-heading">
+	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>D<%=form19 %>">
+	        					<h4 class="panel-title">
+	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
+	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						
+	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
+	          						
+	          						</div>
+	          						<div style="margin-top:-26px; float: right;">
+	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form19 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						
+
+	        					    </div>
+	        					    <input type="hidden" name="specname" value="Agenda-<%=Unit %>-Outcomes">
+	        					    <input class="form-control" type="hidden" name="agendasubid" value="8" readonly="readonly">
+									<input class="form-control" type="hidden" name="minutesid" value="3" readonly="readonly">
+									<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">
+	        					    <input class="form-control" type="hidden" name="committeescheduleid" value="<%=committscheduleid %>" readonly="readonly">
+								    <input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form19 %>" />
+								    <input type="hidden" name="unitid" value="<%=temp %>" />
+								    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
+								    <input class="form-control" type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
+								    <input class="form-control" type="hidden" name="unit1" value="#5Dis<%=scheduleagendaid %>" readonly="readonly">
+									
+	       						</form>
+	       					    
+	           				</div>
+	  					</div>
+					</div>
+				</div>
+	    
+			
+	  			
+	
+	     </div>   <!-- Agenda collapse end -->     
+	 </div><!-- Agenda Panel end -->  
+	
+	</div>
+	
+	</div><!-- row end -->
+	
+<!-- --------------------------------------------------  Dinesh  End  --------------------------------------------------------------------------------------- -->	
 	
 	<!-- ********* sub row 2 end ********* -->
 	
@@ -855,9 +896,6 @@ if(formname!=null){
 									      		</td>
 									      		
 						      				</tr>
-						      	
-						       				
-						       				
 						       			</tbody>
 						      	
 						      		</table>
@@ -872,7 +910,7 @@ if(formname!=null){
 				</div>
 				
 	<%unitcount13++;countloop++;form13++;form18++;unit13++;}}}%>
-	   <div class="row">  
+	   			<div class="row">  
 	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
@@ -880,13 +918,11 @@ if(formname!=null){
 	        					<h4 class="panel-title">
 	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
 	          						<div style="margin-top:-22px; margin-left: 55px;">
-	          						<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
-                                                            <%for(Object[] obj:minutesoutcomelist){ %>	
-																	
-															<option value="<%=obj[0]%>"><%=obj[1]%></option>	
-																	
-															<%} %>
-															</select>
+	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
+	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
+												<option value="<%=obj[0]%>"><%=obj[1]%></option>	
+											<%} %>
+										</select>
 	          						
 	          						
 	          						
@@ -942,7 +978,7 @@ if(formname!=null){
 </div>
 
 
- <%unitcount++;countloop++;form6++;form7++;collapse++;}}else{
+ <%unitcount++;countloop++;form6++;form7++;collapse++; }}else{
  	  
     %> 
     
@@ -1481,9 +1517,6 @@ if(formname!=null){
 									  <input class="form-check-input" type="radio" name="darc" id="comments" value="C">
 									  <label class="form-check-label" for="comments">Comments</label>
 									</div>
-  																	
-	
-									
   								
   								</div>
  
@@ -1577,20 +1610,27 @@ if(formname!=null){
 									</select>
 								</div>
 								</div>
+								
+								  <div class="col-md-4" id="PresDiscHeader">
+                        		<div class="form-group">
+                        		<label class="">Header </label>
+  	                               <input type="text" class="form-control" name="PresDiscHeaderVal" value="" id="PresDiscHeaderVal" maxlength="100">
+								</div>
+								</div>
+								
 								</div>							
 								<div align="center" style="margin-top: -25px;">
 									<br>
-									
 									<br>
-																	
  										<input type="submit" name="sub" class="btn  btn-sm submit" form="specair"  id="addingair" value="SUBMIT"  />
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specair" id="editingair"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
-								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
+								  		<input type="submit" name="sub" class="btn  btn-sm submit" style="background-color: #dc3545; border-color: #dc3545;" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
 										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
 										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
+										<input type="hidden" name="OutComeAirHead"  id="OutComeAirHead" value="">
 								</div>
   							</div>
   						</div>
@@ -1781,6 +1821,88 @@ function editcheck1(editfileid)
 			
 		  
       });
+	  
+	  
+	  function FormNameB(formId) {
+    	  $("#"+formId).submit(function(event){
+    		    event.preventDefault();
+    		    $('#editingair').hide();
+    		    $('#deletingair').hide();
+    		    $('#addingair').show();
+    		    $('#specadd').hide();
+    		    $('#specair').show();
+    		    $('#OutComeDiv').hide();
+    		    $('#PresDiscHeader').hide();
+    		    var minutesidadd = $("input[name='minutesid']",this).val();
+    		    var specnameadd= $("input[name='specname']",this).val();
+    		    var agendasubidadd= $("input[name='agendasubid']",this).val();
+    		    var scheduleagendaidadd= $("input[name='scheduleagendaid']",this).val();
+    		    var formnameadd= $("input[name='formname']",this).val();
+    		    var type=$("#OutComesId",this).val();
+    		    var unit1idadd= $("input[name='unit1']",this).val();
+    		 
+    		    $("#minutesidair").val(minutesidadd);
+    		    $("#specnameair").val(specnameadd);
+    		    $("#agendasubidair").val(agendasubidadd);
+    		    $("#scheduleagendaidair").val(scheduleagendaidadd);
+    		    $("#formnameair").val(formnameadd);
+    		    $("#unit1idair").val(unit1idadd);
+    		    $.ajax({
+    				type : "GET",
+    				url : "CommitteeMinutesSpecAdd.htm",
+    				data : {
+    					
+    					minutesid : minutesidadd,
+    					specname:specnameadd,
+    					agendasubid:agendasubidadd,
+    					scheduleagendaid:scheduleagendaidadd,
+    					formname:formnameadd,
+    					
+    				},
+    				datatype : 'json',
+    				success : function(result) {
+    					
+    					var result = JSON.parse(result);
+    					var values = Object.keys(result).map(function(e) {
+    						  return result[e]
+    						});
+
+    						if(scheduleagendaidadd==0){
+    						document.getElementById('iditemsubspecofsubair').innerHTML = "" ;
+        					}	
+    						
+							if(scheduleagendaidadd!=0){
+    						document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[4]; 
+        					}
+							
+		
+							if(agendasubidadd==0){
+	    						
+	    						document.getElementById('iditemsubspecair').innerHTML = "";
+	        				}
+    						if(agendasubidadd!=0){
+    						
+    						document.getElementById('iditemsubspecair').innerHTML = " / " + values[3]; 
+        					}
+    						
+    						
+    					document.getElementById('iditemspecair').innerHTML = values[1];
+
+    					$("#remarksair").val('');
+    					$("#OutComeAirHead").val(type);
+    					$("#editorair").val('');
+    					$("#OutComeAir").val('C');
+    					document.getElementById('outcomeair').innerHTML = " / "+type;
+     					
+
+      	  		         	 
+    				}
+    			});
+    		   
+    		  });
+    	  
+
+    }  
 
 	  function FormNameA(formId) {
     	  $("#"+formId).submit(function(event){
@@ -1791,6 +1913,7 @@ function editcheck1(editfileid)
     		    $('#specadd').hide();
     		    $('#specair').show();
     		    $('#OutComeDiv').hide();
+    		    $('#PresDiscHeader').hide();
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
     		    var agendasubidadd= $("input[name='agendasubid']",this).val();
@@ -1965,6 +2088,80 @@ function editcheck1(editfileid)
 
     }  
     
+    
+    function FormNameEditB(formId, AgendaSubHead) {
+  	  $("#"+formId).submit(function(event){
+  		    event.preventDefault();
+  		  $('#addingair').hide();
+  		 $('#editingair').show();
+  		 $('#deletingair').show();
+  		 $('#specadd').hide();
+	       $('#specair').show();
+	       $('#OutComeDiv').hide();
+	       $('#PresDiscHeader').show();
+	       
+  		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
+  		 	var specnameadd= $("input[name='specname']",this).val();
+  		 	var formnameadd= $("input[name='formname']",this).val();
+  		 	
+  		 	
+  		 	$("#specnameair").val(specnameadd);
+  		 	$("#formnameair").val(formnameadd);
+  		 	
+  		    $.ajax({
+  				type : "GET",
+  				url : "CommitteeMinutesSpecEdit.htm",
+  				data : {
+  					scheduleminutesid : itemidadd,
+  					specname:specnameadd,
+  					forname:formnameadd,
+  					
+  				},
+  				datatype : 'json',
+  				success : function(result) {
+  					
+  					var result = JSON.parse(result);
+  					var values = Object.keys(result).map(function(e) {
+  						  return result[e]
+  						});
+  					
+  					$("#scheduleideditair").val(values[2]);	
+   		  			$("#minutesideditair").val(values[0]);
+   		  		    $("#scheduleminutesideditair").val(values[3]);
+   		  		    
+   		  			if(values[6]==0){
+					document.getElementById('iditemsubspecofsubair').innerHTML = ""; 
+					}	
+					if(values[6]!=0){
+					document.getElementById('iditemsubspecofsubair').innerHTML = " / " + values[8]; 
+					}	
+   		  		    
+					if(values[5]==0){	
+					document.getElementById('iditemsubspecair').innerHTML = "";
+					}
+
+					if(values[5]!=0){
+					document.getElementById('iditemsubspecair').innerHTML = " / " + values[7]; 
+					}
+
+  					
+  					document.getElementById('iditemspecair').innerHTML = values[4];
+	
+  					
+  					$("#remarksair").val(values[9]);
+  					$("#OutComeAir").val(values[10]);
+  					$("#editorair").val(values[1]);
+  					$("#PresDiscHeaderVal").val(AgendaSubHead);
+  					document.getElementById('outcomeair').innerHTML = " / "+AgendaSubHead;
+  	  			
+  				}
+  			});
+  		    
+  		  });
+  	  
+
+  } 
+    
     function FormNameEditA(formId) {
     	  $("#"+formId).submit(function(event){
     		    event.preventDefault();
@@ -1974,6 +2171,7 @@ function editcheck1(editfileid)
     		 $('#specadd').hide();
   	         $('#specair').show();
   	       $('#OutComeDiv').show();
+  	     $('#PresDiscHeader').hide();
     		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
     		 	var specnameadd= $("input[name='specname']",this).val();
     		 	var formnameadd= $("input[name='formname']",this).val();
