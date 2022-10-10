@@ -1543,9 +1543,6 @@ public class CommitteeController {
 			String SpecName = req.getParameter("specname");
 			String CommitteeName= req.getParameter("committeename");
 			
-			
-			
-			
 			if (count > 0) {
 				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
 				redir.addAttribute("unit1",req.getParameter("unit1"));
