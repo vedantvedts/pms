@@ -47,6 +47,7 @@ p{
              content: "Page-AI " counter(page) " of " counter(pages);
              margin-bottom: 30px;
              margin-right: 10px;
+              font-size: 10px;
           }
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
@@ -58,24 +59,35 @@ p{
              <%}%>
              margin-top: 30px;
              margin-right: 10px;
+             font-size: 13px;
           }
           @top-left {
           	margin-top: 30px;
             margin-left: 10px;
             content: "<%=committeescheduleeditdata[11] %>";
+            font-size: 13px;
           }            
           
           @top-center { 
           margin-top: 30px;
           content: "<%=committeescheduleeditdata[15]%>"; 
+           font-size: 13px;
           
           }
-           @bottom-center { 
+            <%-- @bottom-center { 
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]%>"; 
           
-          }
+          }  --%>
+          
+          @bottom-left {          		
+ 			 content : "The info in this Doc. is proprietary of  <%if( Long.parseLong(projectid)>0){%> <%=projectdetails[1]%> <%}else if(Long.parseLong(divisionid)>0){%> Division:<%=divisiondetails[1]%> <%}else {%> <%=labdetails[1]%> <%}%> 	/DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
+ 			 margin-bottom: 30px;
+             font-size: 9.5px;
+          } 
  }
+ 
+ 
 
  .sth
  {
@@ -107,8 +119,8 @@ p{
 							<tr>
 								<th  class="sth" style=" max-width: 40px"> SN </th>
 								<th  class="sth" style=" max-width: 110px"> Action Id</th>	
-								<th  class="sth" style=" max-width: 700px"> Item</th>				
-								<th  class="sth" style=" max-width: 80px"> Responsibility </th>					
+								<th  class="sth" style=" max-width: 600px"> Item</th>				
+								<th  class="sth" style=" max-width: 100px"> Responsibility </th>					
 								<th  class="sth" style=" width: 100px"> PDC</th>
 							</tr>
 							

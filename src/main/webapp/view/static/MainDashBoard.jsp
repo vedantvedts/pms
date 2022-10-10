@@ -2725,7 +2725,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 		<div class="container-fluid">
 	
-		<div class="card-deck">
+		<div class="card-deck" style="margin-top: -20px">
 		  <div class="card detailscard">
 		    <div class="card-body">
 		      <h5 class="card-title"><img src="view/images/discuss.png" /> Meeting</h5>
