@@ -258,11 +258,19 @@ public class LoginController {
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
-			
-			     String Clusterid= (String) ses.getAttribute("clusterid");
-			     
+ 
+			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString() ;
+
+			     String IsDG = "No";
+			     if(DGName.equalsIgnoreCase(LabCode))
+			    	 IsDG = "Yes";
+			     else
+			    	 IsDG = "No";
+			    	 
+			     req.setAttribute("IsDG", IsDG);	 
+			    	 
 			     List<Object[]> labdatalist = new ArrayList<Object[]>();
-			     List<Object[]> LabMasterList = headerservice.LabMasterList(Clusterid);
+			     List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
 			     for(Object[] obj : LabMasterList) {
 			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
 			     }

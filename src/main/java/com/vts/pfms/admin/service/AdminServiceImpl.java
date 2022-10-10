@@ -112,10 +112,11 @@ public class AdminServiceImpl implements AdminService{
 		}else {
 			login.setEmpId(Long.parseLong("0"));
 		}
-		HashSet< Role> Roles=new HashSet<Role>();
 		
-		Roles.add(roleRepository.findAll().get(Integer.parseInt(UserManageAdd.getRole())-1));
-		login.setRoles(Roles);
+		//HashSet< Role> Roles=new HashSet<Role>();
+		//Roles.add(roleRepository.findAll().get(Integer.parseInt(UserManageAdd.getRole())-1));
+		//login.setRoles(Roles);
+		
 	    logindivision.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
 	    logindivision.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
 	    logindivision.setCreatedBy(Userid);
@@ -571,7 +572,13 @@ public class AdminServiceImpl implements AdminService{
 			return ret;
 		}
 	
-	
+		@Override
+		public List<Object[]> AllLabList() throws Exception {
+			logger.info(new Date() +"Inside ClusterLabList");
+			
+			return dao.AllLabList();
+		}
+
 	
 	
 }

@@ -209,7 +209,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
 List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
 List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmployeeList");
-
+String labcode = (String)request.getAttribute("labcode");
 List<Object[]> Alllablist = (List<Object[]>)request.getAttribute("AllLabList");
 String projectid=committeescheduleeditdata[9].toString();
 
@@ -413,9 +413,9 @@ if(MinutesBack==null){
 </label>
 <select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
 			<%for(Object[] lab : Alllablist){%>
-					<option value="<%=lab[3] %>"><%=lab[3] %></option>
+					<option value="<%=lab[3] %>" <%if(labcode.equalsIgnoreCase(lab[3].toString())){%>selected="selected"  <%}%> ><%=lab[3] %></option>
 			<%}%>
-			<option value="@EXP">Expert</option>
+			<option value="@EXP"  <%if("@EXP".equalsIgnoreCase(labcode)){%>selected="selected"  <%}%>>Expert</option>
 	</select>
 
 </div>
@@ -511,8 +511,7 @@ if(MinutesBack==null){
 function changeempdd()
 {
 	var $labcode = $('#AssigneeLabCode').val();
-	
-	console.log($labcode);
+
   if (document.getElementById('allempcheckbox').checked) 
   {
     employeefetch(0 , $labcode);
@@ -541,7 +540,7 @@ function changeempdd()
 										 return result[e]
 									  
 							});
-								console.log(values);
+								
 					var s = '';
 						s += '<option value="">'+"--Select--"+ '</option>';
 								 for (i = 0; i < values.length; i++) {									
@@ -776,6 +775,8 @@ function changeempdd()
     		    		var values = Object.keys(result).map(function(e) {
     		    			  return result[e]
     		    			});
+    		    		
+    		    		
     		    		var s = '';
     		    		
     		    		 $("#myTabl tbody tr").hide();
@@ -792,7 +793,7 @@ function changeempdd()
     		    			  var tempday1 = moment(JSON.stringify(values[i][4]), "MMM-DD-YYYY");
     		    			  var formatday1= moment(tempday1).format("DD-MM-YYYY");
     		    			   
-    		    			 markup = "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2]  + "</td></tr>"; 
+    		    			 markup = "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td></tr>"; 
     		                 tableBody = $("#myTabl tbody"); 
     		                 tableBody.append(markup);   		            
 		

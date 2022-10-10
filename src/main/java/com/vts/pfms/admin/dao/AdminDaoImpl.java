@@ -87,9 +87,20 @@ public class AdminDaoImpl implements AdminDao{
     private static final String  GETEDITDETAILS = "SELECT * FROM expert WHERE ExpertId=:EXPERTID";
     private static final String CHECKABILITY2 ="SELECT COUNT(*)FROM expert WHERE ExtNo=:EXTNO AND  ExpertId NOT IN (:ExpertId)";
     private static final String EDITEXPERT = "UPDATE expert SET ExpertName=:NAME, DesigId=:DESIGID, ExtNo=:EXTNO, MobileNo=:MOBLIENO, Email=:EMAIL, Organization=:ORGANIZATION ,ModifiedDate=:MODIFIEDDATE ,modifiedby=:MODIFEDBY WHERE ExpertId=:EXPERTID";
-	
+	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
+
 	@PersistenceContext
 	EntityManager manager;
+	
+	@Override
+	public List<Object[]> AllLabList() throws Exception 
+	{
+		logger.info(new java.util.Date() +"Inside ClusterLabList");
+		Query query=manager.createNativeQuery(CLUSTERLABLIST);
+		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
+		return ClusterLabList;
+	}
+	
 	
 		@Override
 		public List<Object[]> LoginTypeList() throws Exception {
