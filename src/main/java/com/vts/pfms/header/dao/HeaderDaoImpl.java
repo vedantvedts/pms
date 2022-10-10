@@ -20,7 +20,7 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String EMPDETAILES="SELECT b.empname, c.formrolename, b.empno,b.labcode FROM login a,employee b,form_role c WHERE a.empid=b.empid AND a.formroleid=c.formroleid AND a.loginid=:loginid";
 	private static final String DIVISIONNAME="select divisioncode from division_master where divisionid=:divisionid";
 	
-	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate";
+	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";
 	private static final String NOTIFICATIONUPDATE="update pfms_notification set isactive='0' where isactive='1' and notificationid=:notificationid ";
 	private static final String OLDPASSWORD="select password from login where username=:username";
 	private static final String PASSWORDUPDATECHANGE="update login set password=:newpassword,modifiedby=:modifiedby,modifieddate=:modifieddate where username=:username ";
