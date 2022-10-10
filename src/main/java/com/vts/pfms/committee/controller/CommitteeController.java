@@ -1543,10 +1543,15 @@ public class CommitteeController {
 			String SpecName = req.getParameter("specname");
 			String CommitteeName= req.getParameter("committeename");
 			
+			
+			System.out.println(req.getParameter("unit1"));
+			System.out.println( req.getParameter("formname"));
+			
 			if (count > 0) {
 				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
 				redir.addAttribute("unit1",req.getParameter("unit1"));
 				redir.addAttribute("unit1",req.getParameter("unit2"));
+				
 
 				
 			} else {
@@ -1642,9 +1647,14 @@ public class CommitteeController {
 				String SpecName = req.getParameter("specname");
 				String CommitteeName= req.getParameter("committeename");
 	
+				System.out.println(req.getParameter("unit1"));
+				System.out.println( req.getParameter("formname"));
+				
 				if (count > 0) {
 					redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
 					redir.addAttribute("membertype",req.getParameter("membertype"));
+					
+					
 					
 				} else {
 					redir.addAttribute("resultfail", " Schedule Minutes Update Unsuccessful");
@@ -1653,6 +1663,8 @@ public class CommitteeController {
 				redir.addFlashAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addFlashAttribute("specname", req.getParameter("specname"));
 				redir.addFlashAttribute("formname", req.getParameter("formname"));
+				redir.addFlashAttribute("unit1",req.getParameter("unit1"));
+				redir.addFlashAttribute("unit2",req.getParameter("unit2"));
 			}
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId,e);
