@@ -1028,7 +1028,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		{
 			slno=Long.parseLong(maxslno[1].toString())+1;
 		}
-		
+	
 		for(int i=0;i<committeeinvitationdto.getEmpIdList().size();i++) 
 		{
 			
@@ -1333,9 +1333,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 
 	@Override
-	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception {
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
 		logger.info(new Date() +"Inside ProjectCommitteeList");
-		return dao.ProjectCommitteesListNotAdded(projectid);		
+		return dao.ProjectCommitteesListNotAdded(projectid, LabCode);		
 	}
 
 
@@ -2007,6 +2007,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagendato.setScheduleId(Long.parseLong(scheduleidto));
 			scheduleagendato.setScheduleSubId(scheduleagendafrom.getScheduleSubId());
 			scheduleagendato.setAgendaItem(scheduleagendafrom.getAgendaItem());
+			scheduleagendato.setPresentorLabCode(scheduleagendafrom.getPresentorLabCode());
 			scheduleagendato.setPresenterId(scheduleagendafrom.getPresenterId());
 			scheduleagendato.setDuration(scheduleagendafrom.getDuration());
 			scheduleagendato.setProjectId(Long.parseLong(scheduletodata[9].toString()));
@@ -2015,10 +2016,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagendato.setCreatedDate(sdf1.format(new Date()));
 			
 			scheduleagendato.setIsActive(1);
-			
 
 			List<Object[]> agendapriority=dao.CommitteeScheduleAgendaPriority(scheduleidto);
-			
 			
 			if(agendapriority.size()==0)
 			{
@@ -2068,10 +2067,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
 		logger.info(new Date() +"Inside CommitteedivisionNotAssigned");
-		return dao.CommitteedivisionNotAssigned(divisionid);
+		return dao.CommitteedivisionNotAssigned(divisionid,  LabCode );
 	}
 	
 	@Override
@@ -2205,10 +2204,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception 
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception 
 	{
 		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
-		return dao.InitiationCommitteesListNotAdded(initiationid);
+		return dao.InitiationCommitteesListNotAdded(initiationid, LabCode);
 	}
 	
 	@Override

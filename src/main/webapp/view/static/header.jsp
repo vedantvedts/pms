@@ -175,6 +175,7 @@
 
 
 <% String Logintype= (String)session.getAttribute("LoginType");
+String labcode= (String)session.getAttribute("labcode");
 //int ProjectInitSize = (Integer) session.getAttribute("ProjectInitiationList");
 
 %> 
@@ -191,7 +192,7 @@
 				<% long FormRole =(Long)session.getAttribute("FormRole");  %>
 				<% String FormRoleName =(String)session.getAttribute("LoginTypeName");  %>
 					
-				<nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+				<nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear header-top">
 					
 					
 					<div class="container-fluid">
@@ -199,7 +200,7 @@
 						<a class="navbar-brand" id="brandname"	style=" font-family: 'Montserrat', sans-serif; color: white;text-align: initial;width:40% ">						  
 							<span id="p1" style="font-family:Lato, sans-serif;font-size: 19px;font-weight: 700; color: orange;"></span>
 							<span style="font-family: Lato, sans-serif;font-size: 15px;padding: 0px 16px 0px 10px;text-transform: capitalize !important;"><%=LocalDate.now().getMonth() %> &nbsp; <%=LocalDate.now().getYear() %> </span>
-							<img style="width:4%" src="view/images/project.png" alt=""><b> &nbsp; PMS &nbsp;&nbsp;<span style="font-size: 13px;"><%=EmpName %> (<%=FormRoleName %>) </span> </b>
+							<img style="width:4%" src="view/images/project.png" alt=""><b> &nbsp; PMS&nbsp;<span style="font-size: 13px;">(<%=labcode %>) - <%=EmpName %> (<%=FormRoleName %>) </span> </b>
 						</a>
 						
 						
@@ -618,7 +619,7 @@
 						
 	<!------------------------------------------------ new navbar  ---------------------------------------->
 		
-				<nav class="navbar navbar-expand-lg navbar-light second-nav " >
+				<nav class="navbar navbar-expand-lg navbar-light second-nav header-top " >
 				
 				 <a class="navbar-brand" href="#"></a>
 				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

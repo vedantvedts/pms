@@ -115,7 +115,7 @@ public interface CommitteeService {
 	public long ProjectCommitteeAdd(String ProjectId,String[] Committee ,String UserId) throws Exception;
 	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception;
 	public long ProjectCommitteeDelete(String[] CommitteeProject,String user ) throws Exception;
-	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception;
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception;
 	public List<Object[]> CommitteeNonProjectList() throws Exception;
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String divisionid,String initiationid,String projectstatus) throws Exception;
 	public int CommitteeProjectUpdate(String ProjectId,String CommitteeId) throws Exception;
@@ -160,7 +160,7 @@ public interface CommitteeService {
 	//public List<Object[]> ChairpersonEmployeeList() throws Exception;
 	public List<Object[]> divisionList() throws Exception;
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception;
-	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception;
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception;
 	public long DivisionCommitteeAdd(String divisionid, String[] Committee, String UserId) throws Exception;
 	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception;
 	public long DivisionCommitteeDelete(String[] CommitteeProject, String user) throws Exception;
@@ -182,7 +182,7 @@ public interface CommitteeService {
 	public List<Object[]> InitiatedProjectDetailsList() throws Exception;
 	public List<Object[]> InitiationMasterList(String initiationid) throws Exception;
 	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception;
-	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception;
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception;
 	public Long InvitationSerialnoUpdate(String[] newslno, String[] invitationid) throws Exception;
 	public List<Object[]> CommitteeRepList() throws Exception;
 	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception;

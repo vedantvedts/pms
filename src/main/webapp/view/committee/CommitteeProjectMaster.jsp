@@ -64,19 +64,19 @@ String initiationid=(String)request.getAttribute("initiationid");
 String ses1=(String)request.getParameter("resultfail");
 if(ses1!=null){
 %>
-	<center>
+	<div align="center">
 	
 		<div class="alert alert-danger" role="alert">
 			<%=ses1 %>
 		</div>
-	</center>
+	</div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 		<div class="alert alert-success" role="alert">
 			<%=ses %>
 		</div>
 
-	</center>
+	</div>
 	<%} %>
 
 
@@ -289,7 +289,6 @@ if(ses1!=null){
 														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 														<td> 
 															<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" >Constitute</button>
-													
 														</td>															
 													</tr>
 													

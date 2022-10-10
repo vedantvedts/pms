@@ -353,4 +353,11 @@ public class HeaderServiceImpl implements HeaderService {
 		return dao.getLabCode( Empid);
 	}
 	
+	@Override
+	public List<Object[]>  LabMasterList(String Clusterid) throws Exception {
+		
+		logger.info(new Date() +"Inside LabMasterList");
+		return dao.LabMasterList(Clusterid);
+	}
+	
 }

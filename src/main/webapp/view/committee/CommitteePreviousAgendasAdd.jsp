@@ -7,9 +7,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
 <title>COMMITTEE ADD AGENDA FROM OLD MEETING</title>
 <style type="text/css">
 label{
@@ -52,18 +49,18 @@ h6 span{
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	<center>
+	<div align="center">
 	<div class="alert alert-danger" role="alert" >
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></center>
+                   </div></div>
                     <%} %>
 
-    <br />
+    <br/>
     
     
 
@@ -76,7 +73,7 @@ h6 span{
 		
     		<div class="card" style=" ">
     	
-    	<form action="CommitteeScheduleAgenda.htm" name="myfrm" id="myfrm" method="post">    	
+    		<form action="CommitteeScheduleAgenda.htm" name="myfrm" id="myfrm" method="post">    	
 	    		<div class="card-header" style="background-color: #055C9D;">
       				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=committeescheduleeditdata[7] %> <span> (Meeting Date and Time :      				
 	      				 &nbsp;<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString()))%> - <%=committeescheduleeditdata[3] %>) </span> 					 
@@ -86,7 +83,7 @@ h6 span{
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
       				 </h6>  
       			</div>
-      	</form>		
+      		</form>		
       		
 	      		<div class="card-body">      		
 	      			<div class="row">		
@@ -104,12 +101,12 @@ h6 span{
 	      				</div>
 	      				<div class="col-md-5"><%if(committeescheduledata1!=null){ %> Agendas From Meeting Id : &nbsp;<%=committeescheduledata1[11] %> <%} %> </div>
 	      				<div class="col-md-3"><%if(committeescheduledata1!=null){ %>Date : &nbsp;<%=sdf.format(sdf1.parse(committeescheduledata1[2].toString())) %> &nbsp;&nbsp;&nbsp; Time :&nbsp;<%=committeescheduledata1[3] %> <%} %></div>	      				
-	      	</div>
+	      			</div>
 <!--   --------------------------------------------------------------------------------------------------- -->	
 				<% if(meetingsearch!=null&&meetingsearch.size()>0)	{      			%>
 					<div align="center">
-				  	<h5>Select Meeting</h5>
-				</div>
+				  		<h5>Select Meeting</h5>
+					</div>
 				
 	      			<form action="AgendasFromPreviousMeetingsAdd.htm" method="post">  
 			      			<table id="mydatatable" data-toggle="table" data-pagination="true" data-search="true">							
@@ -165,6 +162,7 @@ h6 span{
 										<th align="center">Agenda Item</th>
 										<th align="center">Reference</th>
 										<th align="center">Remarks</th>
+										<th align="center">Lab</th>
 										<th align="center">Presenter</th>
 										<th align="center">Duration </th>
 										<!-- <th>Attachment</th>	 -->								
@@ -177,7 +175,8 @@ h6 span{
 										 </td>
 										<td ><%=agenda[3] %> </td>														
 						         		<td ><%=agenda[4] %> </td>						         		                                      
-						         		<td ><%=agenda[6] %> </td>		
+						         		<td ><%=agenda[6] %> </td>
+						         		<td ><%=agenda[14] %> </td>		
 										<td ><%=agenda[10] %> (<%=agenda[11] %> )</td>						         		                                      
 										<td ><%=agenda[12] %> </td>
 																	

@@ -142,7 +142,7 @@ public interface CommitteeDao {
 	public int UpdateCommitteeInvitationEmailSent(String scheduleid) throws Exception;
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception;
 	public List<Object[]> ProjectCommitteesList() throws Exception;
-	public List<Object[]> ProjectCommitteesListNotAdded(String projectid) throws Exception;
+	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception;
 
 
 	public List<Object[]> ExternalEmployeeListFormation(String LabId,String committeemainid) throws Exception;
@@ -161,7 +161,7 @@ public interface CommitteeDao {
 	public int ScheduleMinutesUnitUpdate(String UnitId,String Unit,String UserId,String dt) throws Exception;
 	public List<Object[]> divisionList() throws Exception;
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception;
-	public List<Object[]> CommitteedivisionNotAssigned(String divisionid) throws Exception;
+	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception;
 	public long DivisionCommitteeAdd(CommitteeDivision committeedivision) throws Exception;
 	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception;
 	public long DivisionCommitteeDelete(CommitteeDivision committeedivision) throws Exception;
@@ -182,7 +182,7 @@ public interface CommitteeDao {
 	public List<Object[]> InitiatedProjectDetailsList() throws Exception;
 	public List<Object[]> InitiationMasterList(String initiationid) throws Exception;
 	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception;
-	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid) throws Exception;
+	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception;
 	public Object[] InvitationMaxSerialNo(String scheduleid) throws Exception;
 	public List<Object[]> CommitteeInvitationSerialNoAfter(String committeeinvitationid) throws Exception;
 	public int CommitteeInvitationSerialNoUpdate(String committeeinvitationid, long serialno) throws Exception;

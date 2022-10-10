@@ -71,6 +71,9 @@ public class LoginController {
 	
 	@Autowired
 	HeaderService headerservice;
+	
+	@Autowired
+	CommitteeService comservice;
 
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -183,10 +186,7 @@ public class LoginController {
 
     long LoginId=Repository.findByUsername(req.getUserPrincipal().getName()).getLoginId();
     Object[] empdetails = headerservice.EmployeeDetailes(String.valueOf(LoginId)).get(0);
-    
-    System.out.println(empdetails[3].toString());
-    System.out.println(headerservice.LabDetails(empdetails[3].toString()) +"as");
-    
+
     ses.setAttribute("Username",req.getUserPrincipal().getName());
     ses.setAttribute("LoginId",LoginId ); 
     ses.setAttribute("Division", Repository.findByUsername(req.getUserPrincipal().getName()).getDivisionId()); 	
@@ -201,12 +201,11 @@ public class LoginController {
   	ses.setAttribute("LoginTypeName", headerservice.FormRoleName(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
   	ses.setAttribute("labid",headerservice.LabDetails(empdetails[3].toString())[0].toString());
   	ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
- 	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()));
+ 	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim());
  	ses.setAttribute("clusterid", headerservice.LabDetails(empdetails[3].toString())[1].toString());
-  	
     req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
- 
+
      String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
      ses.setAttribute("empNo", empNo);
       }catch (Exception e) {
@@ -226,6 +225,7 @@ public class LoginController {
     	String LoginId=String.valueOf(ses.getAttribute("LoginId"));
     	String empNo=(String)ses.getAttribute("empNo"); 
     	String LabCode  = (String)ses.getAttribute("labcode");
+    	String ClusterId =(String)ses.getAttribute("clusterid");
 
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
@@ -235,7 +235,7 @@ public class LoginController {
     	
     	logger.info(new Date() +"Inside MainDashBoard.htm ");
 	      try {    
-	    	  
+
 			     req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
 			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
 			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
@@ -254,10 +254,30 @@ public class LoginController {
 			     req.setAttribute("mytaskdetails", headerservice.MyTaskDetails(EmpId));
 			     req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId,LoginType));
 			     req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
-			     req.setAttribute("projecthealthdata", rfpmainservice.ProjectHealthData());
-			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode));
+			     req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
+			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
+			     //req.setAttribute("clusterlablist", headerservice.LabList());
+			     //req.setAttribute("clusterlist", comservice.ClusterList());
  
-			
+			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString() ;
+
+			     String IsDG = "No";
+			     if(DGName.equalsIgnoreCase(LabCode))
+			    	 IsDG = "Yes";
+			     else
+			    	 IsDG = "No";
+			    	 
+			     req.setAttribute("IsDG", IsDG);	 
+			    	 
+			     List<Object[]> labdatalist = new ArrayList<Object[]>();
+			     List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+			     for(Object[] obj : LabMasterList) {
+			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
+			     }
+			     
+			     req.setAttribute("projecthealthtotaldg", labdatalist);
+			     
+			     
 			    // req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
 
 //			     if(LoginType.equalsIgnoreCase("P") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("Q") )
@@ -353,7 +373,7 @@ public class LoginController {
 		logger.info(new Date() +"Inside IndividualProjectDetails.htm "+UserId);		
 		try {
 			
-			IndividualProjectDetails = rfpmainservice.ProjectHealthTotalData(req.getParameter("ProjectId"),EmpId,LoginType,LabCode);
+			IndividualProjectDetails = rfpmainservice.ProjectHealthTotalData(req.getParameter("ProjectId"),EmpId,LoginType,LabCode,"Y");
 		
 		}
 		catch (Exception e) {
@@ -554,13 +574,21 @@ public class LoginController {
     @RequestMapping (value="ProjectHealthUpdate.htm", method=RequestMethod.GET)
     public String ProjectHealthUpdate(HttpSession ses, RedirectAttributes redir)throws Exception{
     	
-    	String EmpId =  ses.getAttribute("EmpId").toString();
+    	String EmpId =  ses.getAttribute("EmpId").toString();	
     	String UserId = (String) ses.getAttribute("Username");
+    	String LoginType =(String) ses.getAttribute("LoginType");
+    	
     	logger.info(new Date() +"ProjectHealthUpdate.htm "+EmpId);
     	long count=rfpmainservice.ProjectHealthUpdate(EmpId,UserId);
         if(count>0) {
 			redir.addAttribute("Overall","Overall");
-			redir.addAttribute("result", "Project Health Updated Successfully ");
+			
+			if(LoginType.equalsIgnoreCase("X")) {
+				redir.addAttribute("result", "Lab Health Updated Successfully ");
+			}else {
+				redir.addAttribute("result", "Project Health Updated Successfully ");
+			}
+			
 		     }
 		else {
 			
@@ -744,6 +772,8 @@ public class LoginController {
     @RequestMapping(value="ChangesinProject.htm", method= {RequestMethod.GET,RequestMethod.POST})
     public String ChangesinProject (HttpSession ses,HttpServletRequest req) throws Exception{
     	
+    	logger.info(new Date() +"ChangesinProject.htm ");
+    	
     	try {
     	String Empid= ses.getAttribute("EmpId").toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
@@ -846,6 +876,24 @@ public class LoginController {
     	}
 
     	return "admin/ChangesRecord";
+    }
+    
+    @RequestMapping(value="LabWiseProjectDetails.htm", method=RequestMethod.POST)
+    public String LabWiseProjectDetails(HttpServletRequest req, HttpSession ses) throws Exception{
+    	logger.info(new Date() +  "LabWiseProjectDetails.htm");
+    	String LabCode = req.getParameter("labcode");
+    	String EmpId =  ses.getAttribute("EmpId").toString();
+    	String LoginType=(String)ses.getAttribute("LoginType");
+    	
+    	try {
+    		req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData("A",EmpId,LoginType,LabCode,"N"));
+    		req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return "admin/LabProjectDetails";
     }
    
     

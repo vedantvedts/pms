@@ -32,5 +32,6 @@ public interface HeaderService {
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId, String LevelId) throws Exception;
 	public List<Object[]> QuickLinksList( String LoginType) throws Exception;
 	public String getLabCode(String Empid) throws Exception;
+	public List<Object[]> LabMasterList(String Clusterid) throws Exception;
 
 }
