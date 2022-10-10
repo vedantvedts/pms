@@ -718,6 +718,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeminutesdetails.setIDARCK(committeeminutesdetailsdto.getIDARCK());
 		committeeminutesdetails.setCreatedBy(committeeminutesdetailsdto.getCreatedBy());
 		committeeminutesdetails.setCreatedDate(sdf1.format(new Date()));
+		committeeminutesdetails.setAgendaSubHead(committeeminutesdetailsdto.getAgendaSubHead());
 		
 		if(committeeminutesdetailsdto.getRemarks()=="" ) {
 			

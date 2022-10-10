@@ -17,6 +17,8 @@ public class CommitteeMinutesDetailsDto {
 	private String MinutesUnitId;
 	private String StatusFlag;
 	private String Remarks;
+	private String AgendaSubHead;
+	
 	public String getRemarks() {
 		return Remarks;
 	}
@@ -105,6 +107,12 @@ public class CommitteeMinutesDetailsDto {
 	}
 	public String getModifiedDate() {
 		return ModifiedDate;
+	}
+	public String getAgendaSubHead() {
+		return AgendaSubHead;
+	}
+	public void setAgendaSubHead(String agendaSubHead) {
+		AgendaSubHead = agendaSubHead;
 	}
 	public void setModifiedDate(String modifiedDate) {
 		ModifiedDate = modifiedDate;

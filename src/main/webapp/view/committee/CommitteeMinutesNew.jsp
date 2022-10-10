@@ -308,7 +308,7 @@ for(Object[] temp : invitedlist){
 	{ 
 		memPresent++;
 	}
-	else if(temp[4].toString().equals("A") &&  membertypes.contains( temp[3].toString()) )
+	else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
 	{
 		memAbscent++;
 	}
@@ -316,7 +316,7 @@ for(Object[] temp : invitedlist){
 	{ 
 		ParPresent++;
 	}
-	else if( temp [4].toString().equals("A") && !membertypes.contains( temp[3].toString()) )
+	else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
 	{ 
 		parAbscent++;
 	}

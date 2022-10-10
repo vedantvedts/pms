@@ -26,6 +26,7 @@ public class CommitteeScheduleMinutesDetails {
 	private long MinutesSubOfSubId;
 	private String Details;
 	private String IDARCK;
+	private String AgendaSubHead;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -100,6 +101,12 @@ public class CommitteeScheduleMinutesDetails {
 	}
 	public String getModifiedDate() {
 		return ModifiedDate;
+	}
+	public String getAgendaSubHead() {
+		return AgendaSubHead;
+	}
+	public void setAgendaSubHead(String agendaSubHead) {
+		AgendaSubHead = agendaSubHead;
 	}
 	public void setModifiedDate(String modifiedDate) {
 		ModifiedDate = modifiedDate;

@@ -1514,7 +1514,8 @@ public class CommitteeController {
 	}
 	
 	@RequestMapping(value="CommitteeMinutesSubmit.htm", method=RequestMethod.POST)
-	public String CommitteeMinutesSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+	public String CommitteeMinutesSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	{
 		
 		String UserId=(String)ses.getAttribute("Username");
 
@@ -1535,6 +1536,7 @@ public class CommitteeController {
 			committeeminutesdetailsdto.setIDARCK(req.getParameter("darc"));
 			committeeminutesdetailsdto.setCreatedBy(UserId);
 			committeeminutesdetailsdto.setRemarks(req.getParameter("remarks"));
+			committeeminutesdetailsdto.setAgendaSubHead(req.getParameter("OutComeAirHead"));
 			
 			long count = service.CommitteeMinutesInsert(committeeminutesdetailsdto);
 	
