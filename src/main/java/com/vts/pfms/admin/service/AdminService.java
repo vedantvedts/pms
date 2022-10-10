@@ -64,4 +64,5 @@ public interface AdminService {
 	public Object[] EmployeeData(String empid) throws Exception;
 	public List<Object[]> LoginEditEmpList() throws Exception;
 	public String GenExpertNo() throws Exception;
+	public List<Object[]> AllLabList() throws Exception;
 }

@@ -571,7 +571,13 @@ public class AdminServiceImpl implements AdminService{
 			return ret;
 		}
 	
-	
+		@Override
+		public List<Object[]> AllLabList() throws Exception {
+			logger.info(new Date() +"Inside ClusterLabList");
+			
+			return dao.AllLabList();
+		}
+
 	
 	
 }

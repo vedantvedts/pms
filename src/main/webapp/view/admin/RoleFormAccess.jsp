@@ -51,9 +51,10 @@
 List<Object[]> LoginTypeRoles=(List<Object[]>) request.getAttribute("LoginTypeRoles");
 List<Object[]> FormDetailsList=(List<Object[]>) request.getAttribute("FormDetailsList");
 List<Object[]> FormModulesList=(List<Object[]>) request.getAttribute("FormModulesList");
+List<Object[]> AllLabsList=(List<Object[]>) request.getAttribute("AllLabsList");
 String logintype=(String)request.getAttribute("logintype");
 String moduleid=(String)request.getAttribute("moduleid");
-
+String labCode=(String)session.getAttribute("labcode");
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -88,15 +89,28 @@ if(ses1!=null){
 					
 						<div class="row">
 		
-							<div class="col-md-6">
+							<div class="col-sm-3">
 								<h3 class="control-label" > Forms List</h3>
+							</div>
+							<div class="col-sm-1 half">
+								<h6 class="control-label" > Lab :</h6>
+							</div>
+							
+							<div class="col-sm-2">			
+										 <select class="form-control" id="logintype" required="required" name="labCode" onchange='submitForm();' >
+						   						<% for (Object[] obj : AllLabsList) {%>
+												<option value="<%=obj[3]%>" <%if(obj[3].toString().equalsIgnoreCase(labCode)){ %>selected<% } %> ><%=obj[3] %> </option>
+												<%} %>
+						  				</select>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								
 							</div>
 		
 							<div class="col-sm-1half">	
-								<h5 class="control-label" > Role : </h5>
+								<h6 class="control-label" > Role : </h6>
 							</div>		
 								
-							<div class="col-md-2">			
+							<div class="col-sm-2">			
 										 <select class="form-control" id="logintype" required="required" name="logintype" onchange='submitForm();' >
 						   						<% for (Object[] obj : LoginTypeRoles) {%>
 												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]%></option>
@@ -107,10 +121,10 @@ if(ses1!=null){
 							</div>
 							
 							<div class="col-sm-1half">	
-								<h5 class="control-label" > Module : </h5> 						
+								<h6 class="control-label" > Module : </h6> 						
 							</div>
 							
-							<div class="col-md-2">	
+							<div class="col-sm-2">	
 	
 										 <select class="form-control" id="moduleid" required="required" name="moduleid" onchange='submitForm();' >
 										 		<option value="A" >All </option>
