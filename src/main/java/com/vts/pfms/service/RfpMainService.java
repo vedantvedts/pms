@@ -48,10 +48,10 @@ public interface RfpMainService {
 	public long ProjectHealthUpdate(String EmpId,String UserName)throws Exception;
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa, String Username) throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;
-	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> RiskChanges(String ProjectId,String Interval) throws Exception;
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode) throws Exception;
 	public List<Object[]> FinanceDataPartA(String ProjectId, String Interval) throws Exception;
 	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception;
 }

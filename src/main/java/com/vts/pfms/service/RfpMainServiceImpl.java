@@ -654,27 +654,27 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 
 	@Override
-	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception {
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval,String LabCode) throws Exception {
 	
-		return dao.MeetingChanges(ProjectId,Interval);
+		return dao.MeetingChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception {
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception {
 		
-		return dao.MilestoneChanges(ProjectId, Interval);
+		return dao.MilestoneChanges(ProjectId, Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception{
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception{
 		
-		return dao.ActionChanges(ProjectId,Interval);
+		return dao.ActionChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> RiskChanges(String ProjectId,String Interval)throws Exception{
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode)throws Exception{
 		
-		return dao.RiskChanges(ProjectId,Interval);
+		return dao.RiskChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override

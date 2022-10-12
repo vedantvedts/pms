@@ -54,6 +54,7 @@ import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.FinanceChanges;
+import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.service.RfpMainService;
 
@@ -259,7 +260,7 @@ public class LoginController {
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
  
-			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString() ;
+			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
 
 			     String IsDG = "No";
 			     if(DGName.equalsIgnoreCase(LabCode))
@@ -621,11 +622,13 @@ public class LoginController {
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
+    	final String localUri5=uri+"pfms_serv/labdetails";
     	
     	String MonthlyData=null;
     	String WeeklyData=null;
     	String TodayData=null;
     	String HoaJsonData=null;
+    	String LabData= null;
     	long count= 0L;
     	long ibasserveron=0L;
     	try {
@@ -638,9 +641,12 @@ public class LoginController {
 			ResponseEntity<String> monthlyresponse=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
+			
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
+			LabData=labdata.getBody();
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) {
 			
@@ -658,6 +664,7 @@ public class LoginController {
 		List<FinanceChanges> FinanceDetailsMonthly=null;
 		List<FinanceChanges> FinanceDetailsWeekly=null;
 		List<FinanceChanges> FinanceDetailsToday=null;
+		List<IbasLabMaster> LabDetails=null;
 		
 		if(HoaJsonData!=null) {
 			try {
@@ -677,6 +684,10 @@ public class LoginController {
 				FinanceDetailsMonthly = mao.readValue(MonthlyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsWeekly = mao.readValue(WeeklyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsToday = mao.readValue(TodayData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
+				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
+				
+				System.out.println(LabDetails + "in");
+				
 				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,UserId);
 				
 			} catch (JsonProcessingException e) {
@@ -782,6 +793,19 @@ public class LoginController {
     	String ProjectId = "A";
     	String Interval = "T";
     	String ActiveTab = "all-tab_alltab";
+    	String ClusterId = (String)ses.getAttribute("clusterid");
+    	
+    	 String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
+	     String IsDG = "No";
+	     if(DGName.equalsIgnoreCase(LabCode)) {
+	    	 IsDG = "Yes";
+	     	 LabCode="A";
+	     }
+	     else {
+	    	 IsDG = "No";
+	     }
+	     
+    	
     	if(req.getParameter("interval")!=null) {
     		Interval=req.getParameter("interval");
     	}
@@ -791,12 +815,19 @@ public class LoginController {
     	if(req.getParameter("activetab")!=null) {
     		ActiveTab=req.getParameter("activetab");
     	}
+    	if(req.getParameter("labcode")!=null) {
+    		LabCode = req.getParameter("labcode");
+    	}
     	
-    	List<Object[]> MeetingChangesData =rfpmainservice.MeetingChanges(ProjectId,Interval);
-    	List<Object[]> MilestoneChangesData =rfpmainservice.MilestoneChanges(ProjectId, Interval);
-    	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval);
-    	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval) ;
+    	List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+    	List<Object[]> MeetingChangesData =rfpmainservice.MeetingChanges(ProjectId,Interval,LabCode);
+    	List<Object[]> MilestoneChangesData =rfpmainservice.MilestoneChanges(ProjectId, Interval,LabCode);
+    	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval,LabCode);
+    	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval,LabCode) ;
     	
+    	
+	    	 
+	    req.setAttribute("IsDG", IsDG);
     	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,Empid,LabCode));
     	req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
     	req.setAttribute("meetingchangesdata", MeetingChangesData);
@@ -808,6 +839,8 @@ public class LoginController {
     	req.setAttribute("interval", Interval);
     	req.setAttribute("projectid", ProjectId);
     	req.setAttribute("activetab", ActiveTab);
+    	req.setAttribute("labmasterlist", LabMasterList);
+    	req.setAttribute("labcode", LabCode);
  
     	final String localUri=uri+"/pfms_serv/pfms-finance-changes?projectid="+ProjectId+"&interval="+Interval;
     	List<FinanceChanges> FinanceDetails=null;
@@ -840,15 +873,17 @@ public class LoginController {
 				e.printStackTrace();
 			}
 		}
+	
+		
 		req.setAttribute("financechangesdata", FinanceDetails );
 		
 		
 		List<Object[]> alldatalist = new ArrayList<Object[]>();
 
-    	MeetingChangesData.stream().map(c->  new Object[] { "Meeting" ,c[12], c[8] , c[9], sdf.format(c[10]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	MilestoneChangesData.stream().map(c-> new Object[] {"Milestone" ,c[0] ,c[7] , c[8], sdf.format(c[9]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	ActionChangesData.stream().map(c-> new Object[] {"Action" ,c[2] , c[7] , c[9], sdf.format(c[8]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	RiskChangesData.stream().map(c-> new Object[] {"Risk" ,c[1] ,c[9] , c[10], sdf.format(c[8]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	MeetingChangesData.stream().map(c->  new Object[] { "Meeting" ,c[12], c[8] , c[9], sdf.format(c[10]),c[13] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	MilestoneChangesData.stream().map(c-> new Object[] {"Milestone" ,c[0] ,c[7] , c[8], sdf.format(c[9]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	ActionChangesData.stream().map(c-> new Object[] {"Action" ,c[2] , c[7] , c[9], sdf.format(c[8]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	RiskChangesData.stream().map(c-> new Object[] {"Risk" ,c[1] ,c[9] , c[10], sdf.format(c[8]),c[11] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
     	if(FinanceDetails!=null) {
     	FinanceDetails.stream().map(c-> {
 			try {

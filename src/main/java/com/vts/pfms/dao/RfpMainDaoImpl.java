@@ -46,10 +46,10 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
 	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
 	private static final String CHANGESTOTALCOUNTDATA="CALL Project_Changes_Count_Data(:projectid) ";
-	private static final String MEETINGCHANGES="CALL Project_Changes_Meeting_Data(:projectid,:term)";
-	private static final String MILESTONECHANGES="SELECT c.activityname AS 'Main Activity ', b.activityname AS 'Sub Activity',a.progress,a.progressdate,a.attachname,a.remarks, c.projectid,e.empname,f.desigcode, a.createddate FROM milestone_activity_sub a , milestone_activity_level b ,milestone_activity c ,login d, employee e,employee_desig f WHERE a.isactive=1 AND a.activityid=b.activityid AND b.parentactivityid = c.milestoneactivityid AND CASE WHEN :projectid='A' THEN 1=1 ELSE c.projectid=:projectid END AND e.desigid=f.desigid AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.createdby=d.username AND d.empid=e.empid  AND c.projectid<>0 ORDER BY createddate DESC";
-	private static final String ACTIONCHANGES="SELECT b.projectid,b.actionmainid,b.actionno,b.actionitem,a.progress, a.progressdate,a.remarks,d.empname,a.createddate,e.desigcode FROM action_sub a, action_main b ,login c, employee d,employee_desig e WHERE a.actionmainid=b.actionmainid AND CASE WHEN :projectid='A' THEN 1=1 ELSE b.projectid=:projectid END AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.createdby=c.username AND c.empid=d.empid AND d.desigid=e.desigid AND b.projectid<>0 ORDER BY createddate DESC";
-	private static final String RISKCHANGES="SELECT a.projectid,b.actionno,a.description,a.severity,a.probability,a.mitigationplans,a.revisionno,a.revisiondate,a.createddate,c.empname,e.desigcode FROM pfms_risk_rev a, action_main b,employee c,login d,employee_desig e WHERE CASE WHEN :projectid='A' THEN 1=1 ELSE a.projectid=:projectid END AND a.createdby=d.username AND c.empid=d.empid AND c.desigid=e.desigid AND a.actionmainid=b.actionmainid AND CASE WHEN :term='M' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE() WHEN :term='W' THEN CAST(a.createddate AS DATE) BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE() ELSE CAST(a.createddate AS DATE)=CURDATE() END AND a.projectid<>0 ORDER BY createddate DESC";
+	private static final String MEETINGCHANGES="CALL Project_Changes_Meeting_Data(:projectid,:term,:labcode)";
+	private static final String MILESTONECHANGES="CALL Project_Changes_Milestone_Data(:projectid,:term,:labcode)";
+	private static final String ACTIONCHANGES="CALL Project_Changes_Action_Data(:projectid,:term,:labcode)";
+	private static final String RISKCHANGES="CALL Project_Changes_Risk_Data(:projectid,:term,:labcode)";
 	private static final String FINANCEDATAPARTA="SELECT pftsfileid,projectid,demandno,demanddate,estimatedcost,itemnomenclature FROM pfts_file WHERE isactive=1 AND CASE WHEN :projectid='A' THEN 1=1 ELSE projectid=:projectid END";
 	private static final String PROJECTHOACHANGESDELETE="DELETE FROM project_hoa_changes where projectid=:projectid";
 	
@@ -414,45 +414,49 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval,String LabCode) throws Exception
 	{
-		
+
 		Query query = manager.createNativeQuery(MEETINGCHANGES);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("term", Interval);
+		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 		
 	}
 	
 	@Override
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception
 	{
 		
 		Query query = manager.createNativeQuery(MILESTONECHANGES);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("term", Interval);
+		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 		
 	}
 	
 	@Override
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception
 	{
 		
 		Query query = manager.createNativeQuery(ACTIONCHANGES);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("term", Interval);
+		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 		
 	}
 	
 	@Override
-	public List<Object[]> RiskChanges(String ProjectId,String Interval) throws Exception
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode) throws Exception
 	{
 		
 		Query query = manager.createNativeQuery(RISKCHANGES);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("term", Interval);
+		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 		
 	}
