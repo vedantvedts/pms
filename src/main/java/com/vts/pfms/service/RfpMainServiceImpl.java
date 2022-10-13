@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.vts.pfms.dao.RfpMainDao;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.FinanceChanges;
+import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
@@ -634,13 +635,14 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username) throws Exception{
+	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
 		
 		long count1 =0 ;
 		long count = dao.ProjectHoaDelete();
 		for(ProjectHoa obj : hoa) {
 			obj.setCreatedBy(Username);
 			obj.setCreatedDate(sdf1.format(new Date()));
+			obj.setLabCode(LabDetails.get(0).getLabCode());
 			count1=dao.ProjectHoaUpdate(obj);
 		}
 		

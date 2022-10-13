@@ -283,11 +283,17 @@ String labcode = (String)request.getAttribute("labcode");
 				        	Risks <span class="badge badge-success"><%=riskchangesdata.size() %></span>
 				        </a>
 				      </li>
+				      
+				      <%if(!IsDG.equalsIgnoreCase("Yes")){ %>
+				      
 				      <li class="nav-item flex-sm-fill">
 				        <a id="finance-tab" data-toggle="tab" href="#financetab" role="tab" aria-controls="financetab" aria-selected="false" class="nav-link  font-weight-bold mr-sm-3 rounded-0 border">
 				        	Finance <span class="badge badge-success"><%if(financechangesdata!=null){ %> <%=financechangesdata.size() %> <%}else{ %> - <%} %></span>
 				        </a>
 				      </li>
+				      
+				      <%} %>
+				      
 				    </ul>
 				    
 				    <div id="myTab1Content" class="tab-content">

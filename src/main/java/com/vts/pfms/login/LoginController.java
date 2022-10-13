@@ -670,7 +670,8 @@ public class LoginController {
 			try {
 
 				projectDetails1 = mao.readValue(HoaJsonData, mao.getTypeFactory().constructCollectionType(List.class, ProjectHoa.class));
-				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId);
+				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
+				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId,LabDetails);
 				
 			} catch (JsonProcessingException e) {
 
@@ -684,10 +685,8 @@ public class LoginController {
 				FinanceDetailsMonthly = mao.readValue(MonthlyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsWeekly = mao.readValue(WeeklyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsToday = mao.readValue(TodayData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
-				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
 				
-				System.out.println(LabDetails + "in");
-				
+
 				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,UserId);
 				
 			} catch (JsonProcessingException e) {
@@ -719,11 +718,13 @@ public class LoginController {
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
+    	final String localUri5=uri+"pfms_serv/labdetails";
     	
     	String HoaJsonData=null;
     	String MonthlyData=null;
     	String WeeklyData=null;
     	String TodayData=null;
+    	String LabData=null;
     	
     	try {
     		
@@ -736,9 +737,11 @@ public class LoginController {
 			ResponseEntity<String> monthlyresponse=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
+			LabData=labdata.getBody();
 
     	}catch(Exception e)
 		{
@@ -751,12 +754,13 @@ public class LoginController {
 		List<FinanceChanges> FinanceDetailsMonthly=null;
 		List<FinanceChanges> FinanceDetailsWeekly=null;
 		List<FinanceChanges> FinanceDetailsToday=null;
-		
+		List<IbasLabMaster> LabDetails=null;
 		if(HoaJsonData!=null) {
 			try {
 
 				projectDetails1 = mao.readValue(HoaJsonData, mao.getTypeFactory().constructCollectionType(List.class, ProjectHoa.class));
-				long count = rfpmainservice.ProjectHoaUpdate(projectDetails1,"auto-update");
+				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
+				long count = rfpmainservice.ProjectHoaUpdate(projectDetails1,"auto-update",LabDetails);
 				
 			} catch (JsonProcessingException e) {
 
@@ -884,15 +888,20 @@ public class LoginController {
     	MilestoneChangesData.stream().map(c-> new Object[] {"Milestone" ,c[0] ,c[7] , c[8], sdf.format(c[9]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
     	ActionChangesData.stream().map(c-> new Object[] {"Action" ,c[2] , c[7] , c[9], sdf.format(c[8]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
     	RiskChangesData.stream().map(c-> new Object[] {"Risk" ,c[1] ,c[9] , c[10], sdf.format(c[8]),c[11] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	
+    	if(!IsDG.equalsIgnoreCase("Yes")) {
+    	
     	if(FinanceDetails!=null) {
     	FinanceDetails.stream().map(c-> {
 			try {
-				return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), sdf.format(sdf1.parse(c.getCreatedDate().toString())) };
+				return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), sdf.format(sdf1.parse(c.getCreatedDate().toString())), "-" };
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), "-" };
+			return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), "-" ,"-" };
 		} ).forEach(alldatalist :: add);
+    	}
+    	
     	}
     	
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");
