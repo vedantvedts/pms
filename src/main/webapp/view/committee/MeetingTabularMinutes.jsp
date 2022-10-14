@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
@@ -81,20 +83,30 @@ p{
             margin-left: 10px;
             content: "<%=committeescheduleeditdata[11] %>";
              font-size: 13px;
-          }           
-          <%--  @bottom-center { 
+          }      
+          
+           @bottom-center { 
+             font-size: 13px;
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]%>"; 
-	            font-size: 13px;
           
-          }     --%> 
+          } 
           
-          @bottom-left {          		
+          @bottom-left { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
+	          
+          
+          } 
+               
+    
+          <%-- @bottom-left {          		
  			 content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
  			 margin-bottom: 30px;
              margin-right: 5px;
              font-size: 9.5px;
-          }
+          } --%>
  }
  
  .sth

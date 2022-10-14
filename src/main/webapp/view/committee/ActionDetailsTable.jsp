@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
@@ -47,7 +49,7 @@ p{
              content: "Page-AI " counter(page) " of " counter(pages);
              margin-bottom: 30px;
              margin-right: 10px;
-              font-size: 10px;
+             font-size: 13px;
           }
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
@@ -74,17 +76,26 @@ p{
            font-size: 13px;
           
           }
-            <%-- @bottom-center { 
+         
+          @bottom-center { 
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]%>"; 
           
-          }  --%>
+          }
           
-          @bottom-left {          		
+           @bottom-left { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
+	          
+          
+          }   
+          
+      <%--     @bottom-left {          		
  			 content : "The info in this Doc. is proprietary of  <%if( Long.parseLong(projectid)>0){%> <%=projectdetails[1]%> <%}else if(Long.parseLong(divisionid)>0){%> Division:<%=divisiondetails[1]%> <%}else {%> <%=labdetails[1]%> <%}%> 	/DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
  			 margin-bottom: 30px;
              font-size: 9.5px;
-          } 
+          }  --%>
  }
  
  

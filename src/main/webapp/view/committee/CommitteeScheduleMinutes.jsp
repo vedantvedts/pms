@@ -929,7 +929,7 @@ if(formname!=null){
 	          						
 	          						</div>
 	          						<div style="margin-top:-26px; margin-left: 240px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>D<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
 	          						
 
 	        					    </div>
@@ -1888,6 +1888,8 @@ function editcheck1(editfileid)
     }  
 
 	  function FormNameA(formId) {
+	
+		  
     	  $("#"+formId).submit(function(event){
     		    event.preventDefault();
     		    $('#editingair').hide();
