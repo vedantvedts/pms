@@ -1974,7 +1974,7 @@ public class CommitteeController {
 				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
 				req.setAttribute("actionlist",actionsdata);
 				req.setAttribute("labdetails", service.LabDetails());
-				req.setAttribute("isprint", "N");	
+				req.setAttribute("isprint", "N");	    
 				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
 				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 				req.setAttribute("labInfo", printservice.LabDetailes());
