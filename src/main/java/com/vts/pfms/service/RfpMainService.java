@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.FinanceChanges;
+import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.Notice;
 
@@ -46,12 +47,12 @@ public interface RfpMainService {
 	public List<Object[]> ProjectHealthData(String LabCode) throws Exception;
 	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId,String LoginType,String LabCode,String IsAll) throws Exception;
 	public long ProjectHealthUpdate(String EmpId,String UserName)throws Exception;
-	public long ProjectHoaUpdate(List<ProjectHoa> hoa, String Username) throws Exception;
+	public long ProjectHoaUpdate(List<ProjectHoa> hoa, String Username, List<IbasLabMaster> LabDetails) throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;
-	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> RiskChanges(String ProjectId,String Interval) throws Exception;
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode) throws Exception;
 	public List<Object[]> FinanceDataPartA(String ProjectId, String Interval) throws Exception;
 	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception;
 }

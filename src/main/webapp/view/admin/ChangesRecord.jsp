@@ -152,6 +152,10 @@ String projectid = (String)request.getAttribute("projectid");
 String activetab = (String)request.getAttribute("activetab");
 List<Object[]> alldatacombinedlist = (List<Object[]>)request.getAttribute("alldatacombinedlist");
 List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttribute("financechangesdata");
+List<Object[]> labmasterlist =(List<Object[]>)request.getAttribute("labmasterlist");
+String IsDG= (String)request.getAttribute("IsDG");
+String labcode = (String)request.getAttribute("labcode");
+
   %>
 
  <!-- ----------------------------------message ------------------------- -->
@@ -208,7 +212,11 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 						<option value="M"  <%if("M".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %>  style="text-align: left !important" >Monthly</option>
 					</select>
 				</div>
+				
 				<div class="col-md-3 " style="text-align: end">
+				
+				<%if(IsDG.equalsIgnoreCase("No")) {%>
+
 					<label>Project : </label>
 					<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="submitform()"  style="width:200px !important" >
 																
@@ -219,6 +227,22 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 													
 											<%} %>
 					</select>
+	
+				<%} else if(IsDG.equalsIgnoreCase("Yes")) {%>
+				
+				
+					<label>LabCode : </label>
+					<select class="form-control selectdee" id="labcode" required="required" name="labcode" onchange="submitform()"  style="width:200px !important" >
+																
+									<option value="A" <%if("A".equalsIgnoreCase(projectid)){ %> selected="selected" <%} %> selected="selected" hidden="true">All</option>
+											<%	for (Object[] obj : labmasterlist) { %>
+											
+													<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(labcode)){ %> selected="selected" <%} %> style="text-align: left !important" ><%=obj[1]%></option>
+													
+											<%} %>
+					</select>
+	
+				<%} %>
 				</div>
 			</div>
 			
@@ -259,11 +283,17 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 				        	Risks <span class="badge badge-success"><%=riskchangesdata.size() %></span>
 				        </a>
 				      </li>
+				      
+				      <%if(!IsDG.equalsIgnoreCase("Yes")){ %>
+				      
 				      <li class="nav-item flex-sm-fill">
 				        <a id="finance-tab" data-toggle="tab" href="#financetab" role="tab" aria-controls="financetab" aria-selected="false" class="nav-link  font-weight-bold mr-sm-3 rounded-0 border">
 				        	Finance <span class="badge badge-success"><%if(financechangesdata!=null){ %> <%=financechangesdata.size() %> <%}else{ %> - <%} %></span>
 				        </a>
 				      </li>
+				      
+				      <%} %>
+				      
 				    </ul>
 				    
 				    <div id="myTab1Content" class="tab-content">
@@ -276,6 +306,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			            	<thead>
 			                	<tr>
 			                		<th style="width:18px !important">SN</th>
+			                		<th>Lab</th>
 			                    	<th>Type</th>
 			                        <th>Identity</th>
 			                        <th>Done By</th>
@@ -286,6 +317,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			                	 <%int n=1;for (Object[] obj : alldatacombinedlist){  %>
 								<tr>
 									<td><%=n %>.</td>
+									<td><%=obj[5] %></td>
 									<td><%=obj[0]%></td>
 									<td><%=obj[1]%></td>
 									<td><%=obj[2]%> (<%=obj[3] %>)</td>
@@ -326,11 +358,12 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 				      	<table class="table table-bordered table-hover table-striped table-condensed dataTable "  id="myTable"> 
 			            	<thead>
 			                	<tr>
-			                		<th style="width:18px !important">SN</th>
-			                    	<th>Meeting Id</th>
+			                		<th>SN</th>
+			                		<th>Lab</th>
+			                    	<th >Meeting Id</th>
 			                        <th>Schedule</th>
 			                        <th>Status</th>
-			                        <th>Done By</th>
+			                        <th style="width:170px !important">Done By</th>
 			                        <th>Created Date</th>
 			                  	</tr>
 			                </thead>
@@ -338,6 +371,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			                	<%int i=1;for (Object[] obj : meetingchangesdata){ %>
 								<tr>
 									<td><%=i %>.</td>
+									<td><%=obj[13] %></td>
 									<td><%=obj[12] %></td>
 									<td><%=sdf1.format(obj[4]) %> &nbsp;-&nbsp; <%=obj[5] %></td>
 									<td><%=obj[7] %></td>
@@ -370,6 +404,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			            	<thead>
 			                	<tr>
 			                		<th >SN</th>
+			                		<th>Lab</th>
 			                    	<th  style="width:100px	">Main Activity</th>
 			                        <th>Sub Activity</th>
 			                        <th>Progress</th>
@@ -382,6 +417,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			                	<%int j=1;for (Object[] obj : milestonechangesdata){ %>
 								<tr>
 									<td><%=j %>.</td>
+									<td><%=obj[10] %></td>
 									<td><%=obj[0] %></td>
 									<td><%=obj[1] %></td>
 									<td style="text-align: center" ><%=obj[2] %>%</td>
@@ -412,6 +448,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			            	<thead>
 			                	<tr>
 			                		<th>SN</th>
+			                		<th>Lab</th>
 			                    	<th>Action No</th>
 			                        <th>Action Item</th>
 			                        <th>Progress</th>
@@ -424,6 +461,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			                	<%int k=1;for (Object[] obj : actionchangesdata){ %>
 								<tr>
 									<td><%=k %>.</td>
+									<td><%=obj[10] %></td>
 									<td><%=obj[2] %></td>
 									<td style="width: 320px"><%=obj[3] %></td>
 									<td style="text-align: center" ><%=obj[4] %>%</td>
@@ -456,8 +494,9 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			            	<thead>
 			                	<tr>
 			                		<th>SN</th>
-			                    	<th  style="width:170px	">Action No</th>
-			                        <th>Description</th>
+			                		<th>Lab</th>
+			                    	<th style="width:170px	">Action No</th>
+			                        <th style="width:340px!important">Description</th>
 			                        <th>Severity</th>
 			                        <th>Probability</th>
 			                        <th>Mitigation </th>
@@ -470,6 +509,7 @@ List<FinanceChanges> financechangesdata = (List<FinanceChanges>)request.getAttri
 			                	<%int l=1;for (Object[] obj : riskchangesdata){ %>
 								<tr>
 									<td><%=l %>.</td>
+									<td><%=obj[11] %></td>
 									<td><%=obj[1] %></td>
 									<td><%=obj[2] %></td>
 									<td><%=obj[3] %></td>
