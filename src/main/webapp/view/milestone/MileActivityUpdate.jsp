@@ -89,7 +89,12 @@ input[type="file"]::-webkit-file-upload-button{
 </head>
  
 <body>
-  <%List<Object[]> StatusList=(List<Object[]>)request.getAttribute("StatusList");
+  <%
+  List<Object[]> AllLabsList = (List<Object[]>)request.getAttribute("AllLabsList");
+  List<Object[]> StatusList=(List<Object[]>)request.getAttribute("StatusList");
+  String LabCode =(String)session.getAttribute("labcode");
+  
+  System.out.println(LabCode);
   List<Object[]> EmpList=(List<Object[]>)request.getAttribute("EmpList");
   Object[] EditData=(Object[])request.getAttribute("EditData");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -187,7 +192,7 @@ input[type="file"]::-webkit-file-upload-button{
     	<div class="card-body" style="margin-top: -8px">
             <form name="specadd" id="specadd" action="MilActionSubmit.htm" method="post">
   
-   				<div class="row"  style="margin-bottom: 10px;">
+   				<div class="row" >
 <%-- 					<div class="col-md-1"  align="left"></div>
    					<div class="col-sm-10" align="left"  >
 <div class="form-group" style="text-align: justify;">
@@ -196,20 +201,62 @@ input[type="file"]::-webkit-file-upload-button{
 
 </div>
 </div> --%>
-<div class="col-md-1"  align="left"></div>
+
 <div class="col-md-1"  align="left"></div>
   <div class="col-sm-3" align="left"  >
    <div class="form-group">
-<label  >PDC: <span class="mandatory" style="color: red;">* </span>
-</label>
+<label  >PDC: <span class="mandatory" style="color: red;">* </span></label>
 <input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >
 
 </div>
 </div>
 
+                             <div class="col-sm-3" align="left">
+									<label> Priority : </label>
+									<br>
+									<select class="form-control selectdee " name="Priority"  required="required"  data-live-search="true" >                                                     
+										<option value="H" >High</option>	
+										<option value="L" >Low</option>
+										<option value="M" >Medium</option>
+										<option value="I" >Immediate</option>
+									</select>	
+								</div>
+								
+							<div class="col-sm-4" align="left">
+									<label> Category : </label>
+									<br>
+									<select class="form-control selectdee " name="Category"  required="required"  data-live-search="true" >                                                     
+										<option value="T" >Technical</option>	
+										<option value="F" >Finance</option>
+										<option value="M" >Managerial</option>
+										<option value="L" >Logistic</option>
+										<option value="O" >Others</option>
+									</select>	
+							</div>
+</div>
 
 
- <div class="col-sm-7" align="left"  >
+<div class="row"  style="margin-bottom: 10px;">
+ <div class="col-sm-2" align="left"  ></div>
+ <div class="col-sm-3" align="left"  >
+   <div class="form-group">
+<label > Lab : <span class="mandatory" style="color: red;">* </span></label>
+
+<br>
+
+<select class=" form-control selectdee" name="AssigneeLabCode" id="LabCode" required="required" style="margin-top: -5px" onchange="AssigneeEmpList()" >
+											<option disabled="disabled"  selected value="" >Choose...</option>
+											<%	for (Object[] obj  : AllLabsList) {%>
+										     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
+											<% } %>
+											<option value="@EXP"> Expert</option>
+										</select>	
+
+</div>
+</div>
+
+
+ <div class="col-sm-5" align="left"  >
    <div class="form-group">
 <label > Assignee : 
 </label>
@@ -231,6 +278,13 @@ input[type="file"]::-webkit-file-upload-button{
 
 </div>
 </div>
+
+
+
+
+
+
+
   
 				
 
@@ -459,23 +513,26 @@ s    }
 
 function changeempdd()
 {
+	var labcode =$('#LabCode').val();
+	
   if (document.getElementById('allempcheckbox').checked) 
   {
-    employeefetch(0);
+    employeefetch(0,labcode);
   } else {
-	  employeefetch(<%=projectdetails[0]%>);
+	  employeefetch(<%=projectdetails[0]%> , labcode);
   }
 }
 
 	
-	function employeefetch(ProID){
+	function employeefetch(ProID, labcode){
 			
 				
 						$.ajax({		
 							type : "GET",
 							url : "ProjectEmpListFetch.htm",
 							data : {
-								projectid : ProID
+								projectid : ProID,
+								labCode	  :labcode
 								   },
 							datatype : 'json',
 							success : function(result) {
@@ -554,7 +611,64 @@ $(document).ready(function() {
 	}); 
 
 	</script>  
+<script type="text/javascript">
 
+ $(document).ready(function(){	
+	 
+	 AssigneeEmpList();
+}); 	
+ 
+ 
+ 
+ 
+		function AssigneeEmpList(){
+		
+			$('#chairperson').val("");
+			
+				var $LabCode = $('#LabCode').val();
+			
+						if($LabCode!=""){
+				
+									$.ajax({
+		
+										type : "GET",
+										url : "ActionAssigneeEmployeeList.htm",
+										data : {
+											LabCode  : $LabCode,
+											
+											   },
+										datatype : 'json',
+										success : function(result) {
+		
+										var result = JSON.parse(result);
+								
+										var values = Object.keys(result).map(function(e) {
+									 				 return result[e]
+									  
+														});
+								
+											var s = '';
+											s += '<option value="">Choose ...</option>';
+											if($LabCode == '@EXP'){
+												
+											}
+											for (i = 0; i < values.length; i++) 
+											{
+												
+												s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+											} 
+											 
+											$('#Assignee').html(s);
+
+										}
+									});		
+		}
+	}
+		
+		
+		
+
+</script>
 
 </body>
 </html>

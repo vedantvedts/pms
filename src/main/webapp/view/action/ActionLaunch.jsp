@@ -124,9 +124,7 @@
 					
 					
 					<div class="card" style=" ">
-						
-						
-						
+
 						<div class="card-header" style="background-color: #055C9D;">
 							<div class="row"> 
 
@@ -183,18 +181,12 @@
 
 							</div>
 							
-
-							
 							<div class="row" align="center">
 
 
 								<div class="col-sm-2" align="left"  >
 									<div class="form-group">
 										<label > Lab : </label>
-										
-										<!-- <div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
-											<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
-										</div> -->
 										<br>
 										<select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
 											<%for(Object[] lab : AllLabList){ %>
@@ -202,39 +194,53 @@
 											<%} %>
 											<option value="@EXP">Expert</option>
 										</select>
-										</div></div>
-										<div class="col-sm-4" align="left"  >
+										</div>
+								</div>
+								<div class="col-sm-4" align="left">
 									<div class="form-group">
 										<label > Assignee : </label>
 										<select class="form-control selectdee " name="Assignee" id="Assignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" multiple>
-											<%-- <%for(Object[] obj:EmpList){ %>	
-											
-											<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-											
-											<%} %> --%>
 										</select>
-
 									</div>
 								</div>
-
-
 								
-								<div class="col-sm-2" align="left"  >
-									<label > Action Type : 
-									</label><br>
+								<div class="col-sm-2" align="left">
+									<label> Action Type : </label>
+									<br>
 									<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" >                                                     
 										<option value="A" >Action</option>	
 										<option value="I" >Issue</option>
 										<option value="K" >Risk</option>
 									</select>	
 								</div>
-								<div class="col-sm-4" align="left"  >
+								
+								<div class="col-sm-2" align="left">
+									<label> Priority : </label>
+									<br>
+									<select class="form-control selectdee " name="Priority"  required="required"  data-live-search="true" >                                                     
+										<option value="H" >High</option>	
+										<option value="L" >Low</option>
+										<option value="M" >Medium</option>
+										<option value="I" >Immediate</option>
+									</select>	
+								</div>
+								
+								<div class="col-sm-2" align="left">
+									<label> Category : </label>
+									<br>
+									<select class="form-control selectdee " name="Category"  required="required"  data-live-search="true" >                                                     
+										<option value="T" >Technical</option>	
+										<option value="F" >Finance</option>
+										<option value="M" >Managerial</option>
+										<option value="L" >Logistic</option>
+										<option value="O" >Others</option>
+									</select>	
+								</div>
+				
+								<div class="col-sm-4" align="left" >
 									<div class="form-group" id="OldList">
-										<label > Old Action Id : 
-										</label><br>
-										<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " >
-											
-										</select>
+										<label > Old Action Id : </label><br>
+										<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " ></select>
 									</div>
 									<b id="Message" style="font-size:14px;color: maroon " ></b>
 								</div>
@@ -244,9 +250,6 @@
 								<div class="col-sm-4" align="center"  ><br>
 									<input type="submit" id="submit" class="btn  btn-sm submit" style="margin-top: 10px;" onclick="return confirm('Are you sure To Submit?')" value="SUBMIT"/>
 									<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
-									
-									
-									
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
 									
 								</div>			  
@@ -348,12 +351,13 @@
 																			</button>
 																			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 																			<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																			<input type="hidden" name="ActionAssignId" value="<%=obj[15]%>"/>
 																		</form> 
 																		<br>
 																		<%if(obj[11]==null){ %>	
 																		
 																		
-																		<button type="button" onclick="Actioneditmodal('<%=obj[0]%>'); ">
+																		<button type="button" onclick="Actioneditmodal('<%=obj[0]%>' ,'<%=obj[15]%>'); ">
 																			<div class="cc-rockmenu">
 																				<div class="rolling">
 																					<figure class="rolling_icon"><img src="view/images/edit.png"></figure>
@@ -445,6 +449,7 @@
 								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn"  >SUBMIT</button>
 								
 								<input type="hidden" name="actionmainid" id="modalactionmainid" value="">
+								<input type="hidden" name="actionassigneid" id="modalactionassignid" value="">
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 							</form>
 						</div>
@@ -500,11 +505,7 @@ function AssigneeEmpList(){
  					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
  				} 
  				
- 				$('#Assignee').html(s);
- 				
- 				
- 				
- 				
+ 				$('#Assignee').html(s);	
  			}
  		});
  		
@@ -519,14 +520,15 @@ function AssigneeEmpList(){
 
 
 			<script type="text/javascript">
-				function Actioneditmodal($actionid)
+				function Actioneditmodal($actionid , $assignid)
 				{
-					
+					console.log($assignid);
 					$.ajax({		
 						type : "GET",
 						url : "ActionDetailsAjax.htm",
 						data : {
-							actionid : $actionid
+							actionid : $actionid,
+							assignid : $assignid
 						},
 						datatype : 'json',
 						success : function(result) {
@@ -536,6 +538,7 @@ function AssigneeEmpList(){
 							
 							$('#modalactionitem').html(result[1]);
 							$('#modalactionmainid').val(result[0]);
+							$('#modalactionassignid').val(result[6]);
 							$('#modelAssigneelabcode').val(result[5]).trigger('change');
 							AssigneeEmpListForEdit(result[2]);
 							$('#modalassignee').val(''+result[2]).trigger('change');

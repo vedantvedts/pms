@@ -121,11 +121,13 @@ h6{
 	        		
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
+			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
 	      			</form>
 	      	
 	      	
 	      			<form action="ActionForward.htm" method="post" id="fwdfrm">
 	      				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
+	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      			</form>
 				</div>

@@ -3,6 +3,7 @@ package com.vts.pfms.committee.dao;
 import java.sql.Date;
 import java.util.List;
 
+import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
@@ -14,17 +15,18 @@ public interface ActionDao {
 	public List<Object[]> EmployeeList() throws Exception; 
 	public List<Object[]> AssignedList(String EmpId) throws Exception;
 	public long ActionMainInsert(ActionMain main)throws Exception;
+	public long ActionAssignInsert(ActionAssign assign)throws Exception;
 	public List<Object[]> AssigneeList(String EmpId) throws Exception;
-	public List<Object[]> AssigneeData(String MainId) throws Exception;
-	public List<Object[]> SubList(String MainId) throws Exception;
+	public List<Object[]> AssigneeData(String MainId ,String assignid) throws Exception;
+	public List<Object[]> SubList(String assignid) throws Exception;
 	public long ActionSubInsert(ActionSub main)throws Exception;
 	public long ActionAttachInsert(ActionAttachment main)throws Exception;
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception;
 	public int ActionSubDelete(String id) throws Exception;
-	public int MainUpdate(ActionMain main) throws Exception;
-	public int MainForward(ActionMain main) throws Exception;
+	public int AssignUpdate(ActionAssign assign) throws Exception;
+	public int MainForward(ActionAssign assign) throws Exception;
 	public List<Object[]> ForwardList(String EmpId) throws Exception;
-	public int MainSendBack(ActionMain main) throws Exception;
+	public int MainSendBack(ActionAssign assign) throws Exception;
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception;
 	public List<Object[]> ActionList(String EmpId) throws Exception;
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception;
@@ -35,7 +37,7 @@ public interface ActionDao {
 	public int ActionGenCount(String ProjectId) throws Exception;
 	public long ActionNotificationInsert(PfmsNotification ProjectId) throws Exception;
 	public List<Object[]> ActionNoSearch(String ActionMainId) throws Exception;
-	public List <Object[]> AssigneeDetails(String MainId) throws Exception;
+	public List <Object[]> AssigneeDetails(String assignid) throws Exception;
 	public List<Object[]> ScheduleActionItem(String ScheduleId) throws Exception;
 	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type) throws Exception ;
 	public List<Object[]> ActionSearch(String EmpId,String No,String Position) throws Exception;
@@ -43,12 +45,11 @@ public interface ActionDao {
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception;
 	public List<Object[]> projectdetailsList(String EmpId) throws Exception;
 	public List<Object[]> ActionWiseReports(String Term,String ProjectId) throws Exception ;
-	public List<Object[]> ActionNotification( String MainId) throws Exception;
+	public List<Object[]> ActionNotification( String MainId , String assignid) throws Exception;
 	public List<Object[]> ActionPdcReports(String Emp,String ProjectId,String Position,Date From,Date To ) throws Exception ;
 	public String ProjectCode(String ProjectId) throws Exception;
-	public int MainExtendPdc(ActionMain main) throws Exception;
 	public List<Object[]> ActionSelfList(String EmpId)throws Exception;
-	public List<Object[]> SearchDetails(String MainId) throws Exception;
+	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception;
 	public List<Object[]> allprojectdetailsList() throws Exception;	
 	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception;
 	public long ActionSelfReminderAddSubmit(ActionSelf actionself) throws Exception;
@@ -66,11 +67,12 @@ public interface ActionDao {
 	public Object[] CommitteeShortName(String scheduleid) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype,String projectid) throws Exception;
 	public int AssigneeSeenUpdate(String EmpId) throws Exception;
-	public Object[] ActionDetailsAjax(String actionid) throws Exception;
+	public Object[] ActionDetailsAjax(String actionid , String assignid) throws Exception;
 	public int ActionMainEdit(ActionMain main) throws Exception;
+	 public int ActionAssignEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
 	public List<Object[]> ClusterExpertsList() throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
-	
+	 public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception;
  }

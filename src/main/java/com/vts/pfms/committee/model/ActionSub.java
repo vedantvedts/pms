@@ -14,7 +14,7 @@ public class ActionSub {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ActionSubId;
-	private Long ActionMainId;
+	private Long ActionAssignId;
 	private int Progress;
 	private Date ProgressDate;
 	private String Remarks;
@@ -29,11 +29,12 @@ public class ActionSub {
 	public void setActionSubId(Long actionSubId) {
 		ActionSubId = actionSubId;
 	}
-	public Long getActionMainId() {
-		return ActionMainId;
+
+	public Long getActionAssignId() {
+		return ActionAssignId;
 	}
-	public void setActionMainId(Long actionMainId) {
-		ActionMainId = actionMainId;
+	public void setActionAssignId(Long actionAssignId) {
+		ActionAssignId = actionAssignId;
 	}
 	public int getProgress() {
 		return Progress;
