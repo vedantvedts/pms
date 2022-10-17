@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1975,7 +1973,7 @@ public class CommitteeController {
 				req.setAttribute("actionlist",actionsdata);
 				req.setAttribute("labdetails", service.LabDetails());
 				req.setAttribute("isprint", "N");	    
-				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 				req.setAttribute("labInfo", printservice.LabDetailes());
 			}
@@ -2540,7 +2538,7 @@ public class CommitteeController {
 			req.setAttribute("actionlist",  actionsdata);
 			req.setAttribute("labdetails", service.LabDetails());
 			req.setAttribute("isprint", "Y");	
-			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("labInfo", printservice.LabDetailes());
 
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
@@ -3292,7 +3290,7 @@ public class CommitteeController {
 			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
 			req.setAttribute("actionlist",actionsdata);
 			req.setAttribute("labdetails", service.LabDetails());
-			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 		
 			
 			return "committee/ComMeetingApprovalMinDetails";
@@ -3715,7 +3713,7 @@ public class CommitteeController {
 			req.setAttribute("projectid", projectid);				
 			req.setAttribute("actionlist", service.MinutesViewAllActionList(committeescheduleid));
 			req.setAttribute("labdetails", service.LabDetails());
-			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("isprint", "N");
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 			req.setAttribute("labInfo", printservice.LabDetailes());
@@ -3782,7 +3780,7 @@ public class CommitteeController {
 			req.setAttribute("actionlist", service.MinutesViewAllActionList(committeescheduleid));
 			req.setAttribute("labdetails", service.LabDetails());
 			req.setAttribute("isprint", "Y");
-			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 			req.setAttribute("labInfo", printservice.LabDetailes());
 			
@@ -5494,7 +5492,7 @@ public class CommitteeController {
 				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
 				req.setAttribute("labdetails", service.LabDetails());
 				req.setAttribute("isprint", "N");	
-				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				
 				
 				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeescheduleeditdata[22]+""));
@@ -5668,7 +5666,7 @@ public class CommitteeController {
 				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
 				req.setAttribute("labdetails", service.LabDetails());
 				req.setAttribute("isprint", "Y");	
-				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String("lablogo"));
+				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				
 				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
 				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeescheduleeditdata[22]+""));

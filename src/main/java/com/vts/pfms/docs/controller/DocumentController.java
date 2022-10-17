@@ -48,12 +48,18 @@ import com.vts.pfms.docs.model.PfmsDocContentLinks;
 import com.vts.pfms.docs.model.PfmsDocContentRev;
 import com.vts.pfms.docs.model.PfmsDocTemplate;
 import com.vts.pfms.docs.service.DocumentService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
 public class DocumentController {
 
 	@Autowired
 	DocumentService service;
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
+	
+	
 	private static final Logger logger=LogManager.getLogger(DocumentController.class);
 	
 	@RequestMapping(value = "ProjectSystems.htm")
@@ -664,7 +670,7 @@ public class DocumentController {
 			req.setAttribute("itemslist", itemslist);
 			req.setAttribute("docdata",docdata  );
 			req.setAttribute("labdetails",service.LabDetails()  );
-			req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(docdata[10].toString()));
 			req.setAttribute("itemcontentlist", contentlist);
 			req.setAttribute("linkslistmap", service.AllItemsLinksListDraft(contentlist));
 			return "documents/DocUnrevised";
@@ -689,7 +695,7 @@ public class DocumentController {
 			req.setAttribute("linkslistmap", service.AllItemsLinksList(contentlist));
 			req.setAttribute("docdata",docdata  );
 			req.setAttribute("labdetails",service.LabDetails()  );
-			req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(docdata[10].toString()));
 			
 			req.setAttribute("itemcontentlist", service.PfmsDocContentFrzData(pfmsdocid));
 			
@@ -717,7 +723,7 @@ public class DocumentController {
 			req.setAttribute("itemslist", itemslist);
 			req.setAttribute("docdata",docdata);
 			req.setAttribute("labdetails",service.LabDetails()  );
-			req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(docdata[10].toString()));
 			req.setAttribute("itemcontentlist", contentlist);
 			req.setAttribute("linkslistmap", service.AllItemsLinksListDraft(contentlist));
 			
@@ -767,7 +773,7 @@ public class DocumentController {
 			req.setAttribute("contentlist",contentlist );
 			req.setAttribute("docdata",docdata  );
 			req.setAttribute("labdetails",service.LabDetails()  );
-			req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(docdata[10].toString()));
 			req.setAttribute("linkslistmap", service.AllItemsLinksListRev(contentlist));
 			
 			String filename=docdata[6].toString();			
@@ -818,7 +824,7 @@ public class DocumentController {
 			req.setAttribute("linkslistmap", service.AllItemsLinksList(contentlist));
 			req.setAttribute("docdata",docdata  );
 			req.setAttribute("labdetails",service.LabDetails()  );
-			req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(docdata[10].toString()));
 			
 			
 			String filename=docdata[6].toString();			

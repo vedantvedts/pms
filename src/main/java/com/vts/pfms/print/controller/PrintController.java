@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,7 +70,6 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
@@ -84,6 +82,7 @@ import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.print.service.PrintService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 
 @Controller
@@ -108,6 +107,11 @@ public class PrintController {
 	
 	@Autowired
 	Environment env;
+	
+	@Autowired
+	PMSLogoUtil LogoUtil;
+	
+	
 	private static final Logger logger=LogManager.getLogger(PrintController.class);
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -116,7 +120,7 @@ public class PrintController {
 	public String PfmsPrint(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside PfmsPrint.htm "+UserId);		
 	    	try {
 	    		String InitiationId=req.getParameter("IntiationId");
@@ -174,7 +178,7 @@ public class PrintController {
 //	    		}
 //
 //	    	}
-	   		 	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));                     
+	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));                     
 	    		req.setAttribute("labdata", service.LabDetailes());
 	    		req.setAttribute("LabList", service.LabList().get(0));
 	    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId).get(0));
@@ -230,11 +234,11 @@ public class PrintController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ExecutiveSummaryDownload.htm "+UserId);		
 	    try {
-	    
-	    	String InitiationId=req.getParameter("IntiationId");
-    		
 	    	
-   		 	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));                     
+	    	String InitiationId=req.getParameter("IntiationId");
+	    	String LabCode =(String) ses.getAttribute("labcode");
+	    	
+   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));                     
     		req.setAttribute("labdata", service.LabDetailes());
     		req.setAttribute("LabList", service.LabList().get(0));
     		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId).get(0));
@@ -508,7 +512,7 @@ public class PrintController {
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("labInfo", service.LabDetailes());
-	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
             req.setAttribute("filePath", env.getProperty("file_upload_path"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		
@@ -1031,7 +1035,7 @@ public class PrintController {
 	    	req.setAttribute("isprint", "0");
 	    	
 	    	req.setAttribute("labInfo", service.LabDetailes());
-	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		
     		String LevelId= "2";
@@ -1938,7 +1942,7 @@ public class PrintController {
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("labInfo", service.LabDetailes());
-	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
 
             String LevelId= "2";
 			
@@ -2363,7 +2367,7 @@ public class PrintController {
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("labInfo", service.LabDetailes());
-	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
 	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
             String LevelId= "2";
 			

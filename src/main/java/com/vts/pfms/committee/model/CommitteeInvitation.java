@@ -22,7 +22,7 @@ public class CommitteeInvitation
 	private String MemberType;
 	private String Attendance;
 	private String DesigId;
-	private String MemberLabCode;
+	private String LabCode;
 	private long SerialNo;
 	private String CreatedBy;
 	private String CreatedDate;
