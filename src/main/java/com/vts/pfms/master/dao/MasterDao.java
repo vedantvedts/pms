@@ -38,8 +38,8 @@ public interface MasterDao  {
 	public List<Object[]> ActivityList() throws Exception;
 	public Object[] ActivityNameCheck(String activityname) throws Exception;
 	public long ActivityAddSubmit(MilestoneActivityType model) throws Exception;
-	public List<Object[]> GroupsList() throws Exception;
-	public List<Object[]> GroupHeadList() throws Exception;
+	public List<Object[]> GroupsList(String LabCode) throws Exception;
+	public List<Object[]> GroupHeadList(String LabCode) throws Exception;
 	public long GroupAddSubmit(DivisionGroup model) throws Exception;
 	public Object[] GroupAddCheck(String gcode) throws Exception;
 	public Object[] GroupsData(String groupid) throws Exception;
@@ -54,7 +54,7 @@ public interface MasterDao  {
 	public List<Object[]> empNoCheckAjax(String empno) throws Exception;
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
 	public Long FeedbackInsert(PfmsFeedback feedback) throws Exception;
-	public List<Object[]> FeedbackList() throws Exception;
+	public List<Object[]> FeedbackList(String LabCode) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
 	
 	

@@ -793,7 +793,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String COMMITTEEINVITATIONCHECK="SELECT committeescheduleid, labcode, empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND LabCode=:LabCode AND empid=:empid";
+	private static final String COMMITTEEINVITATIONCHECK="SELECT committeescheduleid, labcode, empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND labcode=:labcode AND empid=:empid";
+
 	
 	@Override
 	public List<Object[]> CommitteeInvitationCheck(CommitteeInvitation committeeinvitation) throws Exception
@@ -801,7 +802,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		logger.info(new java.util.Date() +"Inside CommitteeInvitationCheck");
 		Query query= manager.createNativeQuery(COMMITTEEINVITATIONCHECK);
 		query.setParameter("scheduleid", committeeinvitation.getCommitteeScheduleId());
-		query.setParameter("LabCode", committeeinvitation.getLabCode() );
+		query.setParameter("labcode", committeeinvitation.getLabCode() );
 		query.setParameter("empid", committeeinvitation.getEmpId());
 		
 		return (List<Object[]>)query.getResultList();

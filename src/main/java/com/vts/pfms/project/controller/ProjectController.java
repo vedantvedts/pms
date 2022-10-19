@@ -94,10 +94,10 @@ public class ProjectController {
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String LoginType=(String)ses.getAttribute("LoginType");
+			String LabCode =(String ) ses.getAttribute("labcode");
 	
-
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType));
-			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId));
+			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 			return "project/ProjectIntiationList";
                                                                    
 		}
@@ -119,6 +119,7 @@ public class ProjectController {
 				String Option = req.getParameter("sub");
 				String IntiationId = req.getParameter("btSelectItem");
 				String Logintype= (String)ses.getAttribute("LoginType");
+				String LabCode = (String)ses.getAttribute("labcode");
 		
 				if (Option.equalsIgnoreCase("add")) {
 					req.setAttribute("ProjectTypeList", service.ProjectTypeList());
@@ -164,7 +165,7 @@ public class ProjectController {
 			if (Option.equalsIgnoreCase("status")) 
 			{
 				req.setAttribute("ProjectStatusList", service.ProjectStatusList(EmpId,Logintype));
-				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId));
+				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 				return "project/ProjectStatusList";
 			}
 		}

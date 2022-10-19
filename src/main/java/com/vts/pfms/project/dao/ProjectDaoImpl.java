@@ -154,7 +154,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid";
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
 	private static final String DORTMDADEMPDATA="SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
-	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid,b.empname,c.designation,'TCM' FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid";
+	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid,b.empname,c.designation,'TCM' FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
 	private static final String EMPDIVHEADDATA ="SELECT e2.empid,e2.empname, ed.designation,'Division Head' FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
@@ -1687,10 +1687,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		
 		@Override
-		public Object[]  DirectorEmpData() throws Exception
+		public Object[]  DirectorEmpData(String LabCode) throws Exception
 		{
 			logger.info(new java.util.Date() +"Inside DirectorEmpData");
 			Query query=manager.createNativeQuery(DIRECTOREMPDATA);
+			query.setParameter("labcode", LabCode);
+			
 			return (Object[])query.getSingleResult();
 		}
 		

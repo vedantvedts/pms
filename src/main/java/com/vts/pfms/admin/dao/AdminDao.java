@@ -19,7 +19,7 @@ public interface AdminDao {
 	public List<Object[]> LoginTypeList() throws Exception;
 	public List<Object[]> EmployeeList() throws Exception;
 	public List<Object[]> RoleList()throws Exception;
-	public List<Object[]> EmployeeList1()throws Exception;
+	public List<Object[]> EmployeeList1(String LabCode)throws Exception;
 	public Long UserManagerInsert(Login login,DivisionEmployee logindivision )throws Exception;
 	public int UserManagerUpdate(Login login )throws Exception;
 	public List<Object[]> LoginTypeList1()throws Exception;
@@ -47,7 +47,7 @@ public interface AdminDao {
 	public List<Object[]> DivisionList()throws Exception;
 	public Login UserManagerEditData(Long LoginId )throws Exception;
 	public int UserManagerDelete(Login login )throws Exception;
-	public List<Object[]> UserManagerList()throws Exception;
+	public List<Object[]> UserManagerList(String LabCode)throws Exception;
 	public int UserNamePresentCount(String UserName )throws Exception;
 	public Long pfmsRoleInsert(PfmsLoginRole pfmsrole)throws Exception ;
 	public Object checkUser(Long loginId)throws Exception ;
@@ -61,7 +61,7 @@ public interface AdminDao {
 	public Object[] DesignationCheck(String designation) throws Exception;
 	public Object[] DesignationCodeEditCheck(String desigcode, String desigid) throws Exception;
 	public Object[] DesignationEditCheck(String designation, String desigid) throws Exception;
-	public List<Object[]> DivisionMasterList()throws Exception;
+	public List<Object[]> DivisionMasterList(String LabCode)throws Exception;
     public List<Object[]> DivisionGroupList() throws Exception;
 	public List<Object[]> DivisionHeadList() throws Exception;
 	public List<Object[]> DivisionMasterEditData(String DivisionId) throws Exception;
@@ -76,7 +76,8 @@ public interface AdminDao {
 	public List<BigInteger> FormRoleActiveList(String formroleaccessid) throws Exception;
 	public Long FormRoleActive(String formroleaccessid,Long Value ) throws Exception;
 	public Object[] EmployeeData(String empid) throws Exception;
-	public List<Object[]> LoginEditEmpList() throws Exception;
+	public List<Object[]> LoginEditEmpList(String LabCode) throws Exception;
 	public long GetExpertsCount() throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
+	public Long LabHqChange(String FormRoleAccessId, String Value) throws Exception;
   }

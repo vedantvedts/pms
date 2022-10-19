@@ -241,11 +241,11 @@ public class LoginController {
 			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
 			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
 			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId));
-			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice());
+			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
 			     req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
 			     req.setAttribute("logintype",LoginType);
 			     req.setAttribute("selfremindercount",rfpmainservice.SelfActionsList(EmpId).size() );
-			     req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
+			     //req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
 			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			     req.setAttribute("ibasUri",ibasUri);
 			     req.setAttribute("interval", interval);
@@ -481,18 +481,20 @@ public class LoginController {
     public String NoticeAddSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception {
     	
     	String EmpId =  ses.getAttribute("EmpId").toString();
-    	String ueser =  ses.getAttribute("EmpId").toString();
+    	String UserId = (String) ses.getAttribute("Username");
+    	String LabCode =(String) ses.getAttribute("labcode");
     	
-    	logger.info(new Date() +"Inside Notice Add Submit "+ueser);
+    	logger.info(new Date() +"Inside Notice Add Submit "+ UserId);
     	
     	Notice notice=new Notice();
     	notice.setNotice(req.getParameter("noticeFiled"));
     	notice.setNoticeBy(EmpId);
     	notice.setIsActive(1);
-    	notice.setCreatedBy(ueser);
+    	notice.setCreatedBy(UserId);
     	notice.setCreatedDate(this.fc.getSqlDateAndTimeFormat().format(new Date()));
     	notice.setFromDate(new java.sql.Date(sdf.parse(req.getParameter("fdate")).getTime()));
     	notice.setToDate(new java.sql.Date(sdf.parse(req.getParameter("tdate")).getTime()));
+    	notice.setLabCode(LabCode);
     	
     	Long result=rfpmainservice.addNotice(notice);
     	

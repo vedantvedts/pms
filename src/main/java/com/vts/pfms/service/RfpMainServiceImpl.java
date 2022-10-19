@@ -126,9 +126,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public List<Object[]> GetNotice()throws Exception{
+	public List<Object[]> GetNotice(String LabCode)throws Exception{
 		
-		return dao.GetNotice();
+		return dao.GetNotice(LabCode);
 		
 	}
 

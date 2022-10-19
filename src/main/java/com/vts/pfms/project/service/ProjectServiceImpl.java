@@ -1748,7 +1748,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public List<Object[]>  ProjectApprovalFlowEmpData(String empid) throws Exception
+		public List<Object[]>  ProjectApprovalFlowEmpData(String empid,String LabCode) throws Exception
 		{
 			logger.info(new Date() +"Inside ProjectApprovalFlowEmpData");
 			List<Object[]> list=new ArrayList<Object[]>();
@@ -1760,7 +1760,7 @@ public class ProjectServiceImpl implements ProjectService {
 					
 			list.addAll(dao.DoRtmdAdEmpData());
 			
-			temp=dao.DirectorEmpData();
+			temp=dao.DirectorEmpData(LabCode);
 			if(temp!=null) {
 				list.add(temp);
 			}
