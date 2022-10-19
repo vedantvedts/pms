@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.sun.xml.bind.annotation.OverrideAnnotationOf;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.model.Committee;
@@ -2676,16 +2675,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception 
+	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
 		logger.info(new java.util.Date() +"Inside LastPMRCActions");
-		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:isFrozen)");	   
+		System.out.println( scheduleid+"   "+committeeid+"   "+ proid+"   "+isFrozen);
+		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
 		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("committeeid",committeeid);
+		query.setParameter("proid",proid);
 		query.setParameter("isFrozen",isFrozen);
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
 	}
-	
 	
 	@Override
 	public List<Object[]> CommitteeMinutesSpecNew()throws Exception
@@ -2976,7 +2977,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	}
 
-	private static final String MINUTESMILE="SELECT a.milestoneactivityid,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progress, a.activitystatus, a.OIC1,a.milestoneno, a.activityshort, a.activitystatusid,a.level FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
+	private static final String MINUTESMILE="SELECT MilestoneNo AS 'Main',MainId,AId,BId,CId,DId,EId,StartDate,EndDate,MileStoneMain,MileStoneA,MileStoneB,MileStoneC,MileStoneD,MileStoneE,ActivityType,ProgressStatus,Weightage,DateOfCompletion,Activitystatus,ActivityStatusId,RevisionNo,MilestoneNo, OicEmpId,EmpName,Designation,LevelId,ActivityShort,StatusRemarks FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
 	@Override
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
 		logger.info(new java.util.Date() +"Inside getMinutesMile ");

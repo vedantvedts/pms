@@ -204,10 +204,10 @@ public class PrintController {
 			throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside PfmsPrint.htm "+UserId);		
 	    try {
 	    	String InitiationId=req.getParameter("IntiationId");		
-			LabMaster labmaster= service.LabDetailes();
 	    		
 	    		req.setAttribute("labdata", service.LabDetailes());
 	    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId));
@@ -215,6 +215,7 @@ public class PrintController {
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
 	    		req.setAttribute("LabList", service.LabList());
+	    		req.setAttribute("LabLogo", LogoUtil.getLabLogoAsBase64String(LabCode));
 	    	
 	    	}
 				
@@ -292,8 +293,6 @@ public class PrintController {
 	    catch(Exception e) {	    		
     		logger.error(new Date() +" Inside ExecutiveSummaryDownload.htm "+UserId, e);
     		e.printStackTrace();
-			
-	
     	}		
 	}
 	
@@ -1035,7 +1034,7 @@ public class PrintController {
 	    	req.setAttribute("isprint", "0");
 	    	
 	    	req.setAttribute("labInfo", service.LabDetailes());
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		
     		String LevelId= "2";

@@ -212,7 +212,7 @@ List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
-
+String LabLogo = (String)request.getAttribute("LabLogo");
 %>
 
 <div  align="center">
@@ -244,42 +244,14 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
   </div>
 
 
-<!-- <table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
-
-<tbody>
-<br>
-<tr>
-<th colspan="4"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
-<th colspan="4"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
-</tr>
-<tr>
-<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
-</tr>
-<tr>
-<th colspan="8"  style="text-align:center;font-size:30px;font:black">Content</th>
-</tr>
-
-
-
-
-
-
-</table>
-
- <h1 class="break"></h1> -->
- 
-
-<!-- 1st page -->
-
-
 
 <table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 
 <tbody>
 <br>
 <tr>
-<th colspan="4"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
-<th colspan="4"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="4"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
+<th colspan="4"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -353,9 +325,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Brief of Proposed Project</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey;"></th>
@@ -457,9 +429,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Objective, Scope & Deliverables</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -552,9 +524,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">..... Objective, Scope & Deliverables</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 
 
@@ -640,9 +612,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Participating Labs with Work Share (if any) </th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -709,9 +681,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Brief work Done Earlier </th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -787,9 +759,9 @@ for(Object[] obj : DetailsList){ %>
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Technology Challenges</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -887,9 +859,9 @@ for(Object[] obj : DetailsList){ %>
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Cost Breakup as per proposal</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -1013,9 +985,9 @@ count++;
 <tbody>
 <br>
 <tr>
-<th colspan="2"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 <th colspan="4"  style="text-align:center;font-size:26px">Proposed Schedule/Timelines</th>
-<th colspan="2"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="2"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -1139,8 +1111,8 @@ count++;
 <tbody>
 <br>
 <tr>
-<th colspan="4"  style="text-align:left;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
-<th colspan="4"  style="text-align:right;font-size:30px"><img src="view/images/drdologo.png" width="80" ></th>
+<th colspan="4"  style="text-align:left;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
+<th colspan="4"  style="text-align:right;font-size:30px"><img  width=80  <%if(LabLogo!=null ){ %> src="data:image/*;base64,<%=LabLogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></th>
 </tr>
 <tr>
 <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>

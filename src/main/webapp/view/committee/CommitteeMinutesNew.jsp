@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="java.text.Format"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
@@ -120,22 +122,30 @@ p{
           
           }
           
-          <%--  @bottom-center { 
-              font-size: 13px;
+ @bottom-center { 
+             font-size: 13px;
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]%>"; 
           
-          } --%>
+          } 
           
-          @bottom-left {          		
+          @bottom-left { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
+	          
+          
+          } 
+          
+         <%--  @bottom-left {          		
         
-<%--              content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Government of India. Unauthorized possession/use is violating the Government procedure which may be liable for prosecution. ";
- --%>        
+             content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Government of India. Unauthorized possession/use is violating the Government procedure which may be liable for prosecution. ";
+        
  			 content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
  			 margin-bottom: 30px;
              margin-right: 5px;
              font-size: 9.5px;
-          }
+          } --%>
              
 
  }
@@ -691,7 +701,8 @@ for(Object[] temp : invitedlist){
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
-											<%if(obj[4]!= null){if(obj[18]!=null){ %>
+											<%if(obj[4]!= null){if(obj[18]!=null && Integer.parseInt(obj[18].toString())>0){ %>
+											
 												<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]) )){ %>
 													<span class="ongoing">UF</span>
 												<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
@@ -701,13 +712,13 @@ for(Object[] temp : invitedlist){
 												<%}else if(obj[10].toString().equals("C")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
 												   <span class="completeddelay">CD</span>
 												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
-												<span class="ongoing">OG</span>
+													<span class="ongoing">OG</span>
 												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %> 
-												<span class="delay">DO</span>
+													<span class="delay">DO</span>
 												<%}else{ %>
-												<span class="ongoing">OG</span>
-												
-												<%}}else if(obj[10].toString().equals("C")){%>
+													<span class="ongoing">OG</span>
+												<%} 
+												}else if(obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
 											        <span class="completed">CO</span>
 											      <% }else{ %><span class="notyet">NS</span> 
 												<%}}else { %> <span class="notassign">NA</span> <%} %> 
@@ -966,7 +977,7 @@ for(Object[] temp : invitedlist){
 												</tr>
 											<tr>
 												
-												 <th class="std" colspan="2" style="max-width: 150px;">Supply Order No</th>
+												 <th class="std"  style="max-width: 150px;">Supply Order No</th>
 												 <th class="std" style="max-width: 90px;	">DP Date</th>
 												 <th class="std" colspan="2" style="max-width: 90px;	">Vendor Name</th>
 												 <th class="std" style="max-width: 80px;">Rev DP Date</th>											 
@@ -987,7 +998,7 @@ for(Object[] temp : invitedlist){
 										  	 
 
 												<tr>
-												<td class="std" ><%=k%></td>
+												<td class="std" rowspan="2" ><%=k%></td>
 												<td class="std" ><%=obj[1]%> </td>
 												<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td class="std"  colspan="2"><%=obj[8]%></td>
@@ -999,7 +1010,7 @@ for(Object[] temp : invitedlist){
 												} %>
 												<tr>
 													
-													<td class="std" colspan="2"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %>
+													<td class="std" ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %>
 													</td>
 													<td class="std" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
 													<td class="std" colspan="2"> <%=obj[12] %>

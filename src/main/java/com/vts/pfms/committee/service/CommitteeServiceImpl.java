@@ -2979,10 +2979,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 
 	@Override 
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception 
+	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
 		logger.info(new Date() +"Inside LastPMRCActions");
-		return dao.LastPMRCActions(scheduleid,isFrozen);
+		return dao.LastPMRCActions(scheduleid,committeeid,proid,isFrozen);
 	}
 	
 	@Override

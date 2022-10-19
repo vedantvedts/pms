@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -5495,7 +5497,7 @@ public class CommitteeController {
 				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				
 				
-				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeescheduleeditdata[22]+""));
+				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
 				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 				
 				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
@@ -5633,82 +5635,120 @@ public class CommitteeController {
 		@RequestMapping(value="CommitteeMinutesNewDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
 		public void CommitteeMinutesNewDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
-		try
-			{		
-				String committeescheduleid = req.getParameter("committeescheduleid");			
-				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
-				String projectid= committeescheduleeditdata[9].toString();
-				String committeeid=committeescheduleeditdata[0].toString();
-				if(projectid!=null && Integer.parseInt(projectid)>0)
+			String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
+			try
+				{		
+					String committeescheduleid = req.getParameter("committeescheduleid");			
+					Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+					String projectid= committeescheduleeditdata[9].toString();
+					String committeeid=committeescheduleeditdata[0].toString();
+					if(projectid!=null && Integer.parseInt(projectid)>0)
+						
+					{
+						req.setAttribute("projectdetails", service.projectdetails(projectid));
+					}
+					String divisionid= committeescheduleeditdata[16].toString();
+					if(divisionid!=null && Integer.parseInt(divisionid)>0)
+					{
+						req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+					}
+					String initiationid= committeescheduleeditdata[17].toString();
+					if(initiationid!=null && Integer.parseInt(initiationid)>0)
+					{
+						req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+					}
+					HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+					long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);		
+					req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
+					req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+		//			req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+					req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
+		//			req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+					req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
+					req.setAttribute("labdetails", service.LabDetails());
+					req.setAttribute("isprint", "Y");	
+					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 					
-				{
-					req.setAttribute("projectdetails", service.projectdetails(projectid));
-				}
-				String divisionid= committeescheduleeditdata[16].toString();
-				if(divisionid!=null && Integer.parseInt(divisionid)>0)
-				{
-					req.setAttribute("divisiondetails", service.DivisionData(divisionid));
-				}
-				String initiationid= committeescheduleeditdata[17].toString();
-				if(initiationid!=null && Integer.parseInt(initiationid)>0)
-				{
-					req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
-				}
-				HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
-				long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);		
-				req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
-				req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
-	//			req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
-				req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
-	//			req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
-				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
-				req.setAttribute("labdetails", service.LabDetails());
-				req.setAttribute("isprint", "Y");	
-				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
-				
-				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
-				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeescheduleeditdata[22]+""));
-				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
-	    		String LevelId= "2";
-				if(printservice.MileStoneLevelId(projectid,committeeid) != null) {
-					LevelId= printservice.MileStoneLevelId(projectid,committeeid)[0].toString();
-				}
-				req.setAttribute("levelid", LevelId);
-				req.setAttribute("labInfo", printservice.LabDetailes());
+					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
+					
+					req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid));
+		    		String LevelId= "2";
+					if(printservice.MileStoneLevelId(projectid,committeeid) != null) {
+						LevelId= printservice.MileStoneLevelId(projectid,committeeid)[0].toString();
+					}
+					req.setAttribute("levelid", LevelId);
+					req.setAttribute("labInfo", printservice.LabDetailes());
 
-		/*---------------------------------------------------------------------------------------------------------------*/
-				if(Long.parseLong(projectid) >0&&committeescheduleeditdata[22].toString().equals("N") ) {
-					
-					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+projectid+"&rupess="+10000000;
-				 		HttpHeaders headers = new HttpHeaders();
-				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
-				 		String jsonResult=null;
-						try {
-							HttpEntity<String> entity = new HttpEntity<String>(headers);
-							ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-							jsonResult=response.getBody();						
-						}catch(Exception e) {
-							req.setAttribute("errorMsg", "errorMsg");
-						}
-						ObjectMapper mapper = new ObjectMapper();
-						mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-						mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-						List<ProjectFinancialDetails> projectDetails=null;
-						if(jsonResult!=null) {
+			/*---------------------------------------------------------------------------------------------------------------*/
+					if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {
+						
+						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+projectid+"&rupess="+10000000;
+					 		HttpHeaders headers = new HttpHeaders();
+					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+					    	 
+					 		String jsonResult=null;
 							try {
-								projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-								req.setAttribute("financialDetails",projectDetails);
-							} catch (JsonProcessingException e) {
-								e.printStackTrace();
+								HttpEntity<String> entity = new HttpEntity<String>(headers);
+								ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+								jsonResult=response.getBody();						
+							}catch(Exception e) {
+								req.setAttribute("errorMsg", "errorMsg");
 							}
-						}
-		 	
-		
-					 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
+							ObjectMapper mapper = new ObjectMapper();
+							mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+							mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+							List<ProjectFinancialDetails> projectDetails=null;
+							if(jsonResult!=null) {
+								try {
+									projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+									req.setAttribute("financialDetails",projectDetails);
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+							}
+			 	
+			
+						 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
+						 	List<Object[]> procurementOnDemand=null;
+						 	List<Object[]> procurementOnSanction=null;
+			 	
+						
+						 	 if(procurementStatusList!=null){
+						 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+						 		Collection<?> keys = map.keySet();
+						 		for(Object key:keys){
+						 		    if(key.toString().equals("D")) {
+						 		    	procurementOnDemand=map.get(key);
+						 		    }else if(key.toString().equals("S")) {
+						 		    	procurementOnSanction=map.get(key);
+						 		    }
+						 		 }
+						 	}
+						 	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+							
+							for(Object obj[] : actionlist) {
+									
+									ArrayList<Object[]> values=new ArrayList<Object[]>();
+									for(Object obj1[] : actionlist ) {
+										if(obj1[0].equals(obj[0])) {
+											values.add(obj1);
+										}
+									}
+									if(!actionsdata.containsKey(obj[0].toString())) {
+										actionsdata.put(obj[0].toString(), values);
+									}
+							} 
+							
+							req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+							req.setAttribute("actionlist",actionsdata);
+						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
+						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
+						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+						 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
+					}else if(committeescheduleeditdata[22].toString().equals("Y") ){
+						List<Object[]> procurementStatusList=(List<Object[]>)service.getMinutesProcure(committeescheduleid);
 					 	List<Object[]> procurementOnDemand=null;
 					 	List<Object[]> procurementOnSanction=null;
 		 	
@@ -5724,7 +5764,15 @@ public class CommitteeController {
 					 		    }
 					 		 }
 					 	}
-					 	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+					 	 
+					 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(Long.parseLong(committeescheduleid),committeeid,projectid,committeescheduleeditdata[22]+""));
+					 	req.setAttribute("financialDetails",service.getMinutesFinance(committeescheduleid));
+						req.setAttribute("milestonesubsystems", service.getMinutesSubMile(committeescheduleid));
+						req.setAttribute("ActionPlanSixMonths", service.getMinutesMile(committeescheduleid));
+						req.setAttribute("procurementOnDemand", procurementOnDemand);
+					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
+					 	List<Object[]> actionlist= service.getMinutesAction(committeescheduleid);
+						
 						
 						for(Object obj[] : actionlist) {
 								
@@ -5739,166 +5787,124 @@ public class CommitteeController {
 								}
 						} 
 						req.setAttribute("actionlist",actionsdata);
-					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
-					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
-					 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
-					 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
-				}else if(committeescheduleeditdata[22].toString().equals("Y") ){
-					List<Object[]> procurementStatusList=(List<Object[]>)service.getMinutesProcure(committeescheduleid);
-				 	List<Object[]> procurementOnDemand=null;
-				 	List<Object[]> procurementOnSanction=null;
-	 	
-				
-				 	 if(procurementStatusList!=null){
-				 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-				 		Collection<?> keys = map.keySet();
-				 		for(Object key:keys){
-				 		    if(key.toString().equals("D")) {
-				 		    	procurementOnDemand=map.get(key);
-				 		    }else if(key.toString().equals("S")) {
-				 		    	procurementOnSanction=map.get(key);
-				 		    }
-				 		 }
-				 	}
-				 	req.setAttribute("financialDetails",service.getMinutesFinance(committeescheduleid));
-					req.setAttribute("milestonesubsystems", service.getMinutesSubMile(committeescheduleid));
-					req.setAttribute("ActionPlanSixMonths", service.getMinutesMile(committeescheduleid));
-					req.setAttribute("procurementOnDemand", procurementOnDemand);
-				 	req.setAttribute("procurementOnSanction", procurementOnSanction);
-				 	List<Object[]> actionlist= service.getMinutesAction(committeescheduleid);
+					}
+			/*---------------------------------------------------------------------------------------------------------------*/			
+					String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 					
 					
-					for(Object obj[] : actionlist) {
-							
-							ArrayList<Object[]> values=new ArrayList<Object[]>(); 
-							for(Object obj1[] : actionlist ) {
-								if(obj1[0].equals(obj[0])) {
-									values.add(obj1);
-								}
-							}
-							if(!actionsdata.containsKey(obj[0].toString())) {
-								actionsdata.put(obj[0].toString(), values);
-							}
-					} 
-					req.setAttribute("actionlist",actionsdata);
+					String path=req.getServletContext().getRealPath("/view/temp");
+					req.setAttribute("path",path);
+					
+					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+					req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
+					String html = customResponse.getOutput();
+					
+					HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+					req.setAttribute("tableactionlist",  actionsdata);
+			        CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+					req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
+					String html1 = customResponse1.getOutput();        
+			        
+			        HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+			         
+			        
+			        PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+			        
+			        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+			        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+			        PdfMerger merger = new PdfMerger(pdfDocument);
+			        
+			        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+		            
+		            pdfDocument2.close();
+			        pdfDocument.close();
+			        merger.close();
+			        pdf2.close();
+			        pdf1.close();	       
+			        pdfw.close();
+			        
+			        
+			        
+			    
+			        res.setContentType("application/pdf");
+			        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+			        File f=new File(path +File.separator+ "merged.pdf");
+			         
+			        
+//			        FileInputStream fis = new FileInputStream(f);
+//			        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+//			        res.setHeader("Content-Length",String.valueOf(f.length()));
+//			        byte[] buffer = new byte[1024];
+//			        int len = 0;
+//			        while ((len = fis.read(buffer)) >= 0) {
+//			            os.write(buffer, 0, len);
+//			        } 
+//			        os.close();
+//			        fis.close();
+			        OutputStream out = res.getOutputStream();
+					FileInputStream in = new FileInputStream(f);
+					byte[] buffer = new byte[4096];
+					int length;
+					while ((length = in.read(buffer)) > 0) {
+						out.write(buffer, 0, length);
+					}
+					in.close();
+					out.flush();
+				
+			       
+			        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+			        Files.delete(pathOfFile2);		
+			        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			        Files.delete(pathOfFile2);	
+			        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+			        Files.delete(pathOfFile2);
+			        
+//					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//					req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
+//					String html = customResponse.getOutput();
+//					byte[] data = html.getBytes();
+//					InputStream fis1=new ByteArrayInputStream(data);
+//					PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+//				    pdfDoc.setTagged();
+//				    Document document = new Document(pdfDoc, PageSize.A4);
+//				    document.setMargins(50, 50, 50, 50);
+//					ConverterProperties converterProperties = new ConverterProperties();
+//					FontProvider dfp = new DefaultFontProvider(true, true, true);
+//				    converterProperties.setFontProvider(dfp);
+//			        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+//			        document.close();
+//					
+//					
+//					
+//			        res.setContentType("application/msword");
+//			        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
+//			        File f=new File(path+"/"+filename+".pdf");
+//			        FileInputStream fis = new FileInputStream(f);
+//			        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+//			        res.setHeader("Content-Length",String.valueOf(f.length()));
+//			        byte[] buffer = new byte[1024];
+//			        int len = 0;
+//			        while ((len = fis.read(buffer)) >= 0) {
+//			            os.write(buffer, 0, len);
+//			        } 
+//			       
+//			        os.close();
+//			        fis.close();
+//			        
+//			        Path pathOfFile2= Paths.get(path+"/"+filename+".pdf");
+//			        Files.delete(pathOfFile2);	
+			        
+					
 				}
-		/*---------------------------------------------------------------------------------------------------------------*/			
-				String filename=committeescheduleeditdata[11].toString().replace("/", "-");
-				
-				
-				String path=req.getServletContext().getRealPath("/view/temp");
-				req.setAttribute("path",path);
-				
-				CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-				req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
-				String html = customResponse.getOutput();
-				
-				HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
-				req.setAttribute("tableactionlist",  actionsdata);
-		        CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
-				req.getRequestDispatcher("/view/committee/ActionDetailsTable.jsp").forward(req, customResponse1);
-				String html1 = customResponse1.getOutput();        
-		        
-		        HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
-		         
-		        
-		        PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-		        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-		        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
-		        
-		        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
-		        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
-		        PdfMerger merger = new PdfMerger(pdfDocument);
-		        
-		        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
-	            
-	            pdfDocument2.close();
-		        pdfDocument.close();
-		        merger.close();
-		        pdf2.close();
-		        pdf1.close();	       
-		        pdfw.close();
-		        
-		        
-		        
-		    
-		        res.setContentType("application/pdf");
-		        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
-		        File f=new File(path +File.separator+ "merged.pdf");
-		         
-		        
-//		        FileInputStream fis = new FileInputStream(f);
-//		        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-//		        res.setHeader("Content-Length",String.valueOf(f.length()));
-//		        byte[] buffer = new byte[1024];
-//		        int len = 0;
-//		        while ((len = fis.read(buffer)) >= 0) {
-//		            os.write(buffer, 0, len);
-//		        } 
-//		        os.close();
-//		        fis.close();
-		        OutputStream out = res.getOutputStream();
-				FileInputStream in = new FileInputStream(f);
-				byte[] buffer = new byte[4096];
-				int length;
-				while ((length = in.read(buffer)) > 0) {
-					out.write(buffer, 0, length);
+				catch (Exception e) {
+					e.printStackTrace(); 
+					logger.error(new Date() +"Inside CommitteeMinutesNewDownload "+UserId,e);
 				}
-				in.close();
-				out.flush();
-			
-		       
-		        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
-		        Files.delete(pathOfFile2);		
-		        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-		        Files.delete(pathOfFile2);	
-		        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
-		        Files.delete(pathOfFile2);
-		        
-//				CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//				req.getRequestDispatcher("/view/committee/CommitteeMinutesNew.jsp").forward(req, customResponse);
-//				String html = customResponse.getOutput();
-//				byte[] data = html.getBytes();
-//				InputStream fis1=new ByteArrayInputStream(data);
-//				PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-//			    pdfDoc.setTagged();
-//			    Document document = new Document(pdfDoc, PageSize.A4);
-//			    document.setMargins(50, 50, 50, 50);
-//				ConverterProperties converterProperties = new ConverterProperties();
-//				FontProvider dfp = new DefaultFontProvider(true, true, true);
-//			    converterProperties.setFontProvider(dfp);
-//		        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-//		        document.close();
-//				
-//				
-//				
-//		        res.setContentType("application/msword");
-//		        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
-//		        File f=new File(path+"/"+filename+".pdf");
-//		        FileInputStream fis = new FileInputStream(f);
-//		        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-//		        res.setHeader("Content-Length",String.valueOf(f.length()));
-//		        byte[] buffer = new byte[1024];
-//		        int len = 0;
-//		        while ((len = fis.read(buffer)) >= 0) {
-//		            os.write(buffer, 0, len);
-//		        } 
-//		       
-//		        os.close();
-//		        fis.close();
-//		        
-//		        Path pathOfFile2= Paths.get(path+"/"+filename+".pdf");
-//		        Files.delete(pathOfFile2);	
-		        
+				
 				
 			}
-			catch (Exception e) {
-				e.printStackTrace(); 
-				logger.error(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId,e);
-			}
-			
-			
-		}
 		
 		
 		@RequestMapping(value="EmployeeScheduleReports.htm", method = {RequestMethod.POST,RequestMethod.GET})
@@ -6198,7 +6204,7 @@ public class CommitteeController {
 		
 		@RequestMapping(value = "getMinutesFrozen.htm", method = RequestMethod.POST)
 		public String getMinutesFrozen(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception 
-		{
+		{	
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside getMinutesFrozen.htm "+UserId);		
 		    try { 
@@ -6220,8 +6226,9 @@ public class CommitteeController {
 							ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
 							jsonResult=response.getBody();						
 						}
-						catch(HttpClientErrorException  | ResourceAccessException e) {
-
+						catch(HttpClientErrorException  | ResourceAccessException e) 
+						{
+							e.printStackTrace();
 							ibasserviceon++;
 							redir.addAttribute("errorMsg", "Not Freezed as IBAS Server is not Responding !!");
 
@@ -6258,18 +6265,20 @@ public class CommitteeController {
 					fin.setBudgetHeadDescription(finance.getBudgetHeadDescription());
 					fin.setCommiteeScheduleId(Long.parseLong(committeescheduleid));
 					fin.setBudgetHeadId(finance.getBudgetHeadId());
-					fin.setFeBalance(finance.getFeBalance());
-					fin.setFeDipl(finance.getFeDipl());
-					fin.setFeExpenditure(finance.getFeExpenditure());
-					fin.setFeOutCommitment(finance.getReOutCommitment());
-					fin.setFeSanction(finance.getReSanction());
-					fin.setProjectId(finance.getProjectId());
-					fin.setReBalance(finance.getReBalance());
-					fin.setReDipl(finance.getReDipl());
-					fin.setReExpenditure(finance.getReExpenditure());
-					fin.setReOutCommitment(finance.getReOutCommitment());
-					fin.setReSanction(finance.getReSanction());
 					fin.setTotalSanction(finance.getTotalSanction());
+					fin.setReSanction(finance.getReSanction());
+					fin.setFeSanction(finance.getFeSanction());
+					fin.setReExpenditure(finance.getReExpenditure());
+					fin.setFeExpenditure(finance.getFeExpenditure());
+					fin.setReOutCommitment(finance.getReOutCommitment());
+					fin.setFeOutCommitment(finance.getFeOutCommitment());
+					fin.setReDipl(finance.getReDipl());
+					fin.setFeDipl(finance.getFeDipl());
+					fin.setReBalance(finance.getReBalance());
+					fin.setFeBalance(finance.getFeBalance());
+					fin.setProjectId(finance.getProjectId());
+					
+					
 					fin.setCreatedBy(UserId);		
 					result=service.insertMinutesFinance(fin);
 				}	
@@ -6277,48 +6286,57 @@ public class CommitteeController {
 				}
 		    	
 		    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
-		    	for(Object[] obj:procurementStatusList) {
-		    	MinutesProcurementList procure=new MinutesProcurementList();
-		    	procure.setDemandDate(obj[3].toString());
-		    	procure.setCommiteeScheduleId(Long.parseLong(committeescheduleid));
-		    	procure.setDemandNo(obj[1].toString());
-		    	procure.setDpDate(obj[4]+"");
-		    	procure.setOrderNo(obj[2]+"");
-		    	procure.setEstimatedCost(Double.parseDouble(obj[5].toString()));
-		    	procure.setItemNomenclature(obj[8].toString());
-		    	procure.setOrderCost(Double.parseDouble(obj[6]!=null?obj[6].toString():"0.00"));
-		    	procure.setPftsFileId(Long.parseLong(obj[0].toString()));
-		    	procure.setPftsStageName(obj[10].toString());
-		    	procure.setPftsStatus(obj[9].toString());
-		    	procure.setRemarks(obj[11]+"");
-		    	procure.setRevisedDp(obj[7]+"");
-		    	procure.setCreatedBy(UserId);	
-		    	result=service.insertMinutesProcurement(procure);
+		    	for(Object[] obj:procurementStatusList) 
+		    	{
+			    	MinutesProcurementList procure=new MinutesProcurementList();
+			    	procure.setDemandDate(obj[3].toString());
+			    	procure.setCommiteeScheduleId(Long.parseLong(committeescheduleid));
+			    	procure.setDemandNo(obj[1].toString());
+			    	procure.setDpDate(obj[4]+"");
+			    	procure.setOrderNo(obj[2]+"");
+			    	procure.setEstimatedCost(Double.parseDouble(obj[5].toString()));
+			    	procure.setItemNomenclature(obj[8].toString());
+			    	procure.setOrderCost(Double.parseDouble(obj[6]!=null?obj[6].toString():"0.00"));
+			    	procure.setPftsFileId(Long.parseLong(obj[0].toString()));
+			    	procure.setPftsStageName(obj[10].toString());
+			    	procure.setPftsStatus(obj[9].toString());
+			    	procure.setRemarks(obj[11]+"");
+			    	procure.setVendorName(obj[12]+"");  
+			    	procure.setPftsStatusId(Long.parseLong(obj[13].toString()));
+			    	procure.setRevisedDp(obj[7]+"");
+			    	procure.setCreatedBy(UserId);	
+			    	result = service.insertMinutesProcurement(procure);
 		    	}
 		    	
 		    	long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);	
 		    	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+		    	if(actionlist.size()>0) {
 		    	for(Object[] obj:actionlist) {
 		    		MinutesActionList action=new MinutesActionList();
-		    		action.setActionDate(obj[4]+"");
-		    		action.setActionFlag(obj[10]+"");
-		    		action.setActionItem(obj[8]+"");
-		    		action.setActionNo(obj[3]+"");
-		    		action.setActionStatus(obj[9]+"");
-		    		action.setAssignee(Long.parseLong(obj[7]+""));
-		    		action.setAssigneeDesig(obj[14]+"");
-		    		action.setAssigneeName(obj[13]+"");
-		    		action.setAssignerDesig(obj[12]+"");
-		    		action.setAssignor(Long.parseLong(obj[6]+""));
-		    		action.setAssignorName(obj[11]+"");
-		    		action.setCommiteeScheduleId(Long.parseLong(committeescheduleid));
+
+		    		if(obj[9]!=null) 
+		    		{
+				    	action.setActionDate(obj[4]+"");
+				    	action.setActionFlag(obj[10]+"");
+				    	action.setActionItem(obj[8]+"");
+			    		action.setActionNo(obj[3]+"");
+			    		action.setActionStatus(obj[9]+"");
+			    		action.setAssignee(Long.parseLong(obj[7]+""));
+			    		action.setAssigneeDesig(obj[14]+"");
+			    		action.setAssigneeName(obj[13]+"");
+			    		action.setAssignerDesig(obj[12]+"");
+			    		action.setAssignor(Long.parseLong(obj[6]+""));
+			    		action.setAssignorName(obj[11]+"");
+			    		action.setEndDate(obj[5]+"");
+		    		
+		    		}
 		    		action.setDetails(obj[1]+"");
-		    		action.setEndDate(obj[5]+"");
 		    		action.setIdrck(obj[2].toString());
 		    		action.setSchduleMinutesId(Long.parseLong(obj[0].toString()));
+		    		action.setCommiteeScheduleId(Long.parseLong(committeescheduleid));
 		    		action.setCreatedBy(UserId);	
 		    		result=service.insertMinutesAction(action);
-		    		
+		    	 }	
 		    	}
 		    	List<Object[]> Milelist= service.MilestoneSubsystems(projectid);
 		    	for(Object[] obj:Milelist) {
@@ -6339,48 +6357,44 @@ public class CommitteeController {
 		    	}
 		    	List<Object[]> actionsixlist= service.ActionPlanSixMonths(projectid);
 		    	for(Object[] obj:actionsixlist) {
-		    		MinutesMileActivity mile=new MinutesMileActivity();
-		    		mile.setLevel(obj[26]+"");
-		    		if(obj[26].toString().equals("0")) {
-		    		mile.setActivityName(obj[9]+"");
-		    		mile.setMilestoneActivityId(Long.parseLong(obj[1].toString()));
-		    		mile.setParentActivityId(Long.parseLong("0"));
-		    		}else if(obj[26].toString().equals("1")){
-		    			mile.setActivityName(obj[10]+"");
-		    			mile.setMilestoneActivityId(Long.parseLong(obj[2].toString()));
-			    		mile.setParentActivityId(Long.parseLong(obj[1].toString()));
-		    		}else if(obj[26].toString().equals("2")){
-		    			mile.setActivityName(obj[11]+"");
-		    			mile.setMilestoneActivityId(Long.parseLong(obj[3].toString()));
-			    		mile.setParentActivityId(Long.parseLong(obj[2].toString()));
-		    		}else if(obj[26].toString().equals("3")){
-		    			mile.setActivityName(obj[12]+"");
-		    			mile.setMilestoneActivityId(Long.parseLong(obj[4].toString()));
-			    		mile.setParentActivityId(Long.parseLong(obj[3].toString()));
-		    		}else if(obj[26].toString().equals("4")){
-		    			mile.setActivityName(obj[13]+"");
-		    			mile.setMilestoneActivityId(Long.parseLong(obj[5].toString()));
-			    		mile.setParentActivityId(Long.parseLong(obj[4].toString()));
-		    		}else if(obj[26].toString().equals("5")){
-		    			mile.setActivityName(obj[14]+"");
-		    			mile.setMilestoneActivityId(Long.parseLong(obj[6].toString()));
-			    		mile.setParentActivityId(Long.parseLong(obj[5].toString()));
-		    		}
-		    		mile.setActivityShort(obj[27]+"");
-		    		mile.setActivityStatus(obj[19]+"");
-		    		mile.setActivityStatusId(Long.parseLong(obj[20].toString()));
-		    		mile.setCommitteeScheduleId(Long.parseLong(committeescheduleid));
-		    		mile.setCreatedBy(UserId);
-		    		mile.setEndDate(obj[8]+"");
-		    		mile.setMilestoneNo(obj[0]+"");
-		    		mile.setOIC1(obj[24]+", "+obj[25]);
-		    		mile.setProgress(obj[16]!=null?Integer.parseInt(obj[16].toString()):0);
-		    		mile.setStartDate(obj[7]+"");
+		    		MinutesMileActivity mile=MinutesMileActivity.builder()
+		    		.MinutesMileId(null)
+		    		.CommitteeScheduleId(Long.parseLong(committeescheduleid))
+		    		.MilestoneNo(Integer.parseInt(obj[0]+""))
+    				.MainId(Long.parseLong(obj[1]+""))
+    				.AId(Long.parseLong(obj[2]+""))
+    				.BId(Long.parseLong(obj[3]+""))
+    				.CId(Long.parseLong(obj[4]+""))
+    				.DId(Long.parseLong(obj[5]+""))
+    				.EId(Long.parseLong(obj[6]+""))
+    				.StartDate(obj[7]+"")
+    				.EndDate(obj[8]+"")
+    				.MileStoneMain(obj[9]+"")
+    				.MileStoneA(obj[10]+"")
+    				.MileStoneB(obj[11]+"")
+    				.MileStoneC(obj[12]+"")
+    				.MileStoneD(obj[13]+"")
+    				.MileStoneE(obj[14]+"")
+    				.ActivityType(obj[15]+"")
+    				.ProgressStatus(Integer.parseInt(obj[16]+""))
+    				.Weightage(Integer.parseInt(obj[17]+""))
+    				.DateOfCompletion(obj[18]!=null ? obj[18].toString() : null)
+    				.Activitystatus(obj[19]+"")
+    				.ActivitystatusId(Integer.parseInt(obj[20]+""))
+    				.RevisionNo(Integer.parseInt(obj[21]+""))
+    				.OicEmpId(Long.parseLong(obj[23]+""))
+    				.EmpName(obj[24]+"")
+    				.Designation(obj[25]+"")
+    				.LevelId(Integer.parseInt(obj[26]+""))
+    				.ActivityShort(obj[27]+"")
+    				.StatusRemarks( obj[28]!=null ? obj[28].toString() : null)
+    				.CreatedBy(UserId)
+    				.build();
 		    		
 		    		result=service.insertMinutesMileActivity(mile);		
 		    	}
 		    	
-		    	List<Object[]> lastpmrcactionlist= service.LastPMRCActions(lastid,committeescheduleeditdata[22]+"");
+		    	List<Object[]> lastpmrcactionlist= service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+"");
 		    	for(Object[] obj:lastpmrcactionlist) {
 		    		MinutesLastPmrc lastpmrc=new MinutesLastPmrc();
 		    		lastpmrc.setActionFlag(obj[16]+"");
