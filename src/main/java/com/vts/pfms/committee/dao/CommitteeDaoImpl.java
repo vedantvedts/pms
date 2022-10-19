@@ -16,7 +16,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.sun.xml.bind.annotation.OverrideAnnotationOf;
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.model.Committee;
@@ -62,7 +61,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND TRIM(b.labcode)=:labcode" ;
 	private static final String COMMITTEEMEMBERDELETE ="UPDATE committee_member SET isactive=0, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE committeememberid=:committeememberid";
 	private static final String COMMITTEESCHEDULELIST="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND  cs.divisionid=0 AND cs.committeeid=:committeeid AND cs.projectid=0 AND cs.divisionid=0 AND cs.initiationid=0 AND cs.isactive=1 ";
-	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid,c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,d.category ,a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen FROM committee_schedule a,committee b ,committee_meeting_status c, pfms_security_classification d WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND a.confidential=d.categoryid";
+	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid,c.meetingstatusid,a.meetingid,a.meetingvenue,a.confidential,a.Reference,d.category ,a.divisionid  ,a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode FROM committee_schedule a,committee b ,committee_meeting_status c, pfms_security_classification d WHERE a.scheduleflag=c.MeetingStatus AND a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND a.confidential=d.categoryid";
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1 and labcode=:labcode";
 	private static final String AGENDALIST = "SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,b.projectname,b.projectid,a.remarks,b.projectcode,a.agendapriority,a.presenterid ,j.empname,h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM project_master b,employee j,employee_desig h,committee_schedules_agenda a  WHERE a.projectid=b.projectid AND a.scheduleid=:committeescheduleid AND a.isactive=1 AND a.projectid<>0 AND a.presenterid=j.empid AND j.desigid=h.desigid  UNION   SELECT a.scheduleagendaid,a.scheduleid,a.schedulesubid,a.agendaitem,cs.labcode AS 'projectname' , '0' AS projectid,a.remarks,'' AS projectcode,a.agendapriority,a.presenterid ,j.empname,h.designation,a.duration,j.desigid, a.PresentorLabCode  FROM employee j,employee_desig h, committee_schedules_agenda a, committee_schedule cs   WHERE a.scheduleid=:committeescheduleid AND a.scheduleid=cs.scheduleid  AND a.isactive=1 AND a.projectid=0 AND a.presenterid=j.empid AND j.desigid=h.desigid ORDER BY 9   ";
 	private static final String COMMITTEESCHEDULEUPDATE="UPDATE committee_schedule SET scheduledate=:scheduledate,schedulestarttime=:schedulestarttime,modifiedby=:modifiedby,modifieddate=:modifieddate, meetingid=:meetingid WHERE scheduleid=:scheduleid";
@@ -757,7 +756,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 
 	@Override
-	public int MeetingAgendaApprovalSubmit(CommitteeSchedule schedule, CommitteeMeetingApproval approval,PfmsNotification notification)throws Exception {
+	public int MeetingAgendaApprovalSubmit(CommitteeSchedule schedule, CommitteeMeetingApproval approval,PfmsNotification notification)throws Exception 
+	{
 
 		logger.info(new java.util.Date() +"Inside MeetingAgendaApprovalSubmit");
 		manager.persist(approval);
@@ -793,7 +793,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 
+<<<<<<< HEAD
 	private static final String COMMITTEEINVITATIONCHECK="SELECT committeescheduleid, labcode, empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND labcode=:labcode AND empid=:empid";
+=======
+	private static final String COMMITTEEINVITATIONCHECK="SELECT committeescheduleid, labcode, empid FROM committee_schedules_invitation WHERE committeescheduleid=:scheduleid AND LabCode=:LabCode AND empid=:empid";
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
 	
 	@Override
 	public List<Object[]> CommitteeInvitationCheck(CommitteeInvitation committeeinvitation) throws Exception
@@ -801,7 +805,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		logger.info(new java.util.Date() +"Inside CommitteeInvitationCheck");
 		Query query= manager.createNativeQuery(COMMITTEEINVITATIONCHECK);
 		query.setParameter("scheduleid", committeeinvitation.getCommitteeScheduleId());
+<<<<<<< HEAD
 		query.setParameter("labcode", committeeinvitation.getLabCode() );
+=======
+		query.setParameter("LabCode", committeeinvitation.getLabCode() );
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
 		query.setParameter("empid", committeeinvitation.getEmpId());
 		
 		return (List<Object[]>)query.getResultList();
@@ -2675,16 +2683,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	@Override
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception 
+	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
 		logger.info(new java.util.Date() +"Inside LastPMRCActions");
-		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:isFrozen)");	   
+		System.out.println( scheduleid+"   "+committeeid+"   "+ proid+"   "+isFrozen);
+		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
 		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("committeeid",committeeid);
+		query.setParameter("proid",proid);
 		query.setParameter("isFrozen",isFrozen);
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
 	}
-	
 	
 	@Override
 	public List<Object[]> CommitteeMinutesSpecNew()throws Exception
@@ -2975,7 +2985,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	}
 
-	private static final String MINUTESMILE="SELECT a.milestoneactivityid,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progress, a.activitystatus, a.OIC1,a.milestoneno, a.activityshort, a.activitystatusid,a.level FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
+	private static final String MINUTESMILE="SELECT MilestoneNo AS 'Main',MainId,AId,BId,CId,DId,EId,StartDate,EndDate,MileStoneMain,MileStoneA,MileStoneB,MileStoneC,MileStoneD,MileStoneE,ActivityType,ProgressStatus,Weightage,DateOfCompletion,Activitystatus,ActivityStatusId,RevisionNo,MilestoneNo, OicEmpId,EmpName,Designation,LevelId,ActivityShort,StatusRemarks FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
 	@Override
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
 		logger.info(new java.util.Date() +"Inside getMinutesMile ");

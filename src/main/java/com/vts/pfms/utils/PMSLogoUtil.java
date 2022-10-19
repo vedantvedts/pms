@@ -1,6 +1,7 @@
 package com.vts.pfms.utils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Base64;
 
@@ -11,11 +12,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class PMSLogoUtil 
 {
-	@Value("${LabLogoPath}")
-	private String LabLogoPath;
+	@Value("${ApplicationFilesDrive}")
+	private String ApplicationFilesDrive;
 	
 	public String getLabLogoAsBase64String(String LabCode) throws IOException
 	{
-		return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/"+LabCode.trim()+".png")));
+		String path = ApplicationFilesDrive+"PMS/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+		}catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path "+path);
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+"PMS/images/lablogos/"+"lablogo"+".png")));
+		}
 	}
+	
+	public String getLabLogoFilePath(String LabCode) throws IOException
+	{
+		return ApplicationFilesDrive+"\\PMS/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
+		
+	}
+	
+	
 }

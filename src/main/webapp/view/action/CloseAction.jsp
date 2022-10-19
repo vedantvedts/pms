@@ -85,6 +85,7 @@ h6{
 <body>
 <%
   String ActionMainId=(String)request.getAttribute("ActionMainId");
+  String ActionAssignId = (String)request.getAttribute("ActionAssignId"); 
   Object[] Assignee=(Object[])request.getAttribute("Assignee");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
@@ -175,7 +176,8 @@ h6{
 							</div>
 							<div class="col-md-3">
 								<button type="submit" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="return confirm('Are You Sure To Submit ?')" formaction="CloseSubmit.htm"> Close Action</button>
-								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />	
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 							</div>
 						</div>						
@@ -196,6 +198,7 @@ h6{
 							<div class="col-md-4">
 								<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
 								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 							</div>
 						</div>

@@ -225,7 +225,6 @@ public interface CommitteeService {
 	public List<Object[]> DefaultAgendaList(String committeeid) throws Exception;
 	public List<Object[]> ProcurementStatusList(String projectid) throws Exception;
 	public List<Object[]> ActionPlanSixMonths(String projectid) throws Exception;
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception;
 	public List<Object[]> CommitteeMinutesSpecNew() throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid, String rtype) throws Exception;
@@ -257,6 +256,7 @@ public interface CommitteeService {
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
+	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
     
 }
 

@@ -243,7 +243,6 @@ public interface CommitteeDao {
 	public List<Object[]> DefaultAgendaList(String scheduleid) throws Exception;
 	public List<Object[]> ProcurementStatusList(String projectid) throws Exception;
 	public List<Object[]> ActionPlanSixMonths(String projectid) throws Exception;
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception;
 	public List<Object[]> CommitteeMinutesSpecNew() throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(String empid, String fromdate, String todate) throws Exception;
@@ -281,6 +280,7 @@ public interface CommitteeDao {
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
+	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
 
 
 }

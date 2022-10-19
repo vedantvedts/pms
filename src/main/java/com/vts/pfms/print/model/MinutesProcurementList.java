@@ -30,6 +30,8 @@ public class MinutesProcurementList {
 	private String PftsStatus;
 	private String PftsStageName;
 	private String Remarks;
+	private String VendorName;
+	private Long PftsStatusId;
 	private String CreatedBy;
 	private String CreatedDate;
 }
