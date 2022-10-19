@@ -1208,6 +1208,7 @@ public class ActionController {
 	@RequestMapping(value = "ActionSelfReminderAddSubmit.htm")
 	public String ActionSelfAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId =(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ActionSelfReminderAddSubmit.htm "+UserId);		
 		try {	
 			String empid=req.getParameter("empid");
@@ -1222,6 +1223,7 @@ public class ActionController {
 			actionselfdao.setEmpId(empid);
 			actionselfdao.setActionItem(actionitem);
 			actionselfdao.setCreatedBy(UserId);
+			actionselfdao.setLabCode(LabCode);
 			long count=0;
 			count=service.ActionSelfReminderAddSubmit(actionselfdao);
 			if (count > 0) {

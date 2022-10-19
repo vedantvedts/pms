@@ -145,7 +145,7 @@ public interface ProjectDao {
 	public List<Object[]> getProjectCatSecDetalis(Long projectId)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid, String Logintype ,String LabCode) throws Exception;
 	public List<Object[]> DoRtmdAdEmpData() throws Exception;
-	public Object[] DirectorEmpData() throws Exception;
+	public Object[] DirectorEmpData(String LabCode) throws Exception;
 	public Object[] EmpDivHeadData(String empid) throws Exception;
 	public ProjectMain ProjectMainObj(String projectmainid) throws Exception;
 	public List<Object[]> InitCommDefault() throws Exception;

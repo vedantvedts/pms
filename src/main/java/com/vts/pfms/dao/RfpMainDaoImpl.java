@@ -34,7 +34,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String REVOKENOTICE="UPDATE pfms_notice SET isactive=:isactive WHERE NoticeId=:NOTICEID";
 	private static final String EDITNOTICE="UPDATE pfms_notice SET Notice=:NOTICE,FromDate=:FROMDATE,ToDate=:TODATE, NoticeBy=:NOTICEBY WHERE NoticeId=:NOTICEID";
 	private static final String NOTICELIST="SELECT * FROM pfms_notice WHERE NoticeBy=:empid AND IsActive=1 AND MONTH(CreatedDate) = MONTH(CURRENT_DATE())";
-	private static final String NOTICE="SELECT n.*, e.EmpName FROM pfms_notice n, employee e   WHERE   DATE(NOW()) >=n.FromDate AND DATE(NOW()) <= n.ToDate AND e.EmpId=n.NoticeBy AND n.IsActive=1 ORDER BY n.NoticeId DESC";	
+	private static final String NOTICE="SELECT n.noticeid,n.notice, e.EmpName FROM pfms_notice n, employee e   WHERE   DATE(NOW()) >=n.FromDate AND DATE(NOW()) <= n.ToDate AND e.EmpId=n.NoticeBy AND n.IsActive=1 AND n.labcode=:labcode ORDER BY n.NoticeId DESC";	
 	private static final String getEmpNoQuery="SELECT empno FROM employee WHERE empid =:empid";	
 	private static final String PROJECTLIST="SELECT a.projectid AS id,a.projectcode,a.projectname,a.projectmainid,a.projecttype,b.empname AS 'project_director',b.mobileno,'General' AS 'empid',a.sanctiondate,a.pdc FROM project_master a , employee b WHERE a.projectdirector=b.empid AND a.isactive=1 UNION SELECT 0 AS id,'General' AS projectcode,'General' AS projectname,'General' AS projectmainid,'General' AS projecttype,'-' AS projectdirector,0 AS mobileno ,'General' AS 'empid',0 AS sanctiondate, 0 AS pdc FROM DUAL ORDER BY id";
 	private static final String QUATERS="SELECT a.sanctiondate, a.pdc, TIMESTAMPDIFF(YEAR,a.sanctiondate,a.pdc)+1 FROM project_master a WHERE a.projectid=:projectid";
@@ -152,9 +152,14 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	@Override
 	public Long addNotice(Notice notice)throws Exception{
 		
-		manager.persist(notice);
-		manager.flush();
-		
+		try {
+			manager.persist(notice);
+			manager.flush();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
 		return notice.getNoticeId();
 	}
 	
@@ -172,10 +177,10 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public List<Object[]> GetNotice()throws Exception{
+	public List<Object[]> GetNotice(String LabCode)throws Exception{
 		
 		Query query = manager.createNativeQuery(NOTICE);
-
+		query.setParameter("labcode", LabCode);
 		List<Object[]> NoticeList=(List<Object[]>)query.getResultList();
 		
 		return NoticeList;	
@@ -185,7 +190,6 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	public List<Object[]> getAllNotice()throws Exception{
 		
 		Query query = manager.createNativeQuery(NOTICE);
-	
 		List<Object[]> NoticeList=(List<Object[]>)query.getResultList();
 		
 		return NoticeList;	

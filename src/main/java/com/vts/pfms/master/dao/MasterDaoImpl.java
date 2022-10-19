@@ -49,8 +49,8 @@ public class MasterDaoImpl implements MasterDao {
 	
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(activitytypeid) AS 'count','activity' FROM milestone_activity_type WHERE isactive=1 AND activitytype LIKE :activityname";
-	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1";
-	private static final String GROUPHEADLIST ="SELECT e.empid,e.empname,ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 ORDER BY e.srno";
+	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1 AND dg.labcode=:labcode";
+	private static final String GROUPHEADLIST ="SELECT e.empid,e.empname,ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
 	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation,dg.isactive FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
 	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
@@ -61,6 +61,8 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
+	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode";
+
 	
 	@PersistenceContext
 	EntityManager manager;
@@ -339,17 +341,19 @@ public class MasterDaoImpl implements MasterDao {
 	
 	
 	@Override
-	public List<Object[]> GroupsList()throws Exception
+	public List<Object[]> GroupsList(String LabCode)throws Exception
 	{	
-		Query query=manager.createNativeQuery(GROUPLIST);		
+		Query query=manager.createNativeQuery(GROUPLIST);
+		query.setParameter("labcode", LabCode);
 		return (List<Object[]> )query.getResultList();
 	}
 	
 	
 	@Override
-	public List<Object[]> GroupHeadList() throws Exception 
+	public List<Object[]> GroupHeadList(String LabCode) throws Exception 
 	{		
 		Query query=manager.createNativeQuery(GROUPHEADLIST);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> GroupHeadList=(List<Object[]>)query.getResultList();
 
 		return GroupHeadList;
@@ -485,11 +489,11 @@ public class MasterDaoImpl implements MasterDao {
 		return feedback.getFeedbackId();
 	}
 	
-	private static final String FEEDBACKLIST = "select a.feedbackid,b.empname,a.createddate from pfms_feedback a,employee b where a.isactive='1' and a.empid=b.empid";
 	@Override
-	public List<Object[]> FeedbackList() throws Exception 
+	public List<Object[]> FeedbackList(String LabCode) throws Exception 
 	{
 		Query query = manager.createNativeQuery(FEEDBACKLIST);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}

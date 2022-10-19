@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.bytecode.enhance.spi.interceptor.SessionAssociableInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -409,7 +410,9 @@ public class AdminController {
 	    @RequestMapping(value = "UserManagerList.htm", method = RequestMethod.GET)
 		public String UserManagerList(HttpServletRequest req, HttpSession ses) throws Exception {
 
-			req.setAttribute("UserManagerList", service.UserManagerList());
+	    	String LabCode = (String) ses.getAttribute("labcode");
+	    	
+			req.setAttribute("UserManagerList", service.UserManagerList(LabCode));
 			return "admin/UserManagerList";
 		}
 	    
@@ -419,11 +422,13 @@ public class AdminController {
 			String Userid = (String) ses.getAttribute("Username");
 			String Option = req.getParameter("sub");
 			String LoginId = req.getParameter("Lid");
+			String LabCode = (String) ses.getAttribute("labcode");
+			
 			if (Option.equalsIgnoreCase("add")) 
 			{
 				req.setAttribute("DivisionList", service.DivisionList());
 				req.setAttribute("RoleList", service.RoleList());
-				req.setAttribute("EmpList", service.EmployeeList1());
+				req.setAttribute("EmpList", service.EmployeeList1(LabCode));
 				req.setAttribute("LoginTypeList", service.LoginTypeList1());
 				return "admin/UserManagerAdd";
 			}
@@ -432,7 +437,7 @@ public class AdminController {
 				req.setAttribute("UserManagerEditData", service.UserManagerEditData(LoginId));
 				req.setAttribute("DivisionList", service.DivisionList());
 				req.setAttribute("RoleList", service.RoleList());
-				req.setAttribute("EmpList", service.LoginEditEmpList());
+				req.setAttribute("EmpList", service.LoginEditEmpList(LabCode));
 				req.setAttribute("LoginTypeList", service.LoginTypeList1());
 				return "admin/UserManagerEdit";
 			}
@@ -694,9 +699,10 @@ public class AdminController {
 		public String  DivisionMasterList(HttpServletRequest req, HttpSession ses) throws Exception {
 			
 		 final String UserId = (String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
 		 AdminController.logger.info(new Date() +" Inside DivisionMasterList " +  UserId );	
 			
-			req.setAttribute("DivisionMasterList", (Object)this.service.DivisionMasterList());
+			req.setAttribute("DivisionMasterList", (Object)this.service.DivisionMasterList(LabCode));
 
 			return "admin/DivisionList";
 		}
@@ -885,6 +891,26 @@ public class AdminController {
 
 			return "admin/RoleFormAccess";
 		}
+	    
+	    
+	    @RequestMapping (value="LabHqChange.htm" , method = RequestMethod.GET)
+	    public @ResponseBody String LabHqChange(HttpServletRequest req,HttpSession ses) throws Exception{
+	    	
+	    	String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside LabHqChange.htm "+UserId);
+			try
+			{
+				String FormRoleAccessId = req.getParameter("formroleaccessid");
+				String Value = req.getParameter("labhqvalue");
+				service.LabHqChange(FormRoleAccessId,Value);
+			}
+			catch (Exception e) {
+					e.printStackTrace(); logger.error(new Date() +"Inside LabHqChange.htm "+UserId,e);
+			}
+
+			return "admin/RoleFormAccess";
+	    	
+	    }
 	    
 	    
 	    

@@ -3,6 +3,7 @@ package com.vts.pfms.master.controller;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -612,15 +613,14 @@ public class MasterController {
 		public String GroupMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
 			
 			String UserId= (String)ses.getAttribute("Username");
+			String LabCode =(String)ses.getAttribute("labcode");
+			
 			logger.info(new Date() +" Inside DivisionEmployee.htm "+UserId);
 			try 
 			{
 //				String groupid=req.getParameter("groupid");
 				
-				
-				
-				
-				req.setAttribute("groupslist",service.GroupsList() );
+				req.setAttribute("groupslist",service.GroupsList(LabCode) );
 				return "master/GroupsList";
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -634,6 +634,7 @@ public class MasterController {
 			
 			String Userid = (String) ses.getAttribute("Username");
 			String Option= req.getParameter("sub");
+			String LabCode = (String)ses.getAttribute("labcode");
 			
 			
 			logger.info(new Date() +"Inside DivisionMasterAddEdit "+ Userid);	
@@ -642,7 +643,7 @@ public class MasterController {
 				
 			if(Option.equalsIgnoreCase("add")) {
 				
-				req.setAttribute("groupheadlist",service.GroupHeadList());
+				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
 				
 				return "master/GroupMasterAdd";
 			}
@@ -652,7 +653,7 @@ public class MasterController {
 				
 				String groupid=req.getParameter("groupid");
 				req.setAttribute("groupsdata", service.GroupsData(groupid));
-				req.setAttribute("groupheadlist",service.GroupHeadList());
+				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
 				
 				return "master/GroupMasterEdit";
 			}
@@ -670,7 +671,9 @@ public class MasterController {
 	  @RequestMapping(value = "GroupMasterAddSubmit.htm",method=RequestMethod.POST )
 			public String GroupMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		    	String UserId = (String) ses.getAttribute("Username");
-				logger.info(new Date() +"Inside Rtmddo "+UserId);		
+				logger.info(new Date() +"Inside Rtmddo "+UserId);	
+				String LabCode= (String)ses.getAttribute("labcode");
+				
 				try {				
 					String groupCode=req.getParameter("gCode");
 					String groupName=req.getParameter("gName");
@@ -681,6 +684,7 @@ public class MasterController {
 					dgm.setGroupName(groupName);
 					dgm.setGroupHeadId(Long.parseLong(GroupHeadName));
 					dgm.setCreatedBy(UserId);
+					dgm.setLabCode(LabCode);
 					
 					long count=service.GroupAddSubmit(dgm);
 					if (count > 0) {
@@ -766,8 +770,9 @@ public class MasterController {
 		public String LabMasterList(HttpServletRequest req,HttpSession ses) throws Exception{
 			
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +" Inside LabMasterList " +  UserId );			
-			req.setAttribute("labmasterdata", service.LabMasterList());			
+			req.setAttribute("labmasterdata", service.LabMasterList().stream().filter(e-> LabCode.equalsIgnoreCase(e[1].toString())).collect(Collectors.toList()) );			
 			return "master/LabDetails";
 		}
 	  @RequestMapping (value="LabDetails.htm" , method= RequestMethod.POST)
@@ -881,7 +886,10 @@ public class MasterController {
 	@RequestMapping(value = "FeedBackList.htm")
 	public String FeedbackList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		
-		req.setAttribute("FeedbackList", service.FeedbackList());
+		
+		String LabCode =(String) ses.getAttribute("labcode");
+		
+		req.setAttribute("FeedbackList", service.FeedbackList(LabCode));
 		return "master/FeedbackList";
 	}
 	

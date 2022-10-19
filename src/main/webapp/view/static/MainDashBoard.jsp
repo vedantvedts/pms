@@ -451,7 +451,7 @@ List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
 Integer selfremindercount=(Integer)request.getAttribute("selfremindercount");  
 Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").toString());
-List<Object[]> notiecList =(List<Object[]>)request.getAttribute("NotiecList");
+List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList");
 Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
 
 Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount");
@@ -1239,6 +1239,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<%}} %>
 														
 													<tr>
+													
+													<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
+													
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestone</td>
 														
@@ -1271,6 +1274,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 													</tr>
 													
 													
+													<%} %>
 				
 													
 												 </table>
@@ -1735,6 +1739,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 							
 							<!-- New Button Group -->
 							
+							<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
+							
 							<%if(QuickLinkList.size()>0){ %>
 							<div class="multi-button" id="quicklinks" style="display: none">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
@@ -1747,6 +1753,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 									  <a class="button" id="cut"><span>Minutes &nbsp;<i class="fa fa-book" aria-hidden="true"></i></span></a> -->
 							</div>
 							<%} %>
+							
+							<%} %>
+							
 		
 					</div>
 		 
@@ -1833,7 +1842,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 								            <div class="carousel-item " id="notice" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;">
 								            
 											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1] %> <%} %> </p>
-												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[8]%> <%} %> </p> 
+												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]%> <%} %> </p> 
 
 								            </div>
 
@@ -1974,7 +1983,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							<!------------------------------------------ Review Block Start ---------------------------------------------------------------  -->
 
 		   					<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader">
-								<span style="font-size:12px ">Review - Pending with My  Approver</span>
+								<span style="font-size:12px ">Review - Pending with My Approver</span>
 							</div>	
 		   
 								<div style="margin-top:5px;display:none" id="review">
@@ -2628,7 +2637,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				<div class="modal-body">
 						
 					<%
-					 if(!request.getAttribute("logintype").toString().equalsIgnoreCase("X")  ) {%>	
+					 if(!IsDG.equalsIgnoreCase("Yes") ) {%>	
 						
 					<div class="row">
 						<div style="text-align: left">

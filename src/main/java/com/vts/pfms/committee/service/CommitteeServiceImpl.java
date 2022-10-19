@@ -1053,7 +1053,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeinvitation.setDesigId(MemberType[2]);
 			
 			if(!committeeinvitationdto.getLabCodeList().isEmpty()) {
-				committeeinvitation.setMemberLabCode(committeeinvitationdto.getLabCodeList().get(i));
+				committeeinvitation.setLabCode(committeeinvitationdto.getLabCodeList().get(i));
 			}
 			
 			// Check weather this employee is already invited as committee member 

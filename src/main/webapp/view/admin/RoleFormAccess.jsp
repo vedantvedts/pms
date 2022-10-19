@@ -89,14 +89,14 @@ if(ses1!=null){
 					
 						<div class="row">
 		
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<h3 class="control-label" > Forms List</h3>
 							</div>
-							<div class="col-sm-1 half">
+						<!-- 	<div class="col-sm-1 half">
 								<h6 class="control-label" > Lab :</h6>
-							</div>
+							</div> -->
 							
-							<div class="col-sm-2">			
+							<%-- <div class="col-sm-2">			
 										 <select class="form-control" id="logintype" required="required" name="labCode" onchange='submitForm();' >
 						   						<% for (Object[] obj : AllLabsList) {%>
 												<option value="<%=obj[3]%>" <%if(obj[3].toString().equalsIgnoreCase(labCode)){ %>selected<% } %> ><%=obj[3] %> </option>
@@ -104,7 +104,7 @@ if(ses1!=null){
 						  				</select>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								
-							</div>
+							</div> --%>
 		
 							<div class="col-sm-1half">	
 								<h6 class="control-label" > Role : </h6>
@@ -155,6 +155,7 @@ if(ses1!=null){
 			                	<th >SN</th>
 			                    <th >Form Name</th>
 			                    <th >Access</th>
+			                    <th> Lab/ HQ </th>
 			                </tr>
 					        </thead>
         
@@ -167,10 +168,24 @@ if(ses1!=null){
 								<tr>
 									<td ><%=count %></td>
 									<td><%=obj[2] %></td>
-										<td>
+									<td>
 											<input name="access"  onchange="FormNameEdit(<%=obj[0]%>)"  type="checkbox"  <%if(obj[1].toString().equalsIgnoreCase("A")){ %> disabled <%} %> <%if((obj[3]).toString().equalsIgnoreCase("1")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="105" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> Active" data-off="<i class='fa fa-times' aria-hidden='true'></i> Inactive" >
 											<input 	type="hidden" name="sample" value="attendance<%=count %>" >	
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+									</td>
+									<td>
+											<div class="form-check form-check-inline">
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>"  onchange="radioChange(this,<%=obj[0] %>)" id="RadioL<%=obj[0]%>" value="L" <%if(obj[4].toString().equalsIgnoreCase("L")){ %> checked <%} %>>
+											  <label class="form-check-label" for="RadioL<%=obj[0]%>">Lab</label>
+											</div>
+											<div class="form-check form-check-inline">
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioH<%=obj[0]%>" value="H" <%if(obj[4].toString().equalsIgnoreCase("H")){ %> checked <%} %> >
+											  <label class="form-check-label" for="RadioB<%=obj[0]%>">HQ</label>
+											</div>
+											<div class="form-check form-check-inline">
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioB<%=obj[0]%>" value="B" <%if(obj[4].toString().equalsIgnoreCase("B")){ %> checked <%} %> >
+											  <label class="form-check-label" for="RadioB<%=obj[0]%>">Both</label>
+											</div>
 									</td>
 
 								</tr>
@@ -236,6 +251,38 @@ function FormNameEdit(id){
 
 
 
+function radioChange(value,id){
+	
+	console.log(value.value );
+	console.log(id);
+	
+ 	$.ajax({
+	
+		type : "GET",
+		url : "LabHqChange.htm",
+		data : {
+			
+			labhqvalue : value.value,
+			formroleaccessid : id
+			
+		},
+		datatype : 'json',
+		success : function(result) {
+
+			var result = JSON.parse(result);
+	
+			var values = Object.keys(result).map(function(e) {
+		 				 return result[e]
+		  
+							});
+				}
+	
+		
+	}); 
+	
+	
+	
+}
 
 
 </script>

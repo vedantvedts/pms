@@ -41,8 +41,9 @@ public class HeaderController {
 		try {
 			String LoginType = ((String) ses.getAttribute("LoginType"));
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode = (String) ses.getAttribute("labcode");
 			
-		    HeaderModuleList = service.FormModuleList(LoginType);
+		    HeaderModuleList = service.FormModuleList(LoginType,LabCode);
 		    request.setAttribute("ProjectInitiationList", service.ProjectIntiationList(EmpId,LoginType));
 		    
 		    
@@ -430,10 +431,11 @@ public class HeaderController {
 
 		String UserId = (String) ses.getAttribute("Username");
 		List<Object[]> HeaderSchedulesList =null;
+		String LabCode = (String) ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside HeaderSchedulesList.htm "+UserId);
 
 		try {
-			HeaderSchedulesList = service.HeaderSchedulesList(req.getParameter("logintype"),req.getParameter("formmoduleid"));
+			HeaderSchedulesList = service.HeaderSchedulesList(req.getParameter("logintype"),req.getParameter("formmoduleid"),LabCode);
 					 
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside HeaderSchedulesList.htm "+UserId, e);

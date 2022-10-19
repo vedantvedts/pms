@@ -477,6 +477,7 @@ public class ActionServiceImpl implements ActionService {
 		actionself.setCreatedBy(actionselfdao.getCreatedBy());
 		actionself.setCreatedDate(sdf1.format(new Date()));
 		actionself.setIsActive(1);		
+		actionself.setLabCode(actionselfdao.getLabCode());
 		return dao.ActionSelfReminderAddSubmit(actionself);
 	}
 	
