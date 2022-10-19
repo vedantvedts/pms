@@ -9,7 +9,6 @@ public class CommitteeMainDto {
 	private String CommitteeId;
 	private String ValidFrom;
 	private String ValidTo;
-	private String CpClusterid;
 	private String CpLabCode;
 	private String Chairperson;
 	private String Co_Chairperson;

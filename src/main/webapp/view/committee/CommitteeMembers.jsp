@@ -93,7 +93,6 @@ if(proposedcommitteemainid!=null)
 List<Object[]> committeerepnotaddedlist=(List<Object[]>)request.getAttribute("committeerepnotaddedlist");
 List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("committeeMemberreplist");
 
-String LabClusterid = (String)request.getAttribute("clusterid");
 String LabCode = (String)request.getAttribute("LabCode");
 %>
 

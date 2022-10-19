@@ -394,7 +394,6 @@ public class CommitteeController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
-		String clusterid =(String) ses.getAttribute("clusterid");
 		
 		logger.info(new Date() +"Inside CommitteeDetails.htm "+UserId);
 		try
@@ -446,7 +445,6 @@ public class CommitteeController {
 			req.setAttribute("initiationdata", service.Initiationdetails(initiationid));
 			req.setAttribute("AllLabsList", service.AllLabList());
 			
-			req.setAttribute("clusterid", clusterid);
 			req.setAttribute("LabCode", LabCode);
 			return "committee/CommitteeDetailsAdd";
 		}
@@ -484,11 +482,8 @@ public class CommitteeController {
 			committeemaindto.setPreApproved(req.getParameter("preApproved"));
 			committeemaindto.setLabCode(LabCode);
 			committeemaindto.setCo_Chairperson(req.getParameter("cochairperson"));
-			committeemaindto.setCpClusterid(req.getParameter("CpClusterid"));
 			
 			long mainid =service.CommitteeDetailsSubmit(committeemaindto);
-			
-			
 			
 			if (mainid > 0) {
 				redir.addAttribute("result", "Committee Created Successfully");
@@ -524,7 +519,6 @@ public class CommitteeController {
 	{			
 		String Username=(String)ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		String clusterid =(String) ses.getAttribute("clusterid");
 		logger.info(new Date() +"Inside CommitteeMainMembers.htm "+Username);
 		try
 		{		
@@ -605,7 +599,6 @@ public class CommitteeController {
 					chairperson=committeemembersall.get(i);
 				}
 			}
-			String CpLabCode = chairperson[9].toString();
 			req.setAttribute("committeemembersall",committeemembersall);
 			req.setAttribute("committeerepnotaddedlist", service.CommitteeRepNotAddedList(committeemainid));
 			req.setAttribute("committeeMemberreplist", service.CommitteeMemberRepList(committeemainid));
@@ -629,7 +622,6 @@ public class CommitteeController {
 				req.setAttribute("initiationdata", service.Initiationdetails(initiationid) );
 			}
 			
-			req.setAttribute("clusterid", clusterid);
 			req.setAttribute("LabCode", LabCode);
 			
 			return "committee/CommitteeMembers";
@@ -998,7 +990,6 @@ public class CommitteeController {
 	public @ResponseBody String CommitteeAgendaPresenterList(HttpServletRequest req,HttpSession ses) throws Exception 
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		String clusterid =(String) ses.getAttribute("clusterid");
 		logger.info(new Date() +" Inside CommitteeAgendaPresenterList.htm"+ UserId);
 		
 		List<Object[]> EmployeeList = new ArrayList<Object[]>();
@@ -1011,12 +1002,7 @@ public class CommitteeController {
 			}
 			else
 			{
-				String CsLabClusterId = service.LabInfoClusterLab(CsLabCode)[1].toString(); 
-				
-				if(Long.parseLong(clusterid) == Long.parseLong(CsLabClusterId)) 
-				{
-					EmployeeList = service.PreseneterForCommitteSchedule(CsLabCode.trim());
-				}
+				EmployeeList = service.PreseneterForCommitteSchedule(CsLabCode.trim());
 			}
 		}
 		catch (Exception e) {
@@ -4301,7 +4287,6 @@ public class CommitteeController {
 	public @ResponseBody String ChairpersonEmployeeListFormation(HttpServletRequest req,HttpSession ses) throws Exception 
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		String clusterid =(String) ses.getAttribute("clusterid");
 		logger.info(new Date() +" Inside ChairpersonEmployeeListFormation.htm"+ UserId);
 		
 		List<Object[]> EmployeeList = new ArrayList<Object[]>();
@@ -4315,12 +4300,7 @@ public class CommitteeController {
 			}
 			else
 			{
-				String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-				
-				if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
-				{
-					EmployeeList = service.ChairpersonEmployeeListFormation(CpLabCode.trim(),committeemainid);
-				}
+				EmployeeList = service.ChairpersonEmployeeListFormation(CpLabCode.trim(),committeemainid);
 			}
 		}
 		catch (Exception e) {
@@ -4338,19 +4318,13 @@ public class CommitteeController {
 	public @ResponseBody String ExternalEmployeeListInvitations(HttpServletRequest req,HttpSession ses) throws Exception
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		String clusterid =(String) ses.getAttribute("clusterid");
 		logger.info(new Date() +" Inside ExternalEmployeeListInvitations "+ UserId);
 		
 		List<Object[]> ExternalEmployeeList = new ArrayList<Object[]>();
 		
 		String LabCode =req.getParameter("LabCode");
 	
-		String LabClusterId = service.LabInfoClusterLab(LabCode)[1].toString(); 
-		
-		if(Long.parseLong(clusterid) == Long.parseLong(LabClusterId)) 
-		{
-			ExternalEmployeeList = service.ExternalEmployeeListInvitations(LabCode,req.getParameter("scheduleid"));
-		}
+		ExternalEmployeeList = service.ExternalEmployeeListInvitations(LabCode,req.getParameter("scheduleid"));
 	 
 		Gson json = new Gson();
 		return json.toJson(ExternalEmployeeList);	

@@ -1591,21 +1591,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 	
-	private static final String DGEMPDATA ="SELECT e.empid,e.empno,e.empname,e.labcode,c.clustershortname FROM lab_master lm, cluster c, employee e WHERE lm.labcode = c.clustershortname AND e.empid=lm.labauthorityid";
-	@Override
-	public List<Object[]> DGEmpData(String ClusterId) throws Exception
-	{
-		logger.info(new java.util.Date() +"Inside DGEmpData");
-		try {
-			Query query=manager.createNativeQuery(DGEMPDATA);
-			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
-			return DGEmpData;
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
-			return new ArrayList<Object[]>();
-		}
-	}
 	
 	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1  AND e.expertid NOT IN (SELECT  empid FROM committee_member  WHERE isactive=1 AND labcode='@EXP' AND committeemainid=:committeemainid AND membertype IN ('CH','CO')); ";
 	@Override

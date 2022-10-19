@@ -26,11 +26,4 @@ public class PMSLogoUtil
 		}
 	}
 	
-	public String getLabLogoFilePath(String LabCode) throws IOException
-	{
-		return ApplicationFilesDrive+"\\PMS/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
-		
-	}
-	
-	
 }

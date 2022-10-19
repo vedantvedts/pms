@@ -275,7 +275,6 @@ public interface CommitteeDao {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;
 	public List<Object[]> ClusterList() throws Exception;
-	public List<Object[]> DGEmpData(String ClusterId) throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
