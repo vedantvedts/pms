@@ -57,8 +57,6 @@
 <body>
 
 <%
-
-
 Object[] projectdata=(Object[])request.getAttribute("projectdata"); 
 Object[] committeedata=(Object[])request.getAttribute("committeedata");
 Object[] divisiondata=(Object[])request.getAttribute("divisiondata"); 
