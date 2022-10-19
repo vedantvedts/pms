@@ -72,6 +72,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
 import com.vts.pfms.milestone.dto.FileProjectDocDto;
 import com.vts.pfms.milestone.dto.FileUploadDto;
@@ -88,6 +89,8 @@ import com.vts.pfms.milestone.service.MilestoneService;
 @Controller
 public class MilestoneController {
 
+	@Autowired CommitteeService committeservice;
+	
 	@Autowired
 	MilestoneService service;
 	
@@ -98,7 +101,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MilestoneActivityList.htm")
 	public String MilestoneActivityList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
-		System.out.println("isndei" +  req.getParameter("ProjectId"));
+		
 		String UserId = (String) ses.getAttribute("Username");
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -935,6 +938,8 @@ public class MilestoneController {
 				req.setAttribute("ActionList", service.ActionList("A",req.getParameter("ActivityId")));	
 			}
 			req.setAttribute("projectdetails",service.ProjectDetails(req.getParameter("ProjectId")).get(0));
+			req.setAttribute("AllLabsList", committeservice.AllLabList());
+			
 			
 		}
 		catch (Exception e) {
@@ -1025,6 +1030,7 @@ public class MilestoneController {
 					req.setAttribute("SubList", service.MilestoneActivitySub(mainDto));
 					req.setAttribute("ActionList", service.ActionList(Type,SubId));
 					req.setAttribute("projectdetails",service.ProjectDetails(Project).get(0));
+					req.setAttribute("AllLabsList", committeservice.AllLabList());
 				}
 				catch (Exception e) {
 					e.printStackTrace();  
@@ -2013,7 +2019,8 @@ public class MilestoneController {
 			logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);	
 			String projectid = req.getParameter("projectid");
 			String LabCode = req.getParameter("labCode");
-			System.out.println(LabCode);
+			
+			
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)
 			{

@@ -165,6 +165,7 @@ h6{
 									<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="close5()" formaction="CloseSubmit.htm"> Close Action</button>
 					        		<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
 					        		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+					        		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
 								</div>
 								
 							</div>
@@ -190,6 +191,7 @@ h6{
 				                           	<td style="width: 20%">
 												<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > UPDATE</button>
 												<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+												<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
 												<input type="hidden" name="froward" value="Y" />
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 											</td>

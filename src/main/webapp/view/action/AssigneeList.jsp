@@ -200,6 +200,7 @@ a:hover {
                                                                     <input type="hidden" name="ActionLinkId" value="<%=obj[9]%>"/>
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionNo" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[11]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 																</form> 
