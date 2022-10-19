@@ -145,7 +145,7 @@ String ses=(String)request.getParameter("result");
 	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></div>
+	</div></div>
                     <%} %>
 
     <br />
