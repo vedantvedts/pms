@@ -39,14 +39,14 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LOGINTYPEEDIT="UPDATE pfms_login_role_security SET roleid=:roleid WHERE loginid=:loginid";
 	private static final String PFMSLOGINREVOKE="DELETE from pfms_login_role_security WHERE loginid=:loginid";
 	private static final String PFMSLOGINTYPEREVOKE="UPDATE login set modifiedby=:modifiedby, modifieddate=:modifieddate WHERE loginid=:loginid";
-	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
+	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation,a.labcode FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
     private static final String RTMDDO="SELECT 'empid1',a.empid,a.empname,b.designation,c.validfrom,c.validto  FROM employee a,employee_desig b,pfms_rtmddo c WHERE a.empid=c.empid AND c.isactive='1' AND a.isactive='1' AND a.DesigId=b.DesigId AND c.type='DO-RTMD'";
 	private static final String NOTIFICATIONLIST="SELECT notificationdate,notificationmessage,notificationurl,notificationid FROM pfms_notification WHERE empid=:empid and isactive=1";
 	private static final String RTMDDOUPDATE="update pfms_rtmddo set isactive='0' WHERE Type=:type";
 	private static final String DIVISIONLIST ="select divisionid,divisioncode from division_master where isactive='1'";
 	private static final String LOGINDELETE="update login set isactive=:isactive,modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
     private static final String AUDITSTAMPING="SELECT a.username,a.logindate, a.logindatetime,a.ipaddress, a.macaddress, ( CASE WHEN a.logouttype='L' THEN 'Logout' ELSE 'Session Expired' END ) AS logouttype, 	a.logoutdatetime FROM auditstamping a WHERE a.`LoginDate` BETWEEN :fromdate AND :todate AND a.loginid=:loginid ORDER BY a.`LoginDateTime` DESC ";
-	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, e.EmpName FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
+	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, e.EmpName,e.labcode FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
 	private static final String LOGINEDITDATA="FROM Login WHERE LOGINID=:LoginId";
 	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , e.empname, d.designation ,lt.logindesc FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype AND e.labcode=:labcode";
 	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive='1'";
@@ -54,12 +54,12 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LOGINUPDATE="update login set divisionid=:divisionid ,formroleid=:formroleid,logintype=:logintype,empid=:empid, Pfms=:pfms, modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";
-	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type FROM pfms_rtmddo r WHERE r.IsActive=1 ORDER BY r.Type DESC";
+	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_rtmddo r WHERE r.IsActive=1 ORDER BY r.Type DESC";
 	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname,b.empname,c.groupname FROM division_master a,employee b,division_group c WHERE a.isactive='1' AND a.divisionheadid=b.empid AND a.groupid=c.groupid AND c.labcode=:labcode ORDER BY a.divisionid ASC";
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	private static final String DIVISIONUPDATE="UPDATE division_master SET divisioncode=:divisioncode, divisionname=:divisionname, divisionheadid=:divisionheadid , groupid=:groupid, modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=:isactive WHERE divisionid=:divisionid";
-	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname FROM division_group a WHERE a.isactive=1";
-	private static final String DIVISIONHEADLIST="SELECT a.empid, a.empname FROM employee a WHERE  a.isactive=1";
+	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
+	private static final String DIVISIONHEADLIST="SELECT a.empid, a.empname,a.labcode,b.designation FROM employee a , employee_desig b WHERE  a.isactive=1 AND a.desigid=b.desigid";
 	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive FROM division_master d WHERE d.divisionid=:divisionid ";
 	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr FROM employee_desig WHERE desigid=:desigid";
 	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr FROM employee_desig ORDER BY DesigSr";
@@ -245,7 +245,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public List<Object[]> Rtmddo() throws Exception {
-			logger.info(new Date() +"Inside EmployeeList");	
+			logger.info(new Date() +"Inside Rtmddo");	
 			Query query=manager.createNativeQuery(RTMDDO);
 			
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	

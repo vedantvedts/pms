@@ -118,7 +118,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 						<option value="" disabled selected="selected">--Select--</option>
 									
 			<% for (  Object[] obj : DivisionHeadList){ %>							
-			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%> </option><%}%>
+			<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(DivisionMasterEditData[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[3] %> </option><%}%>
 					</select> 
 		</div>
 </div>

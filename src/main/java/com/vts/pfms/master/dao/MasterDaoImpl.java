@@ -22,7 +22,7 @@ import com.vts.pfms.model.LabMaster;
 @Repository
 public class MasterDaoImpl implements MasterDao {
 	
-	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
+	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
 	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo from employee  where empid=:empid";
@@ -39,7 +39,7 @@ public class MasterDaoImpl implements MasterDao {
 	
 	private static final String DIVISIONLIST="SELECT divisionid,divisioncode,divisionname FROM division_master WHERE isactive=1";
 	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,e.empname,ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
-	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, e.empname,ed.designation  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
+	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, e.empname,ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
 	

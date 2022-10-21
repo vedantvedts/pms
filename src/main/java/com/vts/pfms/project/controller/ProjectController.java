@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -2074,10 +2075,11 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectList.htm")
 	public String ProjectList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
+		String LabCode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectList "+Username);
 	try {
 		
-		req.setAttribute("ProjectList", service.ProjectList());
+		req.setAttribute("ProjectList", service.ProjectList().stream().filter(e-> e[14]!=null).filter(e->LabCode.equalsIgnoreCase(e[14].toString())).collect(Collectors.toList()) );
 		
 	}catch (Exception e) {
 		e.printStackTrace(); logger.error(new Date() +" Inside ProjectList "+Username, e);
@@ -2093,6 +2095,7 @@ public class ProjectController {
 		long count=0;
 		
 		String Username = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectSubmit.htm "+Username);
 		try {      	
 		  String sub=req.getParameter("action");
@@ -2108,7 +2111,7 @@ public class ProjectController {
 				  ProjectCatSecDetalis=service.getProjectCatSecDetalis(ProjectMainList.get(0)[0].toString());
 			  }
 			  req.setAttribute("ProjectCatSecDetalis", ProjectCatSecDetalis);
-			  req.setAttribute("OfficerList", service.OfficerList());
+			  req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> LabCode.equalsIgnoreCase(e[9].toString())).collect(Collectors.toList()));
 			  req.setAttribute("CategoryList", service.ProjectCategoryList());
         	  req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
 			  return "project/ProjectAdd";
@@ -2177,7 +2180,7 @@ public class ProjectController {
 			 protype.setIsActive(1);
        	     protype.setCreatedBy(Username);
          	 protype.setCreatedDate(sdf1.format(new Date()));
-       	  
+         	 protype.setLabCode(LabCode);
         	
         	 count=service.ProjectMasterAdd(protype);
         	 if(count>0) {
@@ -2289,8 +2292,9 @@ public class ProjectController {
 		  }else if("mainaddsubmit".equalsIgnoreCase(sub))
 		  {
 			  String projectmainid=req.getParameter("projectmainid");
+			  
 			  count=0;
-			  count=service.ProjectMainToMaster(projectmainid, Username);
+			  count=service.ProjectMainToMaster(projectmainid, Username,LabCode);
 			  if(count>0) {
 	  				redir.addAttribute("result","Project Added Successfully");
 	  			
@@ -2355,7 +2359,7 @@ public class ProjectController {
 
 		req.setAttribute("ProjectAssignList", service.ProjectAssignList(ProjectId));
 		req.setAttribute("ProjectList", ProjectList);
-		req.setAttribute("OfficerList", service.UserList(ProjectId));
+		req.setAttribute("OfficerList", service.UserList(ProjectId).stream().filter(e->e[2]!=null ).filter(e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
 		req.setAttribute("ProjectCode", service.ProjectData(ProjectId));
 		req.setAttribute("ProjectId", ProjectId);
 	}catch (Exception e) {

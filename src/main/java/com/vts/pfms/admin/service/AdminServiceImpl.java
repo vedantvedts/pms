@@ -210,6 +210,7 @@ public class AdminServiceImpl implements AdminService{
 		rtmddo.setCreatedBy(dto.getCreatedBy());
 		rtmddo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		rtmddo.setIsActive(1);
+		rtmddo.setLabCode(dto.getLabCode()); 
 		return dao.RtmddoInsert(rtmddo);
 	}
 	

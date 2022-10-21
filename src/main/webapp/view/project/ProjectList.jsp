@@ -189,6 +189,7 @@ Project List</h3>
     
     
 	 <%int count=1;
+	 if(ProjectList !=null){
 	 for(Object[] obj:ProjectList){ %>
 <tr>
 <td align="center">
@@ -223,7 +224,7 @@ NFormatConvertion nfc1=new NFormatConvertion();
 <td ><%=obj[11]%></td>
 </tr>
 
-<%count++;} %>
+<%count++;} }%>
 </tbody>
 </table>
 <table align="center">

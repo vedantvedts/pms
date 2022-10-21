@@ -107,6 +107,7 @@ public class MasterServiceImpl implements MasterService {
 		employee.setCreatedDate(sdf1.format(new Date()));
 		employee.setIsActive(1);
 		employee.setSrNo(0l);
+		employee.setLabCode(officermasteradd.getLabCode());
 		return dao.OfficeMasterInsert(employee);
 	}
 	
