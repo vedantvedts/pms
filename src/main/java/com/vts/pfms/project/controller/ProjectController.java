@@ -36,14 +36,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
@@ -76,6 +71,9 @@ public class ProjectController {
 	
 	@Value("${File_Size}")
 	String file_size;
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	                                                                                        
 	private static final Logger logger=LogManager.getLogger(ProjectController.class);
 	
@@ -2530,7 +2528,7 @@ public class ProjectController {
 		return "project/ProjectDataCollect";		
 	}
 	
-
+	
 	
 	@RequestMapping(value = "ProjectDataSubmit.htm", method = RequestMethod.POST)
 	public String ProjectDataSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
@@ -2539,6 +2537,7 @@ public class ProjectController {
 			@RequestParam(name ="producttreeimg" ,required = false) MultipartFile producttreeimg,
 			@RequestParam(name ="pearlimg",required = false) MultipartFile pearlimg)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
 		try 
 		{								
@@ -2555,7 +2554,7 @@ public class ProjectController {
 			projectdatadto.setCurrentStageId(req.getParameter("projectstageid"));
 			
 			projectdatadto.setCreatedBy(Username);
-			
+			projectdatadto.setLabcode(LabCode);
 //			String fileName = producttreeimg.getOriginalFilename();
 //			String prefix = fileName.substring(fileName.lastIndexOf("."));
 //			 
@@ -2583,7 +2582,7 @@ public class ProjectController {
 			}
 			else
 			{
-				redir.addAttribute("resultfail","Project Data adding  Unsuccessfully");
+				redir.addAttribute("resultfail","Project Data adding  Unsuccessful");
 			}
 			
 			redir.addFlashAttribute("projectid",projectid);
@@ -2624,7 +2623,7 @@ public class ProjectController {
 				index=3;
 			}
 		
-			my_file = new File(projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
 	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -2648,6 +2647,7 @@ public class ProjectController {
 			@RequestParam(name ="producttreeimg" ,required = false) MultipartFile producttreeimg,
 			@RequestParam(name ="pearlimg",required = false) MultipartFile pearlimg)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
 		try 
 		{		
@@ -2693,6 +2693,7 @@ public class ProjectController {
 				service.ProjectDataRevSubmit(projectdatadto);
 			}
 			projectdatadto.setRevisionNo(revisionno);
+			projectdatadto.setLabcode(LabCode);
 			count=service.ProjectDataEditSubmit(projectdatadto);
 			
 			if(count>0) 
@@ -2811,7 +2812,7 @@ public class ProjectController {
 			}
 			
 	        res.setContentType("Application/octet-stream"); 
-	        File my_file = new File(projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+	        File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
 	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 	 
 	        	 
@@ -3199,7 +3200,7 @@ public class ProjectController {
 	{
 
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMasterAttachAdd.htm "+UserId);
 		
 		try {
@@ -3212,7 +3213,7 @@ public class ProjectController {
 			dto.setFileName(filenames);
 			dto.setFiles(FileAttach);
 			dto.setCreatedBy(UserId);
-			
+			dto.setLabCode(LabCode);
 			
 			
 			long count=service.ProjectMasterAttachAdd(dto);
@@ -3246,7 +3247,7 @@ public class ProjectController {
 			Object[] attachmentdata=service.ProjectMasterAttachData(attachid);
 			
 			File my_file=null;
-			my_file = new File(attachmentdata[2]+File.separator+attachmentdata[3]);
+			my_file = new File(uploadpath+ attachmentdata[2]+File.separator+attachmentdata[3]);
 			
 			res.setContentType("Application/octet-stream");	
 	        res.setHeader("Content-disposition","attachment; filename="+attachmentdata[3].toString()); 
@@ -3305,7 +3306,7 @@ public class ProjectController {
 			String attachid=req.getParameter("attachid");
 			String projectid=req.getParameter("projectid");
 			String RelevantPoints=req.getParameter("RelevantPoints");
-			String committeeid=req.getParameter("projectid");
+			String committeeid = req.getParameter("committeeid");
 			
 			ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
 			

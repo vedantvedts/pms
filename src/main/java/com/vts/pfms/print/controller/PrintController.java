@@ -105,6 +105,9 @@ public class PrintController {
 	@Value("${ProjectCost}")
 	private long ProjectCost;
 	
+	@Value("${ApplicationFilesDrive}")
+	private String ApplicationFilesDrive;
+	
 	@Autowired
 	Environment env;
 	
@@ -351,8 +354,6 @@ public class PrintController {
 	}
 	
 	
-	
-	
 	@RequestMapping(value="ProjectBriefingDownload.htm", method = RequestMethod.GET )
 	public void ProjectBriefingDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
@@ -512,7 +513,7 @@ public class PrintController {
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("labInfo", service.LabDetailes());
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
-            req.setAttribute("filePath", env.getProperty("file_upload_path"));
+            req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		
     		String LevelId= "2";
@@ -543,8 +544,8 @@ public class PrintController {
 	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-            ImageData leftLogo = ImageDataFactory.create(env.getProperty("file_upload_path")+"\\logo\\drdo.png");
-            ImageData rightLogo = ImageDataFactory.create(env.getProperty("file_upload_path")+"\\logo\\lab.png");
+            ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
+            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+"lablogo"+".png");
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 	        
 	        
@@ -585,8 +586,8 @@ public class PrintController {
 	        		}else if(Long.parseLong(committeeid)==2){
 	        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 	        						} 
-		        	 if(new File(env.getProperty("file_upload_path")+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
-		        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("file_upload_path")+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+		        	 if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
+		        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 					        Document document5 = new Document(pdfDocument2,PageSize.A4);
 					        document5.setMargins(50, 50, 50, 50);
 					        Rectangle pageSize;
@@ -619,7 +620,7 @@ public class PrintController {
 					        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
 					        Files.delete(pathOfFile);	
 					        pathOfFile= Paths.get( path+File.separator+TechWorkDataList.get(z)[8].toString());
-					        Files.delete(pathOfFile);	
+					        
 						    }
 		        	
 		        	}catch (Exception e) {
@@ -628,7 +629,7 @@ public class PrintController {
 	        	
 	        	if(objData[3]!=null&&objData[3]!=null) {
 	        	if(FilenameUtils.getExtension(objData[3].toString()).equals("pdf")) {
-		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(objData[2]+"\\"+objData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 		        Document document5 = new Document(pdfDocument2,PageSize.A4);
 		        document5.setMargins(50, 50, 50, 50);
 		        Rectangle pageSize;
@@ -663,7 +664,7 @@ public class PrintController {
 	        	}
 	        	if(objData[4]!=null&&objData[4]!=null) {
 			    if(FilenameUtils.getExtension(objData[4].toString()).equals("pdf")) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -698,7 +699,7 @@ public class PrintController {
 	        	}
 	        	if(objData[5]!=null&&objData[5]!=null) {
 			    if(FilenameUtils.getExtension(objData[5].toString()).equals("pdf")) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(objData[2]+"\\"+objData[5]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[5]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -733,7 +734,7 @@ public class PrintController {
 	        	}
 	        	if(objData[6]!=null&&objData[6]!=null) {
 			    if(FilenameUtils.getExtension(objData[6].toString()).equals("pdf")) {
-			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(objData[2]+"\\"+objData[6]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[6]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
 			        Rectangle pageSize;
@@ -865,14 +866,14 @@ public class PrintController {
 	    try {    	
 	    	
 	    	String projectid=req.getParameter("projectid");
-	    	String committeeid= req.getParameter("committeeid");
-	    	String tempid=committeeid;
+	    	String committeeid = req.getParameter("committeeid");
+//	    	String tempid=committeeid;
 	    	if(committeeid==null  ) {
-	    		committeeid="1";
-	    		tempid="1";
+	    		committeeid="PMRC";
+//	    		tempid="1";
 	    	}else if( Long.parseLong(committeeid)==0)
 	    	{
-	    		committeeid="1";
+	    		committeeid="PMRC";
 	    	}
 
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -986,9 +987,6 @@ public class PrintController {
 			    	}
 		    	 }
 	    	}
-//	    	procurementOnDemandlist.add(procurementStatusList);
-//	    	procurementOnDemandlist.add(procurementOnDemand);
-//	    	procurementOnSanctionlist.add(procurementOnSanction);
 	    	
 	    	procurementOnDemandlist.add(procurementOnDemand);
 	    	procurementOnSanctionlist.add(procurementOnSanction);
@@ -1026,7 +1024,7 @@ public class PrintController {
         	
     		req.setAttribute("projectidlist",Pmainlist);
     		req.setAttribute("projectid",projectid);
-    		req.setAttribute("committeeid",tempid);
+    		req.setAttribute("committeeid",committeeid);
 	    	
 	    	
 	    	req.setAttribute("ProjectCost",ProjectCost);
@@ -1406,8 +1404,12 @@ public class PrintController {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	String projectid=req.getParameter("projectid");
-	    	String committeeid= req.getParameter("committeeid");
+	    	String committeeid = req.getParameter("committeeid");
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+	    	
+	    	
+	    	List<Object[]>SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);	    	
+	    	
 	    	if(projectslist.size()==0 && projectid==null) 
 	        {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -1429,12 +1431,35 @@ public class PrintController {
 	    	}
 	    	
 	    	String tempid=committeeid;
-	    	if(committeeid==null  ) {
-	    		committeeid="1";
-	    		tempid="1";
-	    	}else if( Long.parseLong(committeeid)==0)
+	    	if(committeeid==null  ) 
 	    	{
-	    		committeeid="1";
+	    		
+	    		for(Object[] committee : SpecialCommitteesList) {
+	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) {
+	    				
+	    				committeeid=committee[0].toString();
+	    	    		tempid=committee[0].toString();
+	    	    		
+	    	    		break;
+	    			}
+	    		}
+	    		
+	    	}
+	    	else if(Long.parseLong(committeeid)==0)
+	    	{
+	    		for(Object[] committee : SpecialCommitteesList) {
+	    			if(committee[1].toString().equalsIgnoreCase("PMRC")) 
+	    			{
+	    				committeeid=committee[0].toString();
+	    	    		break;
+	    			}
+	    		}
+	    	}
+	    	
+	    	if(committeeid==null) 
+	    	{
+	    		committeeid = "0";
+	    		tempid = "0";
 	    	}
 	    		    	
 	    	
@@ -1545,8 +1570,6 @@ public class PrintController {
 						
 				}
 				pdffiles.add(pdfs);
-				
-	    		
 	    		
 	    		
 		/* -------------------------------------------------------------------------------------------------------------- */  		
@@ -1646,7 +1669,9 @@ public class PrintController {
     		req.setAttribute("milestoneactivitystatus", service.MilestoneActivityStatus());
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);  
     		req.setAttribute("TechImages", TechImages);   
-    		req.setAttribute("filePath", env.getProperty("file_upload_path"));
+    		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+    		
+    		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
     		
     		String LevelId= "2";
 			
@@ -1816,6 +1841,7 @@ public class PrintController {
 	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
 	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
 	    	
+	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
 	    	
 	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 	    	
@@ -1843,7 +1869,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		
 	    		
@@ -1942,6 +1968,8 @@ public class PrintController {
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("labInfo", service.LabDetailes());
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
+	    	
+	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
 
             String LevelId= "2";
 			
@@ -1969,7 +1997,7 @@ public class PrintController {
 	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);   
-	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("file_upload_path")+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
 	        int update=service.updateBriefingPaperFrozen(nextScheduleId);
 	        redir.addAttribute("result", "Briefing Paper Frozen for Next Scheduled Meeting.");
 	    		}else {
@@ -2394,7 +2422,7 @@ public class PrintController {
 	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);   
-	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("file_upload_path")+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(ApplicationFilesDrive+LabCode+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
 	        int update=service.updateBriefingPaperFrozen(nextScheduleId);
 	        redir.addAttribute("result", "Briefing Paper Frozen for  This Meeting.");
 	    		}else {
@@ -2488,7 +2516,7 @@ public class PrintController {
 	  @PostMapping("/GanttChartUpload.htm") 
 	    public String GanttChartUpload(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir) {
 	        try {
-            int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("file_upload_path"));
+            int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("ApplicationFilesDrive"));
             if(result>0) {  
               redir.addAttribute("result", "Grantt Chart Saved");
     		}else {
@@ -2508,7 +2536,7 @@ public class PrintController {
 	    @PostMapping("/ProjectTechImages.htm") 
 	    public String ProjectTechImages(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir) {
 	        try {
-            int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("file_upload_path"),req.getUserPrincipal().getName());
+            int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName());
             if(result>0) {  
               redir.addAttribute("result", "Tech Image Saved");
     		}else {

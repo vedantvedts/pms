@@ -2,8 +2,10 @@ package com.vts.pfms.print.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -13,6 +15,9 @@ import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 import com.vts.pfms.master.model.EmployeeExternal;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
@@ -50,6 +55,9 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@PersistenceContext
 	EntityManager manager;
+	
+	@Autowired
+	Environment env;
 	
 	private static final Logger logger=LogManager.getLogger(PrintDaoImpl.class);
 	
@@ -253,10 +261,6 @@ public class PrintDaoImpl implements PrintDao {
 		List<Object[]> GanttChartList= query.getResultList();
 		return GanttChartList;
 	}
-	
-	
-	
-	
 	
 	@Override
 	public Object[] ProjectDataDetails(String projectid) throws Exception {
@@ -707,6 +711,25 @@ public class PrintDaoImpl implements PrintDao {
 			Query query = manager.createQuery(TECHIMAGE);
 			query.setParameter("proId", Long.parseLong(proId));
 			List<TechImages> list =(List<TechImages>)query.getResultList();
+			return list;
+		}
+		
+		
+		@Value("#{${CommitteeCodes}}")
+		private List<String> SplCommitteeCodes;
+		
+		@Override
+		public List<Object[]> SpecialCommitteesList(String LabCode)throws Exception
+		{
+			logger.info(new Date() +"Inside SpecialCommitteesList");
+			
+			String concat = String.join("','", SplCommitteeCodes.stream().collect(Collectors.toSet()));
+			
+			String SPECIALCOMMITTEESLIST="SELECT committeeid,committeeshortname, committeename FROM committee WHERE isactive=1 AND LabCode=:LabCode AND committeeshortname IN ( '"+concat+"') AND isactive=1;";
+			
+			Query query = manager.createNativeQuery(SPECIALCOMMITTEESLIST);
+			query.setParameter("LabCode", LabCode);
+			List<Object[]> list =(List<Object[]>)query.getResultList();
 			return list;
 		}
 }

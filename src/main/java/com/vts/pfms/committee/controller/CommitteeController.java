@@ -91,6 +91,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
@@ -125,14 +126,19 @@ public class CommitteeController {
 
 	@Value("${server_uri}")
 	private String uri;
+	
 	@Autowired
 	Environment env;
+	
+	@Value("${ApplicationFilesDrive}")
+	private String ApplicationFilesDrive;
+	
 	
 	@Value("${File_Size}")
 	String file_size;
 	
-	@Value("#{${CommitteeIds}}")
-	private List<String> AgendaCommitteeIds;
+	@Value("#{${CommitteeCodes}}")
+	private List<String> SplCommitteeCodes;
 	
 	@Autowired
 	PrintController pt;
@@ -968,10 +974,10 @@ public class CommitteeController {
 			
 			req.setAttribute("LabCode",LabCode);
 			req.setAttribute("LabEmpList",service.PreseneterForCommitteSchedule(LabCode.trim()));
-			
-			if(AgendaCommitteeIds.contains(scheduledata[0].toString()) && committeeagendalist.size()==0 && req.getParameter("skip")==null)
+			Object[] DefaultAgendasCount = service.getDefaultAgendasCount(scheduledata[0].toString(), LabCode);
+			if(Integer.parseInt(DefaultAgendasCount[0].toString())>0 && committeeagendalist.size()==0 && req.getParameter("skip")==null)
 			{
-				List<Object[]> defAgendaList = service.DefaultAgendaList(scheduledata[0].toString());
+				List<Object[]> defAgendaList = service.DefaultAgendaList(scheduledata[0].toString(),LabCode);
 				req.setAttribute("defAgendaList",defAgendaList);
 				
 				return "committee/ScheduleDefaultAgendas";
@@ -1482,7 +1488,7 @@ public class CommitteeController {
 			}
 			
 			
-			req.setAttribute("AgendaCommitteeIds", AgendaCommitteeIds);
+			req.setAttribute("SplCommitteeCodes", SplCommitteeCodes);
 			req.setAttribute("unit1", unit1);
 			req.setAttribute("formname", formname);
 			req.setAttribute("membertype",MemberType);
@@ -1788,9 +1794,9 @@ public class CommitteeController {
 			{	
 				String committeemainid="0";
 				if(Long.parseLong(initiationid)>0) {
-				 committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"1"));
+					committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"1"));
 				}else {
-					 committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"0"));
+					committeemainid=String.valueOf(service.LastCommitteeId(committeeid, projectid, divisionid,"0"));
 				}
 				
 				
@@ -2476,10 +2482,10 @@ public class CommitteeController {
 	public void CommitteeMinutesViewAllDownload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
 
-	String UserId=(String)ses.getAttribute("Username");
-	logger.info(new Date() +"Inside CommitteeMinutesViewAllDownload.htm "+UserId);
-	try
-	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CommitteeMinutesViewAllDownload.htm "+UserId);
+		try
+		{
 			String committeescheduleid = req.getParameter("committeescheduleid");			
 			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
 			String projectid= committeescheduleeditdata[9].toString();
@@ -2570,9 +2576,6 @@ public class CommitteeController {
 	        pdf2.close();
 	        pdf1.close();	       
 	        pdfw.close();
-	        
-	        
-	        
 	    
 	        res.setContentType("application/pdf");
 	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
@@ -2598,39 +2601,10 @@ public class CommitteeController {
 	        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
 	        Files.delete(pathOfFile2);	
 	        
-//			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
-//			req.getRequestDispatcher("/view/committee/CommitteeMinutesViewAll.jsp").forward(req, customResponse1);
-//			String html = customResponse1.getOutput();        
-//	        
-//	        HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf")); 
-//	         
-//	        res.setContentType("application/pdf");
-//	        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf");
-//	        File f=new File(path +File.separator+ filename+".pdf");
-//	         
-//	        
-//	        FileInputStream fis = new FileInputStream(f);
-//	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-//	        res.setHeader("Content-Length",String.valueOf(f.length()));
-//	        byte[] buffer = new byte[1024];
-//	        int len = 0;
-//	        while ((len = fis.read(buffer)) >= 0) {
-//	            os.write(buffer, 0, len);
-//	        } 
-//	        os.close();
-//	        fis.close();
-//	       
-//	       
-//	        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
-//	        Files.delete(pathOfFile);	
-
-			
-	}catch(Exception e) {	    		
-		logger.error(new Date() +" Inside CommitteeMinutesViewAllDownload.htm "+UserId, e);
-		e.printStackTrace();
-		
-
-	}	
+		}catch(Exception e) {	    		
+			logger.error(new Date() +" Inside CommitteeMinutesViewAllDownload.htm "+UserId, e);
+			e.printStackTrace();
+		}	
 	}
 
 	
@@ -5984,7 +5958,7 @@ public class CommitteeController {
 		}
 	
 		@RequestMapping(value = "AgendaDocLinkDownload.htm", method = RequestMethod.GET)
-		public void FileUnpack(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
+		public void AgendaDocLinkDownload(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
 
@@ -5995,7 +5969,7 @@ public class CommitteeController {
                 Object[] obj=service.AgendaDocLinkDownload(filerepid);
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
-                zip.unpack(obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip",path,obj[5].toString());
+                zip.unpack(ApplicationFilesDrive+ obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip",path,obj[5].toString());
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[4]); 
                 File f=new File(path+"/"+obj[4]);
@@ -6027,6 +6001,7 @@ public class CommitteeController {
 		public String PreDefinedAgendas(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside PreDefinedAgendas.htm "+UserId);			
 			try {	
 				String committeeid=req.getParameter("committeeid");
@@ -6035,16 +6010,25 @@ public class CommitteeController {
 					Map md=model.asMap();
 					committeeid=(String)md.get("committeeid");
 				}
+				
+				List<Object[]> committeeslist = service.ProjectCommitteesList(LabCode);
+				
+				if(committeeslist.size()>0 &&  committeeid==null)
+				{
+					committeeid=committeeslist.get(0)[0].toString();
+				}
 				if(committeeid==null)
 				{
-					committeeid=AgendaCommitteeIds.get(0);
+					committeeid="0";
 				}
 				
-				List<Object[]> DefAgendas =  service.DefaultAgendaList(committeeid);
+				System.out.println(committeeid);
+				
+				List<Object[]> DefAgendas =  service.DefaultAgendaList(committeeid,LabCode);
 				
 				req.setAttribute("DefAgendas", DefAgendas);
 				req.setAttribute("committeeid", committeeid);
-				req.setAttribute("committeeslist", service.ProjectCommitteesList());
+				req.setAttribute("committeeslist",committeeslist);
 				
 				return "committee/PreDefAgendas";
 			}
@@ -6070,9 +6054,9 @@ public class CommitteeController {
 				String duration=req.getParameter("duration");
 				String agendaid=req.getParameter("agendaid");
 				
-				CommitteeScheduleAgenda agenda = new CommitteeScheduleAgenda();
+				CommitteeDefaultAgenda agenda = new CommitteeDefaultAgenda();
 				
-				agenda.setScheduleAgendaId(Long.parseLong(agendaid));
+				agenda.setDefaultAgendaId(Long.parseLong(agendaid));
 				agenda.setDuration(Integer.parseInt(duration));
 				agenda.setAgendaItem(agendaitem);
 				agenda.setRemarks(remarks);
@@ -6105,6 +6089,7 @@ public class CommitteeController {
 		public String PreDefinedAgendaAdd(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,RedirectAttributes redir)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside PreDefinedAgendaEdit.htm "+UserId);			
 			try {	
 				String committeeid=req.getParameter("committeeid");
@@ -6112,8 +6097,9 @@ public class CommitteeController {
 				String remarks=req.getParameter("remarks");
 				String duration=req.getParameter("duration");
 				
-				CommitteeScheduleAgenda agenda = new CommitteeScheduleAgenda();
+				CommitteeDefaultAgenda agenda = new CommitteeDefaultAgenda();
 				
+				agenda.setLabCode(LabCode);
 				agenda.setDuration(Integer.parseInt(duration));
 				agenda.setAgendaItem(agendaitem);
 				agenda.setRemarks(remarks);
@@ -6431,10 +6417,11 @@ public class CommitteeController {
 		public void FrozenProjectBriefingPaper(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
 				throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FrozenProjectBriefingPaper.htm "+UserId);		
 			try {
 
-				String path = env.getProperty("file_upload_path")+"\\Frozen\\BriefingPaper_P"+req.getParameter("projectid")+"_C"+req.getParameter("committeeid")+"_S"+req.getParameter("scheduleid")+".pdf";
+				String path = ApplicationFilesDrive+LabCode+"\\Frozen\\BriefingPaper_P"+req.getParameter("projectid")+"_C"+req.getParameter("committeeid")+"_S"+req.getParameter("scheduleid")+".pdf";
 		
 				res.setContentType("application/pdf");
 				res.setHeader("Content-Disposition", String.format("inline; filename=BriefingPaper.pdf"));

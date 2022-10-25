@@ -2,11 +2,9 @@ package com.vts.pfms.project.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class ProjectMasterAttachDto {
 	
 	private Long ProjectAttachId;
@@ -17,5 +15,7 @@ public class ProjectMasterAttachDto {
 	private String[] OriginalFileName;
 	private String CreatedBy;
 	private String CreatedDate;  
+	
+	private String LabCode;
 
 }

@@ -408,10 +408,10 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception{
-		
+	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception
+	{
 		return dao.BreifingMilestoneDetails(Projectid);
-		}
+	}
 
 	@Override
 	public int saveTechImages(MultipartFile file, String ProjectId, String path,String userName) throws Exception {
@@ -431,6 +431,12 @@ public class PrintServiceImpl implements PrintService{
 	public List<TechImages> getTechList(String proId) throws Exception {
 		
 		return dao.getTechList(proId);
+	}
+	
+	@Override
+	public List<Object[]> SpecialCommitteesList(String LabCode)throws Exception
+	{
+		return dao.SpecialCommitteesList(LabCode);
 	}
 	
 	
