@@ -2375,7 +2375,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		else if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
 		{
-			System.out.println("inside proxy add");
 				CommitteeMember newmodel=new CommitteeMember();
 				newmodel.setLabCode(dto.getSesLabCode());
 				newmodel.setEmpId(Long.parseLong(dto.getProxysecretary()));

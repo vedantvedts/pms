@@ -3369,10 +3369,14 @@ function overalldoc(){
 	 var DG= '<%=IsDG%>';
 	 
 	 	if(DG=='Yes'){
-	 		$('.btn5').click();
+	 		if(logintype =='A' || logintype=='Z' || logintype=='X' ){
+	 			$('.btn5').click();
+	 		}else{
+	 			$('.btn1').click();
+	 		}
+	 		
 	 	}
 	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){	
-	 			console.log("inside");
 				$('.btn3').click();
 		} else{
 			$('.btn1').click();

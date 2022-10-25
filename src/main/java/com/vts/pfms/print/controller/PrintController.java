@@ -2031,7 +2031,6 @@ public class PrintController {
 
 			if("AddEditSanction".equalsIgnoreCase(action)) {
 				String initiationsanid = req.getParameter("initiationsanid");
-				System.out.println(initiationsanid);
 				if(initiationsanid!=null && initiationsanid!="") {
 					//edit the project sanction data
 					InitiationSanction initiationsac = new InitiationSanction(); 

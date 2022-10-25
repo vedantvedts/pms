@@ -201,12 +201,24 @@ public class LoginController {
   	ses.setAttribute("DesgId", rfpmainservice.DesgId(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()));
   	ses.setAttribute("LoginTypeName", headerservice.FormRoleName(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
   	ses.setAttribute("labid",headerservice.LabDetails(empdetails[3].toString())[0].toString());
-  	ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
+  	//ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
  	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim());
  	ses.setAttribute("clusterid", headerservice.LabDetails(empdetails[3].toString())[1].toString());
-    req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
+    
+ 	String DGName = headerservice.LabMasterList(headerservice.LabDetails(empdetails[3].toString())[1].toString()).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
+ 	String IsDG = "No";
+    if(DGName.equalsIgnoreCase(headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim()))
+   	 IsDG = "Yes";
+    else
+   	 IsDG = "No";
+    ses.setAttribute("IsDG", IsDG);
+ 
+ 	req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 
+    
+    
+    
      String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
      ses.setAttribute("empNo", empNo);
       }catch (Exception e) {
@@ -267,7 +279,6 @@ public class LoginController {
 			    	 IsDG = "Yes";
 			     else
 			    	 IsDG = "No";
-			    	 
 			     req.setAttribute("IsDG", IsDG);	 
 			    	 
 			     List<Object[]> labdatalist = new ArrayList<Object[]>();

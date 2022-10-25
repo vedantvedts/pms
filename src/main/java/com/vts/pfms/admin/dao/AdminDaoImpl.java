@@ -457,9 +457,7 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public List<Object[]> EmployeeList1(String LabCode) throws Exception {
-			
-			System.out.println(LabCode  + "sdfsdf");
-			
+
 			Query query=manager.createNativeQuery(EMPLOYEELIST1);
 			query.setParameter("labcode", LabCode);
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();		

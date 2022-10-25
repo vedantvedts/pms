@@ -96,6 +96,8 @@ if(ses1!=null){
  <td >
 <input  class="form-control form-control" placeholder="UserName" type="text" name="UserName" required="required" maxlength="255" style="font-size: 15px;"  id="UserNameCheck">
 <div id="UserNameMsg" style="color: red;"></div>
+<div id="UserNameSuccessMsg" style="color: green;"></div>
+
 </td>
 <td><input type="submit"  class="btn btn-primary btn-sm"        value="CHECK" id="check"/></td>
 </tr> 
@@ -242,11 +244,13 @@ $(document)
 .ready(function(){
 	 $("#check").click(function(){
 			// SUBMIT FORM
-
+		
+		$('#UserNameSuccessMsg').html("");	
+		$('#UserNameMsg').html("");	
 		$('#UserName').val("");
 		 $("#UsernameSubmit").hide();
 			var $UserName = $("#UserNameCheck").val();
-if($UserName!=""&&$UserName.length>=4){
+			if($UserName!=""&&$UserName.length>=4){
 			
 			$
 					.ajax({
@@ -270,6 +274,9 @@ if($UserName!=""&&$UserName.length>=4){
 							}else{
 								$('#UserName').val($UserName);
 								
+								s = "UserName Available";	
+								$('#UserNameSuccessMsg').html(s);
+								
 								 $("#UsernameSubmit").show();
 							}
 							
@@ -279,7 +286,14 @@ if($UserName!=""&&$UserName.length>=4){
 						}
 					});
 
+}else{
+	
+	var s = "Username Too Short";	
+	$('#UserNameMsg').html(s);
+	
 }
+			
+			
 		});
 });
 
