@@ -119,14 +119,14 @@ public interface ProjectService {
 	public List<Object[]> InitiatedProjectDetails(String ProjectId) throws Exception;
 	public List<Object[]> NodalLabList() throws Exception;
 	public Object[] ProjectDataRevData(String projectdatarevid) throws Exception;
-	public List<Object[]> ProjectRiskDataList(String projectid) throws Exception;
+	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception;
 	public Object[] ProjectRiskData(String actionmainid) throws Exception;
 	public long ProjectRiskDataSubmit(PfmsRiskDto dto) throws Exception;
 	public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception;
 	public long ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception;
 	public long ProjectRiskDataRevSubmit(PfmsRiskDto dto) throws Exception;
 	public List<Object[]> ProjectRiskMatrixRevList(String actionmainid) throws Exception;
-	public List<Object> RiskDataPresentList(String projectid) throws Exception;
+	public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception;
 	public Long ProjectInitiationAuthorityAdd(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto,String UserId,PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto) throws Exception;
  	public PfmsInitiationAuthorityFile ProjectAuthorityDownload(String AuthorityFileId) throws Exception;
  	public Long ProjectAuthorityUpdate(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto,PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto,String UserId) throws Exception;

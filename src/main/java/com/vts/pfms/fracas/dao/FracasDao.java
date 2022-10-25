@@ -12,15 +12,15 @@ import com.vts.pfms.fracas.model.PfmsFracasSub;
 
 public interface FracasDao {
 
-	public List<Object[]> ProjectsList() throws Exception;
+	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode) throws Exception;
 	public List<Object[]> FracasTypeList() throws Exception;
 	public long FracasMainAddSubmit(PfmsFracasMain model) throws Exception;
 	public Object[] ProjectsData(String projectid) throws Exception;
-	public List<Object[]> ProjectFracasItemsList(String projectid) throws Exception;
+	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception;
 	public long FracasAttachAdd(PfmsFracasAttach model) throws Exception;
 	public PfmsFracasAttach FracasAttachDownload(String fracasattachid) throws Exception;
 	public Object[] FracasItemData(String fracasmainid) throws Exception;
-	public List<Object[]> EmployeeList() throws Exception;
+	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public long FracasAssignSubmit(PfmsFracasAssign model) throws Exception;
 	public List<Object[]> FracasAssignedList(String assignerempid, String fracasmainid) throws Exception;
 	public List<Object[]> FracasAssigneeList(String assigneeid) throws Exception;
