@@ -165,7 +165,7 @@
 }   
 
 #uppermodule .dropdown-menu-right{
-	width:175px !important; 
+	width:185px !important; 
 }
 
 

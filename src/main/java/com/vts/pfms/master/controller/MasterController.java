@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
@@ -34,6 +35,8 @@ public class MasterController {
 	@Autowired
 	MasterService service;
 	
+	@Autowired
+	AdminService adminservice;
 	
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	
@@ -41,9 +44,10 @@ public class MasterController {
 	public String OfficerList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside OfficerList "+UserId);
 		String empType=req.getParameter("empType");
-        req.setAttribute("OfficerList", service.OfficerList());         
+        req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
 		return "master/OfficerMasterList";
 	}
 	
@@ -52,11 +56,12 @@ public class MasterController {
 	public String OfficerAdd(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 	{		
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside OfficerAdd.htm "+UserId);
 		
 		try {
 			req.setAttribute("DesignationList", service.DesignationList());
-			req.setAttribute("OfficerDivisionList", service.OfficerDivisionList());
+			req.setAttribute("OfficerDivisionList", adminservice.DivisionMasterList(LabCode));
 			req.setAttribute("LabList", service.LabList());
 			return "master/OfficerMasterAdd";
 	
@@ -116,6 +121,7 @@ public class MasterController {
 	public String OfficerListAddEdit(HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
 		
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside Officer.htm "+UserId);
 		
 		try {
@@ -125,7 +131,7 @@ public class MasterController {
 			{		
 				req.setAttribute("OfficerEditData", service.OfficerEditData(OfficerId).get(0));
 				req.setAttribute("DesignationList", service.DesignationList());
-				req.setAttribute("OfficerDivisionList", service.OfficerDivisionList());
+				req.setAttribute("OfficerDivisionList", adminservice.DivisionMasterList(LabCode));
 				req.setAttribute("LabList", service.LabList());	
 				return "master/OfficerMasterEdit";
 			}
@@ -160,6 +166,7 @@ public class MasterController {
 	public String OfficerAddSubmit (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception{
 		
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside OfficerAddSubmit "+UserId);
 	    Integer labid= Integer.parseInt(ses.getAttribute("labid").toString());
 		try {
@@ -191,6 +198,8 @@ public class MasterController {
 			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
 			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
 			officermasteradd.setSrNo("0");
+			officermasteradd.setLabCode(LabCode);
+			
 			long count=0;
 			
 			try {
@@ -445,9 +454,11 @@ public class MasterController {
 	public String DivisionEmployee(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode =(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside DivisionEmployee.htm "+UserId);
 		try {
 		String divisionid=req.getParameter("divisionid");
+		
 		
 		if(divisionid==null)
 		{			
@@ -455,7 +466,7 @@ public class MasterController {
 			divisionid=(String)md.get("divisionid");
 		}
 		
-		List<Object[]>  divisionlist =service.DivisionList();
+		List<Object[]>  divisionlist = adminservice.DivisionMasterList(LabCode);
 		if(divisionlist==null || divisionlist.size()==0)
 		{
 			redir.addAttribute("resultfail", "No Divisions Found");
@@ -468,7 +479,7 @@ public class MasterController {
 		req.setAttribute("divisiondata", service.DivisionData(divisionid));
 		req.setAttribute("divisionlist", divisionlist);
 		req.setAttribute("divisionemplist", service.DivisionEmpList(divisionid));	
-		req.setAttribute("empoyeelist",service.DivisionNonEmpList(divisionid));
+		req.setAttribute("empoyeelist",service.DivisionNonEmpList(divisionid).stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
 		return "master/DivisionAssign";
 		
 		}catch (Exception e) {

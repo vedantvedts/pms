@@ -105,7 +105,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
                             		<input  class="form-control form-control" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
                         		</div>
                     		</div>
-                    		<div class="col-md-3">
+                    		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">Group Head Name</label><span class="mandatory">*</span>
                               		<select class="custom-select" name="ghempid"  required="required" id ="ghempid" style="font-size: 18px;">
@@ -113,13 +113,13 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 													
 													<% for (  Object[] obj : groupheadlist){ %>
 											
-													<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%> </option>
+													<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[2] %> </option>
 												
 													<%} %>
 									</select>
                         		</div>
                     		</div>
-                    			<div class="col-md-3">
+                    			<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">isActive:</label><span class="mandatory">*</span>
                               		 

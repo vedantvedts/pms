@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -214,6 +215,7 @@ public class AdminController {
 	public String RtmddoSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir)throws Exception {
 		 
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RtmddoSubmit.htm "+UserId);		
 		try {
 		
@@ -227,6 +229,7 @@ public class AdminController {
 		rtmddo.setValidTo(req.getParameter("ValidTo"));
 		rtmddo.setType(req.getParameter("type"));
 		rtmddo.setCreatedBy(UserId);
+		rtmddo.setLabCode(LabCode);
 		Long count=service.RtmddoInsert(rtmddo);
 		
 		if(count>0) {
@@ -386,7 +389,8 @@ public class AdminController {
 				String loginid=req.getParameter("loginid");		
 				String Fromdate=req.getParameter("Fromdate");
 				String Todate=req.getParameter("Todate");
-				req.setAttribute("usernamelist", service.UsernameList());
+				String LabCode = (String)ses.getAttribute("labcode");
+				req.setAttribute("usernamelist", service.UsernameList().stream().filter(e-> LabCode.equalsIgnoreCase(e[4].toString())).collect(Collectors.toList()));
 			
 				if(loginid == null) {
 					loginid = ses.getAttribute("LoginId").toString();
@@ -520,12 +524,13 @@ public class AdminController {
 		@RequestMapping(value = "Rtmddo2.htm",method=RequestMethod.GET )
 		public String Rtmddo2(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside Rtmddo "+UserId);		
 			try {
 
-				req.setAttribute("EmployeeList",service.EmployeeListAll());
+				req.setAttribute("EmployeeList",service.EmployeeListAll().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()) );
 				req.setAttribute("RtmddoList",service.Rtmddo());
-				req.setAttribute("presentEmpList", service.presentEmpList());
+				req.setAttribute("presentEmpList", service.presentEmpList().stream().filter(e-> LabCode.equals(e[5].toString())).collect(Collectors.toList()));
 			}
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +" Inside Rtmddo "+UserId, e);
@@ -714,6 +719,7 @@ public class AdminController {
 			String Userid = (String) ses.getAttribute("Username");
 			String Option= req.getParameter("sub");
 			String DivisionId= req.getParameter("Did");
+			String LabCode = (String)ses.getAttribute("labcode");
 			
 			logger.info(new Date() +"Inside DivisionMasterAddEdit "+ Userid);	
 
@@ -721,8 +727,8 @@ public class AdminController {
 				
 			if(Option.equalsIgnoreCase("add")) {
 				
-				req.setAttribute("DivisionGroupListAdd",service.DivisionGroupList());
-				req.setAttribute("DivisionHeadListAdd", service.DivisionHeadList());
+				req.setAttribute("DivisionGroupListAdd", service.DivisionGroupList().stream().filter(e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
+				req.setAttribute("DivisionHeadListAdd", service.DivisionHeadList().stream().filter( e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
 				
 				return "admin/DivisionMasterAdd";
 			}
@@ -731,8 +737,8 @@ public class AdminController {
 			else if(Option.equalsIgnoreCase("edit")) {
 				
 				req.setAttribute("DivisionMasterEditData", service.DivisionMasterEditData(DivisionId).get(0));
-				req.setAttribute("DivisionGroupList",service.DivisionGroupList());
-				req.setAttribute("DivisionHeadList", service.DivisionHeadList());
+				req.setAttribute("DivisionGroupList",service.DivisionGroupList().stream().filter(e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
+				req.setAttribute("DivisionHeadList", service.DivisionHeadList().stream().filter( e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
 
 				
 				

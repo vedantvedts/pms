@@ -201,7 +201,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 								
 								<% for (  Object[] obj : DivisionHeadListAdd){ %>
 						
-								<option value=<%=obj[0]%>><%=obj[1]%> </option>
+								<option value=<%=obj[0]%>><%=obj[1]%>, <%=obj[3] %> </option>
 							
 								<%} %>
 				</select>

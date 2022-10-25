@@ -23,6 +23,14 @@ public class PfmsRtmddo  implements Serializable{
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	private String LabCode;
+	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
 	public Long getRtmddoId() {
 		return RtmddoId;
 	}

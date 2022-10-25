@@ -1770,7 +1770,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public long  ProjectMainToMaster(String projectmainid,String user) throws Exception
+		public long  ProjectMainToMaster(String projectmainid,String user,String LabCode) throws Exception
 		{
 			logger.info(new Date() +"Inside ProjectMainToMaster");
 			
@@ -1801,6 +1801,7 @@ public class ProjectServiceImpl implements ProjectService {
 			master.setIsActive(1);
 			master.setCreatedBy(user);
 			master.setCreatedDate(sdf1.format(new Date()));
+			master.setLabCode(LabCode);
 			
 			return dao.ProjectMasterAdd(master);
 		}

@@ -134,7 +134,7 @@ public interface ProjectService {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public List<Object[]> ProjectApprovalFlowEmpData(String empid,String LabCode) throws Exception;
 	public List<Object[]> ProjectMainList() throws Exception;
-	public long ProjectMainToMaster(String projectmainid, String user) throws Exception;
+	public long ProjectMainToMaster(String projectmainid, String user,String LabCode) throws Exception;
 	public ProjectMasterRev ProjectMasterREVSubmit(String projectid, String userid, String remarks) throws Exception;
 	public List<Object[]> ProjectTypeMainListNotAdded() throws Exception;
 	public List<Object[]> ProjectRevList(String projectid) throws Exception;

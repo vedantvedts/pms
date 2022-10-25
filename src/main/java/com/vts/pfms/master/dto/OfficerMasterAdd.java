@@ -14,8 +14,16 @@ public class OfficerMasterAdd {
 	private String MobileNo;
 	private String DronaEmail;
 	private String InternalEmail;
+	private String LabCode;
 	
 	
+	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
 	public String getMobileNo() {
 		return MobileNo;
 	}
