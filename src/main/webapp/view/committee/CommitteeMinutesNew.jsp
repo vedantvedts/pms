@@ -955,19 +955,12 @@ for(Object[] temp : invitedlist){
 										    <% }else{%>											
 												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
 											<%} %>
-									<!-- </table>
-									<div align="left" style="margin-left: 25px;"></div>
-					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<thead> -->
-										<thead>
 											 <tr >
 												 <th  class="std"  colspan="8">Order Placed</th>
 											 </tr>
-										 </thead>
-										<!-- </thead> -->
 										
 										  	 	<tr>	
-										  	 	 <th class="std" style="width: 30px !important;">SN</th>
+										  	 	 <th class="std" rowspan="2" style="width: 30px !important;">SN</th>
 										  	 	 <th class="std">Demand No </th>
 										  	 	  <th class="std" >Demand  Date</th>
 												 <th class="std" colspan="2"> Nomenclature</th>
@@ -981,7 +974,7 @@ for(Object[] temp : invitedlist){
 												 <th class="std" style="max-width: 90px;	">DP Date</th>
 												 <th class="std" colspan="2" style="max-width: 90px;	">Vendor Name</th>
 												 <th class="std" style="max-width: 80px;">Rev DP Date</th>											 
-												 <th  class="std" colspan="2" style="max-width: 90px;">SO Cost-Lakh &#8377;</th>		
+												 <th  class="std" colspan="3" style="max-width: 90px;">SO Cost-Lakh &#8377;</th>		
 											 		
 											</tr>
 										    <%if(procurementOnSanction!=null && procurementOnSanction.size()>0){
@@ -998,9 +991,9 @@ for(Object[] temp : invitedlist){
 										  	 
 
 												<tr>
-												<td class="std" rowspan="2" ><%=k%></td>
-												<td class="std" ><%=obj[1]%> </td>
-												<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													<td class="std" rowspan="2" ><%=k%></td>
+													<td class="std" ><%=obj[1]%> </td>
+													<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td class="std"  colspan="2"><%=obj[8]%></td>
 													<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												    <td  class="std"> <%=obj[10]%> </td>
@@ -1016,7 +1009,7 @@ for(Object[] temp : invitedlist){
 													<td class="std" colspan="2"> <%=obj[12] %>
 													</td>
 													<td  class="std"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
-				                                    <td  class="std" colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
+				                                    <td  class="std" colspan="3" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
 				
 												</tr>		
 												<% }

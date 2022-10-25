@@ -13,16 +13,16 @@ import org.springframework.stereotype.Component;
 public class PMSLogoUtil 
 {
 	@Value("${ApplicationFilesDrive}")
-	private String ApplicationFilesDrive;
+	private String LabLogoPath;
 	
 	public String getLabLogoAsBase64String(String LabCode) throws IOException
 	{
-		String path = ApplicationFilesDrive+"PMS/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
+		String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".png";
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
 			System.err.println("File Not Found at Path "+path);
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+"PMS/images/lablogos/"+"lablogo"+".png")));
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/"+"lablogo"+".png")));
 		}
 	}
 	

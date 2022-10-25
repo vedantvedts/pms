@@ -239,11 +239,12 @@ String membertype=(String) request.getAttribute("membertype");
 String filesize=(String) request.getAttribute("filesize");
 String committeeid=committeescheduleeditdata[0].toString();
 String projectid=committeescheduleeditdata[9].toString();
+String   committeecode    = committeescheduleeditdata[8].toString();
 String GenId="GenAdd";
 List<Object[]> minutesattachmentlist=(List<Object[]>)request.getAttribute("minutesattachmentlist");
 
 List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
-List<String> AgendaCommitteeIds=(List<String>)request.getAttribute("AgendaCommitteeIds");
+List<String> SplCommitteeCodes=(List<String>)request.getAttribute("SplCommitteeCodes");
 
 String formname=(String)request.getAttribute("formname");
 if(formname!=null){
@@ -290,7 +291,7 @@ if(formname!=null){
 	
 	<form class="form-inline" method="POST" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 	
-			<%if(AgendaCommitteeIds.contains(committeeid) && Long.parseLong(projectid)>0){ %>
+			<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 				<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 				<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
 				

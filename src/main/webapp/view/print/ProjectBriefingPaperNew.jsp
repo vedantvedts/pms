@@ -361,6 +361,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 
+List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
+
+
+
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
 
@@ -422,12 +426,28 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<td  style="border: 0 ">
 										
 											<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												<option disabled  selected value="">Choose...</option>
-												<option <%if(committeeid.equals("1")){ %>selected<%} %> value="1" >PMRC</option>
-												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>ProjectCost){ %>
-													<option <%if(committeeid.equals("2")){ %>selected<%} %> value="2" >EB</option>
-													<option <%if(committeeid.equals("0")){ %>selected<%} %> value="0" >Others</option> 
+												
+												<%for(Object[] committee : SpecialCommitteesList){ %>
+													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+														
+														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+														
+													
+													<%}else if(committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+														
+														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+														
+													<%} %>
+												
 												<%} %>
+												<option <%if(Long.parseLong(committeeid)==Long.parseLong("0")){ %>selected<%} %> value="0" >Others</option>
+												
+												<%-- <option disabled  selected value="">Choose...</option>
+												<option <%if(committeeid.equals("1")){ %>selected<%} %> value="1" >PMRC</option>
+													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>ProjectCost){ %>
+													<option <%if(committeeid.equals("2")){ %>selected<%} %> value="2" >EB</option>
+													<option <%if(committeeid.equals("0")){ %>selected<%} %> value="0" >Others</option>
+												<%} %> --%>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											
