@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +43,17 @@ public class HeaderController {
 			String LoginType = ((String) ses.getAttribute("LoginType"));
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String LabCode = (String) ses.getAttribute("labcode");
+			String ClusterId =(String)ses.getAttribute("clusterid");
 			
+			String DGName = service.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
+
+		     String IsDG = "No";
+		     if(DGName.equalsIgnoreCase(LabCode))
+		    	 IsDG = "Yes";
+		     else
+		    	 IsDG = "No";
+		    	 
+		    request.setAttribute("IsDG", "Yes");	
 		    HeaderModuleList = service.FormModuleList(LoginType,LabCode);
 		    request.setAttribute("ProjectInitiationList", service.ProjectIntiationList(EmpId,LoginType));
 		    
