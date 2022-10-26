@@ -1588,10 +1588,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 		
 		@Override
-		public List<Object[]> ProjectRiskDataList(String projectid) throws Exception 
+		public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
 		{
 			logger.info(new Date() +"Inside ProjectRiskDataList");
-			return dao.ProjectRiskDataList(projectid);
+			return dao.ProjectRiskDataList(projectid, LabCode);
 		}
 		
 		@Override
@@ -1608,6 +1608,7 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.info(new Date() +"Inside ProjectRiskDataSubmit");
 			
 			PfmsRisk model=new PfmsRisk();
+			model.setLabCode(dto.getLabCode());
 			model.setProjectId(Long.parseLong(dto.getProjectId()));
 			model.setActionMainId(Long.parseLong(dto.getActionMainId()));
 			model.setDescription(dto.getDescription());
@@ -1622,9 +1623,6 @@ public class ProjectServiceImpl implements ProjectService {
 			
 			return dao.ProjectRiskDataSubmit(model);
 		}
-		
-		
-	
 		
 		@Override
 		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception {
@@ -1669,9 +1667,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public List<Object> RiskDataPresentList(String projectid) throws Exception {
+		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
 			logger.info(new Date() +"Inside RiskDataPresentList");
-			return dao.RiskDataPresentList(projectid);
+			return dao.RiskDataPresentList(projectid, LabCode);
 		}
 		
 

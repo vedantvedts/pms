@@ -2862,12 +2862,11 @@ public class ProjectController {
 			if(projectid==null) 
 			{
 				projectid="0";
-//				projectid=projectlist.get(0)[0].toString();
 			}
 			
-			List<Object[]> riskdatalist=service.ProjectRiskDataList(projectid);
+			List<Object[]> riskdatalist=service.ProjectRiskDataList(projectid, LabCode);
 			
-			req.setAttribute("riskdatapresentlist",service.RiskDataPresentList(projectid));
+			req.setAttribute("riskdatapresentlist",service.RiskDataPresentList(projectid,LabCode));
 			req.setAttribute("riskdatalist", riskdatalist);
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("projectlist", projectlist);
@@ -2884,6 +2883,7 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectRiskData.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRiskDate(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		
 		logger.info(new Date() +"Inside ProjectRiskData.htm "+Username);
 		try 
 		{
@@ -2916,6 +2916,7 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectRiskDataSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRiskDataSubmit(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectRiskDataSubmit.htm "+Username);
 		try 
 		{						
@@ -2932,6 +2933,7 @@ public class ProjectController {
 			dto.setActionMainId(riskdata[0].toString());
 			dto.setProjectId(projectid);
 			dto.setCreatedBy(Username);		
+			dto.setLabCode(LabCode);
 			long count=service.ProjectRiskDataSubmit(dto);
 			
 			if(count>0) 
