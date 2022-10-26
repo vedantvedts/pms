@@ -31,8 +31,8 @@
         
         
         
-        <property name="java-output-path" value="/pfms_pfms/target/classes"/>
-        <property name="context-root" value="pfms"/>
+        <property name="java-output-path" value="/pfms_dg/target/classes"/>
+        <property name="context-root" value="pfms-dg"/>
                                             
     
     
