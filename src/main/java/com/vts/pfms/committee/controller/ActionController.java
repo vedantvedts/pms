@@ -54,6 +54,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.cfg.Configuration;
 import com.vts.pfms.committee.dao.ActionSelfDao;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
@@ -65,6 +66,9 @@ import com.vts.pfms.committee.service.ActionService;
 
 @Controller
 public class ActionController {
+	
+	@Autowired
+	private Configuration configuration;
 	
 	@Autowired
 	ActionService service;
@@ -83,7 +87,7 @@ public class ActionController {
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
-			
+			System.out.println(configuration);
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
 //			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
