@@ -6,7 +6,7 @@ public class ActionSubDto {
         private String FileNamePath;
 	    private byte[] FilePath;
 	    private String ActionSubId;
-		private String ActionMainId;
+		private String ActionAssignId;
 		private String Progress;
 		private String ProgressDate;
 		private String Remarks;
@@ -38,11 +38,12 @@ public class ActionSubDto {
 		public void setActionSubId(String actionSubId) {
 			ActionSubId = actionSubId;
 		}
-		public String getActionMainId() {
-			return ActionMainId;
+	
+		public String getActionAssignId() {
+			return ActionAssignId;
 		}
-		public void setActionMainId(String actionMainId) {
-			ActionMainId = actionMainId;
+		public void setActionAssignId(String actionAssignId) {
+			ActionAssignId = actionAssignId;
 		}
 		public String getProgress() {
 			return Progress;

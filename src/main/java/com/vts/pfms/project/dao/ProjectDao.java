@@ -130,14 +130,14 @@ public interface ProjectDao {
 	public List<Object[]> SubProjectList(String InitiationId) throws Exception;
     public String StatusDetails(String Status)throws Exception;
     public BigInteger EmpId(String InitiationId) throws Exception;
-	public List<Object[]> ProjectRiskDataList(String projectid) throws Exception;
+	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception;
 	public Object[] ProjectRiskData(String actionmainid) throws Exception;
 	public long ProjectRiskDataSubmit(PfmsRisk model) throws Exception;
 	public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception;
 	public int ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception;
 	public long ProjectRiskDataRevSubmit(PfmsRiskRev model) throws Exception;
 	public List<Object[]> ProjectRiskMatrixRevList(String actionmainid) throws Exception;
-	public List<Object> RiskDataPresentList(String projectid) throws Exception;
+	public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception;
     public Long ProjectInitiationAuthorityAdd(PfmsInitiationAuthority pfmsauthority,PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception;
 	public PfmsInitiationAuthorityFile ProjectAuthorityDownload(String AuthorityFileId) throws Exception;
 	public Long ProjectAuthorityUpdate(PfmsInitiationAuthority pfmsauthority) throws Exception;
@@ -145,7 +145,7 @@ public interface ProjectDao {
 	public List<Object[]> getProjectCatSecDetalis(Long projectId)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid, String Logintype ,String LabCode) throws Exception;
 	public List<Object[]> DoRtmdAdEmpData() throws Exception;
-	public Object[] DirectorEmpData() throws Exception;
+	public Object[] DirectorEmpData(String LabCode) throws Exception;
 	public Object[] EmpDivHeadData(String empid) throws Exception;
 	public ProjectMain ProjectMainObj(String projectmainid) throws Exception;
 	public List<Object[]> InitCommDefault() throws Exception;

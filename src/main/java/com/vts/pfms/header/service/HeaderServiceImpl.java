@@ -25,10 +25,10 @@ public class HeaderServiceImpl implements HeaderService {
 	private SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Override
-	public List<Object[]> FormModuleList(String LoginType)throws Exception {
+	public List<Object[]> FormModuleList(String LoginType,String LabCode)throws Exception {
 		
 		logger.info(new Date() +"Inside FormModuleList");	
-		return dao.FormModuleList(LoginType);
+		return dao.FormModuleList(LoginType,LabCode);
 	}
 
 	@Override
@@ -286,10 +286,10 @@ public class HeaderServiceImpl implements HeaderService {
 	}
 
 	@Override
-	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId) throws Exception {
+	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId,String LabCode) throws Exception {
 		
 		logger.info(new Date() +"Inside HeaderSchedulesList");
-		return dao.HeaderSchedulesList(Logintype,FormModuleId);
+		return dao.HeaderSchedulesList(Logintype,FormModuleId,LabCode);
 	}
 
 	@Override

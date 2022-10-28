@@ -387,7 +387,7 @@ if(MinutesBack==null){
 							<input type="hidden" name="minutesback" value="<%=MinutesBack %>">
 						</label>
 					</div>
-					<div class="col-md-1"  align="left"></div>
+					
    					<div class="col-sm-10" align="left"  >
 <div class="form-group" style="text-align: justify;">
 <label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
@@ -449,7 +449,7 @@ if(MinutesBack==null){
 
  				</div>  
  				<div class="row" align="center">
- <div class="col-sm-2" align="left"  ></div>
+
  <div class="col-sm-4" align="left"  >
    <div class="form-group" id="OldList">
 <label > Old Action No : 
@@ -461,7 +461,7 @@ if(MinutesBack==null){
 </div>
 </div>
 
- <div class="col-sm-4" align="left"  ><br>
+ <div class="col-sm-6" align="left"  ><br>
  				 				<input type="submit" name="sub"   style="margin-top: 10px;" class="btn  btn-sm submit" form="specadd"  id="adding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
 	          					<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
 	          				

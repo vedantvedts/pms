@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,14 +37,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
-import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
@@ -76,6 +72,9 @@ public class ProjectController {
 	
 	@Value("${File_Size}")
 	String file_size;
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	                                                                                        
 	private static final Logger logger=LogManager.getLogger(ProjectController.class);
 	
@@ -94,10 +93,10 @@ public class ProjectController {
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String LoginType=(String)ses.getAttribute("LoginType");
+			String LabCode =(String ) ses.getAttribute("labcode");
 	
-
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType));
-			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId));
+			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 			return "project/ProjectIntiationList";
                                                                    
 		}
@@ -119,6 +118,7 @@ public class ProjectController {
 				String Option = req.getParameter("sub");
 				String IntiationId = req.getParameter("btSelectItem");
 				String Logintype= (String)ses.getAttribute("LoginType");
+				String LabCode = (String)ses.getAttribute("labcode");
 		
 				if (Option.equalsIgnoreCase("add")) {
 					req.setAttribute("ProjectTypeList", service.ProjectTypeList());
@@ -164,7 +164,7 @@ public class ProjectController {
 			if (Option.equalsIgnoreCase("status")) 
 			{
 				req.setAttribute("ProjectStatusList", service.ProjectStatusList(EmpId,Logintype));
-				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId));
+				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 				return "project/ProjectStatusList";
 			}
 		}
@@ -2073,10 +2073,11 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectList.htm")
 	public String ProjectList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
+		String LabCode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectList "+Username);
 	try {
 		
-		req.setAttribute("ProjectList", service.ProjectList());
+		req.setAttribute("ProjectList", service.ProjectList().stream().filter(e-> e[14]!=null).filter(e->LabCode.equalsIgnoreCase(e[14].toString())).collect(Collectors.toList()) );
 		
 	}catch (Exception e) {
 		e.printStackTrace(); logger.error(new Date() +" Inside ProjectList "+Username, e);
@@ -2092,6 +2093,7 @@ public class ProjectController {
 		long count=0;
 		
 		String Username = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectSubmit.htm "+Username);
 		try {      	
 		  String sub=req.getParameter("action");
@@ -2107,7 +2109,7 @@ public class ProjectController {
 				  ProjectCatSecDetalis=service.getProjectCatSecDetalis(ProjectMainList.get(0)[0].toString());
 			  }
 			  req.setAttribute("ProjectCatSecDetalis", ProjectCatSecDetalis);
-			  req.setAttribute("OfficerList", service.OfficerList());
+			  req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> LabCode.equalsIgnoreCase(e[9].toString())).collect(Collectors.toList()));
 			  req.setAttribute("CategoryList", service.ProjectCategoryList());
         	  req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
 			  return "project/ProjectAdd";
@@ -2176,7 +2178,7 @@ public class ProjectController {
 			 protype.setIsActive(1);
        	     protype.setCreatedBy(Username);
          	 protype.setCreatedDate(sdf1.format(new Date()));
-       	  
+         	 protype.setLabCode(LabCode);
         	
         	 count=service.ProjectMasterAdd(protype);
         	 if(count>0) {
@@ -2288,8 +2290,9 @@ public class ProjectController {
 		  }else if("mainaddsubmit".equalsIgnoreCase(sub))
 		  {
 			  String projectmainid=req.getParameter("projectmainid");
+			  
 			  count=0;
-			  count=service.ProjectMainToMaster(projectmainid, Username);
+			  count=service.ProjectMainToMaster(projectmainid, Username,LabCode);
 			  if(count>0) {
 	  				redir.addAttribute("result","Project Added Successfully");
 	  			
@@ -2354,7 +2357,7 @@ public class ProjectController {
 
 		req.setAttribute("ProjectAssignList", service.ProjectAssignList(ProjectId));
 		req.setAttribute("ProjectList", ProjectList);
-		req.setAttribute("OfficerList", service.UserList(ProjectId));
+		req.setAttribute("OfficerList", service.UserList(ProjectId).stream().filter(e->e[2]!=null ).filter(e-> LabCode.equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()));
 		req.setAttribute("ProjectCode", service.ProjectData(ProjectId));
 		req.setAttribute("ProjectId", ProjectId);
 	}catch (Exception e) {
@@ -2529,7 +2532,7 @@ public class ProjectController {
 		return "project/ProjectDataCollect";		
 	}
 	
-
+	
 	
 	@RequestMapping(value = "ProjectDataSubmit.htm", method = RequestMethod.POST)
 	public String ProjectDataSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
@@ -2538,6 +2541,7 @@ public class ProjectController {
 			@RequestParam(name ="producttreeimg" ,required = false) MultipartFile producttreeimg,
 			@RequestParam(name ="pearlimg",required = false) MultipartFile pearlimg)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
 		try 
 		{								
@@ -2554,7 +2558,7 @@ public class ProjectController {
 			projectdatadto.setCurrentStageId(req.getParameter("projectstageid"));
 			
 			projectdatadto.setCreatedBy(Username);
-			
+			projectdatadto.setLabcode(LabCode);
 //			String fileName = producttreeimg.getOriginalFilename();
 //			String prefix = fileName.substring(fileName.lastIndexOf("."));
 //			 
@@ -2582,7 +2586,7 @@ public class ProjectController {
 			}
 			else
 			{
-				redir.addAttribute("resultfail","Project Data adding  Unsuccessfully");
+				redir.addAttribute("resultfail","Project Data adding  Unsuccessful");
 			}
 			
 			redir.addFlashAttribute("projectid",projectid);
@@ -2623,7 +2627,7 @@ public class ProjectController {
 				index=3;
 			}
 		
-			my_file = new File(projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+			my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
 	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 	        OutputStream out = res.getOutputStream();
 	        FileInputStream in = new FileInputStream(my_file);
@@ -2647,6 +2651,7 @@ public class ProjectController {
 			@RequestParam(name ="producttreeimg" ,required = false) MultipartFile producttreeimg,
 			@RequestParam(name ="pearlimg",required = false) MultipartFile pearlimg)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
 		try 
 		{		
@@ -2692,6 +2697,7 @@ public class ProjectController {
 				service.ProjectDataRevSubmit(projectdatadto);
 			}
 			projectdatadto.setRevisionNo(revisionno);
+			projectdatadto.setLabcode(LabCode);
 			count=service.ProjectDataEditSubmit(projectdatadto);
 			
 			if(count>0) 
@@ -2810,7 +2816,7 @@ public class ProjectController {
 			}
 			
 	        res.setContentType("Application/octet-stream"); 
-	        File my_file = new File(projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+	        File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
 	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
 	 
 	        	 
@@ -2856,12 +2862,11 @@ public class ProjectController {
 			if(projectid==null) 
 			{
 				projectid="0";
-//				projectid=projectlist.get(0)[0].toString();
 			}
 			
-			List<Object[]> riskdatalist=service.ProjectRiskDataList(projectid);
+			List<Object[]> riskdatalist=service.ProjectRiskDataList(projectid, LabCode);
 			
-			req.setAttribute("riskdatapresentlist",service.RiskDataPresentList(projectid));
+			req.setAttribute("riskdatapresentlist",service.RiskDataPresentList(projectid,LabCode));
 			req.setAttribute("riskdatalist", riskdatalist);
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("projectlist", projectlist);
@@ -2878,6 +2883,7 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectRiskData.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRiskDate(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		
 		logger.info(new Date() +"Inside ProjectRiskData.htm "+Username);
 		try 
 		{
@@ -2910,6 +2916,7 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectRiskDataSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRiskDataSubmit(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectRiskDataSubmit.htm "+Username);
 		try 
 		{						
@@ -2926,6 +2933,7 @@ public class ProjectController {
 			dto.setActionMainId(riskdata[0].toString());
 			dto.setProjectId(projectid);
 			dto.setCreatedBy(Username);		
+			dto.setLabCode(LabCode);
 			long count=service.ProjectRiskDataSubmit(dto);
 			
 			if(count>0) 
@@ -2968,7 +2976,6 @@ public class ProjectController {
 			dto.setActionMainId(riskdata[0].toString());			
 			dto.setProjectId(projectid);
 			dto.setModifiedBy(Username);			
-			
 			
 			if(rev!=null && rev.equals("1"))
 			{
@@ -3198,7 +3205,7 @@ public class ProjectController {
 	{
 
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectMasterAttachAdd.htm "+UserId);
 		
 		try {
@@ -3211,7 +3218,7 @@ public class ProjectController {
 			dto.setFileName(filenames);
 			dto.setFiles(FileAttach);
 			dto.setCreatedBy(UserId);
-			
+			dto.setLabCode(LabCode);
 			
 			
 			long count=service.ProjectMasterAttachAdd(dto);
@@ -3245,7 +3252,7 @@ public class ProjectController {
 			Object[] attachmentdata=service.ProjectMasterAttachData(attachid);
 			
 			File my_file=null;
-			my_file = new File(attachmentdata[2]+File.separator+attachmentdata[3]);
+			my_file = new File(uploadpath+ attachmentdata[2]+File.separator+attachmentdata[3]);
 			
 			res.setContentType("Application/octet-stream");	
 	        res.setHeader("Content-disposition","attachment; filename="+attachmentdata[3].toString()); 
@@ -3304,7 +3311,7 @@ public class ProjectController {
 			String attachid=req.getParameter("attachid");
 			String projectid=req.getParameter("projectid");
 			String RelevantPoints=req.getParameter("RelevantPoints");
-			String committeeid=req.getParameter("projectid");
+			String committeeid = req.getParameter("committeeid");
 			
 			ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
 			

@@ -18,6 +18,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleAgendaDto;
 import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
+import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeMember;
@@ -133,13 +134,13 @@ public interface CommitteeService {
  	public int MeetingMinutesApprovalSubmit( String ScheduleId, String Remarks,String UserId, String EmpId,String Option) throws Exception;
 
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> MeetingReports(String EmpId,String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception;
+	public List<Object[]> MeetingReports(String EmpId,String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> MeetingReportListAll(String fdate,String tdate, String ProjectId) throws Exception;
 	//public List<Object[]> MeetingReportListEmp(String fdate,String tdate, String ProjectId,String EmpId) throws Exception;
 	public Object[] KickOffMeeting(HttpServletRequest req, RedirectAttributes redir) throws Exception;
 	public int UpdateCommitteeInvitationEmailSent(String scheduleid) throws Exception;
 	public	List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception;
-	public List<Object[]> ProjectCommitteesList() throws Exception;
+	public List<Object[]> ProjectCommitteesList(String LabCode) throws Exception;
 
 
 
@@ -222,10 +223,9 @@ public interface CommitteeService {
 	public int CommitteeScheduleDelete(CommitteeScheduleDto dto) throws Exception;
 	public int ScheduleCommitteeEmpCheck(EmpAccessCheckDto dto) throws Exception;
 	public List<Object[]> EmpScheduleData(String empid, String scheduleid) throws Exception;
-	public List<Object[]> DefaultAgendaList(String committeeid) throws Exception;
+	public List<Object[]> DefaultAgendaList(String committeeid,String LabCode) throws Exception;
 	public List<Object[]> ProcurementStatusList(String projectid) throws Exception;
 	public List<Object[]> ActionPlanSixMonths(String projectid) throws Exception;
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception;
 	public List<Object[]> CommitteeMinutesSpecNew() throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid, String rtype) throws Exception;
@@ -235,8 +235,8 @@ public interface CommitteeService {
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
 	public int AgendaUnlinkDoc(CommitteeScheduleAgendaDocs agendadoc) throws Exception;
-	public int PreDefAgendaEdit(CommitteeScheduleAgenda agenda) throws Exception;
-	public long PreDefAgendaAdd(CommitteeScheduleAgenda agenda) throws Exception;
+	public int PreDefAgendaEdit(CommitteeDefaultAgenda agenda) throws Exception;
+	public long PreDefAgendaAdd(CommitteeDefaultAgenda agenda) throws Exception;
 	public int PreDefAgendaDelete(String agendaid) throws Exception;
 	public int MeetingNo(Object[] scheduledata) throws Exception;
 	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception;
@@ -257,6 +257,8 @@ public interface CommitteeService {
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
+	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
+	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
     
 }
 

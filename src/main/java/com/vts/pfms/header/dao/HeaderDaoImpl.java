@@ -20,7 +20,7 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String EMPDETAILES="SELECT b.empname, c.formrolename, b.empno,b.labcode FROM login a,employee b,form_role c WHERE a.empid=b.empid AND a.formroleid=c.formroleid AND a.loginid=:loginid";
 	private static final String DIVISIONNAME="select divisioncode from division_master where divisionid=:divisionid";
 	
-	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate";
+	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";
 	private static final String NOTIFICATIONUPDATE="update pfms_notification set isactive='0' where isactive='1' and notificationid=:notificationid ";
 	private static final String OLDPASSWORD="select password from login where username=:username";
 	private static final String PASSWORDUPDATECHANGE="update login set password=:newpassword,modifiedby=:modifiedby,modifieddate=:modifieddate where username=:username ";
@@ -31,8 +31,8 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE a.projectid=:projectid and  a.isactive='1'";
 	private static final String LABDETAILS ="SELECT labid,clusterid FROM lab_master WHERE labcode=:labcode"; 
 	
-	private static final String HEADERSCHEDULELIST ="SELECT a.formname,a.formurl FROM pfms_form_detail a , pfms_form_role_access b WHERE a.formdetailid=b.formdetailid AND a.formmoduleid=:formmoduleid AND b.logintype=:logintype AND b.isactive=1";
-	private static final String FROMMODULELIST = "SELECT DISTINCT a.formmoduleid , a.formmodulename  , a.moduleurl,a.isnav  FROM pfms_form_module a, pfms_form_detail b, pfms_form_role_access c WHERE a.isactive='1' AND a.formmoduleid=b.formmoduleid AND b.formdetailid=c.formdetailid AND c.logintype=:logintype AND c.isactive=1	 ORDER BY a.formmoduleid";
+	private static final String HEADERSCHEDULELIST ="SELECT a.formname,a.formurl FROM pfms_form_detail a , pfms_form_role_access b WHERE a.formdetailid=b.formdetailid AND a.formmoduleid=:formmoduleid AND b.logintype=:logintype AND b.isactive=1 AND CASE WHEN 'Y'= (SELECT iscluster FROM lab_master WHERE labcode=:labcode) THEN labhq IN ('H','B') ELSE labhq IN ('L','B') END ";
+	private static final String FROMMODULELIST = "SELECT DISTINCT a.formmoduleid , a.formmodulename  , a.moduleurl,a.isnav  FROM pfms_form_module a, pfms_form_detail b, pfms_form_role_access c WHERE a.isactive='1' AND a.formmoduleid=b.formmoduleid AND b.formdetailid=c.formdetailid AND c.logintype=:logintype AND c.isactive=1 AND CASE WHEN 'Y'= (SELECT iscluster FROM lab_master WHERE labcode= :labcode) THEN labhq IN ('H','B') ELSE labhq IN ('L','B') END 	 ORDER BY a.formmoduleid";
 	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE a.empid=:empid AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' ";
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus,a.revisionno FROM milestone_activity a WHERE  a.isactive=1 AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus,a.revision  FROM milestone_activity_level a WHERE a.parentactivityid=:id AND a.activitylevelid=:levelid ";
@@ -47,10 +47,11 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final Logger logger=LogManager.getLogger(HeaderDaoImpl.class);
 
 	@Override
-	public List<Object[]> FormModuleList(String LoginType) throws Exception {
+	public List<Object[]> FormModuleList(String LoginType,String LabCode) throws Exception {
 		logger.info(new Date() +"Inside FormModuleList");	
 		Query query = manager.createNativeQuery(FROMMODULELIST);
 		query.setParameter("logintype", LoginType);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> FormModuleList= query.getResultList();
 		return FormModuleList;
 	}
@@ -247,12 +248,13 @@ public class HeaderDaoImpl implements HeaderDao {
 	}
 
 	@Override
-	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId) throws Exception {
+	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId,String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside HeaderSchedulesList");
 		Query query=manager.createNativeQuery(HEADERSCHEDULELIST);
 		query.setParameter("logintype",Logintype);
 		query.setParameter("formmoduleid", FormModuleId);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> HeaderSchedulesList=(List<Object[]>)query.getResultList();		
 
 		return HeaderSchedulesList;

@@ -72,6 +72,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.dto.FileDocAmendmentDto;
 import com.vts.pfms.milestone.dto.FileProjectDocDto;
 import com.vts.pfms.milestone.dto.FileUploadDto;
@@ -88,6 +89,8 @@ import com.vts.pfms.milestone.service.MilestoneService;
 @Controller
 public class MilestoneController {
 
+	@Autowired CommitteeService committeservice;
+	
 	@Autowired
 	MilestoneService service;
 	
@@ -95,10 +98,13 @@ public class MilestoneController {
 	@Value("${File_Size}")
     private String GlobalFileSize;
 
+	@Value("${ApplicationFilesDrive}")
+    private String FilePath;
+	
 	@RequestMapping(value = "MilestoneActivityList.htm")
 	public String MilestoneActivityList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
-		System.out.println("isndei" +  req.getParameter("ProjectId"));
+		
 		String UserId = (String) ses.getAttribute("Username");
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -935,6 +941,8 @@ public class MilestoneController {
 				req.setAttribute("ActionList", service.ActionList("A",req.getParameter("ActivityId")));	
 			}
 			req.setAttribute("projectdetails",service.ProjectDetails(req.getParameter("ProjectId")).get(0));
+			req.setAttribute("AllLabsList", committeservice.AllLabList());
+			
 			
 		}
 		catch (Exception e) {
@@ -1025,6 +1033,7 @@ public class MilestoneController {
 					req.setAttribute("SubList", service.MilestoneActivitySub(mainDto));
 					req.setAttribute("ActionList", service.ActionList(Type,SubId));
 					req.setAttribute("projectdetails",service.ProjectDetails(Project).get(0));
+					req.setAttribute("AllLabsList", committeservice.AllLabList());
 				}
 				catch (Exception e) {
 					e.printStackTrace();  
@@ -1198,13 +1207,7 @@ public class MilestoneController {
 	        }
 	        zis1.closeEntry();
 	        zis1.close();
-	        //Zipper zip=new Zipper();
-	    	try {
-	    	//zip.pack("D:\\Daily.doc\\");
-	    	//zip.unpack("D:\\test.zip\\","D:\\Test\\");
-	    	}catch (Exception e) {
-	    		
-	    	}
+	       
 		}
 	 
 	 public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
@@ -1369,6 +1372,7 @@ public class MilestoneController {
 		public String FileSubAddNew(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("FileAttach") MultipartFile FileAttach)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileSubAddNew.htm "+UserId);
 			try {
 
@@ -1422,6 +1426,7 @@ public class MilestoneController {
 	            filedto.setDescription(req.getParameter("description"));
 	            filedto.setSubL1(String.valueOf(sublevel));
 	            filedto.setDocid(req.getParameter("documenttitle"));
+	            filedto.setLabCode(LabCode);
 	            long count=service.FileUploadNew(filedto);
 
 				if (count > 0) {
@@ -2013,7 +2018,8 @@ public class MilestoneController {
 			logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);	
 			String projectid = req.getParameter("projectid");
 			String LabCode = req.getParameter("labCode");
-			System.out.println(LabCode);
+			
+			
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)
 			{
@@ -2202,6 +2208,7 @@ public class MilestoneController {
 		public String AddDocAmmendment(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("AmendFileAttach") MultipartFile FileAttach)throws Exception 
 		{
 			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside FileSubAddNew.htm "+UserId);
 			try {
 //								
@@ -2213,7 +2220,7 @@ public class MilestoneController {
 				amenddoc.setDescription(req.getParameter("Amenddescription"));
 				amenddoc.setProjectId(req.getParameter("projectidvalue"));
 				amenddoc.setInStream(FileAttach.getInputStream());
-				
+				amenddoc.setLabCode(LabCode);
 				long count=service.FileAmmendUploadNew(amenddoc);
 				
 				if (count > 0) {
@@ -2280,7 +2287,7 @@ public class MilestoneController {
                 Object[] obj=service.FileDeatils(Id).get(0);                            	
                	List<Object[]> amendmentsdata= service.DocumentAmendment(Id);
                	for(Object[] amend:amendmentsdata) {
-               		zip.unpack(amend[5].toString()+amend[2].toString()+amend[1].toString()+"-"+amend[4].toString()+".zip",path,amend[6].toString());
+               		zip.unpack(FilePath+amend[5].toString()+amend[2].toString()+amend[1].toString()+"-"+amend[4].toString()+".zip",path,amend[6].toString());
                     amendlist.add(path+"/"+amend[7]);
                	}
                 	
@@ -2359,7 +2366,7 @@ public class MilestoneController {
                 Object[] obj=service.FileDeatils(Id).get(0);
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
-                zip.unpack(obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip",path,obj[5].toString());
+                zip.unpack(FilePath+obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip", path,obj[5].toString());
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[4]); 
                 File f=new File(path+"/"+obj[4]);
@@ -2401,7 +2408,7 @@ public class MilestoneController {
                 Object[] obj	=service.DocumentAmendmentData(Id);
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
-                zip.unpack(obj[5].toString()+obj[2].toString()+obj[1].toString()+"-"+obj[4].toString()+".zip",path,obj[6].toString());
+                zip.unpack(FilePath+obj[5].toString()+obj[2].toString()+obj[1].toString()+"-"+obj[4].toString()+".zip",path,obj[6].toString());
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[7]); 
                 File f=new File(path+"/"+obj[7]);
@@ -2430,7 +2437,6 @@ public class MilestoneController {
 		}
 		
 		
-		
 		@RequestMapping(value = "DocumentsZipDownload.htm", method = RequestMethod.POST)
 		public void DocumentsZipDownload(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res)throws Exception 
 		{
@@ -2452,7 +2458,7 @@ public class MilestoneController {
                
                	for(Object[] Doc:DocsData) 
                	{           
-               		zip.unpack(Doc[2].toString()+Doc[3].toString()+Doc[7].toString()+"-"+Doc[6].toString()+".zip",path,Doc[5].toString());
+               		zip.unpack(FilePath+Doc[2].toString()+Doc[3].toString()+Doc[7].toString()+"-"+Doc[6].toString()+".zip",path,Doc[5].toString());
                		File OFile=new File(path+"/"+Doc[4]);
                		File NFile=new File(path+"/"+Doc[13]+"-"+Doc[14]+"-"+Doc[4]);
                		OFile.renameTo(NFile);

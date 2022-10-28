@@ -3,10 +3,8 @@ package com.vts.pfms.milestone.service;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +47,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	MilestoneDao dao;
 	FormatConverter fc=new FormatConverter();
 	private static final Logger logger=LogManager.getLogger(MilestoneServiceImpl.class);
-	@Value("${File_Path}")
+	@Value("${ApplicationFilesDrive}")
     private String FilePath;
 	
 	@Override
@@ -1094,62 +1092,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.FileSubInsertNew(fileRepo);
 	}
 	
-	@Override
-	public long FileUploadNew(FileUploadDto dto) throws Exception {
-	
-		long count=0;
-	
-		 try {
-				String[] Dir=dto.getPathName().split("/");
-				String FullDir=FilePath+"\\P"+dto.getProjectId()+"\\";
-				for (int i = 0; i < Dir.length; i++) {
-					FullDir=FullDir.concat(Dir[i]+"\\");
-					File theDir = new File(FullDir);
-					 if (!theDir.exists()){
-					     theDir.mkdirs();
-					 }
-				}
 
-			long rev=1;
-			Zipper zip=new Zipper();
-
-			 String Pass=dao.FilePass(dto.getUserId());
-			 long version=Long.parseLong(dto.getVer());
-			 long release=Long.parseLong(dto.getRel());
-			 
-			 FileRepUploadNew upload=new FileRepUploadNew();
-			 upload.setFileName(dto.getFileNamePath());
-			 upload.setFilePass(Pass);
-			 upload.setReleaseDoc(release);
-			 upload.setVersionDoc(version);
-			 upload.setFileRepId(Long.parseLong(dto.getFileId()));
-			 upload.setFilePath(FullDir);
-			 upload.setFileNameUi(dto.getFileName());
-			 upload.setDescription(dto.getDescription());
-			 upload.setCreatedBy(dto.getUserId());
-			 upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-			 upload.setIsActive(1);
-			 
-			 count=dao.FileUploadInsertNew(upload);
-			 
-			 Long Rev=Long.parseLong(dto.getRel());
-			 Long Ver=Long.parseLong(dto.getVer());
-			 if(count>0) {
-				
-	         zip.pack(dto.getFileNamePath(),dto.getIS(),FullDir,dto.getFileName()+Ver+"-"+Rev,Pass);
-	        
-	         count=dao.FileRepRevUpdate(dto.getFileId(),release,version);
-	         
-	        
-			 }
-			 
-		 }catch (Exception e) {
-			 e.printStackTrace();
-		   count=0;
-		}
-
-		return count;
-	}
 
 	@Override
 	public List<Object[]> VersionCheckList(String ProjectId, String SubsystemL1,String documenttitle) throws Exception {
@@ -1199,15 +1142,83 @@ public class MilestoneServiceImpl implements MilestoneService {
 		return dao.DocumentAmendment(FileRepUploadId);
 	}
 	
+	
+	
+	@Override
+	public long FileUploadNew(FileUploadDto dto) throws Exception {
+	
+		long count=0;
+	
+		 try {
+				String[] Dir=dto.getPathName().split("/");
+				
+				String FullDir=dto.getLabCode()+"\\docrepo\\P"+dto.getProjectId()+"\\";
+				
+				String actialFullPath = FilePath+FullDir;
+				
+				for (int i = 0; i < Dir.length; i++) {
+					actialFullPath=actialFullPath.concat(Dir[i]+"\\");
+					FullDir =FullDir.concat(Dir[i]+"\\");
+					File theDir = new File(actialFullPath);
+					 if (!theDir.exists()){
+					     theDir.mkdirs();
+					 }
+				}
+			
+				Zipper zip=new Zipper();
+
+				String Pass=dao.FilePass(dto.getUserId());
+				long version=Long.parseLong(dto.getVer());
+				long release=Long.parseLong(dto.getRel());
+				 
+				FileRepUploadNew upload=new FileRepUploadNew();
+				upload.setFileName(dto.getFileNamePath());
+				upload.setFilePass(Pass);
+				upload.setReleaseDoc(release);
+				upload.setVersionDoc(version);
+				upload.setFileRepId(Long.parseLong(dto.getFileId()));
+				upload.setFilePath(FullDir);
+				upload.setFileNameUi(dto.getFileName());
+				upload.setDescription(dto.getDescription());
+				upload.setCreatedBy(dto.getUserId());
+				upload.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				upload.setIsActive(1);
+				 
+				count=dao.FileUploadInsertNew(upload);
+				 
+				Long Rev=Long.parseLong(dto.getRel());
+				Long Ver=Long.parseLong(dto.getVer());
+				if(count>0) {
+					
+		        zip.pack(dto.getFileNamePath(),dto.getIS(),actialFullPath,dto.getFileName()+Ver+"-"+Rev,Pass);
+		        
+		        count=dao.FileRepRevUpdate(dto.getFileId(),release,version);
+	         
+	        
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+		   count=0;
+		}
+
+		return count;
+	}
+	
 	@Override
 	public long FileAmmendUploadNew(FileDocAmendmentDto dto) throws Exception 
 	{
 		long count=0;
 		try 
 		{
-			String FullDir=FilePath+"P"+dto.getProjectId()+"\\Amendments\\";
-			File theDir = new File(FullDir);
-			if (!theDir.exists()){
+			String FullDir=dto.getLabCode()+"\\docrepo\\P"+dto.getProjectId()+"\\Amendments\\";
+			
+			
+			String actialFullPath = FilePath+FullDir;
+			
+			File theDir = new File(actialFullPath);
+			if (!theDir.exists())
+			{
 			    theDir.mkdirs();
 			}
 				
@@ -1235,7 +1246,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 	
 			if(count>0) {
-				zip.pack(dto.getFileName(),dto.getInStream(),FullDir,model.getFileName()+dto.getFileRepUploadId()+"-"+model.getAmendVersion(),model.getFilePass());
+				zip.pack(dto.getFileName(),dto.getInStream(),actialFullPath,model.getFileName()+dto.getFileRepUploadId()+"-"+model.getAmendVersion(),model.getFilePass());
 			}
 
 	 }catch (Exception e) {

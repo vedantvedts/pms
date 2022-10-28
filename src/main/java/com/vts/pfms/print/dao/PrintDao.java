@@ -63,4 +63,5 @@ public interface PrintDao {
 	public List<Object[]> BreifingMilestoneDetails(String ProjectId) throws Exception;
 	public long insertTechImage(TechImages image) throws Exception;
 	public List<TechImages> getTechList(String proId)throws Exception;
+	public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
 }

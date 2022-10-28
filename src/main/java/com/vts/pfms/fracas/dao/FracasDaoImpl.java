@@ -27,11 +27,11 @@ public class FracasDaoImpl implements FracasDao {
 	@PersistenceContext EntityManager manager;
 	
 	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master";
-	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
+	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId and Labcode=:LabCode ORDER BY a.srno=0,a.srno";
 	private final static String PROJECTSLIST="SELECT projectid,projectcode,projectname FROM project_master";
 	private static final String PROJECTSDATA="SELECT projectid,projectcode,projectname FROM project_master WHERE projectid=:projectid";
 	private final static String FRACASTYPELIST="SELECT fracastypeid, fracastype FROM pfms_fracas_type ";
-	private static final String PROJECTFRACASITEMSLIST="SELECT * FROM (SELECT  pfm.fracasmainid, pfm.fracastypeid, pfm.fracasitem, pfm.fracasdate,pfm.projectid,pft.fracastype, CASE WHEN pfm.projectid>0 THEN pm.projectcode ELSE 'General' END AS 'projectcode' FROM pfms_fracas_main pfm, pfms_fracas_type pft , project_master pm WHERE  CASE WHEN pfm.projectid>0 THEN pm.projectid=pfm.projectid ELSE 1=1 END AND pft.fracastypeid=pfm.fracastypeid AND pfm.isactive=1 AND pfm.projectid=:projectid  GROUP BY pfm.fracasmainid   ) AS X  LEFT JOIN  (     SELECT pfa.fracasattachid,pfa.fracasmainid AS 'mainid',pfa.fracassubid AS 'subid' FROM pfms_fracas_attach pfa ) AS Y  ON x.fracasmainid = y.mainid";
+	private static final String PROJECTFRACASITEMSLIST="SELECT * FROM (SELECT  pfm.fracasmainid, pfm.fracastypeid, pfm.fracasitem, pfm.fracasdate,pfm.projectid,pft.fracastype, CASE WHEN pfm.projectid>0 THEN pm.projectcode ELSE 'General' END AS 'projectcode' FROM pfms_fracas_main pfm, pfms_fracas_type pft , project_master pm WHERE  CASE WHEN pfm.projectid>0 THEN pm.projectid=pfm.projectid ELSE 1=1 END AND pft.fracastypeid=pfm.fracastypeid AND pfm.isactive=1 AND pfm.projectid=:projectid AND pfm.LabCode=:LabCode  GROUP BY pfm.fracasmainid   ) AS X  LEFT JOIN  (     SELECT pfa.fracasattachid,pfa.fracasmainid AS 'mainid',pfa.fracassubid AS 'subid' FROM pfms_fracas_attach pfa ) AS Y  ON x.fracasmainid = y.mainid";
 	private static final String FRACASITEMDATA="SELECT * FROM (SELECT  pfm.fracasmainid, pfm.fracastypeid, pfm.fracasitem, pfm.fracasdate,pfm.projectid,pft.fracastype,CASE WHEN pfm.projectid>0 THEN pm.projectcode ELSE 'Gen' END AS 'projectcode' FROM pfms_fracas_main pfm, project_master pm, pfms_fracas_type pft WHERE  CASE WHEN pfm.projectid>0 THEN pm.projectid=pfm.projectid ELSE 1=1 END AND pft.fracastypeid=pfm.fracastypeid AND pfm.fracasmainid=:fracasmainid GROUP BY pfm.fracasmainid) AS X  LEFT JOIN  (     SELECT pfa.fracasattachid,pfa.fracasmainid AS 'mainid',pfa.fracassubid AS 'subid' FROM pfms_fracas_attach pfa ) AS Y  ON x.fracasmainid = y.mainid";
 	
 	private static final String FRACASASSIGNEDLIST = "SELECT pfa.fracasassignid,pfa.fracasmainid,pfa.remarks,pfa.pdc,pfa.assigner,pfa.assignee,pfa.assigneddate, pfa.fracasstatus, e1.empname AS 'assignername',ed1.designation AS 'assignerdesig', e2.empname AS 'assigneename',  ed2.designation AS 'assigneedesig', pfm.fracasItem ,(SELECT MAX(pfs.progress) FROM  pfms_fracas_sub pfs WHERE pfa.fracasassignid=pfs.fracasassignid) AS 'Progress' FROM pfms_fracas_assign pfa,pfms_fracas_main pfm,employee e1,employee_desig ed1, employee e2, employee_desig ed2   WHERE pfa.assigner=e1.empid AND e1.desigid=ed1.desigid AND pfa.assignee=e2.empid   AND e2.desigid=ed2.desigid AND pfm.fracasmainid=pfa.fracasmainid AND pfa.isactive=1 AND pfa.assigner=:assignerempid AND pfa.fracasmainid=:fracasmainid";
@@ -50,10 +50,11 @@ public class FracasDaoImpl implements FracasDao {
 	
 	
 	@Override
-	public List<Object[]> EmployeeList() throws Exception 
+	public List<Object[]> EmployeeList(String LabCode) throws Exception 
 	{
 		logger.info(new java.util.Date() +"Inside EmployeeList");
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
+		query.setParameter("LabCode",LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
 		return EmployeeList;
 	}
@@ -68,12 +69,15 @@ public class FracasDaoImpl implements FracasDao {
 	}
 	
 	@Override
-	public List<Object[]> ProjectsList() throws Exception
+	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectsList");
-		Query query=manager.createNativeQuery(PROJECTSLIST);
-		List<Object[]> ProjectsList=(List<Object[]>) query.getResultList();
-		return ProjectsList;
+		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
+		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
+		query.setParameter("empid", empid);
+		query.setParameter("logintype", Logintype);
+		query.setParameter("labcode", LabCode);
+		List<Object[]> LoginProjectIdList=(List<Object[]>)query.getResultList();
+		return LoginProjectIdList;
 	}
 	
 	
@@ -118,11 +122,12 @@ public class FracasDaoImpl implements FracasDao {
 	
 	
 	@Override
-	public List<Object[]> ProjectFracasItemsList(String projectid) throws Exception
+	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception
 	{
 		logger.info(new java.util.Date() +"Inside ProjectFracasItemsList");
 		Query query=manager.createNativeQuery(PROJECTFRACASITEMSLIST);
 		query.setParameter("projectid",projectid);
+		query.setParameter("LabCode",LabCode);
 		List<Object[]> ProjectFracasItemsList=(List<Object[]>) query.getResultList();
 		return ProjectFracasItemsList;
 	}

@@ -11,6 +11,15 @@ public class ActionSelfDao {
 		private String CreatedBy;
 		private String CreatedDate;
 		private int IsActive;
+		private String LabCode;
+		public String getLabCode() {
+			return LabCode;
+		}
+
+		public void setLabCode(String labCode) {
+			LabCode = labCode;
+		}
+		
 		
 		public String getActionId() {
 			return ActionId;

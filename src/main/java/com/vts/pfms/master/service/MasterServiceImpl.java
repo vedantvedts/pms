@@ -107,6 +107,7 @@ public class MasterServiceImpl implements MasterService {
 		employee.setCreatedDate(sdf1.format(new Date()));
 		employee.setIsActive(1);
 		employee.setSrNo(0l);
+		employee.setLabCode(officermasteradd.getLabCode());
 		return dao.OfficeMasterInsert(employee);
 	}
 	
@@ -279,15 +280,15 @@ public class MasterServiceImpl implements MasterService {
 	} 
 	
 	@Override
-	public List<Object[]> GroupsList()throws Exception
+	public List<Object[]> GroupsList(String LabCode)throws Exception
 	{	
-		return dao.GroupsList();
+		return dao.GroupsList(LabCode);
 	}
 	
 	@Override
-	public List<Object[]> GroupHeadList() throws Exception 
+	public List<Object[]> GroupHeadList(String LabCode) throws Exception 
 	{
-		return dao.GroupHeadList();
+		return dao.GroupHeadList(LabCode);
 	}
 	
 	@Override
@@ -392,9 +393,9 @@ public class MasterServiceImpl implements MasterService {
 	}
 	
 	@Override
-	public List<Object[]> FeedbackList() throws Exception {
+	public List<Object[]> FeedbackList(String LabCode) throws Exception {
 
-		return dao.FeedbackList();
+		return dao.FeedbackList(LabCode);
 	}
 	@Override
 	public Object[] FeedbackContent(String feedbackid)throws Exception

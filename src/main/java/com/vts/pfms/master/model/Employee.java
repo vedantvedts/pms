@@ -28,6 +28,13 @@ public class Employee {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private String LabCode;
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
 	public Long getEmpId() {
 		return EmpId;
 	}

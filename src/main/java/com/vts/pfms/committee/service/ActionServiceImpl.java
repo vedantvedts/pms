@@ -17,6 +17,7 @@ import com.vts.pfms.committee.dao.ActionSelfDao;
 
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
+import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
@@ -36,9 +37,9 @@ public class ActionServiceImpl implements ActionService {
 	private static final Logger logger=LogManager.getLogger(ActionServiceImpl.class);
 
 	@Override
-	public List<Object[]> EmployeeList() throws Exception {
+	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside EmployeeList");	
-		return dao.EmployeeList();
+		return dao.EmployeeList(LabCode);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public long ActionMainInsert(ActionMainDto main) throws Exception 
-	{		
+	{
 		logger.info(new Date() +"Inside ActionMainInsert");
 		long success=1;
 		long unsuccess=0;
@@ -78,26 +79,16 @@ public class ActionServiceImpl implements ActionService {
 				Project="/"+ProjectCode+"/"+comishortname[1]+"/";
 			}else if(main.getActionType().equalsIgnoreCase("N")) {
 				Project="/"+ProjectCode+"/";
-				}
-			else {
+				
+			}else {
 				Project="/"+ProjectCode+"/MIL/";
 			}
 		}else 
 		{
 			Project="/GEN/";
 		}
-		for(int i=0;i<main.getAssigneeList().length;i++) {
 		ActionMain actionmain=new ActionMain();
-		count=count+1;
-		if(lab!=null) {
-
-		Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
-
-		actionmain.setActionNo(lab[1]+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
 		
-		}else {
-			return unsuccess;
-		}
 		if(main.getActionLinkId()!=null) {
 			actionmain.setActionLinkId(Long.parseLong(main.getActionLinkId()));
 		}else {
@@ -108,23 +99,43 @@ public class ActionServiceImpl implements ActionService {
 		actionmain.setType(main.getType());
 		actionmain.setActionItem(main.getActionItem());
 		actionmain.setActionDate(main.getMeetingDate());
-		actionmain.setEndDate(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
-		actionmain.setPDCOrg(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
-		actionmain.setAssigneeLabCode(main.getAssigneeLabCode());
-		actionmain.setAssignee(Long.parseLong(main.getAssigneeList()[i]));
-		actionmain.setAssignorLabCode(main.getAssignorLabCode());
-		actionmain.setAssignor(Long.parseLong(main.getAssignor()));
-		actionmain.setRevision(0);
+		actionmain.setCategory(main.getCategory());
+		actionmain.setPriority(main.getPriority());
 		actionmain.setProjectId(Long.parseLong(main.getProjectId()));
 		actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
-		actionmain.setActionFlag("N");
-		actionmain.setActionStatus("A");
 		actionmain.setCreatedBy(main.getCreatedBy());
 		actionmain.setCreatedDate(sdf1.format(new Date()));
 		actionmain.setIsActive(1);
 		long result=dao.ActionMainInsert(actionmain);
+		for(int i=0;i<main.getAssigneeList().length;i++) {
+		ActionAssign actionassign = new ActionAssign();
+
+		count=count+1;
+		if(lab!=null) {
+
+		Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+
+		actionassign.setActionNo(lab[1]+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+		
+		}else {
+			return unsuccess;
+		}
+		actionassign.setEndDate(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionassign.setActionMainId(result);
+		actionassign.setPDCOrg(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionassign.setAssigneeLabCode(main.getAssigneeLabCode());
+		actionassign.setAssignee(Long.parseLong(main.getAssigneeList()[i]));
+		actionassign.setAssignorLabCode(main.getAssignorLabCode());
+		actionassign.setAssignor(Long.parseLong(main.getAssignor()));
+		actionassign.setRevision(0);
+		actionassign.setActionFlag("N");		
+		actionassign.setActionStatus("A");
+		actionassign.setCreatedBy(main.getCreatedBy());
+		actionassign.setCreatedDate(sdf1.format(new Date()));
+		actionassign.setIsActive(1);
+		long assignid=  dao.ActionAssignInsert(actionassign);
 		if(result>0) {
-			Object[] data=dao.ActionNotification(String.valueOf(result)).get(0);
+			Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
 			PfmsNotification notification=new PfmsNotification();
 			notification.setEmpId(Long.parseLong(data[2].toString()));
 			notification.setNotificationby(Long.parseLong(data[5].toString()));
@@ -152,22 +163,25 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> AssigneeData(String MainId) throws Exception {
+	public List<Object[]> AssigneeData(String MainId ,String Assignid) throws Exception {
 		logger.info(new Date() +"Inside AssigneeData");
-		return dao.AssigneeData(MainId);
+		
+		List<Object[]> list = dao.AssigneeData(MainId , Assignid);
+		
+		return list;
 	}
 
 	@Override
-	public List<Object[]> SubList(String MainId) throws Exception {
+	public List<Object[]> SubList(String assignid) throws Exception {
 		logger.info(new Date() +"Inside SubList");
-		return dao.SubList(MainId);
+		return dao.SubList(assignid);
 	}
 
 	@Override
 	public long ActionSubInsert(ActionSubDto main) throws Exception {
 		logger.info(new Date() +"Inside ActionSubInsert");
 		ActionSub sub=new ActionSub();
-		sub.setActionMainId(Long.parseLong(main.getActionMainId()));
+		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
 		sub.setProgress(Integer.parseInt(main.getProgress()));
 		sub.setProgressDate(new java.sql.Date(sdf.parse(main.getProgressDate()).getTime()));
@@ -176,13 +190,13 @@ public class ActionServiceImpl implements ActionService {
 		sub.setIsActive(1);
 		long subresult=dao.ActionSubInsert(sub);
 		if(subresult>0) {
-			ActionMain updatemain=new ActionMain();
-			updatemain.setActionMainId(Long.parseLong(main.getActionMainId()));
-			updatemain.setActionFlag("N");
-			updatemain.setActionStatus("I");
-			updatemain.setModifiedBy(main.getCreatedBy());
-			updatemain.setModifiedDate(sdf1.format(new Date()));
-			dao.MainUpdate(updatemain);
+			ActionAssign updateassign=new ActionAssign();
+			updateassign.setActionAssignId(Long.parseLong(main.getActionAssignId()));
+			updateassign.setActionFlag("N");
+			updateassign.setActionStatus("I");
+			updateassign.setModifiedBy(main.getCreatedBy());
+			updateassign.setModifiedDate(sdf1.format(new Date()));
+			dao.AssignUpdate(updateassign);
 			ActionAttachment attach=new ActionAttachment();
 			attach.setActionAttach(main.getFilePath());
 			attach.setActionSubId(subresult);
@@ -210,17 +224,17 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionForward(String id, String UserId) throws Exception {
+	public int ActionForward(String mainid ,String assignid, String UserId) throws Exception {
 		logger.info(new Date() +"Inside ActionForward");
 		long unsuccess=0;
-		ActionMain main=new ActionMain();
-		main.setActionMainId(Long.parseLong(id));
+		ActionAssign main=new ActionAssign();
+		main.setActionAssignId(Long.parseLong(assignid));
 		main.setActionFlag("F");
 		main.setModifiedBy(UserId);
 		main.setModifiedDate(sdf1.format(new Date()));
 		int result=dao.MainForward(main);
 		if(result>0) {
-			Object[] data=dao.ActionNotification(id).get(0);
+			Object[] data=dao.ActionNotification(mainid,assignid).get(0);
 			PfmsNotification notification=new PfmsNotification();
 			notification.setEmpId(Long.parseLong(data[5].toString()));
 			notification.setNotificationby(Long.parseLong(data[2].toString()));
@@ -246,25 +260,25 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionClosed(String id, String Remarks, String UserId) throws Exception {
+	public int ActionClosed(String id, String Remarks, String UserId ,String assignid) throws Exception {
 		logger.info(new Date() +"Inside ActionClosed");
 		long unsuccess=0;
-		ActionMain main=new ActionMain();
-		main.setActionMainId(Long.parseLong(id));
-		main.setActionFlag("Y");
-		main.setActionStatus("C");
-		main.setRemarks(Remarks);
-		main.setModifiedBy(UserId);
-		main.setModifiedDate(sdf1.format(new Date()));
-		int result=dao.MainSendBack(main);
+		ActionAssign assign=new ActionAssign();
+		assign.setActionAssignId(Long.parseLong(assignid));
+		assign.setActionFlag("Y");
+		assign.setActionStatus("C");
+		assign.setRemarks(Remarks);
+		assign.setModifiedBy(UserId);
+		assign.setModifiedDate(sdf1.format(new Date()));
+		int result=dao.MainSendBack(assign);
 		if(result>0) {
-			Object[] data=dao.ActionNotification(id).get(0);
+			Object[] data=dao.ActionNotification(id,assignid).get(0);
 			PfmsNotification notification=new PfmsNotification();
 			notification.setEmpId(Long.parseLong(data[2].toString()));
 			notification.setNotificationby(Long.parseLong(data[5].toString()));
 			notification.setNotificationDate(sdf1.format(new Date()));
 			notification.setScheduleId(unsuccess);
-			notification.setCreatedBy(main.getCreatedBy());
+			notification.setCreatedBy(assign.getCreatedBy());
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setIsActive(1);
 			notification.setNotificationUrl("ActionStatusList.htm");
@@ -278,25 +292,25 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionSendBack(String id, String Remarks, String UserId) throws Exception {
+	public int ActionSendBack(String id, String Remarks, String UserId , String assignid) throws Exception {
 		logger.info(new Date() +"Inside ActionSendBack");
 		long unsuccess=0;
-		ActionMain main=new ActionMain();
-		main.setActionMainId(Long.parseLong(id));
-		main.setActionFlag("B");
-		main.setActionStatus("I");
-		main.setRemarks(Remarks);
-		main.setModifiedBy(UserId);
-		main.setModifiedDate(sdf1.format(new Date()));
-		int result=dao.MainSendBack(main);
+		ActionAssign assign=new ActionAssign();
+		assign.setActionAssignId(Long.parseLong(assignid));
+		assign.setActionFlag("B");
+		assign.setActionStatus("I");
+		assign.setRemarks(Remarks);
+		assign.setModifiedBy(UserId);
+		assign.setModifiedDate(sdf1.format(new Date()));
+		int result=dao.MainSendBack(assign);
 		if(result>0) {
-			Object[] data=dao.ActionNotification(id).get(0);
+			Object[] data=dao.ActionNotification(id,assignid).get(0);
 			PfmsNotification notification=new PfmsNotification();
 			notification.setEmpId(Long.parseLong(data[2].toString()));
 			notification.setNotificationby(Long.parseLong(data[5].toString()));
 			notification.setNotificationDate(sdf1.format(new Date()));
 			notification.setScheduleId(unsuccess);
-			notification.setCreatedBy(main.getCreatedBy());
+			notification.setCreatedBy(assign.getCreatedBy());
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setIsActive(1);
 			notification.setNotificationUrl("AssigneeList.htm");
@@ -352,10 +366,10 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> AssigneeDetails(String MainId) throws Exception {
+	public List<Object[]> AssigneeDetails(String assignid) throws Exception {
 		logger.info(new Date() +"Inside AssigneeDetails");
 		
-		return dao.AssigneeDetails(MainId);
+		return dao.AssigneeDetails(assignid);
 	}
 
 	@Override
@@ -367,9 +381,9 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type) throws Exception {
+	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type,String LabCode) throws Exception {
 		logger.info(new Date() +"Inside ActionReports");
-		return dao.ActionReports(EmpId, Term, Position,Type);
+		return dao.ActionReports(EmpId, Term, Position,Type,LabCode);
 	}
 
 	@Override
@@ -415,17 +429,23 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionExtendPdc(String id,String date, String UserId) throws Exception {
+	public int ActionExtendPdc(String id,String date, String UserId , String assignid) throws Exception {
 		logger.info(new Date() +"Inside ActionExtendPdc");
 		long unsuccess=0;
-		Object[] data=dao.ActionNotification(id).get(0);
-		ActionMain main=new ActionMain();
-		main.setActionMainId(Long.parseLong(id));
-		main.setRevision(1+Integer.parseInt(data[6].toString()));
-		main.setEndDate(new java.sql.Date(sdf.parse(date).getTime()));
-		main.setModifiedBy(UserId);
-		main.setModifiedDate(sdf1.format(new Date()));
-		int result=dao.MainExtendPdc(main);
+		int result=0;
+		Object[] data=dao.ActionNotification(id , assignid).get(0);
+
+		
+		ActionAssign assign=new ActionAssign();
+		assign.setRevision(1+Integer.parseInt(data[6].toString()));
+		if(assignid!=null) {
+		assign.setActionAssignId(Long.parseLong(assignid));
+		}
+		assign.setEndDate(new java.sql.Date(sdf.parse(date).getTime()));
+		assign.setActionMainId(Long.parseLong(id));
+		assign.setModifiedBy(UserId);
+		assign.setModifiedDate(sdf1.format(new Date()));
+		result=dao.ActionAssignRevisionEdit(assign);
 		if(result>0) {
 			
 			PfmsNotification notification=new PfmsNotification();
@@ -433,7 +453,7 @@ public class ActionServiceImpl implements ActionService {
 			notification.setNotificationby(Long.parseLong(data[5].toString()));
 			notification.setNotificationDate(sdf1.format(new Date()));
 			notification.setScheduleId(unsuccess);
-			notification.setCreatedBy(main.getCreatedBy());
+			notification.setCreatedBy(assign.getCreatedBy());
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setIsActive(1);
 			notification.setNotificationUrl("ActionStatusList.htm");
@@ -453,9 +473,9 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> SearchDetails(String MainId) throws Exception {
+	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception {
 		logger.info(new Date() +"Inside SearchDetails");
-		return dao.SearchDetails(MainId);
+		return dao.SearchDetails(MainId , assignid);
 	}
 	
 	
@@ -477,6 +497,7 @@ public class ActionServiceImpl implements ActionService {
 		actionself.setCreatedBy(actionselfdao.getCreatedBy());
 		actionself.setCreatedDate(sdf1.format(new Date()));
 		actionself.setIsActive(1);		
+		actionself.setLabCode(actionselfdao.getLabCode());
 		return dao.ActionSelfReminderAddSubmit(actionself);
 	}
 	
@@ -559,10 +580,10 @@ public class ActionServiceImpl implements ActionService {
 	
 	
 	@Override
-	public Object[] ActionDetailsAjax(String actionid) throws Exception
+	public Object[] ActionDetailsAjax(String actionid , String assignid) throws Exception
 	{
 		logger.info(new Date() +"Inside ActionDetailsAjax"); 
-		return dao.ActionDetailsAjax(actionid);
+		return dao.ActionDetailsAjax(actionid , assignid);
 	}
 	
 	@Override
@@ -571,6 +592,12 @@ public class ActionServiceImpl implements ActionService {
 		logger.info(new Date() +"Inside ActionMainEdit"); 
 		return dao.ActionMainEdit(main);
 	}
+	@Override
+	 public int ActionAssignEdit(ActionAssign assign) throws Exception
+	 {
+		logger.info(new Date() +"Inside ActionAssignEdit"); 
+		return dao.ActionAssignEdit(assign);
+	 }
 	
 	@Override
 	public List<Object[]> AllLabList() throws Exception 

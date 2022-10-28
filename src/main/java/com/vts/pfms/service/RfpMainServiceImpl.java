@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.vts.pfms.dao.RfpMainDao;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.FinanceChanges;
+import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
@@ -125,9 +126,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public List<Object[]> GetNotice()throws Exception{
+	public List<Object[]> GetNotice(String LabCode)throws Exception{
 		
-		return dao.GetNotice();
+		return dao.GetNotice(LabCode);
 		
 	}
 
@@ -634,13 +635,14 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username) throws Exception{
+	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
 		
 		long count1 =0 ;
 		long count = dao.ProjectHoaDelete();
 		for(ProjectHoa obj : hoa) {
 			obj.setCreatedBy(Username);
 			obj.setCreatedDate(sdf1.format(new Date()));
+			obj.setLabCode(LabDetails.get(0).getLabCode());
 			count1=dao.ProjectHoaUpdate(obj);
 		}
 		
@@ -654,27 +656,27 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 
 	@Override
-	public List<Object[]> MeetingChanges(String ProjectId,String Interval) throws Exception {
+	public List<Object[]> MeetingChanges(String ProjectId,String Interval,String LabCode) throws Exception {
 	
-		return dao.MeetingChanges(ProjectId,Interval);
+		return dao.MeetingChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception {
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception {
 		
-		return dao.MilestoneChanges(ProjectId, Interval);
+		return dao.MilestoneChanges(ProjectId, Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception{
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception{
 		
-		return dao.ActionChanges(ProjectId,Interval);
+		return dao.ActionChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override
-	public List<Object[]> RiskChanges(String ProjectId,String Interval)throws Exception{
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode)throws Exception{
 		
-		return dao.RiskChanges(ProjectId,Interval);
+		return dao.RiskChanges(ProjectId,Interval,LabCode);
 	}
 	
 	@Override

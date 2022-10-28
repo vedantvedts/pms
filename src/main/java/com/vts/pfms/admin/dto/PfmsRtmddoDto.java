@@ -11,6 +11,14 @@ public class PfmsRtmddoDto {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	private String LabCode;
+	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
 	public String getRtmddoId() {
 		return RtmddoId;
 	}

@@ -54,6 +54,7 @@ import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.FinanceChanges;
+import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.service.RfpMainService;
 
@@ -200,12 +201,24 @@ public class LoginController {
   	ses.setAttribute("DesgId", rfpmainservice.DesgId(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()));
   	ses.setAttribute("LoginTypeName", headerservice.FormRoleName(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
   	ses.setAttribute("labid",headerservice.LabDetails(empdetails[3].toString())[0].toString());
-  	ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
+  	//ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
  	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim());
  	ses.setAttribute("clusterid", headerservice.LabDetails(empdetails[3].toString())[1].toString());
-    req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
+    
+ 	String DGName = headerservice.LabMasterList(headerservice.LabDetails(empdetails[3].toString())[1].toString()).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
+ 	String IsDG = "No";
+    if(DGName.equalsIgnoreCase(headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim()))
+   	 IsDG = "Yes";
+    else
+   	 IsDG = "No";
+    ses.setAttribute("IsDG", IsDG);
+ 
+ 	req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 
+    
+    
+    
      String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
      ses.setAttribute("empNo", empNo);
       }catch (Exception e) {
@@ -240,11 +253,11 @@ public class LoginController {
 			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
 			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
 			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId));
-			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice());
+			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
 			     req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
 			     req.setAttribute("logintype",LoginType);
 			     req.setAttribute("selfremindercount",rfpmainservice.SelfActionsList(EmpId).size() );
-			     req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
+			     //req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
 			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			     req.setAttribute("ibasUri",ibasUri);
 			     req.setAttribute("interval", interval);
@@ -259,14 +272,13 @@ public class LoginController {
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
  
-			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString() ;
+			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
 
 			     String IsDG = "No";
 			     if(DGName.equalsIgnoreCase(LabCode))
 			    	 IsDG = "Yes";
 			     else
 			    	 IsDG = "No";
-			    	 
 			     req.setAttribute("IsDG", IsDG);	 
 			    	 
 			     List<Object[]> labdatalist = new ArrayList<Object[]>();
@@ -480,18 +492,20 @@ public class LoginController {
     public String NoticeAddSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception {
     	
     	String EmpId =  ses.getAttribute("EmpId").toString();
-    	String ueser =  ses.getAttribute("EmpId").toString();
+    	String UserId = (String) ses.getAttribute("Username");
+    	String LabCode =(String) ses.getAttribute("labcode");
     	
-    	logger.info(new Date() +"Inside Notice Add Submit "+ueser);
+    	logger.info(new Date() +"Inside Notice Add Submit "+ UserId);
     	
     	Notice notice=new Notice();
     	notice.setNotice(req.getParameter("noticeFiled"));
     	notice.setNoticeBy(EmpId);
     	notice.setIsActive(1);
-    	notice.setCreatedBy(ueser);
+    	notice.setCreatedBy(UserId);
     	notice.setCreatedDate(this.fc.getSqlDateAndTimeFormat().format(new Date()));
     	notice.setFromDate(new java.sql.Date(sdf.parse(req.getParameter("fdate")).getTime()));
     	notice.setToDate(new java.sql.Date(sdf.parse(req.getParameter("tdate")).getTime()));
+    	notice.setLabCode(LabCode);
     	
     	Long result=rfpmainservice.addNotice(notice);
     	
@@ -589,11 +603,12 @@ public class LoginController {
 				redir.addAttribute("result", "Project Health Updated Successfully ");
 			}
 			
-		     }
-		else {
+		}
+		else 
+		{
 			
 			redir.addAttribute("resultfail","Project Health Update Unsuccessful");
-		  }
+		}
     	  return "redirect:/MainDashBoard.htm";
     	
     }
@@ -620,11 +635,13 @@ public class LoginController {
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
+    	final String localUri5=uri+"pfms_serv/labdetails";
     	
     	String MonthlyData=null;
     	String WeeklyData=null;
     	String TodayData=null;
     	String HoaJsonData=null;
+    	String LabData= null;
     	long count= 0L;
     	long ibasserveron=0L;
     	try {
@@ -637,9 +654,12 @@ public class LoginController {
 			ResponseEntity<String> monthlyresponse=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
+			
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
+			LabData=labdata.getBody();
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) {
 			
@@ -657,12 +677,14 @@ public class LoginController {
 		List<FinanceChanges> FinanceDetailsMonthly=null;
 		List<FinanceChanges> FinanceDetailsWeekly=null;
 		List<FinanceChanges> FinanceDetailsToday=null;
+		List<IbasLabMaster> LabDetails=null;
 		
 		if(HoaJsonData!=null) {
 			try {
 
 				projectDetails1 = mao.readValue(HoaJsonData, mao.getTypeFactory().constructCollectionType(List.class, ProjectHoa.class));
-				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId);
+				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
+				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId,LabDetails);
 				
 			} catch (JsonProcessingException e) {
 
@@ -676,6 +698,8 @@ public class LoginController {
 				FinanceDetailsMonthly = mao.readValue(MonthlyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsWeekly = mao.readValue(WeeklyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsToday = mao.readValue(TodayData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
+				
+
 				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,UserId);
 				
 			} catch (JsonProcessingException e) {
@@ -707,11 +731,13 @@ public class LoginController {
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
+    	final String localUri5=uri+"pfms_serv/labdetails";
     	
     	String HoaJsonData=null;
     	String MonthlyData=null;
     	String WeeklyData=null;
     	String TodayData=null;
+    	String LabData=null;
     	
     	try {
     		
@@ -724,9 +750,11 @@ public class LoginController {
 			ResponseEntity<String> monthlyresponse=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
+			LabData=labdata.getBody();
 
     	}catch(Exception e)
 		{
@@ -739,12 +767,13 @@ public class LoginController {
 		List<FinanceChanges> FinanceDetailsMonthly=null;
 		List<FinanceChanges> FinanceDetailsWeekly=null;
 		List<FinanceChanges> FinanceDetailsToday=null;
-		
+		List<IbasLabMaster> LabDetails=null;
 		if(HoaJsonData!=null) {
 			try {
 
 				projectDetails1 = mao.readValue(HoaJsonData, mao.getTypeFactory().constructCollectionType(List.class, ProjectHoa.class));
-				long count = rfpmainservice.ProjectHoaUpdate(projectDetails1,"auto-update");
+				LabDetails = mao.readValue(LabData, mao.getTypeFactory().constructCollectionType(List.class, IbasLabMaster.class));
+				long count = rfpmainservice.ProjectHoaUpdate(projectDetails1,"auto-update",LabDetails);
 				
 			} catch (JsonProcessingException e) {
 
@@ -781,6 +810,19 @@ public class LoginController {
     	String ProjectId = "A";
     	String Interval = "T";
     	String ActiveTab = "all-tab_alltab";
+    	String ClusterId = (String)ses.getAttribute("clusterid");
+    	
+    	 String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
+	     String IsDG = "No";
+	     if(DGName.equalsIgnoreCase(LabCode)) {
+	    	 IsDG = "Yes";
+	     	 LabCode="A";
+	     }
+	     else {
+	    	 IsDG = "No";
+	     }
+	     
+    	
     	if(req.getParameter("interval")!=null) {
     		Interval=req.getParameter("interval");
     	}
@@ -790,12 +832,19 @@ public class LoginController {
     	if(req.getParameter("activetab")!=null) {
     		ActiveTab=req.getParameter("activetab");
     	}
+    	if(req.getParameter("labcode")!=null) {
+    		LabCode = req.getParameter("labcode");
+    	}
     	
-    	List<Object[]> MeetingChangesData =rfpmainservice.MeetingChanges(ProjectId,Interval);
-    	List<Object[]> MilestoneChangesData =rfpmainservice.MilestoneChanges(ProjectId, Interval);
-    	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval);
-    	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval) ;
+    	List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+    	List<Object[]> MeetingChangesData =rfpmainservice.MeetingChanges(ProjectId,Interval,LabCode);
+    	List<Object[]> MilestoneChangesData =rfpmainservice.MilestoneChanges(ProjectId, Interval,LabCode);
+    	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval,LabCode);
+    	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval,LabCode) ;
     	
+    	
+	    	 
+	    req.setAttribute("IsDG", IsDG);
     	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,Empid,LabCode));
     	req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
     	req.setAttribute("meetingchangesdata", MeetingChangesData);
@@ -807,6 +856,8 @@ public class LoginController {
     	req.setAttribute("interval", Interval);
     	req.setAttribute("projectid", ProjectId);
     	req.setAttribute("activetab", ActiveTab);
+    	req.setAttribute("labmasterlist", LabMasterList);
+    	req.setAttribute("labcode", LabCode);
  
     	final String localUri=uri+"/pfms_serv/pfms-finance-changes?projectid="+ProjectId+"&interval="+Interval;
     	List<FinanceChanges> FinanceDetails=null;
@@ -839,24 +890,31 @@ public class LoginController {
 				e.printStackTrace();
 			}
 		}
+	
+		
 		req.setAttribute("financechangesdata", FinanceDetails );
 		
 		
 		List<Object[]> alldatalist = new ArrayList<Object[]>();
 
-    	MeetingChangesData.stream().map(c->  new Object[] { "Meeting" ,c[12], c[8] , c[9], sdf.format(c[10]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	MilestoneChangesData.stream().map(c-> new Object[] {"Milestone" ,c[0] ,c[7] , c[8], sdf.format(c[9]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	ActionChangesData.stream().map(c-> new Object[] {"Action" ,c[2] , c[7] , c[9], sdf.format(c[8]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
-    	RiskChangesData.stream().map(c-> new Object[] {"Risk" ,c[1] ,c[9] , c[10], sdf.format(c[8]) } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	MeetingChangesData.stream().map(c->  new Object[] { "Meeting" ,c[12], c[8] , c[9], sdf.format(c[10]),c[13] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	MilestoneChangesData.stream().map(c-> new Object[] {"Milestone" ,c[0] ,c[7] , c[8], sdf.format(c[9]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	ActionChangesData.stream().map(c-> new Object[] {"Action" ,c[2] , c[7] , c[9], sdf.format(c[8]),c[10] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	RiskChangesData.stream().map(c-> new Object[] {"Risk" ,c[1] ,c[9] , c[10], sdf.format(c[8]),c[11] } ).collect(Collectors.toList()).forEach( alldatalist :: add );
+    	
+    	if(!IsDG.equalsIgnoreCase("Yes")) {
+    	
     	if(FinanceDetails!=null) {
     	FinanceDetails.stream().map(c-> {
 			try {
-				return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), sdf.format(sdf1.parse(c.getCreatedDate().toString())) };
+				return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), sdf.format(sdf1.parse(c.getCreatedDate().toString())), "-" };
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), "-" };
+			return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), "-" ,"-" };
 		} ).forEach(alldatalist :: add);
+    	}
+    	
     	}
     	
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MM-yyyy");

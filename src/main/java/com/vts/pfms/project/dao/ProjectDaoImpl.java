@@ -128,33 +128,33 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String PROJECTDATAREVDATA="SELECT ppdr.projectdatarevid,ppdr.projectid,ppdr.filespath,ppdr.systemconfigimgname,ppdr.SystemSpecsFileName,ppdr.ProductTreeImgName,ppdr.PEARLImgName,ppdr.CurrentStageId,ppdr.RevisionNo,pps.projectstagecode,pps.projectstage,ppdr.revisiondate FROM pfms_project_data_rev ppdr, pfms_project_stage pps WHERE ppdr.CurrentStageId=pps.projectstageid AND  ppdr.projectdatarevid=:projectdatarevid";
     private static final String STATUSDETAILS="SELECT statusdetail FROM pfms_project_authority_actionlist WHERE status=:status ";
     private static final String INTEMPID="select empid from pfms_initiation where initiationid=:id";
-    private static final String PROJECTRISKDATALIST="SELECT am.actionmainid, am.actionitem, am.projectid, am.actionstatus,am.type,am.scheduleminutesId FROM action_main am  WHERE  am.type='K' AND am.projectid=:projectid";  /* am.actionstatus IN ('A','I') AND */ 
+    private static final String PROJECTRISKDATALIST="SELECT am.actionmainid, am.actionitem, am.projectid, am.actionstatus,am.type,am.scheduleminutesId FROM action_main am  WHERE  am.type='K' AND am.projectid=:projectid AND assignorlabcode=:LabCode";  /* am.actionstatus IN ('A','I') AND */ 
 	private static final String PROJECTRISKDATA ="SELECT am.actionmainid, am.actionitem, am.projectid, am.actionstatus,am.type,am.pdcorg,am.enddate FROM action_main am WHERE am.actionstatus IN ('A','I','C') AND am.type='K' AND am.actionmainid=:actionmainid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
 	private static final String AUTHORITYFILEUPDATE="UPDATE pfms_initiation_authority_file SET attachmentname=:attachmentname,file=:file WHERE initiationauthorityfileid=:initiationauthorityfileid ";
 	private static final String PROJECTMAINLIST="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
-	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
+	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' ORDER BY a.srno=0,a.srno ASC ";
 	private static final String PROJECTMAINCLOSE="update project_main set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectmainid=:projectmainid";
 	private static final String PROJECTMAINEDITDATA="SELECT a.projectmainid,b.projecttypeid,b.projecttype,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable, a.LabParticipating,a.CategoryId,a.scope FROM project_main a, project_type b WHERE a.projecttypeid=b.projecttypeid and a.projectmainid=:promainid and a.isactive='1' and b.isactive='1' ORDER BY a.projecttypeid, a.projectmainid";
 	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby, modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope  WHERE  projectmainid=:promainid  AND isactive='1' ";
-	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
+	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.projectmainid,b.projectcode as id from  project_main b WHERE  b.isactive='1' ";
 	private static final String PROJECTCATEGORY="select categoryid, category from pfms_security_classification";
 	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1' ORDER BY a.projectid, a.projectmainid";
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
 	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, c.empname, d.designation, e.divisioncode FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
-	private static final String USERLIST="SELECT  b.empid, b.empname FROM employee b  WHERE  b.isactive=1 AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
+	private static final String USERLIST="SELECT  b.empid, b.empname,b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
-	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno FROM pfms_risk WHERE actionmainid=:actionmainid";
+	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode FROM pfms_risk WHERE actionmainid=:actionmainid";
 	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate WHERE riskid=:riskid";
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT riskrevisionid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,revisiondate FROM pfms_risk_rev WHERE actionmainid=:actionmainid  ORDER BY revisionno DESC";		
-	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid";
+	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid AND LabCode=:LabCode ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
 	private static final String DORTMDADEMPDATA="SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
-	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid,b.empname,c.designation,'TCM' FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid";
+	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid,b.empname,c.designation,'TCM' FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
 	private static final String EMPDIVHEADDATA ="SELECT e2.empid,e2.empname, ed.designation,'Division Head' FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
@@ -1506,11 +1506,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		
 		@Override
-		public List<Object[]> ProjectRiskDataList(String projectid) throws Exception 
+		public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
 		{			
 			logger.info(loggerdate +"Inside ProjectRiskDataList");
 			Query query=manager.createNativeQuery(PROJECTRISKDATALIST);
 			query.setParameter("projectid", projectid);
+			query.setParameter("LabCode", LabCode);
 			List<Object[]>  ProjectRiskDataList=(List<Object[]>)query.getResultList();
 			return ProjectRiskDataList;
 		}
@@ -1593,10 +1594,11 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		
 		@Override
-		public List<Object> RiskDataPresentList(String projectid) throws Exception {
+		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
 			logger.info(loggerdate +"Inside RiskDataPresentList");
 			Query query=manager.createNativeQuery(RISKDATAPRESENTLIST);
 			query.setParameter("projectid", projectid);
+			query.setParameter("LabCode", LabCode);
 			List<Object>  RiskDataPresentList=(List<Object>)query.getResultList();
 			return RiskDataPresentList;
 		}	
@@ -1687,10 +1689,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		
 		@Override
-		public Object[]  DirectorEmpData() throws Exception
+		public Object[]  DirectorEmpData(String LabCode) throws Exception
 		{
 			logger.info(new java.util.Date() +"Inside DirectorEmpData");
 			Query query=manager.createNativeQuery(DIRECTOREMPDATA);
+			query.setParameter("labcode", LabCode);
+			
 			return (Object[])query.getSingleResult();
 		}
 		

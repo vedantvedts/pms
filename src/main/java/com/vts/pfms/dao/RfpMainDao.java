@@ -31,7 +31,7 @@ public interface RfpMainDao {
 
 	
 
-	public List<Object[]> GetNotice()throws Exception;
+	public List<Object[]> GetNotice(String LabCode)throws Exception;
     public List<Object[]> getAllNotice()throws Exception;
     public List<Object> GetNoticeEligibility(String empId)throws Exception;
 	public List<Object> SelfActionsList(String empId) throws Exception;
@@ -56,10 +56,10 @@ public interface RfpMainDao {
 	public long ProjectHoaUpdate(ProjectHoa hoa ) throws Exception;
 	public int ProjectHoaDelete() throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;
-	public List<Object[]> MeetingChanges(String ProjectId,String Term) throws Exception;
-	public List<Object[]> MilestoneChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> ActionChanges(String ProjectId,String Interval) throws Exception;
-	public List<Object[]> RiskChanges(String ProjectId,String Interval) throws Exception;
+	public List<Object[]> MeetingChanges(String ProjectId,String Term,String LabCode) throws Exception;
+	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception;
+	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode) throws Exception;
 	public List<Object[]> FinanceDataPartA(String ProjectId, String Interval) throws Exception;
 	public int ProjectHoaChangesDelete(String projectId)throws Exception;
 	public long ProjectHoaChangesInsert(ProjectHoaChanges changes) throws Exception;

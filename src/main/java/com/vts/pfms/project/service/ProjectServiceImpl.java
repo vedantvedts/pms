@@ -65,11 +65,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-	@Value("${file_upload_path}")
+	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
-	
-	@Value("${Project_Master_Attachments}")
-	String ProjectMasterFilePath;
 	
 	private static final Logger logger=LogManager.getLogger(ProjectServiceImpl.class);
 	
@@ -1377,69 +1374,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return list;
 	}
 	
-/*-------------------------------------------------------------------------------------------------------------------------------*/	
 	
-		@Override
-		public long ProjectDataSubmit(PfmsProjectDataDto dto) throws Exception {
-			
-			logger.info(new Date() +"Inside ProjectDataSubmit");
-			
-			Timestamp instant= Timestamp.from(Instant.now());
-			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
-			
-			PfmsProjectData model=new PfmsProjectData();
-			model.setProjectId(Long.parseLong(dto.getProjectId()));
-			model.setCurrentStageId(Integer.parseInt(dto.getCurrentStageId()));
-			model.setFilesPath(uploadpath);
-			
-			if(!dto.getSystemConfigImg().isEmpty()) {
-				model.setSystemConfigImgName("configimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemConfigImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getSystemConfigImgName(), dto.getSystemConfigImg());
-			}else
-			{
-				model.setSystemConfigImgName(null);
-			}
-//	--------------------------------------------------------------		
-			if(!dto.getSystemSpecsFile().isEmpty()) {
-				model.setSystemSpecsFileName("specsfile"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemSpecsFile().getOriginalFilename()));
-				saveFile(uploadpath, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
-			}else
-			{
-				model.setSystemSpecsFileName(null);
-			}
-//	--------------------------------------------------------------		
-			if(!dto.getProductTreeImg().isEmpty()) {
-				model.setProductTreeImgName("producttree"+timestampstr+"."+FilenameUtils.getExtension(dto.getProductTreeImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getProductTreeImgName(), dto.getProductTreeImg());
-			}else
-			{
-				model.setProductTreeImgName(null);
-			}
-//	--------------------------------------------------------------		
-			if(!dto.getPEARLImg().isEmpty()) {
-				model.setPEARLImgName("pearlimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getPEARLImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getPEARLImgName(), dto.getPEARLImg());
-			}else
-			{
-				model.setPEARLImgName(null);
-			}
-// ---------------------------------------------------------------
-			
-			
-			
-			model.setCreatedBy(dto.getCreatedBy());
-			model.setCreatedDate(sdf1.format(new Date()));
-			model.setRevisionNo(0);
-			model.setProcLimit(Double.parseDouble(dto.getProcLimit()));
-			File theDir = new File(uploadpath);
-			if (!theDir.exists()){
-			    theDir.mkdirs();
-			}
-			
-			
-			
-			return dao.ProjectDataSubmit(model);
-		}
+
 	
 	
 	    public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
@@ -1457,7 +1393,6 @@ public class ProjectServiceImpl implements ProjectService {
 	            throw new IOException("Could not save image file: " + fileName, ioe);
 	        }     
 	    }
-	    /*-------------------------------------------------------------------------------------------------------------------------------*/
 	    
 	    @Override
 		public List<Object[]> ProjectStageDetailsList() throws Exception {
@@ -1471,37 +1406,104 @@ public class ProjectServiceImpl implements ProjectService {
 			return dao.ProjectDataDetails(projectid);
 		}
 		
+		
+		
 		@Override
-		public long ProjectDataEditSubmit(PfmsProjectDataDto dto) throws Exception {
+		public long ProjectDataSubmit(PfmsProjectDataDto dto) throws Exception 
+		{
 			logger.info(new Date() +"Inside ProjectDataSubmit");
+			String LabCode= dto.getLabcode();
+			Timestamp instant= Timestamp.from(Instant.now());
+			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+			
+			String Path = LabCode+"\\ProjectData\\";
+			
+			PfmsProjectData model=new PfmsProjectData();
+			model.setProjectId(Long.parseLong(dto.getProjectId()));
+			model.setCurrentStageId(Integer.parseInt(dto.getCurrentStageId()));
+			model.setFilesPath(Path);
+			
+			if(!dto.getSystemConfigImg().isEmpty()) {
+				model.setSystemConfigImgName("configimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemConfigImg().getOriginalFilename()));
+				saveFile(uploadpath+Path, model.getSystemConfigImgName(), dto.getSystemConfigImg());
+			}else
+			{
+				model.setSystemConfigImgName(null);
+			}
+//	--------------------------------------------------------------		
+			if(!dto.getSystemSpecsFile().isEmpty()) {
+				model.setSystemSpecsFileName("specsfile"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemSpecsFile().getOriginalFilename()));
+				saveFile(uploadpath+Path, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
+			}else
+			{
+				model.setSystemSpecsFileName(null);
+			}
+//	--------------------------------------------------------------		
+			if(!dto.getProductTreeImg().isEmpty()) {
+				model.setProductTreeImgName("producttree"+timestampstr+"."+FilenameUtils.getExtension(dto.getProductTreeImg().getOriginalFilename()));
+				saveFile(uploadpath+Path, model.getProductTreeImgName(), dto.getProductTreeImg());
+			}else
+			{
+				model.setProductTreeImgName(null);
+			}
+//	--------------------------------------------------------------		
+			if(!dto.getPEARLImg().isEmpty()) {
+				model.setPEARLImgName("pearlimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getPEARLImg().getOriginalFilename()));
+				saveFile(uploadpath+Path, model.getPEARLImgName(), dto.getPEARLImg());
+			}else
+			{
+				model.setPEARLImgName(null);
+			}
+// ---------------------------------------------------------------
+			
+			model.setCreatedBy(dto.getCreatedBy());
+			model.setCreatedDate(sdf1.format(new Date()));
+			model.setRevisionNo(0);
+			model.setProcLimit(Double.parseDouble(dto.getProcLimit()));
+			File theDir = new File(uploadpath+Path);
+			if (!theDir.exists()){
+			    theDir.mkdirs();
+			}
+			
+			return dao.ProjectDataSubmit(model);
+		}
+		
+		@Override
+		public long ProjectDataEditSubmit(PfmsProjectDataDto dto) throws Exception 
+		{
+			logger.info(new Date() +"Inside ProjectDataSubmit");
+			
+			String LabCode= dto.getLabcode();
 			
 			Timestamp instant= Timestamp.from(Instant.now());
 			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 			String query="";
 			
+			String Path = LabCode+"\\ProjectData\\";
+			
 			PfmsProjectData model=new PfmsProjectData();
 			model.setProjectId(Long.parseLong(dto.getProjectId()));
 			model.setProjectDataId(Long.parseLong(dto.getProjectDataId()));
 			model.setCurrentStageId(Integer.parseInt(dto.getCurrentStageId()));
-			model.setFilesPath(uploadpath);
+			model.setFilesPath(Path);
 			if(!dto.getSystemConfigImg().isEmpty()) {
 				model.setSystemConfigImgName("configimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemConfigImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getSystemConfigImgName(), dto.getSystemConfigImg());
+				saveFile(uploadpath+Path, model.getSystemConfigImgName(), dto.getSystemConfigImg());
 				query=query+"SystemConfigImgName='"+model.getSystemConfigImgName()+"',";
 			}			
 			if(!dto.getSystemSpecsFile().isEmpty()) {
 				model.setSystemSpecsFileName("specsfile"+timestampstr+"."+FilenameUtils.getExtension(dto.getSystemSpecsFile().getOriginalFilename()));
-				saveFile(uploadpath, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
+				saveFile(uploadpath+Path, model.getSystemSpecsFileName(), dto.getSystemSpecsFile());
 				query=query+"SystemSpecsFileName='"+model.getSystemSpecsFileName()+"',";
 			}
 			if(!dto.getProductTreeImg().isEmpty()) {
 				model.setProductTreeImgName("producttree"+timestampstr+"."+FilenameUtils.getExtension(dto.getProductTreeImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getProductTreeImgName(), dto.getProductTreeImg());
+				saveFile(uploadpath+Path, model.getProductTreeImgName(), dto.getProductTreeImg());
 				query=query+"ProductTreeImgName='"+model.getProductTreeImgName()+"',";
 			}
 			if(!dto.getPEARLImg().isEmpty()) {
 				model.setPEARLImgName("pearlimg"+timestampstr+"."+FilenameUtils.getExtension(dto.getPEARLImg().getOriginalFilename()));
-				saveFile(uploadpath, model.getPEARLImgName(), dto.getPEARLImg());
+				saveFile(uploadpath+Path, model.getPEARLImgName(), dto.getPEARLImg());
 				query=query+"PEARLImgName='"+model.getPEARLImgName()+"',";
 			}
 			model.setModifiedBy(dto.getModifiedBy());
@@ -1586,10 +1588,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 		
 		@Override
-		public List<Object[]> ProjectRiskDataList(String projectid) throws Exception 
+		public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
 		{
 			logger.info(new Date() +"Inside ProjectRiskDataList");
-			return dao.ProjectRiskDataList(projectid);
+			return dao.ProjectRiskDataList(projectid, LabCode);
 		}
 		
 		@Override
@@ -1606,6 +1608,7 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.info(new Date() +"Inside ProjectRiskDataSubmit");
 			
 			PfmsRisk model=new PfmsRisk();
+			model.setLabCode(dto.getLabCode());
 			model.setProjectId(Long.parseLong(dto.getProjectId()));
 			model.setActionMainId(Long.parseLong(dto.getActionMainId()));
 			model.setDescription(dto.getDescription());
@@ -1620,9 +1623,6 @@ public class ProjectServiceImpl implements ProjectService {
 			
 			return dao.ProjectRiskDataSubmit(model);
 		}
-		
-		
-	
 		
 		@Override
 		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception {
@@ -1655,7 +1655,7 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setRevisionDate(sdf1.format(new Date()));
 			model.setCreatedBy(dto.getModifiedBy());
 			model.setCreatedDate(sdf1.format(new Date()));
-			
+			model.setLabCode(riskmatrixdata[8].toString());
 			
 			return dao.ProjectRiskDataRevSubmit(model);
 		}
@@ -1667,9 +1667,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public List<Object> RiskDataPresentList(String projectid) throws Exception {
+		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
 			logger.info(new Date() +"Inside RiskDataPresentList");
-			return dao.RiskDataPresentList(projectid);
+			return dao.RiskDataPresentList(projectid, LabCode);
 		}
 		
 
@@ -1748,7 +1748,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public List<Object[]>  ProjectApprovalFlowEmpData(String empid) throws Exception
+		public List<Object[]>  ProjectApprovalFlowEmpData(String empid,String LabCode) throws Exception
 		{
 			logger.info(new Date() +"Inside ProjectApprovalFlowEmpData");
 			List<Object[]> list=new ArrayList<Object[]>();
@@ -1760,7 +1760,7 @@ public class ProjectServiceImpl implements ProjectService {
 					
 			list.addAll(dao.DoRtmdAdEmpData());
 			
-			temp=dao.DirectorEmpData();
+			temp=dao.DirectorEmpData(LabCode);
 			if(temp!=null) {
 				list.add(temp);
 			}
@@ -1768,7 +1768,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public long  ProjectMainToMaster(String projectmainid,String user) throws Exception
+		public long  ProjectMainToMaster(String projectmainid,String user,String LabCode) throws Exception
 		{
 			logger.info(new Date() +"Inside ProjectMainToMaster");
 			
@@ -1799,6 +1799,7 @@ public class ProjectServiceImpl implements ProjectService {
 			master.setIsActive(1);
 			master.setCreatedBy(user);
 			master.setCreatedDate(sdf1.format(new Date()));
+			master.setLabCode(LabCode);
 			
 			return dao.ProjectMasterAdd(master);
 		}
@@ -1854,8 +1855,11 @@ public class ProjectServiceImpl implements ProjectService {
 			logger.info(new Date() +"Inside ProjectMastetAttachAdd");
 			
 			String projectcode = dao.ProjectData(dto.getProjectId())[1].toString();
-			String path = ProjectMasterFilePath+"\\"+projectcode;
-			File filepath=new File(path);
+			String path = dto.getLabCode()+"\\ProjectMasterFiles\\"+projectcode;
+			
+			String FullPath = uploadpath+path;
+			
+			File filepath=new File(FullPath);
 			long ret=0;
 			if(!filepath.exists())
 			{
@@ -1870,21 +1874,22 @@ public class ProjectServiceImpl implements ProjectService {
 					modal.setProjectId(Long.parseLong(dto.getProjectId()));
 					modal.setFileName(dto.getFileName()[i]);
 					modal.setOriginalFileName(dto.getFiles()[i].getOriginalFilename());
-					modal.setPath(path);
+					
 					modal.setCreatedBy(dto.getCreatedBy());
 					modal.setCreatedDate(sdf1.format(new Date()));
 					
-					String fullpath=path+"\\"+modal.getOriginalFileName()	;	
+					String fullFilePath=FullPath+"\\"+modal.getOriginalFileName()	;	
 					
-					File file = new File(fullpath);
+					File file = new File(fullFilePath);
 					int count=0;
-					while(true) {
-						file = new File(fullpath);
+					while(true) 
+					{
+						file = new File(fullFilePath);
 						
 						if(file.exists())
 						{
 							count++;
-							fullpath = path+"\\"+FilenameUtils.getBaseName(modal.getOriginalFileName())+"-"+count+"."+FilenameUtils.getExtension(modal.getOriginalFileName());
+							fullFilePath =  uploadpath+path+"\\"+FilenameUtils.getBaseName(modal.getOriginalFileName())+"-"+count+"."+FilenameUtils.getExtension(modal.getOriginalFileName());
 						}
 						else
 						{
@@ -1894,7 +1899,10 @@ public class ProjectServiceImpl implements ProjectService {
 							break;
 						}
 					}
-					saveFile(path, modal.getOriginalFileName(), dto.getFiles()[i]);
+					
+					modal.setPath(path);
+					
+					saveFile(uploadpath+path, modal.getOriginalFileName(), dto.getFiles()[i]);
 					ret=dao.ProjectMasterAttachAdd(modal);
 					
 				}						

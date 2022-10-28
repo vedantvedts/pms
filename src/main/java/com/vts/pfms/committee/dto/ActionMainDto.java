@@ -16,6 +16,8 @@ public class ActionMainDto {
 	private String ActionItem;
 	private String ProjectId;
 	private String ScheduleMinutesId;
+	private String Priority;
+	private String Category;
 	private String Type;
 	private String ActionType;
 	private String ActivityId;
@@ -27,17 +29,29 @@ public class ActionMainDto {
 	private String ModifiedDate;
 	private String MeetingDate;
 	private String ScheduleId;
+	private String [] AssigneeList;
 	
 	
+	
+	
+	public String getPriority() {
+		return Priority;
+	}
+	public void setPriority(String priority) {
+		Priority = priority;
+	}
+	public String getCategory() {
+		return Category;
+	}
+	public void setCategory(String category) {
+		Category = category;
+	}
 	public String getMeetingDate() {
 		return MeetingDate;
 	}
 	public void setMeetingDate(String meetingDate) {
 		MeetingDate = meetingDate;
 	}
-	private String [] AssigneeList;
-	
-	
 	public String getProjectId() {
 		return ProjectId;
 	}

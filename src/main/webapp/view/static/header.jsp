@@ -165,7 +165,7 @@
 }   
 
 #uppermodule .dropdown-menu-right{
-	width:175px !important; 
+	width:185px !important; 
 }
 
 
@@ -191,6 +191,7 @@ String labcode= (String)session.getAttribute("labcode");
 				<% String EmpName =(String)session.getAttribute("EmpName");  %>
 				<% long FormRole =(Long)session.getAttribute("FormRole");  %>
 				<% String FormRoleName =(String)session.getAttribute("LoginTypeName");  %>
+				<% String IsDG =(String)session.getAttribute("IsDG");  %>
 					
 				<nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear header-top">
 					
@@ -219,8 +220,10 @@ String labcode= (String)session.getAttribute("labcode");
 								
 								
 <%-- 								<%if(ProjectInitSize>0 || Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")){ %>
- --%>								
-						<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")){ %>
+ --%>					
+ 							<%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
+ 			
+							<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")){ %>
 								
 								
 								<li class="nav-item dropdown">
@@ -233,17 +236,19 @@ String labcode= (String)session.getAttribute("labcode");
 									  			<a class="dropdown-item"  href="ProjectIntiationList.htm"> List</a>
 									  		</li>
 									  		
-									  		<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y") ) {%>									  		
 									  		
-									  		<li>
-									  			<form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm"  style="display: inline">
-									  		  		<button class="dropdown-item" > Initiate</button>
-									  				<input type="hidden" name="sub" value="add"/>
-									  				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-								      			</form>
-									  		</li>
 									  		
-									  		<%} %>
+										  		<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y") ) {%>									  		
+										  		
+										  		<li>
+										  			<form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm"  style="display: inline">
+										  		  		<button class="dropdown-item" > Initiate</button>
+										  				<input type="hidden" name="sub" value="add"/>
+										  				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+									      			</form>
+										  		</li>
+										  		
+										  		<%} %>
 									  		
 									  		<li>
 										  		<form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm1"  style="display: inline">
@@ -256,6 +261,8 @@ String labcode= (String)session.getAttribute("labcode");
 								    	</ul>
 								</li>
 								
+								
+								<%} %>
 								
 								<%} %>
 								<!-- New Content from table start --------------------------------->

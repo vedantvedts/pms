@@ -115,7 +115,7 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
                             		<input  class="form-control form-control"  type="text" name="gName" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
                         		</div>
                     		</div>
-                    		<div class="col-md-3">
+                    		<div class="col-md-5">
                         		<div class="form-group">
                             		<label class="control-label">Group Head Name</label><span class="mandatory">*</span>
                               		<select class="custom-select" id="ghempid" required="required" name="ghempid">

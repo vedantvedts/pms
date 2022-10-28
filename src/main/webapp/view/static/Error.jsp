@@ -182,7 +182,7 @@ body{
    <div class="content"> 
     <img src="view/images/Error/error-img.png" title="error" /> 
     <p><span><label>O</label>hh.....</span>You Requested the page that is no longer There.</p> 
-    <a href="<%=request.getContextPath()%>">Back To Home</a> 
+    <a href="MainDashBoard.htm">Back To Home</a> 
     <div class="copy-right"> 
      <p>&copy; <script type="text/javascript">
   document.write(new Date().getFullYear());

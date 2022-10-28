@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
@@ -77,8 +79,8 @@ th,td
           @bottom-right {          		
              content: "Page " counter(page) " of " counter(pages);
              margin-bottom: 30px;
-             margin-right: 10px;
-               font-size: 13px;
+             margin-right: auto;
+             font-size: 13px;
           }
           
           @top-right {
@@ -108,25 +110,35 @@ th,td
           content: "<%=committeescheduleeditdata[15]%>"; 
           
           }
-          <%--  @bottom-center { 
+         @bottom-center { 
              font-size: 13px;
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]%>"; 
           
-          } --%>
+          } 
+          
+          @bottom-left { 
+             font-size: 13px;
+	          margin-bottom: 30px;
+	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
+	          
+          
+          } 
 		
-		@bottom-left {          		
- 			 content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
- 			 margin-bottom: 30px;
-             margin-right: 5px;
-             font-size: 9.5px;
-          }
+	<%--  	@left-bottom {           		
+ 			content : "The information in this Document is proprietary of <%=labInfo.getLabCode() %> /DRDO , MOD Govt. of India. Unauthorized possession may be liable for prosecution.";
+            font-size: 10px;
+		    writing-mode: vertical-rl;
+       		text-orientation: sideways;
+       		
+       		
+		    
+          } 
+           --%>
 
 
  }
 
- 
- 
  
  
  .sth
@@ -210,7 +222,7 @@ th,td
 
 
 <%if(invitedlist.size()>0){ %>
-<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
+<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
 //ArrayList<String> addlmembertypes=new ArrayList<String>(Arrays.asList("W","E","I","P")); %>
 
 <% 
@@ -222,7 +234,7 @@ for(Object[] temp : invitedlist){
 	{ 
 		memPresent++;
 	}
-	else if(temp[4].toString().equals("A") &&  membertypes.contains( temp[3].toString()) )
+	else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
 	{
 		memAbscent++;
 	}
@@ -230,7 +242,7 @@ for(Object[] temp : invitedlist){
 	{ 
 		ParPresent++;
 	}
-	else if( temp [4].toString().equals("A") && !membertypes.contains( temp[3].toString()) )
+	else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
 	{ 
 		parAbscent++;
 	}
@@ -262,7 +274,6 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -276,7 +287,7 @@ for(Object[] temp : invitedlist){
 	 		</td>	
 	 		</tr>
 	 <%}
-	 } %>
+	 }  %>
 	 
 	 <% } %>
 	 
@@ -301,7 +312,6 @@ for(Object[] temp : invitedlist){
 	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -348,7 +358,6 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -391,7 +400,6 @@ for(Object[] temp : invitedlist){
 	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) { %>Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
@@ -518,9 +526,9 @@ for(Object[] temp : invitedlist){
 																			
 												<%	if(speclist[5].toString().equals("7") )
 												{%>	
-												<%-- <tr >
+												 <tr >
 														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
-												</tr> --%>
+												</tr> 
 												<tr >
 													<td style="text-align: left; padding:0px 0px 0px 30px;">
 														<%=speclist[1]%>
@@ -528,9 +536,9 @@ for(Object[] temp : invitedlist){
 												</tr>					
 												<%}else if(speclist[5].toString().equals("8")){
 												%>
-												<%-- <tr >
+												 <tr >
 														<th colspan="8" style="text-align: left;padding:0px; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]+"."+agendaid+"."+index+"."+index1%>.&nbsp;&nbsp;&nbsp;<%=speclist[11]%></th>
-												</tr> --%>
+												</tr> 
 												<tr >
 													<td style="text-align: left;padding:0px 0px 0px 30px;">
 														<%=speclist[1]%>
@@ -644,7 +652,7 @@ for(Object[] temp : invitedlist){
 	<div align="center" >
 		<div style="width: 650px;margin-left: 15px; font-size: 16px; " >
 			<div align="center" style="padding-left: 2.5rem;">
-				<p>These Minutes are issued with the approval of Chairperson <%-- <%=committeescheduleeditdata[8] %> --%>. </p>
+				<p>These Minutes are issued with the approval of The Chairperson <%-- <%=committeescheduleeditdata[8] %> --%>. </p>
 			</div>
 			<div align="left" style="padding-right: 1.5rem;padding-bottom: 5rem;">
 				<br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp;
