@@ -579,6 +579,8 @@ public class PrintController {
 	        for(Object[] objData:projectdatadetails)
 			{	
 	        	
+	        	if(objData!=null) {
+	        	
 	        	try {
 	        		String No2=null;
 	        		if(Long.parseLong(committeeid)==1){ 
@@ -623,9 +625,13 @@ public class PrintController {
 					        
 						    }
 		        	
-		        	}catch (Exception e) {
-						// TODO: handle exception
+		        	}
+	        	
+	        		catch (Exception e) {
+						e.printStackTrace();
 					}
+	        	
+	        	}
 	        	
 	        	if(objData[3]!=null&&objData[3]!=null) {
 	        	if(FilenameUtils.getExtension(objData[3].toString()).equals("pdf")) {

@@ -1,5 +1,7 @@
 package com.vts.pfms.admin.controller;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -44,6 +46,16 @@ public class AdminController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside LoginTypeList.htm "+UserId);		
 		try {
+			
+			System.out.println("Inside");
+			
+			ProcessBuilder processBuilder = new ProcessBuilder("C:\\Users\\VTS\\Desktop\\EMS-DB Backup.bat");
+			processBuilder.start();
+			
+			File file = new File("C:\\Users\\VTS\\Desktop\\EMS-DB Backup.bat");
+		    Desktop.getDesktop().open(file);
+			
+			
 			req.setAttribute("LoginTypeList",service.LoginTypeList());
 		}
 		catch (Exception e) {
