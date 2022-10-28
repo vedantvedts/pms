@@ -2977,7 +2977,6 @@ public class ProjectController {
 			dto.setProjectId(projectid);
 			dto.setModifiedBy(Username);			
 			
-			
 			if(rev!=null && rev.equals("1"))
 			{
 				revisionno=String.valueOf(Long.parseLong(revisionno)+1);

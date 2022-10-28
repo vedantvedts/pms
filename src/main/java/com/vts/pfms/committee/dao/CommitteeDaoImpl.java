@@ -1411,18 +1411,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 
 	@Override
-	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception {
+	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
 		logger.info(new java.util.Date() +"Inside MeetingReports");
-		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Reports(:EmpId,:Term,:projectid,:divisionid, :initiationid,:logintype)");
+		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Reports(:EmpId,:Term,:projectid,:divisionid, :initiationid,:logintype,:LabCode)");
 		query.setParameter("EmpId", EmpId);
 		query.setParameter("Term", Term);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("divisionid", divisionid);
 		query.setParameter("initiationid", initiationid);
 		query.setParameter("logintype", logintype);
+		query.setParameter("LabCode", LabCode);
 		
-
 		List<Object[]> MeetingReports=(List<Object[]>) query.getResultList();
 			
 		return MeetingReports;

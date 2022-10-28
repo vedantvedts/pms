@@ -1655,7 +1655,7 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setRevisionDate(sdf1.format(new Date()));
 			model.setCreatedBy(dto.getModifiedBy());
 			model.setCreatedDate(sdf1.format(new Date()));
-			
+			model.setLabCode(riskmatrixdata[8].toString());
 			
 			return dao.ProjectRiskDataRevSubmit(model);
 		}

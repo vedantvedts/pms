@@ -88,7 +88,7 @@ public class ActionController {
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
 //			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
-			req.setAttribute("EmployeeListModal", service.EmployeeList());
+			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("LabCode", LabCode);
 			
@@ -150,7 +150,6 @@ public class ActionController {
 		
 		try {
 			String CpLabCode = req.getParameter("LabCode");
-			String projectid = req.getParameter("proid");
 			
 			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 			{
@@ -663,7 +662,7 @@ public class ActionController {
 				req.setAttribute("EmployeeList", service.ProjectEmpList(projectid));
 			}else
 			{
-				req.setAttribute("EmployeeList", service.EmployeeList());
+				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			}
 			
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
@@ -813,20 +812,20 @@ public class ActionController {
 		 
 		 
 			@RequestMapping(value = "ActionReports.htm", method = RequestMethod.GET)
-			public String ActionReports(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-					throws Exception {
+			public String ActionReports(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
+			{
 				String UserId =(String)ses.getAttribute("Username");
 				String LabCode = (String)ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ActionReports.htm "+UserId);		
 				try {
 					String Logintype= (String)ses.getAttribute("LoginType");
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				
-				req.setAttribute("Term", "A");
-				req.setAttribute("Project", "A");
-				req.setAttribute("Type", "A");
-				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
-				req.setAttribute("StatusList", service.ActionReports(EmpId,"A","A","A"));	
+					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+					
+					req.setAttribute("Term", "A");
+					req.setAttribute("Project", "A");
+					req.setAttribute("Type", "A");
+					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
+					req.setAttribute("StatusList", service.ActionReports(EmpId,"A","A","A", LabCode));	
 
 				}
 				catch (Exception e) {
@@ -841,6 +840,7 @@ public class ActionController {
 			public String ActionReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {
 				String UserId =(String)ses.getAttribute("Username");
+				String LabCode = (String)ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ActionReportSubmit.htm "+UserId);		
 				try {
 				
@@ -861,9 +861,8 @@ public class ActionController {
 //					}
 					
 				}
-				String loginid= ses.getAttribute("LoginId").toString();
 				req.setAttribute("ProjectList", service.projectdetailsList(EmpId));
-				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type));	
+				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode));	
 				req.setAttribute("Term", req.getParameter("Term"));
 				req.setAttribute("Project",Project);
 				req.setAttribute("Type",Type);
@@ -884,19 +883,13 @@ public class ActionController {
 				String UserId =(String)ses.getAttribute("Username");
 				logger.info(new Date() +"Inside ActionSearch.htm "+UserId);		
 				try {
-				
-				
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				
-				req.setAttribute("Position", "ASN");
-				
+					req.setAttribute("Position", "ASN");
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionSearch.htm "+UserId, e);
 				}	
 				
-
 				return "action/ActionSearch";
 			}
 			
@@ -934,7 +927,6 @@ public class ActionController {
 					{
 						ProjectId="0";
 					}
-					String loginid= ses.getAttribute("LoginId").toString();
 					String Logintype= (String)ses.getAttribute("LoginType");	
 					
 					req.setAttribute("StatusList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));					
@@ -1025,9 +1017,8 @@ public class ActionController {
 					req.setAttribute("tdate",tdate);
 					req.setAttribute("fdate",fdate);
 					
-					String loginid= ses.getAttribute("LoginId").toString();
 					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
-					req.setAttribute("EmployeeList", service.EmployeeList());
+					req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 					req.setAttribute("Project",Project);
 					req.setAttribute("Employee", Emp);
 					req.setAttribute("Position",Position );
@@ -1384,8 +1375,7 @@ public class ActionController {
 				String name="NoData";
 				String header="NoData";
 			List<Object[]> bookData= service.getActionAlertList();
-			Object[] value=null;
-			if(bookData!=null&&bookData.size()>0) {
+			if(bookData!=null && bookData.size()>0) {
 			name="ActionMeetingAlertList"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".csv";
 			header="Action Alert List";
 			}
@@ -1745,10 +1735,6 @@ public class ActionController {
 		        	
 		 			   List<Object[]> Today=service.getMeetingToday(hlo[0].toString());
 		 			   List<Object[]> Tommo=service.getMeetingTommo(hlo[0].toString());
-		              
-		               String TimeMsg="";
-		               String VenueMsg="";
-		               int tocount=1;
 		               if(Today.size()>0) {
 		            	   for(Object[] tod :Today) {
 								/*
@@ -1779,18 +1765,11 @@ public class ActionController {
 		   		               
 
 		   		               }
-		            		   
-		            		   
-		            		 tocount++; 
 		            	   }
 		            	  
 		            	   
 		               }
 		               
-		               
-		               String TimeMsgt="";
-		               String VenueMsgt="";
-		               int tmcount=1;
 		               if(Tommo.size()>0) {
 		            	   for(Object[] tod :Tommo) {
 		            		   String AiMsgt="";
@@ -1822,7 +1801,6 @@ public class ActionController {
 		   		               }
 		            		   
 		            		   
-		            		 tmcount++; 
 		            	   }
 		            	  
 		            	   
@@ -1913,14 +1891,13 @@ public class ActionController {
 	
 	
 	@RequestMapping(value = "ActionMonitor.htm")
-	public String ActionMonitor(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ActionMonitor(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
 		String UserId =(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionMonitor.htm "+UserId);		
 		try {	
 			
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
-			String DivId= (String)ses.getAttribute("Division");
 			String fdate=req.getParameter("fdate");
 			String tdate=req.getParameter("tdate");
 			String assigneeid=req.getParameter("assigneeid");
@@ -1929,8 +1906,6 @@ public class ActionController {
 			{	
 				
 			}
-			
-			
 			
 			req.setAttribute("fdate", fdate);
 		    req.setAttribute("tdate", tdate);

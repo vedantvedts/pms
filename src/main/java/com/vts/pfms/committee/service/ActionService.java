@@ -12,7 +12,7 @@ import com.vts.pfms.committee.model.ActionMain;
 
 public interface ActionService {
 
-	public List<Object[]> EmployeeList() throws Exception;
+	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public List<Object[]> AssignedList(String EmpId) throws Exception;
 	public long ActionMainInsert(ActionMainDto main)throws Exception;
 	public List<Object[]> AssigneeList(String EmpId) throws Exception;
@@ -34,7 +34,7 @@ public interface ActionService {
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception;
 	public List<Object[]> ActionNoSearch(String ActionMainId) throws Exception;
 	public String ScheduleActionItem(String ScheduleId) throws Exception;
-	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type) throws Exception ;
+	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception ;
 	public List<Object[]> ActionSearch(String EmpId,String No,String Position) throws Exception;
 	public List<Object[]> ProjectList() throws Exception;
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception;

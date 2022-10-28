@@ -1577,10 +1577,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception {
+	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside MeetingReports");
-		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype);
+		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype,LabCode);
 	}
 
 	@Override

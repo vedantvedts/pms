@@ -134,7 +134,7 @@ public interface CommitteeService {
  	public int MeetingMinutesApprovalSubmit( String ScheduleId, String Remarks,String UserId, String EmpId,String Option) throws Exception;
 
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> MeetingReports(String EmpId,String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception;
+	public List<Object[]> MeetingReports(String EmpId,String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> MeetingReportListAll(String fdate,String tdate, String ProjectId) throws Exception;
 	//public List<Object[]> MeetingReportListEmp(String fdate,String tdate, String ProjectId,String EmpId) throws Exception;
 	public Object[] KickOffMeeting(HttpServletRequest req, RedirectAttributes redir) throws Exception;
