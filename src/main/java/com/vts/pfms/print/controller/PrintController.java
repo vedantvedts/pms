@@ -1477,7 +1477,6 @@ public class PrintController {
 	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
 	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
 	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
-	    	
 	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
     		
 	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
