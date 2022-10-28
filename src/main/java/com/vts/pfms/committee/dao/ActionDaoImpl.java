@@ -30,7 +30,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final Logger logger=LogManager.getLogger(CommitteeDaoImpl.class);
 	
 
-	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno ";
+	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND LabCode=:LabCode ORDER BY a.srno=0,a.srno ";
 	private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision,aas.IsSeen , aas.actionassignid  FROM action_main a,  employee ab ,employee_desig dc ,action_assign aas WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.actionflag<>'Y'";
 	//isseen column has been removed  04-08-2021
 	//private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS remarks,a.revision FROM action_main a,  employee ab ,employee_desig dc WHERE a.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.assignor=:empid and a.actionflag<>'Y'";
@@ -55,7 +55,7 @@ public class ActionDaoImpl implements ActionDao{
     private static final String ACTIONGENCOUNT="SELECT COUNT(*) FROM action_main WHERE  (CASE WHEN :projectid=0 THEN projectid=:projectid AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(actiondate, \"%Y\") ELSE projectid=:projectid END ) AND isactive='1'";
 	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno FROM action_assign WHERE actionassignid=:assignid";
 	private static final String SCHEDULEITEM="SELECT a.scheduleminutesid,a.details FROM  committee_schedules_minutes_details a WHERE  a.scheduleminutesid=:schid";
-    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type)";
+    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type,:LabCode)";
     private static final String ACTIONSEARCHNO="CALL Pfms_ActionNo_Search(:empid,:no,:position)";
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
     private static final String ACTIONCOUNT="CALL Pfms_Action_PD_Chart(:projectid)";
@@ -100,10 +100,10 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	@Override
-	public List<Object[]> EmployeeList() throws Exception {
+	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside EmployeeList");	
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
-		
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
 		return EmployeeList;
 	}
@@ -381,7 +381,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	@Override
-	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type) throws Exception {
+	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception {
 		
 		logger.info(new Date() +"Inside ActionReports");
 		Query query=manager.createNativeQuery(ACTIONREPORT);
@@ -389,6 +389,8 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("term",Term);
 		query.setParameter("position",Position);
 		query.setParameter("type",Type);
+		query.setParameter("LabCode",LabCode);
+		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}

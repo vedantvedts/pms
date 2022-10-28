@@ -3314,26 +3314,19 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside MeetingSearch.htm "+UserId);
 		try
 		{
+			String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
+			String LoginType=(String)ses.getAttribute("LoginType");
 	
-		
-		String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
-		String LoginType=(String)ses.getAttribute("LoginType");
-
-		if(req.getParameter("search")!=null) {
-		
-			if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A") ) {
-				
-				req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ,LabCode));
-				
-			}
-			else {
-				
-				req.setAttribute("meetingsearch", service.UserSchedulesList(EmpId,req.getParameter("search")));
-				
-			}
-		
+			if(req.getParameter("search")!=null) {
 			
-		}
+				if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A") ) 
+				{
+					req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ,LabCode));
+				}
+				else {
+					req.setAttribute("meetingsearch", service.UserSchedulesList(EmpId,req.getParameter("search")));
+				}
+			}
 		}
 		catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside MeetingSearch.htm "+UserId,e);
@@ -3863,10 +3856,10 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside EmailMeetingInvitationLetter.htm "+UserId);		
 		 try {			 
 			 	String scheduleid=req.getParameter("committeescheduleid");
-			 	String memberid=req.getParameter("memberid");
+//			 	String memberid=req.getParameter("memberid");
 				Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
 				String projectid=scheduledata[9].toString();
-				String committeeid=scheduledata[0].toString();				
+//				String committeeid=scheduledata[0].toString();				
 				if(projectid==null || Long.parseLong(projectid)==0)
 				{					
 					projectid="0";
@@ -3914,7 +3907,6 @@ public class CommitteeController {
 		 {
 			String LoginType =(String)ses.getAttribute("LoginType");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-			String loginid= ses.getAttribute("LoginId").toString();
 			
 			String projectid=req.getParameter("projectid");
 			String divisionid=req.getParameter("divisionid");
@@ -3939,7 +3931,7 @@ public class CommitteeController {
 			req.setAttribute("projectid",projectid );
 			req.setAttribute("divisionid",divisionid );
 			req.setAttribute("initiationid",initiationid );
-			req.setAttribute("MeetingReports", service.MeetingReports(EmpId,term,projectid,divisionid,initiationid, LoginType));
+			req.setAttribute("MeetingReports", service.MeetingReports(EmpId,term,projectid,divisionid,initiationid, LoginType,LabCode));
 		 }		 
 		 catch (Exception e) {
 		 	e.printStackTrace(); 

@@ -138,7 +138,7 @@ public interface CommitteeDao {
 	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception;
 	public int MeetingMinutesApprovalSubmit(CommitteeSchedule schedule,CommitteeMeetingApproval approval,PfmsNotification notfication) throws Exception;
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> MeetingReports(String EmpId,String Term,String ProjectId,String divisionid,String initiationid,String logintype) throws Exception;
+	public List<Object[]> MeetingReports(String EmpId,String Term,String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> MeetingReportListAll(String fdate,String tdate,String ProjectId) throws Exception;
 	public int UpdateCommitteeInvitationEmailSent(String scheduleid) throws Exception;
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception;
