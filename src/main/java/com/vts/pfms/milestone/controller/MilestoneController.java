@@ -2017,8 +2017,7 @@ public class MilestoneController {
 			String UserId = (String)ses.getAttribute("Username");
 			logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);	
 			String projectid = req.getParameter("projectid");
-			String LabCode = req.getParameter("labCode");
-			
+			String LabCode =(String) ses.getAttribute("labcode");
 			
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)

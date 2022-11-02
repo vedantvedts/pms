@@ -32,11 +32,7 @@
         top: 0 ;
         background-color: #346691;
     }
-    
-    .table button{
-    	background-color: maroon !important;
-    	font-size: 12px;
-    }
+
 </style>
 
 </head>
@@ -264,36 +260,33 @@ if(ses1!=null){
 													<tr>
 														<td style="text-align: center;">
 														
-														<% int checkcount=0;
-														for(Object[] checklist : ProjectFormationCheckList){															
-															if(obj[3].toString().equalsIgnoreCase(checklist[0].toString()) && checklist[1]==null){
-																checkcount++;
-																break;
+															<% int checkcount=0;
+															for(Object[] checklist : ProjectFormationCheckList){															
+																if(obj[3].toString().equalsIgnoreCase(checklist[0].toString()) && checklist[1]==null){
+																	checkcount++;
+																	break;
+																}
 															}
-														}
-														
-														if(obj[6].toString().equalsIgnoreCase("N") && checkcount >0) {	%>
-														
-															<input type="checkbox" class="checkboxall" name="committeeprojectid" value="<%=obj[3]%>">
-																	
-																
-														<%} else{ %>
-															<input type="checkbox" disabled >
-														<%} %>
-														
-														
-														
+															
+															if(obj[6].toString().equalsIgnoreCase("N") && checkcount >0) {	%>
+																<input type="checkbox" class="checkboxall" name="committeeprojectid" value="<%=obj[3]%>">
+															<%} else{ %>
+																<input type="checkbox" disabled >
+															<%} %>
+															
 														</td>
 														<td style="text-align: left;"><%=obj[0]%> (<%=obj[1]%>)</td>
 														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5] %> days<%} else{%>Non-Periodic<%} %> </td>
 														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 														<td> 
-															<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" >Constitute</button>
+														
+															<%if(checkcount>0){ %>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
+															<%}else{ %>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
+															<%} %>
 														</td>															
 													</tr>
-													
-													
-													
 													<%
 														}}else{
 													%>

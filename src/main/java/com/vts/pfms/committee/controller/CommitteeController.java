@@ -4463,7 +4463,7 @@ public class CommitteeController {
 				}
 				
 				if (count > 0) {
-					redir.addAttribute("result", "Description and Terms of Reference Edited Successfull");
+					redir.addAttribute("result", "Description and Terms of Reference Edited Successfully");
 				} else {
 					redir.addAttribute("resultfail", "Description and Terms of Reference Edit unSuccessfull");
 				}

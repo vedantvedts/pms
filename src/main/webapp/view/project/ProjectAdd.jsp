@@ -335,7 +335,7 @@ function validateismaincheck()
 </label>
 </th>
  <td >
-<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="datepicker" name="sadate" value=""
+<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="sanc-date" name="sadate" value=""
 								class="form-control form-control">
 </td>
   <th>
@@ -389,7 +389,7 @@ function validateismaincheck()
 </label>
 </th>
  <td >
-<input  id="currentdate"  data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
+<input  id="pdc-date"  data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
 								class="form-control form-control">
 </td>
 
@@ -562,8 +562,42 @@ $(function(){
 
 	});
 </script>
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->     
-				</div>
+
+<script type="text/javascript">
+
+var fromDate=null;
+$("#sanc-date").change( function(){	
+	 fromDate = $("#sanc-date").val();
+	 
+	var date1=fromDate.split("-");
+	var date= new Date(date1[1]+' '+date1[0]+' '+date1[2]);
+		
+		$('#pdc-date').daterangepicker({
+			
+			"singleDatePicker": true,
+			"showDropdowns": true,
+			"cancelClass": "btn-default",
+			"minDate":fromDate,
+			"startDate":date ,
+			locale: {
+		    	format: 'DD-MM-YYYY'
+				}
+		});
+		
+});
+
+$('#sanc-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":new Date(), 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
+</script>
+
 </body>
 </html>

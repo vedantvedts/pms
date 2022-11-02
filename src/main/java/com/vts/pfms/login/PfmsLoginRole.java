@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class PfmsLoginRole {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long LoginRoleSecurityId ;
 	private Long LoginId;
 	private Long RoleId;
