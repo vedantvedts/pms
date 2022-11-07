@@ -451,9 +451,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 
 	@Override
-	public Long CommitteeAgendaSubmit(CommitteeScheduleAgenda scheduleagenda) throws Exception {
+	public Long CommitteeAgendaSubmit(CommitteeScheduleAgenda scheduleagenda) throws Exception 
+	{
 		logger.info(new java.util.Date() +"Inside CommitteeAgendaSubmit");
-		scheduleagenda.setCommitteeId(0L);
 		manager.persist(scheduleagenda);
 		manager.flush();
 		
