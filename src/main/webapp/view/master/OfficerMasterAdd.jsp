@@ -13,6 +13,7 @@
 </head>
 <body>
 
+
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
 
@@ -59,7 +60,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="card-body">
 
 
-<form name="myfrm" action="OfficerMasterAddSubmit.htm" method="POST" id="myfrm" >
+<form name="myfrm" action="OfficerMasterAddSubmit.htm" method="POST" id="myfrm" autocomplete="off">
 
 <div class="row">
   
@@ -70,14 +71,16 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: uppercase;" >
+					<input  class="form-control form-control"  type="text" id="EmpNo"  name="EmpNo" required="required" maxlength="6" style="font-size: 15px;width:100%;text-transform: uppercase;"
+					 placeholder="Employee No"/>
 				</div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="EmpName"  id="EmpName"  required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: capitalize;" >
+					<input  class="form-control form-control"  type="text" name="EmpName"  id="EmpName"  required="required" maxlength="50" style="font-size: 15px;width:100%;text-transform: capitalize;" 
+					 placeholder="Employee Name" onkeydown="return /[a-z ]/i.test(event.key)">
 			  </div>
 </div>
 
@@ -96,7 +99,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="number" id="ExtNo" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width:100%"  >
+					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width:100%" 
+					 placeholder="Extension Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 			 </div>
 </div>
 </div>
@@ -105,28 +109,29 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="number" id="mobilenumber"  name="mobilenumber" required max="9999999999" min="1000000000" style="font-size: 15px;width:100%" >
+					<input  class="form-control form-control" type="text" id="mobilenumber" value="" name="mobilenumber" maxlength="10" style="font-size: 15px;width:100%"
+					placeholder="Phone No" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 				</div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" name="Email" id="Email" required="required" maxlength="255" style="font-size: 15px;width:100%"  >
+					<input  class="form-control form-control" type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
 			 </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  >
+					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Drona Email">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:<span class="mandatory" style="color: red;">*</span></label>
-                    <input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  >
+                    <input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
 			   </div>
 </div>
 </div>
@@ -180,6 +185,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 		<script type="text/javascript">
 		
 		
+		
+		
 		function empNoCheck(frmid)
 		{
 			var EmpName=$('#EmpName').val().trim();
@@ -194,9 +201,18 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			
 			if($empno==="" ||EmpName==="" ||Designation==="" || ExtNo===null || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division==="" ) 
 			{
-				alert('Please Fill All the Fields. ');
-				
-			}else
+				alert('Please Fill All the Fields ');
+			}
+			else if(isNaN(mobilenumber))
+				{
+				alert(' Enter Proper Mobile Number ');
+				}
+			else if(isNaN(ExtNo))
+			{
+			alert(' Enter Proper Extension Number ');
+			}
+			
+			else
 			{
 					$.ajax({
 						
@@ -232,7 +248,10 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					});
 				}
 		}
-		
 		</script>
+		<script>
+		
+		    </script>
+		    
 	</body>
 </html>
