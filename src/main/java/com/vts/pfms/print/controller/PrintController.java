@@ -1501,11 +1501,12 @@ public class PrintController {
 	    		TechImages.add(service.getTechList(proid));
 	    		projectattributes.add(service.ProjectAttributes(proid));
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+	    		
+	    		
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-	    		
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
 	    		ganttchartlist.add(service.GanttChartList(proid));
 	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
