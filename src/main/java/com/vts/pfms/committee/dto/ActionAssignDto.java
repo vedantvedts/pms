@@ -1,26 +1,18 @@
-package com.vts.pfms.committee.model;
+package com.vts.pfms.committee.dto;
 
-import java.sql.Date;
+public class ActionAssignDto {
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="action_assign")
-public class ActionAssign {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ActionAssignId;
 	private Long ActionMainId;
 	private String ActionNo;
-	private Date EndDate;
-	private Date PDCOrg;
-	private Date PDC1;
-	private Date PDC2;
+	private String ActionDate;
+	private String ActionType;
+	private String ScheduleId;
+	private String ProjectId;
+	private String EndDate;
+	private String PDCOrg;
+	private String PDC1;
+	private String PDC2;
 	private int Revision;
 	private String AssignorLabCode;
 	private Long Assignor;
@@ -35,16 +27,47 @@ public class ActionAssign {
 	private String ModifiedDate;
 	private int IsSeen;
 	private int IsActive;
+	private String [] AssigneeList;
+	private String MeetingDate;
+	
+	
+	public String getMeetingDate() {
+		return MeetingDate;
+	}
+	public void setMeetingDate(String meetingDate) {
+		MeetingDate = meetingDate;
+	}
+	public String getActionDate() {
+		return ActionDate;
+	}
+	public void setActionDate(String actionDate) {
+		ActionDate = actionDate;
+	}
+	public String getActionType() {
+		return ActionType;
+	}
+	public void setActionType(String actionType) {
+		ActionType = actionType;
+	}
 
-
+	public String getScheduleId() {
+		return ScheduleId;
+	}
+	public void setScheduleId(String scheduleId) {
+		ScheduleId = scheduleId;
+	}
+	public String getProjectId() {
+		return ProjectId;
+	}
+	public void setProjectId(String projectId) {
+		ProjectId = projectId;
+	}
 	public Long getActionAssignId() {
 		return ActionAssignId;
 	}
 	public void setActionAssignId(Long actionAssignId) {
 		ActionAssignId = actionAssignId;
 	}
-	
-	
 	public Long getActionMainId() {
 		return ActionMainId;
 	}
@@ -57,28 +80,28 @@ public class ActionAssign {
 	public void setActionNo(String actionNo) {
 		ActionNo = actionNo;
 	}
-	public Date getEndDate() {
+	public String getEndDate() {
 		return EndDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		EndDate = endDate;
 	}
-	public Date getPDCOrg() {
+	public String getPDCOrg() {
 		return PDCOrg;
 	}
-	public void setPDCOrg(Date pDCOrg) {
+	public void setPDCOrg(String pDCOrg) {
 		PDCOrg = pDCOrg;
 	}
-	public Date getPDC1() {
+	public String getPDC1() {
 		return PDC1;
 	}
-	public void setPDC1(Date pDC1) {
+	public void setPDC1(String pDC1) {
 		PDC1 = pDC1;
 	}
-	public Date getPDC2() {
+	public String getPDC2() {
 		return PDC2;
 	}
-	public void setPDC2(Date pDC2) {
+	public void setPDC2(String pDC2) {
 		PDC2 = pDC2;
 	}
 	public int getRevision() {
@@ -99,17 +122,17 @@ public class ActionAssign {
 	public void setAssignor(Long assignor) {
 		Assignor = assignor;
 	}
-	public String getAssigneeLabCode() {
-		return AssigneeLabCode;
-	}
-	public void setAssigneeLabCode(String assigneeLabCode) {
-		AssigneeLabCode = assigneeLabCode;
-	}
 	public Long getAssignee() {
 		return Assignee;
 	}
 	public void setAssignee(Long assignee) {
 		Assignee = assignee;
+	}
+	public String getAssigneeLabCode() {
+		return AssigneeLabCode;
+	}
+	public void setAssigneeLabCode(String assigneeLabCode) {
+		AssigneeLabCode = assigneeLabCode;
 	}
 	public String getRemarks() {
 		return Remarks;
@@ -165,5 +188,13 @@ public class ActionAssign {
 	public void setIsActive(int isActive) {
 		IsActive = isActive;
 	}
+	public String[] getAssigneeList() {
+		return AssigneeList;
+	}
+	public void setAssigneeList(String[] assigneeList) {
+		AssigneeList = assigneeList;
+	}
+	
+
 	
 }

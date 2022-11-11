@@ -4,15 +4,12 @@ package com.vts.pfms.committee.dto;
 
 public class ActionMainDto {
 	private String ActionMainId;
-	private String ActionNo;
+	private String ActionParentId;
+	private String MainId;
+	private Long ActionLevel;
 	private String ActionLinkId;
 	private String ActionDate;
 	private String StartDate;
-	private String EndDate;
-	private String AssignorLabCode;
-	private String Assignor;
-	private String AssigneeLabCode;
-	private String Assignee;
 	private String ActionItem;
 	private String ProjectId;
 	private String ScheduleMinutesId;
@@ -29,11 +26,27 @@ public class ActionMainDto {
 	private String ModifiedDate;
 	private String MeetingDate;
 	private String ScheduleId;
-	private String [] AssigneeList;
+
 	
-	
-	
-	
+
+	public String getMainId() {
+		return MainId;
+	}
+	public void setMainId(String mainId) {
+		MainId = mainId;
+	}
+	public String getActionParentId() {
+		return ActionParentId;
+	}
+	public void setActionParentId(String actionParentId) {
+		ActionParentId = actionParentId;
+	}
+	public Long getActionLevel() {
+		return ActionLevel;
+	}
+	public void setActionLevel(Long actionLevel) {
+		ActionLevel = actionLevel;
+	}
 	public String getPriority() {
 		return Priority;
 	}
@@ -58,18 +71,6 @@ public class ActionMainDto {
 	public void setProjectId(String projectId) {
 		ProjectId = projectId;
 	}
-	public String[] getAssigneeList() {
-		return AssigneeList;
-	}
-	public void setAssigneeList(String[] assigneeList) {
-		AssigneeList = assigneeList;
-	}
-	public String getActionNo() {
-		return ActionNo;
-	}
-	public void setActionNo(String actionNo) {
-		ActionNo = actionNo;
-	}
 	public String getActionLinkId() {
 		return ActionLinkId;
 	}
@@ -93,24 +94,6 @@ public class ActionMainDto {
 	}
 	public void setStartDate(String startDate) {
 		StartDate = startDate;
-	}
-	public String getEndDate() {
-		return EndDate;
-	}
-	public void setEndDate(String endDate) {
-		EndDate = endDate;
-	}
-	public String getAssignor() {
-		return Assignor;
-	}
-	public void setAssignor(String assignor) {
-		Assignor = assignor;
-	}
-	public String getAssignee() {
-		return Assignee;
-	}
-	public void setAssignee(String assignee) {
-		Assignee = assignee;
 	}
 	public String getActionItem() {
 		return ActionItem;
@@ -186,17 +169,4 @@ public class ActionMainDto {
 	public void setScheduleId(String scheduleId) {
 		ScheduleId = scheduleId;
 	}
-	public String getAssignorLabCode() {
-		return AssignorLabCode;
-	}
-	public void setAssignorLabCode(String assignorLabCode) {
-		AssignorLabCode = assignorLabCode;
-	}
-	public String getAssigneeLabCode() {
-		return AssigneeLabCode;
-	}
-	public void setAssigneeLabCode(String assigneeLabCode) {
-		AssigneeLabCode = assigneeLabCode;
-	}
-	
 }

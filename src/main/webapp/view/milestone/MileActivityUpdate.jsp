@@ -104,6 +104,7 @@ input[type="file"]::-webkit-file-upload-button{
   List<Object[]> ActionList=(List<Object[]> ) request.getAttribute("ActionList");
   String ses=(String)request.getParameter("result"); 
   String ses1=(String)request.getParameter("resultfail");
+  String clusterid = (String)session.getAttribute("clusterid");
   
   Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	if(ses1!=null){
@@ -246,9 +247,11 @@ input[type="file"]::-webkit-file-upload-button{
 
 <select class=" form-control selectdee" name="AssigneeLabCode" id="LabCode" required="required" style="margin-top: -5px" onchange="AssigneeEmpList()" >
 											<option disabled="disabled"  selected value="" >Choose...</option>
-											<%	for (Object[] obj  : AllLabsList) {%>
+											<%if(AllLabsList!=null && AllLabsList.size()>0){	for (Object[] obj  : AllLabsList) {
+												if(clusterid!=null && clusterid.equalsIgnoreCase(obj[1].toString())){
+											%>
 										     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
-											<% } %>
+											<%}}}%>
 											<option value="@EXP"> Expert</option>
 										</select>	
 
@@ -258,12 +261,12 @@ input[type="file"]::-webkit-file-upload-button{
 
  <div class="col-sm-5" align="left"  >
    <div class="form-group">
-<label > Assignee : 
-</label>
+          <label > Assignee : </label>
 
-<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
-<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
-</div>
+	<!-- <div style="float: right;"  > 
+		<label>All &nbsp; : &nbsp;&nbsp;</label>
+		<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
+	</div> -->
 <br>
 
 <select class="form-control selectdee" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
@@ -279,14 +282,6 @@ input[type="file"]::-webkit-file-upload-button{
 </div>
 </div>
 
-
-
-
-
-
-
-  
-				
 
 
  				</div>  
@@ -311,6 +306,7 @@ input[type="file"]::-webkit-file-upload-button{
 	
 </div><!-- col-md-7 end -->
 </div>
+
  <div class="row"> 
  <% if(SubList.size()>0){ %>  
 
@@ -462,12 +458,6 @@ input[type="file"]::-webkit-file-upload-button{
 				</div> 
 			
 				</div>
-			 	
-  			
-
-
-
-	
 
   <%} %> 
   

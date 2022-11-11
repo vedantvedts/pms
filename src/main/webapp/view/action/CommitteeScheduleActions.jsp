@@ -397,80 +397,86 @@ if(MinutesBack==null){
 </div>
 <div class="col-md-1"  align="left"></div>
 
-  <div class="col-sm-3" align="left"  >
-   <div class="form-group">
-<label  >PDC: <span class="mandatory" style="color: red;">* </span>
-</label>
-<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >
+								<div class="col-sm-3" align="left"  >
+								   <div class="form-group">
+								        <label >PDC: <span class="mandatory" style="color: red;">* </span></label>
+								        <input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >  
+										<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2]%>" >
+									</div>
+								</div>
 
-<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2]%>" >
+								<div class="col-sm-4" align="left">
+									<label> Priority : </label>
+									<br>
+									<select class="form-control selectdee " name="Priority"  id="Priority" required="required"  data-live-search="true" >                                                     
+										<option value="H" >High</option>	
+										<option value="L" >Low</option>
+										<option value="M" >Medium</option>
+										<option value="I" >Immediate</option>
+									</select>	
+								</div>
+								
+								<div class="col-sm-4" align="left">
+									<label> Category : </label>
+									<br>
+									<select class="form-control selectdee " name="Category" id="Category"  required="required"  data-live-search="true" >                                                     
+										<option value="T" >Technical</option>	
+										<option value="F" >Finance</option>
+										<option value="M" >Managerial</option>
+										<option value="L" >Logistic</option>
+										<option value="O" >Others</option>
+									</select>	
+								</div>
 
-</div>
-</div>
-<div class="col-sm-3" align="left"  >
-   <div class="form-group">
-<label  >Lab: <span class="mandatory" style="color: red;">* </span>
-</label>
-<select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
-			<%for(Object[] lab : Alllablist){%>
-					<option value="<%=lab[3] %>" <%if(labcode.equalsIgnoreCase(lab[3].toString())){%>selected="selected"  <%}%> ><%=lab[3] %></option>
-			<%}%>
-			<option value="@EXP"  <%if("@EXP".equalsIgnoreCase(labcode)){%>selected="selected"  <%}%>>Expert</option>
-	</select>
+							<div class="col-sm-3" align="left"  >
+			  						 <div class="form-group">
+										<label  >Lab: <span class="mandatory" style="color: red;">* </span></label>
+										<select class="form-control selectdee" name="AssigneeLabCode" id="AssigneeLabCode" onchange="AssigneeEmpList();" >
+													<%for(Object[] lab : Alllablist){%>
+															<option value="<%=lab[3] %>" <%if(labcode.equalsIgnoreCase(lab[3].toString())){%>selected="selected"  <%}%> ><%=lab[3] %></option>
+													<%}%>
+													<option value="@EXP"  <%if("@EXP".equalsIgnoreCase(labcode)){%>selected="selected"  <%}%>>Expert</option>
+										</select>
+									</div>
+							</div>
 
-</div>
-</div>
-
-
- <div class="col-sm-5" align="left"  >
-   <div class="form-group">
-<label> Assignee : </label>
-<%if(Long.parseLong(projectid)>0){ %>
-	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
-		<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
-	</div>
-<%} %>
-<br>
-<select class="form-control selectdee" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
-                                                             
-
-                                                           <%--  <%for(Object[] obj:EmpList){ %>	
-																	
-															<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-																	
-															<%} %> --%>
-</select>
-
-</div>
-</div>
-  
-				
-
+							<div class="col-sm-5" align="left"  >
+							      <div class="form-group">
+							            <label> Assignee : </label>
+											<%if(Long.parseLong(projectid)>0){ %>
+												<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
+												</div>
+											<%} %>
+							<br>
+							<select class="form-control selectdee" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
+							                                                             
+							
+							                                                           <%--  <%for(Object[] obj:EmpList){ %>	
+																								
+																						<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
+																								
+																						<%} %> --%>
+							</select>
+							</div>
+							</div>
+							
+					  <div class="col-sm-4" align="left"  >
+	                      <div class="form-group" id="OldList">
+	                          <label > Old Action No : </label><br>
+	                              <select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " ></select>
+	                     </div>
+	                   </div>
 
  				</div>  
- 				<div class="row" align="center">
-
- <div class="col-sm-4" align="left"  >
-   <div class="form-group" id="OldList">
-<label > Old Action No : 
-</label><br>
-<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " >
-                                                       
-															</select>
-
-</div>
-</div>
-
- <div class="col-sm-6" align="left"  ><br>
- 				 				<input type="submit" name="sub"   style="margin-top: 10px;" class="btn  btn-sm submit" form="specadd"  id="adding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
-	          					<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
-	          				
-	        			
-	        		
-			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
-			       
-</div>			  
-</div>	
+	 				<div class="row" align="center">
+	                   <div class="col-sm-4" align="left"  ></div>
+	                    <div class="col-sm-6" align="left"  ><br>
+	 				 				<input type="submit" name="sub"   style="margin-top: 10px;" class="btn  btn-sm submit" form="specadd"  id="adding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
+		          					<button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
+		          				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+	                    </div>			  
+	               </div>	
  	<!-- Form End -->			
  				
  				<div class="table-responsive">
