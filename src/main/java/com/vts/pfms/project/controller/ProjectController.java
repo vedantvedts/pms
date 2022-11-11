@@ -87,15 +87,14 @@ public class ProjectController {
 	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectIntiationList.htm "+UserId);
 		
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String LoginType=(String)ses.getAttribute("LoginType");
-			String LabCode =(String ) ses.getAttribute("labcode");
 	
-			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType));
+			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
 			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 			return "project/ProjectIntiationList";
                                                                    
@@ -126,7 +125,7 @@ public class ProjectController {
 					req.setAttribute("PfmsDeliverableList", service.PfmsDeliverableList());	
 					req.setAttribute("InitiatedProjectList", service.InitiatedProjectList());
 					req.setAttribute("NodalLabList", service.NodalLabList());
-					req.setAttribute("EmployeeList", service.EmployeeList());
+					req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 				}		
 				if (Option.equalsIgnoreCase("Details")) {
 					
@@ -155,15 +154,14 @@ public class ProjectController {
 						}
 		
 					}
-		
 					req.setAttribute("BudgetItemMapList", BudgetItemMapList);
 	
-				return "project/ProjectIntiationDetailes";
+					return "project/ProjectIntiationDetailes";
 			}
 	
 			if (Option.equalsIgnoreCase("status")) 
 			{
-				req.setAttribute("ProjectStatusList", service.ProjectStatusList(EmpId,Logintype));
+				req.setAttribute("ProjectStatusList", service.ProjectStatusList(EmpId,Logintype,LabCode));
 				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 				return "project/ProjectStatusList";
 			}
@@ -270,7 +268,7 @@ public class ProjectController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpName = (String) ses.getAttribute("EmpName");
-		
+		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectIntiationAdd.htm "+UserId);
 		
 		try {
@@ -279,7 +277,7 @@ public class ProjectController {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			PfmsInitiationDto pfmsinitiationdto = new PfmsInitiationDto();
 			pfmsinitiationdto.setEmpId(req.getParameter("PDD"));
-	
+			pfmsinitiationdto.setLabCode(LabCode);
 			pfmsinitiationdto.setDivisionId(Division);
 			pfmsinitiationdto.setProjectProgramme(req.getParameter("ProjectProgramme"));
 			pfmsinitiationdto.setProjectTypeId(req.getParameter("ProjectType"));
@@ -330,7 +328,7 @@ public class ProjectController {
 	public String ProjectIntiationEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectIntiationEdit.htm "+UserId);
 		
 		try {
@@ -343,7 +341,7 @@ public class ProjectController {
 			req.setAttribute("ProjectEditData", service.ProjectEditData(IntiationId).get(0));
 			req.setAttribute("IntiationId", IntiationId);
 			req.setAttribute("NodalLabList", service.NodalLabList());
-			req.setAttribute("EmployeeList", service.EmployeeList());
+			req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			
 		}catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +" Inside ProjectIntiationEdit.htm "+UserId, e);
@@ -1379,14 +1377,14 @@ public class ProjectController {
 		String UserId = (String) ses.getAttribute("Username");
 
 		logger.info(new Date() +"Inside ProjectAuthorityAdd.htm "+UserId);
-		
+		String LabCode = (String)ses.getAttribute("labcode");
 		try {
 		String IntiationId = req.getParameter("IntiationId");
 		String Option=req.getParameter("option");
 		
 		req.setAttribute("IntiationId", IntiationId);
 		req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
-		req.setAttribute("EmployeeList", service.EmployeeList());
+		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		req.setAttribute("filesize",file_size);
 		
 		if(Option.equalsIgnoreCase("edit")) {
@@ -1824,15 +1822,14 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "TCCAdd.htm", method = RequestMethod.GET)
-	public String TCCAdd(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception {
-
-
+	public String TCCAdd(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside TCCAdd.htm "+UserId);
 		
 		try {
-		req.setAttribute("EmployeeList", service.EmployeeList());
+		req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		}catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +" Inside TCCAdd.htm "+UserId, e);
 		}

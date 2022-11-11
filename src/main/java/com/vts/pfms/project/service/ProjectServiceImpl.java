@@ -83,10 +83,10 @@ public class ProjectServiceImpl implements ProjectService {
 	ProjectDao dao;
 	
 	@Override
-	public List<Object[]> ProjectIntiationList(String Empid,String LoginType) throws Exception {
+	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception {
 		
 		logger.info(new Date() +"Inside ProjectIntiationList");	
-		return dao.ProjectIntiationList(Empid,LoginType);
+		return dao.ProjectIntiationList(Empid,LoginType,LabCode);
 	}
 
 	@Override
@@ -149,12 +149,12 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto, String UserId,String EmpId,String EmpName)
-			throws Exception {
+	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto, String UserId,String EmpId,String EmpName)throws Exception {
+			
 		logger.info(new Date() +"Inside ProjectIntiationAdd");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsNotification notification = new PfmsNotification();
-		
+		pfmsinitiation.setLabCode(pfmsinitiationdto.getLabCode());
 		pfmsinitiation.setEmpId(Long.parseLong(pfmsinitiationdto.getEmpId()));
 		pfmsinitiation.setDivisionId(Long.parseLong(pfmsinitiationdto.getDivisionId()));
 		pfmsinitiation.setProjectProgramme(pfmsinitiationdto.getProjectProgramme());
@@ -173,8 +173,9 @@ public class ProjectServiceImpl implements ProjectService {
 		//pfmsinitiation.setIsMultiLab(pfmsinitiationdto.getIsMultiLab());
 		//pfmsinitiation.setDeliverable(pfmsinitiationdto.getDeliverableId());
 		
-		if(pfmsinitiationdto.getIsMultiLab()!=null && pfmsinitiationdto.getIsMultiLab().equals("Y")) {
-		pfmsinitiation.setLabCount(0);
+		if(pfmsinitiationdto.getIsMultiLab()!=null && pfmsinitiationdto.getIsMultiLab().equals("Y")) 
+		{
+			pfmsinitiation.setLabCount(0);
 		}
         pfmsinitiation.setProjectStatus("PIN");
 		pfmsinitiation.setCreatedBy(UserId);
@@ -917,18 +918,18 @@ public class ProjectServiceImpl implements ProjectService {
 
 
 	@Override
-	public List<Object[]> EmployeeList() throws Exception {
+	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		
 		logger.info(new Date() +"Inside EmployeeList");
-		return dao.EmployeeList();
+		return dao.EmployeeList(LabCode);
 	}
 
 
 	@Override
-	public List<Object[]> ProjectStatusList(String EmpId,String LoginType) throws Exception{
+	public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode) throws Exception{
 		
 		logger.info(new Date() +"Inside ProjectStatusList");
-		return dao.ProjectStatusList(EmpId,LoginType);
+		return dao.ProjectStatusList(EmpId,LoginType,LabCode);
 	}
 	
 	@Override
@@ -1164,10 +1165,6 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectCost(IntiationId);
 	}
 
-
-	
-
-	
 	@Override
 	public List<Object[]> TccProjectList() throws Exception {
 
@@ -1182,85 +1179,6 @@ public class ProjectServiceImpl implements ProjectService {
 		logger.info(new Date() +"Inside ExpertList");
 		return dao.ExpertList();
 	}
-
-
-
-	
-	@Override
-	public List<Object[]> NotInvitedEmployeeList(List<Object[]> TccMemberList,List<Object[]> tccinvitedlist, Object[] TccData) throws Exception
-	{
-		List<Object[]> EmployeeList=dao.EmployeeList();
-		
-		if(tccinvitedlist.size()>0)
-		{
-			for(int i=0;i<tccinvitedlist.size();i++)
-			{
-				for(int j=0;j<EmployeeList.size();j++)
-				{
-					
-					if(EmployeeList.get(j)[0].toString().equals(tccinvitedlist.get(i)[0].toString()) && !tccinvitedlist.get(i)[3].toString().equals("E")  )
-					{
-						EmployeeList.remove(j);
-					}
-				
-				}
-			}
-			return EmployeeList;
-		}	
-		else 
-		{
-			for(int j=0;j<TccMemberList.size();j++) 
-			{
-				for(int i=0;i<EmployeeList.size();i++)
-				{
-					
-					if(EmployeeList.get(i)[0].toString().equals(TccMemberList.get(j)[4].toString()))
-					{
-						EmployeeList.remove(i);						
-					}
-				}			
-				
-			for(int i=0;i<EmployeeList.size();i++)
-			{
-				if( EmployeeList.get(i)[0].toString().equals(TccData[8].toString()))
-				{
-					EmployeeList.remove(i);	
-				}
-				if(EmployeeList.get(i)[0].toString().equals(TccData[7].toString()))
-				{
-					
-					EmployeeList.remove(i);	
-				}
-			}
-				
-			}
-			return EmployeeList;
-		}
-	}
-	
-
-	
-	@Override
-	public List<Object[]> NotInvitedExpertList(List<Object[]> tccinvitedlist) throws Exception
-	{
-		List<Object[]> ExpertList=dao.ExpertList();
-		
-		for(int i=0;i<tccinvitedlist.size();i++)
-		{
-			for(int j=0;j<ExpertList.size();j++)
-			{
-				if(tccinvitedlist.get(i)[3].toString().equals("E"))
-				{
-					if(ExpertList.get(j)[0].toString().equals(tccinvitedlist.get(i)[0].toString()))
-					{
-						ExpertList.remove(j);
-					}
-				}
-			}
-		}
-		return ExpertList;
-	}
-
 
    @Override
 	public List<Object[]> ProjectMainList() throws Exception {

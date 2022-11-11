@@ -26,7 +26,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 
 public interface ProjectService {
 
-	public List<Object[]> ProjectIntiationList(String Empid,String LoginType) throws Exception ;
+	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception ;
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> OfficerList() throws Exception;
 	public Long ProjectMainAdd(ProjectMain proType ) throws Exception;
@@ -78,8 +78,8 @@ public interface ProjectService {
 	public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Exception;
 	public List<Object[]> ProjectApprovePdList(String EmpId) throws Exception;
 	public int ProjectApprovePd(String InitiationId,String Remark,String UserId,String EmpId,String ProjectCode,String Status) throws Exception;
-	public List<Object[]> EmployeeList() throws Exception;
-	public List<Object[]> ProjectStatusList(String EmpId,String LoginType)throws Exception;
+	public List<Object[]> EmployeeList(String LabCode) throws Exception;
+	public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode)throws Exception;
 	public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception;
 	public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception;
 	public int ProjectApproveRtmddo(String InitiationId,String Remark,String UserId,String EmpId,String ProjectCode,String Status) throws Exception;
@@ -90,8 +90,6 @@ public interface ProjectService {
 	public List<Object[]> ProjectCost(Long IntiationId) throws Exception;
 	public List<Object[]> TccProjectList() throws Exception;
 	public List<Object[]> ExpertList() throws Exception;
-	public List<Object[]> NotInvitedEmployeeList(List<Object[]> TccMemberList, List<Object[]> tccinvitedlist, Object[] TccData)	throws Exception;
-	public List<Object[]> NotInvitedExpertList(List<Object[]> tccinvitedlist) throws Exception;
 	public List<Object[]> ProjectList()throws Exception;
 	public List<Object[]> ProjectTypeMainList()throws Exception;
 	public List<Object[]> ProjectCategoryList()throws Exception;
