@@ -63,6 +63,8 @@ public interface ActionDao {
 	public List<Object[]> getMeetingTommo(String empid) throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public List<Object[]> AllEmpNameDesigList() throws Exception;
+	public Object[] GetActionReAssignData(String Actionassignid)throws Exception;
+	public Object[] GetProjectData(String projectid)throws Exception;
 	public List<Object[]> ProjectEmpList(String projectid) throws Exception;
 	public Object[] CommitteeShortName(String scheduleid) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype,String projectid) throws Exception;
@@ -71,8 +73,11 @@ public interface ActionDao {
 	public int ActionMainEdit(ActionMain main) throws Exception;
 	 public int ActionAssignEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
+	public Object[] GetActionMainData(String actionmainid)throws Exception;
 	public List<Object[]> ClusterExpertsList() throws Exception;
+	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId)throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
+	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
 	 public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception;
  }

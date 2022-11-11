@@ -95,7 +95,7 @@ a:hover {
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
  
-  
+  String EmpId = ((Long)session.getAttribute("EmpId")).toString();
   
  %>
 
@@ -201,13 +201,21 @@ a:hover {
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionNo" value="<%=obj[10]%>"/>
 																	<input type="hidden" name="ActionAssignid" value="<%=obj[11]%>"/>
+																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-																</form> 
-																
-																
-																
-																		
+																	<%if(EmpId.equalsIgnoreCase(obj[12].toString()) && Integer.valueOf(obj[14].toString())< 5){ %>
+																		      <button type="submit"  class="editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
+																				<div class="cc-rockmenu">
+																				 <div class="rolling">	
+																				 <figure class="rolling_icon">
+																				 	<i class="fa fa-tasks" aria-hidden="true"></i>
+															                       </figure>
+															                        <span> Re-Assign</span>
+															                      </div>
+															                     </div>
+															                  </button> 
+													                  <%}%>
+																</form> 		
 															</td>
 														</tr>
 												<% count++; } }else{%>

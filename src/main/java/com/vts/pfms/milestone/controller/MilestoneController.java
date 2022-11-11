@@ -944,8 +944,7 @@ public class MilestoneController {
 			req.setAttribute("AllLabsList", committeservice.AllLabList());
 			
 			
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside M-A-Update.htm "+UserId, e); 
 			return "static/Error";

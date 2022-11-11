@@ -1,6 +1,6 @@
 package com.vts.pfms.committee.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +14,10 @@ public class ActionMain {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ActionMainId;
-	private String ActionDate;
-	
+	private Long ParentActionId;
+	private Long MainId;
+	private Long ActionLevel;
+	private Date ActionDate;
 	private String ActionItem;
 	private Long ProjectId;
 	private Long ScheduleMinutesId;
@@ -26,6 +28,7 @@ public class ActionMain {
 	private Long ActivityId;
 	private Long ActionLinkId;
 	private String Remarks;
+	private String ActionStatus;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -34,6 +37,24 @@ public class ActionMain {
 
 	
 	
+	public Long getMainId() {
+		return MainId;
+	}
+	public void setMainId(Long mainId) {
+		MainId = mainId;
+	}
+	public Long getParentActionId() {
+		return ParentActionId;
+	}
+	public void setParentActionId(Long parentActionId) {
+		ParentActionId = parentActionId;
+	}
+	public Long getActionLevel() {
+		return ActionLevel;
+	}
+	public void setActionLevel(Long actionLevel) {
+		ActionLevel = actionLevel;
+	}
 	public String getPriority() {
 		return Priority;
 	}
@@ -70,10 +91,10 @@ public class ActionMain {
 	public void setType(String type) {
 		Type = type;
 	}
-	public String getActionDate() {
+	public Date getActionDate() {
 		return ActionDate;
 	}
-	public void setActionDate(String actionDate) {
+	public void setActionDate(Date actionDate) {
 		ActionDate = actionDate;
 	}
 	public String getActionItem() {
@@ -135,6 +156,12 @@ public class ActionMain {
 	}
 	public void setIsActive(int isActive) {
 		IsActive = isActive;
+	}
+	public String getActionStatus() {
+		return ActionStatus;
+	}
+	public void setActionStatus(String actionStatus) {
+		ActionStatus = actionStatus;
 	}
 	
 }

@@ -16,6 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.bytecode.enhance.spi.interceptor.SessionAssociableInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,8 @@ public class AdminController {
 	
 	private static final Logger logger=LogManager.getLogger(AdminController.class);
 	
+	@Value("${batchfilePath}")
+	String batchfilepath;
 	
 	@RequestMapping(value = "LoginTypeList.htm" )
 	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
@@ -953,5 +957,42 @@ public class AdminController {
 			return "admin/LoginTypeList";
 		}
 	    
+	    @RequestMapping(value = "RunBatchFile.htm")
+		public String runBatchFile(HttpServletRequest req, HttpSession ses) throws Exception
+		{
+	    	String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside RunBatchFile.htm "+UserId);
+			try {
+				
+				ProcessBuilder processBuilder = new ProcessBuilder();
+				processBuilder.command("cmd.exe", "/C",  batchfilepath);
+				Process process = processBuilder.start();
+				return "redirect:/MainDashBoard.htm";
+			} catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside RunBatchFile.htm "+UserId,e);
+				return "static/";
+			}
+			
+			
+			
+		}
+	    @Scheduled(cron ="0 0 */6 * * * ")
+	    public String AutorunBatchFile() throws Exception
+		{
+	    	
+			
+			try {
+				
+				ProcessBuilder processBuilder = new ProcessBuilder();
+				processBuilder.command("cmd.exe", "/C",  batchfilepath);
+				Process process = processBuilder.start();
+				return "";
+			} catch (Exception e) {
+				e.printStackTrace(); 
+				
+				return "static/";
+			}
+		}
 	    
 }

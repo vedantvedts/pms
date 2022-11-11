@@ -4,6 +4,7 @@ package com.vts.pfms.committee.service;
 import java.util.List;
 
 import com.vts.pfms.committee.dao.ActionSelfDao;
+import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
 import com.vts.pfms.committee.model.ActionAssign;
@@ -12,9 +13,12 @@ import com.vts.pfms.committee.model.ActionMain;
 
 public interface ActionService {
 
+
 	public List<Object[]> EmployeeList(String LabCode) throws Exception;
-	public List<Object[]> AssignedList(String EmpId) throws Exception;
-	public long ActionMainInsert(ActionMainDto main)throws Exception;
+	public List<Object[]> AssignedList(String EmpId ) throws Exception;
+	public Object[] GetActionReAssignData(String Actionassignid)throws Exception;
+	public Object[] GetProjectData(String projectid)throws Exception;
+	public long ActionMainInsert(ActionMainDto main , ActionAssignDto assign)throws Exception;
 	public List<Object[]> AssigneeList(String EmpId) throws Exception;
 	public List<Object[]> AssigneeData(String MainId ,String Assignid) throws Exception;
 	public List<Object[]> SubList(String MainId) throws Exception;
@@ -63,8 +67,11 @@ public interface ActionService {
 	public int ActionMainEdit(ActionMain main) throws Exception;
 	public int ActionAssignEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
+	public Object[] GetActionMainData(String Actionmainid)throws Exception;
 	public List<Object[]> ClusterExpertsList() throws Exception;
+	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
+	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
 	
 }

@@ -591,8 +591,12 @@ String labcode= (String)session.getAttribute("labcode");
 											</a>
 
 											<a class="dropdown-item" href="AuditStampingView.htm"> 
-											<img src="view/images/stamping.png"/>
+											<img src="view/images/stamping.png"         />
 												&nbsp;&nbsp; Audit Stamping
+											</a>
+											<a class="dropdown-item" href="RunBatchFile.htm"> 
+											<img src="view/images/backup.png" style="height: 13%; width: 13%;" />
+												&nbsp;&nbsp; BackUp DB
 											</a>
 																						
 											<a class="dropdown-item"  href="DelegationFlow.htm">

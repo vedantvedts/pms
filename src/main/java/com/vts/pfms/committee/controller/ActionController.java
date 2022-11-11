@@ -55,6 +55,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.dao.ActionSelfDao;
+import com.vts.pfms.committee.dto.ActionAssignDto;
 import com.vts.pfms.committee.dto.ActionMainDto;
 import com.vts.pfms.committee.dto.ActionSubDto;
 import com.vts.pfms.committee.dto.MeetingExcelDto;
@@ -62,6 +63,7 @@ import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.service.ActionService;
+import com.vts.pfms.milestone.dto.MileEditDto;
 
 
 @Controller
@@ -87,9 +89,18 @@ public class ActionController {
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
-//			System.out.println(configuration);
-			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));
-//			req.setAttribute("EmployeeList", service.EmployeeDropdown(EmpId,Logintype,"0"));
+
+			String action=req.getParameter("Action");
+			if(action!=null && "ReAssign".equalsIgnoreCase(action)) {
+				String ActionAssignid = req.getParameter("ActionAssignid");
+				String projectid = req.getParameter("ProjectId");
+				Object[]  projectdata = service.GetProjectData(projectid);
+				Object[]  actiondata = service.GetActionReAssignData(ActionAssignid);
+				req.setAttribute("actiondata", actiondata);
+				req.setAttribute("ProjectData", projectdata);
+			}
+			
+			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));  
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
 			req.setAttribute("AllLabList", service.AllLabList());
@@ -103,6 +114,21 @@ public class ActionController {
 		}
 		return "action/ActionLaunch";
 	}
+
+	@RequestMapping(value = "ActionStatus.htm" , method = RequestMethod.POST)
+	public String ActionStatus (HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionStatus.htm "+UserId);	
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionStatus.htm "+UserId, e);
+		}
+		return "action/ActionStatus";
+	}
+	
 	
 	@RequestMapping(value = "ActionAssigneeEmpList.htm", method = RequestMethod.GET)
 	public @ResponseBody String ActionAssigneeEmpList(HttpServletRequest req,HttpSession ses) throws Exception 
@@ -153,20 +179,28 @@ public class ActionController {
 		
 		try {
 			String CpLabCode = req.getParameter("LabCode");
-			
+			String mainid = req.getParameter("MainId");
+
+			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid)){
 			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 			{
 				EmployeeList = service.ClusterExpertsList();
 			}
-			else
-			{
-				String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-				
-				if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
+			
+			}else {
+				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
-					EmployeeList = service.LabEmployeeList(CpLabCode.trim());
+					EmployeeList = service.ClusterExpertsList();
+					
+				}else{
+					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
+					{
+						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
+					}
 				}
 			}
+
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -199,32 +233,59 @@ public class ActionController {
 	@RequestMapping(value = "ActionSubmit.htm", method = RequestMethod.POST)
 	public String ActionSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ActionSubmit.htm "+UserId);		
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ActionSubmit.htm "+UserId);	
 		try {
-			
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		
+
 			ActionMainDto mainDto=new ActionMainDto();
-			mainDto.setActionItem(req.getParameter("Item"));
-			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
-			mainDto.setProjectId(req.getParameter("Project"));
-			mainDto.setActionDate(req.getParameter("DateCompletion"));
-			mainDto.setAssigneeList(req.getParameterValues("Assignee"));
-			mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+			
+			
+			mainDto.setMainId(req.getParameter("MainActionId"));
+			mainDto.setActionItem(req.getParameter("ActionItem"));
+			mainDto.setActionLinkId(req.getParameter("OldActionNoId"));
+			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setActionDate(req.getParameter("MainPDC"));
 			mainDto.setScheduleMinutesId("0");
+			mainDto.setActionStatus("A");
 			mainDto.setType(req.getParameter("Type"));
-			mainDto.setPriority(req.getParameter("Priority"));
-			mainDto.setCategory(req.getParameter("Category"));
-			mainDto.setActionType("N");
+			mainDto.setPriority(req.getParameter("MainPriority"));
+			mainDto.setCategory(req.getParameter("MainCategory"));
+			
+			if(req.getParameter("Atype")!="" && req.getParameter("Atype")!=null) {
+				mainDto.setActionType(req.getParameter("Atype"));
+			}else {
+				mainDto.setActionType("N");
+			}
+			
 			mainDto.setActivityId("0");
-			mainDto.setAssignor(EmpId);
-			mainDto.setAssignorLabCode(ses.getAttribute("labcode").toString());
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			String actionlevel = req.getParameter("ActionLevel");
 			
+			if(actionlevel !="" &&actionlevel!=null) {
+				long level = Long.parseLong(actionlevel)+1;
+				mainDto.setActionLevel(level);
+				
+			}else {
+				mainDto.setActionLevel(1L);
+			}
+			mainDto.setActionParentId(req.getParameter("ActionParentid"));
+			ActionAssignDto assign = new ActionAssignDto();
 			
-			long count =service.ActionMainInsert(mainDto);
-	
+			assign.setActionDate(req.getParameter("MainPDC"));
+			assign.setAssigneeList(req.getParameterValues("Assignee"));
+			assign.setAssignor((Long) ses.getAttribute("EmpId"));
+			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+			assign.setAssignorLabCode(LabCode);
+			assign.setRevision(0);
+			assign.setActionFlag("N");		
+			assign.setActionStatus("A");
+			assign.setCreatedBy(UserId);
+			assign.setIsActive(1);
+			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			long count =service.ActionMainInsert(mainDto , assign);
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully");
 			} else {
@@ -247,8 +308,7 @@ public class ActionController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();		
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside AssigneeList.htm "+UserId, e);
 		}
@@ -600,20 +660,12 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionList.htm "+UserId);		
 			try {
-				
-			
 				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				
-				
-				req.setAttribute("ActionList", service.ActionList(EmpId));
-			
-			}
-			catch (Exception e) {
+				req.setAttribute("ActionList", service.ActionList(EmpId));			
+			}catch(Exception e){
 				e.printStackTrace();
 				logger.error(new Date() +" Inside ActionList.htm "+UserId, e);
-		}
-			
-
+		   }
 			return "action/ActionList";
 		}
 	 
@@ -693,25 +745,49 @@ public class ActionController {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			
 			ActionMainDto mainDto=new ActionMainDto();
+			mainDto.setMainId(req.getParameter("MainActionId"));
 			mainDto.setActionItem(req.getParameter("Item"));
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
-			mainDto.setAssigneeList(req.getParameterValues("Assignee"));
-			mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
+			mainDto.setPriority(req.getParameter("Priority"));
+			mainDto.setCategory(req.getParameter("Category"));
+			mainDto.setActionStatus("A");
 			mainDto.setActionType("S");
 			mainDto.setActivityId("0");
-			mainDto.setAssignor(EmpId);
-			mainDto.setAssignorLabCode(LabCode);
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(req.getParameter("meetingdate"));
 			mainDto.setScheduleId(req.getParameter("ScheduleId"));
-			long count =service.ActionMainInsert(mainDto);
+			String actionlevel = req.getParameter("ActionLevel");
+			
+			if(actionlevel !="" &&actionlevel!=null) {
+				long level = Long.parseLong(actionlevel)+1;
+				mainDto.setActionLevel(level);
+				
+			}else {
+				mainDto.setActionLevel(1L);
+			}
+			mainDto.setActionParentId(req.getParameter("ActionParentid"));
+			
+		ActionAssignDto assign = new ActionAssignDto();
+			
+			assign.setActionDate(req.getParameter("DateCompletion"));
+			assign.setAssigneeList(req.getParameterValues("Assignee"));
+			assign.setAssignor((Long) ses.getAttribute("EmpId"));
+			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+			assign.setAssignorLabCode(LabCode);
+			assign.setRevision(0);
+			assign.setActionFlag("N");		
+			assign.setActionStatus("A");
+			assign.setCreatedBy(UserId);
+			assign.setIsActive(1);
+			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			long count =service.ActionMainInsert(mainDto,assign);
 
 			if (count > 0) {
-				redir.addAttribute("result", "Action Added Successfully For" +req.getParameter("ScheduleSpec"));
+				redir.addAttribute("result", "Action Added Successfully For " +req.getParameter("ScheduleSpec"));
 			} else {
 				redir.addAttribute("resultfail", "Action Add Unsuccessful");
 			}
@@ -1073,6 +1149,7 @@ public class ActionController {
 						String UserId =(String)ses.getAttribute("Username");
 						logger.info(new Date() +"Inside CloseAction.htm "+UserId);		
 						try {
+							System.out.println();
 						req.setAttribute("sub",req.getParameter("sub"));
 						req.setAttribute("ActionMainId",req.getParameter("ActionMainId"));
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
@@ -1281,24 +1358,44 @@ public class ActionController {
 		redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
 		redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
 		redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
+		
 		ActionMainDto mainDto=new ActionMainDto();
+		mainDto.setMainId(req.getParameter("MainActionId"));
 		mainDto.setActionItem(req.getParameter("Item"));
 		mainDto.setProjectId(req.getParameter("ProjectId"));
 		mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 		mainDto.setActionDate(req.getParameter("DateCompletion"));
-		mainDto.setAssigneeList(req.getParameterValues("Assignee"));
 		mainDto.setScheduleMinutesId(req.getParameter("MilestoneActivityId"));
-		mainDto.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
-		mainDto.setAssignorLabCode(LabCode);
 		mainDto.setActionType("A");
+		mainDto.setActionStatus("A");
 		mainDto.setCategory(req.getParameter("Category"));
 		mainDto.setPriority(req.getParameter("Priority"));
 		mainDto.setActivityId(req.getParameter("ActivityId"));
 		mainDto.setType("A");
-		mainDto.setAssignor(EmpId);
 		mainDto.setCreatedBy(UserId);
 		mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-		long count =service.ActionMainInsert(mainDto);
+		String actionlevel = req.getParameter("ActionLevel");
+		if(actionlevel!=null) {
+			long level = Long.parseLong(actionlevel)+1;
+			mainDto.setActionLevel(level);
+			
+		}else{
+			mainDto.setActionLevel(1L);
+		}
+		
+		ActionAssignDto assign = new ActionAssignDto();
+		
+		assign.setActionDate(req.getParameter("DateCompletion"));
+		assign.setAssigneeList(req.getParameterValues("Assignee"));
+		assign.setAssignor((Long) ses.getAttribute("EmpId"));
+		assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+		assign.setAssignorLabCode(LabCode);
+		assign.setRevision(0);
+		assign.setActionFlag("N");		
+		assign.setActionStatus("A");
+		assign.setCreatedBy(UserId);
+
+		long count =service.ActionMainInsert(mainDto , assign);
 
 		if (count > 0) {
 			redir.addAttribute("result", "Action Added Successfully ");
@@ -1954,7 +2051,6 @@ public class ActionController {
 				redir.addAttribute("resultfail", "Action Update Unsuccessful");
 			}
 			return "redirect:/ActionLaunch.htm";
-			
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -1964,6 +2060,47 @@ public class ActionController {
 		
 	}
 	
+	
+	@RequestMapping(value = "M-A-Update123.htm")
+	public String MileActivityUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String Labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside M-A-Update.htm "+UserId);
+		
+		try {
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	        MileEditDto mainDto = new MileEditDto();
+			mainDto.setMilestoneActivityId(req.getParameter("MilestoneActivityId"));
+			mainDto.setActivityId(req.getParameter("ActivityId"));
+			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setActivityType(req.getParameter("ActivityType"));
+			
+//			req.setAttribute("StatusList", service.StatusList());
+//			req.setAttribute("EmpList", service.ProjectEmpList(req.getParameter("ProjectId") ,Labcode));
+//			req.setAttribute("EditData", service.MilestoneActivityEdit(mainDto).get(0));
+//			req.setAttribute("EditMain", mainDto);
+//			req.setAttribute("SubList", service.MilestoneActivitySub(mainDto));
+//			if(req.getParameter("ActivityType").equals("M")) {
+//				req.setAttribute("ActionList", service.ActionList("M",req.getParameter("MilestoneActivityId")));
+//			}else
+//			{
+//				req.setAttribute("ActionList", service.ActionList("A",req.getParameter("ActivityId")));	
+//			}
+//			req.setAttribute("projectdetails",service.ProjectDetails(req.getParameter("ProjectId")).get(0));
+//			req.setAttribute("AllLabsList", committeservice.AllLabList());
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();  
+			logger.error(new Date() +" Inside M-A-Update.htm "+UserId, e); 
+			return "static/Error";
+		}
+
+		return "milestone/MileActivityUpdate";
+
+	}
 	
 	
 }
