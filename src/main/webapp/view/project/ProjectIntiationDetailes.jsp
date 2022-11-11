@@ -66,6 +66,10 @@ body {
    overflow-x: hidden;
 }
 
+.text-center{
+	text-align: left !imporatant;
+}
+
 </style>
 </head>
 <body>
@@ -399,9 +403,9 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 							 <%} %> --%>
 							 <button type="submit" class="btn btn-warning btn-sm edit" formaction="ProjectIntiationEdit.htm"   >EDIT</button>&nbsp;&nbsp;
 							 
-							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
+							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 							 
-							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint2.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
+							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
 							 
 							 
 						</div>	 
@@ -445,7 +449,22 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                        	<%for(Object[] 	obj:AuthorityAttachment){ %>
 				                            <tr>
 				                             
-				                                <td><%=obj[6]%></td>
+				                                <td>
+				                                	<%if(obj[2].toString().equals("1")) {%> DRDO-HQ<%}else
+				                                		if(obj[2].toString().equals("2")) {%> Secy DRDO<%}else
+				                                			if(obj[2].toString().equals("3")) {%> Director General <%}else
+				                                				if(obj[2].toString().equals("4")) {%> Director <%}else
+				                                					if(obj[2].toString().equals("5")) {%> Centre Head <%}else
+				                                						if(obj[2].toString().equals("6")) {%> User Army <%}else
+				                                							if(obj[2].toString().equals("7")) {%> User Airforce <%}else
+				                                								if(obj[2].toString().equals("8")) {%> User Navy <%}else
+				                                									if(obj[2].toString().equals("9")) {%> ADA <%}else
+				                                	
+				                                	
+				                                	{ %> -<%} %>
+				                               
+				                                
+				                                </td>
 				                                <td><%=sdf.format(obj[3])%></td>
 				                                <td><%=obj[4] %></td>
 				                               	<td>
@@ -528,7 +547,58 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
        						 <%for(Object[] 	obj:DetailsList){ %> 
        						
 						            <ul class="nav nav-tabs" id="myTab3" role="tablist">
-						                <li class="nav-item"> <a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> active <%} %> <%if(Details==null){ %> active <%} %>   " id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="home" aria-selected="true">Requirement <img src="view/images/check.png" align="right"></a> </li>
+						            
+						            	<li class="nav-item">
+						                <%if(obj[6]!=null){ %> 
+											
+						            		<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("needofproject")){ %> active <%} %> <%if(Details==null){ %> active <%} %> " id="needofprj-vertical-tab" data-toggle="tab" href="#needofprj-vertical" role="tab" aria-controls="contact" aria-selected="false">Need of Project <img src="view/images/check.png" align="right"></a> 
+							                
+										 <%}
+						                else{ %>
+										
+											<form action="ProjectOtherDetailsAdd.htm" method="POST" id="NeedofProject">
+                   								<a class="nav-link  condn-nav-link" data-toggle="tab" href="#needofprj-vertical" role="tab" onclick='$("#NeedofProject").submit()'>
+                 									Need of Project
+              									</a>
+                  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+												<input type="hidden" name="details_param" value="needofproject"/>
+											</form>	 
+										
+										
+										<%} %>	 				                
+						                </li>
+						            
+						            
+						                <li class="nav-item"> 
+						                
+						                	<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> active <%} %> " id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="home" aria-selected="true">
+						                		Requirement <img src="view/images/check.png" align="right">
+						                	</a> 
+						                	
+						                </li>
+						                
+						                <li class="nav-item">
+						                <%if(obj[12]!=null){ %> 
+											
+						            		<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("worldscenario")){ %> active <%} %> " id="worldscenario-vertical-tab" data-toggle="tab" href="#worldscenario-vertical" role="tab" aria-controls="contact" aria-selected="false">World Scenario 
+						            		<img src="view/images/check.png" align="right"></a>
+							                
+										 <%}
+						                else{ %>
+										
+											<form action="ProjectOtherDetailsAdd.htm" method="POST" id="worldscenario">
+                   								<a class="nav-link  condn-nav-link" data-toggle="tab" href="#worldscenario-vertical" role="tab" onclick='$("#worldscenario").submit()'>
+                 									World Scenario
+              									</a>
+                  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+												<input type="hidden" name="details_param" value="worldscenario"/>
+											</form>	 
+										
+										
+										<%} %>	 				                
+						                </li>
 						                
 						                <li class="nav-item">
 						                <%if(obj[1]!=null){ %> 
@@ -634,28 +704,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 										
 										<%} %>	 				                
 						                </li>
-						                
-						                <li class="nav-item">
-						                <%if(obj[6]!=null){ %> 
-											
-						            		<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("needofproject")){ %> active <%} %> " id="needofprj-vertical-tab" data-toggle="tab" href="#needofprj-vertical" role="tab" aria-controls="contact" aria-selected="false">Need of Project <img src="view/images/check.png" align="right"></a> 
-							                
-										 <%}
-						                else{ %>
-										
-											<form action="ProjectOtherDetailsAdd.htm" method="POST" id="NeedofProject">
-                   								<a class="nav-link  condn-nav-link" data-toggle="tab" href="#needofprj-vertical" role="tab" onclick='$("#NeedofProject").submit()'>
-                 									Need of Project
-              									</a>
-                  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-												<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details_param" value="needofproject"/>
-											</form>	 
-										
-										
-										<%} %>	 				                
-						                </li>
-						                
+						                						                
 						                <li class="nav-item">
 						                <%if(obj[7]!=null){ %> 
 											
@@ -738,7 +787,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 										
 										
 										<%} %>	 				                
-						                </li>				              					               
+						                </li>	
 
 						            </ul>
 						            
@@ -747,9 +796,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 						            
 						            <div class="tab-content" id="myTabContent3">
 						            
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> show active <%} %> <%if(Details==null){ %> show active <%} %>   " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
-						                    
-						                    
+						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> show active <%} %>  " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
 						                    
 						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm" id="myForm">
                             	
@@ -945,7 +992,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 										
 										
 										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("needofproject")){ %> show active <%} %> " id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
+						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("needofproject")){ %> show active <%} %> <%if(Details==null){ %> show active <%} %> " id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
 						                    
 						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm6" id="myForm6">
                             
@@ -1101,6 +1148,35 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 											</form>
 								
                                	 				<p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p>						                
+										</div>
+										
+										 <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("worldscenario")){ %> show active <%} %>    " id="worldscenario-vertical" role="tabpanel" aria-labelledby="worldscenario-vertical-tab">
+						                    
+						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm11" id="myForm11">
+                            
+				                            	<div class="row">
+				                            	
+				                            		<div class="col-md-1"></div>
+				                            		<div class="col-md-9" align="left">
+				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>World Scenario</b></h4>
+				                            		</div>
+					                   				<div class="col-md-1" style="margin-bottom: 5px">
+														<button class="share-button" style="border: none;font-size:13px" form="myForm11" >
+											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
+											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm11">			 
+														</button>
+													</div>       			  	
+				                            	</div>
+	                            	
+	                            				<hr>
+                            	
+		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+												<input type="hidden" name="details" value="worldscenario" />
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
+	
+											</form>
+								
+                               	 				<p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p>						                
 										</div>
 										
 										
