@@ -45,7 +45,15 @@ public class ProjectMaster implements Serializable{
     private String ModifiedDate;
     private int isActive;
     private int IsMainWC;
-  	public int getIsMainWC() {
+    private String LabCode;
+    
+  	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
+	public int getIsMainWC() {
   		return IsMainWC;
   	}
   	public void setIsMainWC(int isMainWC) {

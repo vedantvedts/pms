@@ -72,7 +72,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" 	value="<%=OfficerEditData[2] %>">
+					<input  class="form-control form-control"  type="text" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" onkeydown="return /[a-z ]/i.test(event.key)"	value="<%=OfficerEditData[2] %>">
 				</div>
 </div>
 
@@ -92,7 +92,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="number" name="ExtNo" required="required" maxlength="5" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[4] %>">
+					<input  class="form-control form-control"  type="text" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
 				</div>
 </div>
 </div>
@@ -101,14 +101,14 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="number"   name="mobilenumber" required max="9999999999" min="1000000000" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
+					<input  class="form-control form-control" type="text"  required="required" name="mobilenumber" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
 			   </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email: <span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
+					<input  class="form-control form-control"  type="email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
 			  </div>
 </div>
 

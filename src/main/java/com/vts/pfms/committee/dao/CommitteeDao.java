@@ -9,6 +9,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
+import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
@@ -137,11 +138,11 @@ public interface CommitteeDao {
 	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception;
 	public int MeetingMinutesApprovalSubmit(CommitteeSchedule schedule,CommitteeMeetingApproval approval,PfmsNotification notfication) throws Exception;
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception;
-	public List<Object[]> MeetingReports(String EmpId,String Term,String ProjectId,String divisionid,String initiationid,String logintype) throws Exception;
+	public List<Object[]> MeetingReports(String EmpId,String Term,String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> MeetingReportListAll(String fdate,String tdate,String ProjectId) throws Exception;
 	public int UpdateCommitteeInvitationEmailSent(String scheduleid) throws Exception;
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception;
-	public List<Object[]> ProjectCommitteesList() throws Exception;
+	public List<Object[]> ProjectCommitteesList(String LabCode) throws Exception;
 	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception;
 
 
@@ -240,10 +241,9 @@ public interface CommitteeDao {
 	public List<Object[]> ScheduleCommitteeEmpinvitedCheck(String scheduleid, String empid) throws Exception;
 	public List<Object[]> EmpScheduleData(String empid, String scheduleid) throws Exception;
 	public List<Object[]> AllActionAssignedCheck(String scheduleid) throws Exception;
-	public List<Object[]> DefaultAgendaList(String scheduleid) throws Exception;
+	public List<Object[]> DefaultAgendaList(String scheduleid,String LabCode) throws Exception;
 	public List<Object[]> ProcurementStatusList(String projectid) throws Exception;
 	public List<Object[]> ActionPlanSixMonths(String projectid) throws Exception;
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception;
 	public List<Object[]> CommitteeMinutesSpecNew() throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> EmployeeScheduleReports(String empid, String fromdate, String todate) throws Exception;
@@ -258,8 +258,8 @@ public interface CommitteeDao {
 	public CommitteeScheduleAgendaDocs AgendaUnlinkDoc(CommitteeScheduleAgendaDocs agendadoc) throws Exception;
 	public int AgendaDocUnlink(String agendaid, String Modifiedby, String ModifiedDate) throws Exception;
 	public List<String> AgendaAddedDocLinkIdList(String agendaid) throws Exception;
-	public int PreDefAgendaEdit(CommitteeScheduleAgenda agenda) throws Exception;
-	public long PreDefAgendaAdd(CommitteeScheduleAgenda agenda) throws Exception;
+	public int PreDefAgendaEdit(CommitteeDefaultAgenda agenda) throws Exception;
+	public long PreDefAgendaAdd(CommitteeDefaultAgenda agenda) throws Exception;
 	public int PreDefAgendaDelete(String agendaid) throws Exception;
 	public int CommProScheduleList(String projectid, String committeeid,String sdate) throws Exception;
 	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception;
@@ -276,11 +276,12 @@ public interface CommitteeDao {
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;
 	public List<Object[]> ClusterList() throws Exception;
-	public List<Object[]> DGEmpData(String ClusterId) throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
+	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
+	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
 
 
 }

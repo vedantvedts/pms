@@ -261,7 +261,7 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 </label>
 </th>
  <td >
-<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="datepicker" name="sadate"  value="<%=sdf.format(ProjectMainEditData[8]) %>"
+<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="sanc-date" name="sadate"  value=""
 								class="form-control form-control">
 </td>
 <%--   <th>
@@ -326,7 +326,7 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 </label>
 </th>
  <td >
-<input  id="currentdate"  data-date-format="dd/mm/yyyy" readonly name="pdc" value="<%=sdf.format(ProjectMainEditData[12]) %>"
+<input  id="pdc-date"  data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
 								class="form-control form-control">
 </td>
  <!--  <th>
@@ -506,5 +506,41 @@ $(function(){
 
 	});
 </script>
+
+<script type="text/javascript">
+
+var fromDate=null;
+$("#sanc-date").change( function(){	
+	 fromDate = $("#sanc-date").val();
+
+		$('#pdc-date').daterangepicker({
+			
+			"singleDatePicker": true,
+			"showDropdowns": true,
+			"cancelClass": "btn-default",
+			"minDate":fromDate,
+			"startDate":'<%=sdf.format(ProjectMainEditData[12]) %>	' ,
+			locale: {
+		    	format: 'DD-MM-YYYY'
+				}
+		});
+		
+});
+
+$('#sanc-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":'<%=sdf.format(ProjectMainEditData[8]) %>', 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
+</script>
+
+
+
 </body>
 </html>

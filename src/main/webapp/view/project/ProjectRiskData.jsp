@@ -112,19 +112,19 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 String ses1=(String)request.getParameter("resultfail");
 if(ses1!=null){
 %>
-	<center>
+	<div align="center">
 	
 		<div class="alert alert-danger" role="alert">
 			<%=ses1 %>
 		</div>
-	</center>
+	</div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 		<div class="alert alert-success" role="alert">
 			<%=ses %>
 		</div>
 
-	</center>
+	</div>
 	<%} %>
 
 <div class="container-fluid">
@@ -147,12 +147,12 @@ if(ses1!=null){
 				<%if(Long.parseLong(projectid)>=0){ %>
 					<div class="card-body">	
 						<div class="row">		
-						   <div class="col-md-12">
+						   <div class="col-md-12" align="center">
 							<%if(riskmatrixdata==null){ %>
 							    <form method="post" action="ProjectRiskDataSubmit.htm" >
-							    	<table  style="border-collapse: collapse; border: 0px; width:70%; ">
+							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
 							    		<tr>
-								    		<td style="width: 30%">	
+								    		<td>	
 								    				<label ><b>Project : </b></label> 	
 								    				<%if(Long.parseLong(projectid)==0){ %>
 								    					General
@@ -162,46 +162,51 @@ if(ses1!=null){
 														} 
 													}%>						    			
 								    		</td>
-								    		<td style="width: 50%">
+								    		<td style="width: 60%">
 							    					<label ><b>Description : </b></label> <%=riskdata[1] %> 
 								    		</td>
 								    		
 								    		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
-							    			<td style="width: 20%">
+							    			<td >
 							    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%> 
 								    		</td>
 								    		<%}else{ %>
-								    		<td style="width: 10%">
+								    		<td >
 							    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[6])%> 
 								    		</td>
-								    		<td style="width: 10%">
+								    		<td >
 							    					<label ><b>PDC Org : </b></label> <%=sdf2.format(riskdata[5])%> 
 								    		</td>
 								    		
 								    		<%} %>
 								    		
 								    	</tr>
+								    </table>
+								    <br>
+								    <br>
+							    <table  style="border-collapse: collapse; border: 0px; width:50%; ">
+							    	<tr>
 							    		<tr>
-							    			<td>
+							    			<td style="width: 20%">
 							    				<label ><b>Severity </b>  </label>
 							    			</td> 
-							    			<td >
+							    			<td style="max-width: 40%">
 									    		<input class="form-control" type="text" name="severity"  required maxlength="200" >							    				
 							    			</td>
 							    		</tr>
 							    		<tr>
-							    			<td>
+							    			<td style="width: 20%">
 							    				<label ><b>Probability </b>  </label>
 							    			</td> 
-							    			<td >	
+							    			<td style="max-width: 40%">
 									    		<input class="form-control" type="text" name="probability"  required maxlength="200" >							    				
 							    			</td>
 							    		</tr>
 							    		<tr>
-							    			<td>
+							    			<td style="width: 20%">
 							    				<label ><b>Mitigation Plans</b>  </label> 
 							    			</td> 
-							    			<td >
+							    			<td style="max-width: 40%">
 									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="200">							    				
 							    			</td>
 							    		</tr>						
@@ -218,7 +223,7 @@ if(ses1!=null){
 							  </form>
 							  <%}else{ %>
 							  		 <form method="post" action="ProjectRiskDataEdit.htm" id="editrevform" >
-								    	<table  style="border-collapse: collapse; border: 0px; width:70%; ">
+								    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
 								    		<tr>
 								    			<td>	
 								    				<label ><b>Project : </b></label> 							    					
@@ -226,11 +231,14 @@ if(ses1!=null){
 														<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} %> 
 													<%} %>						    			
 								    			</td>
-								    			<td>
+								    			<td style="width: 60%;">
 								    					<label ><b>Description : </b></label>
 								    					<%=riskdata[1] %> 	
 								    			</td>
 								    			<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
+								    			<td >
+								    			
+								    			</td>
 								    			<td >
 								    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%> 
 									    		</td>
@@ -238,34 +246,41 @@ if(ses1!=null){
 									    		<td >
 								    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[6])%> 
 									    		</td>
-									    		<td ">
+									    		<td >
 								    					<label ><b>PDC Org : </b></label> <%=sdf2.format(riskdata[5])%> 
 									    		</td>
 									    		
 									    		<%} %>
 								    			
+								    		</tr>
+								    		</table>
+								    		
+								    		<br>
+								    		<br>
+								    
+								    		<table  style="border-collapse: collapse; border: 0px; width:50%;" >
 								    		<tr>
 								    		<tr>
-								    			<td>
+								    			<td style="width: 20%">
 								    				<label ><b>Severity </b></label>
 								    			</td> 
-								    			<td>
+								    			<td style="max-width: 40%">
 										    		<input class="form-control" type="text" name="severity" value="<%=riskmatrixdata[4].toString() %>" required maxlength="200" >							    				
 								    			</td>
 								    		</tr>
 								    		<tr>
-								    			<td>
+								    			<td style="width: 20%">
 								    				<label ><b>Probability </b></label> 
 								    			</td> 
-								    			<td>
+								    			<td style="max-width: 40%">
 										    		<input class="form-control" type="text" name="probability" value="<%=riskmatrixdata[5].toString() %>" required maxlength="200">							    				
 								    			</td>
 								    		</tr>
 								    		<tr>
-								    			<td>
+								    			<td style="width: 20%">
 								    				<label ><b>Mitigation Plans</b></label> 
 								    			</td> 
-								    			<td>
+								    			<td style="max-width: 40%">
 										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6].toString() %>"  required maxlength="200" >							    				
 								    			</td>
 								    		</tr>						

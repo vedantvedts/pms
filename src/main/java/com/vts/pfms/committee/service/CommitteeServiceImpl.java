@@ -42,6 +42,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
+import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
@@ -1053,7 +1054,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			committeeinvitation.setDesigId(MemberType[2]);
 			
 			if(!committeeinvitationdto.getLabCodeList().isEmpty()) {
-				committeeinvitation.setMemberLabCode(committeeinvitationdto.getLabCodeList().get(i));
+				committeeinvitation.setLabCode(committeeinvitationdto.getLabCodeList().get(i));
 			}
 			
 			// Check weather this employee is already invited as committee member 
@@ -1576,10 +1577,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype) throws Exception {
+	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside MeetingReports");
-		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype);
+		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype,LabCode);
 	}
 
 	@Override
@@ -1798,10 +1799,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 //	}
 
 	@Override
-	public List<Object[]> ProjectCommitteesList() throws Exception {
+	public List<Object[]> ProjectCommitteesList(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside ProjectCommitteesList");
-		return dao.ProjectCommitteesList();
-		
+		return dao.ProjectCommitteesList( LabCode);
 	}
 
 	@Override
@@ -2375,7 +2375,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		else if(dto.getProxysecretarymemid()==null && Long.parseLong(dto.getProxysecretary())>0)
 		{
-			System.out.println("inside proxy add");
 				CommitteeMember newmodel=new CommitteeMember();
 				newmodel.setLabCode(dto.getSesLabCode());
 				newmodel.setEmpId(Long.parseLong(dto.getProxysecretary()));
@@ -2916,10 +2915,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public List<Object[]> DefaultAgendaList(String committeeid) throws Exception 
+	public List<Object[]> DefaultAgendaList(String committeeid,String LabCode) throws Exception 
 	{
 		logger.info(new Date() +"Inside DefaultAgendaList");
-		return dao.DefaultAgendaList(committeeid);
+		return dao.DefaultAgendaList(committeeid,LabCode);
 	}
 	
 	@Override
@@ -2979,10 +2978,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 
 	@Override 
-	public List<Object[]> LastPMRCActions(long scheduleid,String isFrozen) throws Exception 
+	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
 		logger.info(new Date() +"Inside LastPMRCActions");
-		return dao.LastPMRCActions(scheduleid,isFrozen);
+		return dao.LastPMRCActions(scheduleid,committeeid,proid,isFrozen);
 	}
 	
 	@Override
@@ -3114,20 +3113,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public int PreDefAgendaEdit(CommitteeScheduleAgenda agenda) throws Exception 
+	public int PreDefAgendaEdit(CommitteeDefaultAgenda agenda) throws Exception 
 	{
 		agenda.setModifiedDate(sdf1.format(new Date()));
 		return dao.PreDefAgendaEdit(agenda);
 	}
 	
 	@Override
-	public long PreDefAgendaAdd(CommitteeScheduleAgenda agenda) throws Exception 
+	public long PreDefAgendaAdd(CommitteeDefaultAgenda agenda) throws Exception 
 	{
 		agenda.setCreatedDate(sdf1.format(new Date()));
-		agenda.setProjectId(0L);
-		agenda.setPresenterId(0L);
-		agenda.setScheduleId(0L);
-		agenda.setScheduleSubId(0L);		
 		return dao.PreDefAgendaAdd(agenda);
 	}
 	
@@ -3254,6 +3249,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public List<Object[]> ClusterList() throws Exception {
 		
 		return dao.ClusterList();
+	}
+	
+	@Override
+	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception
+	{
+		return dao.getDefaultAgendasCount(committeeId, LabCode);
 	}
 	
 }

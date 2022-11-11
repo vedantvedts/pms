@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface HeaderDao {
 
-	public List<Object[]> FormModuleList(String LoginType)throws Exception;
+	public List<Object[]> FormModuleList(String LoginType,String LabCode)throws Exception;
 	public List<Object[]> loginTypeList()throws Exception;
 	public List<Object[]> DashboardDemandCount()throws Exception;
 	public List<Object[]> NotificationList(String Empid)throws Exception;
@@ -23,7 +23,7 @@ public interface HeaderDao {
 	public List<Object[]> ProjectDetails(String ProjectId)throws Exception;
 	public Object[] LabDetails(String labcode) throws Exception;
 	public List<Object[]> FullGanttChartList(String ProjectId) throws Exception;
-	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId) throws Exception;
+	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId,String LabCode) throws Exception;
 	public List<Object[]> ProjectIntiationList(String EmpId, String LoginType) throws Exception;
 	public List<Object[]> MyTaskList(String EmpId) throws Exception;
 	public List<Object[]> ApprovalList(String EmpId,String LoginType) throws Exception;

@@ -38,9 +38,9 @@ public class ActionServiceImpl implements ActionService {
 	private static final Logger logger=LogManager.getLogger(ActionServiceImpl.class);
 
 	@Override
-	public List<Object[]> EmployeeList() throws Exception {
+	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside EmployeeList");	
-		return dao.EmployeeList();
+		return dao.EmployeeList(LabCode);
 	}
 
 	@Override
@@ -526,9 +526,9 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type) throws Exception {
+	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type,String LabCode) throws Exception {
 		logger.info(new Date() +"Inside ActionReports");
-		return dao.ActionReports(EmpId, Term, Position,Type);
+		return dao.ActionReports(EmpId, Term, Position,Type,LabCode);
 	}
 
 	@Override
@@ -642,6 +642,7 @@ public class ActionServiceImpl implements ActionService {
 		actionself.setCreatedBy(actionselfdao.getCreatedBy());
 		actionself.setCreatedDate(sdf1.format(new Date()));
 		actionself.setIsActive(1);		
+		actionself.setLabCode(actionselfdao.getLabCode());
 		return dao.ActionSelfReminderAddSubmit(actionself);
 	}
 	

@@ -6,28 +6,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Data
 @Entity
-@Table(name= "committee_schedules_invitation")
-public class CommitteeInvitation 
-{
+@Table(name = "committee_default_agenda")
+public class CommitteeDefaultAgenda {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long CommitteeInvitationId;
-
-	private long CommitteeScheduleId;
-	private long EmpId;
-	private String MemberType;
-	private String Attendance;
-	private String DesigId;
+	private long DefaultAgendaId;
 	private String LabCode;
-	private long SerialNo;
+	private long CommitteeId;
+	private int AgendaPriority;
+	private String AgendaItem;
+	private int Duration;
+	private String Remarks;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
-
+	private int IsActive;
 }

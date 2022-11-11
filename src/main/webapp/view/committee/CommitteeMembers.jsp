@@ -57,8 +57,6 @@
 <body>
 
 <%
-
-
 Object[] projectdata=(Object[])request.getAttribute("projectdata"); 
 Object[] committeedata=(Object[])request.getAttribute("committeedata");
 Object[] divisiondata=(Object[])request.getAttribute("divisiondata"); 
@@ -93,7 +91,6 @@ if(proposedcommitteemainid!=null)
 List<Object[]> committeerepnotaddedlist=(List<Object[]>)request.getAttribute("committeerepnotaddedlist");
 List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("committeeMemberreplist");
 
-String LabClusterid = (String)request.getAttribute("clusterid");
 String LabCode = (String)request.getAttribute("LabCode");
 %>
 
@@ -148,7 +145,7 @@ String ses=(String)request.getParameter("result");
 	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></div>
+	</div></div>
                     <%} %>
 
     <br />

@@ -288,7 +288,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="datepicker" name="sadate"  value="<%=sdf.format(ProjectEditData[8]) %>"
+<input type="text"  data-date-format="dd/mm/yyyy"  readonly id="sanc-date" name="sadate"  value=""
 								class="form-control form-control">
 </td>
 
@@ -345,7 +345,7 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<input  id="currentdate"  data-date-format="dd/mm/yyyy" readonly name="pdc" value="<%=sdf.format(ProjectEditData[12]) %>"
+<input  id="pdc-date"  data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
 								class="form-control form-control">
 </td>
  
@@ -462,35 +462,16 @@ function Edit(myfrm){
 	
 	 var fields = $("input[name='ProjectMainId']").serializeArray();
 
-	  if (fields.length === 0){
-		  bootbox.alert("PLEASE SELECT ONE PROJECT MAIN RECORD");
-		  
-		  
-	 event.preventDefault();
-	return false;
-	}
+	  	if (fields.length === 0)
+	  	{
+		 	bootbox.alert("PLEASE SELECT ONE PROJECT MAIN RECORD");
+	 		event.preventDefault();
+			return false;
+		}
 	 
+	return true;
+}
 	
-	
-		 
-	
-		  return true;
-	 
-			
-	}
-	
-$('#currentdate,#datepicker').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-
-	"cancelClass" : "btn-default",
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});
-
 
 $(document).ready(function () {
 	
@@ -504,6 +485,7 @@ $(document).ready(function () {
 	      
 	   });
 });
+
 $(document).ready(function () {
 	
     var Recostid = $('#Recostid').val();
@@ -547,5 +529,40 @@ $(function(){
 
 	});
 </script>
+
+<script type="text/javascript">
+
+var fromDate=null;
+$("#sanc-date").change( function(){	
+	 fromDate = $("#sanc-date").val();
+
+		$('#pdc-date').daterangepicker({
+			
+			"singleDatePicker": true,
+			"showDropdowns": true,
+			"cancelClass": "btn-default",
+			"minDate":fromDate,
+			"startDate":'<%=sdf.format(ProjectEditData[12]) %>	' ,
+			locale: {
+		    	format: 'DD-MM-YYYY'
+				}
+		});
+		
+});
+
+$('#sanc-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":'<%=sdf.format(ProjectEditData[8]) %>', 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
+</script>
+
+
 </body>
 </html>

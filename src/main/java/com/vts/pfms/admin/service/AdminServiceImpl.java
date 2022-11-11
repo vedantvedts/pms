@@ -61,9 +61,9 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public List<Object[]> LoginEditEmpList() throws Exception {
+	public List<Object[]> LoginEditEmpList(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside LoginEditEmpList");
-		return dao.LoginEditEmpList();
+		return dao.LoginEditEmpList(LabCode);
 	}
 
 	@Override
@@ -79,9 +79,9 @@ public class AdminServiceImpl implements AdminService{
 		return dao.RoleList();
 	}
 	@Override
-	public List<Object[]> EmployeeList1() throws Exception {
+	public List<Object[]> EmployeeList1(String LabCode) throws Exception {
 		
-		return dao.EmployeeList1();
+		return dao.EmployeeList1(LabCode);
 	}
 
 
@@ -210,6 +210,7 @@ public class AdminServiceImpl implements AdminService{
 		rtmddo.setCreatedBy(dto.getCreatedBy());
 		rtmddo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		rtmddo.setIsActive(1);
+		rtmddo.setLabCode(dto.getLabCode()); 
 		return dao.RtmddoInsert(rtmddo);
 	}
 	
@@ -308,9 +309,9 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public List<Object[]> UserManagerList() throws Exception {
+	public List<Object[]> UserManagerList(String LabCode) throws Exception {
 	
-		return dao.UserManagerList();
+		return dao.UserManagerList(LabCode);
 	}
 
 	
@@ -457,9 +458,9 @@ public class AdminServiceImpl implements AdminService{
 	
 	
 	 @Override
-		public List<Object[]> DivisionMasterList() throws Exception {
+		public List<Object[]> DivisionMasterList(String LabCode) throws Exception {
 		
-			return dao.DivisionMasterList();
+			return dao.DivisionMasterList(LabCode);
 		}
 
 	        
@@ -577,6 +578,13 @@ public class AdminServiceImpl implements AdminService{
 			logger.info(new Date() +"Inside ClusterLabList");
 			
 			return dao.AllLabList();
+		}
+
+		@Override
+		public Long LabHqChange(String FormRoleAccessid, String Value) throws Exception {
+			logger.info(new Date() +"Inside LabHqChange");
+			
+			return dao.LabHqChange(FormRoleAccessid, Value);
 		}
 
 	

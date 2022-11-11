@@ -29,24 +29,24 @@ public class FracasServiceImpl implements FracasService {
 	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();  //new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf= fc.getRegularDateFormat();     //new SimpleDateFormat("dd-MM-yyyy");
 //	private  SimpleDateFormat sdf2=	fc.getDateMonthShortName();   //new SimpleDateFormat("dd-MMM-yyyy");
-	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
+//	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(FracasServiceImpl.class);
 	
 	
 	
 	@Override
-	public List<Object[]> ProjectsList() throws Exception
+	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside ProjectsList");
-		return dao.ProjectsList();
+		return dao.ProjectsList( empid, Logintype,  LabCode);
 	}
 	
 	
 	@Override
-	public List<Object[]> EmployeeList() throws Exception 
+	public List<Object[]> EmployeeList(String LabCode) throws Exception 
 	{
 		logger.info(new Date() +"Inside EmployeeList");
-		return dao.EmployeeList();
+		return dao.EmployeeList(LabCode);
 	}
 	
 	
@@ -57,10 +57,10 @@ public class FracasServiceImpl implements FracasService {
 		return dao.FracasTypeList();
 	}
 	@Override
-	public List<Object[]> ProjectFracasItemsList(String projectid) throws Exception
+	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception
 	{
 		logger.info(new Date() +"Inside ProjectFracasItemsList");
-		return dao.ProjectFracasItemsList(projectid);
+		return dao.ProjectFracasItemsList(projectid, LabCode);
 	}
 	
 	
@@ -77,7 +77,7 @@ public class FracasServiceImpl implements FracasService {
 		model.setCreatedBy(dto.getCreatedBy());
 		model.setCreatedDate(sdf1.format(new Date()));
 		model.setIsActive(1);
-		
+		model.setLabCode(dto.getLabCode());
 		long mainid=dao.FracasMainAddSubmit(model);
 		
 		if(!dto.getFracasMainAttach().isEmpty()) 

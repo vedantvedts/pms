@@ -13,7 +13,8 @@ import com.vts.pfms.committee.model.ActionMain;
 
 public interface ActionService {
 
-	public List<Object[]> EmployeeList() throws Exception;
+
+	public List<Object[]> EmployeeList(String LabCode) throws Exception;
 	public List<Object[]> AssignedList(String EmpId ) throws Exception;
 	public Object[] GetActionReAssignData(String Actionassignid)throws Exception;
 	public Object[] GetProjectData(String projectid)throws Exception;
@@ -37,7 +38,7 @@ public interface ActionService {
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception;
 	public List<Object[]> ActionNoSearch(String ActionMainId) throws Exception;
 	public String ScheduleActionItem(String ScheduleId) throws Exception;
-	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type) throws Exception ;
+	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception ;
 	public List<Object[]> ActionSearch(String EmpId,String No,String Position) throws Exception;
 	public List<Object[]> ProjectList() throws Exception;
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception;
@@ -59,7 +60,6 @@ public interface ActionService {
 	public List<Object[]> getMeetingToday(String empid) throws Exception;
 	public List<Object[]> getMeetingTommo(String empid) throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype , String LabCode) throws Exception;
-
 	public List<Object[]> AllEmpNameDesigList() throws Exception;
 	public List<Object[]> ProjectEmpList(String projectid) throws Exception;
 	public List<Object[]> EmployeeDropdown(String empid, String logintype,String projectid) throws Exception;
@@ -68,7 +68,6 @@ public interface ActionService {
 	public int ActionAssignEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
 	public Object[] GetActionMainData(String Actionmainid)throws Exception;
-	
 	public List<Object[]> ClusterExpertsList() throws Exception;
 	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId) throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;

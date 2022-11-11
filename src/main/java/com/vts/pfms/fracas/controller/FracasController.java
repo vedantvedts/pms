@@ -45,7 +45,7 @@ public class FracasController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside FracasMainAdd.htm "+UserId);
+		logger.info(new Date() +"Inside FracasMainItemsList.htm "+UserId);
 		try
 		{
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -70,12 +70,12 @@ public class FracasController {
 				projectid=projectslist.get(0)[0].toString();
 			}
 			req.setAttribute("projectid",projectid);
-			req.setAttribute("projectmainitemslist",service.ProjectFracasItemsList(projectid));
+			req.setAttribute("projectmainitemslist",service.ProjectFracasItemsList(projectid, LabCode));
 			req.setAttribute("projectlist",projectslist);
 			return "fracas/FracasMainItemsList";
 		}catch (Exception e) {
 			e.printStackTrace(); 
-			logger.error(new Date() +"Inside FracasMainAdd.htm "+UserId,e);
+			logger.error(new Date() +"Inside FracasMainItemsList.htm "+UserId,e);
 			return "static/Error";
 		}
 	}
@@ -84,11 +84,14 @@ public class FracasController {
 	public String FracasMainAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) //,@RequestPart("FileAttach") MultipartFile[] FileAttach
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside FracasMainAdd.htm "+UserId);
 		try
 		{
 			req.setAttribute("projectid",req.getParameter("projectid"));
-			req.setAttribute("projectlist", service.ProjectsList());
+			req.setAttribute("projectlist", service.ProjectsList( EmpId, Logintype,  LabCode));
 			req.setAttribute("fracastypelist", service.FracasTypeList());
 			req.setAttribute("filesize",file_size);
 			return "fracas/FracasMainNew";
@@ -103,6 +106,7 @@ public class FracasController {
 	public String FracasMainAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("attachment") MultipartFile FileAttach) 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside FracasMainAddSubmit.htm "+UserId);
 		try
 		{
@@ -113,7 +117,7 @@ public class FracasController {
 			dto.setProjectId(req.getParameter("projectid"));
 			dto.setFracasDate(req.getParameter("date"));
 			dto.setCreatedBy(UserId);
-			
+			dto.setLabCode(LabCode);
 			
 			long count=service.FracasMainAddSubmit(dto);
 			
@@ -161,6 +165,7 @@ public class FracasController {
 	public String FracasAssign(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside FracasAssign.htm "+UserId);
 		try
 		{
@@ -174,7 +179,7 @@ public class FracasController {
 			Object[] fracasitemdata=service.FracasItemData(fracasmainid);
 			
 			req.setAttribute("fracasitemdata",fracasitemdata);
-			req.setAttribute("employeelist",service.EmployeeList());
+			req.setAttribute("employeelist",service.EmployeeList(LabCode));
 			req.setAttribute("fracasassignedlist",service.FracasAssignedList(EmpId,fracasmainid));
 			req.setAttribute("filesize",file_size);
 			return "fracas/FracasItemAssign";
@@ -493,6 +498,9 @@ public class FracasController {
 	public String FracasMainItemEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside FracasAssign.htm "+UserId);
 		try
 		{
@@ -500,7 +508,7 @@ public class FracasController {
 						
 			Object[] fracasitemdata=service.FracasItemData(fracasmainid);
 			req.setAttribute("fracasitemdata", fracasitemdata);
-			req.setAttribute("projectlist", service.ProjectsList());
+			req.setAttribute("projectlist", service.ProjectsList(EmpId, Logintype, LabCode));
 			req.setAttribute("fracastypelist", service.FracasTypeList());
 			req.setAttribute("filesize",file_size);
 			return "fracas/FracasMainItemEdit";

@@ -65,4 +65,5 @@ public interface PrintService {
     public List<Object[]> BreifingMilestoneDetails(String ProjectId) throws Exception;
     public int saveTechImages(MultipartFile file,String ProjectId,String path,String userName)throws Exception;
     public List<TechImages> getTechList(String proId)throws Exception;
+    public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
 }

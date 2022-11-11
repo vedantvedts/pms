@@ -474,7 +474,11 @@ value="<%=LabMasterEditData[6] %>" >
 </div>
 </div>
 
-	  <div id="LabAddSubmit" align="center"><input type="submit"  class="btn btn-primary btn-sm submit"  id="submit_button"       /></div>
+	  <div id="LabAddSubmit" align="center">
+	  	<input type="submit"  class="btn btn-primary btn-sm submit"  id="submit_button"       />
+	  	<a class="btn  btn-sm  back"    href="LabDetails.htm">BACK</a>
+	  </div>
+	  
 	 <input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}"  />
 								<input type="hidden" name="LabMasterId" value="<%= LabMasterEditData[0]%>">

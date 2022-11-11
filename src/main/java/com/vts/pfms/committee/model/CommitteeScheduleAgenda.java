@@ -27,10 +27,7 @@ public class CommitteeScheduleAgenda {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	private Long CommitteeId;
 	private int AgendaPriority;
 	private int IsActive;
-	
-	
 	
 }

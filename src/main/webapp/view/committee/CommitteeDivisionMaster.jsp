@@ -32,11 +32,7 @@
         top: 0 ;
         background-color: #346691;
     }
-    
-    .table button{
-    	background-color: maroon !important;
-    	font-size: 12px;
-    }
+
 </style>
 
 </head>
@@ -237,7 +233,13 @@ if(ses1!=null){
 														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5] %> days<%} else{%>Non-Periodic<%} %> </td>
 														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 															
-														<td><button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" >Constitute</button></td>
+														<td>
+															<%if(checkcount>0){ %>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
+															<%}else{ %>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
+															<%} %>
+														</td>
 													</tr>
 													
 													

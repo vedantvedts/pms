@@ -28,7 +28,7 @@ public interface RfpMainService {
 
 
 
-	public List<Object[]> GetNotice()throws Exception;
+	public List<Object[]> GetNotice(String LabCode)throws Exception;
 	public List<Object[]> getAllNotice()throws Exception;
 	public int GetNoticeEligibility(String empId)throws Exception;
 	public List<Object> SelfActionsList(String empId) throws Exception;
