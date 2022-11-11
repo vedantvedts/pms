@@ -350,42 +350,118 @@ public class PrintController {
 		logger.info(new Date() +"Inside ProjectProposalDownload.htm "+UserId);		
 	    try {
 	    
-	    	String htmlstring=req.getParameter("htmlstring");
+	    	String InitiationId=req.getParameter("IntiationId");
 	    	
-	    	String filename="ProjectProposal";		
+	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));  
+	    	req.setAttribute("labdata", service.LabDetailes());
+    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId));
+    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
+    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
+    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+    		req.setAttribute("LabList", service.LabList().get(0));
+    
+    		String filename="ProjectProposal";	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
-		
-	    	String html = htmlstring;
-	    	byte[] data = html.getBytes();
-	    	InputStream fis1=new ByteArrayInputStream(data);
-	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	pdfDoc.setTagged();
-	    	Document document = new Document(pdfDoc, PageSize.A4);
-	    	//document.setMargins(50, 100, 150, 50);
-	    	document.setMargins(50, 50, 50, 50);
-	    	ConverterProperties converterProperties = new ConverterProperties();
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/PfmsPrint2.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
 	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
 	    	converterProperties.setFontProvider(dfp);
-	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-	        res.setContentType("application/pdf");
-	        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	        File f=new File(path+"/"+filename+".pdf");
-	        FileInputStream fis = new FileInputStream(f);
-	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-	        res.setHeader("Content-Length",String.valueOf(f.length()));
-	        byte[] buffer = new byte[1024];
-	        int len = 0;
-	        while ((len = fis.read(buffer)) >= 0) {
-	            os.write(buffer, 0, len);
-	        } 
-	        os.close();
-	        fis.close();
-	         
-	            
-	        Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
-	        Files.delete(pathOfFile2);		
-	    	
-	        document.close();
+	      
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+
+	        
+//    		String filename="ProjectProposal";		
+//	    	
+//	    	String path=req.getServletContext().getRealPath("/view/temp");
+//	    	req.setAttribute("path",path); 
+//	    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//	    	req.getRequestDispatcher("/view/print/PfmsPrint2.jsp").forward(req, customResponse);
+//	    	String html = customResponse.getOutput();
+//	    	byte[] data = html.getBytes();
+//	    	InputStream fis1=new ByteArrayInputStream(data);
+//	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+//	    	pdfDoc.setTagged();
+//	    	Document document = new Document(pdfDoc, PageSize.A4);
+//	    	//document.setMargins(50, 100, 150, 50);
+//	    	document.setMargins(50, 50, 50, 50);
+//	    	ConverterProperties converterProperties = new ConverterProperties();
+//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+//	    	converterProperties.setFontProvider(dfp);
+//	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+//            ImageData leftLogo = ImageDataFactory.create(env.getProperty("file_upload_path")+"\\logo\\drdo.png");
+//            ImageData rightLogo = ImageDataFactory.create(env.getProperty("file_upload_path")+"\\logo\\lab.png");
+//	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
+//	        
+//	        
+//	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+//	        Document docMain = new Document(pdfDocMain,PageSize.A4);
+//	        docMain.setMargins(50, 50, 50, 50);
+//	        Rectangle pageSizeMain;
+//	        PdfCanvas canvasMAin;
+//	        int main = pdfDocMain.getNumberOfPages();
+//	        for (int i = 1; i <= main; i++) {
+//	            PdfPage pageMain = pdfDocMain.getPage(i);
+//	            pageSizeMain = pageMain.getPageSize();
+//	            canvasMAin = new PdfCanvas(pageMain);
+//	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
+//	            canvasMAin.addImage(leftLogo, rectaMain, false);
+//	            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
+//	            canvasMAin.addImage(rightLogo, rectaMain2, false);
+//
+//
+//	        }
+//	        
+//	        res.setContentType("application/pdf");
+//	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+//	        
+//	        File f=new File(path+"/"+filename+".pdf");
+//	        FileInputStream fis = new FileInputStream(f);
+//	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+//	        res.setHeader("Content-Length",String.valueOf(f.length()));
+//	        byte[] buffer = new byte[1024];
+//	        int len = 0;
+//	        while ((len = fis.read(buffer)) >= 0) {
+//	            os.write(buffer, 0, len);
+//	        } 
+//	        os.close();
+//	        fis.close();
+//	        document.close();
+//	        docMain.close();
+//	        
+//	        Path pathOfFile2= Paths.get(path +File.separator+ "mergedb.pdf"); 
+//	        Files.delete(pathOfFile2);
+//	        pathOfFile2= Paths.get( path+File.separator+filename+"Maintemp.pdf");
+//	        Files.delete(pathOfFile2);	
+//	        document.close();
+
+	        
 	    	
 	    }
 	    catch(Exception e) {	    		
