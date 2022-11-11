@@ -4,16 +4,13 @@ package com.vts.pfms.login;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +18,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -44,7 +39,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -52,7 +46,6 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.header.service.HeaderService;
 import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
-import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.FinanceChanges;
 import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
@@ -82,10 +75,11 @@ public class LoginController {
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
 	
 //	@Autowired
-//    private LoginDetailsServiceImpl loginService;
+//  private LoginDetailsServiceImpl loginService;
 //
-//    @Autowired
-//    private SecurityServiceImpl securityService;
+//  @Autowired
+//  private SecurityServiceImpl securityService;
+	
     @Autowired
 	RestTemplate restTemplate;
 	@Value("${centralapp}")

@@ -601,8 +601,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if( revlist.size()>0 ){ %>	
 													<tr>	
 														<td>Org</td>
-											 			<td style="text-align: right;"><%=revlist.get(0)[11] %></td>
-														<td style="text-align: right;"><%=revlist.get(0)[11] %></td>
+											 			<td style="text-align: right;"><%=revlist.get(0)[17] %></td>
+														<td style="text-align: right;"><%=revlist.get(0)[16] %></td>
 														<td style="text-align: right;"><%=revlist.get(0)[11] %></td>
 													</tr>
 													<tr>			
@@ -3004,7 +3004,7 @@ function milactivitychange6(val){
 
 
 
-<!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
+<!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
 <script type="text/javascript">
 function FileDownload(fileid1)
 {
@@ -3305,7 +3305,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																					
 																					if(values[v3][4]!=0)
 																					{
-																						str += '<input type="radio" class="selectradio" onchange="setattchidvalue(\''+ values[v3][7] +'\', \''+values[v3][3] +'\');" ></button>' ;
+																						str += '<input type="radio" class="selectradio" onchange="setattchidvalue(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
 																					}else
 																					{
 																						str += '<input type="radio" class="selectradio" disabled ></button>' ;

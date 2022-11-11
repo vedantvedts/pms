@@ -5,7 +5,9 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,6 +58,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.google.gson.Gson;
+import com.ibm.icu.math.BigDecimal;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
@@ -238,64 +243,102 @@ public class PrintController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ExecutiveSummaryDownload.htm "+UserId);		
 	    try {
-	    	
+	    
 	    	String InitiationId=req.getParameter("IntiationId");
-	    	String LabCode =(String) ses.getAttribute("labcode");
+    		
+	    	List<Object[]> costDetailsList = service.CostDetailsList(InitiationId);
 	    	
-   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));                     
+   		 	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));                     
     		req.setAttribute("labdata", service.LabDetailes());
     		req.setAttribute("LabList", service.LabList().get(0));
     		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId).get(0));
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
-    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
+			req.setAttribute("CostDetailsList", costDetailsList);
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("isprint", "1");
     		
+    		HashMap<Integer, BigDecimal> hp = new HashMap<Integer, BigDecimal>();
+    		
+//    		for(Object[] obj : costDetailsList) {
+//    			if(hp.containsKey(obj[4]))
+//    				hp.put((int)obj[4], (BigDecimal)hp.get(obj[4])+ (BigDecimal)obj[3]);
+//    			else
+//    				hp.put((int)obj[4], (BigDecimal)obj[3]);
+//    		}
+//    		
+    		costDetailsList.stream().filter(e-> Collections.frequency(costDetailsList, e[4])<1).collect(Collectors.toList());    		
+    		
+    		String filename="ExecutiveSummary";	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			req.getRequestDispatcher("/view/print/PfmsPrint.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
-	    	String filename="ExecutiveSummary";		
+
 		
-	    	byte[] data = html.getBytes();
-	    	InputStream fis1=new ByteArrayInputStream(data);
-	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	pdfDoc.setTagged();
-	    	Document document = new Document(pdfDoc, PageSize.A4);
-	    	//document.setMargins(50, 100, 150, 50);
-	    	document.setMargins(50, 50, 50, 50);
-	    	ConverterProperties converterProperties = new ConverterProperties();
-	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-	    	converterProperties.setFontProvider(dfp);
-	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-	        res.setContentType("application/pdf");
-	        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+			
+
+			
+	    	//byte[] data = html.getBytes();
+	    	//InputStream fis1=new ByteArrayInputStream(data);
+	    	//PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+	    	//pdfDoc.setTagged();
+	    	//Document document = new Document(pdfDoc, PageSize.A4);
+	    	//document.setMargins(50, 50, 50, 50);
+	    	//ConverterProperties converterProperties = new ConverterProperties();
+	    	//FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	//converterProperties.setFontProvider(dfp);
+	        //HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	        File f=new File(path+"/"+filename+".pdf");
-	        FileInputStream fis = new FileInputStream(f);
-	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-	        res.setHeader("Content-Length",String.valueOf(f.length()));
-	        byte[] buffer = new byte[1024];
-	        int len = 0;
-	        while ((len = fis.read(buffer)) >= 0) {
-	            os.write(buffer, 0, len);
-	        } 
-	        os.close();
-	        fis.close();
+	        
+	        //FileInputStream fis = new FileInputStream(f);
+	       // DataOutputStream os = new DataOutputStream(res.getOutputStream());
+	       // res.setHeader("Content-Length",String.valueOf(f.length()));
+	       // byte[] buffer = new byte[1024];
+	       //int len = 0;
+	       // while ((len = fis.read(buffer)) >= 0) {
+	       //     os.write(buffer, 0, len);
+	       // } 
+	       // os.close();
+	       // fis.close();
 	         
 	            
-	        Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
-	        Files.delete(pathOfFile2);		
+	        //Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
+	       // Files.delete(pathOfFile2);		
 	    	
-	        document.close();
+	       // document.close();
 	        
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);		
+	     
 
-	        
 	    	
 	    }
 	    catch(Exception e) {	    		
     		logger.error(new Date() +" Inside ExecutiveSummaryDownload.htm "+UserId, e);
     		e.printStackTrace();
+			
+	
     	}		
 	}
 	
@@ -515,7 +558,7 @@ public class PrintController {
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
-    		
+    		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		String LevelId= "2";
 			
 			if(service.MileStoneLevelId(projectid,committeeid) != null) {
@@ -571,14 +614,12 @@ public class PrintController {
 	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
 	        Files.delete(pathOfFileMain);	
 	        
-	        
 	        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
 	        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
 	        PdfMerger merger = new PdfMerger(pdfDocument);
 	        int z=0;
 	        for(Object[] objData:projectdatadetails)
 			{	
-	        	
 	        	if(objData!=null) {
 	        	
 	        	try {
@@ -624,7 +665,7 @@ public class PrintController {
 					        pathOfFile= Paths.get( path+File.separator+TechWorkDataList.get(z)[8].toString());
 					        
 						    }
-		        	
+		        	 
 		        	}
 	        	
 	        		catch (Exception e) {
@@ -633,8 +674,9 @@ public class PrintController {
 	        	
 	        	}
 	        	
-	        	if(objData[3]!=null&&objData[3]!=null) {
-	        	if(FilenameUtils.getExtension(objData[3].toString()).equals("pdf")) {
+	        	
+	        	if(objData!=null && objData[3]!=null) {
+	        	if(FilenameUtils.getExtension(objData[3].toString()).equalsIgnoreCase("pdf")) {
 		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 		        Document document5 = new Document(pdfDocument2,PageSize.A4);
 		        document5.setMargins(50, 50, 50, 50);
@@ -668,8 +710,8 @@ public class PrintController {
 		        Files.delete(pathOfFile);	
 			    }
 	        	}
-	        	if(objData[4]!=null&&objData[4]!=null) {
-			    if(FilenameUtils.getExtension(objData[4].toString()).equals("pdf")) {
+	        	if(objData!=null && objData[4]!=null) {
+			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf")) {
 			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
@@ -703,8 +745,8 @@ public class PrintController {
 			        Files.delete(pathOfFile);	
 			    }
 	        	}
-	        	if(objData[5]!=null&&objData[5]!=null) {
-			    if(FilenameUtils.getExtension(objData[5].toString()).equals("pdf")) {
+	        	if(objData!=null && objData[5]!=null) {
+			    if(FilenameUtils.getExtension(objData[5].toString()).equalsIgnoreCase("pdf")) {
 			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[5]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
@@ -738,8 +780,8 @@ public class PrintController {
 			        Files.delete(pathOfFile);	
 				    }
 	        	}
-	        	if(objData[6]!=null&&objData[6]!=null) {
-			    if(FilenameUtils.getExtension(objData[6].toString()).equals("pdf")) {
+	        	if(objData!=null&&objData[6]!=null) {
+			    if(FilenameUtils.getExtension(objData[6].toString()).equalsIgnoreCase("pdf")) {
 			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[6]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
@@ -765,7 +807,7 @@ public class PrintController {
 			        document5.close();
 			        pdfDocument2.close();
 		        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
-		        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+		        	PdfDocument pdfDocument3 = new PdfDocument(pdf2);
 			        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
 			        
 			        pdfDocument3.close();
@@ -778,10 +820,9 @@ public class PrintController {
 	        	//Point 13
 	        	try {
 	        	
-	        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equals("pdf")) {
+	        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
 	        		 Zipper zip=new Zipper();
-	                 zip.unpack(TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
-
+	                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
 				    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 				        Document document5 = new Document(pdfDocument2,PageSize.A4);
 				        document5.setMargins(50, 50, 50, 50);
@@ -807,7 +848,7 @@ public class PrintController {
 				        document5.close();
 				        pdfDocument2.close();
 			        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
-			        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+			        	PdfDocument pdfDocument3 = new PdfDocument(pdf2);
 				        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
 				        
 				        pdfDocument3.close();
@@ -819,7 +860,7 @@ public class PrintController {
 					    }
 	        	
 	        	}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 	        	
 	        	z++;
@@ -1530,8 +1571,8 @@ public class PrintController {
 					if(prodetails[3]!=null) {
 						try {
 							//config
-							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[3]))) {
-								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[3])));
+							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3]))) {
+								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3])));
 							}
 						}catch ( FileNotFoundException  e) {
 							e.printStackTrace();
@@ -1541,8 +1582,8 @@ public class PrintController {
 					if(prodetails[5]!=null) {
 						try {
 								//producttree
-							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[5]))) {
-								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[5])));
+							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5]))) {
+								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5])));
 							}
 						}catch (FileNotFoundException e) {
 							pdfs[1]=null;
@@ -1552,8 +1593,8 @@ public class PrintController {
 						try {
 								//pearlimg
 							
-							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[6]))) {
-								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[6])));
+							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6]))) {
+								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6])));
 							}
 						
 						}catch (FileNotFoundException e) {
@@ -1564,8 +1605,8 @@ public class PrintController {
 						try {
 							//Sysspecs
 							
-							if(Files.exists(Paths.get(prodetails[2]+File.separator+prodetails[4]))) {
-								pdfs[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(prodetails[2]+File.separator+prodetails[4])));
+							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4]))) {
+								pdfs[3]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[4])));
 						}
 						
 							}catch (FileNotFoundException e) {

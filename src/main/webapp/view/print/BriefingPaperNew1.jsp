@@ -321,7 +321,7 @@ long ProjectCost = (long)request.getAttribute("ProjectCost");
 List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
 String levelid= (String) request.getAttribute("levelid");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
-
+String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDrive");
 
 %>
 
@@ -356,12 +356,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 				<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
 
 				</th>
-				<br><br>
-			</tr>
-			<!-- <tr >
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px">(ISO 9001-2015 Certified Establishment)</th>
-			</tr> -->
 			
+			</tr>
+	
 			<tr>
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 			</tr>
@@ -523,10 +520,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){
 				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equals("pdf")){
 				%>
-				
-				
 				<br>
-				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" > 
+				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" > --%> 
 			<% }else{
 		%>
 			<b>  System Configuration Annexure </b>
@@ -540,7 +535,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 			if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equals("pdf")){
 			%>
 			   <br>
-				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > 
+				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > --%> 
 		<% }else{
 		%>
 			<b> System Specification Annexure </b>
@@ -556,7 +551,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equals("pdf")){
 			%>
 			     <br>
-				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" > 
+				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" > --%> 
 		<% }else{
 		%>
 			<b> Overall Product tree/WBS Annexure </b>
@@ -1012,7 +1007,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 								<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){
 			                      if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equals("pdf")){
 			                      %>
-				                  <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" > 
+				                  <%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" > --%> 
 		                       <% }else{
 		                                  %>
 			                        <b> TRL table with TRL at sanction stage Annexure </b>
@@ -1508,11 +1503,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 				<b>10. PERT/GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original</span> (as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]: </b></div>
               <%
               if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){
-				
 				%>
 					
 				<br>
-				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
+				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > --%> 
 
               <%}
               else if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){
