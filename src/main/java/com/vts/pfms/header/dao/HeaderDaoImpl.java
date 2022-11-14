@@ -366,9 +366,6 @@ public class HeaderDaoImpl implements HeaderDao {
 		
 		logger.info(new Date() + "Inside getLabCode" );
 
-		System.out.println(Empid + "asdasd");
-		
-		
 		Query query = manager.createNativeQuery(LABCODE);
 		query.setParameter("empid", Empid);
 		
