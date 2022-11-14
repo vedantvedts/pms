@@ -305,7 +305,10 @@ public class ActionController {
 		logger.info(new Date() +"Inside AssigneeList.htm "+UserId);		
 		try {
 			
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();		
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
+		
+		System.out.println(service.AssigneeList(EmpId).size() +"ass");
+		
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
 		}catch (Exception e) {

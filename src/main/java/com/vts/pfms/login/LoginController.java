@@ -633,7 +633,7 @@ public class LoginController {
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
-    	final String localUri5=uri+"pfms_serv/labdetails";
+    	final String localUri5=uri+"/pfms_serv/labdetails";
     	
     	String MonthlyData=null;
     	String WeeklyData=null;

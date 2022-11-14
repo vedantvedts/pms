@@ -582,7 +582,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public long ProjectHealthUpdate(String EmpId, String UserName) throws Exception {
-		List<Object[]> proList=dao.ProjectList();
+		List<Object[]> proList=dao.ProjectList().stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
 		long result=0;
 		for(Object[] obj:proList) {
 			try {
