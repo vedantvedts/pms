@@ -26,7 +26,7 @@ SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf2=new SimpleDateFormat("MMMM yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 
-Object[] Labdata=(Object[])request.getAttribute("LabList");
+Object[] LabList=(Object[])request.getAttribute("LabList");
 Object[] PfmsInitiation=(Object[])request.getAttribute("PfmsInitiationList");
 List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
@@ -85,7 +85,7 @@ String lablogo=(String)request.getAttribute("lablogo");
           border: 1px solid black; 
           
           @bottom-left {          		
-             content: "<%=Labdata[1]%>";
+             content: "<%=LabList[1]%>";
              margin-bottom: 30px;
              margin-right: 10px;
              font-size: 13px;
@@ -197,7 +197,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 		
 			<table style="align: center; margin-left:90px; font-size: 16px" >
 			<%
-			if(Labdata!=null){
+			if(LabList!=null){
 			 %>
 			
 				<tr>			
@@ -210,7 +210,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
 				</tr>
 				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(Labdata[1]!=null){ %><%=Labdata[1] %><%}else{ %>LAB NAME<%} %></th>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></th>
 				</tr>
 				
 				<% } %>
@@ -223,7 +223,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
 			</tr>
 			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(Labdata[2]!=null){ %><%=Labdata[2] %><%}else{ %>LAB NAME<%} %></th>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %>LAB NAME<%} %></th>
 			</tr>
 			</table>			
 		

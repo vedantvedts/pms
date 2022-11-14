@@ -39,10 +39,10 @@ public class PrintServiceImpl implements PrintService{
 	private static final Logger logger=LogManager.getLogger(PrintServiceImpl.class);
 
 	@Override
-	public List<Object[]> LabList() throws Exception {
+	public Object[] LabList(String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside LabList");		
-		return dao.LabList();
+		return dao.LabList(LabCode);
 	}
 
 	@Override
@@ -53,10 +53,10 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public LabMaster LabDetailes() throws Exception {
+	public LabMaster LabDetailes(String LabCode) throws Exception {
 	
 		logger.info(new Date() +"Inside LabDetailes");
-		return dao.LabDetailes();
+		return dao.LabDetailes( LabCode);
 	}
 	
 	@Override

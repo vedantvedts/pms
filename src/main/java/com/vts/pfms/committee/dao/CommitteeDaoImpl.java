@@ -10,6 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +42,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
 import com.vts.pfms.print.model.MinutesLastPmrc;
@@ -3012,5 +3018,21 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 	
 			
+	@Override
+	public LabMaster LabDetailes(String LabCode) throws Exception {
+		logger.info(new java.util.Date() +"Inside LabDetailes");
+		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
+		
+		CriteriaBuilder cb= manager.getCriteriaBuilder();
+		CriteriaQuery<LabMaster> cq= cb.createQuery(LabMaster.class);
+		Root<LabMaster> root= cq.from(LabMaster.class);					
+		Predicate p1=cb.equal(root.get("LabCode") , LabCode);
+		cq=cq.select(root).where(p1);
+		TypedQuery<LabMaster> allquery = manager.createQuery(cq);
+		LabMaster lab= allquery.getResultList().get(0);
+		
+		
+		return LabDetailes;
+	}
 	
 }
