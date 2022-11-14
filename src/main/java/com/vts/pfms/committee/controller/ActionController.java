@@ -181,13 +181,9 @@ public class ActionController {
 			String CpLabCode = req.getParameter("LabCode");
 			String mainid = req.getParameter("MainId");
 
+			System.out.println(mainid);
 			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid)){
-			if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
-			{
-				EmployeeList = service.ClusterExpertsList();
-			}
-			
-			}else {
+				
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
@@ -199,6 +195,18 @@ public class ActionController {
 						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
 					}
 				}
+			}else {
+				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
+				{
+					EmployeeList = service.ClusterExpertsList();
+				}else{
+					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
+					{
+						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
+					}
+				}
+				
 			}
 
 		}
