@@ -53,7 +53,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final Logger logger=LogManager.getLogger(ProjectDaoImpl.class);
 	java.util.Date loggerdate=new java.util.Date();
 
-	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd' FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.empid=a.empid ELSE a.empid=:empid END ) AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
+	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd' FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
 	private static final String PROJECTTYPELIST="select categoryid,category from pfms_security_classification order by category";
 	private static final String PROJECTCATEGORYLIST="select projecttypeid,projecttype,projecttypeshort from project_type where isactive='1' ORDER BY projecttype";
 	private static final String PROJECTDELIVERABLELIST="select deliverableid,deliverable from pfms_deliverable order by deliverable ";
@@ -98,9 +98,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
 	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
-	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
+	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item b  WHERE a.budgetitemid=b.budgetitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
-	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.category,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.empid=a.empid ELSE a.empid=:empid END ) AND a.ProjectTypeId=c.CategoryId AND a.CategoryId=b.ProjectTypeId AND a.projectstatus=d.Status";
+	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.category,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.ProjectTypeId=c.CategoryId AND a.CategoryId=b.ProjectTypeId AND a.projectstatus=d.Status";
 	private static final String PROJECTAPPROVALTRACKING="SELECT a.projectapprovalid,a.empid,c.empname,d.designation,e.divisionname,a.actiondate,a.remarks,b.statusdetail FROM project_approval a, pfms_project_authority_actionlist b,employee c,employee_desig d,division_master e WHERE a.projectstatus=b.Status AND a.empid=c.empid  AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND a.initiationid=:initiationid";
 	private static final String PROJECTINTIDATAPREVIEW="SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.category,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,f.projectshortname AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e,pfms_initiation f WHERE a.initiationid=:initiationid AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=f.initiationid UNION SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.category,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,a.projecttitle AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e WHERE a.initiationid=:initiationid AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=0 ";
 	private static final String PROJECTINTITOTALFECOST="select sum(a.ItemCost) from pfms_initiation_cost a,budget_item b where a.initiationid=:initiationid and a.isactive='1' and a.budgetitemid=b.budgetitemid and a.refe='FE' ";
@@ -173,12 +173,13 @@ public class ProjectDaoImpl implements ProjectDao {
 	EntityManager manager;
 
 	@Override
-	public List<Object[]> ProjectIntiationList(String Empid,String LoginType) throws Exception {
+	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception {
 		logger.info(loggerdate +"Inside ProjectIntiationList");
 		
 		Query query=manager.createNativeQuery(PROJECTINTILIST);
 		query.setParameter("empid", Empid);
 		query.setParameter("logintype", LoginType);
+		query.setParameter("LabCode", LabCode);
 		List<Object[]> ProjectIntiationList=(List<Object[]>)query.getResultList();		
 
 		return ProjectIntiationList;
@@ -919,10 +920,10 @@ public double PfmsInitiationRefeSum(String initiationid,String refe) throws Exce
 
 
 @Override
-public List<Object[]> EmployeeList() throws Exception {
+public List<Object[]> EmployeeList(String LabCode) throws Exception {
 	logger.info(loggerdate +"Inside EmployeeList");
 	Query query=manager.createNativeQuery(EMPLOYEELIST);
-	
+	query.setParameter("LabCode", LabCode);
 	List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
 	return EmployeeList;
 }
@@ -930,12 +931,13 @@ public List<Object[]> EmployeeList() throws Exception {
 
 
 @Override
-public List<Object[]> ProjectStatusList(String EmpId,String LoginType) throws Exception{
+public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode) throws Exception{
 	
 	logger.info(loggerdate +"Inside ProjectStatusList");
 	Query query=manager.createNativeQuery(PROJECTSTATUSLIST);
 	query.setParameter("empid", EmpId);
 	query.setParameter("logintype", LoginType);
+	query.setParameter("LabCode", LabCode);
 	List <Object[]> ProjectStatusList= (List<Object[]>)query.getResultList();
 	return ProjectStatusList;
 	

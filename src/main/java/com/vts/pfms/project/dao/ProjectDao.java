@@ -30,7 +30,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 
 public interface ProjectDao {
 
-	public List<Object[]> ProjectIntiationList(String Empid,String LoginType) throws Exception;
+	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception;
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> OfficerList() throws Exception;
 	public Long ProjectMainAdd(ProjectMain proType ) throws Exception;
@@ -89,8 +89,8 @@ public interface ProjectDao {
 	public BigInteger TccChairpersonId() throws Exception;
 	public BigInteger CcmChairpersonId() throws Exception;
 	public BigInteger AdId() throws Exception;
-	public List<Object[]> EmployeeList() throws Exception;
-	public List<Object[]> ProjectStatusList(String EmpId, String LoginType)throws Exception;
+	public List<Object[]> EmployeeList(String LabCode) throws Exception;
+	public List<Object[]> ProjectStatusList(String EmpId, String LoginType,String LabCode)throws Exception;
 	public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception;
 	public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception;
 	public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception;
