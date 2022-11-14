@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -196,12 +197,15 @@ public class LoginController {
   	ses.setAttribute("LoginTypeName", headerservice.FormRoleName(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
   	ses.setAttribute("labid",headerservice.LabDetails(empdetails[3].toString())[0].toString());
   	//ses.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString(),Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()).size());
- 	ses.setAttribute("labcode", headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim());
+ 	
+  	String LabCode = headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getUsername().toString()).trim();
+  	
+  	ses.setAttribute("labcode", LabCode);
  	ses.setAttribute("clusterid", headerservice.LabDetails(empdetails[3].toString())[1].toString());
-    
+
  	String DGName = headerservice.LabMasterList(headerservice.LabDetails(empdetails[3].toString())[1].toString()).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
  	String IsDG = "No";
-    if(DGName.equalsIgnoreCase(headerservice.getLabCode(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId().toString()).trim()))
+    if(DGName.equalsIgnoreCase(LabCode))
    	 IsDG = "Yes";
     else
    	 IsDG = "No";
@@ -265,9 +269,9 @@ public class LoginController {
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
- 
-			     String DGName = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString();
 
+			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
+			     
 			     String IsDG = "No";
 			     if(DGName.equalsIgnoreCase(LabCode))
 			    	 IsDG = "Yes";

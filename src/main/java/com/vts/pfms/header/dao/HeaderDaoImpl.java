@@ -37,7 +37,7 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus,a.revisionno FROM milestone_activity a WHERE  a.isactive=1 AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus,a.revision  FROM milestone_activity_level a WHERE a.parentactivityid=:id AND a.activitylevelid=:levelid ";
 	private static final String QUICKLINKLIST="SELECT a.formname,a.formurl FROM pfms_form_detail a , pfms_form_role_access b WHERE a.formdetailid=b.formdetailid AND a.formmoduleid=13 AND b.logintype=:logintype AND b.isactive=1";
-	private static final String LABCODE= "SELECT b.labcode FROM login a,employee b WHERE a.empid=b.empid AND a.empid=:empid";
+	private static final String LABCODE= "SELECT b.labcode FROM login a,employee b WHERE a.empid=b.empid AND a.username=:empid";
 	private static final String LABMASTERLIST="SELECT a.labname,a.labcode,a.iscluster FROM lab_master a WHERE clusterid=:clusterid ORDER BY labcode";
 	
 	
@@ -365,6 +365,9 @@ public class HeaderDaoImpl implements HeaderDao {
 	public String getLabCode(String Empid) throws Exception {
 		
 		logger.info(new Date() + "Inside getLabCode" );
+
+		System.out.println(Empid + "asdasd");
+		
 		
 		Query query = manager.createNativeQuery(LABCODE);
 		query.setParameter("empid", Empid);

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>PMS HOME</title>
+<title>PMS MAIN</title>
 
 <jsp:include page="../static/header.jsp"></jsp:include>
 
