@@ -198,7 +198,8 @@ if(ses1!=null){
 								<div class="card" style="margin: 5px">
 	
 									<div class="card-header cardpad ">
-										<h5 style="margin-bottom: -2px; ">Committees Added for <%=Project %></h5>
+										<%-- <h5 style="margin-bottom: -2px; ">Committees Added for <%=Project %></h5> --%>
+										<h5 style="margin-bottom: -2px; ">Committees Added for Initiation</h5>
 									</div>
 	
 									<div style="margin: 5px">

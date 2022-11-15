@@ -596,3 +596,38 @@ a:focus {
 		margin-top: 10rem !important;
 	}
 }
+
+
+@media screen and (max-width: 1370px) and (min-width:100px) {
+    
+    .img-fluid{
+ 		max-width: 65% !important;   
+    }
+    
+    .login-form-wrapper{
+    	padding-top: 0px !important;
+    	padding-bottom: 24px !important;
+    }
+    
+    .support-row{
+    	padding: 16px 0px !important;
+    }
+  
+  	.welcome{
+  		display: none!important;
+  	}
+  	
+  
+}
+
+
+@media screen and (min-width:1370px){
+	
+	.img-fluid{
+		max-width: 75% !important;
+	}
+}
+
+
+
+
