@@ -15,6 +15,13 @@ public class PfmsInitiationDetailDto {
     private String RiskMitiagation;
     private String Proposal;
     private String RealizationPlan;
+    private String WorldScenario;
+	public String getWorldScenario() {
+		return WorldScenario;
+	}
+	public void setWorldScenario(String worldScenario) {
+		WorldScenario = worldScenario;
+	}
 	public String getInitiationDetailId() {
 		return InitiationDetailId;
 	}

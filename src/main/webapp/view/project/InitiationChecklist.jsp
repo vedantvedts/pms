@@ -68,7 +68,11 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 			<div class="card-header">
 				<div class="row">
 					<div class="col-6"><h4>CHECKLIST</h4></div>
-					<div class="col-6"><h4 style="float: right;">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9] %></h4></div>
+					<div class="col-6">
+						<h4 style="float: right;">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9] %> &nbsp;&nbsp;&nbsp;
+							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important; float: right;">BACK</a>
+						</h4>
+					</div>
 				</div>
 			</div>
 			<div class="card-body" > <!-- style="overflow-y : auto; max-height:32rem  " -->

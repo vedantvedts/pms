@@ -28,9 +28,15 @@ public class PfmsInitiationDetail implements Serializable {
     private String RiskMitiagation;
     private String Proposal;
     private String RealizationPlan;
-
+    private String WorldScenario;
     
-    private String CreatedBy;
+    public String getWorldScenario() {
+		return WorldScenario;
+	}
+	public void setWorldScenario(String worldScenario) {
+		WorldScenario = worldScenario;
+	}
+	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;

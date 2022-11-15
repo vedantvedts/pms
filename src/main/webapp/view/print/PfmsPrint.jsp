@@ -195,36 +195,36 @@ String lablogo=(String)request.getAttribute("lablogo");
 		
 		<div align="center" >
 		
-			<table style="align: center; margin-left:90px; font-size: 16px" >
+			<table style="align: center;margin-left:115px !important;  font-size: 16px" >
 			<%
 			if(Labdata!=null){
 			 %>
 			
-				<tr>			
-					<th colspan="8" style="text-align: center; font-weight: 700;">
-					<br><br><br><br><br><br><br><br><br><br><br><br>
-						<img class="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Configuration"<%}else{ %> alt="File Not Found" <%} %> >
-					</th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(Labdata[1]!=null){ %><%=Labdata[1] %><%}else{ %>LAB NAME<%} %></th>
-				</tr>
+					<tr>			
+						<th colspan="8" style="text-align: center; font-weight: 700;">
+						<br><br><br><br><br><br><br><br><br><br><br><br>
+							<img class="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Configuration"<%}else{ %> alt="File Not Found" <%} %> >
+						</th>
+					</tr>
+					<tr>
+						<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
+					</tr>
+					<tr>
+						<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(Labdata[1]!=null){ %><%=Labdata[1] %><%}else{ %>LAB NAME<%} %></th>
+					</tr>
+					
+					<% } %>
 				
-				<% } %>
-			
-			
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
-			</tr>
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
-			</tr>
-			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(Labdata[2]!=null){ %><%=Labdata[2] %><%}else{ %>LAB NAME<%} %></th>
-			</tr>
+				
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(Labdata[2]!=null){ %><%=Labdata[2] %><%}else{ %>LAB NAME<%} %></th>
+				</tr>
 			</table>			
 		
 		</div>

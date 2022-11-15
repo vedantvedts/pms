@@ -1153,6 +1153,10 @@ public class ProjectController {
 				pfmsinitiationdetaildto.setRealizationPlan(req.getParameter("realization"));
 				Alert = "Realization Plan";
 			}
+			if (Details.equalsIgnoreCase("worldscenario")) {
+				pfmsinitiationdetaildto.setWorldScenario(req.getParameter("worldscenario"));
+				Alert = "World Scenario";
+			}
 
 			pfmsinitiationdetaildto.setInitiationId(InitiationId);
 

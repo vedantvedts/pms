@@ -65,7 +65,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
 	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
-	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitiagation,a.Proposal,a.RealizationPlan,a.initiationid FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
+	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitiagation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
 	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost FROM pfms_initiation_cost a,budget_head b,budget_item c WHERE a.budgetheadid=b.budgetheadid AND a.budgetitemid=c.budgetitemid AND a.initiationid=:initiationid order by a.budgetheadid asc";
 	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 UNION SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a ,pfms_initiation b WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
 	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,categoryid=:categoryid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost where initiationid=:initiationid and isactive='1'";
@@ -86,6 +86,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTDETAILSRISKUPDATE="update pfms_initiation_detail set riskmitiagation=:riskmitigation,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSPROPOSALUPDATE="update pfms_initiation_detail set proposal=:proposal,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSREALIZATIONUPDATE="update pfms_initiation_detail set realizationplan=:realization,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSWORLDUPDATE="update pfms_initiation_detail set worldscenario=:worldscenario,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";	
 	private static final String PROJECTSCHTOTALMONTH="select sum(milestonemonth) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String MILESTONENO="select max(MilestoneNo) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String SCDULEMONTH="select milestonemonth from pfms_initiation_schedule where initiationscheduleid=:initiationscheduleid and isactive='1'";
@@ -654,6 +655,14 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("realization")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSREALIZATIONUPDATE);
 		query.setParameter("realization", pfmsinitiationdetail.getRealizationPlan());
+		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+		int count=(int)query.executeUpdate();
+	}
+	if(Details.equalsIgnoreCase("worldscenario")) {
+		Query query=manager.createNativeQuery(PROJECTDETAILSWORLDUPDATE);
+		query.setParameter("worldscenario", pfmsinitiationdetail.getWorldScenario());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());

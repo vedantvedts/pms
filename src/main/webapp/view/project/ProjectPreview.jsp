@@ -605,9 +605,9 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 				         
 				                <form action="" method="POST" name="myfrm" id="myfrm">
 				                
-				                	<button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
+				                	<button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 							 
-							 		<button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint2.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
+							 		<button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
 				                
 				                	<input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
 				                	
