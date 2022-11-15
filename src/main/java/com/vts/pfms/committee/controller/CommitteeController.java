@@ -110,10 +110,14 @@ import com.vts.pfms.utils.PMSLogoUtil;
 @Controller
 public class CommitteeController {
 
-	@Autowired CommitteeService service;
+	@Autowired 
+	CommitteeService service;
+	
 	@Autowired 
 	private JavaMailSender javaMailSender;
-	@Autowired BCryptPasswordEncoder encoder;
+	
+	@Autowired 
+	BCryptPasswordEncoder encoder;
 	
 	@Autowired
 	PrintService printservice;
