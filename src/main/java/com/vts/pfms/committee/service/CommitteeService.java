@@ -27,6 +27,7 @@ import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
 import com.vts.pfms.print.model.MinutesLastPmrc;
@@ -259,6 +260,7 @@ public interface CommitteeService {
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
+	public LabMaster LabDetailes(String LabCode) throws Exception;
     
 }
 

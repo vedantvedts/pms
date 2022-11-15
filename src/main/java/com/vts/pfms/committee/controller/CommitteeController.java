@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +94,6 @@ import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
-import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
@@ -113,10 +110,14 @@ import com.vts.pfms.utils.PMSLogoUtil;
 @Controller
 public class CommitteeController {
 
-	@Autowired CommitteeService service;
+	@Autowired 
+	CommitteeService service;
+	
 	@Autowired 
 	private JavaMailSender javaMailSender;
-	@Autowired BCryptPasswordEncoder encoder;
+	
+	@Autowired 
+	BCryptPasswordEncoder encoder;
 	
 	@Autowired
 	PrintService printservice;
@@ -1921,6 +1922,7 @@ public class CommitteeController {
 		public String CommitteeMinutesViewAll(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
 			String UserId=(String)ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeMinutesViewAll.htm "+UserId);
 			try
 			{		
@@ -1969,7 +1971,7 @@ public class CommitteeController {
 				req.setAttribute("isprint", "N");	    
 				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-				req.setAttribute("labInfo", printservice.LabDetailes());
+				req.setAttribute("labInfo", service.LabDetailes(LabCode));
 			}
 			catch (Exception e) 
 			{
@@ -2483,6 +2485,7 @@ public class CommitteeController {
 	{
 
 		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeMinutesViewAllDownload.htm "+UserId);
 		try
 		{
@@ -2533,7 +2536,7 @@ public class CommitteeController {
 			req.setAttribute("labdetails", service.LabDetails());
 			req.setAttribute("isprint", "Y");	
 			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
-			req.setAttribute("labInfo", printservice.LabDetailes());
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
 
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 			
@@ -3622,6 +3625,7 @@ public class CommitteeController {
 	{
 
 	String UserId=(String)ses.getAttribute("Username");
+	String LabCode =(String) ses.getAttribute("labcode");
 	logger.info(new Date() +"Inside MeetingTabularMinutes.htm "+UserId);
 	try
 	{		
@@ -3671,7 +3675,7 @@ public class CommitteeController {
 			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("isprint", "N");
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-			req.setAttribute("labInfo", printservice.LabDetailes());
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -3686,6 +3690,7 @@ public class CommitteeController {
 	{
 
 	String UserId=(String)ses.getAttribute("Username");
+	String LabCode =(String) ses.getAttribute("labcode");
 	logger.info(new Date() +"Inside MeetingTabularMinutesDownload.htm "+UserId);
 	try
 	{
@@ -3737,7 +3742,7 @@ public class CommitteeController {
 			req.setAttribute("isprint", "Y");
 			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-			req.setAttribute("labInfo", printservice.LabDetailes());
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
 			
 			String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 			
@@ -5402,6 +5407,7 @@ public class CommitteeController {
 		public String CommitteeMinutesNew(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 			{
 			String UserId=(String)ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeMinutesNew.htm "+UserId);
 			try
 			{		
@@ -5446,7 +5452,7 @@ public class CommitteeController {
 					LevelId= printservice.MileStoneLevelId(projectid,committeeid)[0].toString();
 				}
 				req.setAttribute("levelid", LevelId);
-				req.setAttribute("labInfo", printservice.LabDetailes());
+				req.setAttribute("labInfo", service.LabDetailes(LabCode));
 
 		/*---------------------------------------------------------------------------------------------------------------*/
 				if(Long.parseLong(projectid) >0&&committeescheduleeditdata[22].toString().equals("N") ) {
@@ -5576,6 +5582,7 @@ public class CommitteeController {
 		public void CommitteeMinutesNewDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
 			String UserId=(String)ses.getAttribute("Username");
+			String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
 			try
 				{		
@@ -5619,7 +5626,7 @@ public class CommitteeController {
 						LevelId= printservice.MileStoneLevelId(projectid,committeeid)[0].toString();
 					}
 					req.setAttribute("levelid", LevelId);
-					req.setAttribute("labInfo", printservice.LabDetailes());
+					req.setAttribute("labInfo", service.LabDetailes(LabCode));
 
 			/*---------------------------------------------------------------------------------------------------------------*/
 					if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {

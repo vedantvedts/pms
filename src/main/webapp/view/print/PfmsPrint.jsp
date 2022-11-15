@@ -26,7 +26,7 @@ SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf2=new SimpleDateFormat("MMMM yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 
-Object[] Labdata=(Object[])request.getAttribute("LabList");
+Object[] LabList=(Object[])request.getAttribute("LabList");
 Object[] PfmsInitiation=(Object[])request.getAttribute("PfmsInitiationList");
 List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
@@ -85,7 +85,7 @@ String lablogo=(String)request.getAttribute("lablogo");
           border: 1px solid black; 
           
           @bottom-left {          		
-             content: "<%=Labdata[1]%>";
+             content: "<%=LabList[1]%>";
              margin-bottom: 30px;
              margin-right: 10px;
              font-size: 13px;
@@ -195,26 +195,40 @@ String lablogo=(String)request.getAttribute("lablogo");
 		
 		<div align="center" >
 		
-			<table style="align: center;margin-left:115px !important;  font-size: 16px" >
+			<%-- <table style="align: center;margin-left:115px !important;  font-size: 16px" >
 			<%
-			if(Labdata!=null){
+			if(LabList!=null){
 			 %>
 			
+	<<<<<< HEAD
 					<tr>			
-						<th colspan="8" style="text-align: center; font-weight: 700;">
-						<br><br><br><br><br><br><br><br><br><br><br><br>
-							<img class="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Configuration"<%}else{ %> alt="File Not Found" <%} %> >
-						</th>
-					</tr>
+						<th colspan="8" style="text-align: center; font-we	ght: 700;">
+						<br><br><br><br><br><br><br><br><br>	br><br><br>
+							<img class="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Configuration"<%}else{ %> alt="File Not Fou	d" <%} %> >							</th>	
+					</tr	
 					<tr>
-						<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
-					</tr>
+						<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establi	hment)</th>	
+					</tr	
 					<tr>
-						<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(Labdata[1]!=null){ %><%=Labdata[1] %><%}else{ %>LAB NAME<%} %></th>
-					</tr>
+						<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(Labdata[1]!=null){ %><%=Labdata[1] %><%}else{ %>LAB NAM	<%} %></th>	
+						/tr>
 					
-					<% } %>
+					<	 } %>	
+=======					<tr>			
+					<th colspan="8" style="text-align: center; font-weight: 700;">
+					<br><br><br><br><br><br><br><br><br><br><br>	br>
+						<img clas	="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt=	Configurat	on"<%}els	{ %> alt="File Not Found" <%} %> >
+					</th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;paddi	g-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></th>
+				</tr>
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
 				
+<<<<<<< HEAD
 				
 				<tr>
 					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
@@ -225,7 +239,21 @@ String lablogo=(String)request.getAttribute("lablogo");
 				<tr>
 					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(Labdata[2]!=null){ %><%=Labdata[2] %><%}else{ %>LAB NAME<%} %></th>
 				</tr>
-			</table>			
+=======
+				<% } %>
+			
+			
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+			</tr>
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+			</tr>
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %>LAB NAME<%} %></th>
+			</tr>
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
+			</table>			 --%>
 		
 		</div>
 		

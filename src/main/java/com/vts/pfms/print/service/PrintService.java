@@ -12,10 +12,10 @@ import com.vts.pfms.print.model.TechImages;
 
 public interface PrintService {
 
-	public List<Object[]> LabList() throws Exception;
+	public Object[] LabList(String LabCode) throws Exception;
 	public List<Object[]> PfmsInitiationList(String InitiationId) throws Exception;
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception;
-	public LabMaster LabDetailes()throws Exception;
+	public LabMaster LabDetailes(String LabCode)throws Exception;
 	public List<Object[]> CostDetailsList(String InitiationId) throws Exception;
 	public List<Object[]> ProjectInitiationScheduleList(String InitiationId) throws Exception;
 	public List<Object[]> ProjectsList() throws Exception;

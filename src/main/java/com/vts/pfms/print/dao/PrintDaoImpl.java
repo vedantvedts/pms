@@ -2,7 +2,6 @@ package com.vts.pfms.print.dao;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,6 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
-import com.vts.pfms.master.model.EmployeeExternal;
+
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
@@ -32,8 +36,8 @@ import com.vts.pfms.print.model.TechImages;
 @Repository
 public class PrintDaoImpl implements PrintDao {
 
-	private static final String LABLIST="select labcode, labname,labaddress, labcity,lablogo from lab_master";
-	private static final String PFMSINITLIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,d.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost FROM pfms_initiation a,project_type b,pfms_security_classification c ,pfms_initiation d WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=d.initiationid UNION SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration, a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,a.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost FROM pfms_initiation a,project_type b,pfms_security_classification c WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=0";
+	private static final String LABLIST="select labcode, labname,labaddress, labcity,lablogo from lab_master where labcode=:labcode";
+	private static final String PFMSINITLIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,d.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode FROM pfms_initiation a,project_type b,pfms_security_classification c ,pfms_initiation d WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=d.initiationid UNION SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration, a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,a.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode FROM pfms_initiation a,project_type b,pfms_security_classification c WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=0";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitiagation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
 	private static final String COSTDETAILSLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,a.itemdetail,a.itemcost,.c.budgetitemid FROM pfms_initiation_cost a,budget_item c WHERE a.budgetitemid=c.budgetitemid AND a.isactive='1' AND a.initiationid=:initiationid AND a.budgetheadid=c.budgetheadid";
 	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
@@ -62,12 +66,12 @@ public class PrintDaoImpl implements PrintDao {
 	private static final Logger logger=LogManager.getLogger(PrintDaoImpl.class);
 	
 	@Override
-	public List<Object[]> LabList() throws Exception {
+	public Object[] LabList(String LabCode) throws Exception {
 
 		logger.info(new Date() +"Inside LabList");
 		Query query=manager.createNativeQuery(LABLIST);
-		
-		List<Object[]> LabList=(List<Object[]>)query.getResultList();		
+		query.setParameter("labcode", LabCode);
+		Object[] LabList=(Object[])query.getSingleResult();		
 
 		return LabList;
 	}
@@ -85,12 +89,26 @@ public class PrintDaoImpl implements PrintDao {
 	}
 	
 	@Override
-	public LabMaster LabDetailes() throws Exception {
+	public LabMaster LabDetailes(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside LabDetailes");
 		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
+		
+		CriteriaBuilder cb= manager.getCriteriaBuilder();
+		CriteriaQuery<LabMaster> cq= cb.createQuery(LabMaster.class);
+		Root<LabMaster> root= cq.from(LabMaster.class);					
+		Predicate p1=cb.equal(root.get("LabCode") , LabCode);
+		cq=cq.select(root).where(p1);
+		TypedQuery<LabMaster> allquery = manager.createQuery(cq);
+		LabMaster lab= allquery.getResultList().get(0);
+		
+		
 		return LabDetailes;
 	}
 
+	
+	
+	
+	
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 		

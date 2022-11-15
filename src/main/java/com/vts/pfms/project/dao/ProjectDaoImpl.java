@@ -1704,9 +1704,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		{
 			logger.info(new java.util.Date() +"Inside DirectorEmpData");
 			Query query=manager.createNativeQuery(DIRECTOREMPDATA);
-			query.setParameter("labcode", LabCode);
-			
-			return (Object[])query.getSingleResult();
+			query.setParameter("labcode", LabCode);	
+			try {
+				return (Object[])query.getSingleResult();
+			}catch (NoResultException e) {
+				return null;
+			}
 		}
 		
 		
@@ -1718,7 +1721,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("empid",empid);
 			try {
 				return (Object[])query.getSingleResult();
-			}catch (Exception e) {
+			}catch (NoResultException e) {
 				return null;
 			}
 			

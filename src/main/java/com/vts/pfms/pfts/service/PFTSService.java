@@ -17,4 +17,5 @@ public interface PFTSService {
 	public long updateCostOnDemand(List<DemandOrderDetails> dd ,String fileId,String userid)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public int FileInActive(String fileId, String userId)throws Exception;
+	public Object[] ProjectData(String projectid) throws Exception;
 }
