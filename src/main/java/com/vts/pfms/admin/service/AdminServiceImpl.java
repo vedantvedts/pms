@@ -48,7 +48,6 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Object[]> LoginTypeList() throws Exception {
 		
-		logger.info(new Date() +"Inside LoginTypeList");		
 		return dao.LoginTypeList();
 		
 	}
@@ -56,26 +55,22 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public List<Object[]> EmployeeList() throws Exception {
 		 
-		logger.info(new Date() +"Inside EmployeeList");
 		return dao.EmployeeList();
 	}
 	
 	@Override
 	public List<Object[]> LoginEditEmpList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside LoginEditEmpList");
 		return dao.LoginEditEmpList(LabCode);
 	}
 
 	@Override
 	public Object[] EmployeeData(String empid ) throws Exception {
 		 
-		logger.info(new Date() +"Inside EmployeeData");
 		return dao.EmployeeData(empid);
 	}
 	
 	@Override
 	public List<Object[]> RoleList() throws Exception {
-		logger.info(new Date() +"Inside RoleList");
 		return dao.RoleList();
 	}
 	@Override
@@ -94,7 +89,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Long UserManagerInsert(UserManageAdd UserManageAdd, String Userid) throws Exception 
 	{
-		
+		logger.info(new Date() +"Inside SERVICE UserManagerInsert ");
 		if(dao.UserNamePresentCount(UserManageAdd.getUserName())==0) {
 		Login login=new Login();
 		DivisionEmployee logindivision=new DivisionEmployee();
@@ -131,7 +126,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public Long LoginTypeAddSubmit(PfmsLoginRoleSecurityDto loginrolesecurity,String UserId) throws Exception {
-		logger.info(new Date() +"Inside LoginTypeAddSubmit");
+		logger.info(new Date() +"Inside SERVICE LoginTypeAddSubmit ");
 		PfmsLoginRoleSecurity loginrole =new PfmsLoginRoleSecurity();
 		loginrole.setLoginId(Long.parseLong(loginrolesecurity.getLoginId()));
 		loginrole.setRoleId(Long.parseLong(loginrolesecurity.getRoleId()));
@@ -146,7 +141,7 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public Long LoginTypeRevoke(String LoginId,String UserId) throws Exception {
-		logger.info(new Date() +"Inside LoginTypeRevoke");
+		logger.info(new Date() +"Inside SERVICE LoginTypeRevoke ");
 		Login login=new Login();
 		login.setModifiedBy(UserId);
 		login.setModifiedDate(sdf1.format(new Date()));
@@ -157,13 +152,12 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public List<Object[]> LoginTypeEditData(String LoginId) throws Exception {
-		logger.info(new Date() +"Inside LoginTypeEditData");
 		return dao.LoginTypeEditData(LoginId);
 	}
 	
 	@Override
 	public Long LoginTypeEditSubmit(PfmsLoginRoleSecurityDto loginrolesecurity,String LoginId,String UserId) throws Exception {
-		logger.info(new Date() +"Inside LoginTypeEditSubmit");
+		logger.info(new Date() +"Inside SERVICE LoginTypeEditSubmit ");
 		PfmsLoginRoleSecurity loginrole =new PfmsLoginRoleSecurity();
 		
 		loginrole.setRoleId(Long.parseLong(loginrolesecurity.getRoleId()));
@@ -178,7 +172,6 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public List<Object[]> NotificationList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside NotificationList");
 
 		return dao.NotificationList(EmpId);
 	}
@@ -197,10 +190,11 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public long RtmddoInsert(PfmsRtmddoDto dto) throws Exception {
+		logger.info(new Date() +"Inside SERVICE RtmddoInsert ");
 		try {
 		dao.RtmddoUpdate(dto.getType());
 		}catch (Exception e) {
-			logger.info(new Date() +"Inside RtmddoUpdate",e);
+			logger.error(new Date() +"Inside SERVICE RtmddoInsert "+e);
 		}
 		PfmsRtmddo rtmddo=new PfmsRtmddo();
 		rtmddo.setEmpId(Long.parseLong(dto.getEmpId()));
@@ -216,13 +210,13 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
     public List<Object[]> GetExpertList() throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside GetExpertList Service");
         return (List<Object[]>)this.dao.GetExpertList();
     }
     
     
     @Override
     public String GenExpertNo() throws Exception {
+    	logger.info(new Date() +"Inside SERVICE GenExpertNo ");
     	long count=dao.GetExpertsCount();
     	String expno="N"+String.format("%04d", count);
 		return expno;
@@ -230,13 +224,11 @@ public class AdminServiceImpl implements AdminService{
     
     @Override
     public List<Object[]> GetDesignation() throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside GetDesignation Service");
         return (List<Object[]>)this.dao.GetDesignation();
     }
     
     @Override
     public int[] checkAbility( String expertNo,  String extensionNo) throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside check Ability of expertNo and extensionNo Service");
         final int[] result = { this.dao.abilityOfexpertNo(expertNo), this.dao.abilityOfextensionNo(extensionNo) };
         return result;
     }
@@ -249,7 +241,6 @@ public class AdminServiceImpl implements AdminService{
     
     @Override
     public Long addExpert( Expert newExpert) throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside addExpert Service");
         newExpert.setCreatedDate(this.fc.getSqlDateAndTimeFormat().format(new Date()));
         newExpert.setIsActive(1);
         return this.dao.addExpert(newExpert);
@@ -257,8 +248,8 @@ public class AdminServiceImpl implements AdminService{
     
     @Override
     public Long ExpertRevoke(final String expertId, final String userId) throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside Expert Revoke Service");
-        final Expert expert = new Expert();
+    	logger.info(new Date() +"Inside SERVICE ExpertRevoke ");
+    	final Expert expert = new Expert();
         expert.setExpertId(Long.parseLong(expertId));
         expert.setModifiedBy(userId);
         expert.setModifiedDate(this.sdf1.format(new Date()));
@@ -267,20 +258,18 @@ public class AdminServiceImpl implements AdminService{
     
     @Override
     public List<Object[]> getEditDetails( String expertId) throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside getEditDetailse Service");
         return (List<Object[]>)this.dao.getEditDetails(expertId);
     }
     
     @Override
     public Long editExpert( Expert newExpert) throws Exception {
-        AdminServiceImpl.logger.info(new Date() + "Inside Edit Expert  Service");
         newExpert.setModifiedDate(this.sdf1.format(new Date()));
         return this.dao.editExpert(newExpert);
     }
     
     @Override
 	public List<Object[]> AuditStampingList(String loginid,String Fromdateparam,String Todateparam)  throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE AuditStampingList ");
 		 LocalDate Fromdate = null;
 		 LocalDate Todate = null;
 		 
@@ -336,10 +325,8 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public int UserManagerDelete(String LoginId, String Userid) throws Exception {
+		logger.info(new Date() +"Inside SERVICE UserManagerDelete ");
       Login login=new Login();
-		  
-		
-		
 		login.setLoginId(Long.parseLong(LoginId));
 		login.setModifiedBy(Userid);
 		login.setModifiedDate(sdf1.format(new Date()));
@@ -349,6 +336,7 @@ public class AdminServiceImpl implements AdminService{
 	
 	@Override
 	public int UserManagerUpdate(UserManageAdd UserManageAdd,String Userid) throws Exception {
+		logger.info(new Date() +"Inside SERVICE UserManagerUpdate ");
 		Login login=new Login();
 		
 		login.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
@@ -402,6 +390,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public long DesignationEditSubmit(EmployeeDesigDto dto) throws Exception 
 	{
+		logger.info(new Date() +"Inside SERVICE DesignationEditSubmit ");
 		long ret=dao.DesignationEditSubmit(dto);
 		if(!dto.getDesigSr().equals(dto.getOldDesigSr()))
 		{		
@@ -427,6 +416,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public long DesignationAddSubmit(EmployeeDesigDto dto) throws Exception 
 	{
+		logger.info(new Date() +"Inside SERVICE DesignationAddSubmit ");
 		EmployeeDesig model=new EmployeeDesig();
 		model.setDesigCode(dto.getDesigCode());
 		model.setDesignation(dto.getDesignation());
@@ -440,6 +430,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Object[] DesignationAddCheck(String desigcode,String designation) throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE DesignationAddSubmit ");
 		Object[] returnobj=new Object[2];
 		returnobj[0]=dao.DesignationCodeCheck(desigcode)[0].toString();
 		returnobj[1]=dao.DesignationCheck(designation)[0].toString();
@@ -450,6 +441,7 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public Object[] DesignationEditCheck(String desigcode,String designation,String desigid) throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE DesignationEditCheck ");
 		Object[] returnobj=new Object[2];
 		returnobj[0]=dao.DesignationCodeEditCheck(desigcode,desigid)[0].toString();
 		returnobj[1]=dao.DesignationEditCheck(designation,desigid)[0].toString();
@@ -490,13 +482,13 @@ public class AdminServiceImpl implements AdminService{
 		@Override
 		public Object[] DivisionAddCheck(String dCode,String dName) throws Exception
 		{
-			logger.info(new Date() +"Inside DivisionAddCheck");	
 			return dao.DivisionAddCheck(dCode,dName).get(0);
 		}
 		
 		@Override
 		public long DivisionAddSubmit(DivisionMaster dmo) throws Exception 
 		{
+			logger.info(new Date() +"Inside SERVICE DivisionAddSubmit ");
 			DivisionMaster model=new DivisionMaster();
 			model.setDivisionCode(dmo.getDivisionCode());
 			model.setDivisionName(dmo.getDivisionName());
@@ -511,7 +503,7 @@ public class AdminServiceImpl implements AdminService{
 		@Override
 		public int DivisionMasterUpdate(DivisionMaster add, String Userid) throws Exception {
 			
-			
+			logger.info(new Date() +"Inside SERVICE DivisionMasterUpdate ");
 			DivisionMaster divisionmaster = new DivisionMaster();
 			
 			divisionmaster.setDivisionCode(add.getDivisionCode());
@@ -535,7 +527,7 @@ public class AdminServiceImpl implements AdminService{
 
 		@Override
 		public List<Object[]> FormDetailsList(String LoginType,String ModuleId) throws Exception {
-			
+			logger.info(new Date() +"Inside SERVICE FormDetailsList ");
 			String logintype="A";
 			if(LoginType!=null) {
 				logintype=LoginType;
@@ -558,8 +550,7 @@ public class AdminServiceImpl implements AdminService{
 		@Override
 		public Long FormRoleActive(String formroleaccessid) throws Exception {
 			
-			logger.info(new Date() +"Inside FormRoleActive");
-			
+			logger.info(new Date() +"Inside SERVICE FormRoleActive ");			
 			List<BigInteger> FormRoleActiveList=dao.FormRoleActiveList(formroleaccessid);
 			
 			Long Value=null;
@@ -575,14 +566,12 @@ public class AdminServiceImpl implements AdminService{
 	
 		@Override
 		public List<Object[]> AllLabList() throws Exception {
-			logger.info(new Date() +"Inside ClusterLabList");
 			
 			return dao.AllLabList();
 		}
 
 		@Override
 		public Long LabHqChange(String FormRoleAccessid, String Value) throws Exception {
-			logger.info(new Date() +"Inside LabHqChange");
 			
 			return dao.LabHqChange(FormRoleAccessid, Value);
 		}

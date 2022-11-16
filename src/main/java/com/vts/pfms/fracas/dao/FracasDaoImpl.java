@@ -52,7 +52,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside EmployeeList");
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
 		query.setParameter("LabCode",LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -62,7 +61,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public Object[] LabDetails()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LabDetails");
 		Query query=manager.createNativeQuery(LABDETAILS);
 		Object[] Labdetails =(Object[])query.getResultList().get(0);
 		return Labdetails ;
@@ -71,7 +69,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -84,7 +81,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public Object[] ProjectsData(String projectid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectsData");
 		Object[] ProjectsData=null;		
 		Query query=manager.createNativeQuery(PROJECTSDATA);
 		query.setParameter("projectid",projectid);
@@ -96,7 +92,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> FracasTypeList() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasTypeList");
 		Query query=manager.createNativeQuery(FRACASTYPELIST);
 		List<Object[]> FracasTypeList=(List<Object[]>) query.getResultList();
 		return FracasTypeList;
@@ -105,7 +100,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public long FracasMainAddSubmit(PfmsFracasMain model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasMainAddSubmit");
 		manager.persist(model);
 		manager.flush();
 		return model.getFracasMainId();
@@ -114,7 +108,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public long FracasAttachAdd(PfmsFracasAttach model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAttachAdd");
 		manager.persist(model);
 		manager.flush();
 		return model.getFracasAttachId();
@@ -124,7 +117,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectFracasItemsList");
 		Query query=manager.createNativeQuery(PROJECTFRACASITEMSLIST);
 		query.setParameter("projectid",projectid);
 		query.setParameter("LabCode",LabCode);
@@ -135,7 +127,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public PfmsFracasAttach FracasAttachDownload(String fracasattachid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAttachDownload");
 		PfmsFracasAttach attach= manager.find(PfmsFracasAttach .class,Long.parseLong(fracasattachid));
 		return attach;
 	}
@@ -143,7 +134,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public Object[] FracasItemData(String fracasmainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasItemData");
 		Query query=manager.createNativeQuery(FRACASITEMDATA);
 		query.setParameter("fracasmainid",fracasmainid);
 		Object[] FracasItemData=(Object[]) query.getSingleResult();
@@ -153,7 +143,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public long FracasAssignSubmit(PfmsFracasAssign model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAssignSubmit");
 		manager.persist(model);
 		manager.flush();
 		return model.getFracasAssignId();
@@ -163,7 +152,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> FracasAssignedList(String assignerempid,String fracasmainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasSubList");
 		Query query=manager.createNativeQuery(FRACASASSIGNEDLIST);
 		query.setParameter("assignerempid",assignerempid);
 		query.setParameter("fracasmainid",fracasmainid);
@@ -175,7 +163,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> FracasAssigneeList(String assigneeid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAssigneeList");
 		Query query=manager.createNativeQuery(FRACASASSIGNEELIST);
 		query.setParameter("assigneeid",assigneeid);
 		List<Object[]> FracasAssigneeList=(List<Object[]>) query.getResultList();
@@ -185,7 +172,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public Object[] FracasAssignData(String fracasassignid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAssignData");
 		Query query=manager.createNativeQuery(FRACASASSIGNDATA);
 		query.setParameter("fracasassignid",fracasassignid);
 		Object[] FracasAssignData=(Object[]) query.getSingleResult();
@@ -195,7 +181,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public long FracasSubSubmit(PfmsFracasSub model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasSubSubmit");
 		manager.persist(model);
 		manager.flush();
 		return model.getFracasSubId();
@@ -205,7 +190,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> FracasSubList(String fracasassignid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasSubList");
 		Query query=manager.createNativeQuery(FRACASSUBLIST);
 		query.setParameter("fracasassignid",fracasassignid);
 		List<Object[]> FracasSubList=(List<Object[]>) query.getResultList();
@@ -215,7 +199,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public int FracasAssignForwardUpdate(PfmsFracasAssignDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAssignForwardUpdate");
 		Query query=manager.createNativeQuery(FRACASASSIGNFORWARDUPDATE);
 		query.setParameter("fracasstatus",dto.getFracasStatus());	
 		query.setParameter("modifiedby",dto.getModifiedBy());	
@@ -231,7 +214,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> FracasToReviewList(String assignerempid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasSubList");
 		Query query=manager.createNativeQuery(FRACASTOREVIEWLIST);
 		query.setParameter("assignerempid",assignerempid);
 		List<Object[]> FracasToReviewList=(List<Object[]>) query.getResultList();
@@ -242,7 +224,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public int FracasSubDelete(String fracassubid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasSubDelete");
 		Query query=manager.createNativeQuery(FRACASSUBDELETE);
 		query.setParameter("fracassubid",fracassubid);		
 		return query.executeUpdate();
@@ -251,7 +232,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public int FracasMainDelete(PfmsFracasMainDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasMainDelete");
 		Query query=manager.createNativeQuery(FRACASMAINDELETE);
 		query.setParameter("fracasmainid",dto.getFracasMainId());
 		query.setParameter("modifiedby",dto.getModifiedBy());	
@@ -263,7 +243,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public Object[] FracasMainAssignCount(String fracasmainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasMainAssignCount");
 		Query query=manager.createNativeQuery(FRACASMAINASSIGNCOUNT);
 		query.setParameter("fracasmainid",fracasmainid);
 		return ( Object[])query.getSingleResult();
@@ -273,7 +252,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasMainDelete");
 		Query query=manager.createNativeQuery(FRACASMAINEDIT);
 		query.setParameter("fracasmainid",dto.getFracasMainId());
 		query.setParameter("fracastypeid",dto.getFracasTypeId());
@@ -289,7 +267,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public int FracasAttachDelete(String fracasattachid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FracasAttachDelete");
 		Query query=manager.createNativeQuery(FRACASATTACHDELETE);
 		query.setParameter("fracasattachid",fracasattachid);		
 		return query.executeUpdate();
@@ -298,7 +275,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public long FRACASNotificationInsert(PfmsNotification notification) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside FRACASNotificationInsert");
 		manager.persist(notification);
 		manager.flush();
 		return notification.getNotificationId();
@@ -308,7 +284,6 @@ public class FracasDaoImpl implements FracasDao {
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);

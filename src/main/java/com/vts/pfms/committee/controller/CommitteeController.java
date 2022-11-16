@@ -281,7 +281,7 @@ public class CommitteeController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +"Inside CommitteeEdit.htm "+UserId,e);
+			logger.error(new Date() +"Inside CommitteeList.htm "+UserId,e);
 			return "static/Error";
 		}
 	}
@@ -2326,14 +2326,14 @@ public class CommitteeController {
 			throws Exception 
 	{
 		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CommitteeAttendanceSubmit.htm "+UserId);
+		logger.info(new Date() +"Inside CommitteeAttendanceToggle.htm "+UserId);
 		try
 		{
 			String Invitationid = req.getParameter("invitationid");
 			service.CommitteeAttendanceToggle(Invitationid);
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeAttendanceSubmit.htm "+UserId,e);
+				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeAttendanceToggle.htm "+UserId,e);
 		}
 
 		return "committee/CommitteeAttendance";
@@ -3300,7 +3300,7 @@ public class CommitteeController {
 	
 			}
 		}catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +"Inside MeetingAgendaApprovalSubmit.htm "+UserId,e);
+				e.printStackTrace(); logger.error(new Date() +"Inside MeetingMinutesApprovalSubmit.htm "+UserId,e);
 		}
 
 		return "redirect:/MeetingApprovalAgenda.htm";
@@ -3968,7 +3968,7 @@ public class CommitteeController {
 	public String SendFormationLetter1(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside SendFormationLetter1.htm "+UserId);
+		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
 		try
 		{
 			String committeemainid=req.getParameter("committeemainid");	
@@ -4039,7 +4039,7 @@ public class CommitteeController {
 		catch (Exception e) 
 		{
 			e.printStackTrace(); 
-			logger.error(new Date() +"Inside SendFormationLetter1.htm "+UserId,e);
+			logger.error(new Date() +"Inside SendFormationLetter.htm "+UserId,e);
 		}
 		return "redirect:/CommitteeMainMembers.htm";
 	}
@@ -4239,7 +4239,7 @@ public class CommitteeController {
 	public @ResponseBody String ExternalEmployeeListFormation(HttpServletRequest req,HttpSession ses) throws Exception {
 
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside ExternalEmployeeListFormation "+ UserId);
+		logger.info(new Date() +" Inside ExternalEmployeeListFormation.htm"+ UserId);
 		
 		List<Object[]> ExternalEmployeeList= new ArrayList<Object[]>();
 		
@@ -4284,7 +4284,7 @@ public class CommitteeController {
 	public @ResponseBody String ExternalEmployeeListInvitations(HttpServletRequest req,HttpSession ses) throws Exception
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside ExternalEmployeeListInvitations "+ UserId);
+		logger.info(new Date() +" Inside ExternalEmployeeListInvitations.htm"+ UserId);
 		
 		List<Object[]> ExternalEmployeeList = new ArrayList<Object[]>();
 		
@@ -4984,7 +4984,7 @@ public class CommitteeController {
 	public String InvitationSerialNoUpdate(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses)throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside CommitteeAgendaPriorityUpdate.htm "+UserId);
+		logger.info(new Date() +"Inside InvitationSerialNoUpdate.htm "+UserId);
 			try
 			{
 				String committeescheduleid = req.getParameter("scheduleid");
@@ -5010,7 +5010,7 @@ public class CommitteeController {
 			catch (Exception e)
 			{
 				e.printStackTrace(); 
-				logger.error(new Date() +"Inside InitiationCommitteeMaster.htm "+UserId,e);
+				logger.error(new Date() +"Inside InvitationSerialNoUpdate.htm "+UserId,e);
 				return "static/Error";
 			}
 	}
@@ -5039,7 +5039,7 @@ public class CommitteeController {
 		public @ResponseBody String CommitteeRepNotAddedList(HttpServletRequest req,HttpSession ses) throws Exception {
 
 			String UserId = (String)ses.getAttribute("Username");
-			logger.info(new Date() +" Inside CommitteeRepNotAddedList "+ UserId);		
+			logger.info(new Date() +" Inside CommitteeRepNotAddedList.htm"+ UserId);		
 			List<Object[]> CommitteeRepNotAddedList = service.CommitteeRepNotAddedList(req.getParameter("committeemainid"));
 			Gson json = new Gson();
 			return json.toJson(CommitteeRepNotAddedList);	
@@ -5943,7 +5943,7 @@ public class CommitteeController {
 			}
 			catch (Exception e) {
 				e.printStackTrace(); 
-				logger.error(new Date() +"Inside EmployeeScheduleReportDownload "+UserId,e);
+				logger.error(new Date() +"Inside EmployeeScheduleReportDownload.htm "+UserId,e);
 			}
 			
 		
@@ -5954,7 +5954,7 @@ public class CommitteeController {
 		{
 			String UserId = (String) ses.getAttribute("Username");
 
-			logger.info(new Date() +"Inside FileUnpack.htm "+UserId);
+			logger.info(new Date() +"Inside AgendaDocLinkDownload.htm "+UserId);
 			
 			try {	
 				String filerepid=req.getParameter("filerepid");
@@ -5982,7 +5982,7 @@ public class CommitteeController {
 			catch (Exception e) {
 				
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside FileUnpack.htm "+UserId, e); 
+				logger.error(new Date() +" Inside AgendaDocLinkDownload.htm "+UserId, e); 
 				
 			}
 
@@ -6082,7 +6082,7 @@ public class CommitteeController {
 		{
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside PreDefinedAgendaEdit.htm "+UserId);			
+			logger.info(new Date() +"Inside PreDefinedAgendaAdd.htm "+UserId);			
 			try {	
 				String committeeid=req.getParameter("committeeid");
 				String agendaitem=req.getParameter("agendaitem");
@@ -6114,7 +6114,7 @@ public class CommitteeController {
 			}
 			catch (Exception e) {				
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside PreDefinedAgendaEdit.htm "+UserId, e); 
+				logger.error(new Date() +" Inside PreDefinedAgendaAdd.htm "+UserId, e); 
 				return "static/Error";
 			}
 

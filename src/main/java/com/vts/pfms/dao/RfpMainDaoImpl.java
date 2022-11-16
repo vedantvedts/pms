@@ -1,6 +1,7 @@
 package com.vts.pfms.dao;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,8 +9,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.controller.ActionController;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
@@ -21,6 +25,8 @@ import com.vts.pfms.project.model.ProjectHealth;
 @Repository
 public class RfpMainDaoImpl implements RfpMainDao {
 
+	private static final Logger logger=LogManager.getLogger(RfpMainDaoImpl.class);
+	
 	private static final String DASHBOARDFORMURLLIST = "select a.formdispname,a.formurl,a.formcolor from form_detail a,form_role_access b,login c where c.loginid=:loginid and a.formmoduleid=:formmoduleid AND b.formroleid=c.formroleid AND a.formdetailid=b.formdetailid AND a.isactive='1' AND b.isactive='1' ORDER BY a.FormSerialNo  ";
 	private static final String USERMANAGELIST = "select a.loginid, a.username, b.divisionname,c.formrolename  from login a , division_master b , formrole c where a.divisionid=b.divisionid and a.formroleid=c.formroleid and a.isactive=1";
 	private static final String LASTLOGINEMPID = "select a.auditstampingid from  auditstamping a where a.auditstampingid=(select max(b.auditstampingid) from auditstamping b WHERE b.loginid=:loginid)";
@@ -157,6 +163,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 			manager.flush();
 			
 		}catch(Exception e) {
+			logger.info(new Date() +"Inside ActionLaunch.htm "+ e);	
 			e.printStackTrace();
 		}
 

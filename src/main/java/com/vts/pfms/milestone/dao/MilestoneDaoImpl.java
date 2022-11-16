@@ -123,7 +123,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneActivityList");
 		Query query=manager.createNativeQuery(MALIST);
 		query.setParameter("ProjectId", ProjectId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -134,7 +133,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ProjectList() throws Exception {
 
-		logger.info(new Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTMASTER);
 		
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -145,7 +143,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityAssigneeList(String ProjectId,String EmpId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneActivityList");
 		Query query=manager.createNativeQuery(MAASSIGNEELIST);
 		query.setParameter("ProjectId", ProjectId);
 		query.setParameter("empid", EmpId);
@@ -157,7 +154,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ProjectAssigneeList(String EmpId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTASSINEE);
 		query.setParameter("empid", EmpId);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -167,7 +163,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> EmployeeList() throws Exception {
 
-		logger.info(new Date() +"Inside EmployeeList");
 		Query query=manager.createNativeQuery(EMPLOYEELISTALL);
 		
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();		
@@ -177,7 +172,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public long MilestoneActivity(com.vts.pfms.milestone.model.MilestoneActivity Milestone) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivity Add");
 		manager.persist(Milestone);
 		manager.flush();
 		return Milestone.getMilestoneActivityId();
@@ -186,7 +180,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneCount(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneCount");
 		Query query = manager.createNativeQuery(MILESTONECOUNT);
 		query.setParameter("ProjectId", ProjectId);
 		BigInteger count=(BigInteger)query.getSingleResult();
@@ -196,7 +189,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivity(String MilestoneActivityId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneActivity ");
 		Query query=manager.createNativeQuery(MA);
 		query.setParameter("id", MilestoneActivityId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -206,7 +198,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public long MilestoneActivityLevelInsert(MilestoneActivityLevel MileActivityA) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityA Add");
 		manager.persist(MileActivityA);
 		manager.flush();
 		return MileActivityA.getActivityId();
@@ -214,7 +205,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityLevel ");
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVEL);
 		query.setParameter("id", MilestoneActivityId);
 		query.setParameter("levelid", LevelId);
@@ -226,7 +216,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneRevisionCount(String MileActivityId) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneRevisionCount");
 		Query query = manager.createNativeQuery(MAREVISION);
 		query.setParameter("id", MileActivityId);
 		Integer count=(Integer)query.getSingleResult();
@@ -235,7 +224,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public MilestoneActivity MileActivityDetails(Long Id) throws Exception {
-		logger.info(new Date() +" Inside MileActivityDetails " );	
 
         Query query=manager.createQuery(MADETAILS);
 		query.setParameter("Id",Id);
@@ -246,7 +234,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long PfmsNotificationAdd(PfmsNotification notification) throws Exception {
-		logger.info(new Date() +" Inside PfmsNotificationAdd " );	
 		manager.persist(notification);
 		manager.flush();
         return notification.getNotificationId();
@@ -255,7 +242,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public long MilestoneActivityRev(com.vts.pfms.milestone.model.MilestoneActivityRev Milestone) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityRev Add");
 		manager.persist(Milestone);
 		manager.flush();
 		return Milestone.getMilestoneActivityRevId();
@@ -264,7 +250,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public long MilestoneActivitySubRev(MilestoneActivitySubRev Milestone)
 			throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivitySubRev Add");
 		manager.persist(Milestone);
 		manager.flush();
 		return Milestone.getActivityRevId();
@@ -273,7 +258,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MilestoneActivityData(String ActivityId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityData  ");
 		Query query=manager.createNativeQuery(MILEACTIVITYDATA);
 		query.setParameter("id", ActivityId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -283,7 +267,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ActivityLevelData(String ActivityId) throws Exception {
-		logger.info(new Date() +"Inside Activity Level Data");
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVELDATA);
 		query.setParameter("id", ActivityId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -294,7 +277,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ActivityTypeList() throws Exception {
-		logger.info(new Date() +"Inside Activity Type");
 		Query query=manager.createNativeQuery(MILEACTIVITYTYPE);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
 
@@ -304,7 +286,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneActivityMainUpdate(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityMainUpdate");
 		Query query=manager.createNativeQuery(MAINUPDATE);
 		query.setParameter("id",dto.getMilestoneActivityId());
 		query.setParameter("type", dto.getActivityTypeId());
@@ -325,7 +306,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityLevelFullEdit(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityMainUpdate");
 		Query query=manager.createNativeQuery(ACTIVITYLEVELFULLEDIT);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("type", dto.getActivityTypeId());
@@ -346,7 +326,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityLevelEditUpdate(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityLevel EDIT");
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVELEDIT);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("name",dto.getActivityName());
@@ -363,7 +342,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneActivityUpdate(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate");
 		Query query=manager.createNativeQuery(MILEACTIVITYUPDATE);
 		query.setParameter("id",dto.getMilestoneActivityId());
 		query.setParameter("from",dto.getStartDate());
@@ -378,7 +356,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityUpdateA(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate A");
 		Query query=manager.createNativeQuery(MILEACTIVITYAUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("from",dto.getStartDate());
@@ -393,7 +370,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityUpdateB(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate B");
 		Query query=manager.createNativeQuery(MILEACTIVITYBUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("from",dto.getStartDate());
@@ -408,7 +384,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityUpdateC(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate C");
 		Query query=manager.createNativeQuery(MILEACTIVITYCUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("from",dto.getStartDate());
@@ -422,7 +397,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ActivityCompareMAin(String ActivityId,String Rev,String Rev1) throws Exception {
-		logger.info(new Date() +"Inside ActivityCompareMAin  ");
 		Query query=manager.createNativeQuery(MILECOMPAREMAIN);
 		query.setParameter("id", ActivityId);
 		query.setParameter("rev", Rev);
@@ -434,7 +408,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ActivityLevelCompare(String ActivityId,String Rev,String Rev1,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside Activity Level Compare ");
 		Query query=manager.createNativeQuery(MILELEVELCOMPARE);
 		query.setParameter("id", ActivityId);
 		query.setParameter("rev", Rev);
@@ -449,7 +422,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MilestoneActivityEmpIdList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityEmpIdList");
 		Query query=manager.createNativeQuery(MAEMPLIST);
 		query.setParameter("EmpId", EmpId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -461,7 +433,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> StatusList() throws Exception {
 
-		logger.info(new Date() +"Inside StatusList");
 		Query query=manager.createNativeQuery(STATUSLIST);
 		
 		List<Object[]> StatusList=(List<Object[]>)query.getResultList();		
@@ -472,7 +443,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityProgressMainUpdate(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate");
 		Query query=manager.createNativeQuery(PROACTIVITYUPDATE);
 		query.setParameter("id",dto.getMilestoneActivityId());
 		query.setParameter("doc",dto.getDateOfCompletion());
@@ -488,7 +458,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int ActivityProgressUpdateLevel(MileEditDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneActivityUpdate Level");
 		Query query=manager.createNativeQuery(PROACTIVITYLEVELUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("doc",dto.getDateOfCompletion());
@@ -505,7 +474,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneReportsList(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneReportsList");
 		Query query=manager.createNativeQuery(REPORTSLIST);
 		query.setParameter("empid", ProjectId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -517,7 +485,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneTotalWeightage");
 		Query query=manager.createNativeQuery(MILESTONETOTALWEIGHTAGE);
 		query.setParameter("MilestoneActivityId", MilestoneActivityId);		
  		int MilestoneTotalWeightage=Integer.parseInt(query.getSingleResult().toString());
@@ -526,7 +493,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public long MilestoneActivitySubInsert(MilestoneActivitySub sub) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivitySubInsert");
 		manager.persist(sub);
 		manager.flush();
 		return sub.getActivitySubId();
@@ -534,7 +500,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MilestoneActivitySub(String ActivityId,String Type) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivitySub");
 		Query query=manager.createNativeQuery(SUBLIST);
 		query.setParameter("id", ActivityId);
 		//query.setParameter("type", ActivityId);
@@ -546,7 +511,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public com.vts.pfms.milestone.model.MilestoneActivitySub ActivityAttachmentDownload(Long ActivitySubId)
 			throws Exception {
-		logger.info(new Date() +" Inside ActivityAttachmentDownload" );	
         Query query=manager.createQuery(SUBDATA);
 		query.setParameter("id",ActivitySubId);
 		MilestoneActivitySub NoList=(MilestoneActivitySub)query.getSingleResult();
@@ -555,7 +519,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside Project Details");
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
 		query.setParameter("projectid",ProjectId);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -565,7 +528,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int MilestoneActivityAssign(MilestoneActivityDto dto) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityAssign");
 		Query query=manager.createNativeQuery(ASSIGNUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("modifiedby",dto.getCreatedBy());
@@ -576,7 +538,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int MilestoneActivityAccept(MilestoneActivityDto dto, String dt) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityAssign");
 		Query query=manager.createNativeQuery(ACCEPTUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("acceptedby",dto.getOicEmpId());
@@ -589,7 +550,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int MilestoneActivityBack(MilestoneActivityDto dto) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityAssign");
 		Query query=manager.createNativeQuery(SENDBACKUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("statusremarks",dto.getStatusRemarks());
@@ -602,7 +562,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> ActionList(String actiontype,String activityid) throws Exception {
-		logger.info(new Date() +"Inside ActionList");
 		Query query=manager.createNativeQuery(ACTIONLIST);
 		query.setParameter("actiontype",actiontype);
 		query.setParameter("activityid",activityid);
@@ -613,14 +572,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public long ActivityTransactionInsert(ActivityTransaction trans) throws Exception {
-		logger.info(new Date() +"Inside ActivityTransactionInsert");
 		manager.persist(trans);
 		manager.flush();
 		return trans.getActivityTransactionId();
 	}
 	@Override
 	public int ActivityMainSum(String Id,String ActivityId) throws Exception {
-	logger.info(new Date() +"Inside ActivityMainSum");
 	Query query = manager.createNativeQuery(MILESUM);
 	query.setParameter("projectid", ActivityId);
 	query.setParameter("id", Id);
@@ -630,7 +587,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int ActivityLevelSum(String Id, String ActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside ActivityLevelSum");
 		Query query = manager.createNativeQuery(ACTIVITYLEVELSUM);
 		query.setParameter("activityid", ActivityId);
 		query.setParameter("id", Id);
@@ -643,7 +599,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> BaseLineMain(String ActivityId) throws Exception {
-		logger.info(new Date() +"Inside BaseLineMain");
 		Query query=manager.createNativeQuery(BASELINEMAIN);
 		query.setParameter("inActivityId", ActivityId);
 		List<Object[]> BaseLineC=(List<Object[]>)query.getResultList();		
@@ -653,7 +608,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> BaseLineLevel(String ActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside BaseLineA");
 		Query query=manager.createNativeQuery(BASELINELEVEL);
 		query.setParameter("inActivityId", ActivityId);
 		query.setParameter("levelid", LevelId);
@@ -664,7 +618,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> WeightageLevel(String ActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside WeightageLevel");
 		Query query=manager.createNativeQuery(WEIGHTAGELEVEL);
 		query.setParameter("inActivityId", ActivityId);
 		query.setParameter("levelid", LevelId);
@@ -675,7 +628,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int ProgressMain(String ActivityId, String Status, int Progress) throws Exception {
-		logger.info(new Date() +"Inside ProgressMain");
 		Query query=manager.createNativeQuery(PROGRESSMAIN);
 		query.setParameter("id",ActivityId);
 		query.setParameter("status",Status);
@@ -686,7 +638,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int ProgressLevel(String ActivityId, String Status, int Progress) throws Exception {
-		logger.info(new Date() +"Inside ProgressLevel");
 		Query query=manager.createNativeQuery(PROGRESSLEVEL);
 		query.setParameter("id",ActivityId);
 		query.setParameter("status",Status);
@@ -699,7 +650,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int RevMainUpdate(String ActivityId, String Rev) throws Exception {
-		logger.info(new Date() +"Inside RevMainUpdate");
 		Query query=manager.createNativeQuery(REVMAINUPDATE);
 		query.setParameter("id",ActivityId);
 		query.setParameter("rev",Rev);
@@ -709,7 +659,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int RevLevelUpdate(String ActivityId, String Rev) throws Exception {
-		logger.info(new Date() +"Inside RevAUpdate");
 		Query query=manager.createNativeQuery(REVLEVELUPDATE);
 		query.setParameter("id",ActivityId);
 		query.setParameter("rev",Rev);
@@ -721,7 +670,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public int FileRepRevUpdate(String ActivityId, Long release,Long version) throws Exception {
-		logger.info(new Date() +"Inside FileRepRevUpdate");
 		Query query=manager.createNativeQuery(FILEREPREV);
 		query.setParameter("id",ActivityId);
 		query.setParameter("release",release);
@@ -732,7 +680,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public String FilePass(String Userid) throws Exception {
-		logger.info(new Date() +"Inside FilePass");
 		Query query=manager.createNativeQuery(FILEPASS);
 		query.setParameter("userid", Userid);
 		String FilePass=(String)query.getSingleResult();
@@ -742,7 +689,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public List<Object[]> FileDeatils(String FileId) throws Exception {
-		logger.info(new Date() +"Inside FileList");
 		Query query=manager.createNativeQuery(FILEDETAILS);
 		query.setParameter("fileid", FileId);
 		List<Object[]> FileSub=(List<Object[]>)query.getResultList();		
@@ -754,7 +700,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneScheduleList(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneScheduleList");
 		Query query=manager.createNativeQuery(MILESTONESCHEDULELIST);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> MilestoneScheduleList=(List<Object[]>)query.getResultList();		
@@ -765,7 +710,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public Long MilestoneScheduleInsert(MilestoneSchedule Milestone) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneScheduleInsert");
 		manager.persist(Milestone);
 		manager.flush();
 		return Milestone.getMilestoneScheduleId();
@@ -774,7 +718,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int MilestoneScheduleCount(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside MilestoneScheduleCount");
 		Query query = manager.createNativeQuery(MILESTONESCHEDULECOUNT);
 		query.setParameter("projectid", ProjectId);
 		BigInteger count=(BigInteger)query.getSingleResult();
@@ -783,7 +726,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MilestoneExcel(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneExcel");
 		Query query=manager.createNativeQuery(MILESTONEEXCEL);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> MilestoneExcel=(List<Object[]>)query.getResultList();		
@@ -793,7 +735,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MainSystem(String projectid) throws Exception {
-		logger.info(new Date() +"Inside MainSystem");
 		Query query=manager.createNativeQuery(MAINSYSTEM);
 		query.setParameter("projectid", projectid);
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
@@ -805,7 +746,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long RepMasterInsert(FileRepMaster RepMaster) throws Exception {
-		logger.info(new Date() +"Inside RepMaster Add");
 		manager.persist(RepMaster);
 		manager.flush();
 		return RepMaster.getFileRepMasterId();
@@ -813,7 +753,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<Object[]> MainSystemLevel(String ParentId) throws Exception {
-		logger.info(new Date() +"Inside MainSystemLevel");
 	
 		Query query=manager.createNativeQuery(MAINSYSTEMLEVEL);
 		query.setParameter("parentid", ParentId);
@@ -824,7 +763,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -836,7 +774,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ProjectEmpList(String projectid ,String Labcode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectEmpList");
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
 		query.setParameter("projectid", projectid);
 		query.setParameter("labcode", Labcode);
@@ -850,7 +787,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> ProjectEmpListEdit(String projectid,String id)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectEmpList");
 		Query query=manager.createNativeQuery(PROJECTEMPLISTEDIT);
 		query.setParameter("projectid", projectid);
 		query.setParameter("id", id);
@@ -861,7 +797,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> AllEmpNameDesigList(String labcode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside AllEmpNameDesigList");
 		Query query=manager.createNativeQuery(ALLEMPNAMEDESIGLIST);
 		query.setParameter("labcode", labcode);
 		System.out.println(labcode);
@@ -872,7 +807,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public List<MilestoneActivityLevel> ActivityLevelList(Long Id, Long LevelId) {
-		logger.info(new Date() +" Inside MilestoneActivityLevel List" );	
         Query query=manager.createQuery(MILELEVEL);
 		query.setParameter("Id",Id);
 		query.setParameter("LevelId",LevelId);
@@ -883,7 +817,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> DocumentTypeList(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DocumentTypeList");
 		Query query=manager.createNativeQuery(DOCUMENTTYPELIST);
 		query.setParameter("projectid",projectid);
 		query.setParameter("LabCode",LabCode);
@@ -894,7 +827,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> DocumentTitleList(String ProjectId,String Sub,String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside DocumentStageList");
 		Query query=manager.createNativeQuery(DOCUMENTTITLELIST);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("sub", Sub);
@@ -907,7 +839,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> DocumentStageList(String documenttype,String levelid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside DocumentStageList");
 		Query query=manager.createNativeQuery(DOCUMENTSTAGELIST);
 		query.setParameter("documenttype", documenttype);
 		query.setParameter("levelid", levelid);
@@ -919,7 +850,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long FileSubInsertNew(FileRepNew fileRepo) throws Exception {
-		logger.info(new Date() +"Inside FileSubInsertNew");
 		manager.persist(fileRepo);
 		manager.flush();
 		return fileRepo.getFileRepId();
@@ -928,7 +858,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long FileUploadInsertNew(FileRepUploadNew fileRepUplod) throws Exception {
-		logger.info(new Date() +"Inside FileUploadInsertNew");
 		manager.persist(fileRepUplod);
 		manager.flush();
 		return fileRepUplod.getFileRepUploadId();
@@ -937,7 +866,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> VersionCheckList(String ProjectId, String SubsystemId,String documenttitle) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside VersionCheckList");
 		Query query=manager.createNativeQuery(VERSIONCHECKLIST);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("subsysteml1", SubsystemId);
@@ -950,7 +878,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> FileHistoryList(String filerepid) throws Exception 
 	{		
-		logger.info(new java.util.Date() +"Inside FileHistoryList");
 		Query query=manager.createNativeQuery(FILEHISTORYLIST);
 		query.setParameter("filerepid", filerepid);		
 		List<Object[]> FileHistoryList=(List<Object[]>)query.getResultList();
@@ -962,7 +889,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode )throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FileRepMasterListAll");
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
 		query.setParameter("projectid", projectid);
 		query.setParameter("LabCode", LabCode);
@@ -975,7 +901,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> FileDocMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FileDocMasterListAll");
 		Query query=manager.createNativeQuery(FILEDOCMASTERLISTALL);
 		query.setParameter("projectid", projectid);
 		query.setParameter("LabCode", LabCode);
@@ -985,7 +910,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long ProjectDocumetsAdd(FileProjectDoc model) throws Exception {
-		logger.info(new Date() +"Inside ProjectDocumetsAdd");
 		manager.persist(model);
 		manager.flush();
 		return model.getProjectDocId();
@@ -995,7 +919,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public List<Object[]> DocumentAmendment(String FileRepUploadId) throws Exception {
-		logger.info(new java.util.Date() +"Inside DocumentAmendment");
 		Query query=manager.createNativeQuery(PROJECTDOCUMETSADD);
 		query.setParameter("FileRepUploadId", FileRepUploadId);
 		List<Object[]> FileDocMasterListAll=(List<Object[]>)query.getResultList();
@@ -1004,7 +927,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public long DocumetAmmendAdd(FileDocAmendment model) throws Exception {
-		logger.info(new Date() +"Inside DocumetAmmendAdd");
 		manager.persist(model);
 		manager.flush();
 		return model.getDocAmendmentId();
@@ -1013,7 +935,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public Object[] DocumentAmendmentData(String docammendmentid) throws Exception {
-		logger.info(new java.util.Date() +"Inside DocumentAmendmentData");
 		Query query=manager.createNativeQuery(DOCUMENTAMENDMENTDATA);
 		query.setParameter("docammendmentid", docammendmentid);
 		List<Object[]> DocumentAmendmentData=(List<Object[]>)query.getResultList();
@@ -1027,7 +948,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public Object[] RepMasterData(String filerepmasterid) throws Exception {
-		logger.info(new java.util.Date() +"Inside RepMasterData");
 		Query query=manager.createNativeQuery(REPMASTERDATA);
 		query.setParameter("filerepmasterid", filerepmasterid);
 		List<Object[]> RepMasterData=(List<Object[]>)query.getResultList();
@@ -1041,7 +961,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	
 	@Override
 	public List<Object[]> RepMasterAllDocLists(String filerepmasterid) throws Exception {
-		logger.info(new java.util.Date() +"Inside RepMasterAllDocLists");
 		Query query=manager.createNativeQuery(REPMASTERALLDOCLISTS);
 		query.setParameter("filerepmasterid", filerepmasterid);
 		List<Object[]> RepMasterAllDocLists=(List<Object[]>)query.getResultList();
@@ -1053,7 +972,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
  	@Override
 	public List<Object[]> MainSystem1(String filerepmasterid) throws Exception
  	{
-		logger.info(new Date() +"Inside MainSystem1");
 		Query query=manager.createNativeQuery(MAINSYSTEM1);
 		query.setParameter("filerepmasterid", filerepmasterid);
 		List<Object[]> MainSystem=(List<Object[]>)query.getResultList();		
@@ -1064,7 +982,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public int fileRepMasterEditSubmit(String filerepmasterid,String levelname) throws Exception
  	{
-		logger.info(new Date() +"Inside fileRepMasterEditSubmit");
 		FileRepMaster repmaster=manager.find(FileRepMaster.class,Long.parseLong(filerepmasterid));	
 		repmaster.setLevelName(levelname);
 		repmaster=manager.merge(repmaster);
@@ -1080,7 +997,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<FileDocMaster> fileDocMasterList(String LabCode) throws Exception
  	{
-		logger.info(new Date() +"Inside fileDocMasterList");
 		Query query = manager.createQuery(FILEDOCMASTERLIST);
 		query.setParameter("LabCode", LabCode);
 		return (List<FileDocMaster>)query.getResultList();
@@ -1090,7 +1006,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public long FileDocMasterAdd(FileDocMaster model) throws Exception
 	{
-		logger.info(new Date() +"Inside FileDocMasterAdd");
 		manager.persist(model);
 		manager.flush();
 		return model.getFileUploadMasterId();
@@ -1100,7 +1015,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname,String LabCode) throws Exception
  	{
-		logger.info(new Date() +"Inside FileLevelSublevelNameCheck");
 //		CriteriaBuilder cb = manager.getCriteriaBuilder();
 //	    CriteriaQuery<FileDocMaster> cq = cb.createQuery(FileDocMaster.class);
 //	    Root<FileDocMaster> rootEntry = cq.from(FileDocMaster.class);
@@ -1122,7 +1036,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public Object[] fileNameCheck(String levelname, String shortname, String docid, String parentlevelid,String LabCode ) throws Exception
  	{
-		logger.info(new Date() +"Inside MainSystem1");
 		Query query=manager.createNativeQuery(FILENAMECHECK);
 		query.setParameter("levelname", levelname);
 		query.setParameter("shortname", shortname);
@@ -1142,7 +1055,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	@Override
 	public List<Object[]> MilestoneActivityListNew(String ProjectId) throws Exception 
 	{
-		logger.info(new Date() +"Inside MilestoneActivityListNew");
 		Query query=manager.createNativeQuery(MILESTONEACTIVITYLISTNEW);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -1154,7 +1066,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String MILESTONEACTIVITYLEVELEXCEL = "SELECT a.activityid AS obid,a.parentactivityid,a.startdate,a.enddate,a.activityname,a.progressstatus,a.Weightage,a.dateofcompletion, b.activitystatus,a.activitystatusid,a.revision AS rev,d.activitytypeid, d.activitytype,a.oicempid,e.empname,a.oicempid1 ,a.activitylevelid FROM milestone_activity_level a,milestone_activity_status b, milestone_activity_type d ,employee e WHERE a.activitystatusid=b.activitystatusid AND a.activitytype=d.activitytypeid AND a.oicempid=e.empid AND   a.parentactivityid=:MilestoneActivityId AND a.activitylevelid=:levelid ";
 	@Override
 	public List<Object[]> MilestoneActivityLevelExcel(String MilestoneActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityLevel ");
 		Query query=manager.createNativeQuery(MILESTONEACTIVITYLEVELEXCEL);
 		query.setParameter("MilestoneActivityId", MilestoneActivityId);
 		query.setParameter("levelid", LevelId);
@@ -1167,7 +1078,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 
 	@Override
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto) throws Exception {
-		logger.info(new Date() +"Inside MilestoneRemarkUpdate");
 		Query query=manager.createNativeQuery(MILEREMARKUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("remarks",dto.getStatusRemarks());

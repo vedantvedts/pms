@@ -48,7 +48,6 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	@Override
 	public List<Object[]> FormModuleList(String LoginType,String LabCode) throws Exception {
-		logger.info(new Date() +"Inside FormModuleList");	
 		Query query = manager.createNativeQuery(FROMMODULELIST);
 		query.setParameter("logintype", LoginType);
 		query.setParameter("labcode", LabCode);
@@ -58,7 +57,6 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	@Override
 	public List<Object[]> loginTypeList() throws Exception {
-		logger.info(new Date() +"Inside loginTypeList");	
 		Query query = manager.createNativeQuery(LOGINTYPELIST);
 	
 		List<Object[]> loginTypeList= query.getResultList();
@@ -68,7 +66,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> DashboardDemandCount() throws Exception {
 		
-		logger.info(new Date() +"Inside DashboardDemandCount");	
 		Query query=manager.createNativeQuery("CALL DashboardDemandCount()");
 	
 		List<Object[]> DashboardDemandCount=(List<Object[]>)query.getResultList();	
@@ -79,7 +76,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> NotificationList(String Empid) throws Exception {
 		
-		logger.info(new Date() +"Inside NotificationList");	
 		
 		Query query = manager.createNativeQuery(NOTIFICATIONLIST);
 		
@@ -92,7 +88,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public int NotificationUpdate(String NotificationId) throws Exception {
 		
-		logger.info(new Date() +"Inside NotificationUpdate");	
 		Query query = manager.createNativeQuery(NOTIFICATIONUPDATE);
 		
 		query.setParameter("notificationid", NotificationId);
@@ -104,7 +99,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> NotificationAllList(String Empid) throws Exception {
 		
-		logger.info(new Date() +"Inside NotificationAllList");
 		Query query = manager.createNativeQuery(NOTIFICATIONLISTALL);
 		query.setParameter("empid", Empid);
 		List<Object[]> NotificationList= query.getResultList();
@@ -114,7 +108,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> EmployeeDetailes(String LoginId) throws Exception {
 		
-		logger.info(new Date() +"Inside EmployeeDetailes");
 		Query query = manager.createNativeQuery(EMPDETAILES);
 		query.setParameter("loginid", LoginId);
 		List<Object[]> EmployeeDetailes= query.getResultList();
@@ -124,7 +117,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public String DivisionName(String DivisionId) throws Exception {
 		
-		logger.info(new Date() +"Inside DivisionName");
 		Query query = manager.createNativeQuery(DIVISIONNAME);
 		query.setParameter("divisionid", DivisionId);
 		String DivisionName= (String) query.getSingleResult();
@@ -134,7 +126,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> TodaySchedulesList(String EmpId, String TodayDate) throws Exception {
 
-		logger.info(new Date() +"Inside TodaySchedulesList");
 		Query query=manager.createNativeQuery("CALL Pfms_Schedule_Today(:empid,:date)");
 		query.setParameter("empid",EmpId);
 		query.setParameter("date", TodayDate);
@@ -144,7 +135,6 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	@Override
 	public List<Object[]> TodayActionList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside TodayActionList");
 		Query query=manager.createNativeQuery("CALL Pfms_Action_PDC(:empid)");
 		query.setParameter("empid",EmpId);
 		
@@ -153,7 +143,6 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	@Override
 	public String OldPassword(String UserId) throws Exception {
-		logger.info(new Date() +"Inside OldPassword");
 		Query query = manager.createNativeQuery(OLDPASSWORD);
 		query.setParameter("username", UserId);
 		
@@ -165,7 +154,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	public int PasswordChange(String OldPassword, String NewPassword ,String UserName, String ModifiedDate)
 			throws Exception {
 		
-		logger.info(new Date() +"Inside PasswordChange");
 		Query query = manager.createNativeQuery(PASSWORDUPDATECHANGE);
 		
 		query.setParameter("newpassword", NewPassword);
@@ -179,7 +167,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public String FormRoleName(String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside FormRoleName");
 		Query query=manager.createNativeQuery(LOGINTYPENAME);
 		query.setParameter("logintype",LoginType);
 		String FormRoleName=(String)query.getSingleResult();
@@ -190,7 +177,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside GanttChartList");
 		Query query = manager.createNativeQuery(GANTTCHARTLIST);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> GanttChartList= query.getResultList();
@@ -200,7 +186,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> FullGanttChartList(String ProjectId) throws Exception 
 	{		
-		logger.info(new Date() +"Inside FullGanttChartList");
 		Query query = manager.createNativeQuery("CALL Pfms_Milestone_All(:projectid);");
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> FullGanttChartList= query.getResultList();
@@ -211,7 +196,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> ProjectList() throws Exception {
 
-		logger.info(new Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTMASTER);
 		
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -221,7 +205,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside Project Details");
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
 		query.setParameter("projectid",ProjectId);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -232,7 +215,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	
 	@Override
 	public Object[] LabDetails(String labcode) throws Exception {
-		logger.info(new Date() +"Inside Project Details");
 		
 		try {
 		Query query=manager.createNativeQuery(LABDETAILS);
@@ -242,6 +224,7 @@ public class HeaderDaoImpl implements HeaderDao {
 		return ProjectList;
 		}
 		catch (Exception e) {
+			logger.error(new Date() +"Inside DAO LabDetails "+ e);
 			return  null;
 		}
 		
@@ -250,7 +233,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId,String LabCode) throws Exception {
 
-		logger.info(new Date() +"Inside HeaderSchedulesList");
 		Query query=manager.createNativeQuery(HEADERSCHEDULELIST);
 		query.setParameter("logintype",Logintype);
 		query.setParameter("formmoduleid", FormModuleId);
@@ -262,7 +244,6 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	@Override
 	public List<Object[]> ProjectIntiationList(String Empid,String LoginType) throws Exception {
-		logger.info(new Date() +"Inside ProjectIntiationList");
 		
 		Query query=manager.createNativeQuery(PROJECTINTILIST);
 		query.setParameter("empid", Empid);
@@ -276,7 +257,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> MyTaskList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside MyTaskList");
 		
 		Query query=manager.createNativeQuery("CALL `Dashboard_Mytask` (:empid)");
 		query.setParameter("empid", EmpId);
@@ -288,7 +268,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> ApprovalList(String EmpId,String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside ApprovalList");
 		
 		Query query=manager.createNativeQuery("CALL `Dashboard_Approvals` (:empid,:logintype)");
 		query.setParameter("empid", EmpId);
@@ -301,7 +280,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> MyTaskDetails(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside MyTaskDetails");
 		
 		Query query=manager.createNativeQuery("CALL `Dashboard_Mytask_Details` (:empid)");
 		query.setParameter("empid", EmpId);
@@ -313,7 +291,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> DashboardActionPdc(String EmpId,String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside DashboardActionPdc");
 		
 		Query query=manager.createNativeQuery("CALL `Dashboard_Action_PDC` (:empid,:logintype)");
 		query.setParameter("empid", EmpId);
@@ -329,7 +306,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneActivityList");
 		Query query=manager.createNativeQuery(MALIST);
 		query.setParameter("ProjectId", ProjectId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -340,7 +316,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityLevel ");
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVEL);
 		query.setParameter("id", MilestoneActivityId);
 		query.setParameter("levelid", LevelId);
@@ -352,7 +327,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> QuickLinksList(String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside QuickLinksList ");
 		Query query= manager.createNativeQuery(QUICKLINKLIST);
 		query.setParameter("logintype", LoginType);
 		List<Object[]> QuickLinkList= (List<Object[]>)query.getResultList();
@@ -364,7 +338,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public String getLabCode(String Empid) throws Exception {
 		
-		logger.info(new Date() + "Inside getLabCode" );
 
 		Query query = manager.createNativeQuery(LABCODE);
 		query.setParameter("empid", Empid);
@@ -375,7 +348,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	@Override
 	public List<Object[]> LabMasterList(String Clusterid) throws Exception {
 		
-		logger.info(new Date() + "Inside ClusterLabList" );
 		Query query = manager.createNativeQuery(LABMASTERLIST);
 		query.setParameter("clusterid", Clusterid);
 		List<Object[]> LabMasterList= (List<Object[]>)query.getResultList();

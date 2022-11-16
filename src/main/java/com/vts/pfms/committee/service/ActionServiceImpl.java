@@ -39,34 +39,30 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside EmployeeList");	
 		return dao.EmployeeList(LabCode);
 	}
 
 	@Override
 	public List<Object[]> AssignedList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside AssignedList");	
 		return dao.AssignedList(EmpId);
 	}
 	
 	@Override
 	public Object[] GetActionReAssignData(String Actionassignid)throws Exception
 	{
-		logger.info(new Date() +"Inside GetActionReAssignData");	
 		return dao.GetActionReAssignData(Actionassignid);
 	}
 	
 	@Override
 	public Object[] GetProjectData(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside GetProjectData");	
 		return dao.GetProjectData(projectid);
 	}
 
 	
 	public long ActionMainInsert1(ActionMainDto main) throws Exception 
 	{
-		logger.info(new Date() +"Inside ActionMainInsert");
+		logger.info(new Date() +"Inside SERVICE ActionMainInsert1 ");
 		long success=1;
 		long unsuccess=0;
 		Object[] lab=null;
@@ -83,7 +79,7 @@ public class ActionServiceImpl implements ActionService {
 		}
 		catch (Exception e) 
 		{
-			logger.info(new Date() +"Inside ActionMainInsert Project",e);	
+			logger.info(new Date() +"Inside SERVICE ActionMainInsert1 ",e);	
 			return unsuccess;
 		}
 		String Project=null;
@@ -174,7 +170,7 @@ public class ActionServiceImpl implements ActionService {
 	public long ActionMainInsert(ActionMainDto main , ActionAssignDto assign) throws Exception 
 	{
 		try {
-			logger.info(new Date() +"Inside ActionMainInsert");
+			logger.info(new Date() +"Inside SERVICE ActionMainInsert ");
 			long success=1;
 			long unsuccess=0;
 			Object[] lab=null;
@@ -191,7 +187,7 @@ public class ActionServiceImpl implements ActionService {
 			}
 			catch (Exception e) 
 			{
-				logger.info(new Date() +"Inside ActionMainInsert Project",e);	
+				logger.info(new Date() +"Inside SERVICE ActionMainInsert ",e);	
 				return unsuccess;
 			}
 			String Project=null;
@@ -295,6 +291,7 @@ public class ActionServiceImpl implements ActionService {
 			}
 			return success;
 		} catch (Exception e) {
+			logger.info(new Date() +"Inside SERVICE ActionMainInsert "+ e);	
 			e.printStackTrace();
 			return 0;
 		}
@@ -302,14 +299,13 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> AssigneeList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside AssigneeList");
 		dao.AssigneeSeenUpdate(EmpId);
 		return dao.AssigneeList(EmpId);
 	}
 
 	@Override
 	public List<Object[]> AssigneeData(String MainId ,String Assignid) throws Exception {
-		logger.info(new Date() +"Inside AssigneeData");
+		logger.info(new Date() +"Inside SERVICE AssigneeData ");
 		
 		List<Object[]> list = dao.AssigneeData(MainId , Assignid);
 		
@@ -318,13 +314,12 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> SubList(String assignid) throws Exception {
-		logger.info(new Date() +"Inside SubList");
 		return dao.SubList(assignid);
 	}
 
 	@Override
 	public long ActionSubInsert(ActionSubDto main) throws Exception {
-		logger.info(new Date() +"Inside ActionSubInsert");
+		logger.info(new Date() +"Inside SERVICE ActionSubInsert ");
 		ActionSub sub=new ActionSub();
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
@@ -357,20 +352,18 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception {
-		logger.info(new Date() +"Inside ActionAttachmentDownload");
 		return dao.ActionAttachmentDownload(achmentid);
 	}
 
 	@Override
 	public int ActionSubDelete(String id, String UserId) throws Exception {
-		logger.info(new Date() +"Inside ActionSubDelete");
 		
 		return dao.ActionSubDelete(id);
 	}
 
 	@Override
 	public int ActionForward(String mainid ,String assignid, String UserId) throws Exception {
-		logger.info(new Date() +"Inside ActionForward");
+		logger.info(new Date() +"Inside SERVICE ActionForward ");
 		long unsuccess=0;
 		ActionAssign main=new ActionAssign();
 		main.setActionAssignId(Long.parseLong(assignid));
@@ -400,13 +393,12 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> ForwardList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside ForwardList");
 		return dao.ForwardList(EmpId);
 	}
 
 	@Override
 	public int ActionClosed(String id, String Remarks, String UserId ,String assignid) throws Exception {
-		logger.info(new Date() +"Inside ActionClosed");
+		logger.info(new Date() +"Inside SERVICE ActionClosed ");
 		long unsuccess=0;
 		ActionAssign assign=new ActionAssign();
 		assign.setActionAssignId(Long.parseLong(assignid));
@@ -438,7 +430,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public int ActionSendBack(String id, String Remarks, String UserId , String assignid) throws Exception {
-		logger.info(new Date() +"Inside ActionSendBack");
+		logger.info(new Date() +"Inside SERVICE ActionSendBack ");
 		long unsuccess=0;
 		ActionAssign assign=new ActionAssign();
 		assign.setActionAssignId(Long.parseLong(assignid));
@@ -470,56 +462,47 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception {
-		logger.info(new Date() +"Inside StatusList");
 		return dao.StatusList(EmpId, fdate, tdate);
 	}
 
 	@Override
 	public List<Object[]> ActionList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside ActionList");
 		return dao.ActionList(EmpId);
 	}
 
 	@Override
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside CommitteeActionList");
 		return dao.CommitteeActionList(EmpId);
 	}
 
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
-		logger.info(new Date() +"Inside CommitteeScheduleEditData");		
 		return dao.CommitteeScheduleEditData(CommitteeScheduleId);
 	}
 
 	@Override
 	public List<Object[]> ScheduleActionList(String ScheduleId) throws Exception {
-		logger.info(new Date() +"Inside ScheduleActionList");
 		return dao.ScheduleActionList(ScheduleId);
 	}
 
 	@Override
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception {
-		logger.info(new Date() +"Inside MeetingContent");
 		return dao.MeetingContent(ScheduleId);
 	}
 
 	@Override
 	public List<Object[]> ActionNoSearch(String ActionMainId) throws Exception {
-		logger.info(new Date() +"Inside ActionNoSearch");
 		return dao.ActionNoSearch("%"+ActionMainId+"%");
 	}
 
 	@Override
 	public List<Object[]> AssigneeDetails(String assignid) throws Exception {
-		logger.info(new Date() +"Inside AssigneeDetails");
-		
 		return dao.AssigneeDetails(assignid);
 	}
 
 	@Override
 	public String ScheduleActionItem(String ScheduleId) throws Exception {
-		logger.info(new Date() +"Inside ScheduleActionItem");
+		logger.info(new Date() +"Inside SERVICE ScheduleActionItem ");
 		Object[] data=dao.ScheduleActionItem(ScheduleId).get(0);
 		 String Item= data[1].toString().replaceAll("\\<.*?\\>", "");
 		return Item;
@@ -527,55 +510,47 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type,String LabCode) throws Exception {
-		logger.info(new Date() +"Inside ActionReports");
 		return dao.ActionReports(EmpId, Term, Position,Type,LabCode);
 	}
 
 	@Override
 	public List<Object[]> ActionSearch(String EmpId, String No, String Position) throws Exception {
-		logger.info(new Date() +"Inside ActionSearch");
 		return dao.ActionSearch(EmpId, "%"+No+"%", Position) ;
 	}
 
 	@Override
 	public List<Object[]> ProjectList() throws Exception {
-		logger.info(new Date() +"Inside ProjectList");
 		return dao.ProjectList();
 	}
 
 	@Override
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside ActionCountList");
 		return dao.ActionCountList(ProjectId);
 	}
 
 	@Override
 	public List<Object[]> projectdetailsList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside projectdetailsList");        
 		return dao.projectdetailsList(EmpId);
 	}
 	
 	@Override
 	public List<Object[]> allprojectdetailsList() throws Exception {
-		logger.info(new Date() +"Inside allprojectdetailsList");        
 		return dao.allprojectdetailsList();
 	}
 
 	@Override
 	public List<Object[]> ActionWiseReports(String Term, String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside ActionWiseReports");
 		return dao.ActionWiseReports(Term, ProjectId);
 	}
 
 	@Override
 	public List<Object[]> ActionPdcReports(String Emp, String ProjectId,String Position, String From, String To) throws Exception {
-		logger.info(new Date() +"Inside ActionPdcReports");
 		return dao.ActionPdcReports(Emp, ProjectId,Position, new java.sql.Date(sdf.parse(From).getTime()), new java.sql.Date(sdf.parse(To).getTime()));
 	}
 
 	@Override
 	public int ActionExtendPdc(String id,String date, String UserId , String assignid) throws Exception {
-		logger.info(new Date() +"Inside ActionExtendPdc");
+		logger.info(new Date() +"Inside SERVICE ActionExtendPdc ");
 		long unsuccess=0;
 		int result=0;
 		Object[] data=dao.ActionNotification(id , assignid).get(0);
@@ -613,26 +588,23 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> ActionSelfList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside ActionSelfList");
 		return dao.ActionSelfList(EmpId);
 	}
 
 	@Override
 	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception {
-		logger.info(new Date() +"Inside SearchDetails");
 		return dao.SearchDetails(MainId , assignid);
 	}
 	
 	
 	@Override
 	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside ActionWiseAllReport");
 		return dao.ActionWiseAllReport(Term,empid,ProjectId);
 	}
 	
 	@Override
 	public long ActionSelfReminderAddSubmit(ActionSelfDao actionselfdao) throws Exception {
-		logger.info(new Date() +"Inside ActionSelfReminderAddSubmit");
+		logger.info(new Date() +"Inside SERVICE ActionSelfReminderAddSubmit ");
 		ActionSelf actionself=new ActionSelf();
 		actionself.setEmpId(Long.parseLong(actionselfdao.getEmpId()));
 		actionself.setActionDate(new java.sql.Date(sdf.parse(actionselfdao.getActionDate()).getTime()));
@@ -649,13 +621,11 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public List<Object[]> ActionSelfReminderList(String empid,String fromdate,String todate) throws Exception 
 	{
-		logger.info(new Date() +"Inside ActionSelfReminderList");
 		return dao.ActionSelfReminderList(empid,fromdate,todate);
 	}
 	
 	@Override
 	public int ActionSelfReminderDelete(String actionid) throws Exception {
-		logger.info(new Date() +"Inside ActionSelfReminderDelete");
 		return dao.ActionSelfReminderDelete(actionid);
 	}
 
@@ -704,14 +674,12 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public List<Object[]> AllEmpNameDesigList()throws Exception
 	{
-		logger.info(new Date() +"Inside AllEmpNameDesigList"); 
 		return dao.AllEmpNameDesigList();
 	}
 	
 	@Override
 	public List<Object[]> ProjectEmpList(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectEmpList"); 
 		return dao.ProjectEmpList(projectid);
 	}
 	
@@ -719,7 +687,6 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside EmployeeDropdown"); 
 		return dao.EmployeeDropdown(empid, logintype,projectid);
 	}
 	
@@ -727,20 +694,17 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public Object[] ActionDetailsAjax(String actionid , String assignid) throws Exception
 	{
-		logger.info(new Date() +"Inside ActionDetailsAjax"); 
 		return dao.ActionDetailsAjax(actionid , assignid);
 	}
 	
 	@Override
 	public int ActionMainEdit(ActionMain main) throws Exception
 	{
-		logger.info(new Date() +"Inside ActionMainEdit"); 
 		return dao.ActionMainEdit(main);
 	}
 	@Override
 	 public int ActionAssignEdit(ActionAssign assign) throws Exception
 	 {
-		logger.info(new Date() +"Inside ActionAssignEdit"); 
 		return dao.ActionAssignEdit(assign);
 	 }
 	
@@ -773,7 +737,6 @@ public class ActionServiceImpl implements ActionService {
 	
 	@Override
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
 		return dao.LabEmployeeList(LabCode);
 	}
 	@Override

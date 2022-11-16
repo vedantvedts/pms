@@ -261,7 +261,7 @@ public class MilestoneController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);
+		logger.info(new Date() +"Inside MilestoneActivityAdd.htm "+UserId);
 		try {
 	        String ProjectId=req.getParameter("ProjectId");
 			req.setAttribute("EmployeeList", service.ProjectEmpList(ProjectId , LabCode));
@@ -271,7 +271,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside MilestoneActivityAdd.htm "+UserId, e); 
 			return "static/Error";
 		}
 		return "milestone/MilestoneActivityAdd";
@@ -282,7 +282,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MilestoneActivityAddSubmit.htm", method = RequestMethod.POST)
 	public String MilestoneActivityAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityAdd.htm "+UserId);		
+		logger.info(new Date() +"Inside MilestoneActivityAddSubmit.htm "+UserId);		
 		try {
 			
 		
@@ -311,7 +311,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside MilestoneActivityAdd.htm "+UserId, e); 
+				logger.error(new Date() +" Inside MilestoneActivityAddSubmit.htm "+UserId, e); 
 				return "static/Error";
 		}	
 		return "redirect:/MA-DetailsRedirect.htm";
@@ -410,7 +410,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MA-DetailsRedirect.htm", method = RequestMethod.GET)
 	public String MADetailsRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ActionSubLaunchRedirect.htm "+UserId);		
+		logger.info(new Date() +"Inside DetailsRedirect.htm "+UserId);		
 		try {
 			  int countA=1;	
 			  String MainId=null;
@@ -459,7 +459,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside ActionSubLaunchRedirect.htm "+UserId, e); 
+				logger.error(new Date() +" Inside DetailsRedirect.htm "+UserId, e); 
 				return "static/Error";
 		}
 		
@@ -471,7 +471,7 @@ public class MilestoneController {
 	@RequestMapping(value = "M-A-Assign-OIC.htm", method = RequestMethod.POST)
 	public String AssignToOic(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside AssignToOic "+UserId);		
+		logger.info(new Date() +"Inside M-A-Assign-OIC.htm "+UserId);		
 		try {
 			
 		
@@ -515,7 +515,7 @@ public class MilestoneController {
 		
 		}catch (Exception e) {
 				e.printStackTrace(); 
-				logger.error(new Date() +" Inside AssignToOic "+UserId, e); 
+				logger.error(new Date() +" Inside M-A-Assign-OIC.htm "+UserId, e); 
 				return "static/Error";
 		}
 	
@@ -525,7 +525,7 @@ public class MilestoneController {
 	@RequestMapping(value = "M-A-Set-BaseLine.htm", method = RequestMethod.POST)
 	public String BaseLine(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside BaseLine.htm "+UserId);		
+		logger.info(new Date() +"Inside M-A-Set-BaseLine.htm "+UserId);		
 		try {
 			
 		
@@ -546,7 +546,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside BaseLine.htm "+UserId, e); 
+				logger.error(new Date() +" Inside M-A-Set-BaseLine.htm "+UserId, e); 
 				return "static/Error";
 		}
 	
@@ -559,7 +559,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MA-PreviewRedirect.htm", method = RequestMethod.GET)
 	public String PreviewRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside PreviewRedirect.htm "+UserId);		
+		logger.info(new Date() +"Inside MA-PreviewRedirect.htm "+UserId);		
 		try {
 			  int countA=1;	
 			  String MainId=null;
@@ -605,7 +605,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside PreviewRedirect.htm "+UserId, e); 
+				logger.error(new Date() +" Inside MA-PreviewRedirect.htm "+UserId, e); 
 				return "static/Error";
 		}
 		
@@ -649,7 +649,7 @@ public class MilestoneController {
 	@RequestMapping(value = "MilestoneActivityEditSubmit.htm", method = RequestMethod.POST)
 	public String MilestoneActivityEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityEditSubmit "+UserId);		
+		logger.info(new Date() +"Inside MilestoneActivityEditSubmit.htm "+UserId);		
 		try {
 			
 		
@@ -959,7 +959,7 @@ public class MilestoneController {
 	public String MileActivityUpdateSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestPart("FileAttach") MultipartFile FileAttach)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MileActivityUpdateSubmit "+UserId);		
+		logger.info(new Date() +"Inside M-A-UpdateSubmit.htm "+UserId);		
 		try {
 			
 		
@@ -991,7 +991,7 @@ public class MilestoneController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside MileActivityUpdateSubmit.htm "+UserId, e); 
+				logger.error(new Date() +" Inside M-A-UpdateSubmit.htm "+UserId, e); 
 				return "static/Error";
 		}
 		
@@ -1004,7 +1004,7 @@ public class MilestoneController {
 	public String UpdateRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode"); 
-		logger.info(new Date() +"Inside UpdateRedirect.htm "+UserId);		
+		logger.info(new Date() +"Inside MA-UpdateRedirect.htm"+UserId);		
 		try {
 			  
 			  String MainId=null;
@@ -1036,7 +1036,7 @@ public class MilestoneController {
 				}
 				catch (Exception e) {
 					e.printStackTrace();  
-					logger.error(new Date() +" Inside MileActivityUpdate.htm "+UserId, e); 
+					logger.error(new Date() +" Inside MA-UpdateRedirect.htm "+UserId, e); 
 					return "static/Error";
 					
 				}
@@ -1072,7 +1072,7 @@ public class MilestoneController {
 	public @ResponseBody String MilestoneTotalWeightage(HttpServletRequest req,HttpSession ses) throws Exception {
 
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside MilestoneTotalWeightage "+ UserId);		
+		logger.info(new Date() +" Inside MilestoneTotalWeightage.htm "+ UserId);		
 		String MilestoneActivityId=req.getParameter("MilestoneActivityId");		
 		int totalweightage = service.MilestoneTotalWeightage(MilestoneActivityId);
 		Gson json = new Gson();
@@ -1113,7 +1113,7 @@ public class MilestoneController {
 			Gson json = new Gson();
 			int ActivitySum=0;
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside ActivitySum.htm "+UserId);		
+			logger.info(new Date() +"Inside WeightageSum.htm "+UserId);		
 			try {
 			
 				ActivitySum =service.WeightageSum(req.getParameter("Id"),req.getParameter("ActivityId"),req.getParameter("Type"),req.getParameter("LevelId"));
@@ -1122,7 +1122,7 @@ public class MilestoneController {
 			catch (Exception e) {
 				
 				e.printStackTrace();  
-				logger.error(new Date() +" Inside ActivitySum.htm "+UserId, e); 
+				logger.error(new Date() +" Inside WeightageSum.htm "+UserId, e); 
 			}
 			
 			return json.toJson(ActivitySum);
@@ -1130,9 +1130,11 @@ public class MilestoneController {
 		}
 	   
 	 @RequestMapping(value = "encryptFile.htm", method = RequestMethod.GET)
-	 public static void encryptFile() throws IOException, NoSuchPaddingException,
+	 public static void encryptFile(HttpSession ses) throws IOException, NoSuchPaddingException,
 			    NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
 			    BadPaddingException, IllegalBlockSizeException {
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside encryptFile.htm "+UserId);	
 		        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 		        keyGenerator.init(128);
 		        SecretKey key = keyGenerator.generateKey();
@@ -1160,7 +1162,9 @@ public class MilestoneController {
 			    outputStream.close();
 			}
 	 @RequestMapping(value = "decryptFile.htm", method = RequestMethod.GET)
-	 public static void decryptFile2() throws  Exception{
+	 public static void decryptFile2(HttpSession ses) throws  Exception{
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside decryptFile.htm "+UserId);	
 		    String sourceFile = "D:\\D_testenn.txt\\";
 	        FileOutputStream fos = new FileOutputStream("D:\\compressed.zip\\");
 	        ZipOutputStream zipOut = new ZipOutputStream(fos);
@@ -1223,9 +1227,11 @@ public class MilestoneController {
 		}
 	 
 	 //@RequestMapping(value = "decryptFile.htm", method = RequestMethod.GET)
-	 public void decryptFile() throws  IOException, NoSuchPaddingException, NoSuchAlgorithmException,
+	 public void decryptFile(HttpSession ses) throws  IOException, NoSuchPaddingException, NoSuchAlgorithmException,
 			    InvalidAlgorithmParameterException, InvalidKeyException,
 			    BadPaddingException, IllegalBlockSizeException {
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside decryptFile.htm "+UserId);	
 		    KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
 	        keyGenerator.init(128);
 	        SecretKey key = keyGenerator.generateKey();
@@ -1578,7 +1584,7 @@ public class MilestoneController {
 
 			String Username = (String) ses.getAttribute("Username");
 			
-			logger.info(new Date() +"Inside  IccExcelSheet"+Username);
+			logger.info(new Date() +"Inside  MilestoneExcelFile.htm "+Username);
 			try {
 				String name="NoData";
 				String header="NoData";
@@ -1897,7 +1903,7 @@ public class MilestoneController {
 			 }
 		        catch (Exception e) {
 				    e.printStackTrace();  
-				    logger.error(new Date() +"Inside IccExcelSheet"+Username, e);
+				    logger.error(new Date() +"Inside MilestoneExcelFile.htm"+Username, e);
 				    
 			 }
 		}	
@@ -2014,7 +2020,7 @@ public class MilestoneController {
 		public @ResponseBody String ProjectEmpListFetch(HttpServletRequest req,HttpSession ses) throws Exception {
 
 			String UserId = (String)ses.getAttribute("Username");
-			logger.info(new Date() +" Inside ChairpersonEmployeeListFormation "+ UserId);	
+			logger.info(new Date() +" Inside ProjectEmpListFetch.htm "+ UserId);	
 			String projectid = req.getParameter("projectid");
 			String LabCode =(String) ses.getAttribute("labcode");
 			
@@ -2034,7 +2040,7 @@ public class MilestoneController {
 		public @ResponseBody String ProjectEmpListEdit(HttpServletRequest req,HttpSession ses) throws Exception {
 
 			String UserId = (String)ses.getAttribute("Username");
-			logger.info(new Date() +" Inside ProjectEmpListEdit "+ UserId);	
+			logger.info(new Date() +" Inside ProjectEmpListEdit.htm "+ UserId);	
 			String projectid=req.getParameter("projectid");
 			String labcode = req.getParameter("labcode");
 			String empid=req.getParameter("EmpId");
@@ -2057,7 +2063,7 @@ public class MilestoneController {
 		public @ResponseBody String AllFilesList(HttpServletRequest req,HttpSession ses) throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside AllFilesList.htm"+UserId);
+			logger.info(new Date() +"Inside AllFilesList.htm "+UserId);
 			List<Object[]> DocumentTitleList=new ArrayList<Object[]>();
 			try {				
 				String ProjectId=req.getParameter("projectid");
@@ -2078,7 +2084,7 @@ public class MilestoneController {
 		{
 			String UserId = (String) ses.getAttribute("Username");
 
-			logger.info(new Date() +"Inside FileHistoryList.htm"+UserId);
+			logger.info(new Date() +"Inside FileHistoryList.htm "+UserId);
 			List<Object[]> FileHistoryList=new ArrayList<Object[]>();
 			try {				
 				String filerepid=req.getParameter("filerepid");
@@ -2098,7 +2104,7 @@ public class MilestoneController {
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String) ses.getAttribute("labcode");
 			
-			logger.info(new Date() +"Inside FileHistoryListAjax.htm"+UserId);
+			logger.info(new Date() +"Inside FileHistoryListAjax.htm "+UserId);
 			List<Object[]> FileHistoryList=new ArrayList<Object[]>();
 			try {				
 				String ProjectId,MainSystem,SubLevelValue=null;
@@ -2124,7 +2130,7 @@ public class MilestoneController {
 		{
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside FileDocMasterListAll.htm"+UserId);
+			logger.info(new Date() +"Inside FileDocMasterListAll.htm "+UserId);
 			List<Object[]> FileDocMasterListAll=new ArrayList<Object[]>();
 			try 
 			{	String projectid=req.getParameter("projectid");		
@@ -2207,7 +2213,7 @@ public class MilestoneController {
 		{
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside FileSubAddNew.htm "+UserId);
+			logger.info(new Date() +"Inside AddDocAmendment.htm "+UserId);
 			try {
 //								
 				FileDocAmendmentDto amenddoc=new FileDocAmendmentDto(); 
@@ -2242,7 +2248,7 @@ public class MilestoneController {
 			}
 			catch (Exception e) {
 				e.printStackTrace(); 
-				logger.error(new Date() +" Inside ProjectDocumetsSubmit.htm "+UserId, e); 
+				logger.error(new Date() +" Inside AddDocAmendment.htm "+UserId, e); 
 				return "static/Error";
 			}
 		}
@@ -2518,7 +2524,7 @@ public class MilestoneController {
 		@RequestMapping(value = "ProjectModuleNameEdit.htm", method = RequestMethod.POST)
 		public String ProjectModuleNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside ProjectModuleNameEdit "+UserId);		
+			logger.info(new Date() +"Inside ProjectModuleNameEdit.htm "+UserId);		
 			try {
 				
 	          	String filerepmasterid = req.getParameter("filerepmasterid");
@@ -2547,7 +2553,7 @@ public class MilestoneController {
 		public String FileListInRepo(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside FileListInRepo "+UserId);		
+			logger.info(new Date() +"Inside FileListInRepo.htm "+UserId);		
 			try {
 				req.setAttribute("docmasterlist", service.fileDocMasterList(LabCode));
 				return "filerepo/DocumentsList";
@@ -2674,7 +2680,7 @@ public class MilestoneController {
 		@RequestMapping(value = "MileRemarkUpdate.htm", method = RequestMethod.POST)
 		public String MileRemarkUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside MileRemarkUpdate "+UserId);		
+			logger.info(new Date() +"Inside MileRemarkUpdate.htm "+UserId);		
 			try {
 
 					MilestoneActivityDto mainDto=new MilestoneActivityDto();
@@ -2696,7 +2702,7 @@ public class MilestoneController {
 			
 			}catch (Exception e) {
 					e.printStackTrace(); 
-					logger.error(new Date() +" Inside MileRemarkUpdate "+UserId, e); 
+					logger.error(new Date() +" Inside MileRemarkUpdate.htm "+UserId, e); 
 					return "static/Error";
 			}
 		

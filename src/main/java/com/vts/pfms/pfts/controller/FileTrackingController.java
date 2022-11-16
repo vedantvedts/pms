@@ -34,8 +34,10 @@ public class FileTrackingController {
 	FileTrackingService service;
 
 	@RequestMapping(value = "FileTrackingUserSearch.htm")
-	public ModelAndView fileTrackingUserSearch(HttpServletRequest req)  throws Exception
+	public ModelAndView fileTrackingUserSearch(HttpServletRequest req,HttpSession ses)  throws Exception
 	{
+		String UserId= (String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside fileTrackingUserSearch.htm "+UserId);
 		ModelAndView mv = new ModelAndView("pfts/FileTrackingSearch");
 		return mv;
 	}

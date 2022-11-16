@@ -27,13 +27,12 @@ public class HeaderServiceImpl implements HeaderService {
 	@Override
 	public List<Object[]> FormModuleList(String LoginType,String LabCode)throws Exception {
 		
-		logger.info(new Date() +"Inside FormModuleList");	
 		return dao.FormModuleList(LoginType,LabCode);
 	}
 
 	@Override
 	public List<Object[]> loginTypeList(String LoginType) throws Exception {
-		logger.info(new Date() +"Inside loginTypeList");
+		logger.info(new Date() +"Inside SERVICE loginTypeList ");
 	List<Object[]>loginTypeList=dao.loginTypeList();
 	List<Object[]>loginTypeListnew=new ArrayList<Object[]>();
 	
@@ -169,49 +168,42 @@ public class HeaderServiceImpl implements HeaderService {
 	@Override
 	public List<Object[]> DashboardDemandCount() throws Exception {
 		
-		logger.info(new Date() +"Inside DashboardDemandCount");
 		return dao.DashboardDemandCount();
 	}
 
 	@Override
 	public List<Object[]> NotificationList(String Empid) throws Exception {
 	
-		logger.info(new Date() +"Inside NotificationList");
 		return dao.NotificationList(Empid);
 	}
 
 	@Override
 	public int NotificationUpdate(String NotificationId) throws Exception {
 		
-		logger.info(new Date() +"Inside NotificationUpdate");
 		return dao.NotificationUpdate(NotificationId);
 	}
 
 	@Override
 	public List<Object[]> NotificationAllList(String Empid) throws Exception {
 		
-		logger.info(new Date() +"Inside NotificationAllList");
 		return dao.NotificationAllList(Empid);
 	}
 
 	@Override
 	public List<Object[]> EmployeeDetailes(String LoginId) throws Exception {
 	
-		logger.info(new Date() +"Inside EmployeeDetailes");
 		return dao.EmployeeDetailes(LoginId);
 	}
 
 	@Override
 	public String DivisionName(String DivisionId) throws Exception {
 	
-		logger.info(new Date() +"Inside DivisionName");
 		return dao.DivisionName(DivisionId);
 	}
 	
 	@Override
 	public List<Object[]> TodaySchedulesList(String EmpId, String TodayDate) throws Exception {
 
-		logger.info(new Date() +"Inside TodaySchedulesList");
 
 		return dao.TodaySchedulesList(EmpId,TodayDate);
 	}
@@ -219,7 +211,6 @@ public class HeaderServiceImpl implements HeaderService {
 	@Override
 	public List<Object[]> TodayActionList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside TodayActionList");
 		return dao.TodayActionList(EmpId);
 	}
 
@@ -227,7 +218,7 @@ public class HeaderServiceImpl implements HeaderService {
 	public int PasswordChange(String OldPassword, String NewPassword, String UserId)
 			throws Exception {
 
-		logger.info(new Date() +"Inside PasswordChange");
+		logger.info(new Date() +"Inside SERVICE PasswordChange ");
 		String actualoldpassword=dao.OldPassword(UserId);
 
 		if(encoder.matches(OldPassword, actualoldpassword)) {
@@ -245,28 +236,24 @@ public class HeaderServiceImpl implements HeaderService {
 	@Override
 	public String FormRoleName(String LoginType) throws Exception {
 
-		logger.info(new Date() +"Inside FormRoleName");
 		return dao.FormRoleName(LoginType);
 	}
 
 	@Override
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside GanttChartList");
 		return dao.GanttChartList(ProjectId);
 	}
 
 	@Override
 	public List<Object[]> ProjectList() throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectList");
 		return dao.ProjectList();
 	}
 	
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectDetails");
 		return dao.ProjectDetails(ProjectId);
 	}
 	
@@ -274,89 +261,76 @@ public class HeaderServiceImpl implements HeaderService {
 	@Override
 	public Object[] LabDetails(String labcode) throws Exception {
 		
-		logger.info(new Date() +"Inside LabDetails");
 		return dao.LabDetails(labcode);
 	}
 
 	@Override
 	public List<Object[]> FullGanttChartList(String ProjectId) throws Exception 
 	{	
-		logger.info(new Date() +"Inside FullGanttChartList");
 		return dao.FullGanttChartList(ProjectId);
 	}
 
 	@Override
 	public List<Object[]> HeaderSchedulesList(String Logintype,String FormModuleId,String LabCode) throws Exception {
 		
-		logger.info(new Date() +"Inside HeaderSchedulesList");
 		return dao.HeaderSchedulesList(Logintype,FormModuleId,LabCode);
 	}
 
 	@Override
 	public List<Object[]> ProjectIntiationList(String EmpId, String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside HeaderSchedulesList");
 		return dao.ProjectIntiationList(EmpId,LoginType);
 	}
 
 	@Override
 	public List<Object[]> MyTaskList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside MyTaskList");
 		return dao.MyTaskList(EmpId);
 	}
 	
 	@Override
 	public List<Object[]> ApprovalList(String EmpId,String LoginType) throws Exception {
 		
-		logger.info(new Date() +"Inside ApprovalList");
 		return dao.ApprovalList(EmpId,LoginType);
 	}
 	
 	@Override
 	public List<Object[]> MyTaskDetails(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside MyTaskDetails");
 		return dao.MyTaskDetails(EmpId);
 	}
 	
 	@Override
 	public List<Object[]> DashboardActionPdc(String EmpId,String Logintype) throws Exception {
 		
-		logger.info(new Date() +"Inside DashboardActionPdc");
 		return dao.DashboardActionPdc(EmpId,Logintype);
 	}
 	
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityList");
 		return dao.MilestoneActivityList(ProjectId);
 	}
 	
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
-		logger.info(new Date() +"Inside MilestoneActivityLevel");
 		return dao.MilestoneActivityLevel(MilestoneActivityId, LevelId);
 	}
 
 	@Override
 	public List<Object[]> QuickLinksList(String LoginType) throws Exception {
 
-		logger.info(new Date() +"Inside QuickLinksList");
 		return dao.QuickLinksList( LoginType);
 	}
 
 	@Override
 	public String getLabCode(String Empid) throws Exception {
 		
-		logger.info(new Date() +"Inside getLabCode");
 		return dao.getLabCode( Empid);
 	}
 	
 	@Override
 	public List<Object[]>  LabMasterList(String Clusterid) throws Exception {
 		
-		logger.info(new Date() +"Inside LabMasterList");
 		return dao.LabMasterList(Clusterid);
 	}
 	

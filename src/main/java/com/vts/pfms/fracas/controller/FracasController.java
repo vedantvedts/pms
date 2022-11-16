@@ -501,7 +501,7 @@ public class FracasController {
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String LabCode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside FracasAssign.htm "+UserId);
+		logger.info(new Date() +"Inside FracasMainItemEdit.htm "+UserId);
 		try
 		{
 			String fracasmainid=req.getParameter("fracasmainid");
@@ -514,7 +514,7 @@ public class FracasController {
 			return "fracas/FracasMainItemEdit";
 		}catch (Exception e) {
 			e.printStackTrace(); 
-			logger.error(new Date() +"Inside FracasAssign.htm "+UserId,e);
+			logger.error(new Date() +"Inside FracasMainItemEdit.htm "+UserId,e);
 			return "static/Error";
 		}
 	}

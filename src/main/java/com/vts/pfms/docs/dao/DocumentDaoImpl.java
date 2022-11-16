@@ -39,7 +39,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> LoginProjectsList(String empid,String Logintype,String LabCode)throws Exception
 	{
-		logger.info(new Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -53,7 +52,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new Date() +"Inside FileRepMasterListAll");
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
 		query.setParameter("projectid", projectid);
 		query.setParameter("LabCode", LabCode);
@@ -67,7 +65,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> DocParentLevelList(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DocParentLevelList");
 		Query query=manager.createNativeQuery(DOCPARENTLEVELLIST);
 		query.setParameter("projectid", projectid);
 		query.setParameter("labcode", LabCode);
@@ -80,7 +77,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> ProjectDocAssignedList(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectDocAssignedList");
 		Query query=manager.createNativeQuery(PROJECTDOCASSIGNEDLIST);
 		query.setParameter("projectid", projectid);
 		query.setParameter("LabCode", LabCode );
@@ -91,7 +87,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<PfmsDocTemplate> PfmsDocTemplateList(String projectid,String fileuploadmasterid)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocTemplateList");
 		List<PfmsDocTemplate> pfmsdoctemplatelist = new ArrayList<PfmsDocTemplate>();
 		try {
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -105,6 +100,7 @@ public class DocumentDaoImpl implements DocumentDao
 			pfmsdoctemplatelist =allQuery.getResultList();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocTemplateList "+ e);
 			e.printStackTrace();
 		}
 		
@@ -118,7 +114,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] DocMasterDataPdocId(String projectid, String fileuploadmasterid)throws Exception
 	{
-		logger.info(new Date() +"Inside DocMasterDataPdocId");
 		try {
 			Query query=manager.createNativeQuery(DOCMASTERDATAPDOCID);
 			query.setParameter("projectid", projectid);
@@ -126,6 +121,7 @@ public class DocumentDaoImpl implements DocumentDao
 			Object[] DocMasterDataPdocId=(Object[])query.getResultList().get(0);
 			return DocMasterDataPdocId;			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO DocMasterDataPdocId "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -134,7 +130,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long TemplateItemNameEdit(PfmsDocTemplate item)throws Exception
 	{
-		logger.info(new Date() +"Inside TemplateItemNameEdit");
 		long templateid= 0;
 		try {
 			PfmsDocTemplate detach=manager.find(PfmsDocTemplate.class, item.getTemplateItemId());
@@ -143,6 +138,7 @@ public class DocumentDaoImpl implements DocumentDao
 			detach.setModifiedDate(item.getModifiedDate());
 			templateid = detach.getTemplateItemId();
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TemplateItemNameEdit"+ e);
 			e.printStackTrace();
 		}
 		
@@ -152,7 +148,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long TemplateItemDelete(PfmsDocTemplate item)throws Exception
 	{
-		logger.info(new Date() +"Inside TemplateItemDelete");
 		long templateid= 0;
 		try {
 			PfmsDocTemplate detach=manager.find(PfmsDocTemplate.class, item.getTemplateItemId());
@@ -161,6 +156,7 @@ public class DocumentDaoImpl implements DocumentDao
 			detach.setIsActive(0);
 			templateid = detach.getTemplateItemId();
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TemplateItemDelete "+ e);
 			e.printStackTrace();
 		}
 		
@@ -170,7 +166,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<PfmsDocContent> TemplateContentList(String templateitemid)throws Exception
 	{
-		logger.info(new Date() +"Inside TemplateContentList");
 		List<PfmsDocContent> contentlist = new ArrayList<PfmsDocContent>();
 		try {
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -183,6 +178,7 @@ public class DocumentDaoImpl implements DocumentDao
 			contentlist =allQuery.getResultList();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TemplateContentList "+ e);
 			e.printStackTrace();
 		}
 		
@@ -192,13 +188,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long TemplateItemAdd(PfmsDocTemplate tempitem)throws Exception
 	{
-		logger.info(new Date() +"Inside TemplateItemAdd");
 		try {
 			manager.persist(tempitem);
 			manager.flush();
 			return tempitem.getTemplateItemId();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TemplateItemAdd"+ e);
 			e.printStackTrace();
 		}		
 		return 0;
@@ -209,13 +205,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> ProjectDocsList(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectDocsList");
 		try {
 			Query query=manager.createNativeQuery(PROJECTDOCSLIST);
 			query.setParameter("projectid", projectid);
 			List<Object[]> ProjectDocsList=( List<Object[]>)query.getResultList();
 			return ProjectDocsList;			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO ProjectDocsList "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -226,13 +222,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> TempItemListwithContentId(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside TempItemListwithContentId");
 		try {
 			Query query=manager.createNativeQuery(TEMPITEMLISTWITHCONTENTID);
 			query.setParameter("pfmsdocid", pfmsdocid);
 			 List<Object[]> TempItemListwithContentId=( List<Object[]>)query.getResultList();
 			return TempItemListwithContentId;			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TempItemListwithContentId "+ e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}
@@ -243,7 +239,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] PfmsTempItemContent(String templateitemid,String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside TempItemListwithContentId");
 		try {
 			Query query=manager.createNativeQuery(PFMSTEMPITEMCONTENT);
 			query.setParameter("templateitemid", templateitemid);
@@ -251,6 +246,7 @@ public class DocumentDaoImpl implements DocumentDao
 			 List<Object[]> PfmsTempItemContent=( List<Object[]>)query.getResultList();
 			return PfmsTempItemContent.get(0);			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsTempItemContent "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -259,13 +255,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long TempItemContentAdd(PfmsDocContent tempitemcontent)throws Exception
 	{
-		logger.info(new Date() +"Inside TemplateItemAdd");
 		try {
 			manager.persist(tempitemcontent);
 			manager.flush();
 			return tempitemcontent.getTempContentId();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TempItemContentAdd "+ e);
 			e.printStackTrace();
 		}		
 		return 0;
@@ -274,7 +270,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long TempItemContentUpdate(PfmsDocContent itemcontent)throws Exception
 	{
-		logger.info(new Date() +"Inside TempItemContentUpdate");
 		long templateid= 0;
 		try {
 			PfmsDocContent detach=manager.find(PfmsDocContent.class, itemcontent.getTempContentId());
@@ -284,6 +279,7 @@ public class DocumentDaoImpl implements DocumentDao
 			detach.setModifiedDate(itemcontent.getModifiedDate());			
 			templateid = detach.getTempContentId();
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TempItemContentUpdate "+ e);
 			e.printStackTrace();
 		}
 		
@@ -295,13 +291,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> TempItemContentsList(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside TempItemContentsList");
 		try {
 			Query query=manager.createNativeQuery(TEMPITEMCONTENTSLIST);
 			query.setParameter("pfmsdocid", pfmsdocid);
 			 List<Object[]> TempItemContentsList=( List<Object[]>)query.getResultList();
 			return TempItemContentsList;		
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TempItemContentsList "+ e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}
@@ -311,13 +307,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] ProjectAndDocumentName(String projectdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectAndDocumentName");
 		try {
 			Query query=manager.createNativeQuery(PROJECTANDDOCUMENTNAME);
 			query.setParameter("projectdocid", projectdocid);
 			List<Object[]> ProjectAndDocumentName=( List<Object[]>)query.getResultList();
 			return ProjectAndDocumentName.get(0);		
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO ProjectAndDocumentName "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -326,7 +322,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public PfmsDoc PfmsDocCheck(String projectid,String filerepmasterid,String fileuploadmasterid)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocCheck");
 		try {
 			PfmsDoc pfmsdoc = null;
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -342,6 +337,7 @@ public class DocumentDaoImpl implements DocumentDao
 		}catch (NoResultException e) {
 			return null;
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocCheck "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -350,12 +346,12 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public PfmsDoc PfmsDocAdd(PfmsDoc doc)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocList");
 		try {
 			manager.persist(doc);
 			manager.flush();
 			return doc;
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocAdd " + e);
 			e.printStackTrace();
 			return null;
 		}		
@@ -365,12 +361,12 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long PfmsDocContentRevAdd(PfmsDocContentRev contentrev)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocContentRevAdd");
 		try {
 			manager.persist(contentrev);
 			manager.flush();
 			return contentrev.getTempContentRevId();
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocContentRevAdd "+ e);
 			e.printStackTrace();
 			return 0;
 		}		
@@ -381,12 +377,12 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long PfmsDocContentFrzAdd(PfmsDocContentFreeze contentfrz)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocContentRevAdd");
 		try {
 			manager.persist(contentfrz);
 			manager.flush();
 			return contentfrz.getTempContentFrzId();
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocContentFrzAdd "+ e);
 			e.printStackTrace();
 			return 0;
 		}		
@@ -398,7 +394,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public PfmsDoc pfmsDoc(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside pfmsDoc");
 		try {
 			PfmsDoc pfmsdoc = null;
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -410,6 +405,7 @@ public class DocumentDaoImpl implements DocumentDao
 			pfmsdoc = allQuery.getSingleResult();
 			return pfmsdoc;
 		}catch (NoResultException e) {
+			logger.error(new Date() +"Inside DAO pfmsDoc "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -418,12 +414,12 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long pfmsDocVersionUpdate(PfmsDoc pfmsdoc)throws Exception
 	{
-		logger.info(new Date() +"Inside pfmsDoc");
 		try {
 			manager.merge(pfmsdoc);
 			manager.flush();
 			return pfmsdoc.getPfmsDocId();
 		}catch (NoResultException e) {
+			logger.error(new Date() +"Inside DAO pfmsDocVersionUpdate "+ e);
 			e.printStackTrace();
 			return 0;
 		}
@@ -433,13 +429,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] PfmsDocData(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocData");
 		try {
 			Query query=manager.createNativeQuery(PFMSDOCDATA);
 			query.setParameter("pfmsdocid", pfmsdocid);
 			List<Object[]> PfmsDocData=( List<Object[]>)query.getResultList();
 			return PfmsDocData.get(0);		
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocData "+ e);
 			e.printStackTrace();
 			return null;
 		}
@@ -450,13 +446,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> DocRevisedVersionNos(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside DocRevisedVersionNos");
 		try {
 			Query query=manager.createNativeQuery(DOCREVISEDVERSIONNOS);
 			query.setParameter("pfmsdocid", pfmsdocid);
 			 List<Object[]> resultset=( List<Object[]>)query.getResultList();
 			return resultset;		
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO DocRevisedVersionNos "+ e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}
@@ -466,7 +462,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<PfmsDocContentRev> PfmsDocContentRevData(String pfmsdocid,String versionno)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocTemplateList");
 		List<PfmsDocContentRev> pfmsdoctemplatelist = new ArrayList<PfmsDocContentRev>();
 		try {
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -480,6 +475,7 @@ public class DocumentDaoImpl implements DocumentDao
 			pfmsdoctemplatelist =allQuery.getResultList();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocContentRevData "+ e);
 			e.printStackTrace();
 		}
 		
@@ -489,7 +485,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<PfmsDocContentFreeze> PfmsDocContentFrzData(String pfmsdocid)throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsDocContentFrzData");
 		List<PfmsDocContentFreeze> pfmsdoctemplatelist = new ArrayList<PfmsDocContentFreeze>();
 		try {
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -503,6 +498,7 @@ public class DocumentDaoImpl implements DocumentDao
 			pfmsdoctemplatelist =allQuery.getResultList();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO PfmsDocContentFrzData "+ e);
 			e.printStackTrace();
 		}
 		
@@ -513,7 +509,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] LabDetails()throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LabDetails");
 		Query query=manager.createNativeQuery(LABDETAILS);
 		Object[] Labdetails =(Object[])query.getResultList().get(0);
 		return Labdetails ;
@@ -524,7 +519,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> FileDocMasterListAll(String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FileDocMasterListAll");
 		Query query=manager.createNativeQuery(FILEDOCMASTERLISTALL);
 		query.setParameter("projectid", projectid);
 		List<Object[]> FileDocMasterListAll=(List<Object[]>)query.getResultList();
@@ -535,7 +529,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<FileRepMaster> DocProjectSystems(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside DocProjectSystems");
 		List<FileRepMaster> pfmsdoctemplatelist = new ArrayList<FileRepMaster>();
 		try {
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -548,6 +541,7 @@ public class DocumentDaoImpl implements DocumentDao
 			pfmsdoctemplatelist =allQuery.getResultList();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO DocProjectSystems "+ e);
 			e.printStackTrace();
 		}
 		return pfmsdoctemplatelist;
@@ -557,7 +551,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> RevisedItemNamesList(String pfmsdocid,String mainitemcontentid)throws Exception
 	{
-		logger.info(new Date() +"Inside RevisedItemNamesList");
 		try {
 			Query query=manager.createNativeQuery(REVISEDITEMNAMESLIST);
 			query.setParameter("pfmsdocid", pfmsdocid);
@@ -565,6 +558,7 @@ public class DocumentDaoImpl implements DocumentDao
 			 List<Object[]> resultset=( List<Object[]>)query.getResultList();
 			return resultset;		
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO RevisedItemNamesList "+ e);
 			e.printStackTrace();
 			return new ArrayList<Object[]>();
 		}
@@ -574,7 +568,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public Object[] RevisedItemContent(String tempcontentrevid)throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside RevisedItemContent");
 		Query query=manager.createNativeQuery(REVISEDITEMCONTENT);
 		Object[] result =(Object[])query.getResultList().get(0);
 		return result ;
@@ -585,7 +578,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> ContentAddedDocs(String filerepmasterid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ContentAddedDocs");
 		Query query=manager.createNativeQuery(CONTENTADDEDDOCS);
 		query.setParameter("filerepmasterid", filerepmasterid);
 		List<Object[]> reslutlist=(List<Object[]>)query.getResultList();
@@ -595,13 +587,13 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public long pfmsDocContentLinkAdd(PfmsDocContentLinks link)throws Exception
 	{
-		logger.info(new Date() +"Inside pfmsDocContentLinkAdd ");
 		try {
 			manager.persist(link);
 			manager.flush();
 			return link.getContentLinkId();
 			
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO pfmsDocContentLinkAdd "+ e);
 			e.printStackTrace();
 		}		
 		return 0;
@@ -613,12 +605,12 @@ public class DocumentDaoImpl implements DocumentDao
 	public Object[] TempContentFrz(String tempcontentfrzid)throws Exception 
 	{
 		Object[] result =null;
-		logger.info(new java.util.Date() +"Inside TempContentFrz");
 		try {
 			Query query=manager.createNativeQuery(TEMPCONTENTFRZ);
 			query.setParameter("tempcontentfrzid", tempcontentfrzid);
 			result =(Object[])query.getResultList().get(0);
 		}catch (Exception e) {
+			logger.error(new Date() +"Inside DAO TempContentFrz "+ e);
 			e.printStackTrace();
 		}
 		return result ;
@@ -628,7 +620,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public List<Object[]> ItemLinksList(String maintempcontentid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ItemLinksList");
 		Query query=manager.createNativeQuery(ITEMLINKSLIST);
 		query.setParameter("maintempcontentid", maintempcontentid);
 		List<Object[]> reslutlist=(List<Object[]>)query.getResultList();
@@ -639,7 +630,6 @@ public class DocumentDaoImpl implements DocumentDao
 	@Override
 	public int DeleteFrozenDoc(String pfmsdocid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DeleteFrozenDoc");
 		Query query=manager.createNativeQuery(DELETEFROZENDOC);
 		query.setParameter("pfmsdocid", pfmsdocid);
 		return query.executeUpdate(); 

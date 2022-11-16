@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 public class JasperConnection {
-	private static final Logger logger=LogManager.getLogger(PftsReportsController.class);
+	private static final Logger logger=LogManager.getLogger(JasperConnection.class);
 	static Connection con;
 	@Qualifier("sessionFactory")
 	private static SessionFactory sessionFactory;

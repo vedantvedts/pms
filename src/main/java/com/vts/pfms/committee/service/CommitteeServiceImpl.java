@@ -85,7 +85,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeAdd(CommitteeDto committeeDto) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAdd");	
+		logger.info(new Date() +"Inside CommitteeAdd ");	
 		long count=0;
 		String name=committeeDto.getCommitteeName(); 
 		String sname=committeeDto.getCommitteeShortName();
@@ -131,7 +131,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[]CommitteeNamesCheck(String name,String sname, String projectid,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeNamesCheck");	
+		logger.info(new Date() +"Inside CommitteeNamesCheck ");	
 		return dao.CommitteeNamesCheck(name,sname,projectid,LabCode).get(0);
 	}
 		
@@ -140,21 +140,21 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeListActive(String isglobal,String Projectapplicable, String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeListActive");	
+		logger.info(new Date() +"Inside CommitteeListActive ");	
 		return dao.CommitteeListActive(isglobal,Projectapplicable,LabCode); 
 	}
 	
 	@Override
 	public Object[] CommitteeDetails(String committeeid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeDetails");	
+		logger.info(new Date() +"Inside CommitteeDetails ");	
 		return dao.CommitteeDetails(committeeid);
 	}
 	
 	@Override
 	public long CommitteeEditSubmit(CommitteeDto committeeDto) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeEditSubmit");	
+		logger.info(new Date() +"Inside CommitteeEditSubmit ");	
 		String name=committeeDto.getCommitteeName(); 
 		String sname=committeeDto.getCommitteeShortName();
 		
@@ -202,13 +202,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside EmployeeList");	
 		return dao.EmployeeList(LabCode);
 	}
 	
 	@Override
 	public Object[] CommitteeName(String CommitteeId) throws Exception {
-		logger.info(new Date() +"Inside CommitteeName");	
 		return dao.CommitteeName(CommitteeId);
 	}
 
@@ -216,7 +214,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeDetailsSubmit(CommitteeMainDto committeemaindto) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeDetailsSubmit");
+		logger.info(new Date() +"Inside CommitteeDetailsSubmit ");
 		CommitteeMain committeemain= new CommitteeMain();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -338,20 +336,17 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception {
-		logger.info(new Date() +"Inside LastCommitteeId");
 		return dao.LastCommitteeId(CommitteeId, projectid, divisionid,initiationid );
 	}
 	
 	@Override
 	public List<Object[]> CommitteeMainList(String labcode) throws Exception {
-		logger.info(new Date() +"Inside CommitteeMainList");
 		return dao.CommitteeMainList(labcode);
 	}
 	
 	@Override
 	public List<Object[]> CommitteeNonProjectList() throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeNonProjectList");
 		return dao.CommitteeNonProjectList();
 	}
 
@@ -360,7 +355,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid, String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside EmployeeListWithoutMembers");
+		logger.info(new Date() +"Inside SERVICE EmployeeListWithoutMembers ");
 		List<Object[]> employeelist= dao.EmployeeListWithoutMembers(committeemainid,LabCode);
 		return employeelist;
 	}
@@ -368,7 +363,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int CommitteeMemberDelete(String committeememberid, String modifiedby)throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMemberDelete");
+		logger.info(new Date() +"Inside SERVICE CommitteeMemberDelete ");
 		CommitteeMember committeemember=new CommitteeMember();
 		committeemember.setCommitteeMemberId(Long.parseLong(committeememberid));
 		committeemember.setModifiedBy(modifiedby);
@@ -380,7 +375,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeMainMembersAddSubmit(String committeemainid, String[] Member,String userid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMainMembersAddSubmit");
+		logger.info(new Date() +"Inside SERVICE CommitteeMainMembersAddSubmit ");
 		long count=0;
 		for(int i=0;i< Member.length;i++)
 		{
@@ -398,7 +393,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> EmployeeListNoMembers(String labid, String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside EmployeeListNoMembers");
+		logger.info(new Date() +"Inside SERVICE EmployeeListNoMembers ");
 		List<Object[]> employeelist= dao.ChairpersonEmployeeList( labid, committeemainid);	
 		return employeelist;
 	}
@@ -406,7 +401,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeScheduleAddSubmit(CommitteeScheduleDto committeescheduledto)throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleAddSubmit");
+		logger.info(new Date() +"Inside SERVICE CommitteeScheduleAddSubmit ");
 		CommitteeSchedule committeeschedule=new  CommitteeSchedule(); 
 		
 		committeeschedule.setLabCode(committeescheduledto.getLabCode());	
@@ -451,35 +446,31 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid)throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleListNonProject");
 		return dao.CommitteeScheduleListNonProject(committeeid);
 	}
 
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeScheduleEditData");
 		return dao.CommitteeScheduleEditData(CommitteeScheduleId);
 	}
 	
 	@Override
 	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside AgendaReturnData");
 		return dao.AgendaReturnData(CommitteeScheduleId);
 	}
 
 	@Override
 	public List<Object[]> ProjectList(String LabCode) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectList");
 		return dao.ProjectList(LabCode);
 	}
 	
 	@Override
 	public Long CommitteeAgendaSubmit(List<CommitteeScheduleAgendaDto> scheduleagendadtos) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeAgendaSubmit");
+		logger.info(new Date() +"Inside SERVICE CommitteeAgendaSubmit ");
 		long ret=0;
 		
 		String committeescheduleid=scheduleagendadtos.get(0).getScheduleId();
@@ -550,7 +541,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long CommitteeScheduleAgendaEdit(CommitteeScheduleAgendaDto scheduleagendadto,String attachmentid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleAgendaEdit");
+		logger.info(new Date() +"Inside SERVICE CommitteeScheduleAgendaEdit ");
 		CommitteeScheduleAgenda scheduleagenda=new CommitteeScheduleAgenda();
 //		CommitteeSchedulesAttachment attachment = new CommitteeSchedulesAttachment();
 		
@@ -621,7 +612,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long CommitteeAgendaPriorityUpdate(String[] agendaid,String[] priority) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAgendaPriorityUpdate");
+		logger.info(new Date() +"Inside SERVICE CommitteeAgendaPriorityUpdate ");
 			long ret=0;
 			for(int i=0;i<agendaid.length;i++)
 			{
@@ -634,7 +625,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int CommitteeAgendaDelete(String committeescheduleagendaid, String attachmentid,String Modifiedby, String  scheduleid,String AgendaPriority) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAgendaDelete");
+		logger.info(new Date() +"Inside SERVICE CommitteeAgendaDelete ");
 		List<Object[]> agendaslistafter=dao.CommitteeScheduleGetAgendasAfter(scheduleid,AgendaPriority);
 		
 		if(agendaslistafter.size()!=0) 
@@ -669,7 +660,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception 
 	{		
-		logger.info(new Date() +"Inside AgendaList");
 		return dao.AgendaList(CommitteeScheduleId);
 	}
 
@@ -683,7 +673,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override 
 	public Long CommitteeScheduleUpdate(CommitteeScheduleDto committeescheduledto) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeScheduleUpdate");
+		logger.info(new Date() +"Inside SERVICE CommitteeScheduleUpdate ");
 		String meetingid = dao.CommitteeScheduleData(committeescheduledto.getScheduleId().toString())[12].toString();
 		CommitteeSchedule committeeschedule=new  CommitteeSchedule();
 		committeeschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
@@ -701,14 +691,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeMinutesSpecList(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeMinutesSpecList");
 		return dao.CommitteeMinutesSpecList(CommitteeScheduleId);
 	}
 
 	@Override
 	public Long CommitteeMinutesInsert(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeMinutesInsert");
+		logger.info(new Date() +"Inside SERVICE CommitteeMinutesInsert ");
 		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
 		committeeminutesdetails.setScheduleId(Long.parseLong(committeeminutesdetailsdto.getScheduleId()));
 		committeeminutesdetails.setScheduleSubId(Long.parseLong(committeeminutesdetailsdto.getScheduleSubId()));
@@ -738,7 +727,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] CommitteeMinutesSpecDesc(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeMinutesSpecDesc");
+		logger.info(new Date() +"Inside SERVICE CommitteeMinutesSpecDesc ");
 		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
 		
 		committeeminutesdetails.setMinutesId(Long.parseLong(committeeminutesdetailsdto.getMinutesId()));
@@ -751,7 +740,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] CommitteeMinutesSpecEdit(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeMinutesSpecEdit");
+		logger.info(new Date() +"Inside SERVICE CommitteeMinutesSpecEdit ");
 		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
 		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
 		
@@ -761,7 +750,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long CommitteeMinutesUpdate(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeMinutesUpdate");
+		logger.info(new Date() +"Inside SERVICE CommitteeMinutesUpdate ");
 		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
 		committeeminutesdetails.setScheduleId(Long.parseLong(committeeminutesdetailsdto.getScheduleId()));
 		committeeminutesdetails.setScheduleSubId(Long.parseLong(committeeminutesdetailsdto.getScheduleSubId()));
@@ -780,7 +769,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeSubScheduleSubmit(CommitteeSubScheduleDto committeesubscheduledto) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeSubScheduleSubmit");
+		logger.info(new Date() +"Inside SERVICE CommitteeSubScheduleSubmit ");
 		CommitteeSubSchedule committeesubschedule=new CommitteeSubSchedule();
 		committeesubschedule.setScheduleId(Long.parseLong(committeesubscheduledto.getScheduleId()));
 		committeesubschedule.setScheduleDate(new java.sql.Date(sdf.parse(committeesubscheduledto.getScheduleDate()).getTime()));
@@ -796,7 +785,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeSubScheduleList(String scheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeSubScheduleList");
 		return dao.CommitteeSubScheduleList(scheduleid);
 	}
 
@@ -804,7 +792,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleMinutes");
 		return dao.CommitteeScheduleMinutes(scheduleid);
 	}
 
@@ -813,21 +800,18 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeMinutesSpecdetails()throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMinutesSpecdetails");
 		return dao.CommitteeMinutesSpecdetails();
 	}
 
 	@Override
 	public List<Object[]> CommitteeMinutesSub()throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMinutesSub");
 		return dao.CommitteeMinutesSub();
 	}
 
 	@Override
 	public List<Object[]> CommitteeAttendance(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeAttendance");
 		return dao.CommitteeAttendance(CommitteeScheduleId);
 	}
 
@@ -836,7 +820,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public int MeetingAgendaApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception 
 	{
 
-		logger.info(new Date() +"Inside MeetingAgendaApproval");
+		logger.info(new Date() +"Inside SERVICE MeetingAgendaApproval ");
 		CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
 		CommitteeSchedule schedule= new CommitteeSchedule();
 		
@@ -917,7 +901,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> MeetingApprovalAgendaList(String EmpId) throws Exception 
 	{
-		logger.info(new Date() +"Inside MeetingApprovalAgendaList");
 		return dao.MeetingApprovalAgendaList(EmpId);
 	}
 	
@@ -925,7 +908,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int MeetingAgendaApprovalSubmit(String ScheduleId, String Remarks, String UserId, String EmpId,String Option) throws Exception {
 
-		logger.info(new Date() +"Inside MeetingAgendaApprovalSubmit");
+		logger.info(new Date() +"Inside SERVICE MeetingAgendaApprovalSubmit ");
 		CommitteeSchedule schedule= new CommitteeSchedule();
 		CommitteeMeetingApproval approval = new CommitteeMeetingApproval();
 		PfmsNotification notification=new PfmsNotification();
@@ -978,14 +961,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleData");
 		return dao.CommitteeScheduleData(committeescheduleid);
 	}
 	
 	@Override
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleDataPro");
 		return dao.CommitteeScheduleDataPro(committeescheduleid, projectid);
 	}
 
@@ -993,7 +974,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAtendance");
 		return dao.CommitteeAtendance(committeescheduleid);
 	}
 	
@@ -1001,28 +981,25 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside EmployeeListNoInvitedMembers");
 		return dao.EmployeeListNoInvitedMembers(scheduleid,LabCode);
 	}
 	
 	@Override
 	public List<Object[]> ExternalMembersNotInvited(String scheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside ExternalMembersWithoutInvited");
 		return dao.ExternalMembersNotInvited(scheduleid);
 	}
 	
 	@Override
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside ExternalMembersNotAddedCommittee");
 		return dao.ExternalMembersNotAddedCommittee(committeemainid);		
 	}
 	
 	@Override
 	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeInvitationCreate");
+		logger.info(new Date() +"Inside SERVICE CommitteeInvitationCreate ");
 		long ret=0;
 		long slno=1;
 		Object[] maxslno=dao.InvitationMaxSerialNo(committeeinvitationdto.getCommitteeScheduleId());
@@ -1078,7 +1055,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeInvitationDelete");
+		logger.info(new Date() +"Inside SERVICE CommitteeInvitationDelete ");
 		
 		
 			List<Object[]> serialnoafter=dao.CommitteeInvitationSerialNoAfter(committeeinvitationid);
@@ -1095,7 +1072,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long CommitteeAttendanceToggle(String InvitationId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeAttendanceToggle");
+		logger.info(new Date() +"Inside SERVICE CommitteeAttendanceToggle ");
 		List<String> AttendanceList=dao.CommitteeAttendanceList(InvitationId);
 		
 		String Value=null;
@@ -1114,7 +1091,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Long ScheduleMinutesUnitUpdate(CommitteeMinutesDetailsDto detailsdto) throws Exception {
 		
-		logger.info(new Date() +"Inside ScheduleMinutesUnitUpdate");
+		logger.info(new Date() +"Inside SERVICE ScheduleMinutesUnitUpdate ");
 		CommitteeScheduleMinutesDetails minutesdetails = new CommitteeScheduleMinutesDetails();
 		minutesdetails.setScheduleId(Long.parseLong(detailsdto.getScheduleId()));
 		minutesdetails.setScheduleSubId(1);
@@ -1130,21 +1107,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> MinutesUnitList(String CommitteeScheudleId) throws Exception {
 
-		logger.info(new Date() +"Inside MinutesUnitList");
 		return dao.MinutesUnitList(CommitteeScheudleId);
 	}
 	
 	@Override
 	public List<Object[]> CommitteeAgendaPresenter(String scheduleid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAgendaPresenter");
 		return dao.CommitteeAgendaPresenter(scheduleid);
 	}
 	
 	@Override
 	public List<Object[]> PresenterRemovalEmpList(List<Object[]> Employeelist, List<Object[]> PresenterList) throws Exception
 	{
-		logger.info(new Date() +"Inside PresenterRemovalEmpList");
+		logger.info(new Date() +"Inside SERVICE PresenterRemovalEmpList ");
 		for(int i=0;i<Employeelist.size();i++)
 		{
 			for(int j=0;j<PresenterList.size();j++)
@@ -1164,7 +1139,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override 
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
+		logger.info(new Date() +"Inside SERVICE LoginProjectDetailsList "); 
 		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype,LabCode);  
 		return projectidlist;
 	}
@@ -1174,60 +1149,52 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] projectdetails(String projectid) throws Exception
 	{
-		logger.info(new Date() +"Inside projectdetails");
 		return dao.projectdetails(projectid);
 	}
 	
 	@Override
 	public List<Object[]> ProjectScheduleListAll(String projectid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectScheduleListAll");
 		return dao.ProjectScheduleListAll(projectid);
 	}
 	@Override
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectApplicableCommitteeList");
 		return dao.ProjectApplicableCommitteeList(projectid);
 	}
 	@Override
 	public  int UpdateComitteeMainid(String committeemainid, String scheduleid ) throws Exception
 	{
-		logger.info(new Date() +"Inside UpdateComitteeMainid");
 		return dao.UpdateComitteeMainid(committeemainid, scheduleid);
 	}
 	@Override
 	public List<Object[]> ProjectCommitteeScheduleListAll(String projectid,String committeeid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectCommitteeScheduleListAll");
 		return dao.ProjectCommitteeScheduleListAll(projectid, committeeid);
 	}
 	
 	@Override
 	public  List<Object[]> ChaipersonEmailId(String CommitteeMainId) throws Exception {
 
-		logger.info(new Date() +"Inside ChaipersonEmailId");
 		return dao.ChaipersonEmailId(CommitteeMainId);
 	}
 	
 	@Override
 	public Object[] ProjectDirectorEmail(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectDirectorEmail");
 		return dao.ProjectDirectorEmail(ProjectId);
 	}
 	
 	@Override
 	public Object[] RtmddoEmail() throws Exception {
 
-		logger.info(new Date() +"Inside RtmddoEmail");
 		return dao.RtmddoEmail();
 	}
 
 	@Override
 	public String UpdateOtp(CommitteeScheduleDto committeescheduledto) throws Exception {
 
-		logger.info(new Date() +"Inside UpdateOtp");
+		logger.info(new Date() +"Inside SERVICE UpdateOtp ");
 		CommitteeSchedule schedule=new CommitteeSchedule();
 		schedule.setKickOffOtp(committeescheduledto.getKickOffOtp());
 		schedule.setScheduleId(committeescheduledto.getScheduleId());
@@ -1240,7 +1207,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public String KickOffOtp(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside KickOffOtp");
 		return dao.KickOffOtp(CommitteeScheduleId);
 	}
 
@@ -1249,14 +1215,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception {
 
-		logger.info(new Date() +"Inside UserSchedulesList");
 		return dao.UserSchedulesList(EmpId,"%"+MeetingId+"%");
 	}
 	
 	@Override
 	public List<Object[]> MeetingSearchList(String MeetingId ,String LabCode) throws Exception {
 
-		logger.info(new Date() +"Inside MeetingSearchList");
 		return dao.MeetingSearchList("%"+MeetingId+"%" ,LabCode);
 
 	}
@@ -1264,7 +1228,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long ProjectCommitteeAdd(String ProjectId, String[] Committee, String UserId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectCommitteeAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectCommitteeAdd ");
 		long count=0;
 		for(int i=0;i<Committee.length;i++) {
 			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
@@ -1285,7 +1249,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long InitiationCommitteeAdd(String initiation, String[] Committee, String UserId) throws Exception {
 
-		logger.info(new Date() +"Inside InitiationCommitteeAdd");
+		logger.info(new Date() +"Inside SERVICE InitiationCommitteeAdd ");
 		long count=0;
 		for(int i=0;i<Committee.length;i++) {
 			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
@@ -1307,14 +1271,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectMasterList");
 		return dao.ProjectMasterList(ProjectId);
 	}
 
 	@Override
 	public long ProjectCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectCommitteeDelete");
+		logger.info(new Date() +"Inside SERVICE ProjectCommitteeDelete ");
 		long count=0;
 		for(int i=0;i<CommitteeProject.length;i++) {
 			CommitteeProject committeeproject=new CommitteeProject();
@@ -1328,7 +1291,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] LabDetails()throws Exception
 	{
-		logger.info(new Date() +"Inside LabDetails");
 		return dao.LabDetails();
 	}
 
@@ -1336,7 +1298,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
-		logger.info(new Date() +"Inside ProjectCommitteeList");
 		return dao.ProjectCommitteesListNotAdded(projectid, LabCode);		
 	}
 
@@ -1345,28 +1306,24 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String divisionid,String initiationid,String projectstatus) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeAutoScheduleList");
 		return dao.CommitteeAutoScheduleList(ProjectId,divisionid,initiationid,projectstatus);
 	}
 	
 	@Override
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String committeeid, String divisionid , String initiationid,String projectstatus) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeAutoScheduleList");
 		return dao.CommitteeAutoScheduleList(ProjectId, committeeid,divisionid,initiationid,projectstatus);
 	}
 	
 	@Override
 	public Object[] CommitteeLastScheduleDate(String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeLastScheduleDate");
 		return dao.CommitteeLastScheduleDate(committeeid);
 	}
 
 	@Override
 	public int CommitteeProjectUpdate(String ProjectId, String CommitteeId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeProjectUpdate");
 		return dao.CommitteeProjectUpdate(ProjectId,CommitteeId);
 	}
 
@@ -1374,14 +1331,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int UpdateMeetingVenue(CommitteeScheduleDto csdto) throws Exception
 	{
-		logger.info(new Date() +"Inside UpdateMeetingVenue");
 		return dao.UpdateMeetingVenue(csdto);
 	}
 
 	@Override
 	public long MinutesAttachmentAdd(CommitteeMinutesAttachmentDto dto) throws Exception 
 	{
-		logger.info(new Date() +"Inside MinutesAttachmentAdd");
+		logger.info(new Date() +"Inside SERVICE MinutesAttachmentAdd ");
 		CommitteeMinutesAttachment attachment= new CommitteeMinutesAttachment();
 		attachment.setScheduleId(Long.parseLong(dto.getScheduleId()));
 		attachment.setMinutesAttachment(dto.getMinutesAttachment());
@@ -1398,32 +1354,28 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int MinutesAttachmentDelete(String  attachmentid) throws Exception
 	{
-		logger.info(new Date() +"Inside MinutesAttachmentDelete");
 		return dao.MinutesAttachmentDelete(attachmentid);
 	}	
 	@Override
 	public List<Object[]> MinutesAttachmentList(String scheduleid ) throws Exception 
 	{
-		logger.info(new Date() +"Inside MinutesAttachmentList");
 		return dao.MinutesAttachmentList(scheduleid);
 	}	
 	@Override
 	public CommitteeMinutesAttachment MinutesAttachDownload(String attachmentid) throws Exception 
 	{
-		logger.info(new Date() +"Inside MinutesAttachDownload");
 		return dao.MinutesAttachDownload(attachmentid);
 	}	
 	@Override
 	public List<Object[]> PfmsCategoryList() throws Exception 
 	{
-		logger.info(new Date() +"Inside PfmsCategoryList");
 		return dao.PfmsCategoryList();
 	}
 	
 	@Override
 	public int MeetingMinutesApproval(String CommitteeScheduleId, String UserId, String EmpId,String Option ) throws Exception 
 	{
-		logger.info(new Date() +"Inside MeetingMinutesApproval");
+		logger.info(new Date() +"Inside SERVICE MeetingMinutesApproval ");
 		CommitteeMeetingApproval approval=new CommitteeMeetingApproval();
 		CommitteeSchedule schedule= new CommitteeSchedule();
 	
@@ -1512,7 +1464,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception {
 
-		logger.info(new Date() +"Inside MeetingApprovalMinutesList");
 		return dao.MeetingApprovalMinutesList(EmpId);
 	}
 
@@ -1520,7 +1471,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int MeetingMinutesApprovalSubmit(String ScheduleId, String Remarks, String UserId, String EmpId,String Option) throws Exception {
 
-		logger.info(new Date() +"Inside MeetingMinutesApprovalSubmit");
+		logger.info(new Date() +"Inside SERVICE MeetingMinutesApprovalSubmit ");
 		CommitteeSchedule schedule= new CommitteeSchedule();
 		CommitteeMeetingApproval approval = new CommitteeMeetingApproval();
 		PfmsNotification notification=new PfmsNotification();
@@ -1564,7 +1515,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 				notification.setStatus("MMR");
 			}
 		}catch (Exception e) {
-			
+			logger.error(new Date() +" Inside SERVICE MeetingMinutesApprovalSubmit ", e);
 		}
 		return dao.MeetingMinutesApprovalSubmit(schedule,approval,notification);
 	}
@@ -1572,27 +1523,23 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception {
 		 
-		logger.info(new Date() +"Inside CommitteeAllAttendance");
 		return dao.CommitteeAllAttendance(CommitteeScheduleId);
 	}
 
 	@Override
 	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
-		logger.info(new Date() +"Inside MeetingReports");
 		return dao.MeetingReports(EmpId,Term,ProjectId,divisionid,initiationid,logintype,LabCode);
 	}
 
 	@Override
 	public List<Object[]> MeetingReportListAll(String fdate, String tdate, String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside MeetingReportListAll");
 		return dao.MeetingReportListAll(fdate,tdate,ProjectId);
 	}
 	
 	@Override
 	public List<Object[]> MeetingReportListEmp(String fdate, String tdate, String ProjectId, String EmpId)	throws Exception {		
-		logger.info(new Date() +"Inside MeetingReportListEmp");
 		return dao.MeetingReportListEmp(fdate,tdate,ProjectId,EmpId);
 	}
 	
@@ -1600,7 +1547,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] KickOffMeeting(HttpServletRequest req,RedirectAttributes redir) throws Exception
 	{
-		logger.info(new Date() +"Inside KickOffMeeting");
+		logger.info(new Date() +"Inside SERVICE KickOffMeeting ");
 		String CommitteeMainId=req.getParameter("committeemainid");
 		String CommitteeScheduleId=req.getParameter("committeescheduleid");
 		String Option=req.getParameter("sub");
@@ -1675,7 +1622,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 				{
 					javaMailSender.send(msg);
 				}catch (Exception e) {
-					logger.error(new Date() +" EMAIL CREDENTIALS NOT AUTHORIZED ", e);
+					logger.error(new Date() +" Inside SERVICE KickOffMeeting ", e);
 				}
 				dao.UpdateOtp(committeeschedule);
 				redir.addAttribute("result", " OTP Sent to Successfully !! ");
@@ -1723,7 +1670,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int UpdateCommitteeInvitationEmailSent(String scheduleid)throws Exception
 	{
-		logger.info(new Date() +"Inside UpdateCommitteeInvitationEmailSent");
 		return dao.UpdateCommitteeInvitationEmailSent(scheduleid);
 	}
 	
@@ -1788,7 +1734,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception {
-		logger.info(new Date() +"Inside MinutesViewAllActionList");
 		return dao.MinutesViewAllActionList( scheduleid); 
 	}
 	
@@ -1800,20 +1745,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public List<Object[]> ProjectCommitteesList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside ProjectCommitteesList");
 		return dao.ProjectCommitteesList( LabCode);
 	}
 
 	@Override
 	public List<Object[]> ExpertList() throws Exception {
-		logger.info(new Date() +"Inside ExpertList");
 		return dao.ExpertList();
 	}
 
 	@Override
 	public List<Object[]> AllLabList() throws Exception {
-		logger.info(new Date() +"Inside ClusterLabList");
-		
 		return dao.AllLabList();
 	}
 
@@ -1825,7 +1766,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public List<Object[]> ExternalEmployeeListFormation(String CpLabCode,String committeemainid) throws Exception {
-		logger.info(new Date() +"Inside ExternalEmployeeListFormation");
 		return dao.InternalEmployeeListFormation(CpLabCode,committeemainid);
 	}
 	
@@ -1843,14 +1783,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> ChairpersonEmployeeListFormation(String LabCode,String committeemainid) throws Exception {
-		logger.info(new Date() +"Inside ChairpersonEmployeeListFormation");		
 		return dao.ChairpersonEmployeeList(LabCode,committeemainid);
 	}
 	
 	@Override
 	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
 	{
-		logger.info(new Date() +"Inside PreseneterForCommitteSchedule");		
 		return dao.PreseneterForCommitteSchedule(LabCode);
 	}
 	
@@ -1863,7 +1801,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> ExternalEmployeeListInvitations(String labcode,String scheduleid) throws Exception {
-		logger.info(new Date() +"Inside ExternalEmployeeListInvitations");		
 		return dao.ExternalEmployeeListInvitations(labcode,scheduleid);
 	}
 
@@ -1871,7 +1808,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public long CommitteeMembersInsert(CommitteeMembersDto dto) throws Exception {
 		
-		logger.info(new Date() +"Inside CommitteeMembersInsert");
+		logger.info(new Date() +"Inside SERVICE CommitteeMembersInsert ");
 		long count=0;
 		
 		ArrayList<String> emplist=new ArrayList<String>();
@@ -1933,56 +1870,48 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception {
-		logger.info(new Date() +"Inside CommitteeAllMembers");
 		return dao.CommitteeAllMembers(committeemainid);
 	}
 	
 	@Override
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectBasedMeetingStatusCount");
 		return dao.ProjectBasedMeetingStatusCount(projectid);
 	}
 	
 		
 	@Override
 	public List<Object[]> allprojectdetailsList() throws Exception {
-		logger.info(new Date() +"Inside allprojectdetailsList");        
 		return dao.allprojectdetailsList();
 	}
 	
 	@Override
 	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid,String statustype) throws Exception
 	{
-		logger.info(new Date() +"Inside PfmsMeetingStatusWiseReport");   
 		return dao.PfmsMeetingStatusWiseReport(projectid, statustype);
 	}
 	
 	@Override
 	public List<Object[]> ProjectCommitteeFormationCheckList(String projectid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectCommitteeFormationCheckList");   
 		return dao.ProjectCommitteeFormationCheckList(projectid);
 	}
 	
 	@Override
 	public Object[] ProjectCommitteeDescriptionTOR(String projectid,String Committeeid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOR");   
 		return dao.ProjectCommitteeDescriptionTOR(projectid, Committeeid);	
 	}
 	
 	@Override
 	public Object[] DivisionCommitteeDescriptionTOR(String divisionid,String Committeeid) throws Exception
 	{	
-		logger.info(new Date() +"Inside DivisionCommitteeDescriptionTOR");   
 		return dao.DivisionCommitteeDescriptionTOR(divisionid, Committeeid);	
 	}
 
 	@Override
 	public int ProjectCommitteeDescriptionTOREdit( CommitteeProject  committeeproject ) throws Exception
 	{	
-		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOREdit");
 		committeeproject.setModifiedDate(sdf1.format(new Date()));
 		return dao.ProjectCommitteeDescriptionTOREdit(committeeproject);
 	}
@@ -1991,14 +1920,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int DivisionCommitteeDescriptionTOREdit(CommitteeDivision committeedivision) throws Exception
 	{	
-		logger.info(new Date() +"Inside ProjectCommitteeDescriptionTOREdit");
 		committeedivision.setModifiedDate(sdf1.format(new Date()));
 		return dao.DivisionCommitteeDescriptionTOREdit(committeedivision);
 	}
 
 	@Override
 	public long CommitteePreviousAgendaAdd(String scheduleidto,String[] fromagendaids,String userid) throws Exception {
-		logger.info(new Date() +"Inside CommitteePreviousAgendaAdd");
+		logger.info(new Date() +"Inside SERVICE CommitteePreviousAgendaAdd ");
 		long count=0;
 		for(int i=0;i<fromagendaids.length;i++)
 		{			
@@ -2040,14 +1968,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int ScheduleMinutesUnitUpdate(String UnitId, String Unit, String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ScheduleMinutesUnitUpdate");
 		String dt=sdf3.format(new Date());
 		return dao.ScheduleMinutesUnitUpdate(UnitId, Unit, UserId,dt);
 	}
 	
 	@Override
 	public List<Object[]> divisionList() throws Exception {
-		logger.info(new Date() +"Inside divisionList");
 		return dao.divisionList();
 		
 	}
@@ -2055,14 +1981,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public List<Object[]> LoginDivisionList(String empid) throws Exception {
-		logger.info(new Date() +"Inside LoginDivisionList");
 		return dao.LoginDivisionList(empid);
 	}
 	
 	@Override
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteedivisionAssigned");
 		return dao.CommitteedivisionAssigned(divisionid);
 		
 	}
@@ -2070,14 +1994,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteedivisionNotAssigned");
 		return dao.CommitteedivisionNotAssigned(divisionid,  LabCode );
 	}
 	
 	@Override
 	public long DivisionCommitteeAdd(String divisionid, String[] Committee, String UserId) throws Exception 
 	{
-		logger.info(new Date() +"Inside DivisionCommitteeAdd");
+		logger.info(new Date() +"Inside SERVICE DivisionCommitteeAdd ");
 		long count=0;
 		for(int i=0;i<Committee.length;i++) {
 			Object[] committeedata=dao.CommitteeDetails(Committee[i]);
@@ -2098,14 +2021,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception
 	{
-		logger.info(new Date() +"Inside DivisionCommitteeFormationCheckList");   
 		return dao.DivisionCommitteeFormationCheckList(divisionid);
 	}
 	
 	@Override
 	public long DivisionCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
 
-		logger.info(new Date() +"Inside DivisionCommitteeDelete");
+		logger.info(new Date() +"Inside SERVICE DivisionCommitteeDelete ");
 		long count=0;
 		for(int i=0;i<CommitteeProject.length;i++) {
 			CommitteeDivision committeedivision=new CommitteeDivision();
@@ -2120,7 +2042,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public  Object[] DivisionData(String divisionid) throws Exception
 	{
-		logger.info(new Date() +"Inside DivisionData");
 		return dao.DivisionData(divisionid);
 	}
 	
@@ -2128,14 +2049,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> DivisionScheduleListAll(String divisionid) throws Exception
 	{
-		logger.info(new Date() +"Inside DivisionScheduleListAll");
 		return dao.DivisionScheduleListAll(divisionid);
 	}
 	
 	@Override
 	public List<Object[]> DivisionCommitteeScheduleList(String divisionid,String committeeid) throws Exception
 	{
-		logger.info(new Date() +"Inside DivisionCommitteeScheduleList");
 		return dao.DivisionCommitteeScheduleList(divisionid, committeeid);
 	}
 	
@@ -2143,7 +2062,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> DivisionCommitteeMainList(String divisionid) throws Exception 
 	{
-		logger.info(new Date() +"Inside DivisionCommitteeMainList");
 		return dao.DivisionCommitteeMainList(divisionid);
 	}
 	
@@ -2151,20 +2069,17 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> DivisionMasterList(String divisionid) throws Exception 
 	{
-		logger.info(new Date() +"Inside DivisionMasterList");
 		return dao.DivisionMasterList(divisionid);
 	}
 		
 	@Override
 	public List<Object[]> DivCommitteeAutoScheduleList(String divisionid) throws Exception 
 	{		
-		logger.info(new Date() +"Inside DivCommitteeAutoScheduleList");
 		return dao.DivCommitteeAutoScheduleList(divisionid);
 	}
 
 	@Override
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside CommitteeActionList");
 		return dao.CommitteeActionList(EmpId);
 	}
 	
@@ -2172,7 +2087,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int CommitteeDivisionUpdate(String divisionid, String CommitteeId) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeDivisionUpdate");
 		return dao.CommitteeDivisionUpdate(divisionid, CommitteeId);
 	}
 
@@ -2187,34 +2101,30 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> InitiatedProjectDetailsList()throws Exception
 	{
-		logger.info(new Date() +"Inside InitiatedProjectDetailsList");
 		return dao.InitiatedProjectDetailsList();
 	}
 
 	@Override
 	public List<Object[]> InitiationMasterList(String initiationid) throws Exception {
-		logger.info(new Date() +"Inside InitiationMasterList");
 		return dao.InitiationMasterList(initiationid);
 	}
 	
 	@Override
 	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception
 	{
-		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
 		return dao.InitiationCommitteeFormationCheckList(initiationid);
 	}
 
 	@Override
 	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception 
 	{
-		logger.info(new Date() +"Inside InitiationCommitteeFormationCheckList");
 		return dao.InitiationCommitteesListNotAdded(initiationid, LabCode);
 	}
 	
 	@Override
 	public Long InvitationSerialnoUpdate(String[] newslno,String[] invitationid) throws Exception
 	{
-		logger.info(new Date() +"Inside InvitationSerialnoUpdate");
+		logger.info(new Date() +"Inside SERVICE InvitationSerialnoUpdate ");
 			long ret=0;
 			for(int i=0;i<invitationid.length;i++)
 			{
@@ -2227,28 +2137,25 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeRepList() throws Exception
 	{
-		logger.info(new Date() +"Inside CommittRepList");
 		return dao.CommitteeRepList();
 	}
 	
 	@Override
 	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMemberRepList");
 		return dao.CommitteeMemberRepList(committeemainid);
 	}
 	
 	@Override
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeRepNotAddedList");
 		return dao.CommitteeRepNotAddedList(committeemainid);
 	}
 	
 	@Override
 	public long CommitteeRepMemberAdd(String[] repids, String committeemainid, String createdby ) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeRepMemberAdd");
+		logger.info(new Date() +"Inside SERVICE CommitteeRepMemberAdd ");
 		long count=0;
 		for(int i=0;i<repids.length;i++ ) 
 		{
@@ -2267,7 +2174,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeRepNotAddedList");
 		return dao.CommitteeMemberRepDelete(memberrepid);
 		
 	}
@@ -2276,20 +2182,19 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeAllMembersList");
 		return dao.CommitteeAllMembersList(committeemainid);		
 	}
 	
 	@Override
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception {
-		logger.info(new Date() +"Inside CommitteeMemberUpdate");
+		logger.info(new Date() +"Inside SERVICE CommitteeMemberUpdate ");
 		model.setModifiedDate(sdf1.format(new Date()));
 		return dao.CommitteeMemberUpdate(model);		
 	}
 	
 	@Override
 	public int CommitteeMainMemberUpdate(CommitteeMembersEditDto dto) throws Exception {	
-		logger.info(new Date() +"Inside CommitteeMainMemberUpdate");
+		logger.info(new Date() +"Inside SERVICE CommitteeMainMemberUpdate ");
 		
 		int ret=0;
 		// Update Chairperson
@@ -2397,14 +2302,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] CommitteMainData(String committeemainid) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteMainData");
 		return dao.CommitteMainData(committeemainid);
 	}
 	
 	@Override
 	public long InitiationCommitteeDelete( String[] CommitteeProject,String user) throws Exception {
 
-		logger.info(new Date() +"Inside InitiationCommitteeDelete");
+		logger.info(new Date() +"Inside SERVICE InitiationCommitteeDelete ");
 		long count=0;
 		for(int i=0;i<CommitteeProject.length;i++) {
 			CommitteeInitiation model=new CommitteeInitiation();
@@ -2417,7 +2321,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] Initiationdetails(String initiationid) throws Exception
 	{	
-		logger.info(new Date() +"Inside Initiationdetails");
 		return dao.Initiationdetails(initiationid);
 
 	}
@@ -2425,7 +2328,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public Object[] InitiationCommitteeDescriptionTOR(String initiationid,String Committeeid) throws Exception
 	{	
-		logger.info(new Date() +"Inside InitiationCommitteeDescriptionTOR");
 		return dao.InitiationCommitteeDescriptionTOR(initiationid, Committeeid);
 
 	}
@@ -2433,7 +2335,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int InitiationCommitteeDescriptionTOREdit(CommitteeInitiation committeeinitiation) throws Exception
 	{	
-		logger.info(new Date() +"Inside InitiationCommitteeDescriptionTOREdit");
 		committeeinitiation.setModifiedDate(sdf1.format(new Date()));
 		return dao.InitiationCommitteeDescriptionTOREdit(committeeinitiation);
 	}
@@ -2441,53 +2342,45 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> InitiaitionMasterList(String initiationid) throws Exception 
 	{
-		logger.info(new Date() +"Inside InitiaitionMasterList");
 		return dao.InitiaitionMasterList(initiationid);
 	}
 	@Override
 	public int CommitteeInitiationUpdate(String initiationid, String CommitteeId) throws Exception 
 	{
-		logger.info(new Date() +"Inside CommitteeInitiationUpdate");
 		return dao.CommitteeInitiationUpdate(initiationid,CommitteeId);
 	}
 	
 	@Override
 	public List<Object[]> InitiationCommitteeMainList(String initiationid) throws Exception 
 	{
-		logger.info(new Date() +"Inside InitiationCommitteeMainList");
 		return dao.InitiationCommitteeMainList(initiationid);
 	}
 	@Override
 	public List<Object[]> InitiationScheduleListAll(String initiationid) throws Exception
 	{
-		logger.info(new Date() +"Inside InitiationCommitteeMainList");
 		return dao.InitiationScheduleListAll(initiationid);
 	}
 	
 	@Override
 	public List<Object[]> InitiationCommitteeScheduleList(String initiationid,String committeeid) throws Exception
 	{
-		logger.info(new Date() +"Inside InitiationCommitteeScheduleList");
 		return dao.InitiationCommitteeScheduleList(initiationid, committeeid);
 	}
 	@Override
 	public Object[] ProposedCommitteeMainId(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside ProposedCommitteeMainId");
 		return dao.ProposedCommitteeMainId(committeemainid);
 	}
 	
 	@Override
 	public Object[] GetProposedCommitteeMainId(String committeeid,String projectid,String divisionid,String initiationid) throws Exception
 	{
-		logger.info(new Date() +"Inside GetProposedCommitteeMainId");
 		return dao.GetProposedCommitteeMainId(committeeid, projectid, divisionid, initiationid);		
 	}
 	
 	@Override
 	public Object[] CommitteeMainApprovalData(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMainApprovalData");
 		return dao.CommitteeMainApprovalData(committeemainid);
 	}
 	
@@ -2495,14 +2388,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> ApprovalStatusList(String committeemainid ) throws Exception
 	{
-		logger.info(new Date() +"Inside ApprovalStatusList");
 		return dao.ApprovalStatusList(committeemainid);
 	}
 	
 	@Override
 	public long CommitteeMainApprove(CommitteeConstitutionApprovalDto dto ) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMainApprove");
+		logger.info(new Date() +"Inside SERVICE CommitteeMainApprove ");
 		int ret=0;		
 		String operation=dto.getOperation();
 		Object[] oldapprovaldata=dao.CommitteeMainApprovalData(dto.getCommitteeMainId());
@@ -2765,14 +2657,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> ProposedCommitteList() throws Exception
 	{
-		logger.info(new Date() +"Inside ProposedCommitteList");
 		return dao.ProposedCommitteList();
 	}
 	
 	@Override
 	public List<Object[]> ProposedCommitteesApprovalList(String loginid,String EmpId) throws Exception
 	{
-		logger.info(new Date() +"Inside ProposedCommitteList");
+		logger.info(new Date() +"Inside SERVICE ProposedCommitteList ");
 		
 		List<Object[]> ProposedCommitteesApprovalList=new ArrayList<Object[]>(); 
 		Object[] logindata=dao.LoginData(loginid);
@@ -2808,7 +2699,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside ComConstitutionApprovalHistory");
 		return dao.ComConstitutionApprovalHistory(committeemainid);
 	}
 	
@@ -2816,7 +2706,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]>  ConstitutionApprovalFlow(String committeemainid) throws Exception
 	{
-		logger.info(new Date() +"Inside ConstitutionApprovalFlow");
+		logger.info(new Date() +"Inside SERVICE ConstitutionApprovalFlow ");
 		List<Object[]> list=new ArrayList<Object[]>();
 		
 		Object[] temp=dao.ComConstitutionEmpdetails(committeemainid);
@@ -2840,14 +2730,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int  CommitteeMinutesDelete(String scheduleminutesid) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMinutesDelete");
 		return dao.CommitteeMinutesDelete(scheduleminutesid);
 	}
 	
 	@Override
 	public int  CommitteeScheduleDelete(CommitteeScheduleDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeScheduleDelete");
+		logger.info(new Date() +"Inside SERVICE CommitteeScheduleDelete ");
 		dto.setModifiedDate(sdf1.format(new Date()));
 		dao.CommitteeScheduleAgendaDelete(dto);
 		dao.CommitteeScheduleInvitationDelete(dto);
@@ -2857,7 +2746,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int  ScheduleCommitteeEmpCheck(EmpAccessCheckDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside ScheduleCommitteeEmpCheck");
+		logger.info(new Date() +"Inside SERVICE ScheduleCommitteeEmpCheck ");
 		String logintype = dto.getLogintype();
 		String scheduleid = dto.getScheduleid();
 		String empid = dto.getEmpid();
@@ -2910,20 +2799,17 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> EmpScheduleData(String empid,String scheduleid) throws Exception 
 	{
-		logger.info(new Date() +"Inside ScheduleCommitteeEmpCheck");
 		return dao.EmpScheduleData(empid, scheduleid);
 	}
 	
 	@Override
 	public List<Object[]> DefaultAgendaList(String committeeid,String LabCode) throws Exception 
 	{
-		logger.info(new Date() +"Inside DefaultAgendaList");
 		return dao.DefaultAgendaList(committeeid,LabCode);
 	}
 	
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
-		logger.info(new Date()  +"Inside ProcurementStatusList");
 		return dao.ProcurementStatusList(projectid);
 	}
 	
@@ -2931,7 +2817,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public List<Object[]> ActionPlanSixMonths(String projectid)throws Exception
 	{
 		
-		logger.info(new Date()  +"Inside ActionPlanThreeMonths");
+		logger.info(new Date()  +"Inside SERVICE ActionPlanThreeMonths ");
 	
 //			List<Object[]> main=dao.MilestoneActivityList(projectid);
 //			List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
@@ -2980,27 +2866,24 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override 
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
-		logger.info(new Date() +"Inside LastPMRCActions");
 		return dao.LastPMRCActions(scheduleid,committeeid,proid,isFrozen);
 	}
 	
 	@Override
 	public List<Object[]> CommitteeMinutesSpecNew()throws Exception
 	{
-		logger.info(new Date() +"Inside CommitteeMinutesSpecNew");
 		return dao.CommitteeMinutesSpecNew();
 	}
 	
 	@Override 
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception {
-		logger.info(new Date() +"Inside MilestoneSubsystems");
 		return dao.MilestoneSubsystems(projectid);
 	}
 	
 	@Override 
 	public List<Object[]> EmployeeScheduleReports(HttpServletRequest req,String empid,String rtype) throws Exception 
 	{
-		logger.info(new Date() +"Inside EmployeeScheduleReports");
+		logger.info(new Date() +"Inside SERVICE EmployeeScheduleReports ");
 		LocalDate fromdate=null;  
 		LocalDate todate=null;
 		String rtype1=rtype.toLowerCase();
@@ -3077,20 +2960,17 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside EmployeeDropdown");
 		return dao.EmployeeDropdown(empid, logintype, projectid);
 	}
 	@Override
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new Date() +"Inside FileRepMasterListAll");
 		return dao.FileRepMasterListAll(projectid,LabCode);
 	}
 	
 	@Override
 	public Object[] AgendaDocLinkDownload(String filerepid)throws Exception
 	{
-		logger.info(new Date() +"Inside AgendaDocLinkDownload");
 		return dao.AgendaDocLinkDownload(filerepid);
 	}
 	
@@ -3102,6 +2982,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int AgendaUnlinkDoc(CommitteeScheduleAgendaDocs agendadoc) throws Exception 
 	{
+		logger.info(new Date() +"Inside SERVICE AgendaUnlinkDoc ");
 		agendadoc.setModifiedDate(sdf1.format(new Date()));
 		
 		if(dao.AgendaUnlinkDoc(agendadoc)!=null) {
@@ -3135,14 +3016,13 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public int MeetingNo(Object[] scheduledata) throws Exception 
 	{
+		logger.info(new Date() +"Inside SERVICE MeetingNo ");
 		int count=0;
 		if(scheduledata[21].toString().equalsIgnoreCase("P")) {
 			String scheduledate = scheduledata[2].toString(); 
 			String projectid = scheduledata[9].toString();
 			String committeeid = scheduledata[0].toString();
 			count= dao.CommProScheduleList(projectid, committeeid,scheduledate);
-			
-			
 		}
 		return count;
 	}
@@ -3198,6 +3078,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Override
 	public List<ProjectFinancialDetails> getMinutesFinance(String scheduleid) throws Exception {
+		logger.info(new Date() +"Inside SERVICE getMinutesFinance ");
 		List<ProjectFinancialDetails> finlist=new ArrayList<ProjectFinancialDetails>();
 		for(MinutesFinanceList list:dao.getMinutesFinance(scheduleid)) {
 			ProjectFinancialDetails finance=new ProjectFinancialDetails();

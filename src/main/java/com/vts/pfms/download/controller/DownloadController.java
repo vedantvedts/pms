@@ -42,7 +42,7 @@ public class DownloadController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 
-		logger.info(new Date() +"Inside FileUnpack.htm "+UserId);
+		logger.info(new Date() +"Inside AttachDocLinkDownload.htm "+UserId);
 		
 		try {	
 			String filerepid=cryptor.decryptParam(req.getParameter("filerepid"));
@@ -70,7 +70,7 @@ public class DownloadController {
 		catch (Exception e) {
 			
 			e.printStackTrace();  
-			logger.error(new Date() +" Inside FileUnpack.htm "+UserId, e); 
+			logger.error(new Date() +" Inside AttachDocLinkDownload.htm "+UserId, e); 
 			
 		}
 

@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.model.ProjectHoaChanges;
 import com.vts.pfms.project.model.ProjectHealth;
+import com.vts.pfms.project.service.ProjectServiceImpl;
 @Service
 public class RfpMainServiceImpl implements RfpMainService {
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -29,10 +32,11 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Autowired
 	RfpMainDao dao;
 	
+			private static final Logger logger=LogManager.getLogger(RfpMainServiceImpl.class);
 	
 	@Override
 	public List<Object[]> DashBoardFormUrlList(String FormModuleId, String loginId) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE DashBoardFormUrlList ");
 		int FormModuleIdinput=Integer.parseInt(FormModuleId);
 		int LoginIdinput=Integer.parseInt(loginId);
 		List<Object[]> DashBoardFormUrlList=dao.DashBoardFormUrlList(FormModuleIdinput, LoginIdinput);
@@ -53,7 +57,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public int LoginStampingUpdate(String Logid ,String LogoutType) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE LoginStampingUpdate ");
 		LoginStamping stamping=new LoginStamping();
         stamping.setAuditStampingId(dao.LastLoginStampingId(Logid));
        
@@ -100,7 +104,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId,String LabCode) throws Exception 
 	{		
-
+		logger.info(new Date() +"Inside SERVICE AllActionsCount ");
 //		List<Object[]> ProjectList= dao.ProjectList();
 		List<Object[]> al = new ArrayList<Object[]>();
 //
@@ -141,6 +145,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public int  GetNoticeEligibility(String empId)throws Exception{
+		logger.info(new Date() +"Inside SERVICE GetNoticeEligibility ");
 		int count =0; 
 		List<Object> counts=(List<Object>) dao.GetNoticeEligibility(empId);
 		for(Object data:counts) {
@@ -187,7 +192,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public Object[] AllSchedulesCount(String LoginType, String loginid) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE AllSchedulesCount ");
 		Object[] allschedulescount = null;
 		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L") )
 	     {
@@ -406,6 +411,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public String getEmpNo(long empId) throws Exception{
+		logger.info(new Date() +"Inside SERVICE getEmpNo ");
 		List<String> list=dao.getEmpNo(empId);
 		String empno=null;
 		if(list!=null && list.size()>0) {
@@ -418,7 +424,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public List<Object[]> ProjectMeetingCount(String LoginType,String empid,String labcode) throws Exception {
-
+		logger.info(new Date() +"Inside SERVICE ProjectMeetingCount ");
 //		List<Object[]> ProjectList = null;
 //
 //		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L")  )
@@ -461,7 +467,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 //
 //			ProjectList=dao.ProjectEmployeeList(empid);
 //	     }
-		
+		logger.info(new Date() +"Inside SERVICE ProjectList");
 		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType,labcode);
 		
 		return ProjectList;
@@ -469,6 +475,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public ArrayList<String> ProjectQuaters(String ProjectId) throws Exception {
+		logger.info(new Date() +"Inside SERVICE ProjectQuaters ");
 		ArrayList<String> Qualters = new ArrayList<String>();
 		if(!"0".equalsIgnoreCase(ProjectId)) {
 		Object[] Quater=dao.ProjectQuaters(ProjectId).get(0);
@@ -582,6 +589,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public long ProjectHealthUpdate(String EmpId, String UserName) throws Exception {
+		logger.info(new Date() +"Inside SERVICE ProjectHealthUpdate ");
 		List<Object[]> proList=dao.ProjectList();
 		long result=0;
 		for(Object[] obj:proList) {
@@ -636,7 +644,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
-		
+		logger.info(new Date() +"Inside SERVICE ProjectHoaUpdate ");
 		long count1 =0 ;
 		long count = dao.ProjectHoaDelete();
 		for(ProjectHoa obj : hoa) {
@@ -687,7 +695,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE ProjectFinanceChangesUpdate ");
 		List<Object[]> proList=dao.ProjectList();
 		
 		/*

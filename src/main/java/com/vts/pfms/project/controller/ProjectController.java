@@ -189,7 +189,7 @@ public class ProjectController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			 logger.error(new Date() +" Inside ActionNoSearch.htm "+UserId, e);
+			 logger.error(new Date() +" Inside InitiatedProjectDetails.htm "+UserId, e);
 		}
 	
 		Gson convertedgson = new Gson();
@@ -258,6 +258,8 @@ public class ProjectController {
 	@RequestMapping(value = "ProjectShortNameCount.htm", method = RequestMethod.GET)
 	public @ResponseBody String ProjectShortNameCount(HttpServletRequest req,HttpSession ses) throws Exception 
 	{		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectShortNameCount.htm "+UserId);
 		Gson json = new Gson();						
 		Long ProjectShortNameCount = service.ProjectShortNameCount(req.getParameter("ProjectShortName"));			
 		return json.toJson(ProjectShortNameCount);
@@ -1394,7 +1396,7 @@ public class ProjectController {
 		req.setAttribute("Option", Option);
 		
 		}catch (Exception e) {
-			logger.error(new Date() +" Inside ProjectAttachmentAdd.htm "+UserId, e);
+			logger.error(new Date() +" Inside ProjectAuthorityAdd.htm "+UserId, e);
 			e.printStackTrace();
     		
 		}
@@ -1477,7 +1479,7 @@ public class ProjectController {
 	public String ProjectAuthorityEditSubmit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses,@RequestPart("FileAttach") MultipartFile FileAttach )throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ProjectAuthorityEditSubmit.htm"+UserId);
+		logger.info(new Date() +"Inside ProjectAuthorityEditSubmit.htm "+UserId);
 		try
 		{
 			
@@ -1841,6 +1843,8 @@ public class ProjectController {
 	@RequestMapping(value = "TCCScheduleAdd.htm", method = RequestMethod.GET)
 	public String TCCScheduleAdd(HttpServletRequest req, HttpSession ses) throws Exception {
 
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside TCCScheduleAdd.htm "+UserId);
 		return "project/TCCSchedule";
 	}
 
@@ -1848,13 +1852,13 @@ public class ProjectController {
 	@RequestMapping(value ="ProjectMain.htm")
 	public String ProjectMain(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ProjectMain "+Username);
+		logger.info(new Date() +"Inside ProjectMain.htm "+Username);
 	try {
 		
 		req.setAttribute("ProjectMainList", service.ProjectMainList());
 		
 	}catch (Exception e) {
-		e.printStackTrace(); logger.error(new Date() +" Inside ProjectMain "+Username, e);
+		e.printStackTrace(); logger.error(new Date() +" Inside ProjectMain.htm "+Username, e);
 	}
 		return "project/ProjectMainList";
  
@@ -2071,13 +2075,13 @@ public class ProjectController {
 	public String ProjectList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
 		String LabCode=(String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectList "+Username);
+		logger.info(new Date() +"Inside ProjectList.htm "+Username);
 	try {
 		
 		req.setAttribute("ProjectList", service.ProjectList().stream().filter(e-> e[14]!=null).filter(e->LabCode.equalsIgnoreCase(e[14].toString())).collect(Collectors.toList()) );
 		
 	}catch (Exception e) {
-		e.printStackTrace(); logger.error(new Date() +" Inside ProjectList "+Username, e);
+		e.printStackTrace(); logger.error(new Date() +" Inside ProjectList.htm "+Username, e);
 	}
 		return "project/ProjectList";
 
@@ -2312,12 +2316,12 @@ public class ProjectController {
 		String Username = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
-		logger.info(new Date() +"Inside ProjectAssign "+Username);
+		logger.info(new Date() +"Inside ProjectAssign.htm "+Username);
 	try {
 		return "redirect:/ProjectProSubmit.htm";
 	}catch (Exception e) {
 		e.printStackTrace();
-		logger.error(new Date() +" Inside ProjectAssign "+Username, e);
+		logger.error(new Date() +" Inside ProjectAssign.htm "+Username, e);
 		return "ststic/Error";
 	}
 		
@@ -2333,7 +2337,7 @@ public class ProjectController {
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String LabCode = (String)ses.getAttribute("labcode");
 		String ProjectId=null; 
-		logger.info(new Date() +"Inside ProjectAssign "+Username);
+		logger.info(new Date() +"Inside ProjectProSubmit.htm "+Username);
 		try {
 		if(req.getParameter("ProjectId")!=null) {
 
@@ -2359,7 +2363,7 @@ public class ProjectController {
 		req.setAttribute("ProjectId", ProjectId);
 	}catch (Exception e) {
      
-		e.printStackTrace(); logger.error(new Date() +" Inside ProjectAssign "+Username, e);
+		e.printStackTrace(); logger.error(new Date() +" Inside ProjectProSubmit.htm "+Username, e);
 	}
 		return "project/ProjectAssign";
 
@@ -2373,7 +2377,7 @@ public class ProjectController {
 		String ProjectId= req.getParameter("ProjectId");
 		String EmpId[]= req.getParameterValues("EmpId");
 		ProjectAssignDto proAssigndto=new ProjectAssignDto();
-		logger.info(new Date() +"Inside ProjectAssign "+Username);
+		logger.info(new Date() +"Inside ProjectAssignSubmit.htm "+Username);
 	try {
 		
 		proAssigndto.setProjectId(ProjectId);
@@ -2391,7 +2395,7 @@ public class ProjectController {
     	 redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
 	}catch (Exception e) {
 		e.printStackTrace(); 
-		logger.error(new Date() +" Inside ProjectAssign "+Username, e);
+		logger.error(new Date() +" Inside ProjectAssignSubmit.htm "+Username, e);
 	}
 		return "redirect:/ProjectProSubmit.htm";
 	}
@@ -2403,7 +2407,7 @@ public class ProjectController {
 		String Username = (String) ses .getAttribute("Username");
 		String ProjectEmployeeId= (String)req.getParameter("ProjectEmployeeId");
 		ProjectAssign proAssign=new ProjectAssign();
-		logger.info(new Date() +"Inside ProjectAssign "+Username);
+		logger.info(new Date() +"Inside ProjectRevokeSubmit.htm "+Username);
 	try {
 		
 		proAssign.setProjectEmployeeId(Long.parseLong(ProjectEmployeeId));
@@ -2420,7 +2424,7 @@ public class ProjectController {
     	 
     	 redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
 	}catch (Exception e) {
-		e.printStackTrace(); logger.error(new Date() +" Inside ProjectAssign "+Username, e);
+		e.printStackTrace(); logger.error(new Date() +" Inside ProjectRevokeSubmit.htm "+Username, e);
 	}
 	return "redirect:/ProjectProSubmit.htm";
 
@@ -2649,7 +2653,7 @@ public class ProjectController {
 			@RequestParam(name ="pearlimg",required = false) MultipartFile pearlimg)throws Exception {
 		String Username = (String) ses .getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
+		logger.info(new Date() +"Inside ProjectDataEditSubmit.htm "+Username);
 		try 
 		{		
 			long count=0;
@@ -2718,7 +2722,7 @@ public class ProjectController {
 			redir.addFlashAttribute("projectid",projectid);
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +" Inside ProjectDataSubmit.htm "+Username, e);
+			e.printStackTrace(); logger.error(new Date() +" Inside ProjectDataEditSubmit.htm "+Username, e);
 		}
 		return "redirect:/ProjectData.htm";
 		
@@ -3017,7 +3021,8 @@ public class ProjectController {
 	
 	@RequestMapping(value = "projectCatSencDetalis", method = RequestMethod.GET)
 	public @ResponseBody String getCompEmp(HttpServletRequest request,HttpSession ses) throws Exception {
-		
+		String Username = (String) ses .getAttribute("Username");
+		logger.info(new Date() +"Inside projectCatSencDetalis "+Username);
 	   String companyId=request.getParameter("project");
 	   List<Object[]> ProjectCatSecDetalis=new ArrayList<>();
        ProjectCatSecDetalis=service.getProjectCatSecDetalis(companyId);
@@ -3145,7 +3150,7 @@ public class ProjectController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectMasterRev.htm "+Username);
+		logger.info(new Date() +"Inside ProjectMasterRevView.htm "+Username);
 		try 
 		{	
 			String projectid=req.getParameter("ProjectId");
@@ -3155,7 +3160,7 @@ public class ProjectController {
 			return "project/ProjectMasterRevView";
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +" Inside ProjectMasterRev.htm "+Username, e);
+			e.printStackTrace(); logger.error(new Date() +" Inside ProjectMasterRevView.htm "+Username, e);
 			return "static/Error";
 		}	
 		
@@ -3166,7 +3171,7 @@ public class ProjectController {
 	public String ProjectMasterAttach(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
 	{		
 		String Username = (String) ses .getAttribute("Username");
-		logger.info(new Date() +"Inside ProjectMasterRev.htm "+Username);
+		logger.info(new Date() +"Inside ProjectMasterAttach.htm "+Username);
 		try 
 		{	
 			String projectid = req.getParameter("ProjectId");
@@ -3190,7 +3195,7 @@ public class ProjectController {
 			return "project/ProjectAttachments";
 		}
 		catch (Exception e) {
-			e.printStackTrace(); logger.error(new Date() +" Inside ProjectMasterRev.htm "+Username, e);
+			e.printStackTrace(); logger.error(new Date() +" Inside ProjectMasterAttach.htm "+Username, e);
 			return "static/Error";
 		}	
 	}

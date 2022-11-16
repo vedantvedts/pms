@@ -30,7 +30,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public  List<PftsDemandImms>  DemandImmsListForFileTrackingByDemandNo(String DemandNo) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside DemandImmsListForFileTrackingByDemandNo");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -44,7 +43,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public  List<PftsDemandImms>  DemandImmsListForFileTrackingByProjectCode(String ProjectCode) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside DemandImmsListForFileTrackingByProjectCode");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -58,7 +56,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public  List<PftsDemandImms>  DemandImmsListForFileTrackingByItemNomenclature(String ItemNomenclature) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside DemandImmsListForFileTrackingByItemNomenclature");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -73,7 +70,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public Object[] CheckingDemandIdPresent(String DemandNo) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside CheckingDemandIdPresent");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery(CHECKINGDEMANDIDPRESENT);
@@ -91,7 +87,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public   List<Object[]> FileTrackingFlowDetails(String FileTrackingId) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FileTrackingFlowDetails");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery(FILETRACKINGFLOWDETAILS);
@@ -105,7 +100,6 @@ public class FileTrackingDaoImpl implements FileTrackingDao
 	@Override
 	public  Object[] DemandImmsMainDetailsByDemandId(String DemandNo) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside DemandImmsMainDetailsByDemandId");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery(DEMANDIMMSMAINDETAILSBYDEMANDID);

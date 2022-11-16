@@ -41,48 +41,41 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public List<Object[]> LabList() throws Exception {
 
-		logger.info(new Date() +"Inside LabList");		
 		return dao.LabList();
 	}
 
 	@Override
 	public List<Object[]> PfmsInitiationList(String InitiationId) throws Exception {
 
-		logger.info(new Date() +"Inside PfmsInitiationList");
 		return dao.PfmsInitiationList(InitiationId);
 	}
 	
 	@Override
 	public LabMaster LabDetailes() throws Exception {
 	
-		logger.info(new Date() +"Inside LabDetailes");
 		return dao.LabDetailes();
 	}
 	
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectIntiationDetailsList");
 		return dao.ProjectIntiationDetailsList(InitiationId);
 	}
 
 	@Override
 	public List<Object[]> CostDetailsList(String InitiationId) throws Exception {
 
-		logger.info(new Date() +"Inside CostDetailsList");
 		return dao.CostDetailsList(InitiationId);
 	}
 
 	@Override
 	public List<Object[]> ProjectInitiationScheduleList(String InitiationId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectInitiationScheduleList");
 		return dao.ProjectInitiationScheduleList(InitiationId);
 	}
 	
 	@Override
 	public List<Object[]> ProjectsList() throws Exception {
-		logger.info(new Date() +"Inside ProjectsList");
 		return dao.ProjectsList();
 	}
 
@@ -90,7 +83,6 @@ public class PrintServiceImpl implements PrintService{
 	@Override 
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
 		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype,LabCode);  
 		return projectidlist;
 	}
@@ -100,85 +92,72 @@ public class PrintServiceImpl implements PrintService{
 /*------------------------------------------------------------*/
 	@Override
 	public Object[] ProjectAttributes(String projectid) throws Exception {
-		logger.info(new Date() +"Inside ProjectAttributes");
 		return dao.ProjectAttributes(projectid);
 	}
 	
 	@Override
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception {
-		logger.info(new Date() +"Inside EBAndPMRCCount");
 		return dao.EBAndPMRCCount(projectid);
 	}
 	
 	@Override
 	public List<Object[]> Milestones(String projectid) throws Exception {
-		logger.info(new Date() +"Inside Milestones");
 		return dao.Milestones(projectid);
 	}
 	
 	@Override
 	public List<Object[]> MilestonesChange(String projectid,String milestoneactivitystatusid) throws Exception {
-		logger.info(new Date() +"Inside MilestonesChange");
 		return dao.MilestonesChange(projectid,milestoneactivitystatusid);
 	}
 		
 	@Override /* present status*/
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception {
-		logger.info(new Date() +"Inside MilestoneSubsystems");
 		return dao.MilestoneSubsystems(projectid);
 	}
 
 	@Override /* last Pmrc action points*/
 	public List<Object[]> LastPMRCActions(String projectid,String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside LastPMRCActions");
 		return dao.LastPMRCActions(projectid,committeeid);
 	}
 	
 	@Override /* old Pmrc action points*/
 	public List<Object[]> OldPMRCActions(String projectid,String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside OldPMRCActions");
 		return dao.OldPMRCActions(projectid,committeeid);
 	}
 	
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectDetails");
 		return dao.ProjectDetails(ProjectId);
 	}
 	
 	@Override
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside GanttChartList");
 		return dao.GanttChartList(ProjectId);
 	}
 	
 
 	@Override
 	public Object[] ProjectDataDetails(String projectid) throws Exception {
-		logger.info(new Date()  +"Inside ProjectDataDetails");
 		return dao.ProjectDataDetails(projectid);
 	}
 	
 	@Override
 	public List<Object[]> OldPMRCIssuesList(String projectid) throws Exception { 
-		logger.info(new Date()  +"Inside OldPMRCIssuesList");
 		return dao.OldPMRCIssuesList(projectid);
 	}
 	
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
-		logger.info(new Date()  +"Inside ProcurementStatusList");
 		return dao.ProcurementStatusList(projectid);
 	}
 	
 	
 	@Override
 	public List<Object[]> RiskMatirxData(String projectid)throws Exception{
-		logger.info(new Date()  +"Inside RiskMatirxData");
 		return dao.RiskMatirxData(projectid);
 		
 	}
@@ -186,14 +165,13 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public Object[] LastPMRCDecisions(String committeeid,String projectid)throws Exception
 	{
-		logger.info(new Date()  +"Inside LastPMRCDecisions");
 		return dao.LastPMRCDecisions(committeeid ,projectid);
 	}
 	
 	@Override
 	public List<Object[]> ActionPlanSixMonths(String projectid, String committeeid)throws Exception
 	{
-		logger.info(new Date()  +"Inside ActionPlanThreeMonths");
+		logger.info(new Date()  +"Inside SERVICE ActionPlanThreeMonths ");
 		if( committeeid.equalsIgnoreCase("1") ) 
 		{
 			return dao.ActionPlanSixMonths(projectid,90);
@@ -208,7 +186,6 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public List<Object[]> LastPMRCActions1(String projectid ,String committeeid) throws Exception 
 	{
-		logger.info(new Date()  +"Inside LastPMRCActions1");
 		return dao.LastPMRCActions1(projectid, committeeid);
 	}
 	
@@ -244,7 +221,6 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new Date() +"Inside CommitteeScheduleEditData");
 		return dao.CommitteeScheduleEditData(CommitteeScheduleId);
 	}
 
@@ -348,6 +324,7 @@ public class PrintServiceImpl implements PrintService{
 	}
 	 public static int  saveFile(String FilePath, String fileName, MultipartFile multipartFile) throws IOException 
 	   {
+		 logger.info(new Date()  +"Inside SERVICE saveFile ");
 		    int result=1;
 	        Path uploadPath = Paths.get(FilePath);
 	          
@@ -363,6 +340,7 @@ public class PrintServiceImpl implements PrintService{
 	            throw new IOException("Could not save image file: " + fileName, ioe);
 	        }   catch (Exception e) {
 	        	 result=0;
+	        	 logger.error(new Date()  +"Inside SERVICE saveFile "+e);
 	        	e.printStackTrace();
 	        }
 	        return result;
@@ -370,6 +348,7 @@ public class PrintServiceImpl implements PrintService{
 
 	@Override
 	public int saveGranttChart(MultipartFile file, String Name,String path) throws Exception {
+		logger.info(new Date()  +"Inside SERVICE saveGranttChart ");
 		String Path= path+"\\grantt\\";
 		int result=saveFile(Path, Name+"."+FilenameUtils.getExtension(file.getOriginalFilename()), file);
 		return result;
@@ -384,6 +363,7 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public int MileStoneLevelUpdate(MilestoneActivityLevelConfigurationDto dto) throws Exception {
 
+		logger.info(new Date()  +"Inside SERVICE MileStoneLevelUpdate ");
 		MilestoneActivityLevelConfiguration mod = new MilestoneActivityLevelConfiguration();
 		long count=0L;
 		
@@ -415,6 +395,7 @@ public class PrintServiceImpl implements PrintService{
 
 	@Override
 	public int saveTechImages(MultipartFile file, String ProjectId, String path,String userName) throws Exception {
+		logger.info(new Date()  +"Inside SERVICE saveTechImages ");
 		TechImages image=new TechImages();
 		image.setImageName(file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
 		image.setProjectId(Long.parseLong(ProjectId));

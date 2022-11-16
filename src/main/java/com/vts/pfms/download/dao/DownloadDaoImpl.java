@@ -31,7 +31,7 @@ public class DownloadDaoImpl implements DownloadDao{
 	@Override
 	public Object[] AgendaDocLinkDownload(String filerepid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside AgendaDocLinkDownload");
+		logger.info(new java.util.Date() +"Inside DAO AgendaDocLinkDownload ");
 		Query query=manager.createNativeQuery(AGENDADOCLINKDOWNLOAD);
 		query.setParameter("filerepid", filerepid);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
@@ -46,7 +46,7 @@ public class DownloadDaoImpl implements DownloadDao{
 	@Override
 	public Object[] ProjectDataSpecsFileData(String projectdataid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectDataSpecsFileData");
+		logger.info(new java.util.Date() +"Inside DAO ProjectDataSpecsFileData ");
 	
 		Query query=manager.createNativeQuery(PROJECTDATASPECSFILEDATA);
 		query.setParameter("projectdataid",projectdataid);
