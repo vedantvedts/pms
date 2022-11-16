@@ -359,7 +359,6 @@ String ProjectId=(String)request.getAttribute("projectid");
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
-LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 

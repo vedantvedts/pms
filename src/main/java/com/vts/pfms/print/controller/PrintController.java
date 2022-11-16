@@ -82,7 +82,6 @@ import com.vts.pfms.Zipper;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
-import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -128,73 +127,20 @@ public class PrintController {
 	public String PfmsPrint(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode =(String) ses.getAttribute("labcode");
+//		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside PfmsPrint.htm "+UserId);		
 	    	try {
 	    		String InitiationId=req.getParameter("IntiationId");
 	    		
-	   		 	LabMaster labmaster= service.LabDetailes();
+	    		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+	    		String labcode=PfmsInitiationList[17].toString().toLowerCase();
 	    		
-//	    		if(labmaster.getLabLogo().length!=0) {
-//
-//	    			InputStream targetStream = new ByteArrayInputStream(labmaster.getLabLogo());
-//	        		
-//	        		BufferedImage img = ImageIO.read(targetStream);
-//	        		String path=req.getServletContext().getRealPath("/resources");
-//	        		
-//	        		
-//	        		String fileName="logo.jpg";
-//	    		
-//	        		ByteArrayOutputStream os = new ByteArrayOutputStream();
-//	        		ImageIO.write(img, "jpeg", os);                          
-//	        		InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
-//	        		
-//	        	
-//	    			 OutputStream outputStream = null;  
-//	    			
-//	    			File newFile = new File(path+File.separator+fileName);  
-//	    			   
-//	    			 String Path1="logo.jpg";
-//	    			 
-//	    			if(Path1!=null) {
-//	    			 File newFile1 = new File(path+File.separator+Path1);
-//	    				 newFile1.delete(); 
-//	    			
-//	    			  
-//	    			  if (!newFile.exists()) {    
-//	    			    newFile.createNewFile(); 
-//	    			   }
-//	    			    outputStream = new FileOutputStream(newFile);    
-//	    			    int read = 0;    
-//	    			    byte[] bytes = new byte[1024];    
-//	    			     
-//	    			   
-//	    			    
-//	    			    outputStream.write(bytes, 0, read);   
-//	    			    
-//	    			    while ((read = inputStream.read(bytes)) != -1) {    
-//	    			     outputStream.write(bytes, 0, read);    
-//	    			    } 
-//	    			    
-//	    			    outputStream.close();
-//	        		
-//	        		String imagepath=path+File.separator+fileName;
-//	        	
-//	        		
-//	        		req.setAttribute("imagepath", imagepath );
-//	    			
-//	    		}
-//
-//	    	}
-	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));                     
-	    		req.setAttribute("labdata", service.LabDetailes());
-	    		req.setAttribute("LabList", service.LabList().get(0));
-	    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId).get(0));
+	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
+	    		req.setAttribute("LabList", service.LabList(labcode));
+	    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 	    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
-	    		 
-	    	
 	    	}
 				
 	    	catch(Exception e) {	    		
@@ -217,13 +163,16 @@ public class PrintController {
 	    try {
 	    	String InitiationId=req.getParameter("IntiationId");		
 	    		
-	    		req.setAttribute("labdata", service.LabDetailes());
-	    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId));
-	    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
-	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
-	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
-	    		req.setAttribute("LabList", service.LabList());
-	    		req.setAttribute("LabLogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+	 		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+    		String labcode=PfmsInitiationList[17].toString().toLowerCase();
+    		
+   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
+    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+	    	req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
+	    	req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
+	    	req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+	    	req.setAttribute("LabList", service.LabList(labcode));
+	    	req.setAttribute("LabLogo", LogoUtil.getLabLogoAsBase64String(LabCode));
 	    	
 	    	}
 				
@@ -245,13 +194,12 @@ public class PrintController {
 	    try {
 	    
 	    	String InitiationId=req.getParameter("IntiationId");
-    		
+	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
 	    	List<Object[]> costDetailsList = service.CostDetailsList(InitiationId);
-	    	
-   		 	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));                     
-    		req.setAttribute("labdata", service.LabDetailes());
-    		req.setAttribute("LabList", service.LabList().get(0));
-    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId).get(0));
+	    	String labcode=PfmsInitiationList[17].toString();
+   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
+    		req.setAttribute("LabList", service.LabList(labcode));
+    		req.setAttribute("PfmsInitiationList",PfmsInitiationList);
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 			req.setAttribute("CostDetailsList", costDetailsList);
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
@@ -259,13 +207,6 @@ public class PrintController {
     		
     		HashMap<Integer, BigDecimal> hp = new HashMap<Integer, BigDecimal>();
     		
-//    		for(Object[] obj : costDetailsList) {
-//    			if(hp.containsKey(obj[4]))
-//    				hp.put((int)obj[4], (BigDecimal)hp.get(obj[4])+ (BigDecimal)obj[3]);
-//    			else
-//    				hp.put((int)obj[4], (BigDecimal)obj[3]);
-//    		}
-//    		
     		costDetailsList.stream().filter(e-> Collections.frequency(costDetailsList, e[4])<1).collect(Collectors.toList());    		
     		
     		String filename="ExecutiveSummary";	
@@ -347,18 +288,21 @@ public class PrintController {
 	public void ProjectProposalDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		
 		logger.info(new Date() +"Inside ProjectProposalDownload.htm "+UserId);		
 	    try {
 	    
 	    	String InitiationId=req.getParameter("IntiationId");
+	    	List<Object[]> PfmsInitiationList= service.PfmsInitiationList(InitiationId);
+	    	String LabCode =PfmsInitiationList.get(0)[17].toString();
 	    	
-	    	req.setAttribute("lablogo", Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(req.getServletContext().getRealPath("view/images/drdologo.png")))));  
-	    	req.setAttribute("labdata", service.LabDetailes());
-    		req.setAttribute("PfmsInitiationList", service.PfmsInitiationList(InitiationId));
+	    	
+	    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  
+    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
     		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
-    		req.setAttribute("LabList", service.LabList().get(0));
+    		req.setAttribute("LabList", service.LabList(LabCode));
     
     		String filename="ProjectProposal";	
 	    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -630,7 +574,7 @@ public class PrintController {
     		req.setAttribute("committeeid",tempid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
-	    	req.setAttribute("labInfo", service.LabDetailes());
+	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
@@ -664,7 +608,7 @@ public class PrintController {
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
             ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
-            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+"lablogo"+".png");
+            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+LabCode+".png");
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 	        
 	        
@@ -1156,7 +1100,7 @@ public class PrintController {
     		
 	    	req.setAttribute("isprint", "0");
 	    	
-	    	req.setAttribute("labInfo", service.LabDetailes());
+	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		
@@ -1794,7 +1738,6 @@ public class PrintController {
     		req.setAttribute("TechWorkDataList",TechWorkDataList);
     		req.setAttribute("ProjectCost",ProjectCost);
     		
-    		req.setAttribute("labInfo", service.LabDetailes());
     		req.setAttribute("milestoneactivitystatus", service.MilestoneActivityStatus());
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);  
     		req.setAttribute("TechImages", TechImages);   
@@ -2097,7 +2040,6 @@ public class PrintController {
     		req.setAttribute("committeeid",tempid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
-	    	req.setAttribute("labInfo", service.LabDetailes());
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
 	    	
 	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
@@ -2523,7 +2465,7 @@ public class PrintController {
     		req.setAttribute("committeeid",tempid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
-	    	req.setAttribute("labInfo", service.LabDetailes());
+	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
 	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
             String LevelId= "2";

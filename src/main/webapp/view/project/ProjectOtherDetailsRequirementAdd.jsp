@@ -549,6 +549,56 @@ String Parameter=(String) request.getAttribute("details_param");
 					</form>
 
 					<%}%>
+					
+					
+					<%if(Parameter.equalsIgnoreCase("worldscenario")){%>
+		
+						<form action="ProjectInitiationDetailsSubmit.htm" method="POST" name="myfrm11" id="myfrm11" >	
+
+							<div class="row"> 
+								<div class="col-md-12"  >
+									
+										<div class="card" >
+										
+											<h3 class="card-header">
+												World Scenario
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											</h3>
+										
+											<div class="card-body">
+									    		
+									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+										
+															<div  id="summernote" class="center">		</div>
+												
+													</div>
+									  
+									  				<textarea name="worldscenario" style="display:none;"></textarea>
+									  
+													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
+													<input type="hidden" name="details" value="worldscenario"> 
+									 			
+									 			</div>  
+												
+												<br>
+									 			
+									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 		</div>
+									 		
+									 		<div class="form-group" align="center" >
+												<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
+												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
+											</div>
+									 		
+										</div>
+										
+								</div>
+							</div>
+					</form>
+
+					<%}%>
 			
 			
 				
@@ -686,6 +736,13 @@ $('#myfrm10').submit(function() {
 
 	  var data =CKEDITOR.instances['summernote'].getData();
 	  $('textarea[name=realization]').val(data);
+
+});
+
+$('#myfrm11').submit(function() {
+
+	  var data =CKEDITOR.instances['summernote'].getData();
+	  $('textarea[name=worldscenario]').val(data);
 
 });
 

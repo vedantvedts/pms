@@ -18,4 +18,5 @@ public interface PFTSDao {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public int FileInActive(String fileId, String userId)throws Exception;
 	public Long addDemandfileOrder(PftsFileOrder pfo)throws Exception;
+	public Object[] ProjectData(String projectid) throws Exception;
 }

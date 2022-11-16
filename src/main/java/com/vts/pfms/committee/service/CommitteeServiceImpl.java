@@ -59,6 +59,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
+import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
 import com.vts.pfms.print.model.MinutesLastPmrc;
@@ -3136,6 +3137,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception
 	{
 		return dao.getDefaultAgendasCount(committeeId, LabCode);
+	}
+	
+	@Override
+	public LabMaster LabDetailes(String LabCode) throws Exception {
+		return dao.LabDetailes(LabCode);
 	}
 	
 }

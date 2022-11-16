@@ -28,6 +28,9 @@ public  class PFTSDaoImpl implements PFTSDao{
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 9 THEN s.PftsStatusId <= 9 ELSE 1=1 END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
 	private static final String INACTIVEFILE="UPDATE pfts_file SET isactive='0' where PftsFileId=:fileid ";
+	private static final String PROJECTDATA="SELECT projectid, projectcode, projectname FROM project_master WHERE projectid=:projectid";
+	
+	
 	@Override
 	public List<Object[]> ProjectsList() throws Exception {
 
@@ -35,6 +38,16 @@ public  class PFTSDaoImpl implements PFTSDao{
 		List<Object[]> ProjectsList=(List<Object[]>)query.getResultList();	
 		
 		return ProjectsList;
+	}
+	
+	@Override
+	public Object[] ProjectData(String projectid) throws Exception {
+
+		Query query=manager.createNativeQuery(PROJECTDATA);	   
+		query.setParameter("projectid", projectid);
+		Object[] Project=(Object[])query.getSingleResult();	
+		
+		return Project;
 	}
 	
 	@Override

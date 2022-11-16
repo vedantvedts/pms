@@ -26,8 +26,6 @@ import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
 
-import net.bytebuddy.asm.Advice.OffsetMapping.ForOrigin.Renderer.ForReturnTypeName;
-
 
 @Service
 public class PrintServiceImpl implements PrintService{
@@ -39,9 +37,9 @@ public class PrintServiceImpl implements PrintService{
 	private static final Logger logger=LogManager.getLogger(PrintServiceImpl.class);
 
 	@Override
-	public List<Object[]> LabList() throws Exception {
+	public Object[] LabList(String LabCode) throws Exception {
 
-		return dao.LabList();
+		return dao.LabList(LabCode);
 	}
 
 	@Override
@@ -51,9 +49,9 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public LabMaster LabDetailes() throws Exception {
+	public LabMaster LabDetailes(String LabCode) throws Exception {
 	
-		return dao.LabDetailes();
+		return dao.LabDetailes( LabCode);
 	}
 	
 	@Override

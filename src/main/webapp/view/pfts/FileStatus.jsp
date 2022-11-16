@@ -162,19 +162,22 @@ String projectId=request.getAttribute("projectId").toString();
 Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
 %>
-<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%><center>
+<%
+	String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
+%>
+	<%if(ses1!=null){ %>
+	<div align="center">
 	<div class="alert alert-danger" role="alert">
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null){ %>
-	<center>
-	<div class="alert alert-success" role="alert" >
-                     <%=ses %>
-                   </div></center>
-                    <%} %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+	        	<%=ses %>
+	        </div>
+	    </div>
+    <%} %>
 
     
 

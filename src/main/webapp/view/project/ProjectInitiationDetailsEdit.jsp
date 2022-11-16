@@ -578,6 +578,52 @@ small{
             <%} %> 
                 
                 
+              <%if(Details.equalsIgnoreCase("worldscenario")){ %>
+
+            	<form action="ProjectInitiationDetailsSubmit.htm" method="POST" name="myForm" id="myfrm11"> 
+                		
+                	<div class="card" >
+						<h3 class="card-header " > 
+						 	World Scenario
+						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						 </h3>
+						  
+						  <div class="card-body" >
+						  	<div id="content">
+						  	
+								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									
+										<div  id="summernote" class="center"><%=obj[12]%></div>
+												
+									</div>
+									  
+									<textarea name="worldscenario" style="display:none;"></textarea>
+									
+									<input type="hidden" name="details" value="worldscenario" />
+                					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
+                					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
+												
+								</div>
+								
+								<br>
+									 			
+								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								  
+  							</div>	
+  							
+						  </div>
+					</div>
+						
+					<div class="form-group" align="center" style="margin-top: 15px">
+						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
+						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
+					</div>
+                		
+                </form>
+                		  
+            <%} %>   
+                
                 
                 
                 
@@ -669,6 +715,13 @@ $('#myfrm10').submit(function() {
 
 	  var data =CKEDITOR.instances['summernote'].getData();
 	  $('textarea[name=realization]').val(data);
+
+});
+
+$('#myfrm11').submit(function() {
+
+	  var data =CKEDITOR.instances['summernote'].getData();
+	  $('textarea[name=worldscenario]').val(data);
 
 });
 

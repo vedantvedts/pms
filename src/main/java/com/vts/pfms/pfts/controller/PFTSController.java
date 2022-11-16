@@ -99,7 +99,12 @@ public class PFTSController {
 		logger.info(new Date() +"Inside AddNewDemandFile.htm "+UserId);		
 		try {
 			String projectId =req.getParameter("projectId");
-			final String localUri=uri+"/pfms_serv/newDemandsDetails?projectId="+projectId;
+			
+			
+			String projectcode = service.ProjectData(projectId)[1].toString();
+			
+			
+			final String localUri=uri+"/pfms_serv/newDemandsDetails?projectcode="+projectcode;
 			List<DemandDetails> demandList=null;
 	 		HttpHeaders headers = new HttpHeaders();
 	 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON)); 

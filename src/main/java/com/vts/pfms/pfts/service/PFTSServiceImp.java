@@ -35,6 +35,12 @@ public class PFTSServiceImp implements PFTSService{
 	}
 	
 	@Override
+	public Object[] ProjectData(String projectid) throws Exception
+	{
+		return dao.ProjectData(projectid);
+	}
+	
+	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 	{
 		return dao.LoginProjectDetailsList(empid,Logintype,LabCode);

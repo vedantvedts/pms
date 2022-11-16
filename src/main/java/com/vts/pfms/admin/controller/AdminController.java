@@ -969,40 +969,71 @@ public class AdminController {
 		}
 	    
 	    @RequestMapping(value = "RunBatchFile.htm")
-		public String runBatchFile(HttpServletRequest req, HttpSession ses) throws Exception
+		public String runBatchFile(HttpServletRequest req, HttpSession ses , RedirectAttributes redir) throws Exception
 		{
 	    	String UserId=(String)ses.getAttribute("Username");
 			logger.info(new Date() +"Inside RunBatchFile.htm "+UserId);
 			try {
 				
-				ProcessBuilder processBuilder = new ProcessBuilder();
-				processBuilder.command("cmd.exe", "/C",  batchfilepath);
-				Process process = processBuilder.start();
-				return "redirect:/MainDashBoard.htm";
+				if(batchfilepath!=null){
+					File batchfile = new File(batchfilepath.split(" ")[0]);
+					
+					if(!batchfile.exists()){
+						redir.addAttribute("resultfail", "Batch File Is Not Exist in the Given Path!");
+						return "redirect:/MainDashBoard.htm";
+					}else{
+						ProcessBuilder processBuilder = new ProcessBuilder();
+						processBuilder.command("cmd.exe", "/C",  batchfilepath);
+						Process process = processBuilder.start();
+
+						 if(process!=null  && process.waitFor() == 0 &&process.exitValue()== 0 )
+					    {
+							 redir.addAttribute("result", "Database Backup Successful");
+							 return "redirect:/MainDashBoard.htm";
+					    }else{
+					    	redir.addAttribute("resultfail", "Database Backup UnSuccessful");
+					    	return "redirect:/MainDashBoard.htm";
+					    }
+					}
+				}else{
+					redir.addAttribute("resultfail", "Batch File Path Does Not Exist !");
+					return "redirect:/MainDashBoard.htm";
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace(); 
 				logger.error(new Date() +"Inside RunBatchFile.htm "+UserId,e);
-				return "static/";
-			}
-			
-			
-			
+				return "static/Error";
+			}	
 		}
+	    
 	    @Scheduled(cron ="0 0 */6 * * * ")
 	    public String AutorunBatchFile() throws Exception
 		{
 	    	
 			
 			try {
-				
-				ProcessBuilder processBuilder = new ProcessBuilder();
-				processBuilder.command("cmd.exe", "/C",  batchfilepath);
-				Process process = processBuilder.start();
-				return "";
-			} catch (Exception e) {
+				if(batchfilepath!=null) {
+					File batchfile = new File(batchfilepath.split(" ")[0]);
+					if(!batchfile.exists()){
+						return "redirect:/MainDashBoard.htm";
+					}else{
+						ProcessBuilder processBuilder = new ProcessBuilder();
+						processBuilder.command("cmd.exe", "/C",  batchfilepath);
+						Process process = processBuilder.start();
+						 if(process!=null  && process.waitFor() == 0 &&process.exitValue()== 0 )
+					     {
+							 return "redirect:/MainDashBoard.htm";
+					     }else{
+					    	return "redirect:/MainDashBoard.htm";
+					     }
+					}
+				}else {
+					return "redirect:/MainDashBoard.htm";
+				}
+			}catch(Exception e){
 				e.printStackTrace(); 
-				
-				return "static/";
+				return "static/Error";
 			}
 		}
 	    

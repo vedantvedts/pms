@@ -614,6 +614,10 @@ public class ProjectServiceImpl implements ProjectService {
 		if(Details.equalsIgnoreCase("realization")) {
 			pfmsinitiationdetail.setRealizationPlan(pfmsinitiationdetaildto.getRealizationPlan());
 		}
+		if(Details.equalsIgnoreCase("worldscenario")) {
+			pfmsinitiationdetail.setWorldScenario(pfmsinitiationdetaildto.getWorldScenario());
+		}
+		
 		
 		pfmsinitiationdetail.setInitiationId(Long.parseLong(pfmsinitiationdetaildto.getInitiationId()));
 		pfmsinitiationdetail.setModifiedBy(UserId);

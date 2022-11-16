@@ -106,8 +106,8 @@ h6{
 
   <div class="col-md-8">
    
-	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><b style="color: #145374;">----------></b>
-	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><b style="color: #145374;">----------></b><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
+	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><b style="color: #145374;"><i class="fa fa-long-arrow-right " aria-hidden="true"></i></b>
+	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><b style="color: #145374;"><i class="fa fa-long-arrow-right " aria-hidden="true"></i></b><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
       </p>
 	                     
   </div>

@@ -822,7 +822,7 @@ public class MasterController {
 		
 	  
 	@RequestMapping(value="LabMasterEditSubmit.htm" , method= RequestMethod.POST)
-	public String LabMasterEdit (HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception //,@RequestPart ("LabLogo") MultipartFile LabLogo 
+	public String LabMasterEdit (HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{		
 		String Userid= (String) ses.getAttribute("Username");
 		logger.info(new Date() +" Inside LabMasterEditSubmit.htm "+Userid);

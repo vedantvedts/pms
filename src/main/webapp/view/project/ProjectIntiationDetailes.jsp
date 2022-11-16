@@ -446,6 +446,9 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                        </thead>
 				                        <tbody class="customtable">
 				                        
+				                        	<%if(AuthorityAttachment.size()>0){ %>
+				                        
+				                        
 				                        	<%for(Object[] 	obj:AuthorityAttachment){ %>
 				                            <tr>
 				                             
@@ -477,6 +480,17 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                            </tr>
 				                            
 				                             	<%} %> 	
+				                             	
+				                             	<%}else{ %>
+				                             	
+						                             		
+						                           <tr>
+						                           		<td colspan="4" style="text-align: center">
+						                           			No Data !
+						                           		</td>
+						                           </tr>
+				                             	
+				                             	<%} %>
 				                           
 				                        </tbody>
 				                    </table>
@@ -1418,6 +1432,9 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                        </thead>
 				                        <tbody class="customtable">
 				                        
+				                        	<%if(IntiationAttachment.size()>0) {%>
+				                        
+				                        
 				                        	<%for(Object[] 	obj:IntiationAttachment){ %>
 				                            <tr>
 				                                <td>
@@ -1459,6 +1476,19 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                            </tr>
 				                            
 				                             	<%} %> 	
+				                           
+				                           <%}else{ %>
+				                           
+				                           
+				                           <tr>
+				                           		<td colspan="5" style="text-align: center">
+				                           			No Data !
+				                           		</td>
+				                           </tr>
+				                           
+				                           
+				                           <%} %>
+				                           
 				                           
 				                        </tbody>
 				                    </table>

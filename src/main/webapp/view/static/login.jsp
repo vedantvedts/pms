@@ -97,7 +97,7 @@
 								
 								<div>
 									<p class="quote">Lets simplify project management</p>
-								 	<h3 style="font-family: 'Lato', sans-serif;font-weight: 400" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h3>
+								 	<h2 style="font-family: 'Lato', sans-serif;font-weight: 400" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h2>
 								</div>
 								
 								<div class="product-banner-container" style="margin-top:35px">
@@ -119,7 +119,7 @@
 									<div class="login-form-wrapper " style="padding-right: 43px;padding-left: 43px; padding-bottom: 43px; padding-top: 8px " >
 										
 										<div class="login-info-container">
-											<h3 style="font-family: 'Lato', sans-serif;font-weight: 800" >Login</h3><br>
+											<h2 style="font-family: 'Lato', sans-serif;font-weight: 800" >Login</h2><br>
 										</div>
 										
 										<div class="login-form-container">
