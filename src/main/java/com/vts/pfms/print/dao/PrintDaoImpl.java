@@ -571,7 +571,7 @@ public class PrintDaoImpl implements PrintDao {
 	}
 	
 	private static final String ITEMLIST="SELECT a.minorhead, a.headofaccounts , b.itemdetail , b.itemcost  , c.budgetheaddescription FROM budget_item_sanc a,pfms_initiation_cost b ,budget_head c WHERE a.budgetheadid = b.budgetheadid AND a.budgetheadid=c.budgetheadid  AND b.budgetsancid=a.sanctionitemid AND b.initiationid=:initiationid";
-	
+	                    
 	@Override
 	public List<Object[]> GetItemList(String projectid)throws Exception
 	{
