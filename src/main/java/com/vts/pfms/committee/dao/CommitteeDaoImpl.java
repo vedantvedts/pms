@@ -63,7 +63,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 AND labcode=:labcode ";
 	private static final String COMMITTEELISTALL="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive FROM committee";
 	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable  AND labcode=:labcode ;";
-	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)";
+	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal,labcode FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)";
 	private static final String COMMITTEEEDITSUBMIT="UPDATE committee SET CommitteeShortName=:committeeshortname ,  CommitteeName=:committeename , CommitteeType=:committeetype , ProjectApplicable=:projectapplicable ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate,PeriodicDuration=:periodicduration,TechNonTech=:technontech,Guidelines=:guidelines,PeriodicNon=:periodicnon,Description=:description,TermsOfReference=:termsofreference,isglobal=:isglobal WHERE committeeid=:committeeid";
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND TRIM(b.labcode)=:labcode" ;
 	private static final String COMMITTEEMEMBERDELETE ="UPDATE committee_member SET isactive=0, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE committeememberid=:committeememberid";
@@ -86,7 +86,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMINUTESSPECDETAILS="SELECT * FROM committee_schedules_minutes";
 	private static final String COMMITTEEATTENDANCE="SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.empno,b.empname,c.designation FROM committee_schedules_invitation a,employee b,employee_desig c WHERE a.empid = b.empid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype IN ('C','I' ) UNION SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.expertno,b.expertname,c.designation FROM committee_schedules_invitation a,expert b,employee_desig c WHERE a.empid = b.expertid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype = 'E' ORDER BY 4";
 	private static final String COMMITTEEAPPROVAL="UPDATE committee_schedule SET scheduleflag=:flag, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
-	private static final String COMMITTEESCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
+	private static final String COMMITTEESCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid,a.labcode FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
 	private static final String ATTENDANCEUPDATEP="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
 	private static final String ATTENDANCEUPDATEN="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
 	private static final String COMMITTEEATTENDANCETYPE="SELECT attendance from committee_schedules_invitation WHERE CommitteeInvitationId=:invitationid";
@@ -105,7 +105,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String UPDATECOMITTEEMAINID = "UPDATE committee_schedule SET committeemainid=:committeemainid WHERE scheduleid=:scheduleid";
 	private static final String PROJECTCOMMITTEESCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=:projectid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
 	private static final String AGENDARETURNDATA="SELECT remarks,empid,meetingstatus FROM committee_meeting_approval WHERE meetingstatus IN ('MAR','MMR') AND scheduleid=:scheduleid ";
-	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master";
+	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master WHERE labcode=:labcode ;";
 	private static final String COMMITTEESCHEDULEDATAPRO = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid AND a.projectid=:projectid ";
 	private static final String PROJECTMASTERLIST="SELECT b.committeename,b.committeeshortname,b.committeeid,a.committeeprojectid,b.periodicnon,b.periodicduration,a.autoschedule  FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND a.projectid=:projectid";
 	private static final String COMMITTEEPROJECTDELETE="DELETE FROM committee_project WHERE committeeprojectid=:committeeprojectid";
@@ -174,7 +174,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTREPLIST="SELECT repid, repcode , repname FROM committee_rep"; 
 	private static final String EMPLOYEELISTWITHOUTMEMBERS="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN (SELECT empid FROM committee_member WHERE labcode=(SELECT labcode FROM lab_master WHERE labcode=:labcode) AND committeemainid=:committeemainid AND isactive=1) AND labcode=:labcode ORDER BY a.srno=0,a.srno;";
 	private static final String COMMITTEEMEMBERUPDATE="UPDATE committee_member SET labcode=:labcode,empid=:empid,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE committeememberid=:committeememberid";
-	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
+	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status, c.labcode FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
 	private static final  String INITIATIONCOMMITTEEDELETE= "DELETE FROM committee_initiation WHERE CommitteeInitiationId=:committeeinitiationid";
 	private static final String INITIATIONDETAILS ="SELECT InitiationId,ProjectShortName,ProjectTitle FROM pfms_initiation WHERE InitiationId=:initiationid";
 	private static final String INITIATIONCOMMITTEEDESCRIPTIONTOR ="SELECT CommitteeInitiationId,description , termsofreference, committeeid , InitiationId FROM committee_initiation WHERE committeeid=:committeeid AND InitiationId=:initiationid";
@@ -1006,7 +1006,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		Query query=manager.createNativeQuery(KICKOFFOTP);
 		query.setParameter("scheduleid", CommitteeScheduleId);
 		String KickOffOtp=(String)query.getSingleResult();
-		
 		return KickOffOtp;
 	}
 
@@ -1030,8 +1029,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 	}
-	
-	
 
 	@Override
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception
@@ -1042,13 +1039,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (Object[] )query.getResultList().get(0);
 	}
 	
-
-	
 	@Override
-	public Object[] LabDetails()throws Exception
+	public Object[] LabDetails(String LabCode)throws Exception
 	{
 		Query query=manager.createNativeQuery(LABDETAILS);
-		Object[] Labdetails =(Object[])query.getResultList().get(0);
+		query.setParameter("labcode", LabCode);
+		Object[] Labdetails =(Object[])query.getSingleResult();
 		return Labdetails ;
 	}
 	@Override
@@ -1056,7 +1052,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		manager.persist(committeeproject);
 		manager.flush();
-		"abc".substring(1);
 		return  committeeproject.getCommitteeProjectId();
 	}
 

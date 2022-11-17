@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
@@ -320,6 +321,8 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		return ProjectEmployeeList;
 	}
 	
+	
+	
 	@Override
 	public List<Object[]> ProjectQuaters(String ProjectId) throws Exception {
 
@@ -500,6 +503,20 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		manager.flush();
 		
 		return 0L;
+	}
+	
+	private static final String PROJECTDATA ="SELECT projectid, projectcode, projectname FROM project_master WHERE projectid=:projectid ";
+	@Override
+	public Object[] ProjectData(String projectid) throws Exception 
+	{
+		try {
+			Query query=manager.createNativeQuery(PROJECTDATA);
+			query.setParameter("projectid",projectid);
+			return (Object[])query.getSingleResult();
+		}catch (NoResultException e) {
+			return null;
+		}
+		
 	}
 }
 

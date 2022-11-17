@@ -9,6 +9,7 @@ public class FinanceChanges {
 	private String Table;
 	private Long PrimaryKey;
 	private Long ProjectId;
+	private String ProjectCode;
 	private String RefNo;
 	private String Date;
 	private String ItemFor;

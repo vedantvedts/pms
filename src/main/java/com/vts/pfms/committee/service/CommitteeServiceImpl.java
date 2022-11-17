@@ -403,7 +403,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public long CommitteeScheduleAddSubmit(CommitteeScheduleDto committeescheduledto)throws Exception
 	{
 		logger.info(new Date() +"Inside SERVICE CommitteeScheduleAddSubmit ");
-		CommitteeSchedule committeeschedule=new  CommitteeSchedule(); 
+		CommitteeSchedule committeeschedule = new  CommitteeSchedule(); 
 		
 		committeeschedule.setLabCode(committeescheduledto.getLabCode());	
 		committeeschedule.setCommitteeId(committeescheduledto.getCommitteeId());
@@ -420,7 +420,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
 		
 		String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
-		String LabName=dao.LabDetails()[1].toString();
+		String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();
 		BigInteger SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
 		String ProjectName=null;
 		if(Long.parseLong(committeescheduledto.getProjectId())>0) 
@@ -1290,9 +1290,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 	
 	@Override
-	public Object[] LabDetails()throws Exception
+	public Object[] LabDetails(String LabCode)throws Exception
 	{
-		return dao.LabDetails();
+		return dao.LabDetails(LabCode);
 	}
 
 
@@ -3143,5 +3143,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public LabMaster LabDetailes(String LabCode) throws Exception {
 		return dao.LabDetailes(LabCode);
 	}
+	
 	
 }

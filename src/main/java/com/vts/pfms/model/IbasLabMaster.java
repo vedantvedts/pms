@@ -1,8 +1,5 @@
 package com.vts.pfms.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import lombok.Data;
 
 @Data

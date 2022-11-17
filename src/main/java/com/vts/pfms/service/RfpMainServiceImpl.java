@@ -459,9 +459,10 @@ public class RfpMainServiceImpl implements RfpMainService {
 		        dao.ProjectHoaChangesDelete(obj[0].toString());
 		        ProjectHoaChanges changes = new ProjectHoaChanges();
 		        changes.setProjectId(Long.parseLong(obj[0].toString()));
-		        changes.setMonthlyChanges(Long.valueOf(Monthly.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
-		        changes.setWeeklyChanges(Long.valueOf(Weekly.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
-		        changes.setTodayChanges(Long.valueOf(Today.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
+		        changes.setProjectCode(obj[1].toString());
+		        changes.setMonthlyChanges(Long.valueOf(Monthly.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
+		        changes.setWeeklyChanges(Long.valueOf(Weekly.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
+		        changes.setTodayChanges(Long.valueOf(Today.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
 		        changes.setCreatedBy(UserId);
 		        changes.setCreatedDate(sdf1.format(new Date()));
 		        changes.setIsActive(1);
@@ -475,5 +476,11 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return result;
 	}
 	
+	
+	@Override
+	public Object[] ProjectData(String projectid) throws Exception 
+	{
+		return dao.ProjectData(projectid);
+	}
 	
 }

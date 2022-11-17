@@ -461,7 +461,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -483,7 +485,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -986,7 +988,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -1006,7 +1010,7 @@ public class PrintController {
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -1561,8 +1565,13 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	   
+	    		
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
+	    		
 	    		TechImages.add(service.getTechList(proid));
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		
 	    		
@@ -1646,7 +1655,7 @@ public class PrintController {
 	    		
 	    		
 		/* -------------------------------------------------------------------------------------------------------------- */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -1925,7 +1934,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -1947,7 +1958,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -2352,7 +2363,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -2374,7 +2387,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 

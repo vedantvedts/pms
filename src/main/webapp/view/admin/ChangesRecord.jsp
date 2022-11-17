@@ -204,7 +204,7 @@ String labcode = (String)request.getAttribute("labcode");
 					</h4>
 				</div>
 				 
-				<div class="col-md-3  " align="right">
+				<div class="col-md-3  " style="float:right; ">
 					<label>Term : </label>
 					<select class="form-control selectdee" id="interval" required="required" name="interval" onchange="submitform()"  style="width:150px !important">
 						<option value="T"  <%if("T".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> style="text-align: left !important" >Today</option>
@@ -213,7 +213,7 @@ String labcode = (String)request.getAttribute("labcode");
 					</select>
 				</div>
 				
-				<div class="col-md-3 " style="text-align: end">
+				<div class="col-md-3 " style="float:right; ">
 				
 				<%if(IsDG.equalsIgnoreCase("No")) {%>
 
