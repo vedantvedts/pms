@@ -88,10 +88,10 @@ NFormatConvertion nfc=new NFormatConvertion();
 		  		
 		  		<div class="card-header">
 		  			<div class="row" >
-		  				<div class="col-md-3"><h3>Cost </h3></div>
-						<div class="col-md-9 " style="float: right;">
+		  				<div class="col-md-1"><h3>Cost </h3></div>
+						<div class="col-md-11" style="float: right;">
 		 					<form action="ProjectCostAddSubmit.htm" method="POST" name="myfrm3" id="myfrm3" >
-		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
+		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>)&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
 		   
 								<%--    || &nbsp;&nbsp;&nbsp;&nbsp;Cost Utilized:&nbsp;<%=nfc.convert(TotalIntiationCost) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remaining Cost :&nbsp;<%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())-TotalIntiationCost) %><%}else{ %><%=TotalIntiationCost %><%} %> --%>  
 								 	
@@ -194,9 +194,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 		 								
 		 								<select class="custom-select" id="Item" required="required" name="Item" >
 									    	<option disabled="true"  selected value="">Choose...</option>
-												<% for (Object[] obj2 : BudgetItemMap.get(entry.getKey())) {%>
-												<option value="<%=obj2[0]%>" <%if(obj[3].toString().equalsIgnoreCase(obj2[1].toString())){ %> selected="selected" <%} %>><%=obj2[1]%></option>
-												<%} %>
+												<% for (Object[] obj2 : BudgetItemMap.get(entry.getKey())) { 
+												if(obj2[3].toString().equalsIgnoreCase(ProjectDetailes[21].toString())){
+												%>
+												<option value="<%=obj2[0]%>" <%if(obj[3].toString().equalsIgnoreCase(obj2[1].toString())){ %> selected="selected" <%} %>><%=obj2[1]%> (<%=obj2[2]%>) (<%=obj2[4]%>)</option>
+												<%} }%>
 	 							 		</select>
 	 							 		
 	 							 	</td>
@@ -322,9 +324,8 @@ $(document)
       
 			 $("#Item").find('option').remove();
 			
-			
-			$
-					.ajax({
+			var projecttypeid = <%=ProjectDetailes[21]%>
+			$.ajax({
 
 						type : "GET",
 						url : "BudgetItemList.htm",
@@ -344,10 +345,12 @@ $(document)
 							var s = '';
 							/* var t=''; */
 							for (i = 0; i < values.length; i++) {
+								
+								if(values[i][3] === projecttypeid){
 								s += '<option value="'+values[i][0]+'_'+values[i][2]+'">'
-										+values[i][1]
-										+ '</option>';
+										+values[i][1] +'('+ values[i][2] +')' + '('+ values[i][4]+')</option>';
 								/* t += '<option value="'+values[i][2]+'"></option>'; */
+								}
 							}
 							$('#Item').html(s);
 							/* $('#ReFe').html(t); */
