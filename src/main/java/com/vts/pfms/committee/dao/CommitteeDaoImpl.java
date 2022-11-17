@@ -63,7 +63,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEENAMESCHECK="SELECT SUM(IF(CommitteeShortName =:committeeshortname,1,0))   AS 'shortname',SUM(IF(CommitteeName = :committeename,1,0)) AS 'name'FROM committee where isactive=1 AND labcode=:labcode ";
 	private static final String COMMITTEELISTALL="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive FROM committee";
 	private static final String COMMITTEELISTACTIVE="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,isactive,periodicnon,periodicduration,TechNonTech,Guidelines,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND isglobal=:isglobal AND projectapplicable=:projectapplicable  AND labcode=:labcode ;";
-	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)";
+	private static final String COMMITTEEDETAILS="SELECT committeeid,committeeshortname,committeename,CommitteeType,projectapplicable,technontech,guidelines,periodicnon,periodicduration,isactive,Description,TermsOfReference,isglobal,labcode FROM committee WHERE isactive=1 AND (CASE WHEN 'A'=:committeeid THEN committeeid=committeeid ELSE committeeid=:committeeid END)";
 	private static final String COMMITTEEEDITSUBMIT="UPDATE committee SET CommitteeShortName=:committeeshortname ,  CommitteeName=:committeename , CommitteeType=:committeetype , ProjectApplicable=:projectapplicable ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate,PeriodicDuration=:periodicduration,TechNonTech=:technontech,Guidelines=:guidelines,PeriodicNon=:periodicnon,Description=:description,TermsOfReference=:termsofreference,isglobal=:isglobal WHERE committeeid=:committeeid";
 	private static final String COMMITTEEMAINLIST="SELECT a.committeemainid, a.committeeid,a.validfrom,a.validto, b.committeename,b.committeeshortname FROM committee_main a, committee b WHERE b.projectapplicable='N' AND a.isactive='1' AND a.committeeid=b.committeeid  AND a.divisionid=0 AND a.projectid=0 AND a.initiationid=0 AND TRIM(b.labcode)=:labcode" ;
 	private static final String COMMITTEEMEMBERDELETE ="UPDATE committee_member SET isactive=0, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE committeememberid=:committeememberid";
@@ -86,7 +86,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMINUTESSPECDETAILS="SELECT * FROM committee_schedules_minutes";
 	private static final String COMMITTEEATTENDANCE="SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.empno,b.empname,c.designation FROM committee_schedules_invitation a,employee b,employee_desig c WHERE a.empid = b.empid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype IN ('C','I' ) UNION SELECT a.empid,a.committeeinvitationid,a.committeescheduleid,a.membertype,a.attendance,b.expertno,b.expertname,c.designation FROM committee_schedules_invitation a,expert b,employee_desig c WHERE a.empid = b.expertid AND b.desigid=c.desigid AND a.committeescheduleid =:scheduleid AND a.membertype = 'E' ORDER BY 4";
 	private static final String COMMITTEEAPPROVAL="UPDATE committee_schedule SET scheduleflag=:flag, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE scheduleid=:scheduleid";
-	private static final String COMMITTEESCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
+	private static final String COMMITTEESCHEDULEDATA = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId,a.projectid,a.meetingid, a.divisionid ,a.initiationid,a.labcode FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid";
 	private static final String ATTENDANCEUPDATEP="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
 	private static final String ATTENDANCEUPDATEN="UPDATE committee_schedules_invitation SET Attendance=:attendance WHERE CommitteeInvitationId=:invitationid";
 	private static final String COMMITTEEATTENDANCETYPE="SELECT attendance from committee_schedules_invitation WHERE CommitteeInvitationId=:invitationid";
@@ -105,7 +105,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String UPDATECOMITTEEMAINID = "UPDATE committee_schedule SET committeemainid=:committeemainid WHERE scheduleid=:scheduleid";
 	private static final String PROJECTCOMMITTEESCHEDULELISTALL ="SELECT cs.scheduleid, cs.committeeid,cs.committeemainid,cs.scheduledate,cs.schedulestarttime,cs.projectid , c.committeeshortname FROM committee_schedule cs,committee c WHERE cs.committeeid=c.committeeid AND cs.projectid=:projectid AND cs.CommitteeId=:committeeid AND cs.isactive=1 ";
 	private static final String AGENDARETURNDATA="SELECT remarks,empid,meetingstatus FROM committee_meeting_approval WHERE meetingstatus IN ('MAR','MMR') AND scheduleid=:scheduleid ";
-	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master";
+	private static final String LABDETAILS = "SELECT LabMasterId, LabCode, LabName, LabUnitCode, LabAddress, LabCity, LabPin, LabTelNo, LabFaxNo, LabEmail, LabAuthority, LabAuthorityId, LabRfpEmail, LabId, ClusterId, LabLogo FROM lab_master WHERE labcode=:labcode ;";
 	private static final String COMMITTEESCHEDULEDATAPRO = "SELECT a.ScheduleId, a.CommitteeMainId, a.ScheduleDate, a.ScheduleStartTime, a.ScheduleFlag, a.ScheduleSub, a.IsActive, a.committeeid ,b.committeeshortname, b.committeename, c.MeetingStatusId FROM committee_schedule a,committee b,committee_meeting_status c WHERE a.committeeid=b.committeeid AND a.scheduleflag=c.MeetingStatus AND a.ScheduleId=:committeescheduleid AND a.projectid=:projectid ";
 	private static final String PROJECTMASTERLIST="SELECT b.committeename,b.committeeshortname,b.committeeid,a.committeeprojectid,b.periodicnon,b.periodicduration,a.autoschedule  FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND a.projectid=:projectid";
 	private static final String COMMITTEEPROJECTDELETE="DELETE FROM committee_project WHERE committeeprojectid=:committeeprojectid";
@@ -174,7 +174,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTREPLIST="SELECT repid, repcode , repname FROM committee_rep"; 
 	private static final String EMPLOYEELISTWITHOUTMEMBERS="SELECT a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.empid NOT IN (SELECT empid FROM committee_member WHERE labcode=(SELECT labcode FROM lab_master WHERE labcode=:labcode) AND committeemainid=:committeemainid AND isactive=1) AND labcode=:labcode ORDER BY a.srno=0,a.srno;";
 	private static final String COMMITTEEMEMBERUPDATE="UPDATE committee_member SET labcode=:labcode,empid=:empid,modifiedby=:modifiedby,modifieddate=:modifieddate WHERE committeememberid=:committeememberid";
-	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
+	private static final String COMMITTEMAINDATA ="SELECT cm.committeemainid, cm.committeeid,cm.projectid, cm.divisionid,cm.initiationid, cm.validfrom, cm.validto, cm.isactive,c.committeeshortname,cm.status, c.labcode FROM committee_main cm, committee c WHERE  cm.committeeid=c.committeeid AND committeemainid=:committeemainid ";
 	private static final  String INITIATIONCOMMITTEEDELETE= "DELETE FROM committee_initiation WHERE CommitteeInitiationId=:committeeinitiationid";
 	private static final String INITIATIONDETAILS ="SELECT InitiationId,ProjectShortName,ProjectTitle FROM pfms_initiation WHERE InitiationId=:initiationid";
 	private static final String INITIATIONCOMMITTEEDESCRIPTIONTOR ="SELECT CommitteeInitiationId,description , termsofreference, committeeid , InitiationId FROM committee_initiation WHERE committeeid=:committeeid AND InitiationId=:initiationid";
@@ -224,7 +224,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeNewAdd(Committee committeeModel)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeNewAdd");	
 		manager.persist(committeeModel);
 		return committeeModel.getCommitteeId(); 
 	}
@@ -233,7 +232,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeNamesCheck(String name,String sname,String projectid,String LabCode) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeNamesCheck");
 		Query query=manager.createNativeQuery(COMMITTEENAMESCHECK);		
 		query.setParameter("committeeshortname", sname);
 		query.setParameter("committeename", name);
@@ -247,7 +245,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeListAll() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeListAll");
 		Query query=manager.createNativeQuery(COMMITTEELISTALL);
 		
 		List<Object[]> CommitteeListAll=(List<Object[]>)query.getResultList();
@@ -258,7 +255,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeListActive(String isglobal,String projectapplicable, String LabCode) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeListActive");
 		Query query=manager.createNativeQuery(COMMITTEELISTACTIVE);
 		query.setParameter("isglobal", isglobal);
 		query.setParameter("projectapplicable", projectapplicable);
@@ -270,7 +266,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeDetails(String committeeid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeDetails");
 		Query query=manager.createNativeQuery(COMMITTEEDETAILS);
 		query.setParameter("committeeid", committeeid);		
 		Object[] CommitteeDetails = (Object[])query.getResultList().get(0);		
@@ -280,7 +275,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeEditSubmit");
 		Query query=manager.createNativeQuery(COMMITTEEEDITSUBMIT);
 		query.setParameter("committeeshortname",committeemodel.getCommitteeShortName() );
 		query.setParameter("committeename", committeemodel.getCommitteeName());
@@ -302,7 +296,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside EmployeeList");
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -311,7 +304,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public Object[] CommitteeName(String CommitteeId) throws Exception {
-		logger.info(new java.util.Date() +"Inside CommitteeName");
 		Query query=manager.createNativeQuery(COMMITTEENAME);
 		query.setParameter("committeeid", CommitteeId);		
 		Object[] CommitteeName=(Object[])query.getSingleResult();	
@@ -321,7 +313,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeDetailsSubmit(CommitteeMain committeemain) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside CommitteeDetailsSubmit");
 		manager.persist(committeemain);
 		return committeemain.getCommitteeMainId();
 	}
@@ -333,7 +324,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long LastCommitteeId(String CommitteeId,String projectid,String divisionid,String initiationid) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside LastCommitteeId");
 		Query query=manager.createNativeQuery(LASTCOMMITTEEID);
 		query.setParameter("committeeid", CommitteeId);
 		query.setParameter("projectid", projectid);
@@ -345,7 +335,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long UpdateCommitteemainValidto(CommitteeMain committeemain) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside UpdateCommitteemainValidto");
 		Query query=manager.createNativeQuery(UPDATECOMMITTEEVALIDTO);
 		query.setParameter("validto", committeemain.getValidTo());
 		query.setParameter("lastcommitteeid", committeemain.getCommitteeMainId());
@@ -361,7 +350,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMainList(String labcode) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeMainList");
 		Query query=manager.createNativeQuery(COMMITTEEMAINLIST);
 		query.setParameter("labcode", labcode);
 		List<Object[]> CommitteeMainList=(List<Object[]>)query.getResultList();
@@ -374,7 +362,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeNonProjectList() throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeNonProjectList");
 		Query query=manager.createNativeQuery(COMMITTEENONPROJECTLIST);
 		List<Object[]> CommitteeNonProjectList=(List<Object[]>)query.getResultList();
 		
@@ -385,7 +372,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeMemberDelete(CommitteeMember committeemember) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMemberDelete");
 		Query query=manager.createNativeQuery(COMMITTEEMEMBERDELETE);
 		query.setParameter("modifiedby", committeemember.getModifiedBy());
 		query.setParameter("modifieddate",committeemember.getModifiedDate());
@@ -397,7 +383,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeMainMembersAdd(CommitteeMember  committeemember)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMainMembersAdd");
 		manager.persist(committeemember);
 		manager.flush();
 		return (Long)committeemember.getCommitteeMemberId();
@@ -408,7 +393,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeScheduleAddSubmit(CommitteeSchedule committeeschedule )throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleAddSubmit");
 		manager.persist(committeeschedule);
 		return committeeschedule.getScheduleId();
 	}
@@ -416,7 +400,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeScheduleListNonProject(String committeeid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleListNonProject");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULELIST);
 		query.setParameter("committeeid", committeeid);
 		List<Object[]> committeeschedulelist=(List<Object[]>)query.getResultList();
@@ -426,7 +409,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleEditData");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
 		query.setParameter("committeescheduleid", CommitteeScheduleId );
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
@@ -436,7 +418,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> AgendaReturnData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside AgendaReturnData");
 		Query query=manager.createNativeQuery(AGENDARETURNDATA);
 		query.setParameter("scheduleid", CommitteeScheduleId );
 		List<Object[]> AgendaReturnData=(List<Object[]>)query.getResultList();
@@ -447,7 +428,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectList(String LabCode) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTLIST);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();
@@ -459,7 +439,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeAgendaSubmit(CommitteeScheduleAgenda scheduleagenda) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAgendaSubmit");
 		manager.persist(scheduleagenda);
 		manager.flush();
 		
@@ -471,13 +450,13 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<String> AgendaAddedDocLinkIdList(String agendaid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside AgendaDocLinkIdList");
 		Query query=manager.createNativeQuery(AGENDAADDEDDOCLINKIDLIST);
 		query.setParameter("agendaid", agendaid);
 		List<String> AgendaAddedDocLinkIdList=new ArrayList<String>();
 		try {
 			AgendaAddedDocLinkIdList=(List<String>)query.getResultList();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO AgendaAddedDocLinkIdList "+e);
 			e.printStackTrace();
 			return AgendaAddedDocLinkIdList;
 		}
@@ -486,7 +465,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public Long AgendaDocLinkAdd(CommitteeScheduleAgendaDocs doc) throws Exception {
-		logger.info(new java.util.Date() +"Inside AgendaDocLinkAdd");
 		manager.persist(doc);
 		manager.flush();		
 		return doc.getAgendaDocid();
@@ -496,7 +474,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> AgendaList(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside AgendaList");
 		Query query=manager.createNativeQuery(AGENDALIST);
 		query.setParameter("committeescheduleid", CommitteeScheduleId);
 		List<Object[]> AgendaList=(List<Object[]>)query.getResultList();
@@ -510,7 +487,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeScheduleUpdate(CommitteeSchedule committeeschedule) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleUpdate");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEUPDATE);
 		query.setParameter("scheduledate", committeeschedule.getScheduleDate());
 		query.setParameter("schedulestarttime", committeeschedule.getScheduleStartTime());
@@ -527,7 +503,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMinutesSpecList(String CommitteeScheduleId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSpecList");
 		Query query=manager.createNativeQuery(COMMITTEESPECLIST);
 		query.setParameter("scheduleid", CommitteeScheduleId);
 		List<Object[]> CommitteeMinutesSpecList=(List<Object[]>)query.getResultList();
@@ -539,7 +514,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeMinutesInsert(CommitteeScheduleMinutesDetails committeescheduleminutesdetails)	throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesInsert");
 		manager.persist(committeescheduleminutesdetails);
 		manager.flush();
 		
@@ -549,7 +523,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public Object[] CommitteeMinutesSpecDesc(CommitteeScheduleMinutesDetails committeescheduleminutesdetails)throws Exception {
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSpecDesc");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESPEC);
 		query.setParameter("minutesid", committeescheduleminutesdetails.getMinutesId());
 		query.setParameter("agendasubid", committeescheduleminutesdetails.getMinutesSubId());
@@ -561,7 +534,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeMinutesSpecEdit(CommitteeScheduleMinutesDetails committeescheduleminutesdetails)throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSpecEdit");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTEEDIT);
 		query.setParameter("scheduleminutesid", committeescheduleminutesdetails.getScheduleMinutesId());		
 		Object[] CommitteeMinutesSpecEdit=(Object[])query.getSingleResult();		
@@ -572,7 +544,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeMinutesUpdate(CommitteeScheduleMinutesDetails committeescheduleminutesdetails)	throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTEUPDATE);
 		query.setParameter("scheduleid", committeescheduleminutesdetails.getScheduleId());
 		query.setParameter("schedulesubid", committeescheduleminutesdetails.getScheduleSubId());
@@ -591,7 +562,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeScheduleAgendaPriority(String Committeescheduleid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleAgendaPriority");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEAGENDAPRIORITY);
 		query.setParameter("scheduleid", Committeescheduleid);
 		return  (List<Object[]>)query.getResultList();
@@ -600,7 +570,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long	CommitteeScheduleAgendaUpdate(CommitteeScheduleAgenda scheduleagenda) throws Exception   
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleAgendaUpdate");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEAGENDAUPDATE);
 		query.setParameter("scheduleagendaid", scheduleagenda.getScheduleAgendaId());
 		query.setParameter("agendaitem", scheduleagenda.getAgendaItem());
@@ -620,7 +589,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeAgendaPriorityUpdate(String agendaid,String agendapriority) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAgendaPriorityUpdate");
 			Query query =manager.createNativeQuery(COMMITTEEAGENDAPRIORITYUPDATE);
 			query.setParameter("agendapriority", agendapriority);
 			query.setParameter("agendaid", agendaid);
@@ -632,7 +600,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeScheduleGetAgendasAfter( String  scheduleid,String AgendaPriority) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleGetAgendasAfter");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEGETAGENDASAFTER);
 		query.setParameter("scheduleid", scheduleid);
 		query.setParameter("AgendaPriority",  AgendaPriority);
@@ -645,7 +612,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeAgendaDelete(String committeescheduleagendaid,String Modifiedby ,String ModifiedDate)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAgendaDelete");
 		Query query =manager.createNativeQuery(COMMITTEEAGENDADELETE);
 		query.setParameter("agendaid",committeescheduleagendaid);
 		query.setParameter("modifiedby",Modifiedby);
@@ -658,7 +624,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int AgendaDocUnlink(String agendaid,String Modifiedby ,String ModifiedDate)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside AgendaDocUnlink");
 		Query query =manager.createNativeQuery(AGENDADOCUNLINK);
 		query.setParameter("agendaid",agendaid);
 		query.setParameter("modifiedby",Modifiedby);
@@ -669,7 +634,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeSubScheduleSubmit(CommitteeSubSchedule committeesubschedule) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeSubScheduleSubmit");
 		manager.persist(committeesubschedule);
 		return committeesubschedule.getScheduleSubId();
 	}
@@ -677,7 +641,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeSubScheduleList(String scheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeSubScheduleList");
 		Query query=manager.createNativeQuery(COMMITTEESUBSCHEDULELIST);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> CommitteeSubScheduleList=(List<Object[]> )query.getResultList();
@@ -687,7 +650,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeScheduleMinutes(String scheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleMinutes");
 		Query query=manager.createNativeQuery("CALL Pfms_Committee_Minutes_View_All(:scheduleid)");
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> CommitteeScheduleMinutes =(List<Object[]>)query.getResultList();
@@ -697,7 +659,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMinutesSpecdetails()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSpecdetails");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESSPECDETAILS);
 		 List<Object[]> CommitteeMinutesSpecdetails=(List<Object[]>) query.getResultList();
 		return CommitteeMinutesSpecdetails;
@@ -708,7 +669,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMinutesSub()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSub");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESSUB);
 		 List<Object[]> CommitteeMinutesSub=(List<Object[]>) query.getResultList();
 		return CommitteeMinutesSub;
@@ -718,7 +678,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAttendance(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeAttendance");
 		Query query=manager.createNativeQuery(COMMITTEEATTENDANCE);
 		query.setParameter("scheduleid", CommitteeScheduleId);	
 		List<Object[]> CommitteeAttendance=(List<Object[]>) query.getResultList();
@@ -732,7 +691,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int MeetingAgendaApproval(CommitteeMeetingApproval approval, CommitteeSchedule schedule,List<PfmsNotification> notifications)
 			throws Exception {
-		logger.info(new java.util.Date() +"Inside MeetingAgendaApproval");
 		manager.persist(approval);
 		for(int i=0;i<notifications.size();i++) {
 			manager.persist(notifications.get(i));
@@ -750,7 +708,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingApprovalAgendaList(String EmpId) throws Exception {
 				
-		logger.info(new java.util.Date() +"Inside MeetingApprovalAgendaList");
 		Query query=manager.createNativeQuery("CALL Pfms_Agenda_aproval_List(:empid);");
 		query.setParameter("empid", EmpId);
 		List<Object[]> MeetingApprovalAgendaList=(List<Object[]>) query.getResultList();
@@ -766,7 +723,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public int MeetingAgendaApprovalSubmit(CommitteeSchedule schedule, CommitteeMeetingApproval approval,PfmsNotification notification)throws Exception 
 	{
 
-		logger.info(new java.util.Date() +"Inside MeetingAgendaApprovalSubmit");
 		manager.persist(approval);
 		manager.persist(notification);
 
@@ -785,7 +741,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeScheduleData(String committeescheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleData");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDATA);
 		query.setParameter("committeescheduleid", committeescheduleid );
 		return (Object[] )query.getResultList().get(0);
@@ -794,7 +749,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAtendance(String committeescheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAtendance");
 		Query query= manager.createNativeQuery("Call Pfms_Committee_Invitation (:committeescheduleid)");
 		query.setParameter("committeescheduleid", committeescheduleid);
 		return (List<Object[]>)query.getResultList();
@@ -806,7 +760,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeInvitationCheck(CommitteeInvitation committeeinvitation) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInvitationCheck");
 		Query query= manager.createNativeQuery(COMMITTEEINVITATIONCHECK);
 		query.setParameter("scheduleid", committeeinvitation.getCommitteeScheduleId());
 		query.setParameter("labcode", committeeinvitation.getLabCode() );
@@ -819,7 +772,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeInvitationCreate(CommitteeInvitation committeeinvitation) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInvitationCreate");
 		manager.persist(committeeinvitation);
 		return committeeinvitation.getCommitteeInvitationId();
 	}
@@ -829,7 +781,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] InvitationMaxSerialNo(String scheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InvitationMaxSerialNo");
 		Query query=manager.createNativeQuery(INVITATIONMAXSERIALNO);
 		query.setParameter("scheduleid", scheduleid);
 		
@@ -840,7 +791,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long CommitteeInvitationDelete(String committeeinvitationid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInvitationDelete");
 		Query query=manager.createNativeQuery(COMMITTEEINVITATIONDELETE);
 		query.setParameter("committeeinvitationid", committeeinvitationid);
 		return (long) query.executeUpdate();
@@ -851,7 +801,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeInvitationSerialNoUpdate(String committeeinvitationid,long serialno) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInvitationSerialNoUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEINVITATIONSERIALNOUPDATE);
 		query.setParameter("committeeinvitationid", committeeinvitationid);
 		query.setParameter("serialno", serialno);
@@ -865,7 +814,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeInvitationSerialNoAfter(String committeeinvitationid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInvitationSerialNoAfter");
 		Query query=manager.createNativeQuery(COMMITTEEINVITATIONSERIALNOAFTER);
 		query.setParameter("committeeinvitationid", committeeinvitationid);
 		List<Object[]> CommitteeInvitationSerialNoAfter=(List<Object[]> )query.getResultList();
@@ -877,7 +825,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<String> CommitteeAttendanceList(String invitationId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAttendanceList");
 		Query query=manager.createNativeQuery(COMMITTEEATTENDANCETYPE);
 		query.setParameter("invitationid", invitationId);
 		List<String> AttendanceList=(List<String>)query.getResultList();		
@@ -888,7 +835,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Long CommitteeAttendanceUpdate(String InvitationId, String Value) throws Exception 
 	 {
 
-		logger.info(new java.util.Date() +"Inside CommitteeAttendanceUpdate");
 		int count=0;
 		
 		if(Value.equalsIgnoreCase("P")) {
@@ -910,7 +856,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ExpertList() throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ExpertList");
 		Query query=manager.createNativeQuery(EXPERTLIST);
 		List<Object[]> ExpertList=(List<Object[]>)query.getResultList();
 		return ExpertList;
@@ -921,7 +866,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long ScheduleMinutesUnitUpdate(CommitteeScheduleMinutesDetails minutesdetails) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside ScheduleMinutesUnitUpdate");
 		manager.persist(minutesdetails);
 		manager.flush();
 		
@@ -932,7 +876,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MinutesUnitList(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MinutesUnitList");
 		Query query=manager.createNativeQuery(MINUTESUNITLIST);
 		query.setParameter("committeescheduleid", CommitteeScheduleId);
 		List<Object[]> MinutesUnitList=(List<Object[]> )query.getResultList();
@@ -943,7 +886,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAgendaPresenter(String scheduleid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAgendaPresenter");
 		Query query=manager.createNativeQuery(COMMITTEEAGENDAPRESENTER);
 		query.setParameter("scheduleid", scheduleid);
 		return (List<Object[]>)query.getResultList();
@@ -953,7 +895,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ChaipersonEmailId(String CommitteeMainId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside ChaipersonEmailId");
 		Query query=manager.createNativeQuery(CHAIRPERSONEMAIL);
 		query.setParameter("committeemainid", CommitteeMainId);
 		List<Object[]> ChaipersonEmailId=(List<Object[]>)query.getResultList();
@@ -964,7 +905,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] ProjectDirectorEmail(String ProjectId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside ProjectDirectorEmail");
 		Query query=manager.createNativeQuery(PROJECTDIRECTOREMAIL);
 		query.setParameter("projectid", ProjectId);
 		Object[] ProjectDirectorEmail=(Object[])query.getSingleResult();
@@ -975,13 +915,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] RtmddoEmail() throws Exception {
 
-		logger.info(new java.util.Date() +"Inside RtmddoEmail");
 		Query query=manager.createNativeQuery(RTMDDOEMAIL);
 		try {
 			Object[] RtmddoEmail=(Object[])query.getSingleResult();
 			return RtmddoEmail;
 		}catch (Exception e) {
-			
+			logger.error(new java.util.Date() +"Inside DAO RtmddoEmail "+e);
 			return null;
 		}
 		
@@ -991,7 +930,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public String UpdateOtp(CommitteeSchedule schedule) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside UpdateOtp");
 		Query query=manager.createNativeQuery(UPDATEOTP);
 		query.setParameter("otp", schedule.getKickOffOtp());
 		query.setParameter("committeescheduleid", schedule.getScheduleId());
@@ -1009,7 +947,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype, String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -1023,7 +960,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] projectdetails(String projectid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside projectdetails");
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
 		query.setParameter("projectid",projectid);
 		return (Object[]) query.getResultList().get(0);
@@ -1032,7 +968,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectScheduleListAll(String projectid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectScheduleListAll");
 		Query query=manager.createNativeQuery(PROJECTSCHEDULELISTALL);
 		query.setParameter("projectid",projectid);
 		return (List<Object[]>) query.getResultList();
@@ -1041,7 +976,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectApplicableCommitteeList");
 		Query query=manager.createNativeQuery(PROJECTAPPLICABLECOMMITTEELIST);
 		query.setParameter("projectid", projectid);
 		return (List<Object[]>)query.getResultList();
@@ -1050,7 +984,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  int UpdateComitteeMainid(String committeemainid, String scheduleid ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside UpdateComitteeMainid");
 		Query query=manager.createNativeQuery(UPDATECOMITTEEMAINID);
 		query.setParameter("committeemainid", committeemainid);
 		query.setParameter("scheduleid", scheduleid);		
@@ -1060,7 +993,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectCommitteeScheduleListAll(String projectid,String committeeid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeScheduleListAll");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESCHEDULELISTALL);
 		query.setParameter("projectid",projectid);
 		query.setParameter("committeeid",committeeid);
@@ -1071,11 +1003,9 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public String KickOffOtp(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside KickOffOtp");
 		Query query=manager.createNativeQuery(KICKOFFOTP);
 		query.setParameter("scheduleid", CommitteeScheduleId);
 		String KickOffOtp=(String)query.getSingleResult();
-		
 		return KickOffOtp;
 	}
 
@@ -1083,7 +1013,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside UserSchedulesList");
 		Query query=manager.createNativeQuery("CALL Pfms_Schedule_Individual(:empid,:meetingid)");
 		query.setParameter("empid",EmpId);
 		query.setParameter("meetingid",MeetingId);
@@ -1095,49 +1024,40 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingSearchList(String MeetingId ,String LabCode) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MeetingSearchList");
 		Query query=manager.createNativeQuery(MEETINGSEARCHLIST);
 		query.setParameter("meetingid",MeetingId);
 		query.setParameter("labcode", LabCode);
 		return (List<Object[]>) query.getResultList();
 	}
-	
-	
 
 	@Override
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleDataPro");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDATAPRO);
 		query.setParameter("committeescheduleid", committeescheduleid );
 		query.setParameter("projectid", projectid);
 		return (Object[] )query.getResultList().get(0);
 	}
 	
-
-	
 	@Override
-	public Object[] LabDetails()throws Exception
+	public Object[] LabDetails(String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LabDetails");
 		Query query=manager.createNativeQuery(LABDETAILS);
-		Object[] Labdetails =(Object[])query.getResultList().get(0);
+		query.setParameter("labcode", LabCode);
+		Object[] Labdetails =(Object[])query.getSingleResult();
 		return Labdetails ;
 	}
 	@Override
 	public long ProjectCommitteeAdd(CommitteeProject committeeproject) throws Exception{
 		
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeAdd");
 		manager.persist(committeeproject);
 		manager.flush();
-		"abc".substring(1);
 		return  committeeproject.getCommitteeProjectId();
 	}
 
 	@Override
 	public long InitiationCommitteeAdd(CommitteeInitiation model) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeAdd");
 		manager.persist(model);
 		manager.flush();
 		return  model.getCommitteeInitiationId();
@@ -1147,7 +1067,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside ProjectMasterList");
 		Query query=manager.createNativeQuery(PROJECTMASTERLIST);
 		query.setParameter("projectid", ProjectId );
 		List<Object[]> ProjectMasterList=(List<Object[]>)query.getResultList();
@@ -1159,7 +1078,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  long ProjectCommitteeDelete(CommitteeProject committeeproject ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeDelete");
 		Query query=manager.createNativeQuery(COMMITTEEPROJECTDELETE);
 		query.setParameter("committeeprojectid", committeeproject.getCommitteeProjectId());
 		return query.executeUpdate();
@@ -1169,7 +1087,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String divisionid,String initiationid,String projectstatus) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeAutoScheduleList");
 		Query query=manager.createNativeQuery(COMMITTEEAUTOSCHEDULELIST);
 		query.setParameter("projectid", ProjectId );
 		query.setParameter("divisionid", divisionid );
@@ -1183,7 +1100,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public List<Object[]> CommitteeAutoScheduleList(String ProjectId,String committeeid, String divisionid, String initiationid,String projectstatus) throws Exception 
 	{
 		
-		logger.info(new java.util.Date() +"Inside CommitteeAutoScheduleList");
 		Query query=manager.createNativeQuery(COMMITTEEAUTOSCHEDULELIST1);
 		query.setParameter("projectid", ProjectId );
 		query.setParameter("committeeid", committeeid ); 
@@ -1199,7 +1115,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeLastScheduleDate(String committeeid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeLastScheduleDate");
 		Query query=manager.createNativeQuery(COMMITTEELASTSCHEDULEDATE);	
 		query.setParameter("committeeid", committeeid );
 		Object[] CommitteeLastScheduleDate=(Object[])query.getSingleResult();
@@ -1210,7 +1125,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeProjectUpdate(String ProjectId, String CommitteeId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeProjectUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEPROJECTUPDATE);
 		query.setParameter("projectid", ProjectId);
 		query.setParameter("committeeid", CommitteeId);		
@@ -1222,7 +1136,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteMainMembersData(String CommitteeScheduleId, String membertype) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteMainMembersData");
 		Query query=manager.createNativeQuery(COMMITTEMAINMEMBERSDATA);
 		query.setParameter("scheduleid", CommitteeScheduleId );
 		query.setParameter("membertype", membertype);
@@ -1230,6 +1143,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		Object[] CommitteMainMembersData=(Object[])query.getSingleResult();
 		return CommitteMainMembersData;
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO CommitteMainMembersData "+e);
 			return null;
 		}		
 	}
@@ -1243,7 +1157,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] NotificationData(String ScheduleId, String EmpId,String Status) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside NotificationData");
 		Query query=manager.createNativeQuery(NOTIFICATIONDATA);
 		query.setParameter("scheduleid", ScheduleId );
 		query.setParameter("empid", EmpId );
@@ -1253,6 +1166,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		try {
 		 NotificationData=(Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO NotificationData "+e);
 			
 		}
 		
@@ -1263,7 +1177,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public BigInteger MeetingCount(Date ScheduleDate,String ProjectId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MeetingCount");
 		if(ProjectId.equalsIgnoreCase("0")) {
 			Query query=manager.createNativeQuery(MEETINGCOUNT);
 			query.setParameter("scheduledate", ScheduleDate );
@@ -1285,7 +1198,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int UpdateMeetingVenue(CommitteeScheduleDto csdto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside UpdateMeetingVenue");
 		int ret=0;
 		Query query=manager.createNativeQuery(UPDATEMEETINGVENUE);
 		query.setParameter("meetingvenue", csdto.getMeetingVenue());
@@ -1301,7 +1213,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Long MinutesAttachmentAdd(CommitteeMinutesAttachment attachment) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MinutesAttachmentAdd");
 		manager.persist(attachment);
 		manager.flush();
 		
@@ -1311,7 +1222,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MinutesAttachmentList(String scheduleid ) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside MinutesAttachmentList");
 		Query query=manager.createNativeQuery(MINUTESATTACHMENTLIST);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> MinutesAttachmentList=null;
@@ -1323,7 +1233,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int MinutesAttachmentDelete(String attachid ) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside MinutesAttachmentDelete");
 		Query query=manager.createNativeQuery(MINUTESATTACHMENTDELETE);
 		query.setParameter("attachid", attachid);		
 		return query.executeUpdate();
@@ -1332,7 +1241,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public CommitteeMinutesAttachment MinutesAttachDownload(String attachmentid) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MinutesAttachDownload");
 		CommitteeMinutesAttachment minutesattachment= manager.find(CommitteeMinutesAttachment.class, Long.parseLong(attachmentid));
 		
 		return minutesattachment;
@@ -1343,7 +1251,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public List<Object[]> PfmsCategoryList() throws Exception {
-		logger.info(new java.util.Date() +"Inside PfmsCategoryList");
 		Query query=manager.createNativeQuery(PROJECTCATEGORYLIST);
 		List<Object[]> PfmsCategoryList=(List<Object[]>)query.getResultList();		
 
@@ -1353,7 +1260,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int MeetingMinutesApproval(CommitteeMeetingApproval approval, CommitteeSchedule schedule)
 			throws Exception {
-		logger.info(new java.util.Date() +"Inside MeetingMinutesApproval");
 		manager.persist(approval);
 
 		Query query=manager.createNativeQuery(COMMITTEEAPPROVAL);
@@ -1369,7 +1275,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long MeetingMinutesApprovalNotification(PfmsNotification notification)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside MeetingMinutesApprovalNotification");		
 		manager.persist(notification);
 		return notification.getNotificationId();
 	}
@@ -1378,7 +1283,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> MeetingApprovalMinutesList(String EmpId) throws Exception {
-		logger.info(new java.util.Date() +"Inside MeetingApprovalMinutesList");
 		Query query=manager.createNativeQuery("CALL Pfms_Minutes_aproval_List(:empid)");
 		query.setParameter("empid", EmpId);
 		List<Object[]> MeetingApprovalMinutesList=(List<Object[]>) query.getResultList();			
@@ -1390,7 +1294,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int MeetingMinutesApprovalSubmit(CommitteeSchedule schedule, CommitteeMeetingApproval approval,PfmsNotification notification)throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MeetingMinutesApprovalSubmit");
 		manager.persist(approval);
 		manager.persist(notification);
 
@@ -1408,7 +1311,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAllAttendance(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeAllAttendance");
 		Query query=manager.createNativeQuery(COMMITTEEALLATTENDANCE);
 		query.setParameter("scheduleid", CommitteeScheduleId);	
 		List<Object[]> CommitteeAttendance=(List<Object[]>) query.getResultList();
@@ -1419,7 +1321,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingReports(String EmpId, String Term, String ProjectId,String divisionid,String initiationid,String logintype,String LabCode) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MeetingReports");
 		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Reports(:EmpId,:Term,:projectid,:divisionid, :initiationid,:logintype,:LabCode)");
 		query.setParameter("EmpId", EmpId);
 		query.setParameter("Term", Term);
@@ -1437,7 +1338,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MeetingReportListAll(String fdate, String tdate, String ProjectId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside MeetingReportListAll");
 
 		Query query=manager.createNativeQuery(MEETINGREPORTTOTAL);
 		query.setParameter("fdate", fdate);
@@ -1450,7 +1350,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> MeetingReportListEmp(String fdate, String tdate, String ProjectId, String EmpId)	throws Exception {
-		logger.info(new java.util.Date() +"Inside MeetingReportListEmp");
 		Query query=manager.createNativeQuery("CALL Pfms_Total_Meeting_Reports(:fdate,:tdate,:ProjectId,:EmpId)");
 		query.setParameter("EmpId", EmpId);
 		query.setParameter("fdate", fdate);
@@ -1467,8 +1366,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int UpdateCommitteeInvitationEmailSent(String committeescheduleid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside UpdateCommitteeInvitationEmailSent");		
-		logger.info(new java.util.Date() +"Inside CommitteeAdd");	
 		Query query=manager.createNativeQuery(UPDATECOMMITTEEINVITATIONEMAILSENT);
 		query.setParameter("committeescheduleid", committeescheduleid);
 		int ret=0;
@@ -1479,7 +1376,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> MinutesViewAllActionList(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside MinutesViewAllActionList");
 		Query query=manager.createNativeQuery(MINUTESVIEWALLACTIONLIST);
 		query.setParameter("scheduleid", scheduleid );
 		List<Object[]>  MinutesViewAllActionList=(List<Object[]> )query.getResultList();
@@ -1490,7 +1386,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> ProjectCommitteesList(String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside ProjectCommitteesList");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESLIST);		
 		query.setParameter("LabCode", LabCode );
 		List<Object[]>  ProjectCommitteesList=(List<Object[]> )query.getResultList();
@@ -1499,7 +1394,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> ProjectCommitteesListNotAdded(String projectid,String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside ProjectCommitteesListNotAdded");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEESLISTNOTADDED);
 		query.setParameter("projectid", projectid );
 		query.setParameter("LabCode", LabCode );
@@ -1510,7 +1404,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> AllLabList() throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ClusterLabList");
 		Query query=manager.createNativeQuery(CLUSTERLABLIST);
 		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
 		return ClusterLabList;
@@ -1521,7 +1414,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ClusterLabs(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ClusterLabs");
 		Query query=manager.createNativeQuery(CLUSTERLABS);
 		query.setParameter("LabCode", LabCode );
 		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
@@ -1532,7 +1424,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ExternalEmployeeListFormation(String LabId ,String committeemainid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside ExternalEmployeeListFormation");
 		Query query=manager.createNativeQuery(EXTERNALEMPLOYEELISTFORMATION);
 		query.setParameter("labid", LabId);
 		query.setParameter("committeemainid", committeemainid);
@@ -1545,7 +1436,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InternalEmployeeListFormation(String labcode ,String committeemainid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside InternalEmployeeListFormation");
 		Query query=manager.createNativeQuery(INTERNALEMPLOYEELISTFORMATION);
 		query.setParameter("labcode", labcode);
 		query.setParameter("committeemainid", committeemainid);
@@ -1558,7 +1448,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ChairpersonEmployeeList(String LabCode ,String committeemainid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ChairpersonEmployeeListFormation");
 		Query query=manager.createNativeQuery(CHAIRPERSONEMPLOYEELISTFORMATION);
 		query.setParameter("labcode", LabCode);
 		query.setParameter("committeemainid", committeemainid);
@@ -1569,7 +1458,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> PreseneterForCommitteSchedule(String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside PreseneterForCommitteSchedule");
 		Query query=manager.createNativeQuery(PRESENETERFORCOMMITTE);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> result=(List<Object[]>)query.getResultList();
@@ -1582,7 +1470,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LabInfoClusterLab");
 		try {
 			Query query=manager.createNativeQuery(LABINFOCLUSTERLAB);
 			query.setParameter("labcode", LabCode);
@@ -1594,6 +1481,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		{
 			return null;
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO LabInfoClusterLab"+e);
 			e.printStackTrace();
 			return null;
 		}
@@ -1605,7 +1493,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DGEmpData");
 		try {
 			Query query=manager.createNativeQuery(CLUSTEREXPERTSLIST);
 			query.setParameter("committeemainid", committeemainid);
@@ -1613,7 +1500,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			return DGEmpData;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
+			logger.error(new java.util.Date() +" Inside DAO ClusterExpertsList "+ e);
 			return new ArrayList<Object[]>();
 		}
 	}
@@ -1622,7 +1509,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ClusterExpertsListForCommitteeSchdule");
 		try {
 			Query query=manager.createNativeQuery(CELISTFORCOMMITTESCHEDULE);
 		
@@ -1630,7 +1516,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			return DGEmpData;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside ClusterExpertsListForCommitteeSchdule DAO "+ e);
+			logger.error(new java.util.Date() +" Inside DAO ClusterExpertsListForCommitteeSchdule "+ e);
 			return new ArrayList<Object[]>();
 		}
 		
@@ -1651,7 +1537,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ExternalEmployeeListInvitations(String labcode ,String scheduleid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside ExternalEmployeeListInvitations");
 		Query query=manager.createNativeQuery(EXTERNALEMPLOYEELISTINVITATIONS);
 		query.setParameter("labcode", labcode);
 		query.setParameter("scheduleid", scheduleid);
@@ -1662,7 +1547,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> ExternalMembersNotAddedCommittee(String committeemainid) throws Exception {
-		logger.info(new java.util.Date() +"Inside ExternalMembersNotAddedCommittee");
 		Query query=manager.createNativeQuery(EXTERNALMEMBERSNOTADDEDCOMMITTEE);
 		query.setParameter("committeemainid", committeemainid );
 		List<Object[]>  ExternalMembersNotAddedCommittee=(List<Object[]> )query.getResultList();
@@ -1673,7 +1557,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public List<Object[]> CommitteeAllMembers(String committeemainid) throws Exception {
-		logger.info(new java.util.Date() +"Inside CommitteeAllMembers");
 		Query query=manager.createNativeQuery("CALL Pfms_Committee_All_Members(:committeemainid); ");
 		query.setParameter("committeemainid", committeemainid );
 		List<Object[]>  CommitteeAllMembers=(List<Object[]> )query.getResultList();
@@ -1684,7 +1567,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> EmployeeListNoInvitedMembers(String scheduleid,String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside EmployeeListNoInvitedMembers");
 		Query query=manager.createNativeQuery(EMPLOYEELISTNOINVITEDMEMBERS);
 		query.setParameter("scheduleid", scheduleid );
 		query.setParameter("LabCode", LabCode );
@@ -1695,7 +1577,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> ExternalMembersNotInvited(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside ExpertListNoInvitedMembers");
 		Query query=manager.createNativeQuery(EXPERTLISTNOINVITEDMEMBERS);
 		query.setParameter("scheduleid", scheduleid );
 		List<Object[]>  ExpertListNoInvitedMembers=(List<Object[]> )query.getResultList();
@@ -1705,7 +1586,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] ProjectBasedMeetingStatusCount(String projectid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectBasedMeetingStatusCount");
 		Query query=manager.createNativeQuery(" CALL Pfms_Meetings_Status_Count(:projectid);");
 		query.setParameter("projectid", projectid);
 		Object[] ProjectBasedMeetingStatusCount = (Object[]) query.getSingleResult();
@@ -1718,7 +1598,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> allprojectdetailsList() throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside allprojectdetailsList");
 		Query query=manager.createNativeQuery(ALLPROJECTDETAILSLIST);		
 		return (List<Object[]>)query.getResultList();
 	}
@@ -1726,7 +1605,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> PfmsMeetingStatusWiseReport(String projectid,String statustype) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside PfmsMeetingStatusWiseReport");
 		Query query=manager.createNativeQuery("CALL Pfms_Meeting_Status_Wise_Report (:projectid,:statustype);");
 		query.setParameter("projectid", projectid);
 		query.setParameter("statustype", statustype);
@@ -1739,7 +1617,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProjectCommitteeFormationCheckList(String projectid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeFormationCheckList");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEFORMATIONCHECKLIST);
 		query.setParameter("projectid", projectid);		
 		List<Object[]> ProjectCommitteeFormationCheckList = (List<Object[]>)query.getResultList();
@@ -1750,7 +1627,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] ProjectCommitteeDescriptionTOR(String projectid,String Committeeid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeDescriptionTOR");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEDESCRIPTIONTOR);
 		query.setParameter("committeeid", Committeeid);	
 		query.setParameter("projectid", projectid);	
@@ -1762,7 +1638,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] DivisionCommitteeDescriptionTOR(String divisionid,String Committeeid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeDescriptionTOR");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEDESCRIPTIONTOR);
 		query.setParameter("committeeid", Committeeid);	
 		query.setParameter("divisionid", divisionid);	
@@ -1773,7 +1648,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int ProjectCommitteeDescriptionTOREdit( CommitteeProject  committeeproject ) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside ProjectCommitteeDescriptionTOREdit");
 		Query query=manager.createNativeQuery(PROJECTCOMMITTEEDESCRIPTIONTOREDIT);
 		query.setParameter("description", committeeproject.getDescription());	
 		query.setParameter("termsofreference", committeeproject.getTermsOfReference());	
@@ -1788,7 +1662,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int DivisionCommitteeDescriptionTOREdit(CommitteeDivision committeedivision) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeDescriptionTOREdit");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEDESCRIPTIONTOREDIT);
 		query.setParameter("description", committeedivision.getDescription());	
 		query.setParameter("termsofreference", committeedivision.getTermsOfReference());	
@@ -1805,14 +1678,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  CommitteeScheduleAgenda CommitteePreviousAgendaGet(String agendaid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteePreviousAgendaGet");
 		CommitteeScheduleAgenda scheduleagenda= manager.find(CommitteeScheduleAgenda.class,Long.parseLong(agendaid));
 		return scheduleagenda;
 	}
 
 	@Override
 	public int ScheduleMinutesUnitUpdate(String UnitId, String Unit, String UserId,String dt) throws Exception {
-		logger.info(new java.util.Date() +"Inside ScheduleMinutesUnitUpdate");
 		Query query=manager.createNativeQuery(UPDATEUNIT);
 		query.setParameter("unitid", UnitId);	
 		query.setParameter("unitname",Unit);	
@@ -1825,7 +1696,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> divisionList() throws Exception {
-		logger.info(new java.util.Date() +"Inside divisionList");
 		Query query=manager.createNativeQuery(DIVISIONLIST);
 		
 		List<Object[]> divisionList=(List<Object[]>)query.getResultList();	
@@ -1834,7 +1704,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 		@Override
 	public List<Object[]> LoginDivisionList(String empid) throws Exception {
-		logger.info(new java.util.Date() +"Inside LoginDivisionList");
 		Query query=manager.createNativeQuery(LOGINDIVISIONLIST);
 		query.setParameter("empid", empid);
 		List<Object[]> divisionList=(List<Object[]>)query.getResultList();	
@@ -1844,7 +1713,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteedivisionAssigned(String divisionid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteedivisionAssigned");
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONASSIGNED);
 		query.setParameter("divisionid", divisionid);	
 		List<Object[]> CommitteedivisionAssigned=(List<Object[]>)query.getResultList();	
@@ -1856,7 +1724,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteedivisionNotAssigned(String divisionid, String LabCode ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteedivisionNotAssigned");
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONNOTASSIGNED);
 		query.setParameter("divisionid", divisionid);	
 		query.setParameter("LabCode", LabCode);
@@ -1868,7 +1735,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long DivisionCommitteeAdd(CommitteeDivision committeedivision) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeAdd");
 		manager.persist(committeedivision);
 		manager.flush();		
 		return  committeedivision.getCommitteeDivisionId();
@@ -1880,7 +1746,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivisionCommitteeFormationCheckList(String divisionid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeFormationCheckList");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEFORMATIONCHECKLIST);
 		query.setParameter("divisionid", divisionid);		
 		List<Object[]> CommitteeFormationCheckList = (List<Object[]>)query.getResultList();
@@ -1891,7 +1756,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  long DivisionCommitteeDelete(CommitteeDivision committeedivision ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DIVISIONCOMMITTEEDELETE");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEDELETE);
 		query.setParameter("committeedivisionid", committeedivision.getCommitteeDivisionId());				
 		return query.executeUpdate();
@@ -1902,12 +1766,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  Object[] DivisionData(String divisionid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DivisionData");
 		Query query=manager.createNativeQuery(DIVISIONDATA);
 		try {
 		query.setParameter("divisionid", divisionid);		
 		return (Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO DivisionData "+e);
 			return null;
 		}
 	}
@@ -1919,7 +1783,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivisionCommitteeMainList(String divisionid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeMainList");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEEMAINLIST);
 		query.setParameter("divisionid", divisionid);	
 		List<Object[]> DivisionCommitteeMainList=(List<Object[]>)query.getResultList();
@@ -1930,7 +1793,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivisionScheduleListAll(String divisionid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DivisionScheduleListAll");
 		Query query=manager.createNativeQuery(DIVISIONSCHEDULELISTALL);
 		query.setParameter("divisionid",divisionid);
 		return (List<Object[]>) query.getResultList();
@@ -1940,7 +1802,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivisionCommitteeScheduleList(String divisionid,String committeeid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DivisionCommitteeScheduleList");
 		Query query=manager.createNativeQuery(DIVISIONCOMMITTEESCHEDULELIST);
 		query.setParameter("divisionid",divisionid);
 		query.setParameter("committeeid",committeeid);
@@ -1952,13 +1813,13 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivisionMasterList(String divisionid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside DivisionMasterList");
 		Query query=manager.createNativeQuery(DIVISIONMASTERLIST);
 		query.setParameter("divisionid", divisionid );
 		List<Object[]> divisionmasterlist=null;
 		try {
 			divisionmasterlist=(List<Object[]>)query.getResultList();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO DivisionMasterList "+e);
 			return null;
 		}
 		return divisionmasterlist;
@@ -1969,7 +1830,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DivCommitteeAutoScheduleList(String divisionid) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeAutoScheduleList");
 		Query query=manager.createNativeQuery(DIVCOMMITTEEAUTOSCHEDULELIST);
 		query.setParameter("divisionid", divisionid );
 		List<Object[]> divcommitteeautoschedulelist=(List<Object[]>)query.getResultList();
@@ -1980,7 +1840,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside CommitteeActionList");
 		Query query=manager.createNativeQuery(COMMITTEEACTIONDATA);
 		query.setParameter("scheduleid", EmpId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -1991,7 +1850,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeDivisionUpdate(String divisionid, String CommitteeId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeDivisionUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEDIVISIONUPDATE);
 		query.setParameter("divisionid", divisionid);
 		query.setParameter("committeeid", CommitteeId);		
@@ -2004,7 +1862,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public List<Object[]> MinutesOutcomeList() throws Exception {
-		logger.info(new java.util.Date() +"Inside MinutesOutcomeList");
 		Query query=manager.createNativeQuery(OUTCOMELIST);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -2014,7 +1871,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiatedProjectDetailsList()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InitiatedProjectDetailsList");
 		Query query=manager.createNativeQuery(INITIATEDPROJECTDETAILSLIST);
 		List<Object[]> InitiatedProjectDetailsList=(List<Object[]>)query.getResultList();
 		return InitiatedProjectDetailsList;
@@ -2026,7 +1882,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationMasterList(String initiationid) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside InitiationMasterList");
 		Query query=manager.createNativeQuery(INITIATIONMASTERLIST);
 		query.setParameter("initiationid", initiationid );
 		List<Object[]> InitiationMasterList=(List<Object[]>)query.getResultList();
@@ -2036,7 +1891,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationCommitteeFormationCheckList(String initiationid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeFormationCheckList");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEFORMATIONCHECKLIST);
 		query.setParameter("initiationid", initiationid);		
 		List<Object[]> InitiationCommitteeFormationCheckList = (List<Object[]>)query.getResultList();
@@ -2046,7 +1900,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> InitiationCommitteesListNotAdded(String initiationid,String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside InitiationCommitteesListNotAdded");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEESLISTNOTADDED);
 		query.setParameter("initiationid", initiationid );
 		query.setParameter("LabCode", LabCode );
@@ -2060,7 +1913,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int InvitationSerialnoUpdate(String invitationid,String newslno) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InvitationSerialnoUpdate");
 			Query query =manager.createNativeQuery(INVITATIONSERIALNOUPDATE);
 			query.setParameter("newslno", newslno);
 			query.setParameter("invitationid", invitationid);
@@ -2073,7 +1925,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeRepList() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommittRepList");
 			Query query =manager.createNativeQuery(COMMITTREPLIST);
 			List<Object[]> CommittRepList=(List<Object[]>)query.getResultList();
 			return CommittRepList;
@@ -2082,7 +1933,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeRepMembersSubmit(CommitteeMemberRep memreps) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside CommitteeRepMembersSubmit");
 		manager.persist(memreps);		
 		return memreps.getMemberRepId();
 	}
@@ -2092,7 +1942,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMemberRepList(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMemberRepList");
 			Query query =manager.createNativeQuery(COMMITTEEMEMBERREPLIST);
 			query.setParameter("committeemainid", committeemainid);
 			List<Object[]> CommitteeMemberRepList=(List<Object[]>)query.getResultList();
@@ -2102,7 +1951,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeRepNotAddedList(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeRepNotAddedList");
 			Query query =manager.createNativeQuery(COMMITTEEREPNOTADDEDLIST);
 			query.setParameter("committeemainid", committeemainid);
 			List<Object[]> CommitteeRepNotAddedList=(List<Object[]>)query.getResultList();
@@ -2114,7 +1962,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeMemberRepDelete(String memberrepid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMemberRepDelete");
 			Query query =manager.createNativeQuery(COMMITTEEMEMBERREPDELETE);
 			query.setParameter("memberrepid", memberrepid);
 			return query.executeUpdate();
@@ -2123,7 +1970,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeAllMembersList(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeAllMembersList");
 			Query query =manager.createNativeQuery("CALL Pfms_Committee_All_Members(:committeemainid);");
 			query.setParameter("committeemainid", committeemainid);
 			return query.getResultList();
@@ -2132,7 +1978,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> EmployeeListWithoutMembers(String committeemainid,String LabCode) throws Exception {
-		logger.info(new java.util.Date() +"Inside EmployeeListWithoutMembers");
 		Query query=manager.createNativeQuery(EMPLOYEELISTWITHOUTMEMBERS);
 		query.setParameter("committeemainid", committeemainid);
 		query.setParameter("labcode", LabCode);
@@ -2142,7 +1987,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public int CommitteeMemberUpdate(CommitteeMember model) throws Exception {
-		logger.info(new java.util.Date() +"Inside CommitteeMemberUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEMEMBERUPDATE);
 		query.setParameter("committeememberid", model.getCommitteeMemberId());
 		query.setParameter("labcode", model.getLabCode());
@@ -2157,13 +2001,13 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteMainData(String committeemainid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteMainData");
 		Query query=manager.createNativeQuery(COMMITTEMAINDATA);
 		query.setParameter("committeemainid", committeemainid );		
 		try {
 		Object[] CommitteeAutoScheduleList=(Object[])query.getSingleResult();
 		return CommitteeAutoScheduleList;
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO CommitteMainData "+e);
 			return null;
 		}		
 	}
@@ -2173,7 +2017,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public  long InitiationCommitteeDelete(CommitteeInitiation model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeDelete");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEDELETE);
 		query.setParameter("committeeinitiationid", model.getCommitteeInitiationId());
 		return query.executeUpdate();
@@ -2184,12 +2027,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] Initiationdetails(String initiationid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside Initiationdetails");
 		Query query=manager.createNativeQuery(INITIATIONDETAILS);
 		try {
 		query.setParameter("initiationid",initiationid);
 		return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO Initiationdetails "+ e);
 			return null;	
 		}
 		
@@ -2199,7 +2042,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] InitiationCommitteeDescriptionTOR(String initiationid,String Committeeid) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeDescriptionTOR");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEDESCRIPTIONTOR);
 		query.setParameter("committeeid", Committeeid);	
 		query.setParameter("initiationid", initiationid);	
@@ -2211,7 +2053,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int InitiationCommitteeDescriptionTOREdit(CommitteeInitiation committeedivision) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeDescriptionTOREdit");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEDESCRIPTIONTOREDIT);
 		query.setParameter("description", committeedivision.getDescription());	
 		query.setParameter("termsofreference", committeedivision.getTermsOfReference());	
@@ -2226,7 +2067,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiaitionMasterList(String initiationid) throws Exception 
 	{		
-		logger.info(new java.util.Date() +"Inside InitiaitionMasterList");
 		Query query=manager.createNativeQuery(INITIAITIONMASTERLIST);
 		query.setParameter("initiationid", initiationid );
 		List<Object[]> InitiaitionMasterList=(List<Object[]>)query.getResultList();
@@ -2237,7 +2077,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeInitiationUpdate(String initiationid, String CommitteeId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeInitiationUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEINITIATIONUPDATE);
 		query.setParameter("initiationid", initiationid);
 		query.setParameter("committeeid", CommitteeId);		
@@ -2247,7 +2086,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationCommitteeMainList(String initiationid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeMainList");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEEMAINLIST);
 		query.setParameter("initiationid", initiationid);	
 		List<Object[]> InitiationCommitteeMainList=(List<Object[]>)query.getResultList();
@@ -2258,7 +2096,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationScheduleListAll(String initiationid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InitiationScheduleListAll");
 		Query query=manager.createNativeQuery(INITIATIONSCHEDULELISTALL);
 		query.setParameter("initiationid",initiationid);
 		return (List<Object[]>) query.getResultList();
@@ -2269,7 +2106,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> InitiationCommitteeScheduleList(String initiationid,String committeeid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside InitiationCommitteeScheduleList");
 		Query query=manager.createNativeQuery(INITIATIONCOMMITTEESCHEDULELIST);
 		query.setParameter("initiationid",initiationid);
 		query.setParameter("committeeid",committeeid);
@@ -2280,12 +2116,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] ProposedCommitteeMainId(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProposedCommitteeMainId");
 		Query query=manager.createNativeQuery(PROPOSEDCOMMITTEEMAINID);
 		try {
 			query.setParameter("committeemainid",committeemainid);
 			return (Object[]) query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO ProposedCommitteeMainId "+e);
 			return null;	
 		}
 		
@@ -2295,7 +2131,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] GetProposedCommitteeMainId(String committeeid,String projectid,String divisionid,String initiationid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside GetProposedCommitteeMainId");
 		Query query=manager.createNativeQuery(GETPROPOSEDCOMMITTEEMAINID);
 		try {
 			query.setParameter("committeeid",committeeid);
@@ -2304,6 +2139,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			query.setParameter("initiationid",initiationid);
 			return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO GetProposedCommitteeMainId "+e);
 			return null;	
 		}
 		
@@ -2314,13 +2150,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] CommitteeMainApprovalData(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMainApprovalData");
 		Query query=manager.createNativeQuery(COMMITTEEMAINAPPROVALDATA);
 		try {
 			query.setParameter("committeemainid",committeemainid);
 			return (Object[]) query.getResultList().get(0);
 		}catch (Exception e) {
-			
+			logger.error(new java.util.Date() +"Inside DAO CommitteeMainApprovalData "+e);
 			return null;	
 		}		
 	}	
@@ -2328,7 +2163,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long CommitteeConstitutionApprovalAdd(CommitteeConstitutionApproval model) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside CommitteeConstitutionApprovalAdd");
 		manager.persist(model);		
 		return model.getConstitutionApprovalId();
 	}
@@ -2338,7 +2172,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommitteeApprovalUpdate(CommitteeConstitutionApproval model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeApprovalUpdate");
 		Query query=manager.createNativeQuery(COMMITTEEAPPROVALUPDATE);
 		try {
 			query.setParameter("committeemainid",model.getCommitteeMainId());
@@ -2351,6 +2184,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			
 			return query.executeUpdate();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO CommitteeApprovalUpdate "+ e);
 			return 0;	
 		}
 		
@@ -2360,7 +2194,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int updatecommitteeapprovalauthority(CommitteeConstitutionApproval model) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside updatecommitteeapprovalauthority");
 		
 		try {
 			Query query=manager.createNativeQuery(UPDATECOMMITTEEAPPROVALAUTHORITY);
@@ -2369,6 +2202,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			
 			return query.executeUpdate();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO updatecommitteeapprovalauthority "+ e);
 			return 0;	
 		}
 		
@@ -2380,7 +2214,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProposedCommitteList() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProposedCommitteList");
 		Query query=manager.createNativeQuery(PROPOSEDCOMMITTELIST);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -2389,7 +2222,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ApprovalStatusList(String committeemainid ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ApprovalStatusList");
 		
 		try {			
 			Query query=manager.createNativeQuery(APPROVALSTATUSLIST);
@@ -2397,6 +2229,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			List<Object[]> ApprovalStatusList =(List<Object[]>) query.getResultList();
 			return ApprovalStatusList ;
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO ApprovalStatusList "+ e);
 			return null;	
 		}
 		
@@ -2409,7 +2242,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int NewCommitteeMainIsActiveUpdate(CommitteeConstitutionApprovalDto dto ) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside NewCommitteeMainIsActiveUpdate");
 		try {	
 			Query query=manager.createNativeQuery(NEWCOMMITTEEMAINISACTIVEUPDATE);
 			query.setParameter("committeemainid",dto.getCommitteeMainId());
@@ -2417,6 +2249,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			query.setParameter("modifieddate",dto.getActionDate());
 			return query.executeUpdate();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO NewCommitteeMainIsActiveUpdate "+ e);
 			e.printStackTrace();
 			return 0;	
 		}
@@ -2426,7 +2259,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ProposedCommitteesApprovalList(String logintype,String empid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProposedCommitteesApprovalList");
 		Query query=manager.createNativeQuery("CALL Pfms_Com_Con_Approval(:logintype, :empid);");
 		query.setParameter("logintype",logintype);
 		query.setParameter("empid",empid);
@@ -2438,7 +2270,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] LoginData(String loginid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginData");
 		Query query=manager.createNativeQuery(LOGINDATA);
 		query.setParameter("loginid",loginid);
 		return (Object[])query.getSingleResult();
@@ -2448,7 +2279,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DORTMDData() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DORTMDData");
 		Query query=manager.createNativeQuery(DORTMDDATA);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -2457,7 +2287,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long ConstitutionApprovalHistoryAdd(CommitteeConstitutionHistory model) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside CommitteeConstitutionApprovalAdd");
 		manager.persist(model);		
 		return model.getCommitteeHistoryId();
 	}
@@ -2468,7 +2297,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ComConstitutionApprovalHistory");
 		Query query=manager.createNativeQuery(COMCONSTITUTIONAPPROVALHISTORY);
 		query.setParameter("committeemainid",committeemainid);
 		return (List<Object[]>)query.getResultList();
@@ -2478,12 +2306,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[]  ComConstitutionEmpdetails(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ComConstitutionEmpdetails");
 		Query query=manager.createNativeQuery(COMCONSTITUTIONEMPDETAILS);
 		query.setParameter("committeemainid",committeemainid);
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO ComConstitutionEmpdetails "+ e);
 			return null;
 		}
 	}
@@ -2492,11 +2320,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[]  DoRtmdAdEmpData() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DoRtmdAdEmpData");
 		Query query=manager.createNativeQuery(DORTMDADEMPDATA);
 		try {
 			return (Object[])query.getResultList().get(0);
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO DoRtmdAdEmpData "+ e);
 			return null;
 		}
 	}
@@ -2505,11 +2333,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[]  DirectorEmpData() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DirectorEmpData");
 		Query query=manager.createNativeQuery(DIRECTOREMPDATA);
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO DirectorEmpData "+ e);
 			return null;
 		}
 	}
@@ -2518,12 +2346,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[]  CommitteeMainApprovalDoData(String committeemainid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMainApprovalDoData");
 		Query query=manager.createNativeQuery(COMMITTEEMAINAPPROVALDODATA);
 		query.setParameter("committeemainid",committeemainid);
 		try {
 			return (Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO CommitteeMainApprovalDoData "+ e);
 			return null;
 		}
 		
@@ -2535,7 +2363,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int  CommitteeMinutesDelete(String scheduleminutesid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesDelete");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESDELETE);
 		query.setParameter("scheduleminutesid",scheduleminutesid);
 		return query.executeUpdate();
@@ -2545,7 +2372,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[]  CommitteeConStatusDetails(String status) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeConStatusDetails");
 		Query query=manager.createNativeQuery(COMMITTEECONSTATUSDETAILS);
 		query.setParameter("status",status);
 		return (Object[])query.getSingleResult();
@@ -2554,7 +2380,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int  CommitteeScheduleDelete(CommitteeScheduleDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleDelete");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEDELETE);
 		query.setParameter("modifiedby",dto.getModifiedBy());
 		query.setParameter("modifieddate",dto.getModifiedDate());
@@ -2565,7 +2390,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int  CommitteeScheduleAgendaDelete(CommitteeScheduleDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleAgendaDelete");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEAGENDADELETE);
 		query.setParameter("modifiedby",dto.getModifiedBy());
 		query.setParameter("modifieddate",dto.getModifiedDate());
@@ -2579,7 +2403,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int  CommitteeScheduleInvitationDelete(CommitteeScheduleDto dto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleInvitationDelete");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEINVITATIONDELETE);
 		query.setParameter("scheduleid",dto.getScheduleId());
 		return query.executeUpdate();
@@ -2589,7 +2412,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ScheduleCommitteeEmpCheck(String scheduleid ,String empid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ScheduleCommitteeEmpCheck");
 		Query query=manager.createNativeQuery(SCHEDULECOMMITTEEEMPCHECK);
 		query.setParameter("scheduleid",scheduleid);
 		query.setParameter("empid",empid);
@@ -2600,7 +2422,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ScheduleCommitteeEmpinvitedCheck(String scheduleid ,String empid) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ScheduleCommitteeEmpinvitedCheck");
 		Query query=manager.createNativeQuery(SCHEDULECOMMITTEEEMPINVITEDCHECK);
 		query.setParameter("scheduleid",scheduleid);
 		query.setParameter("empid",empid);
@@ -2611,7 +2432,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> EmpScheduleData(String empid,String scheduleid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside EmpScheduleData");
 		Query query=manager.createNativeQuery(EMPSCHEDULEDATA);
 		query.setParameter("empid", empid );
 		query.setParameter("scheduleid", scheduleid );
@@ -2623,7 +2443,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> AllActionAssignedCheck(String scheduleid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside AllActionAssignedCheck");
 		Query query=manager.createNativeQuery(ALLACTIONASSIGNEDCHECK);
 		query.setParameter("scheduleid", scheduleid );
 		List<Object[]> AllActionAssignedCheck=(List<Object[]>)query.getResultList();
@@ -2634,7 +2453,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> DefaultAgendaList(String committeeid,String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside DefaultAgendaList");
 		Query query=manager.createNativeQuery(DEFAULTAGENDALIST);
 		query.setParameter("committeeid", committeeid );
 		query.setParameter("LabCode", LabCode );
@@ -2645,7 +2463,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
-		logger.info(new java.util.Date()  +"Inside ProcurementStatusList");
 		Query query = manager.createNativeQuery(PROCUREMETSSTATUSLIST);
 		query.setParameter("projectid", projectid);
 		List<Object[]> ProcurementStatusList= query.getResultList();
@@ -2656,7 +2473,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> ActionPlanSixMonths(String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ActionPlanThreeMonths");
 		List<Object[]> ActionPlanThreeMonths=new ArrayList<Object[]>();
 		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, 180);");
 		query.setParameter("projectid", projectid);
@@ -2664,7 +2480,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 			ActionPlanThreeMonths= query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside ProjectBriefing.htm "+ e);
+			logger.error(new java.util.Date() +" Inside DAO ActionPlanSixMonths " + e);
 		}
 		return ActionPlanThreeMonths;
 	}
@@ -2672,7 +2488,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LastPMRCActions");
 		System.out.println( scheduleid+"   "+committeeid+"   "+ proid+"   "+isFrozen);
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
 		query.setParameter("scheduleid", scheduleid);
@@ -2686,7 +2501,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> CommitteeMinutesSpecNew()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeMinutesSpecNew");
 		Query query=manager.createNativeQuery(COMMITTEEMINUTESSPECNEW);
 		 List<Object[]> CommitteeMinutesSpecNew=(List<Object[]>) query.getResultList();
 		return CommitteeMinutesSpecNew;
@@ -2696,7 +2510,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override 
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside MilestoneSubsystems");
 		Query query=manager.createNativeQuery(MILESTONESUBSYSTEMS);	   
 		query.setParameter("projectid", projectid);
 		List<Object[]> MilestoneSubsystems=(List<Object[]>)query.getResultList();	
@@ -2706,7 +2519,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override 
 	public List<Object[]> EmployeeScheduleReports(String empid, String fromdate,String todate) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside EmployeeScheduleReports");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_Report (:empid,:fromdate,:todate)");	   
 		query.setParameter("empid", empid);
 		query.setParameter("fromdate", fromdate);
@@ -2719,7 +2531,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside EmployeeDropdown");
 		Query query=manager.createNativeQuery("CALL Employee_Dropdown(:empid,:logintype,:projectid);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", logintype);
@@ -2732,7 +2543,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> FileRepMasterListAll(String projectid,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside FileRepMasterListAll");
 		Query query=manager.createNativeQuery(FILEREPMASTERLISTALL);
 		query.setParameter("projectid", projectid);
 		query.setParameter("LabCode", LabCode);
@@ -2744,7 +2554,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public Object[] AgendaDocLinkDownload(String filerepid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside AgendaDocLinkDownload");
 		Query query=manager.createNativeQuery(AGENDADOCLINKDOWNLOAD);
 		query.setParameter("filerepid", filerepid);
 		List<Object[]> FileRepMasterListAll=(List<Object[]>)query.getResultList();
@@ -2759,7 +2568,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 
-		logger.info(new java.util. Date() +"Inside MilestoneActivityList");
 		Query query=manager.createNativeQuery(MALIST);
 		query.setParameter("ProjectId", ProjectId);
 		List<Object[]> MilestoneActivityList=(List<Object[]>)query.getResultList();		
@@ -2770,7 +2578,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> MilestoneActivityLevel(String MilestoneActivityId,String LevelId) throws Exception {
-		logger.info(new java.util.Date() +"Inside MilestoneActivityLevel ");
 		Query query=manager.createNativeQuery(MILEACTIVITYLEVEL);
 		query.setParameter("id", MilestoneActivityId);
 		query.setParameter("levelid", LevelId);
@@ -2782,7 +2589,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside AgendaLinkedDocList ");
 		Query query=manager.createNativeQuery(AGENDALINKEDDOCLIST);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> AgendaLinkedDocList=(List<Object[]>)query.getResultList();
@@ -2791,7 +2597,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public CommitteeScheduleAgendaDocs AgendaUnlinkDoc(CommitteeScheduleAgendaDocs agendadoc) throws Exception {
-		logger.info(new java.util.Date() +"Inside AgendaUnlinkDoc ");
 		CommitteeScheduleAgendaDocs detachedentity = manager.find(CommitteeScheduleAgendaDocs.class, agendadoc.getAgendaDocid());
 		detachedentity.setIsActive(0);
 		detachedentity.setModifiedBy(agendadoc.getModifiedBy());
@@ -2799,6 +2604,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		try {
 			return manager.merge(detachedentity);
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO AgendaUnlinkDoc"+e);
 			e.printStackTrace();
 			return null;
 		}
@@ -2809,7 +2615,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int PreDefAgendaEdit(CommitteeDefaultAgenda agenda) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside PreDefAgendaEdit ");
 		Query query=manager.createNativeQuery(PREDEFAGENDAEDIT);
 		query.setParameter("agendaitem", agenda.getAgendaItem());
 		query.setParameter("remarks", agenda.getRemarks());
@@ -2824,7 +2629,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long PreDefAgendaAdd(CommitteeDefaultAgenda agenda) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside PreDefAgendaAdd ");
 		manager.persist(agenda);
 		manager.flush();
 		return agenda.getDefaultAgendaId();
@@ -2835,7 +2639,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int PreDefAgendaDelete(String DefaultAgendaId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside PreDefAgendaDelete ");
 		Query query=manager.createNativeQuery(PREDEFAGENDADELETE);		
 		query.setParameter("DefaultAgendaId", DefaultAgendaId);
 		return query.executeUpdate();
@@ -2845,7 +2648,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public int CommProScheduleList(String projectid,String committeeid,String sdate) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside CommProScheduleList ");
 		Query query=manager.createNativeQuery(COMMPROSCHEDULELIST);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -2858,7 +2660,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside getLastPmrcId ");
 		Query query=manager.createNativeQuery(LASTPRMC);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -2868,7 +2669,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
 		result=CommProScheduleList.longValue();
 		}catch (Exception e) {
-			
+			logger.error(new java.util.Date() +"Inside DAO getLastPmrcId "+ e);
 		}
 		return result;
 	}
@@ -2876,7 +2677,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception {
 		
-		logger.info(new java.util.Date() +"Inside insertMinutesFinance");
 		manager.persist(finance);
 		manager.flush();
 		return finance.getMinutesFinanceId();
@@ -2885,7 +2685,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception {
-		logger.info(new java.util.Date() +"Inside insertMinutesprocure");
 		manager.persist(procure);
 		manager.flush();
 		return procure.getMinutesProcurementId();
@@ -2894,7 +2693,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public long insertMinutesAction(MinutesActionList action) throws Exception {
-		logger.info(new java.util.Date() +"Inside insertMinutesaction");
 		manager.persist(action);
 		manager.flush();
 		return action.getMinutesActionId();
@@ -2903,7 +2701,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception {
-		logger.info(new java.util.Date() +"Inside insertMinutesLastPmrc");
 		manager.persist(lastpmrc);
 		manager.flush();
 		return lastpmrc.getMinutesLastPmrcId();
@@ -2912,7 +2709,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception {
-		logger.info(new java.util.Date() +"Inside insertMinutesMileActivity");
 		manager.persist(Mile);
 		manager.flush();
 		return Mile.getMinutesMileId();
@@ -2921,7 +2717,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 
 	@Override
 	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception {
-		logger.info(new java.util.Date() +"Inside insertMinutesSubMileActivity");
 		manager.persist(submile);
 		manager.flush();
 		return submile.getMinutesSubMileId();
@@ -2930,7 +2725,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
     private static final String UPDATEFROZEN="update committee_schedule set MinutesFrozen='Y' where scheduleid=:schduleid";
 	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside updateMinutesFrozen");	
 		Query query=manager.createNativeQuery(UPDATEFROZEN);
 		query.setParameter("schduleid", schduleid);
 		int ret=0;
@@ -2941,7 +2735,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
     private static final String FINANCELIST="FROM MinutesFinanceList WHERE CommiteeScheduleId=:scheduleid";
 	@Override
 	public List<MinutesFinanceList> getMinutesFinance(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside getMinutesFinance ");
 		Query query=manager.createQuery(FINANCELIST);
 		query.setParameter("scheduleid", Long.parseLong(scheduleid));
 		List<MinutesFinanceList> getMinutesFinance=(List<MinutesFinanceList>)query.getResultList();
@@ -2953,7 +2746,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	@Override
 	public List<Object[]> getMinutesAction(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside getMinutesAction ");
 		Query query=manager.createNativeQuery(MINUTESACTION);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> getMinutesFinance=( List<Object[]>)query.getResultList();
@@ -2964,7 +2756,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String MINUTESPROCURE="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, f.EstimatedCost, f.OrderCost, f.RevisedDp ,f.ItemNomenclature, f.PftsStatus, f.PftsStageName, f.Remarks  FROM pfms_minutes_procurement f WHERE f.commiteescheduleid=:scheduleid ";
 	@Override
 	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside getMinutesProcure ");
 		Query query=manager.createNativeQuery(MINUTESPROCURE);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> getMinutesFinance=( List<Object[]>)query.getResultList();
@@ -2975,7 +2766,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String MINUTESMILE="SELECT MilestoneNo AS 'Main',MainId,AId,BId,CId,DId,EId,StartDate,EndDate,MileStoneMain,MileStoneA,MileStoneB,MileStoneC,MileStoneD,MileStoneE,ActivityType,ProgressStatus,Weightage,DateOfCompletion,Activitystatus,ActivityStatusId,RevisionNo,MilestoneNo, OicEmpId,EmpName,Designation,LevelId,ActivityShort,StatusRemarks FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
 	@Override
 	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside getMinutesMile ");
 		Query query=manager.createNativeQuery(MINUTESMILE);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> getMinutesMile=( List<Object[]>)query.getResultList();
@@ -2985,7 +2775,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String MINUTESSUBMILE="SELECT a.activityId, a.Parentactivityid, a.activityname, a.orgenddate, a.enddate,a.activitystatusid,a.activityshort, a.Progress,a.milestoneno, a.StatusRemarks FROM pfms_minutes_submile a WHERE a.committeescheduleid=:scheduleid ORDER BY a.milestoneno ASC";
 	@Override
 	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside getMinutesSubMile ");
 		Query query=manager.createNativeQuery(MINUTESSUBMILE);
 		query.setParameter("scheduleid", scheduleid);
 		List<Object[]> getMinutesSubMile=( List<Object[]>)query.getResultList();
@@ -2995,7 +2784,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String CLUSTERLIST="SELECT clusterid,clustername, clustershortname FROM cluster WHERE clustertype='Technology Cluster' ";
 	@Override
 	public List<Object[]> ClusterList() throws Exception{
-		logger.info(new java.util.Date() +"Inside ClusterList ");
 		Query query=manager.createNativeQuery(CLUSTERLIST);
 		List<Object[]> ClusterList=( List<Object[]>)query.getResultList();
 		return ClusterList;
@@ -3009,7 +2797,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception
 	{
 		System.out.println( committeeId+"    "+ LabCode);
-		logger.info(new java.util.Date() +"Inside getDefaultAgendasCount ");
 		Query query=manager.createNativeQuery(GETDEFAULTAGENDASCOUNT);
 		query.setParameter("committeeId", committeeId);
 		query.setParameter("LabCode", LabCode);

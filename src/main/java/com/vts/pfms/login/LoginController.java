@@ -630,9 +630,9 @@ public class LoginController {
     
     	// Calling pms_serv to update hoa data from ibas to pms
     	final String localUri1=uri+"/pfms_serv/tblprojectdata";
-    	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
-    	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
-    	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
+    	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=M";
+    	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=W";
+    	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=T";
     	final String localUri5=uri+"/pfms_serv/labdetails";
     	
     	String MonthlyData=null;
@@ -726,10 +726,10 @@ public class LoginController {
     	logger.info(new Date() +"ProjectHoaUpdateAuto.htm ");
     	// Calling pms_serv to update hoa data from ibas to pms
     	final String localUri1=uri+"/pfms_serv/tblprojectdata";
-    	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=M";
-    	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=W";
-    	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectid=A&interval=T";
-    	final String localUri5=uri+"pfms_serv/labdetails";
+    	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=M";
+    	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=W";
+    	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=T";
+    	final String localUri5=uri+"/pfms_serv/labdetails";
     	
     	String HoaJsonData=null;
     	String MonthlyData=null;
@@ -797,10 +797,9 @@ public class LoginController {
     }
     
     @RequestMapping(value="ChangesinProject.htm", method= {RequestMethod.GET,RequestMethod.POST})
-    public String ChangesinProject (HttpSession ses,HttpServletRequest req) throws Exception{
-    	
+    public String ChangesinProject (HttpSession ses,HttpServletRequest req) throws Exception
+    {
     	logger.info(new Date() +"ChangesinProject.htm ");
-    	
     	try {
     	String Empid= ses.getAttribute("EmpId").toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
@@ -839,8 +838,10 @@ public class LoginController {
     	List<Object[]> MilestoneChangesData =rfpmainservice.MilestoneChanges(ProjectId, Interval,LabCode);
     	List<Object[]> ActionChangesData =rfpmainservice.ActionChanges(ProjectId,Interval,LabCode);
     	List<Object[]> RiskChangesData =rfpmainservice.RiskChanges(ProjectId,Interval,LabCode) ;
-    	
-    	
+    	String projectCode="A";
+    	if(ProjectId!=null && !ProjectId.equalsIgnoreCase("A")) {
+    		projectCode = rfpmainservice.ProjectData(ProjectId)[1].toString().trim();
+    	}
 	    	 
 	    req.setAttribute("IsDG", IsDG);
     	req.setAttribute("ProjectList", rfpmainservice.ProjectList(LoginType,Empid,LabCode));
@@ -857,7 +858,7 @@ public class LoginController {
     	req.setAttribute("labmasterlist", LabMasterList);
     	req.setAttribute("labcode", LabCode);
  
-    	final String localUri=uri+"/pfms_serv/pfms-finance-changes?projectid="+ProjectId+"&interval="+Interval;
+    	final String localUri=uri+"/pfms_serv/pfms-finance-changes?projectCode="+projectCode+"&interval="+Interval;
     	List<FinanceChanges> FinanceDetails=null;
     	String FinanceChanges=null;
     	long count= 0L;
@@ -888,7 +889,6 @@ public class LoginController {
 				e.printStackTrace();
 			}
 		}
-	
 		
 		req.setAttribute("financechangesdata", FinanceDetails );
 		

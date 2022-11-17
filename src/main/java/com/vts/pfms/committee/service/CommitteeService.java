@@ -112,7 +112,7 @@ public interface CommitteeService {
 	public List<Object[]> UserSchedulesList(String EmpId,String MeetingId) throws Exception;
 	public List<Object[]> MeetingSearchList(String MeetingId ,String LabCode) throws Exception;
 	public Object[] CommitteeScheduleDataPro(String committeescheduleid, String projectid) throws Exception;
-	public Object[] LabDetails() throws Exception;
+	public Object[] LabDetails(String LabCode) throws Exception;
 	
 	public long ProjectCommitteeAdd(String ProjectId,String[] Committee ,String UserId) throws Exception;
 	public List<Object[]> ProjectMasterList(String ProjectId) throws Exception;

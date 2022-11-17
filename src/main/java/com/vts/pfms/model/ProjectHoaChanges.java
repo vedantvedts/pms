@@ -16,6 +16,7 @@ public class ProjectHoaChanges {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ChangesId;
+	private String ProjectCode;
 	private Long ProjectId;
 	private Long TodayChanges;
 	private Long WeeklyChanges;

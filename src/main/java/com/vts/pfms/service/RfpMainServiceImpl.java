@@ -1,6 +1,5 @@
 package com.vts.pfms.service;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,11 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Autowired
 	RfpMainDao dao;
 	
+			private static final Logger logger=LogManager.getLogger(RfpMainServiceImpl.class);
 	
 	@Override
 	public List<Object[]> DashBoardFormUrlList(String FormModuleId, String loginId) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE DashBoardFormUrlList ");
 		int FormModuleIdinput=Integer.parseInt(FormModuleId);
 		int LoginIdinput=Integer.parseInt(loginId);
 		List<Object[]> DashBoardFormUrlList=dao.DashBoardFormUrlList(FormModuleIdinput, LoginIdinput);
@@ -53,7 +55,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public int LoginStampingUpdate(String Logid ,String LogoutType) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE LoginStampingUpdate ");
 		LoginStamping stamping=new LoginStamping();
         stamping.setAuditStampingId(dao.LastLoginStampingId(Logid));
        
@@ -83,7 +85,6 @@ public class RfpMainServiceImpl implements RfpMainService {
 		
 		return dao.DesgId(Empid);
 	}
-	/////////Rajat Changes//Notice
 	@Override
 	public List<Object[]> getIndividualNoticeList(String userId)throws Exception{
 		
@@ -100,21 +101,8 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	public List<Object[]> AllActionsCount(String logintype, String empid,String LoginId,String LabCode) throws Exception 
 	{		
-
-//		List<Object[]> ProjectList= dao.ProjectList();
+		logger.info(new Date() +"Inside SERVICE AllActionsCount ");
 		List<Object[]> al = new ArrayList<Object[]>();
-//
-//		if(logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y") || logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("L") )
-//	     {
-//	
-//			ProjectList=dao.ProjectList();
-//	     }
-//		else if(!logintype.equalsIgnoreCase("U") )
-//	     {
-//
-//			ProjectList=dao.ProjectEmployeeList(empid);
-//	     }
-		
 		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,logintype,LabCode);
 
 		for(Object[] obj : ProjectList) {
@@ -141,6 +129,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public int  GetNoticeEligibility(String empId)throws Exception{
+		logger.info(new Date() +"Inside SERVICE GetNoticeEligibility ");
 		int count =0; 
 		List<Object> counts=(List<Object>) dao.GetNoticeEligibility(empId);
 		for(Object data:counts) {
@@ -187,7 +176,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public Object[] AllSchedulesCount(String LoginType, String loginid) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE AllSchedulesCount ");
 		Object[] allschedulescount = null;
 		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L") )
 	     {
@@ -200,212 +189,10 @@ public class RfpMainServiceImpl implements RfpMainService {
 			return allschedulescount;
 			
 	}
-
-
-	
-//	@Override
-//	public List<String> ProjectBudgets() throws Exception {
-//		
-//		String plist="";
-//		LinkedHashSet<String> projectset= new LinkedHashSet<String>(); 
-//		List<Object[]> ProjectBudgets = dao.ProjectBudgets();
-//		for(Object[] obj : ProjectBudgets)
-//		{
-//			projectset.add(obj[0].toString());
-//		}
-//		int temp=0;
-//		for(String project : projectset)
-//		{ 			
-//			if(temp==projectset.size()-1)
-//			{
-//				plist=plist+"'"+ project +"'";
-//				
-//			}else
-//			{
-//				plist=plist+"'"+ project +"',";
-//			}
-//			temp++;
-//		}
-//		
-//		temp=0;
-//		String revexp="";
-//		String revos="";
-//		String revdipl="";
-//		String revbal="";
-//		
-//		for(String project : projectset)
-//		{	int expcheck=0;
-//			int oscheck=0;
-//			int diplcheck=0;
-//			int balcheck=0;
-//			for(Object[] obj : ProjectBudgets)
-//			{
-//				if(obj[1].toString().equals("REV") && project.equals(obj[0].toString()))
-//				{	
-//					if(temp==projectset.size()-1)
-//					{
-//						revexp=revexp+ obj[3] ;
-//						expcheck++;
-//					}
-//					else
-//					{
-//						revexp=revexp+ obj[3] +",";
-//						expcheck++;
-//					}
-//			/////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						revos=revos+ obj[4] ;
-//						oscheck++;
-//					}
-//					else
-//					{
-//						revos=revos+ obj[4] +",";
-//						oscheck++;
-//					}
-//			/////////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						revdipl=revdipl+ obj[5] ;
-//						diplcheck++;
-//					}
-//					else
-//					{
-//						revdipl=revdipl+ obj[5] +",";
-//						diplcheck++;
-//					}
-//			//////////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						revbal=revbal+ obj[6] ;
-//						balcheck++;
-//					}
-//					else
-//					{
-//						revbal=revbal+ obj[6] +",";
-//						balcheck++;
-//					}
-//				}
-//			}
-//			if(expcheck==0 )
-//			{
-//				revexp=revexp+" 0,";
-//			}
-//			if(oscheck==0 )
-//			{
-//				revos=revos+" 0,";
-//			}
-//			if(diplcheck==0 )
-//			{
-//				revdipl=revdipl+" 0,";
-//			}
-//			if(balcheck==0 )
-//			{
-//				revbal=revbal+" 0,";
-//			}
-//			
-//		}
-
-//		List<String> valueslist = new ArrayList<String>(); 
-//		valueslist.add(plist);
-//		valueslist.add(revexp);
-//		valueslist.add(revos);
-//		valueslist.add(revdipl);
-//		valueslist.add(revbal);
-//		
-//// -------------------------------------------------------------------------------//
-//		String capexp="";
-//		String capos="";
-//		String capdipl="";
-//		String capbal="";
-//		
-//		for(String project : projectset)
-//		{	int expcheck=0;
-//			int oscheck=0;
-//			int diplcheck=0;
-//			int balcheck=0;
-//			for(Object[] obj : ProjectBudgets)
-//			{
-//				if(obj[1].toString().equals("CAP") && project.equals(obj[0].toString()))
-//				{	
-//					if(temp==projectset.size()-1)
-//					{
-//						capexp=capexp+ obj[3] ;
-//						expcheck++;
-//					}
-//					else
-//					{
-//						capexp=capexp+ obj[3] +",";
-//						expcheck++;
-//					}
-//			/////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						capos=capos+ obj[4] ;
-//						oscheck++;
-//					}
-//					else
-//					{
-//						capos=capos+ obj[4] +",";
-//						oscheck++;
-//					}
-//			/////////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						capdipl=capdipl+ obj[5] ;
-//						diplcheck++;
-//					}
-//					else
-//					{
-//						capdipl=capdipl+ obj[5] +",";
-//						diplcheck++;
-//					}
-//			//////////////////////
-//					if(temp==projectset.size()-1)
-//					{
-//						capbal=capbal+ obj[6] ;
-//						balcheck++;
-//					}
-//					else
-//					{
-//						capbal=capbal+ obj[6] +",";
-//						balcheck++;
-//					}
-//				}
-//			}
-//			if(expcheck==0 )
-//			{
-//				capexp=capexp+" 0,";
-//			}
-//			if(oscheck==0 )
-//			{
-//				capos=capos+" 0,";
-//			}
-//			if(diplcheck==0 )
-//			{
-//				capdipl=capdipl+" 0,";
-//			}
-//			if(balcheck==0 )
-//			{
-//				capbal=capbal+" 0,";
-//			}
-//			
-//		}
-//		
-//		
-//		
-//		valueslist.add(capexp);
-//		valueslist.add(capos);
-//		valueslist.add(capdipl);
-//		valueslist.add(capbal);
-//		
-//		
-//		
-//		return valueslist;
-//	}
 	
 	@Override
 	public String getEmpNo(long empId) throws Exception{
+		logger.info(new Date() +"Inside SERVICE getEmpNo ");
 		List<String> list=dao.getEmpNo(empId);
 		String empno=null;
 		if(list!=null && list.size()>0) {
@@ -418,20 +205,8 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public List<Object[]> ProjectMeetingCount(String LoginType,String empid,String labcode) throws Exception {
-
-//		List<Object[]> ProjectList = null;
-//
-//		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L")  )
-//	     {
-//	
-//			ProjectList=dao.ProjectList();
-//	     }
-//		else if(!LoginType.equalsIgnoreCase("U")   )
-//	     {
-//
-//			ProjectList=dao.ProjectEmployeeList(empid);
-//	     }
-		
+		logger.info(new Date() +"Inside SERVICE ProjectMeetingCount ");
+	
 		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType,labcode);
 		
 		List<Object[]> al= new ArrayList<Object[]>();
@@ -449,19 +224,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Override
 	public List<Object[]> ProjectList(String LoginType,String empid,String labcode) throws Exception {
 
-//		List<Object[]> ProjectList=null;
-//
-//		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L")  )
-//	     {
-//	
-//			ProjectList=dao.ProjectList();
-//	     }
-//		else if(!LoginType.equalsIgnoreCase("U")   )
-//	     {
-//
-//			ProjectList=dao.ProjectEmployeeList(empid);
-//	     }
-		
+		logger.info(new Date() +"Inside SERVICE ProjectList");
 		List<Object[]> ProjectList=dao.ProjectEmployeeList(empid,LoginType,labcode);
 		
 		return ProjectList;
@@ -469,6 +232,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public ArrayList<String> ProjectQuaters(String ProjectId) throws Exception {
+		logger.info(new Date() +"Inside SERVICE ProjectQuaters ");
 		ArrayList<String> Qualters = new ArrayList<String>();
 		if(!"0".equalsIgnoreCase(ProjectId)) {
 		Object[] Quater=dao.ProjectQuaters(ProjectId).get(0);
@@ -636,7 +400,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
-		
+		logger.info(new Date() +"Inside SERVICE ProjectHoaUpdate ");
 		long count1 =0 ;
 		long count = dao.ProjectHoaDelete();
 		for(ProjectHoa obj : hoa) {
@@ -687,28 +451,18 @@ public class RfpMainServiceImpl implements RfpMainService {
 	
 	@Override
 	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception {
-		
+		logger.info(new Date() +"Inside SERVICE ProjectFinanceChangesUpdate ");
 		List<Object[]> proList=dao.ProjectList();
-		
-		/*
-		 * List<Integer> list = Arrays.asList(10,12,13,10);
-		 * 
-		 * list.stream().filter(i-> Collections.frequency(list, i) >
-		 * 1).collect(Collectors.toSet()).forEach(p-> System.out.println(p));;
-		 * 
-		 * List<Integer> evenlist= numlist.stream().filter(p -> p%2==0
-		 * ).collect(Collectors.toList());
-		 */
-		
 		long result=0;
 		for(Object[] obj:proList) {
 			try {
 		        dao.ProjectHoaChangesDelete(obj[0].toString());
 		        ProjectHoaChanges changes = new ProjectHoaChanges();
 		        changes.setProjectId(Long.parseLong(obj[0].toString()));
-		        changes.setMonthlyChanges(Long.valueOf(Monthly.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
-		        changes.setWeeklyChanges(Long.valueOf(Weekly.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
-		        changes.setTodayChanges(Long.valueOf(Today.stream().filter(c-> c.getProjectId().toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList()).size()));
+		        changes.setProjectCode(obj[1].toString());
+		        changes.setMonthlyChanges(Long.valueOf(Monthly.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
+		        changes.setWeeklyChanges(Long.valueOf(Weekly.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
+		        changes.setTodayChanges(Long.valueOf(Today.stream().filter(c-> c.getProjectCode().toString().equalsIgnoreCase(obj[1].toString())).collect(Collectors.toList()).size()));
 		        changes.setCreatedBy(UserId);
 		        changes.setCreatedDate(sdf1.format(new Date()));
 		        changes.setIsActive(1);
@@ -722,5 +476,11 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return result;
 	}
 	
+	
+	@Override
+	public Object[] ProjectData(String projectid) throws Exception 
+	{
+		return dao.ProjectData(projectid);
+	}
 	
 }

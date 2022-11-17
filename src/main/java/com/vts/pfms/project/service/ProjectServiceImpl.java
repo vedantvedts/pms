@@ -85,14 +85,12 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationList");	
 		return dao.ProjectIntiationList(Empid,LoginType,LabCode);
 	}
 
 	@Override
 	public List<Object[]> ProjectTypeList() throws Exception {
 
-		logger.info(new Date() +"Inside ProjectTypeList");
 		return dao.ProjectTypeList();
 	}
 	
@@ -130,28 +128,25 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> PfmsCategoryList() throws Exception {
 	
-		logger.info(new Date() +"Inside PfmsCategoryList");
 		return dao.PfmsCategoryList();
 	}
 
 	@Override
 	public List<Object[]> PfmsDeliverableList() throws Exception {
 	
-		logger.info(new Date() +"Inside PfmsDeliverableList");
 		return dao.PfmsDeliverableList();
 	}
 
 	@Override
 	public List<Object[]> LabList(String IntiationId) throws Exception {
 
-		logger.info(new Date() +"Inside LabList");
 		return dao.LabList(IntiationId);
 	}
 
 	@Override
 	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto, String UserId,String EmpId,String EmpName)throws Exception {
 			
-		logger.info(new Date() +"Inside ProjectIntiationAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationAdd ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsNotification notification = new PfmsNotification();
 		pfmsinitiation.setLabCode(pfmsinitiationdto.getLabCode());
@@ -207,28 +202,25 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Long ProjectShortNameCount(String ProjectShortName) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectShortNameCount");
 		return dao.ProjectShortNameCount(ProjectShortName);
 	}
 
 	@Override
 	public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectDetailes");
 		return dao.ProjectDetailes(IntiationId);
 	}
 	
 	@Override
 	public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectDetailsPreview");
 		return dao.ProjectDetailsPreview(IntiationId);
 	}
 
 	@Override
 	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationAdd ");
 		PfmsInitiationDetail pfmsinitiationdetail=new PfmsInitiationDetail();
 		
 		pfmsinitiationdetail.setInitiationId(Long.parseLong(pfmsinitiationdetaildto.getInitiationId()));
@@ -255,21 +247,19 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> BudgetItem(String BudegtId) throws Exception {
 
-		logger.info(new Date() +"Inside BudgetItem");
 		return dao.BudgetItem(BudegtId);
 	}
 
 	@Override
 	public List<Object[]> ProjectIntiationItemList(String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationItemList");
 		return dao.ProjectIntiationItemList(InitiationId);
 	}
 
 	@Override
 	public Long ProjectIntiationCostAdd(PfmsInitiationCostDto pfmsinitiationcostdto, String UserId,Object[] ProjectCost) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationCostAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationCostAdd ");
 		PfmsInitiationCost pfmsinitiationcost=new PfmsInitiationCost();
 		pfmsinitiationcost.setInitiationId(Long.parseLong(pfmsinitiationcostdto.getInitiationId()));
 		pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
@@ -335,7 +325,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int ProjectLabAdd(String [] LabId, String InitiationId, String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectLabAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectLabAdd ");
 		Object[] ProjectDetailes= dao.ProjectDetailes(Long.parseLong(InitiationId)).get(0);
 		int lastlabcount=0;
 		
@@ -366,21 +356,19 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectIntiationLabList(String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationLabList");
 		return dao.ProjectIntiationLabList(InitiationId);
 	}
 
 	@Override
 	public List<Object[]> BudgetHead() throws Exception {
 		
-		logger.info(new Date() +"Inside BudgetHead");
 		return dao.BudgetHead();
 	}
 
 	@Override
 	public Long ProjectScheduleAdd(String[] MilestoneActivity, String[] MilestoneMonth, String[] MilestoneRemark, String InitiationId,
 			String UserId,Object[] ProjectDetailes,Integer TotalMonth) throws Exception {
-		logger.info(new Date() +"Inside ProjectScheduleAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectScheduleAdd ");
    List<PfmsInitiationSchedule> pfmsinitiationschedulelist=new ArrayList<PfmsInitiationSchedule>();
 		int count=dao.ProjectMileStoneNo(InitiationId)+1;
 		int count1=0;
@@ -411,42 +399,37 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectIntiationScheduleList");
 		return dao.ProjectIntiationScheduleList(InitiationId);
 	}
 
 	@Override
 	public Object[] ProjectProgressCount(String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectProgressCount");
 		return dao.ProjectProgressCount(InitiationId);
 	}
 	
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectIntiationDetailsList");
 		return dao.ProjectIntiationDetailsList(InitiationId);
 	}
 	
 	@Override
 	public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectIntiationCostList");
 		return dao.ProjectIntiationCostList(InitiationId);
 	}
 
 	@Override
 	public List<Object[]> ProjectEditData(String IntiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectEditData");
 		return dao.ProjectEditData(IntiationId);
 	}
 
 	@Override
 	public int ProjectIntiationEdit(PfmsInitiationDto pfmsinitiationdto, String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationEdit");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationEdit ");
 		
 		int ret=0;
 		
@@ -508,20 +491,18 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Double TotalIntiationCost(String IntiationId) throws Exception {
 
-		logger.info(new Date() +"Inside TotalIntiationCost");
 		return dao.TotalIntiationCost(IntiationId);
 	}
 
 	@Override
 	public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectCostEditData");
 		return dao.ProjectCostEditData(InitiationCostId);
 	}
 
 	@Override
 	public int ProjectIntiationCostEdit(PfmsInitiationCostDto pfmsinitiationcostdto,String UserId,String InitiationId,String TotalCost) throws Exception {
-		logger.info(new Date() +"Inside ProjectIntiationCostEdit");	
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationCostEdit ");	
 		PfmsInitiationCost pfmsinitiationcost=new PfmsInitiationCost();
 			pfmsinitiationcost.setInitiationCostId(Long.parseLong(pfmsinitiationcostdto.getInitiationCostId()));
 			//pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
@@ -562,7 +543,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int ProjectScheduleEdit(ProjectScheduleDto projectschedule) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectScheduleEdit");	
+		logger.info(new Date() +"Inside SERVICE ProjectScheduleEdit ");	
 		PfmsInitiationSchedule pfmsinitiationschedule=new PfmsInitiationSchedule();
 		
 		
@@ -581,7 +562,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int ProjectScheduleDelete(String InitiationScheduleId, String UserId,Integer TotalMonth,String InitiationId) throws Exception {
-		logger.info(new Date() +"Inside ProjectScheduleDelete");	
+		logger.info(new Date() +"Inside SERVICE ProjectScheduleDelete ");	
 		PfmsInitiationSchedule pfmsinitiationschedule=new PfmsInitiationSchedule();
 		pfmsinitiationschedule.setInitiationScheduleId(Long.parseLong(InitiationScheduleId));
 		pfmsinitiationschedule.setModifiedBy(UserId);
@@ -597,7 +578,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Long ProjectInitiationDetailsUpdate(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId,String Details) throws Exception{
 		
-		logger.info(new Date() +"Inside ProjectInitiationDetailsUpdate");
+		logger.info(new Date() +"Inside SERVICE ProjectInitiationDetailsUpdate ");
 		PfmsInitiationDetail pfmsinitiationdetail=new PfmsInitiationDetail();
 		
 		if(Details.equalsIgnoreCase("requirement")) {
@@ -649,14 +630,12 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectScheduleMonth");
 		return dao.ProjectScheduleMonth(InitiationId);
 	}
 
 	@Override
 	public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectScheduleEditData");
 		return dao.ProjectScheduleEditData(InitiationScheduleId);
 	}
 
@@ -664,7 +643,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public Long ProjectInitiationAttachmentAdd(PfmsInitiationAttachmentDto pfmsinitiationattachmentdto,
 			PfmsInitiationAttachmentFileDto pfmsinitiationattachmentfiledto,String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectInitiationAttachmentAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectInitiationAttachmentAdd ");
 		PfmsInitiationAttachment pfmsinitiationattachment=new PfmsInitiationAttachment();
 		pfmsinitiationattachment.setInitiationId(Long.parseLong(pfmsinitiationattachmentdto.getInitiationId()));
 		pfmsinitiationattachment.setFileName(pfmsinitiationattachmentdto.getFileName());
@@ -683,14 +662,12 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectIntiationAttachment");
 		return dao.ProjectIntiationAttachment(InitiationId);
 	}
 	
 	@Override
 	public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside AuthorityAttachment");
 		return dao.AuthorityAttachment(InitiationId);
 	}
 	
@@ -699,14 +676,13 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectIntiationAttachmentFile");
 		return dao.ProjectIntiationAttachmentFile(InitiationAttachmentId);
 	}
 
 	@Override
 	public int ProjectInitiationAttachmentDelete(String InitiationAttachmentId,String UserId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectInitiationAttachmentDelete");
+		logger.info(new Date() +"Inside SERVICE ProjectInitiationAttachmentDelete ");
 		PfmsInitiationAttachment pfmsinitiationattachment=new PfmsInitiationAttachment();
 		pfmsinitiationattachment.setInitiationAttachmentId(Long.parseLong(InitiationAttachmentId));
 		
@@ -719,7 +695,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public int ProjectInitiationAttachmentUpdate(String InitiationAttachmentId, String FileName, String UserId)
 			throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectInitiationAttachmentUpdate");
+		logger.info(new Date() +"Inside SERVICE ProjectInitiationAttachmentUpdate ");
 		PfmsInitiationAttachment pfmsinitiationattachment=new PfmsInitiationAttachment();
 		pfmsinitiationattachment.setInitiationAttachmentId(Long.parseLong(InitiationAttachmentId));
 		pfmsinitiationattachment.setFileName(FileName);
@@ -731,20 +707,18 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public String ProjectIntiationAttachmentFileName(String InitiationAttachmentId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationAttachmentFileName");
 		return dao.ProjectIntiationAttachmentFileName(InitiationAttachmentId);
 	}
 	
 	@Override
 	public String ProjectIntiationAttachmentFileNamePath(String InitiationAttachmentId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationAttachmentFileNamePath");
 		return dao.ProjectIntiationAttachmentFileNamePath(InitiationAttachmentId);
 	}
 
 	@Override
 	public int ProjectLabDelete(String initiationlabid, String InitiationId, String UserId) throws Exception {
-		logger.info(new Date() +"Inside ProjectLabDelete");
+		logger.info(new Date() +"Inside SERVICE ProjectLabDelete ");
 		Object[] ProjectDetailes= dao.ProjectDetailes(Long.parseLong(InitiationId)).get(0);
 		int lastlabcount=0;
 		
@@ -774,7 +748,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public int ProjectIntiationCostDelete(String initiationcostid, String UserId,String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationCostDelete");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationCostDelete ");
 		PfmsInitiationCost pfmsinitiationcost=new PfmsInitiationCost();
 		pfmsinitiationcost.setInitiationCostId(Long.parseLong(initiationcostid));
 	
@@ -810,15 +784,10 @@ public class ProjectServiceImpl implements ProjectService {
 		return count;
 	}
 
-
-
-
-
-
 	@Override
 	public int ProjectIntiationStatusUpdate(String InitiationId, String UserId,String EmpId,String ProjectCode) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationStatusUpdate");
+		logger.info(new Date() +"Inside SERVICE ProjectIntiationStatusUpdate ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsApproval pfmsapproval=new PfmsApproval();
 		PfmsNotification notification= new PfmsNotification();
@@ -852,27 +821,24 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Long ProjectForwardStatus(String InitiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectForwardStatus");
 		return dao.ProjectForwardStatus(InitiationId);
 	}
 
 	@Override
 	public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectActionList");
 		return dao.ProjectActionList(ProjectAuthorityId);
 	}
 
 	@Override
 	public List<Object[]> ProjectApprovePdList(String EmpId) throws Exception {
 	
-		logger.info(new Date() +"Inside ProjectApprovePdList");
 		return dao.ProjectApprovePdList(EmpId);
 	}
 
 	@Override
 	public int ProjectApprovePd(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status) throws Exception {
-		logger.info(new Date() +"Inside ProjectApprovePd");
+		logger.info(new Date() +"Inside SERVICE ProjectApprovePd ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsApproval pfmsapproval=new PfmsApproval();
 		PfmsNotification notification= new PfmsNotification();
@@ -892,7 +858,7 @@ public class ProjectServiceImpl implements ProjectService {
 		try {
 			massage=dao.StatusDetails(Status);
 		} catch (Exception e) {
-
+			logger.error(new Date() +"Inside SERVICE ProjectApprovePd "+ e);
 		}
 		BigInteger Empid=dao.EmpId(InitiationId);
 		BigInteger RtmddoId= dao.RtmddoId();
@@ -924,7 +890,6 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
 		
-		logger.info(new Date() +"Inside EmployeeList");
 		return dao.EmployeeList(LabCode);
 	}
 
@@ -932,14 +897,12 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode) throws Exception{
 		
-		logger.info(new Date() +"Inside ProjectStatusList");
 		return dao.ProjectStatusList(EmpId,LoginType,LabCode);
 	}
 	
 	@Override
 	public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception{
 		
-		logger.info(new Date() +"Inside ProjectApprovalTracking");
 		return dao.ProjectApprovalTracking(InitiationId);
 	}
 
@@ -947,19 +910,17 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectApproveRtmddoList");
 		return dao.ProjectApproveRtmddoList(EmpId);
 	}
 	
 	@Override
 	public List<Object[]> ProjectApproveAdList(String EmpId) throws Exception {
-		logger.info(new Date() +"Inside ProjectApproveAdList");
 		return dao.ProjectApproveAdList(EmpId);
 	}
 	
 	@Override
 	public int ProjectApproveAd(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status) throws Exception {
-		logger.info(new Date() +"Inside ProjectApproveAd");
+		logger.info(new Date() +"Inside SERVICE ProjectApproveAd ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsApproval pfmsapproval=new PfmsApproval();
 		PfmsNotification notification=new PfmsNotification();
@@ -980,7 +941,7 @@ public class ProjectServiceImpl implements ProjectService {
 		try {
 			massage=dao.StatusDetails(Status);
 		} catch (Exception e) {
-
+			logger.error(new Date() +"Inside SERVICE ProjectApproveAd "+ e);
 		}
 		BigInteger Empid=dao.EmpId(InitiationId);
 		BigInteger DivisionHeadId= dao.DivisionHeadId(Empid.toString());
@@ -1018,7 +979,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int ProjectApproveRtmddo(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status) throws Exception {
-		logger.info(new Date() +"Inside ProjectApproveRtmddo");
+		logger.info(new Date() +"Inside SERVICE ProjectApproveRtmddo ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsApproval pfmsapproval=new PfmsApproval();
 		PfmsNotification notification=new PfmsNotification();
@@ -1038,7 +999,7 @@ public class ProjectServiceImpl implements ProjectService {
 		try {
 			massage=dao.StatusDetails(Status);
 		} catch (Exception e) {
-
+			logger.error(new Date() +"Inside SERVICE ProjectApproveRtmddo "+ e);
 		}
 		BigInteger Empid=dao.EmpId(InitiationId);
 		BigInteger DivisionHeadId= dao.DivisionHeadId(Empid.toString());
@@ -1073,14 +1034,13 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectApproveTccList");
 		return dao.ProjectApproveTccList(EmpId);
 	}
 
 	@Override
 	public int ProjectApproveTcc(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectApproveTcc");
+		logger.info(new Date() +"Inside SERVICE ProjectApproveTcc ");
 		PfmsInitiation pfmsinitiation=new PfmsInitiation();
 		PfmsApproval pfmsapproval=new PfmsApproval();
 		PfmsNotification notification=new PfmsNotification();
@@ -1101,7 +1061,7 @@ public class ProjectServiceImpl implements ProjectService {
 		try {
 			massage=dao.StatusDetails(Status);
 		} catch (Exception e) {
-
+			logger.error(new Date() +"Inside SERVICE ProjectApproveTcc "+ e);
 		}
 		BigInteger Empid=dao.EmpId(InitiationId);
 		BigInteger DivisionHeadId= dao.DivisionHeadId(Empid.toString());
@@ -1151,28 +1111,24 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public Double TotalIntiationFeCost(String IntiationId) throws Exception {
 	
-		logger.info(new Date() +"Inside TotalIntiationFeCost");
 		return dao.TotalIntiationFeCost(IntiationId);
 	}
 
 	@Override
 	public Double TotalIntiationReCost(String IntiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside TotalIntiationReCost");
 		return dao.TotalIntiationReCost(IntiationId);
 	}
 
 	@Override
 	public List<Object[]> ProjectCost(Long IntiationId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectCost");
 		return dao.ProjectCost(IntiationId);
 	}
 
 	@Override
 	public List<Object[]> TccProjectList() throws Exception {
 
-		logger.info(new Date() +"Inside TccProjectList");
 		return dao.TccProjectList();
 	}
 
@@ -1180,7 +1136,6 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<Object[]> ExpertList() throws Exception {
 
-		logger.info(new Date() +"Inside ExpertList");
 		return dao.ExpertList();
 	}
 
@@ -1259,7 +1214,7 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	@Override
 	public Long ProjectAssignAdd(ProjectAssignDto dto) throws Exception {
-		logger.info(new Date() +"Inside ProjectAssignAdd");
+		logger.info(new Date() +"Inside SERVICE ProjectAssignAdd ");
 		long count=0;
 		for(int i=0 ; i<dto.getEmpId().length;i++)
 		{
@@ -1279,13 +1234,13 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Long ProjectRevoke(ProjectAssign proAssign) throws Exception {
-		logger.info(new Date() +"Inside ProjectRevoke");
 		return dao.ProjectRevoke(proAssign);
 	}
 
 	
 	@Override
 	public List<Object[]> ApprovalStutusList(String InitiationId) throws Exception {
+		logger.info(new Date() +"Inside SERVICE ApprovalStutusList ");
 		List<Object[]>  list=new ArrayList<Object[]>();
 		Object[] obj=dao.ProjectEditData(InitiationId).get(0);
 		if(1000000>=Double.parseDouble(obj[8].toString())) {
@@ -1296,12 +1251,9 @@ public class ProjectServiceImpl implements ProjectService {
 		return list;
 	}
 	
-	
-
-	
-	
 	    public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
 	    {
+	    	logger.info(new Date() +"Inside SERVICE saveFile ");
 	        Path uploadPath = Paths.get(uploadpath);
 	          
 	        if (!Files.exists(uploadPath)) {
@@ -1318,13 +1270,11 @@ public class ProjectServiceImpl implements ProjectService {
 	    
 	    @Override
 		public List<Object[]> ProjectStageDetailsList() throws Exception {
-			logger.info(new Date() +"Inside ProjectStageDetailsList");
 			return dao.ProjectStageDetailsList();
 		}
 	
 		@Override
 		public Object[] ProjectDataDetails(String projectid) throws Exception {
-			logger.info(new Date()  +"Inside ProjectDataDetails");
 			return dao.ProjectDataDetails(projectid);
 		}
 		
@@ -1333,7 +1283,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long ProjectDataSubmit(PfmsProjectDataDto dto) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectDataSubmit");
+			logger.info(new Date() +"Inside SERVICE ProjectDataSubmit ");
 			String LabCode= dto.getLabcode();
 			Timestamp instant= Timestamp.from(Instant.now());
 			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
@@ -1393,7 +1343,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long ProjectDataEditSubmit(PfmsProjectDataDto dto) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectDataSubmit");
+			logger.info(new Date() +"Inside SERVICE ProjectDataSubmit ");
 			
 			String LabCode= dto.getLabcode();
 			
@@ -1440,13 +1390,12 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public Object[] ProjectDataSpecsFileData(String projectdataid) throws Exception
 		{
-			logger.info(new Date() +"Inside ProjectDataSpecsFileData");
 			return dao.ProjectDataSpecsFileData(projectdataid);
 		}
 	
 		@Override
 		public long ProjectDataRevSubmit(PfmsProjectDataDto dto) throws Exception {
-			logger.info(new Date() +"Inside ProjectDataRevSubmit");
+			logger.info(new Date() +"Inside SERVICE ProjectDataRevSubmit ");
 			Object[] projectdatadetails=dao.ProjectDataDetails(dto.getProjectId());
 			PfmsProjectDataRev model=new PfmsProjectDataRev();
 			model.setProjectId(Long.parseLong(projectdatadetails[1].toString()));
@@ -1468,14 +1417,12 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public List<Object[]> ProjectDataRevList(String projectid) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectDataRevList");
 			return dao.ProjectDataRevList(projectid);
 		}
 		
 		@Override
 		 public Object[] ProjectDataRevData(String projectdatarevid) throws Exception
 		 {
-			 logger.info(new Date() +"Inside ProjectDataRevData");
 				return dao.ProjectDataRevData(projectdatarevid);
 		 }
 		
@@ -1483,28 +1430,24 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public Object[] ProjectDataSpecsRevFileData(String projectdatarevid) throws Exception
 		{
-			logger.info(new Date() +"Inside ProjectDataSpecsRevFileData");
 			return dao.ProjectDataSpecsRevFileData(projectdatarevid);
 		}
 
 		@Override
 		public List<Object[]> InitiatedProjectList() throws Exception {
 
-			logger.info(new Date() +"Inside InitiatedProjectList");
 			return dao.InitiatedProjectList();
 		}
 
 		@Override
 		public List<Object[]> InitiatedProjectDetails(String ProjectId) throws Exception {
 			
-			logger.info(new Date() +"Inside InitiatedProjectDetails");
 			return dao.InitiatedProjectDetails(ProjectId);
 		}
 
 		@Override
 		public List<Object[]> NodalLabList() throws Exception {
 
-			logger.info(new Date() +"Inside NodalLabList");
 			return dao.NodalLabList();
 		}
 
@@ -1512,14 +1455,12 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectRiskDataList");
 			return dao.ProjectRiskDataList(projectid, LabCode);
 		}
 		
 		@Override
 		public Object[] ProjectRiskData(String actionmainid) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectRiskData");
 			return dao.ProjectRiskData(actionmainid);
 		}
 		
@@ -1527,7 +1468,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long ProjectRiskDataSubmit(PfmsRiskDto dto) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectRiskDataSubmit");
+			logger.info(new Date() +"Inside SERVICE ProjectRiskDataSubmit ");
 			
 			PfmsRisk model=new PfmsRisk();
 			model.setLabCode(dto.getLabCode());
@@ -1548,7 +1489,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		@Override
 		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception {
-			logger.info(new Date() +"Inside ProjectRiskMatrixData");
+			logger.info(new Date() +"Inside ProjectRiskMatrixData ");
 			return dao.ProjectRiskMatrixData(actionmainid);
 		}
 		
@@ -1562,7 +1503,7 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		@Override
 		public long ProjectRiskDataRevSubmit(PfmsRiskDto dto) throws Exception {
-			logger.info(new Date() +"Inside ProjectDataRevSubmit");
+			logger.info(new Date() +"Inside SERVICE ProjectDataRevSubmit ");
 			Object[] riskmatrixdata=dao.ProjectRiskMatrixData(dto.getActionMainId());
 			PfmsRiskRev model=new PfmsRiskRev();
 			
@@ -1584,13 +1525,11 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		@Override
 		public List<Object[]> ProjectRiskMatrixRevList(String actionmainid) throws Exception {
-			logger.info(new Date() +"Inside ProjectRiskMatrixRevList");
 			return dao.ProjectRiskMatrixRevList(actionmainid);
 		}
 		
 		@Override
 		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
-			logger.info(new Date() +"Inside RiskDataPresentList");
 			return dao.RiskDataPresentList(projectid, LabCode);
 		}
 		
@@ -1599,7 +1538,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public Long ProjectInitiationAuthorityAdd(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto, String UserId,PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto)	throws Exception {
 			
-			logger.info(new Date() +"Inside ProjectInitiationAuthorityAdd");
+			logger.info(new Date() +"Inside SERVICE ProjectInitiationAuthorityAdd ");
 			
 			PfmsInitiationAuthority pfmsauthority= new PfmsInitiationAuthority();
 			pfmsauthority.setInitiationId(Long.parseLong(pfmsinitiationauthoritydto.getInitiationId()));
@@ -1619,7 +1558,6 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public PfmsInitiationAuthorityFile ProjectAuthorityDownload(String AuthorityFileId) throws Exception {
 
-			logger.info(new Date() +"Inside ProjectAuthorityDownload");
 			return dao.ProjectAuthorityDownload(AuthorityFileId);
 		}
 
@@ -1627,7 +1565,7 @@ public class ProjectServiceImpl implements ProjectService {
 		public Long ProjectAuthorityUpdate(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto,
 				PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto,String UserId) throws Exception {
 			
-			logger.info(new Date() +"Inside ProjectInitiationAuthorityAdd");
+			logger.info(new Date() +"Inside SERVICE ProjectInitiationAuthorityAdd ");
 			
 			Long ret=0L;
 			
@@ -1665,14 +1603,13 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 		{
-			logger.info(new Date() +"Inside LoginProjectDetailsList");
 			return dao.LoginProjectDetailsList(empid,Logintype,LabCode);
 		}
 		
 		@Override
 		public List<Object[]>  ProjectApprovalFlowEmpData(String empid,String LabCode) throws Exception
 		{
-			logger.info(new Date() +"Inside ProjectApprovalFlowEmpData");
+			logger.info(new Date() +"Inside SERVICE ProjectApprovalFlowEmpData ");
 			List<Object[]> list=new ArrayList<Object[]>();
 			
 			Object[] temp=dao.EmpDivHeadData(empid);
@@ -1692,7 +1629,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long  ProjectMainToMaster(String projectmainid,String user,String LabCode) throws Exception
 		{
-			logger.info(new Date() +"Inside ProjectMainToMaster");
+			logger.info(new Date() +"Inside SERVICE ProjectMainToMaster ");
 			
 			ProjectMain main=dao.ProjectMainObj(projectmainid);
 			ProjectMaster master=new ProjectMaster();   
@@ -1729,6 +1666,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public ProjectMasterRev ProjectMasterREVSubmit(String projectid,String userid,String remarks) throws Exception 
 		{			
+			logger.info(new Date() +"Inside SERVICE ProjectMasterREVSubmit ");
 			ProjectMaster master = dao.ProjectMasterData(Long.parseLong(projectid));
 			ProjectMasterRev rev = new ProjectMasterRev(); 
 			
@@ -1774,7 +1712,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long ProjectMasterAttachAdd(ProjectMasterAttachDto dto) throws Exception 
 		{
-			logger.info(new Date() +"Inside ProjectMastetAttachAdd");
+			logger.info(new Date() +"Inside SERVICE ProjectMastetAttachAdd ");
 			
 			String projectcode = dao.ProjectData(dto.getProjectId())[1].toString();
 			String path = dto.getLabCode()+"\\ProjectMasterFiles\\"+projectcode;
@@ -1845,6 +1783,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public int ProjectMasterAttachDelete(String projectattachid) throws Exception
 		{
+			logger.info(new Date() +"Inside SERVICE ProjectMasterAttachDelete ");
 			Object[] attachdata = dao.ProjectMasterAttachData(projectattachid);
 			boolean result= false;
 			File file = new File(attachdata[2]+File.separator+attachdata[3]);
@@ -1882,6 +1821,7 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception 
 		{
+			logger.info(new Date() +"Inside SERVICE IntiationChecklistUpdate ");
 			PfmsInitiationChecklistData cldatacheck = dao.InitiationChecklistCheck(cldata);
 			if(cldatacheck!=null && cldatacheck.getChecklistDataId()>0) {
 				cldatacheck.setIsChecked(cldatacheck.getIsChecked()^1);

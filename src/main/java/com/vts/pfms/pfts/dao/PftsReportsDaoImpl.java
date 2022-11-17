@@ -21,7 +21,6 @@ public class PftsReportsDaoImpl implements PftsReportsDao
 	@Override
 	public List<Object[]> FileTrackingWeeklyReport(String AsOnDate) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside FileTrackingWeeklyReport");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery("CALL pfts_sp_WeeklyReport (:AsOnDate)");
@@ -34,7 +33,6 @@ public class PftsReportsDaoImpl implements PftsReportsDao
 	@Override
 	public   List<Object[]> milstoneDetails(String fromDate,String toDate) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside milstoneDetails");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery("CALL pfts_sp_MilestoneReport(:fromdate,:todate)");
@@ -47,7 +45,6 @@ public class PftsReportsDaoImpl implements PftsReportsDao
 	@Override
 	public List<Object[]> modeWisefiles(String fromDate,String toDate) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside modeWisefiles");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery("CALL Pfts_sp_ModeWiseFiles(:fromdate,:todate)");
@@ -61,7 +58,6 @@ public class PftsReportsDaoImpl implements PftsReportsDao
 	@Override
 	public List<Object[]> fileMonitoring(String fromDate,String toDate) throws Exception
     {
-		logger.info(new java.util.Date() +"Inside fileMonitoring");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery("CALL Pfts_sp_ModeWiseMonitoring(:fromdate,:todate)");
@@ -75,7 +71,6 @@ public class PftsReportsDaoImpl implements PftsReportsDao
 	@Override
 	public  List<Object[]> soPlaced(String fromDate,String toDate) throws Exception
     {		
-		logger.info(new java.util.Date() +"Inside soPlaced");
 		
 		List<Object[]> returnlist=null;	    
 	    Query query=manager.createNativeQuery("CALL Pfts_sp_ModeWiseMonitoringOrders(:fromdate,:todate)");

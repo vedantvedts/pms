@@ -42,7 +42,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<PftsDemandImms> getResultAsDemandNo(String DemandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getResultAsDemandNo");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -59,7 +58,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<PftsDemandImms> getResultAsFileNo(String fileno) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getResultAsFileNo");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -75,7 +73,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<PftsDemandImms> getResultAsPerItemSearch(String ItemFor) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getResultAsPerItemSearch");
 		
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsDemandImms> cq = cb.createQuery(PftsDemandImms.class);
@@ -91,7 +88,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Object[]> getEventStatus(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getEventStatus");
 		
 		List<Object[]> eventStatusList=null;	    
 	    Query query=manager.createNativeQuery(GETEVENTSTATUS);
@@ -105,7 +101,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	public List<PftsFileEvents> getEvent(String FtUserType) throws Exception
 	{
 	        
-	        logger.info(new java.util.Date() +"Inside getEvent");
 			
 			CriteriaBuilder cb = manager.getCriteriaBuilder();
 			CriteriaQuery<PftsFileEvents> cq = cb.createQuery(PftsFileEvents.class);
@@ -122,7 +117,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public  List<PftsEventCreator> getEventCreator(char userType) throws Exception
 	{
-	    logger.info(new java.util.Date() +"Inside getEventCreator");
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsEventCreator> cq = cb.createQuery(PftsEventCreator.class);
 		Root<PftsEventCreator> root = cq.from(PftsEventCreator.class);
@@ -136,7 +130,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Object[]> getSupplyOrderFromMilestone(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getSupplyOrderFromMilestone");
 		
 		List<Object[]> resultlist=null;	    
 	    Query query=manager.createNativeQuery(GETSUPPLYORDERFROMMILESTONE);
@@ -150,7 +143,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Object[]> getSupplyOrderForFileClose(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getSupplyOrderForFileClose");
 		
 		List<Object[]> resultlist=null;	    
 	    Query query=manager.createNativeQuery(GETSUPPLYORDERFORFILECLOSE);
@@ -164,7 +156,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Date> getEventDate(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getEventDate");
 		
 		List<Date> resultlist=null;	    
 	    Query query=manager.createNativeQuery(GETEVENTDATE);
@@ -177,7 +168,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public  List<PftsFileStage> getDetailsOfFileStage()throws Exception
     {
-		logger.info(new java.util.Date() +"Inside getDetailsOfFileStage");
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsFileStage> cq = cb.createQuery(PftsFileStage.class);
 		Root<PftsFileStage> root = cq.from(PftsFileStage.class);
@@ -191,7 +181,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Boolean> checkIsActiveFromMilestone(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside checkIsActiveFromMilestone");		
 		List<Boolean> resultlist=null;	    
 	    Query query=manager.createNativeQuery(CHECKISACTIVEFROMMILESTONE);
 		query.setParameter("DemandNo",demandNo);
@@ -203,7 +192,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public  List<PftsFileEvents> getEventAsperFilestageId(String filestageId)throws Exception
 	{
-	    logger.info(new java.util.Date() +"Inside getEventAsperFilestageId");
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
 		CriteriaQuery<PftsFileEvents> cq = cb.createQuery(PftsFileEvents.class);
 		Root<PftsFileEvents> root = cq.from(PftsFileEvents.class);
@@ -217,13 +205,13 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public BigInteger getFiletrackingId(String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getFiletrackingId");
 		try {
 		    Query query=manager.createNativeQuery(GETFILETRACKINGID);
 			query.setParameter("DemandNo",demandNo);
 			BigInteger ret=(BigInteger)query.getSingleResult();
 			return ret;
 		}catch (Exception e) {
+			logger.error(new java.util.Date() +"Inside DAO getFiletrackingId " + e);
 			e.printStackTrace();
 		}
 		return null;
@@ -234,7 +222,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public String getFileMileStone(String eventNumber) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside getFileMileStone");
 		
 	    Query query=manager.createNativeQuery(GETFILEMILESTONE);
 		query.setParameter("EventNumber",eventNumber);
@@ -246,7 +233,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Object[]> checkFileMileStone(String demandNo)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside checkFileMileStone");
 		
 		List<Object[]> resultlist=null;	    
 	    Query query=manager.createNativeQuery(CHECKFILEMILESTONE);
@@ -259,7 +245,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int updateFileMileStone(PftsFileMilestone fileMilestone,String column)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside updateFileMileStone");
 		
 		final String UPDATEFILEMILESTONE ="UPDATE pfts_filemilestone SET "+column+"=:FileReceivedDate WHERE DemandNo=:DemandNo ";
 		
@@ -273,7 +258,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public long addFileMileStone(PftsFileMilestone fileMilestone)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside addFileMileStone");
 		
 		manager.persist(fileMilestone);
 		manager.flush();
@@ -287,7 +271,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int addupdateEventStatus(PftsFileTracking dto,int filetrackingId,PftsFileTrackingTransaction tdto)throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside addupdateEventStatus");
 		
 		Query query=manager.createNativeQuery(ADDUPDATEEVENTSTATUS);
 		query.setParameter("DemandNo",dto.getDemandNo());
@@ -312,7 +295,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public long addEventStatus(PftsFileTracking dto)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside addEventStatus");
 		
 		manager.persist(dto);
 		manager.flush();
@@ -322,7 +304,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int addTransactionEvent(PftsFileTrackingTransaction transactionDto) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside addTransactionEvent");
 		
 		manager.persist(transactionDto);
 		manager.flush();
@@ -335,7 +316,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public List<Object[]> getEventStatusasPerFileTrackingId(int id) throws Exception
 	{		
-		logger.info(new java.util.Date() +"Inside getEventStatusasPerFileTrackingId");
 		
 		List<Object[]> resultlist=null;	    
 	    Query query=manager.createNativeQuery(GETEVENTSTATUSASPERFILETRACKINGID);
@@ -350,7 +330,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int updateEventStatusas(int transactionId,int eventId,String eventDate,String modifiedBy,String moDate,String remarks, int fileTrackingId) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside updateEventStatusas");
 		Query query=manager.createNativeQuery(UPDATEEVENTSTATUSAS);
 		query.setParameter("EventId", eventId);
 		query.setParameter("EventDate", eventDate );
@@ -368,7 +347,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int fileClosed(PftsFileTrackingTransaction tranDto,PftsFileTracking trackingDto,int fileClosed) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside fileClosed");
 		Query query=manager.createNativeQuery(FILECLOSED);
 		query.setParameter("FileTrackingOrderId", fileClosed);
 		
@@ -384,7 +362,6 @@ public class FileStatusDaoImpl implements FileStatusDao
 	@Override
 	public int fileClosedNoOrder(PftsFileTrackingTransaction tranDto,PftsFileTracking trackingDto,String demandNo) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside fileClosedNoOrder");
 		Query query=manager.createNativeQuery(FILECLOSEDNOORDER);
 		query.setParameter("DemandNo", demandNo);
 		

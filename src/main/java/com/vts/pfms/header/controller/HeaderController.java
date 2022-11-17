@@ -270,7 +270,7 @@ public class HeaderController {
 	@RequestMapping(value = "MilestoneManual.htm", method = RequestMethod.GET)
 	public void MilestoneManual(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside WorkFlow.htm "+UserId);		
+		logger.info(new Date() +"Inside MilestoneManual.htm "+UserId);		
 		try {
 
 		String path = req.getServletContext().getRealPath("/UserManual/" + "MilestoneManual.pdf");
@@ -292,13 +292,15 @@ public class HeaderController {
 		}
 		catch (Exception e) {
 				e.printStackTrace();
-				logger.error(new Date() +" Inside WorkFlow.htm "+UserId, e);
+				logger.error(new Date() +" Inside MilestoneManual.htm "+UserId, e);
 		}
 	}
 	
 	@RequestMapping(value = "PasswordChange.htm", method = RequestMethod.GET)
 	public String PasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
 
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside PasswordChange.htm "+UserId);	
 		return "admin/PasswordChange";
 	}
 	
@@ -428,7 +430,7 @@ public class HeaderController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside GanttChart.htm "+UserId, e);
+			logger.error(new Date() +" Inside GanttChartSub.htm "+UserId, e);
 			return "static/Error";
 	}
 		

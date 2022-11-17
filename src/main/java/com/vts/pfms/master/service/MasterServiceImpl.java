@@ -5,9 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vts.pfms.master.controller.MasterController;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
@@ -23,6 +26,8 @@ import com.vts.pfms.model.LabMaster;
 @Service
 public class MasterServiceImpl implements MasterService {
 
+	
+	private static final Logger logger=LogManager.getLogger(MasterServiceImpl.class);
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -56,6 +61,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public int OfficerMasterDelete(String OfficerId, String UserId) throws Exception {
 
+		logger.info(new Date() +" Inside SERVICE OfficerMasterDelete ");
 		Employee employee = new Employee();
 		employee.setSrNo((long) 0);
 		employee.setModifiedBy(UserId);
@@ -69,6 +75,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public int OfficerExtDelete(String OfficerId, String UserId) throws Exception {
 
+		logger.info(new Date() +" Inside SERVICE OfficerExtDelete ");
 		EmployeeExternal employee = new EmployeeExternal();
 		employee.setModifiedBy(UserId);
 		employee.setModifiedDate(sdf1.format(new Date()));
@@ -93,6 +100,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public Long OfficerMasterInsert(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{
+		logger.info(new Date() +" Inside SERVICE OfficerMasterInsert ");
 		Employee employee= new Employee();
 		employee.setEmpNo(officermasteradd.getEmpNo());
 		employee.setEmpName(officermasteradd.getEmpName());
@@ -114,6 +122,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public Long OfficerExtInsert(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{
+		logger.info(new Date() +" Inside SERVICE OfficerExtInsert ");
 		EmployeeExternal empExternal=new EmployeeExternal();
 		empExternal.setEmpNo(officermasteradd.getEmpNo());
 		empExternal.setLabId( Long.parseLong(officermasteradd.getLabId()));
@@ -134,7 +143,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public int OfficerMasterUpdate(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{
-
+		logger.info(new Date() +" Inside SERVICE OfficerMasterUpdate ");
 			Employee empExternal=new Employee();
 			empExternal.setEmpNo(officermasteradd.getEmpNo());
 			empExternal.setEmpName(officermasteradd.getEmpName());
@@ -156,6 +165,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public int OfficerExtUpdate(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{		
+		logger.info(new Date() +" Inside SERVICE OfficerExtUpdate ");
 			EmployeeExternal empExternal=new EmployeeExternal();
 			empExternal.setEmpNo(officermasteradd.getEmpNo());
 			empExternal.setLabId( Long.parseLong(officermasteradd.getLabId()));
@@ -197,7 +207,7 @@ public class MasterServiceImpl implements MasterService {
 	
 	@Override
 	public int updateSeniorityNumber(String empid, String newSeniorityNumber)throws Exception{
-		
+		logger.info(new Date() +" Inside SERVICE updateSeniorityNumber ");
 		Long empId=Long.parseLong(empid);
 		Long SeniorityNumber=Long.parseLong(newSeniorityNumber);
 		int result= 0;
@@ -244,6 +254,7 @@ public class MasterServiceImpl implements MasterService {
 	@Override
 	public long DivisionAssignSubmit(DivisionEmployeeDto dto)throws Exception
 	{
+		logger.info(new Date() +" Inside SERVICE DivisionAssignSubmit ");
 		int count=0;
 		for(int i=0;i<dto.getEmpId().length;i++)  //
 		{
@@ -339,7 +350,7 @@ public class MasterServiceImpl implements MasterService {
 	
 	@Override
 	public int LabMasterUpdate(LabMasterAdd labmasteredit, String Userid) throws Exception {
-		
+		logger.info(new Date() +" Inside SERVICE LabMasterUpdate ");
 		LabMaster labmaster= new LabMaster();
 		labmaster.setLabCode(labmasteredit.getLabCode());
 		labmaster.setLabName(labmasteredit.getLabName());
@@ -383,6 +394,7 @@ public class MasterServiceImpl implements MasterService {
 	
 	@Override
 	public Long FeedbackInsert(String Feedback, String UserId,Long EmpId) throws Exception {
+		logger.info(new Date() +" Inside SERVICE FeedbackInsert ");
 		PfmsFeedback feedback=new PfmsFeedback();
     feedback.setEmpId(EmpId);
     feedback.setFeedback(Feedback);

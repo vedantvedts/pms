@@ -25,7 +25,7 @@ public class FileStatusServiceImpl implements FileStatusService
 	@Autowired
 	FileStatusDao dao;
 	
-	private static final Logger logger=LogManager.getLogger(FracasServiceImpl.class);
+	private static final Logger logger=LogManager.getLogger(FileStatusServiceImpl.class);
 	//logger.info(new Date() +"Inside ");
 	@Override
 	public List<PftsDemandImms> getResultAsDemandNo(String DemandNo) throws Exception

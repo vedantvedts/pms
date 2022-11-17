@@ -214,14 +214,14 @@ public class AdminController {
 	public String Rtmddo(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside Rtmddo "+UserId);		
+		logger.info(new Date() +"Inside Rtmddo.htm"+UserId);		
 		try {
 
 			req.setAttribute("EmployeeList",service.EmployeeListAll());
 			req.setAttribute("Rtmddo",service.Rtmddo().get(0));
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+				e.printStackTrace(); logger.error(new Date() +" Inside Rtmddo.htm "+UserId, e);
 		}
 	
 		 return "admin/Rtmddo";
@@ -284,7 +284,7 @@ public class AdminController {
 	        }
 	        catch (Exception e) {
 	            e.printStackTrace();
-	            AdminController.logger.error(new Date() + " Inside LoginTypeList.htm " + UserId, (Throwable)e);
+	            AdminController.logger.error(new Date() + " Inside DelegationFlow.htm " + UserId, (Throwable)e);
 	        }
 	        return "admin/ExpertList";
 	    }
@@ -314,7 +314,7 @@ public class AdminController {
 	    @RequestMapping(value = { "ExpertAddSubmit.htm" }, method = { RequestMethod.POST })
 	    public String ExpertAddSubmit(final HttpServletRequest req, final HttpSession ses, final RedirectAttributes redir) throws Exception {
 	        final String UserId = (String)ses.getAttribute("Username");
-	        AdminController.logger.info(new Date() + "Inside Expert Add Submit " + UserId);
+	        AdminController.logger.info(new Date() + "Inside ExpertAddSubmit.htm " + UserId);
 	        final Expert newExpert = new Expert();
 	        newExpert.setExpertNo(req.getParameter("expertno"));
 	        newExpert.setExpertName(req.getParameter("expertname"));
@@ -377,7 +377,7 @@ public class AdminController {
 	    @RequestMapping(value = { "ExpertEditSubmit.htm" }, method = { RequestMethod.POST })
 	    public String ExpertEditSubmit(final HttpServletRequest req, final HttpSession ses, final RedirectAttributes redir) throws Exception {
 	        final String UserId = (String)ses.getAttribute("Username");
-	        AdminController.logger.info(new Date() + "Inside Expert Add Submit " + UserId);
+	        AdminController.logger.info(new Date() + "Inside ExpertEditSubmit.htm " + UserId);
 	        final Expert newExpert = new Expert();
 	        newExpert.setExpertId(Long.valueOf(Long.parseLong(req.getParameter("expertId"))));
 	        newExpert.setExpertName(req.getParameter("expertname"));
@@ -400,6 +400,8 @@ public class AdminController {
 	    @RequestMapping(value = "AuditStampingView.htm")
 		public String AuditStampingList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside AuditStampingView.htm " + UserId);
 	    	try
 	    	{
 				String loginid=req.getParameter("loginid");		
@@ -422,6 +424,7 @@ public class AdminController {
 				return "admin/AuditStampingList";
 	    	}catch (Exception e) 
 	    	{
+	    		AdminController.logger.error(new Date() + "Inside AuditStampingView.htm " + e);
 	    		e.printStackTrace();
 	    		return "static/Error";
 	    	}
@@ -429,7 +432,8 @@ public class AdminController {
 	    
 	    @RequestMapping(value = "UserManagerList.htm", method = RequestMethod.GET)
 		public String UserManagerList(HttpServletRequest req, HttpSession ses) throws Exception {
-
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside UserManagerList.htm " + UserId);
 	    	String LabCode = (String) ses.getAttribute("labcode");
 	    	
 			req.setAttribute("UserManagerList", service.UserManagerList(LabCode));
@@ -439,6 +443,8 @@ public class AdminController {
 	    @RequestMapping(value = "UserManager.htm", method = RequestMethod.POST)
 		public String UserManagerAddEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside UserManager.htm " + UserId);
 			String Userid = (String) ses.getAttribute("Username");
 			String Option = req.getParameter("sub");
 			String LoginId = req.getParameter("Lid");
@@ -473,8 +479,10 @@ public class AdminController {
 
 	    }
 	    @RequestMapping(value = "UserNamePresentCount.htm", method = RequestMethod.GET)
-		public @ResponseBody String UserNamePresentCount(HttpServletRequest req) throws Exception {
+		public @ResponseBody String UserNamePresentCount(HttpServletRequest req, HttpSession ses) throws Exception {
 
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside UserNamePresentCount.htm " + UserId);
 			int UserNamePresentCount = service.UserNamePresentCount(req.getParameter("UserName"));
 			Gson json = new Gson();
 			return json.toJson(UserNamePresentCount);
@@ -485,6 +493,8 @@ public class AdminController {
 		public String UserManagerAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception 
 	    {
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside UserManagerAddSubmit.htm " + UserId);
 	    	Object[] employeedata=service.EmployeeData(req.getParameter("Employee"));
 			String Userid = (String) ses.getAttribute("Username");
 			UserManageAdd UserManageAdd=new UserManageAdd();
@@ -497,6 +507,7 @@ public class AdminController {
 			try {
 				count = service.UserManagerInsert(UserManageAdd, Userid);
 			} catch (Exception e) {
+				AdminController.logger.error(new Date() + "Inside AuditStampingView.htm " + e);
 				e.printStackTrace();
 				redir.addAttribute("resultfail", "SOME ERROR OCCURED OR USERNAME NOT AVAILABLE");
 				return "redirect:/UserManagerList.htm";
@@ -512,8 +523,8 @@ public class AdminController {
 	    @RequestMapping(value = "UserManagerEditSubmit.htm", method = RequestMethod.POST)
 		public String UserManagerEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
-
-		
+	    	final String UserId = (String)ses.getAttribute("Username");
+	        AdminController.logger.info(new Date() + "Inside AuditStampingView.htm " + UserId);
 			UserManageAdd UserManageAdd=new UserManageAdd();
 			UserManageAdd.setDivision(req.getParameter("Division"));
 			UserManageAdd.setRole(req.getParameter("Role"));
@@ -541,7 +552,7 @@ public class AdminController {
 		public String Rtmddo2(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside Rtmddo2.htm "+UserId);		
 			try {
 
 				req.setAttribute("EmployeeList",service.EmployeeListAll().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()) );
@@ -549,7 +560,7 @@ public class AdminController {
 				req.setAttribute("presentEmpList", service.presentEmpList().stream().filter(e-> LabCode.equals(e[5].toString())).collect(Collectors.toList()));
 			}
 			catch (Exception e) {
-					e.printStackTrace(); logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					e.printStackTrace(); logger.error(new Date() +" Inside Rtmddo2.htm "+UserId, e);
 			}
 		
 			 return "admin/Rtmddo2";
@@ -559,7 +570,7 @@ public class AdminController {
 	    @RequestMapping(value = "DesignationMaster.htm",method= {RequestMethod.GET,RequestMethod.POST })
 		public String DesignationMaster(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DesignationMaster.htm "+UserId);		
 			try {
 								
 				req.setAttribute("designationlist", service.DesignationList());
@@ -567,7 +578,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DesignationMaster.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -576,7 +587,7 @@ public class AdminController {
 	    @RequestMapping(value = "DesignationEdit.htm",method=RequestMethod.POST )
 		public String DesignationEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DesignationEdit.htm "+UserId);		
 			try {
 				
 				String desigid=req.getParameter("desigid");
@@ -585,7 +596,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DesignationEdit.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -594,7 +605,7 @@ public class AdminController {
 	    @RequestMapping(value = "DesignationAdd.htm",method=RequestMethod.GET )
 		public String DesignationAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DesignationAdd.htm "+UserId);		
 			try {				
 				
 
@@ -603,7 +614,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DesignationAdd.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -611,7 +622,7 @@ public class AdminController {
 	    @RequestMapping(value = "DesignationEditSubmit.htm",method=RequestMethod.POST )
 		public String DesignationEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DesignationEditSubmit.htm "+UserId);		
 			try {				
 				String desigid=req.getParameter("desigid");
 				String desigcode=req.getParameter("desigcode");
@@ -638,7 +649,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DesignationEditSubmit.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -648,7 +659,7 @@ public class AdminController {
 	    @RequestMapping(value = "DesignationAddSubmit.htm",method=RequestMethod.POST )
 		public String DesignationAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DesignationAddSubmit.htm "+UserId);		
 			try {				
 				String desigcode=req.getParameter("desigcode");
 				String designation=req.getParameter("designation");
@@ -670,7 +681,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DesignationAddSubmit.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -721,7 +732,7 @@ public class AdminController {
 			
 		 final String UserId = (String)ses.getAttribute("Username");
 		 String LabCode =(String) ses.getAttribute("labcode");
-		 AdminController.logger.info(new Date() +" Inside DivisionMasterList " +  UserId );	
+		 AdminController.logger.info(new Date() +" Inside DivisionMaster.htm " +  UserId );	
 			
 			req.setAttribute("DivisionMasterList", (Object)this.service.DivisionMasterList(LabCode));
 
@@ -737,7 +748,7 @@ public class AdminController {
 			String DivisionId= req.getParameter("Did");
 			String LabCode = (String)ses.getAttribute("labcode");
 			
-			logger.info(new Date() +"Inside DivisionMasterAddEdit "+ Userid);	
+			logger.info(new Date() +"Inside DivisionMaster.htm "+ Userid);	
 
 			try {
 				
@@ -765,7 +776,7 @@ public class AdminController {
 			catch(Exception e){
 				
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside ItemDetailsIUpdate "+ Userid, e);
+				logger.error(new Date() +" Inside DivisionMaster.htm "+ Userid, e);
 
 			}
 			
@@ -798,7 +809,7 @@ public class AdminController {
 	    @RequestMapping(value = "DivisionMasterAddSubmit.htm",method=RequestMethod.POST )
 		public String DivisionAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside Rtmddo "+UserId);		
+			logger.info(new Date() +"Inside DivisionMasterAddSubmit.htm "+UserId);		
 			try {				
 				String divisionCode=req.getParameter("dCode");
 				String divisionName=req.getParameter("dName");
@@ -822,7 +833,7 @@ public class AdminController {
 			}
 			catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+					logger.error(new Date() +" Inside DivisionMasterAddSubmit.htm "+UserId, e);
 					return "static/Error";
 			}
 	    }
@@ -835,7 +846,7 @@ public class AdminController {
 			
 			String Userid = (String) ses.getAttribute("Username");
 			
-			logger.info(new Date() +" Inside DivisionMasterEdit "+Userid );
+			logger.info(new Date() +" Inside DivisionMasterEditSubmit.htm "+Userid );
 			
 			try {
 				
@@ -865,7 +876,7 @@ public class AdminController {
 				
 				e.printStackTrace();
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside DivisionMasterEdit "+Userid , e);
+				logger.error(new Date() +" Inside DivisionMasterEditSubmit.htm "+Userid , e);
 			}
 			
 			return "redirect:/DivisionMaster.htm";
@@ -876,7 +887,7 @@ public class AdminController {
 		public String RoleFormAccess(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside LoginTypeList.htm "+UserId);		
+			logger.info(new Date() +"Inside Role.htm "+UserId);		
 			try {
 				
 
@@ -888,7 +899,7 @@ public class AdminController {
 				req.setAttribute("AllLabsList", service.AllLabList());
 			}
 			catch (Exception e) {
-					e.printStackTrace(); logger.error(new Date() +" Inside LoginTypeList.htm "+UserId, e);
+					e.printStackTrace(); logger.error(new Date() +" Inside Role.htm "+UserId, e);
 			}
 			
 		

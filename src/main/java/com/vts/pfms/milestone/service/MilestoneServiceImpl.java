@@ -70,6 +70,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public long MilestoneActivityInsert(MilestoneActivityDto dto) throws Exception {
+		logger.info(new Date() +"Inside SERVICE MilestoneActivityInsert ");
 		MilestoneActivity Milestone=new MilestoneActivity();
 		Milestone.setProjectId(Long.parseLong(dto.getProjectId()));
 		Milestone.setActivityType(Long.parseLong(dto.getActivityType()));
@@ -98,6 +99,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public long MilestoneActivityLevelInsert(MilestoneActivityDto dto) throws Exception {
+		logger.info(new Date() +"Inside SERVICE MilestoneActivityLevelInsert ");
 		MilestoneActivityLevel Milestone=new MilestoneActivityLevel();
 		Milestone.setParentActivityId(Long.parseLong(dto.getActivityId()));
 		Milestone.setActivityLevelId(Long.parseLong(dto.getLevelId()));
@@ -132,11 +134,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public int MilestoneRevisionCount(String MileActivityId) throws Exception {
 		int count=0;
+		logger.info(new Date() +"Inside SERVICE MilestoneRevisionCount ");
 		try
 		{
 			count=dao.MilestoneRevisionCount(MileActivityId)+1;
 		}catch (Exception e) {
-			logger.info(new Date() +"Inside  MilestoneRevisionCount",e);
+			logger.error(new Date() +"Inside  MilestoneRevisionCount ",e);
 			count=0;
 		}
 		return count;
@@ -145,6 +148,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long MilestoneActivityRevision(MilestoneActivityDto dto) throws Exception {
 		long count=1;
+		logger.info(new Date() +"Inside SERVICE MilestoneActivityRevision ");
 		MilestoneActivity getMA=dao.MileActivityDetails(Long.parseLong(dto.getActivityId()));
 		MilestoneActivityRev MaRev=new MilestoneActivityRev();
 		MaRev.setActivityName(getMA.getActivityName());
@@ -272,7 +276,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public List<Object[]> MilestoneActivityEdit(MileEditDto dto) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneActivityEdit");
+		logger.info(new Date() +"Inside  MilestoneActivityEdit ");
 		List<Object[]> MileEditData=new ArrayList<Object[]>();
 		if("M".equalsIgnoreCase(dto.getActivityType())) {
 			MileEditData=dao.MilestoneActivityData(dto.getMilestoneActivityId());
@@ -292,7 +296,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public int MilestoneActivityUpdate(MileEditDto dto) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneActivityUpdate");
+		logger.info(new Date() +"Inside  MilestoneActivityUpdate ");
 		int result=0;
 		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
 		Date fdate = fc.getRegularDateFormat().parse(dto.getStartDate());
@@ -338,7 +342,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 	@Override
 	public int ActivityProgressUpdate(MileEditDto dto) throws Exception {
-		logger.info(new Date() +"Inside  ActivityProgressUpdate");
+		logger.info(new Date() +"Inside  ActivityProgressUpdate ");
 		int result=0;
 		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
 		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
@@ -623,19 +627,16 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public List<Object[]> MilestoneReportsList(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneReportsList");
 		return dao.MilestoneReportsList(ProjectId);
 	}
 	
 	@Override
 	public int MilestoneTotalWeightage(String MilestoneActivityId) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneTotalWeightage");
 		
 		return dao.MilestoneTotalWeightage(MilestoneActivityId);
 	}
 	@Override
 	public List<Object[]> MilestoneActivitySub(MileEditDto dto) throws Exception {
-		logger.info(new Date() +"Inside  MilestoneActivitySub");
 		List<Object[]> MileSubata=new ArrayList<Object[]>();
 		if(dto.getActivityType().equals("M")) {
 			//MileSubata=dao.MilestoneActivitySub(dto.getActivityId(),"M");
@@ -673,6 +674,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public int MilestoneActivityAssign(MilestoneActivityDto dto) throws Exception {
+		logger.info(new Date() +"Inside SERVICE MilestoneActivityAssign ");
 		int result=0;
 		dto.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		 String dt=fc.getSqlDateFormat().format(new Date());
@@ -896,6 +898,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public int WeightageSum(String Id, String ActivityId, String ActivityType,String LevelId) throws Exception {
 		int result=0;
+		logger.info(new Date() +"Inside SERVICE WeightageSum ");
 		if("M".equalsIgnoreCase(ActivityType)) {
 			result=dao.ActivityMainSum(Id, ActivityId);
 		}
@@ -922,6 +925,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long MilestoneScheduleInsert(MilestoneScheduleDto maindto) throws Exception {
 
+		logger.info(new Date() +"Inside SERVICE MilestoneScheduleInsert ");
 		MilestoneSchedule Milestone=new MilestoneSchedule();
 		
 		try {
@@ -942,7 +946,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			
 		}
 		catch(Exception e) {
-			
+			logger.error(new Date() +"Inside  MilestoneScheduleInsert ",e);
 			e.printStackTrace();
 			
 		}
@@ -954,7 +958,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public List<Object[]> MilestoneExcel(String ProjectId) throws Exception {
 	
-		
+		logger.info(new Date() +"Inside SERVICE MilestoneExcel ");
 		List<Object[]> main=dao.MilestoneActivityListNew(ProjectId);
 		List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
 		List<Object[]> MilestoneActivityB=new ArrayList<Object[]>();
@@ -1011,6 +1015,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public long RepMasterInsert(com.vts.pfms.milestone.model.FileRepMaster fileRepo) throws Exception {
+		logger.info(new Date() +"Inside SERVICE RepMasterInsert ");
 		long pi=0;
 		fileRepo.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		fileRepo.setIsActive(1);
@@ -1034,7 +1039,6 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override 
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside LoginProjectDetailsList"); 
 		List<Object[]> projectidlist=(ArrayList<Object[]>) dao.LoginProjectDetailsList(empid,Logintype,LabCode);  
 		return projectidlist;
 	}
@@ -1044,14 +1048,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public List<Object[]> ProjectEmpList(String projectid,String Labcode)throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectEmpList"); 
 		return dao.ProjectEmpList(projectid , Labcode);
 	}
 	
 	@Override
 	public List<Object[]> AllEmpNameDesigList( String labcode)throws Exception
 	{
-		logger.info(new Date() +"Inside AllEmpNameDesigList"); 
 		return dao.AllEmpNameDesigList(labcode);
 	}
 
@@ -1121,7 +1123,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long ProjectDocumetsAdd(FileProjectDocDto dto)throws Exception
 	{
-		logger.info(new Date() +"Inside  ProjectDocumetsSubmit");
+		logger.info(new Date() +"Inside  ProjectDocumetsAdd ");
 		long count=0;
 		for(String FileUploadMasterId:dto.getFileUploadMasterId()) 
 		{
@@ -1146,7 +1148,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 	@Override
 	public long FileUploadNew(FileUploadDto dto) throws Exception {
-	
+		logger.info(new Date() +"Inside SERVICE FileUploadNew ");
 		long count=0;
 	
 		 try {
@@ -1198,6 +1200,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			 }
 			 
 		 }catch (Exception e) {
+			 logger.error(new Date() +"Inside SERVICE FileUploadNew "+ e);
 			 e.printStackTrace();
 		   count=0;
 		}
@@ -1208,6 +1211,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long FileAmmendUploadNew(FileDocAmendmentDto dto) throws Exception 
 	{
+		logger.info(new Date() +"Inside SERVICE FileAmmendUploadNew ");
 		long count=0;
 		try 
 		{
@@ -1250,6 +1254,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			}
 
 	 }catch (Exception e) {
+		 logger.error(new Date() +"Inside SERVICE FileAmmendUploadNew "+e);
 		 e.printStackTrace();
 		 count=0;
 	 }
@@ -1311,6 +1316,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public void excelCellValuesSet(Sheet sheet,Object[] hlo, CellStyle  wrapname,int rowcount) throws Exception
  	{
+		logger.info(new Date() +"Inside SERVICE excelCellValuesSet ");
 		SimpleDateFormat sdf=fc.getRegularDateFormat();
 		SimpleDateFormat sdf1=fc.getSqlDateFormat();
 		Row row1 = sheet.createRow(rowcount);
@@ -1404,6 +1410,8 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 	@Override
 	public int MileActivityAssignCheck(MilestoneActivityDto dto) throws Exception {
+		
+		logger.info(new Date() +"Inside SERVICE MileActivityAssignCheck ");
 		int Total=0;
 			List<Object[]> BaselineA=dao.WeightageLevel(dto.getActivityId(),"1");
 			if(BaselineA.size()>0){

@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.master.dto.DemandDetails;
+import com.vts.pfms.pfts.controller.FileStatusController;
 import com.vts.pfms.pfts.dao.PFTSDao;
 import com.vts.pfms.pfts.dto.DemandOrderDetails;
 import com.vts.pfms.pfts.model.PFTSFile;
@@ -19,6 +22,8 @@ public class PFTSServiceImp implements PFTSService{
 	
 	@Autowired 
 	PFTSDao dao;
+	
+	private static final Logger logger=LogManager.getLogger(PFTSServiceImp.class);
 	
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -49,6 +54,7 @@ public class PFTSServiceImp implements PFTSService{
 	@Override
 	public List<DemandDetails> getprevDemandFile(String projectId)throws Exception{
 		
+		logger.info(new Date() +" Inside SERVICE getprevDemandFile ");
 		List<Object[]> data =dao.getprevDemandFile(projectId);
 		List<DemandDetails> pervDD=new ArrayList<>();
 		if(data!=null && data.size()>0) {
@@ -78,7 +84,8 @@ public class PFTSServiceImp implements PFTSService{
 
 	@Override
 	public int upadteDemandFile(String fileId, String statusId, String eventDate,String remarks)throws Exception{
-	String update="";	
+		logger.info(new Date() +" Inside SERVICE upadteDemandFile ");
+		String update="";	
 
 		switch(statusId) {
 		    case "2" :
@@ -134,7 +141,8 @@ public class PFTSServiceImp implements PFTSService{
 	
 	@Override
 	public long updateCostOnDemand(List<DemandOrderDetails> dd ,String fileId,String userid)throws Exception{
-        long result=0; 
+		logger.info(new Date() +" Inside SERVICE updateCostOnDemand ");
+		long result=0; 
 		for(DemandOrderDetails dod:dd) {
         	 PftsFileOrder pfo=new PftsFileOrder();
         	 pfo.setItemFor(dod.getItemFor());

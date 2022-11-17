@@ -45,7 +45,7 @@ public class MasterController {
 	{
 		String UserId= (String)ses.getAttribute("Username");
 		String LabCode=(String)ses.getAttribute("labcode");
-		logger.info(new Date() +" Inside OfficerList "+UserId);
+		logger.info(new Date() +" Inside Officer.htm "+UserId);
 		String empType=req.getParameter("empType");
         req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
 		return "master/OfficerMasterList";
@@ -77,7 +77,7 @@ public class MasterController {
 	 {
 		String UserId=(String)ses.getAttribute("Username");
 		int len=0;
-		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
+		logger.info(new Date() +"Inside EmpNoCheck.htm "+UserId);
 		try
 		{	 
 			List<Object[]> DisDesc = null;
@@ -86,7 +86,7 @@ public class MasterController {
 			len=DisDesc.size();
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
+				e.printStackTrace(); logger.error(new Date() +"Inside EmpNoCheck.htm "+UserId,e);
 		}
 		 
 		  return String.valueOf(len);
@@ -99,7 +99,7 @@ public class MasterController {
 	 {
 		String UserId=(String)ses.getAttribute("Username");
 		int len=0;
-		logger.info(new Date() +"Inside AddActivityCheck.htm "+UserId);
+		logger.info(new Date() +"Inside ExpEmpNoCheck.htm "+UserId);
 		try
 		{	 
 			List<Object[]> DisDesc = null;
@@ -109,7 +109,7 @@ public class MasterController {
 		}
 		catch (Exception e) {
 				e.printStackTrace(); 
-				logger.error(new Date() +"Inside AddActivityCheck.htm "+UserId,e);
+				logger.error(new Date() +"Inside ExpEmpNoCheck.htm "+UserId,e);
 		}
 		 
 		  return String.valueOf(len);
@@ -167,7 +167,7 @@ public class MasterController {
 		
 		String UserId= (String)ses.getAttribute("Username");
 		String LabCode =(String)ses.getAttribute("labcode");
-		logger.info(new Date() +" Inside OfficerAddSubmit "+UserId);
+		logger.info(new Date() +" Inside OfficerMasterAddSubmit.htm "+UserId);
 	    Integer labid= Integer.parseInt(ses.getAttribute("labid").toString());
 		try {
 			String EmpNo=req.getParameter("EmpNo");
@@ -217,7 +217,7 @@ public class MasterController {
 		}
 		catch (Exception e){			
 			e.printStackTrace();
-			logger.error(new Date() +" Inside OfficerAddSubmit "+UserId , e);
+			logger.error(new Date() +" Inside OfficerMasterAddSubmit.htm "+UserId , e);
 			return "static/Error";
 		}
 		return "redirect:/Officer.htm";
@@ -228,7 +228,7 @@ public class MasterController {
 	public String OfficerMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
 		
 		String UserId= (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside OfficerMasterEditSubmit "+UserId);
+		logger.info(new Date() +" Inside OfficerMasterEditSubmit.htm "+UserId);
 		try {
 			
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
@@ -256,7 +256,7 @@ public class MasterController {
 		catch (Exception e){
 			
 			e.printStackTrace();
-			logger.error(new Date() +" Inside OfficerMasterEditSubmit "+UserId , e);
+			logger.error(new Date() +" Inside OfficerMasterEditSubmit.htm "+UserId , e);
 			return "static/Error";
 		}		
 		return "redirect:/Officer.htm";
@@ -285,7 +285,7 @@ public class MasterController {
 	public String OfficerExtList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
 
 		String UserId= (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside OfficerExtList "+UserId);
+		logger.info(new Date() +" Inside OfficerExtList.htm "+UserId);
 		try {
 	
 		     req.setAttribute("OfficerList", service.ExternalOfficerList());
@@ -484,7 +484,7 @@ public class MasterController {
 		
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside DivisionEmployee "+UserId , e);
+			logger.error(new Date() +" Inside DivisionEmployee.htm "+UserId , e);
 			return "static/Error";
 		}
 	 }
@@ -559,7 +559,7 @@ public class MasterController {
 	public String MilestoneActivityTypes(Model model,HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{		
 		String UserId= (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside DivisionAssignSubmit.htm "+UserId);
+		logger.info(new Date() +" Inside MilestoneActivityTypes.htm "+UserId);
 		try {		
 			
 			
@@ -567,7 +567,7 @@ public class MasterController {
 			return "master/MilestoneActivityType";
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside DivisionAssignSubmit.htm "+UserId , e);
+			logger.error(new Date() +" Inside MilestoneActivityTypes.htm "+UserId , e);
 			return "static/Error";
 		}		
 	}
@@ -626,7 +626,7 @@ public class MasterController {
 			String UserId= (String)ses.getAttribute("Username");
 			String LabCode =(String)ses.getAttribute("labcode");
 			
-			logger.info(new Date() +" Inside DivisionEmployee.htm "+UserId);
+			logger.info(new Date() +" Inside GroupMaster.htm "+UserId);
 			try 
 			{
 //				String groupid=req.getParameter("groupid");
@@ -635,7 +635,7 @@ public class MasterController {
 				return "master/GroupsList";
 			}catch (Exception e) {
 				e.printStackTrace();
-				logger.error(new Date() +" Inside DivisionEmployee "+UserId , e);
+				logger.error(new Date() +" Inside GroupMaster.htm "+UserId , e);
 				return "static/Error";
 			}
 		 }
@@ -648,7 +648,7 @@ public class MasterController {
 			String LabCode = (String)ses.getAttribute("labcode");
 			
 			
-			logger.info(new Date() +"Inside DivisionMasterAddEdit "+ Userid);	
+			logger.info(new Date() +"Inside GroupMaster.htm "+ Userid);	
 
 			try {
 				
@@ -673,7 +673,7 @@ public class MasterController {
 			catch(Exception e){
 				
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside ItemDetailsIUpdate "+ Userid, e);
+				logger.error(new Date() +" Inside GroupMaster.htm "+ Userid, e);
 
 			}
 			
@@ -682,7 +682,7 @@ public class MasterController {
 	  @RequestMapping(value = "GroupMasterAddSubmit.htm",method=RequestMethod.POST )
 			public String GroupMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		    	String UserId = (String) ses.getAttribute("Username");
-				logger.info(new Date() +"Inside Rtmddo "+UserId);	
+				logger.info(new Date() +"Inside GroupMaster.htm "+UserId);	
 				String LabCode= (String)ses.getAttribute("labcode");
 				
 				try {				
@@ -708,7 +708,7 @@ public class MasterController {
 				}
 				catch (Exception e) {
 						e.printStackTrace();
-						logger.error(new Date() +" Inside Rtmddo "+UserId, e);
+						logger.error(new Date() +" Inside GroupMaster.htm "+UserId, e);
 						return "static/Error";
 				}
 		    }
@@ -722,7 +722,7 @@ public class MasterController {
 			
 			String Userid = (String) ses.getAttribute("Username");
 			
-			logger.info(new Date() +" Inside DivisionMasterEdit "+Userid );
+			logger.info(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid );
 			
 			try {
 				
@@ -751,7 +751,7 @@ public class MasterController {
 				
 				e.printStackTrace();
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside DivisionMasterEdit "+Userid , e);
+				logger.error(new Date() +" Inside GroupMasterEditSubmit.htm "+Userid , e);
 			}
 			
 			return "redirect:/GroupMaster.htm";
@@ -764,14 +764,14 @@ public class MasterController {
 	  {
 		String UserId=(String)ses.getAttribute("Username");
 		Object[] DisDesc = null;
-		logger.info(new Date() +"Inside DivisionAddCheck.htm "+UserId);
+		logger.info(new Date() +"Inside groupAddCheck.htm "+UserId);
 		try
 		{	  
 			String gCode=req.getParameter("gcode");
 			DisDesc =service.GroupAddCheck(gCode);
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +"Inside DivisionAddCheck.htm "+UserId,e);
+				e.printStackTrace(); logger.error(new Date() +"Inside groupAddCheck.htm "+UserId,e);
 		}
 		  Gson json = new Gson();
 		  return json.toJson(DisDesc); 
@@ -782,7 +782,7 @@ public class MasterController {
 			
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +" Inside LabMasterList " +  UserId );			
+			logger.info(new Date() +" Inside LabDetails.htm " +  UserId );			
 			req.setAttribute("labmasterdata", service.LabMasterList().stream().filter(e-> LabCode.equalsIgnoreCase(e[1].toString())).collect(Collectors.toList()) );			
 			return "master/LabDetails";
 		}
@@ -793,7 +793,7 @@ public class MasterController {
 			String LabId= req.getParameter("Did");
 			String Userid= (String) ses.getAttribute("Username");
 			
-			logger.info(new Date() +" Inside LabMasterAddEdit "+Userid);
+			logger.info(new Date() +" Inside LabDetails.htm "+Userid);
 
 			try {
 			if(Option.equalsIgnoreCase("add")) {
@@ -813,7 +813,7 @@ public class MasterController {
 			catch(Exception e){
 				
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside LabMasterAddEdit "+Userid , e);
+				logger.error(new Date() +" Inside LabDetails.htm "+Userid , e);
 
 			}
 			
@@ -825,7 +825,7 @@ public class MasterController {
 	public String LabMasterEdit (HttpServletResponse res, HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{		
 		String Userid= (String) ses.getAttribute("Username");
-		logger.info(new Date() +" Inside LabMasterEdit "+Userid);
+		logger.info(new Date() +" Inside LabMasterEditSubmit.htm "+Userid);
 			
 		try {
 			LabMasterAdd labmasteredit = new LabMasterAdd();
@@ -859,15 +859,15 @@ public class MasterController {
 			{				
 				e.printStackTrace();
 				redir.addAttribute("resultfail", "Technical Issue");
-				logger.error(new Date() +" Inside LabMasterEdit "+Userid , e);				
+				logger.error(new Date() +" Inside LabMasterEditSubmit.htm "+Userid , e);				
 			}			
 			return "redirect:/LabDetails.htm";
 		}
 	  
 	@RequestMapping(value = "FeedBack.htm", method = RequestMethod.GET)
 	public String FeedBack(HttpServletRequest req, HttpSession ses) throws Exception {
-
-		
+		String Userid= (String) ses.getAttribute("Username");
+		logger.info(new Date() +" Inside FeedBack.htm "+Userid);
 		return "master/FeedBack";
 	}
 	
@@ -875,6 +875,7 @@ public class MasterController {
 	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +" Inside FeedBackAdd.htm "+UserId);
 		Long EmpId = (Long) ses.getAttribute("EmpId");
 		String Feedback=req.getParameter("Feedback");
 		
@@ -897,7 +898,8 @@ public class MasterController {
 	@RequestMapping(value = "FeedBackList.htm")
 	public String FeedbackList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		
-		
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +" Inside FeedBackList.htm "+UserId);
 		String LabCode =(String) ses.getAttribute("labcode");
 		
 		req.setAttribute("FeedbackList", service.FeedbackList(LabCode));

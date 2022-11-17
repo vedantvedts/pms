@@ -27,7 +27,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 @Repository
 public class ActionDaoImpl implements ActionDao{
 	
-	private static final Logger logger=LogManager.getLogger(CommitteeDaoImpl.class);
+	private static final Logger logger=LogManager.getLogger(ActionDaoImpl.class);
 	
 
 
@@ -92,7 +92,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] LabDetails()throws Exception
 	{
-		logger.info(new Date() +"Inside LabDetails");	
 		Query query=manager.createNativeQuery(LABDETAILS);
 		Object[] Labdetails =(Object[])query.getResultList().get(0);
 		return Labdetails ;
@@ -100,7 +99,6 @@ public class ActionDaoImpl implements ActionDao{
 	
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception {
-		logger.info(new Date() +"Inside EmployeeList");	
 		Query query=manager.createNativeQuery(EMPLOYEELIST);
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -109,7 +107,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> AssignedList(String EmpId ) throws Exception {
-		logger.info(new Date() +"Inside AssignedList");	
         Query query=manager.createNativeQuery(ASSIGNEDLIST);
 		query.setParameter("empid", EmpId);
 		
@@ -120,7 +117,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public long ActionMainInsert(ActionMain main) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionMainInsert");	
 		manager.persist(main);
 		manager.flush();
 		return main.getActionMainId();
@@ -129,7 +125,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public long ActionAssignInsert(ActionAssign assign) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionAssignInsert");	
 		manager.persist(assign);
 		manager.flush();
 		return assign.getActionAssignId();
@@ -139,7 +134,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AssigneeList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside AssigneeList");	
 		Query query=manager.createNativeQuery(ASSIGNEELIST);
 		query.setParameter("empid", EmpId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -151,7 +145,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int AssigneeSeenUpdate(String EmpId) throws Exception 
 	{		
-		logger.info(new Date() +"Inside AssigneeSeenUpdate");	
 		Query query=manager.createNativeQuery(ASSIGNEESEENUPDATE);
 		query.setParameter("empid", EmpId);
 		return query.executeUpdate();
@@ -162,7 +155,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AssigneeData(String mainid ,String assignid) throws Exception {
 		
-		logger.info(new Date() +"Inside AssigneeData");	
 		Query query=manager.createNativeQuery(ASSIGNEEDATA);
 		query.setParameter("mainid", mainid);
 		query.setParameter("actionassignid", assignid);
@@ -172,7 +164,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> SubList(String assignid) throws Exception {
-		logger.info(new Date() +"Inside SubList");	
 		Query query=manager.createNativeQuery(SUBLIST);
 		query.setParameter("assignid", assignid);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -182,7 +173,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public long ActionSubInsert(ActionSub main) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionSubInsert");	
 		manager.persist(main);
 		manager.flush();
 		return main.getActionSubId();
@@ -191,7 +181,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public long ActionAttachInsert(ActionAttachment main) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionAttachInsert");
 		manager.persist(main);
 		manager.flush();
 		return main.getActionAttachId();
@@ -200,7 +189,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception
 	{
-		logger.info(new Date() +"Inside ActionAttachmentDownload");
 		ActionAttachment Attachment= manager.find(ActionAttachment.class,Long.parseLong(achmentid));
 		return Attachment;
 	}
@@ -208,7 +196,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int ActionSubDelete(String id) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionSubDelete");
 		Query query=manager.createNativeQuery(SUBDELETE);
 		query.setParameter("subid", id);
 		int result=query.executeUpdate();
@@ -218,7 +205,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int AssignUpdate(ActionAssign assign) throws Exception {
 		
-		logger.info(new Date() +"Inside AssignUpdate");
 		Query query=manager.createNativeQuery(ASSIGNUPDATE);
 		query.setParameter("assignid",assign.getActionMainId());
 		query.setParameter("flag", assign.getActionFlag());
@@ -232,7 +218,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int MainForward(ActionAssign assign) throws Exception {
 		
-		logger.info(new Date() +"Inside MainForward");
 		Query query=manager.createNativeQuery(MAINFORWARD);
 		query.setParameter("assign",assign.getActionAssignId());
 		query.setParameter("flag", assign.getActionFlag());
@@ -245,7 +230,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ForwardList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside ForwardList");
 		Query query=manager.createNativeQuery(FORWARDLIST);
 		query.setParameter("empid", EmpId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -255,7 +239,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int MainSendBack(ActionAssign assign) throws Exception {
 		
-		logger.info(new Date() +"Inside MainSendBack");
 		Query query=manager.createNativeQuery(MAINSENDBACK);
 		query.setParameter("assignid",assign.getActionAssignId());
 		query.setParameter("remarks", assign.getRemarks());
@@ -270,7 +253,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception {
 		
-		logger.info(new Date() +"Inside StatusList");
 		Query query=manager.createNativeQuery(STATUSLIST);
 		query.setParameter("empid", EmpId);
 		query.setParameter("fdate", fdate);
@@ -282,7 +264,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionList");
 		Query query=manager.createNativeQuery(ACTIONLIST);
 		query.setParameter("empid", EmpId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -292,7 +273,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside CommitteeActionList");
 		Query query=manager.createNativeQuery(COMMITTEEDATA);
 		query.setParameter("scheduleid", EmpId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -302,7 +282,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception 
 	{		
-		logger.info(new Date() +"Inside CommitteeScheduleEditData");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
 		query.setParameter("committeescheduleid", CommitteeScheduleId );
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
@@ -312,7 +291,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ScheduleActionList(String ScheduleId) throws Exception {
 		
-		logger.info(new Date() +"Inside ScheduleActionList");
 		Query query=manager.createNativeQuery(SCHEDULELIST);
 		query.setParameter("schid", ScheduleId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -322,7 +300,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception {
 		
-		logger.info(new Date() +"Inside MeetingContent");
 		Query query=manager.createNativeQuery(CONTENT);
 		query.setParameter("aid", ScheduleId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -332,7 +309,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]>  ActionNoSearch(String ActionMainId) throws Exception {
 
-		logger.info(new Date() +"Inside ActionNoSearch");
 		Query query=manager.createNativeQuery(ACTIONSEARCH);
 		query.setParameter("actionno",ActionMainId);
 		List<Object[]> ActionDetails=(List<Object[]>)query.getResultList();
@@ -343,7 +319,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int ActionGenCount(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionGenCount");
 		Query query = manager.createNativeQuery(ACTIONGENCOUNT);
 		query.setParameter("projectid",ProjectId );
 		BigInteger count=(BigInteger)query.getSingleResult();
@@ -353,7 +328,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public long ActionNotificationInsert(PfmsNotification main) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionNotificationInsert");
 		manager.persist(main);
 		manager.flush();
 		return main.getNotificationId();
@@ -362,7 +336,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AssigneeDetails(String assignid) throws Exception {
 		
-		logger.info(new Date() +"Inside AssigneeDetails");
 		Query query=manager.createNativeQuery(ASSIGNEEDETAILS);
 		query.setParameter("assignid",assignid );
 		List<Object[]> AssigneeDetails=(List<Object[]>)query.getResultList();
@@ -373,7 +346,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ScheduleActionItem(String ScheduleId) throws Exception {
 		
-		logger.info(new Date() +"Inside ScheduleActionItem");
 		Query query=manager.createNativeQuery(SCHEDULEITEM);
 		query.setParameter("schid", ScheduleId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -383,7 +355,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionReports");
 		Query query=manager.createNativeQuery(ACTIONREPORT);
 		query.setParameter("empid",EmpId);
 		query.setParameter("term",Term);
@@ -397,7 +368,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionSearch(String EmpId,String No,String Position) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionSearch");
 		Query query=manager.createNativeQuery(ACTIONSEARCHNO);
 		query.setParameter("empid",EmpId);
 		query.setParameter("no",No);
@@ -409,7 +379,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ProjectList() throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectList");
 		Query query=manager.createNativeQuery(PROJECTLIST);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -418,7 +387,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionCountList(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionCountList");
 		Query query=manager.createNativeQuery(ACTIONCOUNT);
 		query.setParameter("projectid",ProjectId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -428,7 +396,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> projectdetailsList(String EmpId) throws Exception {
 		
-		logger.info(new Date() +"Inside projectdetailsList");
 		Query query=manager.createNativeQuery(LOGINPROJECTIDLIST);
 		query.setParameter("empid", EmpId);
 		return (List<Object[]>)query.getResultList();
@@ -437,7 +404,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> allprojectdetailsList() throws Exception {
 		
-		logger.info(new Date() +"Inside allprojectdetailsList");
 		Query query=manager.createNativeQuery(ALLPROJECTDETAILSLIST);		
 		return (List<Object[]>)query.getResultList();
 	}
@@ -445,7 +411,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionWiseReports(String Term, String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionWiseReports");
 		Query query=manager.createNativeQuery(ACTIONWISE);
 		query.setParameter("term",Term);
 		query.setParameter("ProjectId",ProjectId);
@@ -455,7 +420,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionNotification( String MainId , String assignid) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionNotification");
 		Query query=manager.createNativeQuery(ACTIONNOTIFIC);
 		query.setParameter("mainid",MainId);
 		query.setParameter("actionassignid", assignid);
@@ -481,7 +445,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public String ProjectCode(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectCode");
 		Query query=manager.createNativeQuery(PROJECTCODE);
 		query.setParameter("ProjectId",ProjectId);
 		String ProjectCode=(String)query.getSingleResult();	
@@ -489,7 +452,6 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	@Override
 	public List<Object[]> ActionSelfList(String EmpId) throws Exception {
-			logger.info(new Date() +"Inside Self AssignedList");	
 	        Query query=manager.createNativeQuery(SELFASSIGNEDLIST);
 			query.setParameter("empid", EmpId);
 			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
@@ -498,7 +460,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> SearchDetails(String MainId , String assignid) throws Exception {
-		logger.info(new Date() +"Inside SearchDetails");	
 		Query query=manager.createNativeQuery(SEARCHDATA);
 		query.setParameter("mainid", MainId);
 		query.setParameter("assignid", assignid);
@@ -511,7 +472,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionWiseAllReport(String Term,String empid,String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionWiseAllReport");
 		Query query=manager.createNativeQuery(ACTIONWISEALLREPORT);
 		query.setParameter("term",Term);
 		query.setParameter("empid",empid);
@@ -524,7 +484,6 @@ public class ActionDaoImpl implements ActionDao{
 	
 	@Override
 	public long ActionSelfReminderAddSubmit(ActionSelf actionself) throws Exception {
-		logger.info(new Date() +"Inside ActionSelfReminderAddSubmit");		
 		manager.persist(actionself);
 		manager.flush();	
 		return actionself.getActionId();
@@ -534,7 +493,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ActionSelfReminderList(String empid,String fromdate,String todate) throws Exception {
 		
-		logger.info(new Date() +"Inside ActionSelfReminderList");
 		Query query=manager.createNativeQuery(ACTIONSELFREMINDERLIST);		
 		query.setParameter("empid",empid);
 		query.setParameter("fromdate",fromdate);
@@ -545,7 +503,6 @@ public class ActionDaoImpl implements ActionDao{
 	
 	@Override
 	public int ActionSelfReminderDelete(String actionid) throws Exception {		
-		logger.info(new Date() +"Inside ActionSelfReminderDelete");
 		Query query=manager.createNativeQuery(ACTIONSELFREMINDERDELETE);	
 		query.setParameter("actionid",actionid);
 		return query.executeUpdate();		
@@ -553,7 +510,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getActionAlertList() throws Exception {
-		logger.info(new Date() +"Inside getActionAlertList");
 		Query query=manager.createNativeQuery(ACTIONALERT);		
 		List<Object[]> getActionAlertList=(List<Object[]>)query.getResultList();	
 		return getActionAlertList;
@@ -561,7 +517,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getActionToday(String empid,String ai) throws Exception {
-		logger.info(new Date() +"Inside getActionToday");
 		Query query=manager.createNativeQuery(ACTIONTODAY);	
 		query.setParameter("empid",empid);
 		query.setParameter("AI",ai);
@@ -571,7 +526,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getActionTommo(String empid,String ai) throws Exception {
-		logger.info(new Date() +"Inside getActionTommo");
 		Query query=manager.createNativeQuery(ACTIONTOMMO);	
 		query.setParameter("empid",empid);
 		query.setParameter("AI",ai);
@@ -581,7 +535,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getMeetingAlertList() throws Exception {
-		logger.info(new Date() +"Inside getMeetingAlertList");
 		Query query=manager.createNativeQuery(MEETINGALERT);		
 		List<Object[]> getMeetingAlertList=(List<Object[]>)query.getResultList();	
 		return getMeetingAlertList;
@@ -589,7 +542,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getMeetingToday(String empid) throws Exception {
-		logger.info(new Date() +"Inside getMeetingToday");
 		Query query=manager.createNativeQuery(MEETINGTODAY);	
 		query.setParameter("empid",empid);
 		List<Object[]> getMeetingToday=(List<Object[]>)query.getResultList();	
@@ -598,7 +550,6 @@ public class ActionDaoImpl implements ActionDao{
 
 	@Override
 	public List<Object[]> getMeetingTommo(String empid) throws Exception {
-		logger.info(new Date() +"Inside getMeetingTommo");
 		Query query=manager.createNativeQuery(MEETINGTOMMO);	
 		query.setParameter("empid",empid);
 		List<Object[]> getMeetingTommo=(List<Object[]>)query.getResultList();	
@@ -608,7 +559,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype , String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -620,7 +570,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AllEmpNameDesigList()throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside AllEmpNameDesigList");
 		Query query=manager.createNativeQuery(ALLEMPNAMEDESIGLIST);
 		List<Object[]> AllEmpNameDesigList=(List<Object[]>)query.getResultList();
 		return AllEmpNameDesigList;
@@ -629,7 +578,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] GetActionReAssignData(String Actionassignid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside GetActionReAssignData");
 		Object[] assigndata = null;
 		Query query=manager.createNativeQuery(GETREASSIGNEDDATA);
 		query.setParameter("actionassignid", Actionassignid);
@@ -643,7 +591,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] GetProjectData(String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside GetProjectData");
 		Object[] assigndata = null;
 		Query query=manager.createNativeQuery(PROJECTDATA);
 		query.setParameter("projectid", projectid);
@@ -657,7 +604,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ProjectEmpList(String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ProjectEmpList");
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
 		query.setParameter("projectid", projectid);
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
@@ -669,7 +615,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] CommitteeShortName(String scheduleid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside CommitteeShortName");
 		Query query=manager.createNativeQuery(COMMITTEESHORTNAME);
 		query.setParameter("scheduleid", scheduleid);
 		Object[] CommitteeShortName=(Object[])query.getResultList().get(0);
@@ -681,7 +626,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> EmployeeDropdown(String empid,String logintype,String projectid)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside EmployeeDropdown");
 		Query query=manager.createNativeQuery("CALL Employee_Dropdown(:empid,:logintype,:projectid);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", logintype);
@@ -696,7 +640,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] ActionDetailsAjax(String actionid ,String assignid) throws Exception
 	{		
-		logger.info(new Date() +"Inside ActionDetailsAjax");
 		Query query=manager.createNativeQuery(ACTIONDETAILSAJAX);
 		query.setParameter("actionid", actionid);
 		query.setParameter("assignid", assignid);
@@ -711,7 +654,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public int ActionMainEdit(ActionMain main) throws Exception
 	{	
-		logger.info(new Date() +"Inside ActionMainEdit");
 		ActionMain detach = manager.find(ActionMain.class, main.getActionMainId());
 		detach.setActionItem(main.getActionItem());
 		
@@ -724,7 +666,6 @@ public class ActionDaoImpl implements ActionDao{
 	 @Override
 	 public int ActionAssignEdit(ActionAssign assign) throws Exception
 	 {
-		 logger.info(new Date() +"Inside ActionMainEdit");
 		 ActionAssign detach = manager.find(ActionAssign.class, assign.getActionAssignId());
 		
 			detach.setAssignee(assign.getAssignee());
@@ -740,7 +681,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> AllLabList() throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ClusterLabList");
 		Query query=manager.createNativeQuery(CLUSTERLABLIST);
 		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
 		return ClusterLabList;
@@ -749,7 +689,6 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String ACTIONMAINDATA="SELECT Actionmainid,empid,actiondate,actionitem,actiontype,projectid,scheduleminutesid FROM action_main WHERE actionstatus='A' AND isactive=1 AND Actionmainid=:actionmainid";
 	@Override
 	public Object[] GetActionMainData(String actionmainid) throws Exception {
-		logger.info(new java.util.Date()+"Inside getActionMAinData");
 		Object[] actiondata=null;
 		Query query = manager.createNativeQuery(ACTIONMAINDATA);
 		query.setParameter("actionmainid", actionmainid);
@@ -764,14 +703,13 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ClusterExpertsList() throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside DGEmpData");
 		try {
 			Query query=manager.createNativeQuery(CLUSTEREXPERTSLIST);
 			List<Object[]> DGEmpData=(List<Object[]>)query.getResultList();
 			return DGEmpData;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside DGEmpData DAO "+ e);
+			logger.error(new java.util.Date() +" Inside DAO ClusterExpertsList"+ e);
 			return new ArrayList<Object[]>();
 		}
 	}
@@ -780,7 +718,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside ClusterFilterExpertsList");
 		try {
 			Query query=manager.createNativeQuery(CLUSTERFILTEREMPLIST);
 			query.setParameter("labcode", Labcode);
@@ -789,7 +726,7 @@ public class ActionDaoImpl implements ActionDao{
 			return DGEmpData;
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new java.util.Date() +" Inside ClusterFilterExpertsList DAO "+ e);
+			logger.error(new java.util.Date() +" Inside DAO ClusterFilterExpertsList "+ e);
 			return new ArrayList<Object[]>();
 		}
 	}
@@ -797,7 +734,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LabInfoClusterLab");
 		Query query=manager.createNativeQuery(LABINFOCLUSTERLAB);
 		query.setParameter("labcode", LabCode);
 		Object[] LabInfoClusterLab=(Object[])query.getSingleResult();
@@ -808,7 +744,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LabEmployeeList");
 		Query query=manager.createNativeQuery(LABEMPLOYEELIST);
 		query.setParameter("labcode", LabCode);
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
@@ -819,7 +754,6 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LabEmpListFilterForAction");
 		Query query=manager.createNativeQuery(LABEMPFILTERFORACTION);
 		query.setParameter("labcode", LabCode);
 		query.setParameter("mainid", MainId);
@@ -829,7 +763,6 @@ public class ActionDaoImpl implements ActionDao{
 	 @Override
 	 public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception
 	 {
-		 logger.info(new Date() +"Inside ActionMainEdit");
 		 ActionAssign detach = manager.find(ActionAssign.class, assign.getActionAssignId());
 		
 			detach.setRevision(assign.getRevision());

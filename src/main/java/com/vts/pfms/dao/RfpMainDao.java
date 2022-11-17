@@ -63,5 +63,6 @@ public interface RfpMainDao {
 	public List<Object[]> FinanceDataPartA(String ProjectId, String Interval) throws Exception;
 	public int ProjectHoaChangesDelete(String projectId)throws Exception;
 	public long ProjectHoaChangesInsert(ProjectHoaChanges changes) throws Exception;
+	public Object[] ProjectData(String projectid) throws Exception;
 
 }

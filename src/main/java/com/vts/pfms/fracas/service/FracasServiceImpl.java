@@ -37,7 +37,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectsList");
 		return dao.ProjectsList( empid, Logintype,  LabCode);
 	}
 	
@@ -45,7 +44,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> EmployeeList(String LabCode) throws Exception 
 	{
-		logger.info(new Date() +"Inside EmployeeList");
 		return dao.EmployeeList(LabCode);
 	}
 	
@@ -53,13 +51,11 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> FracasTypeList() throws Exception
 	{
-		logger.info(new Date() +"Inside FracasTypeList");
 		return dao.FracasTypeList();
 	}
 	@Override
 	public List<Object[]> ProjectFracasItemsList(String projectid,String LabCode) throws Exception
 	{
-		logger.info(new Date() +"Inside ProjectFracasItemsList");
 		return dao.ProjectFracasItemsList(projectid, LabCode);
 	}
 	
@@ -68,7 +64,7 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public long FracasMainAddSubmit(PfmsFracasMainDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasMainAddSubmit");		
+		logger.info(new Date() +"Inside DAO FracasMainAddSubmit ");		
 		PfmsFracasMain model=new PfmsFracasMain();
 		model.setFracasTypeId(Integer.parseInt(dto.getFracasTypeId()));
 		model.setFracasItem(dto.getFracasItem());
@@ -98,7 +94,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public PfmsFracasAttach FracasAttachDownload(String fracasattachid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAttachDownload");
 		return dao.FracasAttachDownload(fracasattachid);
 		
 	}
@@ -106,14 +101,13 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public Object[] FracasItemData(String fracasmainid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasItemData");
 		return dao.FracasItemData(fracasmainid);
 	}
 	
 	@Override
 	public long FracasAssignSubmit(PfmsFracasAssignDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAssignSubmit");
+		logger.info(new Date() +"Inside DAO FracasAssignSubmit ");
 		long subid=0;
 		String[] asignee=dto.getAssignee();
 		for(int i=0;i<asignee.length;i++)
@@ -167,17 +161,8 @@ public class FracasServiceImpl implements FracasService {
 				notification.setScheduleId(temp);
 				notification.setStatus("MAR");
 				dao.FRACASNotificationInsert(notification);
-				
 			}
-			
-			
-			
-			
 		}
-		
-		
-		
-		
 		
 		return subid;
 	}
@@ -185,21 +170,18 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> FracasAssignedList(String assignerempid,String fracasmainid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAssignedList");
 		return dao.FracasAssignedList(assignerempid, fracasmainid);
 	}
 	
 	@Override
 	public List<Object[]> FracasAssigneeList(String assigneeid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAssigneeList");
 		return dao.FracasAssigneeList(assigneeid);
 	}
 	
 	@Override
 	public Object[] FracasAssignData(String fracasassignid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAssignData");
 		return dao.FracasAssignData(fracasassignid);
 	}
 	
@@ -207,7 +189,7 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public long FracasSubSubmit(PfmsFracasSubDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasSubSubmit");
+		logger.info(new Date() +"Inside DAO FracasSubSubmit ");
 		
 		PfmsFracasSub model=new PfmsFracasSub();
 		model.setFracasAssignId(Long.parseLong(dto.getFracasAssignId()));
@@ -238,7 +220,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> FracasSubList(String fracasassignid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasSubList");
 		return dao.FracasSubList(fracasassignid);
 	}
 	
@@ -246,7 +227,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public int FracasAssignForwardUpdate(PfmsFracasAssignDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasAssignForwardUpdate");
 		dto.setModifiedDate(sdf1.format(new Date()));
 		int ret= dao.FracasAssignForwardUpdate(dto);
 		long temp=0;
@@ -282,14 +262,13 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> FracasToReviewList(String assignerempid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasToReviewList");
 		return dao.FracasToReviewList(assignerempid);
 	}
 	
 	@Override
 	public int FracasSubDelete(String fracassubid,String fracasattachid) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasSubDelete");
+		logger.info(new Date() +"Inside DAO FracasSubDelete ");
 		int ret=0;
 		ret=dao.FracasSubDelete(fracassubid);
 		if(ret>0 && fracasattachid!=null)
@@ -302,7 +281,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public int FracasMainDelete(PfmsFracasMainDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasMainDelete");
 		dto.setModifiedDate(sdf1.format(new Date()));
 		return dao.FracasMainDelete(dto);
 	}
@@ -310,7 +288,7 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception
 	{
-		logger.info(new Date() +"Inside FracasMainEdit");
+		logger.info(new Date() +"Inside DAO FracasMainEdit ");
 		dto.setModifiedDate(sdf1.format(new Date()));
 		dto.setFracasDate(sdf1.format(sdf.parse(dto.getFracasDate())));
 		int ret=dao.FracasMainEdit(dto);
@@ -336,7 +314,6 @@ public class FracasServiceImpl implements FracasService {
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode)throws Exception
 	{
-		logger.info(new Date() +"Inside LoginProjectDetailsList");
 		return dao.LoginProjectDetailsList(empid,Logintype,LabCode);
 	}
 		

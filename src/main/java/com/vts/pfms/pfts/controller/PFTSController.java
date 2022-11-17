@@ -61,7 +61,7 @@ public class PFTSController {
 		String projectId =req.getParameter("projectid");		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside ProcurementStatus.htm "+UserId);		
 		try {
 			List<Object[]> projectlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 			
@@ -84,7 +84,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside ProcurementStatus.htm "+UserId, e); 
 			return "static/Error";	
 		}	
 		
@@ -96,7 +96,7 @@ public class PFTSController {
 	{
 		
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside AddNewDemandFile.htm "+UserId);		
 		try {
 			String projectId =req.getParameter("projectId");
 			
@@ -139,7 +139,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside AddNewDemandFile.htm "+UserId, e); 
 			return "static/Error";	
 		}	
 		
@@ -149,7 +149,7 @@ public class PFTSController {
 	public String addDemandFileSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside AddDemandFileSubmit.htm "+UserId);		
 		try {
 			String projectId=req.getParameter("projectId");
 			PFTSFile pf=new PFTSFile();
@@ -178,7 +178,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside AddDemandFileSubmit.htm "+UserId, e); 
 			return "static/Error";	
 		}
 	}
@@ -188,7 +188,7 @@ public class PFTSController {
 	public @ResponseBody String getStatusEvent(HttpServletRequest request, HttpSession ses) throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside getStatusEvent.htm "+UserId);		
 		try {
 				String fileid=request.getParameter("fileid");
 				List<Object[]> statusList=service.getStatusList(fileid);
@@ -197,7 +197,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside getStatusEvent.htm "+UserId, e); 
 			return null;
 		}
 
@@ -209,7 +209,7 @@ public class PFTSController {
 	public String upadteDemandFile(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside upadteDemandFile.htm "+UserId);		
 		try {
 			
              String statusId=req.getParameter("statusId");
@@ -261,7 +261,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside upadteDemandFile.htm "+UserId, e); 
 			return "static/Error";	
 		}
 	}
@@ -338,7 +338,7 @@ public class PFTSController {
 	public String FileOrderRetrive(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneActivityList.htm "+UserId);		
+		logger.info(new Date() +"Inside FileOrderRetrive.htm "+UserId);		
 		try {
 			
              String projectId=req.getParameter("projectId");
@@ -384,7 +384,7 @@ public class PFTSController {
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneActivityList.htm "+UserId, e); 
+			logger.error(new Date() +" Inside FileOrderRetrive.htm "+UserId, e); 
 			return "static/Error";	
 		}
 	}

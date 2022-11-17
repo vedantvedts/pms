@@ -68,7 +68,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] LabList(String LabCode) throws Exception {
 
-		logger.info(new Date() +"Inside LabList");
 		Query query=manager.createNativeQuery(LABLIST);
 		query.setParameter("labcode", LabCode);
 		Object[] LabList=(Object[])query.getSingleResult();		
@@ -79,7 +78,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> PfmsInitiationList(String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside PfmsInitiationList");
 		Query query=manager.createNativeQuery(PFMSINITLIST);
 		query.setParameter("initiationid", InitiationId);
 		
@@ -112,7 +110,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
 		
-		logger.info(new Date() +"Inside ProjectIntiationDetailsList");
 		Query query=manager.createNativeQuery(PROJECTDETAILSLIST);
 		query.setParameter("initiationid", InitiationId);
 		List<Object[]> ProjectIntiationDetailsList=(List<Object[]> )query.getResultList();	
@@ -124,7 +121,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> CostDetailsList(String InitiationId) throws Exception {
 
-		logger.info(new Date() +"Inside CostDetailsList");
 		Query query=manager.createNativeQuery(COSTDETAILSLIST);
 		query.setParameter("initiationid", InitiationId);
 		List<Object[]> CostDetailsList =(List<Object[]>)query.getResultList();
@@ -135,7 +131,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProjectInitiationScheduleList(String InitiationId) throws Exception {
 
-		logger.info(new Date() +"Inside ProjectInitiationScheduleList");
 		Query query=manager.createNativeQuery(PROJECTSCHEDULELIST);
 	    query.setParameter("initiationid", InitiationId);
 		List<Object[]> ProjectIntiationScheduleList=(List<Object[]>)query.getResultList();		
@@ -147,7 +142,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ProjectsList() throws Exception {
 
-		logger.info(new Date() +"Inside ProjectInitiationScheduleList");
 		Query query=manager.createNativeQuery(PROJECTSLIST);	   
 		List<Object[]> ProjectsList=(List<Object[]>)query.getResultList();	
 		
@@ -158,7 +152,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 	{
-		logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 		Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 		query.setParameter("empid", empid);
 		query.setParameter("logintype", Logintype);
@@ -172,13 +165,13 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] ProjectAttributes(String projectid) throws Exception 
 	{
-		logger.info(new Date() +"Inside ProjectAttributes");
 		Query query=manager.createNativeQuery(PROJECTATTRIBUTES);	   
 		query.setParameter("projectid", projectid);
 		Object[] ProjectAttributes=null;
 		try {
 			ProjectAttributes=(Object[])query.getSingleResult();	
 		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO ProjectAttributes "+ e);
 			ProjectAttributes=null;
 		}
 		return ProjectAttributes;
@@ -190,7 +183,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception {
 
-		logger.info(new Date() +"Inside EBAndPMRCCount");
 		Query query=manager.createNativeQuery(EBANDPMRCCOUNT);	   
 		query.setParameter("projectid", projectid);
 		List<Object[]> EBAndPMRCCount=(List<Object[]>)query.getResultList();	
@@ -205,7 +197,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> Milestones(String projectid) throws Exception {
 
-		logger.info(new Date() +"Inside Milestones");
 		Query query=manager.createNativeQuery(MILESTONES);	   
 		query.setParameter("projectid", projectid);
 		List<Object[]> Milestones=(List<Object[]>)query.getResultList();	
@@ -216,7 +207,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> MilestonesChange(String projectid,String milestoneactivitystatusid) throws Exception {
 
-		logger.info(new Date() +"Inside MilestonesChange");
 		Query query=manager.createNativeQuery(MILESTONESCHANGE);	   
 		query.setParameter("projectid", projectid);
 		query.setParameter("milestoneactivitystatusid", milestoneactivitystatusid );
@@ -228,7 +218,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override /* present status*/
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception {
 
-		logger.info(new Date() +"Inside MilestoneSubsystems");
 		Query query=manager.createNativeQuery(MILESTONESUBSYSTEMS);	   
 		query.setParameter("projectid", projectid);
 		List<Object[]> MilestoneSubsystems=(List<Object[]>)query.getResultList();	
@@ -239,7 +228,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override /* last Pmrc action points*/
 	public List<Object[]> LastPMRCActions(String projectid ,String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside LastPMRCActions");
 		Query query=manager.createNativeQuery("CALL Last_PMRC_Actions_List(:projectid,:committeeid);");	   
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -251,7 +239,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override /* old Pmrc action points*/
 	public List<Object[]> OldPMRCActions(String projectid, String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside OldPMRCActions");
 		Query query=manager.createNativeQuery("CALL Old_PMRC_Actions_List(:projectid,:committeeid);");	   
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -261,7 +248,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> ProjectDetails(String ProjectId) throws Exception {
-		logger.info(new Date() +"Inside Project Details");
 		Query query=manager.createNativeQuery(PROJECTDETAILS);
 		query.setParameter("projectid",ProjectId);
 		List<Object[]> ProjectList=(List<Object[]>)query.getResultList();		
@@ -273,7 +259,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GanttChartList(String ProjectId) throws Exception {
 		
-		logger.info(new Date() +"Inside GanttChartList");
 		Query query = manager.createNativeQuery(GANTTCHARTLIST);
 		query.setParameter("projectid", ProjectId);
 		List<Object[]> GanttChartList= query.getResultList();
@@ -282,13 +267,13 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public Object[] ProjectDataDetails(String projectid) throws Exception {
-		logger.info(new Date() +"Inside ProjectDataDetails");
 		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
 		query.setParameter("projectid", projectid);
 		Object[] ProjectStageDetails=null;
 		try {
 			ProjectStageDetails=(Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO ProjectDataDetails "+ e);
 			return null;
 		}
 		
@@ -299,7 +284,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override   //unfinished or open issues only
 	public List<Object[]> OldPMRCIssuesList(String projectid) throws Exception {  
 		
-		logger.info(new Date() +"Inside OldPMRCIssuesList");
 		Query query = manager.createNativeQuery("CALL Old_Issues_List(:projectid);");
 		query.setParameter("projectid", projectid);
 		List<Object[]> OldPMRCIssuesList= query.getResultList();
@@ -309,7 +293,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
-		logger.info(new Date() +"Inside ProcurementStatusList");
 		Query query = manager.createNativeQuery(PROCUREMETSSTATUSLIST);
 		query.setParameter("projectid", projectid);
 		List<Object[]> ProcurementStatusList= query.getResultList();
@@ -320,7 +303,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> RiskMatirxData(String projectid)throws Exception{
-		logger.info(new Date() +"Inside RiskMatirxData");
 		Query query = manager.createNativeQuery(RISKMATIRXDATA);
 		query.setParameter("projectid", projectid);
 		List<Object[]> RiskMatirxData= query.getResultList();
@@ -333,7 +315,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] LastPMRCDecisions(String committeeid,String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside LastPMRCDecisions");
 		Query query = manager.createNativeQuery(LASTPMRCDECISIONS);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -342,6 +323,7 @@ public class PrintDaoImpl implements PrintDao {
 		try {
 			LastPMRCDecisions= (Object[])query.getSingleResult();
 		}catch (Exception e) {
+			logger.error(new Date() +" Inside DAO LastPMRCDecisions "+ e);
 			return LastPMRCDecisions;
 		}		
 		return LastPMRCDecisions;		
@@ -350,7 +332,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ActionPlanSixMonths(String projectid, int interval)throws Exception
 	{
-		logger.info(new Date() +"Inside ActionPlanThreeMonths");
 		List<Object[]> ActionPlanThreeMonths=new ArrayList<Object[]>();
 		//Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC(:projectid, 180);");
 		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, 180)");
@@ -359,7 +340,7 @@ public class PrintDaoImpl implements PrintDao {
 			ActionPlanThreeMonths= query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside ActionPlanThreeMonths "+ e);
+			logger.error(new Date() +" Inside DAO ActionPlanSixMonths "+ e);
 		}
 		return ActionPlanThreeMonths;
 	}
@@ -369,7 +350,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside getLastPmrcId ");
 		Query query=manager.createNativeQuery(LASTPRMC);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -379,14 +359,13 @@ public class PrintDaoImpl implements PrintDao {
 		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
 		result=CommProScheduleList.longValue();
 		}catch (Exception e) {
-			
+			logger.error(new Date() +" Inside DAO getLastPmrcId "+ e);
 		}
 		return result;
 	}
 	@Override
 	public List<Object[]> LastPMRCActions1(String projectid ,String committeeid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside LastPMRCActions");
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid);");	   
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -399,7 +378,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<String> ProjectsubProjectIdList(String projectid ) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ProjectsubProjectIdList");
 		Query query=manager.createNativeQuery(PROJECTSUBPROJECTIDLIST);	   
 		query.setParameter("projectid", projectid);
 		List<String> Projectidlist=(List<String>)query.getResultList();			
@@ -411,7 +389,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception 
 	{
-		logger.info(new Date() +"Inside ReviewMeetingList");
 		Query query=manager.createNativeQuery(REVIEWMEETINGLIST);	   
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -424,7 +401,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] TechWorkData(String projectid) throws Exception 
 	{
-		logger.info(new Date() +"Inside TechWorkDataList");
 		Query query=manager.createNativeQuery(TECHWORKDATALIST);	   
 		query.setParameter("projectid", projectid);
 		List<Object[]> ReviewMeetingList=(List<Object[]>)query.getResultList();	
@@ -441,7 +417,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> ProjectRevList(String projectid) throws Exception {
-		logger.info(new java.util.Date() +"Inside ProjectRevList");
 		Query query=manager.createNativeQuery(PROJECTREVLIST);
 		query.setParameter("projectid", projectid);
 		return (List<Object[]>)query.getResultList();
@@ -451,7 +426,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> getMeetingSchedules(String ProjectId, String Month, String Year) throws Exception {
-		logger.info(new java.util.Date() +"Inside ProjectRevList");
 		Query query=manager.createNativeQuery(SCHEDULELIST);
 		query.setParameter("ProjectId", ProjectId);
 		query.setParameter("InMonth", Month);
@@ -465,7 +439,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] CommitteeScheduleEditData(String CommitteeScheduleId) throws Exception {
 
-		logger.info(new java.util.Date() +"Inside CommitteeScheduleEditData");
 		Query query=manager.createNativeQuery(COMMITTEESCHEDULEEDITDATA);
 		query.setParameter("committeescheduleid", CommitteeScheduleId );
 		Object[] CommitteeScheduleEditData=(Object[])query.getSingleResult();
@@ -476,7 +449,6 @@ public class PrintDaoImpl implements PrintDao {
     @Override
 	public long getNextScheduleId(String projectid,String committeeid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside getNextScheduleId ");
 		Query query=manager.createNativeQuery(NEXTSCHEDULEID);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
@@ -485,8 +457,9 @@ public class PrintDaoImpl implements PrintDao {
 		BigInteger CommProScheduleList=(BigInteger)query.getSingleResult();
 		result=CommProScheduleList.longValue();
 		}catch (Exception e) {
-			
+			logger.error(new Date() +" Inside DAO getNextScheduleId "+ e);
 		}
+		
 		return result;
 	}
     
@@ -494,7 +467,6 @@ public class PrintDaoImpl implements PrintDao {
     @Override
 	public String getNextScheduleFrozen(long schduleid) throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside getNextScheduleFrozen ");
 		Query query=manager.createNativeQuery(NEXTSCHEDULEFROZEN);
 		query.setParameter("schduleid", schduleid);
 		String getNextScheduleFrozen=(String)query.getSingleResult();
@@ -504,7 +476,6 @@ public class PrintDaoImpl implements PrintDao {
     private static final String UPDATEFROZEN="update committee_schedule set BriefingPaperFrozen='Y' where scheduleid=:schduleid";
 	@Override
 	public int updateBriefingPaperFrozen(long schduleid) throws Exception {
-		logger.info(new java.util.Date() +"Inside updateMinutesFrozen");	
 		Query query=manager.createNativeQuery(UPDATEFROZEN);
 		query.setParameter("schduleid", schduleid);
 		int ret=0;
@@ -516,7 +487,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override
 	public List<Object[]> MilestoneActivityStatus() throws Exception {
-		logger.info(new java.util.Date() +"Inside MilestoneActivityStatus");
 		Query query=manager.createNativeQuery(MILESTONEACTIVITYSTATUS);
 		
 		return (List<Object[]>)query.getResultList();
@@ -526,7 +496,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetProjectInitiationSanList() throws Exception 
 	{
-		logger.info(new Date() +"Inside GetProjectInitiationSanList");
 		Query query = manager.createNativeQuery(GETPROJECTSANLIST);
 		
 		return  (List<Object[]>) query.getResultList();
@@ -536,7 +505,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override 
 	public Object[] MileStoneLevelId(String ProjectId, String Committeeid) throws Exception{
-		logger.info(new java.util.Date() +"Inside MileStoneLevelId");
 
 		try {
 		Query query=manager.createNativeQuery(MILESTONELEVELID);
@@ -546,7 +514,7 @@ public class PrintDaoImpl implements PrintDao {
 		return MileStoneLevelId;
 	
 		} catch(NoResultException e) {
-			
+			logger.error(new Date() +" Inside DAO MileStoneLevelId "+ e);
 			return null;
 		}
 
@@ -555,7 +523,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override 
 	public Long MilestoneLevelInsert(MilestoneActivityLevelConfiguration mod) throws Exception{
-		logger.info(new java.util.Date() +"Inside MilestoneLevelInsert");
 
 		manager.persist(mod);
 		manager.flush();
@@ -567,7 +534,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override 
 	public Long MilestoneLevelUpdate(MilestoneActivityLevelConfiguration mod) throws Exception{
-		logger.info(new java.util.Date() +"Inside MilestoneLevelUpdate");
 
 		Query query=manager.createNativeQuery(MILESTONELEVELUPDATE);
 		query.setParameter("levelid",  mod.getLevelid() );
@@ -580,7 +546,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	@Override 
 	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception{
-		logger.info(new java.util.Date() +"Inside BreifingMilestoneDetails");
 
 		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Details (:projectid)");
 		query.setParameter("projectid", Projectid);
@@ -592,13 +557,13 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] GetProjectInitiationdata(String projectid) throws Exception {
 		
-			logger.info(new Date() +"Inside GetProjectInitiationdata");
 			Query query=manager.createNativeQuery(PROJECTINITIATIONDATA);	   
 			query.setParameter("initiationid", projectid);
 			Object[] ProjectAttributes=null;
 			try {
 				ProjectAttributes=(Object[])query.getSingleResult();	
 			}catch (Exception e) {
+				logger.error(new Date() +" Inside DAO GetProjectInitiationdata "+ e);
 				ProjectAttributes=null;
 			}
 			return ProjectAttributes;
@@ -610,7 +575,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetItemList(String projectid)throws Exception
 	{
-		logger.info(new Date() +"Inside GetItemList");
 		Query query = manager.createNativeQuery(ITEMLIST);
 		query.setParameter("initiationid", projectid);
 		return  (List<Object[]>) query.getResultList();
@@ -620,7 +584,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetAuthorityList()throws Exception
 	{
-		logger.info(new Date() +"Inside GetAuthorityList");
 		Query query = manager.createNativeQuery(AUTHORITYLIST);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -628,7 +591,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetinitiationCopyAddr() throws Exception
 	{
-		logger.info(new Date() +"Inside GetinitiationCopyAddr");
 		Query query = manager.createNativeQuery(COPYADDR);
 		return (List<Object[]>)query.getResultList();
 	}
@@ -637,14 +599,12 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetinitiationDeptList ()throws Exception
 	{
-		logger.info(new Date() +"Inside GetinitiationCopyAddr");
 		Query query = manager.createNativeQuery(INITIATIONDEPT);
 		return (List<Object[]>)query.getResultList();
 	}
 	
 	@Override
 	public Long AddInitiationSanction(InitiationSanction initiationsac) throws Exception{
-		logger.info(new Date() +"Inside AddInitiationSanction Add");
 		manager.persist(initiationsac);
 		manager.flush();
 		return initiationsac.getInitiationSanctionId();
@@ -652,7 +612,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Long AddCopyAddress(InitiationsanctionCopyAddr copyaddress) throws Exception
 	{	
-		logger.info(new Date() +"Inside AddCopyAddress Add");
 		manager.persist(copyaddress);
 		manager.flush();
 		return copyaddress.getInitiationSanctionCopyId();
@@ -661,7 +620,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public Object[] GetInitiationSanctionData(String initiationId)throws Exception
 	{
-		logger.info(new Date() +"Inside GetInitiationSanctionData");
 		Query query = manager.createNativeQuery(INITIATIONSANCTIONDATA);
 		query.setParameter("initiationid", initiationId);
 		List<Object[]> list =(List<Object[]>)query.getResultList();
@@ -675,7 +633,6 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public List<Object[]> GetCopyAddressList (String initiationId)throws Exception
 	{
-		logger.info(new Date() +"Inside GetCopyAddressList");
 		Query query = manager.createNativeQuery(COPYADDRESSDATA);
 		query.setParameter("initiationid", initiationId);
 		List<Object[]> list =(List<Object[]>)query.getResultList();
@@ -694,7 +651,6 @@ public class PrintDaoImpl implements PrintDao {
 	
 	  private static final String UPDATEINITIATIONSAC="UPDATE initiation_sanction SET RdNo=:rdno ,AuthorityId=:authorityid, FromDeptId=:fromdeptid , FromDate=:fromdate ,  ToDeptId=:todeptid ,StartDate=:startdate , EstimateFund=:estimatefund , UAC=:uac ,RdDate=:rddate , VideNo=:videno ,ModifiedBy=:modifiedby , ModifiedDate=:modifieddate  WHERE InitiationSanctionId=:initiationsanctionid";
 		public Long EditInitiationSanction(InitiationSanction initiationsac) throws Exception{
-			logger.info(new java.util.Date() +"Inside EditInitiationSanction");	
 			Query query=manager.createNativeQuery(UPDATEINITIATIONSAC);
 			query.setParameter("rdno",initiationsac.getRdNo() );
 			query.setParameter("authorityid",initiationsac.getAuthorityId());
@@ -714,7 +670,6 @@ public class PrintDaoImpl implements PrintDao {
 
 		@Override
 		public long insertTechImage(TechImages image) throws Exception {
-			logger.info(new Date() +"Inside insertTechImage Add");
 			manager.persist(image);
 			manager.flush();
 			return image.getTechImagesId();
@@ -725,7 +680,6 @@ public class PrintDaoImpl implements PrintDao {
 		@Override
 		public List<TechImages> getTechList(String proId)throws Exception
 		{
-			logger.info(new Date() +"Inside getTechList");
 			Query query = manager.createQuery(TECHIMAGE);
 			query.setParameter("proId", Long.parseLong(proId));
 			List<TechImages> list =(List<TechImages>)query.getResultList();
@@ -739,7 +693,6 @@ public class PrintDaoImpl implements PrintDao {
 		@Override
 		public List<Object[]> SpecialCommitteesList(String LabCode)throws Exception
 		{
-			logger.info(new Date() +"Inside SpecialCommitteesList");
 			
 			String concat = String.join("','", SplCommitteeCodes.stream().collect(Collectors.toSet()));
 			

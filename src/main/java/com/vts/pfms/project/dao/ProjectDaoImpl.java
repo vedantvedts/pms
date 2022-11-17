@@ -2,7 +2,6 @@ package com.vts.pfms.project.dao;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.PfmsNotification;
-import com.vts.pfms.milestone.model.FileDocMaster;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.model.PfmsApproval;
@@ -175,7 +173,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public List<Object[]> ProjectIntiationList(String Empid,String LoginType,String LabCode) throws Exception {
-		logger.info(loggerdate +"Inside ProjectIntiationList");
 		
 		Query query=manager.createNativeQuery(PROJECTINTILIST);
 		query.setParameter("empid", Empid);
@@ -189,7 +186,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public List<Object[]> ProjectTypeList() throws Exception {	
 		
-		logger.info(loggerdate +"Inside ProjectTypeList");
 		Query query=manager.createNativeQuery(PROJECTTYPELIST);
 		List<Object[]> ProjectTypeList=(List<Object[]>)query.getResultList();		
 
@@ -198,7 +194,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	
 	@Override
 	public List<Object[]> OfficerList() throws Exception {
-		logger.info(new java.util.Date() +"Inside Officer List ");	
 		Query query=manager.createNativeQuery(OFFICERLIST);
 		List<Object[]> OfficerList=(List<Object[]>)query.getResultList();
 		return OfficerList;
@@ -206,7 +201,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Long ProjectMainAdd(ProjectMain proType) throws Exception {
-		logger.info(new java.util.Date() +"Inside ProjectMainAdd ");	
         manager.persist(proType);
 		manager.flush();
 		return proType.getProjectMainId();
@@ -216,7 +210,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	
 	@Override
 	public List<Object[]> PfmsCategoryList() throws Exception {
-		logger.info(loggerdate +"Inside PfmsCategoryList");
 		Query query=manager.createNativeQuery(PROJECTCATEGORYLIST);
 		List<Object[]> PfmsCategoryList=(List<Object[]>)query.getResultList();		
 
@@ -225,7 +218,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public List<Object[]> PfmsDeliverableList() throws Exception {
-		logger.info(loggerdate +"Inside PfmsDeliverableList");
 		Query query=manager.createNativeQuery(PROJECTDELIVERABLELIST);
 		List<Object[]> PfmsDeliverableList=(List<Object[]>)query.getResultList();		
 
@@ -234,7 +226,6 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public List<Object[]> LabList(String IntiationId) throws Exception {
-		logger.info(loggerdate +"Inside LabList");
 		Query query=manager.createNativeQuery(LABLIST);
 		query.setParameter("initiationid", IntiationId);
 		List<Object[]> LabList=(List<Object[]>)query.getResultList();		
@@ -246,8 +237,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	@Override
 	public Long ProjectIntiationAdd(PfmsInitiation pfmsinitiation,PfmsNotification notification)
 			throws Exception {
-	   logger.info(loggerdate +"Inside ProjectIntiationAdd");
-
 		manager.persist(pfmsinitiation);
 		manager.persist(notification);
 		
@@ -258,7 +247,6 @@ public class ProjectDaoImpl implements ProjectDao {
 @Override
 public Long ProjectShortNameCount(String ProjectShortName) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectShortNameCount");
 	Query query=manager.createNativeQuery(PROJECTSHORTNAMECHECK);
 	query.setParameter("projectshortname", ProjectShortName);
 	
@@ -269,7 +257,6 @@ public Long ProjectShortNameCount(String ProjectShortName) throws Exception {
 
 @Override
 public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectDetailes");
     Query query=manager.createNativeQuery("CALL Pfms_Project_Initiation_Data(:InitiationId)");
 	query.setParameter("InitiationId", IntiationId);
 	List<Object[]> ProjectDetailes=(List<Object[]>)query.getResultList();		
@@ -279,7 +266,6 @@ public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception {
 
 @Override
 public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectDetailsPreview");
     Query query=manager.createNativeQuery(PROJECTINTIDATAPREVIEW);
     query.setParameter("initiationid", IntiationId);
 	List<Object[]> ProjectDetailsPreview=(List<Object[]>)query.getResultList();		
@@ -290,7 +276,6 @@ public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception {
 
 @Override
 public Long ProjectIntiationDetailAdd(PfmsInitiationDetail pfmsinitiationdetail) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationDetailAdd");
 	manager.persist(pfmsinitiationdetail);
 	
 	manager.flush();
@@ -299,7 +284,6 @@ public Long ProjectIntiationDetailAdd(PfmsInitiationDetail pfmsinitiationdetail)
 
 @Override
 public int ProjectLabAdd(List<PfmsInitiationLab> pfmsinitiationlablist,PfmsInitiation pfmsinitiation) throws Exception {
-	logger.info(loggerdate +"Inside ProjectLabAdd");
 	for(PfmsInitiationLab lab:pfmsinitiationlablist) {
 		manager.persist(lab);
 	}
@@ -315,7 +299,6 @@ public int ProjectLabAdd(List<PfmsInitiationLab> pfmsinitiationlablist,PfmsIniti
 
 @Override
 public List<Object[]> BudgetItem(String BudegtId) throws Exception {
-	logger.info(loggerdate +"Inside BudgetItem");
     Query query=manager.createNativeQuery(BUDEGTITEM);
     query.setParameter("budgetheadid", BudegtId);
 	List<Object[]> BudgetItem=(List<Object[]>)query.getResultList();		
@@ -325,7 +308,6 @@ public List<Object[]> BudgetItem(String BudegtId) throws Exception {
 
 @Override
 public List<Object[]> ProjectIntiationItemList(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationItemList");
 	 Query query=manager.createNativeQuery(PROJECTITEMLIST);
     query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectIntiationItemList=(List<Object[]>)query.getResultList();		
@@ -335,7 +317,6 @@ public List<Object[]> ProjectIntiationItemList(String InitiationId) throws Excep
 
 @Override
 public Long ProjectIntiationCostAdd(PfmsInitiationCost pfmsinitiationcost,String ReFe,PfmsInitiation pfmsinitiation) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationCostAdd");
 	manager.persist(pfmsinitiationcost);
 	manager.flush();
 
@@ -344,7 +325,6 @@ public Long ProjectIntiationCostAdd(PfmsInitiationCost pfmsinitiationcost,String
 
 @Override
 public List<Object[]> ProjectIntiationLabList(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationLabList");
 	    Query query=manager.createNativeQuery(PROJECTLABLIST);
 	    query.setParameter("initiationid", InitiationId);
 		List<Object[]> ProjectIntiationLabList=(List<Object[]>)query.getResultList();		
@@ -354,7 +334,6 @@ public List<Object[]> ProjectIntiationLabList(String InitiationId) throws Except
 
 @Override
 public List<Object[]> BudgetHead() throws Exception {
-	logger.info(loggerdate +"Inside BudgetHead");
 	 Query query=manager.createNativeQuery(BUDEGTHEADLIST);
 	List<Object[]> BudgetHead=(List<Object[]>)query.getResultList();		
 	
@@ -364,7 +343,6 @@ public List<Object[]> BudgetHead() throws Exception {
 @Override
 public Long ProjectScheduleAdd(List<PfmsInitiationSchedule> pfmsinitiationschedulelist,PfmsInitiation pfmsinitiation) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectScheduleAdd");
 	Long count=0L;
 	for(PfmsInitiationSchedule schedule:pfmsinitiationschedulelist) {
 		
@@ -384,7 +362,6 @@ public Long ProjectScheduleAdd(List<PfmsInitiationSchedule> pfmsinitiationschedu
 @Override
 public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectIntiationScheduleList");
     Query query=manager.createNativeQuery(PROJECTSCHEDULELIST);
     query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectIntiationScheduleList=(List<Object[]>)query.getResultList();		
@@ -394,7 +371,6 @@ public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws E
 
 @Override
 public Object[] ProjectProgressCount(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectProgressCount");
 	Query query=manager.createNativeQuery("CALL ProjectProgressBar(:InitiationId)");
 	query.setParameter("InitiationId", InitiationId);
 	Object[] ProjectProgressCount=(Object[])query.getSingleResult();	
@@ -404,7 +380,6 @@ public Object[] ProjectProgressCount(String InitiationId) throws Exception {
 
 @Override
 public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationDetailsList");
 	Query query=manager.createNativeQuery(PROJECTDETAILSLIST);
 	query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectIntiationDetailsList=(List<Object[]> )query.getResultList();	
@@ -416,7 +391,6 @@ public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Ex
 
 @Override
 public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationCostList");
     Query query=manager.createNativeQuery(PROJECTCOSTLIST);
     query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectIntiationCostList=(List<Object[]>)query.getResultList();		
@@ -426,7 +400,6 @@ public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Excep
 
 @Override
 public List<Object[]> ProjectEditData(String IntiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectEditData");
     Query query=manager.createNativeQuery(PROJECTINTIEDITDATA);
     query.setParameter("initiationid", IntiationId);
 	List<Object[]> ProjectEditData=(List<Object[]>)query.getResultList();		
@@ -437,7 +410,6 @@ public List<Object[]> ProjectEditData(String IntiationId) throws Exception {
 @Transactional
 @Override
 public int ProjectIntiationEdit(PfmsInitiation pfmsinitiation) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationEdit");
 	
 	 Query query=manager.createNativeQuery(PROJECTINTIEDITUPDATE);
 	    query.setParameter("initiationid", pfmsinitiation.getInitiationId());
@@ -467,7 +439,6 @@ public int ProjectIntiationEdit(PfmsInitiation pfmsinitiation) throws Exception 
 
 @Override
 public Double TotalIntiationCost(String IntiationId) throws Exception {
-	logger.info(loggerdate +"Inside TotalIntiationCost");
 	 Query query=manager.createNativeQuery(PROJECTINTITOTALCOST);
     query.setParameter("initiationid", IntiationId);
 	BigDecimal TotalIntiationCost=(BigDecimal)query.getSingleResult();		
@@ -479,7 +450,6 @@ public Double TotalIntiationCost(String IntiationId) throws Exception {
 
 @Override
 public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectCostEditData");
 	 Query query=manager.createNativeQuery(PROJECTINTICOSTDATA);
     query.setParameter("initiationcostid", InitiationCostId);
 	List<Object[]> ProjectCostEditData=(List<Object[]>)query.getResultList();		
@@ -491,7 +461,6 @@ public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Except
 @Override
 public int ProjectIntiationCostEdit(PfmsInitiationCost pfmsinitiationcost) throws Exception {
 
-	logger.info(loggerdate +"Inside ProjectIntiationCostEdit");
 	 	Query query=manager.createNativeQuery(PROJECTINTICOSTUPDATE);
 	    query.setParameter("initiationcostid", pfmsinitiationcost.getInitiationCostId());
 	    query.setParameter("budgetitemid", pfmsinitiationcost.getBudgetSancId());
@@ -510,7 +479,6 @@ public int ProjectIntiationCostEdit(PfmsInitiationCost pfmsinitiationcost) throw
 @Override
 public int ProjectIntiationCostsUpdate(PfmsInitiation pfmsinitiation) throws Exception 
 {
-	logger.info(loggerdate +"Inside ProjectIntiationCostsUpdate");
 	int count=0;
 
 	Query query1=manager.createNativeQuery(PROJECTCOSTUPDATE);
@@ -531,7 +499,6 @@ return count;
 @Override
 public int ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
 
-	logger.info(loggerdate +"Inside ProjectScheduleEdit");
 	Query query=manager.createNativeQuery(PROJECTSHDULEUPDATE);
     query.setParameter("initiationscheduleid", pfmsinitiationschedule.getInitiationScheduleId());
     query.setParameter("milestoneactivity", pfmsinitiationschedule.getMilestoneActivity());
@@ -552,7 +519,6 @@ return count1+count2;
 @Override
 public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectScheduleDelete");
 	 Query query=manager.createNativeQuery(PROJECTSHDULEDELETE);
 	 query.setParameter("initiationscheduleid", pfmsinitiationschedule.getInitiationScheduleId());
 
@@ -571,7 +537,6 @@ public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,P
 @Override
 public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationdetail,String Details) throws Exception{
 	
-	logger.info(loggerdate +"Inside ProjectInitiationDetailsUpdate");
 	if(Details.equalsIgnoreCase("requirement")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSREQUPDATE);
 		query.setParameter("requirements", pfmsinitiationdetail.getRequirements());
@@ -676,7 +641,6 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 @Override
 public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectScheduleMonth");
 	 Query query=manager.createNativeQuery(PROJECTSCHTOTALMONTH);
     query.setParameter("InitiationId", InitiationId);
     BigDecimal ProjectScheduleMonth=(BigDecimal)query.getSingleResult();		
@@ -688,7 +652,6 @@ public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 
 @Override
 public int ProjectMileStoneNo(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectMileStoneNo");
 	 Query query=manager.createNativeQuery(MILESTONENO);
     query.setParameter("InitiationId", InitiationId);
     Integer ProjectMileStoneNo=(Integer)query.getSingleResult();		
@@ -702,7 +665,6 @@ public int ProjectMileStoneNo(String InitiationId) throws Exception {
 
 @Override
 public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectScheduleEditData");
 	Query query=manager.createNativeQuery(SCDULEMONTH);
 	    query.setParameter("initiationscheduleid", InitiationScheduleId);
 	    Integer ProjectScheduleMonth=(Integer)query.getSingleResult();		
@@ -715,7 +677,6 @@ public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception
 @Override
 public Long ProjectInitiationAttachmentAdd(PfmsInitiationAttachment pfmsinitiationattachment,
 		PfmsInitiationAttachmentFile pfmsinitiationattachmentfile) throws Exception {
-	logger.info(loggerdate +"Inside ProjectInitiationAttachmentAdd");
 manager.persist(pfmsinitiationattachment);
 pfmsinitiationattachmentfile.setInitiationAttachmentId(pfmsinitiationattachment.getInitiationAttachmentId());
 manager.persist(pfmsinitiationattachmentfile);
@@ -726,7 +687,6 @@ return pfmsinitiationattachmentfile.getInitiationAttachmentFileId();
 @Override
 public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectIntiationAttachment");
 	 Query query=manager.createNativeQuery(PROJECTINTATTACH);
     query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectIntiationAttachment=(List<Object[]>)query.getResultList();		
@@ -737,7 +697,6 @@ public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exc
 @Override
 public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside AuthorityAttachment");
 	 Query query=manager.createNativeQuery(AUTHORITYATTACHMENT);
     query.setParameter("initiationid", InitiationId);
  
@@ -748,7 +707,6 @@ public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception 
 
 @Override
 public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationAttachmentFile");
 	PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile= manager.find(PfmsInitiationAttachmentFile.class,Long.parseLong(InitiationAttachmentId));
 	return ProjectIntiationAttachmentFile;
 }
@@ -756,7 +714,6 @@ public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String Initia
 @Override
 public int ProjectInitiationAttachmentDelete(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectInitiationAttachmentDelete");
 	Query query=manager.createNativeQuery(PROJECTINTATTACHDELETE);
 	query.setParameter("initiationattachmentid", pfmsinitiationattachment.getInitiationAttachmentId());
 
@@ -771,7 +728,6 @@ public int ProjectInitiationAttachmentDelete(PfmsInitiationAttachment pfmsinitia
 @Override
 public int ProjectInitiationAttachmentUpdate(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectInitiationAttachmentUpdate");
 	Query query=manager.createNativeQuery(PROJECTINTATTACHUPDATE);
 	query.setParameter("initiationattachmentid", pfmsinitiationattachment.getInitiationAttachmentId());
     query.setParameter("filename", pfmsinitiationattachment.getFileName());
@@ -786,7 +742,6 @@ public int ProjectInitiationAttachmentUpdate(PfmsInitiationAttachment pfmsinitia
 @Override
 public String ProjectIntiationAttachmentFileName(String InitiationAttachmentId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectIntiationAttachmentFileName");
 	Query query=manager.createNativeQuery(PROJECTINTATTACHFILENAME);
     query.setParameter("initiationattachmentid", InitiationAttachmentId);
     String ProjectIntiationAttachmentFileName=(String)query.getSingleResult();		
@@ -797,7 +752,6 @@ public String ProjectIntiationAttachmentFileName(String InitiationAttachmentId) 
 @Override
 public String ProjectIntiationAttachmentFileNamePath(String InitiationAttachmentId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectIntiationAttachmentFileNamePath");
 	Query query=manager.createNativeQuery(PROJECTINTATTACHFILENAMEPATH);
     query.setParameter("initiationattachmentid", InitiationAttachmentId);
     String ProjectIntiationAttachmentFileNamePath=(String)query.getSingleResult();		
@@ -809,7 +763,6 @@ public String ProjectIntiationAttachmentFileNamePath(String InitiationAttachment
 public int ProjectLabdelete(PfmsInitiationLab pfmsinitiationlab, PfmsInitiation pfmsinitiation) throws Exception {
 	
 	
-	logger.info(loggerdate +"Inside ProjectLabdelete");
 	    Query query=manager.createNativeQuery(PROJECTINTIUPDATE);
 	    query.setParameter("initiationid", pfmsinitiation.getInitiationId());
 	    query.setParameter("labcount", pfmsinitiation.getLabCount());
@@ -828,7 +781,6 @@ public int ProjectLabdelete(PfmsInitiationLab pfmsinitiationlab, PfmsInitiation 
 
 @Override
 public int ProjectIntiationCostDelete(PfmsInitiationCost pfmsinitiationcost) throws Exception {
-	logger.info(loggerdate +"Inside ProjectIntiationCostDelete");
 	 Query query=manager.createNativeQuery(PROJECTINTCOSTDELETE);
 	    query.setParameter("initiationcostid", pfmsinitiationcost.getInitiationCostId());
 	    query.setParameter("modifiedby",   pfmsinitiationcost.getModifiedBy());
@@ -842,7 +794,6 @@ public int ProjectIntiationCostDelete(PfmsInitiationCost pfmsinitiationcost) thr
 @Override
 public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApproval pfmsapproval,PfmsNotification notification) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectIntiationStatusUpdate");
 	manager.persist(pfmsapproval);
 	manager.persist(notification);
 	
@@ -861,7 +812,6 @@ public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApprov
 
 @Override
 public Long ProjectForwardStatus(String InitiationId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectForwardStatus");
 	Query query=manager.createNativeQuery("CALL ProjectForwardStatus(:InitiationId)");
 	query.setParameter("InitiationId", InitiationId);
 	BigInteger ProjectForwardStatus=(BigInteger)query.getSingleResult();	
@@ -871,7 +821,6 @@ public Long ProjectForwardStatus(String InitiationId) throws Exception {
 @Override
 public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectActionList");
 	Query query=manager.createNativeQuery(PROJECTACTIONLIST);
     query.setParameter("projectauthorityid", ProjectAuthorityId);
 	List<Object[]> ProjectActionList=(List<Object[]>)query.getResultList();		
@@ -882,7 +831,6 @@ public List<Object[]> ProjectActionList(String ProjectAuthorityId) throws Except
 @Override
 public List<Object[]> ProjectApprovePdList(String EmpId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectApprovePdList");
 	Query query=manager.createNativeQuery("CALL Project_Approval_Pd(:EmpId)");
 	query.setParameter("EmpId", EmpId);
 	List<Object[]> ProjectApprovePdList=(List<Object[]>)query.getResultList();	
@@ -894,7 +842,6 @@ public int ProjectApprove(PfmsInitiation pfmsinitiation, PfmsApproval pfmsapprov
 	manager.persist(pfmsapproval);
 	manager.persist(notification);
 	
-	logger.info(loggerdate +"Inside ProjectApprove");
     Query query=manager.createNativeQuery(PROJECTSTATUSUPDATE);
     query.setParameter("initiationid", pfmsinitiation.getInitiationId());
     query.setParameter("projectstatus", pfmsinitiation.getProjectStatus());
@@ -912,7 +859,6 @@ public int ProjectApprove(PfmsInitiation pfmsinitiation, PfmsApproval pfmsapprov
 @Override
 public double PfmsInitiationRefeSum(String initiationid,String refe) throws Exception
 {
-	logger.info(loggerdate +"Inside PfmsInitiationRefeSum");
 	Query query=manager.createNativeQuery(PFMSINITIATIONREFESUM);
 	query.setParameter("initiationid", initiationid);
 	query.setParameter("refe", refe);
@@ -930,7 +876,6 @@ public double PfmsInitiationRefeSum(String initiationid,String refe) throws Exce
 
 @Override
 public List<Object[]> EmployeeList(String LabCode) throws Exception {
-	logger.info(loggerdate +"Inside EmployeeList");
 	Query query=manager.createNativeQuery(EMPLOYEELIST);
 	query.setParameter("LabCode", LabCode);
 	List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -942,7 +887,6 @@ public List<Object[]> EmployeeList(String LabCode) throws Exception {
 @Override
 public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String LabCode) throws Exception{
 	
-	logger.info(loggerdate +"Inside ProjectStatusList");
 	Query query=manager.createNativeQuery(PROJECTSTATUSLIST);
 	query.setParameter("empid", EmpId);
 	query.setParameter("logintype", LoginType);
@@ -955,7 +899,6 @@ public List<Object[]> ProjectStatusList(String EmpId,String LoginType,String Lab
 @Override
 public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Exception{
 	
-	logger.info(loggerdate +"Inside ProjectApprovalTracking");
 	Query query=manager.createNativeQuery(PROJECTAPPROVALTRACKING);
 	query.setParameter("initiationid", InitiationId);
 	List<Object[]> ProjectApprovalTracking=(List<Object[]>)query.getResultList();
@@ -966,7 +909,6 @@ public List<Object[]> ProjectApprovalTracking(String InitiationId) throws Except
 @Override
 public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectApproveRtmddoList");
 	Query query=manager.createNativeQuery("CALL Project_Approval_Rtmddo(:EmpId)");
 	query.setParameter("EmpId", EmpId);
 	List<Object[]> ProjectApproveRtmddoList=(List<Object[]>)query.getResultList();	
@@ -976,7 +918,6 @@ public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception {
 @Override
 public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectApproveTccList");
 	Query query=manager.createNativeQuery("CALL Project_Approval_Tcc(:EmpId)");
 	query.setParameter("EmpId", EmpId);
 	List<Object[]> ProjectApproveTccList=(List<Object[]>)query.getResultList();	
@@ -987,7 +928,6 @@ public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception {
 
 @Override
 public Double TotalIntiationFeCost(String IntiationId) throws Exception {
-	logger.info(loggerdate +"Inside TotalIntiationFeCost");
 	 Query query=manager.createNativeQuery(PROJECTINTITOTALFECOST);
 	    query.setParameter("initiationid", IntiationId);
 		BigDecimal TotalIntiationFeCost=(BigDecimal)query.getSingleResult();		
@@ -1000,7 +940,6 @@ public Double TotalIntiationFeCost(String IntiationId) throws Exception {
 @Override
 public Double TotalIntiationReCost(String IntiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside TotalIntiationReCost");
 	 Query query=manager.createNativeQuery(PROJECTINTITOTALRECOST);
 	    query.setParameter("initiationid", IntiationId);
 		BigDecimal TotalIntiationReCost=(BigDecimal)query.getSingleResult();		
@@ -1013,7 +952,6 @@ public Double TotalIntiationReCost(String IntiationId) throws Exception {
 @Override
 public List<Object[]> ProjectCost(Long IntiationId) throws Exception {
 	
-	logger.info(loggerdate +"Inside ProjectCost");
 	 	Query query=manager.createNativeQuery(PROJECTCOSTDATA);
 	    query.setParameter("initiationid", IntiationId);
 		List<Object[]> ProjectCost=(List<Object[]>)query.getResultList();		
@@ -1026,7 +964,6 @@ public List<Object[]> ProjectCost(Long IntiationId) throws Exception {
 @Override
 public List<Object[]> TccProjectList() throws Exception {
 
-	logger.info(loggerdate +"Inside TccProjectList");
 	Query query=manager.createNativeQuery(TCCPROJECTLIST);
 	List<Object[]> TccProjectList=(List<Object[]>)query.getResultList();		
 	
@@ -1038,7 +975,6 @@ public List<Object[]> TccProjectList() throws Exception {
 @Override
 public List<Object[]> ExpertList() throws Exception {
 
-	logger.info(loggerdate +"Inside ExpertList");
 	Query query=manager.createNativeQuery(EXPERTLIST);
 	List<Object[]> ExpertList=(List<Object[]>)query.getResultList();
 	return ExpertList;
@@ -1048,7 +984,6 @@ public List<Object[]> ExpertList() throws Exception {
 @Override
 public BigInteger DivisionHeadId(String EmpId) throws Exception {
 	
-	logger.info(loggerdate +"Inside DivisionHeadId");
 	Query query=manager.createNativeQuery(DIVISIONHEADID);
 	query.setParameter("empid", EmpId);
 	BigInteger  DivisionHeadId=(BigInteger)query.getSingleResult();
@@ -1058,7 +993,6 @@ public BigInteger DivisionHeadId(String EmpId) throws Exception {
 @Override
 public BigInteger RtmddoId() throws Exception {
 
-	logger.info(loggerdate +"Inside RtmddoId");
 	Query query=manager.createNativeQuery(RTMDDOID);
 	
 	BigInteger  RtmddoId=(BigInteger)query.getSingleResult();
@@ -1068,7 +1002,6 @@ public BigInteger RtmddoId() throws Exception {
 @Override
 public BigInteger TccChairpersonId() throws Exception {
 
-	logger.info(loggerdate +"Inside TccChairpersonId");
 	Query query=manager.createNativeQuery(TCCCHAIRPERSONID);
 	
 	BigInteger  TccChairpersonId=(BigInteger)query.getSingleResult();
@@ -1078,7 +1011,6 @@ public BigInteger TccChairpersonId() throws Exception {
 @Override
 public BigInteger CcmChairpersonId() throws Exception {
 	
-	logger.info(loggerdate +"Inside CcmChairpersonId");
 	Query query=manager.createNativeQuery(CCMCHAIRPERSONID);
 	
 	BigInteger  CcmChairpersonId=(BigInteger)query.getSingleResult();
@@ -1087,7 +1019,6 @@ public BigInteger CcmChairpersonId() throws Exception {
 
 @Override
 public List<Object[]> ProjectMainList() throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectMainList ");
 	Query query = manager.createNativeQuery(PROJECTMAINLIST);
 	List<Object[]> ProjectMainList = (List<Object[]>) query.getResultList();
 	return ProjectMainList;
@@ -1095,7 +1026,6 @@ public List<Object[]> ProjectMainList() throws Exception {
 
 @Override
 public Long ProjectMainClose(ProjectMain proType) throws Exception {
-	logger.info(new java.util.Date() +"Inside PROJECTMAINCLOSE ");	
 	Query query=manager.createNativeQuery(PROJECTMAINCLOSE);
 	query.setParameter("projectmainid",proType.getProjectMainId());
 	query.setParameter("modifiedby", proType.getModifiedBy());
@@ -1107,7 +1037,6 @@ public Long ProjectMainClose(ProjectMain proType) throws Exception {
 }
 @Override
 public Object[] ProjectMainEditData(String ProjectMainId) throws Exception {
-	logger.info(new java.util.Date()+"Inside ProjectMainEditData ");
 	Query query = manager.createNativeQuery(PROJECTMAINEDITDATA);
 	query.setParameter("promainid",ProjectMainId);
 	Object[] ProjectMainEditData = (Object[]) query.getSingleResult();
@@ -1117,7 +1046,6 @@ public Object[] ProjectMainEditData(String ProjectMainId) throws Exception {
 @Override
 public Long ProjectMainEdit(ProjectMain proType) throws Exception {
 
-	logger.info(new java.util.Date() +"Inside ProjectMainEdit ");	
 	Query query=manager.createNativeQuery(PROJECTMAINUPDATE);
 	query.setParameter("projecttypeid",proType.getProjectTypeId());
     query.setParameter("categoryId", proType.getCategoryId());
@@ -1151,7 +1079,6 @@ public Long ProjectMainEdit(ProjectMain proType) throws Exception {
 
 @Override
 public List<Object[]> ProjectList() throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectList ");
 	Query query = manager.createNativeQuery(PROJECTLIST1);
 	List<Object[]> ProjectList = (List<Object[]>) query.getResultList();
 	return ProjectList;
@@ -1159,7 +1086,6 @@ public List<Object[]> ProjectList() throws Exception {
 
 @Override
 public List<Object[]> ProjectTypeMainList() throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectTypeMainList ");
 	Query query = manager.createNativeQuery(PROJECTTYPEMAINLIST);
 	List<Object[]> ProjectTypeList = (List<Object[]>) query.getResultList();
 	return ProjectTypeList;
@@ -1168,7 +1094,6 @@ public List<Object[]> ProjectTypeMainList() throws Exception {
 
 @Override
 public List<Object[]> ProjectTypeMainListNotAdded() throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectTypeMainListNotAdded ");
 	Query query = manager.createNativeQuery(PROJECTTYPEMAINLISTNOTADDED);
 	List<Object[]> ProjectMainList = (List<Object[]>) query.getResultList();
 	return ProjectMainList;
@@ -1176,7 +1101,6 @@ public List<Object[]> ProjectTypeMainListNotAdded() throws Exception {
 
 @Override
 public List<Object[]> ProjectCategoryList() throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectCategoryList ");
 	Query query = manager.createNativeQuery(PROJECTCATEGORY);
 	List<Object[]> ProjectCategoryList = (List<Object[]>) query.getResultList();
 	return ProjectCategoryList;
@@ -1185,7 +1109,6 @@ public List<Object[]> ProjectCategoryList() throws Exception {
 
 @Override
 public Long ProjectMasterAdd(ProjectMaster proType) throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectMasterAdd ");	
     manager.persist(proType);
 	manager.flush();
 	return proType.getProjectId();
@@ -1193,7 +1116,6 @@ public Long ProjectMasterAdd(ProjectMaster proType) throws Exception {
 
 @Override
 public Long ProjectEdit(ProjectMaster proType) throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectEdit ");	
 	
 	ProjectMaster proj=pmrepo.findById(proType.getProjectId()).get();
 //	 proj.setIsMainWC(proType.getIsMainWC());
@@ -1233,7 +1155,6 @@ public Long ProjectEdit(ProjectMaster proType) throws Exception {
 
 @Override
 public Long ProjectClose(ProjectMaster proType) throws Exception {
-	logger.info(new java.util.Date() +"Inside PROJECTCLOSE ");	
 	Query query=manager.createNativeQuery(PROJECTCLOSE);
 	query.setParameter("projectid",proType.getProjectId());
 	query.setParameter("modifiedby", proType.getModifiedBy());
@@ -1246,7 +1167,6 @@ public Long ProjectClose(ProjectMaster proType) throws Exception {
 
 @Override
 public Object[] ProjectEditData1(String ProjectId) throws Exception {
-	logger.info(new java.util.Date()  +"Inside ProjectEditData ");
 	Query query = manager.createNativeQuery(PROJECTEDITDATA);
 	query.setParameter("proid",ProjectId);
 	Object[] ProjectEditData = (Object[]) query.getSingleResult();
@@ -1264,7 +1184,6 @@ public List<Object[]> getProjectList() throws Exception {
 @Override
 public List<Object[]> ProjectAssignList(String EmpId) throws Exception {
 
-	logger.info(new java.util.Date()  +"Inside ProjectAssignList ");	
 	Query query=manager.createNativeQuery(PROJECTASSIGNLIST);
 	query.setParameter("proid",EmpId);
 	List<Object[]> ProjectAssignList=(List<Object[]>)query.getResultList();	
@@ -1282,7 +1201,6 @@ public List<Object[]> UserList(String proId) throws Exception {
 
 @Override
 public Object[] ProjectData(String ProId) throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectData ");	
 	Query query=manager.createNativeQuery(PROJECTDATA);
 	query.setParameter("proid",ProId);
 	Object[] ProjectData=(Object[])query.getSingleResult();
@@ -1292,7 +1210,6 @@ public Object[] ProjectData(String ProId) throws Exception {
 
 @Override
 public Long ProjectAssignAdd(ProjectAssign proAssign) throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectAssignAdd ");	
     manager.persist(proAssign);
 	manager.flush();
 	return proAssign.getProjectEmployeeId();
@@ -1300,7 +1217,6 @@ public Long ProjectAssignAdd(ProjectAssign proAssign) throws Exception {
 
 @Override
 public Long ProjectRevoke(ProjectAssign proAssign) throws Exception {
-	logger.info(new java.util.Date() +"Inside ProjectRevoke ");	
 	Query query=manager.createNativeQuery(PROJECTASSIGNREVOKE);
 	query.setParameter("proempid",proAssign.getProjectEmployeeId());
 	query.setParameter("modifiedby", proAssign.getModifiedBy());
@@ -1312,7 +1228,6 @@ public Long ProjectRevoke(ProjectAssign proAssign) throws Exception {
 
 @Override
 public List<Object[]> ProjectApproveAdList(String EmpId) throws Exception {
-	logger.info(loggerdate +"Inside ProjectApproveAdList");
 	Query query=manager.createNativeQuery("CALL Project_Approval_Ad(:EmpId)");
 	query.setParameter("EmpId", EmpId);
 	List<Object[]> ProjectApproveAdList=(List<Object[]>)query.getResultList();	
@@ -1322,7 +1237,6 @@ public List<Object[]> ProjectApproveAdList(String EmpId) throws Exception {
 @Override
 public BigInteger AdId() throws Exception {
 
-	logger.info(loggerdate +"Inside AdId");
 	Query query=manager.createNativeQuery(ADID);
 	
 	BigInteger  RtmddoId=(BigInteger)query.getSingleResult();
@@ -1331,7 +1245,6 @@ public BigInteger AdId() throws Exception {
 
 @Override
 public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
-	logger.info(loggerdate +"Inside StutusList");
 	Query query=manager.createNativeQuery(APPSTATUSLIST);
 	query.setParameter("AuthoId", AuthoId);
 	List<Object[]> StutusList=(List<Object[]>)query.getResultList();	
@@ -1340,7 +1253,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public long ProjectDataSubmit(PfmsProjectData pfmsprojectdata) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataSubmit");
 			manager.persist(pfmsprojectdata);
 			manager.flush();
 			return pfmsprojectdata.getProjectDataId();
@@ -1349,7 +1261,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public List<Object[]> ProjectStageDetailsList() throws Exception {
-			logger.info(loggerdate +"Inside ProjectStageDetailsList");
 			Query query=manager.createNativeQuery(PROJECTSTAGEDETAILSLIST);
 			List<Object[]> ProjectStageDetailsList=(List<Object[]>)query.getResultList();	
 			return ProjectStageDetailsList;
@@ -1358,13 +1269,13 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				
 		@Override
 		public Object[] ProjectDataDetails(String projectid) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataDetails");
 			Query query=manager.createNativeQuery(PROJECTDATADETAILS);
 			query.setParameter("projectid", projectid);
 			Object[] ProjectStageDetails=null;
 			try {
 				ProjectStageDetails=(Object[])query.getSingleResult();
 			}catch (Exception e) {
+				logger.error(loggerdate +"Inside DAO ProjectDataDetails "+ e);
 				return null;
 			}
 			
@@ -1375,7 +1286,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectDataEditSubmit(PfmsProjectData pfmsprojectdata, String querystr) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataEditSubmit");
 			String PROJECTDATAEDITSUBMIT="UPDATE pfms_project_data SET "+querystr+" currentstageid=:currentstageid,RevisionNo=:revisionno,proclimit=:proclimit,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE projectdataid=:projectdataid";
 			Query query=manager.createNativeQuery(PROJECTDATAEDITSUBMIT);
 			//query.setParameter("querystr", querystr);
@@ -1392,7 +1302,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Object[] ProjectDataSpecsFileData(String projectdataid) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside ProjectDataSpecsFileData");
 		
 			Query query=manager.createNativeQuery(PROJECTDATASPECSFILEDATA);
 			query.setParameter("projectdataid",projectdataid);
@@ -1404,7 +1313,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectRevDataSubmit(PfmsProjectDataRev pfmsprojectrevdata) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataSubmit");
 			manager.persist(pfmsprojectrevdata);
 			manager.flush();
 			return pfmsprojectrevdata.getProjectDataRevId();
@@ -1413,7 +1321,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object[]> ProjectDataRevList(String projectid) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataRevList");
 			Query query=manager.createNativeQuery(PROJECTDATAREVLIST);
 			query.setParameter("projectid", projectid);
 			List<Object[]> ProjectDataRevList=(List<Object[]>)query.getResultList();
@@ -1426,14 +1333,14 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		 @Override
 		 public Object[] ProjectDataRevData(String projectdatarevid) throws Exception
 		 {
-			logger.info(loggerdate +"Inside ProjectDataRevData"); Query
-			query=manager.createNativeQuery(PROJECTDATAREVDATA);
+			Query query=manager.createNativeQuery(PROJECTDATAREVDATA);
 			query.setParameter("projectdatarevid", projectdatarevid); 
 			Object[] ProjectDataRevData=null;
 			try 
 			{
 				ProjectDataRevData=(Object[])query.getSingleResult();
 			}catch (Exception e) {
+				logger.error(loggerdate +"Inside DAO ProjectDataRevData "+ e);
 				ProjectDataRevData=null;
 			}
 			 return	 ProjectDataRevData; 
@@ -1444,7 +1351,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Object[] ProjectDataSpecsRevFileData(String projectdatarevid) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside ProjectDataSpecsRevFileData");
 		
 			Query query=manager.createNativeQuery(PROJECTDATASPECSREVFILEDATA);
 			query.setParameter("projectdatarevid",projectdatarevid);
@@ -1456,7 +1362,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> InitiatedProjectList() throws Exception {
 
-			logger.info(new java.util.Date() +"Inside InitiatedProjectList");
 			
 			Query query=manager.createNativeQuery(INITIATEDPROJECT);
 			List<Object[]> InitiatedProjectList=(List<Object[]>)query.getResultList();
@@ -1466,7 +1371,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> InitiatedProjectDetails(String ProjectId) throws Exception {
 
-			logger.info(loggerdate +"Inside InitiatedProjectDetails");
 			Query query=manager.createNativeQuery(INITIATEDPROJECTDETAILS);
 			query.setParameter("initiationid", ProjectId);
 			List<Object[]> InitiatedProjectDetails=(List<Object[]>)query.getResultList();
@@ -1476,7 +1380,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> NodalLabList() throws Exception {
 			
-			logger.info(loggerdate +"Inside NodalLabList");
 			Query query=manager.createNativeQuery(NODALLABLIST);
 			List<Object[]> NodalLabList=(List<Object[]>)query.getResultList();
 			return NodalLabList;
@@ -1486,7 +1389,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> SubProjectList(String InitiationId) throws Exception {
 
-			logger.info(loggerdate +"Inside SubProjectList");
 			Query query=manager.createNativeQuery(SUBPROJECTLIST);
 			query.setParameter("initiationid", InitiationId);
 			List<Object[]> SubProjectList=(List<Object[]>)query.getResultList();
@@ -1495,7 +1397,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public String StatusDetails(String Status) throws Exception {
-			logger.info(loggerdate +"Inside StatusDetails");
 			Query query=manager.createNativeQuery(STATUSDETAILS);
 			query.setParameter("status",Status);
 			String StatusDetails=(String)query.getSingleResult();
@@ -1506,7 +1407,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public BigInteger EmpId(String InitiationId) throws Exception {
 			
-			logger.info(loggerdate +"Inside DivisionHeadId");
 			Query query=manager.createNativeQuery(INTEMPID);
 			query.setParameter("id", InitiationId);
 			BigInteger  DivisionHeadId=(BigInteger)query.getSingleResult();
@@ -1519,7 +1419,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception 
 		{			
-			logger.info(loggerdate +"Inside ProjectRiskDataList");
 			Query query=manager.createNativeQuery(PROJECTRISKDATALIST);
 			query.setParameter("projectid", projectid);
 			query.setParameter("LabCode", LabCode);
@@ -1532,13 +1431,13 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Object[] ProjectRiskData(String actionmainid) throws Exception 
 		{			
-			logger.info(loggerdate +"Inside ProjectRiskData");
 			Query query=manager.createNativeQuery(PROJECTRISKDATA);
 			query.setParameter("actionmainid", actionmainid);
 			Object[] ProjectRiskData=null;
 			try {
 				ProjectRiskData=(Object[])query.getSingleResult();
 			}catch (Exception e) {
+				logger.error(loggerdate +"Inside DAO ProjectRiskData "+ e);
 				ProjectRiskData=null;
 			}
 			return ProjectRiskData;		
@@ -1546,7 +1445,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectRiskDataSubmit(PfmsRisk model) throws Exception {
-			logger.info(loggerdate +"Inside ProjectDataSubmit");
 			manager.persist(model);
 			manager.flush();
 			return model.getRiskId();
@@ -1555,13 +1453,13 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception {
-			logger.info(loggerdate +"Inside ProjectRiskMatrixData");
 			Query query=manager.createNativeQuery(PROJECTRISKMATRIXDATA);
 			query.setParameter("actionmainid", actionmainid);
 			Object[] ProjectRiskMatrixData=null;
 			try {
 				ProjectRiskMatrixData=(Object[])query.getSingleResult();
 			}catch (Exception e) {
+				logger.error(loggerdate +"Inside DAO ProjectRiskMatrixData "+ e);
 				ProjectRiskMatrixData=null;
 			}
 			return ProjectRiskMatrixData;
@@ -1570,7 +1468,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public int ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception {
-			logger.info(loggerdate +"Inside ProjectRiskDataEdit");
 			Query query=manager.createNativeQuery(PROJECTRISKDATAEDIT);
 			query.setParameter("severity", dto.getSeverity());
 			query.setParameter("probability", dto.getProbability());
@@ -1585,7 +1482,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectRiskDataRevSubmit(PfmsRiskRev model) throws Exception{
-			logger.info(loggerdate +"Inside ProjectDataSubmit");
 			manager.persist(model);
 			manager.flush();
 			return model.getRiskRevisionId();
@@ -1594,7 +1490,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object[]> ProjectRiskMatrixRevList(String actionmainid) throws Exception {
-			logger.info(loggerdate +"Inside ProjectRiskMatrixRevList");
 			Query query=manager.createNativeQuery(PROJECTRISKMATRIXREVLIST);
 			query.setParameter("actionmainid", actionmainid);
 			List<Object[]>  ProjectRiskMatrixRevList=(List<Object[]>)query.getResultList();
@@ -1606,7 +1501,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
-			logger.info(loggerdate +"Inside RiskDataPresentList");
 			Query query=manager.createNativeQuery(RISKDATAPRESENTLIST);
 			query.setParameter("projectid", projectid);
 			query.setParameter("LabCode", LabCode);
@@ -1618,7 +1512,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Long ProjectInitiationAuthorityAdd(PfmsInitiationAuthority pfmsauthority,PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception {
 			
-			logger.info(loggerdate +"Inside ProjectInitiationAuthorityAdd");
 			manager.persist(pfmsauthority);
 			pfmsinitiationauthorityfile.setAuthorityId(pfmsauthority.getAuthorityId());
 			manager.persist(pfmsinitiationauthorityfile);
@@ -1630,7 +1523,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public PfmsInitiationAuthorityFile ProjectAuthorityDownload(String AuthorityFileId) throws Exception {
 			
-			logger.info(new java.util.Date() +"Inside ProjectAuthorityDownload");
 
 			PfmsInitiationAuthorityFile ProjectAuthorityDownload= manager.find(PfmsInitiationAuthorityFile.class,Long.parseLong(AuthorityFileId));
 			
@@ -1640,7 +1532,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Long ProjectAuthorityUpdate(PfmsInitiationAuthority pfmsauthority) throws Exception {
 			
-			logger.info(loggerdate +"Inside ProjectAuthorityUpdate");
 			Query query=manager.createNativeQuery(AUTHORITYUPDATE);
 			query.setParameter("authorityname",pfmsauthority.getAuthorityName() );
 			query.setParameter("letterdate", pfmsauthority.getLetterDate());
@@ -1657,7 +1548,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Long AuthorityFileUpdate(PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception {
 			
-			logger.info(loggerdate +"Inside AuthorityFileUpdate");
 			Query query=manager.createNativeQuery(AUTHORITYFILEUPDATE);
 			query.setParameter("attachmentname", pfmsinitiationauthorityfile.getAttachmentName());
 			query.setParameter("file", pfmsinitiationauthorityfile.getFile());
@@ -1671,7 +1561,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object[]> getProjectCatSecDetalis(Long projectId)throws Exception{
-			logger.info(loggerdate +"Inside getProjectCatSecDetalis Dao");
 			Query query=manager.createNativeQuery(PROCATSECDETAILS);
 			query.setParameter("projectmainid", projectId);
 			return (List<Object[]>)query.getResultList();
@@ -1679,7 +1568,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode)throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside LoginProjectDetailsList");
 			Query query=manager.createNativeQuery("CALL Pfms_Emp_ProjectList(:empid,:logintype,:labcode);");
 			query.setParameter("empid", empid);
 			query.setParameter("logintype", Logintype);
@@ -1693,7 +1581,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]>  DoRtmdAdEmpData() throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside DoRtmdAdEmpData");
 			Query query=manager.createNativeQuery(DORTMDADEMPDATA);
 			return (List<Object[]>)query.getResultList();
 		}
@@ -1702,7 +1589,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Object[]  DirectorEmpData(String LabCode) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside DirectorEmpData");
 			Query query=manager.createNativeQuery(DIRECTOREMPDATA);
 			query.setParameter("labcode", LabCode);	
 			try {
@@ -1716,12 +1602,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public Object[]  EmpDivHeadData(String empid) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside EmpDivHeadData");
 			Query query=manager.createNativeQuery(EMPDIVHEADDATA);
 			query.setParameter("empid",empid);
 			try {
 				return (Object[])query.getSingleResult();
 			}catch (NoResultException e) {
+				logger.error(loggerdate +"Inside DAO EmpDivHeadData "+ e);
 				return null;
 			}
 			
@@ -1731,7 +1617,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public ProjectMain  ProjectMainObj(String projectmainid) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside ProjectMainObj");
 			ProjectMain model= manager.find(ProjectMain.class,Long.parseLong(projectmainid));
 			return model;
 		}
@@ -1740,7 +1625,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]>  InitCommDefault() throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside InitCommDefault");
 			Query query=manager.createNativeQuery(INITCOMMDEFAULT);
 			return (List<Object[]> )query.getResultList();
 		}
@@ -1748,7 +1632,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public long InitiationCommitteeAdd(CommitteeInitiation model) throws Exception
 		{		
-			logger.info(new java.util.Date() +"Inside ProjectCommitteeAdd");
 			manager.persist(model);
 			manager.flush();
 			return  model.getCommitteeInitiationId();
@@ -1757,7 +1640,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public ProjectMaster ProjectMasterData(long projectid) throws Exception
 		{		
-			logger.info(new java.util.Date() +"Inside ProjectMasterData");
 			return manager.find(ProjectMaster.class, projectid);
 			
 		}
@@ -1765,7 +1647,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public ProjectMasterRev ProjectREVSubmit(ProjectMasterRev masterrev) throws Exception {
-			logger.info(new java.util.Date() +"Inside ProjectREVSubmit ");	
 		    manager.persist(masterrev);
 			manager.flush();
 			return masterrev;
@@ -1774,7 +1655,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object[]> ProjectRevList(String projectid) throws Exception {
-			logger.info(new java.util.Date() +"Inside ProjectRevList");
 			Query query=manager.createNativeQuery(PROJECTREVLIST);
 			query.setParameter("projectid", projectid);
 			return (List<Object[]>)query.getResultList();
@@ -1782,7 +1662,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectMasterAttachAdd(ProjectMasterAttach modal) throws Exception {
-			logger.info(new java.util.Date() +"Inside ProjectREVSubmit ");	
 		    manager.persist(modal);
 			manager.flush();
 			return modal.getProjectAttachId();
@@ -1791,7 +1670,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public List<Object[]> ProjectMasterAttachList(String projectid) throws Exception {
-			logger.info(new java.util.Date() +"Inside ProjectMasterAttachList");
 			Query query=manager.createNativeQuery(PROJECTMASTERATTACHLIST);
 			query.setParameter("projectid", projectid);
 			return (List<Object[]>)query.getResultList();
@@ -1800,7 +1678,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public Object[] ProjectMasterAttachData(String projectattachid) throws Exception {
-			logger.info(new java.util.Date() +"Inside ProjectMasterAttachData");
 			Query query=manager.createNativeQuery(PROJECTMASTERATTACHDATA);
 			query.setParameter("projectattachid", projectattachid);
 			return (Object[])query.getResultList().get(0);
@@ -1812,7 +1689,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public int ProjectMasterAttachDelete(String projectattachid) throws Exception
 		{
-			logger.info(new java.util.Date() +"Inside ProjectMasterAttachDelete");
 			Query query=manager.createNativeQuery(PROJECTMASTERATTACHDELETE);
 			query.setParameter("projectattachid", projectattachid);
 			return query.executeUpdate();
@@ -1820,7 +1696,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 
 		@Override
 		public long TechnicalWorkDataAdd(ProjectTechnicalWorkData modal) throws Exception {
-			logger.info(new java.util.Date() +"Inside TechnicalWorkDataAdd ");	
 		    manager.persist(modal);
 			manager.flush();
 			return modal.getTechDataId();
@@ -1828,7 +1703,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long TechnicalWorkDataEdit(ProjectTechnicalWorkData modal,long Techdataid) throws Exception {
-			logger.info(new java.util.Date() +"Inside TechnicalWorkDataAdd ");	
 			ProjectTechnicalWorkData detached = manager.find(ProjectTechnicalWorkData.class, Techdataid);
 			detached.setModifiedBy(modal.getCreatedBy());
 			detached.setModifiedDate(modal.getCreatedDate());			
@@ -1841,7 +1715,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public List<Object[]> InitiationCheckList(String initiationid ) throws Exception 
 		{
-			logger.info(new java.util.Date() +"Inside InitiationCheckList ");
 			Query query=manager.createNativeQuery(INITIATIONCHECKLIST);
 			query.setParameter("initiationid", initiationid);
 			return (List<Object[]>)query.getResultList();
@@ -1850,7 +1723,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public long InitiationChecklistAdd( PfmsInitiationChecklistData cldata ) throws Exception 
 		{
-			logger.info(new java.util.Date() +"Inside InitiationCheckList ");
 			manager.persist(cldata);
 			manager.flush();
 			return cldata.getChecklistDataId();
@@ -1859,7 +1731,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public PfmsInitiationChecklistData InitiationChecklistCheck( PfmsInitiationChecklistData cldata ) throws Exception
 	 	{
-			logger.info(new Date() +"Inside InitiationChecklistCheck");
 			try {
 				CriteriaBuilder cb =manager.getCriteriaBuilder();
 				CriteriaQuery <PfmsInitiationChecklistData> cq = cb.createQuery(PfmsInitiationChecklistData.class);
@@ -1868,6 +1739,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				TypedQuery<PfmsInitiationChecklistData> query  = manager.createQuery(all);
 				return query.getSingleResult();
 			}catch (NoResultException e) {
+				logger.error(loggerdate +"Inside DAO InitiationChecklistCheck "+ e);
 				return null;
 			}			
 		}
@@ -1875,7 +1747,6 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		@Override
 		public long InitiationChecklistUpdate( PfmsInitiationChecklistData cldata ) throws Exception
 	 	{
-			logger.info(new Date() +"Inside InitiationChecklistUpdate");
 			manager.merge(cldata);
 			manager.flush();
 			return cldata.getChecklistDataId();

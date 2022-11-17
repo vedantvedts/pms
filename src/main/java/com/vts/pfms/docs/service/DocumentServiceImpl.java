@@ -145,6 +145,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public PfmsDoc ProjectDocCheck(String projectid,String filerepmasterid,String fileuploadmasterid, String userid)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE ProjectDocCheck ");	
 		PfmsDoc doc = dao.PfmsDocCheck(projectid, filerepmasterid,fileuploadmasterid);
 		if(doc==null) {
 			PfmsDoc doc1= new PfmsDoc();
@@ -165,6 +166,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public long PfmsDocContentRevision(String projectdocid,String pfmsdocid,String userid)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE PfmsDocContentRevision ");	
 		List<PfmsDocContentFreeze> doccontent = dao.PfmsDocContentFrzData(pfmsdocid);
 		PfmsDoc pfmsDoc = dao.pfmsDoc(pfmsdocid); 
 		for(PfmsDocContentFreeze content : doccontent) 
@@ -199,6 +201,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public long pfmsDocContentFreeze(String projectdocid,String pfmsdocid,String userid)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE pfmsDocContentFreeze ");	
 		dao.DeleteFrozenDoc(pfmsdocid);
 		List<Object[]> doccontent = dao.TempItemContentsList(pfmsdocid);
 		PfmsDoc pfmsDoc = dao.pfmsDoc(pfmsdocid); 
@@ -317,6 +320,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public HashMap<Long, ArrayList<Object[]>> AllItemsLinksList(List<PfmsDocContentFreeze> contentlist)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE AllItemsLinksList ");	
 		HashMap<Long, ArrayList<Object[]>> linkslistmap = new HashMap<Long, ArrayList<Object[]>>();
 			for(PfmsDocContentFreeze content : contentlist)
 			{
@@ -332,6 +336,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public HashMap<Long, ArrayList<Object[]>> AllItemsLinksListDraft(List<Object[]> contentlist)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE AllItemsLinksListDraft ");	
 		HashMap<Long, ArrayList<Object[]>> linkslistmap = new HashMap<Long, ArrayList<Object[]>>();
 		
 			for(Object[] content : contentlist)
@@ -348,6 +353,7 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public HashMap<Long, ArrayList<Object[]>> AllItemsLinksListRev(List<PfmsDocContentRev> contentlist)throws Exception
 	{
+		logger.info(new Date() +"Inside SERVICE AllItemsLinksListRev ");	
 		HashMap<Long, ArrayList<Object[]>> linkslistmap = new HashMap<Long, ArrayList<Object[]>>();
 		for(PfmsDocContentRev content : contentlist)
 		{

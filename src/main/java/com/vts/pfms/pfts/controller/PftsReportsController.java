@@ -321,7 +321,7 @@ public class PftsReportsController {
 	public void fileMonitoringReportPrint(HttpServletRequest req,HttpServletResponse res,HttpSession ses) throws Exception  
 	{
 		String UserId= (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside WeeklyReport.htm "+UserId);
+		logger.info(new Date() +" Inside FileMonitoringReport-Print.htm "+UserId);
 		
 		DateFormat format=new SimpleDateFormat("YYYY-MM-dd");
 		DateFormat parse=new SimpleDateFormat("dd-MM-yyyy");
@@ -376,7 +376,7 @@ public class PftsReportsController {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside WeeklyReport.htm "+UserId , e);
+			logger.error(new Date() +" Inside FileMonitoringReport-Print.htm "+UserId , e);
 		}
 	}
 	

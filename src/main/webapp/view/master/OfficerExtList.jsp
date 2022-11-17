@@ -166,7 +166,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	   <thead>
+	   <thead style = "text-align:center">
 	   <tr>
 	   <th>Select</th>
 	  <th>Employee No</th>

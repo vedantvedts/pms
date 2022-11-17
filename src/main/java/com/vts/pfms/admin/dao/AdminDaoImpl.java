@@ -98,7 +98,6 @@ public class AdminDaoImpl implements AdminDao{
 	@Override
 	public List<Object[]> AllLabList() throws Exception 
 	{
-		logger.info(new java.util.Date() +"Inside ClusterLabList");
 		Query query=manager.createNativeQuery(CLUSTERLABLIST);
 		List<Object[]> ClusterLabList=(List<Object[]>)query.getResultList();
 		return ClusterLabList;
@@ -107,7 +106,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public List<Object[]> LoginTypeList() throws Exception {
-			logger.info(new Date() +"Inside LoginTypeList");
 			Query query=manager.createNativeQuery(LOGINTYPELIST);
 			
 			List<Object[]> LoginTypeList=(List<Object[]>)query.getResultList();		
@@ -117,7 +115,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public List<Object[]> EmployeeList() throws Exception {
-			logger.info(new Date() +"Inside EmployeeList");
 			Query query=manager.createNativeQuery(EMPLOYEELIST);
 			
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();		
@@ -128,7 +125,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public List<Object[]> LoginEditEmpList(String LabCode) throws Exception {
-			logger.info(new Date() +"Inside LoginEditEmpList");
 			Query query=manager.createNativeQuery(LOGINEDITEMPLIST);
 			query.setParameter("labcode", LabCode);
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();		
@@ -138,7 +134,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public Object[] EmployeeData(String empid) throws Exception {
-			logger.info(new Date() +"Inside EmployeeData");
 			Query query=manager.createNativeQuery(EMPLOYEEDATA);
 			query.setParameter("empid",empid );
 			List<Object[]> EmployeeData=(List<Object[]>)query.getResultList();		
@@ -148,7 +143,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public List<Object[]> RoleList() throws Exception {
-			logger.info(new Date() +"Inside RoleList");
 			Query query=manager.createNativeQuery(ROLELIST);
 			
 			List<Object[]> RoleList=(List<Object[]>)query.getResultList();		
@@ -165,7 +159,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public Long LoginTypeAddSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception {
-			logger.info(new Date() +"Inside LoginTypeAddSubmit");
 			manager.persist(loginrole);
 			
 			Query query=manager.createNativeQuery(LOGINTYPEADD);
@@ -181,7 +174,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public Long LoginTypeRevoke(Login login) throws Exception {
-			logger.info(new Date() +"Inside LoginTypeRevoke");
 			Query query=manager.createNativeQuery(LOGINTYPEREVOKE);
 			query.setParameter("pfms", "N");
 			query.setParameter("loginid", login.getLoginId());
@@ -199,7 +191,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public List<Object[]> LoginTypeEditData(String LoginId) throws Exception {
-			logger.info(new Date() +"Inside LoginTypeEditData");
 			Query query=manager.createNativeQuery(LOGINTYPEEDITDATA);
 			query.setParameter("loginid", LoginId);
 			List<Object[]> LoginTypeEditData=(List<Object[]>)query.getResultList();		
@@ -209,7 +200,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public Long LoginTypeEditSubmit(PfmsLoginRoleSecurity loginrole,Login login) throws Exception {
-			logger.info(new Date() +"Inside LoginTypeEditSubmit");
 			Query query=manager.createNativeQuery(LOGINTYPEEDIT);
 			query.setParameter("loginid", loginrole.getLoginId());
 			query.setParameter("roleid", loginrole.getRoleId());
@@ -226,7 +216,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public List<Object[]> NotificationList(String EmpId) throws Exception {
-			logger.info(new Date() +"Inside NotificationList");
 			Query query=manager.createNativeQuery(NOTIFICATIONLIST);
 			query.setParameter("empid", EmpId);
 			List<Object[]> NotificationList=(List<Object[]>)query.getResultList();		
@@ -236,7 +225,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public List<Object[]> EmployeeListAll() throws Exception {
-			logger.info(new Date() +"Inside EmployeeList");	
 			Query query=manager.createNativeQuery(EMPLOYEELISTALL);
 			
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -245,7 +233,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 		@Override
 		public List<Object[]> Rtmddo() throws Exception {
-			logger.info(new Date() +"Inside Rtmddo");	
 			Query query=manager.createNativeQuery(RTMDDO);
 			
 			List<Object[]> EmployeeList=(List<Object[]>)query.getResultList();	
@@ -254,7 +241,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public long RtmddoInsert(PfmsRtmddo rtmddo) throws Exception {
-			logger.info(new Date() +"Inside RtmddoInsert");	
 			manager.persist(rtmddo);
 			manager.flush();
 			return rtmddo.getRtmddoId();
@@ -262,7 +248,6 @@ public class AdminDaoImpl implements AdminDao{
 	
 		@Override
 		public int RtmddoUpdate(String type) throws Exception {
-			logger.info(new Date() +"Inside RtmddoUpdate");	
 			Query query=manager.createNativeQuery(RTMDDOUPDATE);
 			query.setParameter("type", type);
 			int count=query.executeUpdate();
@@ -273,7 +258,6 @@ public class AdminDaoImpl implements AdminDao{
 		
 	    @Override
 	    public List<Object[]> GetExpertList() throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside GetExpertList DAO");
 	        final Query query = this.manager.createNativeQuery(GETEXPERTLIST);
 	        final List<Object[]> ExpertList = (List<Object[]>)query.getResultList();
 	        return ExpertList;
@@ -283,7 +267,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public long GetExpertsCount() throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside GetExpertsCount DAO");
 	        final Query query = manager.createNativeQuery(GETEXPERTSCOUNT);
 	        BigInteger Expertcount = (BigInteger)query.getSingleResult();
 	        return Expertcount.longValue()+1;
@@ -292,7 +275,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public List<Object[]> GetDesignation() throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside GetDesignation DAO");
 	        final Query query = this.manager.createNativeQuery(GETDESIGNATION);
 	        final List<Object[]> DesigList = (List<Object[]>)query.getResultList();
 	        return DesigList;
@@ -301,7 +283,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public int abilityOfexpertNo( String expertNo) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside ability Of expertNo DAO");
 	        final Query query = this.manager.createNativeQuery(ABILITYOFEXPERTNO);
 	        query.setParameter("EXPERTNO", (Object)expertNo);
 	        final Object count = query.getSingleResult();
@@ -312,7 +293,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public int abilityOfextensionNo( String extensionNo) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside ability Of extensionNo DAO");
 	        final Query query = this.manager.createNativeQuery(ABILITYOFEXTENSIONNO);
 	        query.setParameter("EXTNO", (Object)extensionNo);
 	        final Object count = query.getSingleResult();
@@ -322,8 +302,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public Long addExpert( Expert newExpert) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside Expert");
-	        this.manager.persist((Object)newExpert);
 	        this.manager.flush();
 	        return newExpert.getExpertId();
 	    }
@@ -331,7 +309,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public Long ExpertRevoke( Expert expert) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside Expert Revoke Edit");
 	        final Query query = this.manager.createNativeQuery(EXPERTREVOKE);
 	        query.setParameter("ISACTIVE", (Object)0);
 	        query.setParameter("MODIFIEDBY", (Object)expert.getModifiedBy());
@@ -345,7 +322,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public List<Object[]> getEditDetails( String expertId) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside getEditDetails ");
 	        final Query query = this.manager.createNativeQuery(GETEDITDETAILS);
 	        query.setParameter("EXPERTID", (Object)expertId);
 
@@ -357,7 +333,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public int checkAbility2( String extensionNo, final String expertId) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside ability Of extensionNo DAO");
 	        final Query query = this.manager.createNativeQuery(CHECKABILITY2);
 	        query.setParameter("EXTNO", (Object)extensionNo);
 	        query.setParameter("ExpertId", (Object)expertId);
@@ -369,7 +344,6 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public Long editExpert( Expert newExpert) throws Exception {
-	        AdminDaoImpl.logger.info(new Date() + "Inside Edit Expert DAO");
 	        final Query query = this.manager.createNativeQuery(EDITEXPERT);
 	        query.setParameter("NAME", (Object)newExpert.getExpertName());
 	        query.setParameter("DESIGID", (Object)newExpert.getDesigId());
@@ -642,7 +616,6 @@ public class AdminDaoImpl implements AdminDao{
 		public List<Object[]> DivisionAddCheck(String dCode,String dName) throws Exception
 		{
 			
-			logger.info(new java.util.Date() +"Inside DivisionAddCheck");
 			Query query=manager.createNativeQuery(DIVISIONADDCHECK);
 			query.setParameter("divisionCode", dCode);
 			query.setParameter("divisionName", dName);
@@ -744,7 +717,6 @@ public class AdminDaoImpl implements AdminDao{
 		@Override
 		public Long FormRoleActive(String formroleaccessid, Long Value) throws Exception {
 
-			logger.info(new java.util.Date() +"Inside FormRoleActive");
 			int count=0;
 			
 			
@@ -771,7 +743,6 @@ public class AdminDaoImpl implements AdminDao{
 		@Override
 		public Long LabHqChange(String formroleaccessid, String Value) throws Exception{
 			
-			logger.info(new java.util.Date() +"Inside LabHqChange");
 			int count=0;
 			
 			Query query=manager.createNativeQuery(LABHQCHANGE);

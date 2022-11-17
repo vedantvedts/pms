@@ -159,7 +159,7 @@ public class PrintController {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside PfmsPrint.htm "+UserId);		
+		logger.info(new Date() +"Inside PfmsPrint2.htm "+UserId);		
 	    try {
 	    	String InitiationId=req.getParameter("IntiationId");		
 	    		
@@ -461,7 +461,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -483,7 +485,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -689,6 +691,7 @@ public class PrintController {
 		        	}
 	        	
 	        		catch (Exception e) {
+	        			logger.error(new Date() +" Inside ProjectBriefingDownload "+UserId, e);
 						e.printStackTrace();
 					}
 	        	
@@ -880,6 +883,7 @@ public class PrintController {
 					    }
 	        	
 	        	}catch (Exception e) {
+	        		logger.error(new Date() +" Inside ProjectBriefingDownload "+UserId, e);
 					e.printStackTrace();
 				}
 	        	
@@ -984,7 +988,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -1004,7 +1010,7 @@ public class PrintController {
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -1466,7 +1472,7 @@ public class PrintController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
+		logger.info(new Date() +"Inside ProjectBriefingPaper.htm "+UserId);		
 	    try {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
@@ -1559,8 +1565,13 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	   
+	    		
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
+	    		
 	    		TechImages.add(service.getTechList(proid));
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		
 	    		
@@ -1595,6 +1606,7 @@ public class PrintController {
 								pdfs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[3])));
 							}
 						}catch ( FileNotFoundException  e) {
+							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
 							e.printStackTrace();
 							pdfs[0]=null;
 						}
@@ -1606,6 +1618,7 @@ public class PrintController {
 								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5])));
 							}
 						}catch (FileNotFoundException e) {
+							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
 							pdfs[1]=null;
 						}
 					}
@@ -1618,6 +1631,7 @@ public class PrintController {
 							}
 						
 						}catch (FileNotFoundException e) {
+							logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
 							pdfs[2]=null;
 						}
 					}
@@ -1630,6 +1644,7 @@ public class PrintController {
 						}
 						
 							}catch (FileNotFoundException e) {
+								logger.error(new Date() +" Inside ProjectBriefingPaper "+UserId, e);
 								e.printStackTrace();
 								pdfs[3]=null;
 							}
@@ -1640,7 +1655,7 @@ public class PrintController {
 	    		
 	    		
 		/* -------------------------------------------------------------------------------------------------------------- */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -1919,7 +1934,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -1941,7 +1958,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -1951,6 +1968,7 @@ public class PrintController {
 						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
 						jsonResult=response.getBody();						
 					}catch(Exception e) {
+						logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
 						req.setAttribute("errorMsg", "errorMsg");
 					}
 					ObjectMapper mapper = new ObjectMapper();
@@ -1968,6 +1986,7 @@ public class PrintController {
 							financialDetails.add(projectDetails);
 							req.setAttribute("financialDetails",projectDetails);
 						} catch (JsonProcessingException e) {
+							logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
 							e.printStackTrace();
 						}
 					}
@@ -2288,13 +2307,13 @@ public class PrintController {
 	public String ReallocationPreview(HttpServletRequest req , HttpServletResponse res , HttpSession ses)throws Exception
 	{
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside PdcExtention.htm "+UserId);	
+		logger.info(new Date() +"Inside ReallocationReport.htm "+UserId);	
 		try {
 			List<Object[]> projectinitiationlist = (List<Object[]>)service.GetProjectInitiationSanList();
 			req.setAttribute("projectslist", projectinitiationlist);
 			
 		} catch (Exception e) {
-			logger.error(new Date() +" Inside PdcExtention.htm "+UserId, e);
+			logger.error(new Date() +" Inside ReallocationReport.htm "+UserId, e);
     		e.printStackTrace();
 		}
 		return "print/ReallocationFunds";
@@ -2303,7 +2322,7 @@ public class PrintController {
 	public void freezeBriefingPaperAfterKickoff(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
+		logger.info(new Date() +"Inside freezeBriefingPaperAfterKickoff "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid= req.getParameter("committeeid");
@@ -2344,7 +2363,9 @@ public class PrintController {
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
-	    		projectattributes.add(service.ProjectAttributes(proid));
+	    		Object[] projectattribute = service.ProjectAttributes(proid);
+	    		
+	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
@@ -2366,7 +2387,7 @@ public class PrintController {
 	    		
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?projectId="+proid+"&rupess="+10000000;
+	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	 
@@ -2499,7 +2520,7 @@ public class PrintController {
 	    }
 	    catch(Exception e) {	
 	    	redir.addAttribute("resultfail", "Briefing Paper Not Frozen for  This Meeting.");
-    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
+    		logger.error(new Date() +" Inside freezeBriefingPaperAfterKickoff "+UserId, e);
     		e.printStackTrace();
 			/* return "static/Error"; */
 	
@@ -2510,7 +2531,8 @@ public class PrintController {
 	@RequestMapping(value = "MilestoneActivityChange.htm", method = RequestMethod.GET)
 	public @ResponseBody String MilestoneActivityChange(HttpServletRequest req, HttpServletResponse response, HttpSession ses) throws Exception 
 	{
-				
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +" Inside freezeBriefingPaperAfterKickoff "+UserId);
 		String projectid=req.getParameter("projectid");
     	String milestoneactivitystatusid = req.getParameter("milactivitystatusid");
     			
@@ -2525,6 +2547,7 @@ public class PrintController {
 	    	}
 			
 		} catch (Exception e) {
+			logger.error(new Date() +" Inside freezeBriefingPaperAfterKickoff "+UserId,e);
 			e.printStackTrace();
 		}
 		Gson json = new Gson();
@@ -2578,8 +2601,10 @@ public class PrintController {
 	
 	
 	  @PostMapping("/GanttChartUpload.htm") 
-	    public String GanttChartUpload(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir) {
-	        try {
+	    public String GanttChartUpload(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir,HttpSession ses) {
+		  String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);	  
+		  try {
             int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("ApplicationFilesDrive"));
             if(result>0) {  
               redir.addAttribute("result", "Grantt Chart Saved");
@@ -2588,7 +2613,7 @@ public class PrintController {
     		}
 
 	        } catch (Exception e) {
-
+	        	logger.error(new Date() +" Inside GanttChartUpload.htm "+UserId, e);
 	        }
 	        redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
 			redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
@@ -2598,8 +2623,10 @@ public class PrintController {
 	  
 		
 	    @PostMapping("/ProjectTechImages.htm") 
-	    public String ProjectTechImages(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir) {
-	        try {
+	    public String ProjectTechImages(@RequestParam("FileAttach") MultipartFile file,HttpSession ses,HttpServletRequest req,RedirectAttributes redir) {
+	    	 String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);
+	    	try {
             int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName());
             if(result>0) {  
               redir.addAttribute("result", "Tech Image Saved");
@@ -2608,7 +2635,7 @@ public class PrintController {
     		}
 
 	        } catch (Exception e) {
-
+	        	logger.error(new Date() +" Inside ProjectTechImages.htm "+UserId, e);
 	        }
 	        redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
 			redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));

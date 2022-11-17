@@ -135,7 +135,7 @@ public class ActionController {
 	{
 		String UserId = (String)ses.getAttribute("Username");
 		String clusterid =(String) ses.getAttribute("clusterid");
-		logger.info(new Date() +" Inside ActionAssigneeEmployeeList.htm"+ UserId);
+		logger.info(new Date() +" Inside ActionAssigneeEmpList.htm "+ UserId);
 		
 		List<Object[]> EmployeeList = new ArrayList<Object[]>();
 		
@@ -158,7 +158,7 @@ public class ActionController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside ActionAssigneeEmployeeList.htm "+UserId, e);
+			logger.error(new Date() +" Inside ActionAssigneeEmpList.htm "+UserId, e);
 		}
 		
 		Gson json = new Gson();
@@ -887,7 +887,7 @@ public class ActionController {
 			public @ResponseBody String ScheduleActionItem(HttpServletRequest req, HttpSession ses) throws Exception {
 			
 			 String UserId = (String) ses.getAttribute("Username");
-				logger.info(new Date() +"Inside AgendaView.htm "+UserId);		
+				logger.info(new Date() +"Inside ScheduleActionItem.htm "+UserId);		
 				Gson json = new Gson();			 
 				String ItemDescriptionSearchLedger=null;
 				try {
@@ -895,7 +895,7 @@ public class ActionController {
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-					logger.error(new Date() +" Inside ActionNoSearch.htm "+UserId, e);
+					logger.error(new Date() +" Inside ScheduleActionItem.htm "+UserId, e);
 				}
 				return json.toJson(ItemDescriptionSearchLedger);
 			}
@@ -1178,7 +1178,7 @@ public class ActionController {
 					public String ActionSelf(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 						
 						String UserId = (String) ses.getAttribute("Username");
-						logger.info(new Date() +"Inside ActionSelf.htm "+UserId);		
+						logger.info(new Date() +"Inside ActionSelfList.htm "+UserId);		
 						try {
 						String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 						
@@ -1189,7 +1189,7 @@ public class ActionController {
 						}
 						catch (Exception e) {
 								e.printStackTrace();
-								logger.error(new Date() +" Inside ActionSelf.htm "+UserId, e);
+								logger.error(new Date() +" Inside ActionSelfList.htm "+UserId, e);
 						}
 						
 
@@ -1339,7 +1339,7 @@ public class ActionController {
 	@RequestMapping(value = "ActionSelfReminderDelete.htm")
 	public String ActionSelfReminderDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId =(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ActionSelfReminderAdd.htm "+UserId);		
+		logger.info(new Date() +"Inside ActionSelfReminderDelete.htm "+UserId);		
 		try {	
 			int count=0;
 			count=service.ActionSelfReminderDelete(req.getParameter("actionid"));
@@ -1351,7 +1351,7 @@ public class ActionController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			logger.error(new Date() +" Inside ActionSelfReminderAddSubmit.htm "+UserId, e);
+			logger.error(new Date() +" Inside ActionSelfReminderDelete.htm "+UserId, e);
 		}	
 		return "redirect:/ActionSelfReminderAdd.htm";
 	}
@@ -1481,7 +1481,7 @@ public class ActionController {
 
 		String Username = (String) ses.getAttribute("Username");
 		
-		logger.info(new Date() +"Inside  IccExcelSheet"+Username);
+		logger.info(new Date() +"Inside  AlertExcelFile.htm "+Username);
 			try {
 				String name="NoData";
 				String header="NoData";
@@ -1814,7 +1814,7 @@ public class ActionController {
 			 }
 	        catch (Exception e) {
 	        	e.printStackTrace();
-			    logger.error(new Date() +"Inside IccExcelSheet"+Username, e);
+			    logger.error(new Date() +"Inside AlertExcelFile.htm "+Username, e);
 //			    return "static/Error";
 		
 	        }
@@ -1827,7 +1827,7 @@ public class ActionController {
 
 		String Username = (String) ses.getAttribute("Username");
 		
-		logger.info(new Date() +"Inside  IccExcelSheet"+Username);
+		logger.info(new Date() +"Inside  MeetingExcelFile.htm "+Username);
 		try {
 			
 		List<Object[]> bookData= service.getMeetingAlertList();
@@ -1930,7 +1930,7 @@ public class ActionController {
 
 		 }
 	        catch (Exception e) {
-			    logger.error(new Date() +"Inside IccExcelSheet"+Username, e);
+			    logger.error(new Date() +"Inside MeetingExcelFile.htm "+Username, e);
 		        }
 		
 		return "action/MeetingExcel";
@@ -1984,7 +1984,7 @@ public class ActionController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String UserId = (String)ses.getAttribute("Username");
-		logger.info(new Date() +" Inside ProjectEmpListFetchAction "+ UserId);	
+		logger.info(new Date() +" Inside ProjectEmpListFetchAction.htm "+ UserId);	
 		String projectid=req.getParameter("projectid");
 		List<Object[]> EmployeeList=null;
 		if(projectid.equalsIgnoreCase("A"))
@@ -2077,7 +2077,7 @@ public class ActionController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String Labcode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside M-A-Update.htm "+UserId);
+		logger.info(new Date() +"Inside M-A-Update123.htm "+UserId);
 		
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -2105,7 +2105,7 @@ public class ActionController {
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
-			logger.error(new Date() +" Inside M-A-Update.htm "+UserId, e); 
+			logger.error(new Date() +" Inside M-A-Update123.htm "+UserId, e); 
 			return "static/Error";
 		}
 
