@@ -777,9 +777,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		Query query=manager.createNativeQuery(PROJECTEMPLIST);
 		query.setParameter("projectid", projectid);
 		query.setParameter("labcode", Labcode);
-		
-		System.out.println(projectid);
-		System.out.println(Labcode);
+
 		List<Object[]> ProjectEmpList=(List<Object[]>)query.getResultList();
 		return ProjectEmpList;
 	}
@@ -801,7 +799,6 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("labcode", labcode);
 		System.out.println(labcode);
 		List<Object[]> AllEmpNameDesigList=(List<Object[]>)query.getResultList();
-		System.out.println(AllEmpNameDesigList.size());
 		return AllEmpNameDesigList;
 	}
 

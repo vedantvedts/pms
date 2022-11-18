@@ -1542,8 +1542,8 @@ public class CommitteeController {
 			String CommitteeName= req.getParameter("committeename");
 			
 			
-			System.out.println(req.getParameter("unit1"));
-			System.out.println( req.getParameter("formname"));
+			//System.out.println(req.getParameter("unit1"));
+			//System.out.println( req.getParameter("formname"));
 			
 			if (count > 0) {
 				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
@@ -1645,8 +1645,8 @@ public class CommitteeController {
 				String SpecName = req.getParameter("specname");
 				String CommitteeName= req.getParameter("committeename");
 	
-				System.out.println(req.getParameter("unit1"));
-				System.out.println( req.getParameter("formname"));
+				//System.out.println(req.getParameter("unit1"));
+				//System.out.println( req.getParameter("formname"));
 				
 				if (count > 0) {
 					redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
@@ -6034,9 +6034,7 @@ public class CommitteeController {
 				{
 					committeeid="0";
 				}
-				
-				System.out.println(committeeid);
-				
+
 				List<Object[]> DefAgendas =  service.DefaultAgendaList(committeeid,LabCode);
 				
 				req.setAttribute("DefAgendas", DefAgendas);

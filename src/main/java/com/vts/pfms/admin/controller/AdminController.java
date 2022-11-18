@@ -50,9 +50,7 @@ public class AdminController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside LoginTypeList.htm "+UserId);		
 		try {
-			
-			System.out.println("Inside");
-			
+
 			ProcessBuilder processBuilder = new ProcessBuilder("C:\\Users\\VTS\\Desktop\\EMS-DB Backup.bat");
 			processBuilder.start();
 			
