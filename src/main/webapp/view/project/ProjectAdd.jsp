@@ -268,7 +268,7 @@ function validateismaincheck()
 							<option value="IA">Indian Army</option>
 							<option value="IN">Indian Navy</option>
 							<option value="IAF">Indian Air Force</option>
-							<option value="HLS">Home Land Security</option>
+							<option value="IH">Home Land Security</option>
 							<option value="DRDO">DRDO</option>
 							<option value="OH">Others</option>
 	</select>
