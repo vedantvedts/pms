@@ -4,7 +4,7 @@
 	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	<!DOCTYPE html>
 	<html>
-	<head>
+	<head>                   
 		<meta charset="ISO-8859-1">
 		<jsp:include page="../static/header.jsp"></jsp:include>
 		<script src="./resources/js/multiselect.js"></script>
