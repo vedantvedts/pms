@@ -1316,30 +1316,6 @@ public class CommitteeController {
 		return"redirect:/CommitteeScheduleAgenda.htm";
 		}
 	
-//	@RequestMapping(value = "CommitteeAgendaAttachDownload.htm", method = RequestMethod.GET)
-//	public void TccAgendaAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
-//			throws Exception 
-//	{
-//		String UserId = (String) ses.getAttribute("Username");
-//		logger.info(new Date() +"Inside CommitteeAgendaAttachDownload.htm "+UserId);
-//		try
-//		{
-//			CommitteeSchedulesAttachment attachment = service.CommitteeAgendaAttachDownload(req.getParameter("committeeattachmentid"));
-//	
-//			res.setContentType("application/octet-stream");
-//			res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachmentName()));
-//			res.setContentLength((int)attachment.getAgendaAttachment().length);
-//			InputStream inputStream = new ByteArrayInputStream(attachment.getAgendaAttachment()); 
-//			OutputStream outputStream = res.getOutputStream();
-//			FileCopyUtils.copy(inputStream, outputStream);
-//			inputStream.close();
-//			outputStream.close();
-//		}catch (Exception e) {
-//				e.printStackTrace(); logger.error(new Date() +"Inside CommitteeAgendaAttachDownload.htm "+UserId,e);
-//		}
-//	}
-
-
 	@RequestMapping(value="CommitteeMainEditSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeMainEditSubmit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses )throws Exception
 	{
@@ -1542,8 +1518,8 @@ public class CommitteeController {
 			String CommitteeName= req.getParameter("committeename");
 			
 			
-			System.out.println(req.getParameter("unit1"));
-			System.out.println( req.getParameter("formname"));
+			//System.out.println(req.getParameter("unit1"));
+			//System.out.println( req.getParameter("formname"));
 			
 			if (count > 0) {
 				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
@@ -1645,8 +1621,8 @@ public class CommitteeController {
 				String SpecName = req.getParameter("specname");
 				String CommitteeName= req.getParameter("committeename");
 	
-				System.out.println(req.getParameter("unit1"));
-				System.out.println( req.getParameter("formname"));
+				//System.out.println(req.getParameter("unit1"));
+				//System.out.println( req.getParameter("formname"));
 				
 				if (count > 0) {
 					redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
@@ -2594,7 +2570,7 @@ public class CommitteeController {
 			}
 			in.close();
 			out.flush();
-		
+			out.close();
 	       
 	       
 	        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
@@ -3463,8 +3439,9 @@ public class CommitteeController {
 	    while ((len = fis.read(buffer)) >= 0) {
 	        os.write(buffer, 0, len);
 	    } 
-	    os.close();
 	    fis.close();
+	    os.close();
+	    
 	     
 	        
 	    Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
@@ -3547,8 +3524,9 @@ public class CommitteeController {
 	    while ((len = fis.read(buffer)) >= 0) {
 	        os.write(buffer, 0, len);
 	    } 
-	    os.close();
 	    fis.close();
+	    os.close();
+	    
 	     
 	        
 	    Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
@@ -3803,7 +3781,7 @@ public class CommitteeController {
 			}
 			in.close();
 			out.flush();
-		
+			out.close();
 	       
 	        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
 	        Files.delete(pathOfFile2);		
@@ -5813,7 +5791,7 @@ public class CommitteeController {
 					}
 					in.close();
 					out.flush();
-				
+					out.close();
 			       
 			        Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
 			        Files.delete(pathOfFile2);		
@@ -5953,8 +5931,9 @@ public class CommitteeController {
 		        while ((len = fis.read(buffer)) >= 0) {
 		            os.write(buffer, 0, len);
 		        } 
-		        os.close();
 		        fis.close();
+		        os.close();
+		       
 		       
 		       
 		        Path pathOfFile= Paths.get( path+File.separator+filename+".pdf"); 
@@ -5994,8 +5973,9 @@ public class CommitteeController {
                 while ((len = fis.read(buffer)) >= 0) {
                     os.write(buffer, 0, len);
                 } 
-                os.close();
                 fis.close();
+                os.close();
+                
                 Path pathOfFile2= Paths.get(path+"/"+obj[4]); 
                 Files.delete(pathOfFile2);
 
@@ -6034,9 +6014,7 @@ public class CommitteeController {
 				{
 					committeeid="0";
 				}
-				
-				System.out.println(committeeid);
-				
+
 				List<Object[]> DefAgendas =  service.DefaultAgendaList(committeeid,LabCode);
 				
 				req.setAttribute("DefAgendas", DefAgendas);
@@ -6452,6 +6430,7 @@ public class CommitteeController {
 				}
 				in.close();
 				out.flush();
+				out.close();
 			}
 			catch (Exception e) {
 					e.printStackTrace();

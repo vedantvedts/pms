@@ -209,7 +209,7 @@ Project Edit</h4>
 							<option value="IN" <%if("IN".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>Indian Navy</option>
 							<option value="IAF" <%if("IAF".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>Indian Air Force</option>
 							<option value="DRDO" <%if("DRDO".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>DRDO</option>
-							<option value="HLS" <%if("HLS".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>HLS</option>
+							<option value="IH" <%if("IH".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>Home Land Security</option>
 							<option value="OH" <%if("OH".equalsIgnoreCase(ProjectEditData[24]+"")){%> selected="selected" <%}%>>Others</option>
 							
 	</select>

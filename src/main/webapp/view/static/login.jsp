@@ -97,7 +97,7 @@
 								
 								<div>
 									<p class="quote">Lets simplify project management</p>
-								 	<h2 style="font-family: 'Lato', sans-serif;font-weight: 400" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h2>
+								 	<h4 style="font-family: 'Lato', sans-serif;font-weight: 400" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h4>
 								</div>
 								
 								<div class="product-banner-container" style="margin-top:35px">
@@ -119,7 +119,7 @@
 									<div class="login-form-wrapper " style="padding-right: 43px;padding-left: 43px; padding-bottom: 43px; padding-top: 8px " >
 										
 										<div class="login-info-container">
-											<h2 style="font-family: 'Lato', sans-serif;font-weight: 800" >Login</h2><br>
+											<h4 style="font-family: 'Lato', sans-serif;font-weight: 800" >Login</h4><br>
 										</div>
 										
 										<div class="login-form-container">
@@ -154,7 +154,7 @@
 															<div class="form-submit-button">
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 																<button type="submit" class="btn btn-block btn-success" style="font-family: 'Montserrat', sans-serif;" >Login</button>
-																<button type="submit" class="btn btn-link" formaction="fpwd/ForgotPassword.htm" > Forgot Password?</button>
+																<!-- <button type="submit" class="btn btn-link" formaction="fpwd/ForgotPassword.htm" > Forgot Password?</button> -->
 															</div>
 														</div>
 													</div>

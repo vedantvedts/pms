@@ -181,7 +181,6 @@ public class ActionController {
 			String CpLabCode = req.getParameter("LabCode");
 			String mainid = req.getParameter("MainId");
 
-			System.out.println(mainid);
 			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid)){
 				
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
@@ -292,7 +291,6 @@ public class ActionController {
 			assign.setCreatedBy(UserId);
 			assign.setIsActive(1);
 			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-			System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			long count =service.ActionMainInsert(mainDto , assign);
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully");
@@ -314,9 +312,6 @@ public class ActionController {
 		try {
 			
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
-		
-		System.out.println(service.AssigneeList(EmpId).size() +"ass");
-		
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
 		}catch (Exception e) {
@@ -1160,7 +1155,6 @@ public class ActionController {
 						String UserId =(String)ses.getAttribute("Username");
 						logger.info(new Date() +"Inside CloseAction.htm "+UserId);		
 						try {
-							System.out.println();
 						req.setAttribute("sub",req.getParameter("sub"));
 						req.setAttribute("ActionMainId",req.getParameter("ActionMainId"));
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
@@ -1810,7 +1804,9 @@ public class ActionController {
 		        OutputStream outStream = res.getOutputStream();
 		        outStream.write(outArray);
 		        outStream.flush();
+		        outStream.close();
 			    wb.close();
+			    outByteStream.close();
 			 }
 	        catch (Exception e) {
 	        	e.printStackTrace();
@@ -1832,11 +1828,6 @@ public class ActionController {
 			
 		List<Object[]> bookData= service.getMeetingAlertList();
 	
-	     
-
-			
-	
-		
 	      List<MeetingExcelDto> dto=new ArrayList<MeetingExcelDto>();
             
 	        int count1=1;
