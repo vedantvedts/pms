@@ -37,9 +37,9 @@ import com.vts.pfms.print.model.TechImages;
 public class PrintDaoImpl implements PrintDao {
 
 	private static final String LABLIST="select labcode, labname,labaddress, labcity,lablogo from lab_master where labcode=:labcode";
-	private static final String PFMSINITLIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,d.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode FROM pfms_initiation a,project_type b,pfms_security_classification c ,pfms_initiation d WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=d.initiationid UNION SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration, a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,a.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode FROM pfms_initiation a,project_type b,pfms_security_classification c WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=0";
+	private static final String PFMSINITLIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,d.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode ,a.categoryid FROM pfms_initiation a,project_type b,pfms_security_classification c ,pfms_initiation d WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=d.initiationid UNION SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration, a.isplanned,a.ismultilab,a.createddate,a.deliverable,a.ismain,a.projecttitle AS initiatedproject,a.remarks,a.fecost,a.recost,a.labcode ,a.categoryid FROM pfms_initiation a,project_type b,pfms_security_classification c WHERE a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.initiationid=:initiationid AND a.mainid=0";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitiagation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
-	private static final String COSTDETAILSLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,a.itemdetail,a.itemcost,.c.budgetitemid FROM pfms_initiation_cost a,budget_item c WHERE a.budgetitemid=c.budgetitemid AND a.isactive='1' AND a.initiationid=:initiationid AND a.budgetheadid=c.budgetheadid";
+	private static final String COSTDETAILSLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,a.itemdetail,a.itemcost,.c.sanctionitemid FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationid AND a.budgetheadid=c.budgetheadid";
 	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
 
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
@@ -570,8 +570,8 @@ public class PrintDaoImpl implements PrintDao {
 		
 	}
 	
-	private static final String ITEMLIST="SELECT a.minorhead, a.headofaccounts , b.itemdetail , b.itemcost  , c.budgetheaddescription FROM budget_item a,pfms_initiation_cost b ,budget_head c WHERE a.budgetheadid = b.budgetheadid AND a.budgetheadid=c.budgetheadid  AND a.budgetitemid = b.budgetitemid AND b.initiationid=:initiationid";
-	
+	private static final String ITEMLIST="SELECT a.minorhead, a.headofaccounts , b.itemdetail , b.itemcost  , c.budgetheaddescription FROM budget_item_sanc a,pfms_initiation_cost b ,budget_head c WHERE a.budgetheadid = b.budgetheadid AND a.budgetheadid=c.budgetheadid  AND b.budgetsancid=a.sanctionitemid AND b.initiationid=:initiationid";
+	                    
 	@Override
 	public List<Object[]> GetItemList(String projectid)throws Exception
 	{

@@ -777,12 +777,12 @@ for(Object[] obj : DetailsList){   %>
  
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
-		<tr>
-		<th colspan="4"  style="text-align:center;" class="heading heading-color">Cost Breakup as per proposal</th>
-		</tr>
-		<tr>
-		<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
-		</tr>
+	   <tr>
+		   <th colspan="4"  style="text-align:center;" class="heading heading-color">Cost Breakup as per proposal</th>
+	   </tr>
+	   <tr>
+		   <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+	   </tr>
 	</tbody>
 </table>
 
@@ -790,21 +790,20 @@ for(Object[] obj : DetailsList){   %>
 
 <table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;border-collapse: collapse; ">
 	<tbody>
-		<tr>
+	<tr>
 		<th colspan="1" class="border_black weight_700 center" style=";width:7%"><span >SN</span></th>
 		<th colspan="3" class="border_black weight_700 center" style=";width:15%"><span >Head Code</span></th>
 		<th colspan="2" class="border_black weight_700 center" style=";width:45%"><span >Item</span></th>
 		<th colspan="2" class="border_black weight_700 center"style=";width:20%"> <span >Cost (Lakhs)</span></th>
-		</tr>
-		<%
-		int count=1;
+	</tr>
+		<%int count=1;
 		for(Object[] obj : CostDetailsList){ %> 
-		<tr>
+	<tr>
 		<td colspan="1" class="border_black weight_700 center" style=";width:7%"><span ><%=count %>.</span></td>
-		<td colspan="3" class="border_black weight_700 left" style="padding-left:5px" ><span ><%=obj[1] %></span></td>
-		<td colspan="2" class="border_black weight_700 left" style="padding-left:5px" ><span ><%=obj[2] %></span></td>
+		<td colspan="3" class=" left" style="padding-left:5px" ><span ><%=obj[1] %></span></td>
+		<td colspan="2" class=" left" style="padding-left:5px" ><span ><%=obj[2] %></span></td>
 		<td colspan="2" class="border_black weight_700 right" style="padding-right:5px" ><span >&#8377; <span><%=nfc.convert(Double.parseDouble(obj[3].toString())/100000)%></span></span></td>
-		</tr> 
+	</tr> 
 	</tbody>
 	<%
 	count++;
@@ -816,9 +815,10 @@ for(Object[] obj : DetailsList){   %>
 <table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:820px;  ">
 
 <tr>
-<th colspan="1" class="border_black weight_700 left" style=";width:9%"><span >SN</span></th>
-<th colspan="5" class="border_black weight_700 center" style=";width:60%"><span >Item</span></th>
-<th colspan="2" class="border_black weight_700 center" ><span >Cost (Lakhs)</span></th>
+	<th colspan="1" class="border_black weight_700 left" style=";width:9%"><span >SN</span></th>
+	<th colspan="3" class="border_black weight_700 center" style=";width:15%"><span >Head Code</span></th>
+	<th colspan="2" class="border_black weight_700 center" style=";width:60%"><span >Item</span></th>
+	<th colspan="2" class="border_black weight_700 center" ><span >Cost (Lakhs)</span></th>
 </tr> 
 <tr>
 	<th colspan="8" class="border_black weight_700 center" ><span >No Data Available</span></th>
@@ -828,9 +828,244 @@ for(Object[] obj : DetailsList){   %>
 
 </table>
 
-<%} %>
+<%}%>
 
  <h1 class="break"></h1>
+ <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("1") ||
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("2")|| PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("4") ||
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("6") ||PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("7") ||
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("8")){ %>
+
+ <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  ">
+		  <thead>
+			  	<tr> 
+				  	 <th colspan="5" class="border_black weight_700 center">
+				 		 	 Cost Break-Up Table for MM, TD, UT & IF Projects  <br> (in &#x20B9; Cr.)
+				  	</th>
+			  	</tr>
+			  	<tr>
+			  		<th rowspan="2" class="border_black weight_700 center"> Minor Head </th>
+			  		<th class="border_black weight_700 center"> Major Head 2080 - Revenue </th>
+			  		<th class="border_black weight_700 center"> Nodal  Lab</th>
+			  		<th class="border_black weight_700 center"> Participating <br> Lab, if any</th>
+			  		<th rowspan="2" class="border_black weight_700 center"> Total  (FE) </th>
+			  	</tr>
+			  	<tr>
+			  		<th class="border_black weight_700 center"> Heads of Expenditure </th>
+			  		<th class="border_black weight_700 center"> Total (FE) </th>
+			  		<th class="border_black weight_700 center"> Total (FE)</th>
+			  	</tr>
+		  </thead>
+		  
+		  <tbody>
+				  	<tr>	
+				  		<td rowspan="10">052 <br>(Code Head-929/25)*</td>	
+				  		<td> Transportation (Movement of Stores)</td>
+				  		<td></td>
+				  		<td></td>
+				  		<td></td>
+				   </tr>
+				   <tr>
+				   		<td> Equipment/Stores</td>
+				   		<td></td>
+				  		<td></td>
+				  		<td></td>
+				   </tr>	 	
+				  <tr>
+				 		<td> CARS/CAPSI </td>
+				  		<td></td>
+				  		<td></td>
+				  		<td></td>
+				  </tr>
+				  <tr>
+				 		<td> Consultancy Contracts </td>
+				  		<td></td>
+				  		<td></td>
+				  		<td></td>
+				  </tr>
+				  <tr>
+				  		<td> Job Work/Contracts/Technical Services</td>
+				  		<td></td>
+				  		<td></td>
+				  		<td></td>
+				  </tr>
+
+				  <tr>
+				 	 <td> Hiring of Transport </td>
+				 	 <td></td>
+				  	 <td></td>
+				  	 <td></td>
+				 </tr>
+				 <tr>
+				 	<td> Fuel/Oil/Lubricants for Project Vehicles</td>
+				 	<td></td>
+				  	<td></td>
+				  	<td></td>
+				 </tr>	
+				  <tr>
+				 	<td> Contingency & Miscellaneous</td>
+				 	<td></td>
+				  	<td></td>
+				  	<td></td>
+				 </tr>	
+				 <tr>
+				  	<td> Plant & Machinery</td>
+				  	<td></td>
+				  	<td></td>
+				  	<td></td>
+				</tr>
+			    <tr>
+			  		<td> Project related Vehicles </td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+			  	 <tr>
+			  		<td> 111 </td>
+			  		<td> Works</td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+			  	<tr>
+			  		<td colspan="2" class="border_black weight_700 right"> Total </td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+		  </tbody>
+  
+ </table>
+ <h1 class="break"></h1>
+  <%}%>
+ 
+ <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("3") ||
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("5")){%> 
+  <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  ">
+		  <thead>
+			  	<tr> 
+				  	 <th colspan="5">
+				  	 		Cost Break-up Table for S&T & PS Projects  <br> (in &#x20B9; Cr.) 
+				  	</th> 
+			  	</tr>
+			  	<tr>
+			  		<th rowspan="2"> Minor Head </th>
+			  		<th> Major Head 4076 - Capital <br> Sub Major Head - 05 </th>
+			  		<th> Nodal <br> Lab</th>
+			  		<th> Participating <br> Lab, if any</th>
+			  		<th rowspan="2"> Total <br> (FE) </th>
+			  	</tr>
+			  	<tr>
+			  		<th> Heads of Expenditure </th>
+			  		<th> Total (FE) </th>
+			  		<th> Total (FE)</th>
+			  	</tr>
+		  </thead>
+		  
+		  <tbody>
+			  	<tr>
+			  		<td> 105</td>
+			  		<td> Transportation (Movement of Stores) </td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	
+			  	<tr>
+			  		<td rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
+			  		<td> Equipment/Stores </td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			  		<td> CARS</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  		
+			  	</tr>
+			  	<tr>
+			  		<td> CAPSI</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			  		<td> Consultancy Contracts </td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			  		<td> Job Work/Contracts/Hiring of <br>Technical Services</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr> 
+				<tr>
+			  		<td> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			  		<td>Contingency & Miscellaneous</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			 	 	<td> 111</td>
+			  		<td> Works</td>
+			  		<td> </td>
+			  		<td> </td>
+			  		<td> </td>
+			  	</tr>
+			  	<tr>
+			  		<td colspan="2" class="border_black weight_700 right"> Total (Revenue)</td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+			  	<tr>
+			 	 	<td rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
+			  		<td> Plant & Machinery </td>
+			  		<td rowspan="2"></td>
+			  		<td rowspan="2"></td>
+			  		<td rowspan="2"></td>
+			  	</tr>
+			  	<tr>
+			  		<td> Project related Vehicles </td>
+			  		
+			  	</tr>
+			  	<tr>
+			  		<td> Works </td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+			  	
+			  	
+			  	
+			  	<tr>
+			  		<td colspan="2" class="border_black weight_700 right"> Total (Capital)</td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+			  	<tr>
+			  		<td colspan="2" class="border_black weight_700 right"> Grand Total (Revenue & Capital)</td>
+			  		<td></td>
+			  		<td></td>
+			  		<td></td>
+			  	</tr>
+		  </tbody>
+  
+ </table>
+  <h1 class="break"></h1>
+ <%}%>
+ 
  
   <!-- Project Schedule -->
   

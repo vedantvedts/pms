@@ -20,7 +20,7 @@ public class PfmsInitiationCost implements Serializable {
 	private Long InitiationCostId;
 	private Long InitiationId;
     private Long BudgetHeadId;
-    private Long BudgetItemId;
+    private Long BudgetSancId;
     private String ItemDetail;
     private Double ItemCost;
     
@@ -47,11 +47,12 @@ public class PfmsInitiationCost implements Serializable {
 	public void setBudgetHeadId(Long budgetHeadId) {
 		BudgetHeadId = budgetHeadId;
 	}
-	public Long getBudgetItemId() {
-		return BudgetItemId;
+
+	public Long getBudgetSancId() {
+		return BudgetSancId;
 	}
-	public void setBudgetItemId(Long budgetItemId) {
-		BudgetItemId = budgetItemId;
+	public void setBudgetSancId(Long budgetSancId) {
+		BudgetSancId = budgetSancId;
 	}
 	public String getItemDetail() {
 		return ItemDetail;

@@ -648,7 +648,7 @@ public class ProjectController {
 	
 				pfmsinitiationcostdto.setInitiationId(req.getParameter("IntiationId"));
 				pfmsinitiationcostdto.setBudgetHeadId(req.getParameter("BudgetHead"));
-				pfmsinitiationcostdto.setBudgetItemId(req.getParameter("Item"));
+				pfmsinitiationcostdto.setBudgetSancId(req.getParameter("Item"));
 				pfmsinitiationcostdto.setItemCost(req.getParameter("Cost"));
 				pfmsinitiationcostdto.setItemDetail(req.getParameter("ItemDetail"));
 	
@@ -728,7 +728,7 @@ public class ProjectController {
 			pfmsinitiationcostdto.setInitiationCostId(req.getParameter("InitiationCostId"));
 			pfmsinitiationcostdto.setInitiationId(req.getParameter("IntiationId"));
 			// pfmsinitiationcostdto.setBudgetHeadId(req.getParameter("BudgetHead"));
-			pfmsinitiationcostdto.setBudgetItemId(req.getParameter("Item"));
+			pfmsinitiationcostdto.setBudgetSancId(req.getParameter("Item"));
 			pfmsinitiationcostdto.setItemCost(req.getParameter("Cost"));
 			pfmsinitiationcostdto.setItemDetail(req.getParameter("ItemDetail"));
 			

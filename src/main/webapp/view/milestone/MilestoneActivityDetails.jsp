@@ -516,7 +516,7 @@ String ses=(String)request.getParameter("result");
 
 
 														<input type="submit"  class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
-														<button type="submit" class="btn btn-primary btn-sm preview " id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
+														<button type="submit" class="btn btn-primary btn-sm edit" id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %><%=Sub4Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
 														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack('<%=ProjectSubCount %>/<%=Sub1Count %>/<%=Sub2Count %>/<%=Sub3Count %>/<%=Sub4Count %>')" formaction="MilestoneActivityList.htm">
 															<input type="hidden"name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
@@ -675,7 +675,7 @@ $( document ).ready(function() {
 
 
 														<input type="submit"  class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
-														<button type="submit" class="btn btn-primary btn-sm preview " id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
+														<button type="submit" class="btn btn-primary btn-sm edit " id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
 														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %><%=Sub3Count %>')" formaction="MilestoneActivityList.htm">
 															<input type="hidden"name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
@@ -835,7 +835,7 @@ $( document ).ready(function() {
 
 
 														<input type="submit"  class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
-														<button type="submit" class="btn btn-primary btn-sm preview " id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
+														<button type="submit" class="btn btn-primary btn-sm edit" id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
 														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %><%=Sub2Count %>')" formaction="MilestoneActivityList.htm">
 															<input type="hidden"name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
@@ -994,7 +994,7 @@ $( document ).ready(function() {
 
 
 														<input type="submit"  class="btn btn-primary btn-sm submit " id="sub" value="SUBMIT" name="sub" onclick="return confirm('Are You Sure To Submit?');">
-														<button type="submit" class="btn btn-primary btn-sm preview " id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
+														<button type="submit" class="btn btn-primary btn-sm edit" id="sub"	value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %>')"	formaction="MilestoneActivityDetails.htm">Edit</button>
 														<input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack('<%=ProjectSubCount %><%=Sub1Count %>')" formaction="MilestoneActivityList.htm">
 															<input type="hidden"name="ProjectId" value="<%=getMA[10]%>" />
 													</div>
@@ -1168,7 +1168,7 @@ $( document ).ready(function() {
 															value="SUBMIT" name="sub"
 															onclick="return confirm('Are You Sure To Submit?');">
 														<button type="submit"
-															class="btn btn-primary btn-sm preview " id="sub"
+															class="btn btn-primary btn-sm edit " id="sub"
 															value="C" name="sub" onclick="SubmitBack('<%=ProjectSubCount %>')"
 															formaction="MilestoneActivityDetails.htm">
 															Edit</button>

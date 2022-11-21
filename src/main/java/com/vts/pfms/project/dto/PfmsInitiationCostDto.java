@@ -6,7 +6,7 @@ public class PfmsInitiationCostDto {
 	private String InitiationCostId;
 	private String InitiationId;
     private String BudgetHeadId;
-    private String BudgetItemId;
+    private String BudgetSancId;
     private String ItemDetail;
     private String ItemCost;
 	public String getInitiationCostId() {
@@ -26,12 +26,13 @@ public class PfmsInitiationCostDto {
 	}
 	public void setBudgetHeadId(String budgetHeadId) {
 		BudgetHeadId = budgetHeadId;
+	}	
+
+	public String getBudgetSancId() {
+		return BudgetSancId;
 	}
-	public String getBudgetItemId() {
-		return BudgetItemId;
-	}
-	public void setBudgetItemId(String budgetItemId) {
-		BudgetItemId = budgetItemId;
+	public void setBudgetSancId(String budgetSancId) {
+		BudgetSancId = budgetSancId;
 	}
 	public String getItemDetail() {
 		return ItemDetail;

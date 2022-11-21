@@ -264,7 +264,7 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationcost.setInitiationId(Long.parseLong(pfmsinitiationcostdto.getInitiationId()));
 		pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
 		
-		String Item=pfmsinitiationcostdto.getBudgetItemId();
+		String Item=pfmsinitiationcostdto.getBudgetSancId();
 		
 		String[] temp = null;
 		String ReFe = "";
@@ -273,7 +273,7 @@ public class ProjectServiceImpl implements ProjectService {
 			ReFe=temp[1];
 		}
 		
-		pfmsinitiationcost.setBudgetItemId(Long.parseLong(temp[0]));
+		pfmsinitiationcost.setBudgetSancId(Long.parseLong(temp[0]));
 		
 //		Double FeCost=Double.parseDouble(pfmsinitiationcostdto.getItemCost());
 //		Double ReCost=Double.parseDouble(pfmsinitiationcostdto.getItemCost());
@@ -506,7 +506,7 @@ public class ProjectServiceImpl implements ProjectService {
 		PfmsInitiationCost pfmsinitiationcost=new PfmsInitiationCost();
 			pfmsinitiationcost.setInitiationCostId(Long.parseLong(pfmsinitiationcostdto.getInitiationCostId()));
 			//pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
-			pfmsinitiationcost.setBudgetItemId(Long.parseLong(pfmsinitiationcostdto.getBudgetItemId()));
+			pfmsinitiationcost.setBudgetSancId(Long.parseLong(pfmsinitiationcostdto.getBudgetSancId()));
 			pfmsinitiationcost.setItemCost(Double.parseDouble(pfmsinitiationcostdto.getItemCost()));
 			pfmsinitiationcost.setItemDetail(pfmsinitiationcostdto.getItemDetail());
 			pfmsinitiationcost.setModifiedBy(UserId);

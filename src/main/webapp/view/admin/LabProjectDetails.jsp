@@ -478,7 +478,7 @@ int ProjectCount = 0;
 														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>color: green<%} 
 														else if(obj[45].toString().equalsIgnoreCase("IN")){%>color: #007bff <%} 
 														else if(obj[45].toString().equalsIgnoreCase("IAF")){%>color: #1F4690 <%} 
-														else if(obj[45].toString().equalsIgnoreCase("HLS")){%>color: #8E3200 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("IH")){%>color: #8E3200 <%} 
 														else if(obj[45].toString().equalsIgnoreCase("OH")){%>color: #EE5007 <%} 
 														else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>color: #231955 <%} 
 														else {%>color:black <%} }else{ %>color:black <%}%>">
@@ -487,7 +487,7 @@ int ProjectCount = 0;
 													title="<%if(obj[45]!=null) { if(obj[45].toString().equalsIgnoreCase("IA")){%>Indian Army<%}
 													else if(obj[45].toString().equalsIgnoreCase("IN")){%>Indian Navy <%} 
 													else if(obj[45].toString().equalsIgnoreCase("IAF")){%>Indian Air Force<%} 
-													else if(obj[45].toString().equalsIgnoreCase("HLS")){%>Home Land Security <%} 
+													else if(obj[45].toString().equalsIgnoreCase("IH")){%>Home Land Security <%} 
 													else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>DRDO <%} 
 													else if(obj[45].toString().equalsIgnoreCase("OH")){%>Others <%} 
 													else {%> -  <%} }else{ %>-<%}%>">
