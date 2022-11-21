@@ -14,6 +14,7 @@ public interface PrintService {
 
 	public Object[] LabList(String LabCode) throws Exception;
 	public List<Object[]> PfmsInitiationList(String InitiationId) throws Exception;
+	public List<Object[]> GetCostBreakList(String InitiationId , String projecttypeid)throws Exception;
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception;
 	public LabMaster LabDetailes(String LabCode)throws Exception;
 	public List<Object[]> CostDetailsList(String InitiationId) throws Exception;

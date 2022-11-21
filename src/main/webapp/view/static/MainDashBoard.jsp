@@ -2012,7 +2012,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 																			<input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
 																			<input type="hidden" name="Assignee" value="<%=obj[11] %>" />
 																			<input type="hidden" name="fracasassignid" value="<%=obj[10]%>"/>
-																			
+																			<input type="hidden" name="ActionAssignId" value="<%=obj[16]%>">
 																			
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																    		
@@ -2084,7 +2084,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 																			<input type="hidden" name="Assignee" value="<%=obj[11] %>" />
 																			<input type="hidden" name="fracasassignid" value="<%=obj[10]%>"/>
 																			<input type="hidden" name="forceclose" value="N"/>
-																			
+																			<input type="hidden" name="ActionAssignId" value="<%=obj[16]%>">
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																    		
 																    	
