@@ -355,6 +355,8 @@ public class DocumentController {
 	        OutputStream outStream = res.getOutputStream();
 	        outStream.write(outArray);
 	        outStream.flush();
+	        outStream.close();
+	        outByteStream.close();
 	        workbook.close();
 			
 

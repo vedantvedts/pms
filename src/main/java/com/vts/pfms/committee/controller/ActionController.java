@@ -1810,7 +1810,9 @@ public class ActionController {
 		        OutputStream outStream = res.getOutputStream();
 		        outStream.write(outArray);
 		        outStream.flush();
+		        outStream.close();
 			    wb.close();
+			    outByteStream.close();
 			 }
 	        catch (Exception e) {
 	        	e.printStackTrace();
@@ -1832,11 +1834,6 @@ public class ActionController {
 			
 		List<Object[]> bookData= service.getMeetingAlertList();
 	
-	     
-
-			
-	
-		
 	      List<MeetingExcelDto> dto=new ArrayList<MeetingExcelDto>();
             
 	        int count1=1;

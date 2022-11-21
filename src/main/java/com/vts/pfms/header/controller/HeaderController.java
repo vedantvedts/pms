@@ -229,6 +229,7 @@ public class HeaderController {
 			}
 			in.close();
 			out.flush();
+			out.close();
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -259,6 +260,7 @@ public class HeaderController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 		}
 		catch (Exception e) {
 				e.printStackTrace();
@@ -289,6 +291,7 @@ public class HeaderController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 		}
 		catch (Exception e) {
 				e.printStackTrace();

@@ -119,6 +119,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 	
 	
@@ -144,6 +145,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 
 
@@ -168,6 +170,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 	
 	
@@ -196,6 +199,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 	
 	
@@ -230,6 +234,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 	
 	@RequestMapping(value = "LoginPage/DPFMDoc2021.htm", method = RequestMethod.GET)
@@ -254,6 +259,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 	
 	
@@ -279,6 +285,7 @@ public class PfmsMainController {
 		}
 		in.close();
 		out.flush();
+		out.close();
 	}
 
 	

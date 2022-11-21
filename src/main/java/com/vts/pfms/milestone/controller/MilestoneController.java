@@ -1899,7 +1899,9 @@ public class MilestoneController {
 		        OutputStream outStream = res.getOutputStream();
 		        outStream.write(outArray);
 		        outStream.flush();
+		        outStream.close();
 			    wb.close();
+			    outByteStream.close();
 			 }
 		        catch (Exception e) {
 				    e.printStackTrace();  

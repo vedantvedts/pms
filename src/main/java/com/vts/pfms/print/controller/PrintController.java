@@ -268,6 +268,7 @@ public class PrintController {
 			}
 			in.close();
 			out.flush();
+			out.close();
 			
 			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
 	        Files.delete(pathOfFile2);		
@@ -336,6 +337,7 @@ public class PrintController {
 			}
 			in.close();
 			out.flush();
+			out.close();
 			
 			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
 	        Files.delete(pathOfFile2);	

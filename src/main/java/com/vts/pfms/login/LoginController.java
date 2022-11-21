@@ -104,63 +104,7 @@ public class LoginController {
 	    	
 	    	try {
 	    		
-//	    		LabMaster labmaster= rfpmainservice.LabDetailes();
-//	    		
-//	    		
-//	    		if(labmaster.getLabLogo() != null) {
-//	    			
-//	    			InputStream targetStream = new ByteArrayInputStream(labmaster.getLabLogo());
-//	        		
-//	        		BufferedImage img = ImageIO.read(targetStream);
-//	        		String path=req.getServletContext().getRealPath("/resources");
-//	        		
-//	        		
-//	        		String fileName="logo.jpg";
-//	    		
-//	        		ByteArrayOutputStream os = new ByteArrayOutputStream();
-//	        		ImageIO.write(img, "jpeg", os);                          
-//	        		InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
-//	        		
-//	        	
-//	    			 OutputStream outputStream = null;  
-//	    			
-//	    			   File newFile = new File(path+File.separator+fileName);  
-//	    			   
-//	    			 String Path1="logo.jpg";
-//	    			 
-//	    			if(Path1!=null) {
-//	    			 File newFile1 = new File(path+File.separator+Path1);
-//	    				 newFile1.delete(); 
-//	    			
-//	    			  
-//	    			  if (!newFile.exists()) {    
-//	    			    newFile.createNewFile(); 
-//	    			   }
-//	    			    outputStream = new FileOutputStream(newFile);    
-//	    			    int read = 0;    
-//	    			    byte[] bytes = new byte[1024];    
-//	    			     
-//	    			   
-//	    			    
-//	    			    outputStream.write(bytes, 0, read);   
-//	    			    
-//	    			    while ((read = inputStream.read(bytes)) != -1) {    
-//	    			     outputStream.write(bytes, 0, read);    
-//	    			    } 
-//	    			    
-//	    			    outputStream.close();
-//	        		
-//	        		String imagepath=path+File.separator+fileName;
-//	        	
-//	        		
-//	        		req.setAttribute("imagepath", imagepath );
-//	    			
-//	    		}
-//
-//	    	}
-//	    		
-//	    		 req.setAttribute("labdata", rfpmainservice.LabDetailes());
-//	    		 req.setAttribute("labdata1", rfpmainservice.LabDetails());
+
 	    	
 	    	}
 				catch(Exception e) {

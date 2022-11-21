@@ -2643,7 +2643,7 @@ public class ProjectController {
 	        }
 	        in.close();
 	        out.flush();
-			
+	        out.close();
 		}catch (Exception e) {
 				e.printStackTrace(); 
 				logger.error(new Date() +"Inside ProjectDataSystemSpecsFileDownload.htm "+UserId,e);
@@ -2676,25 +2676,7 @@ public class ProjectController {
 			projectdatadto.setCurrentStageId(req.getParameter("projectstageid"));
 			projectdatadto.setProcLimit(proclimit);
 			
-//			String fileName = systemconfigimg.getOriginalFilename();
-//			String prefix = fileName.substring(fileName.lastIndexOf("."));
-//			 
-//			File file = null;
-//			try {
-//			 
-//			     file = File.createTempFile(fileName, prefix);
-//			     systemconfigimg.transferTo(file);
-//			} catch (Exception e) {
-//			     e.printStackTrace();
-//			            
-//			}
-//			
-//			
-//			BufferedImage bimg = ImageIO.read(file);
-//			int width          = bimg.getWidth();
-//			int height         = bimg.getHeight();
-			
-			
+		
 			projectdatadto.setModifiedBy(Username);
 			if(rev!=null && rev.equals("1"))
 			{
@@ -2834,7 +2816,7 @@ public class ProjectController {
 	        }
 	        in.close();
 	        out.flush();
-			
+	        out.close();
 		}catch (Exception e) {
 				 e.printStackTrace(); logger.error(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId,e);
 		}
@@ -3271,7 +3253,7 @@ public class ProjectController {
 	        }
 	        in.close();
 	        out.flush();
-	        
+	        out.close();
 		}catch 
 		(Exception e) {
 			e.printStackTrace(); 

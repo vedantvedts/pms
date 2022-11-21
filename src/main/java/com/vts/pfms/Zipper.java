@@ -47,6 +47,7 @@ public class Zipper
             try (OutputStream outputStream = new FileOutputStream(extractedFile)) {
               while ((readLen = zipInputStream.read(readBuffer)) != -1) {
                 outputStream.write(readBuffer, 0, readLen);
+                outputStream.close();
               }
             }
           }

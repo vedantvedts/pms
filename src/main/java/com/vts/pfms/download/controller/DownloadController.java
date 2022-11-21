@@ -118,6 +118,7 @@ public class DownloadController {
 	        }
 	        in.close();
 	        out.flush();
+	        out.close();
 			
 		}catch (Exception e) {
 				e.printStackTrace(); 
