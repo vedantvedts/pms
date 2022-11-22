@@ -21,6 +21,7 @@ SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf2=new SimpleDateFormat("MMMM yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 
+List<Object[]> costbreak = (List<Object[]>)request.getAttribute("costbreak");
 List<Object[]> PfmsInitiationList=(List<Object[]>)request.getAttribute("PfmsInitiationList");
 List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
@@ -831,16 +832,109 @@ for(Object[] obj : DetailsList){   %>
 <%}%>
 
  <h1 class="break"></h1>
- <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("1") ||
+ <%
+ 
+ double totalcost = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
+ if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("1") ||
 		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("2")|| PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("4") ||
 		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("6") ||PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("7") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("8")){ %>
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("8")){ 
+		 
+		 
+	  double transportation=0; 
+	  double Equipment = 0;
+	  double CARSCAPSI =0;
+	  double Consultancy=0;
+	  double TechnicalServices=0;
+	  double HiringofTransport=0;
+	  double ProjectVehicles=0;
+	  double Miscellaneous=0;
+	  double PlantMachinery=0;
+	  double ProjectrelatedVehicles=0;
+	  double Works=0;
+	  
+	  double FEtransportation=0; 
+	  double FEEquipment = 0;
+	  double FECARSCAPSI =0;
+	  double FEConsultancy=0;
+	  double FETechnicalServices=0;
+	  double FEHiringofTransport=0;
+	  double FEProjectVehicles=0;
+	  double FEMiscellaneous=0;
+	  double FEPlantMachinery=0;
+	  double FEProjectrelatedVehicles=0;
+	  double FEWorks=0;
+	  for(Object[] obj:costbreak){ 
+			if("1".equalsIgnoreCase(obj[1].toString()) ||"2".equalsIgnoreCase(obj[1].toString()) ||
+			   "23".equalsIgnoreCase(obj[1].toString())||"24".equalsIgnoreCase(obj[1].toString())){ 
+				transportation+=Double.parseDouble(obj[0].toString()); 	
+			if("FE".equalsIgnoreCase(obj[2].toString())){FEtransportation+=Double.parseDouble(obj[0].toString()); }
+				}  
+			if("3".equalsIgnoreCase(obj[1].toString()) ||"4".equalsIgnoreCase(obj[1].toString()) ||
+					   "25".equalsIgnoreCase(obj[1].toString())||"26".equalsIgnoreCase(obj[1].toString())){ 
+				Equipment+=Double.parseDouble(obj[0].toString());
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEEquipment+=Double.parseDouble(obj[0].toString()); }
+			}
+			if("5".equalsIgnoreCase(obj[1].toString()) ||"6".equalsIgnoreCase(obj[1].toString()) ||
+					   "27".equalsIgnoreCase(obj[1].toString())||"28".equalsIgnoreCase(obj[1].toString()) ||
+					   "29".equalsIgnoreCase(obj[1].toString())||"30".equalsIgnoreCase(obj[1].toString())){ 
+				CARSCAPSI+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FECARSCAPSI+=Double.parseDouble(obj[0].toString()); }
+			}
+			if("7".equalsIgnoreCase(obj[1].toString()) ||"8".equalsIgnoreCase(obj[1].toString()) ||
+					   "31".equalsIgnoreCase(obj[1].toString())||"32".equalsIgnoreCase(obj[1].toString())){ 
+				Consultancy+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEConsultancy+=Double.parseDouble(obj[0].toString()); }	
+			}
+			if("9".equalsIgnoreCase(obj[1].toString()) ||"10".equalsIgnoreCase(obj[1].toString()) ||
+					   "33".equalsIgnoreCase(obj[1].toString())||"34".equalsIgnoreCase(obj[1].toString())){ 
+				TechnicalServices+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FETechnicalServices+=Double.parseDouble(obj[0].toString()); }
+			}
+			if("11".equalsIgnoreCase(obj[1].toString()) ||"12".equalsIgnoreCase(obj[1].toString()) ||
+					   "35".equalsIgnoreCase(obj[1].toString())||"36".equalsIgnoreCase(obj[1].toString())){ 
+				HiringofTransport+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEHiringofTransport+=Double.parseDouble(obj[0].toString()); }	
+			}
+			if("13".equalsIgnoreCase(obj[1].toString()) ||"14".equalsIgnoreCase(obj[1].toString()) ||
+					   "37".equalsIgnoreCase(obj[1].toString())||"38".equalsIgnoreCase(obj[1].toString())){ 
+				ProjectVehicles+=Double.parseDouble(obj[0].toString());
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEProjectVehicles+=Double.parseDouble(obj[0].toString()); }	
+			}
+			if("15".equalsIgnoreCase(obj[1].toString()) ||"16".equalsIgnoreCase(obj[1].toString()) ||
+					   "39".equalsIgnoreCase(obj[1].toString())||"40".equalsIgnoreCase(obj[1].toString())){ 
+				Miscellaneous+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEMiscellaneous+=Double.parseDouble(obj[0].toString()); }	
+			}
+			if("17".equalsIgnoreCase(obj[1].toString()) ||"18".equalsIgnoreCase(obj[1].toString()) ||
+					   "43".equalsIgnoreCase(obj[1].toString())||"44".equalsIgnoreCase(obj[1].toString())){ 
+				PlantMachinery+=Double.parseDouble(obj[0].toString());
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEPlantMachinery+=Double.parseDouble(obj[0].toString()); }	
+			}
+			if("19".equalsIgnoreCase(obj[1].toString()) ||"20".equalsIgnoreCase(obj[1].toString()) ||
+					   "45".equalsIgnoreCase(obj[1].toString())||"46".equalsIgnoreCase(obj[1].toString())){ 
+				ProjectrelatedVehicles+=Double.parseDouble(obj[0].toString());
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEProjectrelatedVehicles+=Double.parseDouble(obj[0].toString()); }	
+			}
+			
+			if("21".equalsIgnoreCase(obj[1].toString()) ||"22".equalsIgnoreCase(obj[1].toString()) ||
+					   "41".equalsIgnoreCase(obj[1].toString())||"42".equalsIgnoreCase(obj[1].toString())||
+					   "47".equalsIgnoreCase(obj[1].toString())||"48".equalsIgnoreCase(obj[1].toString())   
+					){ 
+				Works+=Double.parseDouble(obj[0].toString()); 
+				if("FE".equalsIgnoreCase(obj[2].toString())){FEWorks+=Double.parseDouble(obj[0].toString()); }	
+			}
+	  
+	  }
+		 
+		 
+		 %>
 
  <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  ">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
-				 		 	 Cost Break-Up Table for MM, TD, UT & IF Projects  <br> (in &#x20B9; Cr.)
+				 		 	 Cost Break-Up Table for MM, TD, UT & IF Projects  <br> (in &#x20B9; Lakhs.)
 				  	</th>
 			  	</tr>
 			  	<tr>
@@ -861,91 +955,187 @@ for(Object[] obj : DetailsList){   %>
 				  	<tr>	
 				  		<td rowspan="10">052 <br>(Code Head-929/25)*</td>	
 				  		<td> Transportation (Movement of Stores)</td>
-				  		<td></td>
-				  		<td></td>
-				  		<td></td>
+				  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
+				  		<td>0.00</td>
+				  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000) %>)</td>
 				   </tr>
 				   <tr>
 				   		<td> Equipment/Stores</td>
-				   		<td></td>
-				  		<td></td>
-				  		<td></td>
+				   		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+				  		<td>0.00</td>
+				  		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 				   </tr>	 	
 				  <tr>
 				 		<td> CARS/CAPSI </td>
-				  		<td></td>
-				  		<td></td>
-				  		<td></td>
+				  		<td><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
+				  		<td>0.00</td>
+				  		<td><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
 				  </tr>
 				  <tr>
 				 		<td> Consultancy Contracts </td>
-				  		<td></td>
-				  		<td></td>
-				  		<td></td>
-				  </tr>
+				  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+				  		<td> 0.00</td>
+				  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+				  </tr> 
 				  <tr>
 				  		<td> Job Work/Contracts/Technical Services</td>
-				  		<td></td>
-				  		<td></td>
-				  		<td></td>
+				  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+				  		<td> 0.00</td>
+				  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 				  </tr>
 
 				  <tr>
 				 	 <td> Hiring of Transport </td>
-				 	 <td></td>
-				  	 <td></td>
-				  	 <td></td>
+				 	 <td><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
+				  	 <td> 0.00</td>
+				  	 <td><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
 				 </tr>
 				 <tr>
 				 	<td> Fuel/Oil/Lubricants for Project Vehicles</td>
-				 	<td></td>
-				  	<td></td>
-				  	<td></td>
+				 	<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
+				  	<td> 0.00</td>
+				    <td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
 				 </tr>	
 				  <tr>
 				 	<td> Contingency & Miscellaneous</td>
-				 	<td></td>
-				  	<td></td>
-				  	<td></td>
-				 </tr>	
+				 	<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+				  	<td> 0.00</td>
+				  	<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+				 </tr>	 
 				 <tr>
 				  	<td> Plant & Machinery</td>
-				  	<td></td>
-				  	<td></td>
-				  	<td></td>
+				  	<td><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
+				  	<td> 0.00</td>
+				  	<td><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
 				</tr>
 			    <tr>
 			  		<td> Project related Vehicles </td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
+				  	<td> 0.00</td>
+				  	<td><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
 			  	</tr>
 			  	 <tr>
 			  		<td> 111 </td>
 			  		<td> Works</td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+				  	<td> 0.00</td>
+				  	<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+				  	
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total </td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
+			  		<td>0.00</td>
+			  		<td><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td></td>
 			  	</tr>
 		  </tbody>
   
  </table>
  <h1 class="break"></h1>
   <%}%>
- 
- <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("3") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("5")){%> 
+  <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("3") ||
+		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("5")){
+		 
+		  double grandtotal = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
+		  double transportation=0; 
+		  double Equipment = 0;
+		  double CARS =0;
+		  double CAPSI=0;
+		  double Consultancy=0;
+		  double TechnicalServices=0;
+		  double HiringofTransport=0;
+		  double ProjectVehicles=0;
+		  double Miscellaneous=0;
+		  double PlantMachinery=0;
+		  double ProjectrelatedVehicles=0;
+		  double Works=0;
+		  
+		  double FEtransportation=0; 
+		  double FEEquipment = 0;
+		  double FECARS =0;
+		  double FECAPSI=0;
+		  double FEConsultancy=0;
+		  double FETechnicalServices=0;
+		  double FEHiringofTransport=0;
+		  double FEProjectVehicles=0;
+		  double FEMiscellaneous=0;
+		  double FEPlantMachinery=0;
+		  double FEProjectrelatedVehicles=0;
+		  double FEWorks=0;
+		  for(Object[] obj:costbreak){ 
+				if("1".equalsIgnoreCase(obj[1].toString()) ||"2".equalsIgnoreCase(obj[1].toString()) ||
+				   "23".equalsIgnoreCase(obj[1].toString())||"24".equalsIgnoreCase(obj[1].toString())){ 
+					transportation+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEtransportation+=Double.parseDouble(obj[0].toString());}
+				}  
+				if("3".equalsIgnoreCase(obj[1].toString()) ||"4".equalsIgnoreCase(obj[1].toString()) ||
+						   "25".equalsIgnoreCase(obj[1].toString())||"26".equalsIgnoreCase(obj[1].toString())){ 
+					Equipment+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEEquipment+=Double.parseDouble(obj[0].toString());}
+				}
+				
+				if("29".equalsIgnoreCase(obj[1].toString()) ||"30".equalsIgnoreCase(obj[1].toString())
+						   ){ 
+					CAPSI+=Double.parseDouble(obj[0].toString());
+					if("FE".equalsIgnoreCase(obj[2].toString())){FECAPSI+=Double.parseDouble(obj[0].toString());}
+					
+				}
+				if("27".equalsIgnoreCase(obj[1].toString()) ||"28".equalsIgnoreCase(obj[1].toString())){ 
+					CARS+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FECARS+=Double.parseDouble(obj[0].toString());}
+				}
+				if("7".equalsIgnoreCase(obj[1].toString()) ||"8".equalsIgnoreCase(obj[1].toString()) ||
+						   "31".equalsIgnoreCase(obj[1].toString())||"32".equalsIgnoreCase(obj[1].toString())){ 
+					Consultancy+=Double.parseDouble(obj[0].toString());
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEConsultancy+=Double.parseDouble(obj[0].toString());}
+				}
+				if("9".equalsIgnoreCase(obj[1].toString()) ||"10".equalsIgnoreCase(obj[1].toString()) ||
+						   "33".equalsIgnoreCase(obj[1].toString())||"34".equalsIgnoreCase(obj[1].toString())){ 
+					TechnicalServices+=Double.parseDouble(obj[0].toString());
+					if("FE".equalsIgnoreCase(obj[2].toString())){FETechnicalServices+=Double.parseDouble(obj[0].toString());}
+				}
+				if("11".equalsIgnoreCase(obj[1].toString()) ||"12".equalsIgnoreCase(obj[1].toString()) ||
+						   "35".equalsIgnoreCase(obj[1].toString())||"36".equalsIgnoreCase(obj[1].toString())){ 
+					HiringofTransport+=Double.parseDouble(obj[0].toString());
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEHiringofTransport+=Double.parseDouble(obj[0].toString());}
+				}
+				if("13".equalsIgnoreCase(obj[1].toString()) ||"14".equalsIgnoreCase(obj[1].toString()) ||
+						   "37".equalsIgnoreCase(obj[1].toString())||"38".equalsIgnoreCase(obj[1].toString())){ 
+					ProjectVehicles+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEProjectVehicles+=Double.parseDouble(obj[0].toString());}
+				}
+				if("15".equalsIgnoreCase(obj[1].toString()) ||"16".equalsIgnoreCase(obj[1].toString()) ||
+						   "39".equalsIgnoreCase(obj[1].toString())||"40".equalsIgnoreCase(obj[1].toString())){ 
+					Miscellaneous+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEMiscellaneous+=Double.parseDouble(obj[0].toString());}
+				}
+				if("17".equalsIgnoreCase(obj[1].toString()) ||"18".equalsIgnoreCase(obj[1].toString()) ||
+						   "43".equalsIgnoreCase(obj[1].toString())||"44".equalsIgnoreCase(obj[1].toString())){ 
+					PlantMachinery+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEPlantMachinery+=Double.parseDouble(obj[0].toString());}
+				}
+				
+				if("19".equalsIgnoreCase(obj[1].toString()) ||"20".equalsIgnoreCase(obj[1].toString()) ||
+						   "45".equalsIgnoreCase(obj[1].toString())||"46".equalsIgnoreCase(obj[1].toString())){ 
+					ProjectrelatedVehicles+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEProjectrelatedVehicles+=Double.parseDouble(obj[0].toString());}
+				}
+				if("21".equalsIgnoreCase(obj[1].toString()) ||"22".equalsIgnoreCase(obj[1].toString()) ||
+						   "41".equalsIgnoreCase(obj[1].toString())||"42".equalsIgnoreCase(obj[1].toString())||
+						   "47".equalsIgnoreCase(obj[1].toString())||"48".equalsIgnoreCase(obj[1].toString()) ){ 
+					Works+=Double.parseDouble(obj[0].toString()); 
+					if("FE".equalsIgnoreCase(obj[2].toString())){FEWorks+=Double.parseDouble(obj[0].toString());}
+				}
+		  }
+			 
+		 
+		 
+		 %>  
   <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  ">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5">
-				  	 		Cost Break-up Table for S&T & PS Projects  <br> (in &#x20B9; Cr.) 
+				  	 		Cost Break-up Table for S&T & PS Projects  <br> (in &#x20B9; Lakhs.) 
 				  	</th> 
 			  	</tr>
 			  	<tr>
@@ -966,74 +1156,81 @@ for(Object[] obj : DetailsList){   %>
 			  	<tr>
 			  		<td> 105</td>
 			  		<td> Transportation (Movement of Stores) </td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
 			  	</tr>
 			  	
 			  	<tr>
 			  		<td rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
 			  		<td> Equipment/Stores </td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			     	<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+			  		
 			  	</tr>
 			  	<tr>
 			  		<td> CARS</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
 			  		<td> CAPSI</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td> Consultancy Contracts </td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td> Job Work/Contracts/Hiring of <br>Technical Services</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td> <%=TechnicalServices %></td>
+			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+
 			  	</tr> 
 				<tr>
 			  		<td> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
+			  		
 			  	</tr>
 			  	<tr>
 			  		<td>Contingency & Miscellaneous</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+
 			  	</tr>
 			  	<tr>
 			 	 	<td> 111</td>
 			  		<td> Works</td>
-			  		<td> </td>
-			  		<td> </td>
-			  		<td> </td>
+			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total (Revenue)</td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  	    <td><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
+			  	    (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks)/100000)%>)</td>	
+			  		<td>0.00</td>
+			  		<td><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
+			  		(<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			 	 	<td rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
 			  		<td> Plant & Machinery </td>
-			  		<td rowspan="2"></td>
-			  		<td rowspan="2"></td>
-			  		<td rowspan="2"></td>
+			  		<td rowspan="2"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
+			  		<td rowspan="2">0.00</td>
+			  		<td rowspan="2"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td> Project related Vehicles </td>
@@ -1041,30 +1238,30 @@ for(Object[] obj : DetailsList){   %>
 			  	</tr>
 			  	<tr>
 			  		<td> Works </td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td> <%=nfc.convert(Works/100000) %> (<%=nfc.convert(FEWorks/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td> <%=nfc.convert(Works/100000) %> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  	</tr>
 			  	
 			  	
 			  	
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total (Capital)</td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+Works)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
+			  		<td>0.00</td>
+			  		<td><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+Works)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Grand Total (Revenue & Capital)</td>
-			  		<td></td>
-			  		<td></td>
-			  		<td></td>
+			  		<td> <%=nfc.convert(grandtotal/100000)%>   (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+ FEPlantMachinery + FEProjectrelatedVehicles)/100000)%>)</td>
+			  		<td> 0.00</td>
+			  		<td> <%=nfc.convert(grandtotal/100000)%></td>
 			  	</tr>
 		  </tbody>
   
  </table>
   <h1 class="break"></h1>
- <%}%>
+  <%}%>
  
  
   <!-- Project Schedule -->

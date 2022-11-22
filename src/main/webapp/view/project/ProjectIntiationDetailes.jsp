@@ -1264,7 +1264,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 									    for(Object[] 	obj:entry.getValue()){ 	    %>
 
 											<tr>
-		 										<td style="width: 400px; " align="left"> <%=obj[3] %></td>
+		 										<td style="width: 500px; " align="left"> <%=obj[3] %> (<%=obj[6]%>) (<%=obj[7]%>)</td>
 									    		<td style="width: 550px;" align="left"><%=obj[4] %></td>
 									    		<td style="text-align: right">&#8377; <%=nfc.convert(Double.parseDouble(obj[5].toString().split("\\.")[0])/100000) %></td>
 								 			</tr>

@@ -4,7 +4,7 @@
 	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 	<!DOCTYPE html>
 	<html>
-	<head>
+	<head>                   
 		<meta charset="ISO-8859-1">
 		<jsp:include page="../static/header.jsp"></jsp:include>
 		<script src="./resources/js/multiselect.js"></script>
@@ -235,7 +235,8 @@
 									        <input type="hidden"  id="ActionPraentId" <%if(ActionData!=null && ActionData[1]!=null){ %> value="<%=ActionData[1]%>" <%}%>>
 									        <input type="hidden"  id="Actiontype" <%if(ActionData!=null && ActionData[8]!=null){ %> value="<%=ActionData[8]%>" <%}%>>
 									        <input type="hidden" id="MainId" <%if(ActionData!=null && ActionData[7]!=null){ %> value="<%=ActionData[7]%>" <%}%>>
-									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit" style="margin-top: 10px;" value="SUBMIT"/>									
+									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit" style="margin-top: 10px;" value="SUBMIT"/>
+									        <input type="hidden" id="Actionscheduleid" <%if(ActionData!=null && ActionData[9]!=null){ %> value="<%=ActionData[9]%>" <%}else{%> value="0" <%}%>>									
 										    <button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
 									
@@ -493,6 +494,7 @@
 			 				</div>  
 			 				<div  align="center">
 			 								<input type="hidden" name="Atype" id="Atype">
+			 								<input type="hidden" name="scheduleminutesid" id="scheduleid">
 			 								<input type="hidden" name="MainActionId" id="MainActionId">
 			 								<input type="hidden" name="ActionLevel"   id="actionlevel" >
 			 								<input type="hidden" name="ActionParentid"   id="actionparentid" >
@@ -763,6 +765,8 @@
 							var $Actionlevel = $("#ActionLevel").val();
 							var $Actionparentid = $("#ActionPraentId").val(); 
 							var $Atype = $("#Actiontype").val();
+							var $actionscheduleid = $("#Actionscheduleid").val();
+							$("#scheduleid").val($actionscheduleid);
 							$("#Atype").val($Atype);
 							$("#MainActionId").val($Mainid);
 							$("#actionlevel").val($Actionlevel);

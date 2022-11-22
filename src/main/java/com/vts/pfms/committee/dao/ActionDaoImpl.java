@@ -53,7 +53,7 @@ public class ActionDaoImpl implements ActionDao{
     private static final String ACTIONGENCOUNT="SELECT COUNT(*) FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND (CASE WHEN :projectid=0 THEN a.projectid=:projectid AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(a.actiondate, \"%Y\") ELSE a.projectid=:projectid END ) AND a.isactive='1'";
 	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno FROM action_assign WHERE actionassignid=:assignid";
 	private static final String SCHEDULEITEM="SELECT a.scheduleminutesid,a.details FROM  committee_schedules_minutes_details a WHERE  a.scheduleminutesid=:schid";
-    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type,:LabCode)";
+    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type)";
     private static final String ACTIONSEARCHNO="CALL Pfms_ActionNo_Search(:empid,:no,:position)";
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
     private static final String ACTIONCOUNT="CALL Pfms_Action_PD_Chart(:projectid)";
@@ -359,7 +359,7 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("term",Term);
 		query.setParameter("position",Position);
 		query.setParameter("type",Type);
-		query.setParameter("LabCode",LabCode);
+		//query.setParameter("LabCode",LabCode);
 		
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -412,6 +412,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query=manager.createNativeQuery(ACTIONWISE);
 		query.setParameter("term",Term);
+		System.out.println("ProjectId    : "+ProjectId);
 		query.setParameter("ProjectId",ProjectId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -573,7 +574,7 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> AllEmpNameDesigList=(List<Object[]>)query.getResultList();
 		return AllEmpNameDesigList;
 	}
-	private static final String GETREASSIGNEDDATA="SELECT  b.actionassignid,b.Actionmainid ,a.Actionitem , b.Actionno , a.actionlevel,a.projectid ,b.enddate,a.mainid ,a.actiontype FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND b.actionassignid=:actionassignid";
+	private static final String GETREASSIGNEDDATA="SELECT  b.actionassignid,b.Actionmainid ,a.Actionitem , b.Actionno , a.actionlevel,a.projectid ,b.enddate,a.mainid ,a.actiontype ,a.ScheduleMinutesId FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND b.actionassignid=:actionassignid";
 	@Override
 	public Object[] GetActionReAssignData(String Actionassignid)throws Exception
 	{

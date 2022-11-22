@@ -253,7 +253,7 @@ public class ActionController {
 			mainDto.setActionLinkId(req.getParameter("OldActionNoId"));
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionDate(req.getParameter("MainPDC"));
-			mainDto.setScheduleMinutesId("0");
+			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setActionStatus("A");
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("MainPriority"));
@@ -1200,7 +1200,7 @@ public class ActionController {
 							
 							
 							req.setAttribute("Assignee", service.SearchDetails(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId")).get(0));
-							req.setAttribute("SubList", service.SubList(req.getParameter("ActionMainId")));
+							req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 							req.setAttribute("AssigneeName", AssigneeName);
 							req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 							req.setAttribute("ActionNo", req.getParameter("ActionNo"));

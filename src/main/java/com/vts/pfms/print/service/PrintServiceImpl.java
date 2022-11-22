@@ -53,6 +53,11 @@ public class PrintServiceImpl implements PrintService{
 	
 		return dao.LabDetailes( LabCode);
 	}
+	@Override
+	public List<Object[]> GetCostBreakList(String InitiationId,String projecttypeid)throws Exception
+	{
+		return dao.GetCostBreakList(InitiationId,projecttypeid);
+	}
 	
 	@Override
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception {
