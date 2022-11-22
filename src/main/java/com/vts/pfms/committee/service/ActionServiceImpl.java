@@ -744,4 +744,10 @@ public class ActionServiceImpl implements ActionService {
 	{
 		return dao.LabEmpListFilterForAction(LabCode,MainId);
 	}
+	
+	 @Override
+	 public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception
+	 {
+		 return dao.ActionSubLevelsList(ActionAssignId);
+	 }
 }

@@ -2105,4 +2105,25 @@ public class ActionController {
 	}
 	
 	
+	@RequestMapping(value = "ActionTree.htm")
+	public String ActionTree(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionTree.htm "+UserId);
+		try {
+			String ActionAssignId = req.getParameter("ActionAssignId"); 
+			
+			req.setAttribute("actionslist", service.ActionSubLevelsList(ActionAssignId));
+			return "action/ActionTree";
+		}catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ActionTree.htm "+UserId, e);		
+			return "static/Error";
+			
+		}		
+		
+
+	}
+	
+	
 }
