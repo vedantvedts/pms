@@ -209,8 +209,7 @@ th, td
 
 img
 {
-	width:25cm;
-	height:17cm;
+	
 <%if(isprint!=null && isprint.equals("1")){%>
 	margin-left: -15px;
 <%}%>
@@ -348,24 +347,17 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 		<%} %>	
 		
 		<table class="executive" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto; max-width: 650px; font-size: 16px;"  >
-		<%
-		if(labInfo!=null){
-		 %>
+		<% if(labInfo!=null){ %>
 			<tr>			
 				<th colspan="8" style="text-align: center; font-weight: 700;">
-				<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
+				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
 
 				</th>
-			
 			</tr>
-	
 			<tr>
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 			</tr>
-			
-			<% } %>
-		
-		
+		<% } %>
 		<tr>
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
 		</tr>
@@ -471,8 +463,8 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 										<%if( ProjectRevList.get(z).size()>0 ){ %>	
 													<tr>	
 														<td ><b>Org</b></td>
-											 			<td style="text-align: right;"><%=ProjectRevList.get(z).get(0)[11] %></td>
-														<td style="text-align: right;"><%=ProjectRevList.get(z).get(0)[11] %></td>
+											 			<td style="text-align: right;"><%=ProjectRevList.get(z).get(0)[17] %></td>
+														<td style="text-align: right;"><%=ProjectRevList.get(z).get(0)[16] %></td>
 														<td style="text-align: right;"><%=ProjectRevList.get(z).get(0)[11] %></td>
 													</tr>
 													<tr>			
@@ -521,7 +513,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){
 				%>
 				<div align="center"><br>
-				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
 				</div> 
 			<% }else{
 		%>
@@ -536,7 +528,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 			if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){
 			%>
 			   <div align="center"><br>
-				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > --%>
+				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > --%>
 				</div> 
 		<% }else{
 		%>
@@ -553,7 +545,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){
 			%>
 			     <div align="center"><br>
-				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
+				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
 				</div> 
 		<% }else{
 		%>
@@ -1011,7 +1003,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 			                      if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){
 			                      %>
 			                      <div align="center"><br>
-				                  <img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px;margin-left: 10px;"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
+				                  <img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px;margin-left: 10px;"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
 				                  </div> 
 		                       <% }else{
 		                                  %>
@@ -1506,12 +1498,12 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 <!-- ----------------------------------------------9.GANTT chart---------------------------------------------------------- -->
 			<div align="left" style="margin-left: 15px;">
 				<b>10. PERT/GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original</span> (as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]: </b></div>
-              <%
+            <%
               if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){
-				%>
+			%>
 					
 				<div align="center"><br>
-				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
+				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
 				</div> 
               <%}
               else if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){

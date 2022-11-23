@@ -678,7 +678,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img   width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
 
 											<%}else{ %>
@@ -708,7 +708,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){ %>
 												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 											<%}else{ %>
-												<img	width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+												<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
 											<%} %>
 												
 										<%}else{ %>
@@ -755,7 +755,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
 												
 												
@@ -1569,7 +1569,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" >											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
 												<%} %>
 												
 												
@@ -2247,7 +2247,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
 											
-													<img width="1200" height="600" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 												
 
 										</td>
