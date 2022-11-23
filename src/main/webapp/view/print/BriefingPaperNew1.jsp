@@ -209,8 +209,8 @@ th, td
 
 img
 {
-	width:17cm;
-	height:25cm;
+	width:25cm;
+	height:17cm;
 <%if(isprint!=null && isprint.equals("1")){%>
 	margin-left: -15px;
 <%}%>
@@ -518,10 +518,11 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 		<div align="left" style="margin-left: 15px;margin-top: 5px;"><b>2 (a) System Configuration : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		
 			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){
-				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equals("pdf")){
+				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){
 				%>
-				<br>
-				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" > --%> 
+				<div align="center"><br>
+				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+				</div> 
 			<% }else{
 		%>
 			<b>  System Configuration Annexure </b>
@@ -533,10 +534,11 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 	<h1 class="break"></h1>
 		<div align="left" style="margin-left: 15px;margin-top: 5px;"><b>2 (b) System Specification : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){
-			if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equals("pdf")){
+			if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){
 			%>
-			   <br>
-				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > --%> 
+			   <div align="center"><br>
+				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" > --%>
+				</div> 
 		<% }else{
 		%>
 			<b> System Specification Annexure </b>
@@ -550,10 +552,11 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 		<div align="left" style="margin-left: 10px;margin-top: 5px;"><b>3. Overall Product tree/WBS:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			
 			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[5]!=null){
-				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equals("pdf")){
+				if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){
 			%>
-			     <br>
-				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" > --%> 
+			     <div align="center"><br>
+				<img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
+				</div> 
 		<% }else{
 		%>
 			<b> Overall Product tree/WBS Annexure </b>
@@ -1007,9 +1010,11 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 						 <div align="left" style="margin-left: 15px;"><b>(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</b></div>
 							<div>
 								<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){
-			                      if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equals("pdf")){
+			                      if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){
 			                      %>
-				                  <%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" > --%> 
+			                      <div align="center"><br>
+				                  <img class="logo" style="max-width:1150px;height:100%;margin-bottom: 5px;margin-left: 10px;"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(ApplicationFilesDrive+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
+				                  </div> 
 		                       <% }else{
 		                                  %>
 			                        <b> TRL table with TRL at sanction stage Annexure </b>
@@ -1507,9 +1512,9 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
               if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){
 				%>
 					
-				<br>
-				<%-- <img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > --%> 
-
+				<div align="center"><br>
+				<img class="logo" style="max-width:950px;height:100%;margin-bottom: 5px"   src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
+				</div> 
               <%}
               else if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){
 				

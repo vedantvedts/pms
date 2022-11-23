@@ -152,15 +152,15 @@ String ses=(String)request.getParameter("result");
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	<center>
+	<div align="center">
 	<div class="alert alert-danger" role="alert" >
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></center>
+                   </div></div>
                     <%} %>
 
     <br />

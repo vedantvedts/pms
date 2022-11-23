@@ -166,9 +166,17 @@ String projectId=request.getAttribute("projectId").toString();
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 
-					<div class="card-header"
-						style="background-color: #055C9D; margin-top:">
+					<div class="card-header" style="background-color: #055C9D; margin-top:">
 						<b class="text-white">Add Demand File</b>
+						
+						
+						<form action="ProcurementStatus.htm" style="float:right; " method="post">
+							<button type="submit" class="btn btn-sm back">Back</button>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<input type="hidden" name="projectid" value="<%=projectId%>">
+							
+						</form>
+						
 					</div>
 					<div class="card-body">
 						<table class="table table-bordered table-hover table-striped table-condensed dataTable no-footer" id="myTable" role="grid" aria-describedby="myTable_info"> 
@@ -200,7 +208,7 @@ String projectId=request.getAttribute("projectId").toString();
 														<input type="hidden"  name="ItemNomcl" id="ItemNomclId" value= "<%=demand.getItemFor() %>" >
 														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%=demand.getEstimatedCost() %>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<button class="btn" onclick="confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+														<button type="submit" class="btn" onclick="return confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
 												
 													</form>
 												</td>

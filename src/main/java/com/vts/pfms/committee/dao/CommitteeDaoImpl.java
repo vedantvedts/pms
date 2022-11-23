@@ -927,7 +927,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 	}
 
-
+	private static final String LASTPMRCDATEUPDATE ="UPDATE pfms_project_data SET lastpmrcdate =:lastpmrcdate WHERE projectid=:projectid ;";
+	private static final String LASTEBDATEUPDATE ="UPDATE pfms_project_data SET lastebdate =:lastebdate WHERE projectid=:projectid ;";
 	@Override
 	public String UpdateOtp(CommitteeSchedule schedule) throws Exception {
 
@@ -936,6 +937,27 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("committeescheduleid", schedule.getScheduleId());
 		query.setParameter("scheduleflag", schedule.getScheduleFlag());
 		int ret=query.executeUpdate();
+		
+
+		if(schedule.getScheduleFlag().equalsIgnoreCase("MKV")) 
+		{
+			Object[] scheduledata = CommitteeScheduleEditData(String.valueOf(schedule.getScheduleId()));
+			if(scheduledata[8].toString().equalsIgnoreCase("PMRC") && Long.parseLong(scheduledata[9].toString()) > 0) 
+			{
+				query = manager.createNativeQuery(LASTPMRCDATEUPDATE);
+				query.setParameter("lastpmrcdate", scheduledata[2].toString());
+				query.setParameter("projectid", scheduledata[9].toString());
+				query.executeUpdate();
+			}
+			else if(scheduledata[8].toString().equalsIgnoreCase("EB") && Long.parseLong(scheduledata[9].toString()) > 0) 
+			{
+				query = manager.createNativeQuery(LASTEBDATEUPDATE);
+				query.setParameter("lastebdate", scheduledata[2].toString());
+				query.setParameter("projectid", scheduledata[9].toString());
+				query.executeUpdate();
+			}
+		}
+		
 		
 		if(schedule.getKickOffOtp()==null) {
 			return String.valueOf(ret);

@@ -71,7 +71,7 @@ public interface ActionDao {
 	public int AssigneeSeenUpdate(String EmpId) throws Exception;
 	public Object[] ActionDetailsAjax(String actionid , String assignid) throws Exception;
 	public int ActionMainEdit(ActionMain main) throws Exception;
-	 public int ActionAssignEdit(ActionAssign assign) throws Exception;
+	public int ActionAssignEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
 	public Object[] GetActionMainData(String actionmainid)throws Exception;
 	public List<Object[]> ClusterExpertsList() throws Exception;
@@ -79,5 +79,6 @@ public interface ActionDao {
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
-	 public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception;
+	public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception;
+	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
  }
