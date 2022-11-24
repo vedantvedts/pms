@@ -213,7 +213,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMINUTESSPECNEW="SELECT minutesid,description FROM committee_schedules_minutes_new";
 	private static final String MILESTONESUBSYSTEMS="SELECT maa.activityId, maa.Parentactivityid, maa.activityname, maa.orgenddate, maa.enddate,maa.activitystatusid,mas.activityshort, maa.ProgressStatus,ma.milestoneno, maa.StatusRemarks,maa.activitylevelid FROM milestone_activity ma,milestone_activity_level maa,milestone_activity_status mas WHERE ma.milestoneactivityid = maa.parentactivityid AND maa.activitylevelid='1' AND maa.activitystatusid=mas.activitystatusid  AND ma.projectid=:projectid ORDER BY ma.milestoneno ASC";
 	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid and LabCode=:LabCode ORDER BY parentlevelid ";
-	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND a.filerepid=:filerepid AND a.releasedoc=b.releasedoc AND a.versiondoc=b.versiondoc";
+	//private static final String AGENDADOCLINKDOWNLOAD  ="SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND a.filerepid=:filerepid AND a.releasedoc=b.releasedoc AND a.versiondoc=b.versiondoc";
+	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT b.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_upload b WHERE  b.filerepuploadid=: ";
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus, mas.activitystatus, e.empname AS 'OIC1',a.milestoneno, mas.activityshort, mas.activitystatusid,0 as level FROM milestone_activity a, milestone_activity_status mas,employee e WHERE  a.isactive=1 AND mas.activitystatusid=a.activitystatusid AND a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY))  AND a.oicempid=e.empid AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus, mas.activitystatus, e.empname,0 as milestoneno, mas.activityshort, mas.activitystatusid,a.activitylevelid as level  FROM milestone_activity_level a, milestone_activity_status mas, employee e WHERE  a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY)) AND mas.activitystatusid=a.activitystatusid AND a.oicempid=e.empid AND a.parentactivityid=:id AND a.activitylevelid=:levelid ";
 	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,dm.levelname FROM committee_schedule_agenda_docs sad, file_rep_new rn, committee_schedules_agenda sa,file_doc_master dm WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid=rn.filerepid AND dm.fileuploadmasterid = rn.documentid AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
@@ -926,7 +927,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 	}
 
-
+	private static final String LASTPMRCDATEUPDATE ="UPDATE pfms_project_data SET lastpmrcdate =:lastpmrcdate WHERE projectid=:projectid ;";
+	private static final String LASTEBDATEUPDATE ="UPDATE pfms_project_data SET lastebdate =:lastebdate WHERE projectid=:projectid ;";
 	@Override
 	public String UpdateOtp(CommitteeSchedule schedule) throws Exception {
 
@@ -935,6 +937,27 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("committeescheduleid", schedule.getScheduleId());
 		query.setParameter("scheduleflag", schedule.getScheduleFlag());
 		int ret=query.executeUpdate();
+		
+
+		if(schedule.getScheduleFlag().equalsIgnoreCase("MKV")) 
+		{
+			Object[] scheduledata = CommitteeScheduleEditData(String.valueOf(schedule.getScheduleId()));
+			if(scheduledata[8].toString().equalsIgnoreCase("PMRC") && Long.parseLong(scheduledata[9].toString()) > 0) 
+			{
+				query = manager.createNativeQuery(LASTPMRCDATEUPDATE);
+				query.setParameter("lastpmrcdate", scheduledata[2].toString());
+				query.setParameter("projectid", scheduledata[9].toString());
+				query.executeUpdate();
+			}
+			else if(scheduledata[8].toString().equalsIgnoreCase("EB") && Long.parseLong(scheduledata[9].toString()) > 0) 
+			{
+				query = manager.createNativeQuery(LASTEBDATEUPDATE);
+				query.setParameter("lastebdate", scheduledata[2].toString());
+				query.setParameter("projectid", scheduledata[9].toString());
+				query.executeUpdate();
+			}
+		}
+		
 		
 		if(schedule.getKickOffOtp()==null) {
 			return String.valueOf(ret);

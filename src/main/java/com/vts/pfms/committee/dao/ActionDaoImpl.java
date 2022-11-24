@@ -779,5 +779,18 @@ public class ActionDaoImpl implements ActionDao{
 			}
 			return 0;
 	 }
+	 
+	 
+	 private static final String ACTIONSUBLEVELSLIST="CALL pfms_action_level_list (:ActionAssignId ); ";
+			 
+	 @Override
+	 public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception
+	 {
+		Query query=manager.createNativeQuery(ACTIONSUBLEVELSLIST);
+		query.setParameter("ActionAssignId", ActionAssignId);
+		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
+		return ActionSubLevelsList;
+	 }
+	 
 	
 }

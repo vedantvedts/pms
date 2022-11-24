@@ -3425,5 +3425,26 @@ public class ProjectController {
 		}
 	}
 	
+	@RequestMapping(value = "ActionTreeDemo.htm")
+	public String ActionTree(HttpServletRequest req, HttpSession ses) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionTreeDemo.htm "+UserId);
+		
+		try {
+			return "static/ActionTree";
+			
+		}catch (Exception e) {
+
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ActionTreeDemo.htm "+UserId, e);		
+			return "ststic/Error";
+			
+		}		
+		
+
+	}
+	
+	
 
 }

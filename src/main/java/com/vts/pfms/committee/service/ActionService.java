@@ -73,5 +73,6 @@ public interface ActionService {
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
+	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	
 }

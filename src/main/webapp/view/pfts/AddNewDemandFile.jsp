@@ -167,11 +167,21 @@ String projectId=request.getAttribute("projectId").toString();
 				<div class="card shadow-nohover">
 
 					<div class="card-header" style="background-color: #055C9D; margin-top:">
+
 						<form action="ProcurementStatus.htm" method="post">
 							<b class="text-white">Add Demand File</b>
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<input type="hidden" name="projectid" <%if(projectId!=null){%> value="<%=projectId%>" <%}%>>
 							<button type="submit" class="btn btn-info btn-sm shadow-nohover back" name="back" style="float: right;" > BACK </button>
+						</form>
+						<b class="text-white">Add Demand File</b>
+						
+						
+						<form action="ProcurementStatus.htm" style="float:right; " method="post">
+							<button type="submit" class="btn btn-sm back">Back</button>
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<input type="hidden" name="projectid" value="<%=projectId%>">
+							
 						</form>
 					</div>
 					<div class="card-body">
@@ -204,7 +214,11 @@ String projectId=request.getAttribute("projectId").toString();
 														<input type="hidden"  name="ItemNomcl" id="ItemNomclId" value= "<%=demand.getItemFor() %>" >
 														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%=demand.getEstimatedCost() %>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
 														<button class="btn" onclick="return confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+
+														<button type="submit" class="btn" onclick="return confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+
 												
 													</form>
 												</td>

@@ -1180,8 +1180,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
