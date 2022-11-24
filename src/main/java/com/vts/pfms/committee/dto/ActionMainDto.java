@@ -26,9 +26,15 @@ public class ActionMainDto {
 	private String ModifiedDate;
 	private String MeetingDate;
 	private String ScheduleId;
-
+	private String LabName;
 	
 
+	public String getLabName() {
+		return LabName;
+	}
+	public void setLabName(String labName) {
+		LabName = labName;
+	}
 	public String getMainId() {
 		return MainId;
 	}

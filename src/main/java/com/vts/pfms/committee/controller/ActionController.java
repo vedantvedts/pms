@@ -264,7 +264,7 @@ public class ActionController {
 			}else {
 				mainDto.setActionType("N");
 			}
-			
+			mainDto.setLabName((String)ses.getAttribute("labcode"));
 			mainDto.setActivityId("0");
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -312,6 +312,7 @@ public class ActionController {
 		try {
 			
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
+		System.out.println(service.AssigneeList(EmpId).size());
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
 		}catch (Exception e) {

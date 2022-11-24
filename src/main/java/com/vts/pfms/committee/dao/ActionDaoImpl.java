@@ -67,8 +67,8 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String SEARCHDATA="SELECT a.actionmainid,b.empname,c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,a.scheduleminutesid,a.actionlinkid,d.actionno,d.revision FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid  AND a.actionmainid=:mainid AND d.actionassignid=:assignid";
 	private static final String ACTIONWISEALLREPORT="CALL Pfms_Action_Wise_All_Reports (:term,:empid,:projectid);";
 	private static final String ACTIONALERT="CALL Pfms_Actions_Msg()";
-	private static final String ACTIONTODAY="SELECT a.actionno,a.projectid FROM action_main a WHERE  a.enddate=CURDATE() AND a.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND  a.assignee=:empid ";
-	private static final String ACTIONTOMMO="SELECT a.actionno,a.projectid FROM action_main a WHERE  a.enddate=CURDATE()+1 AND a.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND a.assignee=:empid ";
+	private static final String ACTIONTODAY="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE() AND a.actionmainid=b.actionmainid  AND b.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND  b.assignee=:empid ";
+	private static final String ACTIONTOMMO="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE()+1 AND a.actionmainid=b.actionmainid  AND b.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND b.assignee=:empid ";
 	private static final String MEETINGALERT="CALL Pfms_Meeting_Msg()";
 	private static final String MEETINGTODAY="CALL Pfms_Meeting_Msg_Today(:empid)";
 	private static final String MEETINGTOMMO="CALL Pfms_Meeting_Msg_Tommo(:empid)";

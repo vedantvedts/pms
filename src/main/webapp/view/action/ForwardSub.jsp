@@ -161,8 +161,8 @@ h6{
 								</div>
 								
 								<div class="col-md-4">
-									<button type="submit" class="btn btn-warning btn-sm edit"  onclick="back()" >Send Back</button>
-									<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="close5()" formaction="CloseSubmit.htm"> Close Action</button>
+									<button type="submit" class="btn btn-warning btn-sm edit"  onclick="return back()" >Send Back</button>
+									<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  close5()" formaction="CloseSubmit.htm"> Close Action</button>
 					        		<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
 					        		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
 					        		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
@@ -382,7 +382,11 @@ function back(){
 	event.preventDefault;
 	$("#Remarks").prop('required',true);
 	
-	confirm('Are You Sure to Send Back To Assignee ?');
+	if(confirm('Are You Sure to Send Back To Assignee ?')){
+		return true;
+	}else{
+		return false;
+	}
 	
 }
 
@@ -391,7 +395,11 @@ function close5(){
 	event.preventDefault;
 	$("#Remarks").prop('required',true);
 	
-	confirm('Are You Sure to Close This Action ?');
+	if(confirm('Are You Sure to Close This Action ?')){
+		return true;
+	}else{
+		return false;
+	}
 	
 }
 

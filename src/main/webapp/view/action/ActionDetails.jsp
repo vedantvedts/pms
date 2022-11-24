@@ -190,7 +190,7 @@ h6{
 						</thead>
 						<tbody>					
 											
-					 	<%int  count=1;
+					 	<% if(SubList!=null && SubList.size()>0){ int  count=1;
 						for(Object[] obj: SubList){ %>
 														
 						<tr >
@@ -224,23 +224,19 @@ h6{
 										 href="ActionAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
-								
-									
+	
 								<%}else{ %>
 								
 								<div  align="center">-</div>
 								
 								 <%} %>
-									
-						
-															
-							
-						
+
 						</tr>
-														
-							<% count++; } %>
-							
-							
+							<% count++; } }else{%>
+							<tr align="center">
+								<td colspan="4"><h5> Action Not Yet Started! </h5></td>
+							</tr>
+							<%}%>
 						</tbody>
 					</table>
 				</div> 

@@ -2644,4 +2644,101 @@ public class PrintController {
 			redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
 	        return "redirect:/ProjectBriefingPaper.htm";
 	    }
+	    
+	    
+	    @RequestMapping(value ="FilterMilestone.htm" ,method = RequestMethod.POST)
+	    public String FilterMilestone(HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir,HttpSession ses)throws Exception
+	    {
+	    	
+	    	String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside FilterMilestone.htm "+UserId);
+		    try {
+				
+		    	String projectid = req.getParameter("projectidvalue");
+		    	String committeeid = req.getParameter("committeidvalue");
+		    	
+		    	String MilestoneActivity = req.getParameter("milestoneactivity");
+		    	
+		    	String LevelId= "2";
+		    	Object[] getlevelid = service.MileStoneLevelId(projectid,committeeid);
+				if(getlevelid != null && getlevelid[0]!=null) {
+					LevelId= getlevelid[0].toString();
+				}
+				List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+				List<List<Object[]>> MilestoneFilterlist = new ArrayList<List<Object[]>>();
+		    	for(String  proid : Pmainlist) 
+		    	{
+		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid));
+		    	}
+		    	System.out.println("MilestoneActivity  :"+MilestoneActivity);
+		    	List<Object[]> main = new ArrayList<>();
+     	        if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity)) {
+     	        	 main=milservice.MilestoneActivityList(projectid);
+     	        }else {
+     	        	main=milservice.MilestoneActivityList(projectid).stream().filter(statusactivityid-> statusactivityid[14].toString().equalsIgnoreCase(MilestoneActivity)  ).collect(Collectors.toList());
+     	        }
+					System.out.println("Size  :"+main.size());
+		    	if(projectid!=null) {
+    				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
+    				int MainCount=1;
+    				for(Object[] objmain:main ) {
+    				 int countA=1;
+    				    List<Object[]>  MilestoneActivityA = new ArrayList<>();
+    					
+    						 MilestoneActivityA=milservice.MilestoneActivityLevel(objmain[0].toString(),"1");
+    					
+    					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+    					
+    					for(Object[] obj:MilestoneActivityA) {
+    						List<Object[]>  MilestoneActivityB = new ArrayList<>();
+        					
+        						MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
+        					
+    						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+    						int countB=1;
+    						for(Object[] obj1:MilestoneActivityB) {
+    							List<Object[]>  MilestoneActivityC = new ArrayList<>();
+            					
+            						MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
+            					
+    							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+    							int countC=1;
+    							for(Object[] obj2:MilestoneActivityC) {
+    								
+    								List<Object[]>  MilestoneActivityD = new ArrayList<>();
+                					
+                						MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
+                					
+    								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+    								int countD=1;
+    								for(Object[] obj3:MilestoneActivityD) {
+    									List<Object[]>  MilestoneActivityE = new ArrayList<>();
+                    					
+                    						MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
+                    					
+    									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+    									countD++;
+    								}
+    								countC++;
+    							}
+    							countB++;
+    						}
+    						countA++;
+    					}
+    					MainCount++;
+    				}
+    			}
+		    	req.setAttribute("MilestoneActivityList",main );
+    			req.setAttribute("ProjectId",projectid );
+		    	req.setAttribute("milestoneactivitystatus", service.MilestoneActivityStatus());
+		    	req.setAttribute("milestonefilterlist", MilestoneFilterlist);
+		    	req.setAttribute("levelid", LevelId);
+		    	req.setAttribute("CommitteeId", committeeid);
+		    	req.setAttribute("MilestoneActivity", MilestoneActivity);
+			} catch (Exception e) {
+				logger.error(new Date() +" Inside FilterMilestone.htm "+UserId, e);
+	    		e.printStackTrace();
+			}	
+		    return "milestone/MilestoneFilterList";
+	    }
 }
