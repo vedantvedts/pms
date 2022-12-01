@@ -2663,7 +2663,7 @@ public class PrintController {
 				
 		    	String projectid = req.getParameter("projectidvalue");
 		    	String committeeid = req.getParameter("committeidvalue");
-		    	
+		    	Committee committee = service.getCommitteeData(committeeid);
 		    	String MilestoneActivity = req.getParameter("milestoneactivity");
 		    	
 		    	String LevelId= "2";
@@ -2675,7 +2675,7 @@ public class PrintController {
 				List<List<Object[]>> MilestoneFilterlist = new ArrayList<List<Object[]>>();
 		    	for(String  proid : Pmainlist) 
 		    	{
-		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid));
+		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 		    	}
 		    	System.out.println("MilestoneActivity  :"+MilestoneActivity);
 		    	List<Object[]> main = new ArrayList<>();
