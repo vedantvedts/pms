@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
@@ -63,8 +64,9 @@ public interface PrintService {
     public int saveGranttChart(MultipartFile file,String Name,String path)throws Exception;
     public Object[] MileStoneLevelId(String ProjectId, String CommitteeId) throws Exception;
     public int MileStoneLevelUpdate(MilestoneActivityLevelConfigurationDto dto) throws Exception;
-    public List<Object[]> BreifingMilestoneDetails(String ProjectId) throws Exception;
+    public List<Object[]> BreifingMilestoneDetails(String ProjectId, String CommitteeCode) throws Exception;
     public int saveTechImages(MultipartFile file,String ProjectId,String path,String userName)throws Exception;
     public List<TechImages> getTechList(String proId)throws Exception;
     public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
+    public Committee getCommitteeData(String committeeid) throws Exception;
 }

@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.text.Format"%>
@@ -14,47 +15,50 @@
 
 
 <%
-    DecimalFormat df=new DecimalFormat("####################.##");
-	List<Object[]> speclists = (List<Object[]>) request.getAttribute("committeeminutesspeclist");
-	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
-	List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
-	/* List<Object[]> committeeminutessub = (List<Object[]>) request.getAttribute("committeeminutessub"); */
-	/* List<Object[]> agendas = (List<Object[]>) request.getAttribute("CommitteeAgendaList"); */
-	List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
-	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
 	HashMap< String, ArrayList<Object[]>> actionlist = (HashMap< String, ArrayList<Object[]>>) request.getAttribute("actionlist");
-	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
-	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
-	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
-	/* String committeeid1=committeescheduleeditdata[0].toString(); */
-	String projectid= committeescheduleeditdata[9].toString();
-	String divisionid= committeescheduleeditdata[16].toString();
-	String initiationid= committeescheduleeditdata[17].toString();
 	
-	String lablogo=(String)request.getAttribute("lablogo");
 	
+	List<Object[]> speclists = (List<Object[]>) request.getAttribute("committeeminutesspeclist");
+	List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
+	List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
 	List<ProjectFinancialDetails> projectFinancialDetails =(List<ProjectFinancialDetails>)request.getAttribute("financialDetails");
 	List<Object[]> procurementOnDemand = (List<Object[]>)request.getAttribute("procurementOnDemand");
 	List<Object[]> procurementOnSanction = (List<Object[]>)request.getAttribute("procurementOnSanction");
-	List<Object[]> milestonesubsystems= (List<Object[]>)request.getAttribute("milestonesubsystems");
 	List<Object[]> ActionPlanSixMonths = (List<Object[]>)request.getAttribute("ActionPlanSixMonths");
 	List<Object[]> lastpmrcactions = (List<Object[]>)request.getAttribute("lastpmrcactions");
+	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
+	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
+	/* List<Object[]> committeeminutessub = (List<Object[]>) request.getAttribute("committeeminutessub"); */
+	/* List<Object[]> agendas = (List<Object[]>) request.getAttribute("CommitteeAgendaList"); */	
+	/* List<Object[]> milestonesubsystems  = (List<Object[]>)request.getAttribute("milestonesubsystems"); */
+
+
+	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
+	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
+	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
+	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
+	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
+	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	
+	
+	DecimalFormat df=new DecimalFormat("####################.##");
 	int meetingcount= (int) request.getAttribute("meetingcount");
-	
 	FormatConverter fc=new FormatConverter(); 
 	SimpleDateFormat sdf3=fc.getRegularDateFormat();
 	SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 	SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
-	 String isprint=(String)request.getAttribute("isprint"); 
+	String isprint=(String)request.getAttribute("isprint"); 
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
+	String projectid= committeescheduleeditdata[9].toString();
+	String divisionid= committeescheduleeditdata[16].toString();
+	String initiationid= committeescheduleeditdata[17].toString();
+	String lablogo=(String)request.getAttribute("lablogo");
+	/* String committeeid1=committeescheduleeditdata[0].toString(); */
+	
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
-	
-	
-	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
 	String levelid= (String) request.getAttribute("levelid");
-	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
+	
 	
 	%>
 <style type="text/css">
@@ -1035,6 +1039,33 @@ for(Object[] temp : invitedlist){
 												<tr><td colspan="8" class="std"  style="text-align: center;">Nil </td></tr>
 											<%} %>
 									</table> 
+									
+									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
+									       <tr >
+												 <th class="std" style="max-width: 150px;">Total No. of Demand</th>
+												 <th class="std" style="max-width: 150px;">Total Est. Cost-Lakh &#8377;</th>
+										  	 	 <th class="std" style="max-width: 150px;">Total No. of Orders</th>
+										  	 	 <th class="std" style="max-width: 150px;">Total So Cost-Lakh &#8377; </th>
+										  	 	 <th class="std" style="max-width: 150px;">Total Expenditure-Lakh &#8377; </th>
+											 </tr>
+									<%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
+										 for(TotalDemand obj:totalprocurementdetails){
+											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
+										 %>
+										   <tr>
+										      <td class="std" style="text-align: center;"><%=obj.getDemandCount() %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getEstimatedCost() %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getSupplyOrderCount()%></td>
+										      <td class="std" style="text-align: center;"><%=obj.getTotalOrderCost() %></td>
+										      <td class="std" style="text-align: center;"><%=obj.getTotalExpenditure()%></td>
+										   </tr>
+										   <%}}}else{%>
+										   <tr>
+										      <td class="std" colspan="5" style="text-align: center;">IBAS Server Could Not Be Connected</td>
+										   </tr>
+										   <%} %>
+									</table>
+									
 					 <h1 class="break"></h1> 
 			<%}else if (committeemin[0].toString().equals("6") ) 
 			{ %>

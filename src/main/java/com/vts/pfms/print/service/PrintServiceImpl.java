@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
@@ -391,9 +392,9 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception
 	{
-		return dao.BreifingMilestoneDetails(Projectid);
+		return dao.BreifingMilestoneDetails(Projectid,CommitteeCode);
 	}
 
 	@Override
@@ -423,5 +424,10 @@ public class PrintServiceImpl implements PrintService{
 		return dao.SpecialCommitteesList(LabCode);
 	}
 	
+	@Override
+	public Committee getCommitteeData(String committeeid)throws Exception
+	{
+		return dao.getCommitteeData(committeeid);
+	}
 	
 }

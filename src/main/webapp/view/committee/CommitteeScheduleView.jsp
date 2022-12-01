@@ -262,7 +262,7 @@
 		                  					</td>
 		                  				<tr>
 		                  					<td colspan="4" >
-						       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="500"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18] %> <%} %></textarea>
+						       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18] %> <%} %></textarea>
 						       				</td>
 		                  				</tr>
 		                  				<tr >  

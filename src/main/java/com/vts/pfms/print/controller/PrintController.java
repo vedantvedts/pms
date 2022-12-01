@@ -79,6 +79,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.Zipper;
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
@@ -434,6 +435,9 @@ public class PrintController {
 
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
+	    	Committee committee = service.getCommitteeData(committeeid);
+	    	
+	    	
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
 	    	
@@ -482,7 +486,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));
+		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		
 	    		
@@ -962,7 +966,7 @@ public class PrintController {
 	    		projectid=projectslist.get(0)[0].toString();
 	    	}
 	    	
-	    	
+	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -1008,7 +1012,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
@@ -1537,7 +1541,8 @@ public class PrintController {
 	    		committeeid = "0";
 	    		tempid = "0";
 	    	}
-	    		    	
+	    	
+	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -1592,7 +1597,7 @@ public class PrintController {
 	    		TechWorkDataList.add(service.TechWorkData(proid)); 
 	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));	    		
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));	    		
 	    		Object[] prodetails=service.ProjectDataDetails(proid);
 	    		projectdatadetails.add(prodetails);
 	    		
@@ -1905,6 +1910,7 @@ public class PrintController {
 	    		if(service.getNextScheduleFrozen(nextScheduleId).equalsIgnoreCase("N")) {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
+	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
@@ -1955,7 +1961,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		
 	    		
@@ -2335,6 +2341,7 @@ public class PrintController {
 	    		if(service.getNextScheduleFrozen(nextScheduleId).equalsIgnoreCase("N")) {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
+	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
@@ -2384,7 +2391,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		
 	    		

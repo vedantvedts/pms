@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
@@ -556,11 +557,11 @@ public class PrintDaoImpl implements PrintDao {
 	}
 	
 	@Override 
-	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception{
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception{
 
-		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Details (:projectid)");
+		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode )");
 		query.setParameter("projectid", Projectid);
-		
+		query.setParameter("CommitteeCode", CommitteeCode);
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -714,4 +715,16 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> list =(List<Object[]>)query.getResultList();
 			return list;
 		}
+		
+		private static final String GETCOMMITTEEDATA="FROM Committee WHERE committeeid=:committeeid";
+		@Override
+		public Committee getCommitteeData(String committeeid)throws Exception
+		{
+			Query query = manager.createQuery(GETCOMMITTEEDATA);
+			query.setParameter("committeeid", Long.parseLong(committeeid));
+			Committee committee =(Committee)query.getSingleResult();
+			return committee;
+		}
+		
+		
 }

@@ -22,7 +22,7 @@
 
 
 /*----------------genealogy-tree----------*/
-.genealogy-body{
+/* .genealogy-body{
     white-space: nowrap;
     overflow-y: hidden;
     padding: 50px;
@@ -32,7 +32,7 @@
 }
 .genealogy-tree{
   display: inline-block;
-}
+} */
 .genealogy-tree ul {
     padding-top: 20px; 
     position: relative;

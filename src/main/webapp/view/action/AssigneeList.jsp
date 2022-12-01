@@ -88,8 +88,6 @@ a:hover {
  
 <body>
   <%
-  
-
 
   List<Object[]> AssigneeList=(List<Object[]>)request.getAttribute("AssigneeList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
