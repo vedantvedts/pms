@@ -2776,7 +2776,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	}
 
-	private static final String MINUTESPROCURE="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, f.EstimatedCost, f.OrderCost, f.RevisedDp ,f.ItemNomenclature, f.PftsStatus, f.PftsStageName, f.Remarks  FROM pfms_minutes_procurement f WHERE f.commiteescheduleid=:scheduleid ";
+	private static final String MINUTESPROCURE="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, f.EstimatedCost, f.OrderCost, f.RevisedDp ,f.ItemNomenclature, f.PftsStatus, f.PftsStageName, f.Remarks, f.vendorname, f.PftsStatusId  AS id  FROM pfms_minutes_procurement f WHERE f.commiteescheduleid=:scheduleid ";
 	@Override
 	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
 		Query query=manager.createNativeQuery(MINUTESPROCURE);

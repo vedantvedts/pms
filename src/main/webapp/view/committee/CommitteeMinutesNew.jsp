@@ -654,9 +654,9 @@ for(Object[] temp : invitedlist){
 				
 				<%  }else if (committeemin[0].toString().equals("3")) { %>
 						 <h1 class="break"></h1> 
-						  <div align="center"><p style="font-size: 14px;text-align: center"> <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span> : InActive </div>
+						  <!-- <div align="center"><p style="font-size: 14px;text-align: center"> <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span> : InActive </div>
 						  <div align="center"><p style="font-size: 14px;text-align: center"> <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; <span class="completed">CO</span> : Completed &nbsp;&nbsp; <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp; <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; </div>
-						 
+						  -->
 							<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 								<tr>
 									<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
@@ -664,15 +664,36 @@ for(Object[] temp : invitedlist){
 							</table>	
    				
 							<table style=" margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<thead >
+									<tr>
+										<td colspan="6" style="border: 0px !important;">
+											<p style="font-size: 10px;text-align: center"> 
+												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
+												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+											 </p>
+										</td>									
+									</tr>
+								
+								
 								<tr>
-									<th class="std"  style="max-width: 30px;"  >SN</th>
-									<th class="std"  style="max-width: 215px;" >Action Point</th>
-									<th class="std"  style="max-width: 80px;min-width:80px; "  > PDC</th>
-									<th class="std"  style="max-width: 115px;" > Item Code</th>
-									<th class="std"  style="max-width: 100px;" > Responsible agency/ Person</th>
-									<th class="std"  style="max-width: 70px;"  >Status/ Remarks</th>			
+									<th class="std"  style="width: 30px;"  >SN</th>
+									<th class="std"  style="width: 255px;" >Action Point</th>
+									<th class="std"  style="width: 80px; "  > PDC</th>
+									<th class="std"  style="width: 115px;" > Item Code</th>
+									<th class="std"  style="width: 100px;" >Responsibility</th>
+									<th class="std"  style="width: 70px;"  >Status/ Remarks</th>			
 								</tr>
-													
+								</thead>		
+								<tbody>
 								<%if(lastpmrcactions.size()==0){ %>
 									<tr><td class="std"  colspan="6" > No Data</td></tr>
 								<%}
@@ -701,7 +722,7 @@ for(Object[] temp : invitedlist){
 											</td> 
 											<td class="std" >
 												<%if(obj[4]!= null){ %>  
-													<%=obj[12] %>  (<%=obj[13] %>)
+													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
@@ -730,6 +751,7 @@ for(Object[] temp : invitedlist){
 										</tr>			
 									<%i++;
 									}} %>
+								</tbody>
 							</table>
 				
 			<%}else if(committeemin[0].toString().equals("4") ){%>
@@ -740,28 +762,38 @@ for(Object[] temp : invitedlist){
 						</tr>
 					</table>	
 					<table style="margin-top: 00px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+						     <thead>
+									<tr>
+										<td colspan="8" style="border: 0px">
+											<p style="font-size: 10px;text-align: center"> 
+												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
+												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+											 </p>
+										</td>									
+									</tr>
+						     
 						           <tr>
-										<!--  <th class="std"  style="width: 30px !important; ">SN</th>
-										 <th class="std" style="max-width: 100px; ">Mile- stone</th>
-										 <th class="std" style="max-width: 150px; ">System/ Subsystem/ Activities</th>
-										 <th class="std" style="max-width: 110px; "> Original PDC</th>
-										 <th class="std" style="max-width: 110px; "> Revised PDC</th>
-										 <th class="std" style="max-width: 100px; "> Progress</th>
-										 <th class="std" style="max-width: 70px; "> Present Status</th>
-										 <th class="std" style="max-width: 100px; "> Remarks</th> -->
-										 
-										 
+																 
 										 <th class="std"  style="width: 30px !important; ">MS</th>
 										 <th class="std"  style="width: 30px !important; ">L</th>
 										 <th class="std" style="max-width: 150px; ">System/ Subsystem/ Activities</th>
 										 <th class="std" style="max-width: 110px; "> Original PDC</th>
 										 <th class="std" style="max-width: 110px; "> Revised PDC</th>
 										 <th class="std" style="max-width: 100px; "> Progress</th>
-										 <th class="std" style="max-width: 70px; "> Present Status</th>
+										 <th class="std" style="max-width: 70px; "> Status</th>
 										 <th class="std" style="max-width: 100px; "> Remarks</th> 
 										 
 									</tr>
-										
+								</thead>
 						<!-- Old Code Before 14-09-2022 -->				
 															
 						<%-- <%if(milestonesubsystems.size()==0){ %>
@@ -805,7 +837,7 @@ for(Object[] temp : invitedlist){
 									<%i++;}} %> --%>
 									
 							<!-- New code by tharun  -->		
-									
+									<tbody>
 									<% if(MilestoneDetails6 !=null){ if( MilestoneDetails6.size()>0){ 
 									long milcount1=1;
 									int milcountA=1;
@@ -901,7 +933,7 @@ for(Object[] temp : invitedlist){
 								<!-- New code by tharun end -->	
 									
 
-								
+						</tbody>
 					</table>
 				 <h1 class="break"></h1> 
 				
@@ -1195,18 +1227,39 @@ for(Object[] temp : invitedlist){
 							<th colspan="8" style="text-align: left; font-weight: 700; text-align: justify;padding-left: 15px;" ><br><%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 						</tr>
 					</table>	
-								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							 <thead>
+									<tr>
+										<td colspan="8" style="border: 0px">
+											<p style="font-size: 10px;text-align: center"> 
+												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
+												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+											 </p>
+										</td>									
+									</tr>
+							
 								<tr>
 									<th class="std"  style="width: 30px !important;">SN</th>
 									<th class="std"  style="width: 30px; ">MS</th>
 									<th class="std"  style="width: 40px; ">L</th>
 									<th class="std"  style="max-width: 220px;">Action Plan </th>	
-									<th class="std"  style="max-width: 80px;">Responsible Agency/ Person </th>
+									<th class="std"  style="max-width: 80px;">Responsibility </th>
 									<th class="std"  style="max-width: 85px;">PDC</th>	
 									<th class="std"  style="max-width: 60px;">Progress </th>
 					                <th class="std"  style="max-width: 50px;">Status</th>
 					                 <th class="std"  style="max-width: 80px;">Remarks</th>
 								</tr>
+							</thead>
+							<tbody>
 								<%if(ActionPlanSixMonths.size()>0){ 
 									long count1=1;
 									int countA=1;
@@ -1297,7 +1350,7 @@ for(Object[] temp : invitedlist){
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
-											<td class="std" ><%=obj[24] %>(<%=obj[25] %>)</td>
+											<td class="std" ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
 											<td class="std" ><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
 											<td class="std"  style="text-align: center">
@@ -1324,8 +1377,8 @@ for(Object[] temp : invitedlist){
 								
 								
 								<%} %>
-									
-								</table>
+						</tbody>				
+					</table>
 							 <h1 class="break"></h1> 
 				
 		<%} else if (committeemin[0].toString().equals("8") || committeemin[0].toString().equals("9") || committeemin[0].toString().equals("10"))
@@ -1463,7 +1516,7 @@ for(Object[] temp : invitedlist){
 						<td  class="std" style="text-align: left;" >
 							<%	int count2=0;
 							for(Object obj[]:values){ %>
-							<%if(obj[13]!=null){ %> <%= obj[13]%>,&nbsp;<%=obj[14] %>
+							<%if(obj[13]!=null){ %> <%= obj[13]%><%-- ,&nbsp;<%=obj[14] %> --%>
 								<%if(count2>=0 && count2<values.size()-1){ %>
 								,&nbsp;
 								<%} %>
