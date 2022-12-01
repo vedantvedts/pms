@@ -176,7 +176,7 @@ h6{
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
 															
 															<td class="width-30px"><%=sdf.format(obj[4])%></td>
-															<td style="width:8% !important; "><%=sdf1.format(obj[3])%></td>
+															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td style="width:18% !important; "><%=obj[1]%>, <%=obj[2]%></td>
 															<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

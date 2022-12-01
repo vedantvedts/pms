@@ -523,6 +523,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 			<%} %>
 			<br>	
 	</div>
+	<h1 class="break"></h1>
 		<div align="left" style="margin-left: 15px;margin-top: 5px;"><b>2 (b) System Specification : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){
 			if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){
@@ -538,6 +539,7 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 		<%} %>
 		<br>
 	</div>	
+	<h1 class="break"></h1>
 <!-- --------------------------------------------- ----------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;margin-top: 5px;"><b>3. Overall Product tree/WBS:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			
@@ -905,8 +907,8 @@ String ApplicationFilesDrive= (String) request.getAttribute("ApplicationFilesDri
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td style="text-align:center"><%=obj[17] %>%</td>											
 											<td style="text-align:center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned

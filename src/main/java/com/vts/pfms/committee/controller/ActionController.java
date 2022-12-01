@@ -264,7 +264,7 @@ public class ActionController {
 			}else {
 				mainDto.setActionType("N");
 			}
-			
+			mainDto.setLabName((String)ses.getAttribute("labcode"));
 			mainDto.setActivityId("0");
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
@@ -312,6 +312,7 @@ public class ActionController {
 		try {
 			
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
+		System.out.println(service.AssigneeList(EmpId).size());
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
 		}catch (Exception e) {
@@ -725,7 +726,7 @@ public class ActionController {
 			{
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			}
-			
+			System.out.println("CommitteeScheduleId  :"+CommitteeScheduleId);
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
 			
 			}
@@ -766,6 +767,7 @@ public class ActionController {
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(req.getParameter("meetingdate"));
 			mainDto.setScheduleId(req.getParameter("ScheduleId"));
+			mainDto.setLabName(LabCode);
 			String actionlevel = req.getParameter("ActionLevel");
 			
 			if(actionlevel !="" &&actionlevel!=null) {
@@ -791,7 +793,7 @@ public class ActionController {
 			assign.setIsActive(1);
 			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			long count =service.ActionMainInsert(mainDto,assign);
-
+				
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully For " +req.getParameter("ScheduleSpec"));
 			} else {
@@ -1365,6 +1367,7 @@ public class ActionController {
 		redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
 		
 		ActionMainDto mainDto=new ActionMainDto();
+		mainDto.setLabName(LabCode);
 		mainDto.setMainId(req.getParameter("MainActionId"));
 		mainDto.setActionItem(req.getParameter("Item"));
 		mainDto.setProjectId(req.getParameter("ProjectId"));

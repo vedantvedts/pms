@@ -249,13 +249,12 @@ public class ActionServiceImpl implements ActionService {
 			ActionAssign actionassign = new ActionAssign();
 				
 			count=count+1;
-			if(lab!=null) 
-			{
+
+			if(lab!=null && main.getLabName()!=null) {
 		    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
-			     actionassign.setActionNo(lab[1]+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
-			}
-			else 
-			{
+
+			     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+			}else {
 				return unsuccess;
 			}
 			

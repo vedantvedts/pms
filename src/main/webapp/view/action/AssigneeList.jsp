@@ -201,7 +201,7 @@ a:hover {
 																	<input type="hidden" name="ActionAssignid" value="<%=obj[11]%>"/>
 																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																	<%if(EmpId.equalsIgnoreCase(obj[12].toString()) && Integer.valueOf(obj[14].toString())< 5){ %>
+																	<%if(obj[14]!=null && obj[12]!=null && EmpId.equalsIgnoreCase(obj[12].toString()) && Integer.valueOf(obj[14].toString())< 5){ %>
 																		      <button type="submit"  class="editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
 																				<div class="cc-rockmenu">
 																				 <div class="rolling">	

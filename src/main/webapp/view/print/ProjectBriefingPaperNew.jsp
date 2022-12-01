@@ -1063,7 +1063,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
 									</div>	
 								<%} %>	
-								<div align="left" style="margin-left: 15px;">(a) Work carried out, Achievements, test result etc.</div>
+								<div align="left" style="margin-left: 15px;">(a) Work carried out, Achievements, test result etc.
+									   <%if(z==0){ %>
+										<form action="FilterMilestone.htm" method="POST">  
+											<button class="btn btn-sm back"    style="float: right;margin-top: 5px;text-transform: capitalize !important; " formtarget="blank"> Filter</button> 
+											<input type="hidden" name="projectidvalue" <%if( projectid!=null ){%> value="<%=projectid%>" <%}%>>
+											<input type="hidden" name="committeidvalue" <%if(committeeid!=null){%> value="<%=committeeid %>" <%}%>>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</form>
+										<%}%> 
+								</div>
 								<div align="left" style="margin-left: 20px;"><b>Present Status:</b>
 								
 								
@@ -1171,8 +1180,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned

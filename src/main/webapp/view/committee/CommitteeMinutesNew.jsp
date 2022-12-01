@@ -722,7 +722,7 @@ for(Object[] temp : invitedlist){
 												<%}else{ %>
 													<span class="ongoing">OG</span>
 												<%} 
-												}else if(obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
+												}else if(obj[18]!=null && obj[10]!=null && obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
 											        <span class="completed">CO</span>
 											      <% }else{ %><span class="notyet">NS</span> 
 												<%}}else { %> <span class="notassign">NA</span> <%} %> 
