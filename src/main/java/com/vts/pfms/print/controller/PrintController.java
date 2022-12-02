@@ -206,7 +206,6 @@ public class PrintController {
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("isprint", "1");
     		
-    		HashMap<Integer, BigDecimal> hp = new HashMap<Integer, BigDecimal>();
     		
     		costDetailsList.stream().filter(e-> Collections.frequency(costDetailsList, e[4])<1).collect(Collectors.toList());    		
     		
@@ -243,11 +242,11 @@ public class PrintController {
 	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	        File f=new File(path+"/"+filename+".pdf");
 	        
-	        //FileInputStream fis = new FileInputStream(f);
+	       // FileInputStream fis = new FileInputStream(f);
 	       // DataOutputStream os = new DataOutputStream(res.getOutputStream());
 	       // res.setHeader("Content-Length",String.valueOf(f.length()));
 	       // byte[] buffer = new byte[1024];
-	       //int len = 0;
+	       // int len = 0;
 	       // while ((len = fis.read(buffer)) >= 0) {
 	       //     os.write(buffer, 0, len);
 	       // } 
@@ -421,7 +420,7 @@ public class PrintController {
 	}
 	
 	
-	@RequestMapping(value="ProjectBriefingDownload.htm", method = RequestMethod.GET )
+	@RequestMapping(value="ProjectBriefingDownload.htm")
 	public void ProjectBriefingDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -464,20 +463,20 @@ public class PrintController {
 	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
 	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
     		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-	    	
+    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
 	    		Object[] projectattribute = service.ProjectAttributes(proid);
 	    		
+	    		TechImages.add(service.getTechList(proid));
 	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-	    		Object[] prodetails=service.ProjectDetails(proid).get(0);
-	    		ProjectDetails.add(prodetails);
+	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
 	    		ganttchartlist.add(service.GanttChartList(proid));
 	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
@@ -555,7 +554,8 @@ public class PrintController {
 /* ----------------------------------------------------------------------------------------------------------  */
 	    	req.setAttribute("projectslist", projectslist);
 	    	
-	    	
+	    	req.setAttribute("TechImages",TechImages);
+	    	req.setAttribute("committeeData", committee);
 	    	req.setAttribute("projectattributes",projectattributes);
     		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
     		req.setAttribute("milestonesubsystems", milestonesubsystems);
@@ -588,6 +588,9 @@ public class PrintController {
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
+    		
+    		
+    		
     		String LevelId= "2";
 			
 			if(service.MileStoneLevelId(projectid,committeeid) != null) {
@@ -653,9 +656,9 @@ public class PrintController {
 	        	
 	        	try {
 	        		String No2=null;
-	        		if(Long.parseLong(committeeid)==1){ 
+	        		if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
 	        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-	        		}else if(Long.parseLong(committeeid)==2){
+	        		}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 	        						} 
 		        	 if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
@@ -904,7 +907,7 @@ public class PrintController {
 	        pdf1.close();	       
 	        pdfw.close();
 	        res.setContentType("application/pdf");
-	        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	        File f=new File(path +File.separator+ "mergedb.pdf");
 	        FileInputStream fis = new FileInputStream(f);
 	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
@@ -1725,7 +1728,7 @@ public class PrintController {
 	    }
 /* -------------------------------------------------------------------------------------------------------------  */
 	    	req.setAttribute("projectslist", projectslist);
-	    	
+	    	req.setAttribute("committeeData", committee);
 	    	
 	    	req.setAttribute("projectattributes",projectattributes);
     		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		

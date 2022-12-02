@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.committee.model.Committee"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="com.vts.pfms.print.model.TechImages"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
@@ -363,15 +364,15 @@ List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
 
-
+Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
 
 String No2=null;
 SimpleDateFormat sdfg=new SimpleDateFormat("yyyy");
-if(Long.parseLong(committeeid)==1){ 
+if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
 No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-}else if(Long.parseLong(committeeid)==2){
+}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 				} 
  
@@ -408,91 +409,58 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<h3>Project Briefing Paper</h3>
 						</div>							
 						<div class="col-md-8 justify-content-end" style="float: right;">
+						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
 									<td  style="border: 0 "><h6>Project </h6></td>
 									<td  style="border: 0 ">
-										<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
-											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												<option disabled  selected value="">Choose...</option>
-												<%for(Object[] obj : projectslist){ %>
+										
+										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+											<%for(Object[] obj : projectslist){ %>
 												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] %></option>
-												<%} %>
-											</select>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<%} %>
+										</select>
 									</td>
 									<td  style="border: 0 "><h6>Committee</h6></td>
 									<td  style="border: 0 ">
 										
-											<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												
-												<%for(Object[] committee : SpecialCommitteesList){ %>
-													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !committee[1].toString().equalsIgnoreCase("PMRC")){ %>
-														
-														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
-														
-													
-													<%}else if(committee[1].toString().equalsIgnoreCase("PMRC")){ %>
-														
-														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
-														
-													<%} %>
-												
-												<%} %>
-												<option <%if(Long.parseLong(committeeid)==Long.parseLong("0")){ %>selected<%} %> value="0" >Others</option>
-												
-												<%-- <option disabled  selected value="">Choose...</option>
-												<option <%if(committeeid.equals("1")){ %>selected<%} %> value="1" >PMRC</option>
-													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>ProjectCost){ %>
-													<option <%if(committeeid.equals("2")){ %>selected<%} %> value="2" >EB</option>
-													<option <%if(committeeid.equals("0")){ %>selected<%} %> value="0" >Others</option>
-												<%} %> --%>
-											</select>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											
-										</form>
+											<%for(Object[] committee : SpecialCommitteesList){ %>
+												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+													
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+													
+												<%}else if(committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+													
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+														
+												<%} %>
+												
+											<%} %>
+												
+										</select>
+										
 									</td>
-								<%if(Long.parseLong(projectid)>0){ %>
+									
 									<td style="border: 0 "> 
-										<form method="post" action="ProjectBriefing.htm" target="_blank">
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" ><img src="view/images/preview3.png"></button>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										</form>
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="post" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+										</button>
 									</td>
 									<td style="border: 0 "> 
-										<form method="get" action="ProjectBriefingDownload.htm" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formtarget="_blank">
-												<i class="fa fa-download fa-lg" aria-hidden="true"></i>
-											</button>
-										</form>
+										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;">
+											<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
+										</button>
 									</td>
-									<td style="border: 0 "> 
-										<form method="POST" action="ProjectBriefingFreeze.htm" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm " onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;">
-												<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
-											</button>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										</form>
-									</td>
-									<%-- <td style="border: 0 "> 
-										<form method="get" action="#" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm " title="Frozen List" style="border: 0 ;border-radius: 3px;">
-												<i class="fa fa-list-ol  fa-lg" style="color:#34029A; "  aria-hidden="true"></i>
-											</button>
-										</form>
-									</td> --%>
-								<%} %>
+									
 									<td style="border: 0 "><button  type="submit" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
-							</table>					
+							</table>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								<input type="hidden" name="projectid" value="<%=projectid%>"/>
+								<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
+							</form>				
 						</div>
 					 </div>
 					 
@@ -785,23 +753,15 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
-								   <div align="left" style="margin-left: 15px;">(a) <%if(Long.parseLong(committeeid)==1){ %>
+								   <div align="left" style="margin-left: 15px;">(a) <%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						Ratification
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
+															   						<%}else { %>
 															   						Ratification
 															   						<%} %> 
 															   						
 															   						 of 
 															   						 
-															   						<b>recommendations</b> of last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>  (if any).</div>
+															   						<b>recommendations</b> of last <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> (if any).</div>
 								   <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<tr>
 											 <th  style="width: 30px !important;  ">SN</th>
@@ -863,13 +823,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									
 									</table>
 									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %> 
-								  	<div align="left" style="margin-left: 15px;">(b) Last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC / EB
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %> action points with Expected Date of completion (EDC)  and current status.</div>
+								  	<div align="left" style="margin-left: 15px;">(b) Last <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> action points with Expected Date of completion (EDC)  and current status.</div>
 									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<tr>
 											 <th  style="width: 30px !important;  ">SN</th>
@@ -958,13 +912,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
-   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %> period.</b>  </summary>
+   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 						<div class="content">
 									
 								<select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" onchange="milactivitychange(this);">
@@ -1041,13 +989,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
-   						<summary role="button" tabindex="0" id="leveltab"><b>6.Details of work and current status of sub system with major milestones (since last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>)</b>  </summary>
+   						<summary role="button" tabindex="0" id="leveltab"><b>6.Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
 							
 							
@@ -1880,10 +1822,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
-						<%if(Integer.parseInt(committeeid)==2){ %>
-   							<summary role="button" tabindex="0"><b>9. Action Plan for Next three months </b>    </summary>
+						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   							<summary role="button" tabindex="0"><b>9. Action Plan for Next Six months </b>    </summary>
 						<%}else { %>
-							<summary role="button" tabindex="0"><b>9. Action Plan for Next six months </b>    </summary>
+							<summary role="button" tabindex="0"><b>9. Action Plan for Next Three months </b>    </summary>
 						<%} %>
 						<div class="content">
 						<%for(int z=0;z<projectidlist.size();z++){ %>
@@ -2142,13 +2084,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 
 					<details>
-   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%if(Long.parseLong(committeeid)==1){ %>
-			   						PMRC
-			   						<%}else if(Long.parseLong(committeeid)==2){ %>
-			   						EB
-			   						<%}else if(Long.parseLong(committeeid)==0){ %>
-			   						Meeting
-			   						<%} %></b>     </summary>
+   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
 						  <div class="content">
 						  <%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
@@ -2173,10 +2109,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
    						<summary role="button" tabindex="0"><b>13. Other Relevant Points (if any) 
-   							<%if(Integer.parseInt(committeeid)==2){ %>
-   								and Technical Work Carried Out For Last Three Months
+   							<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   								and Technical Work Carried Out For Last Six Months
 							<%}else { %>
-								and Technical Work Carried Out For Last Six Months
+								and Technical Work Carried Out For Last Three Months
 							<%} %>
    						
    						
@@ -2785,11 +2721,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	      		<div class="col-md-3">
 	      			<h6>
 	      				<b>Committee :</b> 
-	      				<%if(Long.parseLong(committeeid)==1){ %>
-						PMRC
-						<%}else if(Long.parseLong(committeeid)==2){ %>
-						EB
-						<%}%>
+	      				<%=committeeData.getCommitteeShortName().trim().toUpperCase() %>
 	      			</h6>
 	      		</div>
 	      		<div class="col-md-1"><b>Level</b></div>
