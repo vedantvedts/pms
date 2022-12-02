@@ -101,8 +101,8 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public LabMaster LabDetailes(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside LabDetailes");
-		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
-		
+//		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
+	
 		CriteriaBuilder cb= manager.getCriteriaBuilder();
 		CriteriaQuery<LabMaster> cq= cb.createQuery(LabMaster.class);
 		Root<LabMaster> root= cq.from(LabMaster.class);					
@@ -112,7 +112,7 @@ public class PrintDaoImpl implements PrintDao {
 		LabMaster lab= allquery.getResultList().get(0);
 		
 		
-		return LabDetailes;
+		return lab;
 	}
 
 	
@@ -396,8 +396,10 @@ public class PrintDaoImpl implements PrintDao {
 		return Projectidlist;		
 	}
 	
-	private static final String REVIEWMEETINGLIST = "SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE (cs.scheduledate BETWEEN (SELECT MAX(cs.scheduledate) FROM committee_schedule cs, committee_meeting_status cms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.scheduledate < CURDATE() AND cs.scheduleflag=cms.meetingstatus AND meetingstatusid > 6)   AND CURDATE() )  AND cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid <> :committeeid ";
+	//private static final String REVIEWMEETINGLIST = "SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE (cs.scheduledate BETWEEN (SELECT MAX(cs.scheduledate) FROM committee_schedule cs, committee_meeting_status cms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.scheduledate < CURDATE() AND cs.scheduleflag=cms.meetingstatus AND meetingstatusid > 6)   AND CURDATE() )  AND cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid <> :committeeid ";
 	
+	private static final String REVIEWMEETINGLIST ="SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE   cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid = :committeeid AND cs.scheduledate <>CURDATE() AND cs.scheduledate < CURDATE()";
+
 	@Override
 	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception 
 	{

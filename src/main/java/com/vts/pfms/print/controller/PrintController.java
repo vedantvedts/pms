@@ -583,6 +583,10 @@ public class PrintController {
     		req.setAttribute("committeeid",tempid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
+	    	
+	    	System.out.println("Inside print " + LabCode);
+	    	
+	    	
 	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));

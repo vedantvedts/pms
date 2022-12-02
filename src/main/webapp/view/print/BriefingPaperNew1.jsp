@@ -466,7 +466,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tr>
 											 <td  style=" padding: 5px; padding-left: 10px">(f)</td>
 											 <th  style="width: 150px;padding: 5px; padding-left: 10px"><b>Objective</b></th>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes.get(z)[4]%></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;text-align: justify"> <%=projectattributes.get(z)[4]%></td>
 										</tr>
 										<tr>
 											 <td  style="padding: 5px; padding-left: 10px">(g)</td>
@@ -477,9 +477,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											 <td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
 											 <th rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px"><b>PDC</b></th>
 											 
-											<th colspan="2">Original</th>					
+											<th colspan="2" style="text-align: center !important">Original</th>					
 											<%if( ProjectRevList.get(z).size()>0){ %>	
-												<th colspan="2">Revised</th>																			
+												<th colspan="2" style="text-align: center !important">Revised</th>																			
 											<%}else{ %>													 
 										 		<th colspan="2" ></th>	
 										 	<%} %>
@@ -504,25 +504,25 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											 	
 										<tr>
 											<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-											<th rowspan="3" style=""><b>Cost Breakup( <span class="currency">Lakhs</span>)</b></th>
+											<th rowspan="3" style="padding-left: 10px"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></th>
 											
 											<%if( ProjectRevList.get(z).size()>0 ){ %>
 													<td style="width: 10% !important" >RE Cost</td>
-													<td ><%=projectattributes.get(z)[8] %></td> 
-													<td colspan="2"><%=ProjectRevList.get(z).get(0)[17] %></td>
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[17] %></td> 
+													<td colspan="2" style="text-align: center;"><%=projectattributes.get(z)[8] %></td>
 												</tr>
 												
 												
 												<tr>
 													<td style="width: 10% !important">FE Cost</td>		
-													<td ><%=projectattributes.get(z)[9] %></td>					
-													<td colspan="2" ><%=ProjectRevList.get(z).get(0)[16] %></td>
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[16] %></td>					
+													<td colspan="2" style="text-align: center;"><%=projectattributes.get(z)[9] %></td>
 												</tr>
 													
 												<tr>	
 													<td style="width: 10% !important">Total Cost</td>	
-													<td ><%=projectattributes.get(z)[7] %></td>
-											 		<td colspan="2" ><%=ProjectRevList.get(z).get(0)[11] %></td>
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[11] %></td>
+											 		<td colspan="2" style="text-align: center;"><%=projectattributes.get(z)[7] %></td>
 												</tr> 
 														
 											<%}else{ %>
@@ -692,17 +692,17 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											<tr>
 												<td colspan="6" style="border: 0">
 													<p style="font-size: 10px;text-align: center"> 
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
 														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
 													 </p>
 												</td>									
 											</tr>
@@ -710,11 +710,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tbody>
 											<tr>
 												 <th  style="width: 15px !important;text-align: center;">SN</th>
-												 <th  style="max-width: 220px !important;">Recommendation Point</th>
-												 <th  class="date-column"> PDC</th>
-												 <th  class="resp-column"> Responsibility</th>
-												 <th  class="status-column">Status</th>
-												 <th  style="max-width: 50px; ">Remarks</th>
+												 <th  style="width: 335px !important;">Recommendation Point</th>
+												 <th  style="width: 80px !important;"> PDC</th>
+												 <th  style="width: 210px !important;"> Responsibility</th>
+												 <th  style="width: 50px !important;">Status</th>
+												 <th  style="width: 280px !important; ">Remarks</th>
 											</tr>
 											
 											<%if(lastpmrcminsactlist.get(z).size()==0){ %>
@@ -725,17 +725,17 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											for(Object[] obj:lastpmrcminsactlist.get(z)){
 													if(obj[3].toString().equalsIgnoreCase("R")){%>
 												<tr>
-													<td  style="width: 15px !important;text-align: center;"><%=i %></td>
-													<td  style="max-width: 220px !important;text-align: justify; "><%=obj[2] %></td>
-													<td   class="date-column" style=" text-align: center;">
+													<td  style="text-align: center;"><%=i %></td>
+													<td  style="text-align: justify; "><%=obj[2] %></td>
+													<td   style=" text-align: center;">
 														<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
 													</td>
-													<td  class="resp-column" >
+													<td   >
 														<%if(obj[4]!= null){ %>  
 															<%=obj[12] %><%-- , <%=obj[13] %> --%>
 														<%}else { %> <span class="notassign">NA</span> <%} %> 
 													</td>
-													<td  class="status-column" style="text-align: center; ">
+													<td  style="text-align: center; ">
 															<%if(obj[4]!= null){if(obj[18]!=null){ %>
 														<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
 															<span class="ongoing">RC</span>
@@ -783,17 +783,17 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											<tr>
 												<td colspan="7" style="border: 0">
 													<p style="font-size: 10px;text-align: center"> 
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
 														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
 													 </p>
 												</td>									
 											</tr>
@@ -801,13 +801,13 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 								
 								<tbody>
 									<tr>
-										<th  style="width: 20px !important;text-align: center;  ">SN</th>
-										<th  style="max-width: 250px; ">Action Point</th>
-										<th  class="date-column">PDC</th>
-										<th  class="date-column"> ADC</th>
-										<th  class="resp-column"> Responsibility</th>
-										<th  class="status-column">Status</th>
-										<th  style="max-width: 90px; ">Remarks</th>			
+										<th  style="width: 15px !important;text-align: center;  ">SN</th>
+										<th  style="width: 300px; ">Action Point</th>
+										<th  style="width: 80px; ">PDC</th>
+										<th  style="width: 80px; "> ADC</th>
+										<th  style="width: 210px; "> Responsibility</th>
+										<th  style="width: 50px; ">Status</th>
+										<th  style="width: 235px; ">Remarks</th>			
 									</tr>
 										
 										<%if(lastpmrcactions.get(z).size()==0){ %>
@@ -817,16 +817,16 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										{int i=1;
 										for(Object[] obj:lastpmrcactions.get(z)){ %>
 											<tr>
-												<td  style="max-width: 20px;text-align: center;"><%=i %></td>
-												<td  style="max-width: 250px;text-align: justify ;"><%=obj[2] %></td>
-												<td  class="date-column" style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  class="date-column" style="text-align: center;"> 
+												<td  style="text-align: center;"><%=i %></td>
+												<td  style="text-align: justify ;"><%=obj[2] %></td>
+												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td   style="text-align: center;"> 
 												<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
 												
 												<%= sdf.format(sdf1.parse(obj[13].toString()))%> 
 												<%}else{ %>-<%} %></td>
-												<td class="resp-column" > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
-												<td class="status-column" style="text-align: center;"> 
+												<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+												<td  style="text-align: center;"> 
 													<%if(obj[15]!=null){ %>
 													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
 														<span class="ongoing">RC</span>
@@ -847,7 +847,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												      	<span class="notyet">NS</span> 
 													<%} %> 
 												</td>	
-												<td  style="max-width: 90px;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
+												<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 											</tr>			
 										<%i++;
 										}} %>
@@ -865,8 +865,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									 <th  style="max-width: 200px; "> MeetingId</th>
 									 <th  style="max-width: 80px; "> Date Held</th>
 								</tr>
-								<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										<%-- <%if(ReviewMeetingList.get(z).size()==0){ %>
+								<!--  -->
+										<%if(ReviewMeetingList.get(z).size()==0){ %>
 										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
 										<%}
 										else if(ReviewMeetingList.size()>0)
@@ -879,7 +879,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												<td  style="max-width: 80px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%i++;
-										}} %> --%>
+										}}else{ %>
+										
+											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+										
+										<%} %> 
 									</table>
 
 
@@ -901,17 +905,17 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 					<tr>
 						<td colspan="8" style="border: 0">
 							<p style="font-size: 10px;text-align: center"> 
-								 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-								 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-								 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-								 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-								 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-								 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-								 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-								 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-							 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-								 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+								<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+								<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+								<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+								<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+								<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 							 </p>
 		   				</td>									
 					</tr>
@@ -919,14 +923,14 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										
 				<tbody>
 					<tr>
-						<th  style="width: 20px !important;text-align: center; ">SN</th> 
-						<th  style="max-width: 15px; ">MS</th>
-						<th  style="max-width: 230px; ">Milestones </th>
-						<th  style="max-width: 80px; "> Original PDC </th>
-						<th  style="max-width: 80px; "> Revised PDC</th>
-						<th  style="max-width: 50px; ">Progress</th>
-						<th  class="status-column"> Status</th>
-						<th  style="max-width: 70px; "> Remarks</th>
+						<th  style="width: 15px !important;text-align: center; ">SN</th> 
+						<th  style="width: 20px; ">MS</th>
+						<th  style="width: 375px; ">Milestones </th>
+						<th  style="width: 100px; "> Original PDC </th>
+						<th  style="width: 100px; "> Revised PDC</th>
+						<th  style="width: 50px; ">Progress</th>
+						<th  style="width: 50px; "> Status</th>
+						<th  style="width: 270px; "> Remarks</th>
 					</tr>
 					<%if(milestones.get(z).size()==0){ %>
 						<tr><td colspan="8" style="text-align: center;" > Nil</td></tr>
@@ -938,11 +942,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									if(Integer.parseInt(obj[12].toString())>0)
 									{ %>
 										<tr>
-											<td  style="max-width: 20px;text-align: center; "><%=i%></td> 
-											<td  style="max-width: 15px;text-align: center;">M<%=obj[2]%></td>
-											<td  style="max-width: 230px;"><%=obj[3] %></td>
-											<td  style="max-width: 80px;text-align: center;" ><%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
-											<td  style="max-width: 80px;text-align: center;">
+											<td  style="text-align: center; "><%=i%></td> 
+											<td  style="text-align: center;">M<%=obj[2]%></td>
+											<td  style=""><%=obj[3] %></td>
+											<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
+											<td  style="text-align: center;">
 												<%if(LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
 											 		-
 											 	<%}else{ %>
@@ -950,8 +954,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											 	<%} %>
 											<%-- <%= sdf.format(sdf1.parse(obj[7].toString()))%> --%>
 											</td>
-											<td  style="max-width: 50px;text-align: center;"><%=obj[12] %>%	</td>
-											<td  class="status-column" style="text-align: center;">
+											<td  style="text-align: center;"><%=obj[12] %>%	</td>
+											<td   style="text-align: center;">
 												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%>assigned
 														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> notyet
 														<%}else if(obj[10].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -962,7 +966,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												<%=obj[11] %>	
 											</span>
 												</td>
-											<td  style="max-width: 70px;"><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
+											<td  ><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
 										</tr>			
 									<% i++;
 											}	
@@ -996,19 +1000,19 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						
 										<thead>
 											<tr>
-												<td colspan="8" style="border: 0">
+												<td colspan="9" style="border: 0">
 													<p style="font-size: 10px;text-align: center"> 
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 													 </p>
 												</td>									
 											</tr>
@@ -1017,14 +1021,14 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 							<tbody>
 								<tr>
 									<th  style="width: 20px; ">SN</th>
-									<th  style="width: 40px; ">MS</th>
-									<th  style="width: 50px; ">L</th>
+									<th  style="width: 30px; ">MS</th>
+									<th  style="width: 30px; ">L</th>
 									<th  style="width: 300px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 100px; "> Original PDC</th>
+									<th  style="width: 110px; "> Original PDC</th>
 									<th  style="width: 100px; "> Revised PDC</th>
 									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 40px; "> Status</th>
-								 	<th  style="width: 230px; "> Remarks</th>
+									<th  style="width: 50px; "> Status</th>
+								 	<th  style="width: 270px; "> Remarks</th>
 								</tr>
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
@@ -1040,7 +1044,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
 										<tr>
-											<td style="width: 20px;text-align: center"><%=serial%></td>
+											<td style="text-align: center"><%=serial%></td>
 											<td style="text-align: center">M<%=obj[0] %></td>
 									
 											<td style="text-align: center">
@@ -1082,7 +1086,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												} %>
 											</td>
 
-											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>text-align: justify;">
 												<%if(obj[21].toString().equals("0")) {%>
 													<%=obj[10] %>
 												<%}else if(obj[21].toString().equals("1")) { %>
@@ -1122,7 +1126,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											</span> 
 											
 											</td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;text-align: justify;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 									</tr>
 									<%count1++; serial++;}} %>
 								<%} else{ %>
@@ -1177,13 +1181,13 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 		<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 			
 			<tr>
-				<th  style="width: 20px;text-align: center  ">SN</th>
-				<th  style="width: 200px; ">Description</th>
-				<th class="date-column"  > PDC</th>
-				<th class="resp-column" > Responsibility</th>
-				<th  style="width: 60px;text-align: center "> Severity</th>
-				<th  style="width: 80px;text-align: center "> Probability</th>
-				<th  style="width: 150px; "> Mitigation Plans</th>
+				<th  style="width: 15px;text-align: center  ">SN</th>
+				<th  style="width: 295px; ">Description</th>
+				<th style="width: 80px; "  > PDC</th>
+				<th style="width: 210px; " > Responsibility</th>
+				<th  style="width: 50px;text-align: center "> Severity</th>
+				<th  style="width: 40px;text-align: center "> Prob</th>
+				<th  style="width: 280px; "> Mitigation Plans</th>
 				
 			</tr>
 				<%if(riskmatirxdata.get(z).size()>0){
@@ -1193,10 +1197,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 					<tr>
 						<td style="text-align: center" ><%=i %></td>
 						<td style="text-align: justify;"><%=obj[0] %></td>
-						<td class="date-column"  style="text-align: center">
+						<td  style="text-align: center">
 							<%=sdf.format(sdf1.parse(obj[9+Integer.parseInt(obj[12].toString())].toString())) %>
 						</td>	
-						<td class="resp-column"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+						<td  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
 						<td style="text-align: center"><%=obj[1] %></td>
 						<td style="text-align: center"><%=obj[2] %></td>
 						<td style="text-align: justify;"><%=obj[3] %></td>	
@@ -1214,18 +1218,18 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details (Greater than <%if(projectdatadetails.get(z)!=null){ %> <%=projectdatadetails.get(z)[13] %> <%}else{ %>0.00 <%} %><span class="currency">Lakhs</span> )</b></th>
+											 	<th colspan="8" ><b class="mainsubtitle">Demand Details (Greater than <% if(projectdatadetails.get(Integer.valueOf(0))[13] != null){ %>  <%=projectdatadetails.get(Integer.valueOf(0))[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
 											 </tr>
 										</thead>
 										
 										<tr>
-											<th  style="width: 20px !important;text-align: center;">SN</th>
-											<th  style="max-width: 160px;">Demand No</th>
-											<th  style="max-width: 70px; ">Demand Date</th>
-											<th  colspan="2" style="max-width: 280px;"> Nomenclature</th>
-											<th  style="max-width: 80px;"> Est. Cost-Lakh &#8377;</th>
-											<th  style="max-width: 80px; "> Status</th>
-											<th  style="max-width: 120px;">Remarks</th>
+											<th  style="width: 15px !important;text-align: center;">SN</th>
+											<th  style="width: 175px;">Demand No</th>
+											<th  style="width: 100px; ">Demand Date</th>
+											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
+											<th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+											<th  style="width: 50px; "> Status</th>
+											<th  style="width: 195px;">Remarks</th>
 										</tr>
 										    <% int k=0;
 										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
@@ -1266,27 +1270,27 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-												 <th colspan="8" ><b class="mainsubtitle">Order Placed (Greater than <%if(projectdatadetails.get(z)!=null){ %> <%=projectdatadetails.get(z)[13] %> <%}else{ %>0.00 <%} %><span class="currency">Lakhs</span> )</b></th>
+											 	<th colspan="8" ><b class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(Integer.valueOf(0))[13] != null){ %>  <%=projectdatadetails.get(Integer.valueOf(0))[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
 										<!-- </thead> -->
 										
-										  	 <tr>	
-										  	 	 <th rowspan="2" style="width: 20px !important;text-align: center;">SN</th>
-										  	 	 <th >Demand No </th>
-										  	 	  <th >Demand  Date</th>
-												 <th  colspan="2" style="max-width: 150px;"> Nomenclature</th>
-												 <th  > Est. Cost-Lakh &#8377;</th>
-												 <th  style="max-width: 80px; "> Status</th>
-												 <th  style="max-width: 200px;">Remarks</th>
+										  	 	 <tr>	
+											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
+											  	 	 <th style="width: 150px;">Demand No </th>
+											  	 	 <th style="width: 80px;">Demand  Date</th>
+													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
+													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+													 <th  style="max-width: 50px; "> Status</th>
+													 <th  style="max-width: 310px;">Remarks</th>
 												</tr>
 											<tr>
 												
-												 <th style="max-width: 150px;">Supply Order No</th>
-												 <th  style="max-width: 150px;	">DP Date</th>
-												 <th  colspan="2" style="max-width: 90px;	">Vendor Name</th>
-												 <th  style="max-width: 80px;">Rev DP Date</th>											 
-												 <th   colspan="2" style="max-width: 90px;">SO Cost-Lakh &#8377;</th>		
+												 <th style="">Supply Order No</th>
+												 <th  style="	">DP Date</th>
+												 <th  colspan="2" style="	">Vendor Name</th>
+												 <th  >Rev DP Date</th>											 
+												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
 											 		
 											</tr>
 										    <%if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
@@ -1306,7 +1310,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												<td rowspan="2" style="text-align: center;"><%=k%></td>
 												<td ><%=obj[1]%> </td>
 												<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td   colspan="2"><%=obj[8]%></td>
+													<td   colspan="2" style="text-align: justify;"><%=obj[8]%></td>
 													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												    <td  > <%=obj[10]%> </td>
 													<td  ><%=obj[11]%> </td>	
@@ -1357,12 +1361,12 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										 </thead>
 										 
 										 <tbody>
-										 <tr >
+										<tr >
 												 <th>Total No. of Demand</th>
-												 <th>Total Est. Cost (&#8377; <span class="currency">Lakhs</span>)</th>
+												 <th>Total Est. Cost (<span>Lakh</span> &#8377;)</th>
 										  	 	 <th>Total No. of Orders</th>
-										  	 	 <th>Total SO Cost (&#8377; <span class="currency">Lakhs</span>)</th>
-										  	 	 <th>Total Expenditure (&#8377; <span class="currency">Lakhs</span>)</th>
+										  	 	 <th>Total SO Cost (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>Total Expenditure (<span>Lakh</span> &#8377;)</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
