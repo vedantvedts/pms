@@ -822,9 +822,30 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 												<td   style="text-align: center;"> 
 												<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
+
+												<%if(obj[15]!=null){ %>
+													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+														<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+													   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}
+													}else if(obj[9].toString().equals("C")){ %>
+												        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												    <% }else{ %>
+												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
+												<%} %> 
 												
-												<%= sdf.format(sdf1.parse(obj[13].toString()))%> 
 												<%}else{ %>-<%} %></td>
+												
+												
 												<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
 												<td  style="text-align: center;"> 
 													<%if(obj[15]!=null){ %>
@@ -944,7 +965,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tr>
 											<td  style="text-align: center; "><%=i%></td> 
 											<td  style="text-align: center;">M<%=obj[2]%></td>
-											<td  style=""><%=obj[3] %></td>
+											<td  style="text-align: justify"><%=obj[3] %></td>
 											<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
 											<td  style="text-align: center;">
 												<%if(LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
@@ -1051,7 +1072,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												<%
 												
 												if(obj[21].toString().equals("0")) {%>
-													L
+													<!-- L -->
 												<%	milcountA=1;
 													milcountB=1;
 													milcountC=1;
@@ -1516,19 +1537,19 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 				
 						<thead>
 							<tr>
-								<td colspan="8" style="border: 0">
+								<td colspan="9" style="border: 0">
 									<p style="font-size: 10px;text-align: center"> 
-										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+									<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 									 </p>
 								</td>									
 							</tr>
@@ -1539,12 +1560,12 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
 									<th style="width: 20px; ">L</th>
-									<th style="width: 240px;">Action Plan </th>	
-									<th class="date-column" >PDC</th>	
-									<th class="resp-column">Responsibility </th>
+									<th style="width: 275px;">Action Plan </th>	
+									<th style="width: 90px;" >PDC</th>	
+									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
-					                <th class="status-column" style="padding-right: 5px !important ">Status</th>
-					                <th style="width: 40px;">Remarks</th>
+					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
+					                <th style="width: 230px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -1563,7 +1584,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										%>
 										
 										<tr>
-											<td style="width: 15px !important;text-align: center;"><%=serialno %></td>
+											<td style="text-align: center;"><%=serialno %></td>
 											<td style="text-align: center">M<%=obj[22] %></td>
 							
 											<td style="text-align: center">
@@ -1620,7 +1641,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
-											<td class="date-column"  style="text-align:center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td  style="text-align:center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
 											<td style="text-align: center"><%=obj[16] %>%</td>											
 											<td  style="text-align: center">
@@ -1635,7 +1656,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											</span>
 											
 											</td>
-											<td  style="max-width: 40px;">
+											<td >
 												<%if(obj[28]!=null){ %>
 												<%=obj[28] %>
 												<%} %>
@@ -1659,7 +1680,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 <!-- ----------------------------------------------8. Action plan for next three------------------------------------------------- -->
 <!-- ----------------------------------------------9.GANTT chart---------------------------------------------------------- -->
 			<div align="left" style="margin-left: 15px;">
-				<b class="sub-title">10. PERT/GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original (as per Project sanction / Latest PDC extension) and Current</span>]: </b></div>
+					<b class="sub-title">10. PERT/GANTT chart of overall project schedule :
+					<!--  [<span style="text-decoration: underline;">Original (as per Project sanction / Latest PDC extension) and Current</span>]: --> 
+				</b>
+			</div>
+
               <%
               if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){
 				
@@ -1701,11 +1726,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tr>
 											 <th  style="width: 20px !important;text-align: center;">SN</th>
 											 <th  style="width: 270px;">Issue Point</th>
-											 <th  class="date-column"> PDC</th>
-											 <th  class="date-column"> ADC</th>
-											 <th  class="resp-column">Responsibility</th>
-											 <th  style="width: 40px; ">Status</th>	
-											 <th  style="width: 120px; ">Remarks</th>		
+											 <th  style="width: 80px; "> PDC</th>
+											 <th  style="width: 80px; "> ADC</th>
+											 <th  style="width: 210px; ">Responsibility</th>
+											 <th  style="width: 50px; ">Status</th>	
+											 <th  style="width: 270px; ">Remarks</th>		
 										</tr>
 										
 										<%if(oldpmrcissueslist.get(z).size()==0){ %>
@@ -1717,13 +1742,13 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
-												<td  class="date-column" style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  class="date-column" style="text-align: center;"> 
+												<td   style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td  style="text-align: center;"> 
 												<%if(obj[9].toString().equals("C")){ %>
 												
 												<%= sdf.format(sdf1.parse(obj[13].toString()))%> 
 												<%}else{ %>- <%} %></td>
-												<td class="resp-column" > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
+												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
 												<td  style=";text-align: center;"> 
 													<%if(obj[16]!=null){ %>
 														<%if(obj[9].toString().equals("I")&&obj[15].toString().equals("F")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]) )){ %>
@@ -1765,9 +1790,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						   						<%}else if(Long.parseLong(committeeid)==0){ %>
 						   						Meeting
 						   						<%} %>:</b></div>
-											<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
-														<hr style="margin-right: 10px !important">
-														<div style="white-space: pre-wrap;font-weight: 400 !important;font-family: Lato !important"><%=lastpmrcdecisions.get(z)[0] %></div>
+													<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
+														<hr style="margin-right: 10px !important"><br>
+														<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
 													<%}else{ %>
 													<div align="center">
 														Nil 
@@ -1775,7 +1800,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												  	
 												  	<br><br><br>
 												  	<%} %></div>	
-						<h1 class="break"></h1>					
+						<h1 class="break"></h1>								
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 									
 					<div align="left" style="margin-left: 10px;"><b class="sub-title"> 
