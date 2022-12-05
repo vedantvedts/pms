@@ -79,7 +79,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String COMMITTEESHORTNAME="SELECT cs.committeeid, c.committeeshortname  FROM committee c,committee_schedule cs WHERE c.committeeid=cs.committeeid AND cs.scheduleid=:scheduleid AND cs.isactive=1 ";
 	private static final String ASSIGNEESEENUPDATE="UPDATE action_assign SET isseen='1' WHERE assignee=:empid ";
 	public static final String ACTIONSELFREMINDERDELETE="UPDATE pfms_action_self SET isactive=0 WHERE actionid=:actionid";
-	private static final String PROJECTEMPLIST="SELECT a.empid,CONCAT(IFNULL(b.title,''),a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
+	private static final String PROJECTEMPLIST="SELECT a.empid,CONCAT(IFNULL(a.title,''),a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
 	 
 	 
     @PersistenceContext

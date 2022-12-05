@@ -306,6 +306,52 @@ ul, #myUL {
 	max-width: 1400px;
 }
 
+.sub-title{
+	font-size : 20px !important;
+	color: #145374 !important
+}
+
+.subtables{
+	width: 1100px !important;
+}
+
+.date-column{
+	max-width:60px !important;
+}
+ 
+.status-column{
+	max-width:10px !important;
+} 
+
+.resp-column{
+	max-width:80px !important;
+} 
+ 
+.currency{
+	color:#367E18 !important;
+	font-style: italic;
+} 
+
+
+.subtables th{
+	/* background-color: #001253 !important; 
+	color: white !important;
+	border-color: white; */
+	color: #001253 !important;
+	
+}
+ 
+.mainsubtitle{
+	font-size : 18px !important;
+	color:#882042 !important;
+}
+ 
+ 
+.projectattributetable th{
+	text-align: left !important;
+} 
+ 
+
 </style>
 
 
@@ -556,10 +602,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<tr>
 												<%if( revlist.size()>0 ){ %>
 													<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-													<td rowspan="3" style="">Cost Breakup(In Lakhs)</td>
+													<td rowspan="3" style="">Cost Breakup(&#8377; <span>Lakhs</span>)</td>
 												<%}else{ %>	
 													<td rowspan="2" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-													<td rowspan="2" style="">Cost Breakup(In Lakhs)</td>
+													<td rowspan="2" style="">Cost Breakup&#8377; <span>(Lakhs</span>)</td>
 												<%} %>
 													<th style="max-width: 10px !important"></th>
 													<th >RE Cost</th>
@@ -765,16 +811,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					<tr>
 						<td colspan="6" style="border: 0">
 							<p style="font-size: 10px;text-align: center"> 
-								 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-								 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-								 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-								 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-								 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-								 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-								 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-								 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-								 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+								 <span class="notassign">NA</span> : Not Assigned &nbsp;
+								 <span class="assigned">AA</span> : Activity Assigned &nbsp; 
+								 <span class="notyet">NS</span> : Not yet Started &nbsp;
+								 <span class="ongoing">OG</span> : On Going &nbsp; 
+								 <span class="delay">DO</span> : Delay - On Going &nbsp; 
+								 <span class="ongoing">RC</span> : Review & Close &nbsp;
+								 <span class="delay">FD</span> : Forwarded With Delay &nbsp;
+								 <span class="completed">CO</span> : Completed &nbsp;
+								 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;
+								 <span class="inactive">IA</span> : InActive &nbsp;
 								 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 							 </p>
 						</td>									
@@ -782,8 +828,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										
 					<tr>
 						<th  style="width: 15px !important;text-align: center;">SN</th>
-						<th  style="width: 335px !important;">Recommendation Point</th>
-						<th  style="width: 80px !important;"> PDC</th>
+						<th  style="width: 315px !important;">Recommendation Point</th>
+						<th  style="width: 100px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
 						<th  style="width: 50px !important;">Status</th>
 						<th  style="width: 280px !important; ">Remarks</th>
@@ -855,18 +901,18 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
-								<td colspan="7" style="border: 0">
+								<td colspan="8" style="border: 0">
 									<p style="font-size: 10px;text-align: center"> 
-										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+										 <span class="notassign">NA</span> : Not Assigned &nbsp;
+										 <span class="assigned">AA</span> : Activity Assigned &nbsp;
+										 <span class="notyet">NS</span> : Not yet Started &nbsp;
+										 <span class="ongoing">OG</span> : On Going &nbsp;
+										 <span class="delay">DO</span> : Delay - On Going &nbsp;
+										 <span class="ongoing">RC</span> : Review & Close &nbsp;
+										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;
+										 <span class="completed">CO</span> : Completed &nbsp;
+										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;
+										 <span class="inactive">IA</span> : InActive &nbsp;
 										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 									 </p>
 								</td>									
@@ -874,9 +920,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
-								<th  style="width: 300px; ">Action Point</th>
-								<th  style="width: 80px; ">PDC</th>
-								<th  style="width: 80px; "> ADC</th>
+								<th  style="width: 280px; ">Action Point</th>
+								<th  style="width: 100px; ">PDC</th>
+								<th  style="width: 100px; "> ADC</th>
 								<th  style="width: 210px; "> Responsibility</th>
 								<th  style="width: 50px; ">Status</th>
 								<th  style="width: 235px; ">Remarks</th>			
@@ -956,69 +1002,69 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						
 							
 						<div align="center">
-							<div align="center" style="max-width:400px;float:left;">
-							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
-								<thead>
-									<tr>
-										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
-										 <th  style="max-width: 70px; ">Committee</th>
-										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-										 <th  style="max-width: 80px; "> Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%if(ReviewMeetingList.get(z).size()==0){ %>
-									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-									<%}
-									else if(ReviewMeetingList.size()>0)
-									  {int i=1;
-									for(Object[] obj:ReviewMeetingList.get(z)){ %>
+								<!-- <div align="center" style="max-width:400px;float:left;"> -->
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
+									<thead>
 										<tr>
-											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-											<td  style="max-width: 70px;"><%=obj[1] %></td>												
-											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>			
-									<%i++;
-									}}else{ %>
-									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									<%} %> 
-							</tbody>
-						</table>
-						</div>
-						<div align="center" style="max-width:400px;float:right;">
-							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
-								<thead>
-									<tr>
-										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
-										 <th  style="max-width: 70px; ">Committee</th>
-										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-										 <th  style="max-width: 80px; "> Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-									<%}
-									else if(ReviewMeetingListPMRC.size()>0)
-									  {int i=1;
-									for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-										<tr>
-											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-											<td  style="max-width: 70px;"><%=obj[1] %></td>												
-											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>			
-									<%i++;
-									}}else{ %>
-									
+											 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+											 <th  style="max-width: 70px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 80px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%if(ReviewMeetingList.get(z).size()==0){ %>
+										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+										<%}
+										else if(ReviewMeetingList.size()>0)
+										  {int i=1;
+										for(Object[] obj:ReviewMeetingList.get(z)){ %>
+											<tr>
+												<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+												<td  style="max-width: 70px;"><%=obj[1] %></td>												
+												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>			
+										<%i++;
+										}}else{ %>
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									
-								<%} %> 
-							</tbody>
-						</table>
+										<%} %> 
+								</tbody>
+							</table>
+							<!-- </div> -->
+							<!-- <div align="center" style="max-width:400px;float:right;"> -->
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
+									<thead>
+										<tr>
+											 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+											 <th  style="max-width: 70px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 80px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+										<%}
+										else if(ReviewMeetingListPMRC.size()>0)
+										  {int i=1;
+										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+											<tr>
+												<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+												<td  style="max-width: 70px;"><%=obj[1] %></td>												
+												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>			
+										<%i++;
+										}}else{ %>
+										
+											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+										
+									<%} %> 
+								</tbody>
+							</table>
+						<!-- </div> -->
 					</div>
-				</div>
 			
 															
 					<%} %>
@@ -1051,16 +1097,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					<tr>
 						<td colspan="8" style="border: 0">
 							<p style="font-size: 10px;text-align: center"> 
-								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-								<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-								<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-								<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+								<span class="notassign">NA</span> : Not Assigned &nbsp;
+								<span class="assigned">AA</span> : Activity Assigned &nbsp; 
+								<span class="notyet">NS</span> : Not yet Started &nbsp;
+								<span class="ongoing">OG</span> : On Going &nbsp;
+								<span class="delay">DO</span> : Delay - On Going &nbsp;
+								<span class="ongoing">RC</span> : Review & Close &nbsp;
+								<span class="delay">FD</span> : Forwarded With Delay &nbsp;
+								<span class="completed">CO</span> : Completed &nbsp;
+								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
+								<span class="inactive">IA</span> : InActive &nbsp;
 								<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 							 </p>
 		   				</td>									
@@ -1223,7 +1269,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%
 												
 												if(obj[21].toString().equals("0")) {%>
-													L
+													<!-- L -->
 												<%	milcountA=1;
 													milcountB=1;
 													milcountC=1;
@@ -1739,18 +1785,19 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr>
-											 	<th colspan="8" >Demand Details</th>
+											 	<th colspan="8" ><span class="mainsubtitle">Demand Details(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										</thead>
 										
+										
 										<tr>
-											<th  style="width: 30px !important;">SN</th>
-											<th  style="max-width: 90px;">Demand No</th>
-											<th  style="max-width: 90px; ">Demand Date</th>
-											<th  colspan="2" style="max-width: 150px;"> Nomenclature</th>
-											<th  style="max-width: 90px;"> Est. Cost-Lakh &#8377;</th>
-											<th  style="max-width: 80px; "> Status</th>
-											<th  style="max-width: 200px;">Remarks</th>
+											<th  style="width: 15px !important;text-align: center;">SN</th>
+											<th  style="width: 175px;">Demand No</th>
+											<th  style="width: 100px; ">Demand Date</th>
+											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
+											<th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+											<th  style="width: 50px; "> Status</th>
+											<th  style="width: 195px;">Remarks</th>
 										</tr>
 										    <% int k=0;
 										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
@@ -1787,7 +1834,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<div align="left" style="margin-left: 25px;"></div>
 					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<thead> -->
-										 <thead>
+										 <%-- <thead>
 											 <tr >
 												 <th colspan="8">Order Placed</th>
 											 </tr>
@@ -1868,15 +1915,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										     <% }else{%>
 											
 												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %>
-									</table>
-								
-								
-								
-										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+											<%} %> --%>
+						
+										<!-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" > -->
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										 </thead>
 										
@@ -1958,6 +2002,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<%} %>
 									</table> 
 									
+									</table>
+								
 																	
 								<%} %>
 								
@@ -1965,7 +2011,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr >
-												 <th colspan="8" ><b class="mainsubtitle">Total Summary of Procurement</b></th>
+												 <th colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
 											 </tr>
 										 </thead>
 										 
@@ -2010,17 +2056,17 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</div>	
 							<%} %>	
 						  	
-						  							 
+						  	<br>				 
 						  	<table  class="subtables" style="width: 980px;">
 						  	    <thead>
 		                           <tr>
-		                         	<th colspan="2" style="text-align: center ;width:200px !important;"><b>Head</b></td>
-		                         	<th colspan="2" style="text-align: center;width:120px !important;"><b>Sanction</b></td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;"><b>Expenditure</b></td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;"><b>Out Commitment</b> </td>
-		                           	<th colspan="2" style="text-align: center;width:120px !important;"><b>Balance</b></td>
-			                        <th colspan="2" style="text-align: center;width:120px !important;"><b>DIPL</b></td>
-		                          	<th colspan="2" style="text-align: center;width:120px !important;"><b>Notional Balance</b></td>
+		                         	<th colspan="2" style="text-align: center ;width:200px !important;">Head</td>
+		                         	<th colspan="2" style="text-align: center;width:120px !important;">Sanction</td>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">Expenditure</td>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">Out Commitment </td>
+		                           	<th colspan="2" style="text-align: center;width:120px !important;">Balance</td>
+			                        <th colspan="2" style="text-align: center;width:120px !important;">DIPL</td>
+		                          	<th colspan="2" style="text-align: center;width:120px !important;">Notional Balance</td>
 			                      </tr>
 			                      <tr>
 				                    <th style="width:30px !important;text-align: center;" >SN</th>
@@ -2140,27 +2186,27 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<tr>
 								<td colspan="9" style="border: 0">
 									<p style="font-size: 10px;text-align: center"> 
-									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-									<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+									<span class="notassign">NA</span> : Not Assigned &nbsp;
+									<span class="assigned">AA</span> : Activity Assigned &nbsp;
+									<span class="notyet">NS</span> : Not yet Started &nbsp;
+									<span class="ongoing">OG</span> : On Going &nbsp;
+									<span class="delay">DO</span> : Delay - On Going &nbsp;
+									<span class="ongoing">RC</span> : Review & Close &nbsp;
+									<span class="delay">FD</span> : Forwarded With Delay &nbsp;
+									<span class="completed">CO</span> : Completed &nbsp;
+									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
+									<span class="inactive">IA</span> : InActive &nbsp;
 									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 									 </p>
 								</td>									
 							</tr>
 							
-								<tr>
+							<tr>
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
-									<th style="width: 20px; ">L</th>
+									<th style="width: 40px; ">L</th>
 									<th style="width: 275px;">Action Plan </th>	
-									<th style="width: 90px;" >PDC</th>	
+									<th style="width: 110px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
@@ -2190,7 +2236,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%
 												
 												if(obj[26].toString().equals("0")) {%>
-													L
+													<!-- L -->
 												<%countA=1;
 													countB=1;
 													countC=1;
@@ -2347,6 +2393,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
    						<summary role="button" tabindex="0"><b>11. Issues</b></summary>
 						   <div class="content">
 						   			<%for(int z=0;z<projectidlist.size();z++){ %>		
+						   			
 						   			<%if(ProjectDetail.size()>1){ %>
 										<div>
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
@@ -2359,16 +2406,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<tr>
 								<td colspan="7" style="border: 0">
 									<p style="font-size: 10px;text-align: center"> 
-									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-									<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+									<span class="notassign">NA</span> : Not Assigned &nbsp;
+									<span class="assigned">AA</span> : Activity Assigned &nbsp; 
+									<span class="notyet">NS</span> : Not yet Started &nbsp;
+									<span class="ongoing">OG</span> : On Going &nbsp;
+									<span class="delay">DO</span> : Delay - On Going &nbsp;
+									<span class="ongoing">RC</span> : Review & Close &nbsp;
+									<span class="delay">FD</span> : Forwarded With Delay &nbsp;
+									<span class="completed">CO</span> : Completed &nbsp;
+									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
+									<span class="inactive">IA</span> : InActive &nbsp;
 									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
 									 </p>
 								</td>									
