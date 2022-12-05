@@ -453,7 +453,7 @@ public class PrintController {
 	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
 	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
 	    	List<List<Object[]>> ReviewMeetingListEB = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
 	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
 	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
     		List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
@@ -484,8 +484,8 @@ public class PrintController {
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
 	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
-	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, committee.getCommitteeShortName().trim()));
-//	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
+	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
+	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
 		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
@@ -569,8 +569,10 @@ public class PrintController {
     		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
     		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
     		req.setAttribute("projectdatadetails",projectdatadetails);
+    		
+    		
     		req.setAttribute("ReviewMeetingList",ReviewMeetingListEB);
-//    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
+    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
     		
     		req.setAttribute("financialDetails",financialDetails);
     		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
@@ -584,7 +586,7 @@ public class PrintController {
     		req.setAttribute("committeeid",tempid);
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
-	    	
+	    	req.setAttribute("AppFilesPath",ApplicationFilesDrive);
 	    	System.out.println("Inside print " + LabCode);
 	    	
 	    	

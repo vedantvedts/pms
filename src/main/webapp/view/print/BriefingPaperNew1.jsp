@@ -357,7 +357,7 @@ String projectid=(String)request.getAttribute("projectid");
 List<Object[]> projectdatadetails = (List<Object[]> )request.getAttribute("projectdatadetails");
 List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
 List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
-List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+
 List<Object[]> TechWorkDataList=(List<Object[]>)request.getAttribute("TechWorkDataList");
 List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
 List<List<Object[]>> milestonesubsystems = (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
@@ -372,6 +372,11 @@ List<Object[]> lastpmrcdecisions = (List<Object[]> )request.getAttribute("lastpm
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails");
 List<String> projectidlist = (List<String>)request.getAttribute("projectidlist");
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
+
+
+List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+
 AESCryptor cryptor = new AESCryptor();
 long ProjectCost = (long)request.getAttribute("ProjectCost");
 
@@ -381,7 +386,7 @@ List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActi
 String levelid= (String) request.getAttribute("levelid");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 
-
+String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 %>
 
 
@@ -437,8 +442,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 		
 		<br><br>
 	</div>
-
-<%for(int z=0 ; z<projectidlist.size();z++){ %>
+<h1 class="break"></h1>
+<%for(int z=0 ; z<projectidlist.size();z++){  %>
 	<%if(z>0){ %><h1 class="break"></h1> <%} %>
 	
 	<div  id="detailContainer" align="center" >
@@ -572,7 +577,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											</td> 
 										</tr>	
 			</table>
-			<%}else{ %>
+			<% }else{ %>
 				<div align="center"  style="margin: 25px;" > Complete Project Data Not Found </div>
 			<%} %>
 		</div>
@@ -584,12 +589,12 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 		<div align="center">
 			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
-				<%if(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
+				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
 				
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
 						
-							<br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+						<br>
+						<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
 						
 					<% }else{ %>
 						<b>  System Configuration Annexure </b>
@@ -613,11 +618,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 	
 		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){ %>
 				
-				<%if(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4]).exists()){ %>
+				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4]).exists()){ %>
 				
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center"><br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" >
+							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" >
 						</div> 
 					<% }else{ %>
 						<b> System Specification Annexure </b>
@@ -647,11 +652,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 
 				<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[5]!=null){ %>
 				
-				<%if(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5]).exists()){ %>
+				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5]).exists()){ %>
 				
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center"><br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
+							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[5])))%>" alt="Speci" >
 						</div> 
 					<% }else{ %>
 						<b> Overall Product tree/WBS Annexure </b>
@@ -672,9 +677,6 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 			</div>
 			<%} %>
 			
-			
-			
-			
 		</div>	
 		
 <!-- ------------------------------------system configuration and Specification------------------------------------------------- -->
@@ -690,134 +692,135 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</b></div>
 		
 		
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
-										<thead>
-											<tr>
-												<td colspan="6" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
-												</td>									
-											</tr>
+			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
+				<thead>
+					<tr>
+						<td colspan="6" style="border: 0">
+							<p style="font-size: 10px;text-align: center"> 
+								 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+								 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+								 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+								 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+								 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+								 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+								 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+								 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+								 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+								 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+								 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+							 </p>
+						</td>									
+					</tr>
 										
-											<tr>
-												 <th  style="width: 15px !important;text-align: center;">SN</th>
-												 <th  style="width: 335px !important;">Recommendation Point</th>
-												 <th  style="width: 80px !important;"> PDC</th>
-												 <th  style="width: 210px !important;"> Responsibility</th>
-												 <th  style="width: 50px !important;">Status</th>
-												 <th  style="width: 280px !important; ">Remarks</th>
-											</tr>
-										</thead>
-										<tbody>
-											<%if(lastpmrcminsactlist.get(z).size()==0){ %>
-											<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-											<%}
-											else if(lastpmrcminsactlist.get(z).size()>0)
-											{int i=1;
-											for(Object[] obj:lastpmrcminsactlist.get(z)){
-													if(obj[3].toString().equalsIgnoreCase("R")){%>
-												<tr>
-													<td  style="text-align: center;"><%=i %></td>
-													<td  style="text-align: justify; "><%=obj[2] %></td>
-													<td   style=" text-align: center;">
-														<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
-													</td>
-													<td   >
-														<%if(obj[4]!= null){ %>  
-															<%=obj[12] %><%-- , <%=obj[13] %> --%>
-														<%}else { %> <span class="notassign">NA</span> <%} %> 
-													</td>
-													<td  style="text-align: center; ">
-															<%if(obj[4]!= null){if(obj[18]!=null){ %>
-														<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
-															<span class="ongoing">RC</span>
-														<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-															<span class="delay">FD</span>
-														<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-															<span class="completed">CO</span>
-														<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-														
-														   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
+					<tr>
+						<th  style="width: 15px !important;text-align: center;">SN</th>
+						<th  style="width: 335px !important;">Recommendation Point</th>
+						<th  style="width: 80px !important;"> PDC</th>
+						<th  style="width: 210px !important;"> Responsibility</th>
+						<th  style="width: 50px !important;">Status</th>
+						<th  style="width: 280px !important; ">Remarks</th>
+					</tr>
+				</thead>
+				<tbody>
+					<%if(lastpmrcminsactlist.get(z).size()==0){ %>
+						<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+					<%}
+						else if(lastpmrcminsactlist.get(z).size()>0)
+							{int i=1;
+								for(Object[] obj:lastpmrcminsactlist.get(z)){
+									if(obj[3].toString().equalsIgnoreCase("R")){%>
+						<tr>
+							<td  style="text-align: center;"><%=i %></td>
+							<td  style="text-align: justify; "><%=obj[2] %></td>
+							<td   style=" text-align: center;">
+							<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+						</td>
+						<td>
+							<%if(obj[4]!= null){ %>  
+								<%=obj[12] %><%-- , <%=obj[13] %> --%>
+							<%}else { %> <span class="notassign">NA</span> <%} %> 
+						</td>
+						<td  style="text-align: center; ">
+							<%if(obj[4]!= null){if(obj[18]!=null){ %>
+								<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+									<span class="ongoing">RC</span>
+							<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+									<span class="delay">FD</span>
+							<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+									<span class="completed">CO</span>
+							<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+												
+								   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
 														   
-														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
-														<span class="ongoing">OG</span>
-														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %> 
-														<span class="delay">DO</span>
-														<%}else{ %>
-														<span class="ongoing">-</span>
+							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
+									<span class="ongoing">OG</span>
+							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %> 
+									<span class="delay">DO</span>
+							<%}else{ %>
+									<span class="ongoing">-</span>
 														
-														<%}}else if(obj[10].toString().equals("C")){%>
-													        <span class="completed">CO</span>
-													      <% }else{ %><span class="notyet">NS</span> 
-														<%}}else { %> <span class="notassign">NA</span> <%} %> 
-													</td>
-													<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
-												</tr>		
-											<%i++;}
-											}%>
-											<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
+							<%}}else if(obj[10].toString().equals("C")){%>
+							        <span class="completed">CO</span>
+						    <% }else{ %>
+						    		<span class="notyet">NS</span> 
+							<%}}else { %> <span class="notassign">NA</span> <%} %> 
+						</td>
+						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
+					</tr>		
+					<%i++;}
+						}%>
+					<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
 											
-											<%} %>
-										</tbody>
+					<%} %>
+				</tbody>
 										
-									</table>
+			</table>
 									
-						<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
-						<h1 class="break"></h1>
-						 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
-															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
-   							</div>
+			<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
+				<h1 class="break"></h1>
+				 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
+					</div>
    							
-							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
-										<thead>
-											<tr>
-												<td colspan="7" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
-												</td>									
-											</tr>
+					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+						<thead>
+							<tr>
+								<td colspan="7" style="border: 0">
+									<p style="font-size: 10px;text-align: center"> 
+										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									 </p>
+								</td>									
+							</tr>
 										
-									<tr>
-										<th  style="width: 15px !important;text-align: center;  ">SN</th>
-										<th  style="width: 300px; ">Action Point</th>
-										<th  style="width: 80px; ">PDC</th>
-										<th  style="width: 80px; "> ADC</th>
-										<th  style="width: 210px; "> Responsibility</th>
-										<th  style="width: 50px; ">Status</th>
-										<th  style="width: 235px; ">Remarks</th>			
-									</tr>
-								</thead>
-								
-								<tbody>		
-										<%if(lastpmrcactions.get(z).size()==0){ %>
-										<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(lastpmrcactions.size()>0)
-										{int i=1;
-										for(Object[] obj:lastpmrcactions.get(z)){ %>
-											<tr>
+							<tr>
+								<th  style="width: 15px !important;text-align: center;  ">SN</th>
+								<th  style="width: 300px; ">Action Point</th>
+								<th  style="width: 80px; ">PDC</th>
+								<th  style="width: 80px; "> ADC</th>
+								<th  style="width: 210px; "> Responsibility</th>
+								<th  style="width: 50px; ">Status</th>
+								<th  style="width: 235px; ">Remarks</th>			
+							</tr>
+						</thead>
+							
+						<tbody>		
+							<%if(lastpmrcactions.get(z).size()==0){ %>
+								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
+								<%}
+								else if(lastpmrcactions.size()>0)
+								{int i=1;
+								for(Object[] obj:lastpmrcactions.get(z)){ %>
+								<tr>
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify ;"><%=obj[2] %></td>
 												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
@@ -881,13 +884,18 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 								<h1 class="break"></h1>
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Details of Technical/ User Reviews (if any).</b></div>
 						
-						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
-								<tr>
-									 <th  style="width: 20px !important;text-align: center;  ">SN</th>
-									 <th  style="max-width: 70px; ">Committee</th>
-									 <th  style="max-width: 200px; "> MeetingId</th>
-									 <th  style="max-width: 80px; "> Date Held</th>
-								</tr>
+						<div align="center">
+							<div align="center" style="max-width:400px;float:left;">
+							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
+								<thead>
+									<tr>
+										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+										 <th  style="max-width: 70px; ">Committee</th>
+										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+										 <th  style="max-width: 80px; "> Date Held</th>
+									</tr>
+								</thead>
+								<tbody>
 									<%if(ReviewMeetingList.get(z).size()==0){ %>
 									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
 									<%}
@@ -897,7 +905,37 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tr>
 											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
 											<td  style="max-width: 70px;"><%=obj[1] %></td>												
-											<td  style="max-width: 200px;" ><%= obj[4]%></td>
+											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+										</tr>			
+									<%i++;
+									}}else{ %>
+									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+									<%} %> 
+							</tbody>
+						</table>
+						</div>
+						<div align="center" style="max-width:400px;float:right;">
+							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
+								<thead>
+									<tr>
+										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+										 <th  style="max-width: 70px; ">Committee</th>
+										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+										 <th  style="max-width: 80px; "> Date Held</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+									<%}
+									else if(ReviewMeetingListPMRC.size()>0)
+									  {int i=1;
+									for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+										<tr>
+											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
@@ -906,8 +944,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
 									
 								<%} %> 
+							</tbody>
 						</table>
-
+					</div>
+				</div>
 				 <h1 class="break"></h1>
 <!-- -------------------------------------------------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">5. Milestones achieved prior to this  
@@ -1171,11 +1211,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						
 								<% if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){ %>
 				
-									<%if(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6]).exists()){ %>
+									<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6]).exists()){ %>
 									
 										<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf") ){ %>
 											<div align="center"><br>
-												<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
+												<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
 											</div> 
 										<% }else{ %>
 											 <b> TRL table with TRL at sanction stage Annexure </b>
