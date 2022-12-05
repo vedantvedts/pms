@@ -78,7 +78,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					<select class="form-control selectdee" id="labId" name="labId" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 									<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 										<% for ( Object[]  obj :LabList) {%>
-								<option value="<%=obj[0] %>"  > <%=obj[2] %></option><%} %>
+								<option value="<%=obj[2] %>"  > <%=obj[2] %></option><%} %>
 					</select> 
 			</div>
 </div>

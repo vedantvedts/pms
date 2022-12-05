@@ -116,8 +116,8 @@ h6{
 	      								<td style="width: 15%;">
 	      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
 	      								</td>	      	
-	      								<td >&nbsp;&nbsp;&nbsp;&nbsp;
-	      									 <%=Assignee[5] %>
+	      								<td>&nbsp;&nbsp;
+	      									 <%=Assignee[5]%>
 	      								</td>							
 	      							</tr>
 	      						</table>
@@ -126,19 +126,19 @@ h6{
 	      								<td>
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)
+	      								<td>
+	      								<%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
+	      								<td>
+	      								<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
 	      								</td>	
-	      								<td style="padding-left: 50px;" >
+	      								<td style="padding-left: 15px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
+	      								<td >
 	      									<%=sdf.format(Assignee[4])%>
 	      								</td>	
 	      							</tr>
@@ -146,21 +146,21 @@ h6{
 	      								<td>
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC Original :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
+	      								<td>&nbsp;&nbsp;
 	      									<%=sdf.format(Assignee[14])%>
 	      								</td>	
 	      								     
 	      							<% int revision=Integer.parseInt(Assignee[11].toString());
-	      							for(int i=1;i<=revision;i++){ %>
+	      							for(int i=1;i<=revision;i++){%>
 	      							
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
+	      								<td>&nbsp;&nbsp;
 	      									<%=sdf.format(Assignee[15+i-1])%>
 	      								</td>	
 	      							
-	      							<%} %>
+	      							<%}%>
 	      							</tr>	
 	      						</table>      						      					
 	      					</div>      				

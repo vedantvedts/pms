@@ -1,11 +1,14 @@
 package com.vts.pfms.committee.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class CommitteeMinutesAttachmentDto {
 	private String MinutesAttachmentId;
 	private String ScheduleAttachmentId;
 	private String ScheduleId;
-	private byte[] MinutesAttachment;
+	private MultipartFile MinutesAttachment;
 	private String AttachmentName;
+	private String LabCode;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -22,10 +25,11 @@ public class CommitteeMinutesAttachmentDto {
 	public void setScheduleId(String scheduleId) {
 		ScheduleId = scheduleId;
 	}
-	public byte[] getMinutesAttachment() {
+	
+	public MultipartFile getMinutesAttachment() {
 		return MinutesAttachment;
 	}
-	public void setMinutesAttachment(byte[] minutesAttachment) {
+	public void setMinutesAttachment(MultipartFile minutesAttachment) {
 		MinutesAttachment = minutesAttachment;
 	}
 	public String getAttachmentName() {
@@ -33,6 +37,12 @@ public class CommitteeMinutesAttachmentDto {
 	}
 	public void setAttachmentName(String attachmentName) {
 		AttachmentName = attachmentName;
+	}
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
 	}
 	public String getCreatedBy() {
 		return CreatedBy;

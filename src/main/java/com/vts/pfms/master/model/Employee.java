@@ -14,6 +14,8 @@ public class Employee {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long EmpId;
 	private String EmpNo;
+	private String Title;
+	private String Salutation;
 	private String EmpName;
 	private Long DesigId;
 	private String ExtNo;
@@ -29,6 +31,20 @@ public class Employee {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private String LabCode;
+	
+	
+	public String getTitle() {
+		return Title;
+	}
+	public void setTitle(String title) {
+		Title = title;
+	}
+	public String getSalutation() {
+		return Salutation;
+	}
+	public void setSalutation(String salutation) {
+		Salutation = salutation;
+	}
 	public String getLabCode() {
 		return LabCode;
 	}

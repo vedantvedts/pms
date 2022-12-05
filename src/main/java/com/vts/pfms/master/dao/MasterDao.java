@@ -22,10 +22,10 @@ public interface MasterDao  {
 	public Long OfficeMasterInsert(Employee employee) throws Exception;
 	public int OfficerMasterUpdate(Employee employee) throws Exception;
 	public List<Object[]> LabList()throws Exception;
-	public Long OfficeMasterExternalInsert(EmployeeExternal empExternal)throws Exception;
+	public Long OfficeMasterExternalInsert(Employee empExternal)throws Exception;
 	public List<Object[]> ExternalOfficerList()throws Exception;
 	public List<Object[]> ExternalOfficerEditData(String officerId) throws Exception;
-	public int OfficerExtUpdate(EmployeeExternal employee) throws Exception;
+	public int OfficerExtUpdate(Employee employee) throws Exception;
 	public Object[] getOfficerDetalis(String officerId)throws Exception;
 	public List<Object[]> updateAndGetList(Long empId, String newSeniorityNumber)throws Exception;
 	public int  updateAllSeniority(Long empIdL, Long long1)throws Exception;
@@ -50,7 +50,7 @@ public interface MasterDao  {
 	public int LabMasterUpdate(LabMaster labmaster) throws Exception;
 	public List<Object[]> LabsList() throws Exception;
 	public List<String> EmpExtNoCheck() throws Exception;
-	public int OfficerExtDelete(EmployeeExternal employee) throws Exception;
+	public int OfficerExtDelete(Employee employee) throws Exception;
 	public List<Object[]> empNoCheckAjax(String empno) throws Exception;
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
 	public Long FeedbackInsert(PfmsFeedback feedback) throws Exception;

@@ -149,7 +149,7 @@ h6{
 						        %>
 						        <div  align="center">
 										<a  
-										 href="ActionAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
 								
@@ -221,7 +221,7 @@ h6{
 						        %>
 						        <div  align="center">
 										<a  
-										 href="ActionAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
 	

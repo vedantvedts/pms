@@ -1,18 +1,25 @@
 package com.vts.pfms.committee.service;
 
-import java.awt.Desktop.Action;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
-
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.vts.pfms.admin.service.AdminServiceImpl;
 import com.vts.pfms.committee.dao.ActionDao;
 import com.vts.pfms.committee.dao.ActionSelfDao;
 import com.vts.pfms.committee.dto.ActionAssignDto;
@@ -31,6 +38,9 @@ public class ActionServiceImpl implements ActionService {
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Autowired
 	ActionDao dao;
@@ -320,6 +330,12 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	public long ActionSubInsert(ActionSubDto main) throws Exception {
 		logger.info(new Date() +"Inside SERVICE ActionSubInsert ");
+		
+		Timestamp instant= Timestamp.from(Instant.now());
+		String LabCode = main.getLabCode();
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\ActionData\\";
 		ActionSub sub=new ActionSub();
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
@@ -338,9 +354,16 @@ public class ActionServiceImpl implements ActionService {
 			updateassign.setModifiedDate(sdf1.format(new Date()));
 			dao.AssignUpdate(updateassign);
 			ActionAttachment attach=new ActionAttachment();
-			attach.setActionAttach(main.getFilePath());
+			//attach.setActionAttach(main.getFilePath());
+			attach.setAttachFilePath(Path);
 			attach.setActionSubId(subresult);
 			attach.setAttachName(main.getFileNamePath());
+			if(!main.getMultipartfile().isEmpty()) {
+				attach.setAttachName("Action"+timestampstr+"."+FilenameUtils.getExtension(main.getMultipartfile().getOriginalFilename()));
+				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
+			}else{
+				attach.setAttachFilePath(null);
+			}
 			attach.setCreatedBy(main.getCreatedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));
 			dao.ActionAttachInsert(attach);
@@ -349,6 +372,23 @@ public class ActionServiceImpl implements ActionService {
 		}
 		return subresult;
 	}
+	
+    public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
+    {
+    	logger.info(new Date() +"Inside SERVICE saveFile ");
+        Path uploadPath = Paths.get(uploadpath);
+          
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {       
+            throw new IOException("Could not save image file: " + fileName, ioe);
+        }     
+    }
 
 	@Override
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception {

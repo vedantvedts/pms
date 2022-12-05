@@ -60,11 +60,11 @@ public interface PrintService {
 	public List<Object[]> GetCopyAddressList (String initiationId)throws Exception;
 	public int DeleteCopyAddress(String initiationsancopyid) throws Exception;
 	public Long EditInitiationSanction(InitiationSanction initiationsac) throws Exception;
-    public int saveGranttChart(MultipartFile file,String Name,String path)throws Exception;
+    public int saveGranttChart(MultipartFile file,String Name,String path,String labcode)throws Exception;
     public Object[] MileStoneLevelId(String ProjectId, String CommitteeId) throws Exception;
     public int MileStoneLevelUpdate(MilestoneActivityLevelConfigurationDto dto) throws Exception;
     public List<Object[]> BreifingMilestoneDetails(String ProjectId) throws Exception;
-    public int saveTechImages(MultipartFile file,String ProjectId,String path,String userName)throws Exception;
+    public int saveTechImages(MultipartFile file,String ProjectId,String path,String userName,String LabCode)throws Exception;
     public List<TechImages> getTechList(String proId)throws Exception;
     public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
 }

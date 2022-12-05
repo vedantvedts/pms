@@ -1,7 +1,7 @@
 package com.vts.pfms.fracas.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -39,6 +38,8 @@ public class FracasController {
 	@Value("${File_Size}")
 	String file_size;
 	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@RequestMapping(value = "FracasMainItemsList.htm")
 	public String FracasMainItemsList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir) //,@RequestPart("FileAttach") MultipartFile[] FileAttach
@@ -144,15 +145,24 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasAttachDownload.htm "+UserId);
 		try
 		{
+			res.setContentType("Application/octet-stream");	
+			
 			PfmsFracasAttach attachment = service.FracasAttachDownload(req.getParameter("fracasattachid"));
-			res.setContentType("application/octet-stream");
-			res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachName()));
-			res.setContentLength((int)attachment.getFracasAttach().length);
-			InputStream inputStream = new ByteArrayInputStream(attachment.getFracasAttach()); 
-			OutputStream outputStream = res.getOutputStream();
-			FileCopyUtils.copy(inputStream, outputStream);
-			inputStream.close();
-			outputStream.close();
+			File my_file=null;
+		
+			my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachName()); 
+	        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0){
+	           out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +"Inside FracasAttachDownload.htm "+UserId,e);
@@ -278,6 +288,7 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasSubSubmit.htm "+UserId);
 		try
 		{
+			String labCode  = (String)ses.getAttribute("labcode");
 			String fracasassignid=req.getParameter("fracasassignid");
 			//Object[] fracasitemdata=service.FracasItemData(fracasmainid);
 						
@@ -288,6 +299,7 @@ public class FracasController {
 			dto.setProgressDate(req.getParameter("asondate"));
 			dto.setCreatedBy(UserId);
 			dto.setAttachment(FileAttach);
+			dto.setLabCode(labCode);
 			long count=0;
 			
 			
@@ -522,6 +534,7 @@ public class FracasController {
 	@RequestMapping(value = "FracasMainEditSubmit.htm", method = RequestMethod.POST)
 	public String FracasMainEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("attachment") MultipartFile FileAttach) throws Exception 
 	{
+		String LabCode = (String)ses.getAttribute("labcode");
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside FracasMainEditSubmit.htm "+UserId);		
 		try {
@@ -534,6 +547,7 @@ public class FracasController {
 			dto.setFracasItem(req.getParameter("fracasitem"));
 			dto.setFracasMainId(req.getParameter("fracasmainid"));
 			dto.setModifiedBy(UserId);
+			dto.setLabCode(LabCode);
 			dto.setFracasMainAttachId(req.getParameter("fracasmainattachid"));
 			int count=0;
 			count=service.FracasMainEdit(dto);

@@ -187,7 +187,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												
@@ -262,7 +262,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												
@@ -284,7 +284,9 @@ h6{
 				<!-- 									<button type="submit" class="btn btn-warning btn-sm" name="action" value="edit" onclick="return confirm('Are you sure To Submit?')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 				 -->								<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
-									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
+									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
+									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
+									                <input type="hidden" name="ActionAttachid" value="<%=obj[7]%>"> 
 											        </form>
 												</td>
 										

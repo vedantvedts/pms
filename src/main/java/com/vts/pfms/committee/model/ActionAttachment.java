@@ -15,12 +15,21 @@ public class ActionAttachment {
 	private Long ActionAttachId;
 	private Long ActionSubId;
 	private String AttachName;
+	private String AttachFilePath;
 	@Lob
 	private byte[] ActionAttach;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	
+	
+	public String getAttachFilePath() {
+		return AttachFilePath;
+	}
+	public void setAttachFilePath(String attachFilePath) {
+		AttachFilePath = attachFilePath;
+	}
 	public Long getActionAttachId() {
 		return ActionAttachId;
 	}

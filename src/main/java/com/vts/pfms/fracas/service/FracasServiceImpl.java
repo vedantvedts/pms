@@ -1,16 +1,28 @@
 package com.vts.pfms.fracas.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.fracas.dao.FracasDaoImpl;
 import com.vts.pfms.fracas.dto.PfmsFracasAssignDto;
@@ -32,7 +44,8 @@ public class FracasServiceImpl implements FracasService {
 //	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(FracasServiceImpl.class);
 	
-	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Override
 	public List<Object[]> ProjectsList(String empid,String Logintype, String LabCode) throws Exception
@@ -65,6 +78,12 @@ public class FracasServiceImpl implements FracasService {
 	public long FracasMainAddSubmit(PfmsFracasMainDto dto) throws Exception
 	{
 		logger.info(new Date() +"Inside DAO FracasMainAddSubmit ");		
+		
+		String LabCode= dto.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\FracasData\\";
 		PfmsFracasMain model=new PfmsFracasMain();
 		model.setFracasTypeId(Integer.parseInt(dto.getFracasTypeId()));
 		model.setFracasItem(dto.getFracasItem());
@@ -78,11 +97,12 @@ public class FracasServiceImpl implements FracasService {
 		
 		if(!dto.getFracasMainAttach().isEmpty()) 
 		{
-			MultipartFile attachment=dto.getFracasMainAttach();
+			
 			PfmsFracasAttach attach=new PfmsFracasAttach();
 			attach.setFracasMainId(mainid);
-			attach.setAttachName(attachment.getOriginalFilename());
-			attach.setFracasAttach(attachment.getBytes());
+			attach.setFilePath(Path);
+			attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getFracasMainAttach().getOriginalFilename()));
+			saveFile(uploadpath+Path, attach.getAttachName(), dto.getFracasMainAttach());
 			attach.setFracasSubId(0);
 			attach.setCreatedBy(dto.getCreatedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));			
@@ -91,6 +111,22 @@ public class FracasServiceImpl implements FracasService {
 		
 		return mainid;
 	}
+	 public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
+	    {
+	    	logger.info(new Date() +"Inside SERVICE saveFile ");
+	        Path uploadPath = Paths.get(uploadpath);
+	          
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+	        
+	        try (InputStream inputStream = multipartFile.getInputStream()) {
+	            Path filePath = uploadPath.resolve(fileName);
+	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	        } catch (IOException ioe) {       
+	            throw new IOException("Could not save image file: " + fileName, ioe);
+	        }     
+	    }
 	@Override
 	public PfmsFracasAttach FracasAttachDownload(String fracasattachid) throws Exception
 	{
@@ -190,7 +226,11 @@ public class FracasServiceImpl implements FracasService {
 	public long FracasSubSubmit(PfmsFracasSubDto dto) throws Exception
 	{
 		logger.info(new Date() +"Inside DAO FracasSubSubmit ");
+		String LabCode= dto.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 		
+		String Path = LabCode+"\\FracasData\\";
 		PfmsFracasSub model=new PfmsFracasSub();
 		model.setFracasAssignId(Long.parseLong(dto.getFracasAssignId()));
 		model.setProgress(Integer.parseInt(dto.getProgress()));
@@ -204,11 +244,12 @@ public class FracasServiceImpl implements FracasService {
 		
 		if(!dto.getAttachment().isEmpty() && subid!=0) 
 		{
-				MultipartFile attachment=dto.getAttachment();
+				
 				PfmsFracasAttach attach=new PfmsFracasAttach();
 				attach.setFracasMainId(0);
-				attach.setAttachName(attachment.getOriginalFilename());
-				attach.setFracasAttach(attachment.getBytes());
+				attach.setFilePath(Path);
+				attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getAttachment().getOriginalFilename()));
+				saveFile(uploadpath+Path, attach.getAttachName(), dto.getAttachment());
 				attach.setFracasSubId(subid);
 				attach.setCreatedBy(dto.getCreatedBy());
 				attach.setCreatedDate(sdf1.format(new Date()));			
@@ -273,6 +314,12 @@ public class FracasServiceImpl implements FracasService {
 		ret=dao.FracasSubDelete(fracassubid);
 		if(ret>0 && fracasattachid!=null)
 		{
+			PfmsFracasAttach attachment = dao.FracasAttachDownload(fracasattachid);
+			if(attachment!=null) {
+				String filepath = uploadpath+attachment.getFilePath()+attachment.getAttachName();
+				File file = new File(filepath);
+				file.delete();
+			}		
 			ret=dao.FracasAttachDelete(fracasattachid);
 		}
 		return ret;
@@ -289,19 +336,30 @@ public class FracasServiceImpl implements FracasService {
 	public int FracasMainEdit(PfmsFracasMainDto dto) throws Exception
 	{
 		logger.info(new Date() +"Inside DAO FracasMainEdit ");
+		
+		String LabCode= dto.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\FracasData\\";
 		dto.setModifiedDate(sdf1.format(new Date()));
 		dto.setFracasDate(sdf1.format(sdf.parse(dto.getFracasDate())));
 		int ret=dao.FracasMainEdit(dto);
 		if(!dto.getFracasMainAttach().isEmpty() && ret >0) 
 		{
 			if(dto.getFracasMainAttachId()!=null) {
+				PfmsFracasAttach attachment = dao.FracasAttachDownload(dto.getFracasMainAttachId());
+				String filepath = uploadpath+attachment.getFilePath()+attachment.getAttachName();
+				File file = new File(filepath);
+				if(file.exists()) {	file.delete(); }
 				dao.FracasAttachDelete(dto.getFracasMainAttachId());
 			}
-			MultipartFile attachment=dto.getFracasMainAttach();
+			
 			PfmsFracasAttach attach=new PfmsFracasAttach();
 			attach.setFracasMainId(Long.parseLong(dto.getFracasMainId()));
-			attach.setAttachName(attachment.getOriginalFilename());
-			attach.setFracasAttach(attachment.getBytes());
+			attach.setAttachName("Fracas"+timestampstr+"."+FilenameUtils.getExtension(dto.getFracasMainAttach().getOriginalFilename()));
+			attach.setFilePath(Path);
+			saveFile(uploadpath+Path, attach.getAttachName(), dto.getFracasMainAttach());
 			attach.setFracasSubId(0);
 			attach.setCreatedBy(dto.getModifiedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));			

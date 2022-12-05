@@ -72,9 +72,9 @@ String seslabid=(String)session.getAttribute("labid");
 							<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<%  for ( Object[]  obj :LabList) {%>
 								<%if(OfficerEditData.length==11){ %>
-								<option value="<%=obj[0] %>" <%if(obj[0].equals(OfficerEditData[10])) {%> selected="selected"  <%} %>> <%=obj[2] %></option>
+								<option value="<%=obj[2] %>" <%if(obj[2].equals(OfficerEditData[10])) {%> selected="selected"  <%} %>> <%=obj[2] %></option>
 								<%}else{ %>
-								<option value="<%=obj[0] %>" <%if(obj[0].toString().equalsIgnoreCase(seslabid)) {%> selected="selected" <%} %>> <%=obj[2] %></option>
+								<option value="<%=obj[2] %>" <%if(obj[2].toString().equalsIgnoreCase(seslabid)) {%> selected="selected" <%} %>> <%=obj[2] %></option>
 								<%} %>
 								<%} %>
 				     </select> 

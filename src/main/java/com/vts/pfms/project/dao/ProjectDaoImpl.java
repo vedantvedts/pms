@@ -97,7 +97,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
 	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
-	private static final String EMPLOYEELIST="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
+	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(a.title,''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item_sanc b  WHERE a.budgetsancid=b.sanctionitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
 	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.category,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.ProjectTypeId=c.CategoryId AND a.CategoryId=b.ProjectTypeId AND a.projectstatus=d.Status";
 	private static final String PROJECTAPPROVALTRACKING="SELECT a.projectapprovalid,a.empid,c.empname,d.designation,e.divisionname,a.actiondate,a.remarks,b.statusdetail FROM project_approval a, pfms_project_authority_actionlist b,employee c,employee_desig d,division_master e WHERE a.projectstatus=b.Status AND a.empid=c.empid  AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND a.initiationid=:initiationid";
@@ -143,7 +143,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1' ORDER BY a.projectid, a.projectmainid";
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
-	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, c.empname, d.designation, e.divisioncode FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
+	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(c.title,''), c.empname)AS 'empname', d.designation, e.divisioncode  FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
 	private static final String USERLIST="SELECT  b.empid, b.empname,b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
@@ -152,9 +152,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT riskrevisionid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,revisiondate FROM pfms_risk_rev WHERE actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid AND LabCode=:LabCode ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
-	private static final String DORTMDADEMPDATA="SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
-	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid,b.empname,c.designation,'TCM' FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
-	private static final String EMPDIVHEADDATA ="SELECT e2.empid,e2.empname, ed.designation,'Division Head' FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
+	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(e.title,''), e.empname) as 'title',ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
+	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(b.title,''), b.empname) as 'emp',c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
+	private static final String EMPDIVHEADDATA ="SELECT e2.empid, CONCAT(IFNULL(e2.title,''), e2.empname) as 'empname', ed.designation,'Division Head'  FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
 	
@@ -709,6 +709,19 @@ public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception 
 public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception {
 	PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile= manager.find(PfmsInitiationAttachmentFile.class,Long.parseLong(InitiationAttachmentId));
 	return ProjectIntiationAttachmentFile;
+}
+
+@Override
+public Object[] ProjectIntiationFileName(long AttachmentId) throws Exception
+{
+	Query query=manager.createNativeQuery("SELECT a.initiationattachmentid,a.initiationid,a.filename,a.filenamepath FROM pfms_initiation_attachment a WHERE isactive='1' AND a.initiationattachmentid=:AttachmentId");
+	query.setParameter("AttachmentId", AttachmentId);
+	List<Object[]> ProjectApprovePdList=(List<Object[]>)query.getResultList();
+	Object[] result =null;
+	if(ProjectApprovePdList!=null && ProjectApprovePdList.size()>0) {
+		result=ProjectApprovePdList.get(0);
+	}
+	return result;
 }
 
 @Override

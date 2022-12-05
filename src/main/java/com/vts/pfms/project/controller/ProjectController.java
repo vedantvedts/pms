@@ -42,6 +42,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.fracas.model.PfmsFracasAttach;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
@@ -1214,7 +1215,7 @@ public class ProjectController {
 			@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
-
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectAttachmentAddSubmit.htm "+UserId);
 		
 		try {
@@ -1227,8 +1228,8 @@ public class ProjectController {
 			pfmsinitiationattachmentdto.setInitiationId(req.getParameter("IntiationId"));
 			pfmsinitiationattachmentdto.setFileNamePath(
 					req.getParameter("FileName") + "." + FileAttach.getOriginalFilename().split("\\.")[1]);
-	
-			pfmsinitiationattachmentfiledto.setFilePath(FileAttach.getBytes());
+			pfmsinitiationattachmentfiledto.setLabCode(LabCode);
+			pfmsinitiationattachmentfiledto.setFileAttach(FileAttach);
 
 			Long count = service.ProjectInitiationAttachmentAdd(pfmsinitiationattachmentdto,
 					pfmsinitiationattachmentfiledto, UserId);
@@ -1348,24 +1349,27 @@ public class ProjectController {
 		logger.info(new Date() +"Inside ProjectAttachDownload.htm "+UserId);
 		
 		try {
-		
-			
-		  PfmsInitiationAttachmentFile attachment=service.ProjectIntiationAttachmentFile(req.getParameter("InitiationAttachmentId" ));
-		  
 		  //String FilenamePath = service.ProjectIntiationAttachmentFileNamePath(req.getParameter("InitiationAttachmentId"));
-		  
+
+			 res.setContentType("Application/octet-stream");	
+				
+			 PfmsInitiationAttachmentFile attachment=service.ProjectIntiationAttachmentFile(req.getParameter("InitiationAttachmentId" ));
+			 Object[]  pfmsinitiation = service.ProjectIntiationFileName(attachment.getInitiationAttachmentId());
+				File my_file=null;
 			
-			 res.setContentType("application/octet-stream");
-			 res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getFileName())); 
-			 res.setContentLength((int)attachment.getFilePath().length);
-			
-			 InputStream inputStream = new ByteArrayInputStream(attachment.getFilePath());
-			 OutputStream outputStream = res.getOutputStream();
-			 FileCopyUtils.copy(inputStream, outputStream); 
-			 inputStream.close();
-			 outputStream.close(); 
-			
-	
+				my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getFileName()); 
+		        res.setHeader("Content-disposition","attachment; filename="+pfmsinitiation[3].toString()); 
+		        OutputStream out = res.getOutputStream();
+		        FileInputStream in = new FileInputStream(my_file);
+		        byte[] buffer = new byte[4096];
+		        int length;
+		        while ((length = in.read(buffer)) > 0){
+		           out.write(buffer, 0, length);
+		        }
+		        in.close();
+		        out.flush();
+		        out.close();
+
 		}catch (Exception e) {
 
 			

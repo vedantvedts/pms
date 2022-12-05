@@ -13,6 +13,14 @@ public class PfmsFracasSubDto {
 	private String CreatedBy;
 	private String CreatedDate;
 	private MultipartFile attachment;
+	private String LabCode;
+	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
 	public String getFracasSubId() {
 		return FracasSubId;
 	}

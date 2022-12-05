@@ -4,6 +4,8 @@ public class OfficerMasterAdd {
  
 	public String EmpId;
 	public String EmpNo;
+	public String Title;
+	public String Salutation;
 	public String EmpName;
 	public String Designation;
 	public String ExtNo;
@@ -18,6 +20,18 @@ public class OfficerMasterAdd {
 	
 	
 	
+	public String getTitle() {
+		return Title;
+	}
+	public void setTitle(String title) {
+		Title = title;
+	}
+	public String getSalutation() {
+		return Salutation;
+	}
+	public void setSalutation(String salutation) {
+		Salutation = salutation;
+	}
 	public String getLabCode() {
 		return LabCode;
 	}

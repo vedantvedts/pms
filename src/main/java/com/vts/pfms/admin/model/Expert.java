@@ -16,6 +16,8 @@ public class Expert implements Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ExpertId;
     private String ExpertNo;
+    private String Title;
+    private String Salutation;
     private String ExpertName;
     private Long DesigId;
     private String ExtNo;
@@ -28,7 +30,25 @@ public class Expert implements Serializable
     private String ModifiedBy;
     private String ModifiedDate;
     
-    public Long getExpertId() {
+    
+    
+    public String getTitle() {
+		return Title;
+	}
+
+	public void setTitle(String title) {
+		Title = title;
+	}
+
+	public String getSalutation() {
+		return Salutation;
+	}
+
+	public void setSalutation(String salutation) {
+		Salutation = salutation;
+	}
+
+	public Long getExpertId() {
         return this.ExpertId;
     }
     

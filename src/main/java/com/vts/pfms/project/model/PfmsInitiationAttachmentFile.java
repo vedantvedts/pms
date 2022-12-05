@@ -17,7 +17,7 @@ public class PfmsInitiationAttachmentFile implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InitiationAttachmentFileId;
 	private Long InitiationAttachmentId;
-    private byte[] FilePath;
+    private String FilePath;
     private String FileName;
   
 	public String getFileName() {
@@ -38,10 +38,10 @@ public class PfmsInitiationAttachmentFile implements Serializable {
 	public void setInitiationAttachmentId(Long initiationAttachmentId) {
 		InitiationAttachmentId = initiationAttachmentId;
 	}
-	public byte[] getFilePath() {
+	public String getFilePath() {
 		return FilePath;
 	}
-	public void setFilePath(byte[] filePath) {
+	public void setFilePath(String filePath) {
 		FilePath = filePath;
 	}
    

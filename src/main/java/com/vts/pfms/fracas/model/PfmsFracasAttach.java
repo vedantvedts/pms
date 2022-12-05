@@ -17,8 +17,7 @@ public class PfmsFracasAttach {
 	private long FracasMainId;
 	private long FracasSubId;
 	private String AttachName;
-	@Lob
-	private byte[] FracasAttach;
+	private String FilePath;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -37,9 +36,7 @@ public class PfmsFracasAttach {
 	public String getAttachName() {
 		return AttachName;
 	}
-	public byte[] getFracasAttach() {
-		return FracasAttach;
-	}
+	
 	public String getCreatedBy() {
 		return CreatedBy;
 	}
@@ -64,8 +61,12 @@ public class PfmsFracasAttach {
 	public void setAttachName(String attachName) {
 		AttachName = attachName;
 	}
-	public void setFracasAttach(byte[] fracasAttach) {
-		FracasAttach = fracasAttach;
+	
+	public String getFilePath() {
+		return FilePath;
+	}
+	public void setFilePath(String filePath) {
+		FilePath = filePath;
 	}
 	public void setCreatedBy(String createdBy) {
 		CreatedBy = createdBy;

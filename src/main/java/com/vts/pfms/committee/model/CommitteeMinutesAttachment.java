@@ -14,7 +14,7 @@ public class CommitteeMinutesAttachment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long MinutesAttachmentId;
 	private long ScheduleId;
-	private byte[] MinutesAttachment;
+	private String FilePath;
 	private String AttachmentName;
 	private String CreatedDate;
 	private String CreatedBy;
@@ -32,11 +32,12 @@ public class CommitteeMinutesAttachment {
 	public void setScheduleId(long scheduleId) {
 		ScheduleId = scheduleId;
 	}
-	public byte[] getMinutesAttachment() {
-		return MinutesAttachment;
+	
+	public String getFilePath() {
+		return FilePath;
 	}
-	public void setMinutesAttachment(byte[] minutesAttachment) {
-		MinutesAttachment = minutesAttachment;
+	public void setFilePath(String filePath) {
+		FilePath = filePath;
 	}
 	public String getAttachmentName() {
 		return AttachmentName;

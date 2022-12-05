@@ -106,7 +106,7 @@ h6{
 											</td>
 					   					
 					   						<td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Name </label>
+					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Name: </label>
 					   						</td>
 					   						<td style="max-width: 340px; padding-right: 50px">
                                                         <select class="form-control selectdee " name="EmpId" id="EmpId" required="required"  data-live-search="true"  >
@@ -119,7 +119,7 @@ h6{
 																</select>	        
 											</td>
 											<td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date Type </label>
+					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date Type: </label>
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">
                                                         <select class="form-control selectdee " name="Position" id="Assignee" required="required"  data-live-search="true"  >
@@ -132,13 +132,13 @@ h6{
 					   						<td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> From Date:</label>
 					   						</td>
-					   						<td style="max-width: 160px; padding-right: 50px">
+					   						<td style="max-width: 160px; padding-right: 10px">
 					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=fdate%>">
 					   						</td>
 					   						<td>
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> To Date:</label>
 					   						</td>
-					   						<td style="width: 160px; padding-right: 50px">
+					   						<td style="width: 160px; padding-right: 30px">
 					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=tdate%>">
 					   						</td>
 					   						<td>

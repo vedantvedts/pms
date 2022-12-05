@@ -13,7 +13,6 @@ import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
-import com.vts.pfms.master.model.EmployeeExternal;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.model.LabMaster;
@@ -22,23 +21,23 @@ import com.vts.pfms.model.LabMaster;
 @Repository
 public class MasterDaoImpl implements MasterDao {
 	
-	private static final String OFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
+	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(a.title,''), a.empname)AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode , a.title , a.salutation FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
-	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo from employee  where empid=:empid";
+	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation from employee  where empid=:empid";
 	private static final String OFFICERMASTERDELETE="UPDATE employee SET srno=:srno, isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
-	private static final String OFFICEREXTMASTERDELETE="UPDATE employee_external SET isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
+	private static final String OFFICEREXTMASTERDELETE="UPDATE employee SET isactive=:isactive, modifieddate=:modifieddate, modifiedby=:modifiedby WHERE empid=:empid";
 	private static final String EMPNOCHECK="SELECT empno FROM employee";
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
-	private static final String OFFICERMASTERUPDATE="UPDATE employee SET empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
+	private static final String OFFICERMASTERUPDATE="UPDATE employee SET title=:title, salutation=:salutation, empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
     private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
-    private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid ,'active',a.isactive  FROM employee_external a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.empid DESC";
-	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,LabId from employee_external  where empid=:empid";
-	private static final String EXTERNALOFFICERMASTERUPDATE="UPDATE employee_external SET labid=:labid,empno=:empno, empname=:empname, desigid=:desigid, extno=:extno, MobileNo=:mobileno, email=:email,DronaEmail=:dronaemail, InternetEmail=:internalemail , divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
+    private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid ,'active',a.isactive  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.empid DESC";
+	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode from employee  where empid=:empid";
+	private static final String EXTERNALOFFICERMASTERUPDATE="UPDATE employee SET labcode=:labcode,empno=:empno, empname=:empname, desigid=:desigid, extno=:extno, MobileNo=:mobileno, email=:email,DronaEmail=:dronaemail, InternetEmail=:internalemail , divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
 	
 	
 	private static final String DIVISIONLIST="SELECT divisionid,divisioncode,divisionname FROM division_master WHERE isactive=1";
-	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,e.empname,ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
+	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
 	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, e.empname,ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
@@ -49,7 +48,7 @@ public class MasterDaoImpl implements MasterDao {
 	
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(activitytypeid) AS 'count','activity' FROM milestone_activity_type WHERE isactive=1 AND activitytype LIKE :activityname";
-	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1 AND dg.labcode=:labcode";
+	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation  FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1 AND dg.labcode=:labcode";
 	private static final String GROUPHEADLIST ="SELECT e.empid,e.empname,ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
 	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation,dg.isactive FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
@@ -115,7 +114,7 @@ public class MasterDaoImpl implements MasterDao {
 	}
 	
 	@Override
-	public int OfficerExtDelete(EmployeeExternal employee) throws Exception {
+	public int OfficerExtDelete(Employee employee) throws Exception {
 		
 		Query query=manager.createNativeQuery(OFFICEREXTMASTERDELETE);
 		query.setParameter("modifieddate", employee.getModifiedDate());
@@ -157,6 +156,8 @@ public class MasterDaoImpl implements MasterDao {
 	public int OfficerMasterUpdate(Employee employee) throws Exception {
 		
 		Query query=manager.createNativeQuery(OFFICERMASTERUPDATE);
+		query.setParameter("title", employee.getTitle());
+		query.setParameter("salutation", employee.getSalutation());
 		query.setParameter("empno", employee.getEmpNo());
 		query.setParameter("empname", employee.getEmpName());
 		query.setParameter("desigid", employee.getDesigId());
@@ -185,7 +186,7 @@ public class MasterDaoImpl implements MasterDao {
 	}
 	
 	@Override
-	public Long OfficeMasterExternalInsert(EmployeeExternal empExternal)throws Exception{
+	public Long OfficeMasterExternalInsert(Employee empExternal)throws Exception{
 
 		manager.persist(empExternal);
 		manager.flush();
@@ -210,7 +211,7 @@ public class MasterDaoImpl implements MasterDao {
 	}
 
 	@Override  
-	public int OfficerExtUpdate(EmployeeExternal employee) throws Exception{
+	public int OfficerExtUpdate(Employee employee) throws Exception{
 
 		Query query=manager.createNativeQuery(EXTERNALOFFICERMASTERUPDATE);
 		query.setParameter("empno", employee.getEmpNo());
@@ -225,7 +226,7 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("modifieddate", employee.getModifiedDate());
 		query.setParameter("dronaemail", employee.getDronaEmail());
 		query.setParameter("internalemail", employee.getInternetEmail());
-		query.setParameter("labid", employee.getLabId());
+		query.setParameter("labcode", employee.getLabCode());
 		int count =(int)query.executeUpdate();
 		
 		return count;

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -71,6 +73,9 @@ public class ActionController {
 	
 //	@Autowired
 //	private Configuration configuration;
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Autowired
 	ActionService service;
@@ -349,7 +354,8 @@ public class ActionController {
 	public String SubSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception {
 		
-		String UserId = (String) ses.getAttribute("Username");
+		String UserId  = (String) ses.getAttribute("Username");
+		String labCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside SubSubmit.htm "+UserId);		
 		try {
 			
@@ -357,9 +363,10 @@ public class ActionController {
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 			ActionSubDto subDto=new ActionSubDto();
+			subDto.setLabCode(labCode);
 			subDto.setFileName(req.getParameter("FileName"));
 			subDto.setFileNamePath(FileAttach.getOriginalFilename());
-			subDto.setFilePath(FileAttach.getBytes());
+			subDto.setMultipartfile(FileAttach);
             subDto.setCreatedBy(UserId);
             subDto.setActionAssignId(req.getParameter("ActionAssignId"));
             subDto.setRemarks(req.getParameter("Remarks"));
@@ -396,7 +403,7 @@ public class ActionController {
 				    	
 				    	MainId = (String) md.get("ActionMainId");
 				    	AssignId = (String)md.get("ActionAssignId");
-				    
+
 				    if(MainId==null|| AssignId==null) {
 				    	 redir.addAttribute("resultfail", "Refresh Not Allowed");
 				    	return "redirect:/AssigneeList.htm";
@@ -457,15 +464,55 @@ public class ActionController {
 			}
 	 }
 	 
+	 @RequestMapping(value = "ActionDataAttachDownload.htm", method = RequestMethod.GET)
+	 public void ActionDataAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
+	 {	 
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ActionAttachDownload.htm "+UserId);		
+			try { 
+		 
+					res.setContentType("Application/octet-stream");	
+					ActionAttachment attach=service.ActionAttachmentDownload(req.getParameter("ActionSubId" ));
+					
+					File my_file=null;
+				
+					my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+			        res.setHeader("Content-disposition","attachment; filename="+attach.getAttachName().toString()); 
+			        OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
+ 
+			}
+			catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside ActionAttachDownload.htm "+UserId, e);
+			}
+	 }
+	 
 	 @RequestMapping(value = "ActionSubDelete.htm", method = RequestMethod.POST)
 		public String TCCMemberDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 
 		 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionSubDelete.htm "+UserId);		
 			try { 
-
+			ActionAttachment attach=service.ActionAttachmentDownload(req.getParameter("ActionAttachid" ));	
 			int count = service.ActionSubDelete(req.getParameter("ActionSubId"), UserId);
-
+			
+			File my_file=null;
+			       
+			my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+		       
+			if(my_file.exists()) {
+				my_file.delete();
+			}
+			
 			if (count > 0) {
 				redir.addAttribute("result", "Action Sub Deleted Successfully");
 			} else {
@@ -473,7 +520,7 @@ public class ActionController {
 
 			}
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
-			
+			redir.addFlashAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
