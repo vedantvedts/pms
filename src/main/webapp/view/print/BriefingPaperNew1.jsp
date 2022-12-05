@@ -1622,7 +1622,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 												<%
 												
 												if(obj[26].toString().equals("0")) {%>
-													L
+													<!-- L -->
 												<%countA=1;
 													countB=1;
 													countC=1;
