@@ -910,10 +910,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										</tr>			
 									<%i++;
 									}}else{ %>
-									
-										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									
-								<%} %> 
+									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+									<%} %> 
 							</tbody>
 						</table>
 						</div>
