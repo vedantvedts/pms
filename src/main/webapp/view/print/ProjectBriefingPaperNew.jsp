@@ -1006,7 +1006,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
 									<thead>
 										<tr>
-											 <th  style="width: 20px !important;text-align: center;  ">SN</th>
 											 <th  style="max-width: 70px; ">Committee</th>
 											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
 											 <th  style="max-width: 80px; "> Date Held</th>
@@ -1020,8 +1019,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										  {int i=1;
 										for(Object[] obj:ReviewMeetingList.get(z)){ %>
 											<tr>
-												<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-												<td  style="max-width: 70px;"><%=obj[1] %></td>												
+												
+												<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
 												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
@@ -1036,7 +1035,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
 									<thead>
 										<tr>
-											 <th  style="width: 20px !important;text-align: center;  ">SN</th>
 											 <th  style="max-width: 70px; ">Committee</th>
 											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
 											 <th  style="max-width: 80px; "> Date Held</th>
@@ -1050,8 +1048,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										  {int i=1;
 										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
 											<tr>
-												<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-												<td  style="max-width: 70px;"><%=obj[1] %></td>												
+												<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
 												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
