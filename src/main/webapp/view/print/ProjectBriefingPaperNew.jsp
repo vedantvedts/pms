@@ -1,3 +1,4 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="com.vts.pfms.print.model.TechImages"%>
@@ -29,9 +30,7 @@
 <link href="${contentCss}" rel="stylesheet" />
 
 <title>Briefing </title>
-
-
- <style type="text/css">
+<style type="text/css">
  
  p{
   text-align: justify;
@@ -331,7 +330,7 @@ String filePath=(String)request.getAttribute("filePath");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
-
+Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>> )request.getAttribute("ebandpmrccount");
@@ -426,14 +425,14 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										
 										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											
-											<%for(Object[] committee : SpecialCommitteesList){ %>
-												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+											<%for(Object[] comm : SpecialCommitteesList){ %>
+												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !comm[1].toString().equalsIgnoreCase("PMRC")){ %>
 													
-													<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
 													
-												<%}else if(committee[1].toString().equalsIgnoreCase("PMRC")){ %>
+												<%}else if(comm[1].toString().equalsIgnoreCase("PMRC")){ %>
 													
-													<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
 														
 												<%} %>
 												
@@ -476,7 +475,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										Object[] projectattributes =projectattributeslist.get(z);	%>  
 										<%if(projectattributes!=null){ %>
 										
-										<%-- <%if(ProjectDetail.size()>1){ %> --%>
 										<div>
 											<form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
@@ -485,7 +483,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
 										</div>	
-										<%-- <%} %> --%>
 										
 										  <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 												<tr>
@@ -753,158 +750,216 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
-								   <div align="left" style="margin-left: 15px;">(a) <%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+								   <div align="left" style="margin-left: 15px;">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
 															   						<%}else { %>
 															   						Ratification
-															   						<%} %> 
+															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</div>
 															   						
-															   						 of 
-															   						 
-															   						<b>recommendations</b> of last <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> (if any).</div>
-								   <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 300px; ">Recommendation Point</th>
-											 <th  style="max-width: 100px; "> PDC</th>
-											 <th  style="max-width: 100px; "> Responsible agency/ Person</th>
-											 <th  style="max-width: 40px; ">Status</th>
-											 <th  style="max-width: 100px; ">Remarks</th>			
-										</tr>
-										
-										<%if(lastpmrcminsactlist.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(lastpmrcminsactlist.size()>0)
-										{int i=1;
-										for(Object[] obj:lastpmrcminsactlist.get(z)){
-												if(obj[3].toString().equalsIgnoreCase("R")){%>
+							
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
+										<thead>
 											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 300px; "><%=obj[2] %></td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
-												</td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){ %>  
-														<%=obj[12] %>  (<%=obj[13] %>)
-													<%}else { %> Not Assigned <%} %> 
-												</td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){if(obj[18]!=null){ %>
-												<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]) )){ %>
-													<span class="ongoing">UF</span>
-												<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[10].toString().equals("C")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-													<span class="completed">CO</span>
-												<%}else if(obj[10].toString().equals("C")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-												   <span class="completeddelay">CD</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
-												<span class="ongoing">OG</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %> 
-												<span class="delay">DO</span>
-												<%}else{ %>
-												<span class="ongoing">OG</span>
-												
-												<%}}else if(obj[10].toString().equals("C")){%>
-											        <span class="completed">CO</span>
-											      <% }else{ %><span class="notyet">NS</span> 
-												<%}}else { %> <span class="notassign">NA</span> <%} %> 
-												</td>
-												<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
-												
-											</tr>		
-										<%i++;}
-										}%>
-										<%if(i==1){ %> <tr><td colspan="6" align="center" > Nil</td></tr>	<%} %>
+												<td colspan="6" style="border: 0">
+													<p style="font-size: 10px;text-align: center"> 
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+													 </p>
+												</td>									
+											</tr>
 										
-										<%} %>
-									
+											<tr>
+												 <th  style="width: 15px !important;text-align: center;">SN</th>
+												 <th  style="width: 335px !important;">Recommendation Point</th>
+												 <th  style="width: 80px !important;"> PDC</th>
+												 <th  style="width: 210px !important;"> Responsibility</th>
+												 <th  style="width: 50px !important;">Status</th>
+												 <th  style="width: 280px !important; ">Remarks</th>
+											</tr>
+										</thead>
+										<tbody>
+											<%if(lastpmrcminsactlist.get(z).size()==0){ %>
+											<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+											<%}
+											else if(lastpmrcminsactlist.get(z).size()>0)
+											{int i=1;
+											for(Object[] obj:lastpmrcminsactlist.get(z)){
+													if(obj[3].toString().equalsIgnoreCase("R")){%>
+												<tr>
+													<td  style="text-align: center;"><%=i %></td>
+													<td  style="text-align: justify; "><%=obj[2] %></td>
+													<td   style=" text-align: center;">
+														<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+													</td>
+													<td   >
+														<%if(obj[4]!= null){ %>  
+															<%=obj[12] %><%-- , <%=obj[13] %> --%>
+														<%}else { %> <span class="notassign">NA</span> <%} %> 
+													</td>
+													<td  style="text-align: center; ">
+															<%if(obj[4]!= null){if(obj[18]!=null){ %>
+														<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+															<span class="ongoing">RC</span>
+														<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+															<span class="delay">FD</span>
+														<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+															<span class="completed">CO</span>
+														<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+														
+														   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
+														   
+														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
+														<span class="ongoing">OG</span>
+														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %> 
+														<span class="delay">DO</span>
+														<%}else{ %>
+														<span class="ongoing">-</span>
+														
+														<%}}else if(obj[10].toString().equals("C")){%>
+													        <span class="completed">CO</span>
+													      <% }else{ %><span class="notyet">NS</span> 
+														<%}}else { %> <span class="notassign">NA</span> <%} %> 
+													</td>
+													<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
+												</tr>		
+											<%i++;}
+											}%>
+											<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
+											
+											<%} %>
+										</tbody>
+										
 									</table>
-									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %> 
-								  	<div align="left" style="margin-left: 15px;">(b) Last <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> action points with Expected Date of completion (EDC)  and current status.</div>
-									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 350px; ">Action Point</th>
-											 <th  style="max-width: 80px; "> Expected Date of Completion (PDC)</th>
-											 <th  style="max-width: 80px; "> Actual Date of Completion</th>
-											 <th  style="max-width: 100px; "> Responsible agency/ Person</th>
-											 <th  style="max-width: 40px; ">Status</th>
-											 <th  style="max-width: 100px; ">Remarks</th>			
-										</tr>
-										
+									
+							
+							
+							
+									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
+									  
+								  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
+								
+								
+							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+								<thead>
+											
+									<tr>
+										<th  style="width: 15px !important;text-align: center;  ">SN</th>
+										<th  style="width: 300px; ">Action Point</th>
+										<th  style="width: 80px; ">PDC</th>
+										<th  style="width: 80px; "> ADC</th>
+										<th  style="width: 210px; "> Responsibility</th>
+										<th  style="width: 50px; ">Status</th>
+										<th  style="width: 235px; ">Remarks</th>			
+									</tr>
+								</thead>
+								
+								<tbody>		
 										<%if(lastpmrcactions.get(z).size()==0){ %>
-										<tr><td colspan="7" style="text-align: center;" > Nil</td></tr>
+										<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 										<%}
 										else if(lastpmrcactions.size()>0)
-										  {int i=1;
+										{int i=1;
 										for(Object[] obj:lastpmrcactions.get(z)){ %>
 											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 350px;text-align: justify;"><%=obj[2] %></td>
-												<td  style="max-width: 80px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  style="max-width: 80px;"> 
-												<%if( obj[9].toString().equals("C") && obj[13]!=null ){ %>												
-												<%= sdf.format(sdf1.parse(obj[13].toString()))%> 
-												<%}else{ %>-<%} %></td>
-												<td  style="max-width: 100px;"> <%=obj[11] %>, <%=obj[12] %> </td>
-												<td  style="max-width: 100px;"> 
+												<td  style="text-align: center;"><%=i %></td>
+												<td  style="text-align: justify ;"><%=obj[2] %></td>
+												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td   style="text-align: center;"> 
+												<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
+
 												<%if(obj[15]!=null){ %>
-												<%if(obj[9].toString().equals("I")&&obj[14].toString().equals("F")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]) )){ %>
-													<span class="ongoing">UF</span>
-												<%}else if(obj[9].toString().equals("I")&&obj[14].toString().equals("F")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[9].toString().equals("C")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
-													<span class="completed">CO</span>
-												<%}else if(obj[9].toString().equals("C")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %>
-												   <span class="completeddelay">CD</span>
-												<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %> 
-												<span class="ongoing">OG</span>
-												<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %> 
-												<span class="delay">DO</span>
-												<%}else{ %>
-												<span class="ongoing">OG</span>
-												
-												<%}}else if(obj[9].toString().equals("C")){%>
-											        <span class="completed">CO</span>
-											      <% }else{ %><span class="notyet">NS</span> 
+													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+														<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+													   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}
+													}else if(obj[9].toString().equals("C")){ %>
+												        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												    <% }else{ %>
+												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
 												<%} %> 
+												
+												<%}else{ %>-<%} %></td>
+												
+												
+												<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+												<td  style="text-align: center;"> 
+													<%if(obj[15]!=null){ %>
+													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+														<span class="ongoing">RC</span>
+													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<span class="delay">FD</span>
+													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<span class="completed">CO</span>
+													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+													<span class="ongoing">OG</span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+													<span class="delay">DO</span>
+													<%}
+													}else if(obj[9].toString().equals("C")){ %>
+												        <span class="completed">CO</span>
+												    <% }else{ %>
+												      	<span class="notyet">NS</span> 
+													<%} %> 
 												</td>	
-												<td  style="max-width: 100px; "><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>					
+												<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 											</tr>			
 										<%i++;
 										}} %>
+										</tbody>
+										
 									</table> 
-									<%} %>
-									
+							
 								
-									<!-- <h1 class="break"></h1>  -->
-									<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
-									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
+									<%} %>
+								
+					<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
+						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+								<tr>
+									 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+									 <th  style="max-width: 70px; ">Committee</th>
+									 <th  style="max-width: 200px; "> MeetingId</th>
+									 <th  style="max-width: 80px; "> Date Held</th>
+								</tr>
+									<%if(ReviewMeetingList.get(z).size()==0){ %>
+									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+									<%}
+									else if(ReviewMeetingList.size()>0)
+									  {int i=1;
+									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 70px; ">Committee</th>
-											 <th  style="max-width: 100px; "> MeetingId</th>
-											 <th  style="max-width: 180px; "> Date Held</th>
-										</tr>
+											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<td  style="max-width: 200px;" ><%= obj[4]%></td>
+											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+										</tr>			
+									<%i++;
+									}}else{ %>
+									
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										<%-- <%if(ReviewMeetingList.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingList.size()>0)
-										  {int i=1;
-										for(Object[] obj:ReviewMeetingList.get(z)){ %>
-											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 70px;"><%=obj[1] %></td>												
-												<td  style="max-width: 100px;" ><%= obj[4]%></td>
-												<td  style="max-width: 180px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%i++;
-										}} %> --%>
-									</table>
+									
+								<%} %> 
+						</table>
 									
 								<%} %>
 							</div>

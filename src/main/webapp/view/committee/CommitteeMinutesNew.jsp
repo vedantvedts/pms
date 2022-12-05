@@ -668,18 +668,18 @@ for(Object[] temp : invitedlist){
 									<tr>
 										<td colspan="6" style="border: 0px !important;">
 											<p style="font-size: 10px;text-align: center"> 
-												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
-											 </p>
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+													 </p>
 										</td>									
 									</tr>
 								
@@ -766,18 +766,18 @@ for(Object[] temp : invitedlist){
 									<tr>
 										<td colspan="8" style="border: 0px">
 											<p style="font-size: 10px;text-align: center"> 
-												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
-											 </p>
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+													 </p>
 										</td>									
 									</tr>
 						     
@@ -1230,20 +1230,20 @@ for(Object[] temp : invitedlist){
 					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 							 <thead>
 									<tr>
-										<td colspan="8" style="border: 0px">
+										<td colspan="9" style="border: 0px">
 											<p style="font-size: 10px;text-align: center"> 
-												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-												 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;  
-												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-												 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
-											 </p>
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+													 </p>
 										</td>									
 									</tr>
 							

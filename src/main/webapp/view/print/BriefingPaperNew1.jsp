@@ -1,3 +1,5 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="com.vts.pfms.committee.model.Committee"%>
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.print.model.TechImages"%>
 <%@page import="java.io.File"%>
@@ -33,7 +35,10 @@
 <title>Briefing Paper</title>
 
 
-<%String isprint=(String)request.getAttribute("isprint"); 
+<%
+
+Committee committee=(Committee)request.getAttribute("committeeData");
+String isprint=(String)request.getAttribute("isprint"); 
 List<Object[]> projectattributes = (List<Object[]> )request.getAttribute("projectattributes");
 List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 String lablogo=(String)request.getAttribute("lablogo");
@@ -42,11 +47,15 @@ String committeeid=(String)request.getAttribute("committeeid");
 String filePath=(String)request.getAttribute("filePath");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute("ebandpmrccount");
 String No2=null;
-if(Long.parseLong(committeeid)==1){ 
+if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
 No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-}else if(Long.parseLong(committeeid)==2){
+}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
-				} 
+}
+
+
+
+
 %>
 
 <style type="text/css">
@@ -137,12 +146,13 @@ th, td
   			}   
   			
   			@top-center {
-	          content: "<%if(Long.parseLong(committeeid)==1){ %>
+	         content: "<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 			PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
-			<%}else if(Long.parseLong(committeeid)==2){ %>
-   							EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
-   						<%} %>"; 
-			  margin-top: 30px;
+			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+   			EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
+   			<%} %>"; 
+			
+			margin-top: 30px;
              
   			} 
           
@@ -385,11 +395,12 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 		
 		<%if ( committeeid != null){ %>
 			
-			<div align="center" ><h2 style="color: #145374 !important" ><%if(Long.parseLong(committeeid)==1){ %>
-			PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
-			<%}else if(Long.parseLong(committeeid)==2){ %>
-   							EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
-   						<%} %> Meeting </h2></div>
+			<div align="center" ><h2 style="color: #145374 !important" >
+			<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+				PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
+			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   				EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
+   			<%} %> Meeting </h2></div>
 		
 			<div align="center" ><h2 style="color: #145374 !important"><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
 		
@@ -402,9 +413,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 			<tr>			
 				<th colspan="8" style="text-align: center; font-weight: 700;">
 				<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
-
-				</th>
 				<br><br>
+				</th>
+				
 			</tr>
 			<tr>
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
@@ -672,19 +683,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 <!-- ----------------------------------------------4.Details of work------------------------------------------------- -->			
 
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">4. Particulars of Meeting</b></div><br>
-		<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(a) <%if(Long.parseLong(committeeid)==1){ %>
+		<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
+															   						<%}else { %>
 															   						Ratification
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Ratification
-															   						<%} %>  of <b>recommendations</b> of last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>   (if any)</b></div>
+															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</b></div>
 		
 		
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
@@ -706,8 +709,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 													 </p>
 												</td>									
 											</tr>
-										</thead>
-										<tbody>
+										
 											<tr>
 												 <th  style="width: 15px !important;text-align: center;">SN</th>
 												 <th  style="width: 335px !important;">Recommendation Point</th>
@@ -716,7 +718,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 												 <th  style="width: 50px !important;">Status</th>
 												 <th  style="width: 280px !important; ">Remarks</th>
 											</tr>
-											
+										</thead>
+										<tbody>
 											<%if(lastpmrcminsactlist.get(z).size()==0){ %>
 											<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
 											<%}
@@ -743,8 +746,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 															<span class="delay">FD</span>
 														<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
 															<span class="completed">CO</span>
-														<%}else if(obj[10].toString().equals("C")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-														   <span class="completeddelay">CD</span>
+														<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+														
+														   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
+														   
 														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
 														<span class="ongoing">OG</span>
 														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %> 
@@ -770,14 +775,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									
 						<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
 						<h1 class="break"></h1>
-						 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC / EB
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>  action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
+						 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
    							</div>
+   							
 							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
@@ -797,9 +798,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 													 </p>
 												</td>									
 											</tr>
-										</thead>
-								
-								<tbody>
+										
 									<tr>
 										<th  style="width: 15px !important;text-align: center;  ">SN</th>
 										<th  style="width: 300px; ">Action Point</th>
@@ -809,7 +808,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<th  style="width: 50px; ">Status</th>
 										<th  style="width: 235px; ">Remarks</th>			
 									</tr>
-										
+								</thead>
+								
+								<tbody>		
 										<%if(lastpmrcactions.get(z).size()==0){ %>
 										<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 										<%}
@@ -856,7 +857,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
 														<span class="completed">CO</span>
 													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-													   <span class="completeddelay">CD</span>
+													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
 													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
 													<span class="ongoing">OG</span>
 													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
@@ -875,6 +876,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										</tbody>
 										
 									</table> 
+								
 								<%} %>
 								<h1 class="break"></h1>
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Details of Technical/ User Reviews (if any).</b></div>
@@ -886,38 +888,32 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									 <th  style="max-width: 200px; "> MeetingId</th>
 									 <th  style="max-width: 80px; "> Date Held</th>
 								</tr>
-								<!--  -->
-										<%if(ReviewMeetingList.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingList.size()>0)
-										  {int i=1;
-										for(Object[] obj:ReviewMeetingList.get(z)){ %>
-											<tr>
-												<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-												<td  style="max-width: 70px;"><%=obj[1] %></td>												
-												<td  style="max-width: 200px;" ><%= obj[4]%></td>
-												<td  style="max-width: 80px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%i++;
-										}}else{ %>
-										
-											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										
-										<%} %> 
-									</table>
-
+									<%if(ReviewMeetingList.get(z).size()==0){ %>
+									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+									<%}
+									else if(ReviewMeetingList.size()>0)
+									  {int i=1;
+									for(Object[] obj:ReviewMeetingList.get(z)){ %>
+										<tr>
+											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<td  style="max-width: 200px;" ><%= obj[4]%></td>
+											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+										</tr>			
+									<%i++;
+									}}else{ %>
+									
+										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+									
+								<%} %> 
+						</table>
 
 				 <h1 class="break"></h1>
 <!-- -------------------------------------------------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">5. Milestones achieved prior to this  
-						<%if(Long.parseLong(committeeid)==1){ %>
-   						PMRC
-   						<%}else if(Long.parseLong(committeeid)==2){ %>
-   						EB
-   						<%}else if(Long.parseLong(committeeid)==0){ %>
+						<%=committee.getCommitteeShortName().trim().toUpperCase() %>
    						Meeting
-   						<%} %>  period.  </b></div>
+   						  period.  </b></div>
    						
 			
 			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
@@ -940,9 +936,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 							 </p>
 		   				</td>									
 					</tr>
-				</thead>
-										
-				<tbody>
+				
 					<tr>
 						<th  style="width: 15px !important;text-align: center; ">SN</th> 
 						<th  style="width: 20px; ">MS</th>
@@ -953,6 +947,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						<th  style="width: 50px; "> Status</th>
 						<th  style="width: 270px; "> Remarks</th>
 					</tr>
+				</thead>
+										
+				<tbody>
 					<%if(milestones.get(z).size()==0){ %>
 						<tr><td colspan="8" style="text-align: center;" > Nil</td></tr>
 							<%}else if(milestones.get(z).size()>0)
@@ -985,6 +982,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 														<%}else if(obj[10].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[11] %>	
+												
+												<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[5].toString()), LocalDate.parse(obj[7].toString())) %>)
+												<%} %>
+												
 											</span>
 												</td>
 											<td  ><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
@@ -1004,13 +1006,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						 <h1 class="break"></h1>
 <!-- ------------------------------------------------------------------------------------------------------------ -->
 
-		<div align="left" style="margin-left: 10px;"><b class="sub-title">6. Details of work and current status of sub system with major milestones (since last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>) period </b></div> 
+		<div align="left" style="margin-left: 10px;"><b class="sub-title">6. Details of work and current status of sub system with major milestones ( since last <%= committee.getCommitteeShortName().trim().toUpperCase() %> meeting ) period </b></div> 
 						
 			
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle"><br>(a) Work carried out, Achievements, test result etc.</b></div>
@@ -1037,9 +1033,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 													 </p>
 												</td>									
 											</tr>
-										</thead>
 										
-							<tbody>
 								<tr>
 									<th  style="width: 20px; ">SN</th>
 									<th  style="width: 30px; ">MS</th>
@@ -1051,6 +1045,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									<th  style="width: 50px; "> Status</th>
 								 	<th  style="width: 270px; "> Remarks</th>
 								</tr>
+							</thead>
+										
+							<tbody>
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
 									int milcountA=1;
@@ -1144,6 +1141,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[22] %>	
+												<%if(obj[19].toString().equalsIgnoreCase("5")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[8].toString())) %>)
+												<%} %>
+												
 											</span> 
 											
 											</td>
@@ -1200,7 +1201,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						<h1 class="break"></h1>
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
 		<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-			
+		<thead>	
 			<tr>
 				<th  style="width: 15px;text-align: center  ">SN</th>
 				<th  style="width: 295px; ">Description</th>
@@ -1211,6 +1212,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 				<th  style="width: 280px; "> Mitigation Plans</th>
 				
 			</tr>
+		</thead>
+										
+		<tbody>
 				<%if(riskmatirxdata.get(z).size()>0){
 				int i=0;%> 
 					<%for(Object[] obj : riskmatirxdata.get(z)){
@@ -1229,7 +1233,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 					<%}%>
 				<%}else{%>
 					<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
-				<%} %>		
+				<%} %>
+			</tbody>		
 		</table> 
 
 <!-- ----------------------------------------------5.Particulars of Meeting------------------------------------------------- -->
@@ -1239,9 +1244,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details (Greater than <% if(projectdatadetails.get(Integer.valueOf(0))[13] != null){ %>  <%=projectdatadetails.get(Integer.valueOf(0))[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Demand Details (Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
 											 </tr>
-										</thead>
+										
 										
 										<tr>
 											<th  style="width: 15px !important;text-align: center;">SN</th>
@@ -1252,6 +1257,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											<th  style="width: 50px; "> Status</th>
 											<th  style="width: 195px;">Remarks</th>
 										</tr>
+									</thead>
 										    <% int k=0;
 										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
 										    Double estcost=0.0;
@@ -1291,10 +1297,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(Integer.valueOf(0))[13] != null){ %>  <%=projectdatadetails.get(Integer.valueOf(0))[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
-										<!-- </thead> -->
+										
 										
 										  	 	 <tr>	
 											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
@@ -1553,9 +1559,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									 </p>
 								</td>									
 							</tr>
-						</thead>
-				
-							<thead>
+							
 								<tr>
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
@@ -1646,13 +1650,17 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											<td style="text-align: center"><%=obj[16] %>%</td>											
 											<td  style="text-align: center">
 											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
-														<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
+												<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
+												<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
+												<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
+												<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
+												<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
+												<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
+												
 												<%=obj[27] %>	
+												<%-- <%if(obj[20].toString().equalsIgnoreCase("5")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[8].toString())) %>)
+												<%} %> --%>
 											</span>
 											
 											</td>
@@ -1723,6 +1731,24 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 			<div align="left" style="margin-left: 10px;"><b class="sub-title">11. Issues:</b></div>
 			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+						<thead>
+							<tr>
+								<td colspan="7" style="border: 0">
+									<p style="font-size: 10px;text-align: center"> 
+									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+									<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									 </p>
+								</td>									
+							</tr>
 										<tr>
 											 <th  style="width: 20px !important;text-align: center;">SN</th>
 											 <th  style="width: 270px;">Issue Point</th>
@@ -1732,7 +1758,8 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											 <th  style="width: 50px; ">Status</th>	
 											 <th  style="width: 270px; ">Remarks</th>		
 										</tr>
-										
+						</thead>
+						<tbody>				
 										<%if(oldpmrcissueslist.get(z).size()==0){ %>
 										<tr><td colspan="7" style="text-align: center;" > Nil</td></tr>
 										<%}
@@ -1758,7 +1785,7 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 														<%}else if(obj[9].toString().equals("C")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[17].equals(obj[13]))){  %>
 															<span class="completed">CO</span>
 														<%}else if(obj[9].toString().equals("C")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %>
-														   <span class="completeddelay">CD</span>
+														   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>)</span>
 														<%}else if(!obj[15].toString().equals("F")&&obj[9].toString().equals("I")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %> 
 														<span class="ongoing">OG</span>
 														<%}else if(!obj[15].toString().equals("F")&&obj[9].toString().equals("I")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %> 
@@ -1779,17 +1806,12 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 											</tr>			
 										<%i++;
 										}} %>
-									</table>
+								</tbody>			
+							</table>
 
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%if(Long.parseLong(committeeid)==1){ %>
-						 						PMRC
-						   						<%}else if(Long.parseLong(committeeid)==2){ %>
-						   						EB
-						   						<%}else if(Long.parseLong(committeeid)==0){ %>
-						   						Meeting
-						   						<%} %>:</b></div>
+						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting :</b></div>
 													<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
 														<hr style="margin-right: 10px !important"><br>
 														<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
@@ -1819,18 +1841,9 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 									<% if(TechWorkDataList.get(z)!=null){ %>
 										<tr>
 											<td><%=TechWorkDataList.get(z)[2] %></td>
-											<%-- <td>
-												<%if(TechWorkDataList.get(z)[3]!=null && Long.parseLong(TechWorkDataList.get(z)[3].toString())>0){ %>
-													
-													<a href="<%="http://"+InetAddress.getLocalHost().getHostAddress()+":"+request.getServerPort()+request.getContextPath()+"/download/AttachDocLinkDownload.htm?filerepid="+cryptor.encryptParam(TechWorkDataList.get(z)[3] .toString())%>" target="_blank">Download</a>
-													
-												<%}else{ %>
-													File Not Attached
-												<%} %>
-											</td> --%>	
 										</tr>
 								<%}else{ %>
-									<tr><td colspan="2" style="text-align: center;">Nil </td></tr>
+									<tr><td colspan="2" style="text-align: left ;">Nil </td></tr>
 								<%} %>
 									
 						</table>
@@ -1843,12 +1856,11 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 						<b class="mainsubtitle"> &nbsp;&nbsp;Technical Images</b> 
 						
 						<%} }%>
-						
-						
-								<div>
+					<div>
 										
-											<br>
-											</div>
+					<br>
+					</div>
+					
 							<% if(TechImages.size()>0){
 							List<TechImages>  TechImagesList= TechImages.get(z); 
 							if(TechImagesList.size()>0){

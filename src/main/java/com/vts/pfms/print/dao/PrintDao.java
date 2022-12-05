@@ -36,7 +36,7 @@ public interface PrintDao {
 	public List<Object[]> ActionPlanSixMonths(String projectid, int interval) throws Exception;
 	public List<Object[]> LastPMRCActions1(String projectid, String committeeid) throws Exception;
 	public List<String> ProjectsubProjectIdList(String projectid) throws Exception;
-	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception;
+	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception;
 	public Object[] TechWorkData(String projectid) throws Exception;
 	public List<Object[]> ProjectRevList(String projectid) throws Exception;
 	public List<Object[]> getMeetingSchedules(String ProjectId,String Month,String Year)throws Exception;
