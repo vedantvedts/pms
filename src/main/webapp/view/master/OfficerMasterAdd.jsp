@@ -64,9 +64,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 
 <div class="row">
   
-  
      <input type="hidden" name="labId" value="<%= session.getAttribute("labid")%>">
-
  
 <div class="col-md-3">
               <div class="form-group">
@@ -75,7 +73,31 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					 placeholder="Employee No"/>
 				</div>
 </div>
-
+<div class="col-md-3">
+					 <div class="form-group">
+			                <label>Title<span class="mandatory">*</span></label><br>
+			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Prof.">Prof.</option>
+								<option value="Rev.">Rev.</option>
+								<option value="Dr.">Dr.</option>
+								
+							</select>
+					</div>
+</div>
+<div class="col-md-3">
+					 <div class="form-group">
+			                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
+			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Shree.">Shree.</option>
+								<option value="Smt.">Srimathi/Smt.</option> 
+								<option value="Mr.">Mr.</option>
+								<option value="Mrs.">Mrs.</option>
+								<option value="Miss.">Miss.</option>
+							</select>
+					</div>
+	</div>
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
@@ -83,7 +105,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					 placeholder="Employee Name" onkeydown="return /[a-z ]/i.test(event.key)">
 			  </div>
 </div>
+</div>
 
+<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 					<label >Designation:<span class="mandatory" style="color: red;">*</span></label>
@@ -103,9 +127,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					 placeholder="Extension Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 			 </div>
 </div>
-</div>
 
-<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
@@ -120,7 +142,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					<input  class="form-control form-control" type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
 			 </div>
 </div>
+</div>
 
+<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email:<span class="mandatory" style="color: red;">*</span></label>
@@ -134,9 +158,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
                     <input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
 			   </div>
 </div>
-</div>
 
-<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 					<label >Division:<span class="mandatory" style="color: red;">*</span></label>

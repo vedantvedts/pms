@@ -644,6 +644,13 @@ public class ProjectServiceImpl implements ProjectService {
 			PfmsInitiationAttachmentFileDto pfmsinitiationattachmentfiledto,String UserId) throws Exception {
 		
 		logger.info(new Date() +"Inside SERVICE ProjectInitiationAttachmentAdd ");
+		String LabCode= pfmsinitiationattachmentfiledto.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\ProjectInitiation\\";
+		
+		
 		PfmsInitiationAttachment pfmsinitiationattachment=new PfmsInitiationAttachment();
 		pfmsinitiationattachment.setInitiationId(Long.parseLong(pfmsinitiationattachmentdto.getInitiationId()));
 		pfmsinitiationattachment.setFileName(pfmsinitiationattachmentdto.getFileName());
@@ -653,9 +660,10 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationattachment.setIsActive(1);
 
 		PfmsInitiationAttachmentFile pfmsinitiationattachmentfile=new PfmsInitiationAttachmentFile();
-		pfmsinitiationattachmentfile.setFilePath(pfmsinitiationattachmentfiledto.getFilePath());
-		pfmsinitiationattachmentfile.setFileName(pfmsinitiationattachmentdto.getFileNamePath());
-		
+		pfmsinitiationattachmentfile.setFilePath(Path);
+		pfmsinitiationattachmentfile.setFileName("Initiation"+timestampstr+"."+FilenameUtils.getExtension(pfmsinitiationattachmentfiledto.getFileAttach().getOriginalFilename()));
+		saveFile(uploadpath+Path, pfmsinitiationattachmentfile.getFileName(), pfmsinitiationattachmentfiledto.getFileAttach());
+
 		return dao.ProjectInitiationAttachmentAdd(pfmsinitiationattachment, pfmsinitiationattachmentfile);
 	}
 	
@@ -677,6 +685,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception {
 
 		return dao.ProjectIntiationAttachmentFile(InitiationAttachmentId);
+	}
+	
+	@Override
+	public Object[] ProjectIntiationFileName(long InitiationAttachmentId) throws Exception
+	{
+		return dao.ProjectIntiationFileName(InitiationAttachmentId);
 	}
 
 	@Override

@@ -1,12 +1,15 @@
 package com.vts.pfms.project.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class PfmsInitiationAttachmentFileDto {
 
 	
 
 	private String InitiationAttachmentFileId;
 	private String InitiationAttachmentId;
-    private byte[] FilePath;
+    private MultipartFile FileAttach;
+    private String LabCode;
 	public String getInitiationAttachmentFileId() {
 		return InitiationAttachmentFileId;
 	}
@@ -19,12 +22,19 @@ public class PfmsInitiationAttachmentFileDto {
 	public void setInitiationAttachmentId(String initiationAttachmentId) {
 		InitiationAttachmentId = initiationAttachmentId;
 	}
-	public byte[] getFilePath() {
-		return FilePath;
+	public MultipartFile getFileAttach() {
+		return FileAttach;
 	}
-	public void setFilePath(byte[] filePath) {
-		FilePath = filePath;
+	public void setFileAttach(MultipartFile fileAttach) {
+		FileAttach = fileAttach;
 	}
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
+	
 
     
 	

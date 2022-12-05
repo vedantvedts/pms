@@ -180,6 +180,8 @@ public class MasterController {
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
 			officermasteradd.setLabId(req.getParameter("labId"));
 			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
+			officermasteradd.setTitle(req.getParameter("title"));
+			officermasteradd.setSalutation(req.getParameter("salutation"));
 			String name=req.getParameter("EmpName");			
 			String words[]=name.split("\\s");  
 		    String capitalizeWord="";  
@@ -232,6 +234,8 @@ public class MasterController {
 		try {
 			
 			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
+			officermasteradd.setTitle(req.getParameter("title"));
+			officermasteradd.setSalutation(req.getParameter("salutation"));
 			officermasteradd.setLabId(req.getParameter("labId"));
 			officermasteradd.setEmpNo(req.getParameter("EmpNo"));
 			officermasteradd.setEmpName(req.getParameter("EmpName"));
@@ -324,6 +328,7 @@ public class MasterController {
 	public String OfficerExtAddSubmit (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception
 	{
 		String UserId= (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside OfficerExtAddSubmit.htm "+UserId);
 		try {
 			String EmpNo=req.getParameter("EmpNo");
@@ -354,6 +359,7 @@ public class MasterController {
 			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));
 			officermasteradd.setMobileNo(req.getParameter("mobilenumber"));
 			officermasteradd.setSrNo("0");
+			officermasteradd.setLabCode(labcode);
 			long count=0;
 			
 			try {

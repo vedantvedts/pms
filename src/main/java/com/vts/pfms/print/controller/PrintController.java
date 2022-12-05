@@ -2623,9 +2623,10 @@ public class PrintController {
 	  @PostMapping("/GanttChartUpload.htm") 
 	    public String GanttChartUpload(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir,HttpSession ses) {
 		  String UserId = (String) ses.getAttribute("Username");
+		  String Labcode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);	  
 		  try {
-            int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("ApplicationFilesDrive"));
+            int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("ApplicationFilesDrive"),Labcode);
             if(result>0) {  
               redir.addAttribute("result", "Grantt Chart Saved");
     		}else {
@@ -2645,9 +2646,10 @@ public class PrintController {
 	    @PostMapping("/ProjectTechImages.htm") 
 	    public String ProjectTechImages(@RequestParam("FileAttach") MultipartFile file,HttpSession ses,HttpServletRequest req,RedirectAttributes redir) {
 	    	 String UserId = (String) ses.getAttribute("Username");
+	    	 String LabCode= (String) ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);
 	    	try {
-            int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName());
+            int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName(),LabCode);
             if(result>0) {  
               redir.addAttribute("result", "Tech Image Saved");
     		}else {
@@ -2687,14 +2689,14 @@ public class PrintController {
 		    	{
 		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
 		    	}
-		    	System.out.println("MilestoneActivity  :"+MilestoneActivity);
+		    	
 		    	List<Object[]> main = new ArrayList<>();
      	        if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity)) {
      	        	 main=milservice.MilestoneActivityList(projectid);
      	        }else {
      	        	main=milservice.MilestoneActivityList(projectid).stream().filter(statusactivityid-> statusactivityid[14].toString().equalsIgnoreCase(MilestoneActivity)  ).collect(Collectors.toList());
      	        }
-					System.out.println("Size  :"+main.size());
+					
 		    	if(projectid!=null) {
     				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
     				int MainCount=1;

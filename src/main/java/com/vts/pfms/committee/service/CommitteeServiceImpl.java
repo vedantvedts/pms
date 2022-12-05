@@ -1,8 +1,17 @@
 package com.vts.pfms.committee.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,13 +25,16 @@ import java.util.Random;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.FormatConverter;
@@ -82,6 +94,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	private  SimpleDateFormat sdf2=	fc.getDateMonthShortName();   //new SimpleDateFormat("dd-MMM-yyyy");
 	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(CommitteeServiceImpl.class);
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Override
 	public long CommitteeAdd(CommitteeDto committeeDto) throws Exception
@@ -1339,22 +1354,54 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public long MinutesAttachmentAdd(CommitteeMinutesAttachmentDto dto) throws Exception 
 	{
 		logger.info(new Date() +"Inside SERVICE MinutesAttachmentAdd ");
+		
+		String LabCode= dto.getLabCode();
+		Timestamp instant= Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\CommitteeMinutesAttachmentFile\\";
+		
 		CommitteeMinutesAttachment attachment= new CommitteeMinutesAttachment();
 		attachment.setScheduleId(Long.parseLong(dto.getScheduleId()));
-		attachment.setMinutesAttachment(dto.getMinutesAttachment());
-		attachment.setAttachmentName(dto.getAttachmentName());
+		attachment.setFilePath(Path);
+		attachment.setAttachmentName("minutesAttach"+timestampstr+"."+FilenameUtils.getExtension(dto.getMinutesAttachment().getOriginalFilename()));
+		saveFile(uploadpath+Path, attachment.getAttachmentName(), dto.getMinutesAttachment());
 		attachment.setCreatedBy(dto.getCreatedBy());
 		attachment.setCreatedDate(sdf1.format(new Date()));		
 		if(dto.getMinutesAttachmentId()!=null)
 		{
+			CommitteeMinutesAttachment attach = dao.MinutesAttachDownload(dto.getMinutesAttachmentId());
+			String filepath = uploadpath+attach.getFilePath()+attach.getAttachmentName();
+			File file = new File(filepath);
+			if(file.exists()) {	file.delete(); }
 			dao.MinutesAttachmentDelete(dto.getMinutesAttachmentId());
 		}		
 		return dao.MinutesAttachmentAdd(attachment);		
 	}
-	
+	 public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
+	    {
+	    	logger.info(new Date() +"Inside SERVICE saveFile ");
+	        Path uploadPath = Paths.get(uploadpath);
+	          
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+	        
+	        try (InputStream inputStream = multipartFile.getInputStream()) {
+	            Path filePath = uploadPath.resolve(fileName);
+	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	        } catch (IOException ioe) {       
+	            throw new IOException("Could not save image file: " + fileName, ioe);
+	        }     
+	    }
 	@Override
 	public int MinutesAttachmentDelete(String  attachmentid) throws Exception
 	{
+		CommitteeMinutesAttachment attachment = dao.MinutesAttachDownload(attachmentid);
+		
+		String filepath = uploadpath+attachment.getFilePath()+attachment.getAttachmentName();
+		File file = new File(filepath);
+		if(file.exists()) { file.delete(); }
 		return dao.MinutesAttachmentDelete(attachmentid);
 	}	
 	@Override

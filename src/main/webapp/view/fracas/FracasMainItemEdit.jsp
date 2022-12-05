@@ -15,7 +15,7 @@
 
 <title>Edit FRACAS</title>
 
-<title> ADD COMMITTEE</title>
+<title> Edit COMMITTEE</title>
 	<style type="text/css">
 		.input-group-text {
 			font-weight: bold;
@@ -141,7 +141,7 @@ h6{
 		<div class="col-md-12">
 			<div class="card shadow-nohover">
 				<div class="card-header">
-					<h4 class="text-blue">Add FRACAS Item</h4>
+					<h4 class="text-blue">Edit FRACAS Item</h4>
 				</div>
 				<div class="card-body">
 					<form method="post" action="FracasMainEditSubmit.htm" enctype="multipart/form-data" >

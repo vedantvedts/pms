@@ -73,6 +73,7 @@ public interface ProjectDao {
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception;
 	public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception;
 	public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception;
+	public Object[] ProjectIntiationFileName(long InitiationAttachmentId) throws Exception;
 	public int ProjectInitiationAttachmentDelete(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception;
 	public int ProjectInitiationAttachmentUpdate(PfmsInitiationAttachment pfmsinitiationattachment) throws Exception;
 	public String ProjectIntiationAttachmentFileName(String InitiationAttachmentId) throws Exception;

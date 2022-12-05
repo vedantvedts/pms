@@ -76,7 +76,7 @@ public class MasterServiceImpl implements MasterService {
 	public int OfficerExtDelete(String OfficerId, String UserId) throws Exception {
 
 		logger.info(new Date() +" Inside SERVICE OfficerExtDelete ");
-		EmployeeExternal employee = new EmployeeExternal();
+		Employee employee = new Employee();
 		employee.setModifiedBy(UserId);
 		employee.setModifiedDate(sdf1.format(new Date()));
 		employee.setIsActive(0);
@@ -102,6 +102,8 @@ public class MasterServiceImpl implements MasterService {
 	{
 		logger.info(new Date() +" Inside SERVICE OfficerMasterInsert ");
 		Employee employee= new Employee();
+		employee.setSalutation(officermasteradd.getSalutation());
+		employee.setTitle(officermasteradd.getTitle());
 		employee.setEmpNo(officermasteradd.getEmpNo());
 		employee.setEmpName(officermasteradd.getEmpName());
 		employee.setDesigId(Long.parseLong(officermasteradd.getDesignation()));
@@ -123,9 +125,10 @@ public class MasterServiceImpl implements MasterService {
 	public Long OfficerExtInsert(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{
 		logger.info(new Date() +" Inside SERVICE OfficerExtInsert ");
-		EmployeeExternal empExternal=new EmployeeExternal();
+		Employee empExternal=new Employee();
+		empExternal.setSrNo(Long.parseLong(officermasteradd.getSrNo()));
 		empExternal.setEmpNo(officermasteradd.getEmpNo());
-		empExternal.setLabId( Long.parseLong(officermasteradd.getLabId()));
+		empExternal.setLabCode( officermasteradd.getLabId());
 		empExternal.setEmpName(officermasteradd.getEmpName());
 		empExternal.setDesigId(Long.parseLong(officermasteradd.getDesignation()));
 		empExternal.setExtNo(officermasteradd.getExtNo());
@@ -145,6 +148,8 @@ public class MasterServiceImpl implements MasterService {
 	{
 		logger.info(new Date() +" Inside SERVICE OfficerMasterUpdate ");
 			Employee empExternal=new Employee();
+			empExternal.setTitle(officermasteradd.getTitle());
+			empExternal.setSalutation(officermasteradd.getSalutation());
 			empExternal.setEmpNo(officermasteradd.getEmpNo());
 			empExternal.setEmpName(officermasteradd.getEmpName());
 			empExternal.setDesigId(Long.parseLong(officermasteradd.getDesignation()));
@@ -166,9 +171,9 @@ public class MasterServiceImpl implements MasterService {
 	public int OfficerExtUpdate(OfficerMasterAdd officermasteradd, String UserId) throws Exception 
 	{		
 		logger.info(new Date() +" Inside SERVICE OfficerExtUpdate ");
-			EmployeeExternal empExternal=new EmployeeExternal();
+			Employee empExternal=new Employee();
 			empExternal.setEmpNo(officermasteradd.getEmpNo());
-			empExternal.setLabId( Long.parseLong(officermasteradd.getLabId()));
+			empExternal.setLabCode( officermasteradd.getLabId());
 			empExternal.setEmpName(officermasteradd.getEmpName());
 			empExternal.setDesigId(Long.parseLong(officermasteradd.getDesignation()));
 			empExternal.setExtNo(officermasteradd.getExtNo());

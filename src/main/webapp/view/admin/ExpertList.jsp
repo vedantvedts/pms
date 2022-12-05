@@ -161,16 +161,15 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			<div class="card shadow-nohover" >
 			<div class="card-header">
 			<div class=row>
-				<h3 >
-					Expert List
-					
-				</h3>
-				 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"></div>
+				<div class="col-3"><h3>Expert List</h3></div>
+				 <div class="col-7"></div>
+				 <div class="col-2">
 				<form method="post" style="margin-left: 4.2rem; " action="ExpertAdd.htm" >
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									<button type="submit" name="projecttype" value="N" class="btn btn-sm add" >ADD EXPERT</button>						
-								</form>	
-								</div>
+				</form>	
+				</div>
+			</div>
 								</div>
 				<div class="card-body"> 
 		

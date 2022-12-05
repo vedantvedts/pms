@@ -1,19 +1,31 @@
 package com.vts.pfms.committee.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ActionSubDto {
 	
         private String FileName;
         private String FileNamePath;
-	    private byte[] FilePath;
+	    private MultipartFile multipartfile;
 	    private String ActionSubId;
 		private String ActionAssignId;
 		private String Progress;
 		private String ProgressDate;
 		private String Remarks;
+		private String LabCode;
 		private String CreatedBy;
 		private String CreatedDate;
 		private String ModifiedBy;
 		private String ModifiedDate;
+		
+		
+		
+		public String getLabCode() {
+			return LabCode;
+		}
+		public void setLabCode(String labCode) {
+			LabCode = labCode;
+		}
 		public String getFileName() {
 			return FileName;
 		}
@@ -26,11 +38,12 @@ public class ActionSubDto {
 		public void setFileNamePath(String fileNamePath) {
 			FileNamePath = fileNamePath;
 		}
-		public byte[] getFilePath() {
-			return FilePath;
+		
+		public MultipartFile getMultipartfile() {
+			return multipartfile;
 		}
-		public void setFilePath(byte[] filePath) {
-			FilePath = filePath;
+		public void setMultipartfile(MultipartFile multipartfile) {
+			this.multipartfile = multipartfile;
 		}
 		public String getActionSubId() {
 			return ActionSubId;

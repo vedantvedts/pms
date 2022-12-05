@@ -353,9 +353,9 @@ public class PrintServiceImpl implements PrintService{
 	    }
 
 	@Override
-	public int saveGranttChart(MultipartFile file, String Name,String path) throws Exception {
+	public int saveGranttChart(MultipartFile file, String Name,String path ,String labcode) throws Exception {
 		logger.info(new Date()  +"Inside SERVICE saveGranttChart ");
-		String Path= path+"\\grantt\\";
+		String Path= path+labcode+"\\gantt\\";
 		int result=saveFile(Path, Name+"."+FilenameUtils.getExtension(file.getOriginalFilename()), file);
 		return result;
 	}
@@ -400,7 +400,7 @@ public class PrintServiceImpl implements PrintService{
 	}
 
 	@Override
-	public int saveTechImages(MultipartFile file, String ProjectId, String path,String userName) throws Exception {
+	public int saveTechImages(MultipartFile file, String ProjectId, String path,String userName,String LabCode) throws Exception {
 		logger.info(new Date()  +"Inside SERVICE saveTechImages ");
 		TechImages image=new TechImages();
 		image.setImageName(file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()));
@@ -409,7 +409,7 @@ public class PrintServiceImpl implements PrintService{
 		image.setCreatedBy(userName);
 		image.setIsActive(1);
 		long imageId=dao.insertTechImage(image);
-		String Path= path+"\\TechImages\\";
+		String Path= path+LabCode+"\\TechImages\\";
 		int result=saveFile(Path, imageId+"_"+file.getName()+"."+FilenameUtils.getExtension(file.getOriginalFilename()), file);
 		return result;
 	}

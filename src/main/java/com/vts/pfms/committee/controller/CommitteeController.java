@@ -136,6 +136,8 @@ public class CommitteeController {
 	@Value("${ApplicationFilesDrive}")
 	private String ApplicationFilesDrive;
 	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Value("${File_Size}")
 	String file_size;
@@ -3053,16 +3055,17 @@ public class CommitteeController {
 	public String MinutesAttachment(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception{
 				
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside MinutesAttachment.htm "+UserId);
 		try
 		{			
 			CommitteeMinutesAttachmentDto dto= new CommitteeMinutesAttachmentDto();
 			dto.setScheduleId(req.getParameter("ScheduleId"));
-			dto.setMinutesAttachment(FileAttach.getBytes());
+			dto.setMinutesAttachment(FileAttach);
 			dto.setAttachmentName(FileAttach.getOriginalFilename());
 			dto.setCreatedBy(UserId);
 			dto.setMinutesAttachmentId(req.getParameter("attachmentid"));
-			
+			dto.setLabCode(LabCode);
 			Long count = service.MinutesAttachmentAdd(dto);
 
 			if (count > 0) {
@@ -3116,20 +3119,27 @@ public class CommitteeController {
 	public void MinutesAttachDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
 			throws Exception 
 	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MinutesAttachDownload.htm "+UserId);
-		try
-		{
-			CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(req.getParameter("attachmentid"));
+			 String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside MinutesAttachDownload.htm "+UserId);		
+				try { 
+						res.setContentType("Application/octet-stream");	
+						CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(req.getParameter("attachmentid"));
 
-			res.setContentType("application/octet-stream");
-			res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachmentName()));
-			res.setContentLength((int)attachment.getMinutesAttachment() .length);
-			InputStream inputStream = new ByteArrayInputStream(attachment.getMinutesAttachment()); 
-			OutputStream outputStream = res.getOutputStream();
-			FileCopyUtils.copy(inputStream, outputStream);
-			inputStream.close();
-			outputStream.close();
+						File my_file=null;
+					
+						my_file = new File(uploadpath+attachment.getFilePath()+File.separator+attachment.getAttachmentName()); 
+				        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachmentName().toString()); 
+				        OutputStream out = res.getOutputStream();
+				        FileInputStream in = new FileInputStream(my_file);
+				        byte[] buffer = new byte[4096];
+				        int length;
+				        while ((length = in.read(buffer)) > 0){
+				           out.write(buffer, 0, length);
+				        }
+				        in.close();
+				        out.flush();
+				        out.close();
+		
 		}catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside MinutesAttachDownload.htm"+UserId,e);
 		}

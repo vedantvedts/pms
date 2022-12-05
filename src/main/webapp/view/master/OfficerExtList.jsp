@@ -181,7 +181,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
         <tbody>
 	       <%for(Object[] obj:OfficerList){ %>
 	         <tr>
-	             <td><input type="radio" name="Did" value=<%=obj[0]%>  ></td> 
+	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]%>  ></td> 
 	             <td><%=obj[1]%></td>
 	             <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>

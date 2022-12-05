@@ -314,6 +314,8 @@ public class AdminController {
 	        final String UserId = (String)ses.getAttribute("Username");
 	        AdminController.logger.info(new Date() + "Inside ExpertAddSubmit.htm " + UserId);
 	        final Expert newExpert = new Expert();
+	        newExpert.setTitle(req.getParameter("title"));
+	        newExpert.setSalutation(req.getParameter("salutation"));
 	        newExpert.setExpertNo(req.getParameter("expertno"));
 	        newExpert.setExpertName(req.getParameter("expertname"));
 	        newExpert.setDesigId(Long.valueOf(Long.parseLong(req.getParameter("designationId"))));
@@ -377,6 +379,8 @@ public class AdminController {
 	        final String UserId = (String)ses.getAttribute("Username");
 	        AdminController.logger.info(new Date() + "Inside ExpertEditSubmit.htm " + UserId);
 	        final Expert newExpert = new Expert();
+	        newExpert.setTitle(req.getParameter("title"));
+	        newExpert.setSalutation(req.getParameter("salutation"));
 	        newExpert.setExpertId(Long.valueOf(Long.parseLong(req.getParameter("expertId"))));
 	        newExpert.setExpertName(req.getParameter("expertname"));
 	        newExpert.setDesigId(Long.valueOf(Long.parseLong(req.getParameter("designationId"))));

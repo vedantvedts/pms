@@ -55,7 +55,7 @@ public class AdminDaoImpl implements AdminDao{
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";
 	private static final String CURRENTADDORTMT="SELECT r.RtmddoId, r.EmpId, r.ValidFrom, r.ValidTo, r.Type,r.labcode FROM pfms_rtmddo r WHERE r.IsActive=1 ORDER BY r.Type DESC";
-	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname,b.empname,c.groupname FROM division_master a,employee b,division_group c WHERE a.isactive='1' AND a.divisionheadid=b.empid AND a.groupid=c.groupid AND c.labcode=:labcode ORDER BY a.divisionid ASC";
+	private static final String DIVISIONLIST1 ="SELECT a.divisionid,a.divisioncode,a.divisionname, CONCAT(IFNULL(b.title,''), b.empname)AS 'empname' ,c.groupname  FROM division_master a,employee b,division_group c WHERE a.isactive='1' AND a.divisionheadid=b.empid AND a.groupid=c.groupid AND c.labcode=:labcode ORDER BY a.divisionid ASC";
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	private static final String DIVISIONUPDATE="UPDATE division_master SET divisioncode=:divisioncode, divisionname=:divisionname, divisionheadid=:divisionheadid , groupid=:groupid, modifiedby=:modifiedby, modifieddate=:modifieddate, isactive=:isactive WHERE divisionid=:divisionid";
 	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
@@ -84,9 +84,9 @@ public class AdminDaoImpl implements AdminDao{
     private static final String  ABILITYOFEXPERTNO ="SELECT COUNT(*)FROM expert WHERE ExpertNo=:EXPERTNO ";
     private static final String ABILITYOFEXTENSIONNO = "SELECT COUNT(*)FROM expert WHERE ExtNo=:EXTNO ";
     private static final String  EXPERTREVOKE = "UPDATE expert SET IsActive=:ISACTIVE,modifiedby=:MODIFIEDBY ,modifieddate=:MODIFIEDATE WHERE ExpertId=:EXPERTID ";
-    private static final String  GETEDITDETAILS = "SELECT * FROM expert WHERE ExpertId=:EXPERTID";
+    private static final String  GETEDITDETAILS = "SELECT expertid , title , salutation , expertname, desigid , mobileno , email , organization , expertno FROM expert WHERE ExpertId=:EXPERTID";
     private static final String CHECKABILITY2 ="SELECT COUNT(*)FROM expert WHERE ExtNo=:EXTNO AND  ExpertId NOT IN (:ExpertId)";
-    private static final String EDITEXPERT = "UPDATE expert SET ExpertName=:NAME, DesigId=:DESIGID, ExtNo=:EXTNO, MobileNo=:MOBLIENO, Email=:EMAIL, Organization=:ORGANIZATION ,ModifiedDate=:MODIFIEDDATE ,modifiedby=:MODIFEDBY WHERE ExpertId=:EXPERTID";
+    private static final String EDITEXPERT = "UPDATE expert SET title=:title,salutation=:salutation, ExpertName=:NAME, DesigId=:DESIGID, ExtNo=:EXTNO, MobileNo=:MOBLIENO, Email=:EMAIL, Organization=:ORGANIZATION ,ModifiedDate=:MODIFIEDDATE ,modifiedby=:MODIFEDBY WHERE ExpertId=:EXPERTID";
 	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String LABHQCHANGE ="UPDATE pfms_form_role_access SET labhq=:labhqvalue WHERE formroleaccessid=:formroleaccessid ";
 
@@ -302,6 +302,7 @@ public class AdminDaoImpl implements AdminDao{
 	    
 	    @Override
 	    public Long addExpert( Expert newExpert) throws Exception {
+	    	manager.persist(newExpert);
 	        this.manager.flush();
 	        return newExpert.getExpertId();
 	    }
@@ -345,6 +346,8 @@ public class AdminDaoImpl implements AdminDao{
 	    @Override
 	    public Long editExpert( Expert newExpert) throws Exception {
 	        final Query query = this.manager.createNativeQuery(EDITEXPERT);
+	        query.setParameter("title", newExpert.getTitle());
+	        query.setParameter("salutation", newExpert.getSalutation());
 	        query.setParameter("NAME", (Object)newExpert.getExpertName());
 	        query.setParameter("DESIGID", (Object)newExpert.getDesigId());
 	        query.setParameter("EXTNO", (Object)newExpert.getExtNo());

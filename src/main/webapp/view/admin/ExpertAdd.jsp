@@ -92,7 +92,30 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 										<input class="form-control" id="ExpertNo" type="text" value="<%=expno %>" readonly="readonly"  name="expertno" required maxlength="50">
 									</div>
 								</div>
-							
+							<div class="col-md-3">
+											 <div class="form-group">
+									                <label>Title<span class="mandatory">*</span></label><br>
+									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+														<option value="Prof.">Prof.</option>
+														<option value="Rev.">Rev.</option>
+														<option value="Dr.">Dr.</option>	
+													</select>
+											</div>
+							</div>
+							<div class="col-md-3">
+												 <div class="form-group">
+										                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
+										                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+															<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+															<option value="Shree.">Shree.</option>
+															<option value="Smt.">Srimathi/Smt.</option> 
+															<option value="Mr.">Mr.</option>
+															<option value="Mrs.">Mrs.</option>
+															<option value="Miss.">Miss.</option>
+														</select>
+												</div>
+								</div>
 							
 								<div class="col-md-4">
 									<div class="form-group">
@@ -107,10 +130,12 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 										<input class="form-control" type="number" id="extensionNo"  name="extensionnumber"  max="9999" min="1000">
 									</div>
 								</div> -->
-								
 
-							
-							<div class="col-md-4">
+						</div>
+						
+						<div class="row">
+						
+						<div class="col-md-3">
 								<div class="form-group">
 									<label class="control-label">Designation</label>
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
@@ -122,11 +147,6 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 									</select>
 								</div>
 							</div>
-						
-						
-						</div>
-						
-						<div class="row">
 						
 							<div class="col-md-3">
 									<div class="form-group">

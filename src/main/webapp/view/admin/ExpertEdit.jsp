@@ -98,15 +98,39 @@ if(details!=null){
 								<div class="col-md-2">
 									<div class="form-group">
 										<label class="control-label">Expert No.</label>
-										<input class="form-control" id="ExpertNo" type="text" readonly="readonly"  value="<%=detail[1]%>" name="expertno" required maxlength="50">
+										<input class="form-control" id="ExpertNo" type="text" readonly="readonly"  value="<%=detail[8]%>" name="expertno" required maxlength="50">
 									</div>
 								</div>
-							
+									<div class="col-md-3">
+											 <div class="form-group">
+									                <label>Title<span class="mandatory">*</span></label><br>
+									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+															<option value="Prof." <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
+															<option value="Rev."  <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Rev.")){%>  selected="selected" <%}%>>  Rev.</option>
+															<option value="Dr."   <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
+															
+													</select>
+											</div>
+									</div>
+								<div class="col-md-3">
+													 <div class="form-group">
+											                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
+											                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+																<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+																<option value="Shree." <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Shree.")){%> selected="selected" <%}%>> Shree.</option>
+																<option value="Smt."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Smt.")){%>   selected="selected" <%}%>> Srimathi/Smt.</option> 
+																<option value="Mr."    <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
+																<option value="Mrs."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mrs.")){%>   selected="selected" <%}%>> Mrs.</option>
+																<option value="Miss."  <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Miss.")){%>  selected="selected" <%}%>> Miss.</option>
+															</select>
+													</div>
+									</div>
 							
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Expert Name</label>
-										<input class="form-control" type="text" value="<%=detail[2]%>" name="expertname" required>
+										<input class="form-control" type="text" value="<%=detail[3]%>" name="expertname" required>
 									</div>
 								</div>
 							<%-- 	<%int i = Integer.parseInt((detail[4].toString()).replaceAll(" ", "")); %> --%>
@@ -119,24 +143,24 @@ if(details!=null){
 								
 
 							
-							<div class="col-md-4">
-								<div class="form-group">
-									<label class="control-label">Designation</label>
-									<select class="custom-select" id="selectDesig" required="required" name="designationId">
-										<option disabled="true"  selected value="">Choose...</option>
-										<%for(Object[] desig:desigList){ %>
-										<option  value="<%=desig[0]%>" <%if(detail[3].equals(desig[0])){ %> selected="selected" <%} %>><%=desig[2]%></option>
-										<%}%>
-									
-									</select>
-								</div>
-							</div>
+							
 						
 						
 						</div>
 						
 						<div class="row">
-						
+						<div class="col-md-3">
+								<div class="form-group">
+									<label class="control-label">Designation</label>
+									<select class="custom-select" id="selectDesig" required="required" name="designationId">
+										<option disabled="true"  selected value="">Choose...</option>
+										<%for(Object[] desig:desigList){ %>
+										<option  value="<%=desig[0]%>" <%if(detail[4].equals(desig[0])){ %> selected="selected" <%} %>><%=desig[2]%></option>
+										<%}%>
+									
+									</select>
+								</div>
+							</div>
 							<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Mobile No.</label>
