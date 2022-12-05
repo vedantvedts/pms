@@ -1702,7 +1702,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<input type="hidden" name="ActionNo" value="<%=obj[1]%>"/>
 		 												<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 		 												<input type="hidden" name="fracasassignid" value="<%=obj[0]%>"/>
-		 												
+		 												<input type="hidden" name="ActionAssignid" value="<%=obj[16]%>"/>
 		 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		 												
 		 												
