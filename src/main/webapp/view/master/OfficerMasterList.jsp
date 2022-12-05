@@ -187,9 +187,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 	             <td align="center"><input type="radio" name="Did" value=<%=obj[0]%>  ></td> 
 	             <td><%=obj[9]%></td>
 	             <td ><%=obj[1] %></td>
-	             <td style="text-align: left"><%if(obj[2]!=null){%>
-	             <%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("Other")){%> <%=obj[12]%> <%}else{%> <%if(obj[13]!=null){%> <%=obj[13]%> <%}%> <%}%> 
-	             <%=obj[2] %><%}else{ %>-<%} %></td>
+	             <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 	             <td style="text-align: left"> <%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>
 	             <td style="text-align: left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
 	             <td><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></td>

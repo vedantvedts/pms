@@ -21,7 +21,7 @@ import com.vts.pfms.model.LabMaster;
 @Repository
 public class MasterDaoImpl implements MasterDao {
 	
-	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(a.title,''), a.empname)AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode , a.title , a.salutation FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
+	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(a.title,''), a.empname)AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
 	private static final String OFFICERDIVISIONLIST="SELECT divisionid, divisionname FROM division_master where isactive='1'";
 	private static final String OFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid, DronaEmail, InternetEmail,MobileNo , title , salutation from employee  where empid=:empid";
