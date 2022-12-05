@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
@@ -48,11 +49,11 @@ public class PrintDaoImpl implements PrintDao {
 	private static final String PROJECTDETAILS="SELECT a.projectid,a.projectcode,a.projectname,a.projectname as 'name',a.projectcode as 'code' FROM project_master a WHERE a.projectid=:projectid and  a.isactive='1'";
 	private static final String GANTTCHARTLIST="SELECT milestoneactivityid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,progressstatus FROM milestone_activity WHERE isactive=1 AND projectid=:projectid";
 	private static final String MILESTONES="SELECT ma.milestoneactivityid,ma.projectid,ma.milestoneno,ma.activityname,ma.orgstartdate,ma.orgenddate,ma.startdate,ma.enddate, ma.activitytype AS 'activitytypeid' ,mat.activitytype,ma.activitystatusid,mas.activityshort, ma.ProgressStatus,ma.StatusRemarks FROM milestone_activity ma, milestone_activity_type mat ,milestone_activity_status mas WHERE ma.activitytype=mat.activitytypeid AND ma.activitystatusid=mas.activitystatusid AND projectid=:projectid ";
-	private static final String EBANDPMRCCOUNT="SELECT 'PMRC',COUNT(cs.scheduleid) AS 'COUNT' FROM committee_schedule cs, committee_meeting_status cms, committee c WHERE  cs.scheduledate<CURDATE() AND cs.isactive=1 AND cs.committeeid=c.committeeid AND c.committeeshortname='PMRC' AND cms.meetingstatus=cs.scheduleflag AND cms.meetingstatusid>6 AND cs.projectid=:projectid UNION SELECT 'EB',COUNT(cs.scheduleid) AS 'COUNT' FROM committee_schedule cs, committee_meeting_status cms, committee c WHERE  cs.scheduledate<CURDATE() AND cs.isactive=1 AND cs.committeeid=c.committeeid AND c.committeeshortname='ED' AND cms.meetingstatus=cs.scheduleflag AND cms.meetingstatusid>6 AND cs.projectid=:projectid";
+	private static final String EBANDPMRCCOUNT="SELECT 'PMRC',COUNT(scheduleid) AS 'COUNT',scheduledate FROM committee_schedule , committee_meeting_status WHERE  scheduledate<CURDATE() AND isactive=1 AND committeeid=1 AND meetingstatus=scheduleflag AND meetingstatusid>6 AND projectid=:projectid UNION  SELECT 'EB',COUNT(scheduleid) AS 'COUNT',scheduledate  FROM committee_schedule, committee_meeting_status WHERE scheduledate<CURDATE() AND committeeid=2  AND meetingstatus=scheduleflag AND meetingstatusid>6 AND isactive=1 AND projectid=:projectid";
 	private static final String PROJECTATTRIBUTES="SELECT pm.projectcode, pm.projectname, pm.ProjectDescription, pm.sanctiondate, pm.objective, pm.deliverable, pm.pdc,   ROUND(pm.TotalSanctionCost/100000,2) AS 'TotalSanctionCost',   ROUND(pm.SanctionCostRE/100000,2) AS 'SanctionCostRE', ROUND(pm.SanctionCostFE/100000,2) AS 'SanctionCostFE', pm.WorkCenter, pm.projectcategory,pc.category,  pm.projecttype AS 'projecttypeid',pt.projecttype ,pma.labparticipating  FROM project_master pm, pfms_security_classification pc, project_type pt , project_main pma  WHERE pm.projectcategory=pc.categoryid AND pm.projecttype=pt.projecttypeid AND pm.projectmainid=pma.projectmainid AND projectid=:projectid  ";
-	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,pps.stagecolor,pm.projectcode  FROM pfms_project_data ppd, pfms_project_stage pps,project_master pm WHERE ppd.projectid=pm.projectid AND ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
+	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,pps.stagecolor,pm.projectcode,ppd.proclimit/100000  FROM pfms_project_data ppd, pfms_project_stage pps,project_master pm WHERE ppd.projectid=pm.projectid AND ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
 	private static final String PROCUREMETSSTATUSLIST="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(f.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,'' AS vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s  WHERE f.ProjectId=:projectid AND f.EstimatedCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid )  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND f.PftsFileId NOT IN(SELECT PftsFileId FROM pfts_file_order) UNION SELECT f.PftsFileId, f.DemandNo, o.OrderNo, f.DemandDate, o.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(o.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,o.vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s,pfts_file_order o  WHERE f.ProjectId=:projectid AND f.PftsFileId=o.PftsFileId  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND o.OrderCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid ) ORDER BY  DemandNo , id ASC";
-	private static final String RISKMATIRXDATA="SELECT description, severity, probability, mitigationplans revisionno,projectid,actionmainid FROM pfMs_risk WHERE projectid=:projectid AND probability<>0";
+	private static final String RISKMATIRXDATA="SELECT pr.description, pr.severity, pr.probability, pr.mitigationplans, pr.revisionno,pr.projectid,pr.actionmainid ,e.empname, ed.designation,asi.pdcorg, asi.pdc1,asi.pdc2,asi.revision, asi.actionno FROM pfMs_risk pr, action_main am, employee e, employee_desig ed , action_assign asi WHERE pr.projectid=:projectid AND am.actionmainid=asi.actionmainid AND asi.actionmainid= pr.actionmainid AND pr.probability<>0 AND asi.assignee = e.empid AND e.desigid=ed.desigid";
 	private static final String LASTPMRCDECISIONS="SELECT cs.pmrcdecisions,cs.scheduleid,cs.scheduledate FROM committee_schedule cs ,committee_meeting_status cms  WHERE cs.committeeid=:committeeid AND cs.isactive=1 AND cs.projectid=:projectid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid<=6  AND scheduledate=(SELECT MIN(scheduledate) FROM committee_schedule cs ,committee_meeting_status cms WHERE cs.scheduledate>=CURDATE() AND  cs.committeeid=:committeeid AND cs.isactive=1 AND cs.projectid=:projectid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid<=6 )  ";
 	private static final String MILESTONESCHANGE="SELECT ma.milestoneactivityid,ma.projectid,ma.milestoneno,ma.activityname,ma.orgstartdate,ma.orgenddate,ma.startdate,ma.enddate, ma.activitytype AS 'activitytypeid' ,mat.activitytype,ma.activitystatusid,mas.activityshort, ma.ProgressStatus,IFNULL(ma.StatusRemarks,'-') AS 'Status Remarks' FROM milestone_activity ma, milestone_activity_type mat ,milestone_activity_status mas WHERE ma.activitytype=mat.activitytypeid AND ma.activitystatusid=mas.activitystatusid AND projectid=:projectid AND CASE WHEN :milestoneactivitystatusid='A' THEN 1=1 ELSE ma.activitystatusid =:milestoneactivitystatusid END  AND ma.progressstatus <> 0";
 
@@ -100,8 +101,8 @@ public class PrintDaoImpl implements PrintDao {
 	@Override
 	public LabMaster LabDetailes(String LabCode) throws Exception {
 		logger.info(new Date() +"Inside LabDetailes");
-		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
-		
+//		LabMaster LabDetailes=manager.find(LabMaster.class, 1);
+	
 		CriteriaBuilder cb= manager.getCriteriaBuilder();
 		CriteriaQuery<LabMaster> cq= cb.createQuery(LabMaster.class);
 		Root<LabMaster> root= cq.from(LabMaster.class);					
@@ -111,7 +112,7 @@ public class PrintDaoImpl implements PrintDao {
 		LabMaster lab= allquery.getResultList().get(0);
 		
 		
-		return LabDetailes;
+		return lab;
 	}
 
 	
@@ -395,14 +396,16 @@ public class PrintDaoImpl implements PrintDao {
 		return Projectidlist;		
 	}
 	
-	private static final String REVIEWMEETINGLIST = "SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE (cs.scheduledate BETWEEN (SELECT MAX(cs.scheduledate) FROM committee_schedule cs, committee_meeting_status cms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.scheduledate < CURDATE() AND cs.scheduleflag=cms.meetingstatus AND meetingstatusid > 6)   AND CURDATE() )  AND cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid <> :committeeid ";
+	//private static final String REVIEWMEETINGLIST = "SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE (cs.scheduledate BETWEEN (SELECT MAX(cs.scheduledate) FROM committee_schedule cs, committee_meeting_status cms WHERE cs.committeeid=:committeeid AND cs.projectid=:projectid AND cs.scheduledate < CURDATE() AND cs.scheduleflag=cms.meetingstatus AND meetingstatusid > 6)   AND CURDATE() )  AND cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND cs.committeeid <> :committeeid ";
 	
+	private static final String REVIEWMEETINGLIST ="SELECT scheduleid, committeeshortname, committeename,scheduledate,meetingid FROM committee_schedule cs, committee c, committee_meeting_status cms WHERE   cs.committeeid=c.committeeid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid > 6 AND cs.projectid=:projectid AND c.committeeShortName =  :committeecode AND cs.scheduledate <>CURDATE() AND cs.scheduledate < CURDATE()";
+
 	@Override
-	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception 
+	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception 
 	{
 		Query query=manager.createNativeQuery(REVIEWMEETINGLIST);	   
 		query.setParameter("projectid", projectid);
-		query.setParameter("committeeid", committeeid);
+		query.setParameter("committeecode", committeecode);
 		List<Object[]> ReviewMeetingList=(List<Object[]>)query.getResultList();		
 		return ReviewMeetingList;
 	}
@@ -556,11 +559,11 @@ public class PrintDaoImpl implements PrintDao {
 	}
 	
 	@Override 
-	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception{
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception{
 
-		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Details (:projectid)");
+		Query query=manager.createNativeQuery("CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode )");
 		query.setParameter("projectid", Projectid);
-		
+		query.setParameter("CommitteeCode", CommitteeCode);
 		return (List<Object[]>) query.getResultList();
 	}
 
@@ -714,4 +717,16 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> list =(List<Object[]>)query.getResultList();
 			return list;
 		}
+		
+		private static final String GETCOMMITTEEDATA="FROM Committee WHERE committeeid=:committeeid";
+		@Override
+		public Committee getCommitteeData(String committeeid)throws Exception
+		{
+			Query query = manager.createQuery(GETCOMMITTEEDATA);
+			query.setParameter("committeeid", Long.parseLong(committeeid));
+			Committee committee =(Committee)query.getSingleResult();
+			return committee;
+		}
+		
+		
 }

@@ -2,6 +2,7 @@ package com.vts.pfms.print.dao;
 
 import java.util.List;
 
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.InitiationSanction;
@@ -35,7 +36,7 @@ public interface PrintDao {
 	public List<Object[]> ActionPlanSixMonths(String projectid, int interval) throws Exception;
 	public List<Object[]> LastPMRCActions1(String projectid, String committeeid) throws Exception;
 	public List<String> ProjectsubProjectIdList(String projectid) throws Exception;
-	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception;
+	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception;
 	public Object[] TechWorkData(String projectid) throws Exception;
 	public List<Object[]> ProjectRevList(String projectid) throws Exception;
 	public List<Object[]> getMeetingSchedules(String ProjectId,String Month,String Year)throws Exception;
@@ -61,8 +62,9 @@ public interface PrintDao {
 	public Object[] MileStoneLevelId(String ProjectId, String CommitteeId) throws Exception;
 	public Long MilestoneLevelInsert(MilestoneActivityLevelConfiguration mod) throws Exception;
 	public Long MilestoneLevelUpdate(MilestoneActivityLevelConfiguration mod) throws Exception;
-	public List<Object[]> BreifingMilestoneDetails(String ProjectId) throws Exception;
+	public List<Object[]> BreifingMilestoneDetails(String ProjectId, String CommitteeCode) throws Exception;
 	public long insertTechImage(TechImages image) throws Exception;
 	public List<TechImages> getTechList(String proId)throws Exception;
 	public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
+	public Committee getCommitteeData(String committeeid) throws Exception;
 }

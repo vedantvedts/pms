@@ -2161,8 +2161,7 @@ public class ActionController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionTree.htm "+UserId);
 		try {
-			String ActionAssignId = req.getParameter("ActionAssignId"); 
-			
+			String ActionAssignId = req.getParameter("ActionAssignid"); 
 			req.setAttribute("actionslist", service.ActionSubLevelsList(ActionAssignId));
 			return "action/ActionTree";
 		}catch (Exception e) {

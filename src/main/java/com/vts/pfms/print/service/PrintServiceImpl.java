@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
@@ -175,15 +176,15 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> ActionPlanSixMonths(String projectid, String committeeid)throws Exception
 	{
 		logger.info(new Date()  +"Inside SERVICE ActionPlanThreeMonths ");
-		if( committeeid.equalsIgnoreCase("1") ) 
+		if( committeeid.equalsIgnoreCase("PMRC") ) 
 		{
 			return dao.ActionPlanSixMonths(projectid,90);
 		}
-		else if(committeeid.equalsIgnoreCase("2"))
+		else if(committeeid.equalsIgnoreCase("EB"))
 		{
 			return dao.ActionPlanSixMonths(projectid,180);
 		}		
-		return dao.ActionPlanSixMonths(projectid,180);
+		return dao.ActionPlanSixMonths(projectid,90);
 	}
 	
 	@Override
@@ -199,10 +200,12 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> ReviewMeetingList(String projectid, String committeeid) throws Exception 
+	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception 
 	{
-		return dao.ReviewMeetingList(projectid, committeeid);
+		return dao.ReviewMeetingList(projectid, committeecode);
 	}
+	
+	
 	
 	@Override
 	public Object[] TechWorkData(String projectid) throws Exception 
@@ -391,9 +394,9 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> BreifingMilestoneDetails(String Projectid) throws Exception
+	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception
 	{
-		return dao.BreifingMilestoneDetails(Projectid);
+		return dao.BreifingMilestoneDetails(Projectid,CommitteeCode);
 	}
 
 	@Override
@@ -423,5 +426,10 @@ public class PrintServiceImpl implements PrintService{
 		return dao.SpecialCommitteesList(LabCode);
 	}
 	
+	@Override
+	public Committee getCommitteeData(String committeeid)throws Exception
+	{
+		return dao.getCommitteeData(committeeid);
+	}
 	
 }

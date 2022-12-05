@@ -1,3 +1,5 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="com.vts.pfms.committee.model.Committee"%>
 <%@page import="org.apache.commons.io.FileUtils"%>
 <%@page import="com.vts.pfms.print.model.TechImages"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
@@ -28,9 +30,7 @@
 <link href="${contentCss}" rel="stylesheet" />
 
 <title>Briefing </title>
-
-
- <style type="text/css">
+<style type="text/css">
  
  p{
   text-align: justify;
@@ -330,7 +330,7 @@ String filePath=(String)request.getAttribute("filePath");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
-
+Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>> )request.getAttribute("ebandpmrccount");
@@ -363,15 +363,15 @@ List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
 
-
+Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
 
 String No2=null;
 SimpleDateFormat sdfg=new SimpleDateFormat("yyyy");
-if(Long.parseLong(committeeid)==1){ 
+if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
 No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-}else if(Long.parseLong(committeeid)==2){
+}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 				} 
  
@@ -408,91 +408,58 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<h3>Project Briefing Paper</h3>
 						</div>							
 						<div class="col-md-8 justify-content-end" style="float: right;">
+						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
 									<td  style="border: 0 "><h6>Project </h6></td>
 									<td  style="border: 0 ">
-										<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
-											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												<option disabled  selected value="">Choose...</option>
-												<%for(Object[] obj : projectslist){ %>
+										
+										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+											<%for(Object[] obj : projectslist){ %>
 												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] %></option>
-												<%} %>
-											</select>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<%} %>
+										</select>
 									</td>
 									<td  style="border: 0 "><h6>Committee</h6></td>
 									<td  style="border: 0 ">
 										
-											<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												
-												<%for(Object[] committee : SpecialCommitteesList){ %>
-													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !committee[1].toString().equalsIgnoreCase("PMRC")){ %>
-														
-														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
-														
-													
-													<%}else if(committee[1].toString().equalsIgnoreCase("PMRC")){ %>
-														
-														<option <%if(Long.parseLong(committeeid)==Long.parseLong(committee[0].toString())){ %>selected<%} %> value="<%=committee[0] %>" ><%=committee[1] %></option>
-														
-													<%} %>
-												
-												<%} %>
-												<option <%if(Long.parseLong(committeeid)==Long.parseLong("0")){ %>selected<%} %> value="0" >Others</option>
-												
-												<%-- <option disabled  selected value="">Choose...</option>
-												<option <%if(committeeid.equals("1")){ %>selected<%} %> value="1" >PMRC</option>
-													<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>ProjectCost){ %>
-													<option <%if(committeeid.equals("2")){ %>selected<%} %> value="2" >EB</option>
-													<option <%if(committeeid.equals("0")){ %>selected<%} %> value="0" >Others</option>
-												<%} %> --%>
-											</select>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											
-										</form>
+											<%for(Object[] comm : SpecialCommitteesList){ %>
+												<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !comm[1].toString().equalsIgnoreCase("PMRC")){ %>
+													
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
+													
+												<%}else if(comm[1].toString().equalsIgnoreCase("PMRC")){ %>
+													
+													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
+														
+												<%} %>
+												
+											<%} %>
+												
+										</select>
+										
 									</td>
-								<%if(Long.parseLong(projectid)>0){ %>
+									
 									<td style="border: 0 "> 
-										<form method="post" action="ProjectBriefing.htm" target="_blank">
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" ><img src="view/images/preview3.png"></button>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										</form>
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="post" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+										</button>
 									</td>
 									<td style="border: 0 "> 
-										<form method="get" action="ProjectBriefingDownload.htm" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formtarget="_blank">
-												<i class="fa fa-download fa-lg" aria-hidden="true"></i>
-											</button>
-										</form>
+										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;">
+											<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
+										</button>
 									</td>
-									<td style="border: 0 "> 
-										<form method="POST" action="ProjectBriefingFreeze.htm" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm " onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;">
-												<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
-											</button>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										</form>
-									</td>
-									<%-- <td style="border: 0 "> 
-										<form method="get" action="#" >
-											<input type="hidden" name="projectid" value="<%=projectid%>"/>
-											<input type="hidden" name="committeeid" value="<%=committeeid%>"/>
-											<button  type="submit" class="btn btn-sm " title="Frozen List" style="border: 0 ;border-radius: 3px;">
-												<i class="fa fa-list-ol  fa-lg" style="color:#34029A; "  aria-hidden="true"></i>
-											</button>
-										</form>
-									</td> --%>
-								<%} %>
+									
 									<td style="border: 0 "><button  type="submit" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
-							</table>					
+							</table>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								<input type="hidden" name="projectid" value="<%=projectid%>"/>
+								<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
+							</form>				
 						</div>
 					 </div>
 					 
@@ -508,7 +475,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										Object[] projectattributes =projectattributeslist.get(z);	%>  
 										<%if(projectattributes!=null){ %>
 										
-										<%-- <%if(ProjectDetail.size()>1){ %> --%>
 										<div>
 											<form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
@@ -517,7 +483,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
 										</div>	
-										<%-- <%} %> --%>
 										
 										  <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 												<tr>
@@ -678,7 +643,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img   width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=pdffiles.get(z)[0]%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
 
 											<%}else{ %>
@@ -708,7 +673,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){ %>
 												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 											<%}else{ %>
-												<img	width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+												<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=pdffiles.get(z)[3]%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
 											<%} %>
 												
 										<%}else{ %>
@@ -755,7 +720,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=pdffiles.get(z)[1]%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
 												
 												
@@ -785,172 +750,216 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
-								   <div align="left" style="margin-left: 15px;">(a) <%if(Long.parseLong(committeeid)==1){ %>
+								   <div align="left" style="margin-left: 15px;">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
+															   						<%}else { %>
 															   						Ratification
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Ratification
-															   						<%} %> 
+															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</div>
 															   						
-															   						 of 
-															   						 
-															   						<b>recommendations</b> of last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>  (if any).</div>
-								   <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 300px; ">Recommendation Point</th>
-											 <th  style="max-width: 100px; "> PDC</th>
-											 <th  style="max-width: 100px; "> Responsible agency/ Person</th>
-											 <th  style="max-width: 40px; ">Status</th>
-											 <th  style="max-width: 100px; ">Remarks</th>			
-										</tr>
-										
-										<%if(lastpmrcminsactlist.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(lastpmrcminsactlist.size()>0)
-										{int i=1;
-										for(Object[] obj:lastpmrcminsactlist.get(z)){
-												if(obj[3].toString().equalsIgnoreCase("R")){%>
+							
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
+										<thead>
 											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 300px; "><%=obj[2] %></td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
-												</td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){ %>  
-														<%=obj[12] %>  (<%=obj[13] %>)
-													<%}else { %> Not Assigned <%} %> 
-												</td>
-												<td  style="max-width: 100px; ">
-													<%if(obj[4]!= null){if(obj[18]!=null){ %>
-												<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]) )){ %>
-													<span class="ongoing">UF</span>
-												<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[10].toString().equals("C")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-													<span class="completed">CO</span>
-												<%}else if(obj[10].toString().equals("C")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-												   <span class="completeddelay">CD</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
-												<span class="ongoing">OG</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %> 
-												<span class="delay">DO</span>
-												<%}else{ %>
-												<span class="ongoing">OG</span>
-												
-												<%}}else if(obj[10].toString().equals("C")){%>
-											        <span class="completed">CO</span>
-											      <% }else{ %><span class="notyet">NS</span> 
-												<%}}else { %> <span class="notassign">NA</span> <%} %> 
-												</td>
-												<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
-												
-											</tr>		
-										<%i++;}
-										}%>
-										<%if(i==1){ %> <tr><td colspan="6" align="center" > Nil</td></tr>	<%} %>
+												<td colspan="6" style="border: 0">
+													<p style="font-size: 10px;text-align: center"> 
+														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+													 </p>
+												</td>									
+											</tr>
 										
-										<%} %>
-									
+											<tr>
+												 <th  style="width: 15px !important;text-align: center;">SN</th>
+												 <th  style="width: 335px !important;">Recommendation Point</th>
+												 <th  style="width: 80px !important;"> PDC</th>
+												 <th  style="width: 210px !important;"> Responsibility</th>
+												 <th  style="width: 50px !important;">Status</th>
+												 <th  style="width: 280px !important; ">Remarks</th>
+											</tr>
+										</thead>
+										<tbody>
+											<%if(lastpmrcminsactlist.get(z).size()==0){ %>
+											<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+											<%}
+											else if(lastpmrcminsactlist.get(z).size()>0)
+											{int i=1;
+											for(Object[] obj:lastpmrcminsactlist.get(z)){
+													if(obj[3].toString().equalsIgnoreCase("R")){%>
+												<tr>
+													<td  style="text-align: center;"><%=i %></td>
+													<td  style="text-align: justify; "><%=obj[2] %></td>
+													<td   style=" text-align: center;">
+														<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+													</td>
+													<td   >
+														<%if(obj[4]!= null){ %>  
+															<%=obj[12] %><%-- , <%=obj[13] %> --%>
+														<%}else { %> <span class="notassign">NA</span> <%} %> 
+													</td>
+													<td  style="text-align: center; ">
+															<%if(obj[4]!= null){if(obj[18]!=null){ %>
+														<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+															<span class="ongoing">RC</span>
+														<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+															<span class="delay">FD</span>
+														<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+															<span class="completed">CO</span>
+														<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+														
+														   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
+														   
+														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
+														<span class="ongoing">OG</span>
+														<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %> 
+														<span class="delay">DO</span>
+														<%}else{ %>
+														<span class="ongoing">-</span>
+														
+														<%}}else if(obj[10].toString().equals("C")){%>
+													        <span class="completed">CO</span>
+													      <% }else{ %><span class="notyet">NS</span> 
+														<%}}else { %> <span class="notassign">NA</span> <%} %> 
+													</td>
+													<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
+												</tr>		
+											<%i++;}
+											}%>
+											<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
+											
+											<%} %>
+										</tbody>
+										
 									</table>
-									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %> 
-								  	<div align="left" style="margin-left: 15px;">(b) Last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC / EB
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %> action points with Expected Date of completion (EDC)  and current status.</div>
-									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 350px; ">Action Point</th>
-											 <th  style="max-width: 80px; "> Expected Date of Completion (PDC)</th>
-											 <th  style="max-width: 80px; "> Actual Date of Completion</th>
-											 <th  style="max-width: 100px; "> Responsible agency/ Person</th>
-											 <th  style="max-width: 40px; ">Status</th>
-											 <th  style="max-width: 100px; ">Remarks</th>			
-										</tr>
-										
+									
+							
+							
+							
+									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
+									  
+								  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
+								
+								
+							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+								<thead>
+											
+									<tr>
+										<th  style="width: 15px !important;text-align: center;  ">SN</th>
+										<th  style="width: 300px; ">Action Point</th>
+										<th  style="width: 80px; ">PDC</th>
+										<th  style="width: 80px; "> ADC</th>
+										<th  style="width: 210px; "> Responsibility</th>
+										<th  style="width: 50px; ">Status</th>
+										<th  style="width: 235px; ">Remarks</th>			
+									</tr>
+								</thead>
+								
+								<tbody>		
 										<%if(lastpmrcactions.get(z).size()==0){ %>
-										<tr><td colspan="7" style="text-align: center;" > Nil</td></tr>
+										<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 										<%}
 										else if(lastpmrcactions.size()>0)
-										  {int i=1;
+										{int i=1;
 										for(Object[] obj:lastpmrcactions.get(z)){ %>
 											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 350px;text-align: justify;"><%=obj[2] %></td>
-												<td  style="max-width: 80px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td  style="max-width: 80px;"> 
-												<%if( obj[9].toString().equals("C") && obj[13]!=null ){ %>												
-												<%= sdf.format(sdf1.parse(obj[13].toString()))%> 
-												<%}else{ %>-<%} %></td>
-												<td  style="max-width: 100px;"> <%=obj[11] %>, <%=obj[12] %> </td>
-												<td  style="max-width: 100px;"> 
+												<td  style="text-align: center;"><%=i %></td>
+												<td  style="text-align: justify ;"><%=obj[2] %></td>
+												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td   style="text-align: center;"> 
+												<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
+
 												<%if(obj[15]!=null){ %>
-												<%if(obj[9].toString().equals("I")&&obj[14].toString().equals("F")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]) )){ %>
-													<span class="ongoing">UF</span>
-												<%}else if(obj[9].toString().equals("I")&&obj[14].toString().equals("F")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[9].toString().equals("C")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
-													<span class="completed">CO</span>
-												<%}else if(obj[9].toString().equals("C")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %>
-												   <span class="completeddelay">CD</span>
-												<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(sdf.parse(obj[4].toString()).after(sdf.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %> 
-												<span class="ongoing">OG</span>
-												<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&sdf.parse(obj[4].toString()).before(sdf.parse(obj[13].toString()))){  %> 
-												<span class="delay">DO</span>
-												<%}else{ %>
-												<span class="ongoing">OG</span>
-												
-												<%}}else if(obj[9].toString().equals("C")){%>
-											        <span class="completed">CO</span>
-											      <% }else{ %><span class="notyet">NS</span> 
+													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+														<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+													   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+													<%}
+													}else if(obj[9].toString().equals("C")){ %>
+												        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												    <% }else{ %>
+												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
 												<%} %> 
+												
+												<%}else{ %>-<%} %></td>
+												
+												
+												<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+												<td  style="text-align: center;"> 
+													<%if(obj[15]!=null){ %>
+													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+														<span class="ongoing">RC</span>
+													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<span class="delay">FD</span>
+													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<span class="completed">CO</span>
+													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+													<span class="ongoing">OG</span>
+													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+													<span class="delay">DO</span>
+													<%}
+													}else if(obj[9].toString().equals("C")){ %>
+												        <span class="completed">CO</span>
+												    <% }else{ %>
+												      	<span class="notyet">NS</span> 
+													<%} %> 
 												</td>	
-												<td  style="max-width: 100px; "><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>					
+												<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 											</tr>			
 										<%i++;
 										}} %>
+										</tbody>
+										
 									</table> 
-									<%} %>
-									
+							
 								
-									<!-- <h1 class="break"></h1>  -->
-									<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
-									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
+									<%} %>
+								
+					<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
+						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+								<tr>
+									 <th  style="width: 20px !important;text-align: center;  ">SN</th>
+									 <th  style="max-width: 70px; ">Committee</th>
+									 <th  style="max-width: 200px; "> MeetingId</th>
+									 <th  style="max-width: 80px; "> Date Held</th>
+								</tr>
+									<%if(ReviewMeetingList.get(z).size()==0){ %>
+									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+									<%}
+									else if(ReviewMeetingList.size()>0)
+									  {int i=1;
+									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											 <th  style="width: 30px !important;  ">SN</th>
-											 <th  style="max-width: 70px; ">Committee</th>
-											 <th  style="max-width: 100px; "> MeetingId</th>
-											 <th  style="max-width: 180px; "> Date Held</th>
-										</tr>
+											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
+											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<td  style="max-width: 200px;" ><%= obj[4]%></td>
+											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+										</tr>			
+									<%i++;
+									}}else{ %>
+									
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										<%-- <%if(ReviewMeetingList.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingList.size()>0)
-										  {int i=1;
-										for(Object[] obj:ReviewMeetingList.get(z)){ %>
-											<tr>
-												<td  style="max-width: 30px;"><%=i %></td>
-												<td  style="max-width: 70px;"><%=obj[1] %></td>												
-												<td  style="max-width: 100px;" ><%= obj[4]%></td>
-												<td  style="max-width: 180px;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%i++;
-										}} %> --%>
-									</table>
+									
+								<%} %> 
+						</table>
 									
 								<%} %>
 							</div>
@@ -958,13 +967,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
-   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %> period.</b>  </summary>
+   						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 						<div class="content">
 									
 								<select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" onchange="milactivitychange(this);">
@@ -1041,13 +1044,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
-   						<summary role="button" tabindex="0" id="leveltab"><b>6.Details of work and current status of sub system with major milestones (since last <%if(Long.parseLong(committeeid)==1){ %>
-															   						PMRC
-															   						<%}else if(Long.parseLong(committeeid)==2){ %>
-															   						EB
-															   						<%}else if(Long.parseLong(committeeid)==0){ %>
-															   						Meeting
-															   						<%} %>)</b>  </summary>
+   						<summary role="button" tabindex="0" id="leveltab"><b>6.Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
 							
 							
@@ -1578,7 +1575,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%if(FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){ %>
 													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
 												<%}else{ %>
-													<img width="1200" height="600" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" >											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
 												<%} %>
 												
 												
@@ -1880,10 +1877,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
-						<%if(Integer.parseInt(committeeid)==2){ %>
-   							<summary role="button" tabindex="0"><b>9. Action Plan for Next three months </b>    </summary>
+						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   							<summary role="button" tabindex="0"><b>9. Action Plan for Next Six months </b>    </summary>
 						<%}else { %>
-							<summary role="button" tabindex="0"><b>9. Action Plan for Next six months </b>    </summary>
+							<summary role="button" tabindex="0"><b>9. Action Plan for Next Three months </b>    </summary>
 						<%} %>
 						<div class="content">
 						<%for(int z=0;z<projectidlist.size();z++){ %>
@@ -2142,13 +2139,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 
 					<details>
-   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%if(Long.parseLong(committeeid)==1){ %>
-			   						PMRC
-			   						<%}else if(Long.parseLong(committeeid)==2){ %>
-			   						EB
-			   						<%}else if(Long.parseLong(committeeid)==0){ %>
-			   						Meeting
-			   						<%} %></b>     </summary>
+   						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
 						  <div class="content">
 						  <%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
@@ -2173,10 +2164,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
    						<summary role="button" tabindex="0"><b>13. Other Relevant Points (if any) 
-   							<%if(Integer.parseInt(committeeid)==2){ %>
-   								and Technical Work Carried Out For Last Three Months
+   							<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
+   								and Technical Work Carried Out For Last Six Months
 							<%}else { %>
-								and Technical Work Carried Out For Last Six Months
+								and Technical Work Carried Out For Last Three Months
 							<%} %>
    						
    						
@@ -2256,7 +2247,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
 											
-													<img width="1200" height="600" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 												
 
 										</td>
@@ -2785,11 +2776,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	      		<div class="col-md-3">
 	      			<h6>
 	      				<b>Committee :</b> 
-	      				<%if(Long.parseLong(committeeid)==1){ %>
-						PMRC
-						<%}else if(Long.parseLong(committeeid)==2){ %>
-						EB
-						<%}%>
+	      				<%=committeeData.getCommitteeShortName().trim().toUpperCase() %>
 	      			</h6>
 	      		</div>
 	      		<div class="col-md-1"><b>Level</b></div>
