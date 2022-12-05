@@ -83,6 +83,7 @@ import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
+import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -522,6 +523,33 @@ public class PrintController {
 						}
 					}
 	    	
+					final String localUri2=uri+"/pfms_serv/getTotalDemand";
+
+			 		String jsonResult2=null;
+					try {
+						HttpEntity<String> entity = new HttpEntity<String>(headers);
+						ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+						jsonResult2=response.getBody();						
+					}catch(Exception e) {
+						req.setAttribute("errorMsg", "errorMsg");
+					}
+					ObjectMapper mapper2 = new ObjectMapper();
+					mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+					mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+					List<TotalDemand> totaldemand=null;
+					if(jsonResult2!=null) {
+						try {
+							/*
+							 * projectDetails = mapper.readValue(jsonResult,
+							 * mapper.getTypeFactory().constructCollectionType(List.class,
+							 * ProjectFinancialDetails.class));
+							 */
+							totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+							req.setAttribute("TotalProcurementDetails",totaldemand);
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+					}
 	 
 	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
 	    	List<Object[]> procurementOnDemand=null;
@@ -1568,6 +1596,7 @@ public class PrintController {
 	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
 	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
 	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+	    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
 	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
     		
 	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
@@ -1603,8 +1632,11 @@ public class PrintController {
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
 	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
-	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
+	    		
 	    		TechWorkDataList.add(service.TechWorkData(proid)); 
+	    		
+	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, "EB"));
+	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));	    		
@@ -1703,7 +1735,33 @@ public class PrintController {
 							e.printStackTrace();
 						}
 					}
-	    	
+					final String localUri2=uri+"/pfms_serv/getTotalDemand";
+
+			 		String jsonResult2=null;
+					try {
+						HttpEntity<String> entity = new HttpEntity<String>(headers);
+						ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+						jsonResult2=response.getBody();						
+					}catch(Exception e) {
+						req.setAttribute("errorMsg", "errorMsg");
+					}
+					ObjectMapper mapper2 = new ObjectMapper();
+					mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+					mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+					List<TotalDemand> totaldemand=null;
+					if(jsonResult2!=null) {
+						try {
+							/*
+							 * projectDetails = mapper.readValue(jsonResult,
+							 * mapper.getTypeFactory().constructCollectionType(List.class,
+							 * ProjectFinancialDetails.class));
+							 */
+							totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+							req.setAttribute("TotalProcurementDetails",totaldemand);
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+					}
 	 
 	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
 	    	List<Object[]> procurementOnDemand=null;
@@ -1752,7 +1810,7 @@ public class PrintController {
     		req.setAttribute("projectdatadetails",projectdatadetails);
     		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
     		req.setAttribute("ProjectRevList", ProjectRevList);
-    		
+    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
     		req.setAttribute("financialDetails",financialDetails);
     		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
     		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);

@@ -2443,6 +2443,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public long CommitteeMainApprove(CommitteeConstitutionApprovalDto dto ) throws Exception
 	{
 		logger.info(new Date() +"Inside SERVICE CommitteeMainApprove ");
+		
+		Object[] CommitteeMain = dao.CommitteeMainDetails(dto.getCommitteeMainId());
+		
 		int ret=0;		
 		String operation=dto.getOperation();
 		Object[] oldapprovaldata=dao.CommitteeMainApprovalData(dto.getCommitteeMainId());
@@ -2501,7 +2504,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			if(operation.equalsIgnoreCase("approve"))
 			{
 				constatusid="RDT";				
-				notificationemployee=dao.DirectorEmpData();
+				notificationemployee=dao.DirectorEmpData(CommitteeMain[3].toString());
 				if(notificationemployee!=null) {
 					notificationempid=	notificationemployee[0].toString();
 				}
@@ -2594,7 +2597,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			{
 				constatusid="RDT";
 				/* dao.updatecommitteeapprovalauthority(approval); */
-				notificationemployee=dao.DirectorEmpData();
+				notificationemployee=dao.DirectorEmpData(CommitteeMain[3].toString());
 				if(notificationemployee!=null) {
 					notificationempid=	notificationemployee[0].toString();
 				}	
@@ -2756,7 +2759,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	{
 		logger.info(new Date() +"Inside SERVICE ConstitutionApprovalFlow ");
 		List<Object[]> list=new ArrayList<Object[]>();
-		
+		Object[] CommitteeMain = dao.CommitteeMainDetails(committeemainid);
 		Object[] temp=dao.ComConstitutionEmpdetails(committeemainid);
 		if(temp!=null) {
 			list.add(temp);
@@ -2768,7 +2771,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}
 		list.add(dao.DoRtmdAdEmpData());
 		
-		temp=dao.DirectorEmpData();
+		temp=dao.DirectorEmpData(CommitteeMain[3].toString());
 		if(temp!=null) {
 			list.add(temp);
 		}

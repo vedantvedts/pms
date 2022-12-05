@@ -197,7 +197,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMCONSTITUTIONAPPROVALHISTORY ="SELECT cch.constitutionapprovalid, cch.committeemainid,cch.constitutionstatus,cch.remarks, cch.actionbylabid, cch.actionbyempid,cch.actiondate,ccs.statusdetail, e.empname,ed.designation,cl.labcode, cl.labname FROM committee_constitution_history cch, committee_constitution_approval_status ccs,  employee e, employee_desig ed, cluster_lab cl WHERE cch.constitutionstatus=ccs.status AND cch.actionbyempid=e.empid AND e.desigid=ed.desigid AND cch.actionbylabid=cl.labid AND cch.committeemainid=:committeemainid";
 	private static final String COMCONSTITUTIONEMPDETAILS ="SELECT cca.empid ,e.empname,ed.designation,'Constituted By' FROM committee_constitution_approval cca, employee e ,employee_desig ed WHERE cca.empid=e.empid AND e.desigid=ed.desigid AND committeemainid=:committeemainid";
 	private static final String DORTMDADEMPDATA=" SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.type='DO-RTMD' ";
-	private static final String DIRECTOREMPDATA="SELECT l.labauthorityId,e.empname,ed.designation ,'Director'  FROM lab_master l, employee e ,employee_desig ed   WHERE l.labauthorityId=e.empid AND e.desigid=ed.desigid ";
+	private static final String DIRECTOREMPDATA="SELECT l.labauthorityId,e.empname,ed.designation ,'Director'  FROM lab_master l, employee e ,employee_desig ed   WHERE l.labauthorityId=e.empid AND e.desigid=ed.desigid AND l.labcode=:LabCode ";
 	private static final String COMMITTEEMAINAPPROVALDODATA ="SELECT e1.empid,e1.empname,ed.designation,'Group Head' FROM employee e,employee e1,employee_desig ed, committee_constitution_approval cca,division_master dm ,division_group dg WHERE cca.empid=e.empid AND e.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.groupheadid=e1.empid AND e1.desigid=ed.desigid AND cca.committeemainid=:committeemainid";
 	private static final String COMMITTEEMINUTESDELETE ="DELETE FROM committee_schedules_minutes_details WHERE scheduleminutesid=:scheduleminutesid";
 	private static final String COMMITTEECONSTATUSDETAILS ="SELECT statusdetail,status FROM committee_constitution_approval_status WHERE status=:status";
@@ -2354,11 +2354,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	
 	
 	@Override
-	public Object[]  DirectorEmpData() throws Exception
+	public Object[]  DirectorEmpData(String LabCode) throws Exception
 	{
-		Query query=manager.createNativeQuery(DIRECTOREMPDATA);
 		try {
-			return (Object[])query.getSingleResult();
+			Query query=manager.createNativeQuery(DIRECTOREMPDATA);
+			query.setParameter("LabCode",LabCode);
+			return (Object[])query.getResultList().get(0);
 		}catch (Exception e) {
 			logger.error(new java.util.Date() +"Inside DAO DirectorEmpData "+ e);
 			return null;
@@ -2842,6 +2843,18 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 		
 		return LabDetailes;
+	}
+
+
+	private static final String  COMMITTEEMAINDETAILS = "SELECT cm.committeemainid, cm.committeeid, c.committeeshortname, c.labcode FROM committee_main cm, committee c  WHERE cm.committeeid = c.committeeid AND cm.committeemainid=:CommitteeMainId ";
+	@Override
+	public Object[] CommitteeMainDetails(String CommitteeMainId) {
+		
+		Query query=manager.createNativeQuery(COMMITTEEMAINDETAILS);
+		query.setParameter("CommitteeMainId", CommitteeMainId);
+		Object[] ClusterList=(Object[])query.getResultList().get(0);
+		return ClusterList;
+		
 	}
 	
 }

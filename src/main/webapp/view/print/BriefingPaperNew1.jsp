@@ -53,9 +53,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 }
 
-
-
-
 %>
 
 <style type="text/css">
@@ -453,6 +450,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- ------------------------------------project attributes------------------------------------------------- -->
 			<div style="margin-left: 10px;" align="left"><b class="sub-title">1. Project Attributes: </b></div>
 			<%if(projectattributes.get(z)!=null){ %>
+			
 			<table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<tr>
 											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
@@ -577,6 +575,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											</td> 
 										</tr>	
 			</table>
+		
 			<% }else{ %>
 				<div align="center"  style="margin: 25px;" > Complete Project Data Not Found </div>
 			<%} %>
@@ -948,7 +947,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						</table>
 					</div>
 				</div>
-				 <h1 class="break"></h1>
+			
+			 <h1 class="break"></h1>
 <!-- -------------------------------------------------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">5. Milestones achieved prior to this  
 						<%=committee.getCommitteeShortName().trim().toUpperCase() %>
@@ -1053,41 +1053,19 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						
 						<!-- Tharun code Start (For Filtering Milestone based on levels) -->					
 
-						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
-						
-										<thead>
-											<tr>
-												<td colspan="9" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
-												</td>									
-											</tr>
-										
+			
+						<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width:980px;   border-collapse:collapse;" >
 								<tr>
-									<th  style="width: 20px; ">SN</th>
-									<th  style="width: 30px; ">MS</th>
-									<th  style="width: 30px; ">L</th>
-									<th  style="width: 300px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 110px; "> Original PDC</th>
-									<th  style="width: 100px; "> Revised PDC</th>
-									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
-								 	<th  style="width: 270px; "> Remarks</th>
+									<th  style="max-width: 100px; ">MS</th>
+									<th  style="max-width: 100px;width:50px ">L</th>
+									<th  style="max-width: 300px;min-width:250px ">System/ Subsystem/ Activities</th>
+									<th  style="max-width: 110px;width:100px "> Original PDC</th>
+									<th  style="max-width: 150px;width:135px "> Revised PDC/impact on overall project</th>
+									<th  style="max-width: 100px; "> Progress</th>
+									<th  style="max-width: 70px; "> Present Status</th>
+								 	<th  style="max-width: 100px; "> Remarks</th>
+									<th  style="max-width: 100px; "> Info </th>
 								</tr>
-							</thead>
-										
-							<tbody>
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
 									int milcountA=1;
@@ -1097,19 +1075,32 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									int milcountE=1;
 									
 									%>
-									<% int serial=1; for(Object[] obj:MilestoneDetails6.get(z)){
+									<%for(Object[] obj:MilestoneDetails6.get(z)){
 										
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
 										<tr>
-											<td style="text-align: center"><%=serial%></td>
-											<td style="text-align: center">M<%=obj[0] %></td>
-									
+											<td>M<%=obj[0] %></td>
+											<%-- <td style="text-align: center">
+												<%if(obj[21].toString().equals("0")) {%>
+													L
+												<%}else if(obj[21].toString().equals("1")) { %>
+													A-<%=obj[21] %>
+												<%}else if(obj[21].toString().equals("2")) { %>
+													B-<%=obj[21] %>
+												<%}else if(obj[21].toString().equals("3")) { %>
+													C-<%=obj[21] %>
+												<%}else if(obj[21].toString().equals("4")) { %>
+													D-<%=obj[21] %>
+												<%}else if(obj[21].toString().equals("5")) { %>
+													E-<%=obj[21] %>
+												<%} %>
+											</td> --%>
 											<td style="text-align: center">
 												<%
 												
 												if(obj[21].toString().equals("0")) {%>
-													<!-- L -->
+													L
 												<%	milcountA=1;
 													milcountB=1;
 													milcountC=1;
@@ -1144,7 +1135,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 												} %>
 											</td>
 
-											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>text-align: justify;">
+											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
 												<%if(obj[21].toString().equals("0")) {%>
 													<%=obj[10] %>
 												<%}else if(obj[21].toString().equals("1")) { %>
@@ -1159,18 +1150,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td style="text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td style="text-align: center;">
-											
-												<%if(LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[8].toString())) ){ %>
-											 		-
-											 	<%}else{ %>
-											 		<%=sdf.format(sdf1.parse(obj[8].toString())) %>
-											 	<%} %>
-											
-											<%-- <%=sdf.format(sdf1.parse(obj[8].toString())) %> --%>
-											
-											</td>
+											<td><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
@@ -1181,25 +1162,24 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[22] %>	
-												<%if(obj[19].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[8].toString())) %>)
-												<%} %>
-												
-											</span> 
+											</span>
 											
 											</td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;text-align: justify;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
-									</tr>
-									<%count1++; serial++;}} %>
+											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+                                            <td >
+												<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
+													<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
+												</a>
+											</td>
+										</tr>
+									<%count1++;}} %>
 								<%} else{ %>
 								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
 								
 								
 								<%} %>
-								</tbody>
-								
 							</table>
-												
+    
 	
 		<!-- Tharun code end -->
 						
@@ -1240,6 +1220,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						
 						<h1 class="break"></h1>
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
+			
+			
 		<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 		<thead>	
 			<tr>
@@ -1276,11 +1258,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 				<%} %>
 			</tbody>		
 		</table> 
+  
 
 <!-- ----------------------------------------------5.Particulars of Meeting------------------------------------------------- -->
  <h1 class="break"></h1>
 <!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
 			<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
+			
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
@@ -1330,10 +1314,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
 											<%} %>
 										</table>
+								
+								
 									<!-- </table>
 									<div align="left" style="margin-left: 25px;"></div>
 					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<thead> -->
+										
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
@@ -1562,7 +1549,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			                 
 			     </tbody>
 			</table>  	
-
+  
  <h1 class="break"></h1>
 <!-- ---------------------------------------------- -------------------------- ------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;"><b>
@@ -1770,6 +1757,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			<h1 class="break"></h1>
 <!-- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 			<div align="left" style="margin-left: 10px;"><b class="sub-title">11. Issues:</b></div>
+			
 			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
@@ -1848,7 +1836,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										}} %>
 								</tbody>			
 							</table>
-
+	
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting :</b></div>

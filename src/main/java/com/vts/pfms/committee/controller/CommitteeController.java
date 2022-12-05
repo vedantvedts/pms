@@ -5190,6 +5190,7 @@ public class CommitteeController {
 				approvaldto.setApprovalAuthority(approvalauthority);
 				approvaldto.setConstitutionStatus(req.getParameter("newconstitutionstatus"));
 				approvaldto.setOperation(operation);
+				
 				ret=service.CommitteeMainApprove(approvaldto);
 				if(ret==-1)
 				{

@@ -183,9 +183,8 @@ if(ses1!=null){	%>
 					 </div>
 					 </div>
 					<div class="card-body">
-					
-                                              <div class="table-responsive"> 
-												<table class="table  table-hover table-bordered">
+                        <div class="table-responsive"> 
+									<table class="table  table-hover table-bordered">
 													<thead>
 
 														<tr>
@@ -241,22 +240,19 @@ if(ses1!=null){	%>
 															</div>
 															</div> <%} %>
 															</td>
-																<td  style="width:20% !important; text-align: center;">		
-																
-														 
-																
+															<td  style="width:20% !important; text-align: center;">		
 																	
 														 <form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
-															<%-- <%if(obj[8]==null){ %> --%>
-															<button  class="editable-click" name="sub" value="B">  
-																<div class="cc-rockmenu">
-											                      <div class="rolling">
-											                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
-											                        <span>Details</span>
-											                      </div>
-											                     </div> 
-															</button>
-															<%-- <%} %> --%>
+															<%if(Integer.parseInt(obj[12].toString())<100){ %>
+																<button  class="editable-click" name="sub" value="B">  
+																	<div class="cc-rockmenu">
+												                      <div class="rolling">
+												                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
+												                        <span>Details</span>
+												                      </div>
+												                     </div> 
+																</button>
+															<%} %>
 															  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
                                                               <button  class="editable-click" name="sub" value="C" >
 																<div class="cc-rockmenu">

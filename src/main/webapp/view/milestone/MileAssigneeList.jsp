@@ -89,16 +89,11 @@ h6{
  
 <body>
   <%
-  
-
-  
   List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
-  
-  
  %>
 
   <form class="form-inline"  method="POST" action="M-A-AssigneeList.htm">
@@ -106,8 +101,8 @@ h6{
 
   <div class="col-md-8">
    
-	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><b style="color: #145374;"><i class="fa fa-long-arrow-right " aria-hidden="true"></i></b>
-	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><b style="color: #145374;"><i class="fa fa-long-arrow-right " aria-hidden="true"></i></b><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
+	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><b style="color: #145374;">----------></b>
+	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><b style="color: #145374;">----------></b><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
       </p>
 	                     
   </div>
@@ -132,23 +127,18 @@ h6{
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	<center>
+	<div align="center">
 	<div class="alert alert-danger" role="alert" >
                      <%=ses1 %>
-                    </div></center>
+                    </div></div>
 	<%}if(ses!=null){ %>
-	<center>
+	<div align="center">
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
-                   </div></center>
+                   </div></div>
                     <%} %>
 
     <br />
-  
-
-   
-   
-   
    <div class="container-fluid" >
 		<div class="row">
 			<div class="col-md-12">
@@ -167,11 +157,9 @@ h6{
 					 </div>
 					 </div>
 					<div class="card-body">
-					
                                               <div class="table-responsive"> 
 												<table class="table  table-hover table-bordered">
 													<thead>
-
 														<tr>
 															<th>Expand</th>
 															<th style="text-align: left;">Mil-No</th>
@@ -183,8 +171,6 @@ h6{
 															<th style="text-align: center;">Weightage</th>	
 															<th style="text-align: center;">Progress</th>												
 														 	<th style="text-align: center;">Action</th>
-														 		
-														 	
 														</tr>
 													</thead>
 													<tbody>
@@ -301,10 +287,6 @@ h6{
 															
 															
 													 </form> 
-											                  
-                                                          
-											       
-														
 																<%} %>
 																		
 															</td>
@@ -367,32 +349,45 @@ h6{
                                                                   </td>	
 															<td>
 															
-															<%if(MilestoneB!=null && MilestoneB.size()==0){
-															
-															if(!objA[10].toString().equalsIgnoreCase("0") ){
-																if(Integer.parseInt(objA[6].toString())>0){	%>
-                                                         	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
-                        	                                  <button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
-                                                                 <input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
-                                                                  <input type="hidden" name="ActivityId"	value="<%=objA[0] %>" /> 
-                                                                  <input type="hidden" name="ActivityType"	value="A" /> 
-                                                                   <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
-                                                                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-                                                                   </form>
-                                                                   <%}else{%>
-                                                                   	Weightage Not Set 
+															<%if(MilestoneB!=null && MilestoneB.size()==0)
+															{
+																if(Integer.parseInt(objA[5].toString())<100)
+																{ 
+																	
+																	if(!objA[10].toString().equalsIgnoreCase("0") )
+																	{
+																
+																		if(Integer.parseInt(objA[6].toString())>0)
+																		{ %>
+	                                                         	  			<form class="form-inline"  method="POST" action="M-A-Update.htm">
+		                        	                                  			<button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
+		                                                                 		<input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
+		                                                                  		<input type="hidden" name="ActivityId"	value="<%=objA[0] %>" /> 
+		                                                                  		<input type="hidden" name="ActivityType"	value="A" /> 
+		                                                                   		<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
+		                                                                   		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+	                                                                   		</form>
+                                                                   		<%}else{ %>
+                                                                   			Weightage Not Set 
+                                                                   		<%}%>
                                                                    
-                                                                   <%}}else{ %>
-                                                                   Base Line Not Set
-                                                                   <%}} %>
+                                                           			<%}else{ %>
+		                                                                Base Line Not Set
+                                                                   <%} %>
+                                                                   
+                                                        	<%}else{ %> 
+																Completed                                                                   	
+		                                                    <%} %>
+										               <%}%>
                                                          </td>	
 																										
                                                          
                                                          </tr>
                                                          <% int countB=1;
 														 	if(MilestoneB!=null&&MilestoneB.size()>0){
-															for(Object[] objB: MilestoneB){
-																List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);	
+															for(Object[] objB: MilestoneB)
+															{
+																List<Object[]> MilestoneC = (List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);	
 																%>
 														<tr class="collapse row<%=count %>">
 															<td style="width:2% !important; " class="center"> </td>
@@ -432,13 +427,15 @@ h6{
 															</div>
 															</div> <%} %>
 															</td>
-															
-														 													
                                                       
 															<td>
 															<%if(MilestoneC!=null&&MilestoneC.size()==0){
+																
+																if(Integer.parseInt(objB[5].toString())<100)
+																{ 
+																
 															if(!objB[10].toString().equalsIgnoreCase("0")){
-																if(Integer.parseInt(objB[6].toString())>0){	%>
+																if(Integer.parseInt(objB[6].toString())>0 && Integer.parseInt(objB[5].toString())<100){	%>
                                                          	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
                         	                                  <button class="btn btn-sm edit" 
                         	                                  
@@ -455,7 +452,12 @@ h6{
                                                                    <%}
                                                                    }else{ %>
                                                                    Base Line Not Set
-                                                                   <%}} %>
+                                                                   <%} %>
+                                                                  
+                                                                  <%}else{%>
+                                                                   		Completed
+                                                                   <%} %>
+                                                                  <%} %>
                                                          </td>	
 														 
 														
@@ -507,6 +509,11 @@ h6{
 															</td>
 															<td>
 															<%if(MilestoneD!=null&&MilestoneD.size()==0){
+																
+																if(Integer.parseInt(objC[5].toString())<100)
+																{ 
+																
+																
 															if(!objC[10].toString().equalsIgnoreCase("0")){ 
 																if(Integer.parseInt(objC[6].toString())>0){	%>
                                                          	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
@@ -521,9 +528,12 @@ h6{
                                                                    	Weightage Not Set 
                                                                    
                                                                    <%}
-																}else{ %>
+																	}else{ %>
                                                                    Base Line Not Set
-                                                                   <%}} %>
+                                                                   <%} %>
+                                                                   
+                                                                   <%}else{ %> Completed <%} %>
+                                                               <%} %>
                                                          </td>	
 													
                                                          </tr>
@@ -575,6 +585,11 @@ h6{
                                                       
 															<td>
 															<%if(MilestoneE!=null&&MilestoneE.size()==0){
+																
+																if(Integer.parseInt(objD[5].toString())<100)
+																{ 
+																	
+																
 															if(!objD[10].toString().equalsIgnoreCase("0")){ 
 																if(Integer.parseInt(objD[6].toString())>0){	%>
                                                          	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
@@ -593,7 +608,10 @@ h6{
                                                                    <%}
 																}else{ %>
                                                                    Base Line Not Set
-                                                                   <%}} %>
+                                                                   <%} %>
+                                                                   
+                                                                   <%}else{ %> Completed <%} %>
+                                                               <%} %>
                                                          </td>	
 														 
 														
@@ -642,7 +660,14 @@ h6{
 															</div> <%} %>
 															</td>
 															<td>
-															<%if(!objE[10].toString().equalsIgnoreCase("0")){ 
+															
+															
+															<%
+															if(Integer.parseInt(objE[5].toString())<100)
+															{ 
+															if(!objE[10].toString().equalsIgnoreCase("0")){
+																
+																
 																if(Integer.parseInt(objD[6].toString())>0){	%>
                                                          	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
                         	                                  <button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
@@ -659,6 +684,7 @@ h6{
 																}else{ %>
                                                                    Base Line Not Set
                                                                    <%} %>
+                                                                <%}else{ %> Completed <%} %>
                                                          </td>	
 													
                                                          </tr>

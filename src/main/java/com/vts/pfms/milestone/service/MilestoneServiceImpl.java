@@ -2,6 +2,7 @@ package com.vts.pfms.milestone.service;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -616,7 +617,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 									StatusMain="4";
 								}
 							}
-					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA));
+					int mainProgress = (int)Math.round(TotalA);
+					String DateOfCompletion = null;
+					if(mainProgress == 100) {
+						 DateOfCompletion = LocalDate.now().toString();
+					}
+					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion);
 					// dao upadate main
 				}
 			}else {

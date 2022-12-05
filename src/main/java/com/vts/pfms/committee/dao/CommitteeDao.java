@@ -230,7 +230,7 @@ public interface CommitteeDao {
 	public List<Object[]> MeetingReportListEmp(String fdate, String tdate, String ProjectId, String EmpId) throws Exception;
 	public Object[] ComConstitutionEmpdetails(String committeemainid) throws Exception;
 	public Object[] DoRtmdAdEmpData() throws Exception;
-	public Object[] DirectorEmpData() throws Exception;
+	public Object[] DirectorEmpData(String LabCode) throws Exception;
 	public Object[] CommitteeMainApprovalDoData(String committeemainid) throws Exception;
 	public int CommitteeMinutesDelete(String scheduleminutesid) throws Exception;
 	public Object[] CommitteeConStatusDetails(String status) throws Exception;
@@ -284,6 +284,7 @@ public interface CommitteeDao {
 	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
 	public LabMaster LabDetailes(String LabCode) throws Exception;
+	public Object[] CommitteeMainDetails(String CommitteeMainId);
 
 
 }
