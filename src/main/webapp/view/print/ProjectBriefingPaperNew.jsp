@@ -1768,7 +1768,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						<details>
-   						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(In &#8377; Crore)</i> </b> </summary>
+   						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
 						  	<div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
