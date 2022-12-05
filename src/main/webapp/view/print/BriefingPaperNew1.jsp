@@ -45,6 +45,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 String committeeid=(String)request.getAttribute("committeeid");
 String filePath=(String)request.getAttribute("filePath");
+String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute("ebandpmrccount");
 String No2=null;
 if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
@@ -888,7 +889,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
 								<thead>
 									<tr>
-										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
 										 <th  style="max-width: 70px; ">Committee</th>
 										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
 										 <th  style="max-width: 80px; "> Date Held</th>
@@ -902,8 +902,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									  {int i=1;
 									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
 											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
@@ -918,7 +917,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
 								<thead>
 									<tr>
-										 <th  style="width: 20px !important;text-align: center;  ">SN</th>
 										 <th  style="max-width: 70px; ">Committee</th>
 										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
 										 <th  style="max-width: 80px; "> Date Held</th>
@@ -932,13 +930,16 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									  {int i=1;
 									for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
 										<tr>
-											<td  style="max-width: 30px;text-align: center;"><%=i %></td>
-											<td  style="max-width: 70px;"><%=obj[1] %></td>												
+											<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
 											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
-									}}else{ %>
+									}
+									
+									  
+									  
+									  }else{ %>
 									
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
 									
@@ -1719,20 +1720,24 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 					<!--  [<span style="text-decoration: underline;">Original (as per Project sanction / Latest PDC extension) and Current</span>]: --> 
 				</b>
 			</div>
-
-              <%
-              if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){
-				
-				%>
-					
+			
+              <% if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){ %>
+				<div style="font-weight: bold;" align="right" >
+					<br>
+					<span >
+						<span style="margin:0px 0px 10px  10px;">Original : &ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
+						<span style="margin:0px 0px 10px  15px;">Ongoing : &ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
+						<span style="margin:0px 0px 10px  15px;">Revised : &ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+					</span>
+				</div>	
 				<div align="center"><br>
-				<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
+					<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
 				</div>
-              <%}
-              else if(new File(filePath+"\\grantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){
 				
-				%>
+              <%} else if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){ %>
+              
 				<b>Grantt Chart Annexure</b>
+				
 		    <% }else{ %>
 		    	<div align="center">
 		    		<br>
@@ -1840,16 +1845,16 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting :</b></div>
-													<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
-														<hr style="margin-right: 10px !important"><br>
-														<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
-													<%}else{ %>
-													<div align="center">
-														Nil 
-													</div>
-												  	
-												  	<br><br><br>
-												  	<%} %></div>	
+							<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
+								<hr style="margin-right: 10px !important"><br>
+							<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
+							<%}else{ %>
+							<div align="center">
+								Nil 
+							</div>
+										  	
+							<br><br><br>
+							<%} %></div>	
 						<h1 class="break"></h1>								
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 									
@@ -1899,8 +1904,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
 											
-											<%if(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
-											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+											<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
+											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 											<%} %>
 
 										</td>
@@ -1914,12 +1919,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<%}}} %>
 						
 						
-						
-						
 <!-- ----------------------------------------------11.Decisions----------------------------------------------------------------- -->
-						
-
-
 
 
 <!-- ------------------------------------------------------------------------------------------------ -->

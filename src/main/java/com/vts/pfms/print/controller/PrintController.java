@@ -425,7 +425,7 @@ public class PrintController {
 	public void ProjectBriefingDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
+		String LabCode1 = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefingDownload.htm "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
@@ -437,9 +437,7 @@ public class PrintController {
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
-	    	
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-	    	    	
+	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -580,7 +578,6 @@ public class PrintController {
 	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
 	    }
 /* ----------------------------------------------------------------------------------------------------------  */
-	    	req.setAttribute("projectslist", projectslist);
 	    	
 	    	req.setAttribute("TechImages",TechImages);
 	    	req.setAttribute("committeeData", committee);
@@ -615,11 +612,9 @@ public class PrintController {
     		req.setAttribute("ProjectCost",ProjectCost);
 	    	req.setAttribute("isprint", "0");
 	    	req.setAttribute("AppFilesPath",ApplicationFilesDrive);
-	    	System.out.println("Inside print " + LabCode);
-	    	
-	    	
-	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
+	    	req.setAttribute("projectLabCode",projectLabCode);
+	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));    
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
@@ -655,7 +650,7 @@ public class PrintController {
 	    	converterProperties.setFontProvider(dfp);
 	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
             ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
-            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+LabCode+".png");
+            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 	        
 	        
@@ -695,9 +690,9 @@ public class PrintController {
 	        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	        		}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
-	        						} 
-		        	 if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
-		        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\grantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		} 
+		        	if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
+		        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 					        Document document5 = new Document(pdfDocument2,PageSize.A4);
 					        document5.setMargins(50, 50, 50, 50);
 					        Rectangle pageSize;
@@ -1526,7 +1521,7 @@ public class PrintController {
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	
 	    	
-	    	List<Object[]>SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);	    	
+	    	List<Object[]>SpecialCommitteesList =  service.SpecialCommitteesList(LabCode);
 	    	
 	    	if(projectslist.size()==0 && projectid==null) 
 	        {				
@@ -1581,6 +1576,7 @@ public class PrintController {
 	    	}
 	    	
 	    	Committee committee = service.getCommitteeData(committeeid);
+	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -1827,7 +1823,7 @@ public class PrintController {
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);  
     		req.setAttribute("TechImages", TechImages);   
     		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
-    		
+    		req.setAttribute("projectLabCode",projectLabCode);
     		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
     		
     		String LevelId= "2";

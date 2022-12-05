@@ -328,6 +328,7 @@ int addcount=0;
 NFormatConvertion nfc=new NFormatConvertion();
 Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 String filePath=(String)request.getAttribute("filePath");
+String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
@@ -2546,10 +2547,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<table>
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
-											
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
-												
-
+											<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 										</td>
 										<td style="border:0;">  
 											
