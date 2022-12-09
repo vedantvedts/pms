@@ -494,7 +494,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</td>
 									
 									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="post" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
 											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 										</button>
 									</td>

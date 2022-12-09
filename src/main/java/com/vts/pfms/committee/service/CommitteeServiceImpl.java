@@ -60,6 +60,7 @@ import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
 import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMeetingApproval;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
@@ -1378,22 +1379,23 @@ public class CommitteeServiceImpl implements CommitteeService{
 		}		
 		return dao.MinutesAttachmentAdd(attachment);		
 	}
-	 public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
-	    {
-	    	logger.info(new Date() +"Inside SERVICE saveFile ");
-	        Path uploadPath = Paths.get(uploadpath);
+	
+	public void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
+	{
+	   logger.info(new Date() +"Inside SERVICE saveFile ");
+	   Path uploadPath = Paths.get(uploadpath);
 	          
-	        if (!Files.exists(uploadPath)) {
-	            Files.createDirectories(uploadPath);
-	        }
+	   if (!Files.exists(uploadPath)) {
+		   Files.createDirectories(uploadPath);
+	   }
 	        
-	        try (InputStream inputStream = multipartFile.getInputStream()) {
-	            Path filePath = uploadPath.resolve(fileName);
-	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-	        } catch (IOException ioe) {       
-	            throw new IOException("Could not save image file: " + fileName, ioe);
-	        }     
-	    }
+	   try (InputStream inputStream = multipartFile.getInputStream()) {
+		   Path filePath = uploadPath.resolve(fileName);
+	       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	   } catch (IOException ioe) {       
+		   throw new IOException("Could not save file: " + fileName, ioe);
+	   }     
+	}
 	@Override
 	public int MinutesAttachmentDelete(String  attachmentid) throws Exception
 	{
@@ -3192,6 +3194,28 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override
 	public LabMaster LabDetailes(String LabCode) throws Exception {
 		return dao.LabDetailes(LabCode);
+	}
+	
+//	@Override
+	public long FreezeDPFMMinutes(CommitteeMeetingDPFMFrozen dpfm) throws Exception 
+	{
+		
+//		MultipartFile FormFile = noticeDto.getNoticeFile();
+//		long maxFormId = dao.MaxOfEmsNoticeId()+1;
+//		String storagePath="";
+//		while(new File(FilePath+"//Notice//Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename())).exists())
+//		{
+//			maxFormId++;
+//		}
+//		saveFile(FilePath+"//Notice//","Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename()),FormFile);
+//		storagePath="//Notice//Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename());
+		String LabCode = dpfm.getLabCode();
+		String filepath = uploadpath+"//"+LabCode.toUpperCase().trim()+"//DPFM//";
+		
+		
+		
+		
+		return 0;
 	}
 	
 	
