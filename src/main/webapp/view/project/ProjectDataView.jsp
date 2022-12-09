@@ -257,7 +257,7 @@ if(ses1!=null){
 										</tr>
 										<tr>
 											<td colspan="3">
-												<span><b style="color: red">Note :</b><br> &nbsp; 1) Please Upload Files in PDF and Image Files Only <br> &nbsp; 2) Please Upload Images With Aspect Ratio of 1920 X 1800</span>
+												<span><b style="color: red">Note :</b><br> &nbsp; 1) Please Upload Files in PDF and Image Files Only <br> &nbsp; 2) Please Upload Images With Aspect Ratio of 1920 X 1080</span>
 											</td>
 										</tr>
 										<tr>

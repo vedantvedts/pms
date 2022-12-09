@@ -153,6 +153,11 @@ a:hover {
 	text-align: justify;
 }
 
+.tab-pane {
+	min-height: 27rem !important;
+}
+
+
 
 .custom_width{
 	padding: 1rem 1rem !important;
@@ -385,13 +390,14 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						    
 						        <div class="tab-vertical">
 						            <ul class="nav nav-tabs" id="myTab3" role="tablist">
-						                <li class="nav-item"> <a class="nav-link active" id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="home" aria-selected="true">Requirement</a> </li>
+						            	<li class="nav-item"> <a class="nav-link active" id="needofprj-vertical-tab" data-toggle="tab" href="#needofprj-vertical" role="tab" aria-controls="contact" aria-selected="false">Need Of Project</a> </li>
+						                <li class="nav-item"> <a class="nav-link " id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="home" aria-selected="true">Requirement</a> </li>
+						                <li class="nav-item"> <a class="nav-link " id="worldscenario-vertical-tab" data-toggle="tab" href="#worldscenario-vertical" role="tab" aria-controls="home" aria-selected="true">World Scenario</a> </li>
 						                <li class="nav-item"> <a class="nav-link" id="obj-vertical-tab" data-toggle="tab" href="#obj-vertical" role="tab" aria-controls="profile" aria-selected="false">Objective</a> </li>
 						                <li class="nav-item"> <a class="nav-link" id="scope-vertical-tab" data-toggle="tab" href="#scope-vertical" role="tab" aria-controls="contact" aria-selected="false">Scope</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="multilab-vertical-tab" data-toggle="tab" href="#multilab-vertical" role="tab" aria-controls="contact" aria-selected="false">Multi Lab Work Share</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="earlierwork-vertical-tab" data-toggle="tab" href="#earlierwork-vertical" role="tab" aria-controls="contact" aria-selected="false">Earlier Work</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="competency-vertical-tab" data-toggle="tab" href="#competency-vertical" role="tab" aria-controls="contact" aria-selected="false">Competency Established</a> </li>
-						            	<li class="nav-item"> <a class="nav-link" id="needofprj-vertical-tab" data-toggle="tab" href="#needofprj-vertical" role="tab" aria-controls="contact" aria-selected="false">Need Of Project</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="technology-vertical-tab" data-toggle="tab" href="#technology-vertical" role="tab" aria-controls="contact" aria-selected="false">Technology Challenges</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="risk-vertical-tab" data-toggle="tab" href="#risk-vertical" role="tab" aria-controls="contact" aria-selected="false">Risk Mitigation</a> </li>
 						            	<li class="nav-item"> <a class="nav-link" id="proposal-vertical-tab" data-toggle="tab" href="#proposal-vertical" role="tab" aria-controls="contact" aria-selected="false">Proposal</a> </li>
@@ -401,7 +407,11 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						            <%for(Object[] 	obj:DetailsList){ %>
 						            
 						            <div class="tab-content" id="myTabContent3">
-						                <div class="tab-pane fade show active" id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
+						            	<div class="tab-pane fade " id="worldscenario-vertical" role="tabpanel" aria-labelledby="worldscenario-vertical-tab">
+						                    <h3>World Scenario</h3>
+						                    <p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p>
+						                </div>
+						                <div class="tab-pane fade " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
 						                    <h3>Requirement</h3>
 						                    <p><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p>
 						                </div>
@@ -425,7 +435,7 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						                    <h3>Competency Established</h3>
 											<p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p>						                
 										</div>
-						                <div class="tab-pane fade" id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
+						                <div class="tab-pane fade show active" id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
 						                    <h3>Need Of Project</h3>
 											<p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p>						                
 										</div>
