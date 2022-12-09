@@ -292,7 +292,7 @@ if(formname!=null){
 	<form class="form-inline" method="POST" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 	
 			<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-				<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+				<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 				<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
 				
 			<%} %>
@@ -300,11 +300,11 @@ if(formname!=null){
 			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >MINUTES</button>
 
 			<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			 	
+			 
+			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 			<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
-			<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+			
 			<a  class="btn  btn-sm back" href="CommitteeScheduleView.htm?scheduleid=<%=committeescheduleeditdata[6] %>&membertype=<%=membertype%>"   style=" font-size:12px;" >BACK</a>			
 	</form>
 </nav>    
