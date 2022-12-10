@@ -146,7 +146,7 @@ th, td
   			@top-center {
 	         content: "<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 			PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
-			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    			EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
    			<%} %>"; 
 			
@@ -585,7 +585,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 		<h1 class="break"></h1>
 <!-- ------------------------------------system configuration and Specification------------------------------------------------- -->	
 		<div style="margin-left: 10px;" align="left" class="sub-title"><b>2. Schematic Configuration</b></div><br>
-		<div align="left" style="margin-left: 15px;margin-top: 5px;"><b class="mainsubtitle">2 (a) System Configuration : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<div align="left" style="margin-top: 5px;margin-left: 10px;"><b class="mainsubtitle">2 (a) System Configuration : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<div align="center">
 			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
@@ -594,7 +594,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
 						
 						<br>
-						<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+						<img class="logo" style="max-width:25.5cm;max-height:20cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
 						
 					<% }else{ %>
 						<b>  System Configuration Annexure </b>
@@ -622,7 +622,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 				
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf") ){ %>
 						<div align="center"><br>
-							<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" >
+							<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[4])))%>" alt="Speci" >
 						</div> 
 					<% }else{ %>
 						<b> System Specification Annexure </b>
@@ -738,7 +738,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<td>
 							<%if(obj[4]!= null){ %>  
 								<%=obj[12] %><%-- , <%=obj[13] %> --%>
-							<%}else { %> <span class="notassign">NA</span> <%} %> 
+							<%}else { %> <!-- <span class="notassign">NA</span>  --> <span class="">Not Assigned</span> <%} %> 
 						</td>
 						<td  style="text-align: center; ">
 							<%if(obj[4]!= null){if(obj[18]!=null){ %>
@@ -1289,7 +1289,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details (Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
 											 </tr>
 										
 										
@@ -1345,7 +1345,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed (Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
 										
@@ -1437,11 +1437,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										 
 										 <tbody>
 										<tr >
-												 <th>Total No. of Demand</th>
-												 <th>Total Est. Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Total No. of Orders</th>
-										  	 	 <th>Total SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Total Expenditure (<span>Lakh</span> &#8377;)</th>
+												 <th>No. of Demand</th>
+												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>No. of Orders</th>
+										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
@@ -1822,7 +1822,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
-												<td   style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td   style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[4].toString()))%></td>
 												<td  style="text-align: center;"> 
 												<%if(obj[9].toString().equals("C")){ %>
 												
@@ -1841,10 +1841,10 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>)</span>
 														<%}else if(!obj[15].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()))){  %> 
 														<span class="ongoing">OG</span>
-														<%}else if(!obj[15].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+														<%}else if(!obj[15].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
 														<span class="delay">DO</span>
-														<%}else{ %>
-														<span class="ongoing">OG</span>
+														<% } else{ %>
+														<span class="">-</span>
 												
 													<%}}else if(obj[9].toString().equals("C")){%>
 												        <span class="completed">CO</span>

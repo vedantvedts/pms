@@ -351,6 +351,18 @@ ul, #myUL {
 	text-align: left !important;
 } 
  
+ .spinner {
+    position: fixed;
+    top: 40%;
+    left: 20%;
+    margin-left: -50px; /* half width of the spinner gif */
+    margin-top: -50px; /* half height of the spinner gif */
+    text-align:center;
+    z-index:1234;
+    overflow: auto;
+    width: 1000px; /* width of the spinner gif */
+    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
+}
 
 </style>
 
@@ -449,9 +461,15 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
     </div>
 <%} %>
  
+ 
+ <div id="spinner" class="spinner" style="display:none;">
+                <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
+                </div>
+ 
+ 
 
 <div class="container-fluid">
-		<div class="row">
+		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="row card-header">
@@ -852,7 +870,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<td>
 							<%if(obj[4]!= null){ %>  
 								<%=obj[12] %><%-- , <%=obj[13] %> --%>
-							<%}else { %> <span class="notassign">NA</span> <%} %> 
+							<%}else { %><!--  <span class="notassign">NA</span>  --><span class="">Not Assigned</span> <%} %> 
 						</td>
 						<td  style="text-align: center; ">
 							<%if(obj[4]!= null){if(obj[18]!=null){ %>
@@ -1220,17 +1238,19 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 			<!-- Tharun code Start (For Filtering Milestone based on levels) -->		
 			
 			
-						<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width:980px;   border-collapse:collapse;" >
+						<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 								<tr>
-									<th  style="max-width: 100px; ">MS</th>
-									<th  style="max-width: 100px;width:50px ">L</th>
-									<th  style="max-width: 300px;min-width:250px ">System/ Subsystem/ Activities</th>
-									<th  style="max-width: 110px;width:100px "> Original PDC</th>
-									<th  style="max-width: 150px;width:135px "> Revised PDC/impact on overall project</th>
-									<th  style="max-width: 100px; "> Progress</th>
-									<th  style="max-width: 70px; "> Present Status</th>
-								 	<th  style="max-width: 100px; "> Remarks</th>
-									<th  style="max-width: 100px; "> Info </th>
+									<th  style="width: 20px; ">SN</th>
+									<th  style="width: 30px; ">MS</th>
+									<th  style="width: 50px; ">L</th>
+									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+									<th  style="width: 150px; "> Original PDC</th>
+									<th  style="width: 150px; "> Revised PDC</th>
+									<th  style="width: 60px; "> Progress</th>
+									<th  style="width: 50px; "> Status</th>
+								 	<th  style="width: 270px; "> Remarks</th>
+								 	<th  style="max-width: 30px; "> Info </th>
+									
 								</tr>
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
@@ -1241,11 +1261,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									int milcountE=1;
 									
 									%>
-									<%for(Object[] obj:MilestoneDetails6.get(z)){
+									<%int serial=1;for(Object[] obj:MilestoneDetails6.get(z)){
 										
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
 										<tr>
+											<td style="text-align: center"><%=serial%></td>
 											<td>M<%=obj[0] %></td>
 											<%-- <td style="text-align: center">
 												<%if(obj[21].toString().equals("0")) {%>
@@ -1338,7 +1359,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												</a>
 											</td>
 										</tr>
-									<%count1++;}} %>
+									<%count1++;serial++;}} %>
 								<%} else{ %>
 								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
 								
@@ -1782,7 +1803,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr>
-											 	<th colspan="8" ><span class="mainsubtitle">Demand Details(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										</thead>
 										
@@ -1827,97 +1848,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										    <% }else{%>											
 												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
 											<%} %>
-									<!-- </table>
-									<div align="left" style="margin-left: 25px;"></div>
-					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										<thead> -->
-										 <%-- <thead>
-											 <tr >
-												 <th colspan="8">Order Placed</th>
-											 </tr>
-										 </thead>
-										<!-- </thead> -->
-										
-										  	 	<tr>	
-										  	 	 <th  style="width: 30px !important;">SN</th>
-										  	 	 <th >Demand No </th>
-										  	 	  <th >Demand  Date</th>
-												 <th  colspan="2"> Nomenclature</th>
-												 <th  > Est. Cost-Lakh &#8377;</th>
-												 <th  style="max-width: 80px; "> Status</th>
-												 <th  style="max-width: 200px;">Remarks</th>
-												</tr>
-											<tr>
-												
-												 <th  colspan="2" style="max-width: 150px;">Supply Order No</th>
-												 <th  style="max-width: 90px;	">DP Date</th>
-												 <th  colspan="2" style="max-width: 90px;	">Vendor Name</th>
-												 <th  style="max-width: 80px;">Rev DP Date</th>											 
-												 <th   colspan="2" style="max-width: 90px;">SO Cost-Lakh &#8377;</th>		
-											 		
-											</tr>
-										    <%if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
-										    	k=0;
-										    	 Double estcost=0.0;
-												 Double socost=0.0;
-												 String demand="";
-										  	 	for(Object[] obj:procurementOnSanction.get(z))
-										  	 	{ 
-										  	 		if(obj[2]!=null){ 
-										  	 		if(!obj[1].toString().equals(demand)){
-										  	 			k++;
-										  	 		%>
-										  	 
-
-												<tr>
-												<td ><%=k%></td>
-												<td ><%=obj[1]%> </td>
-												<td ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-													<td   colspan="2"><%=obj[8]%></td>
-													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td  > <%=obj[10]%> </td>
-													<td  ><%=obj[11]%> </td>	
-												</tr>
-												<%demand=obj[1].toString();
-												} %>
-												<tr>
-													
-													<td  colspan="2"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %>
-													</td>
-													<td  ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td  colspan="2"> <%=obj[12] %>
-													</td>
-													<td  ><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
-				                                    <td  colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
-				
-												</tr>		
-												<% }
-										  	 		
-										  	 		Double value = 0.00;
-										  	 		if(obj[6]!=null){
-										  	 			value=Double.parseDouble(obj[6].toString());
-										  	 		}
-										  	 		
-										  	 		estcost += Double.parseDouble(obj[5].toString());
-										  	 		socost +=  value;
-										  	 		
-										  	 	 } 
-										   	%>
-										   	 
-										    <tr>
-										    	<td colspan="6" style="text-align: right;"><b>Total</b></td>
-										    	<td colspan="2" style="text-align: right;"><b><%=df.format(socost)%></b></td>
-										    	
-										    </tr>
-										     <% }else{%>
-											
-												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
-											<%} %> --%>
-						
-										<!-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" > -->
+									
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><span class="mainsubtitle">Order Placed(Greater than <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Order Placed ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										 </thead>
 										
@@ -2005,7 +1939,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%} %>
 								
 								<br>
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
 										 <thead>
 											 <tr >
 												 <th colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
@@ -2014,11 +1948,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										 
 										 <tbody>
 										<tr >
-												 <th>Total No. of Demand</th>
-												 <th>Total Est. Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Total No. of Orders</th>
-										  	 	 <th>Total SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Total Expenditure (<span>Lakh</span> &#8377;)</th>
+												 <th>No. of Demand</th>
+												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>No. of Orders</th>
+										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
@@ -2329,7 +2263,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						
 					<details>
-   						<summary role="button" tabindex="0"><b>10. GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]</b>    </summary>
+   						<summary role="button" tabindex="0"><b>10. GANTT chart of overall project schedule <!-- [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>] --></b>    </summary>
 						    <div class="content">
 							    <%for(int z=0;z<projectidlist.size();z++){ %>
 							    <div>
@@ -3995,7 +3929,13 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 
 function submitForm(frmid)
 { 
-  document.getElementById(frmid).submit(); 
+  
+	        $('body').css("filter", "blur(0.8px)");
+	        $('#main').hide();
+	        $('#spinner').show();
+	  
+	
+	document.getElementById(frmid).submit(); 
 } 
 </script>
 
@@ -4170,8 +4110,11 @@ $(document).ready(function() {
 	   
 	});
 
-
-
 </script>
+
+
+
+
+
 
 </body>
