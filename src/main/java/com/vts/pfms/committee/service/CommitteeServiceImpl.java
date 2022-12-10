@@ -1,6 +1,7 @@
 package com.vts.pfms.committee.service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -3196,27 +3197,47 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.LabDetailes(LabCode);
 	}
 	
-//	@Override
+	@Override
 	public long FreezeDPFMMinutes(CommitteeMeetingDPFMFrozen dpfm) throws Exception 
 	{
-		
-//		MultipartFile FormFile = noticeDto.getNoticeFile();
-//		long maxFormId = dao.MaxOfEmsNoticeId()+1;
-//		String storagePath="";
-//		while(new File(FilePath+"//Notice//Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename())).exists())
-//		{
-//			maxFormId++;
-//		}
-//		saveFile(FilePath+"//Notice//","Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename()),FormFile);
-//		storagePath="//Notice//Notice-"+maxFormId+"."+FilenameUtils.getExtension(FormFile.getOriginalFilename());
+		String meedtingId = dpfm.getMeetingId().replaceAll("[&.:?|<>/]", "").replace("\\", "") ;
 		String LabCode = dpfm.getLabCode();
-		String filepath = uploadpath+"//"+LabCode.toUpperCase().trim()+"//DPFM//";
+		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\DPFM\\";
+		int count=0;
+		String filename = "DPFM-"+meedtingId;
+		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		{
+			filename = filename+" ("+ ++count+")";
+		}
+		File file = dpfm.getDpfmfile();
+		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
 		
-		
-		
-		
-		return 0;
+		dpfm.setDPFMFileName(filename+".pdf");
+		dpfm.setFrozenDPFMPath(filepath);
+		dpfm.setFreezeTime(sdf1.format(new Date()));
+		return dao.FreezeDPFMMinutesAdd(dpfm);
 	}
 	
+	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
+	{
+	   logger.info(new Date() +"Inside SERVICE saveFile ");
+	   Path uploadPath = Paths.get(uploadpath);
+	          
+	   if (!Files.exists(uploadPath)) {
+		   Files.createDirectories(uploadPath);
+	   }
+	        
+	   try (InputStream inputStream = new FileInputStream(fileToSave)) {
+		   Path filePath = uploadPath.resolve(fileName);
+	       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	   } catch (IOException ioe) {       
+		   throw new IOException("Could not save file: " + fileName, ioe);
+	   }     
+	}
 	
+	@Override
+	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId)throws Exception
+	{
+		return dao.getFrozenDPFMMinutes(scheduleId);
+	}
 }

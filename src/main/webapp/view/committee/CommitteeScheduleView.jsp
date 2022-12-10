@@ -577,25 +577,18 @@
 									
 						</form>
 						
-						<form action="ProjectBriefingPaper.htm" method="post" id="myfrm" target="_blank">
-						<%if(Long.parseLong(projectid)>0 &&committeescheduleeditdata[23].toString().equalsIgnoreCase("N") ){ %>
-								<input type="submit" class="btn btn-sm back" value="Briefing" style="margin: 0px 10px" >
-								<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-								<input type="hidden" name="projectid" value="<%=projectid %>">
-							</form>
-						<%} %>
-						<form action="FrozenProjectBriefingPaper.htm" method="post" target="_blank">
-						<% if(Long.parseLong(projectid)>0 &&committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") ){%>
-								<input type="submit" class="btn btn-sm back" value="Briefing" >
-								<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
-								<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-								<input type="hidden" name="projectid" value="<%=projectid %>">
-								
-							<%} %>		
-								
-							</form>
+						
+						<form  action="#" method="post" id="myfrm" target="_blank">
+							<% if(Long.parseLong(projectid)>0 &&committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") ){%>
+								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get">
+							<%}else{%>
+								<input type="submit" class="btn btn-sm back" value="Briefing" formaction="ProjectBriefingPaper.htm"  style="margin: 0px 10px" >
+							<%} %>
+							
+							<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+							<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+							<input type="hidden" name="projectid" value="<%=projectid %>">
+						</form>
 						
 						
 							<%} else{ %>

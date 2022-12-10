@@ -147,10 +147,10 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String USERLIST="SELECT  b.empid, b.empname,b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
-	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode FROM pfms_risk WHERE actionmainid=:actionmainid";
-	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate WHERE riskid=:riskid";
-	private static final String PROJECTRISKMATRIXREVLIST="SELECT riskrevisionid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,revisiondate FROM pfms_risk_rev WHERE actionmainid=:actionmainid  ORDER BY revisionno DESC";		
-	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid AND LabCode=:LabCode ";  
+	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact FROM pfms_risk WHERE actionmainid=:actionmainid";
+	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact WHERE riskid=:riskid";
+	private static final String PROJECTRISKMATRIXREVLIST="SELECT riskrevisionid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,revisiondate,RPN,Impact FROM pfms_risk_rev WHERE actionmainid=:actionmainid  ORDER BY revisionno DESC";		
+	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
 	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(e.title,''), e.empname) as 'title',ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
 	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(b.title,''), b.empname) as 'emp',c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
@@ -1486,6 +1486,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("probability", dto.getProbability());
 			query.setParameter("mitigationplans", dto.getMitigationPlans());
 			query.setParameter("revisionno", dto.getRevisionNo());
+			query.setParameter("RPN", Integer.parseInt(dto.getProbability()) * Integer.parseInt(dto.getSeverity()) );
+			query.setParameter("Impact", dto.getImpact());
 			query.setParameter("modifiedby", dto.getModifiedBy());
 			query.setParameter("modifieddate", dto.getModifiedDate());
 			query.setParameter("riskid", dto.getRiskId());
@@ -1516,7 +1518,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		public List<Object> RiskDataPresentList(String projectid,String LabCode) throws Exception {
 			Query query=manager.createNativeQuery(RISKDATAPRESENTLIST);
 			query.setParameter("projectid", projectid);
-			query.setParameter("LabCode", LabCode);
+//			query.setParameter("LabCode", LabCode);
 			List<Object>  RiskDataPresentList=(List<Object>)query.getResultList();
 			return RiskDataPresentList;
 		}	

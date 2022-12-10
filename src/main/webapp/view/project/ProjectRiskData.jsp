@@ -31,8 +31,7 @@
   
  td
  {
- 	padding-top: 5px;
- 	padding-bottom: 5px;
+ 	padding: 5px;
  }
  th
  {
@@ -184,32 +183,77 @@ if(ses1!=null){
 								    </table>
 								    <br>
 								    <br>
-							    <table  style="border-collapse: collapse; border: 0px; width:50%; ">
-							    	<tr>
+							    	<table  style="border-collapse: collapse; border: 0px; width:40%;float: left; " >
+								    	<tr>
+								    		<td style="width: 7%">
+								    			<label style="text-decoration: underline;"><b>Severity </b>  </label>
+								    		</td> 
+								    		<td style="width: 2%">
+								    			<b>X</b>
+								    		</td> 
+								    		<td style="width: 7%">
+								    			<label style="text-decoration: underline;"><b>Probability </b>  </label>
+								    		</td> 
+								    		<td style="width: 2%">
+								    			<b>=</b>
+								    		</td> 
+								    		<td style="width: 7%">
+								    			<label style="text-decoration: underline;"><b>RPN </b>  </label>
+								    		</td> 
+								    	</tr>
 							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Severity </b>  </label>
-							    			</td> 
-							    			<td style="max-width: 40%">
-									    		<input class="form-control" type="text" name="severity"  required maxlength="200" >							    				
+							    			
+							    			<td >
+									    		<!-- <input class="form-control" type="text" name="severity"  required maxlength="200" >	 -->
+									    		 <!-- <input type="range" min="1" max="10" class="slider" id="myRange"> -->					
+									    		 <select class="form-control" name="severity" id="severity" onchange="calculateRPN();" required="required" >
+									    		 		<%for(int i=1;i<=10;i++){ %>
+									    		 			<option value="<%=i%>"><%=i%></option>
+									    		 		<%} %>
+									    		 </select>
+									    		 
 							    			</td>
-							    		</tr>
-							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Probability </b>  </label>
-							    			</td> 
-							    			<td style="max-width: 40%">
-									    		<input class="form-control" type="text" name="probability"  required maxlength="200" >							    				
+							    			<td >
+								    			<b>X</b>
+								    		</td> 
+							    			 
+							    			<td >
+									    		<!-- <input class="form-control" type="text" name="probability"  required maxlength="200" >	 -->
+									    		<select class="form-control" name="probability" id="probability" onchange="calculateRPN();" required="required" >
+									    		 		<%for(int i=1;i<=10;i++){ %>
+									    		 			<option value="<%=i%>"><%=i%></option>
+									    		 		<%} %>
+									    		 </select>						    				
 							    			</td>
-							    		</tr>
+							    			<td >
+							    				<b>=</b>
+							    			</td> 
+							    			
+							    			<td >
+									    		<span style="font-weight: 600" id="RPN"></span>					    				
+							    			</td>
+							    		</tr>	
+							    	</table>
+							    	<br>	
+							    	<br>
+							    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
 							    		<tr>
 							    			<td style="width: 20%">
 							    				<label ><b>Mitigation Plans</b>  </label> 
 							    			</td> 
-							    			<td style="max-width: 40%">
+							    			<td colspan="5" style="max-width: 40%">
 									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="200">							    				
 							    			</td>
-							    		</tr>						
+							    		</tr>		
+							    		<tr>
+							    			<td style="width: 20%">
+							    				<label ><b>Impact</b>  </label> 
+							    			</td> 
+							    			<td colspan="5" style="max-width: 40%">
+									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000">							    				
+							    			</td>
+							    		</tr>	
+							    							
 							    		<tr>
 							    			<td colspan="2" class="center">
 							    				<button type="submit" class="btn btn-sm submit" style="margin-top: 15px;" >SUBMIT</button>
@@ -221,24 +265,28 @@ if(ses1!=null){
 							    	
 							    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
 							  </form>
-							  <%}else{ %>
+							  
+							  
+							  <% }else{ %>
 							  		 <form method="post" action="ProjectRiskDataEdit.htm" id="editrevform" >
+											    
 								    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
 								    		<tr>
-								    			<td>	
-								    				<label ><b>Project : </b></label> 							    					
-													<%for(Object[] obj : projectslist){ %>
-														<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} %> 
-													<%} %>						    			
-								    			</td>
-								    			<td style="width: 60%;">
-								    					<label ><b>Description : </b></label>
-								    					<%=riskdata[1] %> 	
-								    			</td>
-								    			<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
-								    			<td >
-								    			
-								    			</td>
+									    		<td>	
+									    				<label ><b>Project : </b></label> 	
+									    				<%if(Long.parseLong(projectid)==0){ %>
+									    					General
+									    				<%}else if(Long.parseLong(projectid)>0){ 					    					
+															for(Object[] obj : projectslist){ %>
+																<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+															} 
+														}%>						    			
+									    		</td>
+									    		<td style="width: 60%">
+								    					<label ><b>Description : </b></label> <%=riskdata[1] %> 
+									    		</td>
+									    		
+									    		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){ %>
 								    			<td >
 								    					<label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%> 
 									    		</td>
@@ -251,41 +299,84 @@ if(ses1!=null){
 									    		</td>
 									    		
 									    		<%} %>
+									    		
+									    	</tr>
+									    </table>
+									    <br>
+									    <br>
+								    	<table  style="border-collapse: collapse; border: 0px; width:40%;float: left; " >
+									    	<tr>
+									    		<td style="width: 7%">
+									    			<label style="text-decoration: underline;"><b>Severity </b>  </label>
+									    		</td> 
+									    		<td style="width: 2%">
+									    			<b>X</b>
+									    		</td> 
+									    		<td style="width: 7%">
+									    			<label style="text-decoration: underline;"><b>Probability </b>  </label>
+									    		</td> 
+									    		<td style="width: 2%">
+									    			<b>=</b>
+									    		</td> 
+									    		<td style="width: 7%">
+									    			<label style="text-decoration: underline;"><b>RPN </b>  </label>
+									    		</td> 
+									    	</tr>
+								    		<tr>
 								    			
-								    		</tr>
-								    		</table>
-								    		
-								    		<br>
-								    		<br>
-								    
-								    		<table  style="border-collapse: collapse; border: 0px; width:50%;" >
-								    		<tr>
-								    		<tr>
-								    			<td style="width: 20%">
-								    				<label ><b>Severity </b></label>
-								    			</td> 
-								    			<td style="max-width: 40%">
-										    		<input class="form-control" type="text" name="severity" value="<%=riskmatrixdata[4].toString() %>" required maxlength="200" >							    				
+								    			<td >
+										    		<!-- <input class="form-control" type="text" name="severity"  required maxlength="200" >	 -->
+										    		 <!-- <input type="range" min="1" max="10" class="slider" id="myRange"> -->					
+										    		 <select class="form-control" name="severity" id="severity" onchange="calculateRPN();" required="required" >
+										    		 		<%for(int i=1;i<=10;i++){ %>
+										    		 			<option value="<%=i%>" <%if(Integer.parseInt(riskmatrixdata[4].toString())==i){ %>selected <%} %> ><%=i%></option>
+										    		 		<%} %>
+										    		 </select>
+										    		 
 								    			</td>
-								    		</tr>
-								    		<tr>
-								    			<td style="width: 20%">
-								    				<label ><b>Probability </b></label> 
-								    			</td> 
-								    			<td style="max-width: 40%">
-										    		<input class="form-control" type="text" name="probability" value="<%=riskmatrixdata[5].toString() %>" required maxlength="200">							    				
+								    			<td >
+									    			<b>X</b>
+									    		</td> 
+								    			 
+								    			<td >
+										    		<!-- <input class="form-control" type="text" name="probability"  required maxlength="200" >	 -->
+										    		<select class="form-control" name="probability" id="probability" onchange="calculateRPN();" required="required" >
+										    		 		<%for(int i=1;i<=10;i++){ %>
+										    		 			<option value="<%=i%>" <%if(Integer.parseInt(riskmatrixdata[5].toString())==i){ %>selected <%} %>><%=i%></option>
+										    		 		<%} %>
+										    		 </select>						    				
 								    			</td>
-								    		</tr>
-								    		<tr>
-								    			<td style="width: 20%">
-								    				<label ><b>Mitigation Plans</b></label> 
+								    			<td >
+								    				<b>=</b>
 								    			</td> 
-								    			<td style="max-width: 40%">
-										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6].toString() %>"  required maxlength="200" >							    				
+								    			
+								    			<td >
+										    		<span style="font-weight: 600" id="RPN"></span>					    				
 								    			</td>
-								    		</tr>						
+								    		</tr>	
+								    	</table>
+								    	<br>	
+								    	<br>
+								    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
 								    		<tr>
-									    		<td colspan="2" class="center" >
+								    			<td style="width: 12%">
+								    				<label ><b>Mitigation Plans :</b>  </label> 
+								    			</td> 
+								    			<td colspan="5" style="max-width: 40%">
+										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6] %>" required  maxlength="200">							    				
+								    			</td>
+								    		</tr>		
+								    		<tr>
+								    			<td style="width: 12%">
+								    				<label ><b>Impact :</b>  </label> 
+								    			</td> 
+								    			<td colspan="5" style="max-width: 40%">
+										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000">							    				
+								    			</td>
+								    		</tr>	
+								    							
+								    		<tr>
+								    			<td colspan="2" class="center" >
 									    			<%if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
 									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
 									    			<%} %>
@@ -293,8 +384,9 @@ if(ses1!=null){
 									    			
 									    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');"  >BACK</button>
 									    		</td>
-									    	</tr>	    		
+								    		</tr>	    		
 										</table>
+										
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										<input type="hidden" name="riskid" value="<%=riskmatrixdata[0]%>"/>
 										<input type="hidden" name="revisionno" value="<%=riskmatrixdata[7]%>"/>
@@ -330,22 +422,27 @@ if(ses1!=null){
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >		
 							<thead>
 								<tr>
-									<th>Revision No</th>
-									<th>Description</th>
-									<th>Severity</th> 
-									<th>Probability</th>	
-									<th>Mitigation Plans</th>							
-								 	<th> Revision Date</th>
+									<th style="width: 5%;" >Revision No</th>
+									<th style="width: 25%;" >Description</th>
+									<th style="width: 5%;" >Severity</th> 
+									<th style="width: 5%;" >Probability</th>
+									<th style="width: 5%;" >RPN</th>	
+									<th style="width: 25%;" >Mitigation Plans</th>							
+								 	<th style="width: 25%;" > Impact</th>
+								 	<th style="width: 10%;" > Revised on</th>
+								 	
 								</tr>
 							</thead>
 							<tbody>
 								<%for(Object[] obj : projectriskmatrixrevlist){ %>
 									<tr>
 										<td class="center"><%=Long.parseLong(obj[7].toString()) %></td>
-										<td class="center"><%=obj[3] %></td>
+										<td class=""><%=obj[3] %></td>
 										<td class="center"><%=obj[4] %></td>
 										<td class="center"><%=obj[5] %></td>
-										<td class="center"><%=obj[6] %></td>
+										<td class="center"><%=obj[9] %></td>
+										<td class=""><%=obj[6] %></td>
+										<td class=""><%=obj[10] %></td>
 										<td class="center"><%=sdf.format(sdf1.parse(obj[8].toString()) )%></td>
 									</tr>
 								<%} %>
@@ -367,12 +464,7 @@ function submitForm(frmid)
 { 
   document.getElementById(frmid).submit(); 
 } 
-</script>
 
-
-	
-
-<script type="text/javascript">
 function appendrev(frmid){
 	 
 	      $("<input />").attr("type", "hidden")
@@ -388,12 +480,19 @@ function appendrev(frmid){
 	
 
 $(document).ready(function(){
-	  $("#myTable").DataTable({
-	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
-	 "pagingType": "simple"
-	
+	$("#myTable").DataTable({
+		"lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 	"pagingType": "simple"
+	});
 });
-  });
+
+  		function calculateRPN()
+  		{
+  			var $sev = $('#severity').val();
+  			var $pro = $('#probability').val();
+  			$('#RPN').html( Number($sev) * Number($pro) );
+  		}
+  		$(document).ready(calculateRPN());
 </script>
 
 

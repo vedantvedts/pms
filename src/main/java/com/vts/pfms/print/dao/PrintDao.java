@@ -3,8 +3,10 @@ package com.vts.pfms.print.dao;
 import java.util.List;
 
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -67,4 +69,6 @@ public interface PrintDao {
 	public List<TechImages> getTechList(String proId)throws Exception;
 	public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
 	public Committee getCommitteeData(String committeeid) throws Exception;
+	public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing)throws Exception;
+	public CommitteeProjectBriefingFrozen getFrozenProjectBriefing(String scheduleId) throws Exception;
 }

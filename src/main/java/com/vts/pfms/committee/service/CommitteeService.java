@@ -23,6 +23,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
 import com.vts.pfms.committee.model.CommitteeInitiation;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
@@ -263,6 +264,8 @@ public interface CommitteeService {
 	public List<Object[]> LastPMRCActions(long scheduleid, String committeeid, String proid, String isFrozen) throws Exception;
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
 	public LabMaster LabDetailes(String LabCode) throws Exception;
+	public long FreezeDPFMMinutes(CommitteeMeetingDPFMFrozen dpfm) throws Exception;
+	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
     
 }
 

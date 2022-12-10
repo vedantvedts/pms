@@ -347,7 +347,6 @@ public class HeaderDaoImpl implements HeaderDao {
 	
 	@Override
 	public List<Object[]> LabMasterList(String Clusterid) throws Exception {
-		System.out.println(Clusterid);
 		Query query = manager.createNativeQuery(LABMASTERLIST);
 		query.setParameter("clusterid", Clusterid);
 		List<Object[]> LabMasterList= (List<Object[]>)query.getResultList();

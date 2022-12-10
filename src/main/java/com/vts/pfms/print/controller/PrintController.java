@@ -19,7 +19,6 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -58,7 +57,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.google.gson.Gson;
-import com.ibm.icu.math.BigDecimal;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
@@ -84,6 +82,7 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.TotalDemand;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -967,6 +966,820 @@ public class PrintController {
 	}
 	
 	
+	@PostMapping(value = "ProjectBriefingFreeze.htm")
+	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
+	    try {
+	    	String projectid=req.getParameter("projectid");
+	    	String committeeid= req.getParameter("committeeid");
+	    	
+	    	long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
+		    if(nextScheduleId>0) 
+		    {
+		    	String freezeflag = service.getNextScheduleFrozen(nextScheduleId);
+		    	if(freezeflag.equalsIgnoreCase("N")) 
+		    	{
+			   	
+		    		String tempid=committeeid;
+			    	Committee committee = service.getCommitteeData(committeeid);
+			    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+			    	List<Object[]> projectattributes = new ArrayList<Object[]>();
+			    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
+			    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
+			    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
+			    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
+			    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> ReviewMeetingListEB = new ArrayList<List<Object[]>>();
+			    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+			    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
+			    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
+		    		List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
+			    	
+			    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
+			    	
+			    	
+			    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
+			    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
+		    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
+		    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
+			    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+			    	for(String proid : Pmainlist) 
+			    	{	    	
+			    		Object[] projectattribute = service.ProjectAttributes(proid);
+			    		
+			    		TechImages.add(service.getTechList(proid));
+			    		projectattributes.add(projectattribute);
+			    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+			    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
+			    		milestones.add(service.Milestones(proid));
+			    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
+			    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
+			    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
+			    		ganttchartlist.add(service.GanttChartList(proid));
+			    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
+			    		riskmatirxdata.add(service.RiskMatirxData(proid));
+			    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
+			    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
+			    		projectdatadetails.add(service.ProjectDataDetails(proid));
+			    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
+			    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
+			    		TechWorkDataList.add(service.TechWorkData(proid));
+				    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+			    		ProjectRevList.add(service.ProjectRevList(proid));
+			    	
+				/* ----------------------------------------------------------------------------------------------------------	   */  		
+			    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
+					 		HttpHeaders headers = new HttpHeaders();
+					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+					    	 
+					 		String jsonResult=null;
+							try {
+								HttpEntity<String> entity = new HttpEntity<String>(headers);
+								ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+								jsonResult=response.getBody();						
+							}catch(Exception e) {
+								req.setAttribute("errorMsg", "errorMsg");
+							}
+							ObjectMapper mapper = new ObjectMapper();
+							mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+							mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+							List<ProjectFinancialDetails> projectDetails=null;
+							if(jsonResult!=null) {
+								try {
+									/*
+									 * projectDetails = mapper.readValue(jsonResult,
+									 * mapper.getTypeFactory().constructCollectionType(List.class,
+									 * ProjectFinancialDetails.class));
+									 */
+									projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+									financialDetails.add(projectDetails);
+									req.setAttribute("financialDetails",projectDetails);
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+							}
+			    	
+							final String localUri2=uri+"/pfms_serv/getTotalDemand";
+		
+					 		String jsonResult2=null;
+							try {
+								HttpEntity<String> entity = new HttpEntity<String>(headers);
+								ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+								jsonResult2=response.getBody();						
+							}catch(Exception e) {
+								req.setAttribute("errorMsg", "errorMsg");
+							}
+							ObjectMapper mapper2 = new ObjectMapper();
+							mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+							mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+							List<TotalDemand> totaldemand=null;
+							if(jsonResult2!=null) {
+								try {
+									/*
+									 * projectDetails = mapper.readValue(jsonResult,
+									 * mapper.getTypeFactory().constructCollectionType(List.class,
+									 * ProjectFinancialDetails.class));
+									 */
+									totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+									req.setAttribute("TotalProcurementDetails",totaldemand);
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+							}
+			 
+			    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
+			    	List<Object[]> procurementOnDemand=null;
+			    	List<Object[]> procurementOnSanction=null;
+			    	
+		
+			    	if(procurementStatusList!=null)
+			    	{
+				    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+				    	Collection<?> keys = map.keySet();
+				    	for(Object key:keys)
+				    	{
+				    		if(key.toString().equals("D")) {
+				    			procurementOnDemand=map.get(key);
+					    	}else if(key.toString().equals("S")) {
+					    		procurementOnSanction=map.get(key);
+					    	}
+				    	 }
+			    	}
+		//	    	procurementOnDemandlist.add(procurementStatusList);
+		//	    	procurementOnDemandlist.add(procurementOnDemand);
+		//	    	procurementOnSanctionlist.add(procurementOnSanction);
+			    	
+			    	procurementOnDemandlist.add(procurementOnDemand);
+			    	procurementOnSanctionlist.add(procurementOnSanction);
+			    	
+			    	req.setAttribute("procurementOnDemand", procurementOnDemand);
+			    	req.setAttribute("procurementOnSanction", procurementOnSanction);
+			    }
+		/* ----------------------------------------------------------------------------------------------------------  */
+			    	
+			    	req.setAttribute("TechImages",TechImages);
+			    	req.setAttribute("committeeData", committee);
+			    	req.setAttribute("projectattributes",projectattributes);
+		    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
+		    		req.setAttribute("milestonesubsystems", milestonesubsystems);
+		    		req.setAttribute("milestones", milestones);	  
+		    		req.setAttribute("lastpmrcactions", lastpmrcactions);
+		    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
+		    		req.setAttribute("ProjectDetails", ProjectDetails);
+		    		req.setAttribute("ganttchartlist", ganttchartlist );
+		    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
+		    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
+		    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
+		    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
+		    		req.setAttribute("projectdatadetails",projectdatadetails);
+		    		
+		    		
+		    		req.setAttribute("ReviewMeetingList",ReviewMeetingListEB);
+		    		req.setAttribute("ReviewMeetingListPMRC",ReviewMeetingListPMRC);
+		    		
+		    		req.setAttribute("financialDetails",financialDetails);
+		    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
+		    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
+		    		
+		    		req.setAttribute("TechWorkDataList",TechWorkDataList);
+		    		req.setAttribute("ProjectRevList", ProjectRevList);
+		        	
+		    		req.setAttribute("projectidlist",Pmainlist);
+		    		req.setAttribute("projectid",projectid);
+		    		req.setAttribute("committeeid",tempid);
+		    		req.setAttribute("ProjectCost",ProjectCost);
+			    	req.setAttribute("isprint", "0");
+			    	req.setAttribute("AppFilesPath",ApplicationFilesDrive);
+			    	req.setAttribute("projectLabCode",projectLabCode);
+			    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+			    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));    
+		            req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
+		            req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
+		    		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
+		    		
+		    		
+		    		
+		    		String LevelId= "2";
+					
+					if(service.MileStoneLevelId(projectid,committeeid) != null) {
+						LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
+					}
+					  		
+					req.setAttribute("levelid", LevelId);
+					
+		    		
+		    		
+			    	String filename="BriefingPaper";		
+			    	
+			    	String path=req.getServletContext().getRealPath("/view/temp");
+			    	req.setAttribute("path",path); 
+			    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			    	req.getRequestDispatcher("/view/print/BriefingPaperNew1.jsp").forward(req, customResponse);
+			    	String html = customResponse.getOutput();
+			    	byte[] data = html.getBytes();
+			    	InputStream fis1=new ByteArrayInputStream(data);
+			    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+			    	pdfDoc.setTagged();
+			    	Document document = new Document(pdfDoc, PageSize.A4);
+			    	//document.setMargins(50, 100, 150, 50);
+			    	document.setMargins(50, 50, 50, 50);
+			    	ConverterProperties converterProperties = new ConverterProperties();
+			    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+			    	converterProperties.setFontProvider(dfp);
+			        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+		            ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
+		            ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
+			        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
+			        
+			        
+			        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+			        Document docMain = new Document(pdfDocMain,PageSize.A4);
+			        docMain.setMargins(50, 50, 50, 50);
+			        Rectangle pageSizeMain;
+			        PdfCanvas canvasMAin;
+			        int main = pdfDocMain.getNumberOfPages();
+			        for (int i = 1; i <= main; i++) {
+			            PdfPage pageMain = pdfDocMain.getPage(i);
+			            pageSizeMain = pageMain.getPageSize();
+			            canvasMAin = new PdfCanvas(pageMain);
+			            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
+			            canvasMAin.addImage(leftLogo, rectaMain, false);
+			            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
+			            canvasMAin.addImage(rightLogo, rectaMain2, false);
+		
+		
+			        }
+			        docMain.close();
+			        pdfDocMain.close();
+			        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+			        Files.delete(pathOfFileMain);	
+			        
+			        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+			        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+			        PdfMerger merger = new PdfMerger(pdfDocument);
+			        int z=0;
+			        for(Object[] objData:projectdatadetails)
+					{	
+			        	if(objData!=null) {
+			        	
+			        	try {
+			        		String No2=null;
+			        		if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
+			        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
+			        		}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
+			        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
+			        		} 
+				        	if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
+				        		 	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf"),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+							        Document document5 = new Document(pdfDocument2,PageSize.A4);
+							        document5.setMargins(50, 50, 50, 50);
+							        Rectangle pageSize;
+							        PdfCanvas canvas;
+							        int n = pdfDocument2.getNumberOfPages();
+							        for (int i = 1; i <= n; i++) {
+							            PdfPage page = pdfDocument2.getPage(i);
+							            pageSize = page.getPageSize();
+							            canvas = new PdfCanvas(page);
+							            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+							            canvas.addImage(leftLogo, recta, false);
+							            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+							            canvas.addImage(rightLogo, recta2, false);
+							            canvas.beginText().setFontAndSize(
+							                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+							                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
+							                    .showText(objData[12]+" :-  Grantt Chart ")
+							                    .endText();
+							            
+		
+							        }
+							        document5.close();
+							        pdfDocument2.close();
+						        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+						        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+							        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+							        
+							        pdfDocument3.close();
+							        pdf2.close();
+							        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+							        Files.delete(pathOfFile);	
+							        pathOfFile= Paths.get( path+File.separator+TechWorkDataList.get(z)[8].toString());
+							        
+								    }
+				        	 
+				        	}
+			        	
+			        		catch (Exception e) {
+			        			logger.error(new Date() +" Inside ProjectBriefingDownload "+UserId, e);
+								e.printStackTrace();
+							}
+			        	
+			        	}
+			        	
+			        	
+			        	if(objData!=null && objData[3]!=null) {
+			        	if(FilenameUtils.getExtension(objData[3].toString()).equalsIgnoreCase("pdf")) {
+				        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+				        Document document5 = new Document(pdfDocument2,PageSize.A4);
+				        document5.setMargins(50, 50, 50, 50);
+				        Rectangle pageSize;
+				        PdfCanvas canvas;
+				        int n = pdfDocument2.getNumberOfPages();
+				        for (int i = 1; i <= n; i++) {
+				            PdfPage page = pdfDocument2.getPage(i);
+				            pageSize = page.getPageSize();
+				            canvas = new PdfCanvas(page);
+				            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+				            canvas.addImage(leftLogo, recta, false);
+				            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+				            canvas.addImage(rightLogo, recta2, false);
+				            canvas.beginText().setFontAndSize(
+				                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+				                    .moveText(pageSize.getWidth() / 2 - 124, pageSize.getHeight() - 25)
+				                    .showText(objData[12]+" :-  System Configuration Annexure: ")
+				                    .endText();
+		
+				        }
+				        document5.close();
+				        pdfDocument2.close();
+			        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+			        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+				        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+				        
+				        pdfDocument3.close();
+				        pdf2.close();
+				        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+				        Files.delete(pathOfFile);	
+					    }
+			        	}
+			        	if(objData!=null && objData[4]!=null) {
+					    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf")) {
+					    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+					        Document document5 = new Document(pdfDocument2,PageSize.A4);
+					        document5.setMargins(50, 50, 50, 50);
+					        Rectangle pageSize;
+					        PdfCanvas canvas;
+					        int n = pdfDocument2.getNumberOfPages();
+					        for (int i = 1; i <= n; i++) {
+					            PdfPage page = pdfDocument2.getPage(i);
+					            pageSize = page.getPageSize();
+					            canvas = new PdfCanvas(page);
+					            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(leftLogo, recta, false);
+					            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(rightLogo, recta2, false);
+					            canvas.beginText().setFontAndSize(
+					                    PdfFontFactory.createFont(FontConstants.HELVETICA),11)
+					                    .moveText(pageSize.getWidth() / 2 - 130, pageSize.getHeight() - 25)
+					                    .showText(objData[12]+" :-  System Specification Annexure: ")
+					                    .endText();
+		
+					        }
+					        document5.close();
+					        pdfDocument2.close();
+				        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+				        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+					        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+					        
+					        pdfDocument3.close();
+					        pdf2.close();
+					        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+					        Files.delete(pathOfFile);	
+					    }
+			        	}
+			        	if(objData!=null && objData[5]!=null) {
+					    if(FilenameUtils.getExtension(objData[5].toString()).equalsIgnoreCase("pdf")) {
+					    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[5]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+					        Document document5 = new Document(pdfDocument2,PageSize.A4);
+					        document5.setMargins(50, 50, 50, 50);
+					        Rectangle pageSize;
+					        PdfCanvas canvas;
+					        int n = pdfDocument2.getNumberOfPages();
+					        for (int i = 1; i <= n; i++) {
+					            PdfPage page = pdfDocument2.getPage(i);
+					            pageSize = page.getPageSize();
+					            canvas = new PdfCanvas(page);
+					            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(leftLogo, recta, false);
+					            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(rightLogo, recta2, false);
+					            canvas.beginText().setFontAndSize(
+					                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+					                    .moveText(pageSize.getWidth() / 2 - 140, pageSize.getHeight() - 25)
+					                    .showText(objData[12]+" :-  Overall Product tree/WBS Annexure: ")
+					                    .endText();
+		
+					        }
+					        document5.close();
+					        pdfDocument2.close();
+				        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+				        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+					        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+					        
+					        pdfDocument3.close();
+					        pdf2.close();
+					        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+					        Files.delete(pathOfFile);	
+						    }
+			        	}
+			        	if(objData!=null&&objData[6]!=null) {
+					    if(FilenameUtils.getExtension(objData[6].toString()).equalsIgnoreCase("pdf")) {
+					    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[6]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+					        Document document5 = new Document(pdfDocument2,PageSize.A4);
+					        document5.setMargins(50, 50, 50, 50);
+					        Rectangle pageSize;
+					        PdfCanvas canvas;
+					        int n = pdfDocument2.getNumberOfPages();
+					        for (int i = 1; i <= n; i++) {
+					            PdfPage page = pdfDocument2.getPage(i);
+					            pageSize = page.getPageSize();
+					            canvas = new PdfCanvas(page);
+					            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(leftLogo, recta, false);
+					            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+					            canvas.addImage(rightLogo, recta2, false);
+					            canvas.beginText().setFontAndSize(
+					                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+					                    .moveText(pageSize.getWidth() / 2 - 145, pageSize.getHeight() - 25)
+					                    .showText(objData[12]+" :-  TRL table with TRL at sanction stage Annexure ")
+					                    .endText();
+					            
+		
+					        }
+					        document5.close();
+					        pdfDocument2.close();
+				        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+				        	PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+					        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+					        
+					        pdfDocument3.close();
+					        pdf2.close();
+					        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+					        Files.delete(pathOfFile);	
+						    }
+			        	}
+			        	
+			        	//Point 13
+			        	try {
+			        	
+			        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
+			        		 Zipper zip=new Zipper();
+			                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
+						    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+						        Document document5 = new Document(pdfDocument2,PageSize.A4);
+						        document5.setMargins(50, 50, 50, 50);
+						        Rectangle pageSize;
+						        PdfCanvas canvas;
+						        int n = pdfDocument2.getNumberOfPages();
+						        for (int i = 1; i <= n; i++) {
+						            PdfPage page = pdfDocument2.getPage(i);
+						            pageSize = page.getPageSize();
+						            canvas = new PdfCanvas(page);
+						            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+						            canvas.addImage(leftLogo, recta, false);
+						            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+						            canvas.addImage(rightLogo, recta2, false);
+						            canvas.beginText().setFontAndSize(
+						                    PdfFontFactory.createFont(FontConstants.HELVETICA), 11)
+						                    .moveText(pageSize.getWidth() / 2 - 80, pageSize.getHeight() - 25)
+						                    .showText(objData[12]+" :-  Technical Details ")
+						                    .endText();
+						            
+		
+						        }
+						        document5.close();
+						        pdfDocument2.close();
+					        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+					        	PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+						        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+						        
+						        pdfDocument3.close();
+						        pdf2.close();
+						        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+						        Files.delete(pathOfFile);	
+						        pathOfFile= Paths.get( path+File.separator+TechWorkDataList.get(z)[8].toString());
+						        Files.delete(pathOfFile);	
+							    }
+			        	
+			        	}catch (Exception e) {
+			        		logger.error(new Date() +" Inside ProjectBriefingDownload "+UserId, e);
+							e.printStackTrace();
+						}
+			        	
+			        	z++;
+					}
+		
+		
+			        pdfDocument.close();
+			        merger.close();
+			        document.close();
+			        pdf1.close();	       
+			        pdfw.close();
+	        
+			        
+	    			CommitteeProjectBriefingFrozen briefing = CommitteeProjectBriefingFrozen.builder()
+		        											.ScheduleId(nextScheduleId)
+		        											.FreezeByEmpId(Long.parseLong(EmpId))
+		        											.BriefingFile(new File(path +File.separator+ "mergedb.pdf"))
+		        											.LabCode(projectLabCode)
+		        											.IsActive(1)
+		        											.build();
+		       
+	    			long count = service.FreezeBriefing(briefing);
+	    			
+	    			Path pathOfFile2= Paths.get(path +File.separator+ "mergedb.pdf"); 
+			        Files.delete(pathOfFile2);
+			        pathOfFile2= Paths.get( path+File.separator+filename+"Maintemp.pdf");
+			        Files.delete(pathOfFile2);	
+			        
+	    			if(count>0)
+	    			{
+	    				int update=service.updateBriefingPaperFrozen(nextScheduleId);
+	    				redir.addAttribute("result", "Briefing Paper Frozen Successfully");
+	    			}
+	    			else 
+	    			{
+	    				redir.addAttribute("resultfail", "Briefing Paper Freezing Failed");	
+	    			}
+	    			
+		    	}
+		    	else
+		    	{
+		    		redir.addAttribute("result", "Briefing Paper Already Frozen!");
+		    	}
+		    	
+		    }
+		    
+		    redir.addFlashAttribute("projectid",projectid);
+			redir.addFlashAttribute("committeeid",committeeid);
+			return "redirect:/ProjectBriefingPaper.htm";
+	    	
+	    }
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
+    		e.printStackTrace();
+			return "static/Error";
+	
+    	}		
+		
+	}
+	
+	@RequestMapping(value = "MeetingBriefingPaper.htm")
+	public void MeetingBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	{
+		String ScheduleId = req.getParameter("scheduleid");
+		CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+//		if(briefing == null) 
+//		{
+//			
+//			redir.addAttribute("resultfail", "Briefing Paper Not Freezed!");	
+//			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+//			redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+//			return "redirect:/ProjectBriefingPaper.htm";
+//		}else
+//		{
+			res.setContentType("application/pdf");
+		    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
+		    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
+		    FileInputStream fis = new FileInputStream(file);
+		    DataOutputStream os = new DataOutputStream(res.getOutputStream());
+		    res.setHeader("Content-Length",String.valueOf(file.length()));
+		    byte[] buffer = new byte[1024];
+		    int len = 0;
+		    while ((len = fis.read(buffer)) >= 0) {
+		        os.write(buffer, 0, len);
+		    } 
+		    os.close();
+		    fis.close();
+//		}
+//		return "";
+	}
+	
+	
+//	@PostMapping(value = "ProjectBriefingFreeze.htm")
+//	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		String LabCode = (String)ses.getAttribute("labcode");
+//		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
+//	    try {
+//	    	String projectid=req.getParameter("projectid");
+//	    	String committeeid= req.getParameter("committeeid");
+//	    	String tempid=committeeid;
+//	        long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
+//	    	if(nextScheduleId>0) {
+//	    		if(service.getNextScheduleFrozen(nextScheduleId).equalsIgnoreCase("N")) {
+//	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//	    	String Logintype= (String)ses.getAttribute("LoginType");
+//	    	Committee committee = service.getCommitteeData(committeeid);
+//	    	
+//	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+//	    	    	
+//	    	
+//	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
+//	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
+//	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
+//	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
+//	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+//	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
+//	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
+//	    	
+//	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
+//	    	
+//	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
+//	    	
+//	    	
+//	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
+//	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
+//    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
+//	    	
+//	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+//	    	for(String proid : Pmainlist) 
+//	    	{	    	
+//	    		Object[] projectattribute = service.ProjectAttributes(proid);
+//	    		
+//	    		projectattributes.add(projectattribute);
+//	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+//	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
+//	    		milestones.add(service.Milestones(proid));
+//	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
+//	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
+//	    		Object[] prodetails=service.ProjectDetails(proid).get(0);
+//	    		ProjectDetails.add(prodetails);
+//	    		ganttchartlist.add(service.GanttChartList(proid));
+//	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
+//	    		riskmatirxdata.add(service.RiskMatirxData(proid));
+//	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
+//	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
+//	    		projectdatadetails.add(service.ProjectDataDetails(proid));
+//	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
+//	    		TechWorkDataList.add(service.TechWorkData(proid));
+//	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+//	    		ProjectRevList.add(service.ProjectRevList(proid));
+//	    		
+//	    		
+//	    	
+//		/* ----------------------------------------------------------------------------------------------------------	   */  		
+//	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
+//			 		HttpHeaders headers = new HttpHeaders();
+//			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+//			    	 
+//			 		String jsonResult=null;
+//					try {
+//						HttpEntity<String> entity = new HttpEntity<String>(headers);
+//						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+//						jsonResult=response.getBody();						
+//					}catch(Exception e) {
+//						logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
+//						req.setAttribute("errorMsg", "errorMsg");
+//					}
+//					ObjectMapper mapper = new ObjectMapper();
+//					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//					List<ProjectFinancialDetails> projectDetails=null;
+//					if(jsonResult!=null) {
+//						try {
+//							/*
+//							 * projectDetails = mapper.readValue(jsonResult,
+//							 * mapper.getTypeFactory().constructCollectionType(List.class,
+//							 * ProjectFinancialDetails.class));
+//							 */
+//							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+//							financialDetails.add(projectDetails);
+//							req.setAttribute("financialDetails",projectDetails);
+//						} catch (JsonProcessingException e) {
+//							logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
+//							e.printStackTrace();
+//						}
+//					}
+//	    	
+//	 
+//	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
+//	    	List<Object[]> procurementOnDemand=null;
+//	    	List<Object[]> procurementOnSanction=null;
+//	    	
+//
+//	    	if(procurementStatusList!=null)
+//	    	{
+//		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
+//		    	Collection<?> keys = map.keySet();
+//		    	for(Object key:keys)
+//		    	{
+//		    		if(key.toString().equals("D")) {
+//		    			procurementOnDemand=map.get(key);
+//			    	}else if(key.toString().equals("S")) {
+//			    		procurementOnSanction=map.get(key);
+//			    	}
+//		    	 }
+//	    	}
+////	    	procurementOnDemandlist.add(procurementStatusList);
+////	    	procurementOnDemandlist.add(procurementOnDemand);
+////	    	procurementOnSanctionlist.add(procurementOnSanction);
+//	    	
+//	    	procurementOnDemandlist.add(procurementOnDemand);
+//	    	procurementOnSanctionlist.add(procurementOnSanction);
+//	    	
+//	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
+//	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
+//	    }
+///* ----------------------------------------------------------------------------------------------------------  */
+//	    	req.setAttribute("projectslist", projectslist);
+//	    	
+//	    	
+//	    	req.setAttribute("projectattributes",projectattributes);
+//    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
+//    		req.setAttribute("milestonesubsystems", milestonesubsystems);
+//    		req.setAttribute("milestones", milestones);	  
+//    		req.setAttribute("lastpmrcactions", lastpmrcactions);
+//    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
+//    		req.setAttribute("ProjectDetails", ProjectDetails);
+//    		req.setAttribute("ganttchartlist", ganttchartlist );
+//    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
+//    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
+//    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
+//    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
+//    		req.setAttribute("projectdatadetails",projectdatadetails);
+//    		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
+//    		
+//    		req.setAttribute("financialDetails",financialDetails);
+//    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
+//    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
+//    		
+//    		req.setAttribute("TechWorkDataList",TechWorkDataList);
+//    		req.setAttribute("ProjectRevList", ProjectRevList);
+//        	
+//    		req.setAttribute("projectidlist",Pmainlist);
+//    		req.setAttribute("projectid",projectid);
+//    		req.setAttribute("committeeid",tempid);
+//    		req.setAttribute("ProjectCost",ProjectCost);
+//	    	req.setAttribute("isprint", "0");
+//	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
+//	    	
+//	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
+//
+//            String LevelId= "2";
+//			
+//			if(service.MileStoneLevelId(projectid,committeeid) != null) {
+//				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
+//			}
+//			  		
+//			req.setAttribute("levelid", LevelId);
+//    		
+//	    	String filename="BriefingPaper";		
+//	    	
+//	    	String path=req.getServletContext().getRealPath("/view/temp");
+//	    	req.setAttribute("path",path); 
+//	    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//	    	req.getRequestDispatcher("/view/print/BriefingPaperNew1.jsp").forward(req, customResponse);
+//	    	String html = customResponse.getOutput();
+//	    	byte[] data = html.getBytes();
+//	    	InputStream fis1=new ByteArrayInputStream(data);
+//	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"));	
+//	    	pdfDoc.setTagged();
+//	    	Document document = new Document(pdfDoc, PageSize.A4);
+//	    	//document.setMargins(50, 100, 150, 50);
+//	    	document.setMargins(50, 50, 50, 50);
+//	    	ConverterProperties converterProperties = new ConverterProperties();
+//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+//	    	converterProperties.setFontProvider(dfp);
+//	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);   
+//	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
+//	        int update=service.updateBriefingPaperFrozen(nextScheduleId);
+//	        redir.addAttribute("result", "Briefing Paper Frozen for Next Scheduled Meeting.");
+//	    		}else {
+//	    			redir.addAttribute("resultfail", "Briefing Paper Already Frozen for Next Scheduled Meeting.");
+//	    		}
+//	    	}else {
+//	    		redir.addAttribute("resultfail", "No  Meeting scheduled.");
+//	    	}
+//	        
+//	    }
+//	    catch(Exception e) {	    		
+//    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
+//    		e.printStackTrace();
+//			/* return "static/Error"; */
+//	
+//    	}		
+//		return "redirect:/ProjectBriefingPaper.htm";
+//	}
+
 	
 	@RequestMapping(value="ProjectBriefing.htm", method = RequestMethod.POST)
 	public String ProjectBriefing(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
@@ -1518,6 +2331,16 @@ public class PrintController {
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid = req.getParameter("committeeid");
+	    	
+	    	
+	    	
+	    	if(projectid==null || committeeid==null) 
+	    	{
+	    		Map md = model.asMap();	    	
+	    		projectid = (String) md.get("projectid");
+	    		committeeid = (String) md.get("committeeid");
+	    	}
+	    	
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	
 	    	
@@ -1960,220 +2783,9 @@ public class PrintController {
 		return json.toJson(getWorkingHours);
 	}
 	
-	@PostMapping(value = "ProjectBriefingFreeze.htm")
-	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception{
-		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
-	    try {
-	    	String projectid=req.getParameter("projectid");
-	    	String committeeid= req.getParameter("committeeid");
-	    	String tempid=committeeid;
-	        long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
-	    	if(nextScheduleId>0) {
-	    		if(service.getNextScheduleFrozen(nextScheduleId).equalsIgnoreCase("N")) {
-	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	    	String Logintype= (String)ses.getAttribute("LoginType");
-	    	Committee committee = service.getCommitteeData(committeeid);
-	    	
-	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-	    	    	
-	    	
-	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
-	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
-	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
-	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
-	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
-	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
-	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
-	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
-	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
-	    	
-	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
-	    	
-	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
-	    	
-	    	
-	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
-	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
-    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-	    	
-	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
-	    	for(String proid : Pmainlist) 
-	    	{	    	
-	    		Object[] projectattribute = service.ProjectAttributes(proid);
-	    		
-	    		projectattributes.add(projectattribute);
-	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid));
-	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
-	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-	    		Object[] prodetails=service.ProjectDetails(proid).get(0);
-	    		ProjectDetails.add(prodetails);
-	    		ganttchartlist.add(service.GanttChartList(proid));
-	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
-	    		riskmatirxdata.add(service.RiskMatirxData(proid));
-	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
-	    		projectdatadetails.add(service.ProjectDataDetails(proid));
-	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
-	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
-	    		ProjectRevList.add(service.ProjectRevList(proid));
-	    		
-	    		
-	    	
-		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
-			 		HttpHeaders headers = new HttpHeaders();
-			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	 
-			 		String jsonResult=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-						jsonResult=response.getBody();						
-					}catch(Exception e) {
-						logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
-						req.setAttribute("errorMsg", "errorMsg");
-					}
-					ObjectMapper mapper = new ObjectMapper();
-					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-					List<ProjectFinancialDetails> projectDetails=null;
-					if(jsonResult!=null) {
-						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
-							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-							financialDetails.add(projectDetails);
-							req.setAttribute("financialDetails",projectDetails);
-						} catch (JsonProcessingException e) {
-							logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
-							e.printStackTrace();
-						}
-					}
-	    	
-	 
-	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
-	    	List<Object[]> procurementOnDemand=null;
-	    	List<Object[]> procurementOnSanction=null;
-	    	
 
-	    	if(procurementStatusList!=null)
-	    	{
-		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-		    	Collection<?> keys = map.keySet();
-		    	for(Object key:keys)
-		    	{
-		    		if(key.toString().equals("D")) {
-		    			procurementOnDemand=map.get(key);
-			    	}else if(key.toString().equals("S")) {
-			    		procurementOnSanction=map.get(key);
-			    	}
-		    	 }
-	    	}
-//	    	procurementOnDemandlist.add(procurementStatusList);
-//	    	procurementOnDemandlist.add(procurementOnDemand);
-//	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	procurementOnDemandlist.add(procurementOnDemand);
-	    	procurementOnSanctionlist.add(procurementOnSanction);
-	    	
-	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-	    }
-/* ----------------------------------------------------------------------------------------------------------  */
-	    	req.setAttribute("projectslist", projectslist);
-	    	
-	    	
-	    	req.setAttribute("projectattributes",projectattributes);
-    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
-    		req.setAttribute("milestonesubsystems", milestonesubsystems);
-    		req.setAttribute("milestones", milestones);	  
-    		req.setAttribute("lastpmrcactions", lastpmrcactions);
-    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
-    		req.setAttribute("ProjectDetails", ProjectDetails);
-    		req.setAttribute("ganttchartlist", ganttchartlist );
-    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
-    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
-    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
-    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
-    		req.setAttribute("projectdatadetails",projectdatadetails);
-    		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
-    		
-    		req.setAttribute("financialDetails",financialDetails);
-    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
-    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
-    		
-    		req.setAttribute("TechWorkDataList",TechWorkDataList);
-    		req.setAttribute("ProjectRevList", ProjectRevList);
-        	
-    		req.setAttribute("projectidlist",Pmainlist);
-    		req.setAttribute("projectid",projectid);
-    		req.setAttribute("committeeid",tempid);
-    		req.setAttribute("ProjectCost",ProjectCost);
-	    	req.setAttribute("isprint", "0");
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
-	    	
-	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
-
-            String LevelId= "2";
-			
-			if(service.MileStoneLevelId(projectid,committeeid) != null) {
-				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
-			}
-			  		
-			req.setAttribute("levelid", LevelId);
-    		
-	    	String filename="BriefingPaper";		
-	    	
-	    	String path=req.getServletContext().getRealPath("/view/temp");
-	    	req.setAttribute("path",path); 
-	    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-	    	req.getRequestDispatcher("/view/print/BriefingPaperNew1.jsp").forward(req, customResponse);
-	    	String html = customResponse.getOutput();
-	    	byte[] data = html.getBytes();
-	    	InputStream fis1=new ByteArrayInputStream(data);
-	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"));	
-	    	pdfDoc.setTagged();
-	    	Document document = new Document(pdfDoc, PageSize.A4);
-	    	//document.setMargins(50, 100, 150, 50);
-	    	document.setMargins(50, 50, 50, 50);
-	    	ConverterProperties converterProperties = new ConverterProperties();
-	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-	    	converterProperties.setFontProvider(dfp);
-	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);   
-	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
-	        int update=service.updateBriefingPaperFrozen(nextScheduleId);
-	        redir.addAttribute("result", "Briefing Paper Frozen for Next Scheduled Meeting.");
-	    		}else {
-	    			redir.addAttribute("resultfail", "Briefing Paper Already Frozen for Next Scheduled Meeting.");
-	    		}
-	    	}else {
-	    		redir.addAttribute("resultfail", "No  Meeting scheduled.");
-	    	}
-	        
-	    }
-	    catch(Exception e) {	    		
-    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
-    		e.printStackTrace();
-			/* return "static/Error"; */
 	
-    	}		
-		return "redirect:/ProjectBriefingPaper.htm";
-	}
-
+	
 	
 	@RequestMapping(value="ProjectDocs.htm" ,method = RequestMethod.GET)
 	public String ProjectDocuments(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)throws Exception

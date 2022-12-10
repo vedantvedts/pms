@@ -2921,6 +2921,7 @@ public class ProjectController {
 			dto.setSeverity(req.getParameter("severity"));
 			dto.setProbability(req.getParameter("probability"));
 			dto.setMitigationPlans(req.getParameter("mitigationplans"));
+			dto.setImpact(req.getParameter("Impact"));
 			dto.setActionMainId(riskdata[0].toString());
 			dto.setProjectId(projectid);
 			dto.setCreatedBy(Username);		
@@ -2964,6 +2965,7 @@ public class ProjectController {
 			dto.setSeverity(req.getParameter("severity"));
 			dto.setProbability(req.getParameter("probability"));
 			dto.setMitigationPlans(req.getParameter("mitigationplans"));
+			dto.setImpact(req.getParameter("Impact"));
 			dto.setActionMainId(riskdata[0].toString());			
 			dto.setProjectId(projectid);
 			dto.setModifiedBy(Username);			

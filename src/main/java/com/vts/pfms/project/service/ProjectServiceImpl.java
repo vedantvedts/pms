@@ -1489,8 +1489,10 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setProjectId(Long.parseLong(dto.getProjectId()));
 			model.setActionMainId(Long.parseLong(dto.getActionMainId()));
 			model.setDescription(dto.getDescription());
-			model.setSeverity(dto.getSeverity());
-			model.setProbability(dto.getProbability());
+			model.setSeverity(Integer.parseInt(dto.getSeverity()));
+			model.setProbability(Integer.parseInt(dto.getProbability()));
+			model.setRPN(model.getSeverity() * model.getProbability());
+			model.setImpact(dto.getImpact());
 			model.setMitigationPlans(dto.getMitigationPlans());
 			model.setRevisionNo(Long.parseLong("0"));
 			model.setCreatedBy(dto.getCreatedBy());
@@ -1525,9 +1527,13 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setProjectId(Long.parseLong(riskmatrixdata[1].toString()));
 			model.setActionMainId(Long.parseLong(riskmatrixdata[2].toString()));
 			model.setDescription(riskmatrixdata[3].toString());
-			model.setSeverity(riskmatrixdata[4].toString());
-			model.setProbability(riskmatrixdata[5].toString());
+			model.setSeverity(Integer.parseInt(riskmatrixdata[4].toString()));
+			model.setProbability(Integer.parseInt(riskmatrixdata[5].toString()));
+			model.setRPN(Integer.parseInt(riskmatrixdata[9].toString()));
+			
 			model.setMitigationPlans(riskmatrixdata[6].toString());
+			model.setImpact(riskmatrixdata[10].toString());
+			
 			model.setRevisionNo(Long.parseLong(riskmatrixdata[7].toString()));			
 			model.setRevisionDate(sdf1.format(new Date()));
 			model.setCreatedBy(dto.getModifiedBy());

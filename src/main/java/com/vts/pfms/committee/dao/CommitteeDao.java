@@ -15,6 +15,7 @@ import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
 import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMeetingApproval;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
@@ -285,6 +286,8 @@ public interface CommitteeDao {
 	public Object[] getDefaultAgendasCount(String committeeId, String LabCode) throws Exception;
 	public LabMaster LabDetailes(String LabCode) throws Exception;
 	public Object[] CommitteeMainDetails(String CommitteeMainId);
+	public long FreezeDPFMMinutesAdd(CommitteeMeetingDPFMFrozen dpfm) throws Exception;
+	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
 
 
 }

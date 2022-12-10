@@ -1,7 +1,5 @@
 package com.vts.pfms.project.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "pfms_risk_rev")
-public class PfmsRiskRev implements Serializable{
+public class PfmsRiskRev {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +20,11 @@ public class PfmsRiskRev implements Serializable{
 	private Long ProjectId;
     private Long ActionMainId;
     private String Description;
-    private String Severity;
-    private String Probability;
+    private int Severity;
+    private int Probability;
+    private int RPN;
     private String MitigationPlans;
+    private String Impact;
     private Long RevisionNo;
     private String RevisionDate;
     private String CreatedBy;

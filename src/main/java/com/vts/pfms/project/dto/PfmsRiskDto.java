@@ -12,6 +12,7 @@ public class PfmsRiskDto {
 	    private String Severity;
 	    private String Probability;
 	    private String MitigationPlans;
+	    private String Impact;
 	    private String RevisionNo;
 	    private String CreatedBy;
 	    private String CreatedDate;

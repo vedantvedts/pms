@@ -1,5 +1,7 @@
 package com.vts.pfms.print.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -14,15 +16,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.dao.PrintDao;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -33,6 +38,10 @@ public class PrintServiceImpl implements PrintService{
 
 	@Autowired
 	PrintDao dao;
+	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
+	
 	FormatConverter fc=new FormatConverter();
 	
 	private static final Logger logger=LogManager.getLogger(PrintServiceImpl.class);
@@ -432,4 +441,49 @@ public class PrintServiceImpl implements PrintService{
 		return dao.getCommitteeData(committeeid);
 	}
 	
+	@Override
+	public long FreezeBriefing(CommitteeProjectBriefingFrozen briefing) throws Exception 
+	{
+		Object[] scheduledata = dao.CommitteeScheduleEditData(String.valueOf(briefing.getScheduleId()));
+		String meedtingId = scheduledata[11].toString().replaceAll("[&.:?|<>/]", "").replace("\\", "") ;
+		String LabCode = briefing.getLabCode();
+		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\Briefing\\";
+		int count=0;
+		String filename = "Briefing-"+meedtingId;
+		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		{
+			filename = "Briefing-"+meedtingId;
+			filename = filename+" ("+ ++count+")";
+		}
+		File file = briefing.getBriefingFile();
+		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
+		
+		briefing.setBriefingFileName(filename+".pdf");
+		briefing.setFrozenBriefingPath(filepath);
+		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
+		return dao.FreezeBriefingAdd(briefing);
+	}
+	
+	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
+	{
+	   logger.info(new Date() +"Inside SERVICE saveFile ");
+	   Path uploadPath = Paths.get(uploadpath);
+	          
+	   if (!Files.exists(uploadPath)) {
+		   Files.createDirectories(uploadPath);
+	   }
+	        
+	   try (InputStream inputStream = new FileInputStream(fileToSave)) {
+		   Path filePath = uploadPath.resolve(fileName);
+	       Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	   } catch (IOException ioe) {       
+		   throw new IOException("Could not save file: " + fileName, ioe);
+	   }     
+	}
+	
+	@Override
+	public CommitteeProjectBriefingFrozen getFrozenProjectBriefing(String scheduleId)throws Exception
+	{
+		return dao.getFrozenProjectBriefing(scheduleId);
+	}
 }

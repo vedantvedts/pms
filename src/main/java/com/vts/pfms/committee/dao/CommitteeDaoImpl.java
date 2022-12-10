@@ -32,6 +32,7 @@ import com.vts.pfms.committee.model.CommitteeInitiation;
 import com.vts.pfms.committee.model.CommitteeInvitation;
 import com.vts.pfms.committee.model.CommitteeMain;
 import com.vts.pfms.committee.model.CommitteeMeetingApproval;
+import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
@@ -2857,4 +2858,20 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		
 	}
 	
+	@Override
+	public long FreezeDPFMMinutesAdd(CommitteeMeetingDPFMFrozen dpfm)throws Exception
+	{
+		manager.persist(dpfm);
+		return dpfm.getFrozenDPFMId();
+	}
+	
+	private static final String GETFROZENDPFMMINUTES = "from CommitteeMeetingDPFMFrozen where ScheduleId=:scheduleId and IsActive=1 "; 
+	@Override
+	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId)throws Exception
+	{
+		Query query=manager.createQuery(GETFROZENDPFMMINUTES);
+		query.setParameter("scheduleId", Long.parseLong(scheduleId));
+		CommitteeMeetingDPFMFrozen dpfm=(CommitteeMeetingDPFMFrozen)query.getResultList().get(0);
+		return dpfm;
+	}
 }

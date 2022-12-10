@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
 import com.vts.pfms.print.model.TechImages;
@@ -71,4 +72,6 @@ public interface PrintService {
     public List<TechImages> getTechList(String proId)throws Exception;
     public List<Object[]> SpecialCommitteesList(String LabCode) throws Exception;
     public Committee getCommitteeData(String committeeid) throws Exception;
+	public long FreezeBriefing(CommitteeProjectBriefingFrozen briefing) throws Exception;
+	public CommitteeProjectBriefingFrozen getFrozenProjectBriefing(String scheduleId) throws Exception;
 }
