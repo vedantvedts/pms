@@ -1250,7 +1250,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
 			
 			
-		<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+		<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>	
 											<tr>
 												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
@@ -1310,7 +1310,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 															<%}else{ %>-<%} %>
 														</td>
 															
-														<td  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td  ><%=obj[7] %>,&nbsp;<%=obj[8] %></td>	
 														<td style="text-align: center">
 															
 															<%if(obj[18]!=null){ %>
@@ -1344,6 +1344,111 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<td style="text-align: center;" ><%=obj[2] %></td>
 														<td style="text-align: center;" ><%=obj[22] %></td>
 														<td style="text-align: justify;" ><%=obj[3] %></td>
+														<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
+													</tr>
+															
+													<%}%>
+												<%}else{%>
+													<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
+												<%} %>
+											</tbody>		
+										</table> --%>
+										
+										
+										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+										<thead>	
+											<tr>
+												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
+												<th style="width: 330px; " colspan="3">Risk</th>
+												<th style="width: 90px; "  > PDC</th>
+												<th style="width: 110px; "> ADC</th>
+												<th style="width: 160px; " > Responsibility</th>
+												<th style="width: 50px; ">Status</th>
+												<th style="width: 215px; ">Remarks</th>	
+											</tr>
+											
+											<tr>
+												<th  style="text-align: center "> Severity</th>
+												<th  style="text-align: center "> Probability</th>
+												<th  style="text-align: center "> RPN</th>
+												<th  style="" colspan="3" > Mitigation Plans</th>
+												<th  style="" colspan="2"> Impact</th>		
+											</tr>
+										
+										</thead>
+																		
+										<tbody>
+												<%if(riskmatirxdata.get(z).size()>0){
+												int i=0;%> 
+													<%for(Object[] obj : riskmatirxdata.get(z)){
+													i++;%>
+													<tr>
+														<td style="text-align: center" rowspan="2"><%=i %></td>
+														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
+														<td style="text-align: center">
+															<%=sdf.format(sdf1.parse(obj[17].toString())) %>
+														</td>
+														
+														<td style="text-align: center">
+															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
+
+																<%if(obj[18]!=null){ %>
+																	<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
+																		<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																		<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[17].equals(obj[20]))){  %>
+																		<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																	   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
+																	<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
+																	<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	<%}
+																	}else if(obj[15].toString().equals("C")){ %>
+																        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																    <% }else{ %>
+																      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
+																<%} %> 
+																
+															<%}else{ %>-<%} %>
+														</td>
+															
+														<td  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td style="text-align: center">
+															
+															<%if(obj[18]!=null){ %>
+																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
+																	<span class="ongoing">RC</span>
+																<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																	<span class="delay">FD</span>
+																<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[17].equals(obj[20]))){  %>
+																	<span class="completed">CO</span>
+																<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
+																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[17].toString()).isEqual(LocalDate.now()) )){  %> 
+																<span class="ongoing">OG</span>
+																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
+																<span class="delay">DO</span>
+															<%}
+															}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
+														        <span class="completed">CO</span>
+														    <% }else{ %>
+														      	<span class="notyet">NS</span> 
+															<% } %> 
+														
+														
+														</td>
+														<td style="text-align: justify"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+														
+													</tr>	
+													
+													<tr>
+														<td style="text-align: center;" ><%=obj[1] %></td>
+														<td style="text-align: center;" ><%=obj[2] %></td>
+														<td style="text-align: center;" ><%=obj[22] %></td>
+														<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
 														<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
 													</tr>
 															
