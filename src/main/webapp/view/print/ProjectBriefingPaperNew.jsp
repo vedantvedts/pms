@@ -1426,40 +1426,23 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<div align="left" style="margin-left: 15px;">(c) Risk Matrix/Management Plan/Status. </div>
 
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-										<thead>
-											<tr>
-												<td colspan="7" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														<span class="notassign">NA</span> : Not Assigned &nbsp;
-														<span class="assigned">AA</span> : Activity Assigned &nbsp; 
-														<span class="notyet">NS</span> : Not yet Started &nbsp;
-														<span class="ongoing">OG</span> : On Going &nbsp;
-														<span class="delay">DO</span> : Delay - On Going &nbsp;
-														<span class="ongoing">RC</span> : Review & Close &nbsp;
-														<span class="delay">FD</span> : Forwarded With Delay &nbsp;
-														<span class="completed">CO</span> : Completed &nbsp;
-														<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
-														<span class="inactive">IA</span> : InActive &nbsp;
-														<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
-								   				</td>									
-											</tr>
+										<thead>	
 											<tr>
 												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-												<th style="width: 280px; ">Risk</th>
+												<th style="width: 330px; " colspan="3">Risk</th>
 												<th style="width: 100px; "  > PDC</th>
-												<th style="width: 110px; "> ADC</th>
-												<th style="width: 200px; " > Responsibility</th>
+												<th style="width: 100px; "> ADC</th>
+												<th style="width: 160px; " > Responsibility</th>
 												<th style="width: 50px; ">Status</th>
-												<th style="width: 235px; ">Remarks</th>	
+												<th style="width: 215px; ">Remarks</th>	
 											</tr>
 											
 											<tr>
-												<th  style="text-align: center "> Severity</th>
-												<th  style="text-align: center "> Probability</th>
-												<th  style="text-align: center "> RPN</th>
-												<th  style=""> Mitigation Plans</th>
-												<th  style="" colspan="2"> Impact</th>		
+												<th  style="text-align: center;width: 110px; " > Severity</th>
+												<th  style="text-align: center;width: 110px;"> Probability</th>
+												<th  style="text-align: center;width: 110px;"> RPN</th>
+												<th  style="width:320px" colspan="3" > Mitigation Plans</th>
+												<th  style="width:265px" colspan="2"> Impact</th>		
 											</tr>
 										
 										</thead>
@@ -1471,10 +1454,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													i++;%>
 													<tr>
 														<td style="text-align: center" rowspan="2"><%=i %></td>
-														<td style="text-align: center;"><%=obj[0] %></td>
+														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
 														<td style="text-align: center">
 															<%=sdf.format(sdf1.parse(obj[17].toString())) %>
 														</td>
+														
 														<td style="text-align: center">
 															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 
@@ -1526,7 +1510,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														
 														
 														</td>
-														<td style="text-align: center"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+														<td style="text-align: justify"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
 													</tr>	
 													
@@ -1534,7 +1518,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: center;" ><%=obj[1] %></td>
 														<td style="text-align: center;" ><%=obj[2] %></td>
 														<td style="text-align: center;" ><%=obj[22] %></td>
-														<td style="text-align: justify;" ><%=obj[3] %></td>
+														<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
 														<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
 													</tr>
 															
@@ -1543,7 +1527,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
 												<%} %>
 											</tbody>		
-										</table> 
+										</table>
 										
 										<%-- <div style="display: flex;justify-content: center;align-items: center;margin: 10px;padding: 10px; width: 100%;">
 											
