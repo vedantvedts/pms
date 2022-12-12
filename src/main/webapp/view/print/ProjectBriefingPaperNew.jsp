@@ -1,3 +1,4 @@
+<%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
@@ -849,8 +850,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<th  style="width: 315px !important;">Recommendation Point</th>
 						<th  style="width: 100px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
-						<th  style="width: 50px !important;">Status</th>
-						<th  style="width: 280px !important; ">Remarks</th>
+						<th  style="width: 80px !important;">Status(Days)</th>
+						<th  style="width: 250px !important; ">Remarks</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -865,40 +866,41 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
 							<td   style=" text-align: center;">
-							<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
-						</td>
-						<td>
-							<%if(obj[4]!= null){ %>  
-								<%=obj[12] %><%-- , <%=obj[13] %> --%>
-							<%}else { %><!--  <span class="notassign">NA</span>  --><span class="">Not Assigned</span> <%} %> 
-						</td>
-						<td  style="text-align: center; ">
-							<%if(obj[4]!= null){if(obj[18]!=null){ %>
-								<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
-									<span class="ongoing">RC</span>
-							<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-									<span class="delay">FD</span>
-							<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-									<span class="completed">CO</span>
-							<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-												
-								   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
-														   
-							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[17].toString()).equals(LocalDate.now()))){  %> 
-									<span class="ongoing">OG</span>
-							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
-									<span class="delay">DO</span>
-							<%}else{ %>
-									<span class="ongoing">-</span>
-														
-							<%}}else if(obj[10].toString().equals("C")){%>
-							        <span class="completed">CO</span>
-						    <% }else{ %>
-						    		<span class="notyet">NS</span> 
-							<%}}else { %> <span class="notassign">NA</span> <%} %> 
-						</td>
-						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
-					</tr>		
+								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+							</td>
+							<td>
+								<%if(obj[4]!= null){ %>  
+									<%=obj[12] %><%-- , <%=obj[13] %> --%>
+								<%}else { %><!--  <span class="notassign">NA</span>  --><span class="">Not Assigned</span> <%} %> 
+							</td>
+							<td  style="text-align: center; ">
+								<%if(obj[4]!= null){
+									
+								if(obj[18]!=null){ %>
+									<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+										<span class="ongoing">RC</span>
+								<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+										<span class="delay">FD</span>
+								<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+										<span class="completed">CO</span>
+								<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+									   <span class="completeddelay">CD 
+									    (<%=  ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString()))   %>)  </span>
+															   
+								<%}else if(!obj[16].toString().equals("F") && !obj[10].toString().equals("C") &&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[17].toString()).equals(LocalDate.now()))){  %> 
+										<span class="ongoing">OG</span>
+								<%}else if(!obj[16].toString().equals("F")&& !obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
+										<span class="delay">DO
+											 (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.now())  %>)   
+										</span>
+								<%} }else if(obj[10].toString().equals("C")){%>
+								        <span class="completed">CO</span>
+							    <% }else{ %>
+							    		<span class="notyet">NS</span> 
+								<%}}else { %> <span class="notassign">NA</span> <%} %> 
+							</td>
+							<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
+						</tr>		
 					<%i++;}
 						}%>
 					<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
@@ -910,12 +912,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 				
 							
 							
-									 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
-									  
-								  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+		 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
+								  
+		  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
-								
-							
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
@@ -942,8 +942,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<th  style="width: 100px; ">PDC</th>
 								<th  style="width: 100px; "> ADC</th>
 								<th  style="width: 210px; "> Responsibility</th>
-								<th  style="width: 50px; ">Status</th>
-								<th  style="width: 235px; ">Remarks</th>			
+								<th  style="width: 80px; ">Status(Days)</th>
+								<th  style="width: 205px; ">Remarks</th>			
 							</tr>
 						</thead>
 							
@@ -981,27 +981,27 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
 												<%} %> 
 												
-												<%}else{ %>-<%} %>
+												<%}else{ %> - <%} %>
 												
 												</td>
 												
 												
-												<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
-												<td  style="text-align: center;"> 
+												<td> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+												<td  style="text-align: center;" > 
 													<%if(obj[15]!=null){ %>
-													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
-														<span class="ongoing">RC</span>
-													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-														<span class="delay">FD</span>
-													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
-														<span class="completed">CO</span>
-													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
-													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
-													<span class="ongoing">OG</span>
-													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
-													<span class="delay">DO</span>
-													<%}
+														<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+															<span class="ongoing">RC</span>
+														<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+															<span class="delay">FD</span>
+														<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+															<span class="completed">CO</span>
+														<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														   	<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
+														<%}else if(obj[14].toString().equals("F") && obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
+															<span class="ongoing">OG</span>
+														<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
+															<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.now())  %>)  </span>
+														<%}
 													}else if(obj[9].toString().equals("C")){ %>
 												        <span class="completed">CO</span>
 												    <% }else{ %>
@@ -1166,7 +1166,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</td>
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
-												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%>assigned
+												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%> assigned
 														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> notyet
 														<%}else if(obj[10].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[10].toString().equalsIgnoreCase("3")) {%> completed
@@ -1175,9 +1175,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[11] %>	
 												
-												<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[5].toString()), LocalDate.parse(obj[7].toString())) %>)
-												<%} %>
+												
+												<%-- <%if(obj[10].toString().equalsIgnoreCase("5")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
+												<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
+												<%} %> --%>
 												
 											</span>
 												</td>
@@ -1241,6 +1244,25 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 			
 			
 						<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+							<thead>
+							<tr>
+								<td colspan="10" style="border: 0">
+									<p style="font-size: 10px;text-align: center"> 
+										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									 </p>
+								</td>									
+							</tr>
+							
 								<tr>
 									<th  style="width: 20px; ">SN</th>
 									<th  style="width: 30px; ">MS</th>
@@ -1254,6 +1276,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								 	<th  style="max-width: 30px; "> Info </th>
 									
 								</tr>
+							</thead>
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
 									int milcountA=1;

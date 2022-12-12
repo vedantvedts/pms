@@ -717,8 +717,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<th  style="width: 335px !important;">Recommendation Point</th>
 						<th  style="width: 80px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
-						<th  style="width: 50px !important;">Status</th>
-						<th  style="width: 280px !important; ">Remarks</th>
+						<th  style="width: 80px !important;">Status(Days)</th>
+						<th  style="width: 250px !important; ">Remarks</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -741,29 +741,30 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<%}else { %> <!-- <span class="notassign">NA</span>  --> <span class="">Not Assigned</span> <%} %> 
 						</td>
 						<td  style="text-align: center; ">
-							<%if(obj[4]!= null){if(obj[18]!=null){ %>
-								<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
-									<span class="ongoing">RC</span>
-							<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-									<span class="delay">FD</span>
-							<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-									<span class="completed">CO</span>
-							<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-												
-								   <span class="completeddelay">CD  (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
-														   
-							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[17].toString()).isEqual((LocalDate.now()))) ){  %> 
-									<span class="ongoing">OG</span>
-							<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&& LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
-									<span class="delay">DO</span>
-							<%}else{ %>
-									<span class="ongoing">-</span>
-														
-							<%}}else if(obj[10].toString().equals("C")){%>
-							        <span class="completed">CO</span>
-						    <% }else{ %>
-						    		<span class="notyet">NS</span> 
-							<%}}else { %> <span class="notassign">NA</span> <%} %> 
+							<%if(obj[4]!= null){
+									
+								if(obj[18]!=null){ %>
+									<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+										<span class="ongoing">RC</span>
+								<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+										<span class="delay">FD</span>
+								<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+										<span class="completed">CO</span>
+								<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+									   <span class="completeddelay">CD 
+									    (<%=  ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString()))   %>)  </span>
+															   
+								<%}else if(!obj[16].toString().equals("F") && !obj[10].toString().equals("C") &&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[17].toString()).equals(LocalDate.now()))){  %> 
+										<span class="ongoing">OG</span>
+								<%}else if(!obj[16].toString().equals("F")&& !obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
+										<span class="delay">DO
+											 (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.now())  %>)   
+										</span>
+								<%} }else if(obj[10].toString().equals("C")){%>
+								        <span class="completed">CO</span>
+							    <% }else{ %>
+							    		<span class="notyet">NS</span> 
+								<%}}else { %> <span class="notassign">NA</span> <%} %> 
 						</td>
 						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
 					</tr>		
@@ -808,8 +809,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<th  style="width: 80px; ">PDC</th>
 								<th  style="width: 80px; "> ADC</th>
 								<th  style="width: 210px; "> Responsibility</th>
-								<th  style="width: 50px; ">Status</th>
-								<th  style="width: 235px; ">Remarks</th>			
+								<th  style="width: 80px; ">Status(Days)</th>
+								<th  style="width: 205px; ">Remarks</th>			
 							</tr>
 						</thead>
 							
@@ -864,7 +865,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[14].toString().equals("F") && obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
 															<span class="ongoing">OG</span>
 														<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
-															<span class="delay">DO</span>
+															<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.now())  %>)  </span>
 														<%}
 													}else if(obj[9].toString().equals("C")){ %>
 												        <span class="completed">CO</span>
@@ -902,9 +903,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									  {int i=1;
 									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											<td  style="max-width: 70px;font-size:12px !important; "><%=obj[1] %> #<%=i %></td>												
+											<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
+											<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
 									}}else{ %>
@@ -930,17 +931,14 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									  {int i=1;
 									for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
 										<tr>
-											<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-											<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=i %></td>												
+											<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
+											<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
 									}
-									
-									  
 									  
 									  }else{ %>
-									
 										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
 									
 								<%} %> 
@@ -985,8 +983,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<th  style="width: 100px; "> Original PDC </th>
 						<th  style="width: 100px; "> Revised PDC</th>
 						<th  style="width: 50px; ">Progress</th>
-						<th  style="width: 50px; "> Status</th>
-						<th  style="width: 270px; "> Remarks</th>
+						<th  style="width: 80px; "> Status<!-- (Days) --></th>
+						<th  style="width: 240px; "> Remarks</th>
 					</tr>
 				</thead>
 										
@@ -1024,9 +1022,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[11] %>	
 												
-												<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[5].toString()), LocalDate.parse(obj[7].toString())) %>)
-												<%} %>
+												<%-- <%if(obj[10].toString().equalsIgnoreCase("5")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
+												<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
+												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
+												<%} %> --%>
+												
+												
 												
 											</span>
 												</td>
