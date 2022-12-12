@@ -955,54 +955,60 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								{int i=1;
 								for(Object[] obj:lastpmrcactions.get(z)){ %>
 								<tr>
-												<td  style="text-align: center;"><%=i %></td>
-												<td  style="text-align: justify ;"><%=obj[2] %></td>
-												<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-												<td   style="text-align: center;"> 
-												<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
+									<td  style="text-align: center;"><%=i %></td>
+									<td  style="text-align: justify ;"><%=obj[2] %></td>
+									<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+									<td   style="text-align: center;"> 
+										<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
 
-												<%if(obj[15]!=null){ %>
-													<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
-														<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-														<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
-														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-													   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){  %> 
+											<%if(obj[15]!=null){ %>
+											
+											
+												<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
 													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %> 
+												<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
 													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-													<%}
-													}else if(obj[9].toString().equals("C")){ %>
-												        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												    <% }else{ %>
-												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
-												<%} %> 
+												<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+													<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+												   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
+												<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
+												<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}%>
 												
-												<%}else{ %> - <%} %>
 												
-												</td>
+												<%}else if(obj[9].toString().equals("C")){ %>
+											        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											    <% }else{ %>
+											      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
+											<%} %> 
+											
+											<%}else{ %> - <%} %>
+											
+										</td>
 												
 												
 												<td> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
 												<td  style="text-align: center;" > 
 													<%if(obj[15]!=null){ %>
+													
 														<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
 															<span class="ongoing">RC</span>
 														<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
 															<span class="delay">FD</span>
-														<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+														<%}else if(obj[9].toString().equals("C") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
 															<span class="completed">CO</span>
-														<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+														<%}else if(obj[9].toString().equals("C") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
 														   	<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
-														<%}else if(obj[14].toString().equals("F") && obj[9].toString().equals("I")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
+														<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
 															<span class="ongoing">OG</span>
-														<%}else if(!obj[14].toString().equals("F")&&obj[9].toString().equals("I")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
+														<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
 															<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.now())  %>)  </span>
-														<%}
-													}else if(obj[9].toString().equals("C")){ %>
+														<%}%>
+													
+													<% }else if(obj[9].toString().equals("C")){ %>
 												        <span class="completed">CO</span>
 												    <% }else{ %>
 												      	<span class="notyet">NS</span> 
