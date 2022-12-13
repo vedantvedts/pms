@@ -2440,7 +2440,6 @@ public class PrintController {
 	    		
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		
-	    		
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
 	    		milestones.add(service.Milestones(proid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));

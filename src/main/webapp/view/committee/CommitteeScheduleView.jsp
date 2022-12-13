@@ -588,6 +588,8 @@
 							<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
 							<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
 							<input type="hidden" name="projectid" value="<%=projectid %>">
+							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							
 						</form>
 						
 						
