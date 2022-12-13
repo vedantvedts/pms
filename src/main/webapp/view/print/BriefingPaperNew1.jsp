@@ -733,7 +733,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
 							<td   style=" text-align: center;">
-							<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+							<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()	) )%><%}else{ %> <%} %>
 						</td>
 						<td>
 							<%if(obj[4]!= null){ %>  
@@ -1251,28 +1251,27 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<h1 class="break"></h1>
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
 										
-										
-										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-										<thead>	
-											<tr>
-												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-												<th style="width: 330px; " colspan="3">Risk</th>
-												<th style="width: 100px; "  > PDC</th>
-												<th style="width: 100px; "> ADC</th>
-												<th style="width: 160px; " > Responsibility</th>
-												<th style="width: 50px; ">Status</th>
-												<th style="width: 215px; ">Remarks</th>	
-											</tr>
+				<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+					<thead>	
+							<tr>
+								<th style="width: 15px;text-align: center " rowspan="2">SN</th>
+								<th style="width: 330px; " colspan="3">Risk</th>
+								<th style="width: 100px; "  > PDC</th>
+								<th style="width: 100px; "> ADC</th>
+								<th style="width: 160px; " > Responsibility</th>
+								<th style="width: 50px; ">Status</th>
+								<th style="width: 215px; ">Remarks</th>	
+							</tr>
 											
-											<tr>
-												<th  style="text-align: center;width: 110px; " > Severity</th>
-												<th  style="text-align: center;width: 110px;"> Probability</th>
-												<th  style="text-align: center;width: 110px;"> RPN</th>
-												<th  style="width:320px" colspan="3" > Mitigation Plans</th>
-												<th  style="width:265px" colspan="2"> Impact</th>		
-											</tr>
+							<tr>
+								<th  style="text-align: center;width: 110px; " > Severity</th>
+								<th  style="text-align: center;width: 110px;"> Probability</th>
+								<th  style="text-align: center;width: 110px;"> RPN</th>
+								<th  style="width:320px" colspan="3" > Mitigation Plans</th>
+								<th  style="width:265px" colspan="2"> Impact</th>		
+							</tr>
 										
-										</thead>
+					</thead>
 																		
 										<tbody>
 												<%if(riskmatirxdata.get(z).size()>0){
@@ -1283,7 +1282,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<td style="text-align: center" rowspan="2"><%=i %></td>
 														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
 														<td style="text-align: center">
-															<%=sdf.format(sdf1.parse(obj[17].toString())) %>
+															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
 														<td style="text-align: center">

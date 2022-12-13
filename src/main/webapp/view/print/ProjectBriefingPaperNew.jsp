@@ -874,7 +874,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
 							<td   style=" text-align: center;">
-								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()	) )%><%}else{ %> <%} %>
 							</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
@@ -1468,7 +1468,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: center" rowspan="2"><%=i %></td>
 														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
 														<td style="text-align: center">
-															<%=sdf.format(sdf1.parse(obj[17].toString())) %>
+															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
 														<td style="text-align: center">
