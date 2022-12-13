@@ -1251,8 +1251,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<h1 class="break"></h1>
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
 			
-			
-		<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+		<%-- 	
+		<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>	
 											<tr>
 												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
@@ -1362,19 +1362,19 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<tr>
 												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
 												<th style="width: 330px; " colspan="3">Risk</th>
-												<th style="width: 90px; "  > PDC</th>
-												<th style="width: 110px; "> ADC</th>
+												<th style="width: 100px; "  > PDC</th>
+												<th style="width: 100px; "> ADC</th>
 												<th style="width: 160px; " > Responsibility</th>
 												<th style="width: 50px; ">Status</th>
 												<th style="width: 215px; ">Remarks</th>	
 											</tr>
 											
 											<tr>
-												<th  style="text-align: center "> Severity</th>
-												<th  style="text-align: center "> Probability</th>
-												<th  style="text-align: center "> RPN</th>
-												<th  style="" colspan="3" > Mitigation Plans</th>
-												<th  style="" colspan="2"> Impact</th>		
+												<th  style="text-align: center;width: 110px; " > Severity</th>
+												<th  style="text-align: center;width: 110px;"> Probability</th>
+												<th  style="text-align: center;width: 110px;"> RPN</th>
+												<th  style="width:320px" colspan="3" > Mitigation Plans</th>
+												<th  style="width:265px" colspan="2"> Impact</th>		
 											</tr>
 										
 										</thead>
