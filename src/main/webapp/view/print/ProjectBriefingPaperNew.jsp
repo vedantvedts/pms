@@ -1539,34 +1539,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</tbody>		
 										</table>
 										
-										<%-- <div style="display: flex;justify-content: center;align-items: center;margin: 10px;padding: 10px; width: 100%;">
-											
-											<%if(riskmatirxdata.get(z).size()>0){ %>
-												<table >
-													<%for(int sev=1;sev<=5;sev++){ %>
-														<tr>
-														<%for(int pro=1;pro<=5;pro++){ %>
-															<td style="width:100px;min-height:100px;padding: 5px;">
-																<%=sev*pro %>
-																
-																<%for(Object[] obj : riskmatirxdata.get(z)){ %>
-																	<%if( sev == Integer.parseInt(obj[1].toString()) && pro == Integer.parseInt(obj[2].toString()) && Integer.parseInt(obj[22].toString()) == (sev*pro) ){ %>
-																		<%=riskmatirxdata.get(z).indexOf(obj)+1 %>
-																	<%} %>
-																<%} %>
-															</td>
-														<%} %>
-														</tr>
-													<%} %>
-												</table>
-											<%} %>
-										</div>
-										 --%>
-										<%-- <div class="row" style="">
-											<div class="col-md-12"> 
-												<div style="width: 100%;height: 100%;margin: 0;padding: 0;" id="risk-matrix-chart-<%=projectidlist.get(z)%>"></div>
-											</div>
-										</div>		 --%>								
 									<% } %>
 									</div>
 							
