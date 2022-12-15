@@ -554,124 +554,132 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</form>
 										</div>	
 										
-										  <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:970px;   border-collapse:collapse;" >
-												<tr>
-													 <td style="width: 30px; padding: 5px; padding-left: 10px">(a)</td>
-													 <td  style="min-width: 150px !important;padding: 5px; padding-left: 10px">Project Title</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"> <%=projectattributes[1] %></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(b)</td>
-													 <td  style="">Project No</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"> <%=projectattributes[0]%> </td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(c)</td>
-													 <td  style="">Category</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"><%=projectattributes[14]%></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(d)</td>
-													 <td  style="">Date of Sanction</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(e)</td>
-													 <td  style="">Nodal and Participating Labs</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"><%if(projectattributes[15]!=null){ %><%=projectattributes[15]%><%} %></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(f)</td>
-													 <td  style="">Objective</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"> <%=projectattributes[4]%></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(g)</td>
-													 <td  style="">Deliverables</td>
-													 <td colspan="4" style=" width: 310px; padding: 5px; padding-left: 10px"> <%=projectattributes[5]%></td>
-												</tr>
-												<tr>
-													<td rowspan="2" style="width: 30px; padding: 5px; padding-left: 10px">(h)</td>
-													<td rowspan="2" style="">PDC</td>
-													
-										 			
-													<th colspan="2">Original</th>					
-													<%if( revlist.size()>0){ %>	
-													<th colspan="2">Revised</th>																			
-													<%}else{ %>													 
-										 			<th colspan="2" ></th>	
-										 			<%} %>
-										 			
-										 			
-										 			 
-												</tr>
-										 		<tr>
-										 		 
-										 		<%if( revlist.size()>0 ){ %>								
-										 			<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(revlist.get(0)[12].toString()))%> </td>
-										 			<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
-												<%}else{ %>													 
-										 			<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
-													<td colspan="2" ></td>
-										 		<%} %>
-										 		    
-										 		   
-										 		</tr>
-													 	
-												<tr>
-												<%if( revlist.size()>0 ){ %>
-													<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-													<td rowspan="3" style="">Cost Breakup(&#8377; <span>Lakhs</span>)</td>
-												<%}else{ %>	
-													<td rowspan="2" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-													<td rowspan="2" style="">Cost Breakup&#8377; <span>(Lakhs</span>)</td>
-												<%} %>
-													<th style="max-width: 10px !important"></th>
-													<th >RE Cost</th>
-													<th >FE Cost</th>
-													<th >Total</th>
-												</tr>
-													
-												<%if( revlist.size()>0 ){ %>	
-													<tr>	
-														<td>Org</td>
-											 			<td style="text-align: right;"><%=revlist.get(0)[17] %></td>
-														<td style="text-align: right;"><%=revlist.get(0)[16] %></td>
-														<td style="text-align: right;"><%=revlist.get(0)[11] %></td>
-													</tr>
-													<tr>			
-														<td >Rev</td>
-											 			<td style="text-align: right;"><%=projectattributes[8] %></td>
-														<td style="text-align: right;"><%=projectattributes[9] %></td>
-														<td style="text-align: right;"><%=projectattributes[7] %></td>
-													</tr>
-												<%}else{ %>													 
-										 			
-													<tr>		
-														<td >Org</td>					
-											 			<td ><%=projectattributes[8] %></td>
-														<td ><%=projectattributes[9] %></td>
-														<td ><%=projectattributes[7] %></td>
-													</tr>
-										 		<%} %>
-													
-												
-												
-												
-												<tr>
-													<td  style="width: 30px; padding: 5px; padding-left: 10px">(j)</td>
-													<td  style="">No. of EBs and PMRCs held</td>
-										 			<td colspan="2" >EB: <%=ebandpmrccount.get(z).get(1)[1] %></td>
-										 			<td colspan="2">PMRC: <%=ebandpmrccount.get(z).get(0)[1] %></td>
-												</tr>
-												<tr>
-													 <td  style="width: 30px; padding: 5px; padding-left: 10px">(k)</td>
-													 <td  style="width: 310px;padding: 5px; padding-left: 10px">Current Stage of Project</td>
-													 <td colspan="4" style=" width: 200px; padding: 5px;color:white; padding-left: 10px ; <%if(projectdatadetails.get(z)!=null){ %> background-color: <%=projectdatadetails.get(z)[11] %> ;   <%} %>" >
-													 <span> <%if(projectdatadetails.get(z)!=null){ %><b><%=projectdatadetails.get(z)[10] %> </b>  <%}else{ %>Data Not Found<%} %></span></td> 
-												</tr>			
-											</table>
 										
+									<table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+										<tr>
+											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
+											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Title</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[1] %></td>
+										</tr>
+										<tr>
+											 <td  style="padding: 5px; padding-left: 10px">(b)</td>
+											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project No</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[0]%> </td>
+										</tr>
+										<tr>
+											 <td  style=" padding: 5px; padding-left: 10px">(c)</td>
+											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Category</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%=projectattributes[14]%></td>
+										</tr>
+										<tr>
+											 <td  style="padding: 5px; padding-left: 10px">(d)</td>
+											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Date of Sanction</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
+										</tr>
+										<tr>
+											 <td  style="width: 20px; padding: 5px; padding-left: 10px">(e)</td>
+											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Nodal and Participating Labs</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%if(projectattributes[15]!=null){ %><%=projectattributes[15]%><%} %></td>
+										</tr>
+										<tr>
+											 <td  style=" padding: 5px; padding-left: 10px">(f)</td>
+											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Objective</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;text-align: justify"> <%=projectattributes[4]%></td>
+										</tr>
+										<tr>
+											 <td  style="padding: 5px; padding-left: 10px">(g)</td>
+											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Deliverables</b></td>
+											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[5]%></td>
+										</tr>
+										<tr>
+											 <td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
+											 <td rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px"><b>PDC</b></td>
+											 
+											<td colspan="2" style="text-align: center !important">Original</td>					
+											<%if( ProjectRevList.get(z).size()>0){ %>	
+												<td colspan="2" style="text-align: center !important">Revised</td>																			
+											<%}else{ %>													 
+										 		<td colspan="2" ></td>	
+										 	<%} %>
+										</tr>
+								 		<tr>
+								 			<%if( ProjectRevList.get(z).size()>0 ){ %>								
+										 		<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(ProjectRevList.get(z).get(0)[12].toString()))%> </td>
+										 		<td colspan="2" style="text-align: center;">
+											 		<%if(LocalDate.parse(projectattributes[6].toString()).isEqual(LocalDate.parse(ProjectRevList.get(z).get(0)[12].toString())) ){ %>
+											 			-
+											 		<%}else{ %>
+											 			<%= sdf.format(sdf1.parse(projectattributes[6].toString()))%>
+											 		<%} %>
+										 		
+										 		</td>
+											<%}else{ %>													 
+										 		<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
+												<td colspan="2" ></td>
+										 	<%} %>
+										 		    
+								 		</tr>
+											 	
+										<tr>
+											<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
+											<td rowspan="3" style="padding-left: 10px"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></td>
+											
+											<%if( ProjectRevList.get(z).size()>0 ){ %>
+													<td style="width: 10% !important" >RE Cost</td>
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[17] %></td> 
+													<td colspan="2" style="text-align: center;"><%=projectattributes[8] %></td>
+												</tr>
+												
+												
+												<tr>
+													<td style="width: 10% !important">FE Cost</td>		
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[16] %></td>					
+													<td colspan="2" style="text-align: center;"><%=projectattributes[9] %></td>
+												</tr>
+													
+												<tr>	
+													<td style="width: 10% !important">Total Cost</td>	
+													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[11] %></td>
+											 		<td colspan="2" style="text-align: center;"><%=projectattributes[7] %></td>
+												</tr> 
+														
+											<%}else{ %>
+													
+													<td style="width: 10% !important">RE Cost</td>
+													<td ><%=projectattributes[8] %></td>
+													<td colspan="2" ></td>
+												</tr>
+											
+												<tr>
+													<td style="width: 10% !important">FE Cost</td>		
+													<td ><%=projectattributes[9] %></td>					
+													<td colspan="2"></td>
+												</tr>
+												
+												<tr>	
+													<td style="width: 10% !important" >Total Cost</td>	
+													<td ><%=projectattributes[7] %></td>
+													<td colspan="2"></td>			
+												</tr> 
+											<%} %>
+												
+																			 	
+										<tr>
+											<td  style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
+											<td style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of EBs and PMRCs held</b> </td>
+								 			<td colspan="2" ><b>EB :</b> <%=ebandpmrccount.get(z).get(1)[1] %></td>
+								 			<td colspan="2"><b>PMRC :</b> <%=ebandpmrccount.get(z).get(0)[1] %></td>
+								 			
+										</tr>
+										<tr>
+											<td  style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
+											<td  style="width: 210px;padding: 5px; padding-left: 10px"><b>Current Stage of Project</b></td>
+											<td colspan="4" style=" width: 200px;color:white; padding: 5px; padding-left: 10px ; <%if(projectdatadetails.get(z)!=null){ %> background-color: <%=projectdatadetails.get(z)[11] %> ;   <%} %>" >
+												<span> <%if(projectdatadetails.get(z)!=null){ %><b><%=projectdatadetails.get(z)[10] %> </b>  <%}else{ %>Data Not Found<%} %></span>
+											</td> 
+										</tr>	
+									</table>
+		
 										<%}else{ %>
 											<div align="center" style="margin: 25px;"> Complete Project Data Not Found </div>
 										<%} %>
@@ -866,7 +874,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
 							<td   style=" text-align: center;">
-								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6+Integer.parseInt(obj[9].toString())].toString()	) )%><%}else{ %> <%} %>
+								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()	) )%><%}else{ %> <%} %>
 							</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
@@ -877,21 +885,21 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%if(obj[4]!= null){
 									
 								if(obj[18]!=null){ %>
-									<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[17].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
+									<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()) .equals(LocalDate.parse(obj[14].toString())) )){ %>
 										<span class="ongoing">RC</span>
-								<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+								<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
 										<span class="delay">FD</span>
-								<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
+								<%}else if(obj[10].toString().equals("C")&&(LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString()))||obj[6].equals(obj[14]))){  %>
 										<span class="completed">CO</span>
-								<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+								<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
 									   <span class="completeddelay">CD 
-									    (<%=  ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[14].toString()))   %>)  </span>
-															   
-								<%}else if(!obj[16].toString().equals("F") && !obj[10].toString().equals("C") &&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[17].toString()).equals(LocalDate.now()))){  %> 
+									   (<%=  ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.parse(obj[14].toString()))   %>) 
+									   </span>
+								<%}else if(!obj[16].toString().equals("F") && !obj[10].toString().equals("C") &&(LocalDate.parse(obj[6].toString()).isAfter(LocalDate.now())||LocalDate.parse(obj[6].toString()).equals(LocalDate.now()))){  %>
 										<span class="ongoing">OG</span>
-								<%}else if(!obj[16].toString().equals("F")&& !obj[10].toString().equals("C") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
+								<%}else if(!obj[16].toString().equals("F")&& !obj[10].toString().equals("C") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.now())){  %> 
 										<span class="delay">DO
-											 (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.now())  %>)   
+											 (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.now())  %>)   
 										</span>
 								<%} }else if(obj[10].toString().equals("C")){%>
 								        <span class="completed">CO</span>
@@ -962,67 +970,65 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%if(obj[9].toString().equals("C")  && obj[13]!=null){ %>
 
 											<%if(obj[15]!=null){ %>
-											
-											
-												<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+													
+													
+												<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
 													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+												<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
 													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
+												<%}else if(obj[9].toString().equals("C")&&(LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[3].equals(obj[13]))){  %>
 													<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+												<%}else if(obj[9].toString().equals("C")&&LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
 												   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
-												<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
-												<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[3].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.now()) )){  %> 
+													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+												<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[3].toString()).isBefore(LocalDate.now())){  %> 
+													<span class="delay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
 												<%}%>
-												
-												
-												<%}else if(obj[9].toString().equals("C")){ %>
-											        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-											    <% }else{ %>
-											      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
-											<%} %> 
-											
-											<%}else{ %> - <%} %>
-											
-										</td>
-												
-												
-												<td> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
-												<td  style="text-align: center;" > 
-													<%if(obj[15]!=null){ %>
-													
-														<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[4].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
-															<span class="ongoing">RC</span>
-														<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-															<span class="delay">FD</span>
-														<%}else if(obj[9].toString().equals("C") && (LocalDate.parse(obj[4].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[4].equals(obj[13]))){  %>
-															<span class="completed">CO</span>
-														<%}else if(obj[9].toString().equals("C") && LocalDate.parse(obj[4].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
-														   	<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
-														<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[4].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[4].toString()).isEqual(LocalDate.now()) )){  %> 
-															<span class="ongoing">OG</span>
-														<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[4].toString()).isBefore(LocalDate.now())){  %> 
-															<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[4].toString()), LocalDate.now())  %>)  </span>
-														<%}%>
-													
-													<% }else if(obj[9].toString().equals("C")){ %>
-												        <span class="completed">CO</span>
-												    <% }else{ %>
-												      	<span class="notyet">NS</span> 
-													<%} %> 
-												</td>	
-												<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
-											</tr>			
-										<%i++;
-										}} %>
-										</tbody>
+														
+														
+										<%}else if(obj[9].toString().equals("C")){ %>
+									        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+									    <% }else{ %>
+									      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
+										<%} %> 
 										
-									</table> 
+										<%}else{ %> - <%} %>
+											
+									</td>
+									<td> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+									<td  style="text-align: center;" > 
+										<%if(obj[15]!=null){ %>
+													
+											<%if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString())) || LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())) )){ %>
+												<span class="ongoing">RC</span>
+											<%}else if(obj[9].toString().equals("I") && obj[14].toString().equals("F") && LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+												<span class="delay">FD</span>
+											<%}else if(obj[9].toString().equals("C") && (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))||obj[3].equals(obj[13]))){  %>
+												<span class="completed">CO</span>
+											<%}else if(obj[9].toString().equals("C") && LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
+											   	<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[3].toString()), LocalDate.parse(obj[13].toString())) %>) </span>
+											<%}else if( !obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&(LocalDate.parse(obj[3].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.now()) )){  %> 
+												<span class="ongoing">OG</span>
+											<%}else if(!obj[9].toString().equals("C") && !obj[14].toString().equals("F") &&  LocalDate.parse(obj[3].toString()).isBefore(LocalDate.now())){  %> 
+												<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[3].toString()), LocalDate.now())  %>)  </span>
+											<%}%>
+													
+										<% }else if(obj[9].toString().equals("C")){ %>
+									        <span class="completed">CO</span>
+									    <% }else{ %>
+									      	<span class="notyet">NS</span> 
+										<%} %> 
+									</td>	
+									<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
+								</tr>			
+							<%i++;
+							}} %>
+							</tbody>
+									
+						</table> 
 								
-									<%} %>
+					<%} %>
 								
 					<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
 						
@@ -1462,24 +1468,24 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: center" rowspan="2"><%=i %></td>
 														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
 														<td style="text-align: center">
-															<%=sdf.format(sdf1.parse(obj[17].toString())) %>
+															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
 														<td style="text-align: center">
 															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 
 																<%if(obj[18]!=null){ %>
-																	<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
+																	<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
 																		<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																	<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
 																		<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[17].equals(obj[20]))){  %>
+																	<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
 																		<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																	<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
 																	   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
 																	<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
 																	<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
 																	<%}
 																	}else if(obj[15].toString().equals("C")){ %>
@@ -1495,17 +1501,17 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: center">
 															
 															<%if(obj[18]!=null){ %>
-																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[17].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
+																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
 																	<span class="ongoing">RC</span>
-																<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
 																	<span class="delay">FD</span>
-																<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[17].equals(obj[20]))){  %>
+																<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
 																	<span class="completed">CO</span>
-																<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-																   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[17].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
-																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[17].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[17].toString()).isEqual(LocalDate.now()) )){  %> 
+																<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
+																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.now()) )){  %> 
 																<span class="ongoing">OG</span>
-																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[17].toString()).isBefore(LocalDate.now())){  %> 
+																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.now())){  %> 
 																<span class="delay">DO</span>
 															<%}
 															}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
@@ -1513,8 +1519,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														    <% }else{ %>
 														      	<span class="notyet">NS</span> 
 															<% } %> 
-														
-														
 														</td>
 														<td style="text-align: justify"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
@@ -1535,34 +1539,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</tbody>		
 										</table>
 										
-										<%-- <div style="display: flex;justify-content: center;align-items: center;margin: 10px;padding: 10px; width: 100%;">
-											
-											<%if(riskmatirxdata.get(z).size()>0){ %>
-												<table >
-													<%for(int sev=1;sev<=5;sev++){ %>
-														<tr>
-														<%for(int pro=1;pro<=5;pro++){ %>
-															<td style="width:100px;min-height:100px;padding: 5px;">
-																<%=sev*pro %>
-																
-																<%for(Object[] obj : riskmatirxdata.get(z)){ %>
-																	<%if( sev == Integer.parseInt(obj[1].toString()) && pro == Integer.parseInt(obj[2].toString()) && Integer.parseInt(obj[22].toString()) == (sev*pro) ){ %>
-																		<%=riskmatirxdata.get(z).indexOf(obj)+1 %>
-																	<%} %>
-																<%} %>
-															</td>
-														<%} %>
-														</tr>
-													<%} %>
-												</table>
-											<%} %>
-										</div>
-										 --%>
-										<%-- <div class="row" style="">
-											<div class="col-md-12"> 
-												<div style="width: 100%;height: 100%;margin: 0;padding: 0;" id="risk-matrix-chart-<%=projectidlist.get(z)%>"></div>
-											</div>
-										</div>		 --%>								
 									<% } %>
 									</div>
 							
