@@ -217,16 +217,30 @@ public class LoginController {
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
 			     
 			     String IsDG = "No";
-			     if(DGName.equalsIgnoreCase(LabCode))
+			     if(DGName.equalsIgnoreCase(LabCode) || LoginType.equalsIgnoreCase("K"))
 			    	 IsDG = "Yes";
 			     else
 			    	 IsDG = "No";
 			     req.setAttribute("IsDG", IsDG);	 
 			    	 
 			     List<Object[]> labdatalist = new ArrayList<Object[]>();
-			     List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+			     List<Object[]> LabMasterList = new ArrayList<Object[]>();
+			     String InAll ="N";
+			     
+			     
+			     if(LoginType.equalsIgnoreCase("K")) {// For Secretary
+			    	 LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+			     	 InAll="Y";
+			     }
+			     else {
+			    	 LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+			     }
+			     
 			     for(Object[] obj : LabMasterList) {
-			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
+			    	 
+			    	 System.out.println(ProjectId+" "+EmpId+" "+LoginType+" " +obj[1].toString().trim()+" " +InAll);
+			    	 
+			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,InAll));
 			     }
 			     
 			     req.setAttribute("projecthealthtotaldg", labdatalist);
@@ -540,7 +554,7 @@ public class LoginController {
 			redir.addAttribute("Overall","Overall");
 			
 			if(LoginType.equalsIgnoreCase("X")) {
-				redir.addAttribute("result", "Lab Health Updated Successfully ");
+				redir.addAttribute("result", "Cluster Health Updated Successfully ");
 			}else {
 				redir.addAttribute("result", "Project Health Updated Successfully ");
 			}
@@ -884,10 +898,30 @@ public class LoginController {
     	String LabCode = req.getParameter("labcode");
     	String EmpId =  ses.getAttribute("EmpId").toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
+
+    	String ProjectId="A";
+		if(req.getParameter("projectid")!=null) {
+			ProjectId=req.getParameter("projectid");
+		}
     	
     	try {
     		req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData("A",EmpId,LoginType,LabCode,"N"));
     		req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
+    		req.setAttribute("logintype", LoginType);
+    		
+    		String ClusterId = headerservice.LabDetails(LabCode)[1].toString();
+    		
+    		List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
+    		List<Object[]> labdatalist = new ArrayList<Object[]>();
+    		
+		    for(Object[] obj : LabMasterList) {
+		    	
+		    	 System.out.println(ProjectId+" "+EmpId+" "+LoginType+" " +obj[1].toString().trim());
+		    	
+		    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
+		    }
+		    req.setAttribute("projecthealthtotaldg", labdatalist);
+    		
     	}
     	catch(Exception e) {
     		e.printStackTrace();
