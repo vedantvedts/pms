@@ -321,6 +321,9 @@ IndianRupeeFormat nfc=new IndianRupeeFormat();
 List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
 Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealthtotal"); 
 int ProjectCount = 0;
+String logintype=(String)request.getAttribute("logintype"); 
+List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("projecthealthtotaldg");
+
 
 %>
 	
@@ -330,7 +333,7 @@ int ProjectCount = 0;
 		
 			<div class="card " style="background: transparent;" >
 				<div class="card-header">
-						<h3><%=ProjectHealthTotalData[45] %> - Lab Details</h3>
+						<h3><%=ProjectHealthTotalData[45] %> - <%if(logintype.equalsIgnoreCase("K")){ %> Cluster <%}else{%>Lab <%} %> Details</h3>
 						<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
 				</div>
 				<div class="card-body"> 
@@ -727,23 +730,236 @@ int ProjectCount = 0;
 									</div>		
 								
 								<!-- ******************************************************** INDIVIDUAL PROJECT DETAILS END ******************************************* -->
-												
-												
-												
-												
-												
+			
 				
 								</div> 
 								
 								<%}else{ %>
 								
 								
-									<h2>No Project Details</h2>
+									<h2> <%if(logintype.equalsIgnoreCase("K")){ %> No Lab Details <%}else{ %> No Project Details  <%} %></h2>
 								
 								<%} %>
 
 	        	</div>
 			</div>
+			
+			
+			<div class="card" style="background: transparent;">
+		
+			<div id="overalldivdg" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
+								
+				<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed"> 
+										<thead style=" background: #1363DF; color: white;">												
+											<tr>
+												<td style="width:4%">
+													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+												</td>
+												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
+												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
+												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+											</tr>
+										</thead>
+										
+										<tbody>
+	
+											<%for(Object[] obj : projecthealthtotaldg) { %>
+		
+											<tr>
+											
+												<td><a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td   style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[2].toString())>0){ %>
+														
+														<div class="row">
+															<div class="col-md-11">
+															    <div class="progress"  >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[0]%> / <%=obj[2] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[1]%> / <%=obj[2] %>" ></div>
+																</div>
+														  	</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[30].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[30].toString())>25) && (Integer.parseInt(obj[30].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[30].toString())>50) && (Integer.parseInt(obj[30].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[30].toString())>75) && (Integer.parseInt(obj[30].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[30] %></span>
+															</div>
+											
+														</div>
+						
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>	
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[5].toString())>0){ %>
+														
+														<div class="row">
+															<div class="col-md-11">
+															    <div class="progress"  >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[31]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[3]%> / <%=obj[5] %>" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[32]%>%;" data-toggle="tooltip" title="EB Pending : <%=obj[4]%> / <%=obj[5] %>" ></div>
+																</div>
+														  	</div>
+															<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[32].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[32].toString())>25) && (Integer.parseInt(obj[32].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[32].toString())>50) && (Integer.parseInt(obj[32].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[32].toString())>75) && (Integer.parseInt(obj[32].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[32] %></span>
+															</div>
+														</div>
+						
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[9].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirectdg('mil','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[10]%>%" data-toggle="tooltip" title="Completed : <%=obj[8]%> / <%=obj[9] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Delayed : <%=obj[7]%> / <%=obj[9] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[44]%>%" data-toggle="tooltip" title="Pending : <%=obj[6]%> / <%=obj[9] %>" ></div>															  
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[44].toString())<=25){%> background-color:green <%}%>
+																								   <%if( (Integer.parseInt(obj[44].toString())>25) && (Integer.parseInt(obj[44].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																								   <%if( (Integer.parseInt(obj[44].toString())>50) && (Integer.parseInt(obj[44].toString())<=75)){%> background-color: #EE5007 <%}%>
+																								   <%if( (Integer.parseInt(obj[44].toString())>75) && (Integer.parseInt(obj[44].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[44] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[15].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[37]%>%" data-toggle="tooltip" title="Completed : <%=obj[14]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Delayed : <%=obj[13]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[35]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[12]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[34]%>%" data-toggle="tooltip" title="Pending : <%=obj[11]%> / <%=obj[15]%>" ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+															<span class="health-circle" style="<%if(Integer.parseInt(obj[34].toString())<=25){%> background-color:green <%}%>
+																									   <%if( (Integer.parseInt(obj[34].toString())>25) && (Integer.parseInt(obj[34].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																									   <%if( (Integer.parseInt(obj[34].toString())>50) && (Integer.parseInt(obj[34].toString())<=75)){%> background-color: #EE5007 <%}%>
+																									   <%if( (Integer.parseInt(obj[34].toString())>75) && (Integer.parseInt(obj[34].toString())<=100)){%> background-color:red <%}%>
+															"><%=obj[34] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td> 
+												<td class="custom-td">
+													<%if(Integer.parseInt(obj[18].toString())>0){ %>
+													<div class="row">
+														<div class="col-md-11">
+															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[39]%>%" data-toggle="tooltip" title="Completed : <%=obj[16]%> / <%=obj[18] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="Pending : <%=obj[17]%> / <%=obj[18] %>" ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																<span class="health-circle" style="<%if(Integer.parseInt(obj[38].toString())<=25){%> background-color:green <%}%>
+																										   <%if( (Integer.parseInt(obj[38].toString())>25) && (Integer.parseInt(obj[38].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																										   <%if( (Integer.parseInt(obj[38].toString())>50) && (Integer.parseInt(obj[38].toString())<=75)){%> background-color: #EE5007 <%}%>
+																										   <%if( (Integer.parseInt(obj[38].toString())>75) && (Integer.parseInt(obj[38].toString())<=100)){%> background-color:red <%}%>
+																"><%=obj[38] %></span>
+														</div>
+													</div>
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td>
+												<td class="custom-td">
+													<%
+													BigInteger number = new BigInteger(obj[23].toString());
+													if(number.compareTo(new BigInteger("0")) >0){ %>
+													<div class="row">
+														<div class="col-md-10">
+															<div class="progress" onclick="overallfinance()">
+															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[19].toString() ))))%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[41]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[20].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[21].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[43]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[22].toString() ))))%> " ></div>
+															</div>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+																	<span class="health-circle" style="<%if(Integer.parseInt(obj[40].toString())<=25){%> background-color:green <%}%>
+																											   <%if( (Integer.parseInt(obj[40].toString())>25) && (Integer.parseInt(obj[40].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
+																											   <%if( (Integer.parseInt(obj[40].toString())>50) && (Integer.parseInt(obj[40].toString())<=75)){%> background-color: #EE5007 <%}%>
+																											   <%if( (Integer.parseInt(obj[40].toString())>75) && (Integer.parseInt(obj[40].toString())<=100)){%> background-color:red <%}%>
+																	"><%=obj[40] %></span>
+														</div>
+														<div class="col-md-1" style="padding-left: 0px !important">
+														</div>
+													</div>
+													
+													<%}else{ %>
+													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
+														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Nil
+														</div>
+													</div>
+													<%} %>
+												</td> 
+												
+												
+											</tr>
+											
+											
+											<%} %>
+											
+											
+										</tbody>
+											
+											
+									</table>	
+									
+												
+				
+								</div> 
+							
+							</div> 
+			
+			
+			
+			
 
 		</div> 
 	

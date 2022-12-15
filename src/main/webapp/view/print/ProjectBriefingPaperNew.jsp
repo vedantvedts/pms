@@ -1157,12 +1157,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					<tr>
 						<th  style="width: 15px !important;text-align: center; ">SN</th> 
 						<th  style="width: 20px; ">MS</th>
-						<th  style="width: 375px; ">Milestones </th>
-						<th  style="width: 100px; "> Original PDC </th>
-						<th  style="width: 100px; "> Revised PDC</th>
+						<th  style="width: 405px; ">Milestones </th>
+						<th  style="width: 120px; "> Original PDC </th>
+						<th  style="width: 120px; "> Revised PDC</th>
 						<th  style="width: 50px; ">Progress</th>
 						<th  style="width: 50px; "> Status</th>
-						<th  style="width: 270px; "> Remarks</th>
+						<th  style="width: 320px; "> Remarks</th>
 					</tr>
 				</thead>
 										
@@ -1373,8 +1373,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
@@ -2051,14 +2051,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								    <div class="row">
 								    	<div class="col-md-9 ">
 											<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
-												<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="application/pdf,image/jpeg"/>
+												<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="application/pdf,image/jpeg"/>
 												<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
 												<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
 												<button type="submit" formtarget="_blank" class="btn btn-sm back" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" style="float:right; background-color: #DE834D; font-weight: 600;border:0px;">Sub Level</button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												<input type="hidden" name="ProjectId" id="ProjectId" value="<%=projectidlist.get(z)%>"> 
 												<input type="hidden" name="committeeid" value="<%=committeeid%>">
-												
 											</form>
 										</div>
 										<div class="col-md-3" style="float:right;margin-top:10px;  ">

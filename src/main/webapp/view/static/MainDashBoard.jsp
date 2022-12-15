@@ -493,7 +493,8 @@ if(logintype!=null ){
 	}
 }
 
-String LoginTypes[] = {"A","P","E","Z","Y","Q","X"}  ;
+String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K"}  ;
+
 int ProjectCount = 0;
 
 List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("projecthealthtotaldg");
@@ -3030,7 +3031,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 											<tr>
 											
 												<td><a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td   style="font-weight: 800; font-size:1rem;text-align:left;"><%=obj[45] %>	</td>
+												<td   style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[2].toString())>0){ %>
 														
@@ -3369,7 +3370,7 @@ function overalldoc(){
 	 var DG= '<%=IsDG%>';
 	 
 	 	if(DG=='Yes'){
-	 		if(logintype =='A' || logintype=='Z' || logintype=='X' ){
+	 		if(logintype =='A' || logintype=='Z' || logintype=='X' || logintype=='K'  ){
 	 			$('.btn5').click();
 	 		}else{
 	 			$('.btn1').click();
@@ -3588,7 +3589,6 @@ $('.btn3').click(function(){
 	
 	<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
 	document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
-	
 	$('#dgdashboard').css("display","none");
 	
 })
@@ -3638,9 +3638,12 @@ $('.btn5').click(function(){
 	$(".overallheader").css("display","block");
 	$('#projectgraph').css("display","none");
 	
-	document.getElementById('projecttitle').innerHTML = 'LAB HEALTH ';
 	
-	
+	var logintype = '<%=(String)request.getAttribute("logintype")%>';
+	if(logintype=='K')
+		document.getElementById('projecttitle').innerHTML = 'DRDO HEALTH' ;
+	else
+		document.getElementById('projecttitle').innerHTML = 'CLUSTER HEALTH' ;
 })
 
 
