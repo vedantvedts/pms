@@ -159,9 +159,6 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 	
 </div>	
 	
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 </body>
 <script>
   $(document).ready(function(){

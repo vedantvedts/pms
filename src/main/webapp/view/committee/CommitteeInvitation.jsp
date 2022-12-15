@@ -357,8 +357,6 @@ h5,h6{
 	      					
 
 
-	<div class="modal" id="loader">
-	</div>
 
 
 <script type='text/javascript'> 

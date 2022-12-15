@@ -299,6 +299,5 @@ String committeemainid=committeedata[0].toString();
 
 
 
-	<div class="modal" id="loader"></div>
 </body>
 </html>

@@ -242,8 +242,5 @@ $('#DateCompletion1, #DateCompletion3').daterangepicker({
     */
 </script>
 
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 </body>
 </html>

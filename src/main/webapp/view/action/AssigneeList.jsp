@@ -105,7 +105,7 @@ a:hover {
 	%>
 	<div align="center">
 	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
+               <%=ses1 %>
                     </div></div>
 	<%}if(ses!=null){ %>
 	<div align="center">
@@ -212,19 +212,10 @@ a:hover {
 															                      </div>
 															                     </div>
 															                  </button> 
+															                 <button type="submit"  class="editable-click" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank"  formaction="ActionTree.htm" formmethod="POST"  >
+																				<i class="fa fa-solid fa-sitemap"></i>
+																		    </button> 
 													                  <%}%>
-													                 <%--  <button type="submit"  class="editable-click" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank"  formaction="ActionTree.htm" formmethod="POST"  >
-																				<div class="cc-rockmenu">
-																				 <div class="rolling">	
-																				 <figure class="rolling_icon">
-																				 	<i class="fa fa-solid fa-sitemap"></i>
-															                       </figure>
-															                        <span> Tree</span>
-															                      </div>
-															                     </div>
-															                  </button>  --%>
-													                  
-													                  	
 																</form> 		
 															</td>
 														</tr>
@@ -233,10 +224,10 @@ a:hover {
 													<td colspan="6" style="text-align: center">No List Found</td>
 												</tr>
 												<%} %>
-												</tbody>
-												</table>
+											</tbody>
+										</table>
 												
-							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 
 
 											</div>

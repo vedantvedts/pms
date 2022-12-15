@@ -607,8 +607,6 @@
 			</div>
 		</div>	
 	</div>
-	<div class="modal" id="loader">
-		</div>
 	</body>
 	
 	

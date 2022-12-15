@@ -213,7 +213,7 @@ h6{
 								</div> 
 								<%} %>
 								
-								 <% if(SubList.size()>0){ %>  
+								<% if(SubList.size()>0){ %>  
 											
 											<div class="table-responsive">
 				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">

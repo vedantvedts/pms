@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -2161,8 +2162,12 @@ public class ActionController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionTree.htm "+UserId);
 		try {
+			
 			String ActionAssignId = req.getParameter("ActionAssignid"); 
-			req.setAttribute("actionslist", service.ActionSubLevelsList(ActionAssignId));
+			
+			List<Object[]> actionslist = service.ActionSubLevelsList(ActionAssignId);
+	
+			req.setAttribute("actionslist", actionslist);
 			return "action/ActionTree";
 		}catch (Exception e) {
 			e.printStackTrace(); 
