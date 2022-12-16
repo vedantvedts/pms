@@ -36,7 +36,7 @@ public class ActionDaoImpl implements ActionDao{
 	//private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS remarks,a.revision FROM action_main a,  employee ab ,employee_desig dc WHERE a.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.assignor=:empid and a.actionflag<>'Y'";
 	private static final String ASSIGNEELIST="SELECT a.actionmainid,CONCAT(IFNULL(b.title,''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid  FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (d.assignee=:empid OR d.assignor=:empid) and d.actionflag in ('N','B') order by d.enddate desc";
 	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(b.title,''),b.empname)AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,e.actionflag,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT( IFNULL(d.title,''),d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid  FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.actionflag<>'Y' AND  e.assignee=d.empid AND a.actionmainid=:mainid AND e.actionassignid=:actionassignid";
-    private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.attachname,b.actionattach,b.actionattachid FROM action_sub a, action_attachment b WHERE a.actionsubid=b.actionsubid AND a.actionassignid=:assignid";
+    private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.attachname,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
 	private static final String SUBDELETE="delete from action_sub where actionsubid=:subid";
 	private static final String ASSIGNUPDATE="UPDATE action_assign SET actionflag=:flag,actionstatus=:status,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assignid";
 	private static final String MAINFORWARD="UPDATE action_assign SET actionflag=:flag,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assign";
@@ -792,5 +792,13 @@ public class ActionDaoImpl implements ActionDao{
 		return ActionSubLevelsList;
 	 }
 	 
-	
+	 private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	 
+	 @Override
+		public List<Object[]> ActionSubList(String assignid) throws Exception {
+			Query query=manager.createNativeQuery(ACTIONSUBLIST);
+			query.setParameter("assignid", assignid);
+			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+			return AssignedList;
+		}
 }

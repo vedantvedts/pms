@@ -111,37 +111,47 @@
 		                          		
 		                          		<span style="cursor:pointer;font-weight: 600;" 
 		                          			onclick="ActionDetails('<%=action[10] %>',   <!-- assignid -->
-		                          									'<%=action[5] %>',   <!-- action item -->
+		                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
 		                          									'<%=action[11] %>',   <!-- action No -->
-		                          									'<%if(action[25]!=null){ %> <%=action[25] %> % <%}else{ %> Not Started <%} %>', <!-- progress -->
+		                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
 		                          									'<%=sdf.format(action[4]) %>', <!-- action date -->
 		                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
 		                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
-		                          									'<%=action[22]%>', <!-- assignor -->
-		                          									'<%=action[23]%>' <!-- assignee -->
+		                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
+		                          									'<%=action[23].toString().trim()%>' <!-- assignee -->
 		                          									);" >
 		                          				<%=action[11] %>
 		                          		</span >           
 		                          		
 		                          	</div>
-		                          	<div class="action-box-body" align="center">
+		                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
 		                          		<table class="card-body-table">
 		                          			<tr>
-		                          				<th style="text-align: right;">Assignee :</th>
-		                          				<td>&emsp;<%=action[23] %></td>
+		                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+		                          				<td  >&emsp;<%=action[23] %></td>
 		                          			</tr>
 		                          			<tr>
 		                          				<th style="text-align: right;">PDC :</th>
-		                          				<td>&emsp;<%=sdf.format(action[24]) %></td>
+		                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
 		                          			</tr>
 		                          			<tr>
-		                          				<th style="text-align: right;">Progress :</th>
-		                          				<td>
-		                          					&emsp;<%if(action[25]!=null){ %>
-		                          						<%=action[25] %> %
-		                          					<%}else{ %>
-		                          						Not Started
-		                          					<%} %>
+		                          				<th style="text-align: right;">Progress (%) :</th>
+		                          				<td style="padding-left: 10px;">
+		                          					
+		                          					<%if(action[25]!=null){ %>
+				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<%=action[25]%>
+															</div> 
+														</div> 
+													<%}else{ %>
+														<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																Not Yet Started
+															</div>
+														</div> 
+													<%} %>
+		                          					
 		                          				</td>
 		                          			</tr>
 		                          		</table>  
@@ -160,28 +170,50 @@
 										<div class="member-view-box action-view-box">
 											<div class=" action-box" >
 												<div class="action-box-header">
-												                          		
-													<span style="cursor:pointer;font-weight: 600;" ><%=action_L1[11] %></span >    
+												    
+												    <span style="cursor:pointer;font-weight: 600;" 
+						                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
+						                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
+						                          									'<%=action_L1[11] %>',   <!-- action No -->
+						                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+						                          									'<%=sdf.format(action_L1[4]) %>', <!-- action date -->
+						                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
+						                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
+						                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
+						                          									'<%=action_L1[23].toString().trim()%>' <!-- assignee -->
+						                          									);" >                      		
+													
+													<%=action_L1[11] %></span >    
 													       
 												</div>
-												<div class="action-box-body" align="center">
+												<div class="action-box-body" align="center" style="cursor: pointer ;">
 													<table class="card-body-table">
 														<tr>
-															<th style="text-align: right;">Assignee :</th>
-															<td>&emsp;<%=action_L1[23] %></td>
-														</tr>
-														<tr>
-															<th style="text-align: right;">PDC : </th>
-															<td>&emsp;<%=sdf.format(action_L1[24]) %></td>
-														</tr>
-														<tr>
-					                          				<th style="text-align: right;">Progress :</th>
-					                          				<td>
-					                          					&emsp;<%if(action_L1[25]!=null){ %>
-					                          						<%=action_L1[25] %> %
-					                          					<%}else{ %>
-					                          						Not Started
-					                          					<%} %>
+					                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+					                          				<td  >&emsp;<%=action_L1[23] %></td>
+					                          			</tr>
+					                          			<tr>
+					                          				<th style="text-align: right;">PDC :</th>
+					                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
+					                          			</tr>
+					                          			<tr>
+					                          				<th style="text-align: right;">Progress (%) :</th>
+					                          				<td style="padding-left: 10px;">
+					                          					
+					                          					<%if(action_L1[25]!=null){ %>
+							                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																			<%=action_L1[25]%>
+																		</div> 
+																	</div> 
+																<%}else{ %>
+																	<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																			Not Yet Started
+																		</div>
+																	</div> 
+																<%} %>
+					                          					
 					                          				</td>
 					                          			</tr>
 													</table>
@@ -203,28 +235,50 @@
 												<div class="member-view-box action-view-box">
 														<div class=" action-box" >
 															<div class="action-box-header">
-															                          		
-																<span style="cursor:pointer;font-weight: 600;" ><%=action_L2[11] %></span >           
-															      
+																
+																<span style="cursor:pointer;font-weight: 600;" 
+								                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
+								                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
+								                          									'<%=action_L2[11] %>',   <!-- action No -->
+								                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+								                          									'<%=sdf.format(action_L2[4]) %>', <!-- action date -->
+								                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
+								                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
+								                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
+								                          									'<%=action_L2[23].toString().trim()%>' <!-- assignee -->
+								                          									);" >              
+																
+																
+																<%=action_L2[11] %></span >           
 															</div>
-															<div class="action-box-body" align="center">
+															<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
 																<table class="card-body-table">
 																	<tr>
-																		<th style="text-align: right;">Assignee :</th>
-																		<td>&emsp;<%=action_L2[23] %></td>
-																	</tr>
-																	<tr>
-																		<th style="text-align: right;">PDC :</th>
-																		<td>&emsp;<%=sdf.format(action_L2[24]) %></td>
-																	</tr>
-																	<tr>
-								                          				<th style="text-align: right;">Progress :</th>
-								                          				<td>
-								                          					&emsp;<%if(action_L2[25]!=null){ %>
-								                          						<%=action_L2[25] %> %
-								                          					<%}else{ %>
-								                          						Not Started
-								                          					<%} %>
+								                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+								                          				<td  >&emsp;<%=action_L2[23] %></td>
+								                          			</tr>
+								                          			<tr>
+								                          				<th style="text-align: right;">PDC :</th>
+								                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
+								                          			</tr>
+								                          			<tr>
+								                          				<th style="text-align: right;">Progress (%) :</th>
+								                          				<td style="padding-left: 10px;">
+								                          					
+								                          					<%if(action_L2[25]!=null){ %>
+										                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																					<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																						<%=action_L2[25]%>
+																					</div> 
+																				</div> 
+																			<%}else{ %>
+																				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																					<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																						Not Yet Started
+																					</div>
+																				</div> 
+																			<%} %>
+								                          					
 								                          				</td>
 								                          			</tr>
 																</table>
@@ -244,27 +298,49 @@
 																	<div class=" action-box" >
 																			<div class="action-box-header">
 																			                          		
-																				<span style="cursor:pointer;font-weight: 600;" ><%=action_L3[11] %></span >           
+																				<span style="cursor:pointer;font-weight: 600;" 
+												                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
+												                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
+												                          									'<%=action_L3[11] %>',   <!-- action No -->
+												                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+												                          									'<%=sdf.format(action_L3[4]) %>', <!-- action date -->
+												                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
+												                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
+												                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
+												                          									'<%=action_L3[23].toString().trim()%>' <!-- assignee -->
+												                          									);" >      
+																								
+																				<%=action_L3[11] %></span >           
 																			      
 																			</div>
-																			<div class="action-box-body" align="center">
+																			<div class="action-box-body" align="center" style="cursor: pointer ;">
 																				<table class="card-body-table">
 																					<tr>
-																						<th style="text-align: right;">Assignee :</th>
-																						<td>&emsp;<%=action_L3[23] %></td>
-																					</tr>
-																					<tr>
-																						<th style="text-align: right;">PDC :</th>
-																						<td>&emsp;<%=sdf.format(action_L3[24]) %></td>
-																					</tr>
-																					<tr>
-												                          				<th style="text-align: right;">Progress :</th>
-												                          				<td>
-												                          					&emsp;<%if(action_L3[25]!=null){ %>
-												                          						<%=action_L3[25] %> %
-												                          					<%}else{ %>
-												                          						Not Started
-												                          					<%} %>
+												                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+												                          				<td  >&emsp;<%=action_L3[23] %></td>
+												                          			</tr>
+												                          			<tr>
+												                          				<th style="text-align: right;">PDC :</th>
+												                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
+												                          			</tr>
+												                          			<tr>
+												                          				<th style="text-align: right;">Progress (%) :</th>
+												                          				<td style="padding-left: 10px;">
+												                          					
+												                          					<%if(action_L3[25]!=null){ %>
+														                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																									<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																										<%=action_L3[25]%>
+																									</div> 
+																								</div> 
+																							<%}else{ %>
+																								<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																									<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																										Not Yet Started
+																									</div>
+																								</div> 
+																							<%} %>
+												                          					
 												                          				</td>
 												                          			</tr>
 																				</table>
@@ -285,35 +361,56 @@
 																							<div class=" action-box" >
 																								<div class="action-box-header">
 																								                          		
-																									<span style="cursor:pointer;font-weight: 600;" ><%=action_L4[11] %></span >           
+																									<span style="cursor:pointer;font-weight: 600;" 
+																	                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
+																	                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
+																	                          									'<%=action_L4[11] %>',   <!-- action No -->
+																	                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+																	                          									'<%=sdf.format(action_L4[4]) %>', <!-- action date -->
+																	                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
+																	                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
+																	                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
+																	                          									'<%=action_L4[23].toString().trim()%>' <!-- assignee -->
+																	                          									);" >
+																									
+																									
+																									<%=action_L4[11] %></span >           
 																								     
 																								</div>
-																								<div class="action-box-body" align="center">
+																								<div class="action-box-body" align="center" style="cursor: pointer ;">
 																									<table class="card-body-table">
 																										<tr>
-																											<th style="text-align: right;">Assignee :</th>
-																											<td>&emsp;<%=action_L4[23] %></td>
-																										</tr>
-																										<tr>
-																											<th style="text-align: right;">PDC :</th>
-																											<td>&emsp;<%=sdf.format(action_L4[24]) %></td>
-																										</tr>
-																										<tr>
-																	                          				<th style="text-align: right;">Progress :</th>
-																	                          				<td>
-																	                          					&emsp;<%if(action_L4[25]!=null){ %>
-																	                          						<%=action_L4[25] %> %
-																	                          					<%}else{ %>
-																	                          						Not Started
-																	                          					<%} %>
+																	                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+																	                          				<td  >&emsp;<%=action_L4[23] %></td>
+																	                          			</tr>
+																	                          			<tr>
+																	                          				<th style="text-align: right;">PDC :</th>
+																	                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
+																	                          			</tr>
+																	                          			<tr>
+																	                          				<th style="text-align: right;">Progress (%) :</th>
+																	                          				<td style="padding-left: 10px;">
+																	                          					
+																	                          					<%if(action_L4[25]!=null){ %>
+																			                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																														<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																															<%=action_L4[25]%>
+																														</div> 
+																													</div> 
+																												<%}else{ %>
+																													<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																															Not Yet Started
+																														</div>
+																													</div> 
+																												<%} %>
+																	                          					
 																	                          				</td>
 																	                          			</tr>
 																									</table>
 																								</div>
 																							</div>
 																						</div>
-																				    
-																				    
 																				    
 																				    
 														                		</li>
@@ -367,20 +464,93 @@
 	function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg,
 							InAssignor,InAssignee	)
 	{
-		$('#modal_action_no').html(InActionNo);
-		$('#modal_action_item').html(InActionItem);
-		$('#modal_action_date').html(InActionDate);
-		$('#modal_action_PDC').html(InEndDate);
-		$('#modal_action_assignor').html(InAssignor);
-		$('#modal_action_assignee').html(InAssignee);
+		$("#modal_progress_table").DataTable().destroy();
+		$.ajax({		
+			type : "GET",
+			url : "ActionSubListAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				$('#modal_action_no').html(InActionNo);
+				$('#modal_action_item').html(InActionItem);
+				$('#modal_action_date').html(InActionDate);
+				$('#modal_action_PDC').html(InEndDate);
+				$('#modal_action_assignor').html(InAssignor);
+				$('#modal_action_assignee').html(InAssignee);
+				
+				console.log(InProgress);
+				
+				if(InProgress.trim() === '0')
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
+					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					progressBar +=		'Not Started'
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				else
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+';  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >';
+					progressBar +=		InProgress
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				$('#modal_action_progress').html(progressBar);
+				
+				var htmlStr='';
+				if(result.length> 0){
+					for(var v=0;v<result.length;v++)
+					{	
+						htmlStr += '<tr>';
+						
+						htmlStr += '<td style="text-align: center;" >'+ (v+1) + '</td>';
+						htmlStr += '<td style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td style="text-align: center;" >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td>'+ result[v][4] + '</td>';
+						
+						if(result[v][5]=== null)
+						{
+							htmlStr += '<td style="text-align: center;">-</td>';
+						}
+						else
+						{
+							htmlStr += '<td style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+						}
+						htmlStr += '</tr>';
+					}
+				}
+				else
+				{
+					htmlStr += '<tr>';
+					
+					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					
+					htmlStr += '</tr>';
+				}
+				setModalDataTable();
+				$('#modal_progress_table_body').html(htmlStr);
+				
+				
+				$('#action_modal').modal('toggle');
+			}
+		});
 		
-		
-		
-		
-		$('#action_modal').modal('toggle');
 		
 	}
-
+	setModalDataTable();
+	function setModalDataTable()
+	{
+		$("#modal_progress_table").DataTable({
+			"lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			"pagingType": "simple",
+			"pageLength": 5
+		});
+	}
 </script>
     
     
@@ -393,7 +563,7 @@
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header" align="center">
+				<div class="modal-header" align="center" style="background-color: #FFE0AD ">
 					<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -418,9 +588,34 @@
 								<th style="text-align: right;padding: 5px;" >Assignee :</th>
 								<td style="padding: 5px;" id="modal_action_assignee"></td>
 							</tr>
+							<tr>
+								<th style="text-align: right;padding: 5px;" >Progress :</th>
+								<td style="padding: 5px;" id="modal_action_progress"></td>
+								<th style="text-align: right;padding: 5px;" ></th>
+								<td style="padding: 5px;" id=""></td>
+							</tr>
 							
 						</table>
-					</form>
+						</form>
+						<hr>
+						<form action="#" method="get">
+						<div style="text-align: center;font-weight: 600;"> Progress</div>
+						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+							<thead> 
+								<tr style="background-color: #055C9D; color: white;">
+									<th style="text-align: center;width:25px !important;">SN</th>
+									<th style="text-align: center;width:100px !important;">Progress Date</th>
+									<th style="text-align: center;width:100px !important;">Progress</th>
+									<th style="width:150px !important;">Remarks</th>
+									<th style="text-align: center;width:25px !important;">Download</th>
+								</tr>
+							</thead>
+							<tbody id="modal_progress_table_body">
+								
+							</tbody>
+						</table>
+						</form>
+					
 				</div>
 				
 			</div>

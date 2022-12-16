@@ -330,8 +330,8 @@ public class ActionController {
 
 	
 	@RequestMapping(value = "ActionSubLaunch.htm", method = RequestMethod.POST)
-	public String ActionSubLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-			throws Exception {
+	public String ActionSubLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionSubLaunch.htm "+UserId);		
 		try {		
@@ -2178,5 +2178,22 @@ public class ActionController {
 		
 	}
 	
-	
+	@RequestMapping(value = "ActionSubListAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionSubListAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		List<Object[]> ActionSubList=null;
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionSubListAjax.htm "+UserId);		
+		try {
+			
+			ActionSubList =   service.ActionSubList(req.getParameter("ActionAssignid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionSubListAjax.htm "+UserId, e);
+			ActionSubList=new ArrayList<>();
+		}
+		return json.toJson(ActionSubList);
+	}
 }
