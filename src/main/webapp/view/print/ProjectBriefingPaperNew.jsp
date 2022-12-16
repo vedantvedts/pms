@@ -1440,7 +1440,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<thead>	
 											
 											<tr>
-												<td colspan="7" style="border: 0">
+												<td colspan="9" style="border: 0">
 													<p style="font-size: 10px;text-align: center"> 
 														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
@@ -1458,40 +1458,44 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</tr>
 							
 											<tr>
-												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-												<th style="width: 330px; " colspan="3">Risk</th>
-												<th style="width: 100px; "  > PDC</th>
-												<th style="width: 100px; "> ADC</th>
-												<th style="width: 160px; " > Responsibility</th>
-												<th style="width: 50px; ">Status(DD)</th>
-												<th style="width: 215px; ">Remarks</th>	
+												<th style="width: 15px;text-align: center " rowspan="3">SN</th>
+												<th style="width: 330px; "  colspan="3">Risk</th>
+												<th style="width: 100px; " rowspan="2" > PDC</th>
+												<th style="width: 100px; " rowspan="2"> ADC</th>
+												<th style="width: 160px; " rowspan="2"> Responsibility</th>
+												<th style="width: 50px; " rowspan="2">Status(DD)</th>
+												<th style="width: 215px;" rowspan="2">Remarks</th>	
 											</tr>
-											
+											<tr>
+												<th  style="text-align: center;width: 100px;"> Category</th>
+												<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
+											</tr>
 											<tr>
 												<th  style="text-align: center;width: 110px; " > Severity</th>
 												<th  style="text-align: center;width: 110px;"> Probability</th>
 												<th  style="text-align: center;width: 110px;"> RPN</th>
-												<th  style="width:320px" colspan="3" > Mitigation Plans</th>
-												<th  style="width:265px" colspan="2"> Impact</th>		
+												<th  style="width:210px" colspan="3" > Mitigation Plans</th>
+												<th  style="width:215px" colspan="2"> Impact</th>		
 											</tr>
 										
 										</thead>
 																		
 										<tbody>
 												<%if(riskmatirxdata.get(z).size()>0){
-												int i=0;%> 
+												int i=0;
+												%> 
 													<%for(Object[] obj : riskmatirxdata.get(z)){
 													i++;%>
 													<tr>
-														<td style="text-align: center" rowspan="2"><%=i %></td>
-														<td style="text-align: justify;" colspan="3" ><%=obj[0] %></td>
-														<td style="text-align: center">
+														<td style="text-align: center" rowspan="3"><%=i %></td>
+														<td style="text-align: justify;color: red; " colspan="3" ><%=obj[0] %></td>
+														<td style="text-align: center" rowspan="2">
 															<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
 															<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
 															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
-														<td style="text-align: center">
+														<td style="text-align: center" rowspan="2">
 															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 
 																<%if(obj[18]!=null){ %>
@@ -1517,8 +1521,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<%}else{ %>-<%} %>
 														</td>
 															
-														<td  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-														<td style="text-align: center">
+														<td  rowspan="2"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td style="text-align: center" rowspan="2">
 															
 															<%if(obj[18]!=null){ %>
 																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1541,9 +1545,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<% } %> 
 											
 														</td>
-														<td style="text-align: justify"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+														<td style="text-align: justify" rowspan="2"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
 													</tr>	
+													<tr>
+														<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
+														<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
+													</tr>
 													
 													<tr>
 														<td style="text-align: center;" ><%=obj[1] %></td>
@@ -1552,11 +1560,22 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
 														<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
 													</tr>
+													
+													<%if(riskmatirxdata.get(z).size() > i){ %>
+														<tr>
+															<td colspan="9" style="color:transparent ;">.</td>
+														</tr>
+													<%} %>		
 															
 													<%}%>
+													
+													
 												<%}else{%>
 													<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
 												<%} %>
+												
+												
+												
 											</tbody>		
 										</table>
 										
@@ -2152,11 +2171,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													<%= sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 												<td  style="text-align: center;"> 
-													<%if(obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
+													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
 												</td>
 												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
 												<td  style=";text-align: center;"> 
-													<%if(obj[16]!=null){ %>
+													<%if(obj[16]!=null && obj[13]!=null){ %>
 														<%if(obj[9].toString().equals("I")&&obj[15].toString().equals("F")&&(LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))||  LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString()))  )){ %>
 															<span class="ongoing">RC</span>
 														<%}else if(obj[9].toString().equals("I")&&obj[15].toString().equals("F")&&LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))){  %>
