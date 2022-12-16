@@ -237,9 +237,7 @@ public class LoginController {
 			     }
 			     
 			     for(Object[] obj : LabMasterList) {
-			    	 
-			    	 System.out.println(ProjectId+" "+EmpId+" "+LoginType+" " +obj[1].toString().trim()+" " +InAll);
-			    	 
+	
 			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,InAll));
 			     }
 			     
@@ -584,10 +582,11 @@ public class LoginController {
     	
     	String Empid= ses.getAttribute("EmpId").toString();
     	String UserId = (String) ses.getAttribute("Username");
+    	String LabCode=(String)ses.getAttribute("labcode");
     	logger.info(new Date() +"ProjectHoaUpdate.htm "+Empid);
     
     	// Calling pms_serv to update hoa data from ibas to pms
-    	final String localUri1=uri+"/pfms_serv/tblprojectdata";
+    	final String localUri1=uri+"/pfms_serv/tblprojectdata?labcode="+LabCode;
     	final String localUri2=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=M";
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=T";
@@ -915,9 +914,7 @@ public class LoginController {
     		List<Object[]> labdatalist = new ArrayList<Object[]>();
     		
 		    for(Object[] obj : LabMasterList) {
-		    	
-		    	 System.out.println(ProjectId+" "+EmpId+" "+LoginType+" " +obj[1].toString().trim());
-		    	
+
 		    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
 		    }
 		    req.setAttribute("projecthealthtotaldg", labdatalist);

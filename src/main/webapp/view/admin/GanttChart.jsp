@@ -305,7 +305,21 @@ h6{
 								     		/* Half-yearly */
 									     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
 									     	var header = chart.getTimeline().header();
+									     	/* header.level(2).format("{%value}-{%endValue}"); */
 									     	header.level(2).format("{%value}-{%endValue}");
+									     	//header.level(0).format("{%value}");
+									     	header.level(0).format(function() {
+									     			
+									     			if(this.value=='Q1')
+									     				duration='H1';
+									     			if(this.value=='Q3')
+									     				duration='H2'
+									     			
+									     		  var duration = "sdfsdf" + this.value;
+									     		  return duration;
+									     		});
+									     	
+									     	
 								     	}
 								     	
 								     	if(interval==="quarter"){
@@ -319,8 +333,7 @@ h6{
 								     	}
 								     	
 								     	else if(interval===""){
-								
-								     		console.log('else');
+
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
 								     		
