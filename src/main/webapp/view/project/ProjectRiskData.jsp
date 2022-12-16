@@ -101,10 +101,11 @@ SimpleDateFormat sdf2=new SimpleDateFormat("dd-MM-yyyy");
 
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String)request.getAttribute("projectid");
+
+List<Object[]> risktypelist=(List<Object[]>)request.getAttribute("risktypelist");
+
 Object[] riskdata=(Object[] )request.getAttribute("riskdata");
-
 Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
-
 List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
 %>
 <%String ses=(String)request.getParameter("result"); 
@@ -253,6 +254,29 @@ if(ses1!=null){
 									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000">							    				
 							    			</td>
 							    		</tr>	
+							    		<tr>
+							    			<td style="width: 20%">
+							    				<label ><b>Category</b>  </label> 
+							    			</td> 
+							    			<td colspan="1" style="max-width: 40%">
+									    		<select class="form-control" name="category" required="required" style="width:20% ">
+									    			<option value="I">Internal</option>
+									    			<option value="E">External</option>
+									    		</select>				    				
+							    			</td>
+							    		</tr>	
+							    		<tr>
+							    			<td style="width: 20%">
+							    				<label ><b>Type</b>  </label> 
+							    			</td> 
+							    			<td colspan="1" style="max-width: 40%">
+									    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
+									    			<%for(Object[] risktpye : risktypelist){ %>
+									    				<option value="<%=risktpye[0]%>"><%=risktpye[1]%></option>
+									    			<%} %>
+									    		</select>							    				
+							    			</td>
+							    		</tr>	
 							    							
 							    		<tr>
 							    			<td colspan="2" class="center">
@@ -323,16 +347,12 @@ if(ses1!=null){
 									    		</td> 
 									    	</tr>
 								    		<tr>
-								    			
 								    			<td >
-										    		<!-- <input class="form-control" type="text" name="severity"  required maxlength="200" >	 -->
-										    		 <!-- <input type="range" min="1" max="10" class="slider" id="myRange"> -->					
 										    		 <select class="form-control" name="severity" id="severity" onchange="calculateRPN();" required="required" >
 										    		 		<%for(int i=1;i<=10;i++){ %>
 										    		 			<option value="<%=i%>" <%if(Integer.parseInt(riskmatrixdata[4].toString())==i){ %>selected <%} %> ><%=i%></option>
 										    		 		<%} %>
 										    		 </select>
-										    		 
 								    			</td>
 								    			<td >
 									    			<b>X</b>
@@ -374,6 +394,29 @@ if(ses1!=null){
 										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000">							    				
 								    			</td>
 								    		</tr>	
+								    		<tr>
+								    			<td style="width: 20%">
+								    				<label ><b>Category</b>  </label> 
+								    			</td> 
+								    			<td colspan="1" style="max-width: 40%">
+										    		<select class="form-control" name="category" required="required" style="width:20% ">
+										    			<option value="I" <%if(riskmatrixdata[11].toString().equalsIgnoreCase("I")){ %> selected <%} %> >Internal</option>
+										    			<option value="E" <%if(riskmatrixdata[11].toString().equalsIgnoreCase("E")){ %> selected <%} %> >External</option>
+										    		</select>				    				
+								    			</td>
+								    		</tr>	
+								    		<tr>
+								    			<td style="width: 20%">
+								    				<label ><b>Type</b>  </label> 
+								    			</td> 
+								    			<td colspan="1" style="max-width: 40%">
+										    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
+										    			<%for(Object[] risktpye : risktypelist){ %>
+										    				<option value="<%=risktpye[0]%>" <%if(riskmatrixdata[12].toString().equalsIgnoreCase(risktpye[0].toString())){ %> selected <%} %>><%=risktpye[1]%></option>
+										    			<%} %>
+										    		</select>							    				
+								    			</td>
+								    		</tr>
 								    							
 								    		<tr>
 								    			<td colspan="2" class="center" >
@@ -390,7 +433,6 @@ if(ses1!=null){
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										<input type="hidden" name="riskid" value="<%=riskmatrixdata[0]%>"/>
 										<input type="hidden" name="revisionno" value="<%=riskmatrixdata[7]%>"/>
-								    	<%-- <input type="hidden" name="projectid" value="<%=projectid%>"/> --%>
 								    	<input type="hidden" name="actionmainid" value="<%=riskdata[0]%>"/>
 								  </form>
 								  
@@ -427,9 +469,11 @@ if(ses1!=null){
 									<th style="width: 5%;" >Severity</th> 
 									<th style="width: 5%;" >Probability</th>
 									<th style="width: 5%;" >RPN</th>	
-									<th style="width: 25%;" >Mitigation Plans</th>							
+									<th style="width: 15%;" >Mitigation Plans</th>							
 								 	<th style="width: 25%;" > Impact</th>
 								 	<th style="width: 10%;" > Revised on</th>
+								 	<th style="width: 5%;" >Category</th>
+								 	<th style="width: 5%;" > Type</th>
 								 	
 								</tr>
 							</thead>
@@ -444,6 +488,8 @@ if(ses1!=null){
 										<td class=""><%=obj[6] %></td>
 										<td class=""><%=obj[10] %></td>
 										<td class="center"><%=sdf.format(sdf1.parse(obj[8].toString()) )%></td>
+										<td class=""><%if(obj[11].toString().equalsIgnoreCase("I")){ %>Internal <%}else{ %> External<%} %></td>
+										<td class=""><%=obj[13] %></td>
 									</tr>
 								<%} %>
 							</tbody>
