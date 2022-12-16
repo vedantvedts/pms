@@ -20,6 +20,8 @@ public class PfmsRiskDto {
 	    private String ModifiedDate;
 	    private String IsActive;
 	    private String LabCode;
+	    private String Category;
+	    private String RiskTypeId;
 	    
 	    
 }
