@@ -182,20 +182,20 @@ h6{
 												
 												<td style="text-align: left; width: 3%;">
 												
-											 <% 
-										        if(obj[5].toString().length()!=0 && obj[5]!=null){
-										        %>
-										        <div  align="center">
-														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
-														 target="_blank"><i class="fa fa-download"></i></a>
-													</div>
-												
+												 <% 
+											        if( obj[6]!=null){
+											        %>
+											        <div  align="center">
+															<a  
+															 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
+															 target="_blank"><i class="fa fa-download"></i></a>
+														</div>
 													
-												<%}else{ %>
-												
-												<div  align="center">-</div>
-												 <%} %>
+														
+													<%}else{ %>
+													
+													<div  align="center">-</div>
+													 <%} %>
 													
 										
 												</td>
@@ -213,7 +213,7 @@ h6{
 								</div> 
 								<%} %>
 								
-								 <% if(SubList.size()>0){ %>  
+								<% if(SubList.size()>0){ %>  
 											
 											<div class="table-responsive">
 				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
@@ -258,11 +258,11 @@ h6{
 												<td style="text-align: left; width: 3%;">
 												
 											 <% 
-										        if(obj[5].toString().length()!=0 && obj[5]!=null){
+										        if( obj[5]!=null){
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												
@@ -286,7 +286,7 @@ h6{
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
 									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
-									                <input type="hidden" name="ActionAttachid" value="<%=obj[7]%>"> 
+									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
 											        </form>
 												</td>
 										

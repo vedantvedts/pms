@@ -42,7 +42,6 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
-import com.vts.pfms.fracas.model.PfmsFracasAttach;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
@@ -66,7 +65,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.service.ProjectService;
 
 @Controller
-public class ProjectController {
+public class ProjectController 
+{
 
 	@Autowired
 	ProjectService service;
@@ -2891,6 +2891,7 @@ public class ProjectController {
 			
 			req.setAttribute("projectriskmatrixrevlist",service.ProjectRiskMatrixRevList(actionmainid));
 			req.setAttribute("riskmatrixdata",service.ProjectRiskMatrixData(actionmainid));
+			req.setAttribute("risktypelist",service.RiskTypeList());
 			req.setAttribute("riskdata", riskdata);
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("projectlist", projectlist);
@@ -2922,6 +2923,8 @@ public class ProjectController {
 			dto.setProbability(req.getParameter("probability"));
 			dto.setMitigationPlans(req.getParameter("mitigationplans"));
 			dto.setImpact(req.getParameter("Impact"));
+			dto.setCategory(req.getParameter("category"));
+			dto.setRiskTypeId(req.getParameter("risk_type"));
 			dto.setActionMainId(riskdata[0].toString());
 			dto.setProjectId(projectid);
 			dto.setCreatedBy(Username);		
@@ -2966,6 +2969,8 @@ public class ProjectController {
 			dto.setProbability(req.getParameter("probability"));
 			dto.setMitigationPlans(req.getParameter("mitigationplans"));
 			dto.setImpact(req.getParameter("Impact"));
+			dto.setCategory(req.getParameter("category"));
+			dto.setRiskTypeId(req.getParameter("risk_type"));
 			dto.setActionMainId(riskdata[0].toString());			
 			dto.setProjectId(projectid);
 			dto.setModifiedBy(Username);			

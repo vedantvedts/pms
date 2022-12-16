@@ -297,6 +297,5 @@ List<Object[]> committeelist=(List<Object[]>)request.getAttribute("approvallist"
 
 
 
-	<div class="modal" id="loader"></div>
 </body>
 </html>

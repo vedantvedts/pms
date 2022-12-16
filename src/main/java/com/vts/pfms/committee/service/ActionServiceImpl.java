@@ -368,7 +368,9 @@ public class ActionServiceImpl implements ActionService {
 			}
 			attach.setCreatedBy(main.getCreatedBy());
 			attach.setCreatedDate(sdf1.format(new Date()));
+			if(!main.getMultipartfile().isEmpty()) {
 			dao.ActionAttachInsert(attach);
+			}
 		}else {
 			subresult=0;
 		}
@@ -792,4 +794,10 @@ public class ActionServiceImpl implements ActionService {
 	 {
 		 return dao.ActionSubLevelsList(ActionAssignId);
 	 }
+	 
+	@Override
+	public List<Object[]> ActionSubList(String assignid) throws Exception 
+	{
+		return dao.ActionSubList(assignid);
+	}
 }

@@ -274,8 +274,5 @@ var TotalMilestoneMonthadd=Number(ProjectScheduleMonth)+Number(MilestoneMonth);
 
 
 </script>
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 </body>
 </html>

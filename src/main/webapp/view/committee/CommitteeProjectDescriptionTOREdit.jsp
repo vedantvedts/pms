@@ -119,15 +119,6 @@ String committeemainid=committeemaindata[0].toString();
 						</div>
 					</div></div>
 					</div>
-					</div>
-					<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px; ">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal" id="loader">
-			<!-- Place at bottom of page -->
-		</div>
 
 	
 <script type='text/javascript'> 

@@ -165,7 +165,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-sm-5" ></div>
 	<div>
 		<input type="button" value="SUBMIT" onclick="return empNoCheck('myfrm');" class="btn btn-primary btn-sm submit" /></div>
-		<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" form="backfrm" >BACK</button>
+		<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="OfficerExtList.htm" formnovalidate="formnovalidate"  >BACK</button>
 	</div>
 
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -184,10 +184,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 	
 </div>	
 
-				<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
-	 <form action="OfficerExtList.htm" method="get" id="backfrm">
+	 <form  method="get" id="backfrm">
 	
 		
 	

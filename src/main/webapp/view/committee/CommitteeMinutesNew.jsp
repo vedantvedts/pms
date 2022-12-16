@@ -1,3 +1,5 @@
+<%@page import="java.time.temporal.ChronoUnit"%>
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
@@ -28,9 +30,6 @@
 	List<Object[]> lastpmrcactions = (List<Object[]>)request.getAttribute("lastpmrcactions");
 	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
-	/* List<Object[]> committeeminutessub = (List<Object[]>) request.getAttribute("committeeminutessub"); */
-	/* List<Object[]> agendas = (List<Object[]>) request.getAttribute("CommitteeAgendaList"); */	
-	/* List<Object[]> milestonesubsystems  = (List<Object[]>)request.getAttribute("milestonesubsystems"); */
 
 
 	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
@@ -698,29 +697,29 @@ for(Object[] temp : invitedlist){
 									<tr>
 										<td colspan="6" style="border: 0px !important;">
 											<p style="font-size: 10px;text-align: center"> 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
+												<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+												<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+												<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+											</p>
 										</td>									
 									</tr>
 								
 								
 								<tr>
 									<th class="std"  style="width: 30px;"  >SN</th>
-									<th class="std"  style="width: 255px;" >Action Point</th>
+									<th class="std"  style="width: 250px;" >Action Point</th>
 									<th class="std"  style="width: 80px; "  > PDC</th>
-									<th class="std"  style="width: 115px;" > Item Code</th>
-									<th class="std"  style="width: 100px;" >Responsibility</th>
-									<th class="std"  style="width: 70px;"  >Status/ Remarks</th>			
+									<th class="std"  style="width: 80px;" > Item Code</th>
+									<th class="std"  style="width: 130px;" >Responsibility</th>
+									<th class="std"  style="width: 80px;"  >Status(DD)</th>			
 								</tr>
 								</thead>		
 								<tbody>
@@ -735,11 +734,9 @@ for(Object[] temp : invitedlist){
 											<td class="std"  align="center"><%=i %></td>
 											<td class="std" style="text-align: justify;"><%=obj[2] %></td>
 											<td class="std" align="center">
-												<%if(obj[4]!= null){ %>  
-													<%=sdf.format(sdf1.parse(obj[6+(Integer)obj[9] ].toString()))%>												
-												<%}else { %>
-													-
-												<%} %>											
+												<%if(obj[8]!= null){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>
+												<%if(obj[7]!= null){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
+												<%if(obj[6]!= null){ %><br><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
 											</td>
 											<td class="std" align="center" > 
 												<%if(obj[3].toString().equals("A") ){ %>		 A
@@ -756,26 +753,28 @@ for(Object[] temp : invitedlist){
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
-											<%if(obj[4]!= null){if(obj[18]!=null && Integer.parseInt(obj[18].toString())>0){ %>
-											
-												<%if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]) )){ %>
-													<span class="ongoing">UF</span>
-												<%}else if(obj[10].toString().equals("I")&&obj[16].toString().equals("F")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[10].toString().equals("C")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %>
-													<span class="completed">CO</span>
-												<%}else if(obj[10].toString().equals("C")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %>
-												   <span class="completeddelay">CD</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&(sdf.parse(obj[17].toString()).after(sdf.parse(obj[14].toString()))||obj[17].equals(obj[14]))){  %> 
-													<span class="ongoing">OG</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[10].toString().equals("I")&&sdf.parse(obj[17].toString()).before(sdf.parse(obj[14].toString()))){  %> 
-													<span class="delay">DO</span>
-												<%}else{ %>
-													<span class="ongoing">OG</span>
-												<%} 
-												}else if(obj[18]!=null && obj[10]!=null && obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
-											        <span class="completed">CO</span>
-											      <% }else{ %><span class="notyet">NS</span> 
+												<%if(obj[4]!= null){
+													if(obj[18]!=null && Integer.parseInt(obj[18].toString())>0){ %>
+												  
+												  
+													<%if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString()))  )){ %>
+														<span class="ongoing">UF</span>
+													<%}else if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+														<span class="delay">FD</span>
+													<%}else if(obj[10].toString().equals("C") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString())) )){  %>
+														<span class="completed">CO</span>
+													<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
+													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
+													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.now()) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.now()) )){  %> 
+														<span class="ongoing">OG</span>
+													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.now())){  %> 
+														<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.now())  %>) </span>
+													<%}else{ %>
+														<span class="ongoing">OG</span>
+													<%} 
+													}else if(obj[18]!=null && obj[10]!=null && obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
+												        <span class="completed">CO</span>
+												      <% }else{ %><span class="notyet">NS</span> 
 												<%}}else { %> <span class="notassign">NA</span> <%} %> 
 											</td>				
 										</tr>			
@@ -824,50 +823,8 @@ for(Object[] temp : invitedlist){
 										 
 									</tr>
 								</thead>
-						<!-- Old Code Before 14-09-2022 -->				
-															
-						<%-- <%if(milestonesubsystems.size()==0){ %>
-							<tr><td class="std" colspan="5" style="text-align: center;" > No SubSystems</td></tr>
-						<%}else if(milestonesubsystems.size()>0)
-						{int i=1;
-						    int count=0;
-						    String id=null;
-							for(Object[] obj:milestonesubsystems){ 
-								if(i==1){
-									id=obj[8].toString();
-								}
-								if(obj[8].toString().equalsIgnoreCase(id)){
-									count++;
-								}else{
-									id=obj[8].toString();
-									count=1;
-								}
-							%>
-							<tr>
-											<td class="std"  style="max-width: 50px;text-align: center;"><%=i%></td>
-											<td class="std"  style="max-width: 100px;text-align: center;"> M<%=obj[8]%>. <%=count %></td>
-											<td class="std"  style="max-width: 150px;text-align: left;"><%=obj[2] %> </td>											
-											<td class="std"  style="max-width: 110px;text-align: center;"> <%= sdf.format(sdf1.parse(obj[3].toString()))%> </td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%= sdf.format(sdf1.parse(obj[4].toString()))%></td>
-											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[7] %> %</td>
-											<td class="std"  style="max-width: 70px;text-align: center;">
-											<span class="<%if(obj[5].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[5].toString().equalsIgnoreCase("1")) {%> notyet
-														<%}else if(obj[5].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[5].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[5].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[5].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[5].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[6] %>	
-											</span>
-											
-											</td>
-											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[9]!=null&&!obj[9].toString().equals("null")){%><%=obj[9] %><%} %></td>
-										</tr>
-									<%i++;}} %> --%>
-									
-							<!-- New code by tharun  -->		
-									<tbody>
+		
+								<tbody>
 									<% if(MilestoneDetails6 !=null){ if( MilestoneDetails6.size()>0){ 
 									long milcount1=1;
 									int milcountA=1;
@@ -885,7 +842,7 @@ for(Object[] temp : invitedlist){
 												<%
 												
 												if(obj[21].toString().equals("0")) {%>
-													L
+													
 												<%	milcountA=1;
 													milcountB=1;
 													milcountC=1;
@@ -1260,18 +1217,18 @@ for(Object[] temp : invitedlist){
 									<tr>
 										<td colspan="9" style="border: 0px">
 											<p style="font-size: 10px;text-align: center"> 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
+												<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+												<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+												<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+											</p>
 										</td>									
 									</tr>
 							
@@ -1326,7 +1283,7 @@ for(Object[] temp : invitedlist){
 												<%
 												
 												if(obj[26].toString().equals("0")) {%>
-													L
+													
 												<%countA=1;
 													countB=1;
 													countC=1;

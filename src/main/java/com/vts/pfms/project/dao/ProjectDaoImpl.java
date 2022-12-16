@@ -147,9 +147,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String USERLIST="SELECT  b.empid, b.empname,b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
-	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact FROM pfms_risk WHERE actionmainid=:actionmainid";
-	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact WHERE riskid=:riskid";
-	private static final String PROJECTRISKMATRIXREVLIST="SELECT riskrevisionid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,revisiondate,RPN,Impact FROM pfms_risk_rev WHERE actionmainid=:actionmainid  ORDER BY revisionno DESC";		
+	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId FROM pfms_risk WHERE actionmainid=:actionmainid";
+	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact, Category=:Category, RiskTypeId=:RiskTypeId WHERE riskid=:riskid";
+	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
 	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(e.title,''), e.empname) as 'title',ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
@@ -1465,7 +1465,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		
 		@Override
-		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception {
+		public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception 
+		{
 			Query query=manager.createNativeQuery(PROJECTRISKMATRIXDATA);
 			query.setParameter("actionmainid", actionmainid);
 			Object[] ProjectRiskMatrixData=null;
@@ -1479,6 +1480,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}		
 		
 		
+		
+		
 		@Override
 		public int ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception {
 			Query query=manager.createNativeQuery(PROJECTRISKDATAEDIT);
@@ -1488,6 +1491,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("revisionno", dto.getRevisionNo());
 			query.setParameter("RPN", Integer.parseInt(dto.getProbability()) * Integer.parseInt(dto.getSeverity()) );
 			query.setParameter("Impact", dto.getImpact());
+			query.setParameter("Category", dto.getCategory());
+			query.setParameter("RiskTypeId", dto.getRiskTypeId());
 			query.setParameter("modifiedby", dto.getModifiedBy());
 			query.setParameter("modifieddate", dto.getModifiedDate());
 			query.setParameter("riskid", dto.getRiskId());
@@ -1768,6 +1773,14 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}
 
 		
+		private static final String RISKTYPELIST = "SELECT risktypeid, risktype FROM pfms_risk_type";
+		
+		@Override
+		public List<Object[]> RiskTypeList() throws Exception 
+		{
+			Query query=manager.createNativeQuery(RISKTYPELIST);
+			return (List<Object[]>)query.getResultList();
+		}		
 		
 		
 		

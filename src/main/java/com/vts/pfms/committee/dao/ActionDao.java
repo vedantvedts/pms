@@ -81,4 +81,5 @@ public interface ActionDao {
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
 	public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception;
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
+	public List<Object[]> ActionSubList(String assignid) throws Exception;
  }

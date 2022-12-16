@@ -145,6 +145,7 @@ public interface ProjectService {
 	public long TechnicalWorkDataEdit(ProjectTechnicalWorkData modal,String techdataid) throws Exception;
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
+	public List<Object[]> RiskTypeList() throws Exception;
 	
 	
 }

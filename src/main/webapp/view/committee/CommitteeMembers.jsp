@@ -712,9 +712,6 @@ String ses=(String)request.getParameter("result");
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />									
 						</form>	      		
 		      		<% } %>
-		<div class="modal" id="loader">
-			<!-- Place at bottom of page -->
-		</div>
 </div>
 
 <script type="text/javascript">

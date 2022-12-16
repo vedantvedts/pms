@@ -280,9 +280,6 @@ List<Object[]> labmasterdata=(List<Object[]>)request.getAttribute("labmasterdata
 	</div></div></div></div>
 </div>	
 	
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 </body>
 <script>
   $(document).ready(function(){
