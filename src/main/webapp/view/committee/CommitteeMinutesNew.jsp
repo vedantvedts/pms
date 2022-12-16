@@ -30,9 +30,6 @@
 	List<Object[]> lastpmrcactions = (List<Object[]>)request.getAttribute("lastpmrcactions");
 	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
-	/* List<Object[]> committeeminutessub = (List<Object[]>) request.getAttribute("committeeminutessub"); */
-	/* List<Object[]> agendas = (List<Object[]>) request.getAttribute("CommitteeAgendaList"); */	
-	/* List<Object[]> milestonesubsystems  = (List<Object[]>)request.getAttribute("milestonesubsystems"); */
 
 
 	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
