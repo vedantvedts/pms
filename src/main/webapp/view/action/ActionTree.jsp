@@ -33,18 +33,8 @@
 {
 	border-top-right-radius : 10px;
 	border-top-left-radius: 10px;
+ 	padding:5px;
  	
-	display: block;
-    flex-wrap: wrap;
-    justify-content: center;
-	background: #BBC0FF;
-	padding:5px;
-
-    -ms-word-break: break-word;
-    -ms-hyphens: auto;
-    -moz-hyphens: auto;
-    -webkit-hyphens: auto;
-    
   	text-align: center;
 }
 
@@ -75,12 +65,34 @@
 	border:0px;
 }
 
+.Q1
+{
+	background-color: #DC3535;
+	color: #FFFFFF;
+}
 
+.Q2
+{
+	background-color: #FF7000;
+	color: #FFFFFF;
+}
+
+.Q3
+{
+	background-color: #FED049;
+	color: #000000;
+}
+
+.Q4
+{
+	background-color: #5F8D4E;
+	color: #FFFFFF;
+}
 
 </style>
 
 </head>
-<body style="background-color: #FDFFCF69;overflow-y:auto " class="body genealogy-body genealogy-scroll">
+
 <%
 	List<Object[]> actionslist = (List<Object[]>)request.getAttribute("actionslist");
 	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -88,375 +100,450 @@
 	  
 	int startLevel = 0;
 	
-	/* List<Long> ActionAddedList = new ArrayList<Long>(); */
-	
 	if(actionslist.size()>0){
 		startLevel = Integer.parseInt(actionslist.get(0)[3].toString());
 	} 
 
 %>
 
-<div  >
-    <div class="genealogy-tree" ">
-        
-  		<ul>
-			<li>      
-				<%if(startLevel >= 0){ %> 
-					<%for(Object[] action : actionslist){ %>
-						<% if(Integer.parseInt(action[3].toString()) == startLevel){ %>
-							
-		                    <div class="member-view-box action-view-box">
-		                        <div class=" action-box" >
-		                          	<div class="action-box-header">
-		                          		
-		                          		<span style="cursor:pointer;font-weight: 600;" 
-		                          			onclick="ActionDetails('<%=action[10] %>',   <!-- assignid -->
-		                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
-		                          									'<%=action[11] %>',   <!-- action No -->
-		                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
-		                          									'<%=sdf.format(action[4]) %>', <!-- action date -->
-		                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
-		                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
-		                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
-		                          									'<%=action[23].toString().trim()%>' <!-- assignee -->
-		                          									);" >
-		                          				<%=action[11] %>
-		                          		</span >           
-		                          		
-		                          	</div>
-		                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
-		                          		<table class="card-body-table">
-		                          			<tr>
-		                          				<th style="text-align: right;width: 40%;">Assignee :</th>
-		                          				<td  >&emsp;<%=action[23] %></td>
-		                          			</tr>
-		                          			<tr>
-		                          				<th style="text-align: right;">PDC :</th>
-		                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
-		                          			</tr>
-		                          			<tr>
-		                          				<th style="text-align: right;">Progress (%) :</th>
-		                          				<td style="padding-left: 10px;">
-		                          					
-		                          					<%if(action[25]!=null){ %>
-				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																<%=action[25]%>
+<body style="background-color: #FDFFCF69;overflow-y:auto " class="body genealogy-body genealogy-scroll">
+
+	<div>
+		<h3>Action Tree</h3>
+	</div>
+	<div align="right">
+		<div class="">
+			<div style="font-weight: bold; ">
+				<span style="margin:0px 0px 10px  10px;">0 - 25 % :&ensp; 	<span class="Q1" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+				<span style="margin:0px 0px 10px  15px;">26 - 50 % :&ensp; 	<span class="Q2" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+				<span style="margin:0px 0px 10px  15px;">51 - 75 % :&ensp; 	<span class="Q3" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+				<span style="margin:0px 0px 10px  15px;">76 - 100 % :&ensp; <span class="Q4" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+			</div>
+		</div>
+	</div>
+	<div>
+	    <div class="genealogy-tree" >
+	        
+	  		<ul>
+				<li>      
+						<%for(Object[] action : actionslist){ %>
+							<% if(Integer.parseInt(action[3].toString()) == startLevel){ %>
+								
+			                    <div class="member-view-box action-view-box">
+			                        <div class=" action-box" >
+			                          	<div 			                          		
+			                          		<% int progress = action[25]!=null ? Integer.parseInt(action[25].toString()) : 0 ; %>
+			                          		
+			                          		<% if( progress >= 0 && progress <= 25  ){ %>
+			                          			class="action-box-header Q1"
+			                          		<%}else if( progress >= 26 && progress <= 50  ){ %>
+			                          			class=" action-box-header Q2"
+			                          		<%}else if( progress >= 51 && progress <= 75  ){ %>
+			                          			class=" action-box-header Q3"
+			                          		<%}else if(  progress >= 76 && progress <= 100  ){ %>
+			                          			class="action-box-header Q4"
+			                          		<%} %>
+			                          		
+			                          	  >
+			                          		
+			                          		<span style="cursor:pointer;font-weight: 600;" 
+			                          			onclick="ActionDetails('<%=action[10] %>',   <!-- assignid -->
+			                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
+			                          									'<%=action[11] %>',   <!-- action No -->
+			                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+			                          									'<%=sdf.format(action[4]) %>', <!-- action date -->
+			                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
+			                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
+			                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
+			                          									'<%=action[23].toString().trim()%>' <!-- assignee -->
+			                          									);" >
+			                          				<%=action[11] %>
+			                          		</span >           
+			                          		
+			                          	</div>
+			                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
+			                          		<table class="card-body-table">
+			                          			<tr>
+			                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+			                          				<td  >&emsp;<%=action[23] %></td>
+			                          			</tr>
+			                          			<tr>
+			                          				<th style="text-align: right;">PDC :</th>
+			                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
+			                          			</tr>
+			                          			<tr>
+			                          				<th style="text-align: right;">Progress (%) :</th>
+			                          				<td style="padding-left: 10px;">
+			                          					
+			                          					<%if(action[25]!=null){ %>
+					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																	<%=action[25]%>
+																</div> 
 															</div> 
-														</div> 
-													<%}else{ %>
-														<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																Not Yet Started
-															</div>
-														</div> 
-													<%} %>
-		                          					
-		                          				</td>
-		                          			</tr>
-		                          		</table>  
-		                          	</div>
-		                        </div>
-		                    </div>
-		               
-		        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
-		                <ul class="active">	                
-		                <%for(Object[] action_L1 : actionslist){ %>
-							<% if(Integer.parseInt(action_L1[3].toString()) == startLevel+1 && Long.parseLong(action[0].toString()) == Long.parseLong(action_L1[1].toString())  
-							&&  action[18].toString().trim().equalsIgnoreCase(action_L1[16].toString().trim()) 
-							&& Long.parseLong(action[19].toString()) == Long.parseLong(action_L1[17].toString()) ){ %>
-								<li>			    
-								           
-										<div class="member-view-box action-view-box">
-											<div class=" action-box" >
-												<div class="action-box-header">
-												    
-												    <span style="cursor:pointer;font-weight: 600;" 
-						                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
-						                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
-						                          									'<%=action_L1[11] %>',   <!-- action No -->
-						                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
-						                          									'<%=sdf.format(action_L1[4]) %>', <!-- action date -->
-						                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
-						                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
-						                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
-						                          									'<%=action_L1[23].toString().trim()%>' <!-- assignee -->
-						                          									);" >                      		
-													
-													<%=action_L1[11] %></span >    
-													       
-												</div>
-												<div class="action-box-body" align="center" style="cursor: pointer ;">
-													<table class="card-body-table">
-														<tr>
-					                          				<th style="text-align: right;width: 40%;">Assignee :</th>
-					                          				<td  >&emsp;<%=action_L1[23] %></td>
-					                          			</tr>
-					                          			<tr>
-					                          				<th style="text-align: right;">PDC :</th>
-					                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
-					                          			</tr>
-					                          			<tr>
-					                          				<th style="text-align: right;">Progress (%) :</th>
-					                          				<td style="padding-left: 10px;">
-					                          					
-					                          					<%if(action_L1[25]!=null){ %>
-							                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																			<%=action_L1[25]%>
+														<%}else{ %>
+															<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																	Not Yet Started
+																</div>
+															</div> 
+														<%} %>
+			                          					
+			                          				</td>
+			                          			</tr>
+			                          		</table>  
+			                          	</div>
+			                        </div>
+			                    </div>
+			               
+			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
+			                <ul class="active">	                
+			                <%for(Object[] action_L1 : actionslist){ %>
+								<% if(Integer.parseInt(action_L1[3].toString()) == startLevel+1 && Long.parseLong(action[0].toString()) == Long.parseLong(action_L1[1].toString())  
+								&&  action[18].toString().trim().equalsIgnoreCase(action_L1[16].toString().trim()) 
+								&& Long.parseLong(action[19].toString()) == Long.parseLong(action_L1[17].toString()) ){ %>
+									<li>			    
+									           
+											<div class="member-view-box action-view-box">
+												<div class=" action-box" >
+													<div 			                          		
+						                          		<% int progress_L1 = action_L1[25]!=null ? Integer.parseInt(action_L1[25].toString()) : 0 ; %>
+						                          		
+						                          		<% if( progress_L1 >= 0 && progress_L1 <= 25  ){ %>
+						                          			class="action-box-header Q1"
+						                          		<%}else if( progress_L1 >= 26 && progress_L1 <= 50  ){ %>
+						                          			class=" action-box-header Q2"
+						                          		<%}else if( progress_L1 >= 51 && progress_L1 <= 75  ){ %>
+						                          			class=" action-box-header Q3"
+						                          		<%}else if(  progress_L1 >= 76 && progress_L1 <= 100  ){ %>
+						                          			class="action-box-header Q4"
+						                          		<%} %>
+						                          		
+						                          	  >
+													    
+													    <span style="cursor:pointer;font-weight: 600;" 
+							                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
+							                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
+							                          									'<%=action_L1[11] %>',   <!-- action No -->
+							                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+							                          									'<%=sdf.format(action_L1[4]) %>', <!-- action date -->
+							                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
+							                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
+							                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
+							                          									'<%=action_L1[23].toString().trim()%>' <!-- assignee -->
+							                          									);" >                      		
+														
+														<%=action_L1[11] %></span >    
+														       
+													</div>
+													<div class="action-box-body" align="center" style="cursor: pointer ;">
+														<table class="card-body-table">
+															<tr>
+						                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+						                          				<td  >&emsp;<%=action_L1[23] %></td>
+						                          			</tr>
+						                          			<tr>
+						                          				<th style="text-align: right;">PDC :</th>
+						                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
+						                          			</tr>
+						                          			<tr>
+						                          				<th style="text-align: right;">Progress (%) :</th>
+						                          				<td style="padding-left: 10px;">
+						                          					
+						                          					<%if(action_L1[25]!=null){ %>
+								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				<%=action_L1[25]%>
+																			</div> 
 																		</div> 
-																	</div> 
-																<%}else{ %>
-																	<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																			Not Yet Started
-																		</div>
-																	</div> 
-																<%} %>
-					                          					
-					                          				</td>
-					                          			</tr>
-													</table>
+																	<%}else{ %>
+																		<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																				Not Yet Started
+																			</div>
+																		</div> 
+																	<%} %>
+						                          					
+						                          				</td>
+						                          			</tr>
+														</table>
+													</div>
 												</div>
 											</div>
-										</div>
-
-								    
-							<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
-					                <ul class="">	
-					                
-						                <%for(Object[] action_L2 : actionslist){ %>
+	
+									    
+								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
+						                <ul class="">	
 						                
-											<% if(Integer.parseInt(action_L2[3].toString()) == startLevel+2 && Long.parseLong(action_L1[0].toString())== Long.parseLong(action_L2[1].toString())  
-											&& action_L1[18].toString().trim().equalsIgnoreCase(action_L2[16].toString().trim()) 
-											&& Long.parseLong(action_L1[19].toString()) == Long.parseLong(action_L2[17].toString()) ){ %>
-											<li>			    
-											           
-												<div class="member-view-box action-view-box">
-														<div class=" action-box" >
-															<div class="action-box-header">
-																
-																<span style="cursor:pointer;font-weight: 600;" 
-								                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
-								                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
-								                          									'<%=action_L2[11] %>',   <!-- action No -->
-								                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
-								                          									'<%=sdf.format(action_L2[4]) %>', <!-- action date -->
-								                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
-								                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
-								                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
-								                          									'<%=action_L2[23].toString().trim()%>' <!-- assignee -->
-								                          									);" >              
-																
-																
-																<%=action_L2[11] %></span >           
-															</div>
-															<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
-																<table class="card-body-table">
-																	<tr>
-								                          				<th style="text-align: right;width: 40%;">Assignee :</th>
-								                          				<td  >&emsp;<%=action_L2[23] %></td>
-								                          			</tr>
-								                          			<tr>
-								                          				<th style="text-align: right;">PDC :</th>
-								                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
-								                          			</tr>
-								                          			<tr>
-								                          				<th style="text-align: right;">Progress (%) :</th>
-								                          				<td style="padding-left: 10px;">
-								                          					
-								                          					<%if(action_L2[25]!=null){ %>
-										                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																					<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																						<%=action_L2[25]%>
+							                <%for(Object[] action_L2 : actionslist){ %>
+							                
+												<% if(Integer.parseInt(action_L2[3].toString()) == startLevel+2 && Long.parseLong(action_L1[0].toString())== Long.parseLong(action_L2[1].toString())  
+												&& action_L1[18].toString().trim().equalsIgnoreCase(action_L2[16].toString().trim()) 
+												&& Long.parseLong(action_L1[19].toString()) == Long.parseLong(action_L2[17].toString()) ){ %>
+												<li>			    
+												           
+													<div class="member-view-box action-view-box">
+															<div class=" action-box" >
+																<div 			                          		
+									                          		<% int progress_L2 = action_L2[25]!=null ? Integer.parseInt(action_L2[25].toString()) : 0 ; %>
+									                          		
+									                          		<% if( progress_L2 >= 0 && progress_L2 <= 25  ){ %>
+									                          			class="action-box-header Q1"
+									                          		<%}else if( progress_L2 >= 26 && progress_L2 <= 50  ){ %>
+									                          			class=" action-box-header Q2"
+									                          		<%}else if( progress_L2 >= 51 && progress_L2 <= 75  ){ %>
+									                          			class=" action-box-header Q3"
+									                          		<%}else if(  progress_L2 >= 76 && progress_L2 <= 100  ){ %>
+									                          			class="action-box-header Q4"
+									                          		<%} %>
+									                          		
+									                          	  >
+																	
+																	<span style="cursor:pointer;font-weight: 600;" 
+									                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
+									                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
+									                          									'<%=action_L2[11] %>',   <!-- action No -->
+									                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+									                          									'<%=sdf.format(action_L2[4]) %>', <!-- action date -->
+									                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
+									                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
+									                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
+									                          									'<%=action_L2[23].toString().trim()%>' <!-- assignee -->
+									                          									);" >              
+																	
+																	
+																	<%=action_L2[11] %></span >           
+																</div>
+																<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
+																	<table class="card-body-table">
+																		<tr>
+									                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+									                          				<td  >&emsp;<%=action_L2[23] %></td>
+									                          			</tr>
+									                          			<tr>
+									                          				<th style="text-align: right;">PDC :</th>
+									                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
+									                          			</tr>
+									                          			<tr>
+									                          				<th style="text-align: right;">Progress (%) :</th>
+									                          				<td style="padding-left: 10px;">
+									                          					
+									                          					<%if(action_L2[25]!=null){ %>
+											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																							<%=action_L2[25]%>
+																						</div> 
 																					</div> 
-																				</div> 
-																			<%}else{ %>
-																				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																					<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																						Not Yet Started
-																					</div>
-																				</div> 
-																			<%} %>
-								                          					
-								                          				</td>
-								                          			</tr>
-																</table>
+																				<%}else{ %>
+																					<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																						<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																							Not Yet Started
+																						</div>
+																					</div> 
+																				<%} %>
+									                          					
+									                          				</td>
+									                          			</tr>
+																	</table>
+																</div>
 															</div>
 														</div>
-													</div>
-											    
-											    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
-									                <ul class="">	                
-									                <%for(Object[] action_L3 : actionslist){ %>
-														<% if(Integer.parseInt(action_L3[3].toString()) == startLevel+3 && Long.parseLong(action_L2[0].toString())== Long.parseLong(action_L3[1].toString()) 
-														&&  action_L2[18].toString().trim().equalsIgnoreCase(action_L3[16].toString().trim()) 
-														&& Long.parseLong(action_L2[19].toString()) == Long.parseLong(action_L3[17].toString()) ){ %>
-															<li>			    
-															           
-																<div class="member-view-box action-view-box">
-																	<div class=" action-box" >
-																			<div class="action-box-header">
-																			                          		
-																				<span style="cursor:pointer;font-weight: 600;" 
-												                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
-												                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
-												                          									'<%=action_L3[11] %>',   <!-- action No -->
-												                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
-												                          									'<%=sdf.format(action_L3[4]) %>', <!-- action date -->
-												                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
-												                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
-												                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
-												                          									'<%=action_L3[23].toString().trim()%>' <!-- assignee -->
-												                          									);" >      
-																								
-																				<%=action_L3[11] %></span >           
-																			      
-																			</div>
-																			<div class="action-box-body" align="center" style="cursor: pointer ;">
-																				<table class="card-body-table">
-																					<tr>
-												                          				<th style="text-align: right;width: 40%;">Assignee :</th>
-												                          				<td  >&emsp;<%=action_L3[23] %></td>
-												                          			</tr>
-												                          			<tr>
-												                          				<th style="text-align: right;">PDC :</th>
-												                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
-												                          			</tr>
-												                          			<tr>
-												                          				<th style="text-align: right;">Progress (%) :</th>
-												                          				<td style="padding-left: 10px;">
-												                          					
-												                          					<%if(action_L3[25]!=null){ %>
-														                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																									<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																										<%=action_L3[25]%>
+												    
+												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
+										                <ul class="">	                
+										                <%for(Object[] action_L3 : actionslist){ %>
+															<% if(Integer.parseInt(action_L3[3].toString()) == startLevel+3 && Long.parseLong(action_L2[0].toString())== Long.parseLong(action_L3[1].toString()) 
+															&&  action_L2[18].toString().trim().equalsIgnoreCase(action_L3[16].toString().trim()) 
+															&& Long.parseLong(action_L2[19].toString()) == Long.parseLong(action_L3[17].toString()) ){ %>
+																<li>			    
+																           
+																	<div class="member-view-box action-view-box">
+																		<div class=" action-box" >
+																				<div 			                          		
+													                          		<% int progress_L3 = action_L3[25]!=null ? Integer.parseInt(action_L3[25].toString()) : 0 ; %>
+													                          		
+													                          		<% if( progress_L3 >= 0 && progress_L3 <= 25  ){ %>
+													                          			class="action-box-header Q1"
+													                          		<%}else if( progress_L3 >= 26 && progress_L3 <= 50  ){ %>
+													                          			class=" action-box-header Q2"
+													                          		<%}else if( progress_L3 >= 51 && progress_L3 <= 75  ){ %>
+													                          			class=" action-box-header Q3"
+													                          		<%}else if(  progress_L3 >= 76 && progress_L3 <= 100  ){ %>
+													                          			class="action-box-header Q4"
+													                          		<%} %>
+													                          		
+													                          	  >
+																				                          		
+																					<span style="cursor:pointer;font-weight: 600;" 
+													                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
+													                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
+													                          									'<%=action_L3[11] %>',   <!-- action No -->
+													                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+													                          									'<%=sdf.format(action_L3[4]) %>', <!-- action date -->
+													                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
+													                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
+													                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
+													                          									'<%=action_L3[23].toString().trim()%>' <!-- assignee -->
+													                          									);" >      
+																									
+																					<%=action_L3[11] %></span >           
+																				      
+																				</div>
+																				<div class="action-box-body" align="center" style="cursor: pointer ;">
+																					<table class="card-body-table">
+																						<tr>
+													                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+													                          				<td  >&emsp;<%=action_L3[23] %></td>
+													                          			</tr>
+													                          			<tr>
+													                          				<th style="text-align: right;">PDC :</th>
+													                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
+													                          			</tr>
+													                          			<tr>
+													                          				<th style="text-align: right;">Progress (%) :</th>
+													                          				<td style="padding-left: 10px;">
+													                          					
+													                          					<%if(action_L3[25]!=null){ %>
+															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																											<%=action_L3[25]%>
+																										</div> 
 																									</div> 
-																								</div> 
-																							<%}else{ %>
-																								<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																									<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																										Not Yet Started
-																									</div>
-																								</div> 
-																							<%} %>
-												                          					
-												                          				</td>
-												                          			</tr>
-																				</table>
+																								<%}else{ %>
+																									<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																											Not Yet Started
+																										</div>
+																									</div> 
+																								<%} %>
+													                          					
+													                          				</td>
+													                          			</tr>
+																					</table>
+																				</div>
 																			</div>
 																		</div>
-																	</div>
-															    														    
-															    
-															    <!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->
-														                <ul class="">	                
-														                <%for(Object[] action_L4 : actionslist){ %>
-																			<% if(Integer.parseInt(action_L4[3].toString()) == startLevel+4 && Long.parseLong(action_L3[0].toString())== Long.parseLong(action_L4[1].toString())  
-																			&& action_L3[18].toString().trim().equalsIgnoreCase(action_L4[16].toString().trim()) 
-																			&& Long.parseLong(action_L3[19].toString()) == Long.parseLong(action_L4[17].toString()) ){ %>
-																				<li>			    
-																				           
-																					<div class="member-view-box action-view-box">
-																							<div class=" action-box" >
-																								<div class="action-box-header">
-																								                          		
-																									<span style="cursor:pointer;font-weight: 600;" 
-																	                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
-																	                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
-																	                          									'<%=action_L4[11] %>',   <!-- action No -->
-																	                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
-																	                          									'<%=sdf.format(action_L4[4]) %>', <!-- action date -->
-																	                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
-																	                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
-																	                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
-																	                          									'<%=action_L4[23].toString().trim()%>' <!-- assignee -->
-																	                          									);" >
-																									
-																									
-																									<%=action_L4[11] %></span >           
-																								     
-																								</div>
-																								<div class="action-box-body" align="center" style="cursor: pointer ;">
-																									<table class="card-body-table">
-																										<tr>
-																	                          				<th style="text-align: right;width: 40%;">Assignee :</th>
-																	                          				<td  >&emsp;<%=action_L4[23] %></td>
-																	                          			</tr>
-																	                          			<tr>
-																	                          				<th style="text-align: right;">PDC :</th>
-																	                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
-																	                          			</tr>
-																	                          			<tr>
-																	                          				<th style="text-align: right;">Progress (%) :</th>
-																	                          				<td style="padding-left: 10px;">
-																	                          					
-																	                          					<%if(action_L4[25]!=null){ %>
-																			                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																														<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-																															<%=action_L4[25]%>
+																    														    
+																    
+																    <!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->
+															                <ul class="">	                
+															                <%for(Object[] action_L4 : actionslist){ %>
+																				<% if(Integer.parseInt(action_L4[3].toString()) == startLevel+4 && Long.parseLong(action_L3[0].toString())== Long.parseLong(action_L4[1].toString())  
+																				&& action_L3[18].toString().trim().equalsIgnoreCase(action_L4[16].toString().trim()) 
+																				&& Long.parseLong(action_L3[19].toString()) == Long.parseLong(action_L4[17].toString()) ){ %>
+																					<li>			    
+																					           
+																						<div class="member-view-box action-view-box">
+																								<div class=" action-box" >
+																									<div 			                          		
+																		                          		<% int progress_L4 = action_L4[25]!=null ? Integer.parseInt(action_L4[25].toString()) : 0 ; %>
+																		                          		
+																		                          		<% if( progress_L4 >= 0 && progress_L4 <= 25  ){ %>
+																		                          			class="action-box-header Q1"
+																		                          		<%}else if( progress_L4 >= 26 && progress_L4 <= 50  ){ %>
+																		                          			class=" action-box-header Q2"
+																		                          		<%}else if( progress_L4 >= 51 && progress_L4 <= 75  ){ %>
+																		                          			class=" action-box-header Q3"
+																		                          		<%}else if(  progress_L4 >= 76 && progress_L4 <= 100  ){ %>
+																		                          			class="action-box-header Q4"
+																		                          		<%} %>
+													                          						>
+																									                          		
+																										<span style="cursor:pointer;font-weight: 600;" 
+																		                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
+																		                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
+																		                          									'<%=action_L4[11] %>',   <!-- action No -->
+																		                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+																		                          									'<%=sdf.format(action_L4[4]) %>', <!-- action date -->
+																		                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
+																		                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
+																		                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
+																		                          									'<%=action_L4[23].toString().trim()%>' <!-- assignee -->
+																		                          									);" >
+																										
+																										
+																										<%=action_L4[11] %></span >           
+																									     
+																									</div>
+																									<div class="action-box-body" align="center" style="cursor: pointer ;">
+																										<table class="card-body-table">
+																											<tr>
+																		                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+																		                          				<td  >&emsp;<%=action_L4[23] %></td>
+																		                          			</tr>
+																		                          			<tr>
+																		                          				<th style="text-align: right;">PDC :</th>
+																		                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
+																		                          			</tr>
+																		                          			<tr>
+																		                          				<th style="text-align: right;">Progress (%) :</th>
+																		                          				<td style="padding-left: 10px;">
+																		                          					
+																		                          					<%if(action_L4[25]!=null){ %>
+																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
+																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																																<%=action_L4[25]%>
+																															</div> 
 																														</div> 
-																													</div> 
-																												<%}else{ %>
-																													<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																															Not Yet Started
-																														</div>
-																													</div> 
-																												<%} %>
-																	                          					
-																	                          				</td>
-																	                          			</tr>
-																									</table>
+																													<%}else{ %>
+																														<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
+																															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																																Not Yet Started
+																															</div>
+																														</div> 
+																													<%} %>
+																		                          					
+																		                          				</td>
+																		                          			</tr>
+																										</table>
+																									</div>
 																								</div>
 																							</div>
-																						</div>
-																				    
-																				    
-														                		</li>
-																			<% } %>
-																		<%} %>
-														                </ul>
-														                
-														        <!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- --> 
-															    
-															    
-															    
-									                		</li>
-														<% } %>
-													<%} %>
-									                </ul>
-									                
-									        <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
-											    
-											    
-					                		</li>
-										<% } %>
-									<%} %>
-					                </ul>
-					                
-					        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
-								    
-								    
-								    
-								    
-		                		</li>
+																					    
+																					    
+															                		</li>
+																				<% } %>
+																			<%} %>
+															                </ul>
+															                
+															        <!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- --> 
+																    
+																    
+																    
+										                		</li>
+															<% } %>
+														<%} %>
+										                </ul>
+										                
+										        <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
+												    
+												    
+						                		</li>
+											<% } %>
+										<%} %>
+						                </ul>
+						                
+						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
+									    
+									    
+									    
+									    
+			                		</li>
+								<% } %>
 							<% } %>
+			                </ul>
+			                
+			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
+			           			 
+							<% 
+							
+							} %>
 						<% } %>
-		                </ul>
-		                
-		        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
-		           			 
-						<% 
-						
-						} %>
-					<% } %>
-				<%} %>        
-        		</li>
-	        </ul>
-
-    </div>
-</div>
+	        		</li>
+		        </ul>
+	
+	    </div>
+	</div>
 
 
 <script type="text/javascript">
@@ -589,7 +676,7 @@
 								<td style="padding: 5px;" id="modal_action_assignee"></td>
 							</tr>
 							<tr>
-								<th style="text-align: right;padding: 5px;" >Progress :</th>
+								<th style="text-align: right;padding: 5px;" >Final Progress :</th>
 								<td style="padding: 5px;" id="modal_action_progress"></td>
 								<th style="text-align: right;padding: 5px;" ></th>
 								<td style="padding: 5px;" id=""></td>
@@ -605,7 +692,7 @@
 								<tr style="background-color: #055C9D; color: white;">
 									<th style="text-align: center;width:25px !important;">SN</th>
 									<th style="text-align: center;width:100px !important;">Progress Date</th>
-									<th style="text-align: center;width:100px !important;">Progress</th>
+									<th style="text-align: center;width:100px !important;"> Progress</th>
 									<th style="width:150px !important;">Remarks</th>
 									<th style="text-align: center;width:25px !important;">Download</th>
 								</tr>
