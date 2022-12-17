@@ -529,7 +529,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										</button>
 									</td>
 									
-									<td style="border: 0 "><button  type="submit" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
+									<td style="border: 0 "><button  type="button" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
 							</table>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -3593,11 +3593,29 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 									     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
 									     	var header = chart.getTimeline().header();
 									     	header.level(2).format("{%value}-{%endValue}");
+									     	var header = chart.getTimeline().header();
+									     	header.level(0).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="quarter"){
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="month"){
@@ -3609,6 +3627,15 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 															     		
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     		
 								     	}
 								     	
