@@ -1930,13 +1930,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<tr>
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
-									<th style="width: 40px; ">L</th>
+									<th style="width: 50px; ">L</th>
 									<th style="width: 275px;">Action Plan </th>	
 									<th style="width: 110px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
-					                <th style="width: 230px;">Remarks</th>
+					                <th style="width: 220px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody>

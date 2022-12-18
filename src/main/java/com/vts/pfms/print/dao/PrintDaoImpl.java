@@ -553,8 +553,8 @@ public class PrintDaoImpl implements PrintDao {
 
 		Query query=manager.createNativeQuery(MILESTONELEVELUPDATE);
 		query.setParameter("levelid",  mod.getLevelid() );
-		query.setParameter("modifiedby", mod.getModifiedDate());
-		query.setParameter("modifieddate", mod.getModifiedBy());
+		query.setParameter("modifiedby", mod.getModifiedBy());
+		query.setParameter("modifieddate", mod.getModifiedDate());
 		query.setParameter("levelconfigurationid", mod.getLevelConfigurationId());
 		
 		return (long) query.executeUpdate();
