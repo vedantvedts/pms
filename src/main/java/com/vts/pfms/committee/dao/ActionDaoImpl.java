@@ -205,7 +205,7 @@ public class ActionDaoImpl implements ActionDao{
 	public int AssignUpdate(ActionAssign assign) throws Exception {
 		
 		Query query=manager.createNativeQuery(ASSIGNUPDATE);
-		query.setParameter("assignid",assign.getActionMainId());
+		query.setParameter("assignid",assign.getActionAssignId());
 		query.setParameter("flag", assign.getActionFlag());
 		query.setParameter("status",assign.getActionStatus());
 		query.setParameter("modifiedby",assign.getModifiedBy());

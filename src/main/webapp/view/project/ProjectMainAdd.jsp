@@ -154,12 +154,13 @@ String ses1=(String)request.getParameter("resultfail");
 															data-width="80%" data-live-search="true">
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
-															for (Object[] protype : securityClassificationList) 
+															if(securityClassificationList!=null && securityClassificationList.size()>0){ 
+																for (Object[] protype : securityClassificationList) 
 															{
 															%>
 															<option value="<%=protype[0]%>"><%=protype[1]%></option>
 															<%
-															}
+															}}
 															%>
 														</select>
 													</td>												
@@ -178,11 +179,11 @@ String ses1=(String)request.getParameter("resultfail");
 														data-live-search="true" >
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
-															for (Object[] protype : OfficerList) {
+															if(OfficerList!=null && OfficerList.size()>0){for (Object[] protype : OfficerList) {
 															%>
-															<option value="<%=protype[0]%>"><%=protype[2].toString()%></option>
+															<option value="<%=protype[0]%>"><%=protype[2]%></option>
 															<%
-															}
+															}}
 															%>
 													</select></td>
 														<th><label style="margin-bottom: -10px;">

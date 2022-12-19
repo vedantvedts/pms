@@ -28,7 +28,7 @@ public class ActionMain {
 	private Long ActivityId;
 	private Long ActionLinkId;
 	private String Remarks;
-	private String ActionStatus;
+	//private String ActionStatus;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -157,11 +157,11 @@ public class ActionMain {
 	public void setIsActive(int isActive) {
 		IsActive = isActive;
 	}
-	public String getActionStatus() {
-		return ActionStatus;
-	}
-	public void setActionStatus(String actionStatus) {
-		ActionStatus = actionStatus;
-	}
+//	public String getActionStatus() {
+//		return ActionStatus;
+//	}
+//	public void setActionStatus(String actionStatus) {
+//		ActionStatus = actionStatus;
+//	}
 	
 }
