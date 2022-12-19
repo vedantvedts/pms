@@ -255,8 +255,9 @@ public class OnBoardingController {
 
 						              cellIdx++;
 					              }
+					              dmo.setLabCode(LabCode);
 					              dmo.setGroupId(6l);
-					              dmo.setDivisionHeadId(0l);
+					              dmo.setDivisionHeadId(1l);
 					              dmo.setIsActive(1);
 					              dmo.setCreatedBy(UserId);
 					              dmo.setCreatedDate(sdf1.format(new Date()));
