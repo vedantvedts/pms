@@ -541,8 +541,5 @@ $('#startdate').change(function () {
 
 
 
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 
 </html>

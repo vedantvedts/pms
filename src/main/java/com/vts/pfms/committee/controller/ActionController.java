@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -329,8 +330,8 @@ public class ActionController {
 
 	
 	@RequestMapping(value = "ActionSubLaunch.htm", method = RequestMethod.POST)
-	public String ActionSubLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-			throws Exception {
+	public String ActionSubLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionSubLaunch.htm "+UserId);		
 		try {		
@@ -2161,8 +2162,12 @@ public class ActionController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionTree.htm "+UserId);
 		try {
+			
 			String ActionAssignId = req.getParameter("ActionAssignid"); 
-			req.setAttribute("actionslist", service.ActionSubLevelsList(ActionAssignId));
+			
+			List<Object[]> actionslist = service.ActionSubLevelsList(ActionAssignId);
+	
+			req.setAttribute("actionslist", actionslist);
 			return "action/ActionTree";
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -2173,5 +2178,22 @@ public class ActionController {
 		
 	}
 	
-	
+	@RequestMapping(value = "ActionSubListAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionSubListAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		List<Object[]> ActionSubList=null;
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionSubListAjax.htm "+UserId);		
+		try {
+			
+			ActionSubList =   service.ActionSubList(req.getParameter("ActionAssignid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionSubListAjax.htm "+UserId, e);
+			ActionSubList=new ArrayList<>();
+		}
+		return json.toJson(ActionSubList);
+	}
 }

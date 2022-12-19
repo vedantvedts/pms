@@ -154,9 +154,6 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
 	  </div>
 </div>	
 	
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 				
 					
 <script type='text/javascript'> 

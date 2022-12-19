@@ -869,9 +869,6 @@ h5,h6{
 		</div>	
 	</div>
 
-	<div class="modal" id="loader">
-		<!-- Place at bottom of page -->
-	</div>
 	
 <script type="text/javascript">
 

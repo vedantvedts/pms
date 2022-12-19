@@ -165,5 +165,6 @@ public interface ProjectDao {
 	public long InitiationChecklistAdd(PfmsInitiationChecklistData cldata) throws Exception;
 	public PfmsInitiationChecklistData InitiationChecklistCheck(PfmsInitiationChecklistData cldata) throws Exception;
 	public long InitiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
+	public List<Object[]> RiskTypeList() throws Exception;
 	
 }

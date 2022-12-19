@@ -558,10 +558,6 @@ String ses=(String)request.getParameter("result");
 <!-- --------------------------------------External Members Outside DRDO -------------------------------------------- -->
 				
 				
-		<div class="modal" id="loader">
-			<!-- Place at bottom of page -->
-		</div>
-</div>
 <script type="text/javascript">
 
 function submitForm(frmid)

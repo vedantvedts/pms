@@ -352,18 +352,18 @@ public class AdminServiceImpl implements AdminService{
 		
 		login.setModifiedBy(Userid);
 		login.setModifiedDate(sdf1.format(new Date()));
-           if(UserManageAdd.getPfms().equalsIgnoreCase("Y")) {
-			
-	     	Object flag=dao.checkUser(login.getLoginId());
-	     	if(Integer.parseInt(flag.toString())>0){
-	     		dao.updatePfmsLoginRole(Long.parseLong(UserManageAdd.getRole()),Long.parseLong(UserManageAdd.getLoginId()));  	     		
-	     	}else {
-	     		PfmsLoginRole pfmsrole= new PfmsLoginRole();
-				pfmsrole.setLoginId(login.getLoginId());
-				pfmsrole.setRoleId(Long.parseLong(UserManageAdd.getRole()));
-				dao.pfmsRoleInsert(pfmsrole);
-	     	}
-		}
+//           if(UserManageAdd.getPfms().equalsIgnoreCase("Y")) {
+//			
+//	     	Object flag=dao.checkUser(login.getLoginId());
+//	     	if(Integer.parseInt(flag.toString())>0){
+//	     		dao.updatePfmsLoginRole(Long.parseLong(UserManageAdd.getRole()),Long.parseLong(UserManageAdd.getLoginId()));  	     		
+//	     	}else {
+//	     		PfmsLoginRole pfmsrole= new PfmsLoginRole();
+//				pfmsrole.setLoginId(login.getLoginId());
+//				pfmsrole.setRoleId(Long.parseLong(UserManageAdd.getRole()));
+//				dao.pfmsRoleInsert(pfmsrole);
+//	     	}
+//		}
 		
 		return dao.UserManagerUpdate(login);
 	}

@@ -224,10 +224,6 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 	  </div>
 </div>	
 	
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
-				
 					
 <script type='text/javascript'> 
 $(document).ready(function() {

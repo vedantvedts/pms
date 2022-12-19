@@ -207,9 +207,6 @@ Object[] officerData=(Object[])request.getAttribute("officersDetalis");
 		</div>
 
 	</div>
-	<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-	</div>
 <script type="text/javascript">
 $(document).ready(function(){
     $("#SrNo").numeric();

@@ -213,9 +213,6 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="loader">
-			<!-- Place at bottom of page -->
-		</div>
 
 	
 

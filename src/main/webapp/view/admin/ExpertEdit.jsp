@@ -205,9 +205,6 @@ if(details!=null){
 				</div>
 			</div>
 		</div>
-		<div class="modal" id="loader">
-			<!-- Place at bottom of page -->
-		</div>
 
 	
 <script type='text/javascript'> 

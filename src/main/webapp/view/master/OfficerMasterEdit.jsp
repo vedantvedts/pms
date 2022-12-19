@@ -249,8 +249,5 @@ function Delete(myfrm){
 
 
 </script>
-<div class="modal" id="loader">
-					<!-- Place at bottom of page -->
-				</div>
 </body>
 </html>

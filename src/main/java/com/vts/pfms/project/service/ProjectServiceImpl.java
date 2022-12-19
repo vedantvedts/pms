@@ -1495,10 +1495,11 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setImpact(dto.getImpact());
 			model.setMitigationPlans(dto.getMitigationPlans());
 			model.setRevisionNo(Long.parseLong("0"));
+			model.setCategory(dto.getCategory());
+			model.setRiskTypeId(Integer.parseInt(dto.getRiskTypeId()));
 			model.setCreatedBy(dto.getCreatedBy());
 			model.setCreatedDate(sdf1.format(new Date()));
 			model.setIsActive(1);
-			
 			
 			return dao.ProjectRiskDataSubmit(model);
 		}
@@ -1533,6 +1534,8 @@ public class ProjectServiceImpl implements ProjectService {
 			
 			model.setMitigationPlans(riskmatrixdata[6].toString());
 			model.setImpact(riskmatrixdata[10].toString());
+			model.setCategory(riskmatrixdata[11].toString());
+			model.setRiskTypeId(Integer.parseInt(riskmatrixdata[12].toString()));
 			
 			model.setRevisionNo(Long.parseLong(riskmatrixdata[7].toString()));			
 			model.setRevisionDate(sdf1.format(new Date()));
@@ -1857,6 +1860,10 @@ public class ProjectServiceImpl implements ProjectService {
 			
 		}
 
-		
+		@Override
+		public List<Object[]> RiskTypeList() throws Exception 
+		{
+			return dao.RiskTypeList();
+		}
 		
 }

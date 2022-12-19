@@ -26,6 +26,8 @@ public class PfmsRiskRev {
     private String MitigationPlans;
     private String Impact;
     private Long RevisionNo;
+    private String Category;
+    private int RiskTypeId;
     private String RevisionDate;
     private String CreatedBy;
     private String CreatedDate;
