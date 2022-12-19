@@ -14,6 +14,7 @@ public class DivisionMaster {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long DivisionId;
+	private String LabCode;
 	private String DivisionCode;
 	private String DivisionName;
 	private long DivisionHeadId;
@@ -23,6 +24,17 @@ public class DivisionMaster {
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	
+	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
+	public void setIsActive(Integer isActive) {
+		IsActive = isActive;
+	}
 	public Long getDivisionId() {
 		return DivisionId;
 	}

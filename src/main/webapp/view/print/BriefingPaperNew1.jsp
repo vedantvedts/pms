@@ -18,7 +18,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
-<%@page import="java.util.List"%> 
+<%@page import="java.util.List , java.util.stream.Collectors"%> 
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="com.vts.pfms.model.TotalDemand" %>
@@ -903,16 +903,16 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<%} %>
 								<h1 class="break"></h1>
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Details of Technical/ User Reviews (if any).</b></div>
-						
-						<div align="center">
 							
-							<div align="center" style="max-width:400px;float:left;">
-							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
+								<div align="center">
+							
+								<div align="center" style="max-width:300px;float:left;">
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px;max-width:200px;  border-collapse:collapse;float:left;" >
 								<thead>
 									<tr>
-										 <th  style="max-width: 70px; ">Committee</th>
+										 <th  style="max-width:50px; ">Committee</th>
 										 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-										 <th  style="max-width: 80px; "> Date Held</th>
+										 <th  style="max-width: 55px; "> Date Held</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -925,9 +925,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									
 									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											<td  style="max-width: 70px;font-size:12px !important; "><%=obj[1] %> #<%=i %></td>												
+											<td  style="max-width: 50px;font-size:12px !important; "><%=obj[1] %> #<%=i %></td>												
 											<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											<td  style="max-width: 55px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
 									}}else{ %>
@@ -936,8 +936,39 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								</tbody>
 							</table>
 							</div>
-							<div align="center" style="max-width:400px;float:right;">
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
+							<%  int t=1;
+							%>
+							<div align="center" style="max-width:300px;float:left;">
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px  ;max-width:200px;  border-collapse:collapse; " >
+									<thead>
+										<tr>
+										 <th  style="max-width: 70px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 80px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% if(ReviewMeetingListPMRC.size()>0)
+										  { 
+										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+										<%if(t==21) break; %>
+										<%if(t<=20){ %>
+											<tr>
+												<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=t %></td>												
+												<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>
+										<%} 
+										t++;}}
+										else{ %>
+											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+									<%} %> 
+								</tbody>
+							</table>
+						</div>
+						<% if(t>20) {%>
+							<div align="center" style="max-width:300px;float:left;">
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 20px  ;max-width:200px;  border-collapse:collapse; " >
 									<thead>
 										<tr>
 											 <th  style="max-width: 70px; ">Committee</th>
@@ -946,28 +977,24 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										</tr>
 									</thead>
 									<tbody>
-										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingListPMRC.size()>0)
-										  {int i=1;
-										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+										<% if(ReviewMeetingListPMRC.size()>0)
+										  { 
+										for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
+										<%if(t>=20){ %>
 											<tr>
-												<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=i %></td>												
+												<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=t %></td>												
 												<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
 												<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%i++;
-										}
-										  
-										  }else{ %>
+											</tr>
+										<%}
+										t++;}}
+										else{ %>
 											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
 										
-									<%} %> 
+									<%}} %> 
 								</tbody>
 							</table>
 						</div>
-							
 						</div>
 			
 			 <h1 class="break"></h1>

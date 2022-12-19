@@ -292,6 +292,7 @@ if(formname!=null){
 	<form class="form-inline" method="POST" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 	
 			<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
+			    <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 				<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 				<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
 				

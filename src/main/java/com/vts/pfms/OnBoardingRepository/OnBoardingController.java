@@ -255,15 +255,16 @@ public class OnBoardingController {
 
 						              cellIdx++;
 					              }
+					              dmo.setLabCode(LabCode);
 					              dmo.setGroupId(6l);
-					              dmo.setDivisionHeadId(0l);
+					              dmo.setDivisionHeadId(1l);
 					              dmo.setIsActive(1);
 					              dmo.setCreatedBy(UserId);
 					              dmo.setCreatedDate(sdf1.format(new Date()));
 					             
 					              div.add(dmo);
 					            }
-					          List<DivisionMaster>  count= divisionmasterrepo.saveAll(null);
+					          List<DivisionMaster>  count= divisionmasterrepo.saveAll(div);
 								if (count.size() > 0) {
 									redir.addAttribute("result", "Division Added Successfully");
 								} else {
@@ -658,7 +659,7 @@ public class OnBoardingController {
 					                emp.setCreatedDate(sdf1.format(new Date()));
 					                employee.add(emp);
 					            }
-					            
+					                           
 					            List<Employee> count =employeemasterrepo.saveAll(employee);
 								if (count.size() > 0) {
 									redir.addAttribute("result", "Employee Added Successfully");

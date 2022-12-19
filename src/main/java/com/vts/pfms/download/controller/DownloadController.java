@@ -113,7 +113,7 @@ public class DownloadController {
 	        FileInputStream in = new FileInputStream(my_file);
 	        byte[] buffer = new byte[4096];
 	        int length;
-	        while ((length = in.read(buffer)) > 0){
+	        while ((length = in.read(buffer)) > 0){   
 	           out.write(buffer, 0, length);
 	        }
 	        in.close();
