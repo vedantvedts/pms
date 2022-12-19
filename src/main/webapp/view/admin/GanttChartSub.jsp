@@ -446,11 +446,29 @@ h6{
 									     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
 									     	var header = chart.getTimeline().header();
 									     	header.level(2).format("{%value}-{%endValue}");
+									     	var header = chart.getTimeline().header();
+									     	header.level(0).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="quarter"){
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="month"){
@@ -459,10 +477,17 @@ h6{
 								     	}
 								     	
 								     	else if(interval===""){
-								
-								     		console.log('else');
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     		
 								     	}
 								     	

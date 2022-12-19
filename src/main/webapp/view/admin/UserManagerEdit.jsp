@@ -83,98 +83,102 @@ if(ses1!=null){
         		</div>
         
         		<div class="card-body">
-<form name="myfrm" action="UserManagerEditSubmit.htm" method="POST" >
-  <div class="form-group">
-  <div class="table-responsive">
-	  <table class="table table-bordered table-hover table-striped table-condensed "  >
-  <thead>
+						<form name="myfrm" action="UserManagerEditSubmit.htm"
+							method="POST">
+							<div class="form-group">
+								<div class="table-responsive">
+									<table
+										class="table table-bordered table-hover table-striped table-condensed ">
+										<thead>
 
 
-<tr>
-  <th>
-<label >Division:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
- <select class="form-control selectdee" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-				<option value="" disabled="disabled" selected="selected"
-					hidden="true">--Select--</option>
-				<%
-					for (Object[] obj : DivisionList) {
-				%>
-				<option value="<%=obj[0]%>" <%if(Integer.parseInt(obj[0].toString())==login.getDivisionId()) {%> selected="selected" <%} %>><%=obj[1]%></option>
-				<%
-					}
-				%>
+											<tr>
+												<th><label>Division: <span class="mandatory"
+														style="color: red;">*</span>
+												</label></th>
+												<td><select class="form-control selectdee"
+													name="Division" data-container="body"
+													data-live-search="true" required="required"
+													style="font-size: 5px;">
+														<option value="" disabled="disabled" selected="selected"
+															hidden="true">--Select--</option>
+														<% for (Object[] obj : DivisionList) { %>
+														<option value="<%=obj[0]%>" <%if (Integer.parseInt(obj[0].toString()) == login.getDivisionId()) {%> selected="selected" <%}%>><%=obj[1]%></option>
+														<% } %>
 
-			</select> 
- 
-</td>
+												</select></td>
 
-  <th>
-<label >Login Type:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td style="width: 300px;">
- <input type="hidden" name="Role"  value="1">
- 			<select class="form-control selectdee" name="LoginType" id="LoginType" data-container="body" data-live-search="true"  required="required" style="width:100% ;font-size: 5px;">
-				<option value="" disabled="disabled" selected="selected"
-					hidden="true">--Select--</option>
-					<%	for (Object[] obj : LoginTypeList) { %>			
-					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase( login.getLoginType())) {%> selected="selected" <%} %>><%=obj[1]%></option>
-					<% } %>
-			</select> 
- 
-</td>
-</tr>
-<tr>
-   <th>
-<label >Employee:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
-<td >
- <select class="form-control selectdee" name="Employee" id="Employee" 
- 	data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-				
-				<% 	for (Object[] obj : EmpList) {	%>
-				<option value="<%=obj[0]%>"  <%if(Long.parseLong(obj[0].toString())==login.getEmpId()) {%> selected="selected" <%} %>><%=obj[1]%></option>
-				<%	}	%>
+												<th><label>Login Type: <span class="mandatory"
+														style="color: red;">*</span>
+												</label></th>
+												<td style="width: 300px;"><input type="hidden"
+													name="Role" value="1"> <select
+													class="form-control selectdee" name="LoginType"
+													id="LoginType" data-container="body"
+													data-live-search="true" required="required"
+													style="width: 100%; font-size: 5px;">
+														<option value="" disabled="disabled" selected="selected"
+															hidden="true">--Select--</option>
+														<%
+														for (Object[] obj : LoginTypeList) {
+														%>
+														<option value="<%=obj[0]%>"
+															<%if (obj[0].toString().equalsIgnoreCase(login.getLoginType())) {%>
+															selected="selected" <%}%>><%=obj[1]%></option>
+														<%
+														}
+														%>
+												</select></td>
+											</tr>
+											<tr>
+												<th><label>Employee: <span class="mandatory"
+														style="color: red;">*</span>
+												</label></th>
+												<td><select class="form-control selectdee"
+													name="Employee" id="Employee" data-container="body"
+													data-live-search="true" required="required"
+													style="font-size: 5px;">
 
-			</select>
-</td> 
-<th>
-<label >PFMS Login:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
-<td colspan="3">
-<select class="form-control" name="pfmsLogin" style="width:50%; " required="required">
-<option value="N" <%if(login.getPfms().equals("N")){ %> selected="selected" <%} %> >No</option>
-<option value="Y"  <%if(login.getPfms().equals("Y")){ %> selected="selected" <%} %>>Yes</option>
-</select>
+														<%
+														for (Object[] obj : EmpList) {
+														%>
+														<option value="<%=obj[0]%>"
+															<%if (Long.parseLong(obj[0].toString()) == login.getEmpId()) {%>
+															selected="selected" <%}%>><%=obj[1]%></option>
+														<%
+														}
+														%>
 
-</td>
-</tr>
-</thead> 
-</table>
+												</select></td>
+												<th><label>PFMS Login: <span class="mandatory"
+														style="color: red;">*</span>
+												</label></th>
+												<td colspan="3"><select class="form-control"
+													name="pfmsLogin" style="width: 50%;" required="required">
+														<option value="N" <%if (login.getPfms().equals("N")) {%>
+															selected="selected" <%} %>>No</option>
+														<option value="Y" <%if(login.getPfms().equals("Y")){ %>
+															selected="selected" <%} %>>Yes</option>
+												</select></td>
+											</tr>
+										</thead>
+									</table>
 
-</div>
-</div>
-  <div class="row" style="margin-left: 47%;" align="center">
- <input type="submit"  class="btn btn-primary btn-sm submit"/>  
- <a class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 0.5rem;"  href="UserManagerList.htm">Back</a>
- </div>
-	<input type="hidden" name="LoginId"
-								value="<%=login.getLoginId() %>" />
-	 <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />
-								
-	  </form>
-	
-	
-	  </div>
+								</div>
+							</div>
+							<div class="row" style="margin-left: 47%;" align="center">
+								<input type="submit" class="btn btn-primary btn-sm submit" /> <a
+									class="btn btn-info btn-sm shadow-nohover back"
+									style="margin-left: 0.5rem;" href="UserManagerList.htm">Back</a>
+							</div>
+							<input type="hidden" name="LoginId"
+								value="<%=login.getLoginId() %>" /> <input type="hidden"
+								name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+						</form>
+
+
+					</div>
 </div>
 </div>
 </div>	

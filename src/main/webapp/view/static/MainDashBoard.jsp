@@ -1550,6 +1550,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 								     	header.level(0).fontColor("#145374");
 								     	header.level(0).fontWeight(600);
 								     	
+								     	header.level(1).format(function() {
+							     			
+							     			var duration = '';
+							     		
+							     			if(this.value=='Q1')
+							     				duration='H1';
+							     			if(this.value=='Q3')
+							     				duration='H2'
+		
+							     		  return duration;
+							     		});
+								     	
+								     	
 								     	/* Marker */
 								     	var marker_1 = chart.getTimeline().lineMarker(0);
 								     	marker_1.value("current");

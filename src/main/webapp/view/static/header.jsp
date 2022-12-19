@@ -589,11 +589,17 @@ String labcode= (String)session.getAttribute("labcode");
 											<img src="view/images/milestone.png"/>
 												&nbsp;&nbsp; Milestone Manual
 											</a>
-
 											<a class="dropdown-item" href="AuditStampingView.htm"> 
 											<img src="view/images/stamping.png"         />
 												&nbsp;&nbsp; Audit Stamping
 											</a>
+											
+											<a class="dropdown-item" href="OnBoardGroupMaster.htm"> 
+											<i class="fa fa-sign-in fa-lg" aria-hidden="true" style="height: 13%; width: 13%;"></i>
+												&nbsp;&nbsp; On-Board
+											</a>
+
+											
 											<a class="dropdown-item" href="RunBatchFile.htm"> 
 											<img src="view/images/backup.png" style="height: 13%; width: 13%;" />
 												&nbsp;&nbsp; BackUp DB

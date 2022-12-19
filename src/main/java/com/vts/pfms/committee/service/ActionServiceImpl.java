@@ -242,7 +242,7 @@ public class ActionServiceImpl implements ActionService {
 			actionmain.setActionDate(sqlDate);
 			actionmain.setCategory(main.getCategory());
 			actionmain.setPriority(main.getPriority());
-			actionmain.setActionStatus(main.getActionStatus());
+			//actionmain.setActionStatus(main.getActionStatus());
 			actionmain.setProjectId(Long.parseLong(main.getProjectId()));
 			actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
 			actionmain.setCreatedBy(main.getCreatedBy());

@@ -529,7 +529,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										</button>
 									</td>
 									
-									<td style="border: 0 "><button  type="submit" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
+									<td style="border: 0 "><button  type="button" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
 							</table>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -1118,22 +1118,23 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
    						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 						<div class="content">
 									
-								<select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" onchange="milactivitychange(this);">
+								<%-- <select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" onchange="milactivitychange(this);">
 												<option selected value="A">All</option>
 												<%for(Object[] obj : milestoneactivitystatus){ %>
 													<option value=<%=obj[0]%> ><%=obj[1] %> (<%=obj[2] %>)</option>
 												<%} %>
-								</select>	
+								</select> --%>	
 									
 								<%for(int z=0;z<projectidlist.size();z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
 									<div>
-										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>	
+				
+			<!-- Old query data which is commented in Dao Layer (19-12-22)-->
 								
-								
-			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+			<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 				
 				<thead>
 					<tr>
@@ -1158,8 +1159,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<th  style="width: 15px !important;text-align: center; ">SN</th> 
 						<th  style="width: 20px; ">MS</th>
 						<th  style="width: 405px; ">Milestones </th>
-						<th  style="width: 120px; "> Original PDC </th>
-						<th  style="width: 120px; "> Revised PDC</th>
+						<th  style="width: 120px; "> PDC </th>
+						<th  style="width: 120px; "> ADC</th>
 						<th  style="width: 50px; ">Progress</th>
 						<th  style="width: 50px; "> Status</th>
 						<th  style="width: 320px; "> Remarks</th>
@@ -1174,20 +1175,31 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								int i=1;
 								for(Object[] obj:milestones.get(z)){ 
 									/* if(obj[10].toString().equalsIgnoreCase("3") ||obj[10].toString().equalsIgnoreCase("3") || obj[10].toString().equalsIgnoreCase("5")) */
-									if(Integer.parseInt(obj[12].toString())>0)
-									{ %>
+									
+									 %>
 										<tr>
 											<td  style="text-align: center; "><%=i%></td> 
 											<td  style="text-align: center;">M<%=obj[2]%></td>
 											<td  style="text-align: justify"><%=obj[3] %></td>
-											<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
+											<td  style="text-align: center;" >
+												<%if(!LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
+											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%><br>
+											 	<%}%>
+											 	
+												<%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
 											<td  style="text-align: center;">
+<<<<<<< HEAD
+												<%if(obj[14]!=null){ %>
+											 		<%= sdf.format(sdf1.parse(obj[14].toString()))%><br>
+											 	<%}%>
+=======
 												<%if(LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
 											 		-
 											 	<%}else{ %>
 											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%>
 											 	<%} %>
-											<%-- <%= sdf.format(sdf1.parse(obj[7].toString()))%> --%>
+											<%= sdf.format(sdf1.parse(obj[7].toString()))%>
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
 											</td>
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
@@ -1200,19 +1212,25 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[11] %>	
 												
+												<%if(obj[10].toString().equalsIgnoreCase("3") ){ %>
 												
-												<%-- <%if(obj[10].toString().equalsIgnoreCase("5")) { %>
+<<<<<<< HEAD
+												<%}else if(obj[10].toString().equalsIgnoreCase("5")) {%>
+												
+=======
+												<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
 												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
 												<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
 												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
-												<%} %> --%>
+>>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
+												<%} %>
 												
 											</span>
 												</td>
 											<td  ><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
 										</tr>			
 									<% i++;
-											}	
+												
 										}%>
 										
 									
@@ -1221,6 +1239,141 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%} %>
 								</tbody>
 								
+							</table> --%>
+							
+							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+							<thead>
+							<tr>
+								<td colspan="10" style="border: 0">
+									<p style="font-size: 10px;text-align: center"> 
+										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									 </p>
+								</td>									
+							</tr>
+							
+								<tr>
+									<th  style="width: 20px; ">SN</th>
+									<th  style="width: 30px; ">MS</th>
+									<th  style="width: 60px; ">L</th>
+									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+									<th  style="width: 150px; "> Original PDC</th>
+									<th  style="width: 150px; "> Revised PDC</th>
+									<th  style="width: 60px; "> Progress</th>
+									<th  style="width: 50px; "> Status</th>
+								 	<th  style="width: 260px; "> Remarks</th>
+								 	<th  style="max-width: 30px; "> Info </th>
+									
+								</tr>
+							</thead>
+								<% if( milestones.get(z).size()>0){ 
+									long count1=1;
+									int milcountA=1;
+									int milcountB=1;
+									int milcountC=1;
+									int milcountD=1;
+									int milcountE=1;
+									
+									%>
+									<%int serial=1;for(Object[] obj:milestones.get(z)){
+										
+										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+										%>
+										<tr>
+											<td style="text-align: center"><%=serial%></td>
+											<td>M<%=obj[0] %></td>
+											
+											<td style="text-align: center">
+												<%
+												
+												if(obj[21].toString().equals("0")) {%>
+													<!-- L -->
+												<%	milcountA=1;
+													milcountB=1;
+													milcountC=1;
+													milcountD=1;
+													milcountE=1;
+												}else if(obj[21].toString().equals("1")) { %>
+													A-<%=milcountA %>
+												<% milcountA++;
+													milcountB=1;
+													milcountC=1;
+													milcountD=1;
+													milcountE=1;
+												}else if(obj[21].toString().equals("2")) { %>
+													B-<%=milcountB %>
+												<%milcountB+=1;
+												milcountC=1;
+												milcountD=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("3")) { %>
+													C-<%=milcountC %>
+												<%milcountC+=1;
+												milcountD=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("4")) { %>
+													D-<%=milcountD %>
+												<%
+												milcountD+=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("5")) { %>
+													E-<%=milcountE %>
+												<%milcountE++;
+												} %>
+											</td>
+
+											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+												<%if(obj[21].toString().equals("0")) {%>
+													<%=obj[10] %>
+												<%}else if(obj[21].toString().equals("1")) { %>
+													&nbsp;&nbsp;<%=obj[11] %>
+												<%}else if(obj[21].toString().equals("2")) { %>
+													&nbsp;&nbsp;<%=obj[12] %>
+												<%}else if(obj[21].toString().equals("3")) { %>
+													&nbsp;&nbsp;<%=obj[13] %>
+												<%}else if(obj[21].toString().equals("4")) { %>
+													&nbsp;&nbsp;<%=obj[14] %>
+												<%}else if(obj[21].toString().equals("5")) { %>
+													&nbsp;&nbsp;<%=obj[15] %>
+												<%} %>
+											</td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td style="text-align: center"><%=obj[17] %>%</td>											
+											<td style="text-align: center">
+											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+												<%=obj[22] %>	
+											</span>
+											
+											</td>
+											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+                                            <td >
+												<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
+													<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
+												</a>
+											</td>
+										</tr>
+									<%count1++;serial++;}} %>
+								<%} else{ %>
+								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+								
+								
+								<%} %>
 							</table>
 			
 			
@@ -1291,13 +1444,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<tr>
 									<th  style="width: 20px; ">SN</th>
 									<th  style="width: 30px; ">MS</th>
-									<th  style="width: 50px; ">L</th>
+									<th  style="width: 60px; ">L</th>
 									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
 									<th  style="width: 150px; "> Original PDC</th>
 									<th  style="width: 150px; "> Revised PDC</th>
 									<th  style="width: 60px; "> Progress</th>
 									<th  style="width: 50px; "> Status</th>
-								 	<th  style="width: 270px; "> Remarks</th>
+								 	<th  style="width: 260px; "> Remarks</th>
 								 	<th  style="max-width: 30px; "> Info </th>
 									
 								</tr>
@@ -1930,13 +2083,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<tr>
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
-									<th style="width: 40px; ">L</th>
+									<th style="width: 50px; ">L</th>
 									<th style="width: 275px;">Action Plan </th>	
 									<th style="width: 110px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
-					                <th style="width: 230px;">Remarks</th>
+					                <th style="width: 220px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -3593,11 +3746,29 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 									     	chart.getTimeline().scale().zoomLevels([["semester", "year"]]);
 									     	var header = chart.getTimeline().header();
 									     	header.level(2).format("{%value}-{%endValue}");
+									     	var header = chart.getTimeline().header();
+									     	header.level(0).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="quarter"){
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     	}
 								     	
 								     	if(interval==="month"){
@@ -3609,6 +3780,15 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 															     		
 								     		/* Quarterly */
 									     	chart.getTimeline().scale().zoomLevels([["quarter", "semester","year"]]);
+									     	var header = chart.getTimeline().header();
+									     	header.level(1).format(function() {
+								     			var duration = '';
+								     			if(this.value=='Q1')
+								     				duration='H1';
+								     			if(this.value=='Q3')
+								     				duration='H2'
+								     		  return duration;
+								     		});
 								     		
 								     	}
 								     	
