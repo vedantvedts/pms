@@ -1158,8 +1158,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<th  style="width: 15px !important;text-align: center; ">SN</th> 
 						<th  style="width: 20px; ">MS</th>
 						<th  style="width: 405px; ">Milestones </th>
-						<th  style="width: 120px; "> Original PDC </th>
-						<th  style="width: 120px; "> Revised PDC</th>
+						<th  style="width: 120px; "> PDC </th>
+						<th  style="width: 120px; "> ADC</th>
 						<th  style="width: 50px; ">Progress</th>
 						<th  style="width: 50px; "> Status</th>
 						<th  style="width: 320px; "> Remarks</th>
@@ -1174,20 +1174,22 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								int i=1;
 								for(Object[] obj:milestones.get(z)){ 
 									/* if(obj[10].toString().equalsIgnoreCase("3") ||obj[10].toString().equalsIgnoreCase("3") || obj[10].toString().equalsIgnoreCase("5")) */
-									if(Integer.parseInt(obj[12].toString())>0)
-									{ %>
+									
+									 %>
 										<tr>
 											<td  style="text-align: center; "><%=i%></td> 
 											<td  style="text-align: center;">M<%=obj[2]%></td>
 											<td  style="text-align: justify"><%=obj[3] %></td>
-											<td  style="text-align: center;" ><%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
+											<td  style="text-align: center;" >
+												<%if(!LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
+											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%><br>
+											 	<%}%>
+											 	
+												<%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
 											<td  style="text-align: center;">
-												<%if(LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
-											 		-
-											 	<%}else{ %>
-											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%>
-											 	<%} %>
-											<%-- <%= sdf.format(sdf1.parse(obj[7].toString()))%> --%>
+												<%if(obj[14]!=null){ %>
+											 		<%= sdf.format(sdf1.parse(obj[14].toString()))%><br>
+											 	<%}%>
 											</td>
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
@@ -1200,19 +1202,18 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[11] %>	
 												
+												<%if(obj[10].toString().equalsIgnoreCase("3") ){ %>
 												
-												<%-- <%if(obj[10].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
-												<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
-												<%} %> --%>
+												<%}else if(obj[10].toString().equalsIgnoreCase("5")) {%>
+												
+												<%} %>
 												
 											</span>
 												</td>
 											<td  ><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
 										</tr>			
 									<% i++;
-											}	
+												
 										}%>
 										
 									

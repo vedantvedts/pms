@@ -443,8 +443,8 @@ public class AdminController {
 		}
 	    
 	    @RequestMapping(value = "UserManager.htm", method = RequestMethod.POST)
-		public String UserManagerAddEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-				throws Exception {
+		public String UserManagerAddEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	    {
 	    	final String UserId = (String)ses.getAttribute("Username");
 	        AdminController.logger.info(new Date() + "Inside UserManager.htm " + UserId);
 			String Userid = (String) ses.getAttribute("Username");
