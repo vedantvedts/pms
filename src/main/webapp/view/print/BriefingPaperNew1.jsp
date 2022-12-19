@@ -251,7 +251,7 @@ img
 	font-weight: 700;
 }
 
-.notyet{
+.assigned{
 	color: purple;
 	font-weight: 700;
 }
@@ -705,7 +705,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<p style="font-size: 10px;text-align: center"> 
 								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -772,7 +771,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<%} }else if(obj[10].toString().equals("C")){%>
 								        <span class="completed">CO</span>
 							    <% }else{ %>
-							    		<span class="notyet">NS</span> 
+							    		<span class="assigned">AA</span> 
 								<%}}else { %> <span class="notassign">NA</span> <%} %> 
 						</td>
 						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
@@ -799,7 +798,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -863,7 +861,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[9].toString().equals("C")){ %>
 												        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
 												    <% }else{ %>
-												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
+												      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
 												<%} %> 
 											
 												<%}else{ %> - <%} %>
@@ -891,7 +889,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													<% }else if(obj[9].toString().equals("C")){ %>
 												        <span class="completed">CO</span>
 												    <% }else{ %>
-												      	<span class="notyet">NS</span> 
+												      	<span class="assigned">AA</span> 
 													<%} %> 
 												</td>	
 												<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
@@ -991,7 +989,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							<p style="font-size: 10px;text-align: center"> 
 								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1042,7 +1039,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
 												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[10].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[10].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[10].toString().equalsIgnoreCase("4")) {%> delay 
@@ -1073,37 +1070,36 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 							</table> --%>
 							
 							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-							<thead>
-							<tr>
-								<td colspan="10" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
-										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-									 </p>
-								</td>									
-							</tr>
-							
-								<tr>
-									<th  style="width: 20px; ">SN</th>
-									<th  style="width: 30px; ">MS</th>
-									<th  style="width: 60px; ">L</th>
-									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 150px; "> Original PDC</th>
-									<th  style="width: 150px; "> Revised PDC</th>
-									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
-								 	<th  style="width: 260px; "> Remarks</th>
-								</tr>
-							</thead>
+								<thead>
+									<tr>
+										<td colspan="10" style="border: 0">
+											<p style="font-size: 10px;text-align: center"> 
+												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+												 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+												 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+											 </p>
+										</td>									
+									</tr>
+								
+									<tr>
+										<th  style="width: 20px; ">SN</th>
+										<th  style="width: 30px; ">MS</th>
+										<th  style="width: 60px; ">L</th>
+										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+										<th  style="width: 150px; "> PDC</th>
+										<th  style="width: 150px; "> ADC</th>
+										<th  style="width: 60px; "> Progress</th>
+										<th  style="width: 50px; "> Status(DD)</th>
+									 	<th  style="width: 260px; "> Remarks</th>
+									</tr>
+								</thead>
 								<% if( milestones.get(z).size()>0){ 
 									long count1=1;
 									int milcountA=1;
@@ -1175,19 +1171,46 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
-											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
-											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+												<%}%>
+												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
+											</td>
+											<td style="text-align: center">
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													 
+														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+													</span>
+												<%}else{%>
+													-
+												<%} %>
+											</td>
+											<td style="text-align: center"><%=obj[17] %>%</td>							
+											<td style="text-align: center">
+												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[22] %>	
-											</span>
+													<%=obj[22] %>	
+													
+													<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
+													<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
+													<%} %>	
+												
+												</span>
 											
 											</td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
@@ -1215,26 +1238,24 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						
-										<thead>
-											<tr>
-												<td colspan="9" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
-								   				</td>									
-											</tr>
-										</thead>
-										
+							<thead>
+								<tr>
+									<td colspan="9" style="border: 0">
+										<p style="font-size: 10px;text-align: center"> 
+											<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+											<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+											<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+											<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+											<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+											<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+											<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+											<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+											<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+											<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+										 </p>
+									</td>									
+								</tr>
+							</thead>
 							<tbody>
 								<tr>
 									<th  style="width: 20px; ">SN</th>
@@ -1244,7 +1265,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<th  style="width: 110px; "> Original PDC</th>
 									<th  style="width: 100px; "> Revised PDC</th>
 									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
+									<th  style="width: 50px; "> Status(DD)</th>
 								 	<th  style="width: 270px; "> Remarks</th>
 
 								<% if( MilestoneDetails6.get(z).size()>0){ 
@@ -1321,22 +1342,37 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<td style="text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
 											<td style="text-align: center;">
 											
-												<%if(!LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[8].toString()))){ %>
-												<%=sdf.format(sdf1.parse(obj[8].toString())) %>
-												<%}else {%>
-												-
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													 
+														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+													</span>
+												<%}else{%>
+													-
 												<%} %>
+												
 											</td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[22] %>	
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
+												<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
+												<%} %>
 											</span> 
 											
 											</td>
@@ -1398,7 +1434,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1468,7 +1503,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													}else if(obj[15].toString().equals("C")){ %>
 												        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
 												    <% }else{ %>
-												      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
+												      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
 												<%} %> 
 													
 											<%}else{ %>-<%} %>
@@ -1494,7 +1529,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 										        <span class="completed">CO</span>
 										    <% }else{ %>
-										      	<span class="notyet">NS</span> 
+										      	<span class="assigned">AA</span> 
 											<% } %> 
 											
 														
@@ -1712,7 +1747,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									  </table>
                
 <!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
- <h1 class="break"></h1>
+							<h1 class="break"></h1>
 <!-- ----------------------------------------------7. Overall financial Status------------------------------------------------- -->
 
 		 
@@ -1843,7 +1878,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<p style="font-size: 10px;text-align: center"> 
 									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-									<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1851,7 +1885,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									 </p>
 								</td>									
 							</tr>
@@ -1864,7 +1898,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<th style="width: 90px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
-					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
+					                <th style="width: 50px;padding-right: 5px !important ">Status(DD)</th>
 					                <th style="width: 230px;">Remarks</th>
 								</tr>
 							</thead>
@@ -1941,23 +1975,35 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
-											<td  style="text-align:center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td  style="text-align:center">
+											
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 
+													<%=sdf.format(sdf1.parse(obj[8].toString())) %> 
+												<%}%>
+												<%=sdf.format(sdf1.parse(obj[29].toString())) %>
+											
+											</td>
 											<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
 											<td style="text-align: center"><%=obj[16] %>%</td>											
 											<td  style="text-align: center">
-											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-												<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
-												<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-												<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-												<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-												<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-												<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
-												
-												<%=obj[27] %>	
-												<%-- <%if(obj[20].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[8].toString())) %>)
-												<%} %> --%>
-											</span>
+											
+												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
+													<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> assigned
+													<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
+													<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
+													<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
+													<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
+													<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
+													
+													<%=obj[27] %>	
+													
+													<%if((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5") )&& obj[18]!=null){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString())) %>) 
+													<%}else if(obj[20].toString().equalsIgnoreCase("4")){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now()) %>)
+													<%} %>
+													
+												</span>
 											
 											</td>
 											<td >
@@ -2038,7 +2084,6 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -2098,7 +2143,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 												
 													<%}}else if(obj[9].toString().equals("C")){%>
 												        <span class="completed">CO</span>
-												      <% }else{ %><span class="notyet">NS</span> 
+												      <% }else{ %><span class="assigned">AA</span> 
 													<%} %>
 												</td>	
 												<td > <%if(obj[17]!=null){ %> <%=obj[17] %> <%} %> </td>			
