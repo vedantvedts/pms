@@ -658,7 +658,7 @@ public class OnBoardingController {
 					                emp.setCreatedDate(sdf1.format(new Date()));
 					                employee.add(emp);
 					            }
-					            
+					                           
 					            List<Employee> count =employeemasterrepo.saveAll(employee);
 								if (count.size() > 0) {
 									redir.addAttribute("result", "Employee Added Successfully");
