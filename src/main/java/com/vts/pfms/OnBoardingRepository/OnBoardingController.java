@@ -263,7 +263,7 @@ public class OnBoardingController {
 					             
 					              div.add(dmo);
 					            }
-					          List<DivisionMaster>  count= divisionmasterrepo.saveAll(null);
+					          List<DivisionMaster>  count= divisionmasterrepo.saveAll(div);
 								if (count.size() > 0) {
 									redir.addAttribute("result", "Division Added Successfully");
 								} else {
