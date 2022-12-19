@@ -2451,16 +2451,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</form>								
 								
 								<b>Technical Images</b> 
-								<div>
-										<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
-												<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
-												<button type="submit" class="btn btn-sm back">Upload</button>
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-												<input type="hidden" name="committeeid" value="<%=committeeid%>">
-												<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
-											</form>
-											<br>
-											</div>
+								<div class="row">
+									<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
+										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
+										<button type="submit" class="btn btn-sm back">Upload</button>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<input type="hidden" name="committeeid" value="<%=committeeid%>">
+										<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
+									</form>
+											
+								</div>
 							<% if(TechImages.size()>0){
 							List<TechImages>  TechImagesList= TechImages.get(z); 
 							if(TechImagesList.size()>0){
@@ -2470,7 +2470,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<table>
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
-											<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+											
+											<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
+											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+											<%} %> 											
 										</td>
 										<td style="border:0;">  
 											
