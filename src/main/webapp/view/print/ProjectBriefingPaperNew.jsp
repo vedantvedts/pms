@@ -1134,7 +1134,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								
 				
 				
-			<!-- Old query data which is commented in Dao Layer -->
+			<!-- Old query data which is commented in Dao Layer (19-12-22)-->
 								
 			<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 				

@@ -980,7 +980,10 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
    						  period.  </b></div>
    						
 			
-			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+			
+			<!--  Old query data which is commented in Dao Layer  (19-12-22)-->
+			
+			<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 				
 				<thead>
 					<tr>
@@ -1034,7 +1037,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											 	<%}else{ %>
 											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%>
 											 	<%} %>
-											<%-- <%= sdf.format(sdf1.parse(obj[7].toString()))%> --%>
+											<%= sdf.format(sdf1.parse(obj[7].toString()))%>
 											</td>
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
@@ -1047,11 +1050,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 													<%=obj[11] %>	
 												
-													<%-- <%if(obj[10].toString().equalsIgnoreCase("5")) { %>
+													<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
 													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
 													<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
 													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
-													<%} %> --%>
+													<%} %>
 												
 												</span>
 											</td>
@@ -1067,7 +1070,138 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<%} %>
 								</tbody>
 								
+							</table> --%>
+							
+							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+							<thead>
+							<tr>
+								<td colspan="10" style="border: 0">
+									<p style="font-size: 10px;text-align: center"> 
+										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
+										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									 </p>
+								</td>									
+							</tr>
+							
+								<tr>
+									<th  style="width: 20px; ">SN</th>
+									<th  style="width: 30px; ">MS</th>
+									<th  style="width: 60px; ">L</th>
+									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+									<th  style="width: 150px; "> Original PDC</th>
+									<th  style="width: 150px; "> Revised PDC</th>
+									<th  style="width: 60px; "> Progress</th>
+									<th  style="width: 50px; "> Status</th>
+								 	<th  style="width: 260px; "> Remarks</th>
+								</tr>
+							</thead>
+								<% if( milestones.get(z).size()>0){ 
+									long count1=1;
+									int milcountA=1;
+									int milcountB=1;
+									int milcountC=1;
+									int milcountD=1;
+									int milcountE=1;
+									
+									%>
+									<%int serial=1;for(Object[] obj:milestones.get(z)){
+										
+										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+										%>
+										<tr>
+											<td style="text-align: center"><%=serial%></td>
+											<td>M<%=obj[0] %></td>
+											
+											<td style="text-align: center">
+												<%
+												
+												if(obj[21].toString().equals("0")) {%>
+													<!-- L -->
+												<%	milcountA=1;
+													milcountB=1;
+													milcountC=1;
+													milcountD=1;
+													milcountE=1;
+												}else if(obj[21].toString().equals("1")) { %>
+													A-<%=milcountA %>
+												<% milcountA++;
+													milcountB=1;
+													milcountC=1;
+													milcountD=1;
+													milcountE=1;
+												}else if(obj[21].toString().equals("2")) { %>
+													B-<%=milcountB %>
+												<%milcountB+=1;
+												milcountC=1;
+												milcountD=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("3")) { %>
+													C-<%=milcountC %>
+												<%milcountC+=1;
+												milcountD=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("4")) { %>
+													D-<%=milcountD %>
+												<%
+												milcountD+=1;
+												milcountE=1;
+												}else if(obj[21].toString().equals("5")) { %>
+													E-<%=milcountE %>
+												<%milcountE++;
+												} %>
+											</td>
+
+											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+												<%if(obj[21].toString().equals("0")) {%>
+													<%=obj[10] %>
+												<%}else if(obj[21].toString().equals("1")) { %>
+													&nbsp;&nbsp;<%=obj[11] %>
+												<%}else if(obj[21].toString().equals("2")) { %>
+													&nbsp;&nbsp;<%=obj[12] %>
+												<%}else if(obj[21].toString().equals("3")) { %>
+													&nbsp;&nbsp;<%=obj[13] %>
+												<%}else if(obj[21].toString().equals("4")) { %>
+													&nbsp;&nbsp;<%=obj[14] %>
+												<%}else if(obj[21].toString().equals("5")) { %>
+													&nbsp;&nbsp;<%=obj[15] %>
+												<%} %>
+											</td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td style="text-align: center"><%=obj[17] %>%</td>											
+											<td style="text-align: center">
+											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+												<%=obj[22] %>	
+											</span>
+											
+											</td>
+											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+										</tr>
+									<%count1++;serial++;}} %>
+								<%} else{ %>
+								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+								
+								
+								<%} %>
 							</table>
+							
+							
+							
 			
 						 <h1 class="break"></h1>
 <!-- ------------------------------------------------------------------------------------------------------------ -->
