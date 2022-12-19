@@ -1,5 +1,6 @@
 package com.vts.pfms.master.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class MasterController {
 	AdminService adminservice;
 	
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
-	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@RequestMapping(value="Officer.htm", method=RequestMethod.GET)
 	public String OfficerList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
@@ -935,5 +936,7 @@ public class MasterController {
 		  return json.toJson(arr); 
 		  
 	}
+	 
+	
 
 }

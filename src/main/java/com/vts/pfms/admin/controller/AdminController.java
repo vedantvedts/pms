@@ -1012,8 +1012,6 @@ public class AdminController {
 	    @Scheduled(cron ="0 0 */6 * * * ")
 	    public String AutorunBatchFile() throws Exception
 		{
-	    	
-			
 			try {
 				if(batchfilepath!=null) {
 					File batchfile = new File(batchfilepath.split(" ")[0]);
@@ -1038,5 +1036,20 @@ public class AdminController {
 				return "static/Error";
 			}
 		}
+	    
+	    @RequestMapping(value="OnBoardGroupMaster.htm")
+	    public String OnBoardingGroupMaster()throws Exception
+	    {
+	    	try {
+					
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	    	return "admin/GroupMasterOnBoard";
+	    }
+	    
+	    
+	    
+	    
 	    
 }

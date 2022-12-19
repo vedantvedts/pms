@@ -443,11 +443,11 @@ if(MinutesBack==null){
 							<div class="col-sm-5" align="left"  >
 							      <div class="form-group">
 							            <label> Assignee : </label>
-											<%if(Long.parseLong(projectid)>0){ %>
+											<%-- <%if(Long.parseLong(projectid)>0){ %>
 												<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
 												</div>
-											<%} %>
+											<%} %> --%>
 							<br>
 							<select class="form-control selectdee" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
 							                                                             
