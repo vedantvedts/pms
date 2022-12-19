@@ -1131,8 +1131,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>	
-								
-				
 				
 			<!-- Old query data which is commented in Dao Layer (19-12-22)-->
 								
