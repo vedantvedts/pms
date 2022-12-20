@@ -595,14 +595,14 @@ String labcode= (String)session.getAttribute("labcode");
 											</a>
 											
 											<a class="dropdown-item" href="OnBoardGroupMaster.htm"> 
-											<i class="fa fa-sign-in fa-lg" aria-hidden="true" style="height: 13%; width: 13%;"></i>
-												&nbsp;&nbsp; On-Board
+											<img src="view/images/data.png" style="height: 13%; width: 16%;" />
+												&nbsp;&nbsp;On-Board
 											</a>
 
 											
 											<a class="dropdown-item" href="RunBatchFile.htm"> 
-											<img src="view/images/backup.png" style="height: 13%; width: 13%;" />
-												&nbsp;&nbsp; BackUp DB
+											<img src="view/images/backup.png" style="height: 13%; width: 16%;" />
+												&nbsp;&nbsp;DB Back-up 
 											</a>
 																						
 											<a class="dropdown-item"  href="DelegationFlow.htm">

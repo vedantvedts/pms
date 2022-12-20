@@ -927,9 +927,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									
 									for(Object[] obj:ReviewMeetingList.get(z)){ %>
 										<tr>
-											<td  style="max-width: 50px;font-size:12px !important; "><%=obj[1] %> #<%=i %></td>												
+											<td  style="max-width: 50px;font-size:16px !important; "><%=obj[1] %> #<%=i %></td>												
 											<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
-											<td  style="max-width: 55px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											<td  style="max-width: 55px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 										</tr>			
 									<%i++;
 									}}else{ %>
@@ -956,9 +956,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<%if(t==21) break; %>
 										<%if(t<=20){ %>
 											<tr>
-												<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=t %></td>												
+												<td  style="max-width: 70px;font-size:16px !important;"><%=obj[1] %> #<%=t %></td>												
 												<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
-												<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td  style="max-width: 80px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>
 										<%} 
 										t++;}}
@@ -984,9 +984,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
 										<%if(t>=20){ %>
 											<tr>
-												<td  style="max-width: 70px;font-size:12px !important;"><%=obj[1] %> #<%=t %></td>												
+												<td  style="max-width: 70px;font-size:16px !important;"><%=obj[1] %> #<%=t %></td>												
 												<%-- <td  style="max-width: 200px;font-size:12px !important;" ><%= obj[4]%></td> --%>
-												<td  style="max-width: 80px;text-align: center;font-size:12px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td  style="max-width: 80px;text-align: center;font-size:16px !important; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>
 										<%}
 										t++;}}
