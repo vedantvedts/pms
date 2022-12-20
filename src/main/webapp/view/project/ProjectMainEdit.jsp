@@ -181,7 +181,7 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 								<option value="<%=protype[0] %>"
 								 <%if(protype[0].toString().equalsIgnoreCase(ProjectMainEditData[13].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[2].toString() %></option>
+								><%=protype[2] %></option>
 								<%} %>
 							</select>
 </td>
