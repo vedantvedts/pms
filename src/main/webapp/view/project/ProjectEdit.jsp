@@ -223,16 +223,11 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<select required="required" name="projectdirector" class="form-control form-control selectdee" id="officerPunchNo" data-width="100%" data-live-search="true">
-							<%for(Object[] protype:OfficerList ){
-	
-	                           %>
-								<option value="<%=protype[0] %>"
-								 <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %>
-								 selected="selected"  <%} %>
-								><%=protype[2].toString() %></option>
-								<%} %>
-							</select>
+			<select required="required" name="projectdirector" class="form-control form-control selectdee" id="officerPunchNo" data-width="100%" data-live-search="true">
+				<%for(Object[] officer:OfficerList ){  %>
+					<option value="<%=officer[0] %>"  <%if(officer[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %> selected="selected"  <%} %> ><%=officer[2] %></option> 
+				<%} %>
+			</select>
 </td>
 
  
@@ -429,17 +424,19 @@ Project Edit</h4>
 
 					
 					<div align="center">
-									<table>
-										<tr>
-											<td>
-												<button type="submit" name="action" value="editsubmit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit!')">SUBMIT</button>
-											</td>
-											<td>
-											    <a class="btn btn-info btn-sm shadow-nohover back" href="ProjectList.htm">BACK</a>
-											</td>
-										</tr>
-									</table>
-								</div>
+						<table>
+							<tr>
+								<td>
+									<%if(Integer.parseInt(ProjectEditData[18].toString())==0){ %>
+									<button type="submit" name="action" value="editsubmit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit!')">SUBMIT</button>
+									<%} %>
+								</td>
+								<td>
+								    <a class="btn btn-info btn-sm shadow-nohover back" href="ProjectList.htm">BACK</a>
+								</td>
+							</tr>
+						</table>
+					</div>
 		
  	 						
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -1,3 +1,4 @@
+<%@page import="java.net.Inet4Address"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
 <%@page import="java.time.LocalDate"%>
@@ -53,6 +54,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 }else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 }
+String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":"+	request.getLocalPort() + request.getContextPath();
+
 
 %>
 
@@ -391,6 +394,9 @@ String levelid= (String) request.getAttribute("levelid");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 
 String AppFilesPath= (String) request.getAttribute("AppFilesPath");
+
+
+
 %>
 
 
@@ -455,7 +461,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- ------------------------------------heading commented------------------------------------------------- -->	
 	
 <!-- ------------------------------------project attributes------------------------------------------------- -->
-			<div style="margin-left: 10px;" align="left"><b class="sub-title">1. Project Attributes: </b></div>
+			<div style="margin-left: 10px;" align="left"><b class="sub-title"> 
+			
+				<a class="sub-title" href="<%= HyperlinkPath+ "/ProjectSubmit.htm?ProjectId="+projectid + "&action=edit" %>" target="_top" rel="noopener noreferrer" >1. Project Attributes: </a> 
+			
+			</b>
+			
+			</div>
 			<%if(projectattributes.get(z)!=null){ %>
 			
 			<table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
@@ -999,10 +1011,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			
 			 <h1 class="break"></h1>
 <!-- -------------------------------------------------------------------------------------------- -->
-		<div align="left" style="margin-left: 10px;"><b class="sub-title">5. Milestones achieved prior to this  
-						<%=committee.getCommitteeShortName().trim().toUpperCase() %>
-   						Meeting
-   						  period.  </b></div>
+		<div align="left" style="margin-left: 10px;">
+		
+			<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
+				<b class="sub-title">5. Milestones achieved prior to this <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting period.  </b>
+			</a>
+   		</div>
+   				
    						
 			
 			
@@ -1259,8 +1274,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">6. Details of work and current status of sub system with major milestones ( since last <%= committee.getCommitteeShortName().trim().toUpperCase() %> meeting ) period </b></div> 
 						
 			
-			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle"><br>(a) Work carried out, Achievements, test result etc.</b></div>
-						
+			<div align="left" style="margin-left: 15px;">
+				<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
+					<b class="mainsubtitle"><br>(a) Work carried out, Achievements, test result etc.</b>
+				</a>	
+			</div>	
 						<!-- Tharun code Start (For Filtering Milestone based on levels) -->					
 
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
@@ -1818,37 +1836,37 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			                        if(projectFinancialDetails!=null && projectFinancialDetails.size()>0 && projectFinancialDetails.get(z)!=null ){
 			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
 			 
-			                         <tr>
-			<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
-			<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
-			<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-			<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
-			<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-			<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-			<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-			<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-			<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
-			<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-			<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
-	       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-			<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-			<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-	<%-- 	<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%> --%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-			<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-			<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
-		</tr>
+			                  <tr>
+								<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
+								<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+								<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+								<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+								<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
+							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+								<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
+							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+								<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
+							    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+								<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
+								<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+								<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
+								<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+						       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+									<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+									<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
+							<%-- 	<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%> --%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+									<%totReBalance+=(projectFinancialDetail.getReBalance());%>
+								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+									<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
+							</tr>
 			<%} }%>
-			</tbody>
+				</tbody>
 					<tr>
 						<td colspan="2"><b>Total</b></td>
 						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
@@ -1873,26 +1891,22 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
 						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
 					</tr>
-			                         
-			                         
-			                         
-			                    
 			                 
 			     </tbody>
 			</table>  	
   
  <h1 class="break"></h1>
 <!-- ---------------------------------------------- -------------------------- ------------------------------------------------- -->
-		<div align="left" style="margin-left: 10px;"><b>
-		
+		<div align="left" style="margin-left: 10px;">
+				<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
 				<%if(Integer.parseInt(committeeid)==2){ %>
    							<b class="sub-title">9. Action Plan for Next Six Months - Technical Milestones with Financial Outlay : </b>  
 				<%}else { %>
 							<b class="sub-title">9. Action Plan for Next Three Months - Technical Milestones with Financial Outlay : </b> 
 				<%} %>
+				</a>
 		
-		
-		</b></div>
+		</div>
 		
 			<!-- Tharun code after Level -->
 		
