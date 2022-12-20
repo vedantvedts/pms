@@ -553,7 +553,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										
 										<div>
 											<form action="ProjectSubmit.htm" method="post" target="_blank">
-												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
 												<input type="hidden" name="ProjectId" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -702,7 +702,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%-- <%if(ProjectDetail.size()>1){ %> --%>
 										<div>
 											<form action="ProjectData.htm" method="post" target="_blank">
-												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
 												<input type="hidden" name="projectid" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -784,7 +784,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<div>
 								<%if(ProjectDetail.size()>1){ %>
 									<div style="margin-left:1rem; ">
-										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>
 								<table>
@@ -829,7 +829,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
    								
    								  	<%if(ProjectDetail.size()>1){ %>
 										<div>
-											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
 								   <div align="left" style="margin-left: 15px;">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
@@ -846,7 +846,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<p style="font-size: 10px;text-align: center"> 
 								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -887,7 +886,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<td>
 								<%if(obj[4]!= null){ %>  
 									<%=obj[12] %><%-- , <%=obj[13] %> --%>
-								<%}else { %><!--  <span class="notassign">NA</span>  --><span class="">Not Assigned</span> <%} %> 
+								<%}else { %><span class="">Not Assigned</span> <%} %> 
 							</td>
 							<td  style="text-align: center; ">
 								<%if(obj[4]!= null){
@@ -912,7 +911,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%} }else if(obj[10].toString().equals("C")){%>
 								        <span class="completed">CO</span>
 							    <% }else{ %>
-							    		<span class="notyet">NS</span> 
+							    		<span class="assigned">AA</span> 
 								<%}}else { %> <span class="notassign">NA</span> <%} %> 
 							</td>
 							<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
@@ -939,7 +938,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1003,7 +1001,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%}else if(obj[9].toString().equals("C")){ %>
 									        <span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
 									    <% }else{ %>
-									      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
+									      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span> 
 										<%} %> 
 										
 										<%}else{ %> - <%} %>
@@ -1030,7 +1028,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<% }else if(obj[9].toString().equals("C")){ %>
 									        <span class="completed">CO</span>
 									    <% }else{ %>
-									      	<span class="notyet">NS</span> 
+									      	<span class="assigned">AA</span> 
 										<%} %> 
 									</td>	
 									<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
@@ -1142,7 +1140,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<p style="font-size: 10px;text-align: center"> 
 								<span class="notassign">NA</span> : Not Assigned &nbsp;
 								<span class="assigned">AA</span> : Activity Assigned &nbsp; 
-								<span class="notyet">NS</span> : Not yet Started &nbsp;
+								<span class="assigned">AA</span> : Not yet Started &nbsp;
 								<span class="ongoing">OG</span> : On Going &nbsp;
 								<span class="delay">DO</span> : Delay - On Going &nbsp;
 								<span class="ongoing">RC</span> : Review & Close &nbsp;
@@ -1204,7 +1202,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<td  style="text-align: center;"><%=obj[12] %>%	</td>
 											<td   style="text-align: center;">
 												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%> assigned
-														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[10].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[10].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[10].toString().equalsIgnoreCase("4")) {%> delay 
@@ -1248,7 +1246,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<p style="font-size: 10px;text-align: center"> 
 										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1256,7 +1253,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+										 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
 									 </p>
 								</td>									
 							</tr>
@@ -1266,16 +1263,15 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<th  style="width: 30px; ">MS</th>
 									<th  style="width: 60px; ">L</th>
 									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 150px; "> Original PDC</th>
-									<th  style="width: 150px; "> Revised PDC</th>
+									<th  style="width: 150px; "> PDC</th>
+									<th  style="width: 150px; "> ADC</th>
 									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
+									<th  style="width: 50px; "> Status(DD)</th>
 								 	<th  style="width: 260px; "> Remarks</th>
 								 	<th  style="max-width: 30px; "> Info </th>
-									
 								</tr>
 							</thead>
-								<% if( milestones.get(z).size()>0){ 
+								<% if( milestones.get(z).size()>0){
 									long count1=1;
 									int milcountA=1;
 									int milcountB=1;
@@ -1346,19 +1342,45 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td style="text-align: center">
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+												<%}%>
+												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
+											</td>
+											<td style="text-align: center">
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													 
+														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+													</span>
+												<%}else{%>
+													-
+												<%} %>
+											</td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
-											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[22] %>	
-											</span>
+													<%=obj[22] %>	
+													
+													<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
+													<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
+														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
+													<%} %>	
+												</span>
 											
 											</td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
@@ -1397,7 +1419,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<%for(int z=0;z<projectidlist.size();z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
 									<div>
-										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>	
 								<div align="left" style="margin-left: 15px;">(a) Work carried out, Achievements, test result etc.
@@ -1428,7 +1450,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<p style="font-size: 10px;text-align: center"> 
 										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1436,26 +1457,25 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+										 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
 									 </p>
 								</td>									
 							</tr>
 							
-								<tr>
-									<th  style="width: 20px; ">SN</th>
-									<th  style="width: 30px; ">MS</th>
-									<th  style="width: 60px; ">L</th>
-									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 150px; "> Original PDC</th>
-									<th  style="width: 150px; "> Revised PDC</th>
-									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
-								 	<th  style="width: 260px; "> Remarks</th>
-								 	<th  style="max-width: 30px; "> Info </th>
-									
-								</tr>
+							<tr>
+								<th  style="width: 20px; ">SN</th>
+								<th  style="width: 30px; ">MS</th>
+								<th  style="width: 60px; ">L</th>
+								<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+								<th  style="width: 150px; "> PDC</th>
+								<th  style="width: 150px; "> ADC</th>
+								<th  style="width: 60px; "> Progress</th>
+								<th  style="width: 50px; "> Status(DD)</th>
+							 	<th  style="width: 260px; "> Remarks</th>
+							 	<th  style="max-width: 30px; "> Info </th>
+							</tr>
 							</thead>
-								<% if( MilestoneDetails6.get(z).size()>0){ 
+								<% if( MilestoneDetails6.get(z).size()>0) { 
 									long count1=1;
 									int milcountA=1;
 									int milcountB=1;
@@ -1526,18 +1546,44 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td style="text-align: center">
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+												<%}%>
+												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
+											</td>
+											<td style="text-align: center">
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													 
+														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+													</span>
+												<%}else{%>
+													-
+												<%} %>
+											</td>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
 														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
 														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 												<%=obj[22] %>	
+												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
+												<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
+												<%} %>
+												
 											</span>
 											
 											</td>
@@ -1597,7 +1643,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													<p style="font-size: 10px;text-align: center"> 
 														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 														<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 														<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 														<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -1668,7 +1713,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 																	}else if(obj[15].toString().equals("C")){ %>
 																        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
 																    <% }else{ %>
-																      	<span class="notyet"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
+																      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
 																<%} %> 
 																
 															<%}else{ %>-<%} %>
@@ -1694,7 +1739,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 														        <span class="completed">CO</span>
 														    <% }else{ %>
-														      	<span class="notyet">NS</span> 
+														      	<span class="assigned">AA</span> 
 															<% } %> 
 											
 														</td>
@@ -1744,7 +1789,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%for(int z=0;z<projectidlist.size();z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
 									<div>
-										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>
 									
@@ -1881,7 +1926,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<%} %>
 									</table> 
 									
-									</table>
 								
 																	
 								<%} %>
@@ -1931,7 +1975,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
 								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 								</div>	
 							<%} %>	
 						  	
@@ -2053,7 +2097,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<%for(int z=0;z<projectidlist.size();z++){ %>
 							<%if(ProjectDetail.size()>1){ %>
 								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 								</div>	
 							<%} %>
 					
@@ -2067,7 +2111,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<p style="font-size: 10px;text-align: center"> 
 									<span class="notassign">NA</span> : Not Assigned &nbsp;
 									<span class="assigned">AA</span> : Activity Assigned &nbsp;
-									<span class="notyet">NS</span> : Not yet Started &nbsp;
 									<span class="ongoing">OG</span> : On Going &nbsp;
 									<span class="delay">DO</span> : Delay - On Going &nbsp;
 									<span class="ongoing">RC</span> : Review & Close &nbsp;
@@ -2075,7 +2118,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<span class="completed">CO</span> : Completed &nbsp;
 									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
 									<span class="inactive">IA</span> : InActive &nbsp;
-									<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
 									 </p>
 								</td>									
 							</tr>
@@ -2088,7 +2131,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<th style="width: 110px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
-					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
+					                <th style="width: 50px;padding-right: 5px !important; ">Status(DD)</th>
 					                <th style="width: 220px;">Remarks</th>
 								</tr>
 							</thead>
@@ -2165,12 +2208,20 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
-											<td  style="text-align:center"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td  style="text-align:center">
+												
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 
+													<%=sdf.format(sdf1.parse(obj[8].toString())) %> 
+												<%}%>
+												<%=sdf.format(sdf1.parse(obj[29].toString())) %>
+												
+											
+											</td>
 											<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
 											<td style="text-align: center"><%=obj[16] %>%</td>											
 											<td  style="text-align: center">
 											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-												<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
+												<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> assigned
 												<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
 												<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
 												<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
@@ -2178,9 +2229,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
 												
 												<%=obj[27] %>	
-												<%-- <%if(obj[20].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[8].toString())) %>)
-												<%} %> --%>
+												
+												<%if((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5") )&& obj[18]!=null){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString())) %>) 
+												<%}else if(obj[20].toString().equalsIgnoreCase("4")){ %>
+													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now()) %>)
+												<%} %>
+												
 											</span>
 											
 											</td>
@@ -2217,7 +2272,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							    <div>
 							    	<%if(ProjectDetail.size()>1){ %>
 										<div>
-											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
 								    <div class="row">
@@ -2274,7 +2329,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						   			
 						   			<%if(ProjectDetail.size()>1){ %>
 										<div>
-											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
 										   		 
@@ -2286,7 +2341,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<!-- <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp; -->
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
@@ -2346,7 +2400,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												
 													<%}}else if(obj[9].toString().equals("C")){%>
 												        <span class="completed">CO</span>
-												      <% }else{ %><span class="notyet">NS</span> 
+												      <% }else{ %><span class="assigned">AA</span> 
 													<%} %>
 												</td>	
 												<td > <%if(obj[17]!=null){ %> <%=obj[17] %> <%} %> </td>			
@@ -2368,7 +2422,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						  <%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
 								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 								</div>	
 							<%} %>	
 							<%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
@@ -2399,7 +2453,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						  <div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
 								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z==0){ %><%}else{ %> (SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 								</div>	
 								
 								<div class="card-body" style="width:100%"  >
@@ -2451,16 +2505,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</form>								
 								
 								<b>Technical Images</b> 
-								<div>
-										<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
-												<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
-												<button type="submit" class="btn btn-sm back">Upload</button>
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-												<input type="hidden" name="committeeid" value="<%=committeeid%>">
-												<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
-											</form>
-											<br>
-											</div>
+								<div class="row">
+									<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
+										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
+										<button type="submit" class="btn btn-sm back">Upload</button>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+										<input type="hidden" name="committeeid" value="<%=committeeid%>">
+										<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
+									</form>
+											
+								</div>
 							<% if(TechImages.size()>0){
 							List<TechImages>  TechImagesList= TechImages.get(z); 
 							if(TechImagesList.size()>0){
@@ -2470,8 +2524,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								<table>
 									<tr>
 										<td style="border:0; padding-left: 1.5rem;"> 
-<%-- 											<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
- --%>										<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
+										<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
 											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
 											<%} %>
 

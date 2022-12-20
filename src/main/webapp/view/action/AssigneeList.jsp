@@ -184,7 +184,7 @@ a:hover {
 															<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
 																	style="display: inline">
 
-																	<button class="editable-click" name="sub" value="Details" 	>
+																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -202,7 +202,7 @@ a:hover {
 																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	<%if(obj[14]!=null && obj[12]!=null && EmpId.equalsIgnoreCase(obj[12].toString()) && Integer.valueOf(obj[14].toString())< 5){ %>
-																		      <button type="submit"  class="editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
+																		      <button type="submit"  class="btn btn-sm editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
 																				<div class="cc-rockmenu">
 																				 <div class="rolling">	
 																				 <figure class="rolling_icon">
@@ -212,8 +212,8 @@ a:hover {
 															                      </div>
 															                     </div>
 															                  </button> 
-															                 <button type="submit"  class="editable-click" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank"  formaction="ActionTree.htm" formmethod="POST"  >
-																				<i class="fa fa-solid fa-sitemap"></i>
+															                 <button type="submit"  class="btn btn-sm" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
+																				<i class="fa fa-solid fa-sitemap" style=" font-size: 30px; color: #CE7777;"></i>
 																		    </button> 
 													                  <%}%>
 																</form> 		

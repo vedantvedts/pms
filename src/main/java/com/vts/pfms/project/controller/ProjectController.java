@@ -2096,7 +2096,7 @@ public class ProjectController
 	}
 	
 	
-	@RequestMapping(value = "ProjectSubmit.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "ProjectSubmit.htm")
 	public String ProjectSubmit(HttpSession ses, HttpServletRequest req, RedirectAttributes redir) throws Exception 
 	{
 		long count=0;
@@ -2107,7 +2107,8 @@ public class ProjectController
 		try {      	
 		  String sub=req.getParameter("action");
 		 
-		  if("add".equalsIgnoreCase(sub)) {
+		  if("add".equalsIgnoreCase(sub)) 
+		  {
 			  
 			  req.setAttribute("ProjectMainListNotAdded", service.ProjectTypeMainListNotAdded());
 			  req.setAttribute("ProjectTypeMainList", service.ProjectTypeMainList());
@@ -2123,9 +2124,8 @@ public class ProjectController
         	  req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
 			  return "project/ProjectAdd";
 		  }
-         if("submit".equalsIgnoreCase(sub)) {
-        	 
-        	 
+         if("submit".equalsIgnoreCase(sub)) 
+         {
         	 
      		 String pcode=req.getParameter("pcode");
      		 String pname=req.getParameter("pname");
@@ -2208,7 +2208,6 @@ public class ProjectController
 			 req.setAttribute("CategoryList", service.ProjectCategoryList());
 			 req.setAttribute("ProjectEditData", service.ProjectEditData1(ProjectId));
         	 req.setAttribute("ProjectTypeList", service.PfmsCategoryList());
-        	  
         	  
         	  
         	 return "project/ProjectEdit";

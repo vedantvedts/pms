@@ -13,10 +13,137 @@
 <meta charset="ISO-8859-1">
 <title>Action Tree</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
-<spring:url value="/resources/plugins/HTree/HTree.css" var="HTreecss" />
-<link href="${HTreecss}" rel="stylesheet" />
-<spring:url value="/resources/plugins/HTree/HTree.js" var="HTreejs" />
-<script src="${HTreejs}"></script>
+ 
+
+<!-- ------------------------------- tree css ------------------------------- -->
+<style type="text/css">
+
+
+/*----------------genealogy-scroll----------*/
+
+/* .genealogy-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.genealogy-scroll::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #e4e4e4;
+}
+.genealogy-scroll::-webkit-scrollbar-thumb {
+    background: #212121;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+.genealogy-scroll::-webkit-scrollbar-thumb:hover {
+    background: #d5b14c;
+    transition: 0.5s;
+}
+ */
+
+/*----------------genealogy-tree----------*/
+ .genealogy-body{
+    white-space: nowrap;
+    overflow-y: hidden;
+    padding: 50px;
+    min-height: 500px;
+    padding-top: 10px;
+    text-align: center;
+}
+.genealogy-tree{
+  display: inline-block;
+} 
+.genealogy-tree ul {
+    padding-top: 20px; 
+    position: relative;
+    padding-left: 0px;
+    display: flex;
+    justify-content: center;
+}
+.genealogy-tree li {
+    float: left; text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 5px 0 5px;
+}
+.genealogy-tree li::before, .genealogy-tree li::after{
+    content: '';
+    position: absolute; 
+  top: 0; 
+  right: 50%;
+    border-top: 2px solid #ccc;
+    width: 50%; 
+  height: 18px;
+}
+.genealogy-tree li::after{
+    right: auto; left: 50%;
+    border-left: 2px solid #ccc;
+}
+.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
+    display: none;
+}
+.genealogy-tree li:only-child{ 
+    padding-top: 0;
+}
+.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
+    border: 0 none;
+}
+.genealogy-tree li:last-child::before{
+    border-right: 2px solid #ccc;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+.genealogy-tree li:first-child::after{
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+.genealogy-tree ul ul::before{
+    content: '';
+    position: absolute; top: 0; left: 50%;
+    border-left: 2px solid #ccc;
+    width: 0; height: 20px;
+}
+.genealogy-tree li .action-view-box{
+    text-decoration: none;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    display: inline-block;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.genealogy-tree li a:hover+ul li::after, 
+.genealogy-tree li a:hover+ul li::before, 
+.genealogy-tree li a:hover+ul::before, 
+.genealogy-tree li a:hover+ul ul::before{
+    border-color:  #fbba00;
+}
+
+/*--------------memeber-card-design----------*/
+.member-view-box{
+    padding:0px 15px;
+    text-align: center;
+    border-radius: 4px;
+    position: relative;
+}
+.member-image{
+    width: 60px;
+    position: relative;
+}
+.member-image img{
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+  background-color :#000;
+  z-index: 1;
+}
+
+
+</style>
+ <!-- ------------------------------- tree css ------------------------------- -->
+
 
 <style type="text/css">
 .action-box
@@ -89,6 +216,30 @@
 	color: #FFFFFF;
 }
 
+th
+{
+ 	text-align: left;
+ 	overflow-wrap: break-word;
+}
+
+td
+{
+ 	text-align: justify;
+  	text-justify: inter-word;
+    
+}
+
+
+
+.tabledata
+{
+ 	white-space: -o-pre-wrap; 
+    word-wrap: break-word;
+    white-space: pre-wrap; 
+    white-space: -moz-pre-wrap; 
+    white-space: -pre-wrap; 
+}
+
 </style>
 
 </head>
@@ -147,7 +298,7 @@
 			                          	  >
 			                          		
 			                          		<span style="cursor:pointer;font-weight: 600;" 
-			                          			onclick="ActionDetails('<%=action[10] %>',   <!-- assignid -->
+			                          			onclick="ActionDetails(	'<%=action[10] %>',   <!-- assignid -->
 			                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=action[11] %>',   <!-- action No -->
 			                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
@@ -155,7 +306,8 @@
 			                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
 			                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
 			                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
-			                          									'<%=action[23].toString().trim()%>' <!-- assignee -->
+			                          									'<%=action[23].toString().trim()%>', <!-- assignee -->
+			                          									'<%=action[6]%>' <!-- action type -->
 			                          									);" >
 			                          				<%=action[11] %>
 			                          		</span >           
@@ -164,15 +316,15 @@
 			                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
 			                          		<table class="card-body-table">
 			                          			<tr>
-			                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+			                          				<th style="width: 40%;">Assignee :</th>
 			                          				<td  >&emsp;<%=action[23] %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="text-align: right;">PDC :</th>
+			                          				<th style="">PDC :</th>
 			                          				<td >&emsp;<%=sdf.format(action[24]) %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="text-align: right;">Progress (%) :</th>
+			                          				<th style="">Progress (%) :</th>
 			                          				<td style="padding-left: 10px;">
 			                          					
 			                          					<%if(action[25]!=null){ %>
@@ -230,7 +382,8 @@
 							                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
 							                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
 							                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
-							                          									'<%=action_L1[23].toString().trim()%>' <!-- assignee -->
+							                          									'<%=action_L1[23].toString().trim()%>', <!-- assignee -->
+							                          									'<%=action_L1[6]%>' <!-- action type -->
 							                          									);" >                      		
 														
 														<%=action_L1[11] %></span >    
@@ -239,15 +392,15 @@
 													<div class="action-box-body" align="center" style="cursor: pointer ;">
 														<table class="card-body-table">
 															<tr>
-						                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+						                          				<th style="width: 40%;">Assignee :</th>
 						                          				<td  >&emsp;<%=action_L1[23] %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="text-align: right;">PDC :</th>
+						                          				<th style="">PDC :</th>
 						                          				<td >&emsp;<%=sdf.format(action_L1[24]) %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="text-align: right;">Progress (%) :</th>
+						                          				<th style="">Progress (%) :</th>
 						                          				<td style="padding-left: 10px;">
 						                          					
 						                          					<%if(action_L1[25]!=null){ %>
@@ -308,7 +461,8 @@
 									                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
 									                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
 									                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
-									                          									'<%=action_L2[23].toString().trim()%>' <!-- assignee -->
+									                          									'<%=action_L2[23].toString().trim()%>, <!-- assignee -->
+							                          											'<%=action_L2[6]%>' <!-- action type -->
 									                          									);" >              
 																	
 																	
@@ -317,15 +471,15 @@
 																<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
 																	<table class="card-body-table">
 																		<tr>
-									                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+									                          				<th style="width: 40%;">Assignee :</th>
 									                          				<td  >&emsp;<%=action_L2[23] %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="text-align: right;">PDC :</th>
+									                          				<th style="">PDC :</th>
 									                          				<td >&emsp;<%=sdf.format(action_L2[24]) %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="text-align: right;">Progress (%) :</th>
+									                          				<th style="">Progress (%) :</th>
 									                          				<td style="padding-left: 10px;">
 									                          					
 									                          					<%if(action_L2[25]!=null){ %>
@@ -383,7 +537,8 @@
 													                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
 													                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
 													                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
-													                          									'<%=action_L3[23].toString().trim()%>' <!-- assignee -->
+													                          									'<%=action_L3[23].toString().trim()%>, <!-- assignee -->
+							                          															'<%=action_L3[6]%>' <!-- action type -->
 													                          									);" >      
 																									
 																					<%=action_L3[11] %></span >           
@@ -392,15 +547,15 @@
 																				<div class="action-box-body" align="center" style="cursor: pointer ;">
 																					<table class="card-body-table">
 																						<tr>
-													                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+													                          				<th style="width: 40%;">Assignee :</th>
 													                          				<td  >&emsp;<%=action_L3[23] %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="text-align: right;">PDC :</th>
+													                          				<th style="">PDC :</th>
 													                          				<td >&emsp;<%=sdf.format(action_L3[24]) %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="text-align: right;">Progress (%) :</th>
+													                          				<th style="">Progress (%) :</th>
 													                          				<td style="padding-left: 10px;">
 													                          					
 													                          					<%if(action_L3[25]!=null){ %>
@@ -458,25 +613,26 @@
 																		                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
 																		                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
 																		                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
-																		                          									'<%=action_L4[23].toString().trim()%>' <!-- assignee -->
+																		                          									'<%=action_L4[23].toString().trim()%>' , <!-- assignee -->
+							                          																				'<%=action_L4[6]%>' <!-- action type -->
 																		                          									);" >
 																										
 																										
 																										<%=action_L4[11] %></span >           
 																									     
 																									</div>
-																									<div class="action-box-body" align="center" style="cursor: pointer ;">
+																									<div class="action-box-body"  style="cursor: pointer ;">
 																										<table class="card-body-table">
 																											<tr>
-																		                          				<th style="text-align: right;width: 40%;">Assignee :</th>
+																		                          				<th style="width: 40%;">Assignee :</th>
 																		                          				<td  >&emsp;<%=action_L4[23] %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="text-align: right;">PDC :</th>
+																		                          				<th style="">PDC :</th>
 																		                          				<td >&emsp;<%=sdf.format(action_L4[24]) %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="text-align: right;">Progress (%) :</th>
+																		                          				<th style="">Progress (%) :</th>
 																		                          				<td style="padding-left: 10px;">
 																		                          					
 																		                          					<%if(action_L4[25]!=null){ %>
@@ -545,11 +701,110 @@
 	    </div>
 	</div>
 
+    
+
+<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
+
+	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: #FFE0AD; ">
+					<div class="row w-100"  >
+						<div class="col-md-12" >
+							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+						</div>
+					</div>
+					
+					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" align="center">
+					<form action="#" method="post" autocomplete="off"  >
+						<table style="width: 100%;">
+							<tr>
+								<th style="width:10%;padding: 5px;"> Action Item :</th>
+								<td class="tabledata" style="width:90%;padding: 5px;word-wrap:break-word;" colspan="3" id="modal_action_item"></td>
+							</tr>
+							<tr>
+								<th style="padding: 5px;" >Assign Date :</th>
+								<td style="padding: 5px;" id="modal_action_date"></td>
+								<th style="padding: 5px;" >PDC :</th>
+								<td style="padding: 5px;" id="modal_action_PDC"></td>
+							</tr>
+							<tr>
+								<th style="padding: 5px;" >Assignor :</th>
+								<td style="padding: 5px;" id="modal_action_assignor"></td>
+								<th style="padding: 5px;" >Assignee :</th>
+								<td style="padding: 5px;" id="modal_action_assignee"></td>
+							</tr>
+							<tr>
+								<th style="padding: 5px;" >Final Progress :</th>
+								<td style="padding: 5px;" id="modal_action_progress"></td>
+								<th style="padding: 5px;" > Type :</th>
+								<td style="padding: 5px;" id="modal_action_type"></td>
+							</tr>
+							
+						</table>
+						</form>
+						<hr>
+						<form action="#" method="get">
+						
+						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+							<thead> 
+								<tr style="background-color: #055C9D; color: white;">
+									<th style="text-align: center;width:25px !important;">SN</th>
+									<th style="text-align: center;width:100px !important;">Progress Date</th>
+									<th style="text-align: center;width:100px !important;"> Progress</th>
+									<th style="width:150px !important;">Remarks</th>
+									<th style="text-align: center;width:25px !important;">Download</th>
+								</tr>
+							</thead>
+							<tbody id="modal_progress_table_body">
+								
+							</tbody>
+						</table>
+						</form>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+	
+
+
+
+
+
+<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
+
+
+<!-- ------------------------------- tree script ------------------------------- -->
+<script type="text/javascript">
+
+$(function () {
+    $('.genealogy-tree ul').hide();
+    $('.genealogy-tree>ul').show();
+    $('.genealogy-tree ul.active').show();
+    $('.genealogy-tree li .action-box-body').on('click', function (e) {
+		
+        var children = $(this).parent().parent().parent().find('> ul');
+        if (children.is(":visible")) children.hide('fast').removeClass('active');
+        else children.show('fast').addClass('active');
+        e.stopPropagation();
+    });
+});
+
+
+</script>
+<!-- ------------------------------- tree script ------------------------------- -->
 
 <script type="text/javascript">
 
 	function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg,
-							InAssignor,InAssignee	)
+							InAssignor,InAssignee, InActionType	)
 	{
 		$("#modal_progress_table").DataTable().destroy();
 		$.ajax({		
@@ -569,7 +824,34 @@
 				$('#modal_action_assignor').html(InAssignor);
 				$('#modal_action_assignee').html(InAssignee);
 				
-				console.log(InProgress);
+				var ActionType = 'Action';
+				
+				if(InActionType==='A')
+				{
+					ActionType = 'Action';
+				}
+				else if(InActionType==='I')
+				{
+					ActionType = 'Issue';
+				}
+				else if(InActionType==='D')
+				{
+					ActionType = 'Decision';
+				}
+				else if(InActionType==='R')
+				{
+					ActionType = 'Recommendation';
+				}
+				else if(InActionType==='C')
+				{
+					ActionType = 'Comment';
+				}
+				else if(InActionType==='K')
+				{
+					ActionType = 'Risk';
+				}
+				
+				$('#modal_action_type').html(ActionType);
 				
 				if(InProgress.trim() === '0')
 				{
@@ -639,84 +921,6 @@
 		});
 	}
 </script>
-    
-    
-
-
-<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
-
-
-
-	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header" align="center" style="background-color: #FFE0AD ">
-					<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body" align="center">
-					<form action="#" method="post" autocomplete="off"  >
-						<table style="width: 100%;">
-							<tr>
-								<th style="width:10%;padding: 5px;"> Action Item :</th>
-								<td style="width:90%;padding: 5px;" colspan="3" id="modal_action_item"></td>
-							</tr>
-							<tr>
-								<th style="text-align: right;padding: 5px;" >Assign Date :</th>
-								<td style="padding: 5px;" id="modal_action_date"></td>
-								<th style="text-align: right;padding: 5px;" >PDC :</th>
-								<td style="padding: 5px;" id="modal_action_PDC"></td>
-							</tr>
-							<tr>
-								<th style="text-align: right;padding: 5px;" >Assignor :</th>
-								<td style="padding: 5px;" id="modal_action_assignor"></td>
-								<th style="text-align: right;padding: 5px;" >Assignee :</th>
-								<td style="padding: 5px;" id="modal_action_assignee"></td>
-							</tr>
-							<tr>
-								<th style="text-align: right;padding: 5px;" >Final Progress :</th>
-								<td style="padding: 5px;" id="modal_action_progress"></td>
-								<th style="text-align: right;padding: 5px;" ></th>
-								<td style="padding: 5px;" id=""></td>
-							</tr>
-							
-						</table>
-						</form>
-						<hr>
-						<form action="#" method="get">
-						<div style="text-align: center;font-weight: 600;"> Progress</div>
-						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
-							<thead> 
-								<tr style="background-color: #055C9D; color: white;">
-									<th style="text-align: center;width:25px !important;">SN</th>
-									<th style="text-align: center;width:100px !important;">Progress Date</th>
-									<th style="text-align: center;width:100px !important;"> Progress</th>
-									<th style="width:150px !important;">Remarks</th>
-									<th style="text-align: center;width:25px !important;">Download</th>
-								</tr>
-							</thead>
-							<tbody id="modal_progress_table_body">
-								
-							</tbody>
-						</table>
-						</form>
-					
-				</div>
-				
-			</div>
-		</div>
-	</div>
-
-	
-
-
-
-
-
-<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
-
 
 </body>
 </html>
