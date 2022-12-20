@@ -349,8 +349,9 @@ public class PrintDaoImpl implements PrintDao {
 	{
 		List<Object[]> ActionPlanThreeMonths=new ArrayList<Object[]>();
 		//Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC(:projectid, 180);");
-		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, 180)");
+		Query query = manager.createNativeQuery("CALL Pfms_Milestone_PDC_New(:projectid, :interval)");
 		query.setParameter("projectid", projectid);
+		query.setParameter("interval", interval);
 		try {
 			ActionPlanThreeMonths= query.getResultList();
 		}catch (Exception e) {
