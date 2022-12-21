@@ -416,7 +416,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setExtNo(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	emp.setExtNo(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	emp.setExtNo(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -476,7 +476,7 @@ public class OnBoardingController {
 					                }
 					                emp.setLabCode(LabCode);
 					                emp.setSrNo(0l);
-					                emp.setDivisionId(6l);
+					                emp.setDivisionId(1l);
 					                emp.setDesigId(1l);
 					                emp.setIsActive(1);
 					                emp.setCreatedBy(UserId);

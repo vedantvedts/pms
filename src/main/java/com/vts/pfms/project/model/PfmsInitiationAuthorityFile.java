@@ -15,9 +15,15 @@ public class PfmsInitiationAuthorityFile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InitiationAuthorityFileId;
 	private Long AuthorityId;
-	@Lob
-	private byte[] File;
+	private String File;
 	private String AttachmentName;
+	
+	public String getFile() {
+		return File;
+	}
+	public void setFile(String file) {
+		File = file;
+	}
 	public String getAttachmentName() {
 		return AttachmentName;
 	}
@@ -30,18 +36,13 @@ public class PfmsInitiationAuthorityFile {
 	public Long getAuthorityId() {
 		return AuthorityId;
 	}
-	public byte[] getFile() {
-		return File;
-	}
 	public void setInitiationAuthorityFileId(Long initiationAuthorityFileId) {
 		InitiationAuthorityFileId = initiationAuthorityFileId;
 	}
 	public void setAuthorityId(Long authorityId) {
 		AuthorityId = authorityId;
 	}
-	public void setFile(byte[] file) {
-		File = file;
-	}
+
 	
 	
 }

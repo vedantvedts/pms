@@ -354,8 +354,8 @@ function Delete(myfrm){
 	
                  }
                 
-                 if(row>0){table_output += '<td>'+ 0 +'</td>';}
-                 if(row>0){table_output += '<td>'+ 0 +'</td>';}
+                 if(row>0){table_output += '<td>'+ 1 +'</td>';}
+                 if(row>0){table_output += '<td>'+ 1 +'</td>';}
                  table_output += '</tr>';
               }
              table_output += ' <tbody>';
@@ -387,7 +387,7 @@ function Delete(myfrm){
              		 alert("Duplicate Employee Number Existed in Excel file at Serial No :"+ indexval);
     			      excel_file.value = '';
              	}else if(dbDuplicate.length>0){
-             		 alert("Employee Number alredy Existed at serial No :"+ dbDuplicate);
+             		 alert("Employee Number already Existed at serial No :"+ dbDuplicate);
     			      excel_file.value = '';
              	}else{
                  	 $('#exampleModalLong').modal('show');
