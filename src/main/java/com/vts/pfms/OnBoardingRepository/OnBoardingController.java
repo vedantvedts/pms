@@ -753,7 +753,7 @@ public class OnBoardingController {
 						                protype.setCreatedBy(UserId);
 						                protype.setCreatedDate(sdf1.format(new Date()));
 						                
-					                //projectmain.add(protype);
+					                projectmain.add(protype);
 					            }
 					                           
 					            List<ProjectMain> count = projectmainrepo.saveAll(projectmain);
