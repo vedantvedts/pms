@@ -699,7 +699,7 @@ public class ActionDaoImpl implements ActionDao{
 		return actiondata;
 	}
 	
-	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1 ";
+	private static final String CLUSTEREXPERTSLIST ="SELECT e.expertid,CONCAT(IFNULL(e.title,''),e.expertname) as 'expertname' ,e.expertno,'Expert' AS designation FROM expert e WHERE e.isactive=1 ";
 	@Override
 	public List<Object[]> ClusterExpertsList() throws Exception
 	{
@@ -713,7 +713,7 @@ public class ActionDaoImpl implements ActionDao{
 			return new ArrayList<Object[]>();
 		}
 	}
-	private static final String CLUSTERFILTEREMPLIST="SELECT e.expertid,e.expertname,e.expertno,'Expert' AS designation FROM expert e  WHERE e.isactive=1 AND e.expertid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid))";
+	private static final String CLUSTERFILTEREMPLIST="SELECT e.expertid,CONCAT(IFNULL(e.title,''),e.expertname) as 'expertname',e.expertno,'Expert' AS designation FROM expert e  WHERE e.isactive=1 AND e.expertid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid))";
 	
 	@Override
 	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId)throws Exception
@@ -740,7 +740,7 @@ public class ActionDaoImpl implements ActionDao{
 		return LabInfoClusterLab;
 	}
 	
-	private static final String LABEMPLOYEELIST="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode ;";
+	private static final String LABEMPLOYEELIST="SELECT a.empid,CONCAT(IFNULL(a.title,''),a.empname) as 'empname',a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.labcode=:labcode ;";
 	@Override
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception 
 	{
@@ -749,7 +749,7 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
-	private static final String LABEMPFILTERFORACTION="SELECT a.empid, a.empname,a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.empid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid)) AND a.labcode=:labcode\r\n"
+	private static final String LABEMPFILTERFORACTION="SELECT a.empid,CONCAT(IFNULL(a.title,''),a.empname) as 'empname',a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.empid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid)) AND a.labcode=:labcode\r\n"
 			+ "";
 	@Override
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception

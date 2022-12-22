@@ -38,27 +38,27 @@ public class MasterDaoImpl implements MasterDao {
 	
 	private static final String DIVISIONLIST="SELECT divisionid,divisioncode,divisionname FROM division_master WHERE isactive=1";
 	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation,de.divisionid  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND  de.empid=e.empid AND e.desigid=ed.desigid AND de.divisionid=:divisionid";
-	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, e.empname,ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
+	private static final String DIVISIONNONEMPLIST ="SELECT e.empid, CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation,e.labcode  FROM employee e,employee_desig ed  WHERE e.isactive=1 AND e.desigid=ed.desigid AND e.empid NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) ORDER BY e.srno ASC ,ed.desigsr ASC";
 	private static final String DIVISIONDATA ="SELECT divisionid, divisioncode,divisionname FROM division_master WHERE divisionid=:divisionid";
 	private static final String DIVSIONEMPLOYEEREVOKE="UPDATE division_employee SET isactive=0,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE divisionemployeeid=:divisionempid";
 	
-	private final static String OFFICERDETALIS="SELECT a.empid, a.empno, a.empname, b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' AND a.empid=:officerid"; 
+	private final static String OFFICERDETALIS="SELECT a.empid, a.empno,CONCAT(IFNULL(a.title,''), a.empname)AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid AND a.isactive='1' AND a.empid=:officerid"; 
 	private final static String LISTOFSENIORITYNUMBER="SELECT SrNo, EmpId FROM employee WHERE SrNo !=0 ORDER BY SrNo ASC ";
 	private final static String UPDATESRNO="UPDATE employee SET SrNo=:srno WHERE EmpId=:empid";
 	
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(activitytypeid) AS 'count','activity' FROM milestone_activity_type WHERE isactive=1 AND activitytype LIKE :activityname";
 	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation ,dg.labcode FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
-	private static final String GROUPHEADLIST ="SELECT e.empid,e.empname,ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
+	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
-	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,e.empname,ed.designation,dg.isactive FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
+	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation,dg.isactive FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
 	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
 	private static final String LABLIST="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin FROM lab_master";
-	private static final String EMPLOYEELIST="SELECT empid, empname FROM employee WHERE isactive=1 ORDER BY srno ";
+	private static final String EMPLOYEELIST="SELECT empid, CONCAT(IFNULL(title,''), empname)AS 'empname' FROM employee WHERE isactive=1 ORDER BY srno ";
 	private static final String LABMASTEREDITDATA="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin,labtelno,labfaxno,labemail,labauthority,labauthorityid,labrfpemail,lablogo,labid from lab_master where labmasterid= :labmasterid";
 	private static final String LABMASTERUPDATE="UPDATE lab_master SET labcode=:labcode , labname=:labname , labunitcode=:labunitcode, labaddress=:labaddress, labcity=:labcity, labpin= :labpin ,labtelno=:labtelno, labfaxno=:labfaxno, labemail=:labemail, labauthority=:labauthority, labauthorityid=:labauthorityid, labrfpemail=:labrfpemail, labid=:labid, clusterid=:clusterid,  modifiedby=:modifiedby, modifieddate=:modifieddate WHERE labmasterid=:labmasterid"; //lablogo=:lablogo,
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
-	private static final String EMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee WHERE empno=:empno"; 
+	private static final String EMPNOCHECKAJAX="SELECT empid, CONCAT(IFNULL(title,''), empname)AS 'empname' , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
 	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode";
 

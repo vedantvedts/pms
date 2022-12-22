@@ -1418,7 +1418,7 @@ public class ProjectController
 			@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
-
+		String labcode = (String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside ProjectAuthorityAddSubmit.htm "+UserId);
 		
 		try {
@@ -1433,7 +1433,8 @@ public class ProjectController
 			pfmsinitiationauthoritydto.setInitiationId(req.getParameter("IntiationId"));
 			pfmsinitiationauthoritydto.setLetterDate(req.getParameter("startdate"));
 			pfmsinitiationauthoritydto.setLetterNo(req.getParameter("letterno"));
-			pfmsinitiationauthorityfiledto.setFilePath(FileAttach.getBytes());
+			pfmsinitiationauthorityfiledto.setFilePath(labcode);
+			pfmsinitiationauthorityfiledto.setAttachFile(FileAttach);
 			pfmsinitiationauthorityfiledto.setAttachementName(	req.getParameter("letterno") + "." + FileAttach.getOriginalFilename().split("\\.")[1]);
 			
 			Long count = service.ProjectInitiationAuthorityAdd(pfmsinitiationauthoritydto, UserId,pfmsinitiationauthorityfiledto);
@@ -1465,19 +1466,24 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectAuthorityDownload.htm "+UserId);
 		try
 		{
-
 			PfmsInitiationAuthorityFile attachment=service.ProjectAuthorityDownload(req.getParameter("AuthorityFileId"));
 			
 			res.setContentType("application/octet-stream");
-			res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachmentName()));
-			res.setContentLength((int)attachment.getFile().length);
-			InputStream inputStream = new ByteArrayInputStream(attachment.getFile()); 
-			OutputStream outputStream = res.getOutputStream();
-			FileCopyUtils.copy(inputStream, outputStream);
-			inputStream.close();
-			outputStream.close();
-		}catch 
-		(Exception e) {
+			
+				File my_file=null;	
+				my_file = new File(uploadpath+attachment.getFile()+File.separator+attachment.getAttachmentName()); 
+		        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachmentName()); 
+		        OutputStream out = res.getOutputStream();
+		        FileInputStream in = new FileInputStream(my_file);
+		        byte[] buffer = new byte[4096];
+		        int length;
+		        while ((length = in.read(buffer)) > 0){
+		           out.write(buffer, 0, length);
+		        }
+		        in.close();
+		        out.flush();
+		        out.close();
+		}catch (Exception e) {
 			
 			e.printStackTrace(); logger.error(new Date() +"Inside ProjectAuthorityDownload.htm "+UserId,e);
 		}
@@ -1487,10 +1493,12 @@ public class ProjectController
 	public String ProjectAuthorityEditSubmit(HttpServletRequest req,HttpServletResponse res, RedirectAttributes redir, HttpSession ses,@RequestPart("FileAttach") MultipartFile FileAttach )throws Exception
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String labCode =(String)ses.getAttribute("labcode"); 
 		logger.info(new Date() +"Inside ProjectAuthorityEditSubmit.htm "+UserId);
 		try
 		{
-			
+			String option = req.getParameter("sub");
+			if (option.equalsIgnoreCase("SUBMIT")) {
 			PfmsInitiationAuthorityDto pfmsinitiationauthoritydto = new PfmsInitiationAuthorityDto();
 
 			PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto = new PfmsInitiationAuthorityFileDto();
@@ -1502,24 +1510,21 @@ public class ProjectController
 			
 			
 			pfmsinitiationauthorityfiledto.setAttachementName(req.getParameter("letterno"));
-			pfmsinitiationauthorityfiledto.setOriginalName(FileAttach.getOriginalFilename());
-
-			//pfmsinitiationauthorityfiledto.setAttachementName(req.getParameter("letterno") + "." + FileAttach.getOriginalFilename().split("\\.")[1]);
-
-			pfmsinitiationauthorityfiledto.setFilePath(FileAttach.getBytes());
+			pfmsinitiationauthorityfiledto.setAttachFile(FileAttach);
+			pfmsinitiationauthorityfiledto.setFilePath(labCode);
 			pfmsinitiationauthorityfiledto.setInitiationAuthorityFileId(req.getParameter("attachmentid"));
 			
 			
 			long count = 0;
 			count=	service.ProjectAuthorityUpdate(pfmsinitiationauthoritydto,pfmsinitiationauthorityfiledto,UserId);
 			
-			if (count > 0) {
-				redir.addAttribute("result", "Authority Edited Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Authority Edit Unsuccessful");
-				
+				if (count > 0) {
+					redir.addAttribute("result", "Authority Edited Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Authority Edit Unsuccessful");
+					
+				}
 			}
-			
 			redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
 			redir.addFlashAttribute("TabId", "5");
 			}catch (Exception e) {
@@ -1529,9 +1534,7 @@ public class ProjectController
 			}
 			return "redirect:/ProjectIntiationDetailesLanding.htm";
 	}
-	
-	
-	
+
 	@RequestMapping(value = "PreviewPage.htm", method = RequestMethod.POST)
 	public String PreviewPage(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception {
 

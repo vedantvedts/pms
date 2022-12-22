@@ -1562,7 +1562,11 @@ public class ProjectServiceImpl implements ProjectService {
 		public Long ProjectInitiationAuthorityAdd(PfmsInitiationAuthorityDto pfmsinitiationauthoritydto, String UserId,PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto)	throws Exception {
 			
 			logger.info(new Date() +"Inside SERVICE ProjectInitiationAuthorityAdd ");
+			String LabCode=pfmsinitiationauthorityfiledto.getFilePath();
+			Timestamp instant= Timestamp.from(Instant.now());
+			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 			
+			String Path = LabCode+"\\ProjectReference\\";
 			PfmsInitiationAuthority pfmsauthority= new PfmsInitiationAuthority();
 			pfmsauthority.setInitiationId(Long.parseLong(pfmsinitiationauthoritydto.getInitiationId()));
 			pfmsauthority.setAuthorityName(Long.parseLong(pfmsinitiationauthoritydto.getAuthorityName()));
@@ -1572,9 +1576,11 @@ public class ProjectServiceImpl implements ProjectService {
 			pfmsauthority.setCreatedDate(sdf1.format(new Date()));
 			
 			PfmsInitiationAuthorityFile pfmsinitiationauthorityfile=new PfmsInitiationAuthorityFile();
-			pfmsinitiationauthorityfile.setFile(pfmsinitiationauthorityfiledto.getFilePath());
-			pfmsinitiationauthorityfile.setAttachmentName(pfmsinitiationauthorityfiledto.getAttachementName());
 			
+			pfmsinitiationauthorityfile.setFile(Path);
+			pfmsinitiationauthorityfile.setAttachmentName( "Reference"+timestampstr + "." +pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename().split("\\.")[1]);
+			saveFile(uploadpath+Path, pfmsinitiationauthorityfile.getAttachmentName(), pfmsinitiationauthorityfiledto.getAttachFile());
+
 			return dao.ProjectInitiationAuthorityAdd(pfmsauthority,pfmsinitiationauthorityfile);
 		}
 
@@ -1589,6 +1595,8 @@ public class ProjectServiceImpl implements ProjectService {
 				PfmsInitiationAuthorityFileDto pfmsinitiationauthorityfiledto,String UserId) throws Exception {
 			
 			logger.info(new Date() +"Inside SERVICE ProjectInitiationAuthorityAdd ");
+			Timestamp instant= Timestamp.from(Instant.now());
+			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
 			
 			Long ret=0L;
 			
@@ -1604,12 +1612,20 @@ public class ProjectServiceImpl implements ProjectService {
 			
 			ret=dao.ProjectAuthorityUpdate(pfmsauthority);
 			
-			if(pfmsinitiationauthorityfiledto.getFilePath().length!=0) {
-			
-			pfmsinitiationauthorityfile.setFile(pfmsinitiationauthorityfiledto.getFilePath());
-			pfmsinitiationauthorityfile.setAttachmentName(pfmsinitiationauthorityfiledto.getAttachementName()+"."+pfmsinitiationauthorityfiledto.getOriginalName().split("\\.")[1]);
-			pfmsinitiationauthorityfile.setInitiationAuthorityFileId(Long.parseLong(pfmsinitiationauthorityfiledto.getInitiationAuthorityFileId()));
-	
+			if(!pfmsinitiationauthorityfiledto.getAttachFile().isEmpty()) {
+				PfmsInitiationAuthorityFile attachment=dao.ProjectAuthorityDownload(pfmsinitiationauthorityfiledto.getInitiationAuthorityFileId());
+				String file = uploadpath+attachment.getFile()+attachment.getAttachmentName();
+				File f = new File(file);
+				 if(f.exists()) {
+					 f.delete();
+				 }
+				 String Path = pfmsinitiationauthorityfiledto.getFilePath()+"\\ProjectReference\\";
+				
+				pfmsinitiationauthorityfile.setAttachmentName("Reference"+timestampstr+"."+FilenameUtils.getExtension(pfmsinitiationauthorityfiledto.getAttachFile().getOriginalFilename()));
+				pfmsinitiationauthorityfile.setFile(Path);
+				pfmsinitiationauthorityfile.setInitiationAuthorityFileId(Long.parseLong(pfmsinitiationauthorityfiledto.getInitiationAuthorityFileId()));
+				saveFile(uploadpath+Path, pfmsinitiationauthorityfile.getAttachmentName(), pfmsinitiationauthorityfiledto.getAttachFile());
+
 			ret=dao.AuthorityFileUpdate(pfmsinitiationauthorityfile);
 			
 			}

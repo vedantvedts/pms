@@ -329,7 +329,7 @@ excel_file.addEventListener('change', (event) => {
 								 }
 							}		
                     }
-                if(row>0){table_output += '<td>'+ 0 +'</td>';}
+                if(row>0){table_output += '<td>'+ 1 +'</td>';}
                 table_output += '</tr>';
                 }
             table_output += ' <tbody></table>';
@@ -340,7 +340,7 @@ excel_file.addEventListener('change', (event) => {
                      
              var groupcode=[];
              for (var i in sheet_data) {
-          	  groupcode.push(sheet_data[i][1].toString())
+          	  groupcode.push(sheet_data[i][1]+"")
           	}
              const duplicates = groupcode.filter((item, index) => index !== groupcode.indexOf(item));  
              

@@ -178,10 +178,9 @@ Project List</h3>
 			<th style="width:10%" class="text-nowrap">ProjectMain Code</th>
 			<th style="width:10%" class="text-nowrap">Project Code</th>
 			<th width="25%" class="text-nowrap">Project Name</th>
-			<th style="width:10%" class="text-nowrap">Sanction Date</th>
-			<th style="width: 124.892px;" >Sanction Cost (Rs In Lakh)</th>
+			<th style="width:10%" class="text-nowrap">Sanc Date</th>
+			<th style="width: 124.892px;" >Sanc Cost<br>(&#8377; In Lakh)</th>
 			<th style="width:10%">PDC</th>
-		
 			<th style="width: 5%;">RevNo</th>
 	  </tr>
 	   </thead> 

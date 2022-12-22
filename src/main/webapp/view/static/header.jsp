@@ -593,13 +593,6 @@ String labcode= (String)session.getAttribute("labcode");
 											<img src="view/images/stamping.png"         />
 												&nbsp;&nbsp; Audit Stamping
 											</a>
-											
-											<a class="dropdown-item" href="OnBoardGroupMaster.htm"> 
-											<img src="view/images/data.png" style="height: 13%; width: 16%;" />
-												&nbsp;&nbsp;On-Board
-											</a>
-
-											
 											<a class="dropdown-item" href="RunBatchFile.htm"> 
 											<img src="view/images/backup.png" style="height: 13%; width: 16%;" />
 												&nbsp;&nbsp;DB Back-up 

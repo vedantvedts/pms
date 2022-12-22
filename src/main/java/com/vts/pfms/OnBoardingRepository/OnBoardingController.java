@@ -21,7 +21,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.NumberToTextConverter;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -41,10 +40,17 @@ import com.vts.pfms.master.controller.MasterController;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.service.MasterService;
+import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.service.ProjectService;
 
 @Controller
 public class OnBoardingController {
 
+	@Autowired
+	ProjectService projectservice;
+	
+	@Autowired
+	ProjectMainRepository projectmainrepo;
 	
 	@Autowired
 	MasterService service;
@@ -110,45 +116,56 @@ public class OnBoardingController {
 					            Workbook workbook = new XSSFWorkbook(fileData);
 					 
 					            Sheet sheet  = workbook.getSheetAt(0);
-					            Iterator<Row> rows  = sheet.iterator();					            
-					            int rowNumber = 0;
-					            while (rows.hasNext()) {
-					              Row currentRow = rows.next();
-					              
-					              if (rowNumber == 0) {
-					                rowNumber++;
-					                continue;
-					              }
-					              Iterator<Cell> cellsInRow = currentRow.iterator();
-					          	DivisionGroup dgm=new DivisionGroup();
-					              int cellIdx = 0;
-					              while (cellsInRow.hasNext()) {
-					                Cell currentCell = cellsInRow.next();
-					                switch (cellIdx) {
-					                case 1:
-					                	
-					                	dgm.setGroupCode(currentCell.getStringCellValue());
-					                  break;
-					                  
-					                case 2:
-					                	
-					                	dgm.setGroupName(currentCell.getStringCellValue());
-					                  break;
-					                  
-					                default:
-					                  break;
-					                }
+					            
+					            int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 				            
+					            //iterate over all the row to print the data present in each cell.
+					            for(int i=1;i<=rowCount;i++){
+					                 
+					                //get cell count in a row
+					                int cellcount=sheet.getRow(i).getLastCellNum();         
+					            	DivisionGroup dgm=new DivisionGroup();
+					                
+					                //iterate over each cell to print its value       
+					                for(int j=1;j<cellcount;j++){
 
-						              cellIdx++;
-					              }
-					              dgm.setGroupHeadId(0l);
-					              dgm.setLabCode(LabCode);
-					              dgm.setIsActive(1);
-					              dgm.setCreatedBy(UserId);
-					              dgm.setCreatedDate(sdf1.format(new Date()));
-					             
-					              divisiongroup.add(dgm);
-					              
+					                	
+					                	if(sheet.getRow(i).getCell(j)!=null) {
+					                		if(j==1) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	dgm.setGroupCode(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	dgm.setGroupCode(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+							                	}
+					                		}
+					                		if(j==2) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	 dgm.setGroupName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	 break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	 dgm.setGroupName(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+					                            	 break;
+							                	}
+					                		}
+					                		
+					                	}
+					                	  
+					                }
+					                  dgm.setGroupHeadId(1l);
+						              dgm.setLabCode(LabCode);
+						              dgm.setIsActive(1);
+						              dgm.setCreatedBy(UserId);
+						              dgm.setCreatedDate(sdf1.format(new Date()));
+						              if(dgm.getGroupCode()!=null && dgm.getGroupName()!=null) {
+						            	  divisiongroup.add(dgm);
+						              }
 					            }
 					        	List<DivisionGroup>  count= groupmasterrepo.saveAll(divisiongroup);
 					        	
@@ -167,7 +184,6 @@ public class OnBoardingController {
 						
 					}	
 				}
-			           
 						req.setAttribute("groupslist",service.GroupsList(LabCode) );
 			          
 				}catch(Exception e){
@@ -176,7 +192,6 @@ public class OnBoardingController {
 				}
 		 
 			 return "master/GroupsList";
-		 
 	 }
 	 
 	 @RequestMapping(value="DivisionMasterExcelUpload.htm" ,method = RequestMethod.POST)
@@ -224,45 +239,56 @@ public class OnBoardingController {
 					            Workbook workbook = new XSSFWorkbook(fileData);
 					 
 					            Sheet sheet  = workbook.getSheetAt(0);
-					            Iterator<Row> rows  = sheet.iterator();					            
-					            int rowNumber = 0;
-					            while (rows.hasNext()) {
-					              Row currentRow = rows.next();
-					              
-					              if (rowNumber == 0) {
-					                rowNumber++;
-					                continue;
-					              }
-					              Iterator<Cell> cellsInRow = currentRow.iterator();
-					          	DivisionMaster dmo=new DivisionMaster(); 
-					              int cellIdx = 0;
-					              while (cellsInRow.hasNext()) {
-					                Cell currentCell = cellsInRow.next();
-					                switch (cellIdx) {
-					                case 1:
-					                	
-					                	dmo.setDivisionCode(currentCell.getStringCellValue());
-					                  break;
-					                  
-					                case 2:
-					                	
-					                	dmo.setDivisionName(currentCell.getStringCellValue());
-					                  break;
-					                  
-					                default:
-					                  break;
-					                }
+					            int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 				            
+					            //iterate over all the row to print the data present in each cell.
+					            for(int i=1;i<=rowCount;i++){
+					                 
+					                //get cell count in a row
+					                int cellcount=sheet.getRow(i).getLastCellNum();         
+					            	DivisionMaster dmo=new DivisionMaster(); 
+					                
+					                //iterate over each cell to print its value       
+					                for(int j=1;j<cellcount;j++){
 
-						              cellIdx++;
-					              }
-					              dmo.setLabCode(LabCode);
-					              dmo.setGroupId(6l);
-					              dmo.setDivisionHeadId(1l);
-					              dmo.setIsActive(1);
-					              dmo.setCreatedBy(UserId);
-					              dmo.setCreatedDate(sdf1.format(new Date()));
-					             
-					              div.add(dmo);
+					                	
+					                	if(sheet.getRow(i).getCell(j)!=null) {
+					                		if(j==1) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	dmo.setDivisionCode(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	dmo.setDivisionCode(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+							                	}
+					                		}
+					                		if(j==2) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	 dmo.setDivisionName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	 break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	 dmo.setDivisionName(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+					                            	 break;
+							                	}
+					                		}
+					                		
+					                	}
+					                	 
+					                }
+					                  dmo.setLabCode(LabCode);
+						              dmo.setGroupId(6l);
+						              dmo.setDivisionHeadId(1l);
+						              dmo.setIsActive(1);
+						              dmo.setCreatedBy(UserId);
+						              dmo.setCreatedDate(sdf1.format(new Date()));
+						              if(dmo.getDivisionCode()!=null && dmo.getDivisionName()!=null) {
+						            	  div.add(dmo);
+						              }
 					            }
 					          List<DivisionMaster>  count= divisionmasterrepo.saveAll(div);
 								if (count.size() > 0) {
@@ -366,7 +392,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setEmpNo(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	emp.setEmpNo(String.valueOf((long) sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	emp.setEmpNo(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -390,7 +416,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setExtNo(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	emp.setExtNo(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	emp.setExtNo(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -450,7 +476,7 @@ public class OnBoardingController {
 					                }
 					                emp.setLabCode(LabCode);
 					                emp.setSrNo(0l);
-					                emp.setDivisionId(6l);
+					                emp.setDivisionId(1l);
 					                emp.setDesigId(1l);
 					                emp.setIsActive(1);
 					                emp.setCreatedBy(UserId);
@@ -506,15 +532,16 @@ public class OnBoardingController {
 					row.createCell(0).setCellValue("SN");
 					row.createCell(1).setCellValue("Project Code");
 					row.createCell(2).setCellValue("Project Name");
-					row.createCell(3).setCellValue("Project Unit Code");
-					row.createCell(4).setCellValue("Project Sanction Letter No");
-					row.createCell(5).setCellValue("Total Sanction Cost");
-					row.createCell(6).setCellValue("Sanction Cost FE");
-					row.createCell(7).setCellValue("Sanction Cost RE");
-					row.createCell(8).setCellValue("Nodal & Participating Lab");
-					row.createCell(9).setCellValue("Scope");
-					row.createCell(10).setCellValue("Objective");
-					row.createCell(11).setCellValue("Deliverable");
+					row.createCell(3).setCellValue("Project No");
+					row.createCell(4).setCellValue("Project Unit Code");
+					row.createCell(5).setCellValue("Project Sanction Letter No");
+					row.createCell(6).setCellValue("Total Sanction Cost");
+					row.createCell(7).setCellValue("Sanction Cost FE");
+					row.createCell(8).setCellValue("Sanction Cost RE");
+					row.createCell(9).setCellValue("Nodal & Participating Lab");
+					row.createCell(10).setCellValue("Scope");
+					row.createCell(11).setCellValue("Objective");
+					row.createCell(12).setCellValue("Deliverable");
 
 					
 						row=sheet.createRow(1);
@@ -530,7 +557,7 @@ public class OnBoardingController {
 						row.createCell(9).setCellValue("");
 						row.createCell(10).setCellValue("");
 						row.createCell(11).setCellValue("");
-						
+						row.createCell(12).setCellValue("");
 					    res.setContentType("application/vnd.ms-excel");
 			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMaster.xls");	
 			            workbook.write(res.getOutputStream());
@@ -542,7 +569,7 @@ public class OnBoardingController {
 							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
 
-							 List<Employee> employee = new ArrayList<Employee>();
+							 List<ProjectMain> projectmain = new ArrayList<ProjectMain>();
 							 InputStream fileData = filePart.getInputStream();
 							   
 					            Workbook workbook = new XSSFWorkbook(fileData);
@@ -556,22 +583,21 @@ public class OnBoardingController {
 					                 
 					                //get cell count in a row
 					                int cellcount=sheet.getRow(i).getLastCellNum();         
-					                Employee emp = new Employee();
+					                ProjectMain protype=new ProjectMain();
 					                
 					                //iterate over each cell to print its value       
 					                for(int j=1;j<cellcount;j++){
 
-					                	
 					                	if(sheet.getRow(i).getCell(j)!=null) {
 					                		if(j==1) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setEmpNo(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setProjectCode(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setEmpNo(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	protype.setProjectCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
@@ -580,10 +606,10 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	 emp.setEmpName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	 protype.setProjectName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	 emp.setEmpName( sheet.getRow(i).getCell(j).getStringCellValue().toString());
+					                            	 protype.setProjectName( sheet.getRow(i).getCell(j).getStringCellValue().toString());
 					                            	 break;
 							                	}
 					                		}
@@ -592,22 +618,23 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setExtNo(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setProjectDescription(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setExtNo(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	protype.setProjectDescription(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
+					                		
 					                		if(j==4) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setMobileNo(Long.parseLong(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue())));
+					                            	protype.setUnitCode(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setMobileNo(Long.parseLong(sheet.getRow(i).getCell(j).getStringCellValue()));
+					                            	protype.setUnitCode(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
 							                	}
 					                		}
@@ -616,22 +643,22 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setSanctionNo(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setEmail(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	protype.setSanctionNo(sheet.getRow(i).getCell(j).getStringCellValue());
 					                            	break;
-					                			}
+							                	}
 					                		}
 					                		if(j==6) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setDronaEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setTotalSanctionCost(sheet.getRow(i).getCell(j).getNumericCellValue());
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setDronaEmail(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	protype.setTotalSanctionCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
 					                            	break;
 					                			}
 					                		}
@@ -640,34 +667,103 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	emp.setInternetEmail(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setSanctionCostFE(sheet.getRow(i).getCell(j).getNumericCellValue());
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
-					                            	emp.setInternetEmail(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	protype.setSanctionCostFE(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
 					                            	break;
 					                			}
 					                		}
+					                		if(j==8) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	protype.setSanctionCostRE(sheet.getRow(i).getCell(j).getNumericCellValue());
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	protype.setSanctionCostRE(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
+					                            	break;
+					                			}
+					                		}
+					                		if(j==9) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	protype.setLabParticipating(String.valueOf(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue())));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	protype.setLabParticipating(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+							                	}
+					                		}
+					                		if(j==10) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	protype.setScope(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	protype.setScope(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+					                			}
+					                		}
+					                		if(j==11) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	protype.setObjective(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	protype.setObjective(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+					                			}
+					                		}
+					                		if(j==12) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	protype.setDeliverable(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	protype.setDeliverable(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+					                			}
+					                		}
+					                		
+					                	
 					                	}
 					                	  
 					                }
-					                emp.setLabCode(LabCode);
-					                emp.setSrNo(0l);
-					                emp.setDivisionId(6l);
-					                emp.setDesigId(1l);
-					                emp.setIsActive(1);
-					                emp.setCreatedBy(UserId);
-					                emp.setCreatedDate(sdf1.format(new Date()));
-					                employee.add(emp);
+					                System.out.println(protype.getSanctionNo());
+					                long millis=System.currentTimeMillis();  
+					                java.sql.Date date=new java.sql.Date(millis);  
+					                	protype.setPDC(date);
+					                	protype.setSanctionDate(date);
+					                	protype.setRevisionNo(0l);
+						                protype.setProjSancAuthority("DG");
+						                protype.setProjectTypeId(1l);
+						                protype.setCategoryId(1l);
+						                protype.setProjectDirector(1l);
+						                protype.setIsActive(1);
+						                protype.setCreatedBy(UserId);
+						                protype.setCreatedDate(sdf1.format(new Date()));
+						                
+					                projectmain.add(protype);
 					            }
 					                           
-					            List<Employee> count =employeemasterrepo.saveAll(employee);
+					            List<ProjectMain> count = projectmainrepo.saveAll(projectmain);
 								if (count.size() > 0) {
-									redir.addAttribute("result", "Employee Added Successfully");
+									redir.addAttribute("result", "Project Main Added Successfully");
 								} else {
-									redir.addAttribute("resultfail", "Employee Adding Unsuccessfully");
+									redir.addAttribute("resultfail", "Project Main Adding Unsuccessfully");
 								}
 
-								return "redirect:/Officer.htm";
+								return "redirect:/ProjectMain.htm";
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -675,14 +771,13 @@ public class OnBoardingController {
 					}	
 				}
 			           
-				req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));  
-			          
+				req.setAttribute("ProjectMainList", projectservice.ProjectMainList());     
 				}catch(Exception e){
 					e.printStackTrace();
 					logger.error(new Date() +"Inside ProjectMasterExcelUpload.htm "+UserId,e);
 				}
 		 
-			 return "master/OfficerMasterList";
+			 return "project/ProjectMainList";
 		 
 	 }
 	 
@@ -692,13 +787,11 @@ public class OnBoardingController {
 		 String UserId=(String)ses.getAttribute("Username");
 		 logger.info(new Date() +"Inside OnBoarding.htm "+UserId); 
 		 try {
-			
-			 
-		}catch(Exception e){
-				e.printStackTrace();
-				logger.error(new Date() +"Inside OnBoarding.htm "+UserId,e);
-		}
-		 return "print/OnBoarding";
+			}catch(Exception e){
+					e.printStackTrace();
+					logger.error(new Date() +"Inside OnBoarding.htm "+UserId,e);
+			}
+			 return "print/OnBoarding";
 	 }
 	 
 	 

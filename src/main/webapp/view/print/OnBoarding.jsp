@@ -18,14 +18,30 @@
 	letter-spacing: 0px !important;
 	font-size: 18px !important;
 	padding: 4px 0px !important;
-	border-bottom: 4px solid #0078d4;
+	border-bottom: 4px solid #0f53db;
 	font-weight: bold;
+	color:black;
+	background: #D3CCE3;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.btn-primary-2{
+	border-radius: 3px !important;
+	
+	  font-family:'Montserrat', sans-serif !important;
+	letter-spacing: 0px !important;
+	font-size: 18px !important;
+	padding: 4px 0px !important;
+	border-bottom: 4px solid #17a2b8;
+	font-weight: bold;
+	color:black;
 	background: #D3CCE3;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+	
 }
-
 i{
 	font-style: normal !important;
 }
@@ -81,7 +97,7 @@ i{
 								</a>
 						</div>
 						<div class="col-md-3">
-								<a class="btn shadow-nohover  btn-primary-1 btn-block btn-sm" href="DivisionMaster.htm" style="text-align: left">
+								<a class="btn shadow-nohover  btn-primary-2 btn-block btn-sm" href="DivisionMaster.htm" style="text-align: left">
 									<span class="fa-stack" style="width:3em !important">
 									<span class="fa fa-square-o fa-stack-2x"></span>
 				   					<strong class="fa-stack-1x" style="font-size: 14px">2</strong></span>
@@ -97,7 +113,7 @@ i{
 								</a>
 						</div>
 						<div class="col-md-3">
-								<a class="btn shadow-nohover  btn-primary-1 btn-block btn-sm" href="ProjectMain.htm" style="text-align: left">
+								<a class="btn shadow-nohover  btn-primary-2 btn-block btn-sm" href="ProjectMain.htm" style="text-align: left">
 									<span class="fa-stack" style="width:3em !important">
 									<span class="fa fa-square-o fa-stack-2x"></span>
 				   					<strong class="fa-stack-1x" style="font-size: 14px">4</strong></span>

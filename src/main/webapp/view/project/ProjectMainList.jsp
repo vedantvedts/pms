@@ -2,11 +2,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/js/excel.js" var="excel" />
+<script src="${excel}"></script>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT INT  LIST</title>
 <style type="text/css">
@@ -87,11 +91,9 @@ font-weight: bold;
 .width{
 	width:270px !important;
 }
-
-
-
-
-
+.modal-xl{
+	max-width: 1400px;
+}
 </style>
 </head>
 <body>
@@ -139,7 +141,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 	<div class="col-md-3"><h4><b>Project Main List</b></h4></div>
 	
 	<div class="col-md-9" align="right">
-				  <%-- <form action="ProjectMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
+				   <form action="ProjectMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
 								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="ProjectMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
@@ -149,16 +151,16 @@ NFormatConvertion nfc=new NFormatConvertion();
 							    </tr>
 					  		</table>	
 					     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
-					<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" style="width: 100%; padding-right: 320px; ">
-					  <div class="modal-dialog modal-lg" role="document">
-					    <div class="modal-content" style="width: 145%;">
+					<div class="modal fade" id="exampleModalLong"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" >
+					  <div class="modal-dialog modal-xl" role="document">
+					    <div class="modal-content"  >
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLongTitle">Employee Master Details</h5>
+					        <h5 class="modal-title" id="exampleModalLongTitle">Project Master Details</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
 					      </div>
-					      <div class="modal-body" align="center" style="max-height: 25rem; overflow-y:auto;">
+					      <div class="modal-body"  style="max-height: 25rem; overflow-y:auto;">
 					             <table class="table table-bordered table-hover table-striped table-condensed" id="myTable1"> </table>
 					      </div>
 					      <div class="modal-footer" align="center">
@@ -169,7 +171,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					    </div>
 					  </div>
 					</div>
-					</form> --%>
+					</form> 
 					</div>
 					</div>
   </div>
@@ -186,8 +188,8 @@ NFormatConvertion nfc=new NFormatConvertion();
 			<th class="text-nowrap">Project Type</th>
 			<th class="text-nowrap">Project Code</th>
 			<th width="25%" class="text-nowrap">Project Name</th>
-			<th style="width:10%" class="text-nowrap">Sanction<br> Date</th>
-			<th style="width: 124.892px;"  >Sanction Cost<br>(Rs In Lakh)</th>
+			<th style="width:10%" class="text-nowrap">Sanc Date</th>
+			<th style="width: 124.892px;"  >Sanc Cost(&#8377; Lakh)</th>
 			<th style="width:10%">PDC</th>
 			<th>RevNo</th>
 	  </tr>
@@ -288,7 +290,7 @@ function Prints(myfrm){
 			return false;
 		}
 		  return true;	
-	}
+}
 
 $(document).ready(function(){
 	  $("#myTable").DataTable({
@@ -296,9 +298,17 @@ $(document).ready(function(){
 	 "pagingType": "simple"
 	
 });
-  });
+});
+  
+$(document).ready(function(){
+	  $("#myTable1").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple"
+	
+});
+});
 </script>
-<%-- <script type="text/javascript">
+ <script type="text/javascript">
 const excel_file = document.getElementById('excel_file');
 
 excel_file.addEventListener('change', (event) => {
@@ -321,14 +331,14 @@ excel_file.addEventListener('change', (event) => {
         {          
         	
             
-        var table_output ='<thead> <tr > <th>SNo</th> <th>LabCode</th> <th>Emp No</th> <th>Emp Name</th> <th>Ext No</th> <th>Mobile No</th> <th>Email</th> <th>Drona Email</th> <th>Internet Email</th> <th>Designation</th> <th>Division</th></tr> </thead><tbody>'
+        var table_output ='<thead> <tr > <th>SNo</th> <th>LabCode</th> <th>Code</th> <th>Name</th><th>proj No</th> <th>Unit Code</th> <th>Sanc Letter No</th> <th>Total Sanc Cost</th> <th>Sanc Cost FE</th> <th>Sanc Cost RE</th> <th>Nodal & Participating Lab</th> <th >Scope</th> <th >Objective</th> <th>Deliverable</th></tr> </thead><tbody>'
         	
             for(var row = 0; row < sheet_data.length; row++)
             {            	
             	  table_output += ' <tr> ';
-             	 console.log("length   :"+sheet_data[row].length);
+             	
             	  if(row>0){table_output += '<td>'+ row +'</td>';}
-                for(var cell = 0; cell < 8; cell++)
+                for(var cell = 0; cell < 13; cell++)
                 {
                 	if(row>0 && cell==0){
                 		table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';
@@ -339,14 +349,14 @@ excel_file.addEventListener('change', (event) => {
 	
                 }
                
-                if(row>0){table_output += '<td>'+ 0 +'</td>';}
-                if(row>0){table_output += '<td>'+ 0 +'</td>';}
+               /*  if(row>0){table_output += '<td>'+ 0 +'</td>';}
+                if(row>0){table_output += '<td>'+ 0 +'</td>';} */
                 table_output += '</tr>';
              }
             table_output += ' <tbody>';
             document.getElementById('myTable1').innerHTML = table_output;
              
-             var EmployeeNojsArray = [<%int i=0; for (Object[] obj:ProjectMainList) { %>"<%= obj[1] %>"<%= i + 1 < ProjectMainList.size() ? ",":"" %><% } %>];
+             var EmployeeNojsArray = [<%int i=0; for (Object[] obj:ProjectMainList) { %>"<%= obj[3] %>"<%= i + 1 < ProjectMainList.size() ? ",":"" %><% } %>];
                     
              var employeeNo=[];
              for (var i in sheet_data) {
@@ -389,7 +399,7 @@ excel_file.addEventListener('change', (event) => {
 $('#exampleModalLong').on('hide.bs.modal', function(){
 	 excel_file.value = '';
 })
-</script> --%>
+</script> 
 <div class="modal" id="loader">
 					<!-- Place at bottom of page -->
 				</div>

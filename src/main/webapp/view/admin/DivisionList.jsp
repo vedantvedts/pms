@@ -329,7 +329,7 @@ excel_file.addEventListener('change', (event) => {
 					}		
                 }
                
-                if(row>0){table_output += '<td>'+ 0 +'</td>';}
+                if(row>0){table_output += '<td>'+ 1 +'</td>';}
                 table_output += '</tr>';
              }
             table_output += ' <tbody></table>';
