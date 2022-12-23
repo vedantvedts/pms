@@ -70,26 +70,22 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+			                <label>Title</label><br>
+			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof. " <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
 								<option value="Rev. "  <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Rev.")){%>  selected="selected" <%}%>>  Rev.</option>
 								<option value="Dr. "   <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
-								
 							</select>
 					</div>
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+			                <label>Rank/Salutation</label><br>
+			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-								<option value="Shree." <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Shree.")){%> selected="selected" <%}%>> Shree.</option>
-								<option value="Smt."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Smt.")){%>   selected="selected" <%}%>> Srimathi/Smt.</option> 
 								<option value="Mr."    <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
-								<option value="Mrs."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Mrs.")){%>   selected="selected" <%}%>> Mrs.</option>
-								<option value="Miss."  <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Miss.")){%>  selected="selected" <%}%>> Miss.</option>
+								<option value="Ms."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Ms.")){%>   selected="selected" <%}%>> Mrs.</option>
 							</select>
 					</div>
 </div>

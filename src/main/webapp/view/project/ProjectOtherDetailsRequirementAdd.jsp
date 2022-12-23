@@ -23,7 +23,23 @@ small{
     color: green;
     font-weight: 500;
 }
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+.card{
+border:1px solid black;
+background-color: #e2ebf0;
+}
 
+.card-body{
+	background-color: #e2ebf0;
+	padding-left:30px;
+	padding-right:0px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
 </style>
 </head>
 <body>
@@ -74,23 +90,35 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 			<div class="row">
+													 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   				
+		                   					   </div>
+												</div>
+												<div class="card-body">
+												 <label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
-															<div  id="summernote" class="center">		</div>
+														 <div  id="summernote" class="center">		</div> 
 												
 													</div>
+													
 									  
 									  				<textarea name="objective" style="display:none;"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
 													<input type="hidden" name="details" value="objective"> 
-									 			
 									 			</div>  
-												
-												<br>
-									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
@@ -124,6 +152,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 		<div class="row">
+											   <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   				
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -138,8 +181,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="scope"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -173,6 +214,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 				<div class="row">
+										   <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -187,8 +243,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="multilab"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -223,6 +277,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 			<div class="row">
+											   <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="EarlierWorkBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -237,8 +306,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="earlierwork"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -272,6 +339,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 <div class="row">
+											<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250"  placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -286,8 +368,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="competency"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -305,52 +385,71 @@ String Parameter=(String) request.getAttribute("details_param");
 
 					<%}%>
 					
-					<%if(Parameter.equalsIgnoreCase("needofproject")){%>
-		
-						<form action="ProjectInitiationDetailsSubmit.htm" method="POST" name="myfrm6" id="myfrm6" >	
-		
-							<div class="row"> 
-								<div class="col-md-12"  >
+					<%if(Parameter.equalsIgnoreCase("requirement")){%>
+
+					  	<form action="ProjectInitiationDetailsSubmit.htm" method="POST" name="myfrm" id="myfrm" >	
+
+					<div class="row"> 
+							<div class="col-md-12"  >
 									
-										<div class="card" >
-										
-											<h3 class="card-header">
-												Need of Project
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
-											</h3>
-										
+							<div class="card" >
+					
+								<h3 class="card-header">
+							Requirements
+						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+						</h3>				
+											
+						<div class="card-body">
+						
 											<div class="card-body">
 									    		
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									    		<div class="row">
+												<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" placeholder="maximum 250 characters" >  
+		                        			   </div>
+		                   					   </div> 
+		                   					
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+									    			  
+							<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+								<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
-															<div  id="summernote" class="center">		</div>
+									<div  id="summernote" class="center">		</div>
 												
-													</div>
-									  
-									  				<textarea name="needofproject" style="display:none;"></textarea>
-									  
-													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
-													<input type="hidden" name="details" value="needofproject"> 
-									 			
-									 			</div>  
-												
-												<br>
-									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
-									 		</div>
-									 		
-									 		<div class="form-group" align="center" >
-												<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
-												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
-											</div>
-									 		
-										</div>
-										
 								</div>
+									  
+								<textarea name="Requirements" style="display:none;"></textarea>
+									  
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+								<input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
+								<input type="hidden" name="details" value="requirement"> 	
+							</div>  
+						
+								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+						</div>
+									 		
+							<div class="form-group" align="center"  style=" margin-top:10px;">
+								<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
+								<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 							</div>
-					</form>
+									 		
+							</div>		 		
+									 		
+					</div>
+				</div>
+			</div>
+								
+		</form>
+
+
 
 					<%}%>
 					
@@ -370,6 +469,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 			<div class="row">
+											<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="TechnologyBrief" maxlength="250" placeholder="maximum 250 characters" >  
+		                        			   </div>
+		                   					   </div> 
+		                   					
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -384,9 +498,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="technology"> 
 									 			
 									 			</div>  
-												
-												<br>
-									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
@@ -418,7 +529,21 @@ String Parameter=(String) request.getAttribute("details_param");
 											</h3>
 										
 											<div class="card-body">
-									    		
+									    			<div class="row">
+												<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					  
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -433,8 +558,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="riskmitigation"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -467,7 +590,20 @@ String Parameter=(String) request.getAttribute("details_param");
 											</h3>
 										
 											<div class="card-body">
-									    		
+									    		<div class="row">
+													<div class="form-group">
+			                                     	  <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+			                        			   </div>
+		                   					 
+												<div class="col-md-11">
+			                                        <div class="form-group">
+			                                       	 <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" placeholder="maximum 250 characters">  
+			                        			   </div>
+		                   					   </div> 
+		                   					
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -482,9 +618,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="proposal"> 
 									 			
 									 			</div>  
-												
-												<br>
-									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
@@ -517,6 +650,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 			<div class="row">
+												<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					  
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -531,9 +679,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="realization"> 
 									 			
 									 			</div>  
-												
-												<br>
-									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
@@ -567,6 +712,21 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<div class="card-body">
 									    		
+									 			<div class="row">
+												<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250"  placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   				
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
 									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
@@ -581,8 +741,6 @@ String Parameter=(String) request.getAttribute("details_param");
 													<input type="hidden" name="details" value="worldscenario"> 
 									 			
 									 			</div>  
-												
-												<br>
 									 			
 									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
@@ -605,51 +763,62 @@ String Parameter=(String) request.getAttribute("details_param");
 		<%}else{ %>
 		
 		
-		<form action="ProjectOtherDetailsAddSubmit.htm" method="POST" name="myfrm" id="myfrm" >	
-
-			<div class="row"> 
-				<div class="col-md-12"  >
+		<form action="ProjectOtherDetailsAddSubmit.htm" method="POST" name="myfrm6" id="myfrm6" >	
+		
+							<div class="row"> 
+								<div class="col-md-12"  >
 									
-					<div class="card" >
-					
-						<h3 class="card-header">
-							Requirements
-						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
-						</h3>				
-											
-						<div class="card-body">
-									    			  
-							<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-								<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+										<div class="card" >
 										
-									<div  id="summernote" class="center">		</div>
+											<h3 class="card-header">
+												Need of Project
+											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
+											</h3>
+										
+											<div class="card-body">
+											
+											<div class="row">
+											<div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 		     
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+										
+															<div  id="summernote" class="center">		</div>
 												
+													</div>
+									  
+									  				<textarea name="needofproject" style="display:none;"></textarea>
+									  
+													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
+													 <input type="hidden" name="details" value="needofproject"> 
+									 			
+									 			</div>  
+												
+									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 		</div>
+									 		
+									 		<div class="form-group" align="center" style=" margin-top:10px;" >
+												<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
+												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
+											</div>
+									 		
+										</div>
+										
 								</div>
-									  
-								<textarea name="Requirements" style="display:none;"></textarea>
-									  
-								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-								<input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
-									 			
-							</div>  
-													
-							<br>
-									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
-						</div>
-									 		
-							<div class="form-group" align="center" >
-								<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
-								<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 							</div>
-									 		
-									 		
-									 		
-					</div>
-				</div>
-			</div>
-								
-		</form>
+					</form>
 			
 	<%} %>
 								

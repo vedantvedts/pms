@@ -63,8 +63,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
 	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
-	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitiagation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
-	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost FROM pfms_initiation_cost a,budget_head b,budget_item_sanc c WHERE a.budgetheadid=b.budgetheadid AND a.budgetsancid=c.sanctionitemid AND a.initiationid=:initiationid order by a.budgetheadid asc";
+	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost FROM pfms_initiation_cost a,budget_head b,budget_item_sanc c WHERE a.budgetheadid=b.budgetheadid AND a.budgetsancid=c.sanctionitemid AND a.initiationid=:initiationid order by a.budgetheadid asc";
 	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 UNION SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a ,pfms_initiation b WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
 	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,categoryid=:categoryid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTITOTALCOST="select sum(ItemCost) from pfms_initiation_cost where initiationid=:initiationid and isactive='1'";
@@ -73,18 +72,18 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTSHDULEUPDATE="update pfms_initiation_schedule set milestoneactivity=:milestoneactivity,milestonemonth=:milestonemonth,milestoneremark=:milestoneremark,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	private static final String PROJECTSHDULEDELETE="update pfms_initiation_schedule set modifiedby=:modifiedby,modifieddate=:modifieddate,isactive='0' where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	private static final String PROJECTCOSTUPDATE="UPDATE pfms_initiation SET fecost=:fecost,recost=:recost,projectcost=:projectcost,modifieddate=:modifieddate, modifiedby=:modifiedby WHERE initiationid=:initiationid";	
-	private static final String PROJECTDETAILSREQUPDATE="update pfms_initiation_detail set requirements=:requirements,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSOBJUPDATE="update pfms_initiation_detail set objective=:objective,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSSCOPEUPDATE="update pfms_initiation_detail set scope=:scope,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSMULTIUPDATE="update pfms_initiation_detail set multilabworkshare=:multilab,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSEARLYUPDATE="update pfms_initiation_detail set earlierwork=:earlierwork,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSCOMPETANCYUPDATE="update pfms_initiation_detail set compentencyestablished=:competancy,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSNEEDOFUPDATE="update pfms_initiation_detail set needofproject=:needofproject,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSTECHUPDATE="update pfms_initiation_detail set technologychallanges=:technology,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSRISKUPDATE="update pfms_initiation_detail set riskmitiagation=:riskmitigation,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSPROPOSALUPDATE="update pfms_initiation_detail set proposal=:proposal,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSREALIZATIONUPDATE="update pfms_initiation_detail set realizationplan=:realization,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
-	private static final String PROJECTDETAILSWORLDUPDATE="update pfms_initiation_detail set worldscenario=:worldscenario,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";	
+	private static final String PROJECTDETAILSREQUPDATE="update pfms_initiation_detail set requirements=:requirements, reqbrief=:reqbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSOBJUPDATE="update pfms_initiation_detail set objective=:objective, objbrief=:objbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSSCOPEUPDATE="update pfms_initiation_detail set scope=:scope, scopebrief=:scopebrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSMULTIUPDATE="update pfms_initiation_detail set multilabworkshare=:multilab, multilabbrief=:multibrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSEARLYUPDATE="update pfms_initiation_detail set earlierwork=:earlierwork, earlierworkbrief=:earlibrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSCOMPETANCYUPDATE="update pfms_initiation_detail set compentencyestablished=:competancy, compentencybrief=:combrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSNEEDOFUPDATE="update pfms_initiation_detail set needofproject=:needofproject, needofprojectbrief=:needbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSTECHUPDATE="update pfms_initiation_detail set technologychallanges=:technology, technologybrief=:techbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSRISKUPDATE="update pfms_initiation_detail set riskmitigation=:riskmitigation, riskmitigationbrief=:riskbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSPROPOSALUPDATE="update pfms_initiation_detail set proposal=:proposal, proposalbrief=:probrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSREALIZATIONUPDATE="update pfms_initiation_detail set realizationplan=:realization, realizationbrief=:realizationbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
+	private static final String PROJECTDETAILSWORLDUPDATE="update pfms_initiation_detail set worldscenario=:worldscenario,worldscenariobrief=:worldbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";	
 	private static final String PROJECTSCHTOTALMONTH="select sum(milestonemonth) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String MILESTONENO="select max(MilestoneNo) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String SCDULEMONTH="select milestonemonth from pfms_initiation_schedule where initiationscheduleid=:initiationscheduleid and isactive='1'";
@@ -97,7 +96,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
 	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
-	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(a.title,''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
+	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item_sanc b  WHERE a.budgetsancid=b.sanctionitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
 	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.category,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.ProjectTypeId=c.CategoryId AND a.CategoryId=b.ProjectTypeId AND a.projectstatus=d.Status";
 	private static final String PROJECTAPPROVALTRACKING="SELECT a.projectapprovalid,a.empid,c.empname,d.designation,e.divisionname,a.actiondate,a.remarks,b.statusdetail FROM project_approval a, pfms_project_authority_actionlist b,employee c,employee_desig d,division_master e WHERE a.projectstatus=b.Status AND a.empid=c.empid  AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND a.initiationid=:initiationid";
@@ -143,8 +142,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1' ORDER BY a.projectid, a.projectmainid";
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
-	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(c.title,''), c.empname)AS 'empname', d.designation, e.divisioncode  FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
-	private static final String USERLIST="SELECT  b.empid, b.empname,b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
+	private static final String PROJECTASSIGNLIST="SELECT a.projectemployeeid, c.empid, a.projectid, CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) AS 'empname' , d.designation, e.divisioncode  FROM project_employee a, employee c, employee_desig d, division_master e WHERE a.empid=c.empid AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND  a.isactive='1' AND c.isactive='1' AND e.isactive='1'  AND a.projectid= :proid "; 
+	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
 	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId FROM pfms_risk WHERE actionmainid=:actionmainid";
@@ -152,9 +151,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
-	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(e.title,''), e.empname) as 'title',ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
-	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(b.title,''), b.empname) as 'emp',c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
-	private static final String EMPDIVHEADDATA ="SELECT e2.empid, CONCAT(IFNULL(e2.title,''), e2.empname) as 'empname', ed.designation,'Division Head'  FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
+	private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
+	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
+	private static final String EMPDIVHEADDATA ="SELECT e2.empid, CONCAT(IFNULL(CONCAT(e2.title,' '),''), e2.empname) AS 'empname' , ed.designation,'Division Head'  FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
 	
@@ -533,13 +532,13 @@ public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,P
 
 	return query.executeUpdate();
 }
-
 @Override
 public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationdetail,String Details) throws Exception{
 	
 	if(Details.equalsIgnoreCase("requirement")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSREQUPDATE);
 		query.setParameter("requirements", pfmsinitiationdetail.getRequirements());
+		query.setParameter("reqbrief", pfmsinitiationdetail.getReqBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -548,6 +547,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("objective")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSOBJUPDATE);
 		query.setParameter("objective", pfmsinitiationdetail.getObjective());
+		query.setParameter("objbrief", pfmsinitiationdetail.getObjBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -556,6 +556,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("scope")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSSCOPEUPDATE);
 		query.setParameter("scope", pfmsinitiationdetail.getScope());
+		query.setParameter("scopebrief",pfmsinitiationdetail.getScopeBrief() );
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -564,6 +565,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("multilab")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSMULTIUPDATE);
 		query.setParameter("multilab", pfmsinitiationdetail.getMultiLabWorkShare());
+		query.setParameter("multibrief", pfmsinitiationdetail.getMultiLabBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -572,6 +574,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("earlierwork")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSEARLYUPDATE);
 		query.setParameter("earlierwork", pfmsinitiationdetail.getEarlierWork());
+		query.setParameter("earlibrief",pfmsinitiationdetail.getEarlierWorkBrief() );
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -580,6 +583,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("competency")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSCOMPETANCYUPDATE);
 		query.setParameter("competancy", pfmsinitiationdetail.getCompentencyEstablished());
+		query.setParameter("combrief", pfmsinitiationdetail.getCompentencyBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -588,6 +592,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("needofproject")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSNEEDOFUPDATE);
 		query.setParameter("needofproject", pfmsinitiationdetail.getNeedOfProject());
+		query.setParameter("needbrief", pfmsinitiationdetail.getNeedOfProjectBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -596,6 +601,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("technology")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSTECHUPDATE);
 		query.setParameter("technology", pfmsinitiationdetail.getTechnologyChallanges());
+		query.setParameter("techbrief", pfmsinitiationdetail.getTechnologyBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -603,7 +609,8 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	}
 	if(Details.equalsIgnoreCase("riskmitigation")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSRISKUPDATE);
-		query.setParameter("riskmitigation", pfmsinitiationdetail.getRiskMitiagation());
+		query.setParameter("riskmitigation", pfmsinitiationdetail.getRiskMitigation());
+		query.setParameter("riskbrief",pfmsinitiationdetail.getRiskMitigationBrief() );
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -612,6 +619,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("proposal")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSPROPOSALUPDATE);
 		query.setParameter("proposal", pfmsinitiationdetail.getProposal());
+		query.setParameter("probrief", pfmsinitiationdetail.getProposalBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -620,6 +628,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("realization")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSREALIZATIONUPDATE);
 		query.setParameter("realization", pfmsinitiationdetail.getRealizationPlan());
+		query.setParameter("realizationbrief", pfmsinitiationdetail.getRealizationBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -628,6 +637,7 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 	if(Details.equalsIgnoreCase("worldscenario")) {
 		Query query=manager.createNativeQuery(PROJECTDETAILSWORLDUPDATE);
 		query.setParameter("worldscenario", pfmsinitiationdetail.getWorldScenario());
+		query.setParameter("worldbrief", pfmsinitiationdetail.getWorldScenarioBrief());
 		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
 		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
 		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
@@ -637,6 +647,110 @@ public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationd
 
 	return pfmsinitiationdetail.getInitiationId();
 }
+
+//@Override
+//public Long ProjectInitiationDetailsUpdate (PfmsInitiationDetail pfmsinitiationdetail,String Details) throws Exception{
+//	
+//	if(Details.equalsIgnoreCase("requirement")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSREQUPDATE);
+//		query.setParameter("requirements", pfmsinitiationdetail.getRequirements());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("objective")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSOBJUPDATE);
+//		query.setParameter("objective", pfmsinitiationdetail.getObjective());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("scope")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSSCOPEUPDATE);
+//		query.setParameter("scope", pfmsinitiationdetail.getScope());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("multilab")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSMULTIUPDATE);
+//		query.setParameter("multilab", pfmsinitiationdetail.getMultiLabWorkShare());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("earlierwork")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSEARLYUPDATE);
+//		query.setParameter("earlierwork", pfmsinitiationdetail.getEarlierWork());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("competency")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSCOMPETANCYUPDATE);
+//		query.setParameter("competancy", pfmsinitiationdetail.getCompentencyEstablished());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("needofproject")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSNEEDOFUPDATE);
+//		query.setParameter("needofproject", pfmsinitiationdetail.getNeedOfProject());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("technology")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSTECHUPDATE);
+//		query.setParameter("technology", pfmsinitiationdetail.getTechnologyChallanges());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("riskmitigation")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSRISKUPDATE);
+//		query.setParameter("riskmitigation", pfmsinitiationdetail.getRiskMitigation());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("proposal")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSPROPOSALUPDATE);
+//		query.setParameter("proposal", pfmsinitiationdetail.getProposal());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("realization")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSREALIZATIONUPDATE);
+//		query.setParameter("realization", pfmsinitiationdetail.getRealizationPlan());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	if(Details.equalsIgnoreCase("worldscenario")) {
+//		Query query=manager.createNativeQuery(PROJECTDETAILSWORLDUPDATE);
+//		query.setParameter("worldscenario", pfmsinitiationdetail.getWorldScenario());
+//		query.setParameter("initiationid", pfmsinitiationdetail.getInitiationId());
+//		query.setParameter("modifiedby", pfmsinitiationdetail.getModifiedBy());
+//		query.setParameter("modifieddate", pfmsinitiationdetail.getModifiedDate());
+//		int count=(int)query.executeUpdate();
+//	}
+//	
+//
+//	return pfmsinitiationdetail.getInitiationId();
+//}
 
 @Override
 public Integer ProjectScheduleMonth(String InitiationId) throws Exception {

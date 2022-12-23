@@ -481,7 +481,10 @@ public class OnBoardingController {
 					                emp.setIsActive(1);
 					                emp.setCreatedBy(UserId);
 					                emp.setCreatedDate(sdf1.format(new Date()));
-					                employee.add(emp);
+					                if(emp.getEmpName()!=null && emp.getEmpNo()!=null) {
+					                	employee.add(emp);
+					                }
+					                
 					            }
 					            
 					            List<Employee> count =employeemasterrepo.saveAll(employee);
@@ -594,7 +597,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setProjectCode(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setProjectCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setProjectCode(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -606,7 +609,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	 protype.setProjectName(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	 protype.setProjectName(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	 break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	 protype.setProjectName( sheet.getRow(i).getCell(j).getStringCellValue().toString());
@@ -618,7 +621,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setProjectDescription(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setProjectDescription(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setProjectDescription(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -631,7 +634,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setUnitCode(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setUnitCode(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setUnitCode(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -643,7 +646,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setSanctionNo(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setSanctionNo(NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setSanctionNo(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -691,7 +694,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setLabParticipating(String.valueOf(NumberToTextConverter.toText(sheet.getRow(i).getCell(j).getNumericCellValue())));
+					                            	protype.setLabParticipating(String.valueOf(NumberToTextConverter.toText((long)sheet.getRow(i).getCell(j).getNumericCellValue())));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setLabParticipating(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -703,7 +706,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setScope(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setScope(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setScope(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -715,7 +718,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setObjective(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setObjective(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setObjective(sheet.getRow(i).getCell(j).getStringCellValue());
@@ -727,7 +730,7 @@ public class OnBoardingController {
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
 					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setDeliverable(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	protype.setDeliverable(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
 					                            	break;
 					                            case Cell.CELL_TYPE_STRING:
 					                            	protype.setDeliverable(sheet.getRow(i).getCell(j).getStringCellValue());

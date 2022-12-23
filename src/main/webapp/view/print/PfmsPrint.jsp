@@ -329,7 +329,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 				
 				<%} %>
 				
-				<tr>
+				<%-- <tr>
 					<th  class="border_black normal center" ><span >7.</span></th>
 					<td class="border_black normal left main-text" >
 						<span class="bold"><u>Need of the Project</u> :</span>
@@ -474,6 +474,159 @@ String lablogo=(String)request.getAttribute("lablogo");
 						<span class="bold"><u>Realization Plan</u> :</span>
 						<%for (Object[] obj : DetailsList){ %>
 							<span class="editor-text" ><%if(obj[10]!=null){ %><%=obj[10] %><%}else{ %><i></i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+
+				
+			</table> --%>
+			
+			<tr>
+					<th  class="border_black normal center" ><span >7.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold" ><u>Need of the Project</u> :</span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span  style="font-size:15px; max-width:200px; word-wrap:break-word;"><%if(obj[19]!=null){ %><%=obj[19] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >8.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Requirements</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span  style="font-size:15px;" ><%if(obj[13]!=null){ %><%=obj[13] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>	
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >9.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>World Scenario</u> :</span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[24]!=null){ %><%=obj[24] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>	
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >10.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Objective</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[14]!=null){ %><%=obj[14] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >11.</span></th>
+					<td class="border_black normal left main-text"  >
+						<span class="bold"><u>Scope</u> :</span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[15]!=null){ %><%=obj[15] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<%if(PfmsInitiation!= null) { Object[] obj = PfmsInitiation; %>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >12.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Deliverables/Output</u> : </span>
+						<span style="font-size:15px;" ><%if(obj[11]!=null){ %> <br><%=obj[11] %><%}else{ %><i>-</i><%} %></span>
+					</td>
+				</tr>
+				
+				<%} %>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >13.</span></th>
+					<td class="border_black normal left" >
+						<span class="bold"><u>Participating Labs with Work share</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;"" ><%if(obj[16]!=null){ %><%=obj[16] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+
+				<tr>
+					<th  class="border_black normal center" ><span >14.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Brief of earlier work done</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[17]!=null){ %><%=obj[17] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >15.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Competency Established</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[18]!=null){ %><%=obj[18] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				
+				<tr>
+					<th  class="border_black normal center" ><span >16.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Technology Challenges/Issues foreseen</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[20]!=null){ %><%=obj[20] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >17.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Risk involved and Mitigation Plan</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[21]!=null){ %><%=obj[21] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >18.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Proposal</u> : </span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span style="font-size:15px;" ><%if(obj[22]!=null){ %><%=obj[22] %><%}else{ %><i>-</i><%} %></span>
+						<%} %>
+					</td>
+				</tr>
+
+				<tr>
+					<th  class="border_black normal center" ><span >19.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Cost estimate/Break-up</u> : </span>
+						<span style="font-size:15px;" >  Attached as Annexure - A</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<th  class="border_black normal center" ><span >20.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Major milestone/Project schedule</u> :</span>
+						<span style="font-size:15px;" >  Attached as Annexure - B</span>
+					</td>
+				</tr>
+				 
+				<tr>
+					<th  class="border_black normal center" ><span >21.</span></th>
+					<td class="border_black normal left main-text" >
+						<span class="bold"><u>Realization Plan</u> :</span>
+						<%for (Object[] obj : DetailsList){ %>
+							<span class="editor-text" ><%if(obj[23]!=null){ %><%=obj[23] %><%}else{ %><i>-</i><%} %></span>
 						<%} %>
 					</td>
 				</tr>

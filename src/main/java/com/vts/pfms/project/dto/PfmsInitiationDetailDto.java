@@ -12,10 +12,98 @@ public class PfmsInitiationDetailDto {
     private String CompentencyEstablished;
     private String NeedOfProject;
     private String TechnologyChallanges;
-    private String RiskMitiagation;
+    private String RiskMitigation;
     private String Proposal;
     private String RealizationPlan;
     private String WorldScenario;
+    
+    private String ReqBrief;
+    private String ObjBrief;
+    private String ScopeBrief;
+    private String MultiLabBrief;
+    private String EarlierWorkBrief;
+    private String CompentencyBrief;
+    private String NeedOfProjectBrief;
+    private String TechnologyBrief;
+    private String RiskMitigationBrief;
+    private String ProposalBrief;
+    private String RealizationBrief;
+    private String WorldScenarioBrief;
+    
+    
+    
+	public String getReqBrief() {
+		return ReqBrief;
+	}
+	public void setReqBrief(String reqBrief) {
+		ReqBrief = reqBrief;
+	}
+	public String getObjBrief() {
+		return ObjBrief;
+	}
+	public void setObjBrief(String objBrief) {
+		ObjBrief = objBrief;
+	}
+	public String getScopeBrief() {
+		return ScopeBrief;
+	}
+	public void setScopeBrief(String scopeBrief) {
+		ScopeBrief = scopeBrief;
+	}
+	public String getMultiLabBrief() {
+		return MultiLabBrief;
+	}
+	public void setMultiLabBrief(String multiLabBrief) {
+		MultiLabBrief = multiLabBrief;
+	}
+	public String getEarlierWorkBrief() {
+		return EarlierWorkBrief;
+	}
+	public void setEarlierWorkBrief(String earlierWorkBrief) {
+		EarlierWorkBrief = earlierWorkBrief;
+	}
+	public String getCompentencyBrief() {
+		return CompentencyBrief;
+	}
+	public void setCompentencyBrief(String compentencyBrief) {
+		CompentencyBrief = compentencyBrief;
+	}
+	public String getNeedOfProjectBrief() {
+		return NeedOfProjectBrief;
+	}
+	public void setNeedOfProjectBrief(String needOfProjectBrief) {
+		NeedOfProjectBrief = needOfProjectBrief;
+	}
+	public String getTechnologyBrief() {
+		return TechnologyBrief;
+	}
+	public void setTechnologyBrief(String technologyBrief) {
+		TechnologyBrief = technologyBrief;
+	}
+	public String getRiskMitigationBrief() {
+		return RiskMitigationBrief;
+	}
+	public void setRiskMitigationBrief(String riskMitigationBrief) {
+		RiskMitigationBrief = riskMitigationBrief;
+	}
+	public String getProposalBrief() {
+		return ProposalBrief;
+	}
+	public void setProposalBrief(String proposalBrief) {
+		ProposalBrief = proposalBrief;
+	}
+	public String getRealizationBrief() {
+		return RealizationBrief;
+	}
+	public void setRealizationBrief(String realizationBrief) {
+		RealizationBrief = realizationBrief;
+	}
+	public String getWorldScenarioBrief() {
+		return WorldScenarioBrief;
+	}
+	public void setWorldScenarioBrief(String worldScenarioBrief) {
+		WorldScenarioBrief = worldScenarioBrief;
+	}
 	public String getWorldScenario() {
 		return WorldScenario;
 	}
@@ -82,11 +170,12 @@ public class PfmsInitiationDetailDto {
 	public void setTechnologyChallanges(String technologyChallanges) {
 		TechnologyChallanges = technologyChallanges;
 	}
-	public String getRiskMitiagation() {
-		return RiskMitiagation;
+
+	public String getRiskMitigation() {
+		return RiskMitigation;
 	}
-	public void setRiskMitiagation(String riskMitiagation) {
-		RiskMitiagation = riskMitiagation;
+	public void setRiskMitigation(String riskMitigation) {
+		RiskMitigation = riskMitigation;
 	}
 	public String getProposal() {
 		return Proposal;

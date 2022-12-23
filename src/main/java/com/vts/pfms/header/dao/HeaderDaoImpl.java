@@ -17,7 +17,7 @@ public class HeaderDaoImpl implements HeaderDao {
 
 	private static final String LOGINTYPELIST = "select logintype,logindesc from login_type ";
 	private static final String NOTIFICATIONLISTALL ="SELECT empid,notificationby,notificationdate,notificationmessage,notificationurl FROM rfpwizard_notification WHERE  empid=:empid ORDER BY notificationdate";
-	private static final String EMPDETAILES="SELECT CONCAT(IFNULL(b.title,''), b.empname)AS 'empname', c.formrolename, b.empno,b.labcode FROM login a,employee b,form_role c WHERE a.empid=b.empid AND a.formroleid=c.formroleid AND a.loginid=:loginid";
+	private static final String EMPDETAILES="SELECT CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname', c.formrolename, b.empno,b.labcode FROM login a,employee b,form_role c WHERE a.empid=b.empid AND a.formroleid=c.formroleid AND a.loginid=:loginid";
 	private static final String DIVISIONNAME="select divisioncode from division_master where divisionid=:divisionid";
 	
 	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";

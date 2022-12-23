@@ -2688,6 +2688,7 @@ public class MilestoneController {
 					MilestoneActivityDto mainDto=new MilestoneActivityDto();
 					mainDto.setActivityId(req.getParameter("MileId"));
 					mainDto.setStatusRemarks(req.getParameter("Remarks"));
+					mainDto.setFinancaOutlay(Double.parseDouble(req.getParameter("financialoutlay")));
 					mainDto.setCreatedBy(UserId);
 					long count =service.MilestoneRemarkUpdate(mainDto);
 			

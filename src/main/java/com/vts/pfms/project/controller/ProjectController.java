@@ -454,13 +454,24 @@ public class ProjectController
 				pfmsinitiationdetaildto.setMultiLabWorkShare(req.getParameter("MultiLabWorkShare"));
 				pfmsinitiationdetaildto.setEarlierWork(req.getParameter("EarlierWork"));
 				pfmsinitiationdetaildto.setCompentencyEstablished(req.getParameter("CompentencyEstablished"));
-				pfmsinitiationdetaildto.setNeedOfProject(req.getParameter("NeedOfProject"));
+				pfmsinitiationdetaildto.setNeedOfProject(req.getParameter("needofproject"));
 				pfmsinitiationdetaildto.setTechnologyChallanges(req.getParameter("TechnologyChallanges"));
-				pfmsinitiationdetaildto.setRiskMitiagation(req.getParameter("RiskMitiagation"));
+				pfmsinitiationdetaildto.setRiskMitigation(req.getParameter("RiskMitiagation"));
 				pfmsinitiationdetaildto.setProposal(req.getParameter("Proposal"));
 				pfmsinitiationdetaildto.setRealizationPlan(req.getParameter("RealizationPlan"));
-	
-				Long count = service.ProjectIntiationAdd(pfmsinitiationdetaildto, UserId);
+				pfmsinitiationdetaildto.setReqBrief(req.getParameter("ReqBrief"));
+				pfmsinitiationdetaildto.setObjBrief(req.getParameter("ObjBrief"));
+				pfmsinitiationdetaildto.setScopeBrief(req.getParameter("ScopeBrief"));
+				pfmsinitiationdetaildto.setMultiLabBrief(req.getParameter("MultiLabBrief"));
+				pfmsinitiationdetaildto.setEarlierWorkBrief(req.getParameter("EarlierWorkBrief"));
+				pfmsinitiationdetaildto.setCompentencyBrief(req.getParameter("CompentencyBrief"));
+				pfmsinitiationdetaildto.setNeedOfProjectBrief(req.getParameter("NeedOfProjectBrief"));
+				pfmsinitiationdetaildto.setTechnologyBrief(req.getParameter("TechnologyBrief"));
+				pfmsinitiationdetaildto.setRiskMitigationBrief(req.getParameter("RiskMitigationBrief"));
+				pfmsinitiationdetaildto.setProposalBrief(req.getParameter("ProposalBrief"));
+				pfmsinitiationdetaildto.setRealizationBrief(req.getParameter("RealizationBrief"));
+				pfmsinitiationdetaildto.setWorldScenarioBrief(req.getParameter("WorldScenarioBrief"));
+				Long count =    service.ProjectIntiationAdd(pfmsinitiationdetaildto, UserId);
 	
 				if (count > 0) {
 					redir.addAttribute("result", "Project Details Added Successfully");
@@ -483,6 +494,60 @@ public class ProjectController
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 
 	}
+	
+//	@RequestMapping(value = "ProjectOtherDetailsAddSubmit.htm", method = RequestMethod.POST)
+//	public String ProjectOtherDetailsAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+//			throws Exception
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//
+//		logger.info(new Date() +"Inside ProjectOtherDetailsAddSubmit.htm "+UserId);
+//		
+//		try {
+//
+//		
+//			String Option = req.getParameter("sub");
+//	
+//			if (Option.equalsIgnoreCase("SUBMIT")) {
+//	
+//				PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
+//	
+//				pfmsinitiationdetaildto.setInitiationId(req.getParameter("IntiationId"));
+//				pfmsinitiationdetaildto.setRequirements(req.getParameter("Requirements"));
+//				pfmsinitiationdetaildto.setObjective(req.getParameter("Objective"));
+//				pfmsinitiationdetaildto.setScope(req.getParameter("Scope"));
+//				pfmsinitiationdetaildto.setMultiLabWorkShare(req.getParameter("MultiLabWorkShare"));
+//				pfmsinitiationdetaildto.setEarlierWork(req.getParameter("EarlierWork"));
+//				pfmsinitiationdetaildto.setCompentencyEstablished(req.getParameter("CompentencyEstablished"));
+//				pfmsinitiationdetaildto.setNeedOfProject(req.getParameter("NeedOfProject"));
+//				pfmsinitiationdetaildto.setTechnologyChallanges(req.getParameter("TechnologyChallanges"));
+//				pfmsinitiationdetaildto.setRiskMitiagation(req.getParameter("RiskMitiagation"));
+//				pfmsinitiationdetaildto.setProposal(req.getParameter("Proposal"));
+//				pfmsinitiationdetaildto.setRealizationPlan(req.getParameter("RealizationPlan"));
+//	
+//				Long count = service.ProjectIntiationAdd(pfmsinitiationdetaildto, UserId);
+//	
+//				if (count > 0) {
+//					redir.addAttribute("result", "Project Details Added Successfully");
+//				} else {
+//					redir.addAttribute("resultfail", "Project Details Add Unsuccessful");
+//				}
+//				redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+//				redir.addFlashAttribute("TabId", "1");
+//				return "redirect:/ProjectIntiationDetailesLanding.htm";
+//	
+//			}
+//	
+//			redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+//			redir.addFlashAttribute("TabId", "1");
+//		}catch (Exception e) {
+//			e.printStackTrace(); logger.error(new Date() +" Inside ProjectOtherDetailsAddSubmit.htm "+UserId, e);
+//			
+//    		return "static/Error";
+//		}
+//		return "redirect:/ProjectIntiationDetailesLanding.htm";
+//
+//	}
 
 	@RequestMapping(value = "ProjectLabInsert.htm", method = RequestMethod.POST)
 	public String ProjectLabInsert(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
@@ -1091,7 +1156,6 @@ public class ProjectController
 
 		return "project/ProjectInitiationDetailsEdit";
 	}
-
 	@RequestMapping(value = "ProjectInitiationDetailsSubmit.htm", method = RequestMethod.POST)
 	public String ProjectInitiationDetailsSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses)
 			throws Exception {
@@ -1102,6 +1166,7 @@ public class ProjectController
 		try {
 		String InitiationId = req.getParameter("IntiationId");
 		String Details = req.getParameter("details");
+//		
 
 		String option = req.getParameter("sub");
 		if (option.equalsIgnoreCase("SUBMIT")) {
@@ -1113,51 +1178,64 @@ public class ProjectController
 			PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
 
 			if (Details.equalsIgnoreCase("requirement")) {
-				pfmsinitiationdetaildto.setRequirements(req.getParameter("requirement"));
+				pfmsinitiationdetaildto.setRequirements(req.getParameter("Requirements"));
+				//edited
+				pfmsinitiationdetaildto.setReqBrief(req.getParameter("ReqBrief"));
 				Alert = "Requirement";
 			}
 			if (Details.equalsIgnoreCase("objective")) {
 				pfmsinitiationdetaildto.setObjective(req.getParameter("objective"));
+				pfmsinitiationdetaildto.setObjBrief(req.getParameter("ObjBrief")); //edited
 				Alert = "Objective";
 			}
 			if (Details.equalsIgnoreCase("scope")) {
 				pfmsinitiationdetaildto.setScope(req.getParameter("scope"));
+				pfmsinitiationdetaildto.setScopeBrief(req.getParameter("ScopeBrief"));
 				Alert = "Scope";
 			}
 			if (Details.equalsIgnoreCase("multilab")) {
 				pfmsinitiationdetaildto.setMultiLabWorkShare(req.getParameter("multilab"));
+				pfmsinitiationdetaildto.setMultiLabBrief(req.getParameter("MultiLabBrief"));
 				Alert = "Multi-Lab Work Share";
 			}
 			if (Details.equalsIgnoreCase("earlierwork")) {
 				pfmsinitiationdetaildto.setEarlierWork(req.getParameter("earlierwork"));
+				pfmsinitiationdetaildto.setEarlierWorkBrief(req.getParameter("EarlierWorkBrief"));
 				Alert = "Earlier Work";
 			}
 			if (Details.equalsIgnoreCase("competency")) {
 				pfmsinitiationdetaildto.setCompentencyEstablished(req.getParameter("competency"));
+				pfmsinitiationdetaildto.setCompentencyBrief(req.getParameter("CompentencyBrief"));
 				Alert = "Competency Established";
 			}
 			if (Details.equalsIgnoreCase("needofproject")) {
 				pfmsinitiationdetaildto.setNeedOfProject(req.getParameter("needofproject"));
+				pfmsinitiationdetaildto.setNeedOfProjectBrief(req.getParameter("NeedOfProjectBrief"));
 				Alert = "Need of Project";
 			}
 			if (Details.equalsIgnoreCase("technology")) {
 				pfmsinitiationdetaildto.setTechnologyChallanges(req.getParameter("technology"));
+				pfmsinitiationdetaildto.setTechnologyBrief(req.getParameter("TechnologyBrief"));
 				Alert = "Technology Challenges";
 			}
 			if (Details.equalsIgnoreCase("riskmitigation")) {
-				pfmsinitiationdetaildto.setRiskMitiagation(req.getParameter("riskmitigation"));
+				pfmsinitiationdetaildto.setRiskMitigation(req.getParameter("riskmitigation"));
+				pfmsinitiationdetaildto.setRiskMitigationBrief(req.getParameter("RiskMitigationBrief"));
 				Alert = "Risk Mitigation";
 			}
 			if (Details.equalsIgnoreCase("proposal")) {
 				pfmsinitiationdetaildto.setProposal(req.getParameter("proposal"));
+				pfmsinitiationdetaildto.setProposalBrief(req.getParameter("ProposalBrief"));
 				Alert = "Proposal";
 			}
 			if (Details.equalsIgnoreCase("realization")) {
 				pfmsinitiationdetaildto.setRealizationPlan(req.getParameter("realization"));
+				pfmsinitiationdetaildto.setRealizationBrief(req.getParameter("RealizationBrief"));
 				Alert = "Realization Plan";
 			}
 			if (Details.equalsIgnoreCase("worldscenario")) {
 				pfmsinitiationdetaildto.setWorldScenario(req.getParameter("worldscenario"));
+				pfmsinitiationdetaildto.setWorldScenarioBrief(req.getParameter("WorldScenarioBrief"));
 				Alert = "World Scenario";
 			}
 
@@ -1186,6 +1264,101 @@ public class ProjectController
 		}
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 	}
+	
+//	@RequestMapping(value = "ProjectInitiationDetailsSubmit.htm", method = RequestMethod.POST)
+//	public String ProjectInitiationDetailsSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses)
+//			throws Exception {
+//		String UserId = (String) ses.getAttribute("Username");
+//
+//		logger.info(new Date() +"Inside ProjectInitiationDetailsSubmit.htm "+UserId);
+//		
+//		try {
+//		String InitiationId = req.getParameter("IntiationId");
+//		String Details = req.getParameter("details");
+//
+//		String option = req.getParameter("sub");
+//		if (option.equalsIgnoreCase("SUBMIT")) {
+//
+//			
+//
+//			String Alert = "";
+//
+//			PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
+//
+//			if (Details.equalsIgnoreCase("requirement")) {
+//				pfmsinitiationdetaildto.setRequirements(req.getParameter("requirement"));
+//				Alert = "Requirement";
+//			}
+//			if (Details.equalsIgnoreCase("objective")) {
+//				pfmsinitiationdetaildto.setObjective(req.getParameter("objective"));
+//				Alert = "Objective";
+//			}
+//			if (Details.equalsIgnoreCase("scope")) {
+//				pfmsinitiationdetaildto.setScope(req.getParameter("scope"));
+//				Alert = "Scope";
+//			}
+//			if (Details.equalsIgnoreCase("multilab")) {
+//				pfmsinitiationdetaildto.setMultiLabWorkShare(req.getParameter("multilab"));
+//				Alert = "Multi-Lab Work Share";
+//			}
+//			if (Details.equalsIgnoreCase("earlierwork")) {
+//				pfmsinitiationdetaildto.setEarlierWork(req.getParameter("earlierwork"));
+//				Alert = "Earlier Work";
+//			}
+//			if (Details.equalsIgnoreCase("competency")) {
+//				pfmsinitiationdetaildto.setCompentencyEstablished(req.getParameter("competency"));
+//				Alert = "Competency Established";
+//			}
+//			if (Details.equalsIgnoreCase("needofproject")) {
+//				pfmsinitiationdetaildto.setNeedOfProject(req.getParameter("needofproject"));
+//				Alert = "Need of Project";
+//			}
+//			if (Details.equalsIgnoreCase("technology")) {
+//				pfmsinitiationdetaildto.setTechnologyChallanges(req.getParameter("technology"));
+//				Alert = "Technology Challenges";
+//			}
+//			if (Details.equalsIgnoreCase("riskmitigation")) {
+//				pfmsinitiationdetaildto.setRiskMitiagation(req.getParameter("riskmitigation"));
+//				Alert = "Risk Mitigation";
+//			}
+//			if (Details.equalsIgnoreCase("proposal")) {
+//				pfmsinitiationdetaildto.setProposal(req.getParameter("proposal"));
+//				Alert = "Proposal";
+//			}
+//			if (Details.equalsIgnoreCase("realization")) {
+//				pfmsinitiationdetaildto.setRealizationPlan(req.getParameter("realization"));
+//				Alert = "Realization Plan";
+//			}
+//			if (Details.equalsIgnoreCase("worldscenario")) {
+//				pfmsinitiationdetaildto.setWorldScenario(req.getParameter("worldscenario"));
+//				Alert = "World Scenario";
+//			}
+//
+//			pfmsinitiationdetaildto.setInitiationId(InitiationId);
+//
+//			Long count = 0L;
+//
+//			count = service.ProjectInitiationDetailsUpdate(pfmsinitiationdetaildto, UserId, Details);
+//
+//			if (count > 0) {
+//				redir.addAttribute("result", "Project Details (" + Alert + ") Edited Successfully");
+//			} else {
+//				redir.addAttribute("resultfail", "Project Initiation Edit Unsuccessful");
+//			}
+//
+//		}
+//
+//		redir.addFlashAttribute("detailsedit", Details);
+//		redir.addFlashAttribute("details", Details);
+//		redir.addFlashAttribute("IntiationId", InitiationId);
+//		redir.addFlashAttribute("TabId", "1");
+//		}catch (Exception e) {
+//			logger.error(new Date() +" Inside ProjectInitiationDetailsSubmit.htm "+UserId, e);
+//			e.printStackTrace();
+//    		return "static/Error";
+//		}
+//		return "redirect:/ProjectIntiationDetailesLanding.htm";
+//	}
 
 	@RequestMapping(value = "ProjectAttachmentAdd.htm", method = RequestMethod.POST)
 	public String ProjectAttachmentAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)

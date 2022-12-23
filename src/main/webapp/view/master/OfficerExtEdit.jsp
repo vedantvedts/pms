@@ -71,7 +71,7 @@ String seslabid=(String)session.getAttribute("labid");
 				    <select class="form-control selectdee" name="labId" data-container="body" data-live-search="true"  required="required"  style="font-size: 5px;"> 
 							<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<%  for ( Object[]  obj :LabList) {%>
-								<%if(OfficerEditData.length==11){ %>
+								<%if(OfficerEditData.length==13){ %>
 								<option value="<%=obj[2] %>" <%if(obj[2].equals(OfficerEditData[10])) {%> selected="selected"  <%} %>> <%=obj[2] %></option>
 								<%}else{ %>
 								<option value="<%=obj[2] %>" <%if(obj[2].toString().equalsIgnoreCase(seslabid)) {%> selected="selected" <%} %>> <%=obj[2] %></option>
@@ -80,18 +80,39 @@ String seslabid=(String)session.getAttribute("labid");
 				     </select> 
 				</div>
 </div> 
-	
+	<div class="col-md-3">
+					 <div class="form-group">
+			                <label>Title</label><br>
+			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Prof. " <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
+								<option value="Rev. "  <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Rev.")){%>  selected="selected" <%}%>>  Rev.</option>
+								<option value="Dr. "   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
+							</select>
+					</div>
+</div>
+<div class="col-md-3">
+					 <div class="form-group">
+			                <label>Rank/Salutation</label><br>
+			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Mr."    <%if(OfficerEditData[12]!=null && OfficerEditData[12].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
+								<option value="Ms."   <%if(OfficerEditData[12]!=null && OfficerEditData[12].toString().equalsIgnoreCase("Ms.")){%>   selected="selected" <%}%>> Ms.</option>
+							</select>
+					</div>
+</div>
 	 
-<div class="col-md-2">
+<div class="col-md-3">
               <div class="form-group">
 						<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
 						<input  class="form-control form-control"  type="text" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
 				</div>
 </div>
+</div>
+<div class="row">
 
 
-
-<div class="col-md-4">
+<div class="col-md-3">
               <div class="form-group">
 						<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
 						<input  class="form-control form-control"  type="text" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 100%;" 	value="<%=OfficerEditData[2] %>">
@@ -112,8 +133,7 @@ String seslabid=(String)session.getAttribute("labid");
 				</div>
 </div>
 
-</div>
-<div class="row">
+
 
 <div class="col-md-3">
               <div class="form-group">
@@ -129,7 +149,8 @@ String seslabid=(String)session.getAttribute("labid");
 					<input  class="form-control form-control" type="tex"   name="mobilenumber" required maxlength="10" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
 			  </div>
 </div>
-
+</div>
+<div class="row">
 
 <div class="col-md-3">
               <div class="form-group">
@@ -145,9 +166,7 @@ String seslabid=(String)session.getAttribute("labid");
 					<input  class="form-control form-control" type="email" name="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
 			</div>
 </div>
-</div>
 
-<div class="row">
 
 <div class="col-md-3">
               <div class="form-group">

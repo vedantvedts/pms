@@ -351,6 +351,8 @@ public class MasterController {
 		        capitalizeWord+=first.toUpperCase()+afterfirst+" ";  
 		    }	
 			name = name.substring(0,1).toUpperCase() + name.substring(1);
+			officermasteradd.setTitle(req.getParameter("title"));
+			officermasteradd.setSalutation(req.getParameter("salutation"));
 			officermasteradd.setEmpName(capitalizeWord);
 			officermasteradd.setDesignation(req.getParameter("Designation"));
 			officermasteradd.setExtNo(req.getParameter("ExtNo"));
@@ -438,7 +440,9 @@ public class MasterController {
 			officermasteradd.setDivision(req.getParameter("Division"));
 			officermasteradd.setEmpId(req.getParameter("OfficerId"));
 			officermasteradd.setDronaEmail(req.getParameter("DronaEmail"));
-			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));		
+			officermasteradd.setInternalEmail(req.getParameter("InternetEmail"));	
+			officermasteradd.setTitle(req.getParameter("title"));
+			officermasteradd.setSalutation(req.getParameter("salutation"));
 			int count= service.OfficerExtUpdate(officermasteradd, UserId);							
 			if(count>0) {
 				redir.addAttribute("result", "External Officer Edited Successfully ");

@@ -1072,13 +1072,14 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		return MilestoneActivityList;
 	}
 	
-	private static final String MILEREMARKUPDATE="update milestone_activity set statusremarks=:remarks , modifiedby=:userid,modifieddate=sysdate() where milestoneactivityid=:id";
+	private static final String MILEREMARKUPDATE="update milestone_activity set FinancialOutlay=:Financial , statusremarks=:remarks , modifiedby=:userid,modifieddate=sysdate() where milestoneactivityid=:id";
 
 	@Override
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto) throws Exception {
 		Query query=manager.createNativeQuery(MILEREMARKUPDATE);
 		query.setParameter("id",dto.getActivityId());
 		query.setParameter("remarks",dto.getStatusRemarks());
+		query.setParameter("Financial",dto.getFinancaOutlay());
 		query.setParameter("userid",dto.getCreatedBy());
 		int result=query.executeUpdate();
 		return result;

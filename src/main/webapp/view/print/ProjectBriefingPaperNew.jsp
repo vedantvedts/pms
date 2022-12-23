@@ -1040,8 +1040,109 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</table> 
 								
 					<%} %>
-								
 					<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
+						
+							
+						<div align="center" style="width:990px">
+							<div align="center" style="margin-left:25px;max-width:300px;float:left;">
+								<!-- <div align="center" style="max-width:400px;float:left;"> -->
+								<table class="subtables" style="align: left; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;max-width:200px;  border-collapse:collapse;" >
+									<thead>
+										<tr>
+											 <th  style="max-width: 55px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 55px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%if(ReviewMeetingList.get(z).size()==0){ %>
+										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+										<%}
+										else if(ReviewMeetingList.size()>0)
+										  {int i=1;
+										for(Object[] obj:ReviewMeetingList.get(z)){ %>
+											<tr>
+												
+												<td  style="max-width: 55px;"><%=obj[1] %> #<%=i %></td>												
+											<%-- 	<td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>			
+										<%i++;
+										}}else{ %>
+										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+										<%} %> 
+								</tbody>
+							</table>
+							</div>
+						
+							
+							<div align="center" style="max-width:300px; display:inline-block; ;">
+								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
+									<thead>
+										<tr>
+											 <th  style="max-width: 55px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 55px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+										<%}
+										else if(ReviewMeetingListPMRC.size()>0)
+										  {int i=1;
+										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+											<tr>
+												<td  style="max-width: 55px;"><%=obj[1] %> #<%=i %></td>												
+											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>			
+										<%i++;
+										}}else{ %>
+										
+											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+										
+									<%} %> 
+								</tbody>
+							</table>
+							</div>
+			
+						<div align="left" style="max-width:300px; float:right; ;">
+								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
+									<thead>
+										<tr>
+											 <th  style="max-width: 55px; ">Committee</th>
+											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
+											 <th  style="max-width: 55px; "> Date Held</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+										<%}
+										else if(ReviewMeetingListPMRC.size()>0)
+										  {int i=1;
+										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+											<tr>
+												<td  style="max-width: 55px;"><%=obj[1] %> #<%=i %></td>												
+											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+											</tr>			
+										<%i++;
+										}}else{ %>
+										
+											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+										
+									<%} %> 
+								</tbody>
+							</table>
+							</div>
+			</div>
+															
+					<%} %>
+			
+			</details>			
+					<%-- <div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
 						
 							
 						<div align="center">
@@ -1064,7 +1165,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<tr>
 												
 												<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 200px;" ><%= obj[4]%></td>
 												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%i++;
@@ -1092,7 +1193,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
 											<tr>
 												<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-												<%-- <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 200px;" ><%= obj[4]%></td>
 												<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%i++;
@@ -1109,7 +1210,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															
 					<%} %>
 				</div>
-			</details>
+			</details> --%>
 						
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
