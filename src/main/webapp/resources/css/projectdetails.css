@@ -564,7 +564,7 @@
 /* inside tabs */
 
 p {
-    margin: 0px 0px 20px 0px
+    margin: 0px 0px 0px 0px
 }
 
 p:last-child {
@@ -649,6 +649,6 @@ a:hover {
 }
 
 .tab-content p{
-	padding:5px 0px;
+	padding:0px 0px;
 }
 

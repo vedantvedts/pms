@@ -47,7 +47,30 @@ small{
     font-weight: 500;
 }
 
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
 
+.card-body{
+	background-color: #e2ebf0;
+	padding-left:30px;
+	padding-right:0px;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+
+.card{
+	border: 1px solid grey;
+	
+	}
+	
+small{
+	margin-top: 7px;
+    color: green;
+    font-weight: 500;
+}
 
 
 </style>
@@ -78,23 +101,33 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	<div class="row">
+						  					
+		                               <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        		</div>
+		                   					
+										<div class="col-md-11" >
+		                                     <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" value="<%if(obj[13]!=null){%><%=obj[13]%><%}else{%><%}%> "placeholde="maximum 250 characters" >  
+		                        			 </div>
+		                   				</div> 
+		                   							
+		                   			</div>
+							</div>
+						<div class="card-body">
+									    		<label >Detailed: </label>
 						  	<div id="content">
-						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
-									
-										<div  id="summernote" class="center"><%=obj[0]%></div>
-												
+										<div  id="summernote" class="center"><%if(obj[0]!=null){%><%=obj[0]%><%}else{%><%}%></div>
 									</div>
-									  
-									<textarea name="requirement" style="display:none;"></textarea>
-									
+									<textarea name="Requirements" style="display:none;" ></textarea>
 									<input type="hidden" name="details" value="requirement" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
-                					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
-												
-								</div>
-								
+                					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   	
+								</div>		
+
 								<br>
 									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
@@ -125,15 +158,29 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+							<div class="row">
+									<div class="form-group">
+		                                 <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        	</div>
+		                   					 
+									<div class="col-md-11">
+		                                 <div class="form-group">
+		                                   <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" value="<%if(obj[14]!=null){%><%=obj[14]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        		</div>
+		                   			</div>
+		                   		</div>
+						</div>
+						<div class="card-body">
+								<label class="control-label">Detailed: </label>
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+								<div class="row"  style="margin-bottom:10px; margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[1]%></div>
+										<div  id="summernote" class="center"><%if(obj[1]!=null){%><%=obj[1]%><%}else{%><%}%></div>
 												
 									</div>
-									  
+									 
 									<textarea name="objective" style="display:none;"></textarea>
 									
 									<input type="hidden" name="details" value="objective" />
@@ -172,12 +219,28 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	
+						  	<div class="row">
+											   <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" value="<%if(obj[15]!=null){%><%=obj[15]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   	</div>
+												</div>
+								<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[2]%></div>
+										<div  id="summernote" class="center"><%if(obj[2]!=null){%><%=obj[2]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -187,9 +250,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
+								</div>		
 									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								
@@ -219,12 +280,27 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	<div class="row">
+									<div class="form-group">
+		                                 <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        	</div>
+		                   					 
+									<div class="col-md-11">
+		                                   <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" value="<%if(obj[16]!=null){%><%=obj[16]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			</div>
+		                   			</div> 
+		                   	</div>
+						</div>
+						<div class="card-body">
+							<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[3]%></div>
+										<div  id="summernote" class="center"><%if(obj[3]!=null){%><%=obj[3]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -234,9 +310,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
+								</div>	
 									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
@@ -265,12 +339,29 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	
+						  	<div class="row">
+									<div class="form-group">
+		                                  <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        	</div>
+		                   					 
+									<div class="col-md-11">
+		                                <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="EarlierWorkBrief" maxlength="250" value="<%if(obj[17]!=null){%><%=obj[17]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        		</div>
+		                   			</div> 
+		                   					  
+		                   	</div>
+					</div>
+					<div class="card-body">
+							<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[4]%></div>
+										<div  id="summernote" class="center"><%if(obj[4]!=null){%><%=obj[4]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -280,10 +371,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
-									 			
+								</div>	 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -311,12 +399,30 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  
+						  
+						  	<div class="row">
+												 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250" value="<%if(obj[18]!=null){%><%=obj[18]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					  
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[5]%></div>
+										<div  id="summernote" class="center"><%if(obj[5]!=null){%><%=obj[5]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -327,9 +433,6 @@ small{
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>
-								
-								<br>
-									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -357,12 +460,30 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	
+						  
+						  	<div class="row">
+												 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" value="<%if(obj[19]!=null){%><%=obj[19]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					   
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[6]%></div>
+										<div  id="summernote" class="center"><%if(obj[6]!=null){%><%=obj[6]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -372,10 +493,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
-									 			
+								</div>	
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -404,12 +522,30 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	
+						  
+						  	<div class="row">
+												 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="TechnologyBrief" id="Brief" maxlength="250" value="<%if(obj[20]!=null){%><%=obj[20]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[7]%></div>
+										<div  id="summernote" class="center"><%if(obj[7]!=null){%><%=obj[7]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -419,10 +555,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
-									 			
+								</div>		
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -450,12 +583,29 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  
+						  
+						  	<div class="row">
+											 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" value="<%if(obj[21]!=null){%><%=obj[21]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[8]%></div>
+										<div  id="summernote" class="center"><%if(obj[8]!=null){%><%=obj[8]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -465,10 +615,7 @@ small{
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
-								</div>
-								
-								<br>
-									 			
+								</div>			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -496,12 +643,28 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	
+						  	<div class="row">
+											 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" value="<%if(obj[22]!=null){%><%=obj[22]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[9]%></div>
+										<div  id="summernote" class="center"><%if(obj[9]!=null){%><%=obj[9]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -512,9 +675,7 @@ small{
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>
-								
-								<br>
-									 			
+									
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
@@ -542,12 +703,28 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
+						  	<div class="row">
+										 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" value="<%if(obj[23]!=null){%><%=obj[23]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					   
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  
 						  	<div id="content">
 						  	
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[10]%></div>
+										<div  id="summernote" class="center"><%if(obj[10]!=null){%><%=obj[10]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -558,8 +735,6 @@ small{
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>
-								
-								<br>
 									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
@@ -589,12 +764,31 @@ small{
 						 </h3>
 						  
 						  <div class="card-body" >
-						  	<div id="content">
 						  	
+						   
+						  	<div class="row">
+								 <div class="form-group">
+		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                        			   </div>
+		                   					 
+												<div class="col-md-11">
+		                                        <div class="form-group">
+		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250" value="<%if(obj[24]!=null){%><%=obj[24]%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                        			   </div>
+		                   					   </div> 
+		                   					   </div>
+												</div>
+												<div class="card-body">
+									    		<label class="control-label">Detailed: </label>
+						  					<div id="content">
+						  	
+								
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+									
+									
 									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 									
-										<div  id="summernote" class="center"><%=obj[12]%></div>
+										<div  id="summernote" class="center"><%if(obj[12]!=null){%><%=obj[12]%><%}else{%><%}%></div>
 												
 									</div>
 									  
@@ -605,8 +799,6 @@ small{
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>
-								
-								<br>
 									 			
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
@@ -642,7 +834,7 @@ small{
 $('#myfrm').submit(function() {
     
 	  var data =CKEDITOR.instances['summernote'].getData();
-	  $('textarea[name=requirement]').val(data);
+	  $('textarea[name=Requirements]').val(data);
 
  });
  

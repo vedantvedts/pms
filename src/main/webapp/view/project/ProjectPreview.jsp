@@ -46,7 +46,10 @@ overflow-x: hidden;
         
     }
 }
-
+hr{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
 .nav-pills-custom .nav-link.active::before {
     opacity: 1;
 }
@@ -62,7 +65,7 @@ overflow-x: hidden;
 /* inside tabs */
 
 p {
-    margin: 0px 0px 20px 0px
+    margin: 0px 0px 0px 0px
 }
 
 p:last-child {
@@ -388,7 +391,7 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
                         <div class="container " style="margin: 0px !important;padding: 0px !important">
 						    <div class="col">
 						    
-						        <div class="tab-vertical">
+						     <div class="tab-vertical">
 						            <ul class="nav nav-tabs" id="myTab3" role="tablist">
 						            	<li class="nav-item"> <a class="nav-link active" id="needofprj-vertical-tab" data-toggle="tab" href="#needofprj-vertical" role="tab" aria-controls="contact" aria-selected="false">Need Of Project</a> </li>
 						                <li class="nav-item"> <a class="nav-link " id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="home" aria-selected="true">Requirement</a> </li>
@@ -406,54 +409,104 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						            
 						            <%for(Object[] 	obj:DetailsList){ %>
 						            
-						            <div class="tab-content" id="myTabContent3">
+						            <div class="tab-content" id="myTabContent3" style="padding-top:0px">
 						            	<div class="tab-pane fade " id="worldscenario-vertical" role="tabpanel" aria-labelledby="worldscenario-vertical-tab">
 						                    <h3>World Scenario</h3>
-						                    <p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p>
+						                    <hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; color:#07689f; font-family: Lato;">Brief</label>
+											<p><%if(obj[24]!=null){%><%=obj[24] %><%}else{ %>-<%} %></p>
+											<hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p></div>
 						                </div>
 						                <div class="tab-pane fade " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
-						                    <h3>Requirement</h3>
-						                    <p><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p>
+						                    <h3>Requirement</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[13]!=null){%><%=obj[13] %><%}else{ %>-<%} %></p><hr>				                
+											<div>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p style="margin-top:0px;!important"><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p></div>
 						                </div>
 						                <div class="tab-pane fade" id="obj-vertical" role="tabpanel" aria-labelledby="obj-vertical-tab">
-						                    <h3>Objective</h3>
-											<p><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Objective</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px;font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[14]!=null){%><%=obj[14] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="scope-vertical" role="tabpanel" aria-labelledby="scope-vertical-tab">
-						                    <h3>Scope</h3>
-											<p><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Scope</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[15]!=null){%><%=obj[15] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="multilab-vertical" role="tabpanel" aria-labelledby="multilab-vertical-tab">
-						                    <h3>Multi Lab Work Share</h3>
-											<p><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Multi Lab Work Share</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[16]!=null){%><%=obj[16] %><%}else{ %>-<%} %></p><hr>				                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-family: Lato; 	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="earlierwork-vertical" role="tabpanel" aria-labelledby="earlierwork-vertical-tab">
-						                    <h3>Earlier Work</h3>
-											<p><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Earlier Work</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[17]!=null){%><%=obj[17] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="competency-vertical" role="tabpanel" aria-labelledby="competency-vertical-tab">
-						                    <h3>Competency Established</h3>
-											<p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Competency Established</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[18]!=null){%><%=obj[18] %><%}else{ %>-<%} %></p><hr>				                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						                <div class="tab-pane fade show active" id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
-						                    <h3>Need Of Project</h3>
-											<p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p>						                
-										</div>
+						                    <h3>Need Of Project</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[19]!=null){%><%=obj[19] %><%}else{ %>-<%} %></p><hr>					                
+											<div>
+											<label style="margin-top:0px; margin-bottom:0px;; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p></div>					                
+											</div>
 						                <div class="tab-pane fade" id="technology-vertical" role="tabpanel" aria-labelledby="technology-vertical-tab">
-						                    <h3>Technology Challenges</h3>
-											<p><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Technology Challenges</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[20]!=null){%><%=obj[20] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="risk-vertical" role="tabpanel" aria-labelledby="risk-vertical-tab">
-						                    <h3>Risk Mitigation</h3>
-											<p><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Risk Mitigation</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[21]!=null){%><%=obj[21] %><%}else{ %>-<%} %></p><hr>				                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="proposal-vertical" role="tabpanel" aria-labelledby="proposal-vertical-tab">
-						                    <h3>Proposal</h3>
-											<p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Proposal</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[22]!=null){%><%=obj[22] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="realization-vertical" role="tabpanel" aria-labelledby="realization-vertical-tab">
-						                    <h3>Realization Plan</h3>
-											<p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p>						                
+						                    <h3>Realization Plan</h3><hr>
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
+											<p><%if(obj[23]!=null){%><%=obj[23] %><%}else{ %>-<%} %></p><hr>					                
+											<div style="">
+											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
+											<p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						            </div>
 						            

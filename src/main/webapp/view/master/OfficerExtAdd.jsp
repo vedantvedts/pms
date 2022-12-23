@@ -83,14 +83,38 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			</div>
 </div>
 	
+
 <div class="col-md-3">
+					 <div class="form-group">
+			                <label>Title</label><br>
+			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Prof. ">Prof.</option>
+								<option value="Rev. ">Rev.</option>
+								<option value="Dr. ">Dr.</option>
+								
+							</select>
+					</div>
+</div>
+	<div class="col-md-3">
+					 <div class="form-group">
+			                <label>Rank/Salutation</label><br>
+			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Mr.">Mr.</option>
+								<option value="Ms.">Ms.</option>
+							</select>
+					</div>
+	</div>
+	<div class="col-md-3">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
 					<input  class="form-control form-control"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;width:100%;text-transform: uppercase;"  >
 			</div>
 </div>
+</div>
 
-
+<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
@@ -108,8 +132,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 					</select> 
 		</div>
 </div>
-</div>
-<div class="row">
+
 
 <div class="col-md-3">
               <div class="form-group">
@@ -126,6 +149,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 				</div>
 </div>
 
+</div>
+<div class="row">
 
 <div class="col-md-3">
               <div class="form-group">
@@ -140,9 +165,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 						<input  class="form-control form-control" type="email" id="DronaEmail" name="DronaEmail"  maxlength="255" style="font-size: 15px;width:100%"  >
 			  </div>
 </div>
-</div>
 
-<div class="row">
 <div class="col-md-3">
               <div class="form-group">
 						<label >Internet Email:</label>
@@ -161,6 +184,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 
 </div>
+
 <div class="row">
 <div class="col-sm-5" ></div>
 	<div>

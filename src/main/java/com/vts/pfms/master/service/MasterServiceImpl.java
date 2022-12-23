@@ -136,6 +136,8 @@ public class MasterServiceImpl implements MasterService {
 		empExternal.setDivisionId(Long.parseLong(officermasteradd.getDivision()));
 		empExternal.setDronaEmail(officermasteradd.getDronaEmail());
 		empExternal.setInternetEmail(officermasteradd.getInternalEmail());
+		empExternal.setTitle(officermasteradd.getTitle());
+		empExternal.setSalutation(officermasteradd.getSalutation());
 		empExternal.setCreatedBy(UserId);
 		empExternal.setCreatedDate(sdf1.format(new Date()));
 		empExternal.setIsActive(1);
@@ -185,7 +187,8 @@ public class MasterServiceImpl implements MasterService {
 			empExternal.setModifiedBy(UserId);
 			empExternal.setModifiedDate(sdf1.format(new Date()));
 			empExternal.setEmpId(Long.parseLong(officermasteradd.getEmpId()));
-			
+			empExternal.setTitle(officermasteradd.getTitle());
+			empExternal.setSalutation(officermasteradd.getSalutation());
 			return dao.OfficerExtUpdate(empExternal);
 		
 	}

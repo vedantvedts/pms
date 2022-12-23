@@ -217,6 +217,32 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectDetailsPreview(IntiationId);
 	}
 
+//	@Override
+//	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId) throws Exception {
+//		
+//		logger.info(new Date() +"Inside SERVICE ProjectIntiationAdd ");
+//		PfmsInitiationDetail pfmsinitiationdetail=new PfmsInitiationDetail();
+//		
+//		pfmsinitiationdetail.setInitiationId(Long.parseLong(pfmsinitiationdetaildto.getInitiationId()));
+//		pfmsinitiationdetail.setRequirements(pfmsinitiationdetaildto.getRequirements());
+//		pfmsinitiationdetail.setObjective(pfmsinitiationdetaildto.getObjective());
+//		pfmsinitiationdetail.setScope(pfmsinitiationdetaildto.getScope());
+//		pfmsinitiationdetail.setMultiLabWorkShare(pfmsinitiationdetaildto.getMultiLabWorkShare());
+//		pfmsinitiationdetail.setEarlierWork(pfmsinitiationdetaildto.getEarlierWork());
+//		pfmsinitiationdetail.setCompentencyEstablished(pfmsinitiationdetaildto.getCompentencyEstablished());
+//		pfmsinitiationdetail.setNeedOfProject(pfmsinitiationdetaildto.getNeedOfProject());
+//		pfmsinitiationdetail.setTechnologyChallanges(pfmsinitiationdetaildto.getTechnologyChallanges());
+//		pfmsinitiationdetail.setRiskMitiagation(pfmsinitiationdetaildto.getRiskMitiagation());
+//		pfmsinitiationdetail.setProposal(pfmsinitiationdetaildto.getProposal());
+//		pfmsinitiationdetail.setRealizationPlan(pfmsinitiationdetaildto.getRealizationPlan());
+//		pfmsinitiationdetail.setCreatedBy(UserId);
+//		pfmsinitiationdetail.setCreatedDate(sdf1.format(new Date()));
+//		pfmsinitiationdetail.setIsActive(1);
+//		
+//		
+//		
+//		return dao.ProjectIntiationDetailAdd(pfmsinitiationdetail);
+//	}
 	@Override
 	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId) throws Exception {
 		
@@ -232,9 +258,22 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationdetail.setCompentencyEstablished(pfmsinitiationdetaildto.getCompentencyEstablished());
 		pfmsinitiationdetail.setNeedOfProject(pfmsinitiationdetaildto.getNeedOfProject());
 		pfmsinitiationdetail.setTechnologyChallanges(pfmsinitiationdetaildto.getTechnologyChallanges());
-		pfmsinitiationdetail.setRiskMitiagation(pfmsinitiationdetaildto.getRiskMitiagation());
+		pfmsinitiationdetail.setRiskMitigation(pfmsinitiationdetaildto.getRiskMitigation());
 		pfmsinitiationdetail.setProposal(pfmsinitiationdetaildto.getProposal());
 		pfmsinitiationdetail.setRealizationPlan(pfmsinitiationdetaildto.getRealizationPlan());
+		pfmsinitiationdetail.setReqBrief(pfmsinitiationdetaildto.getReqBrief());
+		pfmsinitiationdetail.setObjBrief(pfmsinitiationdetaildto.getObjBrief());
+		pfmsinitiationdetail.setScopeBrief(pfmsinitiationdetaildto.getScopeBrief());
+		pfmsinitiationdetail.setMultiLabBrief(pfmsinitiationdetaildto.getMultiLabBrief());
+		pfmsinitiationdetail.setEarlierWorkBrief(pfmsinitiationdetaildto.getEarlierWorkBrief());
+		pfmsinitiationdetail.setCompentencyBrief(pfmsinitiationdetaildto.getCompentencyBrief());
+		pfmsinitiationdetail.setNeedOfProjectBrief(pfmsinitiationdetaildto.getNeedOfProjectBrief());
+		pfmsinitiationdetail.setTechnologyBrief(pfmsinitiationdetaildto.getTechnologyBrief());
+		pfmsinitiationdetail.setRiskMitigationBrief(pfmsinitiationdetaildto.getRiskMitigationBrief());
+		pfmsinitiationdetail.setProposalBrief(pfmsinitiationdetaildto.getProposalBrief());
+		pfmsinitiationdetail.setRealizationBrief(pfmsinitiationdetaildto.getRealizationBrief());
+		pfmsinitiationdetail.setWorldScenarioBrief(pfmsinitiationdetaildto.getWorldScenarioBrief());
+		
 		pfmsinitiationdetail.setCreatedBy(UserId);
 		pfmsinitiationdetail.setCreatedDate(sdf1.format(new Date()));
 		pfmsinitiationdetail.setIsActive(1);
@@ -243,7 +282,6 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return dao.ProjectIntiationDetailAdd(pfmsinitiationdetail);
 	}
-
 	@Override
 	public List<Object[]> BudgetItem(String BudegtId) throws Exception {
 
@@ -575,6 +613,58 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectScheduleDelete(pfmsinitiationschedule,pfmsinitiation);
 	}
 
+//	@Override
+//	public Long ProjectInitiationDetailsUpdate(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId,String Details) throws Exception{
+//		
+//		logger.info(new Date() +"Inside SERVICE ProjectInitiationDetailsUpdate ");
+//		PfmsInitiationDetail pfmsinitiationdetail=new PfmsInitiationDetail();
+//		
+//		if(Details.equalsIgnoreCase("requirement")) {
+//			pfmsinitiationdetail.setRequirements(pfmsinitiationdetaildto.getRequirements());
+//		}
+//		if(Details.equalsIgnoreCase("objective")) {
+//			pfmsinitiationdetail.setObjective(pfmsinitiationdetaildto.getObjective());
+//		}
+//		if(Details.equalsIgnoreCase("scope")) {
+//			pfmsinitiationdetail.setScope(pfmsinitiationdetaildto.getScope());
+//		}
+//		if(Details.equalsIgnoreCase("multilab")) {
+//			pfmsinitiationdetail.setMultiLabWorkShare(pfmsinitiationdetaildto.getMultiLabWorkShare());
+//		}
+//		if(Details.equalsIgnoreCase("earlierwork")) {
+//			pfmsinitiationdetail.setEarlierWork(pfmsinitiationdetaildto.getEarlierWork());
+//		}
+//		if(Details.equalsIgnoreCase("competency")) {
+//			pfmsinitiationdetail.setCompentencyEstablished(pfmsinitiationdetaildto.getCompentencyEstablished());
+//		}
+//		if(Details.equalsIgnoreCase("needofproject")) {
+//			pfmsinitiationdetail.setNeedOfProject(pfmsinitiationdetaildto.getNeedOfProject());
+//		}
+//		if(Details.equalsIgnoreCase("technology")) {
+//			pfmsinitiationdetail.setTechnologyChallanges(pfmsinitiationdetaildto.getTechnologyChallanges());
+//		}
+//		if(Details.equalsIgnoreCase("riskmitigation")) {
+//			pfmsinitiationdetail.setRiskMitigation(pfmsinitiationdetaildto.getRiskMitigation());
+//		}
+//		if(Details.equalsIgnoreCase("proposal")) {
+//			pfmsinitiationdetail.setProposal(pfmsinitiationdetaildto.getProposal());
+//		}
+//		if(Details.equalsIgnoreCase("realization")) {
+//			pfmsinitiationdetail.setRealizationPlan(pfmsinitiationdetaildto.getRealizationPlan());
+//		}
+//		if(Details.equalsIgnoreCase("worldscenario")) {
+//			pfmsinitiationdetail.setWorldScenario(pfmsinitiationdetaildto.getWorldScenario());
+//		}
+//		
+//		
+//		pfmsinitiationdetail.setInitiationId(Long.parseLong(pfmsinitiationdetaildto.getInitiationId()));
+//		pfmsinitiationdetail.setModifiedBy(UserId);
+//		pfmsinitiationdetail.setModifiedDate(sdf1.format(new Date()));
+//		
+//		
+//		return dao.ProjectInitiationDetailsUpdate(pfmsinitiationdetail,Details);
+//	}
+
 	@Override
 	public Long ProjectInitiationDetailsUpdate(PfmsInitiationDetailDto pfmsinitiationdetaildto, String UserId,String Details) throws Exception{
 		
@@ -583,39 +673,51 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		if(Details.equalsIgnoreCase("requirement")) {
 			pfmsinitiationdetail.setRequirements(pfmsinitiationdetaildto.getRequirements());
+			pfmsinitiationdetail.setReqBrief(pfmsinitiationdetaildto.getReqBrief());
 		}
 		if(Details.equalsIgnoreCase("objective")) {
 			pfmsinitiationdetail.setObjective(pfmsinitiationdetaildto.getObjective());
+			pfmsinitiationdetail.setObjBrief(pfmsinitiationdetaildto.getObjBrief());
 		}
 		if(Details.equalsIgnoreCase("scope")) {
 			pfmsinitiationdetail.setScope(pfmsinitiationdetaildto.getScope());
+			pfmsinitiationdetail.setScopeBrief(pfmsinitiationdetaildto.getScopeBrief());
 		}
 		if(Details.equalsIgnoreCase("multilab")) {
 			pfmsinitiationdetail.setMultiLabWorkShare(pfmsinitiationdetaildto.getMultiLabWorkShare());
+			pfmsinitiationdetail.setMultiLabBrief(pfmsinitiationdetaildto.getMultiLabBrief());
 		}
 		if(Details.equalsIgnoreCase("earlierwork")) {
 			pfmsinitiationdetail.setEarlierWork(pfmsinitiationdetaildto.getEarlierWork());
+			pfmsinitiationdetail.setEarlierWorkBrief(pfmsinitiationdetaildto.getEarlierWorkBrief());
 		}
 		if(Details.equalsIgnoreCase("competency")) {
 			pfmsinitiationdetail.setCompentencyEstablished(pfmsinitiationdetaildto.getCompentencyEstablished());
+			pfmsinitiationdetail.setCompentencyBrief(pfmsinitiationdetaildto.getCompentencyBrief());
 		}
 		if(Details.equalsIgnoreCase("needofproject")) {
 			pfmsinitiationdetail.setNeedOfProject(pfmsinitiationdetaildto.getNeedOfProject());
+			pfmsinitiationdetail.setNeedOfProjectBrief(pfmsinitiationdetaildto.getNeedOfProjectBrief());
 		}
 		if(Details.equalsIgnoreCase("technology")) {
 			pfmsinitiationdetail.setTechnologyChallanges(pfmsinitiationdetaildto.getTechnologyChallanges());
+			pfmsinitiationdetail.setTechnologyBrief(pfmsinitiationdetaildto.getTechnologyBrief());
 		}
 		if(Details.equalsIgnoreCase("riskmitigation")) {
-			pfmsinitiationdetail.setRiskMitiagation(pfmsinitiationdetaildto.getRiskMitiagation());
+			pfmsinitiationdetail.setRiskMitigation(pfmsinitiationdetaildto.getRiskMitigation());
+			pfmsinitiationdetail.setRiskMitigationBrief(pfmsinitiationdetaildto.getRiskMitigationBrief());
 		}
 		if(Details.equalsIgnoreCase("proposal")) {
 			pfmsinitiationdetail.setProposal(pfmsinitiationdetaildto.getProposal());
+			pfmsinitiationdetail.setProposalBrief(pfmsinitiationdetaildto.getProposalBrief());
 		}
 		if(Details.equalsIgnoreCase("realization")) {
 			pfmsinitiationdetail.setRealizationPlan(pfmsinitiationdetaildto.getRealizationPlan());
+			pfmsinitiationdetail.setRealizationBrief(pfmsinitiationdetaildto.getRealizationBrief());
 		}
 		if(Details.equalsIgnoreCase("worldscenario")) {
 			pfmsinitiationdetail.setWorldScenario(pfmsinitiationdetaildto.getWorldScenario());
+			pfmsinitiationdetail.setWorldScenarioBrief(pfmsinitiationdetaildto.getWorldScenarioBrief());
 		}
 		
 		
@@ -626,7 +728,6 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		return dao.ProjectInitiationDetailsUpdate(pfmsinitiationdetail,Details);
 	}
-
 	@Override
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 	

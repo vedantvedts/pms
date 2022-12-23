@@ -16,6 +16,7 @@ public class MilestoneActivityDto {
 	private String OicEmpId1;
 	private String ProgressStatus;
 	private String ActivityStatusId;
+	private Double FinancaOutlay;
 	private String StatusRemarks;
 	private String RevisionNo;
 	private String Weightage;
@@ -25,6 +26,14 @@ public class MilestoneActivityDto {
 	private String ModifiedDate;
 	private int IsActive;
 	
+	
+	
+	public Double getFinancaOutlay() {
+		return FinancaOutlay;
+	}
+	public void setFinancaOutlay(Double financaOutlay) {
+		FinancaOutlay = financaOutlay;
+	}
 	public String getActivityId() {
 		return ActivityId;
 	}

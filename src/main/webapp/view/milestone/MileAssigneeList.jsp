@@ -731,14 +731,15 @@ h6{
   	      </div>
   	      <div class="modal-body">
   	      
-  	      	<form action="MileRemarkUpdate.htm" method="POST">
+  	      	<form action="MileRemarkUpdate.htm" method="POST" autocomplete="on">
   	      		<div class="row">
-  	      		    <div class="col-md-12">
-  	      		    Remarks:<br>
-  	      		    <textarea class="form-control"  name="Remarks"   required="required"  maxlength="255"> </textarea>
+  	      		    <div class="col-md-12"> Remarks :<br>
+  	      		    		<textarea class="form-control"  name="Remarks"   required="required"  maxlength="255"> </textarea>
   	      		    </div>
-
-
+  	      		    <br>
+					<div class="col-md-12">Financial Outlay : <br>
+							<input class="form-control" name="financialoutlay" type="text">
+					</div>
   	      			</div>
   	      		<br>
   	      		<div align="center">

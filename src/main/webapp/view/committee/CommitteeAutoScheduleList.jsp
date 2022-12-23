@@ -206,7 +206,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 						<h5 class="col-md-4"> Auto-Scheduled List for <%=projectname%></h5>
 						
 						
-						<div class="col-md-2"  style="float: right;">							
+						<div class="col-md-2"  >							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform">
 								
 									<h6 class="control-label" > Project : </h6> &nbsp;&nbsp;&nbsp;
@@ -226,7 +226,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>						
 						</div>	
 						
-						<div class="col-md-2"  style="float: right;">							
+						<div class="col-md-2"  >							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform2">
 								
 									<h6 class="control-label" > Committee : </h6> &nbsp;&nbsp;&nbsp;
@@ -246,7 +246,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>						
 						</div>	
 						
-						<div class="col-md-3"  >							
+						<div class="col-md-3"  style="padding-left: 80px;">							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform1">
 								
 									<h6 class="control-label" > Status :  </h6> &nbsp;
@@ -264,12 +264,8 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 						  			<%-- <input type="hidden" name="projectstatus" value="<%=projectstatus%>" />  	 --%>						
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 							</form>						
-						</div>	
-						
-						
-						
-						<div class="col-md-1"  style="float: right;">
-						
+						</div>
+						<div class="col-md-1">
 							<%if(divisionid !=null && divisionid.equalsIgnoreCase("D")){ %>
 							<form action="MainDashBoard.htm">
 								<button type="submit" class="btn btn-primary btn-sm back"  style="margin-bottom: 2%">BACK</button>

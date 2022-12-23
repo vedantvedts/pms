@@ -463,8 +463,90 @@ String lablogo=(String)request.getAttribute("lablogo");
 <h1 class="break"></h1>
 
 
-<!-- Objective and Scope-->
+<!-- Objective -->
+ <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+	<tbody>
+		<tr>
+			<th colspan="4"  style="text-align:center;" class="heading heading-color">Objective</th>
+		</tr>
+		<tr>
+			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+		</tr>
+	</tbody>
+</table>
 
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+	<tbody>
+<%if(!DetailsList.isEmpty()){
+	
+	for(Object[] obj: DetailsList){
+	%>
+	
+		<tr>
+		<%if(obj[1]!=null){  %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[1] %></td>
+		<%}else{ %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
+		<%} %>
+		</tr>
+
+	<%}}else{ %>
+
+<tr>
+	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+</tr>
+
+<%} %>
+
+	</tbody>
+</table>
+  
+  
+   <h1 class="break"></h1>
+  
+  <!-- Scope -->
+    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+	<tbody>
+		<tr>
+			<th colspan="4"  style="text-align:center;" class="heading heading-color">Scope</th>
+		</tr>
+		<tr>
+			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+	<tbody>
+<%if(!DetailsList.isEmpty()){
+	
+	for(Object[] obj: DetailsList){
+	%>
+	
+		<tr>
+		<%if(obj[2]!=null){  %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[2] %></td>
+		<%}else{ %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
+		<%} %>
+		</tr>
+
+	<%}}else{ %>
+
+<tr>
+	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+</tr>
+
+<%} %>
+
+	</tbody>
+</table>
+  
+  
+   <h1 class="break"></h1>
+  
+  
+<%-- 
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
@@ -517,7 +599,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 </table>
 
  <h1 class="break"></h1>
- 
+  --%>
 <!-- Deliverables-->
 
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
@@ -672,8 +754,90 @@ for(Object[] obj : DetailsList){   %>
  <h1 class="break"></h1>
 
  
-<!-- Technology Challenges -->
 
+<!-- Technology Challenges -->
+  <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+	<tbody>
+		<tr>
+			<th colspan="4"  style="text-align:center;" class="heading heading-color">Technology Challenges</th>
+		</tr>
+		<tr>
+			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+	<tbody>
+<%if(!DetailsList.isEmpty()){
+	
+	for(Object[] obj: DetailsList){
+	%>
+	
+		<tr>
+		<%if(obj[7]!=null){  %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[7] %></td>
+		<%}else{ %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
+		<%} %>
+		</tr>
+
+	<%}}else{ %>
+
+<tr>
+	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+</tr>
+
+<%} %>
+
+	</tbody>
+</table>
+  
+  
+   <h1 class="break"></h1> 
+   
+   <!--Risk Mitigation  -->
+    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+	<tbody>
+		<tr>
+			<th colspan="4"  style="text-align:center;" class="heading heading-color">Risk Mitigation</th>
+		</tr>
+		<tr>
+			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+		</tr>
+	</tbody>
+</table>
+
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+	<tbody>
+<%if(!DetailsList.isEmpty()){
+	
+	for(Object[] obj: DetailsList){
+	%>
+	
+		<tr>
+		<%if(obj[8]!=null){  %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[8] %></td>
+		<%}else{ %>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
+		<%} %>
+		</tr>
+
+	<%}}else{ %>
+
+<tr>
+	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+</tr>
+
+<%} %>
+
+	</tbody>
+</table>
+  
+  
+   <h1 class="break"></h1> 
+   
+<%-- 
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
@@ -732,7 +896,7 @@ for(Object[] obj : DetailsList){   %>
 </table>
 
  <h1 class="break"></h1>
- 
+  --%>
  
  <!-- Proposal -->
 

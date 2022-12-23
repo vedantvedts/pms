@@ -181,7 +181,7 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 					<select class="form-control selectdee " name="EmpId" style="margin-left: 12px;" required="required" multiple="multiple" data-placeholder= "Select Employees"  >
 			           	<%if(ProjectAssignList!=null){
 				          for(Object[] protype:OfficerList ){ %>
-				        	<option value="<%=protype[0] %>"><%=protype[1].toString()%>, <%=protype[3].toString() %></option>
+				        	<option value="<%=protype[0] %>"><%=protype[1]%>, <%=protype[3]%></option>
 			        	<%}}%>
 				  </select>
 	    </td>

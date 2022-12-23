@@ -95,7 +95,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							<div class="col-md-3">
 											 <div class="form-group">
 									                <label>Title<span class="mandatory">*</span></label><br>
-									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
 														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 														<option value="Prof.">Prof.</option>
 														<option value="Rev.">Rev.</option>
@@ -106,13 +106,10 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							<div class="col-md-3">
 												 <div class="form-group">
 										                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-										                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+										                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
 															<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-															<option value="Shree.">Shree.</option>
-															<option value="Smt.">Srimathi/Smt.</option> 
 															<option value="Mr.">Mr.</option>
-															<option value="Mrs.">Mrs.</option>
-															<option value="Miss.">Miss.</option>
+															<option value="Ms.">Ms.</option>
 														</select>
 												</div>
 								</div>
