@@ -65,7 +65,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/LoginPage/*").permitAll()
 		  .antMatchers("/download/**").permitAll()
 		  .antMatchers("/pfms-dg/*").permitAll()
-		  
+		  .antMatchers("/login").permitAll()
 		  
 		  .anyRequest().authenticated().accessDecisionManager(adm())
 		  
@@ -82,12 +82,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		    .and()
 		    
 		    .csrf()
-		    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
+		    .and().sessionManagement()
+		    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+		    .sessionFixation().migrateSession()
+			.invalidSessionUrl("/login")
+			.maximumSessions(2)
+			.maxSessionsPreventsLogin(false)
+			.expiredUrl("/login")
+		    //.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/login")
 		    
 		    ;
-		  
-		 
-	}
+		}
 	 
 	
 	

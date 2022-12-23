@@ -528,6 +528,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
 										</button>
 									</td>
+									<td style="border: 0 "> 
+										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;">
+											<img alt="" src="view/images/presentation.png">
+										</button>
+									</td>
 									
 									<td style="border: 0 "><button  type="button" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
@@ -541,6 +546,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					 
 	
 						<div class="card-body">	
+						
 							 <details>					
 							    <summary role="button" tabindex="0"><b>1. Project Attributes </b>  </summary>
 								<div class="content">
@@ -552,12 +558,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%if(projectattributes!=null){ %>
 										
 										<div>
-											<form action="ProjectSubmit.htm" method="post" target="_blank">
+											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+											<%-- <form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
 												<input type="hidden" name="ProjectId" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											</form>
+											</form> --%>
 										</div>	
 										
 										
@@ -569,7 +576,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										</tr>
 										<tr>
 											 <td  style="padding: 5px; padding-left: 10px">(b)</td>
-											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project No</b></td>
+											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Code</b></td>
 											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[0]%> </td>
 										</tr>
 										<tr>
@@ -692,7 +699,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<% } %>
 							</div>
 						</details>
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+
+
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
+				
 						<details>
 	   						<summary role="button" tabindex="0"><b>2. Schematic Configuration</b>   </summary>
 	   						<div class="content">
@@ -776,7 +786,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%} %>
 							</div>
 						</details>
-	<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+	
+	<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+							
 						<details>
 	   						<summary role="button" tabindex="0"><b>3. Overall Product tree/WBS</b> </summary>
 							
@@ -820,9 +832,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</div>
 							<%} %>
 						</details>
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+ 
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
+				
 						<details>
    						<summary role="button" tabindex="0"><b>4. Particulars of Meeting </b> </summary>
+   						
    						<div class="content">
    							<%for(int z=0;z<projectidlist.size();z++){ %>
    								<h1 class="break"></h1>
@@ -1109,247 +1124,149 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															
 					<%} %>
 				</div>
-			</details>
+					
+						</details>
 						
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->				
+	
 						<details>
    						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
-						<div class="content">
-									
-								<%-- <select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" onchange="milactivitychange(this);">
-												<option selected value="A">All</option>
-												<%for(Object[] obj : milestoneactivitystatus){ %>
-													<option value=<%=obj[0]%> ><%=obj[1] %> (<%=obj[2] %>)</option>
-												<%} %>
-								</select> --%>	
-									
+							<div class="content">
+				
 								<%for(int z=0;z<projectidlist.size();z++){ %>
-								<%if(ProjectDetail.size()>1){ %>
-									<div>
-										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-									</div>	
-								<%} %>	
+									<%if(ProjectDetail.size()>1){ %>
+										<div>
+											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+										</div>	
+									<%} %>	
 				
-			<!-- Old query data which is commented in Dao Layer (19-12-22)-->
-								
-			<%-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-				
-				<thead>
-					<tr>
-						<td colspan="8" style="border: 0">
-							<p style="font-size: 10px;text-align: center"> 
-								<span class="notassign">NA</span> : Not Assigned &nbsp;
-								<span class="assigned">AA</span> : Activity Assigned &nbsp; 
-								<span class="assigned">AA</span> : Not yet Started &nbsp;
-								<span class="ongoing">OG</span> : On Going &nbsp;
-								<span class="delay">DO</span> : Delay - On Going &nbsp;
-								<span class="ongoing">RC</span> : Review & Close &nbsp;
-								<span class="delay">FD</span> : Forwarded With Delay &nbsp;
-								<span class="completed">CO</span> : Completed &nbsp;
-								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;
-								<span class="inactive">IA</span> : InActive &nbsp;
-								<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-							 </p>
-		   				</td>									
-					</tr>
-				
-					<tr>
-						<th  style="width: 15px !important;text-align: center; ">SN</th> 
-						<th  style="width: 20px; ">MS</th>
-						<th  style="width: 405px; ">Milestones </th>
-						<th  style="width: 120px; "> PDC </th>
-						<th  style="width: 120px; "> ADC</th>
-						<th  style="width: 50px; ">Progress</th>
-						<th  style="width: 50px; "> Status</th>
-						<th  style="width: 320px; "> Remarks</th>
-					</tr>
-				</thead>
-										
-				<tbody>
-					<%if(milestones.get(z).size()==0){ %>
-						<tr><td colspan="8" style="text-align: center;" > Nil</td></tr>
-							<%}else if(milestones.get(z).size()>0)
-							  {	
-								int i=1;
-								for(Object[] obj:milestones.get(z)){ 
-									/* if(obj[10].toString().equalsIgnoreCase("3") ||obj[10].toString().equalsIgnoreCase("3") || obj[10].toString().equalsIgnoreCase("5")) */
-									
-									 %>
-										<tr>
-											<td  style="text-align: center; "><%=i%></td> 
-											<td  style="text-align: center;">M<%=obj[2]%></td>
-											<td  style="text-align: justify"><%=obj[3] %></td>
-											<td  style="text-align: center;" >
-												<%if(!LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
-											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%><br>
-											 	<%}%>
-											 	
-												<%= sdf.format(sdf1.parse(obj[5].toString()))%> </td>
-											<td  style="text-align: center;">
-<<<<<<< HEAD
-												<%if(obj[14]!=null){ %>
-											 		<%= sdf.format(sdf1.parse(obj[14].toString()))%><br>
-											 	<%}%>
-=======
-												<%if(LocalDate.parse(obj[5].toString()).isEqual(LocalDate.parse(obj[7].toString())) ){ %>
-											 		-
-											 	<%}else{ %>
-											 		<%= sdf.format(sdf1.parse(obj[7].toString()))%>
-											 	<%} %>
-											<%= sdf.format(sdf1.parse(obj[7].toString()))%>
->>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
-											</td>
-											<td  style="text-align: center;"><%=obj[12] %>%	</td>
-											<td   style="text-align: center;">
-												<span class="<%if(obj[10].toString().equalsIgnoreCase("0")){%> assigned
-														<%}else if(obj[10].toString().equalsIgnoreCase("1")) {%> assigned
-														<%}else if(obj[10].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[10].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[10].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[10].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[10].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[11] %>	
-												
-												<%if(obj[10].toString().equalsIgnoreCase("3") ){ %>
-												
-<<<<<<< HEAD
-												<%}else if(obj[10].toString().equalsIgnoreCase("5")) {%>
-												
-=======
-												<%if(obj[10].toString().equalsIgnoreCase("5")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.parse(obj[7].toString())) %>)
-												<%} else if(obj[10].toString().equalsIgnoreCase("4")) { %>
-												(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[7].toString()), LocalDate.now())  %>)
->>>>>>> branch 'master' of git@bitbucket.org:susant-vedts/dgecs.git
-												<%} %>
-												
-											</span>
-												</td>
-											<td  ><%if(obj[13]!=null){%><%=obj[13] %><%} %></td>
-										</tr>			
-									<% i++;
-												
-										}%>
-										
-									
-										<%if(i==1){ %> <tr><td colspan="8" style="text-align: center;" >Nil</td></tr>	<%} %>	
-										
-								<%} %>
-								</tbody>
-								
-							</table> --%>
-							
 							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
-							<thead>
-							<tr>
-								<td colspan="10" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
-										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-										 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-										 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-									 </p>
-								</td>									
-							</tr>
-							
+								<thead>
 								<tr>
-									<th  style="width: 20px; ">SN</th>
-									<th  style="width: 30px; ">MS</th>
-									<th  style="width: 60px; ">L</th>
-									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 150px; "> PDC</th>
-									<th  style="width: 150px; "> ADC</th>
-									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status(DD)</th>
-								 	<th  style="width: 260px; "> Remarks</th>
-								 	<th  style="max-width: 30px; "> Info </th>
+									<td colspan="10" style="border: 0">
+										<p style="font-size: 10px;text-align: center"> 
+											 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+											 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+											 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+											 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+											 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+											 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+											 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+											 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+											 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+											 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
+										 </p>
+									</td>									
 								</tr>
-							</thead>
-								<% if( milestones.get(z).size()>0){
-									long count1=1;
-									int milcountA=1;
-									int milcountB=1;
-									int milcountC=1;
-									int milcountD=1;
-									int milcountE=1;
-									
-									%>
-									<%int serial=1;for(Object[] obj:milestones.get(z)){
+								
+									<tr>
+										<th  style="width: 20px; ">SN</th>
+										<th  style="width: 30px; ">MS</th>
+										<th  style="width: 60px; ">L</th>
+										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+										<th  style="width: 150px; "> PDC</th>
+										<th  style="width: 150px; "> ADC</th>
+										<th  style="width: 60px; "> Progress</th>
+										<th  style="width: 50px; "> Status(DD)</th>
+									 	<th  style="width: 260px; "> Remarks</th>
+									 	<th  style="max-width: 30px; "> Info </th>
+									</tr>
+								</thead>
+									<% if( milestones.get(z).size()>0){
+										long count1=1;
+										int milcountA=1;
+										int milcountB=1;
+										int milcountC=1;
+										int milcountD=1;
+										int milcountE=1;
 										
-										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
 										%>
-										<tr>
-											<td style="text-align: center"><%=serial%></td>
-											<td>M<%=obj[0] %></td>
+										<%int serial=1;for(Object[] obj:milestones.get(z)){
 											
-											<td style="text-align: center">
-												<%
+											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+											%>
+											<tr>
+												<td style="text-align: center"><%=serial%></td>
+												<td>M<%=obj[0] %></td>
 												
-												if(obj[21].toString().equals("0")) {%>
-													<!-- L -->
-												<%	milcountA=1;
-													milcountB=1;
+												<td style="text-align: center">
+													<%
+													
+													if(obj[21].toString().equals("0")) {%>
+														<!-- L -->
+													<%	milcountA=1;
+														milcountB=1;
+														milcountC=1;
+														milcountD=1;
+														milcountE=1;
+													}else if(obj[21].toString().equals("1")) { %>
+														A-<%=milcountA %>
+													<% milcountA++;
+														milcountB=1;
+														milcountC=1;
+														milcountD=1;
+														milcountE=1;
+													}else if(obj[21].toString().equals("2")) { %>
+														B-<%=milcountB %>
+													<%milcountB+=1;
 													milcountC=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { %>
-													A-<%=milcountA %>
-												<% milcountA++;
-													milcountB=1;
-													milcountC=1;
+													}else if(obj[21].toString().equals("3")) { %>
+														C-<%=milcountC %>
+													<%milcountC+=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("2")) { %>
-													B-<%=milcountB %>
-												<%milcountB+=1;
-												milcountC=1;
-												milcountD=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("3")) { %>
-													C-<%=milcountC %>
-												<%milcountC+=1;
-												milcountD=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("4")) { %>
-													D-<%=milcountD %>
-												<%
-												milcountD+=1;
-												milcountE=1;
-												}else if(obj[21].toString().equals("5")) { %>
-													E-<%=milcountE %>
-												<%milcountE++;
-												} %>
-											</td>
-
-											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
-												<%if(obj[21].toString().equals("0")) {%>
-													<%=obj[10] %>
-												<%}else if(obj[21].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
-												<%}else if(obj[21].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
-												<%}else if(obj[21].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
-												<%}else if(obj[21].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
-												<%}else if(obj[21].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[15] %>
-												<%} %>
-											</td>
-											<td style="text-align: center">
-												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
-													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
-												<%}%>
-												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
-											</td>
-											<td style="text-align: center">
-												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													}else if(obj[21].toString().equals("4")) { %>
+														D-<%=milcountD %>
+													<%
+													milcountD+=1;
+													milcountE=1;
+													}else if(obj[21].toString().equals("5")) { %>
+														E-<%=milcountE %>
+													<%milcountE++;
+													} %>
+												</td>
+	
+												<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+													<%if(obj[21].toString().equals("0")) {%>
+														<%=obj[10] %>
+													<%}else if(obj[21].toString().equals("1")) { %>
+														&nbsp;&nbsp;<%=obj[11] %>
+													<%}else if(obj[21].toString().equals("2")) { %>
+														&nbsp;&nbsp;<%=obj[12] %>
+													<%}else if(obj[21].toString().equals("3")) { %>
+														&nbsp;&nbsp;<%=obj[13] %>
+													<%}else if(obj[21].toString().equals("4")) { %>
+														&nbsp;&nbsp;<%=obj[14] %>
+													<%}else if(obj[21].toString().equals("5")) { %>
+														&nbsp;&nbsp;<%=obj[15] %>
+													<%} %>
+												</td>
+												<td style="text-align: center">
+													<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+														<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+													<%}%>
+													<%=sdf.format(sdf1.parse(obj[9].toString())) %>
+												</td>
+												<td style="text-align: center">
+													<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+														<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+																<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+																<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+																<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+																<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+																<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+																<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+														 
+															<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+														</span>
+													<%}else{%>
+														-
+													<%} %>
+												</td>
+												<td style="text-align: center"><%=obj[17] %>%</td>											
+												<td style="text-align: center">
 													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
 															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -1357,45 +1274,29 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
 															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-													 
-														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
+														<%=obj[22] %>	
+														
+														<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
+														<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
+															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
+														<%} %>	
 													</span>
-												<%}else{%>
-													-
-												<%} %>
-											</td>
-											<td style="text-align: center"><%=obj[17] %>%</td>											
-											<td style="text-align: center">
-												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-													<%=obj[22] %>	
-													
-													<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
-														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
-													<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
-														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
-													<%} %>	
-												</span>
-											
-											</td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
-                                            <td >
-												<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
-													<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
-												</a>
-											</td>
-										</tr>
-									<%count1++;serial++;}} %>
-								<%} else{ %>
-								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
-								
-								
-								<%} %>
+												
+												</td>
+												<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+	                                            <td >
+													<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
+														<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
+													</a>
+												</td>
+											</tr>
+										<%count1++;serial++;}} %>
+									<%} else{ %>
+									<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+									
+									
+									<%} %>
 							</table>
 			
 			
@@ -1404,19 +1305,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%} %>
 						</div>
 						</details>
+
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
 						<details>
    						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
 							
-							
-							<%-- <select class="form-control items milestonechange" name="milactivitystatusid"  required="required" style="width:200px;margin-right: 150px" data-live-search="true" data-container="body" >
-												<option selected value="A">All</option>
-												<%for(Object[] obj : milestoneactivitystatus){ %>
-													<option value=<%=obj[0]%> ><%=obj[1] %></option>
-												<%} %>
-							</select> --%>
-								<%for(int z=0;z<projectidlist.size();z++){ %>
+							<%for(int z=0;z<projectidlist.size();z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
 									<div>
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -1433,8 +1328,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%}%> 
 								</div>
 								<div align="left" style="margin-left: 20px;"><b>Present Status:</b>
-								
-								
 								
 								</div>
 								
@@ -1783,6 +1676,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									
 						</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+
 						<details>
    						<summary role="button" tabindex="0"><b>7. Details of Procurement Plan (Major Items)</b>  </summary>
 						<div class="content">
@@ -1796,7 +1690,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr>
-											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										</thead>
 										
@@ -1844,7 +1738,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><span class="mainsubtitle">Order Placed ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										 </thead>
 										
@@ -1968,9 +1862,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
                
 							</div>
 						</details>
+
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						<details>
    						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
+   						
 						  	<div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
@@ -2085,7 +1981,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%} %>
 							
 							</div> 		
-					</details>
+						
+						</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
 						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
@@ -2093,6 +1990,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						<%}else { %>
 							<summary role="button" tabindex="0"><b>9. Action Plan for Next Three months </b>    </summary>
 						<%} %>
+						
 						<div class="content">
 						<%for(int z=0;z<projectidlist.size();z++){ %>
 							<%if(ProjectDetail.size()>1){ %>
@@ -2262,11 +2160,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 		
 						<%} %>
 						</div>
+					
 					</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						
 					<details>
    						<summary role="button" tabindex="0"><b>10. GANTT chart of overall project schedule <!-- [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>] --></b>    </summary>
+   						
 						    <div class="content">
 							    <%for(int z=0;z<projectidlist.size();z++){ %>
 							    <div>
@@ -2320,10 +2220,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</div>
 							<%} %>							
 						</div>
+					
 					</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
    						<summary role="button" tabindex="0"><b>11. Issues</b></summary>
+   						
 						   <div class="content">
 						   			<%for(int z=0;z<projectidlist.size();z++){ %>		
 						   			
@@ -2418,6 +2320,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 
 					<details>
    						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
+   						
 						  <div class="content">
 						  <%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
@@ -2450,6 +2353,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
    						
    						
    						</b></summary>
+   						
 						  <div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
 								<div>
@@ -2548,6 +2452,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								
 						  <%} %>
 						  </div>
+					
+					
 					</details>
 <!--   --------------------------------------------------------------------------------------------------------------------------------------------- --> 
 					<details>
@@ -3101,6 +3007,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	<input type="hidden" name="milestonelevelid" id="milestonelevelid" />
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>	
+
+
+<!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
+
 	
 
 <script>
@@ -3278,7 +3188,6 @@ function milactivitychange6(val){
 
 
 
-<!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
 <script type="text/javascript">
 function FileDownload(fileid1)
 {
@@ -3298,9 +3207,7 @@ function FileDownload1(fileid1)
 
 function openMainModal(agendatempid,addedit,Proid)
 {
-	/* console.log('agendatempid = '+agendatempid);
-	$('#agendatempid').val(agendatempid);
-	$('#attachmentmodal').modal('show');*/
+	
 	$('#AttachProjectId').val(Proid); 
 	
 	
@@ -3686,6 +3593,8 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 
 
 </script>
+
+
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 			
 	<% for(int z=0;z<projectidlist.size();z++){ %>

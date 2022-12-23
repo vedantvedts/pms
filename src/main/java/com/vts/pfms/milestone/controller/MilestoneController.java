@@ -2373,6 +2373,7 @@ public class MilestoneController {
                 String path=req.getServletContext().getRealPath("/view/temp");
                 Zipper zip=new Zipper();
                 zip.unpack(FilePath+obj[2].toString()+obj[3].toString()+obj[7].toString()+"-"+obj[6].toString()+".zip", path,obj[5].toString());
+                
                 res.setContentType("application/pdf");
                 res.setHeader("Content-disposition","attachment;filename="+obj[4]); 
                 File f=new File(path+"/"+obj[4]);

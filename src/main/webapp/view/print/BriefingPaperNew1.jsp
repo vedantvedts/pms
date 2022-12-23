@@ -478,7 +478,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										</tr>
 										<tr>
 											 <td  style="padding: 5px; padding-left: 10px">(b)</td>
-											 <th style="width: 150px;padding: 5px; padding-left: 10px"><b>Project No</b></th>
+											 <th style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Code </b></th>
 											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes.get(z)[0]%> </td>
 										</tr>
 										<tr>
@@ -800,7 +800,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
 				<h1 class="break"></h1>
 				 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
-														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
+														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status.</b>
 					</div>
    							
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
@@ -1617,7 +1617,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
 											 </tr>
 										
 										
@@ -1673,7 +1673,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
 										
@@ -2217,6 +2217,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								13. Other Relevant Points (if any) and Technical Work Carried Out For Last Three Months
 							<%} %>
    						</b></div>
+   						
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 							<tr>
 								 <th  style="width: 80%; ">Other Relevant Points</th>

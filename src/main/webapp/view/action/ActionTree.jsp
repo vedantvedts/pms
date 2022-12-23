@@ -301,7 +301,7 @@ td
 			                          			onclick="ActionDetails(	'<%=action[10] %>',   <!-- assignid -->
 			                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=action[11] %>',   <!-- action No -->
-			                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+			                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
 			                          									'<%=sdf.format(action[4]) %>', <!-- action date -->
 			                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
 			                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
@@ -377,7 +377,7 @@ td
 							                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
 							                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
 							                          									'<%=action_L1[11] %>',   <!-- action No -->
-							                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+							                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
 							                          									'<%=sdf.format(action_L1[4]) %>', <!-- action date -->
 							                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
 							                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
@@ -456,12 +456,12 @@ td
 									                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
 									                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
 									                          									'<%=action_L2[11] %>',   <!-- action No -->
-									                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+									                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
 									                          									'<%=sdf.format(action_L2[4]) %>', <!-- action date -->
 									                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
 									                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
 									                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
-									                          									'<%=action_L2[23].toString().trim()%>, <!-- assignee -->
+									                          									'<%=action_L2[23].toString().trim()%>', <!-- assignee -->
 							                          											'<%=action_L2[6]%>' <!-- action type -->
 									                          									);" >              
 																	
@@ -532,12 +532,12 @@ td
 													                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
 													                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
 													                          									'<%=action_L3[11] %>',   <!-- action No -->
-													                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+													                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
 													                          									'<%=sdf.format(action_L3[4]) %>', <!-- action date -->
 													                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
 													                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
 													                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
-													                          									'<%=action_L3[23].toString().trim()%>, <!-- assignee -->
+													                          									'<%=action_L3[23].toString().trim()%>', <!-- assignee -->
 							                          															'<%=action_L3[6]%>' <!-- action type -->
 													                          									);" >      
 																									
@@ -608,12 +608,12 @@ td
 																		                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
 																		                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
 																		                          									'<%=action_L4[11] %>',   <!-- action No -->
-																		                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %> 0 <%} %>', <!-- progress -->
+																		                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
 																		                          									'<%=sdf.format(action_L4[4]) %>', <!-- action date -->
 																		                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
 																		                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
 																		                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
-																		                          									'<%=action_L4[23].toString().trim()%>' , <!-- assignee -->
+																		                          									'<%=action_L4[23].toString().trim()%>', <!-- assignee -->
 							                          																				'<%=action_L4[6]%>' <!-- action type -->
 																		                          									);" >
 																										
