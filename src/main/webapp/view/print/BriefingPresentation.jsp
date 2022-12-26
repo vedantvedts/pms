@@ -2698,7 +2698,6 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 	
 	</div>
 		
-	
 
 <!-- ------------------------------------------------- MODALS -------------------------------------------------- -->
 
