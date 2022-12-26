@@ -293,7 +293,7 @@
 														 	<th>Assignee</th>	
 														 	<th class="width-125px" style="width: 155.547px;">Progress</th>
 														 	<th >Is Seen</th>
-														 	<th >Action</th>
+														 	<th style="width:170px !important; " >Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -318,7 +318,7 @@
 																Not Yet Started .
 															</div>
 															</div> <%} %></td>
-															<td class="talign">
+															<td class="talign" >
 														
 																	<%if(obj[14].toString().equals("1")){ %>
 																		<p style="color: green;">Seen</p>																		
@@ -327,7 +327,7 @@
 																	<%} %>
 														</td>
 															
-														<td >		
+														<td style="width:17rem !important; ">		
 														 <form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
 															<button  class="editable-click" name="sub" value="C">  
 																<div class="cc-rockmenu">

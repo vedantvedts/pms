@@ -54,7 +54,7 @@ public interface RfpMainDao {
 	public Object[] ProjectHealthInsertData(String projectId) throws Exception;
 	public int ProjectHealthDelete(String projectId)throws Exception;
 	public long ProjectHoaUpdate(ProjectHoa hoa ) throws Exception;
-	public int ProjectHoaDelete() throws Exception;
+	public int ProjectHoaDelete(String LabCode) throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;
 	public List<Object[]> MeetingChanges(String ProjectId,String Term,String LabCode) throws Exception;
 	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception;

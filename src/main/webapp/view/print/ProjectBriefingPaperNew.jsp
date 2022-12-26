@@ -530,7 +530,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</td>
 									<td style="border: 0 "> 
 										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;">
-											<img alt="" src="view/images/presentation.png">
+											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 									</td>
 									

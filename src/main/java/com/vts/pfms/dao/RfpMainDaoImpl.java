@@ -51,7 +51,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype,:labcode,:isall )";
 	private static final String PROJECTHEALTHINSERTDATA="CALL Project_Health_Insert_Data(:projectid)";
 	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
-	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
+	private static final String PROJECTHOADELETE="DELETE FROM project_hoa WHERE labcode=:labcode";
 	private static final String CHANGESTOTALCOUNTDATA="CALL Project_Changes_Count_Data(:projectid) ";
 	private static final String MEETINGCHANGES="CALL Project_Changes_Meeting_Data(:projectid,:term,:labcode)";
 	private static final String MILESTONECHANGES="CALL Project_Changes_Milestone_Data(:projectid,:term,:labcode)";
@@ -410,9 +410,10 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public int ProjectHoaDelete() throws Exception{
+	public int ProjectHoaDelete(String LabCode) throws Exception{
 		
 		Query query = manager.createNativeQuery(PROJECTHOADELETE);
+		query.setParameter("labcode", LabCode);
 
 		return query.executeUpdate();
 	}
