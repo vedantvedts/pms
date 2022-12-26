@@ -85,9 +85,9 @@ String seslabid=(String)session.getAttribute("labid");
 			                <label>Title</label><br>
 			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-								<option value="Prof. " <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
-								<option value="Rev. "  <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Rev.")){%>  selected="selected" <%}%>>  Rev.</option>
-								<option value="Dr. "   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
+								<option value="Prof." <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
+								<option value="Lt."  <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Lt.")){%>  selected="selected" <%}%>>  Lt.</option>
+								<option value="Dr."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
 							</select>
 					</div>
 </div>

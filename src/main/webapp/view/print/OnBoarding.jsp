@@ -117,7 +117,7 @@ i{
 									<span class="fa-stack" style="width:3em !important">
 									<span class="fa fa-square-o fa-stack-2x"></span>
 				   					<strong class="fa-stack-1x" style="font-size: 14px">4</strong></span>
-									<i >Project Master</i>
+									<i >Project Main</i>
 								</a>
 						</div>
 				</div>

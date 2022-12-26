@@ -122,7 +122,7 @@ a:hover {
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 				
-					<h3 class="card-header">Assigned List</h3>
+					<h5 class="card-header">Assigned List</h5>
 					
 					<div class="card-body">
 
