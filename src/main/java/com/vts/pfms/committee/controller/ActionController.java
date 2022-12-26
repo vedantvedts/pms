@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -318,7 +319,7 @@ public class ActionController {
 		try {
 			
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
-		System.out.println(service.AssigneeList(EmpId).size());
+		
 		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
 		
 		}catch (Exception e) {
@@ -334,14 +335,15 @@ public class ActionController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionSubLaunch.htm "+UserId);		
-		try {		
+		try {		 
 			String AssignerName=req.getParameter("Assigner");
 			req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") ,req.getParameter("ActionAssignid")).get(0));
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignid")));
-			req.setAttribute("LinkList", service.SubList(""));
+			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
 			req.setAttribute("AssignerName", AssignerName);
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
+			req.setAttribute("back", req.getParameter("back"));
 		}
 		catch (Exception e) 
 		{
@@ -564,12 +566,24 @@ public class ActionController {
 				throws Exception {
 		 
 		 	String UserId = (String) ses.getAttribute("Username");
+		 	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			logger.info(new Date() +"Inside ActionForwardList.htm "+UserId);		
 			try { 
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				
-				req.setAttribute("ForwardList", service.ForwardList(EmpId));
-			
+					String type = req.getParameter("Type");
+					System.out.println("type         :"+type);
+					if(type!=null && !type.equalsIgnoreCase("F")) {
+						if(type.equalsIgnoreCase("A")) {
+							req.setAttribute("ForwardList", service.ForwardList(EmpId));
+						}else if (type.equalsIgnoreCase("NB")) {
+							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("N")).collect(Collectors.toList()));
+						}
+						req.setAttribute("type", type);
+					}else{
+						req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("F")).collect(Collectors.toList()));
+						req.setAttribute("type", "F");
+					}
+
 			}
 			catch (Exception e) {
 					e.printStackTrace();

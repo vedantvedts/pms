@@ -98,7 +98,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
 														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 														<option value="Prof.">Prof.</option>
-														<option value="Rev.">Rev.</option>
+														<option value="Lt.">Lt.</option>
 														<option value="Dr.">Dr.</option>	
 													</select>
 											</div>

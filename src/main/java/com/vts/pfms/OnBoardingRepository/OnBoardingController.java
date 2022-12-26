@@ -742,7 +742,7 @@ public class OnBoardingController {
 					                	}
 					                	  
 					                }
-					                System.out.println(protype.getSanctionNo());
+					               
 					                long millis=System.currentTimeMillis();  
 					                java.sql.Date date=new java.sql.Date(millis);  
 					                	protype.setPDC(date);
@@ -755,8 +755,10 @@ public class OnBoardingController {
 						                protype.setIsActive(1);
 						                protype.setCreatedBy(UserId);
 						                protype.setCreatedDate(sdf1.format(new Date()));
-						                
-					                projectmain.add(protype);
+						                if(protype.getProjectCode()!=null && protype.getProjectName()!=null ) {
+						                	projectmain.add(protype);
+						                }
+					                
 					            }
 					                           
 					            List<ProjectMain> count = projectmainrepo.saveAll(projectmain);
@@ -770,6 +772,8 @@ public class OnBoardingController {
 							
 						} catch (Exception e) {
 							e.printStackTrace();
+							redir.addAttribute("resultfail", "Project Main Adding Unsuccessfully");
+							return "redirect:/ProjectMain.htm";
 						}
 					}	
 				}

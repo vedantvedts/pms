@@ -126,12 +126,12 @@
 							<div class="row"> 
 
 								<div class="col-sm-7" align="left"  >
-									<h3 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left">
+									<h3 style="color: white;font-weight: bold;font-size: 1.0rem !important " align="left">
 									<%if(ActionData!=null &&ActionData[2]!=null){%>
 									             <%=ActionData[2]%>
 									<%}else{%>
 										New Action 
-									<%}%>  For  Assignee 
+									<%}%> 
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<%if(ActionData!=null &&ActionData[6]!=null){%>
 									           PDC :  <%=sdf.format(ActionData[6])%>
@@ -256,7 +256,7 @@
 				<div class="col-md-12">
 					<div class="card shadow-nohover">
 						
-						<h3 class="card-header">Action Assigned List</h3>
+						<h5 class="card-header">Action Assigned List</h5>
 						
 						<div class="card-body">
 

@@ -94,7 +94,7 @@ a:hover {
   List<Object[]> AssigneeList=(List<Object[]>)request.getAttribute("ForwardList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
- 
+  String type = (String)request.getAttribute("type");
   
   
  %>
@@ -124,9 +124,24 @@ a:hover {
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-				
-					<h3 class="card-header">Action Forwarded List</h3>
-					
+				<div class="card-header">	
+					<div class="row">
+					<div class="col-sm-9" align="left">
+						<h5 >Action Review & Close</h5>
+						</div>
+						<div class="col-sm-3" align="left">
+						<form action="ActionForwardList.htm" method="post">
+										<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" onchange="this.form.submit();">                                                     
+											<option value="A" <%if("A".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  All</option>	
+											<option value="F" <%if("F".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  Forwarded</option>
+											<option value="NB" <%if("NB".equalsIgnoreCase(type)){%>selected="selected" <%}%>> Assigned</option>
+										</select>	
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										
+						</form>	
+									</div>		
+						</div>
+					</div>
 					<div class="card-body">
 
 						<div class="data-table-area mg-b-15">
@@ -191,7 +206,34 @@ a:hover {
 															</div> <%} %></td>
 
 															<td class="left ">		
+																<%if(obj[7]!=null && "N".equalsIgnoreCase(obj[7].toString()) || "B".equalsIgnoreCase(obj[7].toString())){%> 
 																
+																<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
+																	style="display: inline">
+
+																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
+																		<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+												                    <input type="hidden" name="Assigner" value="<%=obj[1]%>,<%=obj[2]%>"/>													
+                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
+																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[14]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="back" value="backToReview">
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																	
+																</form>
+																
+																
+																<%}else if(obj[7]!=null && "F".equalsIgnoreCase(obj[7].toString())){%>
 															<form name="myForm1" id="myForm1" action="ForwardSub.htm" method="POST" 
 																	style="display: inline">
 
@@ -216,10 +258,7 @@ a:hover {
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 																</form> 
-																
-																
-																
-																		
+																<%}%>		
 															</td>
 														</tr>
 												<% count++; } }else{%>

@@ -101,8 +101,8 @@ h6{
 
   <div class="col-md-8">
    
-	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><b style="color: #145374;">----------></b>
-	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><b style="color: #145374;">----------></b><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
+	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><i class="fa fa-long-arrow-right " aria-hidden="true"></i><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
       </p>
 	                     
   </div>
@@ -731,14 +731,14 @@ h6{
   	      </div>
   	      <div class="modal-body">
   	      
-  	      	<form action="MileRemarkUpdate.htm" method="POST" autocomplete="on">
+  	      	<form action="MileRemarkUpdate.htm" method="POST" autocomplete="off">
   	      		<div class="row">
   	      		    <div class="col-md-12"> Remarks :<br>
   	      		    		<textarea class="form-control"  name="Remarks"   required="required"  maxlength="255"> </textarea>
   	      		    </div>
   	      		    <br>
 					<div class="col-md-12">Financial Outlay : <br>
-							<input class="form-control" name="financialoutlay" type="text">
+							<input class="form-control" title="Enter Number" name="financialoutlay" id="financialoutlay" type="text"   maxlength="9">
 					</div>
   	      			</div>
   	      		<br>
@@ -822,6 +822,25 @@ function ChangeButton(id) {
 		$("#exampleModalLongTitle").html('Milestone '+mile);
 	}
 	
+	
+	
+	setPatternFilter($("#financialoutlay"), /^-?\d*$/);
+	function setPatternFilter(obj, pattern) {
+		  setInputFilter(obj, function(value) { return pattern.test(value); });
+		}
+
+	function setInputFilter(obj, inputFilter) {
+		  obj.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+		    if (inputFilter(this.value)) {
+		      this.oldValue = this.value;
+		      this.oldSelectionStart = this.selectionStart;
+		      this.oldSelectionEnd = this.selectionEnd;
+		    } else if (this.hasOwnProperty("oldValue")) {
+		      this.value = this.oldValue;
+		      this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+		    }
+		  });
+		}
 	</script>  
 
 
