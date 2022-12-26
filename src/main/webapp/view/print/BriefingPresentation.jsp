@@ -1,3 +1,4 @@
+<%@page import="java.net.Inet4Address"%>
 <%@page import="com.vts.pfms.Zipper"%>
 <%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
@@ -39,7 +40,7 @@
 <title>Briefing </title>
 <style type="text/css">
  
- p{
+p{
   text-align: justify;
   text-justify: inter-word;
 }
@@ -529,6 +530,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 }else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 } 
+
+String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":"+	request.getLocalPort() + request.getContextPath();
  
 %>
 
@@ -542,7 +545,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 		<div class="carousel-inner" align="center" >
 	   
 	<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
-			<div class="carousel-item active "  >			
+			<div class="carousel-item active"  >			
 					
 				<div class="content-header  " >
 					<h3>1. Project Attributes </h3>
@@ -696,7 +699,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				
 	   			<div class="content-header " >
 	   				<h3>2. Schematic Configuration - (a) System Configuration</h3>
-	   				
 	   			</div>
 	   			
 	   			<div class="content">
@@ -760,7 +762,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				
 	   			<div class="content-header " >
 	   				<h3>2. Schematic Configuration - (b) System Specifications.</h3>
-	   				
 	   			</div>
 	   			
 	   			<div class="content">
@@ -990,8 +991,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	
 	<!-- ----------------------------------------  P-4a Div ----------------------------------------------------- -->
 	
-	
-	
 	<!-- ---------------------------------------- P-4b Div ----------------------------------------------------- -->
 	
 			<div class="carousel-item ">
@@ -1010,9 +1009,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							
 					<%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
 												  
-						<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+						<%-- <div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 																   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
-						
+						 --%>
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
@@ -1122,63 +1121,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						</table> 
 								
 					<%} %>
-								
-					<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
-						
-						<div align="center">
-							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse;float:left;" >
-								<thead>
-									<tr>
-										 <th  style="max-width: 70px; ">Committee</th>
-										 <th  style="max-width: 80px; "> Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%if(ReviewMeetingList.get(z).size()==0){ %>
-									<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-									<%}
-									else if(ReviewMeetingList.size()>0)
-									  {int i=1;
-									for(Object[] obj:ReviewMeetingList.get(z)){ %>
-										<tr>
-											
-											<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-											<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>			
-									<%i++;
-									}}else{ %>
-									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									<%} %> 
-							</tbody>
-						</table>
-						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;max-width:350px;  border-collapse:collapse; " >
-							<thead>
-								<tr>
-									<th  style="max-width: 70px; ">Committee</th>
-									<th  style="max-width: 80px; "> Date Held</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-								<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-								<%}
-								else if(ReviewMeetingListPMRC.size()>0)
-								  {int i=1;
-								for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-									<tr>
-										<td  style="max-width: 70px;"><%=obj[1] %> #<%=i %></td>												
-										<td  style="max-width: 80px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-									</tr>			
-								<%i++;
-								}}else{ %>
-								
-									<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-									
-								<%} %> 
-							</tbody>
-						</table>
-					</div>
-															
+												
 				<%} %>
 				</div>
 					
@@ -1265,7 +1208,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 																   						
 	<!-- ----------------------------------------   P-4c Div ----------------------------------------------------- -->
 	
-	
 	<!-- ---------------------------------------- P-5  Milestones achieved prior Div ----------------------------------------------------- -->
 		
 			<div class="carousel-item ">
@@ -1274,15 +1216,18 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				
 				<div class="content">
 			
-						<%for(int z=0;z<projectidlist.size();z++){ %>
-							<%if(ProjectDetail.size()>1){ %>
-								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-								</div>	
-							<%} %>	
-				
-								
-							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+					<%for(int z=0;z<projectidlist.size();z++){ %>
+						<%if(ProjectDetail.size()>1){ %>
+							<div>
+								<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+							</div>	
+						<%} %>	
+						
+						<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_blank" rel="noopener noreferrer" >
+							<b class="sub-title">Milestones achieved prior to this <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting period.  </b>
+						</a>
+							
+						<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 							<thead>
 							<tr>
 								<td colspan="10" style="border: 0">
@@ -1456,7 +1401,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			<div class="carousel-item ">
 
    				<%-- <div class="content-header" ><h3>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</h3></div> --%>
-					<div class="content-header" ><h3>6 (a) Work carried out, Achievements, test result etc.</h3></div>
+				<div class="content-header" >
+					<h3>6 (a) Work carried out, Achievements, test result etc.</h3>
+				</div>
+				
 				<div class="content">
 							
 						<%for(int z=0;z<projectidlist.size();z++){ %>
@@ -1465,19 +1413,22 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 								</div>	
 							<%} %>	
-							<div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(a) Work carried out, Achievements, test result etc.</span>
-								   <%if(z==0){ %>
+							<div align="left" style="margin-left: 15px;"><!-- <span class="mainsubtitle">(a) Work carried out, Achievements, test result etc.</span> -->
+								<%if(z==0){ %>
 									<form action="FilterMilestone.htm" method="POST">  
 										<button class="btn btn-sm back"    style="float: right;margin-top: 5px;text-transform: capitalize !important; " formtarget="blank"> Filter</button> 
 										<input type="hidden" name="projectidvalue" <%if( projectid!=null ){%> value="<%=projectid%>" <%}%>>
 										<input type="hidden" name="committeidvalue" <%if(committeeid!=null){%> value="<%=committeeid %>" <%}%>>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
-									<%}%> 
+								<%}%> 
 							</div>
-							<div align="left" style="margin-left: 20px;"><b>Present Status:</b>
-								
+							<div align="center" style="margin-left: 15px;">
+								<a class="sub-title"  href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_blank" rel="noopener noreferrer" >
+									<b> Present Status</b>
+								</a>
 							</div>
+							<hr>
 								
 			
 						<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
@@ -1661,7 +1612,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								</div>	
 							<%} %>	
 		
-						<div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</span></div>
+						<!-- <div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</span></div> -->
 									
 						<div>
 								<table>
@@ -1720,7 +1671,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								</div>	
 							<%} %>	
 							
-							<div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(c) Risk Matrix/Management Plan/Status.</span> </div>
+							<!-- <div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(c) Risk Matrix/Management Plan/Status.</span> </div> -->
 
 								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 									<thead>	
@@ -2166,8 +2117,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			</div>
 			
 	<!-- ----------------------------------------  Overall Financial Status Div ----------------------------------------------------- -->	
-	
-	
 		
 	<!-- ---------------------------------------- P-9  Action Plan for Div ----------------------------------------------------- -->
 	
@@ -2351,7 +2300,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	  		
 	<!-- ---------------------------------------- Action Plan for Div ----------------------------------------------------- -->
 	
-		
 	<!-- ---------------------------------------- P-10  GANTT chart of overall project Div ----------------------------------------------------- -->
 	
 			<div class="carousel-item ">
@@ -2415,7 +2363,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	  		</div>
 	  		
 	<!-- ---------------------------------------- GANTT chart of overall project Div ----------------------------------------------------- -->
-	
 		
 	<!-- ---------------------------------------- P-11 Issues Div ----------------------------------------------------- -->
 	
@@ -2513,7 +2460,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	  		</div>
 	  		
 	<!-- ---------------------------------------- Issues Div ----------------------------------------------------- -->
-	
 		
 	<!-- ---------------------------------------- P-12 Decision/Recommendations sought Div ----------------------------------------------------- -->
 	
@@ -2602,20 +2548,18 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 					<%ArrayList<String> FileExtList = new ArrayList<String>(Arrays.asList("jpg","jpeg","png","pdf","JPG","JPEG","PNG","PDF")); %>
 					<%for(int z=0;z<projectidlist.size();z++){ %>
 						<div align="left">
-							<b style="font-size: 20px;" >Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+							
 						</div>	
 								
 						<div class="card-body" style="width:100%"  >
 							
-							<form action="TechnicalWorkDataAdd.htm" method="post">
-							
-								<div class="row" align="center" style="margin-top:15px;" >
-									<div class="col-3" style="text-align: left;margin-top: 5px;">	<label><b>Technical Work Carried (Attachment)</b></label></div>
-
-									<div class="col-2" style="text-align: left;">
-										<span id="attachname_<%=projectidlist.get(z)%>" ></span>
-										 <%if(TechWorkDataList.get(z)!=null){ %>
+							<div class="row" align="center" style="margin-top:15px;" >
+								<div class="col-6" style="text-align: left;margin-top: 5px;"> 
+								
+									<form action="TechnicalWorkDataAdd.htm" method="post">			
+										<%if(TechWorkDataList.get(z)!=null){ %>
 											<input type="hidden" name="TechDataId" value="<%=TechWorkDataList.get(z)[0]%>">
+											<b style="font-size: 20px;" >Project : <%=ProjectDetail.get(z)[1] %> -	<%if(z!=0){ %>(SUB)<%} %>	</b>	<span class="mainsubtitle">Technical Work Carried (Attachment)</span>
 											<%if(TechWorkDataList.get(z)[3]!=null && Long.parseLong(TechWorkDataList.get(z)[3].toString())>0){ %>
 												<button type="button" class="btn" title="Download Document"  onclick="FileDownload1('<%=TechWorkDataList.get(z)[3]%>');"  ><i class="fa fa-download" aria-hidden="true"> </i></button>
 												<input type="hidden" class="hidden" name="attachid" id="attachid_<%=projectidlist.get(z)%>" value="<%=TechWorkDataList.get(z)[3]%>">
@@ -2623,10 +2567,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<input type="hidden" class="hidden" name="attachid" id="attachid_<%=projectidlist.get(z)%>" value="0">
 											<%} %>
 										<%} %>  
-										<br>
-									</div>
+									</form>	
 								</div>
-								
+							</div>
+								<br>
 								<div class="row">
 									<div class="col-md-12">
 										
@@ -2668,14 +2612,13 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										
 									</div>
 								</div>
-							</form>								
+														
 								
 						</div>
 					<%} %>
 				</div>
 			
 			</div>
-	
 	
 	<!-- ---------------------------------------- p-13b Other Relevant Points Div ----------------------------------------------------- -->
 	
@@ -2693,38 +2636,32 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 					<%for(int z=0;z<projectidlist.size();z++){ %>
 						<div align="left">
 							<b style="font-size: 20px;" >Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-						</div>	
+						</div>	 
 								
-						<div class="card-body" style="width:100%" align="left" >
-							<div align="center">
-								<b>Technical Images</b> <br>
-									<% if(TechImages.size()>0){
-									List<TechImages>  TechImagesList= TechImages.get(z); 
-									if(TechImagesList.size()>0){
-									for(TechImages imges:TechImagesList){ %>
-									<div class="row" align="center">
-										<table>
-											<tr>
-												<td style="border:0; padding-left: 1.5rem;"> 
-													<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
-														<img data-enlargable  style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
-													<%} %>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<hr>
-									<%}}} %>
-							</div>
+						<div align="center">
+							<span class="mainsubtitle">Technical Images</span> <hr>
+								<% if(TechImages.size()>0){
+								List<TechImages>  TechImagesList= TechImages.get(z); 
+								if(TechImagesList.size()>0){
+								for(TechImages imges:TechImagesList){ %>
+								
+									<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
+										<img data-enlargable  style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" >
+										<hr>
+									<%} %>
+											
 						</div>
+						
+					<%}}} %>
+				
 							
 					<%} %>
 				</div>
-			
+				
 			</div>
-	
+			
 	<!-- ---------------------------------------- p-13c Other Relevant Points Div ----------------------------------------------------- -->
-	
+		
 	
 			<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width:0%;padding-left: 20px; ">
 				<span  aria-hidden="true" ><i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span>
@@ -2735,34 +2672,33 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				<span class="sr-only">Next</span>
 			</a> 
 		
+		
+			<ol class="carousel-indicators">
+				<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="1. Project Attributes" ><b>1</b></li>
+				<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"  ><b>2 (a) </b></li>
+				<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"  ><b>2 (b) </b></li>
+				<li data-target="#presentation-slides" data-slide-to="3" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"  ><b>3</b></li>
+				<li data-target="#presentation-slides" data-slide-to="4" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"  ><b>4 (a)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="5" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"  ><b>4 (b)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="6" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %> Approval <%}else { %> Ratification <%} %>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting"  ><b>4 (c)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="7" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting" ><b>5</b></li>
+				<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc" ><b>6 (a)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI" ><b>6 (b)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status." ><b>6 (c)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan" ><b>7</b></li>
+				<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status" ><b>8</b></li>
+				<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan" ><b>9</b></li>
+				<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule" ><b>10</b></li>
+				<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues" ><b>11</b></li>
+				<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations" ><b>12</b></li>
+				<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points" ><b>13 (a)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out" ><b>13 (b)</b></li>
+				<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images" ><b>13 (c)</b></li>
+			</ol>
+	
 		</div>
-	
-		<ol class="carousel-indicators">
-			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="1. Project Attributes" ><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"  ><b>2 (a) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"  ><b>2 (b) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="3" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"  ><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="4" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"  ><b>4 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"  ><b>4 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="6" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %> Approval <%}else { %> Ratification <%} %>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting"  ><b>4 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="7" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting" ><b>5</b></li>
-			<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc" ><b>6 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI" ><b>6 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status." ><b>6 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan" ><b>7</b></li>
-			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status" ><b>8</b></li>
-			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan" ><b>9</b></li>
-			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule" ><b>10</b></li>
-			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues" ><b>11</b></li>
-			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations" ><b>12</b></li>
-			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points" ><b>13 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out" ><b>13 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images" ><b>13 (c)</b></li>
-		</ol>
-	
+		
 	</div>
-	
-
 
 <!-- ------------------------------------------------- MODALS -------------------------------------------------- -->
 
