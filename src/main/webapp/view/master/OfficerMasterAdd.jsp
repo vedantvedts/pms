@@ -75,8 +75,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title</label><br>
-			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
+			                <label>Title<span class="mandatory">*</span></label><br>
+			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof.">Prof.</option>
 								<option value="Lt.">Lt.</option>
@@ -85,13 +85,16 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 							</select>
 					</div>
 </div>
-	<div class="col-md-3">
+<div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation</label><br>
-			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+			                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
+			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+								<option value="Shri.">Shri.</option>
+								<option value="Smt.">Smt.</option> 
 								<option value="Mr.">Mr.</option>
-								<option value="Ms.">Ms.</option>
+								<option value="Mrs.">Mrs.</option>
+								<option value="Miss.">Miss.</option>
 							</select>
 					</div>
 	</div>

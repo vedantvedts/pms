@@ -56,7 +56,6 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 }
 String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":"+	request.getLocalPort() + request.getContextPath();
 
-
 %>
 
 <style type="text/css">
@@ -95,14 +94,14 @@ th, td
 		margin: 25px 0px 25px 0px;
 	} 
 	 
- #pageborder {
+#pageborder {
       position:fixed;
       left: 0;
       right: 0;
       top: 0;
       bottom: 0;
       border: 2px solid black;
-    }     
+}     
  
 @page {             
           size: 1120px 790px; 
@@ -463,8 +462,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- ------------------------------------project attributes------------------------------------------------- -->
 			<div style="margin-left: 10px;" align="left"><b class="sub-title"> 
 			
-				<a class="sub-title" href="<%= HyperlinkPath+ "/ProjectSubmit.htm?ProjectId="+projectid + "&action=edit" %>" target="_top" rel="noopener noreferrer" >1. Project Attributes: </a> 
-			
+				<%-- <a class="sub-title" href="<%= HyperlinkPath+ "/ProjectSubmit.htm?ProjectId="+projectid + "&action=edit" %>" target="_top" rel="noopener noreferrer" >1. Project Attributes: </a> --%> 
+				<span class="sub-title"  >1. Project Attributes: </span>
 			</b>
 			
 			</div>
@@ -478,7 +477,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										</tr>
 										<tr>
 											 <td  style="padding: 5px; padding-left: 10px">(b)</td>
-											 <th style="width: 150px;padding: 5px; padding-left: 10px"><b>Project No</b></th>
+											 <th style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Code </b></th>
 											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes.get(z)[0]%> </td>
 										</tr>
 										<tr>
@@ -800,7 +799,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 			<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
 				<h1 class="break"></h1>
 				 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
-														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</b>
+														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status.</b>
 					</div>
    							
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
@@ -1013,9 +1012,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- -------------------------------------------------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;">
 		
-			<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
+			<%-- <a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" > --%>
 				<b class="sub-title">5. Milestones achieved prior to this <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting period.  </b>
-			</a>
+			<!-- </a> -->
    		</div>
    				
    						
@@ -1275,9 +1274,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						
 			
 			<div align="left" style="margin-left: 15px;">
-				<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
+				<%-- <a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" > --%>
 					<b class="mainsubtitle"><br>(a) Work carried out, Achievements, test result etc.</b>
-				</a>	
+				<!-- </a> -->	
 			</div>	
 						<!-- Tharun code Start (For Filtering Milestone based on levels) -->					
 
@@ -1617,7 +1616,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
 											 </tr>
 										
 										
@@ -1673,7 +1672,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
 										
@@ -1898,13 +1897,13 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
  <h1 class="break"></h1>
 <!-- ---------------------------------------------- -------------------------- ------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;">
-				<a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" >
+				<%-- <a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" > --%>
 				<%if(Integer.parseInt(committeeid)==2){ %>
    							<b class="sub-title">9. Action Plan for Next Six Months - Technical Milestones with Financial Outlay : </b>  
 				<%}else { %>
 							<b class="sub-title">9. Action Plan for Next Three Months - Technical Milestones with Financial Outlay : </b> 
 				<%} %>
-				</a>
+				<!-- </a> -->
 		
 		</div>
 		
@@ -2217,6 +2216,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								13. Other Relevant Points (if any) and Technical Work Carried Out For Last Three Months
 							<%} %>
    						</b></div>
+   						
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 							<tr>
 								 <th  style="width: 80%; ">Other Relevant Points</th>

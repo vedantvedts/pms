@@ -783,7 +783,7 @@ for(Object[] temp : invitedlist){
 								</tbody>
 							</table>
 				
-			<%}else if(committeemin[0].toString().equals("4") ){%>
+			<%}else if(committeemin[0].toString().equals("4") ) { %>
 				<br>
 					<table style="margin-top: -15px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 						<tr>
@@ -892,8 +892,8 @@ for(Object[] temp : invitedlist){
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
+											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
 											<td class="std"  style="max-width: 70px;text-align: center;">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
