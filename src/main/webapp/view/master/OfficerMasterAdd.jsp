@@ -78,9 +78,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			                <label>Title</label><br>
 			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-								<option value="Prof. ">Prof.</option>
-								<option value="Rev. ">Rev.</option>
-								<option value="Dr. ">Dr.</option>
+								<option value="Prof.">Prof.</option>
+								<option value="Lt.">Lt.</option>
+								<option value="Dr.">Dr.</option>
 								
 							</select>
 					</div>

@@ -2233,6 +2233,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important; ">Status(DD)</th>
+					             	<th style="width: 100px;" >FO ( &#x20B9; Cr)</th>
 					                <th style="width: 220px;">Remarks</th>
 								</tr>
 							</thead>
@@ -2340,6 +2341,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</span>
 											
 											</td>
+											<td align="center"><%if(obj[30]!=null){ %>
+												<%= nfc.convert(Double.parseDouble(obj[30].toString())/10000000)%>
+												<%}else{%>-<%}%></td>
 											<td >
 												<%if(obj[28]!=null){ %>
 												<%=obj[28] %>

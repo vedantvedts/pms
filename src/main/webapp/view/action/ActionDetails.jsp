@@ -6,10 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="../static/dependancy.jsp"></jsp:include>
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
 
 <title>Action Assignee</title>
 <style type="text/css">
@@ -145,7 +142,7 @@ h6{
 								<td style="text-align: left; width: 3%;">
 								
 							 <% 
-						        if(obj[5].toString().length()!=0 && obj[5]!=null){
+						        if(obj[5]!=null && obj[5].toString().length()!=0  ){
 						        %>
 						        <div  align="center">
 										<a  
@@ -217,7 +214,7 @@ h6{
 								<td style="text-align: left; width: 3%;">
 								
 							 <% 
-						        if(obj[5].toString().length()!=0 && obj[5]!=null){
+						        if(obj[5]!=null && obj[5].toString().length()!=0  ){
 						        %>
 						        <div  align="center">
 										<a  

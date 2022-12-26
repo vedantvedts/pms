@@ -41,6 +41,7 @@ h6{
   Object[] AssigneeDetails=(Object[]) request.getAttribute("AssigneeDetails");
   String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
+  String back = (String) request.getAttribute("back");
  %>
 
 
@@ -106,15 +107,20 @@ h6{
 
 	          				<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
-				            	<a type="button" class="btn  btn-sm back" href="AssigneeList.htm"  >BACK</a>
+				            	<%if("backToReview".equalsIgnoreCase(back)){%>
+				            		
+				            		<a type="button" class="btn  btn-sm back"  href="ActionForwardList.htm?Type=NB">BACK</a>
+				            	<%}else{%>
+				            		<a type="button" class="btn  btn-sm back"    href="AssigneeList.htm"  >BACK</a>
+				            	<%}%>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
 		          				<%if(!"0".equalsIgnoreCase(Assignee[8].toString())){ %>
 	 								<%if(Assignee[13].toString().equalsIgnoreCase("S")){ %>
-	      				 	  			<input type="submit" class="btn  btn-sm view" value="Meeting Content View" formaction="AgendaView.htm" formtarget="_blank"/>
+	      				 	  			<!-- <input type="submit" class="btn  btn-sm view" value="Meeting Content View" formaction="AgendaView.htm" formtarget="_blank"/> -->
 				       				<%} %>
 	                           	<%} %> 
 	                           	<% if(SubList.size()>0){ %>  
-	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');" >Forward</button>
+	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
 	          				</div>
 	        			</div>

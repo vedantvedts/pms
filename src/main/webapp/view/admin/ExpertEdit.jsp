@@ -106,9 +106,9 @@ if(details!=null){
 									                <label>Title<span class="mandatory">*</span></label><br>
 									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-															<option value="Prof." <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
-															<option value="Rev."  <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Rev.")){%>  selected="selected" <%}%>>  Rev.</option>
-															<option value="Dr."   <%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
+															<option value="Prof." 	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
+															<option value="Lt."  	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Lt.")){%>  selected="selected" <%}%>>  Lt.</option>
+															<option value="Dr."   	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
 															
 													</select>
 											</div>

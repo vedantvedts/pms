@@ -125,7 +125,7 @@ h6{
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 				
-					<h3 class="card-header">Self Assigned List</h3>
+					<h5 class="card-header">Self Assigned List</h5>
 					
 					<div class="card-body">
 
