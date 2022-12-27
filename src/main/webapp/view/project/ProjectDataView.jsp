@@ -108,6 +108,11 @@ border: 1px solid black;
 .card-header{
 	
 }
+
+.col-md-12{
+    padding-left:0px;
+    padding-right:0px;
+ }
 </style>
 
 
@@ -156,7 +161,7 @@ if(ses1!=null){
 <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover">
+				<div class="card shadow-nohover" style="margin-right:10px;margin-left:10px;margin-bottom:40px;">
 					<div class="col-md-12">
 						<div class="row card-header">
 				   			<div class="col-md-6">
@@ -254,6 +259,14 @@ if(ses1!=null){
 										    	<label ><b>6. Procurement Limit </b></label>
 										    	<input class="form-control" type="number" name="proclimit" placeholder="Add Limit" min="500000" step="0.01"  <%if(projectdatadetails!=null && projectdatadetails[11]!=null){ %>value="<%=projectdatadetails[11] %>" <%} %>  >
 										    </td>
+										</tr>
+										<tr>
+											<td><label><b>7. Last PMRC Date </b> </label> <input
+												type="text" data-date-format="dd/mm/yyyy" id="pmrc-date"
+												name="pmrcdate" class="form-control form-control"></td>
+											<td><label><b>8. Last EB Date </b> </label> <input
+												type="text" data-date-format="dd/mm/yyyy" id="EB-date"
+												name="ebdate" class="form-control form-control"></td>
 										</tr>
 										<tr>
 											<td colspan="3">
@@ -367,6 +380,31 @@ function appendrev(frmid){
 	      
 	 	
 	}
+	
+	
+$('#pmrc-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate": '<%if(projectdatadetails[12]!=null){  %><%=sdf.format(projectdatadetails[12]) %><%}%><% else %><%=LocalDate.now()%>', 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+
+});
+$('#EB-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":'<%if(projectdatadetails[13]!=null){  %><%=sdf.format(projectdatadetails[13]) %><%}%><% else %><%=LocalDate.now()%> ' ,
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});	
 </script>
 
 

@@ -205,6 +205,16 @@ if(ses1!=null){
 										    	<input class="form-control" type="number" name="proclimit" placeholder="Add Limit" min="500000" value="500000.00" step="0.01" >
 										    </td>
 										</tr>
+										<tr>
+											<td><label><b>7. Last PMRC Date </b> </label> <input
+												type="text" data-date-format="dd/mm/yyyy" id="pmrc-date"
+												name="pmrcdate" value="" class="form-control form-control">
+											</td>
+											<td><label><b>8. Last EB Date </b> </label> <input
+												type="text" data-date-format="dd/mm/yyyy" id="EB-date"
+												name="ebdate" value="" class="form-control form-control">
+											</td>
+										</tr>
 										
 										<tr>
 											<td colspan="3">
@@ -285,6 +295,32 @@ function submitForm(frmid)
 { 
   document.getElementById(frmid).submit(); 
 } 
+
+
+$('#pmrc-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":new Date(), 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
+
+
+$('#EB-date').daterangepicker({
+	
+	"singleDatePicker": true,
+	"showDropdowns": true,
+	"cancelClass": "btn-default",
+	/* "minDate":new Date(), */
+	"startDate":new Date(), 
+	locale: {
+    	format: 'DD-MM-YYYY'
+		}
+});
 </script>
 
 

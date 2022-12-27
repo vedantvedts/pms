@@ -1445,6 +1445,8 @@ public class ProjectServiceImpl implements ProjectService {
 			
 			model.setCreatedBy(dto.getCreatedBy());
 			model.setCreatedDate(sdf1.format(new Date()));
+			model.setLastPmrcDate(dto.getLastPmrcDate());
+			model.setLastEBDate(dto.getLastEBDate());
 			model.setRevisionNo(0);
 			model.setProcLimit(Double.parseDouble(dto.getProcLimit()));
 			File theDir = new File(uploadpath+Path);
@@ -1497,7 +1499,8 @@ public class ProjectServiceImpl implements ProjectService {
 			model.setModifiedDate(sdf1.format(new Date()));
 			model.setRevisionNo(Long.parseLong(dto.getRevisionNo()));
 			model.setProcLimit(Double.parseDouble(dto.getProcLimit()));
-			
+			model.setLastPmrcDate(dto.getLastPmrcDate());
+			model.setLastEBDate(dto.getLastEBDate());
 			
 			return dao.ProjectDataEditSubmit(model, query);
 		}
