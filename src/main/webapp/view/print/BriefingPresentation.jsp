@@ -770,7 +770,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 	   							
 							<div>
 								<form action="ProjectData.htm" method="post" target="_blank">
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<% } %>	</b>
 									<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
 									<input type="hidden" name="projectid" value="<%=ProjectDetail.get(z)[0] %>">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -2317,18 +2317,20 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 							<%} %>	
 						    <div class="row">
 							   	<div class="col-md-9 ">
-									<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
+								<%-- 	<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
 										<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="application/pdf,image/jpeg"/>
 										<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
-										<!-- <button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button> -->
+										<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
 										<button type="submit" formtarget="_blank" class="btn btn-sm back" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" style="float:right; background-color: #DE834D; font-weight: 600;border:0px;">Sub Level</button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										<input type="hidden" name="ProjectId" id="ProjectId" value="<%=projectidlist.get(z)%>"> 
 										<input type="hidden" name="committeeid" value="<%=committeeid%>">
-									</form>
+									</form> --%>
 								</div>
-								<div class="col-md-3" style="float:right;margin-top:10px;  ">
-									<label>Interval : &nbsp;&nbsp;&nbsp; </label>
+								<div class="col-md-1" align="right">
+									<label style="margin-top:10px; float:right;">Interval : &nbsp;&nbsp; </label>
+								</div>
+								<div class="col-md-2" align="left" style="margin-top:10px;  ">
 									<select class="form-control selectdee " name="interval_<%=projectidlist.get(z)%>" id="interval_<%=projectidlist.get(z)%>" required="required"  data-live-search="true"  style="width:150px !important" >
 				            	        <option value="quarter"> Quarterly </option>
 				                	    <option value="half" >Half-Yearly</option>
@@ -2529,7 +2531,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 	
 	<!-- ----------------------------------------p-13a Other Relevant Points Div ----------------------------------------------------- -->
 	
-	<!-- ---------------------------------------- P-13b  Other Relevant Points Div ----------------------------------------------------- -->
+	<!-- ---------------------------------------- P-13b Technical Work Carried Div ----------------------------------------------------- -->
 	
 			<div class="carousel-item ">
 
@@ -2574,7 +2576,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 								<div class="row">
 									<div class="col-md-12">
 										
-										<%if(TechWorkDataList.get(z)[3]!=null && Long.parseLong(TechWorkDataList.get(z)[3].toString())>0){ %>
+										<%if(TechWorkDataList.get(z)!=null && TechWorkDataList.get(z)[3]!=null && Long.parseLong(TechWorkDataList.get(z)[3].toString())>0){ %>
 											
 											
 											<%	Object[] TechWork =TechWorkDataList.get(z);
@@ -2620,9 +2622,9 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 			
 			</div>
 	
-	<!-- ---------------------------------------- p-13b Other Relevant Points Div ----------------------------------------------------- -->
+	<!-- ---------------------------------------- p-13b Technical Work Carried Div ----------------------------------------------------- -->
 	
-	<!-- ---------------------------------------- P-13c  Other Relevant Points Div ----------------------------------------------------- -->
+	<!-- ---------------------------------------- P-13c  Technical Images Div ----------------------------------------------------- -->
 	
 			<div class="carousel-item ">
 
@@ -2640,7 +2642,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 								
 						<div align="center">
 							<span class="mainsubtitle">Technical Images</span> <hr>
-								<% if(TechImages.size()>0){
+								<% if(TechImages.size()>0 ){
 								List<TechImages>  TechImagesList= TechImages.get(z); 
 								if(TechImagesList.size()>0){
 								for(TechImages imges:TechImagesList){ %>
@@ -2649,20 +2651,18 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 										<img data-enlargable  style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" >
 										<hr>
 									<%} %>
-											
-						</div>
-						
-					<%}}} %>
-				
 							
+								<%}}} %>
+				
+						</div>
 					<%} %>
 				</div>
 				
 			</div>
-			
-	<!-- ---------------------------------------- p-13c Other Relevant Points Div ----------------------------------------------------- -->
-		
-	</div>
+
+	<!-- ---------------------------------------- p-13c Technical Images Div ----------------------------------------------------- -->
+	</div>	
+
 	
 			<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width:0%;padding-left: 20px; ">
 				<span  aria-hidden="true" ><i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span>
@@ -2697,9 +2697,8 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 				<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images" ><b>13 (c)</b></li>
 			</ol>
 	
-		</div>
-		
 	</div>
+		
 
 <!-- ------------------------------------------------- MODALS -------------------------------------------------- -->
 
@@ -3402,121 +3401,6 @@ function FileDownload1(fileid1)
 
 <script type="text/javascript">
 
-function openMainModal(agendatempid,addedit,Proid)
-{
-	
-	$('#AttachProjectId').val(Proid); 
-	
-	
-	$.ajax({
-			type : "GET",
-			url : "FileRepMasterListAllAjax.htm",
-			data : {
-				projectid : Proid,
-							
-			},
-			datatype: 'json',
-			success : function(result)
-				{
-					var result= JSON.parse(result);
-					var values= Object.keys(result).map(function(e){
-						return result[e];
-					})	
-	
-					var values1=values;
-					var values2=values;
-					var values3=values;
-					var values4=values;
-					var values5=values;
-
-			
-				/* --------------------------------------------------tree making--------------------------------------------------------- */			
-					var str='<ul>';
-					for(var v1=0;v1<values1.length;v1++)
-					{ 
-						if(values1[v1][1]===0)
-						{  
-							str +='<li> <span class="caret" id="system'+values1[v1][0]+'" onclick="onclickchangeMain(this);"  >'+values1[v1][3] +'</span> <ul  class="nested"> <li>'; 
-					 /* ----------------------------------------level 1------------------------------------- */	
-								for(var v2=0;v2<values2.length;v2++)
-								{ 
-									if( values2[v2][1]==values1[v1][0] )
-									{  
-										str += '<li> <span class="caret" id="system'+values2[v2][0]+'" onclick="onclickchangeMain(this);"  >' +values2[v2][3]+'</span>';
-										str +=  '<span> <button type="button" id="upbutton'+values2[v2][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\', \'-\',\'\',\'-\',\'\',\'-\',\'\',1)"> ';
-										str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-										str +='<ul  class="nested"> <li>'; 
-								/* ----------------------------------------level 2------------------------------------- */
-											for(var v3=0;v3<values3.length;v3++)
-											{ 
-												if( values3[v3][1]==values2[v2][0] )
-												{  
-													str += '<li> <span class="caret" id="system'+values3[v3][0]+'"  onclick="onclickchangeMain(this);"  >' +values3[v3][3]+'</span>';
-													str +=  '<span> <button type="button" id="upbutton'+values3[v3][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\'-\',\'\',\'-\',\'\',2)"> ';
-													str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-													str +='<ul  class="nested"> <li>'; 
-											/* ----------------------------------------level 3------------------------------------- */
-														for(var v4=0;v4<values4.length;v4++)
-														{ 
-															if( values4[v4][1]==values3[v3][0] )
-															{  
-																str += '<li> <span class="caret" id="system'+values4[v4][0]+'" onclick="onclickchangeMain(this);"  >' +values4[v4][3]+'</span>';
-																str +=  '<span> <button type="button" id="upbutton'+values4[v4][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\''+values4[v4][0]+'\',\''+values4[v4][3]+'\',\'-\',\'\',3)"> ';
-																str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-																str +='<ul  class="nested"> <li>'; 
-														/* ----------------------------------------level 4------------------------------------- */
-																	for(var v5=0;v5<values5.length;v5++)
-																	{ 
-																		if( values5[v5][1]==values4[v4][0] )
-																		{  
-																			str += '<li> <span class="caret-last" id="system'+values5[v5][0]+'" onclick="onclickchangeMain(this);"  >' +values5[v5][3]+'</span>';
-																			str +=  '<span> <button type="button" id="upbutton'+values5[v5][0]+'" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox(\''+ values1[v1][0] +'\',\''+values1[v1][3]+'\' ,\''+values2[v2][0]+'\',\''+values2[v2][3]+'\',\''+values3[v3][0]+'\',\''+values3[v3][3]+'\',\''+values4[v4][0]+'\',\''+values4[v4][3]+'\',\''+values4[v5][0]+'\',\''+values4[v5][3]+'\',4)"> ';
-																			str +=  '<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i> </button>';
-																			
-																		}
-																	} 
-																	
-														/* ----------------------------------------level 4------------------------------------- */			
-																str +=	'</li> </ul> </li>';
-															}
-														} 
-														
-											/* ----------------------------------------level 3------------------------------------- */			
-													str +=	'</li> </ul> </li>';
-												}
-											} 
-											
-								/* ----------------------------------------level 2------------------------------------- */			
-										str +=	'</li> </ul> </li>';
-									}
-								} 
-							
-				 	/* ----------------------------------------level 1------------------------------------- */
-											
-							str +='</li> 	</ul> 	</li>';	
-						} 
-					} 
-			/* --------------------------------------------------tree making--------------------------------------------------------- */
-					str += '</ul>';
-				
-							
-				$('#submodules').html(str);
-				$('#attachmentmodal').modal('show');
-				var toggler = document.getElementsByClassName("caret");
-				var i;
-				for (i = 0; i <toggler.length; i++) {
-				  toggler[i].addEventListener("click", function() {	
-					this.parentElement.querySelector(".nested").classList.toggle("active");   
-				    this.classList.toggle("caret-down");
-				  });
-				}
-			}
-	
-	});
-	
-}
-
-
 
 function setattchidvalue(attachid, attchName)
 {
@@ -3531,267 +3415,6 @@ function setattchidvalue(attachid, attchName)
 </script>
 
 
-<script type="text/javascript">
-
-function onclickchangeMain(ele)
-{
-	elements = document.getElementsByClassName('caret');
-	for (var i1 = 0; i1 < elements.length; i1++) {
-		$(elements[i1]).css("color", "black");
-		$(elements[i1]).css("font-weight", "");
-	}
-	elements = document.getElementsByClassName('caret-last');
-	for (var i1 = 0; i1 < elements.length; i1++) {
-		$(elements[i1]).css("color", "black");
-		$(elements[i1]).css("font-weight", "");
-	}
-	$(ele).css("color", "green");
-	$(ele).css("font-weight", "700");
-}
-
-
-function onclickchange(ele)
-{
-	elements = document.getElementsByClassName('caret-1');
-    for (var i1 = 0; i1 < elements.length; i1++) {
-    	$(elements[i1]).css("color", "black");
-    	$(elements[i1]).css("font-weight", "");
-    }
-    elements = document.getElementsByClassName('caret-last-1');
-    for (var i1 = 0; i1 < elements.length; i1++) {
-    	$(elements[i1]).css("color", "black");
-    	$(elements[i1]).css("font-weight", "");
-    }
-$(ele).css("color", "green");
-$(ele).css("font-weight", "700");
-
-}
-
-
-$(document).ready(function(){
-
-	
-	
-	var toggler = document.getElementsByClassName("caret");
-	var i;
-	for (i = 0; i <toggler.length; i++) {
-	  toggler[i].addEventListener("click", function() {	
-		this.parentElement.querySelector(".nested").classList.toggle("active");   
-	    this.classList.toggle("caret-down");
-	  });
-	}
-});
-
-function setmodelheader(m,l1,l2,l3,l4,lev,project,divid){
-	
-	/* var modelhead=project+'  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+m; */
-	
-	var modelhead=m;
-	
-	if(lev>=1)
-	{
-		 modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l1; 
-	}
-	if(lev>=2)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l2;
-	}
-	if(lev>=3)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l3;
-	}
-	if(lev>=4)
-	{
-		modelhead +='  <i class="fa fa-long-arrow-right" aria-hidden="true"></i>  '+l4;
-	}
-	$('#'+divid).html(modelhead);
-}
-
-
-function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
-{
-		
-		var $projectid=$('#AttachProjectId').val();		
-		setmodelheader(mname,lname1,lname2,lname3,lname4,lev,$('#projectname').val(),'model-card-header');		
-		$('#amendmentbox').css('display','none');
-		$('#submitversion').val('');
-		$('#prevversion').text('');
-		$('#downloadbtn').remove();
-		$('#FileName').prop('readonly',false);
-		$('#FileName').val('');
-		$('#modeldescshow').text('');
-		$('#uploadbox').css('display','none');
-		$('#ammendmentbox').css('display','none');
-		
-		$.ajax({
-				type : "GET",
-				url : "FileHistoryListAjax.htm",
-				data : {
-					projectid : $projectid,
-					mainsystemval : mid,
-					sublevel : lev ,
-					s1:l1,
-					s2:l2,
-					s3:l3,
-					s4:l4,				
-				},
-				datatype: 'json',
-				success : function(result)
-					{
-						var result= JSON.parse(result);
-						var values= Object.keys(result).map(function(e){
-						return result[e];
-					})			
-					
-						/* --------------------------------------------ajax nested--------------------------------------- */		
-							
-							 $.ajax({
-									type : "GET",
-									url : "FileDocMasterListAll.htm",
-									data : {
-										projectid : $projectid,		
-									},
-									datatype: 'json',
-									success : function(result1)
-											{
-												var result1= JSON.parse(result1);
-												var values1= Object.keys(result1).map(function(e){
-													return result1[e];
-												})
-														
-												var values2=values1;
-												/* --------------------------------------------------tree making--------------------------------------------------------- */			
-													var str='<ul>';
-													for(var v1=0;v1<values1.length;v1++)
-													{ 
-														if(values1[v1][2]===1)
-														{  
-															str +='<li> <span class="caret-1" id="docsysl1'+values1[v1][0]+'" onclick="onclickchange(this);" >'+values1[v1][3] +'</span> <ul  class="nested-1"> <li>'; 
-													 /* ----------------------------------------level 1------------------------------------- */	
-																for(var v2=0;v2<values2.length;v2++)
-																{ 
-																	if(values1[v2][2]===2 && values2[v2][1]==values1[v1][0] )
-																	{  
-																		str += '<li> <span class="caret-1" id="docsysl2'+values2[v2][0]+'" onclick="onclickchange(this);" >' +values2[v2][3]+'</span> <ul  class="nested-1"> <li>'; 
-																/* ----------------------------------------level 2------------------------------------- */
-																			
-																			for(var v3=0;v3<values.length;v3++)
-																			{ 
-																				if(  values[v3][1]==values2[v2][0])
-																				{
-																					str += '<li>';
-																					
-																					if(values[v3][4]!=0)
-																					{
-																						str += '<input type="radio" class="selectradio" onchange="setattchidvalue(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
-																					}else
-																					{
-																						str += '<input type="radio" class="selectradio" disabled ></button>' ;
-																					}
-																					
-																					str +=' <span class="caret-last-1" id="docsysl3'+values[v3][0]+'" onclick="onclickchange(this);">'+values[v3][3]+'('+values[v3][9]+')</span>';
-																						
-																					/*  str +='<span><button type="button" class="btn"  style="background-color: transparent;margin: -3px 0px;" onclick="showuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\')" >'; 																					
-																					str +=		'<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>';
-																					str +=		'</button>';  */
-																					if(values[v3][4]!=0)
-																					{ 
-																						str +=' <span class="version">Ver '+values[v3][8]+'.'+values[v3][6];
-																						str +=		' <button type="radio" name="selectattach" class="btn"  style="background-color: transparent;margin: -5px 0px;" onclick="FileDownload(\''+values[v3][4]+'\')">';                                     
-																						str += 			'<i class="fa fa-download" aria-hidden="true"></i>';
-																						str +=		'</button> ';
-																				
-																						/* str +=		'  <button type="button" class="btn"  style="background-color: #CFFFFE;padding : 0px 5px 3px;margin: 0px -10px;border: 0.1px solid grey;" onclick="showamuploadbox(\''+values1[v1][3]+'\',\''+values2[v2][3]+'\',\''+values[v3][3]+'\',\''+values[v3][8]+'\',\''+values[v3][6]+'\',\''+values[v3][0]+'\',\''+values[v3][9]+'\',\''+values[v3][10]+'\',\''+values1[v1][0]+'\',\''+values2[v2][0] +'\',\''+values[v3][4]+'\')" >';                                     
-																						str  += 			' Amendment <img data-enlargable  style="height:20px; width: 20px; " src="view/images/amendment-icon-2.png"> ';   /* <i class="fa fa-plus" style="color: #3DB2FF" aria-hidden="true"></i> <i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i> 
-																						str +=		'</button> </span>'; */
-																						
-																						str += '</span>';
-																					} 
-																							
-																							
-																					str +='	</span> </li>';
-																						
-																				}
-																			}			
-																	
-																			
-																/* ----------------------------------------level 2------------------------------------- */			
-																		str +=	'</li> </ul> </li>';
-																	}
-																} 
-															
-												 	/* ----------------------------------------level 1------------------------------------- */
-																			
-															str +='</li> 	</ul> 	</li>';	
-														} 
-													} 
-												/* --------------------------------------------------tree making--------------------------------------------------------- */
-													str += '</ul>';
-													
-													$('#fileuploadlist').html(str);
-													
-													var toggler = document.getElementsByClassName("caret-1");
-													$('#s1').val(l1);
-													$('#s2').val(l2);
-													$('#s3').val(l3);
-													$('#s4').val(l4);
-													$('#mainsystemval').val(mid);
-													$('#sublevel').val(lev);
-													$('#Path').val(mname+'/'+lname1);
-													
-													var i;
-													for (i = 0; i <toggler.length; i++) {
-													  toggler[i].addEventListener("click", function() {	
-														this.parentElement.querySelector(".nested-1").classList.toggle("active-1");   
-													    this.classList.toggle("caret-down-1");
-													  });
-													}
-													$('#exampleModalCenter1').modal('show');
-															
-															/* if($doclev1>0)
-															{
-																$('#docsysl1'+$doclev1).click();
-															}
-															if($doclev2>0)
-															{
-																$('#docsysl2'+$doclev2).click();
-															}
-															if($doclev3>0)
-															{
-																$('#docsysl3'+$doclev3).css("font-weight", "700")
-															}
-															
-															$doclev1=0;
-															$doclev2=0;
-															$doclev3=0;
-													 */
-													
-											},
-											error: function(XMLHttpRequest, textStatus, errorThrown) {
-												alert("Internal Error Occured !!");
-									            alert("Status: " + textStatus);
-									            alert("Error: " + errorThrown); 
-									        }  
-											
-							 		})
-							 
-						/* --------------------------------------------ajax nested--------------------------------------- */
-						
-					
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert("Internal Error Occured !!");
-		            alert("Status: " + textStatus);
-		            alert("Error: " + errorThrown); 
-		        }  
-		 })
-				
-}
-
-
-</script>
-
-			
 	<% for(int z=0;z<projectidlist.size();z++){ %>
 		<script>
 								    	  

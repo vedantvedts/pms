@@ -220,7 +220,7 @@ h6{
 																	
 															<%if(obj[8]!=null&&"Y".equalsIgnoreCase(obj[10].toString())&&MilestoneA!=null&&MilestoneA.size()>0){ %>
 
-                        	                                  <button type="button" class="btn btn-sm edit" title="Comment" onclick="getCommentBox('<%=obj[0] %>','<%=obj[5] %>')"> <i class="fa fa-comment" aria-hidden="true" ></i> </button>
+                        	                                  <button type="button" class="btn btn-sm edit" title="Comment" onclick="getCommentBox('<%=obj[0] %>','<%=obj[5] %>','<%=obj[15] %>','<%=obj[16] %>')"> <i class="fa fa-comment" aria-hidden="true" ></i> </button>
                         
                           
 															<%} %>
@@ -733,13 +733,14 @@ h6{
   	      
   	      	<form action="MileRemarkUpdate.htm" method="POST" autocomplete="off">
   	      		<div class="row">
-  	      		    <div class="col-md-12"> Remarks :<br>
-  	      		    		<textarea class="form-control"  name="Remarks"   required="required"  maxlength="255"> </textarea>
-  	      		    </div>
-  	      		    <br>
+  	      		    
 					<div class="col-md-12">Financial Outlay : <br>
 							<input class="form-control" title="Enter Number" name="financialoutlay" id="financialoutlay" type="text"   maxlength="9">
 					</div>
+					 <br>
+					<div class="col-md-12"> Remarks :<br>
+  	      		    		<textarea class="form-control"  name="Remarks" id="remarks"   required="required"  maxlength="255"> </textarea>
+  	      		    </div>
   	      			</div>
   	      		<br>
   	      		<div align="center">
@@ -816,9 +817,16 @@ function ChangeButton(id) {
 	
 	
 	
-	function getCommentBox(id,mile){
+	function getCommentBox(id,mile,remarks,financeoutlay){
+
 		$('#exampleModalCenter').modal('toggle');
 		$("#milId").val(id);
+		$("#financialoutlay").val("");
+		$("#remarks").val("");
+		if(remarks!="null" && financeoutlay!="null"){
+			$("#financialoutlay").val(financeoutlay);
+			$("#remarks").val(remarks);
+		}
 		$("#exampleModalLongTitle").html('Milestone '+mile);
 	}
 	

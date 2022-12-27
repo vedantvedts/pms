@@ -1,5 +1,7 @@
 package com.vts.pfms.project.dto;
 
+import java.sql.Date;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -20,6 +22,8 @@ public class PfmsProjectDataDto {
 		private MultipartFile PEARLImg;
 		private String procLimit;
 		private String CurrentStageId;
+		private Date LastPmrcDate;
+		private Date LastEBDate;
 		private String RevisionNo;
 		private String CreatedBy;
 		private String CreatedDate;

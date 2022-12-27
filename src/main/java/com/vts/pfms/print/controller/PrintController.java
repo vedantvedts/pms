@@ -230,7 +230,7 @@ public class PrintController {
 	    	//byte[] data = html.getBytes();
 	    	//InputStream fis1=new ByteArrayInputStream(data);
 	    	//PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	//pdfDoc.setTagged();
+	    	//
 	    	//Document document = new Document(pdfDoc, PageSize.A4);
 	    	//document.setMargins(50, 50, 50, 50);
 	    	//ConverterProperties converterProperties = new ConverterProperties();
@@ -354,7 +354,7 @@ public class PrintController {
 //	    	byte[] data = html.getBytes();
 //	    	InputStream fis1=new ByteArrayInputStream(data);
 //	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-//	    	pdfDoc.setTagged();
+//	    	
 //	    	Document document = new Document(pdfDoc, PageSize.A4);
 //	    	//document.setMargins(50, 100, 150, 50);
 //	    	document.setMargins(50, 50, 50, 50);
@@ -640,7 +640,7 @@ public class PrintController {
 	    	byte[] data = html.getBytes();
 	    	InputStream fis1=new ByteArrayInputStream(data);
 	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	pdfDoc.setTagged();
+	    	
 	    	Document document = new Document(pdfDoc, PageSize.A4);
 	    	//document.setMargins(50, 100, 150, 50);
 	    	document.setMargins(50, 50, 50, 50);
@@ -966,125 +966,117 @@ public class PrintController {
 	}
 	
 	
-	@PostMapping(value = "ProjectBriefingFreeze.htm")
-	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	public File BriefingPaperGeneratePDF(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)
 	{
+
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
+		logger.info(new Date() +"Inside BriefingPaperGeneratePDF.htm "+UserId);		
 	    try {
-	    	String projectid=req.getParameter("projectid");
-	    	String committeeid= req.getParameter("committeeid");
-	    	
-	    	long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
-		    if(nextScheduleId>0) 
-		    {
-		    	String freezeflag = service.getNextScheduleFrozen(nextScheduleId);
-		    	if(freezeflag.equalsIgnoreCase("N")) 
-		    	{
+		    	String projectid=req.getParameter("projectid");
+		    	String committeeid= req.getParameter("committeeid");
 			   	
-		    		String tempid=committeeid;
-			    	Committee committee = service.getCommitteeData(committeeid);
-			    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
-			    	List<Object[]> projectattributes = new ArrayList<Object[]>();
-			    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
-			    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
-			    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
-			    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
-			    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> ReviewMeetingListEB = new ArrayList<List<Object[]>>();
-			    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
-			    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
-			    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
-		    		List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
+		   		String tempid=committeeid;
+			   	Committee committee = service.getCommitteeData(committeeid);
+			   	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+			   	List<Object[]> projectattributes = new ArrayList<Object[]>();
+			   	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
+			   	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
+			   	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
+			   	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
+			   	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> ReviewMeetingListEB = new ArrayList<List<Object[]>>();
+			   	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+			   	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
+			   	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
+		    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
+			   	
+			   	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 			    	
-			    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 			    	
-			    	
-			    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
-			    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
-		    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-		    		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
-			    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
-			    	for(String proid : Pmainlist) 
-			    	{	    	
-			    		Object[] projectattribute = service.ProjectAttributes(proid);
-			    		
-			    		TechImages.add(service.getTechList(proid));
-			    		projectattributes.add(projectattribute);
-			    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-			    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-			    		milestones.add(service.Milestones(proid));
-			    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
-			    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-			    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
-			    		ganttchartlist.add(service.GanttChartList(proid));
-			    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
-			    		riskmatirxdata.add(service.RiskMatirxData(proid));
-			    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-			    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
-			    		projectdatadetails.add(service.ProjectDataDetails(proid));
-			    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
-			    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
-			    		TechWorkDataList.add(service.TechWorkData(proid));
-				    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
-			    		ProjectRevList.add(service.ProjectRevList(proid));
-			    	
-				/* ----------------------------------------------------------------------------------------------------------	   */  		
-			    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
-					 		HttpHeaders headers = new HttpHeaders();
-					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-					    	 
-					 		String jsonResult=null;
+			   	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
+			   	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
+		    	List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
+		    	List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
+			   	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
+			   	for(String proid : Pmainlist) 
+			   	{	    	
+			   		Object[] projectattribute = service.ProjectAttributes(proid);
+			   		
+			   		TechImages.add(service.getTechList(proid));
+			   		projectattributes.add(projectattribute);
+			   		ebandpmrccount.add(service.EBAndPMRCCount(proid));
+			   		milestonesubsystems.add(service.MilestoneSubsystems(proid));
+			   		milestones.add(service.Milestones(proid));
+			   		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
+			   		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
+			   		ProjectDetails.add(service.ProjectDetails(proid).get(0));
+			   		ganttchartlist.add(service.GanttChartList(proid));
+			   		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
+			   		riskmatirxdata.add(service.RiskMatirxData(proid));
+			   		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
+			   		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
+			   		projectdatadetails.add(service.ProjectDataDetails(proid));
+			   		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
+			   		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
+			   		TechWorkDataList.add(service.TechWorkData(proid));
+			    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+			   		ProjectRevList.add(service.ProjectRevList(proid));
+			   	
+			/* ----------------------------------------------------------------------------------------------------------	   */  		
+			  		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
+				 		HttpHeaders headers = new HttpHeaders();
+				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+				    	 
+				 		String jsonResult=null;
 							try {
-								HttpEntity<String> entity = new HttpEntity<String>(headers);
-								ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-								jsonResult=response.getBody();						
-							}catch(Exception e) {
-								req.setAttribute("errorMsg", "errorMsg");
-							}
-							ObjectMapper mapper = new ObjectMapper();
-							mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-							mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-							List<ProjectFinancialDetails> projectDetails=null;
-							if(jsonResult!=null) {
-								try {
-									/*
-									 * projectDetails = mapper.readValue(jsonResult,
-									 * mapper.getTypeFactory().constructCollectionType(List.class,
-									 * ProjectFinancialDetails.class));
-									 */
-									projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-									financialDetails.add(projectDetails);
+							HttpEntity<String> entity = new HttpEntity<String>(headers);
+							ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+							jsonResult=response.getBody();						
+						}catch(Exception e) {
+							req.setAttribute("errorMsg", "errorMsg");
+						}
+						ObjectMapper mapper = new ObjectMapper();
+						mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+						mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+						List<ProjectFinancialDetails> projectDetails=null;
+						if(jsonResult!=null) {
+							try {
+								/*
+								 * projectDetails = mapper.readValue(jsonResult,
+								 * mapper.getTypeFactory().constructCollectionType(List.class,
+								 * ProjectFinancialDetails.class));
+								 */
+								projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+								financialDetails.add(projectDetails);
 									req.setAttribute("financialDetails",projectDetails);
-								} catch (JsonProcessingException e) {
-									e.printStackTrace();
-								}
+							} catch (JsonProcessingException e) {
+								e.printStackTrace();
 							}
-			    	
-							final String localUri2=uri+"/pfms_serv/getTotalDemand";
-		
-					 		String jsonResult2=null;
+						}
+			   	
+						final String localUri2=uri+"/pfms_serv/getTotalDemand";
+							 		String jsonResult2=null;
+						try {
+							HttpEntity<String> entity = new HttpEntity<String>(headers);
+							ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
+							jsonResult2=response.getBody();						
+						}catch(Exception e) {
+							req.setAttribute("errorMsg", "errorMsg");
+						}
+						ObjectMapper mapper2 = new ObjectMapper();
+						mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+						mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+						List<TotalDemand> totaldemand=null;
+						if(jsonResult2!=null) {
 							try {
-								HttpEntity<String> entity = new HttpEntity<String>(headers);
-								ResponseEntity<String> response=restTemplate.exchange(localUri2, HttpMethod.POST, entity, String.class);
-								jsonResult2=response.getBody();						
-							}catch(Exception e) {
-								req.setAttribute("errorMsg", "errorMsg");
-							}
-							ObjectMapper mapper2 = new ObjectMapper();
-							mapper2.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-							mapper2.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-							List<TotalDemand> totaldemand=null;
-							if(jsonResult2!=null) {
-								try {
 									/*
 									 * projectDetails = mapper.readValue(jsonResult,
 									 * mapper.getTypeFactory().constructCollectionType(List.class,
@@ -1189,7 +1181,7 @@ public class PrintController {
 			    	byte[] data = html.getBytes();
 			    	InputStream fis1=new ByteArrayInputStream(data);
 			    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-			    	pdfDoc.setTagged();
+			    	
 			    	Document document = new Document(pdfDoc, PageSize.A4);
 			    	//document.setMargins(50, 100, 150, 50);
 			    	document.setMargins(50, 50, 50, 50);
@@ -1485,21 +1477,58 @@ public class PrintController {
 			        pdf1.close();	       
 			        pdfw.close();
 	        
+			        return new File(path +File.separator+ "mergedb.pdf");
+		    	
+		    
+	    }
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
+    		e.printStackTrace();
+			return null;
+	
+    	}		
+		
+	
+	}
+	
+	
+	
+	@PostMapping(value = "ProjectBriefingFreeze.htm")
+	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	{
+
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
+	    try {
+	    	String projectid=req.getParameter("projectid");
+	    	String committeeid= req.getParameter("committeeid");
+	    	
+	    	long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
+	    	System.out.println("nextScheduleId" + nextScheduleId );
+		    if(nextScheduleId>0) 
+		    {
+		    	String freezeflag = service.getNextScheduleFrozen(nextScheduleId);
+		    	System.out.println("freezeflag "+freezeflag );
+		    	if(freezeflag.equalsIgnoreCase("N")) 
+		    	{
+		    		
+		    		String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+		    		File BPFile =  BriefingPaperGeneratePDF(req, res, ses, redir);
+		    		
 			        
 	    			CommitteeProjectBriefingFrozen briefing = CommitteeProjectBriefingFrozen.builder()
 		        											.ScheduleId(nextScheduleId)
 		        											.FreezeByEmpId(Long.parseLong(EmpId))
-		        											.BriefingFile(new File(path +File.separator+ "mergedb.pdf"))
+		        											.BriefingFile(BPFile)
 		        											.LabCode(projectLabCode)
 		        											.IsActive(1)
 		        											.build();
 		       
 	    			long count = service.FreezeBriefing(briefing);
 	    			
-	    			Path pathOfFile2= Paths.get(path +File.separator+ "mergedb.pdf"); 
-			        Files.delete(pathOfFile2);
-			        pathOfFile2= Paths.get( path+File.separator+filename+"Maintemp.pdf");
-			        Files.delete(pathOfFile2);	
+	    			BPFile.delete();	
 			        
 	    			if(count>0)
 	    			{
@@ -1531,22 +1560,15 @@ public class PrintController {
 	
     	}		
 		
+	
 	}
 	
+
 	@RequestMapping(value = "MeetingBriefingPaper.htm")
 	public void MeetingBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
 	{
 		String ScheduleId = req.getParameter("scheduleid");
 		CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
-//		if(briefing == null) 
-//		{
-//			
-//			redir.addAttribute("resultfail", "Briefing Paper Not Freezed!");	
-//			redir.addFlashAttribute("projectid", req.getParameter("projectid"));
-//			redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
-//			return "redirect:/ProjectBriefingPaper.htm";
-//		}else
-//		{
 			res.setContentType("application/pdf");
 		    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
 		    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
@@ -1560,226 +1582,8 @@ public class PrintController {
 		    } 
 		    os.close();
 		    fis.close();
-//		}
-//		return "";
 	}
 	
-	
-//	@PostMapping(value = "ProjectBriefingFreeze.htm")
-//	public String freezeBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
-//	{
-//		String UserId = (String) ses.getAttribute("Username");
-//		String LabCode = (String)ses.getAttribute("labcode");
-//		logger.info(new Date() +"Inside ProjectBriefingFreeze.htm "+UserId);		
-//	    try {
-//	    	String projectid=req.getParameter("projectid");
-//	    	String committeeid= req.getParameter("committeeid");
-//	    	String tempid=committeeid;
-//	        long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
-//	    	if(nextScheduleId>0) {
-//	    		if(service.getNextScheduleFrozen(nextScheduleId).equalsIgnoreCase("N")) {
-//	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-//	    	String Logintype= (String)ses.getAttribute("LoginType");
-//	    	Committee committee = service.getCommitteeData(committeeid);
-//	    	
-//	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-//	    	    	
-//	    	
-//	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
-//	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> milestones  = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> lastpmrcactions = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> lastpmrcminsactlist = new ArrayList<List<Object[]>>();
-//	    	List<Object[]> ProjectDetails = new ArrayList<Object[]>();
-//	    	List<List<Object[]>> ganttchartlist = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> oldpmrcissueslist = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> riskmatirxdata = new ArrayList<List<Object[]>>();
-//	    	List<Object[]> lastpmrcdecisions = new ArrayList<Object[]>();
-//	    	List<List<Object[]>> actionplanthreemonths = new ArrayList<List<Object[]>>();
-//	    	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
-//	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
-//	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
-//	    	
-//	    	List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
-//	    	
-//	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
-//	    	
-//	    	
-//	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
-//	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
-//    		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
-//	    	
-//	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
-//	    	for(String proid : Pmainlist) 
-//	    	{	    	
-//	    		Object[] projectattribute = service.ProjectAttributes(proid);
-//	    		
-//	    		projectattributes.add(projectattribute);
-//	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-//	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-//	    		milestones.add(service.Milestones(proid));
-//	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
-//	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
-//	    		Object[] prodetails=service.ProjectDetails(proid).get(0);
-//	    		ProjectDetails.add(prodetails);
-//	    		ganttchartlist.add(service.GanttChartList(proid));
-//	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
-//	    		riskmatirxdata.add(service.RiskMatirxData(proid));
-//	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-//	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
-//	    		projectdatadetails.add(service.ProjectDataDetails(proid));
-//	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
-//	    		TechWorkDataList.add(service.TechWorkData(proid));
-//	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
-//	    		ProjectRevList.add(service.ProjectRevList(proid));
-//	    		
-//	    		
-//	    	
-//		/* ----------------------------------------------------------------------------------------------------------	   */  		
-//	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
-//			 		HttpHeaders headers = new HttpHeaders();
-//			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//			    	 
-//			 		String jsonResult=null;
-//					try {
-//						HttpEntity<String> entity = new HttpEntity<String>(headers);
-//						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-//						jsonResult=response.getBody();						
-//					}catch(Exception e) {
-//						logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
-//						req.setAttribute("errorMsg", "errorMsg");
-//					}
-//					ObjectMapper mapper = new ObjectMapper();
-//					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-//					List<ProjectFinancialDetails> projectDetails=null;
-//					if(jsonResult!=null) {
-//						try {
-//							/*
-//							 * projectDetails = mapper.readValue(jsonResult,
-//							 * mapper.getTypeFactory().constructCollectionType(List.class,
-//							 * ProjectFinancialDetails.class));
-//							 */
-//							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-//							financialDetails.add(projectDetails);
-//							req.setAttribute("financialDetails",projectDetails);
-//						} catch (JsonProcessingException e) {
-//							logger.error(new Date() +" Inside ProjectBriefingFreeze "+UserId, e);
-//							e.printStackTrace();
-//						}
-//					}
-//	    	
-//	 
-//	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
-//	    	List<Object[]> procurementOnDemand=null;
-//	    	List<Object[]> procurementOnSanction=null;
-//	    	
-//
-//	    	if(procurementStatusList!=null)
-//	    	{
-//		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-//		    	Collection<?> keys = map.keySet();
-//		    	for(Object key:keys)
-//		    	{
-//		    		if(key.toString().equals("D")) {
-//		    			procurementOnDemand=map.get(key);
-//			    	}else if(key.toString().equals("S")) {
-//			    		procurementOnSanction=map.get(key);
-//			    	}
-//		    	 }
-//	    	}
-////	    	procurementOnDemandlist.add(procurementStatusList);
-////	    	procurementOnDemandlist.add(procurementOnDemand);
-////	    	procurementOnSanctionlist.add(procurementOnSanction);
-//	    	
-//	    	procurementOnDemandlist.add(procurementOnDemand);
-//	    	procurementOnSanctionlist.add(procurementOnSanction);
-//	    	
-//	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-//	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-//	    }
-///* ----------------------------------------------------------------------------------------------------------  */
-//	    	req.setAttribute("projectslist", projectslist);
-//	    	
-//	    	
-//	    	req.setAttribute("projectattributes",projectattributes);
-//    		req.setAttribute("ebandpmrccount", ebandpmrccount);	    		
-//    		req.setAttribute("milestonesubsystems", milestonesubsystems);
-//    		req.setAttribute("milestones", milestones);	  
-//    		req.setAttribute("lastpmrcactions", lastpmrcactions);
-//    		req.setAttribute("lastpmrcminsactlist", lastpmrcminsactlist);
-//    		req.setAttribute("ProjectDetails", ProjectDetails);
-//    		req.setAttribute("ganttchartlist", ganttchartlist );
-//    		req.setAttribute("oldpmrcissueslist",oldpmrcissueslist);	    		
-//    		req.setAttribute("riskmatirxdata",riskmatirxdata);	    		
-//    		req.setAttribute("lastpmrcdecisions" , lastpmrcdecisions);	    		
-//    		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
-//    		req.setAttribute("projectdatadetails",projectdatadetails);
-//    		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
-//    		
-//    		req.setAttribute("financialDetails",financialDetails);
-//    		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
-//    		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
-//    		
-//    		req.setAttribute("TechWorkDataList",TechWorkDataList);
-//    		req.setAttribute("ProjectRevList", ProjectRevList);
-//        	
-//    		req.setAttribute("projectidlist",Pmainlist);
-//    		req.setAttribute("projectid",projectid);
-//    		req.setAttribute("committeeid",tempid);
-//    		req.setAttribute("ProjectCost",ProjectCost);
-//	    	req.setAttribute("isprint", "0");
-//	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));    
-//	    	
-//	    	req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
-//
-//            String LevelId= "2";
-//			
-//			if(service.MileStoneLevelId(projectid,committeeid) != null) {
-//				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
-//			}
-//			  		
-//			req.setAttribute("levelid", LevelId);
-//    		
-//	    	String filename="BriefingPaper";		
-//	    	
-//	    	String path=req.getServletContext().getRealPath("/view/temp");
-//	    	req.setAttribute("path",path); 
-//	    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//	    	req.getRequestDispatcher("/view/print/BriefingPaperNew1.jsp").forward(req, customResponse);
-//	    	String html = customResponse.getOutput();
-//	    	byte[] data = html.getBytes();
-//	    	InputStream fis1=new ByteArrayInputStream(data);
-//	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"));	
-//	    	pdfDoc.setTagged();
-//	    	Document document = new Document(pdfDoc, PageSize.A4);
-//	    	//document.setMargins(50, 100, 150, 50);
-//	    	document.setMargins(50, 50, 50, 50);
-//	    	ConverterProperties converterProperties = new ConverterProperties();
-//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-//	    	converterProperties.setFontProvider(dfp);
-//	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);   
-//	        Files.move(Paths.get(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"),Paths.get(env.getProperty("ApplicationFilesDrive")+"\\"+LabCode+"\\Frozen\\"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"), StandardCopyOption.REPLACE_EXISTING);
-//	        int update=service.updateBriefingPaperFrozen(nextScheduleId);
-//	        redir.addAttribute("result", "Briefing Paper Frozen for Next Scheduled Meeting.");
-//	    		}else {
-//	    			redir.addAttribute("resultfail", "Briefing Paper Already Frozen for Next Scheduled Meeting.");
-//	    		}
-//	    	}else {
-//	    		redir.addAttribute("resultfail", "No  Meeting scheduled.");
-//	    	}
-//	        
-//	    }
-//	    catch(Exception e) {	    		
-//    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
-//    		e.printStackTrace();
-//			/* return "static/Error"; */
-//	
-//    	}		
-//		return "redirect:/ProjectBriefingPaper.htm";
-//	}
-
 	
 	@RequestMapping(value="ProjectBriefing.htm", method = RequestMethod.POST)
 	public String ProjectBriefing(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
@@ -1791,10 +1595,8 @@ public class PrintController {
 	    	
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid = req.getParameter("committeeid");
-//	    	String tempid=committeeid;
 	    	if(committeeid==null  ) {
 	    		committeeid="PMRC";
-//	    		tempid="1";
 	    	}else if( Long.parseLong(committeeid)==0)
 	    	{
 	    		committeeid="PMRC";
@@ -1881,11 +1683,6 @@ public class PrintController {
 					List<ProjectFinancialDetails> projectDetails=null;
 					if(jsonResult!=null) {
 						try {
-							/*
-							 * projectDetails = mapper.readValue(jsonResult,
-							 * mapper.getTypeFactory().constructCollectionType(List.class,
-							 * ProjectFinancialDetails.class));
-							 */
 							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
 							financialDetails.add(projectDetails);
 							req.setAttribute("financialDetails",projectDetails);
@@ -1969,62 +1766,6 @@ public class PrintController {
 			  		
 			req.setAttribute("levelid", LevelId);
 	    	
-	    	// MileStone Activity Logic (number 6)
-    		
-			/*
-			 * try { List<Object[] > projlist=
-			 * service.LoginProjectDetailsList(EmpId,Logintype); if(projlist.size()==0) {
-			 * redir.addAttribute("resultfail", "No Project is Assigned to you."); return
-			 * "redirect:/MainDashBoard.htm"; }
-			 * 
-			 * if(projectid==null) { try { Object[] pro=projlist.get(0);
-			 * projectid=pro[0].toString(); }catch (Exception e) {
-			 * 
-			 * }
-			 * 
-			 * } List<Object[]> main=milservice.MilestoneActivityList(projectid);
-			 * 
-			 * req.setAttribute("MilestoneActivityList",main );
-			 * req.setAttribute("ProjectList",projlist); req.setAttribute("ProjectId",
-			 * projectid); if(projectid!=null) { req.setAttribute("ProjectDetailsMil",
-			 * milservice.ProjectDetails(projectid).get(0)); int MainCount=1; for(Object[]
-			 * objmain:main ) { int countA=1; List<Object[]>
-			 * MilestoneActivityA=milservice.MilestoneActivityLevel(objmain[0].toString(),
-			 * "1"); req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
-			 * for(Object[] obj:MilestoneActivityA) { List<Object[]>
-			 * MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
-			 * req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
-			 * int countB=1; for(Object[] obj1:MilestoneActivityB) { List<Object[]>
-			 * MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
-			 * req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB,
-			 * MilestoneActivityC); int countC=1; for(Object[] obj2:MilestoneActivityC) {
-			 * List<Object[]>
-			 * MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
-			 * req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC,
-			 * MilestoneActivityD); int countD=1; for(Object[] obj3:MilestoneActivityD) {
-			 * List<Object[]>
-			 * MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
-			 * req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD,
-			 * MilestoneActivityE); countD++; } countC++; } countB++; } countA++; }
-			 * MainCount++; } }
-			 * 
-			 * 
-			 * String LevelId= "2"; String Tabid="0";
-			 * 
-			 * if(service.MileStoneLevelId(projectid,committeeid) != null) { LevelId=
-			 * service.MileStoneLevelId(projectid,committeeid)[0].toString(); }
-			 * 
-			 * if(req.getParameter("tabid")!=null) { Tabid=req.getParameter("tabid"); }
-			 * 
-			 * req.setAttribute("tabid", Tabid); req.setAttribute("levelid", LevelId);
-			 * 
-			 * } catch (Exception e) { e.printStackTrace(); logger.error(new Date()
-			 * +" Inside ProjectBriefing.htm (Milestone ActivityLogic) "+UserId, e); return
-			 * "static/Error";
-			 * 
-			 * }
-			 */
-	    	
 
 	    	return "print/BriefingPaperNew1";
 	    }
@@ -2036,291 +1777,6 @@ public class PrintController {
     	}		
 	}
 
-	
-
-	
-	
-	{
-		
-//		@RequestMapping(value="ProjectBriefing1.htm", method = RequestMethod.POST)
-//		public String ProjectBriefing1(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
-//		{
-//			String UserId = (String) ses.getAttribute("Username");
-//			logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
-//		    try {    	
-//		    	
-//		    	String projectid=req.getParameter("projectid");
-//		    	String committeeid= req.getParameter("committeeid");
-//		    	String tempid=committeeid;
-//		    	if(committeeid==null  ) {
-//		    		committeeid="1";
-//		    		tempid="1";
-//		    	}else if( Long.parseLong(committeeid)==0)
-//		    	{
-//		    		committeeid="1";
-//		    	}
-//		    	
-//		    	if(Long.parseLong(projectid)>0)
-//		    	{
-//		    	req.setAttribute("lastpmrcminsactlist", service.LastPMRCActions1(projectid,"1"));
-//		    	req.setAttribute("projectattributes",service.ProjectAttributes(projectid));
-//	    		req.setAttribute("ebandpmrccount", service.EBAndPMRCCount(projectid));
-//	    		req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
-//	    		req.setAttribute("milestones", service.Milestones(projectid));	  
-//	    		req.setAttribute("lastpmrcactions", service.LastPMRCActions(projectid,"2"));	 
-////	    		req.setAttribute("oldpmrcactions", service.OldPMRCActions(projectid,committeeid));	 
-//	    		req.setAttribute("projectid",projectid);  
-//	    		req.setAttribute("committeeid",tempid);
-//	    		req.setAttribute("ProjectDetails", service.ProjectDetails(projectid).get(0));
-//	    		req.setAttribute("ganttchartlist", service.GanttChartList(projectid));
-//	    		req.setAttribute("oldpmrcissueslist",service.OldPMRCIssuesList(projectid));
-//	    		req.setAttribute("riskmatirxdata",service.RiskMatirxData(projectid));
-//	    		req.setAttribute("isprint","0");
-//	    		req.setAttribute("lastpmrcdecisions",service.LastPMRCDecisions(committeeid,projectid));
-//	    		req.setAttribute("actionplanthreemonths",service.ActionPlanSixMonths(projectid));
-//	    		
-//	    		Object[] projectdatadetails=service.ProjectDataDetails(projectid);
-//	    		String[] imgs=new String[3];
-////				if(projectdatadetails!=null && projectdatadetails.length>0)
-////				{	
-////					try {
-////						//config
-////						imgs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[3])));
-////					}catch (Exception e) {
-////						imgs[0]=null;
-////					}
-////					
-////					try {
-////							//producttree
-////							imgs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[5])));
-////					}catch (Exception e) {
-////						imgs[1]=null;
-////					}
-////					try {
-////							//pearlimg
-////							imgs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[6])));
-////					}catch (Exception e) {
-////						imgs[2]=null;
-////					}
-////						
-////				}
-////				req.setAttribute("projectdataimages",imgs);
-//	    		req.setAttribute("projectdatadetails", projectdatadetails);
-//		    	
-//	    		
-//	    		
-//	    		
-//	    /* ----------------------------------------------------------------------------------------------------------	   */
-//	    		 final String localUri=uri+"/pfms_serv/financialStatus?projectId="+projectid+"&rupess="+10000000;
-//			 		HttpHeaders headers = new HttpHeaders();
-//			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//			    	 
-//			 		String jsonResult=null;
-//					try {
-//						HttpEntity<String> entity = new HttpEntity<String>(headers);
-//						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-//						jsonResult=response.getBody();						
-//					}catch(Exception e) {
-//						req.setAttribute("errorMsg", "errorMsg");
-//					}
-//					ObjectMapper mapper = new ObjectMapper();
-//					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-//					List<ProjectFinancialDetails> projectDetails=null;
-//					if(jsonResult!=null) {
-//						try {
-//							/*
-//							 * projectDetails = mapper.readValue(jsonResult,
-//							 * mapper.getTypeFactory().constructCollectionType(List.class,
-//							 * ProjectFinancialDetails.class));
-//							 */
-//							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-//							req.setAttribute("financialDetails",projectDetails);
-//						} catch (JsonProcessingException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//						
-//		    	}
-//					List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
-//			    	List<Object[]> procurementOnDemand=null;
-//			    	List<Object[]> procurementOnSanction=null;
-//			    	
-	//
-//			    	if(procurementStatusList!=null)
-//			    	{
-//				    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-//				    	Collection<?> keys = map.keySet();
-//				    	for(Object key:keys)
-//				    	{
-//				    		if(key.toString().equals("D")) {
-//				    			procurementOnDemand=map.get(key);
-//					    	}else if(key.toString().equals("S")) {
-//					    		procurementOnSanction=map.get(key);
-//					    	}
-//				    	 }
-//			    	}
-//			    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-//			    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-//			  /* ----------------------------------------------------------------------------------------------------------	   */
-//	    		
-//	    		
-//	    		
-//	    		
-//		    	return "print/BriefingPaper";
-//		    }
-//		    catch(Exception e) {	    		
-//	    		logger.error(new Date() +" Inside ProjectBriefing.htm "+UserId, e);
-//	    		e.printStackTrace();
-//	    		return "static/Error";
-	//	
-//	    	}		
-//		}
-	
-		
-//	@RequestMapping(value="ProjectBriefingPaper1.htm", method = {RequestMethod.GET,RequestMethod.POST})
-//	public String ProjectBriefingPaper1(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
-//	{
-//		String UserId = (String) ses.getAttribute("Username");
-//		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
-//	    try {
-//	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-//	    	String Logintype= (String)ses.getAttribute("LoginType");
-//	    	String projectid=req.getParameter("projectid");
-//	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype);
-//	    	if(projectslist.size()==0) 
-//	        {				
-//				redir.addAttribute("resultfail", "No Project is Assigned to you.");
-//				return "redirect:/MainDashBoard.htm";
-//			}
-//	    	if(projectid==null) {
-//	    		projectid=projectslist.get(0)[0].toString();
-//	    	}
-//	    	
-//	    	String committeeid= req.getParameter("committeeid");
-//	    	String tempid=committeeid;
-//	    	if(committeeid==null  ) {
-//	    		committeeid="1";
-//	    		tempid="1";
-//	    	}else if( Long.parseLong(committeeid)==0)
-//	    	{
-//	    		committeeid="1";
-//	    	}
-//	    		
-//	    		req.setAttribute("projectattributes",service.ProjectAttributes(projectid));
-//	    		req.setAttribute("ebandpmrccount", service.EBAndPMRCCount(projectid));
-//	    		req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
-//	    		req.setAttribute("milestones", service.Milestones(projectid));	  
-//	    		req.setAttribute("lastpmrcactions", service.LastPMRCActions(projectid,"2"));	
-//	    		req.setAttribute("lastpmrcminsactlist", service.LastPMRCActions1(projectid,"1"));	
-////	    		req.setAttribute("oldpmrcactions", service.OldPMRCActions(projectid,committeeid));	 
-//	    		req.setAttribute("ProjectDetails", service.ProjectDetails(projectid).get(0));
-//	    		req.setAttribute("ganttchartlist", service.GanttChartList(projectid));
-//	    		req.setAttribute("oldpmrcissueslist",service.OldPMRCIssuesList(projectid));
-//	    		req.setAttribute("projectid",projectid);
-//	    		req.setAttribute("committeeid",tempid);
-//	    		req.setAttribute("riskmatirxdata",service.RiskMatirxData(projectid));
-//	    		req.setAttribute("lastpmrcdecisions",service.LastPMRCDecisions(committeeid,projectid));
-//	    		req.setAttribute("actionplanthreemonths",service.ActionPlanSixMonths(projectid));
-//	    		
-//	    		
-//	    		Object[] projectdatadetails=service.ProjectDataDetails(projectid);
-//	    		String[] imgs=new String[4];
-////				if(projectdatadetails!=null && projectdatadetails.length>0)
-////				{	
-////					try {
-////						//config
-////						imgs[0] = Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[3])));
-////					}catch (Exception e) {
-////						imgs[0]=null;
-////					}
-////					
-////					try {
-////							//producttree
-////							imgs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[5])));
-////					}catch (Exception e) {
-////						imgs[1]=null;
-////					}
-////					try {
-////							//pearlimg
-////							imgs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(projectdatadetails[2]+File.separator+projectdatadetails[6])));
-////					}catch (Exception e) {
-////						imgs[2]=null;
-////					}
-////					  
-////				}
-//				req.setAttribute("projectdataimages",imgs);
-//				req.setAttribute("projectdatadetails",projectdatadetails);
-//	    		
-//	    		
-//		/* ----------------------------------------------------------------------------------------------------------	   */  		
-//	    		 final String localUri=uri+"/pfms_serv/financialStatus?projectId="+projectid+"&rupess="+10000000;
-//			 		HttpHeaders headers = new HttpHeaders();
-//			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//			    	 
-//			 		String jsonResult=null;
-//					try {
-//						HttpEntity<String> entity = new HttpEntity<String>(headers);
-//						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-//						jsonResult=response.getBody();						
-//					}catch(Exception e) {
-//						req.setAttribute("errorMsg", "errorMsg");
-//					}
-//					ObjectMapper mapper = new ObjectMapper();
-//					mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//					mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-//					List<ProjectFinancialDetails> projectDetails=null;
-//					if(jsonResult!=null) {
-//						try {
-//							/*
-//							 * projectDetails = mapper.readValue(jsonResult,
-//							 * mapper.getTypeFactory().constructCollectionType(List.class,
-//							 * ProjectFinancialDetails.class));
-//							 */
-//							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-//							req.setAttribute("financialDetails",projectDetails);
-//						} catch (JsonProcessingException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//	    	
-//	 
-//	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
-//	    	List<Object[]> procurementOnDemand=null;
-//	    	List<Object[]> procurementOnSanction=null;
-//	    	
-//
-//	    	if(procurementStatusList!=null)
-//	    	{
-//		    	Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-//		    	Collection<?> keys = map.keySet();
-//		    	for(Object key:keys)
-//		    	{
-//		    		if(key.toString().equals("D")) {
-//		    			procurementOnDemand=map.get(key);
-//			    	}else if(key.toString().equals("S")) {
-//			    		procurementOnSanction=map.get(key);
-//			    	}
-//		    	 }
-//	    	}
-//	    	req.setAttribute("procurementOnDemand", procurementOnDemand);
-//	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
-//	  /* ----------------------------------------------------------------------------------------------------------	   */
-//	    	req.setAttribute("projectslist", projectslist);
-//	    	return "print/ProjectBriefingPaper";
-//	    }
-//	    catch(Exception e) {	    		
-//    		logger.error(new Date() +" Inside ProjectBriefing.htm "+UserId, e);
-//    		e.printStackTrace();
-//    		return "static/Error";
-//	
-//    	}		
-//	}
-	
-	}
-	
-	
-	
 	public int setBriefingDataToResponse(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
 		
@@ -2333,8 +1789,6 @@ public class PrintController {
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid = req.getParameter("committeeid");
-	    	
-	    	
 	    	
 	    	if(projectid==null || committeeid==null) 
 	    	{
@@ -3225,7 +2679,7 @@ public class PrintController {
 	    	byte[] data = html.getBytes();
 	    	InputStream fis1=new ByteArrayInputStream(data);
 	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+"_P"+projectid+"_C"+committeeid+"_S"+nextScheduleId+".pdf"));	
-	    	pdfDoc.setTagged();
+	    	
 	    	Document document = new Document(pdfDoc, PageSize.A4);
 	    	//document.setMargins(50, 100, 150, 50);
 	    	document.setMargins(50, 50, 50, 50);

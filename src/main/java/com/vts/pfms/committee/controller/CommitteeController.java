@@ -2376,7 +2376,7 @@ public class CommitteeController {
 		
 		 try {
 				
-			pt.freezeBriefingPaperAfterKickoff(req, res, ses, redir);
+			pt.freezeBriefingPaper(req, res, ses, redir);
 			Object[] obj= service.KickOffMeeting(req, redir);
 		    req=(HttpServletRequest)obj[0];
 		    redir=(RedirectAttributes)obj[1];
@@ -3408,7 +3408,7 @@ public class CommitteeController {
 		byte[] data = html.getBytes();
 		InputStream fis1=new ByteArrayInputStream(data);
 		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-		pdfDoc.setTagged();
+		
 		Document document = new Document(pdfDoc, PageSize.A4);
 		//document.setMargins(50, 100, 150, 50);
 		document.setMargins(50, 50, 50, 50);
@@ -3494,7 +3494,7 @@ public class CommitteeController {
 		byte[] data = html.getBytes();
 		InputStream fis1=new ByteArrayInputStream(data);
 		PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-		pdfDoc.setTagged();
+		
 		Document document = new Document(pdfDoc, PageSize.A4);
 		//document.setMargins(50, 100, 150, 50);
 		document.setMargins(50, 50, 50, 50);
@@ -3788,7 +3788,7 @@ public class CommitteeController {
 //			byte[] data = html.getBytes();
 //			InputStream fis1=new ByteArrayInputStream(data);
 //			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-//		    pdfDoc.setTagged();
+//		    
 //		    Document document = new Document(pdfDoc, PageSize.A4);
 //		    //document.setMargins(50, 100, 150, 50);
 //		    document.setMargins(50, 50, 50, 50);
