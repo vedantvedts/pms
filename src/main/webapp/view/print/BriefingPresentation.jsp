@@ -2122,7 +2122,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 	
 			<div class="carousel-item ">
 
-   				<div class="content-header" >
+   				<%-- <div class="content-header" >
    					<h3><%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    							9. Action Plan for Next Six months
 						<%}else { %>
@@ -2252,7 +2252,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 										
 											
 									</td>
-									<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
+									<td ><%=obj[24] %>(<%=obj[25] %>)</td>
 									<td style="text-align: center"><%=obj[16] %>%</td>											
 									<td  style="text-align: center">
 										<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
@@ -2294,7 +2294,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 		
 		
 				<%} %>
-				</div>
+				</div> --%>
 					
 	  		</div>
 	  		
@@ -2662,6 +2662,7 @@ String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":
 			
 	<!-- ---------------------------------------- p-13c Other Relevant Points Div ----------------------------------------------------- -->
 		
+	</div>
 	
 			<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width:0%;padding-left: 20px; ">
 				<span  aria-hidden="true" ><i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span>

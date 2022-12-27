@@ -657,7 +657,7 @@ public class LoginController {
 				FinanceDetailsToday = mao.readValue(TodayData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				
 
-				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,UserId);
+				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,UserId,Empid);
 				
 			} catch (JsonProcessingException e) {
 
@@ -747,7 +747,8 @@ public class LoginController {
 				FinanceDetailsMonthly = mao.readValue(MonthlyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsWeekly = mao.readValue(WeeklyData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 				FinanceDetailsToday = mao.readValue(TodayData, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
-				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,"auto-update");
+				//we have to pass empid instead of 0
+				rfpmainservice.ProjectFinanceChangesUpdate(FinanceDetailsMonthly,FinanceDetailsWeekly,FinanceDetailsToday,"auto-update","0");
 				
 			} catch (JsonProcessingException e) {
 
@@ -829,6 +830,7 @@ public class LoginController {
     		
     		HttpHeaders headers = new HttpHeaders();
 	 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	 		headers.set("labcode", LabCode);
     		HttpEntity<String> entity = new HttpEntity<String>(headers);
 			ResponseEntity<String> response1=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
 			FinanceChanges=response1.getBody();
