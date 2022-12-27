@@ -31,7 +31,6 @@ int revno=(Integer)request.getAttribute("Count");
 				 <% for (int i=0;i<revno;i++) { %>
 				<option value="<%=i%>" ><%=i%></option>
 				<% } %>
-
 			</select>   
    <label style="margin-left: 10px;margin-right: 10px;" >Second  No : <span class="mandatory" style="color: red;">*</span></label>
   <select class="form-control selectdee"    name="SecondNo"  id="SecondNo" required="required"    data-live-search="true" style="margin-left: 10px;margin-right: 10px;width: 150px;">
