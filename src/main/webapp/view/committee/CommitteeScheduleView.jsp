@@ -102,26 +102,29 @@
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
+	
+	List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
+	
 %>
 	
-	<%String ses=(String)request.getParameter("result"); 
-	 String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<center>
-		<div class="alert alert-danger" role="alert" >
-	                     <%=ses1 %>
-	                    </div>
-		<%}if(ses!=null){ %>
-		</center><center>
-		<div class="alert alert-success" role="alert" >
-	                     <%=ses %>
-	                   </div>
-	                    <%} %>
-	</center>
+<%String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null)
+	{ %>
+		<div align="center">
+			<div class="alert alert-danger" role="alert" >
+	        	<%=ses1 %>
+	        </div>
+	    </div>
+	<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+	        	<%=ses %>
+	        </div>
+	    </div>
+	<%} %>
 	
-	
-	<div class="container">
+	<div class="container-fluid">
 			<div class="row" style="">
 			
 				<div class="col-md-12 ">
@@ -133,13 +136,13 @@
 							  <h4>
 							  		<%=committeescheduleeditdata[8] %> Meeting 
 									<%if(Long.parseLong(projectid)>0){ %>							  
-										(Project : <%=projectdetails[4] %> )
+										(Project : <%=projectdetails[4] %>)
 									<%} %>
 									<%if(Long.parseLong(divisionid)>0){ %>							  
-									  ( Division : <%=divisiondetails[1] %> )
+									  (Division : <%=divisiondetails[1] %>)
 									<%} %>
 									<%if(Long.parseLong(initiationid)>0){ %>							  
-									  ( Initiated Project : <%=initiationdetails[1] %> )
+									  (Initiated Project : <%=initiationdetails[1] %>)
 									<%} %>
 							  </h4>
 							 </div>
@@ -420,7 +423,7 @@
 									 	<a  class="btn  btn-sm view" href="MinutesAttachDownload.htm?attachmentid=<%=committeescheduleeditdata[20] %>" target="_blank" style="background-color:#009DAE ;color:white ;font-size:12px;" >ATTACHED MINUTES </a>
 									 	<%} %>
 									 	<%if(Long.parseLong(projectid)>0){ %>
-										<input type="submit" class="btn  btn-sm view" value="MINUTES 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">
+										<input type="submit" class="btn  btn-sm view" value="MINUTES 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" formmethod="get" style="background-color:#0e49b5 ;color:white ;font-size:12px;">
 										<%} %>
 										<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >VIEW MINUTES</button>
 										<button type="submit" class="btn  btn-sm view" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" >TABULAR MINUTES</button>
@@ -578,19 +581,15 @@
 						</form>
 						
 						
-						<form  action="#" method="post" id="myfrm" target="_blank">
-							<% if(Long.parseLong(projectid)>0 &&committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") ){%>
+						<% if(Long.parseLong(projectid)>0 && committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") && SplCommitteeCodes.contains(committeescheduleeditdata[8].toString().trim().toUpperCase())){%>
+							<form  action="#" method="post" id="myfrm" target="_blank">
 								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get">
-							<%}else{%>
-								<input type="submit" class="btn btn-sm back" value="Briefing" formaction="ProjectBriefingPaper.htm"  style="margin: 0px 10px" >
-							<%} %>
-							
-							<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
-							<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-							<input type="hidden" name="projectid" value="<%=projectid %>">
-							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-							
-						</form>
+								<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+								<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+								<input type="hidden" name="projectid" value="<%=projectid %>">
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							</form>
+						<%} %>
 						
 						
 							<%} else{ %>

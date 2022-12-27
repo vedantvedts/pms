@@ -1549,18 +1549,18 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</tr>
 							
 											<tr>
-												<th style="width: 15px;text-align: center " rowspan="3">SN</th>
+												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
 												<th style="width: 330px; "  colspan="3">Risk</th>
-												<th style="width: 100px; " rowspan="2" > PDC</th>
-												<th style="width: 100px; " rowspan="2"> ADC</th>
-												<th style="width: 160px; " rowspan="2"> Responsibility</th>
-												<th style="width: 50px; " rowspan="2">Status(DD)</th>
-												<th style="width: 215px;" rowspan="2">Remarks</th>	
+												<th style="width: 100px; " rowspan="1" > PDC</th>
+												<th style="width: 100px; " rowspan="1"> ADC</th>
+												<th style="width: 160px; " rowspan="1"> Responsibility</th>
+												<th style="width: 50px; " rowspan="1">Status(DD)</th>
+												<th style="width: 215px;" rowspan="1">Remarks</th>	
 											</tr>
-											<tr>
+										<!-- 	<tr>
 												<th  style="text-align: center;width: 100px;"> Category</th>
 												<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-											</tr>
+											</tr> -->
 											<tr>
 												<th  style="text-align: center;width: 110px; " > Severity</th>
 												<th  style="text-align: center;width: 110px;"> Probability</th>
@@ -1578,15 +1578,17 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													<%for(Object[] obj : riskmatirxdata.get(z)){
 													i++;%>
 													<tr>
-														<td style="text-align: center" rowspan="3"><%=i %></td>
-														<td style="text-align: justify;color: red; " colspan="3" ><%=obj[0] %></td>
-														<td style="text-align: center" rowspan="2">
+														<td style="text-align: center" rowspan="2"><%=i %></td>
+														<td style="text-align: justify;color: red; " colspan="3" >
+															<%=obj[0] %><span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+														</td>
+														<td style="text-align: center" rowspan="1">
 															<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
 															<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
 															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
-														<td style="text-align: center" rowspan="2">
+														<td style="text-align: center" rowspan="1">
 															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 
 																<%if(obj[18]!=null){ %>
@@ -1612,8 +1614,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<%}else{ %>-<%} %>
 														</td>
 															
-														<td  rowspan="2"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-														<td style="text-align: center" rowspan="2">
+														<td  rowspan="1"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td style="text-align: center" rowspan="1">
 															
 															<%if(obj[18]!=null){ %>
 																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1636,13 +1638,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<% } %> 
 											
 														</td>
-														<td style="text-align: justify" rowspan="2"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+														<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
 													</tr>	
-													<tr>
+													<%-- <tr>
 														<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
 														<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-													</tr>
+													</tr> --%>
 													
 													<tr>
 														<td style="text-align: center;" ><%=obj[1] %></td>

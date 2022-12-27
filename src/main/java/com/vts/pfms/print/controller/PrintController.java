@@ -1506,11 +1506,9 @@ public class PrintController {
 	    	String committeeid= req.getParameter("committeeid");
 	    	
 	    	long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
-	    	System.out.println("nextScheduleId" + nextScheduleId );
 		    if(nextScheduleId>0) 
 		    {
 		    	String freezeflag = service.getNextScheduleFrozen(nextScheduleId);
-		    	System.out.println("freezeflag "+freezeflag );
 		    	if(freezeflag.equalsIgnoreCase("N")) 
 		    	{
 		    		

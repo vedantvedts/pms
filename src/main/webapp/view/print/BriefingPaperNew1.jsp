@@ -1490,19 +1490,19 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 				   				</td>									
 							</tr>
 							<tr>
-								<th style="width: 15px;text-align: center " rowspan="3">SN</th>
+								<th style="width: 15px;text-align: center " rowspan="2">SN</th>
 								<th style="width: 330px; " colspan="3">Risk</th>
-								<th style="width: 100px; " rowspan="2" > PDC</th>
-								<th style="width: 100px; " rowspan="2"> ADC</th>
-								<th style="width: 160px; " rowspan="2"> Responsibility</th>
-								<th style="width: 50px; "  rowspan="2">Status(DD)</th>
-								<th style="width: 215px; " rowspan="2">Remarks</th>	
+								<th style="width: 100px; " rowspan="1" > PDC</th>
+								<th style="width: 100px; " rowspan="1"> ADC</th>
+								<th style="width: 160px; " rowspan="1"> Responsibility</th>
+								<th style="width: 50px; "  rowspan="1">Status(DD)</th>
+								<th style="width: 215px; " rowspan="1">Remarks</th>	
 							</tr>
 							
-							<tr>
+						<!-- 	<tr>
 								<th  style="text-align: center;width: 100px;"> Category</th>
 								<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-							</tr>
+							</tr> -->
 								
 							<tr>
 								<th  style="text-align: center;width: 110px; " > Severity</th>
@@ -1520,15 +1520,17 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<%for(Object[] obj : riskmatirxdata.get(z)){
 								i++;%>
 									<tr>
-										<td style="text-align: center" rowspan="3"><%=i %></td>
-										<td style="text-align: justify;color: red; " colspan="3" ><%=obj[0] %></td>
-										<td style="text-align: center" rowspan="2">
+										<td style="text-align: center" rowspan="2"><%=i %></td>
+										<td style="text-align: justify;color: red; " colspan="3" >
+											<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+										</td>
+										<td style="text-align: center" rowspan="1">
 											<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
 											<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
 											<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 										</td>
 										
-										<td style="text-align: center" rowspan="2">
+										<td style="text-align: center" rowspan="1">
 											<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 												<%if(obj[18]!=null){ %>
 													<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1553,8 +1555,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<%}else{ %>-<%} %>
 										</td>
 													
-										<td rowspan="2"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-										<td style="text-align: center" rowspan="2">
+										<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+										<td style="text-align: center" rowspan="1">
 												
 											<%if(obj[18]!=null){ %>
 												<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1578,14 +1580,14 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											
 														
 										</td>
-										<td style="text-align: justify" rowspan="2"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+										<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 											
 									</tr>	
 									
-									<tr>
+									<%-- <tr>
 										<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
 										<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-									</tr>
+									</tr> --%>
 													
 									<tr>
 										<td style="text-align: center;" ><%=obj[1] %></td>
@@ -1609,14 +1611,18 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
  	 
 
 <!-- ----------------------------------------------5.Particulars of Meeting------------------------------------------------- -->
- <h1 class="break"></h1>
-<!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
-			<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
+ 						<h1 class="break"></h1>
+<!-- ----------------------------------------------7. Procurement Status------------------------------------------------- -->
+						<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
 			
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<!-- <th colspan="5" style="text-align: right ;border-right: 0;" ><b class="mainsubtitle">Demand Details &emsp;&emsp;&emsp;&emsp; </b> </th> -->
+											 	<th colspan="8">
+											 		<b class="mainsubtitle">Demand Details </b>
+											 		<b class="mainsubtitle">( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> 
+											 	</th>
 											 </tr>
 										
 										
@@ -1672,11 +1678,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
-										
-										
 										  	 	 <tr>	
 											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
 											  	 	 <th style="width: 150px;">Demand No </th>
@@ -1684,15 +1688,16 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
 													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
 													 <th  style="max-width: 50px; "> Status</th>
-													 <th  style="max-width: 310px;">Remarks</th>
+													 <th style="max-width: 310px;">SO Cost-Lakh &#8377;</th>
 												</tr>
 											<tr>
 												
 												 <th style="">Supply Order No</th>
 												 <th  style="	">DP Date</th>
 												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP Date</th>											 
-												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
+												 <!-- <th  >Rev DP Date</th> -->
+												 <th   colspan="3"  >Remarks</th>											 
+												 		
 											 		
 											</tr>
 										    <%if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
@@ -1709,25 +1714,23 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										  	 
 
 												<tr>
-												<td rowspan="2" style="text-align: center;"><%=k%></td>
-												<td ><%=obj[1]%> </td>
-												<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													<td rowspan="2" style="text-align: center;"><%=k%></td>
+													<td ><%=obj[1]%> </td>
+													<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td   colspan="2" style="text-align: justify;"><%=obj[8]%></td>
 													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												    <td  > <%=obj[10]%> </td>
-													<td  ><%=obj[11]%> </td>	
+												    <td   style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
 												</tr>
 												<%demand=obj[1].toString();
 												} %>
 												<tr>
 													
-													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %>
-													</td>
+													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
 													<td style="text-align:center" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td  colspan="2"> <%=obj[12] %>
-													</td>
-													<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
-				                                    <td  colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
+													<td  colspan="2"> <%=obj[12] %> </td>
+													<%-- <td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td> --%>
+				                                    <td colspan="3" ><%=obj[11]%> </td>										
 				
 												</tr>		
 												<% }
