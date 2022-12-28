@@ -1614,14 +1614,14 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
  						<h1 class="break"></h1>
 <!-- ----------------------------------------------7. Procurement Status------------------------------------------------- -->
 						<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
-			
+							<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
+											
 										<thead>
 											<tr>
-											 	<!-- <th colspan="5" style="text-align: right ;border-right: 0;" ><b class="mainsubtitle">Demand Details &emsp;&emsp;&emsp;&emsp; </b> </th> -->
 											 	<th colspan="8">
 											 		<b class="mainsubtitle">Demand Details </b>
-											 		<b class="mainsubtitle">( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> 
+											 		<b class="mainsubtitle">( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %>  ) <%} else {%> - )<%} %> </b> 
 											 	</th>
 											 </tr>
 										
@@ -1631,7 +1631,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<th  style="width: 175px;">Demand No</th>
 											<th  style="width: 100px; ">Demand Date</th>
 											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
-											<th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+											<th  style="width: 80px;"> Est. Cost</th>
 											<th  style="width: 50px; "> Status</th>
 											<th  style="width: 195px;">Remarks</th>
 										</tr>
@@ -1674,11 +1674,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<div align="left" style="margin-left: 25px;"></div>
 					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<thead> -->
-										
+										<!-- <div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div> -->
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <!-- <span class="currency">Lakhs</span>  -->) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
 										  	 	 <tr>	
@@ -1686,17 +1686,17 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											  	 	 <th style="width: 150px;">Demand No </th>
 											  	 	 <th style="width: 80px;">Demand  Date</th>
 													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+													 <th  style="width: 80px;"> Est. Cost</th>
 													 <th  style="max-width: 50px; "> Status</th>
-													 <th style="max-width: 310px;">SO Cost-Lakh &#8377;</th>
+													 <th style="max-width: 310px;">SO Cost</th>
 												</tr>
 											<tr>
 												
 												 <th style="">Supply Order No</th>
 												 <th  style="	">DP Date</th>
 												 <th  colspan="2" style="	">Vendor Name</th>
-												 <!-- <th  >Rev DP Date</th> -->
-												 <th   colspan="3"  >Remarks</th>											 
+												 <th  >Rev DP</th>
+												 <th   colspan="2"  >Remarks</th>											 
 												 		
 											 		
 											</tr>
@@ -1729,8 +1729,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
 													<td style="text-align:center" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
 													<td  colspan="2"> <%=obj[12] %> </td>
-													<%-- <td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td> --%>
-				                                    <td colspan="3" ><%=obj[11]%> </td>										
+													<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
+				                                    <td colspan="2" ><%=obj[11]%> </td>										
 				
 												</tr>		
 												<% }
@@ -1757,21 +1757,22 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<%} %>
 									</table> 
 									
-									<br>
+									<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										 <thead>
+										 	
 											 <tr >
-												 <th colspan="8" ><b class="mainsubtitle">Total Summary of Procurement</b></th>
+												 <th colspan="5" ><b class="mainsubtitle">Total Summary of Procurement</b></th>
 											 </tr>
 										 </thead>
 										 
 										 <tbody>
 										<tr >
 												 <th>No. of Demand</th>
-												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+												 <th>Est. Cost</th>
 										  	 	 <th>No. of Orders</th>
-										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>SO Cost</th>
+										  	 	 <th>Expenditure</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 

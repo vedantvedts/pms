@@ -2510,6 +2510,22 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return ActionPlanThreeMonths;
 	}
 	
+	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,pps.stagecolor,pm.projectcode,ppd.proclimit/100000  FROM pfms_project_data ppd, pfms_project_stage pps,project_master pm WHERE ppd.projectid=pm.projectid AND ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
+	@Override
+	public Object[] ProjectDataDetails(String projectid) throws Exception 
+	{
+		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
+		query.setParameter("projectid", projectid);
+		Object[] ProjectStageDetails=null;
+		try {
+			ProjectStageDetails=(Object[])query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new java.util.Date() +" Inside DAO ProjectDataDetails "+ e);
+			return null;
+		}
+		
+		return ProjectStageDetails;
+	}
 	@Override
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{

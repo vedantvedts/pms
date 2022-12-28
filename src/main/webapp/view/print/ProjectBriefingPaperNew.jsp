@@ -946,6 +946,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								  
 		  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
+					
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
@@ -1726,10 +1727,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</div>	
 								<%} %>
 									
+									<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr>
-											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										</thead>
 										
@@ -1796,7 +1798,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												 <th style="">Supply Order No</th>
 												 <th  style="	">DP Date</th>
 												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP Date</th>											 
+												 <th  >Rev DP</th>											 
 												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
 											 		
 											</tr>
@@ -1863,7 +1865,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 																	
 								<%} %>
 								
-								<br>
+								
+								<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
 										 <thead>
 											 <tr >
@@ -1874,10 +1877,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										 <tbody>
 										<tr >
 												 <th>No. of Demand</th>
-												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+												 <th>Est. Cost</th>
 										  	 	 <th>No. of Orders</th>
-										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>SO Cost </th>
+										  	 	 <th>Expenditure</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 

@@ -288,6 +288,7 @@ public interface CommitteeDao {
 	public Object[] CommitteeMainDetails(String CommitteeMainId);
 	public long FreezeDPFMMinutesAdd(CommitteeMeetingDPFMFrozen dpfm) throws Exception;
 	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
+	public Object[] ProjectDataDetails(String projectid) throws Exception;
 
 
 }

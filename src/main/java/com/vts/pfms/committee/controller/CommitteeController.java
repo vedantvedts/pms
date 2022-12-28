@@ -5718,6 +5718,7 @@ public class CommitteeController {
 						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
 						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+						 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
 	//					 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
 	//				}
 					

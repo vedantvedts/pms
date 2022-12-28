@@ -58,6 +58,7 @@
 	Object[] membersec=null; 
 	String levelid= (String) request.getAttribute("levelid");
 	
+	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
 	%>
 <style type="text/css">
@@ -696,31 +697,30 @@ for(Object[] temp : invitedlist){
 								<thead >
 									<tr>
 										<td colspan="6" style="border: 0px !important;">
-											<p style="font-size: 10px;text-align: center"> 
+											<p style="font-size: 10px; text-align: center">
 												<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 												<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-												<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 												<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-												<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
 												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+												<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+												<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 											</p>
 										</td>									
 									</tr>
 								
 								
-								<tr>
-									<th class="std"  style="width: 30px;"  >SN</th>
-									<th class="std"  style="width: 250px;" >Action Point</th>
-									<th class="std"  style="width: 80px; "  > PDC</th>
-									<th class="std"  style="width: 80px;" > Item Code</th>
-									<th class="std"  style="width: 130px;" >Responsibility</th>
-									<th class="std"  style="width: 80px;"  >Status(DD)</th>			
-								</tr>
+									<tr>
+										<th class="std"  style="width: 30px;"  >SN</th>
+										<th class="std"  style="width: 250px;" >Action Point</th>
+										<th class="std"  style="width: 80px; " > PDC</th>
+										<th class="std"  style="width: 80px;" > Item Code</th>
+										<th class="std"  style="width: 130px;" >Responsibility</th>
+										<th class="std"  style="width: 80px;"  >Status(DD)</th>			
+									</tr>
 								</thead>		
 								<tbody>
 								<%if(lastpmrcactions.size()==0){ %>
@@ -734,15 +734,15 @@ for(Object[] temp : invitedlist){
 											<td class="std"  align="center"><%=i %></td>
 											<td class="std" style="text-align: justify;"><%=obj[2] %></td>
 											<td class="std" align="center">
-												<%if(obj[8]!= null){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>
-												<%if(obj[7]!= null){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
-												<%if(obj[6]!= null){ %><br><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
+												<%if(obj[8]!= null){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>
+												<%if(obj[7]!= null){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
+												<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
 											</td>
 											<td class="std" align="center" > 
 												<%if(obj[3].toString().equals("A") ){ %>		 A
 												<%}else if(obj[3].toString().equals("I") ){  %>  I
 												<%}else if(obj[3].toString().equals("R") ){  %>  R
-												<%}else if(obj[3].toString().equals("D") ){ %>   D
+												<%}else if(obj[3].toString().equals("D") ){  %>   D
 												<%}else if(obj[3].toString().equals("C") ){  %>  C
 												<%}else if(obj[3].toString().equals("K") ){  %>  K
 												<%} %>  
@@ -794,19 +794,18 @@ for(Object[] temp : invitedlist){
 						     <thead>
 									<tr>
 										<td colspan="8" style="border: 0px">
-											<p style="font-size: 10px;text-align: center"> 
-														 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														 <span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
-														 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														 <span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														 <span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														 <span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														 <!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
-													 </p>
+											<p style="font-size: 10px; text-align: center">
+												<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+												<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+												<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+												<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+											</p>
 										</td>									
 									</tr>
 						     
@@ -933,9 +932,15 @@ for(Object[] temp : invitedlist){
 					</table>	
 					<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
 										<thead>
+										<tr>
+											<th colspan="8" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
+										</tr>
 										 <tr>
-										 	<th class="std" colspan="8" >Demand Details</th>
-											 </tr>
+										 	<th colspan="8" class="std">Demand Details ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
+													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+												
+											</th>
+										</tr>
 										</thead>
 										
 										<tr>
@@ -943,7 +948,7 @@ for(Object[] temp : invitedlist){
 											<th class="std" style="max-width: 90px;">Demand No</th>
 											<th class="std" style="max-width: 90px; ">Demand Date</th>
 											<th class="std" colspan="2" style="max-width: 150px;"> Nomenclature</th>
-											<th class="std" style="max-width: 90px;"> Est. Cost-Lakh &#8377;</th>
+											<th class="std" style="max-width: 90px;"> Est. Cost</th>
 											<th class="std" style="max-width: 80px; "> Status</th>
 											<th class="std" style="max-width: 200px;">Remarks</th>
 										</tr>
@@ -979,25 +984,27 @@ for(Object[] temp : invitedlist){
 												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
 											<%} %>
 											 <tr >
-												 <th  class="std"  colspan="8">Order Placed</th>
+												<th  class="std"  colspan="8">Orders Placed ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
+													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+												</th>
 											 </tr>
 										
-										  	 	<tr>	
+										  	 <tr>	
 										  	 	 <th class="std" rowspan="2" style="width: 30px !important;">SN</th>
 										  	 	 <th class="std">Demand No </th>
-										  	 	  <th class="std" >Demand  Date</th>
+										  	 	 <th class="std" >Demand  Date</th>
 												 <th class="std" colspan="2"> Nomenclature</th>
-												 <th class="std" > Est. Cost-Lakh &#8377;</th>
+												 <th class="std" > Est. Cost</th>
 												 <th class="std" style="max-width: 80px; "> Status</th>
-												 <th class="std" style="max-width: 200px;">Remarks</th>
+												 <th class="std" style="max-width: 200px;">SO Cost</th>
 												</tr>
 											<tr>
 												
 												 <th class="std"  style="max-width: 150px;">Supply Order No</th>
 												 <th class="std" style="max-width: 90px;	">DP Date</th>
-												 <th class="std" colspan="2" style="max-width: 90px;	">Vendor Name</th>
-												 <th class="std" style="max-width: 80px;">Rev DP Date</th>											 
-												 <th  class="std" colspan="3" style="max-width: 90px;">SO Cost-Lakh &#8377;</th>		
+												 <th class="std" colspan="2" style="max-width: 90px;">Vendor Name</th>
+												 <th class="std" style="max-width: 80px;">Rev DP</th>											 
+												 <th  class="std" colspan="3" style="max-width: 90px;">Remarks</th>		
 											 		
 											</tr>
 										    <%if(procurementOnSanction!=null && procurementOnSanction.size()>0){
@@ -1011,16 +1018,14 @@ for(Object[] temp : invitedlist){
 										  	 		if(!obj[1].toString().equals(demand)){
 										  	 			k++;
 										  	 		%>
-										  	 
-
 												<tr>
 													<td class="std" rowspan="2" ><%=k%></td>
 													<td class="std" ><%=obj[1]%> </td>
 													<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td class="std"  colspan="2"><%=obj[8]%></td>
 													<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												    <td  class="std"> <%=obj[10]%> </td>
-													<td  class="std"><%=obj[11]%> </td>	
+												    <td class="std"> <%=obj[10]%> </td>
+													<td class="std" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %> </td>	
 												</tr>
 												<%demand=obj[1].toString();
 												} %>
@@ -1030,7 +1035,7 @@ for(Object[] temp : invitedlist){
 													<td class="std" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
 													<td class="std" colspan="2"> <%=obj[12] %> </td>
 													<td class="std"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
-				                                    <td class="std" colspan="3" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
+				                                    <td class="std" colspan="3" ><%=obj[11]%></td>												
 				
 												</tr>		
 												<% }
@@ -1058,13 +1063,13 @@ for(Object[] temp : invitedlist){
 									</table> 
 									
 									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
-									       <tr >
-												 <th class="std" style="max-width: 150px;">Total No. of Demand</th>
-												 <th class="std" style="max-width: 150px;">Total Est. Cost-Lakh &#8377;</th>
-										  	 	 <th class="std" style="max-width: 150px;">Total No. of Orders</th>
-										  	 	 <th class="std" style="max-width: 150px;">Total So Cost-Lakh &#8377; </th>
-										  	 	 <th class="std" style="max-width: 150px;">Total Expenditure-Lakh &#8377; </th>
-											 </tr>
+									       <tr>
+												<th class="std" style="max-width: 150px;">No. of Demand</th>
+												<th class="std" style="max-width: 150px;">Est. Cost</th>
+												<th class="std" style="max-width: 150px;">No. of Orders</th>
+												<th class="std" style="max-width: 150px;">SO Cost</th>
+												<th class="std" style="max-width: 150px;">Expenditure</th>
+											</tr>
 									<%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
 										 for(TotalDemand obj:totalprocurementdetails){
 											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
@@ -1216,18 +1221,17 @@ for(Object[] temp : invitedlist){
 							 <thead>
 									<tr>
 										<td colspan="9" style="border: 0px">
-											<p style="font-size: 10px;text-align: center"> 
+											<p style="font-size: 10px; text-align: center">
 												<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 												<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-												<span class="notyet">NS</span> : Not yet Started &nbsp;&nbsp;
 												<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
 												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-												<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
 												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												<!-- <span class="ongoing">UF</span> : User Forwarded &nbsp;&nbsp; --> 
+												<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+												<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 											</p>
 										</td>									
 									</tr>
@@ -1336,7 +1340,14 @@ for(Object[] temp : invitedlist){
 												<%} %>
 											</td>
 											<td class="std" ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
-											<td class="std" ><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td class="std" >
+												
+												<%=sdf.format(sdf1.parse(obj[8].toString())) %>
+												<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
+													<br><%=sdf.format(sdf1.parse(obj[29].toString())) %>
+												<%} %>
+												
+											</td>
 											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
 											<td class="std"  style="text-align: center">
 											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned

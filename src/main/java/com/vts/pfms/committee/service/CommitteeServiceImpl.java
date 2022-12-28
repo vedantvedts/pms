@@ -2916,6 +2916,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return dao.ActionPlanSixMonths(projectid);
 	}
 	
+	@Override
+	public Object[] ProjectDataDetails(String projectid) throws Exception 
+	{
+		return dao.ProjectDataDetails(projectid);
+	}
+	
 
 	@Override 
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 

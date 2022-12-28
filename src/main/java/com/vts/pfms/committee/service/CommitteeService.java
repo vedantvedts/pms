@@ -266,6 +266,7 @@ public interface CommitteeService {
 	public LabMaster LabDetailes(String LabCode) throws Exception;
 	public long FreezeDPFMMinutes(CommitteeMeetingDPFMFrozen dpfm) throws Exception;
 	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
+	public Object[] ProjectDataDetails(String projectid) throws Exception;
     
 }
 

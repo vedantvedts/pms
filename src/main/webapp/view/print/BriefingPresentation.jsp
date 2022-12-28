@@ -477,8 +477,7 @@ ul, #myUL {
 	List<Object[]> projectdatadetails = (List<Object[]>) request.getAttribute("projectdatadetails");
 	List<List<Object[]>> oldpmrcissueslist = (List<List<Object[]>>) request.getAttribute("oldpmrcissueslist");
 
-	List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>) request
-			.getAttribute("financialDetails");
+	List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>) request.getAttribute("financialDetails");
 	List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>) request.getAttribute("procurementOnDemandlist");
 	List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>) request.getAttribute("procurementOnSanctionlist");
 	List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>) request.getAttribute("riskmatirxdata");
@@ -937,19 +936,13 @@ ul, #myUL {
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div style="margin-left: 1rem;">
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 					<table style="width: 100%;">
 						<%
 						if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[5] != null) {
@@ -1041,16 +1034,15 @@ ul, #myUL {
 								<td colspan="6" style="border: 0">
 									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -1215,18 +1207,17 @@ ul, #myUL {
 						<thead>
 							<tr>
 								<td colspan="7" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
+									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -1546,18 +1537,17 @@ ul, #myUL {
 						<thead>
 							<tr>
 								<td colspan="10" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
+									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -1809,18 +1799,17 @@ ul, #myUL {
 						<thead>
 							<tr>
 								<td colspan="10" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
+									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -2129,18 +2118,17 @@ ul, #myUL {
 
 							<tr>
 								<td colspan="9" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
+									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -2356,26 +2344,16 @@ ul, #myUL {
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 
 					<table
-						style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px; border-collapse: collapse;">
+						style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
 						<thead>
 							<tr>
-								<th colspan="8"><span class="mainsubtitle">Demand
-										Details ( > &#8377; <%
- if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) {
- %>
-										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%>
-										) <%
-										} else {
-										%> - )<%
-										}
-										%>
-								</span> <span class="currency" style="float: right;">(In &#8377;
-										Lakhs)</span></th>
+								<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+									</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
+								</th>
 							</tr>
 						</thead>
 
@@ -2431,8 +2409,8 @@ ul, #myUL {
 							<tr>
 								<th colspan="8"><span class="mainsubtitle">Orders
 										Placed ( > &#8377; <%
- if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) {
- %>
+									 if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) {
+									 %>
 										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%>
 										) <%
 										} else {
@@ -2459,8 +2437,8 @@ ul, #myUL {
 							<th style="">Supply Order No</th>
 							<th style="">DP Date</th>
 							<th colspan="2" style="">Vendor Name</th>
-							<!-- <th >Rev DP Date</th>		 -->
-							<th colspan="3">Remarks</th>
+							<th >Rev DP</th>
+							<th colspan="2">Remarks</th>
 						</tr>
 						<%
 						if (procurementOnSanction.get(z) != null && procurementOnSanction.get(z).size() > 0) {
@@ -2481,14 +2459,8 @@ ul, #myUL {
 							<td style="text-align: right;"><%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 							<td><%=obj[10]%></td>
 							<td style="text-align: right;">
-								<%
-								if (obj[6] != null) {
-								%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%>
-								<%
-								} else {
-								%> - <%
-								}
-								%>
+								<% if (obj[6] != null) { %> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%>
+								<% } else { %> - <% } %>
 							</td>
 						</tr>
 						<%
@@ -2500,10 +2472,10 @@ ul, #myUL {
 								<%
 								if (obj[2] != null) {
 								%> <%=obj[2]%> <%
- } else {
- %>-<%
- }
- %>
+								 } else {
+								 %>-<%
+								 }
+								 %>
 							</td>
 							<td style="text-align: center">
 								<%
@@ -2516,11 +2488,10 @@ ul, #myUL {
 								%>
 							</td>
 							<td colspan="2"><%=obj[12]%></td>
-							<%-- <td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td> --%>
-							<td colspan="3"><%=obj[11]%></td>
+							<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
+							<td colspan="2"><%=obj[11]%></td>
 						</tr>
-						<%
-						}
+						<% }
 
 						Double value = 0.00;
 						if (obj[6] != null) {
@@ -2530,39 +2501,29 @@ ul, #myUL {
 						estcost += Double.parseDouble(obj[5].toString());
 						socost += value;
 
-						}
-						%>
+						} %>
 
 						<tr>
 							<td colspan="6" style="text-align: right;"><b>Total</b></td>
 							<td colspan="2" style="text-align: right;"><b><%=df.format(socost)%></b></td>
 						</tr>
-						<%
-						} else {
-						%>
+						<% } else { %>
 
 						<tr>
 							<td colspan="8" style="text-align: center;">Nil</td>
 						</tr>
-						<%
-						}
-						%>
+						<% } %>
 					</table>
 
-					<%
-					}
-					%>
+					<% } %>
 
-					<br>
-					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; width: 980px !important; border-collapse: collapse;">
+					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px;  border-collapse: collapse;">
 						<thead>
 							<tr>
-								<th colspan="8" style="text-align: right; border: 0px;"><span
-									class="currency">(In &#8377; Lakhs)</span></th>
+								<th colspan="5" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
 							</tr>
 							<tr>
-								<th colspan="8"><span class="mainsubtitle">Total
-										Summary of Procurement</span></th>
+								<th colspan="5"><span class="mainsubtitle">Total Summary of Procurement</span></th>
 							</tr>
 						</thead>
 
@@ -2575,11 +2536,9 @@ ul, #myUL {
 								<th>Expenditure</th>
 							</tr>
 
-							<%
-							if (totalprocurementdetails != null && totalprocurementdetails.size() > 0) {
+							<% if (totalprocurementdetails != null && totalprocurementdetails.size() > 0) {
 								for (TotalDemand obj : totalprocurementdetails) {
-									if (obj.getProjectId().equalsIgnoreCase(projectid)) {
-							%>
+									if (obj.getProjectId().equalsIgnoreCase(projectid)) { %>
 							<tr>
 								<td style="text-align: center;"><%=obj.getDemandCount()%></td>
 								<td style="text-align: center;"><%=obj.getEstimatedCost()%></td>
@@ -2587,18 +2546,14 @@ ul, #myUL {
 								<td style="text-align: center;"><%=obj.getTotalOrderCost()%></td>
 								<td style="text-align: center;"><%=obj.getTotalExpenditure()%></td>
 							</tr>
-							<%
+							<% }
 							}
-							}
-							} else {
-							%>
+							} else { %>
 							<tr>
 								<td class="std" colspan="5" style="text-align: center;">IBAS
 									Server Could Not Be Connected</td>
 							</tr>
-							<%
-							}
-							%>
+							<% } %>
 						</tbody>
 					</table>
 
@@ -2617,50 +2572,28 @@ ul, #myUL {
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 
 					<br>
-					<table class="subtables" style="width: 980px;">
+					<table class="subtables" >
 						<thead>
 							<tr>
 								<td colspan="14" style="text-align: right; border: 0px;"><span
 									class="currency"><b>(In &#8377; Crore)</b></span></td>
 							</tr>
 							<tr>
-								<th colspan="2"
-									style="text-align: center; width: 200px !important;">Head
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">Sanction
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">Expenditure
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">Out
-									Commitment
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">Balance
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">DIPL
-								</td>
-								<th colspan="2"
-									style="text-align: center; width: 120px !important;">Notional
-									Balance
-								</td>
+								<th colspan="2" style="text-align: center; width: 200px !important;">Head </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">Sanction </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">Expenditure </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">Out Commitment </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">Balance </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">DIPL </th>
+								<th colspan="2" style="text-align: center; width: 120px !important;">Notional Balance </th>
 							</tr>
 							<tr>
 								<th style="width: 30px !important; text-align: center;">SN</th>
@@ -2691,57 +2624,32 @@ ul, #myUL {
 							%>
 
 							<tr>
-								<td align="center"
-									style="max-width: 50px !important; text-align: center;"><%=count++%></td>
+								<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
 								<td><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction())%></td>
-								<%
-								totReSanctionCost += (projectFinancialDetail.getReSanction());
-								%>
+								<% totReSanctionCost += (projectFinancialDetail.getReSanction()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-								<%
-								totFESanctionCost += (projectFinancialDetail.getFeSanction());
-								%>
+								<% totFESanctionCost += (projectFinancialDetail.getFeSanction()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
-								<%
-								totREExpenditure += (projectFinancialDetail.getReExpenditure());
-								%>
+								<% totREExpenditure += (projectFinancialDetail.getReExpenditure()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-								<%
-								totFEExpenditure += (projectFinancialDetail.getFeExpenditure());
-								%>
+								<% totFEExpenditure += (projectFinancialDetail.getFeExpenditure()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-								<%
-								totRECommitment += (projectFinancialDetail.getReOutCommitment());
-								%>
+								<% totRECommitment += (projectFinancialDetail.getReOutCommitment()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-								<%
-								totFECommitment += (projectFinancialDetail.getFeOutCommitment());
-								%>
+								<% totFECommitment += (projectFinancialDetail.getFeOutCommitment()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
-								<%
-								btotalRe += (projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl());
-								%>
+								<% btotalRe += (projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
-								<%
-								btotalFe += (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl());
-								%>
+								<% btotalFe += (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-								<%
-								totalREDIPL += (projectFinancialDetail.getReDipl());
-								%>
+								<% totalREDIPL += (projectFinancialDetail.getReDipl()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-								<%
-								totalFEDIPL += (projectFinancialDetail.getFeDipl());
-								%>
+								<% totalFEDIPL += (projectFinancialDetail.getFeDipl()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-								<%
-								totReBalance += (projectFinancialDetail.getReBalance());
-								%>
+								<% totReBalance += (projectFinancialDetail.getReBalance()); %>
 								<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-								<%
-								totFeBalance += (projectFinancialDetail.getFeBalance());
-								%>
+								<% totFeBalance += (projectFinancialDetail.getFeBalance()); %>
 							</tr>
 							<%
 							}
@@ -2777,9 +2685,7 @@ ul, #myUL {
 					</table>
 
 
-					<%
-					}
-					%>
+					<% } %>
 
 				</div>
 
@@ -2793,51 +2699,38 @@ ul, #myUL {
 
 				<div class="content-header">
 					<h3>
-						<%
-						if (committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")) {
-						%>
-						9. Action Plan for Next Six months
-						<%
-						} else {
-						%>
-						9. Action Plan for Next Three months
-						<%
-						}
-						%>
+						<% if (committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")) { %>
+							9. Action Plan for Next Six months
+						<% } else { %>
+							9. Action Plan for Next Three months
+						<% } %>
 					</h3>
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
 								<td colspan="9" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
-										<span class="notassign">NA</span> : Not Assigned &nbsp; <span
-											class="assigned">AA</span> : Activity Assigned &nbsp; <span
-											class="ongoing">OG</span> : On Going &nbsp; <span
-											class="delay">DO</span> : Delay - On Going &nbsp; <span
-											class="ongoing">RC</span> : Review & Close &nbsp; <span
-											class="delay">FD</span> : Forwarded With Delay &nbsp; <span
-											class="completed">CO</span> : Completed &nbsp; <span
-											class="completeddelay">CD</span> : Completed with Delay
-										&nbsp; <span class="inactive">IA</span> : InActive &nbsp; <span
-											class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+									<p style="font-size: 12px; text-align: center">
+										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -2878,62 +2771,49 @@ ul, #myUL {
 									<%
 									if (obj[26].toString().equals("0")) {
 									%> <!-- L --> <%
- countA = 1;
- countB = 1;
- countC = 1;
- countD = 1;
- countE = 1;
- } else if (obj[26].toString().equals("1")) {
- %> A-<%=countA%> <%
- countA++;
- countB = 1;
- countC = 1;
- countD = 1;
- countE = 1;
- } else if (obj[26].toString().equals("2")) {
- %> B-<%=countB%> <%
- countB += 1;
- countC = 1;
- countD = 1;
- countE = 1;
- } else if (obj[26].toString().equals("3")) {
- %> C-<%=countC%> <%
- countC += 1;
- countD = 1;
- countE = 1;
- } else if (obj[26].toString().equals("4")) {
- %> D-<%=countD%> <%
- countD += 1;
- countE = 1;
- } else if (obj[26].toString().equals("5")) {
- %> E-<%=countE%> <%
- countE++;
- }
- %>
+									 countA = 1;
+									 countB = 1;
+									 countC = 1;
+									 countD = 1;
+									 countE = 1;
+									 } else if (obj[26].toString().equals("1")) {
+									 %> A-<%=countA%> <%
+									 countA++;
+									 countB = 1;
+									 countC = 1;
+									 countD = 1;
+									 countE = 1;
+									 } else if (obj[26].toString().equals("2")) {
+									 %> B-<%=countB%> <%
+									 countB += 1;
+									 countC = 1;
+									 countD = 1;
+									 countE = 1;
+									 } else if (obj[26].toString().equals("3")) {
+									 %> C-<%=countC%> <%
+									 countC += 1;
+									 countD = 1;
+									 countE = 1;
+									 } else if (obj[26].toString().equals("4")) {
+									 %> D-<%=countD%> <%
+									 countD += 1;
+									 countE = 1;
+									 } else if (obj[26].toString().equals("5")) {
+									 %> E-<%=countE%> <%
+									 countE++;
+									 }
+									 %>
 								</td>
 
 								<td
-									style="<%if (obj[26].toString().equals("0")) {%>font-weight: bold;<%}%>;text-align:justify ">
-									<%
-									if (obj[26].toString().equals("0")) {
-									%> <%=obj[9]%> <%
- } else if (obj[26].toString().equals("1")) {
- %>
-									&nbsp;&nbsp;<%=obj[10]%> <%
- } else if (obj[26].toString().equals("2")) {
- %>
-									&nbsp;&nbsp;<%=obj[11]%> <%
- } else if (obj[26].toString().equals("3")) {
- %>
-									&nbsp;&nbsp;<%=obj[12]%> <%
- } else if (obj[26].toString().equals("4")) {
- %>
-									&nbsp;&nbsp;<%=obj[13]%> <%
- } else if (obj[26].toString().equals("5")) {
- %>
-									&nbsp;&nbsp;<%=obj[14]%> <%
- }
- %>
+									style="<%if (obj[26].toString().equals("0")) { %>font-weight: bold;<%}%>;text-align:justify ">
+									<% if (obj[26].toString().equals("0")) { %> <%=obj[9]%> 
+									<% } else if (obj[26].toString().equals("1")) { %>&nbsp;&nbsp;<%=obj[10]%> 
+									<% } else if (obj[26].toString().equals("2")) { %>&nbsp;&nbsp;<%=obj[11]%> 
+									<% } else if (obj[26].toString().equals("3")) { %>&nbsp;&nbsp;<%=obj[12]%> 
+									<% } else if (obj[26].toString().equals("4")) { %>&nbsp;&nbsp;<%=obj[13]%> 
+									<% } else if (obj[26].toString().equals("5")) { %>&nbsp;&nbsp;<%=obj[14]%> 
+									<% } %>
 								</td>
 								<td style="text-align: center">
 									<%
@@ -2947,8 +2827,8 @@ ul, #myUL {
 								</td>
 								<td><%=obj[24]%><%-- (<%=obj[25] %>) --%></td>
 								<td style="text-align: center"><%=obj[16]%>%</td>
-								<td style="text-align: center"><span
-									class="<%if (obj[20].toString().equalsIgnoreCase("0")) {%>assigned
+								<td style="text-align: center">
+									<span class="<%if (obj[20].toString().equalsIgnoreCase("0")) {%>assigned
 											<%} else if (obj[20].toString().equalsIgnoreCase("1")) {%> assigned
 											<%} else if (obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
 											<%} else if (obj[20].toString().equalsIgnoreCase("3")) {%> completed
@@ -2956,53 +2836,37 @@ ul, #myUL {
 											<%} else if (obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
 											<%} else if (obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 status-column ">
 
-										<%=obj[27]%> <%
- if ((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5")) && obj[18] != null) {
- %>
+										<%=obj[27]%> 
+										<% if ((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5")) && obj[18] != null) { %>
 										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
-										<%
- } else if (obj[20].toString().equalsIgnoreCase("4")) {
- %> (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
-										<%
- }
- %>
+										<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
+										<% } %>
 
-								</span></td>
+									</span>
+								</td>
 								<td>
-									<%
-									if (obj[28] != null) {
-									%> <%=obj[28]%> <%
- }
- %>
+									<% if (obj[28] != null) { %> <%=obj[28]%> <% } %>
 								</td>
 							</tr>
 
-							<%
-							count1++;
+							<% count1++;
 							serialno++;
 							}
 							}
 							%>
-							<%
-							} else {
-							%>
+							<% } else { %>
 
 							<tr>
 								<td colspan="9" style="text-align: center;">Nil</td>
 							</tr>
 
-							<%
-							}
-							%>
+							<% } %>
 
 						</tbody>
 
 					</table>
 
-
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -3124,18 +2988,17 @@ ul, #myUL {
 						<thead>
 							<tr>
 								<td colspan="7" style="border: 0">
-									<p style="font-size: 11px; text-align: center">
+									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned
-										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
-										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
-										&nbsp;&nbsp; <span class="ongoing">RC</span> : Review & Close
-										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
-										Delay &nbsp;&nbsp; <span class="completed">CO</span> :
-										Completed &nbsp;&nbsp; <span class="completeddelay">CD</span>
-										: Completed with Delay &nbsp;&nbsp; <span class="inactive">IA</span>
-										: InActive &nbsp;&nbsp; <span class="delaydays">DD</span> :
-										Delayed days &nbsp;&nbsp;
+										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -3264,9 +3127,7 @@ ul, #myUL {
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 					<%
 					if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
 							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) {
@@ -3278,13 +3139,9 @@ ul, #myUL {
 					%>
 					Nil
 
-					<%
-					}
-					%>
+					<% } %>
 
-					<%
-					}
-					%>
+					<% } %>
 					<br>
 					<br>
 					<br>
@@ -3305,9 +3162,7 @@ ul, #myUL {
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 					<div align="left">
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
@@ -3315,18 +3170,11 @@ ul, #myUL {
 					<div class="card-body" style="width: 100%">
 
 						<form action="TechnicalWorkDataAdd.htm" method="post">
-							<div class="row" align="center">
-								<div class="row"
-									style="width: 100%; margin-left: 0.5rem; margin-top: -0.5rem;">
+							<div class="row" align="left">
+								<div class="row" style="width: 100%; margin-left: 0.5rem; margin-top: -0.5rem;">
 									<div class="col-12">
 										<div>
-											<%
-											if (TechWorkDataList.get(z) != null) {
-											%>
-											<%=TechWorkDataList.get(z)[2]%>
-											<%
-											}
-											%>
+											<% if (TechWorkDataList.get(z) != null) { %> <%=TechWorkDataList.get(z)[2]%> <%}%>
 										</div>
 									</div>
 								</div>
@@ -3336,9 +3184,7 @@ ul, #myUL {
 
 
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -3366,8 +3212,6 @@ ul, #myUL {
 					
 					for (int z = 0; z < projectidlist.size(); z++) {
 					%>
-					<div align="left"></div>
-
 					<div class="card-body" style="width: 100%">
 
 						<div class="row" align="center" >
