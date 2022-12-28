@@ -43,7 +43,7 @@ public interface RfpMainDao {
 	public Object[] AllSchedulesCount(String loginid) throws Exception;
 	public List<Object[]> ProjectMeetingCount(String ProjectId) throws Exception;
 	List<String> getEmpNo(long empId) throws Exception;
-	public List<Object[]> ProjectList() throws Exception;
+	public List<Object[]> ProjectList(String EmpId) throws Exception;
 	public List<Object[]> ProjectEmployeeList(String empid,String logintype,String LabCode) throws Exception;
 	public List<Object[]> ProjectQuaters(String ProjectId)throws Exception;
 	public List<Object[]> MileQuaters(String ProjectId,int Quater,int year )throws Exception;
@@ -54,7 +54,7 @@ public interface RfpMainDao {
 	public Object[] ProjectHealthInsertData(String projectId) throws Exception;
 	public int ProjectHealthDelete(String projectId)throws Exception;
 	public long ProjectHoaUpdate(ProjectHoa hoa ) throws Exception;
-	public int ProjectHoaDelete() throws Exception;
+	public int ProjectHoaDelete(String LabCode) throws Exception;
 	public Object[] ChangesTotalCountData(String ProjectId) throws Exception;
 	public List<Object[]> MeetingChanges(String ProjectId,String Term,String LabCode) throws Exception;
 	public List<Object[]> MilestoneChanges(String ProjectId,String Interval,String LabCode) throws Exception;

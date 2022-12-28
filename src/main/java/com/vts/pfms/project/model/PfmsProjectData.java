@@ -1,5 +1,7 @@
 package com.vts.pfms.project.model;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,8 @@ public class PfmsProjectData {
 	private Double procLimit;
 	private int CurrentStageId;
 	private long RevisionNo;
+	private Date LastPmrcDate;
+	private Date LastEBDate;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

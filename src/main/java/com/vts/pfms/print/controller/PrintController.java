@@ -1777,6 +1777,9 @@ public class PrintController {
 
 	public int setBriefingDataToResponse(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
+		
+		try {
+		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
 
@@ -2163,6 +2166,15 @@ public class PrintController {
     			e.printStackTrace(); 
     			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) "+UserId, e); 
     		}
+    		
+			}	
+			catch (Exception e) {
+    			e.printStackTrace(); 
+    			logger.error(new Date() +" Inside ProjectBriefingPaper.htm (Milestone ActivityLogic) ", e); 
+    		}
+    		
+    		
+    		
 			return 1;
 		
 	}

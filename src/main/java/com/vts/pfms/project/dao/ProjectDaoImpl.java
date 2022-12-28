@@ -115,7 +115,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String ADID="SELECT empid FROM pfms_rtmddo WHERE isactive=1 AND TYPE='AD';";  
     private static final String APPSTATUSLIST="SELECT a.status, a.statusaction FROM pfms_project_authority_actionlist  a WHERE projectauthorityid=:AuthoId";
     private static final String PROJECTSTAGEDETAILSLIST ="SELECT projectstageid,projectstagecode,projectstage FROM pfms_project_stage";
-	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,ppd.proclimit FROM pfms_project_data ppd, pfms_project_stage pps WHERE ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
+    private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,ppd.proclimit,ppd.LastPmrcDate,ppd.LastEBDate FROM pfms_project_data ppd, pfms_project_stage pps WHERE ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
 	private static final String PROJECTDATASPECSFILEDATA  ="SELECT projectdataid,projectid,filespath, systemspecsfilename,systemconfigimgname,producttreeimgname,pearlimgname FROM pfms_project_data WHERE projectdataid=:projectdataid";
 	private static final String PROJECTDATASPECSREVFILEDATA  ="SELECT projectdatarevid,projectid,filespath, systemspecsfilename,systemconfigimgname,producttreeimgname,pearlimgname  FROM pfms_project_data_rev WHERE projectdatarevid=:projectdatarevid";
 	private static final String PROJECTDATAREVLIST="SELECT ProjectDataRevId,ProjectId,RevisionNo,RevisionDate FROM pfms_project_data_rev WHERE ProjectId=:projectid ORDER BY RevisionNo DESC";
@@ -1413,13 +1413,15 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		
 		@Override
 		public long ProjectDataEditSubmit(PfmsProjectData pfmsprojectdata, String querystr) throws Exception {
-			String PROJECTDATAEDITSUBMIT="UPDATE pfms_project_data SET "+querystr+" currentstageid=:currentstageid,RevisionNo=:revisionno,proclimit=:proclimit,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate WHERE projectdataid=:projectdataid";
+			String PROJECTDATAEDITSUBMIT="UPDATE pfms_project_data SET "+querystr+" currentstageid=:currentstageid,RevisionNo=:revisionno,proclimit=:proclimit,ModifiedBy=:modifiedby,ModifiedDate=:modifieddate,LastPmrcDate=:pmrcdate,LastEBDate=:ebdate WHERE projectdataid=:projectdataid";
 			Query query=manager.createNativeQuery(PROJECTDATAEDITSUBMIT);
 			//query.setParameter("querystr", querystr);
 			query.setParameter("currentstageid", pfmsprojectdata.getCurrentStageId());
 			query.setParameter("projectdataid", pfmsprojectdata.getProjectDataId());
 			query.setParameter("revisionno", pfmsprojectdata.getRevisionNo());
 			query.setParameter("proclimit", pfmsprojectdata.getProcLimit());
+			query.setParameter("pmrcdate", pfmsprojectdata.getLastPmrcDate());
+			query.setParameter("ebdate", pfmsprojectdata.getLastEBDate());
 			query.setParameter("modifiedby", pfmsprojectdata.getModifiedBy());
 			query.setParameter("modifieddate", pfmsprojectdata.getModifiedDate());
 			return query.executeUpdate();

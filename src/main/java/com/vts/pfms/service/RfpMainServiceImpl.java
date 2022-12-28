@@ -346,7 +346,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public long ProjectHealthUpdate(String EmpId, String UserName) throws Exception {
-		List<Object[]> proList=dao.ProjectList().stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
+		List<Object[]> proList=dao.ProjectList(EmpId).stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
 		long result=0;
 		for(Object[] obj:proList) {
 			try {
@@ -402,7 +402,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
 		logger.info(new Date() +"Inside SERVICE ProjectHoaUpdate ");
 		long count1 =0 ;
-		long count = dao.ProjectHoaDelete();
+		long count = dao.ProjectHoaDelete(LabDetails.get(0).getLabCode());
 		for(ProjectHoa obj : hoa) {
 			obj.setCreatedBy(Username);
 			obj.setCreatedDate(sdf1.format(new Date()));
@@ -450,9 +450,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception {
+	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId,String EmpId) throws Exception {
 		logger.info(new Date() +"Inside SERVICE ProjectFinanceChangesUpdate ");
-		List<Object[]> proList=dao.ProjectList();
+		List<Object[]> proList=dao.ProjectList(EmpId);
 		long result=0;
 		for(Object[] obj:proList) {
 			try {

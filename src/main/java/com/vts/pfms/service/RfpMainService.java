@@ -54,6 +54,6 @@ public interface RfpMainService {
 	public List<Object[]> ActionChanges(String ProjectId,String Interval,String LabCode) throws Exception;
 	public List<Object[]> RiskChanges(String ProjectId,String Interval,String LabCode) throws Exception;
 	public List<Object[]> FinanceDataPartA(String ProjectId, String Interval) throws Exception;
-	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception;
+	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId,String EmpId) throws Exception;
 	public Object[] ProjectData(String projectid) throws Exception;
 }
