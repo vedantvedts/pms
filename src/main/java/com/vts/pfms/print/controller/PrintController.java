@@ -437,6 +437,7 @@ public class PrintController {
 	    	Committee committee = service.getCommitteeData(committeeid);
 	    	
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -480,12 +481,12 @@ public class PrintController {
 	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
+	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,CommitteeCode));
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
@@ -617,7 +618,7 @@ public class PrintController {
             req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
-    		
+    		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
     		
     		
     		String LevelId= "2";
@@ -685,9 +686,9 @@ public class PrintController {
 	        	
 	        	try {
 	        		String No2=null;
-	        		if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
+	        		if(CommitteeCode.equalsIgnoreCase("PMRC")){ 
 	        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-	        		}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
+	        		}else if(CommitteeCode.equalsIgnoreCase("EB")){
 	        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 	        		} 
 		        	if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
@@ -980,6 +981,9 @@ public class PrintController {
 		   		String tempid=committeeid;
 			   	Committee committee = service.getCommitteeData(committeeid);
 			   	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+			   	
+			   	String CommitteeCode = committee.getCommitteeShortName().trim();
+			   	
 			   	List<Object[]> projectattributes = new ArrayList<Object[]>();
 			   	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
 			   	List<List<Object[]>> milestonesubsystems = new ArrayList<List<Object[]>>();
@@ -1022,12 +1026,12 @@ public class PrintController {
 			   		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 			   		riskmatirxdata.add(service.RiskMatirxData(proid));
 			   		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-			   		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committee.getCommitteeShortName().trim()));
+			   		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,CommitteeCode));
 			   		projectdatadetails.add(service.ProjectDataDetails(proid));
 			   		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 			   		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 			   		TechWorkDataList.add(service.TechWorkData(proid));
-			    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+			    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
 			   		ProjectRevList.add(service.ProjectRevList(proid));
 			   	
 			/* ----------------------------------------------------------------------------------------------------------	   */  		
@@ -1226,9 +1230,9 @@ public class PrintController {
 			        	
 			        	try {
 			        		String No2=null;
-			        		if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
+			        		if(CommitteeCode.equalsIgnoreCase("PMRC")){ 
 			        		No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-			        		}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
+			        		}else if(CommitteeCode.equalsIgnoreCase("EB")){
 			        			No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 			        		} 
 				        	if(new File(env.getProperty("ApplicationFilesDrive")+"\\"+projectLabCode+"\\gantt\\grantt_"+objData[1]+"_"+No2+".pdf").exists()) {
@@ -1638,6 +1642,7 @@ public class PrintController {
 	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
     		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
 	    	
+    		String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	    	
@@ -1658,7 +1663,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
 	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
@@ -1804,7 +1809,6 @@ public class PrintController {
 				return 0;
 			}
 	    	
-	    	
 	    	if(projectslist.size()==0 && projectid!=null) 
 	        {				
 				projectslist.addAll(service.ProjectDetails(projectid));
@@ -1845,14 +1849,10 @@ public class PrintController {
 	    		}
 	    	}
 	    	
-	    	if(committeeid==null) 
-	    	{
-	    		committeeid = "0";
-	    		tempid = "0";
-	    	}
 	    	
 	    	Committee committee = service.getCommitteeData(committeeid);
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -1886,31 +1886,24 @@ public class PrintController {
 	    	{	   
 	    		
 	    		Object[] projectattribute = service.ProjectAttributes(proid);
-	    		
 	    		projectattributes.add(projectattribute);
-	    		
 	    		TechImages.add(service.getTechList(proid));
-	    		
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
-	    		
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid));
-	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
-	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
+				milestones.add(service.Milestones(proid)); /* CALL Pfms_Milestone_Level_Prior(:projectid) */
+				lastpmrcactions.add(service.LastPMRCActions(proid, committeeid)); /* CALL Last_PMRC_Actions_List(:projectid,:committeeid); */
+				lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid)); /* CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid); */
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
 	    		ganttchartlist.add(service.GanttChartList(proid));
-	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
+				oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));/* CALL Old_Issues_List(:projectid); */
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
-	    		
+				actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid)); /* CALL Pfms_Milestone_PDC_New(:projectid, :interval) */
 	    		TechWorkDataList.add(service.TechWorkData(proid)); 
-	    		
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
-	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));	    		
+				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, CommitteeCode)); /* CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode ) */	    	 	
 	    		Object[] prodetails=service.ProjectDataDetails(proid);
 	    		projectdatadetails.add(prodetails);
 	    		
@@ -2100,7 +2093,10 @@ public class PrintController {
     		req.setAttribute("filePath", env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("projectLabCode",projectLabCode);
     		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
-    		
+    		req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+	    	
     		String LevelId= "2";
 			
 			if(service.MileStoneLevelId(projectid,committeeid) != null) {
@@ -2109,10 +2105,7 @@ public class PrintController {
 			  		
 			req.setAttribute("levelid", LevelId);
     		
-    		
     		try {
-    	        //String ProjectId=req.getParameter("projectid");
-    	       
     	        if(projectid==null) {
     	        	try {
     	        		Object[] pro=projlist.get(0);
@@ -2132,7 +2125,7 @@ public class PrintController {
     				int MainCount=1;
     				for(Object[] objmain:main ) {
     				 int countA=1;
-    					List<Object[]>  MilestoneActivityA=milservice.MilestoneActivityLevel(objmain[0].toString(),"1");
+						List<Object[]> MilestoneActivityA = milservice.MilestoneActivityLevel(objmain[0].toString(),"1"); /* CALL Pfms_Milestone_Level_List(:id,:levelid) */
     					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
     					for(Object[] obj:MilestoneActivityA) {
     						List<Object[]>  MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
@@ -2213,7 +2206,6 @@ public class PrintController {
 		try
 		{
 			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
-		
 			if(flag==0) 
 	        {				
 				redir.addAttribute("resultfail", "No Project is Assigned to you.");
@@ -2510,7 +2502,7 @@ public class PrintController {
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	Committee committee = service.getCommitteeData(committeeid);
-	    	
+	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	    	    	
 	    	
@@ -2559,7 +2551,7 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    		
 	    		
@@ -2835,7 +2827,7 @@ public class PrintController {
 		    	String committeeid = req.getParameter("committeidvalue");
 		    	Committee committee = service.getCommitteeData(committeeid);
 		    	String MilestoneActivity = req.getParameter("milestoneactivity");
-		    	
+		    	String CommitteeCode = committee.getCommitteeShortName().trim();
 		    	String LevelId= "2";
 		    	Object[] getlevelid = service.MileStoneLevelId(projectid,committeeid);
 				if(getlevelid != null && getlevelid[0]!=null) {
@@ -2845,7 +2837,7 @@ public class PrintController {
 				List<List<Object[]>> MilestoneFilterlist = new ArrayList<List<Object[]>>();
 		    	for(String  proid : Pmainlist) 
 		    	{
-		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));
+		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
 		    	}
 		    	
 		    	List<Object[]> main = new ArrayList<>();
@@ -3058,7 +3050,7 @@ public class PrintController {
 //		    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 //		    		
 //		    		ProjectRevList.add(service.ProjectRevList(proid));
-//		    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committee.getCommitteeShortName().trim()));	    		
+//		    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));	    		
 //		    		Object[] prodetails=service.ProjectDataDetails(proid);
 //		    		projectdatadetails.add(prodetails);
 //		    		
@@ -3336,6 +3328,16 @@ public class PrintController {
 //		
 //	    	}		
 //		}
+	    
+	    @RequestMapping(value="AgendaPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String AgendaPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
+		{
+	    	
+	    	String scheduleid = req.getParameter("AgendaList");
+	    	
+	    	req.setAttribute("AgendaList", service.AgendaList(scheduleid));
+	    	return "";
+		}
 	    
 	    
 }
