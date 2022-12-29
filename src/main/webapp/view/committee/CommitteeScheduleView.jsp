@@ -564,7 +564,6 @@
 													
 										<%} %>
 											
-											
 										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">	
 										<input type="hidden" name="committeemainid" value="<%=committeescheduleeditdata[1] %>">
@@ -583,26 +582,20 @@
 								
 								<%} %>	
 								
+								
 								<hr style="margin: 0.5rem 0rem !important;">
-								
 								<form  action="#" method="post" id="myfrm" target="_blank">
-									<% if(Long.parseLong(projectid)>0 && committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") && SplCommitteeCodes.contains(committeescheduleeditdata[8].toString().trim().toUpperCase())){%>
+									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=6) { %>
+										
+											<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
+												<img alt="" src="view/images/presentation.png" style="width:19px !important">
+											</button>
 									
-										<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get">
-										<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank" title="Briefing Presentation" >
-											<img alt="" src="view/images/presentation.png" style="width:19px !important">
-										</button>
-									
-									<%}else if(Long.parseLong(projectid)>0){ %>
-										<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
-											<img alt="" src="view/images/presentation.png" style="width:19px !important">
-										</button>
-								
-									<%} %>	
-									<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
-									<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-									<input type="hidden" name="projectid" value="<%=projectid %>">
-									<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+										<input type="hidden" name="projectid" value="<%=projectid %>">
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+									<%} %>
 								</form>	
 						</div>
 

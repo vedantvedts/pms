@@ -38,7 +38,7 @@
 <meta charset="ISO-8859-1">
 
 </head>
-<body style="background-color: #F9F2DF66;">
+<body style="background-color: #F9F2DF66;" class="slides-container">
 	<%
 	DecimalFormat df = new DecimalFormat("####################.##");
 	FormatConverter fc = new FormatConverter();
@@ -100,8 +100,7 @@
 	%>
 
 
-	<div id="presentation-slides" class="carousel slide"
-		data-ride="carousel">
+	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
 
 		<div class="carousel-inner" align="center">
 			
@@ -116,14 +115,14 @@
 					
 					<div class="firstpage"  > 
 
-						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Project Briefing </h1></div>
+						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h1></div>
 						<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
 							
-							<div align="center" >
-								<h2 style="color: #145374 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
-				   			</div>
+						<div align="center" >
+							<h2 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
+				   		</div>
 						
-							<div align="center" ><h2 style="color: #145374 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h2></div>
+						<div align="center" ><h2 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h2></div>
 						
 						
 						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
@@ -2928,6 +2927,8 @@
 		</a>
 
 		<ol class="carousel-indicators">
+			
+			
 			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
 			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
 			<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
@@ -2936,20 +2937,24 @@
 			<li data-target="#presentation-slides" data-slide-to="5" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (a)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="6" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="7" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (c) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
-			<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="7. Details of Procurement Plan"><b>7</b></li>
-			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="8. Overall Financial Status"><b>8</b></li>
-			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="9. Action Plan"><b>9</b></li>
-			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="10. GANTT chart of overall project schedule"><b>10</b></li>
-			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="11. Issues"><b>11</b></li>
-			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="12. Decision/Recommendations"><b>12</b></li>
-			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="13 (c) Technical Images"><b>13 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top"title="Thank You"><b>Last</b></li>
+			<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
+			<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan"><b>7</b></li>
+			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
+			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
+			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
+			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
+			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
+			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
+			
+			<li data-target="" data-slide-to="21" style="background-color:  #FF0000;width: 35px;margin-left: 25px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+			<li data-target="" data-slide-to="21" style="background-color:  #FF0000;width: 35px;margin-left: 25px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
+			
 		</ol>
 	</div>
 
@@ -2959,8 +2964,7 @@
 
 
 
-	<div class="modal fade " id="exampleModal1" tabindex="-1"
-		aria-labelledby="exampleModalLabel1" aria-hidden="true">
+	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 
@@ -3641,16 +3645,31 @@ $('img[data-enlargable]').addClass('img-enlargable').click(function(){
 
 
 
-	<script type="text/javascript">
-$('.content_full_screen').on('click', function(e){
+<script type="text/javascript">
+	
+$('.content_reg_screen').hide();
+$('.content_full_screen, .content_reg_screen').on('click', function(e){
 	  
 	  if (document.fullscreenElement) {
 	    	document.exitFullscreen();
 	  } else {
-		  $(this).parent().get(0).requestFullscreen();
+		  $('.slides-container').get(0).requestFullscreen();
 	  }
 	});
 
+$('.content_full_screen').on('click', function(e){
+	
+	$('.content_full_screen').hide();
+	$('.content_reg_screen').show();
+	
+});
+
+$('.content_reg_screen').on('click', function(e){
+	
+	$('.content_reg_screen').hide();
+	$('.content_full_screen').show();
+	
+});
 
 </script>
 

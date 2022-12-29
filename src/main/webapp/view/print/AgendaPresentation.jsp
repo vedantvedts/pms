@@ -39,9 +39,11 @@
 </head>
 <body style="background-color: #F9F2DF66;">
 	<%
+		List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
+	
 		Object[] projectattributes = (Object[]) request.getAttribute("projectattributes");
 		Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
-		
+		Object[] scheduledata =  (Object[]) request.getAttribute("scheduledata");
 	
 		List<Object[]> AgendaList =  (List<Object[]>) request.getAttribute("AgendaList");
 		List<Object[]> AgendaDocList =  (List<Object[]>) request.getAttribute("AgendaDocList");
@@ -49,7 +51,12 @@
 		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 		String lablogo=(String)request.getAttribute("lablogo");
 		Committee committeeData = (Committee) request.getAttribute("committeeData");
+		
+		String scheduleid = scheduledata[6].toString();
+		String committeeid = scheduledata[0].toString();
 		String CommitteeCode = committeeData.getCommitteeShortName().trim();
+		String projectid = scheduledata[9].toString();
+				
 	%>
 
 
@@ -66,14 +73,14 @@
 					
 					<div class="firstpage"  > 
 
-						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Project Briefing </h1></div>
+						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h1></div>
 						<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
 							
 						<div align="center" >
-							<h2 style="color: #145374 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
+							<h2 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
 				   		</div>
 						
-						<div align="center" ><h2 style="color: #145374 !important"><%= projectattributes[1] %> (<%= projectattributes[0] %>)</h2></div>
+						<div align="center" ><h2 style="color: #4C9100 !important"><%= projectattributes[1] %> (<%= projectattributes[0] %>)</h2></div>
 						
 						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
 							<% if(labInfo!=null){  %>
@@ -113,7 +120,32 @@
 			<div class="carousel-item">
 
 				<div class="content-header  ">
-					<h3>Agendas</h3>
+					<h3>Agendas
+					
+					<form  action="#" method="post" id="myfrm" target="_blank" style="float: right;margin-right: 5px;">
+					
+					
+						<% if(Long.parseLong(projectid)>0  && SplCommitteeCodes.contains(CommitteeCode)){ %>
+						
+							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
+											
+								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
+											
+							<%}%>
+						
+							<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank"  data-toggle="tooltip" data-placement="bottom" title="Presentation"  >
+								<img src="view/images/presentation.png" style="width:19px !important">
+							</button>
+						<% } %>
+						<input type="hidden" name="scheduleid" value="<%=scheduleid%>">	
+						<input type="hidden" name="committeeid" value="<%=committeeid%>">
+						<input type="hidden" name="projectid" value="<%=projectid %>">
+						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+					</form>	
+								
+					
+					</h3>
+					
 				</div>
 				
 				<div class="content" >

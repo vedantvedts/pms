@@ -113,6 +113,9 @@ public class PrintController {
 	@Value("${ApplicationFilesDrive}")
 	private String ApplicationFilesDrive;
 	
+	@Value("#{${CommitteeCodes}}")
+	private List<String> SplCommitteeCodes;
+	
 	@Autowired
 	Environment env;
 	
@@ -3351,6 +3354,7 @@ public class PrintController {
 	    	req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
 	    	req.setAttribute("scheduledata", scheduledata);
+	    	req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
 	    	
 	    	req.setAttribute("projectid", projectid);
 	    	
