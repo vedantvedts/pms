@@ -184,6 +184,9 @@ public class PrintDaoImpl implements PrintDao {
 		Object[] ProjectAttributes=null;
 		try {
 			ProjectAttributes=(Object[])query.getSingleResult();	
+		}catch (NoResultException e) {
+			logger.error(new Date() +" Inside DAO ProjectAttributes "+ e);
+			ProjectAttributes=null;
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside DAO ProjectAttributes "+ e);
 			ProjectAttributes=null;
@@ -778,4 +781,14 @@ public class PrintDaoImpl implements PrintDao {
 			return AgendaList;
 		}
 		
+		private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
+		
+		@Override
+		public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception 
+		{
+			Query query=manager.createNativeQuery(AGENDALINKEDDOCLIST);
+			query.setParameter("scheduleid", scheduleid);
+			List<Object[]> AgendaLinkedDocList=(List<Object[]>)query.getResultList();
+			return AgendaLinkedDocList;
+		}
 }

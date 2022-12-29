@@ -340,12 +340,12 @@
 									<td><%=obj[12] %></td>
 									<td>
 								
-							 <table>
+							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
 													<td><%=doc[3] %></td>
-													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 												<tr>													
 											<%} }%>
 										</table>
@@ -593,8 +593,8 @@
 											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 									
-									<%}else{ %>
-										<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
+									<%}else if(Long.parseLong(projectid)>0){ %>
+										<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
 											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 								

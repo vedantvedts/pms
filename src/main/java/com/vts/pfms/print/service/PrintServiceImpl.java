@@ -499,5 +499,10 @@ public class PrintServiceImpl implements PrintService{
 		return dao.AgendaList(scheduleId);
 	}
 	
+	@Override
+	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception
+	{
+		return dao.AgendaLinkedDocList(scheduleid);
+	}
 	
 }

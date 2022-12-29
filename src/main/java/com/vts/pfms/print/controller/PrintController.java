@@ -3332,11 +3332,29 @@ public class PrintController {
 	    @RequestMapping(value="AgendaPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String AgendaPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 		{
+	    	String scheduleid = req.getParameter("scheduleid");
+	    	String projectid = req.getParameter("projectid");
+	    	String committeeid= req.getParameter("committeeid");
 	    	
-	    	String scheduleid = req.getParameter("AgendaList");
+	    	Committee committee = service.getCommitteeData(committeeid);
+	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
+	    	
+	    	Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
+	    	
+	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+	    	req.setAttribute("committeeData", service.getCommitteeData(committeeid));
+	    	req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
 	    	req.setAttribute("AgendaList", service.AgendaList(scheduleid));
-	    	return "";
+	    	req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
+	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+	    	req.setAttribute("scheduledata", scheduledata);
+	    	
+	    	req.setAttribute("projectid", projectid);
+	    	
+	    	return "print/AgendaPresentation";
 		}
 	    
 	    
