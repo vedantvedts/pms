@@ -16,8 +16,6 @@ public class ActionAttachment {
 	private Long ActionSubId;
 	private String AttachName;
 	private String AttachFilePath;
-	@Lob
-	private byte[] ActionAttach;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -47,12 +45,6 @@ public class ActionAttachment {
 	}
 	public void setAttachName(String attachName) {
 		AttachName = attachName;
-	}
-	public byte[] getActionAttach() {
-		return ActionAttach;
-	}
-	public void setActionAttach(byte[] actionAttach) {
-		ActionAttach = actionAttach;
 	}
 	public String getCreatedBy() {
 		return CreatedBy;

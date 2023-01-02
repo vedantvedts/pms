@@ -216,6 +216,12 @@
 	color: #FFFFFF;
 }
 
+.Q5
+{
+	background-color: #3d3a32;
+	color: #FFFFFF;
+}
+
 th
 {
  	text-align: left;
@@ -269,6 +275,7 @@ td
 				<span style="margin:0px 0px 10px  15px;">26 - 50 % :&ensp; 	<span class="Q2" style="padding: 0px 15px;border-radius: 3px;"></span></span>
 				<span style="margin:0px 0px 10px  15px;">51 - 75 % :&ensp; 	<span class="Q3" style="padding: 0px 15px;border-radius: 3px;"></span></span>
 				<span style="margin:0px 0px 10px  15px;">76 - 100 % :&ensp; <span class="Q4" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+				<span style="margin:0px 0px 10px  15px;">Closed:&ensp; <span class="Q5" style="padding: 0px 15px;border-radius: 3px;"></span></span>
 			</div>
 		</div>
 	</div>
@@ -285,13 +292,15 @@ td
 			                          	<div 			                          		
 			                          		<% int progress = action[25]!=null ? Integer.parseInt(action[25].toString()) : 0 ; %>
 			                          		
-			                          		<% if( progress >= 0 && progress <= 25  ){ %>
+			                          		<% if( action[9]!=null && "C".equalsIgnoreCase(action[20]+"") ){ %>
+			                          			class="action-box-header Q5"
+			                          		<%}else if( progress >= 0 && progress <= 25  ){ %>
 			                          			class="action-box-header Q1"
 			                          		<%}else if( progress >= 26 && progress <= 50  ){ %>
 			                          			class=" action-box-header Q2"
 			                          		<%}else if( progress >= 51 && progress <= 75  ){ %>
 			                          			class=" action-box-header Q3"
-			                          		<%}else if(  progress >= 76 && progress <= 100  ){ %>
+			                          		<%}else if(  progress >= 76 && progress <= 100 ){ %>
 			                          			class="action-box-header Q4"
 			                          		<%} %>
 			                          		
@@ -360,14 +369,15 @@ td
 												<div class=" action-box" >
 													<div 			                          		
 						                          		<% int progress_L1 = action_L1[25]!=null ? Integer.parseInt(action_L1[25].toString()) : 0 ; %>
-						                          		
-						                          		<% if( progress_L1 >= 0 && progress_L1 <= 25  ){ %>
-						                          			class="action-box-header Q1"
+						                          		<% if( action[9]!=null && "C".equalsIgnoreCase(action_L1[20]+"")){ %>
+						                          			class="action-box-header Q5"
+						                          		<%}else if( progress_L1 >= 0 && progress_L1 <= 25  ){ %>
+									                        class="action-box-header Q1"
 						                          		<%}else if( progress_L1 >= 26 && progress_L1 <= 50  ){ %>
 						                          			class=" action-box-header Q2"
 						                          		<%}else if( progress_L1 >= 51 && progress_L1 <= 75  ){ %>
 						                          			class=" action-box-header Q3"
-						                          		<%}else if(  progress_L1 >= 76 && progress_L1 <= 100  ){ %>
+						                          		<%}else if(  progress_L1 >= 76 && progress_L1 <= 100 ){ %>
 						                          			class="action-box-header Q4"
 						                          		<%} %>
 						                          		
@@ -439,8 +449,9 @@ td
 															<div class=" action-box" >
 																<div 			                          		
 									                          		<% int progress_L2 = action_L2[25]!=null ? Integer.parseInt(action_L2[25].toString()) : 0 ; %>
-									                          		
-									                          		<% if( progress_L2 >= 0 && progress_L2 <= 25  ){ %>
+									                          		<% if( action[9]!=null && "C".equalsIgnoreCase(action_L2[20]+"")){ %>
+								                          				class="action-box-header Q5"
+								                          			<%}else if( progress_L2 >= 0 && progress_L2 <= 25  ){ %>
 									                          			class="action-box-header Q1"
 									                          		<%}else if( progress_L2 >= 26 && progress_L2 <= 50  ){ %>
 									                          			class=" action-box-header Q2"
@@ -515,8 +526,9 @@ td
 																		<div class=" action-box" >
 																				<div 			                          		
 													                          		<% int progress_L3 = action_L3[25]!=null ? Integer.parseInt(action_L3[25].toString()) : 0 ; %>
-													                          		
-													                          		<% if( progress_L3 >= 0 && progress_L3 <= 25  ){ %>
+													                          		<% if( action[9]!=null && "C".equalsIgnoreCase(action_L3[20]+"")){ %>
+								                          								class="action-box-header Q5"
+								                          							<%}else  if( progress_L3 >= 0 && progress_L3 <= 25  ){ %>
 													                          			class="action-box-header Q1"
 													                          		<%}else if( progress_L3 >= 26 && progress_L3 <= 50  ){ %>
 													                          			class=" action-box-header Q2"
@@ -592,8 +604,9 @@ td
 																								<div class=" action-box" >
 																									<div 			                          		
 																		                          		<% int progress_L4 = action_L4[25]!=null ? Integer.parseInt(action_L4[25].toString()) : 0 ; %>
-																		                          		
-																		                          		<% if( progress_L4 >= 0 && progress_L4 <= 25  ){ %>
+																		                          		<% if( action[9]!=null && "C".equalsIgnoreCase(action_L4[20]+"")){ %>
+								                          													class="action-box-header Q5"
+								                          												<%}else if( progress_L4 >= 0 && progress_L4 <= 25  ){ %>
 																		                          			class="action-box-header Q1"
 																		                          		<%}else if( progress_L4 >= 26 && progress_L4 <= 50  ){ %>
 																		                          			class=" action-box-header Q2"

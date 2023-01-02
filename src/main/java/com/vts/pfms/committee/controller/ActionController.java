@@ -339,8 +339,9 @@ public class ActionController {
 			String AssignerName=req.getParameter("Assigner");
 			req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") ,req.getParameter("ActionAssignid")).get(0));
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignid")));
-			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
+			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
 			req.setAttribute("AssignerName", AssignerName);
+			
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("back", req.getParameter("back"));
@@ -451,15 +452,20 @@ public class ActionController {
 				  ActionAttachment attachment=service.ActionAttachmentDownload(req.getParameter("ActionSubId" ));
 		
 				  res.setContentType("application/octet-stream");
-				  res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachName()));
-				  res.setContentLength((int)attachment.getActionAttach().length);
-				  
-				  InputStream inputStream = new ByteArrayInputStream(attachment.getActionAttach()); 
-				  OutputStream outputStream = res.getOutputStream(); 
-				  FileCopyUtils.copy(inputStream, outputStream);
-				  
-				 inputStream.close(); 
-				 outputStream.close();
+				  File my_file=null;
+					
+					my_file = new File(uploadpath+attachment.getAttachFilePath()+File.separator+attachment.getAttachName()); 
+			        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
+			        OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -571,7 +577,7 @@ public class ActionController {
 			try { 
 				
 					String type = req.getParameter("Type");
-					System.out.println("type         :"+type);
+					
 					if(type!=null && !type.equalsIgnoreCase("F")) {
 						if(type.equalsIgnoreCase("A")) {
 							req.setAttribute("ForwardList", service.ForwardList(EmpId));
@@ -604,7 +610,7 @@ public class ActionController {
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 			req.setAttribute("AssigneeName", AssigneeName);
 			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
-			
+			req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -621,7 +627,7 @@ public class ActionController {
 			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);		
 			try { 
 				
-				int count = service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
+				int count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
 				if (count > 0) {
 					redir.addAttribute("result", "Action Sent Back Successfully");
@@ -647,9 +653,11 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside CloseSubmit.htm "+UserId);		
 			try { 
-
-			int count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
-
+				
+				String levelcount = req.getParameter("LevelCount");
+				int	count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
+				
+			 
 			if (count > 0) {
 				redir.addAttribute("result", "Action Closed Successfully");
 			} else {
@@ -659,8 +667,7 @@ public class ActionController {
 			if ("C".equalsIgnoreCase(req.getParameter("sub"))) {
 				return "redirect:/ActionLaunch.htm";
 			}
-			}
-			catch (Exception e) {
+			}catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside CloseSubmit.htm "+UserId, e);
 			}
@@ -708,9 +715,7 @@ public class ActionController {
 					{
 						tdate=sdf1.format(sdf.parse(tdate));				
 					}
-					
-					
-					
+
 					req.setAttribute("tdate",tdate);
 					req.setAttribute("fdate",fdate);
 					req.setAttribute("StatusList", service.StatusList(EmpId,fdate,tdate));
@@ -1223,6 +1228,7 @@ public class ActionController {
 						req.setAttribute("ActionMainId",req.getParameter("ActionMainId"));
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
 						req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") , req.getParameter("ActionAssignId")).get(0));
+						req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 						}
 						catch (Exception e) {
 							e.printStackTrace();
@@ -2210,4 +2216,24 @@ public class ActionController {
 		}
 		return json.toJson(ActionSubList);
 	}
+	@RequestMapping(value = "ActionTreeForClose.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionTreeForCloseAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		List<Object[]> Actiontreelist=null;
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionTreeForClose.htm "+UserId);		
+		try {
+			System.out.println("Action Assignid  :"+req.getParameter("AssignId"));
+			Actiontreelist =   service.ActionSubLevelsList(req.getParameter("AssignId"));
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionTreeForClose.htm "+UserId, e);
+			Actiontreelist=new ArrayList<>();
+		}
+		return json.toJson(Actiontreelist);
+	}
+	
 }

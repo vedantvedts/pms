@@ -79,7 +79,9 @@ h6{
 .width {
 	width: 270px !important;
 }
-
+.width1 {
+	width: 210px !important;
+}
 a:hover {
 	color: white;
 }
@@ -205,7 +207,7 @@ a:hover {
 															</div>
 															</div> <%} %></td>
 
-															<td class="left ">		
+															<td class="left width1">		
 																<%if(obj[7]!=null && "N".equalsIgnoreCase(obj[7].toString()) || "B".equalsIgnoreCase(obj[7].toString())){%> 
 																
 																<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
@@ -226,7 +228,7 @@ a:hover {
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionNo" value="<%=obj[14]%>"/>
 																	<input type="hidden" name="ActionAssignid" value="<%=obj[15]%>"/>
-																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="ProjectId" value="<%=obj[16]%>"/>
 																	<input type="hidden" name="back" value="backToReview">
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	
@@ -247,8 +249,15 @@ a:hover {
 																			</div>
 																		</div>
 																	</button>
-																	<button type="submit"  class="btn btn-sm" name="ActionAssignid" value="<%=obj[15]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
-																			<i class="fa fa-solid fa-sitemap" style=" font-size: 30px; color: #CE7777;"></i>
+																	<button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[15]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
+																			<div class="cc-rockmenu">
+																				 <div class="rolling">	
+																					   <figure class="rolling_icon">
+																					 	<img src="view/images/tree.png"  >
+																                       </figure>
+															                        	<span> Action Tree</span>
+															                      </div>
+															                  </div>
 																	</button> 
                                                                     <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
                                                                     <input type="hidden" name="ActionNo" value="<%=obj[14]%>"/>
