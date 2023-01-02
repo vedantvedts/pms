@@ -162,8 +162,8 @@ Project Edit</h4>
 </label>
 </th>
  <td >
- <input type="text"   name="pcode"
-								class="form-control" maxlength="20" value="<%=ProjectEditData[3] %>" required="required">
+ <%=ProjectEditData[3] %>
+ <input type="hidden"   name="pcode" class="form-control" maxlength="20" value="<%=ProjectEditData[3] %>"  required="required">
  
 </td>
 

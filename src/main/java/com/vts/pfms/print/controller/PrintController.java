@@ -2098,6 +2098,7 @@ public class PrintController {
     		req.setAttribute("SpecialCommitteesList",SpecialCommitteesList);
     		req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
 	    	
     		String LevelId= "2";

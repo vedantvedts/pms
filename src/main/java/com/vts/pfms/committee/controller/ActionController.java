@@ -188,29 +188,30 @@ public class ActionController {
 			String CpLabCode = req.getParameter("LabCode");
 			String mainid = req.getParameter("MainId");
 
-			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid)){
+			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid))
+			{
 				
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
 					
 				}else{
-					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
-					{
+//					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+//					if(true) 
+//					{
 						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
-					}
+//					}
 				}
 			}else {
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
 				}else{
-					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
-					{
+//					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+//					if(true) 
+//					{
 						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
-					}
+//					}
 				}
 				
 			}
@@ -857,9 +858,9 @@ public class ActionController {
 			long count =service.ActionMainInsert(mainDto,assign);
 				
 			if (count > 0) {
-				redir.addAttribute("result", "Action Added Successfully For " +req.getParameter("ScheduleSpec"));
+				redir.addAttribute("result", "Action Assigned Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Action Add Unsuccessful");
+				redir.addAttribute("resultfail", "Action Assign Unsuccessful");
 			}
 			redir.addFlashAttribute("ScheduleId", req.getParameter("ScheduleId"));
 			redir.addFlashAttribute("specname", req.getParameter("specname"));
