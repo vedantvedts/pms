@@ -1062,7 +1062,14 @@ for(Object[] temp : invitedlist){
 											<%} %>
 									</table> 
 									
+									
+									
 									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
+										<thead>
+											 <tr >
+												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
+											 </tr>
+										 </thead>
 									       <tr>
 												<th class="std" style="max-width: 150px;">No. of Demand</th>
 												<th class="std" style="max-width: 150px;">Est. Cost</th>

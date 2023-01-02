@@ -430,6 +430,31 @@
 	.bigcount h4,h3{
 		margin-bottom: -4px;
 	}
+	.financetable{
+		margin-top: 12px;
+		margin-bottom: 0rem !important
+		
+	}
+	
+	.financetable tr td{
+		font-size: 14px !important;
+	}
+	.financetable tr th{
+		font-size: 13px !important;
+		padding: 0.5rem !important;
+	}
+	
+	.financetable > tbody > tr >td{
+		 border-top:1px solid grey !important;
+	}
+	
+	.financetable > tbody > tr >th{
+		 border-top:1px solid grey !important;
+	}
+	
+	.financetable > thead > tr >th{
+		 border-top:1px solid transparent !important;
+	}
 	
 
 
@@ -702,7 +727,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 						
 												<div class="col-md-12" style="text-align: right;">
 													
-													<%if(!obj[8].toString().equals("0")){ %>
+													<%if(obj[8]!=null) { if(!obj[8].toString().equals("0")){ %>
 													
 													<h6>Project Code : </h6>
 													<h6>Project Name : </h6>
@@ -712,7 +737,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<h6>PMRC Due On : </h6>
 													<h6>EB Due On : </h6>
 
-													<%}else{ %>
+													<%}}else{ %>
 													
 													<br><br><br><br><br><br><br>
 													
@@ -2979,9 +3004,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		  </div>
 		  <div class="card detailscard">
 		    <div class="card-body">
-		      <h5 class="card-title"><img src="view/images/rupee.png" /> Finance</h5>
+		      <h5 class="card-title"><img src="view/images/rupee.png" /> Finance (Cr)</h5>
 		      <hr>
-		      <div>
+		      <%-- <div>
 		      	<div class="bigcount">
 		      			<h3 style="color:#CD1818">&#8377;<%if(ProjectHealthTotalData[22]!=null){%><%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(ProjectHealthTotalData[22].toString() ))))%><%} %></h3>
 		      			<p class="normalfont"><span class="red">&#x220E;</span> &nbsp;Balance</p>
@@ -3007,7 +3032,87 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <th scope="col" ><span class="blue">&#x220E;</span> &nbsp;Dipl</th>
 				    </tr>
 				  </tbody>
-			</table>
+			</table> --%>
+
+		 
+		    <!-- <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;font-size: 14px;height: 52px">
+				  <thead>
+				  	<tr>
+				  		<td style="border-right:1px solid darkgrey;"></td>
+				  		<td style="border-right:1px solid darkgrey;"></td>
+				  		<td style="border-right:1px solid darkgrey;"></td>
+				  		<td ></td>
+				  	</tr>
+				  </thead>
+				  <tbody>
+				  	<tr>
+				  	  <th scope="col" style="border-right:1px solid darkgrey;">2022-23</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Allot</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">Exp</th>
+				      <th scope="col" >Bal</th>
+				    </tr>
+				    <tr>
+				  	  <th scope="col" style="border-right:1px solid darkgrey;">Capital</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 2000 Cr</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 874 Cr</th>
+				      <th scope="col" >&#8377; 1546.4 Cr</th>
+				    </tr>
+				    <tr>
+				  	  <th scope="col" style="border-right:1px solid darkgrey;">Revenue</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 2000 Cr</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 874 Cr</th>
+				      <th scope="col" >&#8377; 1546.4 Cr</th>
+				    </tr>
+				    <tr>
+				  	  <th scope="col" style="border-right:1px solid darkgrey;">Total</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 2000 Cr</th>
+				      <th scope="col" style="border-right:1px solid darkgrey;">&#8377; 874 Cr</th>
+				      <th scope="col" >&#8377; 1546.4 Cr</th>
+				    </tr>
+				  </tbody>
+			</table> -->
+			
+				<div class="bigcount">
+		      			<h4 style="color:dimgrey">2022-23</h4>
+		      	</div>
+			
+				<table class="table countstable financetable" >
+				  <thead>
+				    <tr>
+				      <th scope="col"></th>
+				      <th scope="col">Allot</th>
+				      <th scope="col">Exp</th>
+				      <th scope="col">Bal</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">Cap</th>
+				      <td>&#8377; 2000</td>
+				      <td>&#8377; 874</td>
+				      <td>&#8377; 1546.4</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Rev</th>
+				      <td>&#8377; 2000</td>
+				      <td>&#8377; 874</td>
+				      <td>&#8377; 1546.4</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">Total</th>
+				      <td>&#8377; 2000</td>
+				      <td>&#8377; 874</td>
+				      <td>&#8377; 1546.4</td>
+				    </tr>
+				  </tbody>
+				</table>
+			
+			
+			
+			   </div>
+		    
+			
+			
 		  </div>	 
 	
 		</div>
@@ -3021,7 +3126,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		
 			<div id="overalldivdg" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
 								
-				<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed"> 
+				<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed;margin-bottom: 0rem !important
+				"> 
 										<thead style=" background: #1363DF; color: white;">												
 											<tr>
 												<td style="width:4%">

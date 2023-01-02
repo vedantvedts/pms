@@ -331,14 +331,14 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 	<div class="row">
 		<div class="col-md-12">
 		
-			<div class="card " style="background: transparent;" >
+			<div class="card " style="background: transparent;display:none" id="projectdetailsview"  >
 				<div class="card-header">
-						<h3><%=ProjectHealthTotalData[45] %> - <%if(logintype.equalsIgnoreCase("K")){ %> Cluster <%}else{%>Lab <%} %> Details</h3>
+						<h3>Lab  Details</h3>
 						<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
 				</div>
 				<div class="card-body"> 
 					
-							<%if(ProjectHealthData.size()!=0){ %>
+							<%if(ProjectHealthData.size()>0){ %>
 					
 							<div class="card-deck">
 							  <div class="card overall-card normal-dashboard" id="overallcard1" >
@@ -734,10 +734,10 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 				
 								</div> 
 								
-								<%}else{ %>
+								<%}	else{ %>
 								
 								
-									<h2> <%if(logintype.equalsIgnoreCase("K")){ %> No Lab Details <%}else{ %> No Project Details  <%} %></h2>
+									<h2> No Project Details  </h2>
 								
 								<%} %>
 
@@ -745,9 +745,14 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 			</div>
 			
 			
-			<div class="card" style="background: transparent;">
+			<div id="overalldivdg"  class="card" style="background: transparent;display:none" >
+			
+			<div class="card-header">
+						<h3><%=ProjectHealthTotalData[45] %> - Cluster Details</h3>
+						<a class="btn btn-info btn-sm back"   href="MainDashBoard.htm" style="float: right">Back</a>
+				</div>
 		
-			<div id="overalldivdg" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
+			<div  style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
 								
 				<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed"> 
 										<thead style=" background: #1363DF; color: white;">												
@@ -1072,6 +1077,21 @@ List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("proj
 
 
 <script>
+
+$(document).ready(function(){
+	
+	var logintype = '<%=logintype%>';
+	if(logintype=='K')
+		$('#overalldivdg').css('display','block');
+	else
+		$('#projectdetailsview').css('display','block');
+	
+	
+	
+})
+
+
+
 $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
     placement: 'bottom'

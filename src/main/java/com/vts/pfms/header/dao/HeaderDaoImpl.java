@@ -38,7 +38,7 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus,a.revision  FROM milestone_activity_level a WHERE a.parentactivityid=:id AND a.activitylevelid=:levelid ";
 	private static final String QUICKLINKLIST="SELECT a.formname,a.formurl FROM pfms_form_detail a , pfms_form_role_access b WHERE a.formdetailid=b.formdetailid AND a.formmoduleid=13 AND b.logintype=:logintype AND b.isactive=1";
 	private static final String LABCODE= "SELECT b.labcode FROM login a,employee b WHERE a.empid=b.empid AND a.username=:empid";
-	private static final String LABMASTERLIST="SELECT a.labname,a.labcode,a.iscluster FROM lab_master a WHERE CASE WHEN :clusterid=9 THEN 1=1 ELSE clusterid=:clusterid END ORDER BY labcode";
+	private static final String LABMASTERLIST="SELECT a.labname,a.labcode,a.iscluster FROM lab_master a WHERE CASE WHEN :clusterid=9 THEN 1=1 AND  clusterid<>9  ELSE clusterid=:clusterid END ORDER BY labcode";
 	
 	
 	@PersistenceContext

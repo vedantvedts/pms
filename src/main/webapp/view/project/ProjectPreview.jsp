@@ -352,7 +352,20 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 							<div class="row details">
 							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;border-top-left-radius: 5px">
 							    <h6>Authority Name</h6>
-							    <p><%if(AuthorityAttachment[6]!=null){%> <%=AuthorityAttachment[6] %> <%}else{ %> - <%}%></p>
+							    <p><%if(AuthorityAttachment[2]!=null){%> 
+							    
+							    			<% if(AuthorityAttachment[2].toString().equals("1")) {%>DRDO-HQ <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("2")) {%>Secy DRDO <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("3")) {%>Director General <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("4")) {%>Director <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("5")) {%>Centre Head <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("6")) {%>User Army <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("7")) {%>User Airforce <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("8")) {%>User Navy <%} %> 
+					   						<% if(AuthorityAttachment[2].toString().equals("9")) {%>ADA  <%}else{ %> - <%} %>
+							    
+							    <%}else{ %> - <%}%>
+							    </p>
 							  </div>
 							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Letter Date</h6>

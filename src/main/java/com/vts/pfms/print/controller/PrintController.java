@@ -424,7 +424,7 @@ public class PrintController {
 	public void ProjectBriefingDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode1 = (String)ses.getAttribute("labcode");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectBriefingDownload.htm "+UserId);		
 	    try {
 	    	String projectid=req.getParameter("projectid");
@@ -492,7 +492,8 @@ public class PrintController {
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	 
+			    	headers.set("labcode", LabCode);
+			 		
 			 		String jsonResult=null;
 					try {
 						HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -1034,7 +1035,8 @@ public class PrintController {
 			  		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 				 		HttpHeaders headers = new HttpHeaders();
 				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
+				    	headers.set("labcode", LabCode);
+				 		
 				 		String jsonResult=null;
 							try {
 							HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -1083,6 +1085,9 @@ public class PrintController {
 									 * ProjectFinancialDetails.class));
 									 */
 									totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+									
+									System.out.println("Inside Total Demand : " + totaldemand);
+									
 									req.setAttribute("TotalProcurementDetails",totaldemand);
 								} catch (JsonProcessingException e) {
 									e.printStackTrace();
@@ -1666,7 +1671,8 @@ public class PrintController {
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	 
+			    	headers.set("labcode", LabCode);
+			 		
 			 		String jsonResult=null;
 					try {
 						HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -1979,7 +1985,7 @@ public class PrintController {
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	 
+			    	headers.set("labcode", LabCode);
 			 		String jsonResult=null;
 					try {
 						HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -2568,7 +2574,8 @@ public class PrintController {
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			    	 
+			    	headers.set("labcode", LabCode);
+			 		
 			 		String jsonResult=null;
 					try {
 						HttpEntity<String> entity = new HttpEntity<String>(headers);
