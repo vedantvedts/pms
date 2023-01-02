@@ -29,428 +29,16 @@
 <head>
 <meta charset="ISO-8859-1">
 
-<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
-<script src="${ckeditor}"></script>
-<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
-<link href="${contentCss}" rel="stylesheet" />
-
-
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
+<spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
+<link href="${SlidesStyleCSS}" rel="stylesheet" />
 
-
-<title>Briefing</title>
-<style type="text/css">
-p {
-	text-align: justify;
-	text-justify: inter-word;
-}
-
-th {
-	border: 1px solid black;
-	text-align: center;
-	padding: 5px;
-	overflow-wrap: break-word;
-}
-
-td {
-	border: 1px solid black;
-	text-align: left;
-	padding: 5px;
-	overflow-wrap: break-word;
-}
-
-}
-.textcenter {
-	text-align: center;
-}
-
-.border {
-	border: 1px solid black;
-}
-
-.textleft {
-	text-align: left;
-}
-
-.containers {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-.anychart-credits {;
-	
-}
-
-.flex-container {
-	display: flex;
-	flex-direction: column;
-	min-height: 85vh;
-}
-
-summary[role=button] {
-	background-color: white;
-	color: black;
-	border: 1px solid black;
-	border-radius: 5px;
-	padding: 0.5rem;
-	cursor: pointer;
-}
-
-summary[role=button]:hover {
-	color: white;
-	border-radius: 15px;
-	background-color: #4a47a3;
-}
-
-summary[role=button]:focus {
-	color: white;
-	border-radius: 5px;
-	background-color: #4a47a3;
-	border: 0px;
-}
-
-summary::marker {
-	
-}
-
-details {
-	margin-bottom: 5px;
-}
-
-details  .content {
-	background-color: white;
-	padding: 0 1rem;
-	align: center;
-	border: 1px solid black;
-}
-
-}
-.anchorlink {
-	cursor: pointer;
-	color: #C84B31;
-}
-
-.anchorlink:hover {
-	text-decoration: underline;
-}
-</style>
-
-
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-	list-style-type: none;
-}
-
-#myUL {
-	margin: 0;
-	padding: 0;
-}
-
-.caret {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret::before {
-	content: "  \25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-down::before {
-	content: "\25B6  ";
-	-ms-transform: rotate(90deg); /* IE 9 */
-	-webkit-transform: rotate(90deg); /* Safari */ '
-	transform: rotate(90deg);
-}
-
-.caret-last {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.nested {;
-	
-}
-
-.active {
-	display: block;
-}
-</style>
-
-<!-- ---------------- tree ----------------- -->
-<!-- -------------- model  tree   ------------------- -->
-<style>
-.caret-1 {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last-1 {
-	cursor: pointer;
-	-webkit-user-select: none; /* Safari 3.1+ */
-	-moz-user-select: none; /* Firefox 2+ */
-	-ms-user-select: none; /* IE 10+ */
-	user-select: none;
-}
-
-.caret-last-1::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-1::before {
-	content: "\25B7";
-	color: black;
-	display: inline-block;
-	margin-right: 6px;
-}
-
-.caret-down-1::before {
-	content: "\25B6";
-	-ms-transform: rotate(90deg); /* IE 9 */
-	-webkit-transform: rotate(90deg); /* Safari */ '
-	transform: rotate(90deg);
-}
-
-.nested-1 {;
-	
-}
-
-.active-1 {
-	display: block;
-}
-
-.completed {
-	color: green;
-	font-weight: 700;
-}
-
-.briefactive {
-	color: blue;
-	font-weight: 700;
-}
-
-.inprogress {
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.assigned {
-	color: brown;
-	font-weight: 700;
-}
-
-.notyet {
-	color: purple;
-	font-weight: 700;
-}
-
-.notassign {
-	color: #AB0072;
-	font-weight: 700;
-}
-
-.ongoing {
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.completed {
-	color: green;
-	font-weight: 700;
-}
-
-.delay {
-	color: maroon;
-	font-weight: 700;
-}
-
-.completeddelay {
-	color: #BABD42;
-	font-weight: 700;
-}
-
-.inactive {
-	color: red;
-	font-weight: 700;
-}
-
-.delaydays {
-	color: #000000;
-	font-weight: 700;
-}
-
-.select2-container {
-	float: right !important;
-	margin-top: 5px;
-}
-
-.modal-xl {
-	max-width: 1400px;
-}
-
-.sub-title {
-	font-size: 20px !important;
-	color: #145374 !important
-}
-
-.subtables {
-	/* width: 1100px !important; */
-	width:95%;
-}
-
-.date-column {
-	max-width: 60px !important;
-}
-
-.status-column {
-	max-width: 10px !important;
-}
-
-.resp-column {
-	max-width: 80px !important;
-}
-
-.currency {
-	color: #367E18 !important;
-	font-style: italic;
-}
-
-.subtables th {
-	/* background-color: #001253 !important; 
-	color: white !important;
-	border-color: white; */
-	color: #001253 !important;
-	
-}
-
-.mainsubtitle {
-	font-size: 18px !important;
-	color: #882042 !important;
-	font-weight: 600;
-}
-
-.spinner {
-	position: fixed;
-	top: 40%;
-	left: 20%;
-	margin-left: -50px; /* half width of the spinner gif */
-	margin-top: -50px; /* half height of the spinner gif */
-	text-align: center;
-	z-index: 1234;
-	overflow: auto;
-	width: 1000px; /* width of the spinner gif */
-	height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
-}
-
-.carousel-item {
-	width: 95%;
-	margin-top: 5px;
-}
-
-.carousel-indicators {
-	bottom: -35px;
-	margin: 5px;
-}
-
-.carousel-indicators li {
-	background-color: #000000;
-	height: 1.5rem;
-	text-indent: 0px;
-	width: 55px;
-	text-align: center;
-	color: #FFFFFF;
-	font-size: 13px;
-	cursor: pointer;
-	border-radius: 3px;
-    padding-top: 2px;
-}
-
-.carousel-indicators .active {
-	background-color: #FFC6D3;
-	color: #000000;
-}
-
-.content-header {
-	padding: 5px 0px;
-	background: #002CCD;
-	margin: 0px 0px 10px 0px;
-	border-radius: 5px;
-	color: white;
-}
-
-.content {
-	padding: 0px 10px;
-	overflow: auto;
-	height: 85vh;
-}
-
-.carousel-item {
-	/* border: 1px solid grey;	 */
-	border-radius: 5px;
-}
-
-:fullscreen, ::backdrop {
-	background-color: rgba(255, 255, 255, 0);
-}
-</style>
-
-<!-- ---------------------  slider-CSS ----------------------------- -->
-
-
-
-
-<style type="text/css">
-.content::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
-
-.content::-webkit-scrollbar-track {
-	border-radius: 3px;
-	background-color: #e4e4e4;
-}
-
-.content::-webkit-scrollbar-thumb {
-	background: #212121;
-	border-radius: 3px;
-	transition: 0.5s;
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-	background: #d5b14c;
-	transition: 0.5s;
-}
-</style>
-
+<title>Briefing Presentation</title>
 
 <meta charset="ISO-8859-1">
 
 </head>
-<body style="background-color: #F9F2DF66;">
+<body style="background-color: #F9F2DF66;" class="slides-container">
 	<%
 	DecimalFormat df = new DecimalFormat("####################.##");
 	FormatConverter fc = new FormatConverter();
@@ -464,9 +52,8 @@ ul, #myUL {
 	String projectLabCode = (String) request.getAttribute("projectLabCode");
 	List<Object[]> projectslist = (List<Object[]>) request.getAttribute("projectslist");
 	String projectid = (String) request.getAttribute("projectid");
-	String committeeid = (String) request.getAttribute("committeeid");
 	Committee committee = (Committee) request.getAttribute("committeeData");
-
+	String committeeid = (String) request.getAttribute("committeeid");
 	List<Object[]> projectattributeslist = (List<Object[]>) request.getAttribute("projectattributes");
 	List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>) request.getAttribute("ebandpmrccount");
 	List<List<Object[]>> milestonesubsystems = (List<List<Object[]>>) request.getAttribute("milestonesubsystems");
@@ -498,38 +85,86 @@ ul, #myUL {
 	List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>) request.getAttribute("milestonedatalevel6");
 	List<List<TechImages>> TechImages = (List<List<TechImages>>) request.getAttribute("TechImages");
 
-	List<Object[]> SpecialCommitteesList = (List<Object[]>) request.getAttribute("SpecialCommitteesList");
-
-	Committee committeeData = (Committee) request.getAttribute("committeeData");
+	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
+	
+	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
+	String lablogo=(String)request.getAttribute("lablogo");
+	
 	long ProjectCost = (long) request.getAttribute("ProjectCost");
 	String levelid = (String) request.getAttribute("levelid");
+	
+	Committee committeeData = (Committee) request.getAttribute("committeeData");
+	String CommitteeCode = committeeData.getCommitteeShortName().trim();
 
-	String No2 = null;
-	SimpleDateFormat sdfg = new SimpleDateFormat("yyyy");
-	if (committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {
-		No2 = "P" + (Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString()) + 1);
-	} else if (committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")) {
-		No2 = "E" + (Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString()) + 1);
-	}
-
-	String HyperlinkPath = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + request.getLocalPort()
-			+ request.getContextPath();
+	String HyperlinkPath = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + request.getLocalPort() + request.getContextPath();
 	%>
 
 
-	<div id="spinner" class="spinner" style="display: none;">
-		<img id="img-spinner"
-			style="width: 200px; height: 200px;" src="view/images/spinner1.gif"
-			alt="Loading" />
-	</div>
-
-	<div id="presentation-slides" class="carousel slide"
-		data-ride="carousel">
+	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
 
 		<div class="carousel-inner" align="center">
-
-			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
+			
+			<!-- ---------------------------------------- P-0  Div ----------------------------------------------------- -->
 			<div class="carousel-item active">
+
+				<!-- <div class="content-header  ">
+					<h3>1. Project Attributes</h3>
+				</div> -->
+				
+				<div class="content" align="center" style="height:93vh !important;padding-top: 50px;">
+					
+					<div class="firstpage"  > 
+
+						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h1></div>
+						<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
+							
+						<div align="center" >
+							<h2 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
+				   		</div>
+						
+						<div align="center" ><h2 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h2></div>
+						
+						
+						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+						<%
+						if(labInfo!=null){
+						 %>
+							<tr>			
+								<th colspan="8" style="text-align: center; font-weight: 700;">
+								<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
+								<br><br>
+								</th>
+								
+							</tr>
+							<tr>
+								<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
+							</tr>
+							
+							<% } %>
+						
+						
+						<tr>
+							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+						</tr>
+						<tr>
+							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+						</tr>
+						<tr>
+							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> <br><br><br></th>
+						</tr>
+						</table>			
+						
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			<!-- ----------------------------------------  P-0  Div ----------------------------------------------------- -->
+			
+			
+			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
+			<div class="carousel-item ">
 
 				<div class="content-header  ">
 					<h3>1. Project Attributes</h3>
@@ -545,13 +180,7 @@ ul, #myUL {
 					if (projectattributes != null) {
 					%>
 
-					<b style="font-size: 25px;">Project : <%=ProjectDetail.get(z)[1]%>
-						<%
-						if (z != 0) {
-						%>(SUB)<%
-						}
-						%>
-					</b>
+					<b style="font-size: 25px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b>
 					<hr style="margin: 0.25rem 0rem;">
 					<table class="subtables " style="align: left; margin-top: 10px; width:1100px !important; border-collapse: collapse;">
 						<tr>
@@ -579,10 +208,8 @@ ul, #myUL {
 						</tr>
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(d)</td>
-							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Date
-									of Sanction</b></td>
-							<td colspan="4"
-								style="width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
+							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Date of Sanction</b></td>
+							<td colspan="4" style="width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 5px; padding-left: 10px">(e)</td>
@@ -768,25 +395,14 @@ ul, #myUL {
 								<tr>
 									<td style="border: 0; text-align: left;">
 										<form action="#" method="post" target="_blank">
-											<b><%=ProjectDetail.get(z)[1]%> <%
-											 if (z != 0) {
-											 %>(SUB)<%
-											 }
-											 %> :</b>
-											<span class="mainsubtitle"></span><span class="anchorlink"
-												onclick="$('#config<%=ProjectDetail.get(z)[0]%>').toggle();"
-												style="color: #C84B31; cursor: pointer;"><b>As
-													on File Attached</b></span>
-											<button type="submit" class="btn btn-sm "
-												formaction="ProjectDataSystemSpecsFileDownload.htm"
-												formmethod="post" formtarget="_blank">
+											<b><%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %> : </b>
+											<span class="mainsubtitle"></span><span class="anchorlink" onclick="$('#config<%=ProjectDetail.get(z)[0]%>').toggle();" style="color: #C84B31; cursor: pointer;"><b>As on File Attached</b></span>
+											<button type="submit" class="btn btn-sm " formaction="ProjectDataSystemSpecsFileDownload.htm" formmethod="post" formtarget="_blank">
 												<i class="fa fa-download fa-lg"></i>
 											</button>
-											<input type="hidden" name="projectdataid"
-												value="<%=projectdatadetails.get(z)[0]%>" /> <input
-												type="hidden" name="filename" value="sysconfig" /> <input
-												type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" />
+											<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>" /> 
+											<input type="hidden" name="filename" value="sysconfig" /> 
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
 									</td>
 								</tr>
@@ -813,13 +429,7 @@ ul, #myUL {
 								} else {
 								%>
 								<tr>
-									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%>
-											<%
-											if (z != 0) {
-											%>(SUB)<%
-											}
-											%> : </b><span class="mainsubtitle">System
-											Configuration File Not Found</span></td>
+									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %> : </b><span class="mainsubtitle">System Configuration File Not Found</span></td>
 								</tr>
 								<%
 								}
@@ -858,11 +468,7 @@ ul, #myUL {
 								<tr>
 									<td style="border: 0; text-align: left;">
 										<form action="#" method="post" target="_blank">
-											<b><%=ProjectDetail.get(z)[1]%> <%
-											 if (z != 0) {
-											 %>(SUB)<%
-											 }
-											 %> :</b>
+											<b><%=ProjectDetail.get(z)[1]%> <% if (z != 0) { %>(SUB<% } %> : </b>
 											<span class="mainsubtitle"></span><span class="anchorlink"
 												onclick="$('#sysspecs<%=ProjectDetail.get(z)[0]%>').toggle();"
 												style="color: #C84B31; cursor: pointer;"><b>As
@@ -902,13 +508,7 @@ ul, #myUL {
 								} else {
 								%>
 								<tr>
-									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%>
-											<%
-											if (z != 0) {
-											%>(SUB)<%
-											}
-											%> : </b><span class="mainsubtitle">
-											System Specifications File Not Found</span></td>
+									<td style="border: 0; text-align: left;"><b><%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %> : </b><span class="mainsubtitle"> System Specifications File Not Found</span></td>
 								</tr>
 								<%
 								}
@@ -1027,7 +627,7 @@ ul, #myUL {
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
 					<% } %>
-
+					<!-- CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid); -->
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1203,6 +803,8 @@ ul, #myUL {
 					<%-- <div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 																   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
 						 --%>
+						 
+					<!-- CALL Last_PMRC_Actions_List(:projectid,:committeeid);  -->
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1498,41 +1100,29 @@ ul, #myUL {
 
 				<div class="content-header">
 					<h3>
-						5. Milestones achieved prior to this
-						<%=committeeData.getCommitteeShortName().trim().toUpperCase()%>
-						period.
+						5. Milestones achieved prior to this <%=CommitteeCode%> period.
 					</h3>
 				</div>
-
+				
 				<div class="content">
 
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
 					<%
 					}
 					%>
-					<form action="MilestoneActivityList.htm" target="_blank"
-						style="float: right;">
-						<button class="btn btn-sm "
-							style="background-color: #D3D3D3; margin-right: 5px; float: right;"
-							data-toggle="tooltip" data-placement="bottom"
-							title="Milestone Data">
-							<i class="fa fa-info-circle "
-								style="font-size: 1.5rem; color: #145374;" aria-hidden="true"></i>
+					<form action="MilestoneActivityList.htm" target="_blank" style="float: right;">
+						<button class="btn btn-sm " style="background-color: #D3D3D3; margin-right: 5px; float: right;" data-toggle="tooltip" data-placement="bottom" title="Milestone Data">
+							<i class="fa fa-info-circle " style="font-size: 1.5rem; color: #145374;" aria-hidden="true"></i>
 						</button>
 						<input type="hidden" name="ProjectId" value="<%=projectid%>">
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
 
-
+					<!-- CALL Pfms_Milestone_Level_Prior(:projectid) -->
 					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1748,7 +1338,7 @@ ul, #myUL {
 
 			<div class="carousel-item ">
 
-				<%-- <div class="content-header" ><h3>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</h3></div> --%>
+				<%-- <div class="content-header" ><h3>6. Details of work and current status of sub system with major milestones (since last <%=CommitteeCode%>)</h3></div> --%>
 				<div class="content-header">
 					<h3>6 (a) Work carried out, Achievements, test result etc.</h3>
 				</div>
@@ -1773,15 +1363,10 @@ ul, #myUL {
 						if (z == 0) {
 						%>
 						<form action="FilterMilestone.htm" method="POST">
-							<button class="btn btn-sm back"
-								style="float: right; margin-top: 5px; text-transform: capitalize !important;"
-								formtarget="blank">Filter</button>
-							<input type="hidden" name="projectidvalue"
-								<%if (projectid != null) {%> value="<%=projectid%>" <%}%>>
-							<input type="hidden" name="committeidvalue"
-								<%if (committeeid != null) {%> value="<%=committeeid%>" <%}%>>
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
+							<button class="btn btn-sm back" style="float: right; margin-top: 5px; text-transform: capitalize !important;" formtarget="blank">Filter</button>
+							<input type="hidden" name="projectidvalue"  value="<%=projectid%>">
+							<input type="hidden" name="committeidvalue" value="<%=committeeid%>" >
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</form>
 						<%
 						}
@@ -1794,7 +1379,7 @@ ul, #myUL {
 							</div>
 							<hr> --%>
 
-
+					<!-- CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode ) -->
 					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -2699,7 +2284,7 @@ ul, #myUL {
 
 				<div class="content-header">
 					<h3>
-						<% if (committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")) { %>
+						<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
 							9. Action Plan for Next Six months
 						<% } else { %>
 							9. Action Plan for Next Three months
@@ -2715,7 +2300,7 @@ ul, #myUL {
 					</div>
 					<% } %>
 
-
+					<!-- CALL Pfms_Milestone_PDC_New(:projectid, :interval) -->
 					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -2983,7 +2568,7 @@ ul, #myUL {
 					<%
 					}
 					%>
-
+					<!-- CALL Old_Issues_List(:projectid); -->
 					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -3112,8 +2697,7 @@ ul, #myUL {
 
 				<div class="content-header">
 					<h3>
-						12. Decision/Recommendations sought from
-						<%=committeeData.getCommitteeShortName().trim().toUpperCase()%>
+						12. Decision/Recommendations sought from <%=CommitteeCode%>
 					</h3>
 				</div>
 
@@ -3198,7 +2782,7 @@ ul, #myUL {
 
 				<div class="content-header">
 					<h3>
-						<% if (Integer.parseInt(committeeid) == 2) { %>
+						<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
 							13 (b) Technical Work Carried Out For Last Six Months
 						<% } else { %>
 							13 (b) Technical Work Carried Out For Last Three Months
@@ -3219,12 +2803,8 @@ ul, #myUL {
 
 								<form action="TechnicalWorkDataAdd.htm" method="post">
 									<% if (TechWorkDataList.get(z) != null) { %>
-									<input type="hidden" name="TechDataId"
-										value="<%=TechWorkDataList.get(z)[0]%>"> <b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b> <span class="mainsubtitle">Technical Work Carried
-										(Attachment)</span>
-									<%
-									if (TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {
-									%>
+									<input type="hidden" name="TechDataId" value="<%=TechWorkDataList.get(z)[0]%>"> <b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b> <span class="mainsubtitle">Technical Work Carried (Attachment)</span>
+									<% if (TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) { %>
 									<button type="button" class="btn" title="Download Document"
 										onclick="FileDownload1('<%=TechWorkDataList.get(z)[3]%>');">
 										<i class="fa fa-download" aria-hidden="true"> </i>
@@ -3232,17 +2812,11 @@ ul, #myUL {
 									<input type="hidden" class="hidden" name="attachid"
 										id="attachid_<%=projectidlist.get(z)%>"
 										value="<%=TechWorkDataList.get(z)[3]%>">
-									<%
-									} else {
-									%>
+									<% } else { %>
 									<input type="hidden" class="hidden" name="attachid"
 										id="attachid_<%=projectidlist.get(z)%>" value="0">
-									<%
-									}
-									%>
-									<%
-									}
-									%>
+									<% } %>
+									<% } %>
 								</form>
 							</div>
 						</div>
@@ -3250,71 +2824,38 @@ ul, #myUL {
 						<div class="row">
 							<div class="col-md-12">
 
-								<%
-								if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null
-										&& Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {
-								%>
+								<% if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {%>
 
-
-								<%
-								Object[] TechWork = TechWorkDataList.get(z);
+								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
-								if (FileExtList.contains(fileExt)
-										&& new File(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip")
-										.exists()) {
-								%>
+								if (FileExtList.contains(fileExt) && new File(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip").exists()) {%>
 
 								<%-- <% System.out.println(fileExt); %> --%>
-								<%
-								String path = request.getServletContext().getRealPath("/view/temp");
+								<% String path = request.getServletContext().getRealPath("/view/temp");
 								Zipper zip = new Zipper();
-								zip.unpack(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip", path,
-										TechWork[9].toString());
-								File techattachfile = new File(path + "/" + TechWork[8]);
-								%>
+								zip.unpack(filePath + TechWork[6] + TechWork[7] + TechWork[11] + "-" + TechWork[10].toString() + ".zip", path, TechWork[9].toString());
+								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
-								<%
-								if (fileExt.equalsIgnoreCase("pdf")) {
-								%>
+								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
 
-								<iframe width="1200" height="600"
-									src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
-								</iframe>
+									<iframe width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>"></iframe>
+									
+								<% } else { %>
 
-								<%
-								} else {
-								%>
+									<img data-enlargable style="max-width: 28cm;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
 
-								<img data-enlargable style="max-width: 28cm;"
-									src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
+								<% } %>
 
-								<%
-								}
-								%>
-
-								<%
-								techattachfile.delete();
-								}
-								%>
-								<%
-								}
-								%>
-
-
-								<input type="hidden" name="projectid"
-									value="<%=projectidlist.get(z)%>"> <input type="hidden"
-									name="committeeid" value="<%=committeeid%>"> <input
-									type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" />
+								<% techattachfile.delete(); 
+								} %>
+								<% } %>
 
 							</div>
 						</div>
 
 
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -3330,152 +2871,91 @@ ul, #myUL {
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<div align="left">
-						<b style="font-size: 20px;">Project : <%=ProjectDetail.get(z)[1]%>
-							<%
-							if (z != 0) {
-							%>(SUB)<%
-							}
-							%>
-						</b>
-					</div>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<div align="left"> <b style="font-size: 20px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b> </div>
 
 					<div align="center">
 						<span class="mainsubtitle">Technical Images</span>
 						<hr>
-						<%
-						if (TechImages.size() > 0) {
+						<% if (TechImages.size() > 0) {
 							List<TechImages> TechImagesList = TechImages.get(z);
 							if (TechImagesList.size() > 0) {
-								for (TechImages imges : TechImagesList) {
-						%>
+								for (TechImages imges : TechImagesList) { %>
+
+								<% if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName()).exists()) { %>
+								<img data-enlargable style="max-width: 28cm; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
+								<hr>
+								<% } %>
 
 						<%
-						if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())
-								.exists()) {
-						%>
-						<img data-enlargable
-							style="max-width: 28cm; margin-bottom: 5px"
-							src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(
-		filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
-						<hr>
-						<%
-						}
-						%>
-
-						<%
-						}
-						}
+								}
+							}
 						}
 						%>
 
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
 
-			<!-- ---------------------------------------- p-13c Technical Images Div ----------------------------------------------------- -->
+		<!-- ---------------------------------------- p-13c Technical Images Div ----------------------------------------------------- -->
+		
+		<!-- ---------------------------------------- P-13c  Technical Images Div ----------------------------------------------------- -->
+
+			<div class="carousel-item ">
+
+				<div class="content" style="border: 0px solid black;padding-top: 50px;border-radius: 20px;position: relative;height: 93vh !important;">
+					
+					
+					<div style=" position: absolute ;top: 40%;left: 34%;">
+						<h1 style="font-size: 5rem;">Thank You !</h1>
+					</div>
+					
+				</div>
+
+			</div>
+
+		<!-- ---------------------------------------- p-13c Technical Images Div ----------------------------------------------------- -->
+		
 		</div>
 
-		<a class="carousel-control-prev" href="#presentation-slides"
-			role="button" data-slide="prev"
-			style="width: 0%; padding-left: 20px;"> <span aria-hidden="true"><i
-				class="fa fa-chevron-left fa-2x" style="color: #000000"
-				aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
-		</a> <a class="carousel-control-next" href="#presentation-slides"
-			role="button" data-slide="next"
-			style="width: 0%; padding-right: 20px;"> <span aria-hidden="true"><i
-				class="fa fa-chevron-right fa-2x" style="color: #000000"
-				aria-hidden="true"></i></span> <span class="sr-only">Next</span>
+		<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
+			<i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
+		</a> <a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
+			<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 		</a>
 
-
 		<ol class="carousel-indicators">
-			<li data-target="#presentation-slides" data-slide-to="0"
-				class="carousel-indicator active" data-toggle="tooltip"
-				data-placement="top" title="1. Project Attributes"><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="1"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="2 (a) System Configuration"><b>2
-					(a) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="2"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="2 (b) System Specifications"><b>2
-					(b) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="3"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="4"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="4 (c) Details of Technical/ User Reviews"><b>4 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4
-					(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="6"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="4 (c) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting"><b>4
-					(c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="7"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
-			<li data-target="#presentation-slides" data-slide-to="8"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="6 (a) Work carried out, Achievements, test result etc"><b>6
-					(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="9"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6
-					(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="10"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="11"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="7. Details of Procurement Plan"><b>7</b></li>
-			<li data-target="#presentation-slides" data-slide-to="12"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
-			<li data-target="#presentation-slides" data-slide-to="13"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="9. Action Plan"><b>9</b></li>
-			<li data-target="#presentation-slides" data-slide-to="14"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top"
-				title="10. GANTT chart of overall project schedule"><b>10</b></li>
-			<li data-target="#presentation-slides" data-slide-to="15"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="11. Issues"><b>11</b></li>
-			<li data-target="#presentation-slides" data-slide-to="16"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
-			<li data-target="#presentation-slides" data-slide-to="17"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="13 (a) Other Relevant Points"><b>13
-					(a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="18"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="13 (b) Technical Work Carried out"><b>13
-					(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="19"
-				class="carousel-indicator" data-toggle="tooltip"
-				data-placement="top" title="13 (c) Technical Images"><b>13
-					(c)</b></li>
+			
+			
+			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
+			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
+			<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="3" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"><b>2 (b) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="4" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
+			<li data-target="#presentation-slides" data-slide-to="5" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="6" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="7" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (c) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
+			<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan"><b>7</b></li>
+			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
+			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
+			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
+			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
+			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
+			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
+			
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 25px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 25px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
+			
 		</ol>
-
 	</div>
 
 
@@ -3484,15 +2964,12 @@ ul, #myUL {
 
 
 
-	<div class="modal fade " id="exampleModal1" tabindex="-1"
-		aria-labelledby="exampleModalLabel1" aria-hidden="true">
+	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 
 				<div class="modal-body">
-
-
-
+				
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-md-12">
@@ -4086,8 +3563,7 @@ ul, #myUL {
 						</div>
 						<div class="col-md-3">
 							<h6>
-								<b>Committee :</b>
-								<%=committeeData.getCommitteeShortName().trim().toUpperCase()%>
+								<b>Committee :</b> <%=CommitteeCode%>
 							</h6>
 						</div>
 						<div class="col-md-1">
@@ -4122,28 +3598,23 @@ ul, #myUL {
 	<!-- ------------------------------------------------- MODALS -------------------------------------------------- -->
 
 
-	<form method="POST" action="FileUnpack.htm" id="downloadform"
-		target="_blank">
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" /> <input type="hidden" name="FileUploadId"
-			id="FileUploadId" value="" />
+	<form method="POST" action="FileUnpack.htm" id="downloadform" target="_blank">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+		<input type="hidden" name="FileUploadId" id="FileUploadId" value="" />
 	</form>
 
 
-	<form method="get" action="AgendaDocLinkDownload.htm"
-		id="downloadform1" target="_blank">
-		<input type="hidden" name="${_csrf.parameterName}"
-			value="${_csrf.token}" /> <input type="hidden" name="filerepid"
-			id="filerepid" value="" />
+	<form method="get" action="AgendaDocLinkDownload.htm" id="downloadform1" target="_blank">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="hidden" name="filerepid" id="filerepid" value="" />
 	</form>
 
-	<form method="POST" action="MilestoneLevelUpdate.htm"
-		id="milestonelevelform">
+	<form method="POST" action="MilestoneLevelUpdate.htm" id="milestonelevelform">
 
-		<input type="hidden" name="projectid" id="projectid"> <input
-			type="hidden" name="committeeid" id="committeeid"> <input
-			type="hidden" name="milestonelevelid" id="milestonelevelid" /> <input
-			type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		<input type="hidden" name="projectid" id="projectid"> 
+		<input type="hidden" name="committeeid" id="committeeid"> 
+		<input type="hidden" name="milestonelevelid" id="milestonelevelid" /> 
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 
 
@@ -4174,16 +3645,31 @@ $('img[data-enlargable]').addClass('img-enlargable').click(function(){
 
 
 
-	<script type="text/javascript">
-$('.content_full_screen').on('click', function(e){
+<script type="text/javascript">
+	
+$('.content_reg_screen').hide();
+$('.content_full_screen, .content_reg_screen').on('click', function(e){
 	  
 	  if (document.fullscreenElement) {
 	    	document.exitFullscreen();
 	  } else {
-		  $(this).parent().get(0).requestFullscreen();
+		  $('.slides-container').get(0).requestFullscreen();
 	  }
 	});
 
+$('.content_full_screen').on('click', function(e){
+	
+	$('.content_full_screen').hide();
+	$('.content_reg_screen').show();
+	
+});
+
+$('.content_reg_screen').on('click', function(e){
+	
+	$('.content_reg_screen').hide();
+	$('.content_full_screen').show();
+	
+});
 
 </script>
 
@@ -4651,11 +4137,10 @@ d
 		
 		</script>
 
-	<%
-	}
-	%>
+	<% } %>
 
 
 
 
 </body>
+</html>

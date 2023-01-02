@@ -358,6 +358,7 @@ ul, #myUL {
 		   			<div class="col-md-12" style="padding-left: 0px">
 		   
 		   				<div class="table-responsive">
+		   				
 		    				<table class="table table-bordered table-hover  table-condensed" id="myTable3" style="margin-top: 20px;">
 								<thead>
 									<tr>
@@ -433,7 +434,7 @@ ul, #myUL {
 													if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 													<tr>
 														<td><%=doc[3] %></td>
-														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 														<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 													<tr>													
 												<%} }%>
@@ -466,6 +467,7 @@ ul, #myUL {
 										<%} %>
 								</tbody>
 							</table>
+						
 						</div> 
 					</div>
  <!-- ----------------------------- -->		 	
@@ -1026,8 +1028,9 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																					
 																					if(values[v3][4]!=0)
 																					{
-																						str += '<input type="radio" class="DocModalcheckbox" onchange="setagendaattachval(\''+ values[v3][7] +'\', \''+values[v3][3] +'\');" ></button>' ;
-																					}else
+																						str += '<input type="radio" class="DocModalcheckbox" onchange="setagendaattachval(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
+																					}
+																					else
 																					{
 																						str += '<input type="radio" class="DocModalcheckbox" disabled onclick="alert(\'Document Not Uploaded\');" ></button>' ;
 																					}

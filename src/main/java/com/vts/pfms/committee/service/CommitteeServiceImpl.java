@@ -495,7 +495,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		Iterator<CommitteeScheduleAgendaDto> iterator = scheduleagendadtos.iterator();
 		
-		while(iterator.hasNext()) {
+		while(iterator.hasNext()) 
+		{
 			CommitteeScheduleAgendaDto AgendaDto = iterator.next();
 			CommitteeScheduleAgenda scheduleagenda=new CommitteeScheduleAgenda();
 //			CommitteeSchedulesAttachment attachment = new CommitteeSchedulesAttachment();
@@ -533,10 +534,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 			
 			ret= dao.CommitteeAgendaSubmit(scheduleagenda);
 			
-			if(AgendaDto.getDocLinkIds()!=null) {
+			if(AgendaDto.getDocLinkIds()!=null) 
+			{
 				List<String> docids = Arrays.asList(AgendaDto.getDocLinkIds());
 				List<String> existingdocids = new ArrayList<String>();
 				for(int j=0; j<docids.size();j++) {
+					System.out.println(!existingdocids.contains(docids.get(j)));
 					if(!existingdocids.contains(docids.get(j))) 
 					{
 						CommitteeScheduleAgendaDocs doc= new CommitteeScheduleAgendaDocs();
