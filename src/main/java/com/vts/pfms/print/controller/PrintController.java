@@ -3348,7 +3348,7 @@ public class PrintController {
 	    	String committeeid= req.getParameter("committeeid");
 	    	
 	    	Committee committee = service.getCommitteeData(committeeid);
-	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+	    	String projectLabCode = committee.getLabCode();
 	    	String CommitteeCode = committee.getCommitteeShortName().trim();
 	    	
 	    	

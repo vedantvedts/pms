@@ -79,9 +79,9 @@
 						<div align="center" >
 							<h2 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
 				   		</div>
-						
+						<%if(projectattributes!=null){ %>
 						<div align="center" ><h2 style="color: #4C9100 !important"><%= projectattributes[1] %> (<%= projectattributes[0] %>)</h2></div>
-						
+						<%} %>
 						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
 							<% if(labInfo!=null){  %>
 								<tr>			
