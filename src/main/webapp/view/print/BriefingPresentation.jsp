@@ -3809,13 +3809,6 @@ $('img[data-enlargable]').addClass('img-enlargable').click(function(){
 });
 
 
-</script>
-
-
-
-
-
-<script type="text/javascript">
 	
 $('.content_reg_screen').hide();
 $('.content_full_screen, .content_reg_screen').on('click', function(e){
