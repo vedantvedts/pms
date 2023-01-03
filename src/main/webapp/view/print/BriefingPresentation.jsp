@@ -2854,36 +2854,26 @@
 					</div>
 				</div>
 
-				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+				<div class="content align-items-center" align="left">
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
 					<% } %>
-					<%
-					if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
-							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) {
-					%>
+					<% if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
+							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) { %>
 
 					<%=lastpmrcdecisions.get(z)[0]%>
-					<%
-					} else {
-					%>
-					Nil
+					<% } else { %>
+					<div align="center" style="font-size: 25px;font-weight: bold;">
+						<br><br><br><br><br><br><br><br>
+						Nil
+					</div>
 
 					<% } %>
 
 					<% } %>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
 				</div>
 
 			</div>
@@ -3629,16 +3619,16 @@
 																	<%=objE[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+														 } else {
+														 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+														 }
+														 %>
 														</td>
 
 
@@ -3837,19 +3827,22 @@ $('.content_full_screen, .content_reg_screen').on('click', function(e){
 	  }
 	});
 
-$('.content_full_screen').on('click', function(e){
-	
+$('.content_full_screen').on('click', function(e){ contentFullScreen() });
+
+$('.content_reg_screen').on('click', function(e){ contentRegScreen() });
+
+function contentFullScreen()
+{
 	$('.content_full_screen').hide();
 	$('.content_reg_screen').show();
-	
-});
+}
 
-$('.content_reg_screen').on('click', function(e){
-	
+function contentRegScreen()
+{
 	$('.content_reg_screen').hide();
 	$('.content_full_screen').show();
-	
-});
+}
+
 
 </script>
 
@@ -3857,7 +3850,7 @@ $('.content_reg_screen').on('click', function(e){
 
 
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
 $('.carousel').carousel({
 	  interval: false,
