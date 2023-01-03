@@ -166,5 +166,6 @@ public interface ProjectDao {
 	public PfmsInitiationChecklistData InitiationChecklistCheck(PfmsInitiationChecklistData cldata) throws Exception;
 	public long InitiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	
+	public List<Object[]> GetIssueList(String projectid , String labcode)throws Exception;
+	public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception;
 }
