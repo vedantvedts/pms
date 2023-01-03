@@ -150,7 +150,7 @@ h6{
       		 <div class="row">
 				<div class="col-md-1"></div>
 				   <div class="col-md-10" style="padding-left: 0px">
-				   <% if(LinkList.size()>0){ %>  
+				   <% if(LinkList!=null && LinkList.size()>0){ %>  
 				   				<div class="table-responsive">
 				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 										<thead>
@@ -268,7 +268,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												

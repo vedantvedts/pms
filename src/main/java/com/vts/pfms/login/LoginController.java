@@ -214,6 +214,7 @@ public class LoginController {
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
 
+			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
 			     
 			     String IsDG = "No";
@@ -237,7 +238,7 @@ public class LoginController {
 			     }
 			     
 			     for(Object[] obj : LabMasterList) {
-	
+			    	 
 			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,InAll));
 			     }
 			     
@@ -248,9 +249,9 @@ public class LoginController {
 
 //			     if(LoginType.equalsIgnoreCase("P") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("Q") )
 			     
-			     if(!LoginType.equalsIgnoreCase("U") )
+			     if(!LoginType.equalsIgnoreCase("U") || !LoginType.equalsIgnoreCase("K")  )
 			     {
-			    	 
+
 			    	//req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			    	 
 			    	//code for pfms service call to get data for project pie chart

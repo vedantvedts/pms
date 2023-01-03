@@ -12,75 +12,79 @@
 		
 		<title>New Action</title>
 		<style type="text/css">
-			label{
-				font-weight: bold;
-				font-size: 13px;
-			}
-			body{
-				background-color: #f2edfa;
-				overflow-x:hidden !important; 
-			}
-			h6{
-				text-decoration: none !important;
-			}
-			.multiselect-container>li>a>label {
-				padding: 4px 20px 3px 20px;
-			}
-			.cc-rockmenu {
-				color:fff;
-				padding:0px 5px;
-				font-family: 'Lato',sans-serif;
-			}
+	label{
+		font-weight: bold;
+	  font-size: 13px;
+	}
+body{
+background-color: #f2edfa;
+overflow-x:hidden !important; 
+}
+h6{
+	text-decoration: none !important;
+}
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
 
-			.cc-rockmenu .rolling {
-				display: inline-block;
-				cursor:pointer;
-				width: 34px;
-				height: 30px;
-				text-align:left;
-				overflow: hidden;
-				transition: all 0.3s ease-out;
-				white-space: nowrap;
-				
-			}
-			.cc-rockmenu .rolling:hover {
-				width: 120px;
-			}
-			.cc-rockmenu .rolling .rolling_icon {
-				float:left;
-				z-index: 9;
-				display: inline-block;
-				width: 28px;
-				height: 52px;
-				box-sizing: border-box;
-				margin: 0 5px 0 0;
-			}
-			.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-				width: 312px;
-			}
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
 
-			.cc-rockmenu .rolling i.fa {
-				font-size: 20px;
-				padding: 6px;
-			}
-			.cc-rockmenu .rolling span {
-				display: block;
-				font-weight: bold;
-				padding: 0px 0;
-				font-size: 14px;
-				font-family: 'Muli',sans-serif;
-			}
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
 
-			.cc-rockmenu .rolling p {
-				margin:0;
-			}
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
 
-			.width{
-				width:150px !important;
-			}
-			.talign{
-				style="text-align: center;"
-			}
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.width {
+	width: 270px !important;
+}
+.width1 {
+	width: 220px !important;
+}
+a:hover {
+	color: white;
+}
+		
 		</style>
 	</head>
 	
@@ -291,9 +295,9 @@
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>									
 														 	<th>Assignee</th>	
-														 	<th class="width-125px" style="width: 155.547px;">Progress</th>
+														 	<th class="width-125px" >Progress</th>
 														 	<th >Is Seen</th>
-														 	<th style="width:170px !important; " >Action</th>
+														 	<th  >Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -306,7 +310,7 @@
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
 															<td class="width-30px"><%=sdf.format(obj[4])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td style="width:16% !important; "><%=obj[1]%>, <%=obj[2]%></td>
+															<td ><%=obj[1]%>, <%=obj[2]%></td>
 															<td style="width:10% !important; "><%if(obj[11]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
@@ -327,9 +331,9 @@
 																	<%} %>
 														</td>
 															
-														<td style="width:17rem !important; ">		
+														<td class="left width1">		
 														 <form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
-															<button  class="editable-click" name="sub" value="C">  
+															<button  class="btn btn-sm editable-click" name="sub" value="C">  
 																<div class="cc-rockmenu">
 											                      <div class="rolling">
 											                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
@@ -351,7 +355,7 @@
 														
 														<%if(obj[11]==null && "0".equals(obj[16].toString())){ %>	
 															
-																<button type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[15]%>'); ">
+																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[15]%>'); ">
 																	<div class="cc-rockmenu">
 											                    	  <div class="rolling">
 																		<figure class="rolling_icon"><img src="view/images/edit.png"></figure>

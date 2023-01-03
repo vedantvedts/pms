@@ -5436,7 +5436,7 @@ public class CommitteeController {
 					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 				 		HttpHeaders headers = new HttpHeaders();
 				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
+				 		headers.set("labcode", LabCode);			    	 
 				 		String jsonResult=null;
 						try {
 							HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -5637,7 +5637,7 @@ public class CommitteeController {
 						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 					 		HttpHeaders headers = new HttpHeaders();
 					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-					    	 
+					 		headers.set("labcode", LabCode);
 					 		String jsonResult=null;
 							try {
 								HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -6201,7 +6201,7 @@ public class CommitteeController {
 					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 				 		HttpHeaders headers = new HttpHeaders();
 				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
+				 		headers.set("labcode", LabCode);
 				 		String jsonResult=null;
 						try {
 							HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -6774,7 +6774,7 @@ public class CommitteeController {
 						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 					 		HttpHeaders headers = new HttpHeaders();
 					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-					    	 
+					 		headers.set("labcode", LabCode);
 					 		String jsonResult=null;
 							try {
 								HttpEntity<String> entity = new HttpEntity<String>(headers);

@@ -94,11 +94,15 @@ String filesize=(String) request.getAttribute("filesize");
 						            	<label class="control-label">Reference Authority </label>
 										<select class="form-control selectdee" id="authorityname" required="required" name="authorityname" >
 					   						<option disabled="true"  selected value="">Choose...</option>
-					   						<% for (Object[] obj : EmployeeList) {%>
-					   						
-											<option value="<%=obj[0]%>" %> <%=obj[1]%></option>
-												
-											<%} %>
+					   						<option value="1" >DRDO-HQ</option>
+					   						<option value="2" >Secy DRDO</option>
+					   						<option value="3" >Director General</option>
+					   						<option value="4" >Director</option>
+					   						<option value="5" >Centre Head</option>
+					   						<option value="6" >User Army</option>
+					   						<option value="7" >User Airforce</option>
+					   						<option value="8" >User Navy</option>
+					   						<option value="9" >ADA</option>
 					  					</select>			
 					  				</div>
 						         </div>
@@ -169,12 +173,18 @@ String filesize=(String) request.getAttribute("filesize");
 				             	<div class="col-md-4 ">
 						         	<div class="form-group">
 						            	<label class="control-label">Reference Authority </label>
-					  					 <select class="form-control selectdee"   id="authorityname" required="required" name="authorityname">
-													<option disabled="true"  selected value="">Choose...</option>
-													<% for (Object[] obj : EmployeeList) {%>
-														<option value="<%=obj[0]%>" <% if(ProjectAuthorityDetails[2].toString().equals(obj[0].toString())) {%>selected <%} %>  ><%=obj[1]%></option>													
-													<%} %>
-											  </select>			
+					  					 <select class="form-control selectdee" id="authorityname" required="required" name="authorityname" >
+					   						<option disabled="true"  selected value="">Choose...</option>
+					   						<option value="1" <% if(ProjectAuthorityDetails[2].toString().equals("1")) {%>selected <%} %>>DRDO-HQ</option>
+					   						<option value="2" <% if(ProjectAuthorityDetails[2].toString().equals("2")) {%>selected <%} %>>Secy DRDO</option>
+					   						<option value="3" <% if(ProjectAuthorityDetails[2].toString().equals("3")) {%>selected <%} %>>Director General</option>
+					   						<option value="4" <% if(ProjectAuthorityDetails[2].toString().equals("4")) {%>selected <%} %>>Director</option>
+					   						<option value="5" <% if(ProjectAuthorityDetails[2].toString().equals("5")) {%>selected <%} %>>Centre Head</option>
+					   						<option value="6" <% if(ProjectAuthorityDetails[2].toString().equals("6")) {%>selected <%} %>>User Army</option>
+					   						<option value="7" <% if(ProjectAuthorityDetails[2].toString().equals("7")) {%>selected <%} %>>User Airforce</option>
+					   						<option value="8" <% if(ProjectAuthorityDetails[2].toString().equals("8")) {%>selected <%} %>>User Navy</option>
+					   						<option value="9" <% if(ProjectAuthorityDetails[2].toString().equals("9")) {%>selected <%} %>>ADA</option>
+					  					</select>		
 					  				</div>
 						         </div>
 						         
