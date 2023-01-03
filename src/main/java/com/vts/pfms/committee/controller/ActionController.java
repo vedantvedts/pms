@@ -546,8 +546,6 @@ public class ActionController {
 		 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionForward.htm "+UserId);		
 			try { 
-				
-			
 			int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
 
 			if (count > 0) {
@@ -563,7 +561,6 @@ public class ActionController {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
-
 			return "redirect:/ActionForwardList.htm";
 
 		}
