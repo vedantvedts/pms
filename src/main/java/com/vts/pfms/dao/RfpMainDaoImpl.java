@@ -278,7 +278,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	
 	@Override
 	public List<Object[]> ProjectBudgets() throws Exception {
-		Query query=manager.createNativeQuery("CALL Pfms_Dashboard_Finance();");
+		Query query=manager.createNativeQuery("CALL Pfms_Dashboard_Finance_Budgets();");
 		List<Object[]> ProjectsBudgets=(List<Object[]>)query.getResultList();
 		return ProjectsBudgets;
 	}
