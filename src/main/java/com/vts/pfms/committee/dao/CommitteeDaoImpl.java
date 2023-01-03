@@ -2288,8 +2288,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	
-	
 	@Override
 	public Object[] LoginData(String loginid) throws Exception
 	{
@@ -2298,7 +2296,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (Object[])query.getSingleResult();
 	}
 	
-	
 	@Override
 	public List<Object[]> DORTMDData() throws Exception
 	{
@@ -2306,16 +2303,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	
 	@Override
 	public long ConstitutionApprovalHistoryAdd(CommitteeConstitutionHistory model) throws Exception
 	{		
 		manager.persist(model);		
 		return model.getCommitteeHistoryId();
 	}
-	
-	
-	
 	
 	@Override
 	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception

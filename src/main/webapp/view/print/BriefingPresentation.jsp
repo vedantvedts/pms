@@ -88,7 +88,8 @@
 	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
 	
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-	String lablogo=(String)request.getAttribute("lablogo");
+	String lablogo = (String)request.getAttribute("lablogo");
+	String Drdologo = (String)request.getAttribute("Drdologo");
 	
 	long ProjectCost = (long) request.getAttribute("ProjectCost");
 	String levelid = (String) request.getAttribute("levelid");
@@ -166,8 +167,21 @@
 			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
 			<div class="carousel-item ">
 
-				<div class="content-header  ">
-					<h3>1. Project Attributes</h3>
+				<div class="content-header row ">
+					<%-- <div style="float: left;">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div style="width: 50%;"><h3>1. Project Attributes</h3></div>
+					<div style="float: right ;">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div> --%>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10"><h3>1. Project Attributes</h3></div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content" align="center">
@@ -377,8 +391,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header ">
-					<h3>2. Schematic Configuration - (a) System Configuration</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>2. Schematic Configuration - (a) System Configuration</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -450,9 +473,19 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header ">
-					<h3>2. Schematic Configuration - (b) System Specifications.</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>2. Schematic Configuration - (b) System Specifications</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
+				
 
 				<div class="content">
 					<%
@@ -531,8 +564,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>3. Overall Product tree/WBS</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>3. Overall Product tree/WBS</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -605,18 +647,27 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>
-						4 (a)
-						<% if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) { %>
-						Approval
-						<% } else { %>
-						Ratification
-						<% } %>
-						of <b>recommendations</b> of last
-						<%=committee.getCommitteeShortName().trim().toUpperCase()%>
-						Meeting
-					</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>
+							4 (a)
+							<% if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) { %>
+							Approval
+							<% } else { %>
+							Ratification
+							<% } %>
+							of <b>recommendations</b> of last
+							<%=committee.getCommitteeShortName().trim().toUpperCase()%>
+							Meeting
+						</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -778,13 +829,19 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h4>
-						4 (b) Last
-						<%=committee.getCommitteeShortName().trim().toUpperCase()%>
-						Meeting action points with Probable Date of completion (PDC),
-						Actual Date of Completion (ADC) and status.
-					</h4>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h5 style="margin-top: 5px;">
+							4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), 	Actual Date of Completion (ADC) and status.
+						</h5>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -986,8 +1043,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>4 (c) Details of Technical/ User Reviews</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>4 (c) Details of Technical/ User Reviews</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -1098,10 +1164,19 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>
-						5. Milestones achieved prior to this <%=CommitteeCode%> period.
-					</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>
+							5. Milestones achieved prior to this <%=CommitteeCode%> period.
+						</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 				
 				<div class="content">
@@ -1338,9 +1413,17 @@
 
 			<div class="carousel-item ">
 
-				<%-- <div class="content-header" ><h3>6. Details of work and current status of sub system with major milestones (since last <%=CommitteeCode%>)</h3></div> --%>
-				<div class="content-header">
-					<h3>6 (a) Work carried out, Achievements, test result etc.</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>6 (a) Work carried out, Achievements, test result etc.</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -1595,9 +1678,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>6 (b) TRL table with TRL at sanction stage and current
-						stage indicating overall PRI.</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -1683,9 +1774,19 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>6 (c) Risk Matrix/Management Plan/Status.</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>6 (c) Risk Matrix/Management Plan/Status.</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
+
 
 				<div class="content">
 
@@ -1915,8 +2016,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>7. Details of Procurement Plan (Major Items)</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>7. Details of Procurement Plan (Major Items)</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2152,8 +2262,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>8. Overall Financial Status</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>8. Overall Financial Status</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2282,14 +2401,23 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>
-						<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
-							9. Action Plan for Next Six months
-						<% } else { %>
-							9. Action Plan for Next Three months
-						<% } %>
-					</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>
+							<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
+								9. Action Plan for Next Six months
+							<% } else { %>
+								9. Action Plan for Next Three months
+							<% } %>
+						</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2462,8 +2590,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>10. GANTT chart of overall project schedule</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>10. GANTT chart of overall project schedule</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 
@@ -2550,8 +2687,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>11. Issues</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>11. Issues</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2695,42 +2841,39 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>
-						12. Decision/Recommendations sought from <%=CommitteeCode%>
-					</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3> 12. Decision/Recommendations sought from <%=CommitteeCode%> </h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
-				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+				<div class="content align-items-center" align="left">
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
 					<% } %>
-					<%
-					if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
-							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) {
-					%>
+					<% if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
+							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) { %>
 
 					<%=lastpmrcdecisions.get(z)[0]%>
-					<%
-					} else {
-					%>
-					Nil
+					<% } else { %>
+					<div align="center" style="font-size: 25px;font-weight: bold;">
+						<br><br><br><br><br><br><br><br>
+						Nil
+					</div>
 
 					<% } %>
 
 					<% } %>
-					<br>
-					<br>
-					<br>
-					<br>
-					<br>
 				</div>
 
 			</div>
@@ -2741,8 +2884,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>13 (a) Other Relevant Points</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>13 (a) Other Relevant Points</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2780,14 +2932,23 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>
-						<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
-							13 (b) Technical Work Carried Out For Last Six Months
-						<% } else { %>
-							13 (b) Technical Work Carried Out For Last Three Months
-						<% } %>
-					</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>
+							<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
+								13 (b) Technical Work Carried Out For Last Six Months
+							<% } else { %>
+								13 (b) Technical Work Carried Out For Last Three Months
+							<% } %>
+						</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2866,8 +3027,17 @@
 
 			<div class="carousel-item ">
 
-				<div class="content-header">
-					<h3>13 (c) Technical Images</h3>
+				<div class="content-header row ">
+					
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-10">
+						<h3>13 (c) Technical Images</h3>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 				</div>
 
 				<div class="content">
@@ -2929,16 +3099,16 @@
 		<ol class="carousel-indicators">
 			
 			
-			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
-			<li data-target="#presentation-slides" data-slide-to="2" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="3" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"><b>2 (b) </b></li>
-			<li data-target="#presentation-slides" data-slide-to="4" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
-			<li data-target="#presentation-slides" data-slide-to="5" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="6" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="7" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (c) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="8" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
-			<li data-target="#presentation-slides" data-slide-to="9" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
+			<li data-target="#presentation-slides" data-slide-to="1"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="1. Project Attributes"><b>1</b></li>
+			<li data-target="#presentation-slides" data-slide-to="2"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (a) System Configuration"><b>2 (a) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="3"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="2 (b) System Specifications"><b>2 (b) </b></li>
+			<li data-target="#presentation-slides" data-slide-to="4"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="3. Overall Product tree/WBS"><b>3</b></li>
+			<li data-target="#presentation-slides" data-slide-to="5"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title='4 (a) <%if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) {%> Approval <%} else {%> Ratification <%}%>  of recommendations of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting'><b>4(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="6"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status"><b>4(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="7"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="4 (c) Details of Technical/ User Reviews"><b>4 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="8"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="5. Milestones achieved prior to this Meeting"><b>5</b></li>
+			<li data-target="#presentation-slides" data-slide-to="9"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan"><b>7</b></li>
@@ -3449,16 +3619,16 @@
 																	<%=objE[5]%>
 																</div>
 															</div> <%
- } else {
- %>
+														 } else {
+														 %>
 															<div class="progress"
 																style="background-color: #cdd0cb !important; height: 1.4rem !important;">
 																<div class="progress-bar" role="progressbar"
 																	style="width: 100%; background-color: #cdd0cb !important; color: black; font-weight: bold;">
 																	Not Started</div>
 															</div> <%
- }
- %>
+														 }
+														 %>
 														</td>
 
 
@@ -3639,13 +3809,6 @@ $('img[data-enlargable]').addClass('img-enlargable').click(function(){
 });
 
 
-</script>
-
-
-
-
-
-<script type="text/javascript">
 	
 $('.content_reg_screen').hide();
 $('.content_full_screen, .content_reg_screen').on('click', function(e){
@@ -3657,19 +3820,22 @@ $('.content_full_screen, .content_reg_screen').on('click', function(e){
 	  }
 	});
 
-$('.content_full_screen').on('click', function(e){
-	
+$('.content_full_screen').on('click', function(e){ contentFullScreen() });
+
+$('.content_reg_screen').on('click', function(e){ contentRegScreen() });
+
+function contentFullScreen()
+{
 	$('.content_full_screen').hide();
 	$('.content_reg_screen').show();
-	
-});
+}
 
-$('.content_reg_screen').on('click', function(e){
-	
+function contentRegScreen()
+{
 	$('.content_reg_screen').hide();
 	$('.content_full_screen').show();
-	
-});
+}
+
 
 </script>
 
@@ -3677,7 +3843,7 @@ $('.content_reg_screen').on('click', function(e){
 
 
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
 $('.carousel').carousel({
 	  interval: false,

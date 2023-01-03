@@ -76,7 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		    .logout().logoutSuccessUrl("/login?logout").addLogoutHandler(logoutSuccessHandler())
 
 		   .and()
-		   .exceptionHandling().accessDeniedPage("/accessdenied")
+		   .exceptionHandling().accessDeniedPage("/login")
 		 
 		    
 		    .and()

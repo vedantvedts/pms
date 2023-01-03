@@ -202,7 +202,7 @@ td {
 }
 
 .carousel-indicators li {
-	background-color: #3478FF;
+	background-color: #002CCD;;
 	height: 1.5rem;
 	text-indent: 0px;
 	width: 55px;
@@ -215,13 +215,13 @@ td {
 }
 
 .carousel-indicators .active {
-	background-color: #FFC6D3;
-	color: #000000;
+	background-color:maroon;
+	
 }
 
 .content-header {
 	padding: 5px 0px;
-	background: #002CCD;
+	background: maroon;
 	margin: 0px 0px 10px 0px;
 	border-radius: 5px;
 	color: white;
