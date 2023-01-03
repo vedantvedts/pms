@@ -546,8 +546,6 @@ public class ActionController {
 		 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionForward.htm "+UserId);		
 			try { 
-				
-			
 			int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
 
 			if (count > 0) {
@@ -557,19 +555,18 @@ public class ActionController {
 
 			}
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
-			
+			redir.addFlashAttribute("Type", req.getParameter("Type"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
-
-			return "redirect:/AssigneeList.htm";
+			return "redirect:/ActionForwardList.htm";
 
 		}
 	 
 	 @RequestMapping(value = "ActionForwardList.htm", method = {RequestMethod.GET,RequestMethod.POST})
-		public String ForwardList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+		public String ForwardList(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
 		 
 		 	String UserId = (String) ses.getAttribute("Username");
@@ -578,12 +575,16 @@ public class ActionController {
 			try { 
 				
 					String type = req.getParameter("Type");
+					Map md = model.asMap();
 					
+					if(md.get("Type")!=null) {
+						type = (String) md.get("Type");
+					}
 					if(type!=null && !type.equalsIgnoreCase("F")) {
 						if(type.equalsIgnoreCase("A")) {
 							req.setAttribute("ForwardList", service.ForwardList(EmpId));
 						}else if (type.equalsIgnoreCase("NB")) {
-							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("N")).collect(Collectors.toList()));
+							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
 						}
 						req.setAttribute("type", type);
 					}else{
