@@ -262,6 +262,7 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionDate(req.getParameter("MainPDC"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
+			mainDto.setScheduleId(req.getParameter("scheduleminutesid"));
 			mainDto.setActionStatus("A");
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("MainPriority"));
@@ -826,7 +827,7 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
-			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
+			mainDto.setScheduleMinutesId(req.getParameter("ScheduleId"));
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("Priority"));
 			mainDto.setCategory(req.getParameter("Category"));
@@ -2218,24 +2219,6 @@ public class ActionController {
 		}
 		return json.toJson(ActionSubList);
 	}
-	@RequestMapping(value = "ActionTreeForClose.htm", method = RequestMethod.GET)
-	public @ResponseBody String ActionTreeForCloseAjax(HttpServletRequest req, HttpSession ses) throws Exception 
-	{
-		Gson json = new Gson();
-		List<Object[]> Actiontreelist=null;
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ActionTreeForClose.htm "+UserId);		
-		try {
-			System.out.println("Action Assignid  :"+req.getParameter("AssignId"));
-			Actiontreelist =   service.ActionSubLevelsList(req.getParameter("AssignId"));
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside ActionTreeForClose.htm "+UserId, e);
-			Actiontreelist=new ArrayList<>();
-		}
-		return json.toJson(Actiontreelist);
-	}
+	
 	
 }
