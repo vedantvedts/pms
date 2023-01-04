@@ -3,6 +3,7 @@ package com.vts.pfms.dao;
 import java.sql.Date;
 import java.util.List;
 
+import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
@@ -64,5 +65,8 @@ public interface RfpMainDao {
 	public int ProjectHoaChangesDelete(String projectId)throws Exception;
 	public long ProjectHoaChangesInsert(ProjectHoaChanges changes) throws Exception;
 	public Object[] ProjectData(String projectid) throws Exception;
+	public int CCMDataDelete(String LabCode) throws Exception;
+	public long CCMDataInsert(PFMSCCMData ccmdata) throws Exception;
+	public List<Object[]> getCCMData(String EmpId, String LoginType, String LabCode) throws Exception;
 
 }

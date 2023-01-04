@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.dao.RfpMainDao;
+import com.vts.pfms.login.CCMView;
+import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.FinanceChanges;
 import com.vts.pfms.model.IbasLabMaster;
@@ -483,4 +487,52 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return dao.ProjectData(projectid);
 	}
 	
+	
+	@Override
+	public long CCMViewDataUpdate(List<CCMView> CCMViewData,String LabCode,String ClusterId, String UserId,String EmpId) throws Exception
+	{
+		logger.info(new Date() +"Inside SERVICE CCMViewDataUpdate ");
+		List<Object[]> proList=dao.ProjectList(EmpId);
+		
+		
+		
+		long result=0;
+		
+		if(CCMViewData.size()>0) 
+		{
+			dao.CCMDataDelete(LabCode);
+		
+		
+			for(CCMView ccmdata:CCMViewData)
+			{
+				PFMSCCMData pfmsccm = PFMSCCMData.builder()
+								
+								.ClusterId(Long.parseLong(ClusterId))
+								.LabCode(LabCode)
+								.ProjectId(ccmdata.getProjectId())
+								.ProjectCode(ccmdata.getProjectCode().trim())
+								.BudgetHeadId(ccmdata.getBudgetHeadId())
+								.BudgetHeadDescription(ccmdata.getBudgetHeadDescription())
+								.AllotmentCost(ccmdata.getAllotmentCost())
+								.Expenditure(ccmdata.getExpenditure())
+								.Balance(ccmdata.getBalance())
+								.Q1CashOutGo(ccmdata.getQ1CashOutGo())
+								.Q2CashOutGo(ccmdata.getQ2CashOutGo())
+								.Q3CashOutGo(ccmdata.getQ3CashOutGo())
+								.Q4CashOutGo(ccmdata.getQ4CashOutGo())
+								.Required(ccmdata.getRequired())
+								.CreatedDate(sdf1.format(new Date()))
+								.build();
+				result= dao.CCMDataInsert(pfmsccm);
+				
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
+	{
+		return dao.getCCMData(EmpId, LoginType, LabCode);
+	}
 }

@@ -502,7 +502,8 @@ List<Object[]> QuickLinkList=(List<Object[]>)request.getAttribute("QuickLinkList
 List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
 Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealthtotal"); 
 //Object[] ChangesTotalData =(Object[])request.getAttribute("changestotalcount");
- 
+List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData");
+
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf=fc.getRegularDateFormat();
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");

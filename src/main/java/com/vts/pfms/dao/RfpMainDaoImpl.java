@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.committee.controller.ActionController;
+import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
@@ -520,5 +520,38 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		}
 		
 	}
+	
+	private static final String CCMDATADELETE="DELETE FROM pfms_ccm_data where LabCode=:LabCode";
+	@Override
+	public int CCMDataDelete(String LabCode) throws Exception 
+	{
+		Query query = manager.createNativeQuery(CCMDATADELETE);
+		query.setParameter("LabCode", LabCode);
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+	}
+	
+	@Override
+	public long CCMDataInsert(PFMSCCMData ccmdata )throws Exception
+	{
+		manager.persist(ccmdata);
+		manager.flush();
+		return ccmdata.getCCMDataId();
+	}
+	
+	private static final String GETCCMDATA = "CALL Project_Health_Finance_Data (:EmpId, :LoginType, :LabCode );";
+	@Override
+	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETCCMDATA);
+		query.setParameter("EmpId", EmpId);
+		query.setParameter("LoginType", LoginType);
+		query.setParameter("LabCode", LabCode);
+		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
+		
+		return CCMData ;
+	}
+	
 }
 
