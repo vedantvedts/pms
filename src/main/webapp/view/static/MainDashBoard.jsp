@@ -120,6 +120,14 @@
     1px 1px 0 #000;
 }
 
+.legend-shadow{
+	text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
 .overall-card{
 	background: #005C97;  /* fallback for old browsers */
 	background: -webkit-linear-gradient(to left, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
@@ -371,6 +379,10 @@
 .countstable , .normalfont{
 	font-family: 'Lato';
 	font-weight: 700;
+}
+
+.card-deck-table tr td{
+	padding: 10px 0px !important;
 }
 
 @media screen and (min-width:1100px) and (max-width:1500px){
@@ -1282,7 +1294,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 								
 							</div>
 							<div class="col-md-4" style="padding-right: 0px !important">
-								<button type="button" class="btn changes-btn">
+								<button type="button" class="btn changes-btn overallheader" >
 									<span class="navbar-brand changes-font"  style="color:black;">
 										<ul class="small-list">
 									           	<li><span class="green" data-toggle="tooltip" data-placement="top" title="Completed" >&#x220E;</span> C</li>
@@ -1752,8 +1764,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		  	
 		  <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
-		  	 	<form action="ProjectHealthUpdate.htm" method="get">
-		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh"><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
+		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
 		        	<!-- <button type="button" class="btn btn5" data-toggle="tooltip" data-placement="top" title="Refresh"></button> -->
 		        </form>
 		        <button class="btn btn1">Action</button>
@@ -2306,7 +2318,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress " data-value='<%=(ProjectHealthTotalData[29] )%>'>
+		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[29] )%>'>
 			          <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-warning<%}%>
@@ -2322,15 +2334,15 @@ String IsDG = (String)request.getAttribute("IsDG");
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[29] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29] )%>%</div>
 			          </div>
 			        </div>
-			        <div><h5 style="margin-bottom: 5px">PMRC</h5></div>
-			        <hr>
+			        <div><h6 style="margin-bottom: 5px">PMRC</h6></div>
+			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<td>Held : </td>
-			        		<td><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<td style="font-size: 13px">Held: </td>
+			        		<td style="font-size: 13px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
 			        	</tr>
 			        </table>
 		      	</div>
@@ -2354,12 +2366,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[31] )%>%</div>
 			          </div>
 			        </div>
-			        <div><h5 style="margin-bottom: 5px">EB</h5></div>
-			        <hr>
+			        <div><h6 style="margin-bottom: 5px">EB</h6></div>
+			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
-				        		<td>Held : </td>
-				        		<td><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<td style="font-size: 13px">Held: </td>
+				        		<td style="font-size: 13px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -2395,9 +2407,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[8] %><%} %></h1>
+		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
 		      		</div>
+		      		<br>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
 		      			<p class="normalfont">Total</p>
@@ -2405,11 +2418,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Pending" > <span class="yellow" >&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Delayed"  ><span class="red">&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Pending" > <span class="yellow" style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Delayed"  ><span class="red" style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
 				  	</tr>
 				  </thead>
 				 <!--  <tbody>
@@ -2448,9 +2461,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[14] %><%} %></h1>
+		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
 		      		</div>
+		      		<br>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=ProjectHealthTotalData[15] %><%} %></h4>
 		      			<p class="normalfont">Total</p>
@@ -2458,21 +2472,21 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[13] !=null){%><%=ProjectHealthTotalData[13] %><%} %></td>
-				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[12] !=null){%><%=ProjectHealthTotalData[12] %><%} %></td>
-				  		<td><%if(ProjectHealthTotalData[11] !=null){%><%=ProjectHealthTotalData[11] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%><span class="yellow " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%><span class="blue " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%><span class="red " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
 				  	</tr>
 				  </thead>
-				  <tbody>
+				  <!-- <tbody>
 				  	<tr>
 				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
 				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
 				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody>
+				  </tbody> -->
 			</table>
 		  </div>
 		  <div class="card detailscard">
@@ -2503,9 +2517,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[16] %><%} %></h1>
+		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
 		      		</div>
+		      		<br>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
 		      			<p class="normalfont">Total</p>
@@ -2513,19 +2528,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;">-</td>
-				  		<td><%if(ProjectHealthTotalData[17] !=null){%><%=ProjectHealthTotalData[17] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><span class="yellow" style="vertical-align: text-top;">&#x220E;</span> &nbsp;0</td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%><span class="red " style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
 				  	</tr>
 				  </thead>
-				  <tbody>
+				 <!--  <tbody>
 				  	<tr>
 				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
 				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody>
+				  </tbody> -->
 			</table>
 		  </div>
 		  <div class="card detailscard">
@@ -2536,7 +2551,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				      	<form action="ProjectHoaUpdate.htm" method="get">
+				     	<form action="ProjectHoaUpdate.htm" method="get">
 							<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 						</form>
 				      </th>
@@ -2557,12 +2572,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <td><span style="color:green">&#8377;</span> 486</td>
 				      <td><span style="color:green">&#8377;</span> 797</td>
 				      <td><span style="color:green">&#8377;</span> 452.4</td>
-				    </tr>
-				    <tr>
-				      <th scope="row">Misc</th>
-				      <td><span style="color:green">&#8377;</span> 240</td>
-				      <td><span style="color:green">&#8377;</span> 125</td>
-				      <td><span style="color:green">&#8377;</span> 458.4</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">Others</th>
@@ -4213,9 +4222,17 @@ $projectid=value;
 					  return result[key,value]
 					});
 			
-				
 				/* logic to print the project wise data in card */	
 				
+				var s=  values[0] + '/' + values[2]
+				document.getElementById('meetingsvaluepmrc').innerHTML = s;
+				var t=  values[3] + '/' + values[5]
+				document.getElementById('meetingsvalueeb').innerHTML = t;
+				
+				document.getElementById('pmrcprogress').innerHTML = values[29]+'%' ;
+				
+				document.getElementById('pmrcgraph').setAttribute('data-value', 2);
+	
 				/* document.getElementById('financevalue').innerHTML = values[23].toLocaleString('en-IN');
 				document.getElementById('risksvalue').innerHTML = values[16] + ' / ' + values[18];
 				document.getElementById('actionvalue').innerHTML = values[14] + ' / ' + values[15];
@@ -4228,10 +4245,7 @@ $projectid=value;
 				
 				
 				
-				var s=  values[0] + '/' + values[2]
-				document.getElementById('meetingsvaluepmrc').innerHTML = s;
-				var t=  values[3] + '/' + values[5]
-				document.getElementById('meetingsvalueeb').innerHTML = t;
+				
 				
 				if(values[24]!='A')
 				document.getElementById('projecttitle').innerHTML = 'Project : ' + values[25];
