@@ -412,7 +412,6 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query=manager.createNativeQuery(ACTIONWISE);
 		query.setParameter("term",Term);
-		System.out.println("ProjectId    : "+ProjectId);
 		query.setParameter("ProjectId",ProjectId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -802,13 +801,23 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
 		return ActionSubLevelsList;
 	 }
-	 private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
-	 
-	 @Override
-		public List<Object[]> ActionSubList(String assignid) throws Exception {
-			Query query=manager.createNativeQuery(ACTIONSUBLIST);
-			query.setParameter("assignid", assignid);
-			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
-			return AssignedList;
-		}
+	private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	
+	@Override
+	public List<Object[]> ActionSubList(String assignid) throws Exception {
+		Query query=manager.createNativeQuery(ACTIONSUBLIST);
+		query.setParameter("assignid", assignid);
+		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+		return AssignedList;
+	}
+	
+	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,(SELECT asub.progress FROM action_sub asub WHERE createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=aas.actionassignid) AND asub.ActionAssignId = aas.ActionAssignId ) AS 'progress',am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name', CONCAT(IFNULL(asi.title,''), asi.empname) AS 'assignee name',am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus',aas.ActionFlag FROM action_main am, action_Assign aas, employee asn, employee asi WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.assignee= asi.empid AND aas.actionassignid=:assignid";
+	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		Query query=manager.createNativeQuery(ACTIONASSIGNDATAAJAX);
+		query.setParameter("assignid", assignid);
+		return (Object[])query.getResultList().get(0);	
+	}
 }

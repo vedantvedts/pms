@@ -75,5 +75,6 @@ public interface ActionService {
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	public List<Object[]> ActionSubList(String assignid) throws Exception;
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
 	
 }

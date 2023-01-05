@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.text.ParseException,java.math.BigInteger"%>
@@ -2560,30 +2561,44 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
+				  <%
+				  		BigDecimal allotment=new BigDecimal(0.00);
+					  	BigDecimal expenditure=new BigDecimal(0.00);
+					  	BigDecimal balance=new BigDecimal(0.00);
+				  %>
 				  <tbody>
 				    <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> 178</td>
-				      <td><span style="color:green">&#8377;</span> 874</td>
-				      <td><span style="color:green">&#8377;</span> 1546.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> 486</td>
-				      <td><span style="color:green">&#8377;</span> 797</td>
-				      <td><span style="color:green">&#8377;</span> 452.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green"><span style="color:green">&#8377;</span></span> 152</td>
-				      <td><span style="color:green">&#8377;</span> 865</td>
-				      <td><span style="color:green">&#8377;</span> 163.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> 1056</td>
-				      <td><span style="color:green">&#8377;</span> 2661</td>
-				      <td><span style="color:green">&#8377;</span> 2620.5</td>
+				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
+				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
 				  </tbody>
 				</table>
@@ -3246,30 +3261,44 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
+				  <%
+				  		 allotment=new BigDecimal(0.00);
+					  	 expenditure=new BigDecimal(0.00);
+					  	 balance=new BigDecimal(0.00);
+				  %>
 				  <tbody>
 				    <tr>
-				      <th scope="row">Cap</th>
-				      <td>&#8377; 178</td>
-				      <td>&#8377; 874</td>
-				      <td>&#8377; 1546.4</td>
+				      <th scope="row">Capital</th>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
 				    <tr>
-				      <th scope="row">Rev</th>
-				      <td>&#8377; 486</td>
-				      <td>&#8377; 797</td>
-				      <td>&#8377; 452.4</td>
+				      <th scope="row">Revenue</th>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
 				    <tr>
-				      <th scope="row">Misc</th>
-				      <td>&#8377; 240</td>
-				      <td>&#8377; 125</td>
-				      <td>&#8377; 458.4</td>
+				      <th scope="row">Others</th>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td>&#8377; 904</td>
-				      <td>&#8377; 1796</td>
-				      <td>&#8377; 2457.1</td>
+				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
+				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
 				  </tbody>
 				</table>

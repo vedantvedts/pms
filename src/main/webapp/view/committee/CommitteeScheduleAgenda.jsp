@@ -682,20 +682,20 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
  
   count++;
   
-  /* var id='\''+'file'+count+'\'';
   
-  $clone.find("input:file").prop("id", 'file'+count).attr("onchange", 'Filevalidation('+id+')').val("").end(); */
   $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\''+count+'\',\'a\')').val("").end();
   $clone.find(".hidden").prop("id", 'attachid_'+count).prop("name", 'attachid_'+count).val("").end();
   $clone.find(".attachlist").prop("id","attachlistdiv_"+count).html("").end();
   $clone.find(".attachname").prop("id", 'attachname_'+count).html("").end();
   $clone.find('.items presenterid' ).attr('id', 'select'+count);
   $clone.find(".PresLabCode").prop("id", 'PresLabCode_'+count).attr("onchange", 'AgendaPresentors(\''+count+'\')').end();
-  $clone.find(".presenterid").prop("id", 'presenterid_'+count).html('<option value="" selected disabled>Choose...</option>').end();
+  $clone.find(".presenterid").prop("id", 'presenterid_'+count).end();
   
   $('.items').select2();
   $clone.find('.items' ).select2('val', ''); 
   $clone.find("input").val("").end();
+  
+  AgendaPresentors(count+'');
   
 });
 
@@ -711,7 +711,6 @@ if(cl>1){
    var $clone = $tr.remove();
    $tr.after($clone);
    $('.items').select2();
-   /* $clone.find('.items').select2('val', ''); */
    
 }
    
@@ -1122,19 +1121,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 
 
-
-<%-- <script type="text/javascript">
-    function Filevalidation (fileid) 
-    {
-        const fi = $('#'+fileid )[0].files[0].size;							 	
-        const file = Math.round((fi / 1024/1024));
-        if (file >= <%=filesize%> ) 
-        {
-        	alert("File too Big, please select a file less than <%=filesize%> mb");
-        } 
-    }
-</script> 
- --%>
 <script type="text/javascript">
 
 function editcheck(editfileid)

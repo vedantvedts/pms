@@ -1003,4 +1003,10 @@ public class ActionServiceImpl implements ActionService {
 	{
 		return dao.ActionSubList(assignid);
 	}
+	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		return dao.ActionAssignDataAjax(assignid);
+	}
 }

@@ -591,7 +591,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>3. Overall Product tree/WBS</h3>
+						<h3>3. Overall Product Tree/WBS</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -688,7 +688,7 @@
 							<% } else { %>
 							Ratification
 							<% } %>
-							of <b>recommendations</b> of last
+							of <b>Recommendations</b> of last
 							<%=committee.getCommitteeShortName().trim().toUpperCase()%>
 							Meeting
 						</h3>
@@ -752,7 +752,17 @@
 							%>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
-								<td style="text-align: justify;"><%=obj[2]%></td>
+								<td style="text-align: justify;">
+									<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
+										<a onclick="ActionDetails( <%=obj[21] %>);" href="javascript:void(0);">
+											<%=obj[2]%>
+										</a>
+									<%}else{ %>
+										
+											<%=obj[2]%>
+										
+									<%} %>
+								</td>
 								<td style="text-align: center;">
 									<%
 									if (obj[8] != null) {
@@ -871,7 +881,7 @@
 					</div> --%>
 					<div class="col-md-10">
 						<h5 style="margin-top: 5px;">
-							4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting action points with Probable Date of completion (PDC), 	Actual Date of Completion (ADC) and status.
+							4 (b) Last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting Action Points with Probable Date of Completion (PDC), Actual Date of Completion (ADC) and Status
 						</h5>
 					</div>
 				<%-- 	<div class="col-md-1" align="right"  style="padding-top:19px;" >
@@ -893,7 +903,7 @@
 					<% } %>
 
 					<%
-					if ((Double.parseDouble(projectattributeslist.get(0)[7].toString()) * 100000) > 1) {
+					if ((Double.parseDouble(projectattributeslist.get(0)[7].toString()) * 100000) > 0) {
 					%>
 
 					<%-- <div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
@@ -932,20 +942,27 @@
 						</thead>
 
 						<tbody>
-							<%
-							if (lastpmrcactions.get(z).size() == 0) {
-							%>
+							<% if (lastpmrcactions.get(z).size() == 0) { %>
 							<tr>
 								<td colspan="7" style="text-align: center;">Nil</td>
 							</tr>
-							<%
-							} else if (lastpmrcactions.size() > 0) {
+							<% } else if (lastpmrcactions.size() > 0) {
 							int i = 1;
 							for (Object[] obj : lastpmrcactions.get(z)) {
 							%>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
-								<td style="text-align: justify;"><%=obj[2]%></td>
+								<td style="text-align: justify;">
+								
+									<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+										<a onclick="ActionDetails( <%=obj[17] %>);" href="javascript:void(0);">
+											<%=obj[2]%>
+										</a>
+									<%}else{ %>
+										<%=obj[2]%>
+									<%} %>
+									
+								</td>
 								<td style="text-align: center;">
 									<%-- <%= sdf.format(sdf1.parse(obj[3].toString()))%> --%> <%
 								 if (obj[6] != null) {
@@ -1219,7 +1236,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3> 5. Milestones achieved prior to this <%=CommitteeCode%> period</h3>
+						<h3> 5. Milestones Achieved Prior to this <%=CommitteeCode%> Period</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -1416,20 +1433,13 @@
 							</span></td>
 							<td
 								style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
-								<%
-								if (obj[23] != null) {
-								%><%=obj[23]%>
-								<%
-								}
-								%>
+								<% if (obj[23] != null) { %><%=obj[23]%> <% } %>
 							</td>
-							<td><a data-toggle="modal" data-target="#exampleModal1"
-								data-id="milestonemodal<%=obj[0]%>" class="milestonemodal"
-								data-whatever="@mdo"
-								style="padding: 0px 1.5rem; cursor: pointer"> <i
-									class="fa fa-info-circle "
-									style="font-size: 1.3rem; color: #145374" aria-hidden="true"></i>
-							</a></td>
+							<td style="text-align: center">
+								<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
+									<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
+								</a>
+							</td>
 						</tr>
 						<%
 						count1++;
@@ -1473,7 +1483,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>6 (a) Work carried out, Achievements, test result etc.</h3>
+						<h3>6 (a) Work Carried Out, Achievements, Test Result etc.</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -1696,13 +1706,11 @@
 								}
 								%>
 							</td>
-							<td><a data-toggle="modal" data-target="#exampleModal1"
-								data-id="milestonemodal<%=obj[0]%>" class="milestonemodal"
-								data-whatever="@mdo"
-								style="padding: 0px 1.5rem; cursor: pointer"> <i
-									class="fa fa-info-circle "
-									style="font-size: 1.3rem; color: #145374" aria-hidden="true"></i>
-							</a></td>
+							<td style="text-align: center">
+								<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
+									<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
+								</a>
+							</td>
 						</tr>
 						<%
 						count1++;
@@ -1745,7 +1753,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h4>6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI</h4>
+						<h4>6 (b) TRL Table with TRL at Sanction stage and Current stage Indicating Overall PRI</h4>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -1758,77 +1766,51 @@
 
 				<div class="content">
 
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
-					<div>
-						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
-					</div>
-					<%
-					}
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+						<% if (ProjectDetail.size() > 1) { %>
+							<div>
+								<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
+							</div>
+						<% } %>
 
 					<!-- <div align="left" style="margin-left: 15px;"><span class="mainsubtitle">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</span></div> -->
 
 					<div>
-						<table>
-
-							<%
-							if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[6] != null) {
-							%>
+						<table style="width: 100%;">
+							<% if (projectdatadetails.get(z) != null && projectdatadetails.get(z)[6] != null) { %>
 							<tr>
-								<td style="border: 0;"></td>
 								<td style="border: 0;">
-									<form action="ProjectDataSystemSpecsFileDownload.htm"
-										method="post" target="_blank">
-										<span class="anchorlink"
-											onclick="$('#pearl<%=ProjectDetail.get(z)[0]%>').toggle();"
-											style="color: #C84B31; cursor: pointer;"><b>As on
-												File Attached</b></span>
-										<button type="submit" class="btn btn-sm ">
-											<i class="fa fa-download fa-lg"></i>
-										</button>
-										<input type="hidden" name="projectdataid"
-											value="<%=projectdatadetails.get(z)[0]%>" /> <input
-											type="hidden" name="filename" value="pearl" /> <input
-											type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" />
-									</form> <%
-									 if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {
-									 %>
-									<iframe width="1200" height="600"
-										src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>"
-										id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
-									 } else {
-									 %>
-									<img data-enlargable style="max-width: 28cm;"
-									src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"
-									id="pearl<%=ProjectDetail.get(z)[0]%>"> <%
-									 }
-									 %>
+									<form action="ProjectDataSystemSpecsFileDownload.htm" method="post" target="_blank">
+										<span class="anchorlink" onclick="$('#pearl<%=ProjectDetail.get(z)[0]%>').toggle();" style="color: #C84B31; cursor: pointer;">
+											<b>As on File Attached</b>
+										</span>
+										<button type="submit" class="btn btn-sm "> <i class="fa fa-download fa-lg"></i> </button>
+										<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>" /> 
+										<input type="hidden" name="filename" value="pearl" /> 
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form>
+								</td>
+							</tr>
+							<tr>
+									<td style="border: 0;text-align: center;" >
+									<%  if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
+										<iframe width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+									<% } else { %>
+										<img data-enlargable style="max-width: 28cm;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
+									<% } %>
 								</td>
 							</tr>
 
-							<%
-							} else {
-							%>
-							<tr>
-								<td style="border: 0;">File Not Found</td>
-							</tr>
-							<%
-							}
-							%>
+							<% } else { %>
+								<tr>
+									<td style="border: 0;">File Not Found</td>
+								</tr>
+							<% } %>
 
 						</table>
 					</div>
 
-
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -1848,7 +1830,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>6 (c) Risk Matrix/Management Plan/Status.</h3>
+						<h3>6 (c) Risk Matrix/Management Plan/Status</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -1921,8 +1903,16 @@
 								i++; %>
 							<tr>
 								<td style="text-align: center" rowspan="2"><%=i%></td>
-								<td style="text-align: justify; color: red;" colspan="3">
-									<%=obj[0]%>  <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+								<td style="text-align: justify; " colspan="3">
+									
+									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){ %>
+										<a onclick="ActionDetails( <%=obj[25] %>);" href="javascript:void(0);" style="color: red;">
+											<%=obj[0]%>  <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+										</a>
+									<%}else{ %>
+										<%=obj[0]%>  <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+									<%} %>
+									
 								
 								</td>
 								<td style="text-align: center" rowspan="1">
@@ -2498,9 +2488,9 @@
 					<div class="col-md-8">
 						<h3>
 							<% if (CommitteeCode.equalsIgnoreCase("EB")) { %>
-								9. Action Plan for Next Six months
+								9. Action Plan for Next Six Months
 							<% } else { %>
-								9. Action Plan for Next Three months
+								9. Action Plan for Next Three Months
 							<% } %>
 						</h3>
 					</div>
@@ -2525,7 +2515,7 @@
 					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
-								<td colspan="9" style="border: 0">
+								<td colspan="10" style="border: 0">
 									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
@@ -2544,13 +2534,14 @@
 							<tr>
 								<th style="width: 15px !important; text-align: center;">SN</th>
 								<th style="width: 20px;">MS</th>
-								<th style="width: 50px;">L</th>
-								<th style="width: 275px;">Action Plan</th>
+								<th style="width: 40px;">L</th>
+								<th style="width: 265px;">Action Plan</th>
 								<th style="width: 110px;">PDC</th>
-								<th style="width: 210px;">Responsibility</th>
+								<th style="width: 200px;">Responsibility</th>
 								<th style="width: 50px;">Progress</th>
 								<th style="width: 50px; padding-right: 5px !important;">Status(DD)</th>
 								<th style="width: 220px;">Remarks</th>
+								<th style="width: 30px;">Info</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -2653,18 +2644,21 @@
 								<td>
 									<% if (obj[28] != null) { %> <%=obj[28]%> <% } %>
 								</td>
+								<td style="text-align: center">
+									<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
+										<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
+									</a>
+								</td>
 							</tr>
 
 							<% count1++;
-							serialno++;
-							}
-							}
-							%>
+							serialno++; }
+								} %>
 							<% } else { %>
-
-							<tr>
-								<td colspan="9" style="text-align: center;">Nil</td>
-							</tr>
+	
+								<tr>
+									<td colspan="10" style="text-align: center;">Nil</td>
+								</tr>
 
 							<% } %>
 
@@ -2692,7 +2686,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>10. GANTT chart of overall project schedule</h3>
+						<h3>10. GANTT Chart of Overall Project Schedule</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2720,25 +2714,14 @@
 						%>
 						<div class="row">
 							<div class="col-md-9 ">
-								<%-- 	<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
-										<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="application/pdf,image/jpeg"/>
-										<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
-										<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
-										<button type="submit" formtarget="_blank" class="btn btn-sm back" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" style="float:right; background-color: #DE834D; font-weight: 600;border:0px;">Sub Level</button>
-										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										<input type="hidden" name="ProjectId" id="ProjectId" value="<%=projectidlist.get(z)%>"> 
-										<input type="hidden" name="committeeid" value="<%=committeeid%>">
-									</form> --%>
+								
 							</div>
 							<div class="col-md-1" align="right">
 								<label style="margin-top: 10px; float: right;">Interval
 									: &nbsp;&nbsp; </label>
 							</div>
 							<div class="col-md-2" align="left" style="margin-top: 10px;">
-								<select class="form-control selectdee "
-									name="interval_<%=projectidlist.get(z)%>"
-									id="interval_<%=projectidlist.get(z)%>" required="required"
-									data-live-search="true" style="width: 150px !important">
+								<select class="form-control selectdee " name="interval_<%=projectidlist.get(z)%>" id="interval_<%=projectidlist.get(z)%>" required="required" data-live-search="true" style="width: 150px !important">
 									<option value="quarter">Quarterly</option>
 									<option value="half">Half-Yearly</option>
 									<option value="year">Yearly</option>
@@ -2753,30 +2736,20 @@
 							<div class="col-md-4"></div>
 							<div class="col-md-4">
 								<div style="font-weight: bold;">
-									<span style="margin: 0px 0px 10px 10px;">Original
-										:&ensp; <span
-										style="background-color: #046582; padding: 0px 15px; border-radius: 3px;"></span>
-									</span> <span style="margin: 0px 0px 10px 15px;">Ongoing
-										:&ensp; <span
-										style="background-color: #81b214; padding: 0px 15px; border-radius: 3px;"></span>
-									</span> <span style="margin: 0px 0px 10px 15px;">Revised
-										:&ensp; <span
-										style="background-color: #f25287; opacity: 0.5; padding: 0px 15px; border-radius: 3px;"></span>
-									</span>
+									<span style="margin: 0px 0px 10px 10px;">Original :&ensp; <span style="background-color: #046582; padding: 0px 15px; border-radius: 3px;"></span></span> 
+									<span style="margin: 0px 0px 10px 15px;">Ongoing :&ensp; <span style="background-color: #81b214; padding: 0px 15px; border-radius: 3px;"></span> </span> 
+									<span style="margin: 0px 0px 10px 15px;">Revised :&ensp; <span style="background-color: #f25287; opacity: 0.5; padding: 0px 15px; border-radius: 3px;"></span> </span>
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-md-12" style="float: right;" align="center">
-								<div class="flex-container containers"
-									id="containers_<%=projectidlist.get(z)%>"></div>
+								<div class="flex-container containers" id="containers_<%=projectidlist.get(z)%>"></div>
 							</div>
 						</div>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -2808,19 +2781,13 @@
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
-					<%
-					}
-					%>
+					<% } %>
 					<!-- CALL Old_Issues_List(:projectid); -->
 					<table class="subtables" style="align: left; margin-top: 10px;  margin-left: 25px; border-collapse: collapse;">
 						<thead>
@@ -2851,20 +2818,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							<%
-							if (oldpmrcissueslist.get(z).size() == 0) {
-							%>
+							<% if (oldpmrcissueslist.get(z).size() == 0) { %>
 							<tr>
 								<td colspan="7" style="text-align: center;">Nil</td>
 							</tr>
-							<%
-							} else if (oldpmrcissueslist.get(z).size() > 0) {
+							<% } else if (oldpmrcissueslist.get(z).size() > 0) {
 							int i = 1;
-							for (Object[] obj : oldpmrcissueslist.get(z)) {
-							%>
+							for (Object[] obj : oldpmrcissueslist.get(z)) { %>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
-								<td style="text-align: justify;"><%=obj[2]%></td>
+								<td style="text-align: justify;">
+									
+									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){ %>
+										<a onclick="ActionDetails( <%=obj[18] %>);" href="javascript:void(0);" >
+											<%=obj[2]%>
+										</a>
+									<%}else{ %>
+										<%=obj[2]%>
+									<%} %>
+									
+								</td>
 								<td style="text-align: center;">
 									<% if (obj[6] != null) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
 									<% if (obj[5] != null) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
@@ -2876,68 +2849,49 @@
 								</td>
 								<td><%=obj[11]%><%-- <%=obj[12] %> --%></td>
 								<td style="text-align: center;">
-									<%
-									if (obj[16] != null && obj[13] != null) {
-									%> <%
- if (obj[9].toString().equals("I") && obj[15].toString().equals("F")
- 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))
- 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())))) {
- %>
-									<span class="ongoing">RC</span> <%
- } else if (obj[9].toString().equals("I") && obj[15].toString().equals("F")
- 		&& LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))) {
- %>
-									<span class="delay">FD</span> <%
- } else if (obj[9].toString().equals("C")
- 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))
- 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())))) {
- %>
-									<span class="completed">CO</span> <%
- } else if (obj[9].toString().equals("C")
- 		&& LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))) {
- %>
-									<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[3].toString()), LocalDate.parse(obj[13].toString()))%>)
-								</span> <%
- } else if (!obj[15].toString().equals("F") && !obj[9].toString().equals("C")
- 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.now())
- 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.now()))) {
- %>
-									<span class="ongoing">OG</span> <%
- } else if (!obj[15].toString().equals("F") && !obj[9].toString().equals("C")
- 		&& LocalDate.parse(obj[3].toString()).isBefore(LocalDate.now())) {
- %>
+									<% if (obj[16] != null && obj[13] != null) { %> 
+									<% if (obj[9].toString().equals("I") && obj[15].toString().equals("F")
+									 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))
+									 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())))) { %>
+										<span class="ongoing">RC</span> 
+									<% } else if (obj[9].toString().equals("I") && obj[15].toString().equals("F")
+									 		&& LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))) { %>
+										<span class="delay">FD</span> 
+									<% } else if (obj[9].toString().equals("C")
+									 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))
+									 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString())))) { %>
+										<span class="completed">CO</span> 
+									<% } else if (obj[9].toString().equals("C") && LocalDate.parse(obj[3].toString()).isBefore(LocalDate.parse(obj[13].toString()))) { %>
+									 
+										<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[3].toString()), LocalDate.parse(obj[13].toString()))%>)
+								</span> 
+								<% } else if (!obj[15].toString().equals("F") && !obj[9].toString().equals("C")
+									 		&& (LocalDate.parse(obj[3].toString()).isAfter(LocalDate.now())
+									 		|| LocalDate.parse(obj[3].toString()).isEqual(LocalDate.now()))) {  %>
+									<span class="ongoing">OG</span> 
+									<% } else if (!obj[15].toString().equals("F") && !obj[9].toString().equals("C")
+									 		&& LocalDate.parse(obj[3].toString()).isBefore(LocalDate.now())) {  %>
 									<span class="delay">DO (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[3].toString()), LocalDate.now())%>)
-								</span> <%
- } else {
- %> <span class="ongoing">OG</span> <%
- }
- } else if (obj[9].toString().equals("C")) {
- %>
-									<span class="completed">CO</span> <%
- } else {
- %><span
-									class="assigned">AA</span> <%
- }
- %>
+								</span> 
+								<% } else {  %> 
+									<span class="ongoing">OG</span> 
+								<% }
+								
+								} else if (obj[9].toString().equals("C")) { %>
+									<span class="completed">CO</span> 
+								<% } else { %>
+									<span class="assigned">AA</span>
+								<% } %>
 								</td>
 								<td>
-									<%
-									if (obj[17] != null) {
-									%> <%=obj[17]%> <%
- }
- %>
+									<% if (obj[17] != null) { %> <%=obj[17]%> <% } %>
 								</td>
 							</tr>
-							<%
-							i++;
-							}
-							}
-							%>
+							<% i++; }
+							} %>
 						</tbody>
 					</table>
-					<%
-					}
-					%>
+					<% } %>
 				</div>
 
 			</div>
@@ -2957,7 +2911,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3> 12. Decision/Recommendations sought from <%=CommitteeCode%> </h3>
+						<h3> 12. Decision/Recommendations Sought from <%=CommitteeCode%> </h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2970,22 +2924,22 @@
 
 				<div class="content align-items-center" align="left">
 					<% for (int z = 0; z < projectidlist.size(); z++) { %>
-					<% if (ProjectDetail.size() > 1) { %>
-					<div>
-						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
-					</div>
-					<% } %>
-					<% if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
-							&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) { %>
+						<% if (ProjectDetail.size() > 1) { %>
+						<div>
+							<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
+						</div>
+						<% } %>
+						<% if (lastpmrcdecisions.get(z) != null && lastpmrcdecisions.get(z)[0] != null
+								&& !lastpmrcdecisions.get(z)[0].toString().trim().equals("")) { %>
+	
+						<%=lastpmrcdecisions.get(z)[0]%>
+						<% } else { %>
+							<div align="center" style="font-size: 25px;font-weight: bold;">
+								<br><br><br><br><br><br><br><br>
+								Nil
+							</div>
 
-					<%=lastpmrcdecisions.get(z)[0]%>
-					<% } else { %>
-					<div align="center" style="font-size: 25px;font-weight: bold;">
-						<br><br><br><br><br><br><br><br>
-						Nil
-					</div>
-
-					<% } %>
+						<% } %>
 
 					<% } %>
 				</div>
@@ -3922,7 +3876,76 @@
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	</form>
 
+<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
 
+	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: #FFE0AD; ">
+					<div class="row w-100"  >
+						<div class="col-md-12" >
+							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+						</div>
+					</div>
+					
+					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" align="center">
+					<form action="#" method="post" autocomplete="off"  >
+						<table style="width: 100%;">
+							<tr>
+								<td style="width:20%;padding: 5px;border :0;font-weight: bold;"> Action Item :</td>
+								<td class="tabledata" style="width:80%;padding: 5px;word-wrap:break-word;border :0;" colspan="3" id="modal_action_item"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assign Date :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_date"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" >PDC :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_PDC"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assignor :</td>
+								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignor"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Assignee :</td>
+								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignee"></td>
+							</tr>
+							<tr>
+								<td style="padding: 5px;border :0;font-weight: bold;" >Final Progress :</td>
+								<td style="padding: 5px;border :0;" id="modal_action_progress"></td>
+								<td style="padding: 5px;border :0;font-weight: bold;" > Type :</td>
+								<td style="padding: 5px;font-weight: bold;color:#A30808 ;border :0;" id="modal_action_type"></td>
+							</tr>
+							
+						</table>
+						</form>
+						<hr>
+						<form action="#" method="get">
+						
+						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+							<thead> 
+								<tr style="background-color: #055C9D; color: white;">
+									<th style="text-align: center;width:5% !important;">SN</th>
+									<th style="text-align: center;width:15% !important;">Progress Date</th>
+									<th style="text-align: center;width:15% !important;"> Progress</th>
+									<th style="width:60% !important;">Remarks</th>
+									<th style="text-align: center;width:5% !important;">Download</th>
+								</tr>
+							</thead>
+							<tbody id="modal_progress_table_body">
+								
+							</tbody>
+						</table>
+						</form>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+<!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
 
 <script type="text/javascript">
 
@@ -4436,7 +4459,7 @@ function setattchidvalue(attachid, attchName)
 								       
 								        var menu = chart.contextMenu();
 								        
-d
+
 									} 
 								  
 	
@@ -4448,7 +4471,6 @@ d
 	      
 	      
 	      function ChartPrint_<%=projectidlist.get(z)%>(){
-		   		console.log("#interval_<%=projectidlist.get(z)%>");
 	    	  var interval_<%=projectidlist.get(z)%> = $("#interval_<%=projectidlist.get(z)%>").val();
 	    	  $('#containers_<%=projectidlist.get(z)%>').empty();
 	    	  chartprint_<%=projectidlist.get(z)%>('print',interval_<%=projectidlist.get(z)%>);
@@ -4469,7 +4491,150 @@ d
 
 	<% } %>
 
+<script type="text/javascript">
 
+function ActionDetails(InAssignId)
+{
+		$("#modal_progress_table").DataTable().destroy();
+		
+		$.ajax({		
+			type : "GET",
+			url : "ActionAssignDataAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				$('#modal_action_item').html(result[1]);
+				$('#modal_action_no').html(result[2]);
+				$('#modal_action_date').html(moment(new Date(result[5]) ).format('DD-MM-YYYY'));
+				$('#modal_action_PDC').html(moment(new Date(result[6]) ).format('DD-MM-YYYY'));
+				$('#modal_action_assignor').html(result[8]);
+				$('#modal_action_assignee').html(result[9]);
+				
+				var InActionType = result[9];
+				var ActionType = 'Action';
+				
+				if(InActionType==='A')
+				{
+					ActionType = 'Action';
+				}
+				else if(InActionType==='I')
+				{
+					ActionType = 'Issue';
+				}
+				else if(InActionType==='D')
+				{
+					ActionType = 'Decision';
+				}
+				else if(InActionType==='R')
+				{
+					ActionType = 'Recommendation';
+				}
+				else if(InActionType==='C')
+				{
+					ActionType = 'Comment';
+				}
+				else if(InActionType==='K')
+				{
+					ActionType = 'Risk';
+				}
+				
+				$('#modal_action_type').html(ActionType);
+				
+				var InProgress = '0'
+				if(result[4]!=null){
+					InProgress=result[4]+'';
+				}
+				
+				
+				if(InProgress.trim() === '0')
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
+					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					progressBar +=		'Not Started'
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				else
+				{
+					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+'%;  " aria-valuemin="0" aria-valuemax="100" >';
+					progressBar +=		InProgress
+					progressBar +=		'</div>'; 
+					progressBar += '</div>'; 
+				}
+				$('#modal_action_progress').html(progressBar);
+			}
+		});
+		
+		
+		
+		
+		
+		$.ajax({		
+			type : "GET",
+			url : "ActionSubListAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
+				
+				var htmlStr='';
+				if(result.length> 0){
+					for(var v=0;v<result.length;v++)
+					{	
+						htmlStr += '<tr>';
+						
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
+						
+						if(result[v][5]=== null)
+						{
+							htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+						}
+						else
+						{
+							htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+						}
+						htmlStr += '</tr>';
+					}
+				}
+				else
+				{
+					htmlStr += '<tr>';
+					
+					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					
+					htmlStr += '</tr>';
+				}
+				setModalDataTable();
+				$('#modal_progress_table_body').html(htmlStr);
+				
+				
+				$('#action_modal').modal('toggle');
+			}
+		});
+		
+		
+	}
+	setModalDataTable();
+	function setModalDataTable()
+	{
+		$("#modal_progress_table").DataTable({
+			"lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			"pagingType": "simple",
+			"pageLength": 5
+		});
+	}
+</script>
 
 
 </body>
