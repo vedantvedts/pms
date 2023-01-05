@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +15,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.bytecode.enhance.spi.interceptor.SessionAssociableInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -730,12 +731,18 @@ public class AdminController {
 		}
 	
 	   @RequestMapping(value = { "DivisionMaster.htm" }, method = { RequestMethod.GET })
-		public String  DivisionMasterList(HttpServletRequest req, HttpSession ses) throws Exception {
+		public String  DivisionMasterList(Model model,HttpServletRequest req, HttpSession ses) throws Exception {
 			
 		 final String UserId = (String)ses.getAttribute("Username");
 		 String LabCode =(String) ses.getAttribute("labcode");
 		 AdminController.logger.info(new Date() +" Inside DivisionMaster.htm " +  UserId );	
 			
+		 String onboard=req.getParameter("Onboarding");
+			if(onboard==null) {
+				Map md=model.asMap();
+				onboard=(String)md.get("Onboard");
+			}
+		 	req.setAttribute("Onboarding", onboard);
 			req.setAttribute("DivisionMasterList", (Object)this.service.DivisionMasterList(LabCode));
 
 			return "admin/DivisionList";

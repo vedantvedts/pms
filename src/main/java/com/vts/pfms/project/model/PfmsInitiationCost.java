@@ -15,15 +15,12 @@ public class PfmsInitiationCost implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-   
-	
 	private Long InitiationCostId;
 	private Long InitiationId;
     private Long BudgetHeadId;
     private Long BudgetSancId;
     private String ItemDetail;
-    private Double ItemCost;
-    
+    private Double ItemCost; 
     private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

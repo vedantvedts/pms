@@ -186,8 +186,8 @@ h6{
 															<th>Action Item</th>
 															<th >Assigned Date</th>
 															<th class="width-110px" >PDC</th>																							
-														 	<th class="width-140px">Assignee</th>
-														 	<th class="width-140px">Assigner</th>	
+														 	<th class="width-140px">Assigner</th>
+														 	<th class="width-140px"> Assignee</th>	
 														 	<th >Status</th>
 														 	<th class="width-115px">Progress</th>
 														 	<th> Action</th>

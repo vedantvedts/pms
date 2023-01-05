@@ -1987,9 +1987,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		@Override
-		public List<Object[]> GetIssueList(String projectid ,String labcode)throws Exception
+		public List<Object[]> GetIssueList(String projectid,String Empid ,String labcode)throws Exception
 		{
-			return dao.GetIssueList(projectid ,labcode);
+			return dao.GetIssueList(projectid,Empid ,labcode);
 		}
 		
 		@Override

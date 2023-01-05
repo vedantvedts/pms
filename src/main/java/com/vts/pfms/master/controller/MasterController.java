@@ -42,13 +42,19 @@ public class MasterController {
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@RequestMapping(value="Officer.htm", method=RequestMethod.GET)
-	public String OfficerList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+	public String OfficerList(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{
 		String UserId= (String)ses.getAttribute("Username");
 		String LabCode=(String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside Officer.htm "+UserId);
 		String empType=req.getParameter("empType");
-        req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
+		String onboard=req.getParameter("Onboarding");
+		if(onboard==null) {
+			Map md=model.asMap();
+			onboard=(String)md.get("Onboard");
+		}
+		req.setAttribute("Onboarding", onboard);
+		req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
 		return "master/OfficerMasterList";
 	}
 	
@@ -632,7 +638,7 @@ public class MasterController {
 		}
 	 
 	 @RequestMapping(value="GroupMaster.htm",method= {RequestMethod.GET})
-		public String GroupMaster(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+		public String GroupMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
 			
 			String UserId= (String)ses.getAttribute("Username");
 			String LabCode =(String)ses.getAttribute("labcode");
@@ -640,9 +646,15 @@ public class MasterController {
 			logger.info(new Date() +" Inside GroupMaster.htm "+UserId);
 			try 
 			{
-//				String groupid=req.getParameter("groupid");
+				String onboard=req.getParameter("Onboarding");
+			
+				if(onboard==null) {
+					Map md=model.asMap();
+					onboard=(String)md.get("Onboard");
+				}
 				
 				req.setAttribute("groupslist",service.GroupsList(LabCode) );
+				req.setAttribute("Onboarding", onboard);
 				return "master/GroupsList";
 			}catch (Exception e) {
 				e.printStackTrace();

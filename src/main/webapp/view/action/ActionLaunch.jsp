@@ -9,7 +9,8 @@
 		<jsp:include page="../static/header.jsp"></jsp:include>
 		<script src="./resources/js/multiselect.js"></script>
 		<link href="./resources/css/multiselect.css" rel="stylesheet"/>
-		
+		<spring:url value="/resources/js/excel.js" var="excel" />
+		<script src="${excel}"></script>
 		<title>New Action</title>
 		<style type="text/css">
 	label{
@@ -84,7 +85,9 @@ h6{
 a:hover {
 	color: white;
 }
-		
+.modal-xl{
+	max-width: 1400px;
+}
 		</style>
 	</head>
 	
@@ -101,6 +104,7 @@ a:hover {
 		List<Object[]> EmpListmodal=(List<Object[]>)request.getAttribute("EmployeeListModal");		
 		String LabCode =(String)request.getAttribute("LabCode"); 
 		String clusterid = (String)session.getAttribute("clusterid");
+		String Onboarding = (String)request.getAttribute("Onboarding");
 	%>
 
 
@@ -242,6 +246,11 @@ a:hover {
 									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit" style="margin-top: 10px;" value="SUBMIT"/>
 									        <input type="hidden" id="Actionscheduleid" <%if(ActionData!=null && ActionData[9]!=null){ %> value="<%=ActionData[9]%>" <%}else{%> value="0" <%}%>>									
 										    <button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
+										    <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="OnBoarding.htm">Back</a>
+													<%}else{%>
+													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MainDashBoard.htm">Back</a>
+										 <%}%>&nbsp;&nbsp;
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
 									
 								</div>			  
@@ -260,8 +269,46 @@ a:hover {
 				<div class="col-md-12">
 					<div class="card shadow-nohover">
 						
-						<h5 class="card-header">Action Assigned List</h5>
+						<div class="card-header">
+						<div class="row">
+						<div class="col-md-3"><h4><b>Action Assigned List</b></h4></div>
 						
+						<div class="col-md-9" align="right">
+						<%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+							<form action="ActionMainExcelUpload.htm" method="post" enctype="multipart/form-data">
+								  	<table>
+									  	<tr>
+											<td align="left"><h6>Download Excel : &nbsp;<button formaction="ActionMainExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+											<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
+											<input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>							
+										 </tr>
+								  	</table>	
+								    <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
+									<div class="modal fade" id="exampleModalLong"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" >
+									  <div class="modal-dialog modal-xl" role="document">
+									    <div class="modal-content"  >
+									      <div class="modal-header">
+									        <h5 class="modal-title" id="exampleModalLongTitle">Project Master Details</h5>
+									        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									          <span aria-hidden="true">&times;</span>
+									        </button>
+									      </div>
+									      <div class="modal-body"  style="max-height: 25rem; overflow-y:auto;">
+									             <table class="table table-bordered table-hover table-striped table-condensed" id="myTable1"> </table>
+									      </div>
+									      <div class="modal-footer" align="center">
+									       	    <div align="center">
+									        			<button type="submit" onclick="return confirm('Are you sure to submit?')"  class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button>
+									      		</div>
+									       </div>
+									    </div>
+									  </div>
+									</div>
+							</form> 
+						<%}%>		
+					</div>
+					</div>
+					</div>
 						<div class="card-body">
 
 							<div class="data-table-area mg-b-15">
@@ -863,5 +910,84 @@ a:hover {
 				 }
 				
 				</script>
+			<!-- Excel Upload  -->>	
+				
+				 <script type="text/javascript">
+const excel_file = document.getElementById('excel_file');
+
+excel_file.addEventListener('change', (event) => {
+    var reader = new FileReader();
+
+    reader.readAsArrayBuffer(event.target.files[0]);
+
+    reader.onload = function(event){
+
+        var data = new Uint8Array(reader.result);
+
+        var work_book = XLSX.read(data, {type:'array'});
+
+        var sheet_name = work_book.SheetNames;
+
+        var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]], {header:1});  
+    	
+    
+        if(sheet_data.length > 0)
+        {          
+        	
+            
+        var table_output ='<thead> <tr > <th>SNo</th> <th>Action Item</th> <th>AssineeLabCode</th> <th>AssignorLabCode</th>  <th>Action Type </th> <th>Project  </th> <th>Priority </th> <th>Category</th>  </tr> </thead><tbody>'
+        	
+            for(var row = 0; row < sheet_data.length; row++)
+            {            	
+            	  table_output += ' <tr> ';
+             	
+            	  if(row>0){table_output += '<td>'+ row +'</td>';}
+                for(var cell = 0; cell < 2; cell++)
+                {
+                	
+                	if(row>0 && cell>0){
+                		table_output += '<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;">'+sheet_data[row][cell]+'</td>';
+                	}
+	
+                }
+               
+                 if(row>0){table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';}
+                if(row>0){table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';} 
+                if(row>0){table_output += '<td>'+'Action'+'</td>';}
+                if(row>0){table_output += '<td>'+'General '+'</td>';} 
+                if(row>0){table_output += '<td>'+'Medium '+'</td>';}
+                if(row>0){table_output += '<td>'+'Others'+'</td>';}
+                
+                
+                table_output += '</tr>';
+             }
+            table_output += ' <tbody>';
+            document.getElementById('myTable1').innerHTML = table_output;
+			 $('#exampleModalLong').modal('show');
+               
+
+            }else{
+            	alert("Please Select the Excel File!");
+            	return false;
+            }
+        }
+        
+});
+
+$('#exampleModalLong').on('hide.bs.modal', function(){
+	 excel_file.value = '';
+})
+
+$(document).ready(function(){
+	  $("#myTable1").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple"
+	});
+});
+</script> 
+				
+				
+				
+				
 		</body>
 		</html>
