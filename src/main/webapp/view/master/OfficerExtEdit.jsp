@@ -14,14 +14,12 @@
 <body>
 
 <%
-
+              
 Object[] OfficerEditData=(Object[])request.getAttribute("OfficerEditData");
 List<Object[]> DesignationList=(List<Object[]>)request.getAttribute("DesignationList");
 List<Object[]> DivisionList=(List<Object[]>)request.getAttribute("OfficerDivisionList");
 List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 String seslabid=(String)session.getAttribute("labid");
-
-
 %>
 
 <%String ses=(String)request.getParameter("result"); 
