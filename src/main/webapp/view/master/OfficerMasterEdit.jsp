@@ -60,19 +60,19 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="card-body">
 
 
-<form name="myfrm" action="OfficerMasterEditSubmit.htm" method="POST" >
+<form name="myfrm" action="OfficerMasterEditSubmit.htm" method="POST" id="myfrm">
 <div class="row">
 <div class="col-md-2">
               <div class="form-group">
 					<label >Employee No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
+					<input  class="form-control form-control"  type="text" id="EmpNo" name="EmpNo" required="required" maxlength="255" style="font-size: 15px;" readonly	value="<%=OfficerEditData[1] %>">
 			</div>
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+			                <label>Title</label><br>
+			                 <select class="form-control selectdee"  id="title" name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
+								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof." <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
 								<option value="Lt."  <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Lt.")){%>  selected="selected" <%}%>>  Lt.</option>
 								<option value="Dr."   <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
@@ -82,21 +82,19 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-								<option value="Shri" <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Shri.")){%> selected="selected" <%}%>> Shri.</option>
-								<option value="Smt."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Smt.")){%>   selected="selected" <%}%>> Smt.</option> 
+			                <label>Rank/Salutation</label><br>
+			                 <select class="form-control selectdee" id="salutation" name="salutation" data-container="body" data-live-search="true"  style="font-size: 5px;">
+								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr."    <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
-								<option value="Mrs."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Mrs.")){%>   selected="selected" <%}%>> Mrs.</option>
-								<option value="Miss."  <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Miss.")){%>  selected="selected" <%}%>> Miss.</option>
+								<option value="Ms."   <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Ms.")){%>   selected="selected" <%}%>> Ms.</option>
+								
 							</select>
 					</div>
 </div>
 <div class="col-md-4">
               <div class="form-group">
 					<label >Employee Name:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" onkeydown="return /[a-z ]/i.test(event.key)"	value="<%=OfficerEditData[2] %>">
+					<input  class="form-control form-control"  type="text" id="EmpName" name="EmpName" required="required" maxlength="255" style=" font-size: 15px;text-transform: capitalize; width: 80%;" onkeydown="return /[a-z ]/i.test(event.key)"	value="<%=OfficerEditData[2] %>">
 				</div>
 </div>
 </div>
@@ -105,7 +103,7 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Designation:<span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control selectdee" name="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
+					<select class="form-control selectdee" name="Designation"  id="Designation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
 									<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
 										
 											<%  for ( Object[]  obj :DesignationList) {%>			
@@ -117,21 +115,21 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="text" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
+					<input  class="form-control form-control"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
 				</div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="text"  required="required" name="mobilenumber" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
+					<input  class="form-control form-control" type="text"  required="required" id="mobilenumber"  name="mobilenumber" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" style="font-size: 15px;width:100%" value="<%=OfficerEditData[9]%>" id="">
 			   </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email: <span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control"  type="email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
+					<input  class="form-control form-control"  type="email" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[5] %>">
 			  </div>
 </div>
 </div>
@@ -140,21 +138,21 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email: <span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" name="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
+					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" name="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
+					<input  class="form-control form-control" type="email" name="InternetEmail" id="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Division:<span class="mandatory" style="color: red;">*</span></label>
-					<select class="form-control selectdee" name="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
+					<select class="form-control selectdee" name="Division" id="Division" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;width: 80%;">
 									<option value="" disabled="disabled" selected="selected" hidden="true">--Select--</option>
 								<% for ( Object[]  obj :DivisionList) {%>
 								<option value="<%=obj[0] %>" <%if(OfficerEditData[6].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected" <%} %>> <%=obj[1] %></option>
@@ -165,7 +163,7 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 <div class="row">
 <div class="col-sm-5" ></div>
-	<div id="OfficerMasterAdd" ><input type="submit"  class="btn btn-primary btn-sm submit" /></div>
+	<input type="button"  class="btn btn-primary btn-sm submit" value="SUBMIT" onclick="return empNoCheck('myfrm');"/>
 	<button type="button" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" onclick="submitForm('backfrm');" >Back</button>
 </div>
 
@@ -246,6 +244,49 @@ function Delete(myfrm){
 			}
 	
 	}
+		
+		function empNoCheck(frmid)
+		{
+			var title=$('#title').val();
+			var salutation=$('#salutation').val();
+			var EmpName=$('#EmpName').val();
+			var Designation=$('#Designation').val();
+			var ExtNo=$('#ExtNo').val();
+			var mobilenumber=$('#mobilenumber').val();
+			var Email=$('#Email').val();
+			var DronaEmail=$('#DronaEmail').val();
+			var InternetEmail=$('#InternetEmail').val();
+			var Division=$('#Division').val();
+			
+			console.log(title+salutation+EmpName+Designation+ExtNo+mobilenumber+Email+DronaEmail+InternetEmail+Division);
+			
+			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division===null ) 
+			{
+				alert('Please Fill All the Fields ');
+			}
+			
+			
+			
+			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+				window.alert('please select either Title or Rank');
+				event.preventDefault();
+				return false;
+			} else{
+				if(window.confirm('Are you sure to save?')){
+					document.getElementById(frmid).submit(); 
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+			 
+	
+		}
+
+
+
+
+
 
 
 </script>
