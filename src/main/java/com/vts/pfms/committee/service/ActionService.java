@@ -76,5 +76,6 @@ public interface ActionService {
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	public List<Object[]> ActionSubList(String assignid) throws Exception;
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
+	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception;
 	
 }

@@ -94,13 +94,13 @@ h6{
 	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
 								<thead>  
 									<tr id="">
-										<!-- <th>As On Date</th> -->
+										<th>As On Date</th>
 										<th>Remarks</th>
 										<th>Progress %</th>
 										<th>Attachment</th>
 									</tr>							
 									<tr id="Memberrow0">									
-										<!-- <td width="10%"><input  class="form-control "  data-date-format="dd/mm/yyyy" name="AsOnDate" id="DateCompletion" required="required" readonly="readonly" ></td> -->
+										<td width="10%"><input  class="form-control "  data-date-format="dd/mm/yyyy" name="AsOnDate" id="DateCompletion" required="required" readonly="readonly" ></td>
 										<td width="20%"><input type="text" name="Remarks" class="form-control item_name" maxlength="255"  required="required" /></td>      
 										<td width="10%"><input type="number" name="Progress" class="form-control item_name" max="100"  min="0"  required="required" /></td>								
 						         		<td  width="25%"><input type="file" name="FileAttach" id="FileAttach"  class="form-control wrap" aria-describedby="inputGroup-sizing-sm" maxlength="255" onchange="Filevalidation('FileAttach');"  /></td>										

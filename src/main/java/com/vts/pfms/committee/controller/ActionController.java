@@ -88,7 +88,7 @@ public class ActionController {
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ActionLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
@@ -107,6 +107,12 @@ public class ActionController {
 				req.setAttribute("ProjectData", projectdata);
 			}
 			
+			String onboard=req.getParameter("Onboarding");
+			if(onboard==null) {
+				Map md=model.asMap();
+				onboard=(String)md.get("Onboard");
+			}
+			req.setAttribute("Onboarding", onboard);
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));  
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
@@ -2237,5 +2243,6 @@ public class ActionController {
 		}
 		return json.toJson(ActionSubList);
 	}
+	
 	
 }

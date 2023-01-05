@@ -133,6 +133,7 @@ font-weight: bold;
 <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> groupslist=(List<Object[]>) request.getAttribute("groupslist");
+String Onboarding = (String)request.getAttribute("Onboarding");
 String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
@@ -163,6 +164,7 @@ String ses=(String)request.getParameter("result");
 			<div class="row">
 			   <div class="col-md-2"><h3>Groups List</h3></div>
 			   <div class="col-md-10" align="right">
+			   <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 				  <form action="GroupMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
@@ -194,6 +196,7 @@ String ses=(String)request.getParameter("result");
 					  </div>
 					</div>
 				  </form>
+				  <%}%>
 				</div>
 			</div></div>
 				<div class="card-body"> 
@@ -240,11 +243,15 @@ String ses=(String)request.getParameter("result");
 			          </div>
 			        </div>
 	 <div align="center">
-	      <button type="submit" class="btn btn-primary btn-sm add" name="sub" value="add">ADD</button>&nbsp;&nbsp;  
-    <%if(groupslist!=null && groupslist.size()>0){ %>
-          <button type="submit" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;
-     <%} %> 
-		   <a class="btn btn-info btn-sm  back"   href="MainDashBoard.htm">Back</a>
+	     		 <button type="submit" class="btn btn-primary btn-sm add" name="sub" value="add">ADD</button>&nbsp;&nbsp;  
+		    <%if(groupslist!=null && groupslist.size()>0){ %>
+		          <button type="submit" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;
+		     <%} %> 
+		    <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+				<a class="btn btn-info btn-sm  back"   href="OnBoarding.htm">Back</a>
+				<%}else{%>
+				<a class="btn btn-info btn-sm  back"   href="MainDashBoard.htm">Back</a>
+			<%}%>	
    </div>	
 
  	<input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />

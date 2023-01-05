@@ -127,7 +127,7 @@ font-weight: bold;
 <body>
 
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-
+String Onboarding = (String)request.getAttribute("Onboarding");
 List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 
 %>
@@ -168,6 +168,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 	<div class="col-md-2"><h4><b>Officer List</b></h4></div>
 	
 	<div class="col-md-10" align="right">
+	 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 				  <form action="EmployeeMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
@@ -199,6 +200,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 					  </div>
 					</div>
 				  </form>
+				  <%}%>
 			</div>
 		</div>
   </div>
@@ -240,12 +242,18 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 </div>
 <%if(OfficerList!=null && OfficerList.size()>0){ %>
 	 <div align="center"> 
-	 	<button type="submit" class="btn btn-primary btn-sm add" formaction="OfficerAdd.htm" value="add">ADD</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		<button type="submit" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		<button type="submit" class="btn btn-danger btn-sm delete" name="sub" value="delete"  onclick="Delete(frm1)">INACTIVE</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-		<button type="submit" class="btn  btn-sm revoke" name="sub" value="updateSeniority"  onclick="Upadte(frm1)">UPDATE SENIORITY</button>
+	 	<button type="submit" class="btn btn-primary btn-sm add" formaction="OfficerAdd.htm" value="add">ADD</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<button type="submit" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<button type="submit" class="btn btn-danger btn-sm delete" name="sub" value="delete"  onclick="Delete(frm1)">INACTIVE</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		<button type="submit" class="btn  btn-sm revoke" name="sub" value="updateSeniority"  onclick="Upadte(frm1)">UPDATE SENIORITY</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+				<a class="btn btn-info btn-sm  back"   href="OnBoarding.htm">Back</a>
+				<%}else{%>
+				<a class="btn btn-info btn-sm  back"   href="MainDashBoard.htm">Back</a>
+			<%}%>	
 	</div> 
 <%} %> 
+ 
  	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
 </div>
