@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -73,7 +74,6 @@ public class LoginController {
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
 	
 //	@Autowired
 //  private LoginDetailsServiceImpl loginService;
@@ -213,7 +213,7 @@ public class LoginController {
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
-
+			     req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
 			     
@@ -580,11 +580,13 @@ public class LoginController {
     
    
     @RequestMapping (value="ProjectHoaUpdate.htm", method=RequestMethod.GET)
-    public String ProjectHoaUpdate(HttpSession ses, RedirectAttributes redir) throws Exception{
+    public String ProjectHoaUpdate(HttpSession ses, RedirectAttributes redir) throws Exception
+    {
     	
     	String Empid= ses.getAttribute("EmpId").toString();
     	String UserId = (String) ses.getAttribute("Username");
     	String LabCode=(String)ses.getAttribute("labcode");
+    	String ClusterId =(String)ses.getAttribute("clusterid");
     	logger.info(new Date() +"ProjectHoaUpdate.htm "+Empid);
     
     	// Calling pms_serv to update hoa data from ibas to pms
@@ -593,12 +595,14 @@ public class LoginController {
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=T";
     	final String localUri5=uri+"/pfms_serv/labdetails";
+    	final String CCMDataURI=uri+"/pfms_serv/getCCMViewData";
     	
     	String MonthlyData=null;
     	String WeeklyData=null;
     	String TodayData=null;
     	String HoaJsonData=null;
     	String LabData= null;
+    	List<CCMView> CCMViewData=null;
     	long count= 0L;
     	long ibasserveron=0L;
     	try {
@@ -613,21 +617,22 @@ public class LoginController {
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
+			ResponseEntity<List<CCMView>> CCMData=restTemplate.exchange(CCMDataURI, HttpMethod.POST,entity, new ParameterizedTypeReference<List<CCMView>>() {});
+			
 			
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
 			LabData=labdata.getBody();
+			CCMViewData= CCMData.getBody();
     	}
-    	catch(HttpClientErrorException  | ResourceAccessException e) {
-			
+    	catch(HttpClientErrorException  | ResourceAccessException e) 
+    	{
     		ibasserveron = 1;
-
 		}
     	catch(Exception e)
 		{
 			e.printStackTrace();
-			
 		}
 
 		ObjectMapper mao = new ObjectMapper().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -665,17 +670,23 @@ public class LoginController {
 				e.printStackTrace();
 			}
 		}
+		
+		if(CCMViewData!=null && CCMViewData.size()>0)
+		{
+			rfpmainservice.CCMViewDataUpdate(CCMViewData, LabCode, ClusterId, UserId, Empid);
+		}
+		
     	
     	if(count>0 ) {
 			redir.addAttribute("Overall","Overall");
-			redir.addAttribute("result", "Project Hoa Updated Successfully ");
+			redir.addAttribute("result", "Project HOA and CCM Details Updated Successfully ");
 		}
     	else if(ibasserveron==1){
     		redir.addAttribute("resultfail","IBAS Server Not Responding");
     	}
 		else {
 			
-			redir.addAttribute("resultfail","Project Hoa Update Unsuccessful");
+			redir.addAttribute("resultfail","Project HOA and CCM Details Update Unsuccessful");
 		  }
     	  return "redirect:/MainDashBoard.htm";
     }

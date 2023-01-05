@@ -18,9 +18,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.dao.RfpMainDao;
+import com.vts.pfms.model.LoginStamping;
 
 @Service
 public class LoginDetailsServiceImpl implements UserDetailsService{
