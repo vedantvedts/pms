@@ -1,3 +1,4 @@
+<%@page import="java.math.BigDecimal"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.text.ParseException,java.math.BigInteger"%>
@@ -2554,9 +2555,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
 							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
 				  </h5>
-				 <!--  <form action="ProjectHoaUpdate.htm" method="get">
+				 	<form action="ProjectHoaUpdate.htm" method="get">
 								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-				 </form> -->
+				 </form>
 			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
@@ -2570,30 +2571,44 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
+				  <%
+				  		BigDecimal allotment=new BigDecimal(0.00);
+					  	BigDecimal expenditure=new BigDecimal(0.00);
+					  	BigDecimal balance=new BigDecimal(0.00);
+				  %>
 				  <tbody>
 				    <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> 178</td>
-				      <td><span style="color:green">&#8377;</span> 874</td>
-				      <td><span style="color:green">&#8377;</span> 1546.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> 486</td>
-				      <td><span style="color:green">&#8377;</span> 797</td>
-				      <td><span style="color:green">&#8377;</span> 452.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green"><span style="color:green">&#8377;</span></span> 152</td>
-				      <td><span style="color:green">&#8377;</span> 865</td>
-				      <td><span style="color:green">&#8377;</span> 163.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> 1056</td>
-				      <td><span style="color:green">&#8377;</span> 2661</td>
-				      <td><span style="color:green">&#8377;</span> 2620.5</td>
+				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
+				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
 				  </tbody>
 				</table>
@@ -3249,9 +3264,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
 							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
 				  </h5>
-				  <!-- <form action="ProjectHoaUpdate.htm" method="get">
+				  <form action="ProjectHoaUpdate.htm" method="get">
 								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-				 </form> -->
+				 </form> 
 			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
@@ -3265,30 +3280,44 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
+				  <%
+				  		 allotment=new BigDecimal(0.00);
+					  	 expenditure=new BigDecimal(0.00);
+					  	 balance=new BigDecimal(0.00);
+				  %>
 				  <tbody>
 				    <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> 178</td>
-				      <td><span style="color:green">&#8377;</span> 874</td>
-				      <td><span style="color:green">&#8377;</span> 1546.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> 486</td>
-				      <td><span style="color:green">&#8377;</span> 797</td>
-				      <td><span style="color:green">&#8377;</span> 452.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green"><span style="color:green">&#8377;</span></span> 152</td>
-				      <td><span style="color:green">&#8377;</span> 865</td>
-				      <td><span style="color:green">&#8377;</span> 163.4</td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
 				    </tr>
+				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> 1056</td>
-				      <td><span style="color:green">&#8377;</span> 2661</td>
-				      <td><span style="color:green">&#8377;</span> 2620.5</td>
+				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
+				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
 				  </tbody>
 				</table>

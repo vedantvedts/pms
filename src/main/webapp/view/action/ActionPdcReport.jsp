@@ -173,12 +173,13 @@ h6{
 													<thead>
 
 														<tr>
-															<th>SN</th>
-															<th>Action Id</th>	
-															<th >PDC</th>																							
-														 	<th >Assignee</th>	
-														 	<th >Assigner</th>				 	
-														 	<th >Status</th>
+															<th> SN </th>
+															<th> Action Id </th>	
+															<th> PDC </th>																							
+														 	<th> Assigner</th>	
+														 	<th> Assignee </th>				 	
+														 	<th> Status </th>
+														 	<th> Progress </th>
 														</tr>
 													</thead>
 													<tbody>
@@ -196,6 +197,7 @@ h6{
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
+																	             <input type="hidden" name="ActionAssignId" value="<%=obj[12]%>"/>
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			
 																			</form> 
@@ -203,18 +205,29 @@ h6{
 																		<td><%=sdf.format(obj[6])%></td>																		
 																		<td><%=obj[1]%>, <%=obj[2]%></td>
 																	  	<td> <%=obj[3]%>, <%=obj[4]%></td>
-																		<td> <%=obj[5]%></td>
+																		<td> 
+																				<%if(obj[5]!=null && "N".equalsIgnoreCase(obj[5].toString())){%>
+																						Assigned 
+																				<%}else if(obj[5]!=null && "F".equalsIgnoreCase(obj[5].toString())){%>
+																						Forward
+																				<%}else if(obj[5]!=null && "B".equalsIgnoreCase(obj[5].toString())){%>
+																						Send Back
+																				<%}else if(obj[5]!=null && "Y".equalsIgnoreCase(obj[5].toString())){%>
+																						Completed
+																				<%}%>	
+																		</td>
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[11]%>
-															            </div> 
-															            </div> <%}else{ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-															             Not Yet Started .
-															            </div>
-															            </div> <%} %></td>				
+																            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																	            <%=obj[11]%>
+																	            </div> 
+																            </div> <%}else{ %>
+																            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																	            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																	             Not Yet Started .
+																	            </div>
+																            </div> <%} %>
+															            </td>				
 																	</tr>
 																<% count++;
 																	}									   					

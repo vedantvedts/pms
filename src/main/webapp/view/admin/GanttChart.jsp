@@ -158,6 +158,8 @@ h6{
 								    		   	baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>", 
 								    		    <%}%>
+								    		    baselineStart: "<%=obj[6]%>",
+								    		    baselineEnd: "<%=obj[7]%>", 
 								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",

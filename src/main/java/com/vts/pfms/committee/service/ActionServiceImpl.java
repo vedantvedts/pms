@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -1002,5 +1003,93 @@ public class ActionServiceImpl implements ActionService {
 	public List<Object[]> ActionSubList(String assignid) throws Exception 
 	{
 		return dao.ActionSubList(assignid);
+	}
+	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		return dao.ActionAssignDataAjax(assignid);
+	}	
+	@Override
+	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception 
+	{
+		try {
+			logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard ");
+			long success=1;
+			long unsuccess=0;
+			Object[] lab=null;
+			int count=0;
+			String ProjectCode=null;
+			try
+			{
+				lab=dao.LabDetails();
+				count=dao.ActionGenCount(main.getProjectId());
+				
+			}
+			catch (Exception e) 
+			{
+				logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard ",e);	
+				return unsuccess;
+			}
+			
+			ActionMain actionmain=new ActionMain();
+				actionmain.setActionLinkId(unsuccess);
+				actionmain.setMainId(0l);
+				actionmain.setActivityId(Long.parseLong(main.getActivityId()));
+				actionmain.setActionType(main.getActionType());
+				actionmain.setType(main.getType());
+				actionmain.setActionItem(main.getActionItem());
+				java.util.Date date = new java.util.Date();
+				java.util.Date sqlDate = new Date(date.getTime());
+				actionmain.setActionDate(sqlDate);
+				actionmain.setCategory(main.getCategory());
+				actionmain.setPriority(main.getPriority());
+				actionmain.setProjectId(0l);
+				actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
+				actionmain.setCreatedBy(main.getCreatedBy());
+				actionmain.setCreatedDate(sdf1.format(new Date()));
+				actionmain.setIsActive(1);
+				actionmain.setParentActionId(0l);
+				actionmain.setActionLevel(1l);
+			long result=dao.ActionMainInsert(actionmain);
+			
+			if(result>0) {
+			ActionAssign actionassign = new ActionAssign();
+				
+			count=count+1;
+			
+			if(lab!=null && main.getLabName()!=null) {
+		    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString());
+			     actionassign.setActionNo(main.getLabName()+"/GEN/"+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+			}else {
+				return unsuccess;
+			}
+			
+			actionassign.setEndDate(assign.getEndDate());
+			actionassign.setActionMainId(result);
+			actionassign.setPDCOrg(assign.getPDCOrg());
+			actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+			actionassign.setAssignee(assign.getAssignee());
+			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+			actionassign.setAssignor(assign.getAssignor());
+			actionassign.setRevision(assign.getRevision());
+			actionassign.setActionFlag(assign.getActionFlag());		
+			actionassign.setActionStatus(assign.getActionStatus());
+			actionassign.setCreatedBy(main.getCreatedBy());
+			actionassign.setCreatedDate(sdf1.format(new Date()));
+			actionassign.setIsActive(1);
+			long assignid=  dao.ActionAssignInsert(actionassign);
+					
+			}
+			if(result>0) {
+				return success;
+			}else {
+				return unsuccess;
+			}
+		} catch (Exception e) {
+			logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard "+ e);	
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

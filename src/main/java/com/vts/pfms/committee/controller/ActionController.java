@@ -88,7 +88,7 @@ public class ActionController {
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ActionLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
@@ -107,6 +107,12 @@ public class ActionController {
 				req.setAttribute("ProjectData", projectdata);
 			}
 			
+			String onboard=req.getParameter("Onboarding");
+			if(onboard==null) {
+				Map md=model.asMap();
+				onboard=(String)md.get("Onboard");
+			}
+			req.setAttribute("Onboarding", onboard);
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));  
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
@@ -827,7 +833,7 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
-			mainDto.setScheduleMinutesId(req.getParameter("ScheduleId"));
+			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("Priority"));
 			mainDto.setCategory(req.getParameter("Category"));
@@ -2216,6 +2222,24 @@ public class ActionController {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ActionSubListAjax.htm "+UserId, e);
 			ActionSubList=new ArrayList<>();
+		}
+		return json.toJson(ActionSubList);
+	}
+	
+	@RequestMapping(value = "ActionAssignDataAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionAssignDataAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionAssignDataAjax.htm "+UserId);	
+		Object[] ActionSubList =null;
+		try {
+			
+			ActionSubList =   service.ActionAssignDataAjax(req.getParameter("ActionAssignid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionAssignDataAjax.htm "+UserId, e);
 		}
 		return json.toJson(ActionSubList);
 	}

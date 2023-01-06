@@ -83,4 +83,5 @@ public interface ActionDao {
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	public List<Object[]> ActionSubList(String assignid) throws Exception;
 	public List<Object[]> ActionSubLevelsListForClose(String ActionAssignId) throws Exception;
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
  }

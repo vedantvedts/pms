@@ -1992,11 +1992,16 @@ public class ProjectController
 
 
 	@RequestMapping(value ="ProjectMain.htm")
-	public String ProjectMain(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ProjectMain(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectMain.htm "+Username);
 	try {
-		
+		 String onboard=req.getParameter("Onboarding");
+			if(onboard==null) {
+				Map md=model.asMap();
+				onboard=(String)md.get("Onboard");
+			}
+		req.setAttribute("Onboarding", onboard);
 		req.setAttribute("ProjectMainList", service.ProjectMainList());
 		
 	}catch (Exception e) {
@@ -3607,7 +3612,7 @@ public class ProjectController
 				projectid="0";
 			}
 			
-			List<Object[]> issuedatalist=service.GetIssueList(projectid, LabCode);
+			List<Object[]> issuedatalist=service.GetIssueList(projectid,"", LabCode);
 			
 			req.setAttribute("issuedatapresentlist",service.IsuueDataPresentList(projectid,LabCode));
 			req.setAttribute("issuedatalist", issuedatalist);
@@ -3641,14 +3646,14 @@ public class ProjectController
 			}
 			List<Object[]> projectlist=service.getProjectList();
 				
-			Object[] riskdata=service.ProjectRiskData(actionmainid);
-			String projectid=riskdata[2].toString();
+			//Object[] riskdata=service.ProjectRiskData(actionmainid);
+			//String projectid=riskdata[2].toString();
 			
 			req.setAttribute("projectriskmatrixrevlist",service.ProjectRiskMatrixRevList(actionmainid));
 			req.setAttribute("riskmatrixdata",service.ProjectRiskMatrixData(actionmainid));
 			req.setAttribute("risktypelist",service.RiskTypeList());
-			req.setAttribute("riskdata", riskdata);
-			req.setAttribute("projectid", projectid);
+			//req.setAttribute("riskdata", riskdata);
+			//req.setAttribute("projectid", projectid);
 			req.setAttribute("projectlist", projectlist);
 			
 			return "Issue/IssueUpdate";

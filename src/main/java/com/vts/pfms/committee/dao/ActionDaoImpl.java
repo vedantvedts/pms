@@ -48,7 +48,7 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String SCHEDULELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag ,d.assigneelabcode FROM  action_main a, employee b ,employee_desig c ,action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignee=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND a.scheduleminutesid=:schid";
     private static final String CONTENT="SELECT a.actionmainid,b.details,b.minutesid,b.minutessubid,b.minutessubofsubid,b.minutesunitid,b.idarck FROM action_main a, committee_schedules_minutes_details b WHERE a.scheduleminutesid=b.scheduleminutesid AND a.actionmainid=:aid";
     private static final String ACTIONSEARCH="SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname',dc.designation FROM action_main a,  employee ab ,employee_desig dc,action_assign  aas WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionno LIKE :actionno";
-    private static final String STATUSLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'emp',c.designation,a.actiondate,f.enddate,a.actionitem,f.actionstatus,f.actionflag, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'emps',e.designation AS desig,f.actionno,a.actionlinkid,(SELECT g.progress FROM action_sub g  WHERE g.actionassignid = f.actionassignid AND g.actionsubid = (SELECT MAX(s.actionsubid) FROM action_sub s WHERE s.actionassignid = f.actionassignid) )  AS progress , f.actionassignid  FROM  action_main a, employee b ,employee_desig c, employee d ,employee_desig e ,action_assign f WHERE a.actionmainid = f.actionmainid  AND f.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND f.assignee=d.empid AND d.isactive='1' AND d.desigid=e.desigid AND f.assignee=:empid AND a.actiondate BETWEEN :fdate AND :tdate";
+    private static final String STATUSLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'assignoremp',c.designation,a.actiondate,f.enddate,a.actionitem,f.actionstatus,f.actionflag, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assigneemp',e.designation AS desig,f.actionno,a.actionlinkid,(SELECT g.progress FROM action_sub g  WHERE g.actionassignid = f.actionassignid AND g.actionsubid = (SELECT MAX(s.actionsubid) FROM action_sub s WHERE s.actionassignid = f.actionassignid) )  AS progress , f.actionassignid  FROM  action_main a, employee b ,employee_desig c, employee d ,employee_desig e ,action_assign f WHERE a.actionmainid = f.actionmainid  AND f.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND f.assignee=d.empid AND d.isactive='1' AND d.desigid=e.desigid AND f.assignee=:empid AND a.actiondate BETWEEN :fdate AND :tdate ORDER BY a.actionmainid DESC";
 	private static final String LABDETAILS = "select * from lab_master"; 
     private static final String ACTIONGENCOUNT="SELECT COUNT(*) FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND (CASE WHEN :projectid=0 THEN a.projectid=:projectid AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(a.actiondate, \"%Y\") ELSE a.projectid=:projectid END ) AND a.isactive='1'";
 	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno FROM action_assign WHERE actionassignid=:assignid";
@@ -412,7 +412,6 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query=manager.createNativeQuery(ACTIONWISE);
 		query.setParameter("term",Term);
-		System.out.println("ProjectId    : "+ProjectId);
 		query.setParameter("ProjectId",ProjectId);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -802,13 +801,23 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
 		return ActionSubLevelsList;
 	 }
-	 private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
-	 
-	 @Override
-		public List<Object[]> ActionSubList(String assignid) throws Exception {
-			Query query=manager.createNativeQuery(ACTIONSUBLIST);
-			query.setParameter("assignid", assignid);
-			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
-			return AssignedList;
-		}
+	private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	
+	@Override
+	public List<Object[]> ActionSubList(String assignid) throws Exception {
+		Query query=manager.createNativeQuery(ACTIONSUBLIST);
+		query.setParameter("assignid", assignid);
+		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+		return AssignedList;
+	}
+	
+	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,(SELECT asub.progress FROM action_sub asub WHERE createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=aas.actionassignid) AND asub.ActionAssignId = aas.ActionAssignId ) AS 'progress',am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name', CONCAT(IFNULL(asi.title,''), asi.empname) AS 'assignee name',am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus',aas.ActionFlag FROM action_main am, action_Assign aas, employee asn, employee asi WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.assignee= asi.empid AND aas.actionassignid=:assignid";
+	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		Query query=manager.createNativeQuery(ACTIONASSIGNDATAAJAX);
+		query.setParameter("assignid", assignid);
+		return (Object[])query.getResultList().get(0);	
+	}
 }

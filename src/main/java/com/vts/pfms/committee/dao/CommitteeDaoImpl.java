@@ -528,6 +528,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("minutesid", committeescheduleminutesdetails.getMinutesId());
 		query.setParameter("agendasubid", committeescheduleminutesdetails.getMinutesSubId());
 		query.setParameter("scheduleagendaid", committeescheduleminutesdetails.getMinutesSubOfSubId());
+		
 		Object[] CommitteeMinutesSpecDesc=(Object[])query.getSingleResult();		
 		return CommitteeMinutesSpecDesc;
 	}
@@ -2521,7 +2522,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
-		System.out.println( scheduleid+"   "+committeeid+"   "+ proid+"   "+isFrozen);
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
 		query.setParameter("scheduleid", scheduleid);
 		query.setParameter("committeeid",committeeid);

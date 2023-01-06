@@ -785,8 +785,6 @@ td
 		</div>
 	</div>
 
-
-
 <!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
 
 
@@ -812,9 +810,8 @@ $(function () {
 
 <script type="text/javascript">
 
-	function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg,
-							InAssignor,InAssignee, InActionType	)
-	{
+function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg, InAssignor,InAssignee, InActionType	)
+{
 		$("#modal_progress_table").DataTable().destroy();
 		$.ajax({		
 			type : "GET",
