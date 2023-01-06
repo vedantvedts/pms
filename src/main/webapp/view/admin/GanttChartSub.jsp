@@ -135,12 +135,13 @@ h6{
 								    		    id: "<%=obj[0]%>",
 								    		    name: "<%=obj[2]%>",
 								    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-								    		    baselineStart: "<%=obj[5]%>",
-								    		    baselineEnd: "<%=obj[6]%>",
-								    		    <%}%>
+								    		    baselineStart: "<%=obj[3]%>",
+								    		    baselineEnd: "<%=obj[4]%>",
 								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-								    		    actualStart: "<%=obj[3]%>",
-								    		    actualEnd: "<%=obj[4]%>",
+								    		    <%}%>
+								    		    
+								    		    actualStart: "<%=obj[5]%>",
+								    		    actualEnd: "<%=obj[6]%>",
 								    		    actual: {fill: "red", stroke: "0.8 #150e56"},
 								    		    progressValue: "<%= Math.round((int)obj[7])%>%",
 								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
@@ -155,13 +156,14 @@ h6{
 								    		   			{
 											    		    id: "<%=obj[0]%>_<%=objA[0]%>",
 											    		    name: "<%=objA[2]%>",
-											    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-											    		    baselineStart: "<%=obj[5]%>",
-											    		    baselineEnd: "<%=obj[6]%>",
-											    		    <%}%>
+											    		    <%if(!objA[8].toString().equalsIgnoreCase("0")){%>
+											    		    baselineStart: "<%=objA[3]%>",
+											    		    baselineEnd: "<%=objA[4]%>",
 											    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-											    		    actualStart: "<%=objA[3]%>",
-											    		    actualEnd: "<%=objA[4]%>",
+											    		    <%}%>
+											    		    
+											    		    actualStart: "<%=objA[5]%>",
+											    		    actualEnd: "<%=objA[6]%>",
 											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 											    		    progressValue: "<%= Math.round((int)objA[7])%>%",
 											    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
@@ -176,13 +178,14 @@ h6{
 												    		   			{
 															    		    id: "<%=objA[0]%>_<%=objB[0]%>",
 															    		    name: "<%=objB[2]%>",
-															    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-															    		    baselineStart: "<%=obj[5]%>",
-															    		    baselineEnd: "<%=obj[6]%>",
-															    		    <%}%>
+															    		    <%if(!objB[8].toString().equalsIgnoreCase("0")){%>
+															    		    baselineStart: "<%=objB[3]%>",
+															    		    baselineEnd: "<%=objB[4]%>",
 															    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-															    		    actualStart: "<%=objB[3]%>",
-															    		    actualEnd: "<%=objB[4]%>",
+															    		    <%}%>
+															    		    
+															    		    actualStart: "<%=objB[5]%>",
+															    		    actualEnd: "<%=objB[6]%>",
 															    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 															    		    progressValue: "<%= Math.round((int)objB[7])%>%",
 															    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
@@ -196,13 +199,14 @@ h6{
 																    		   			{
 																			    		    id: "<%=objB[0]%>_<%=objC[0]%>",
 																			    		    name: "<%=objC[2]%>",
-																			    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-																			    		    baselineStart: "<%=obj[5]%>",
-																			    		    baselineEnd: "<%=obj[6]%>",
-																			    		    <%}%>
+																			    		    <%if(!objC[8].toString().equalsIgnoreCase("0")){%>
+																			    		    baselineStart: "<%=objC[3]%>",
+																			    		    baselineEnd: "<%=objC[4]%>",
 																			    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																			    		    actualStart: "<%=objC[3]%>",
-																			    		    actualEnd: "<%=objC[4]%>",
+																			    		    <%}%>
+																			    		    
+																			    		    actualStart: "<%=objC[5]%>",
+																			    		    actualEnd: "<%=objC[6]%>",
 																			    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																			    		    progressValue: "<%= Math.round((int)objC[7])%>%",
 																			    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
@@ -216,13 +220,14 @@ h6{
 																				    		   			{
 																							    		    id: "<%=objC[0]%>_<%=objD[0]%>",
 																							    		    name: "<%=objD[2]%>",
-																							    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-																							    		    baselineStart: "<%=obj[5]%>",
-																							    		    baselineEnd: "<%=obj[6]%>",
-																							    		    <%}%>
+																							    		    <%if(!objD[8].toString().equalsIgnoreCase("0")){%>
+																							    		    baselineStart: "<%=objD[3]%>",
+																							    		    baselineEnd: "<%=objD[4]%>",
 																							    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																							    		    actualStart: "<%=objD[3]%>",
-																							    		    actualEnd: "<%=objD[4]%>",
+																							    		    <%}%>
+																							    		    
+																							    		    actualStart: "<%=objD[5]%>",
+																							    		    actualEnd: "<%=objD[6]%>",
 																							    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																							    		    progressValue: "<%= Math.round((int)objD[7])%>%",
 																							    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
@@ -236,21 +241,18 @@ h6{
 																								    		   			{
 																											    		    id: "<%=objD[0]%>_<%=objE[0]%>",
 																											    		    name: "<%=objE[2]%>",
-																											    		    <%if(!obj[8].toString().equalsIgnoreCase("0")){%>
-																											    		    baselineStart: "<%=obj[5]%>",
-																											    		    baselineEnd: "<%=obj[6]%>",
-																											    		    <%}%>
+																											    		    <%if(!objE[8].toString().equalsIgnoreCase("0")){%>
+																											    		    baselineStart: "<%=objE[3]%>",
+																											    		    baselineEnd: "<%=objE[4]%>",
 																											    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
-																											    		    actualStart: "<%=objE[3]%>",
-																											    		    actualEnd: "<%=objE[4]%>",
+																											    		    <%}%>
+																											    		    
+																											    		    actualStart: "<%=objE[5]%>",
+																											    		    actualEnd: "<%=objE[6]%>",
 																											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																											    		    progressValue: "<%= Math.round((int)objE[7])%>%",
 																											    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
 																											    		    rowHeight: "35",
-																											    		    
-																											    		    
-																											    		    
-																											    		    
 																											    		    
 																								    		   			},
 																								    		    	<%}%>
@@ -355,18 +357,18 @@ h6{
 								        
 								        
 								        <%if(ProjectId!=null){
-												Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
-												%>
+											Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
+										%>
 
-								        /* Title */
-								        
-								        var title = chart.title();
-										title.enabled(true);
-										title.text("<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) Gantt Chart");
-										title.fontColor("#64b5f6");
-										title.fontSize(18);
-										title.fontWeight(600);
-										title.padding(5);
+									        /* Title */
+									        
+									        var title = chart.title();
+											title.enabled(true);
+											title.text("<%=ProjectDetail[2] %> ( <%=ProjectDetail[1] %> ) Gantt Chart");
+											title.fontColor("#64b5f6");
+											title.fontSize(18);
+											title.fontWeight(600);
+											title.padding(5);
 								        
 										<%} %>
 										
@@ -603,7 +605,6 @@ h6{
 						
 						</div>
 					
-						<div class="card-footer" align="right">&nbsp;</div>
 				</div>
 					
 		

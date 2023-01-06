@@ -136,7 +136,6 @@ h6{
 						
 						</div>
 					
-						<div class="card-footer" align="right">&nbsp;</div>
 				</div>
 					
 		
