@@ -382,7 +382,11 @@
 }
 
 .card-deck-table tr td{
-	padding: 10px 0px !important;
+	padding: 0px 0px !important;
+}
+
+.border-orange{
+	border-color: #EE5007 !important;
 }
 
 @media screen and (min-width:1100px) and (max-width:1500px){
@@ -424,7 +428,7 @@
 	}
 	
 	.bigcount p{
-		margin-bottom: 5px !important;
+		margin-bottom: 0px !important;
 	}
 	
 	.countstable tbody {
@@ -470,6 +474,9 @@
 	}
 	
 
+.textfont{
+	font-size: 12px !important;
+}
 
 </style>
 
@@ -2318,23 +2325,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[29] )%>'>
+		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[30] )%>'>
 			          <span class="progress-left">
-			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
+			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[30].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=100)){%> border-danger <%}%>
 																"></span>             
 			          </span>
 			          <span class="progress-right">
-			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
+			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[30].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[29] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[30] )%>%</div>
 			          </div>
 			        </div>
 			        <div><h6 style="margin-bottom: 5px">PMRC</h6></div>
@@ -2347,23 +2354,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        </table>
 		      	</div>
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress" data-value='<%=(ProjectHealthTotalData[31] )%>'>
+		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[32] )%>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=100)){%> border-success <%}%>
-																"></span>   
+			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[32].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=100)){%> border-danger <%}%>
+																"></span>             
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=100)){%> border-success <%}%>
+			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[32].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[31] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[32] )%>%</div>
 			          </div>
 			        </div>
 			        <div><h6 style="margin-bottom: 5px">EB</h6></div>
@@ -2385,35 +2392,35 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[44] !=null){%><%=ProjectHealthTotalData[44] %><%} %>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[10].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[44].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[10].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[44].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>%</span></div>
+			            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[44] !=null){%><%=ProjectHealthTotalData[44] %><%} %>%</span></div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[8] %><%} %></h1>
-		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
+		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
-		      		<br>
+		      		
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
@@ -2421,16 +2428,16 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Pending" > <span class="yellow" style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Delayed"  ><span class="red" style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Pending" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Delayed"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
 				  	</tr>
 				  </thead>
-				 <!--  <tbody>
+				  <tbody>
 				  	<tr>
-				  		<th scope="col" style="border-right:1px solid darkgrey;" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      	<th scope="col" ><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				  		<th scope="col" class="textfont" style="border-right:1px solid darkgrey;" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      	<th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody> -->
+				  </tbody> 
 			</table>
 		  </div>
 		  <div class="card detailscard">
@@ -2439,35 +2446,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[34] !=null){%><%=ProjectHealthTotalData[34] %><%} %>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[34].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[34].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[34] !=null){%><%=ProjectHealthTotalData[34] %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[14] %><%} %></h1>
-		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
+		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%} %></h1>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
-		      		<br>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=ProjectHealthTotalData[15] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
@@ -2475,18 +2481,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%><span class="yellow " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%><span class="blue " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%><span class="red " style="vertical-align: text-top;" >&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
 				  	</tr>
 				  </thead>
-				  <!-- <tbody>
+				  <tbody>
 				  	<tr>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
-				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
+				      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody> -->
+				  </tbody>
 			</table>
 		  </div>
 		  <div class="card detailscard">
@@ -2495,35 +2501,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[38] !=null){%><%=ProjectHealthTotalData[38] %><%} %>'>
 			          <span class="progress-left">
-			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=100)){%> border-success <%}%>
+			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[38].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=100)){%> border-danger <%}%>
 																"></span>  
 			          </span>
 			          <span class="progress-right">
-			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=100)){%> border-success <%}%>
+			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[38].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=100)){%> border-danger <%}%>
 																"></span>  
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[38] !=null){%><%=ProjectHealthTotalData[38] %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
-		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><span class="green legend-shadow" style="font-size: 16px;vertical-align: middle ">&#x220E;</span> <%=ProjectHealthTotalData[16] %><%} %></h1>
-		      			<!-- <p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p> -->
+		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
-		      		<br>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
@@ -2531,29 +2536,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><span class="yellow" style="vertical-align: text-top;">&#x220E;</span> &nbsp;0</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%><span class="red " style="vertical-align: text-top;">&#x220E;</span> &nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;0</td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
 				  	</tr>
 				  </thead>
-				 <!--  <tbody>
+				 <tbody>
 				  	<tr>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				      <th scope="col" class="textfont"style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody> -->
+				  </tbody> 
 			</table>
 		  </div>
-		  <div class="card detailscard">
+		   <div class="card detailscard">
 		    <div class="card-body">
-		      <h5 class="card-title"><img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span></h5>
+		    	<div style="display: inline-flex">
+			      <h5 class="card-title" style="margin-bottom: 8px !important">
+							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+				  </h5>
+				 <!--  <form action="ProjectHoaUpdate.htm" method="get">
+								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+				 </form> -->
+			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				     	<form action="ProjectHoaUpdate.htm" method="get">
-							<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-						</form>
+				     	22-23
 				      </th>
 				      <th scope="col">Allot</th>
 				      <th scope="col">Exp</th>
@@ -2589,7 +2599,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				</table>
 	
 			   </div>
-		  	</div>	 
+		  	</div>	 s 
 		</div>
 
 		<div class="card" style="background: transparent;margin-top:5px" >
@@ -3003,67 +3013,67 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 		<div class="container-fluid">
 	
-		<div class="card-deck" style="margin-top: -20px">
+		<div class="card-deck" style="margin-top: -20px;" >
 		  <div class="card detailscard">
 		    <div class="card-body">
 		      <h5 class="card-title"><img src="view/images/discuss.png" /> Meeting</h5>
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress " data-value='<%=(ProjectHealthTotalData[29] )%>'>
+		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[30] )%>'>
 			          <span class="progress-left">
-			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
+			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[30].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=100)){%> border-danger <%}%>
 																"></span>             
 			          </span>
 			          <span class="progress-right">
-			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
+			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[30].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[29] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[30] )%>%</div>
 			          </div>
 			        </div>
-			        <div><h5 style="margin-bottom: 5px">PMRC</h5></div>
-			        <hr>
+			        <div><h6 style="margin-bottom: 5px">PMRC</h6></div>
+			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<td>Held : </td>
-			        		<td><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<td style="font-size: 13px">Held: </td>
+			        		<td style="font-size: 13px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
 			        	</tr>
 			        </table>
 		      	</div>
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress" data-value='<%=(ProjectHealthTotalData[31] )%>'>
+		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[32] )%>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=100)){%> border-success <%}%>
-																"></span>   
+			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[32].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=100)){%> border-danger <%}%>
+																"></span>             
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[31].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[31].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[31].toString())<=100)){%> border-success <%}%>
+			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[32].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[32].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[32].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%=(ProjectHealthTotalData[31] )%>%</div>
+			            <div class="h4 font-weight-bold" id="pmrcprogress" ><%=(ProjectHealthTotalData[32] )%>%</div>
 			          </div>
 			        </div>
-			        <div><h5 style="margin-bottom: 5px">EB</h5></div>
-			        <hr>
+			        <div><h6 style="margin-bottom: 5px">EB</h6></div>
+			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
-				        		<td>Held : </td>
-				        		<td><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<td style="font-size: 13px">Held: </td>
+				        		<td style="font-size: 13px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -3077,51 +3087,52 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[44] !=null){%><%=ProjectHealthTotalData[44] %><%} %>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[10].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[44].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[10].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[10].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[10].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[44].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[44].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[44].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[10] !=null){%><%=ProjectHealthTotalData[10] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><span id="milestonepercentage"><%if(ProjectHealthTotalData[44] !=null){%><%=ProjectHealthTotalData[44] %><%} %>%</span></div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
 		      			<h1><%if(ProjectHealthTotalData[8] !=null){%><%=ProjectHealthTotalData[8] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
+		      		
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[9] !=null){%><%=ProjectHealthTotalData[9] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" ><%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-				  		<td ><%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Pending" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Delayed"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
 				  	<tr>
-				  		<th scope="col" style="border-right:1px solid darkgrey;" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      	<th scope="col" ><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				  		<th scope="col" class="textfont" style="border-right:1px solid darkgrey;" ><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      	<th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody>
+				  </tbody> 
 			</table>
 		  </div>
 		  <div class="card detailscard">
@@ -3130,51 +3141,51 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[34] !=null){%><%=ProjectHealthTotalData[34] %><%} %>'>
 			          <span class="progress-left">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[34].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <span class="progress-right">
-			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[37].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[37].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[37].toString())<=100)){%> border-success <%}%>
+			                        <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[34].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[34].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[34].toString())<=100)){%> border-danger <%}%>
 																"></span>   
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[37] !=null){%><%=ProjectHealthTotalData[37] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[34] !=null){%><%=ProjectHealthTotalData[34] %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
 		      			<h1><%if(ProjectHealthTotalData[14] !=null){%><%=ProjectHealthTotalData[14] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[15] !=null){%><%=ProjectHealthTotalData[15] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[13] !=null){%><%=ProjectHealthTotalData[13] %><%} %></td>
-				  		<td style="border-right:1px solid darkgrey;"><%if(ProjectHealthTotalData[12] !=null){%><%=ProjectHealthTotalData[12] %><%} %></td>
-				  		<td><%if(ProjectHealthTotalData[11] !=null){%><%=ProjectHealthTotalData[11] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
 				  	<tr>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
-				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      <th scope="col" class="textfont" style="border-right:1px solid darkgrey;"><span class="blue">&#x220E;</span> &nbsp;Forwarded</th>
+				      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
 				  </tbody>
 			</table>
@@ -3185,62 +3196,70 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>'>
+		      		<div class="progress " data-value='<%if(ProjectHealthTotalData[38] !=null){%><%=ProjectHealthTotalData[38] %><%} %>'>
 			          <span class="progress-left">
-			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=100)){%> border-success <%}%>
+			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[38].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=100)){%> border-danger <%}%>
 																"></span>  
 			          </span>
 			          <span class="progress-right">
-			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[39].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=50)){%> border-warning<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=75)){%> border-primary <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[39].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[39].toString())<=100)){%> border-success <%}%>
+			                         <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[38].toString())<=25){%> border-success<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=50)){%> border-warning<%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=75)){%> border-orange <%}%>
+																								   <%if( (Integer.parseInt(ProjectHealthTotalData[38].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[38].toString())<=100)){%> border-danger <%}%>
 																"></span>  
 			          </span>
 			          <div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[39] !=null){%><%=ProjectHealthTotalData[39] %><%} %>%</div>
+			            <div class="h4 font-weight-bold"><%if(ProjectHealthTotalData[38] !=null){%><%=ProjectHealthTotalData[38] %><%} %>%</div>
 			          </div>
 			     	</div>
 		      	</div>
 		      	<div class="col-md-6">
 		      		<div class="bigcount">
 		      			<h1><%if(ProjectHealthTotalData[16] !=null){%><%=ProjectHealthTotalData[16] %><%} %></h1>
-		      			<p class="normalfont"><span class="green">&#x220E;</span> &nbsp;Completed</p>
+		      			<p class="textfont"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p>
 		      		</div>
 		      		<div class="bigcount">
 		      			<h4><%if(ProjectHealthTotalData[18] !=null){%><%=ProjectHealthTotalData[18] %><%} %></h4>
-		      			<p class="normalfont">Total</p>
+		      			<p class="textfont">Total</p>
 		      		</div>
 		      	</div>
 		      </div>
 		    </div>
-		    <table class="countstable" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
+		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;">-</td>
-				  		<td><%if(ProjectHealthTotalData[17] !=null){%><%=ProjectHealthTotalData[17] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;0</td>
+				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
 				  	</tr>
 				  </thead>
-				  <tbody>
+				 <tbody>
 				  	<tr>
-				      <th scope="col" style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
-				      <th scope="col"><span class="red">&#x220E;</span> &nbsp;Pending</th>
+				      <th scope="col" class="textfont"style="border-right:1px solid darkgrey;"><span class="yellow">&#x220E;</span> &nbsp;Delayed</th>
+				      <th scope="col" class="textfont"><span class="red">&#x220E;</span> &nbsp;Pending</th>
 				    </tr>
-				  </tbody>
+				  </tbody> 
 			</table>
 		  </div>
 		  <div class="card detailscard">
 		    <div class="card-body">
-		      <h5 class="card-title"><img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span></h5>
-		      <hr>
-	
-				<table class="table countstable financetable" >
+		    	<div style="display: inline-flex">
+			      <h5 class="card-title" style="margin-bottom: 8px !important">
+							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+				  </h5>
+				  <!-- <form action="ProjectHoaUpdate.htm" method="get">
+								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+				 </form> -->
+			   </div>
+		      <hr style="margin:3px 10px !important">
+				<table class="table  financetable" >
 				  <thead>
 				    <tr>
-				      <th scope="col"></th>
+				      <th scope="col">
+				     	22-23
+				      </th>
 				      <th scope="col">Allot</th>
 				      <th scope="col">Exp</th>
 				      <th scope="col">Bal</th>
@@ -3248,40 +3267,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  </thead>
 				  <tbody>
 				    <tr>
-				      <th scope="row">Cap</th>
-				      <td>&#8377; 178</td>
-				      <td>&#8377; 874</td>
-				      <td>&#8377; 1546.4</td>
+				      <th scope="row">Capital</th>
+				      <td><span style="color:green">&#8377;</span> 178</td>
+				      <td><span style="color:green">&#8377;</span> 874</td>
+				      <td><span style="color:green">&#8377;</span> 1546.4</td>
 				    </tr>
 				    <tr>
-				      <th scope="row">Rev</th>
-				      <td>&#8377; 486</td>
-				      <td>&#8377; 797</td>
-				      <td>&#8377; 452.4</td>
+				      <th scope="row">Revenue</th>
+				      <td><span style="color:green">&#8377;</span> 486</td>
+				      <td><span style="color:green">&#8377;</span> 797</td>
+				      <td><span style="color:green">&#8377;</span> 452.4</td>
 				    </tr>
 				    <tr>
-				      <th scope="row">Misc</th>
-				      <td>&#8377; 240</td>
-				      <td>&#8377; 125</td>
-				      <td>&#8377; 458.4</td>
+				      <th scope="row">Others</th>
+				      <td><span style="color:green"><span style="color:green">&#8377;</span></span> 152</td>
+				      <td><span style="color:green">&#8377;</span> 865</td>
+				      <td><span style="color:green">&#8377;</span> 163.4</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td>&#8377; 904</td>
-				      <td>&#8377; 1796</td>
-				      <td>&#8377; 2457.1</td>
+				      <td><span style="color:green">&#8377;</span> 1056</td>
+				      <td><span style="color:green">&#8377;</span> 2661</td>
+				      <td><span style="color:green">&#8377;</span> 2620.5</td>
 				    </tr>
 				  </tbody>
 				</table>
-			
-			
-			
-			   </div>
-		    
-			
-			
-		  </div>	 
 	
+			   </div>
+		  	</div>	 
 		</div>
 		</div>
 		

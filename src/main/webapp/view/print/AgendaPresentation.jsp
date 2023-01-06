@@ -120,7 +120,7 @@
 			<div class="carousel-item">
 
 				<div class="content-header  ">
-					<h3>Agendas
+					<h3>Agenda
 					
 					<form  action="#" method="post" id="myfrm" target="_blank" style="float: right;margin-right: 5px;">
 					
@@ -156,8 +156,8 @@
 			                    	<th style="width: 5%;">SN</th>
 			                       	<th style="width: 25%;">Agenda Item</th> 
 			                       	<th style="width: 15%;">Reference</th>
-			                       	<th style="width: 25%;">Remarks</th>
-			                       	<th style="width: 13%;">Presenter</th>
+			                       	<th style="width: 13%;">Remarks</th>
+			                       	<th style="width: 25%;">Presenter</th>
 			                       	<th style="width: 7%;">Duration (Mins)</th>
 			                       	<th style="width: 10%;">Attachment</th>
 			                    </tr>
@@ -209,7 +209,7 @@
 
 		<ol class="carousel-indicators">
 			<li data-target="#presentation-slides" data-slide-to="0" class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
-			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Agendas"><b>1</b></li>
+			<li data-target="#presentation-slides" data-slide-to="1" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Agenda"><b>1</b></li>
 		</ol>
 	</div>
 
