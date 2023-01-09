@@ -530,7 +530,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</td>
 									<td style="border: 0 "> 
 										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;">
-											<img alt="" src="view/images/presentation.png">
+											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 									</td>
 									
@@ -946,6 +946,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								  
 		  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
+					
 					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 						<thead>
 							<tr>
@@ -1124,8 +1125,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</tbody>
 							</table>
 							</div>
-						<% if(t>20) {%>
-						<div align="left" style="max-width:300px; float:right; ;">
+							<% if(t>20) {%>
+							<div align="left" style="max-width:300px; float:right; ;">
 								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
 									<thead>
 										<tr>
@@ -1156,7 +1157,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</tbody>
 							</table>
 							</div>
-			</div>
+						
+						</div>
 															
 					<%} %>
 			
@@ -1587,18 +1589,18 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</tr>
 							
 											<tr>
-												<th style="width: 15px;text-align: center " rowspan="3">SN</th>
+												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
 												<th style="width: 330px; "  colspan="3">Risk</th>
-												<th style="width: 100px; " rowspan="2" > PDC</th>
-												<th style="width: 100px; " rowspan="2"> ADC</th>
-												<th style="width: 160px; " rowspan="2"> Responsibility</th>
-												<th style="width: 50px; " rowspan="2">Status(DD)</th>
-												<th style="width: 215px;" rowspan="2">Remarks</th>	
+												<th style="width: 100px; " rowspan="1" > PDC</th>
+												<th style="width: 100px; " rowspan="1"> ADC</th>
+												<th style="width: 160px; " rowspan="1"> Responsibility</th>
+												<th style="width: 50px; " rowspan="1">Status(DD)</th>
+												<th style="width: 215px;" rowspan="1">Remarks</th>	
 											</tr>
-											<tr>
+										<!-- 	<tr>
 												<th  style="text-align: center;width: 100px;"> Category</th>
 												<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-											</tr>
+											</tr> -->
 											<tr>
 												<th  style="text-align: center;width: 110px; " > Severity</th>
 												<th  style="text-align: center;width: 110px;"> Probability</th>
@@ -1616,15 +1618,17 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 													<%for(Object[] obj : riskmatirxdata.get(z)){
 													i++;%>
 													<tr>
-														<td style="text-align: center" rowspan="3"><%=i %></td>
-														<td style="text-align: justify;color: red; " colspan="3" ><%=obj[0] %></td>
-														<td style="text-align: center" rowspan="2">
+														<td style="text-align: center" rowspan="2"><%=i %></td>
+														<td style="text-align: justify;color: red; " colspan="3" >
+															<%=obj[0] %><span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+														</td>
+														<td style="text-align: center" rowspan="1">
 															<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
 															<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
 															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 														</td>
 														
-														<td style="text-align: center" rowspan="2">
+														<td style="text-align: center" rowspan="1">
 															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 
 																<%if(obj[18]!=null){ %>
@@ -1650,8 +1654,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<%}else{ %>-<%} %>
 														</td>
 															
-														<td  rowspan="2"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-														<td style="text-align: center" rowspan="2">
+														<td  rowspan="1"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td style="text-align: center" rowspan="1">
 															
 															<%if(obj[18]!=null){ %>
 																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1674,13 +1678,13 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<% } %> 
 											
 														</td>
-														<td style="text-align: justify" rowspan="2"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+														<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
 													</tr>	
-													<tr>
+													<%-- <tr>
 														<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
 														<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-													</tr>
+													</tr> --%>
 													
 													<tr>
 														<td style="text-align: center;" ><%=obj[1] %></td>
@@ -1725,10 +1729,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									</div>	
 								<%} %>
 									
+									<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										 <thead>
 											 <tr>
-											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
+											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> ) <%} else {%> -  )<%} %> </span> </th>
 											 </tr>
 										</thead>
 										
@@ -1795,7 +1800,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												 <th style="">Supply Order No</th>
 												 <th  style="	">DP Date</th>
 												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP Date</th>											 
+												 <th  >Rev DP</th>											 
 												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
 											 		
 											</tr>
@@ -1862,7 +1867,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 																	
 								<%} %>
 								
-								<br>
+								
+								<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
 										 <thead>
 											 <tr >
@@ -1873,10 +1879,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										 <tbody>
 										<tr >
 												 <th>No. of Demand</th>
-												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+												 <th>Est. Cost</th>
 										  	 	 <th>No. of Orders</th>
-										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>SO Cost </th>
+										  	 	 <th>Expenditure</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
@@ -2068,7 +2074,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important; ">Status(DD)</th>
-					             	<th style="width: 100px;" >FO ( &#x20B9; Cr)</th>
+					             	<!-- <th style="width: 100px;" >FO ( &#x20B9; Cr)</th> -->
 					                <th style="width: 220px;">Remarks</th>
 								</tr>
 							</thead>
@@ -2176,9 +2182,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											</span>
 											
 											</td>
-											<td align="center"><%if(obj[26].toString().equals("0")&& obj[30]!=null){ %>
-												<%= nfc.convert(Double.parseDouble(obj[30].toString())/10000000)%>
-												<%}else{%>-<%}%></td>
+
 											<td >
 												<%if(obj[28]!=null){ %>
 												<%=obj[28] %>

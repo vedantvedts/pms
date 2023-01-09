@@ -214,11 +214,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEMINUTESSPECNEW="SELECT minutesid,description FROM committee_schedules_minutes_new";
 	private static final String MILESTONESUBSYSTEMS="SELECT maa.activityId, maa.Parentactivityid, maa.activityname, maa.orgenddate, maa.enddate,maa.activitystatusid,mas.activityshort, maa.ProgressStatus,ma.milestoneno, maa.StatusRemarks,maa.activitylevelid FROM milestone_activity ma,milestone_activity_level maa,milestone_activity_status mas WHERE ma.milestoneactivityid = maa.parentactivityid AND maa.activitylevelid='1' AND maa.activitystatusid=mas.activitystatusid  AND ma.projectid=:projectid ORDER BY ma.milestoneno ASC";
 	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid and LabCode=:LabCode ORDER BY parentlevelid ";
-//	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT a.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_new a,file_rep_upload b WHERE a.filerepid=b.filerepid AND a.filerepid=:filerepid AND a.releasedoc=b.releasedoc AND a.versiondoc=b.versiondoc";
-	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT b.filerepid,b.filerepuploadid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_upload b WHERE  b.filerepuploadid=:filerepid ";
+	private static final String AGENDADOCLINKDOWNLOAD  ="SELECT b.filerepuploadid,b.filerepid,b.filepath,b.filenameui,b.filename,b.filepass,b.ReleaseDoc,b.VersionDoc FROM file_rep_upload b WHERE  b.filerepuploadid=:filerepid ";
 	private static final String MALIST="SELECT a.milestoneactivityid,0 AS 'parentactivityid', a.activityname,a.orgstartdate,a.orgenddate,a.startdate,a.enddate,a.progressstatus, mas.activitystatus, e.empname AS 'OIC1',a.milestoneno, mas.activityshort, mas.activitystatusid,0 as level FROM milestone_activity a, milestone_activity_status mas,employee e WHERE  a.isactive=1 AND mas.activitystatusid=a.activitystatusid AND a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY))  AND a.oicempid=e.empid AND a.projectid=:ProjectId";
 	private static final String MILEACTIVITYLEVEL="SELECT a.activityid ,a.parentactivityid, a.activityname,a.orgstartdate,a.orgenddate , a.startdate, a.enddate,  a.progressstatus, mas.activitystatus, e.empname,0 as milestoneno, mas.activityshort, mas.activitystatusid,a.activitylevelid as level  FROM milestone_activity_level a, milestone_activity_status mas, employee e WHERE  a.enddate BETWEEN CURDATE() AND DATE(DATE_ADD(CURDATE(),INTERVAL 180 DAY)) AND mas.activitystatusid=a.activitystatusid AND a.oicempid=e.empid AND a.parentactivityid=:id AND a.activitylevelid=:levelid ";
-	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,dm.levelname FROM committee_schedule_agenda_docs sad, file_rep_new rn, committee_schedules_agenda sa,file_doc_master dm WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid=rn.filerepid AND dm.fileuploadmasterid = rn.documentid AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
+	private static final String AGENDALINKEDDOCLIST="SELECT sad.agendadocid,sad.agendaid,sad.filedocid,fru.filenameui FROM committee_schedule_agenda_docs sad, committee_schedules_agenda sa, file_rep_upload fru WHERE sad.agendaid=sa.scheduleagendaid AND sad.filedocid = fru.FileRepUploadId AND sad.isactive=1 AND sa.isactive=1 AND sa.scheduleid=:scheduleid";
 	
 	@PersistenceContext
 	EntityManager manager;
@@ -529,6 +528,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("minutesid", committeescheduleminutesdetails.getMinutesId());
 		query.setParameter("agendasubid", committeescheduleminutesdetails.getMinutesSubId());
 		query.setParameter("scheduleagendaid", committeescheduleminutesdetails.getMinutesSubOfSubId());
+		
 		Object[] CommitteeMinutesSpecDesc=(Object[])query.getSingleResult();		
 		return CommitteeMinutesSpecDesc;
 	}
@@ -2289,8 +2289,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	
-	
 	@Override
 	public Object[] LoginData(String loginid) throws Exception
 	{
@@ -2299,7 +2297,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (Object[])query.getSingleResult();
 	}
 	
-	
 	@Override
 	public List<Object[]> DORTMDData() throws Exception
 	{
@@ -2307,16 +2304,12 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return (List<Object[]>)query.getResultList();
 	}
 	
-	
 	@Override
 	public long ConstitutionApprovalHistoryAdd(CommitteeConstitutionHistory model) throws Exception
 	{		
 		manager.persist(model);		
 		return model.getCommitteeHistoryId();
 	}
-	
-	
-	
 	
 	@Override
 	public List<Object[]>  ComConstitutionApprovalHistory(String committeemainid) throws Exception
@@ -2510,10 +2503,25 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return ActionPlanThreeMonths;
 	}
 	
+	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,pps.stagecolor,pm.projectcode,ppd.proclimit/100000  FROM pfms_project_data ppd, pfms_project_stage pps,project_master pm WHERE ppd.projectid=pm.projectid AND ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
+	@Override
+	public Object[] ProjectDataDetails(String projectid) throws Exception 
+	{
+		Query query=manager.createNativeQuery(PROJECTDATADETAILS);
+		query.setParameter("projectid", projectid);
+		Object[] ProjectStageDetails=null;
+		try {
+			ProjectStageDetails=(Object[])query.getSingleResult();
+		}catch (Exception e) {
+			logger.error(new java.util.Date() +" Inside DAO ProjectDataDetails "+ e);
+			return null;
+		}
+		
+		return ProjectStageDetails;
+	}
 	@Override
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
-		System.out.println( scheduleid+"   "+committeeid+"   "+ proid+"   "+isFrozen);
 		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
 		query.setParameter("scheduleid", scheduleid);
 		query.setParameter("committeeid",committeeid);

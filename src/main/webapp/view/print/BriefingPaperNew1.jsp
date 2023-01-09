@@ -44,15 +44,17 @@ List<Object[]> projectattributes = (List<Object[]> )request.getAttribute("projec
 List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 String lablogo=(String)request.getAttribute("lablogo");
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-String committeeid=(String)request.getAttribute("committeeid");
 String filePath=(String)request.getAttribute("filePath");
 String projectLabCode=(String)request.getAttribute("projectLabCode");
-List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute("ebandpmrccount");
+
+Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
+String CommitteeCode = committee.getCommitteeShortName().trim();
 String No2=null;
-if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
-No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
-}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
-	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
+
+if(CommitteeCode.equalsIgnoreCase("PMRC")){ 
+No2="P"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
+}else if(CommitteeCode.equalsIgnoreCase("EB")){
+	No2="E"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 }
 String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":"+	request.getLocalPort() + request.getContextPath();
 
@@ -146,11 +148,7 @@ th, td
   			}   
   			
   			@top-center {
-	         content: "<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
-			PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
-			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
-   			EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
-   			<%} %>"; 
+	         content: "<%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %>"; 
 			
 			margin-top: 30px;
              
@@ -378,7 +376,7 @@ List<Object[]> lastpmrcdecisions = (List<Object[]> )request.getAttribute("lastpm
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails");
 List<String> projectidlist = (List<String>)request.getAttribute("projectidlist");
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
-
+List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute("ebandpmrccount");
 
 List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
 List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
@@ -407,18 +405,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 		
 		<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
 		
-		<%if ( committeeid != null){ %>
 			
-			<div align="center" ><h2 style="color: #145374 !important" >
-			<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
-				PMRC #<%=Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1 %>
-			<%}else if(committee.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
-   				EB #<%=Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1 %>
-   			<%} %> Meeting </h2></div>
+			<div align="center" ><h2 style="color: #145374 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2></div>
 		
 			<div align="center" ><h2 style="color: #145374 !important"><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
 		
-		<%} %>	
 		
 		<table class="executive" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;  font-size: 16px;"  >
 		<%
@@ -702,11 +693,11 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- ----------------------------------------------4.Details of work------------------------------------------------- -->			
 
 		<div align="left" style="margin-left: 10px;"><b class="sub-title">4. Particulars of Meeting</b></div><br>
-		<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+		<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(a) <%if(CommitteeCode.equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
 															   						<%}else { %>
 															   						Ratification
-															   						<%} %>  of <b>recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</b></div>
+															   						<%} %>  of <b>recommendations</b> of last <%=CommitteeCode.toUpperCase() %> Meeting (if any)</b></div>
 		
 		
 			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
@@ -798,7 +789,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									
 			<%if((Double.parseDouble(projectattributes.get(0)[7].toString())*100000)>1){ %>		
 				<h1 class="break"></h1>
-				 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+				 	<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Last <%=CommitteeCode.toUpperCase() %>
 														   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and status.</b>
 					</div>
    							
@@ -1013,7 +1004,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 		<div align="left" style="margin-left: 10px;">
 		
 			<%-- <a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" > --%>
-				<b class="sub-title">5. Milestones achieved prior to this <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting period.  </b>
+				<b class="sub-title">5. Milestones achieved prior to this <%=CommitteeCode.toUpperCase() %> Meeting period.  </b>
 			<!-- </a> -->
    		</div>
    				
@@ -1270,7 +1261,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						 <h1 class="break"></h1>
 <!-- ------------------------------------------------------------------------------------------------------------ -->
 
-		<div align="left" style="margin-left: 10px;"><b class="sub-title">6. Details of work and current status of sub system with major milestones ( since last <%= committee.getCommitteeShortName().trim().toUpperCase() %> meeting ) period </b></div> 
+		<div align="left" style="margin-left: 10px;"><b class="sub-title">6. Details of work and current status of sub system with major milestones ( since last <%= CommitteeCode.toUpperCase() %> meeting ) period </b></div> 
 						
 			
 			<div align="left" style="margin-left: 15px;">
@@ -1490,19 +1481,19 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 				   				</td>									
 							</tr>
 							<tr>
-								<th style="width: 15px;text-align: center " rowspan="3">SN</th>
+								<th style="width: 15px;text-align: center " rowspan="2">SN</th>
 								<th style="width: 330px; " colspan="3">Risk</th>
-								<th style="width: 100px; " rowspan="2" > PDC</th>
-								<th style="width: 100px; " rowspan="2"> ADC</th>
-								<th style="width: 160px; " rowspan="2"> Responsibility</th>
-								<th style="width: 50px; "  rowspan="2">Status(DD)</th>
-								<th style="width: 215px; " rowspan="2">Remarks</th>	
+								<th style="width: 100px; " rowspan="1" > PDC</th>
+								<th style="width: 100px; " rowspan="1"> ADC</th>
+								<th style="width: 160px; " rowspan="1"> Responsibility</th>
+								<th style="width: 50px; "  rowspan="1">Status(DD)</th>
+								<th style="width: 215px; " rowspan="1">Remarks</th>	
 							</tr>
 							
-							<tr>
+						<!-- 	<tr>
 								<th  style="text-align: center;width: 100px;"> Category</th>
 								<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-							</tr>
+							</tr> -->
 								
 							<tr>
 								<th  style="text-align: center;width: 110px; " > Severity</th>
@@ -1520,15 +1511,17 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 								<%for(Object[] obj : riskmatirxdata.get(z)){
 								i++;%>
 									<tr>
-										<td style="text-align: center" rowspan="3"><%=i %></td>
-										<td style="text-align: justify;color: red; " colspan="3" ><%=obj[0] %></td>
-										<td style="text-align: center" rowspan="2">
+										<td style="text-align: center" rowspan="2"><%=i %></td>
+										<td style="text-align: justify;color: red; " colspan="3" >
+											<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+										</td>
+										<td style="text-align: center" rowspan="1">
 											<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
 											<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
 											<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 										</td>
 										
-										<td style="text-align: center" rowspan="2">
+										<td style="text-align: center" rowspan="1">
 											<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
 												<%if(obj[18]!=null){ %>
 													<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1553,8 +1546,8 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<%}else{ %>-<%} %>
 										</td>
 													
-										<td rowspan="2"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
-										<td style="text-align: center" rowspan="2">
+										<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+										<td style="text-align: center" rowspan="1">
 												
 											<%if(obj[18]!=null){ %>
 												<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
@@ -1578,14 +1571,14 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											
 														
 										</td>
-										<td style="text-align: justify" rowspan="2"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+										<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 											
 									</tr>	
 									
-									<tr>
+									<%-- <tr>
 										<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
 										<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-									</tr>
+									</tr> --%>
 													
 									<tr>
 										<td style="text-align: center;" ><%=obj[1] %></td>
@@ -1609,14 +1602,18 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
  	 
 
 <!-- ----------------------------------------------5.Particulars of Meeting------------------------------------------------- -->
- <h1 class="break"></h1>
-<!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
-			<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
-			
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+ 						<h1 class="break"></h1>
+<!-- ----------------------------------------------7. Procurement Status------------------------------------------------- -->
+						<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
+							<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
+											
 										<thead>
 											<tr>
-											 	<th colspan="8" ><b class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> - )<%} %> </b> </th>
+											 	<th colspan="8">
+											 		<b class="mainsubtitle">Demand Details </b>
+											 		<b class="mainsubtitle">( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %>  ) <%} else {%> - )<%} %> </b> 
+											 	</th>
 											 </tr>
 										
 										
@@ -1625,7 +1622,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<th  style="width: 175px;">Demand No</th>
 											<th  style="width: 100px; ">Demand Date</th>
 											<th  colspan="2" style="width: 355px;"> Nomenclature</th>
-											<th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+											<th  style="width: 80px;"> Est. Cost</th>
 											<th  style="width: 50px; "> Status</th>
 											<th  style="width: 195px;">Remarks</th>
 										</tr>
@@ -1668,31 +1665,30 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<div align="left" style="margin-left: 25px;"></div>
 					 				<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 										<thead> -->
-										
+										<!-- <div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div> -->
 										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
-											 	<th colspan="8" ><b class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </b> </th>
+											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <!-- <span class="currency">Lakhs</span>  -->) <%} else {%> -  )<%} %> </b> </th>
 											 </tr>
 										 </thead>
-										
-										
 										  	 	 <tr>	
 											  	 	 <th rowspan="2" style="width: 15px !important;text-align: center;">SN</th>
 											  	 	 <th style="width: 150px;">Demand No </th>
 											  	 	 <th style="width: 80px;">Demand  Date</th>
 													 <th  colspan="2" style="width: 295px;"> Nomenclature</th>
-													 <th  style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+													 <th  style="width: 80px;"> Est. Cost</th>
 													 <th  style="max-width: 50px; "> Status</th>
-													 <th  style="max-width: 310px;">Remarks</th>
+													 <th style="max-width: 310px;">SO Cost</th>
 												</tr>
 											<tr>
 												
 												 <th style="">Supply Order No</th>
 												 <th  style="	">DP Date</th>
 												 <th  colspan="2" style="	">Vendor Name</th>
-												 <th  >Rev DP Date</th>											 
-												 <th   colspan="2" >SO Cost-Lakh &#8377;</th>		
+												 <th  >Rev DP</th>
+												 <th   colspan="2"  >Remarks</th>											 
+												 		
 											 		
 											</tr>
 										    <%if(procurementOnSanction.get(z)!=null && procurementOnSanction.get(z).size()>0){
@@ -1709,25 +1705,23 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										  	 
 
 												<tr>
-												<td rowspan="2" style="text-align: center;"><%=k%></td>
-												<td ><%=obj[1]%> </td>
-												<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													<td rowspan="2" style="text-align: center;"><%=k%></td>
+													<td ><%=obj[1]%> </td>
+													<td style="text-align:center" ><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td   colspan="2" style="text-align: justify;"><%=obj[8]%></td>
 													<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												    <td  > <%=obj[10]%> </td>
-													<td  ><%=obj[11]%> </td>	
+												    <td   style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
 												</tr>
 												<%demand=obj[1].toString();
 												} %>
 												<tr>
 													
-													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %>
-													</td>
+													<td ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
 													<td style="text-align:center" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
-													<td  colspan="2"> <%=obj[12] %>
-													</td>
+													<td  colspan="2"> <%=obj[12] %> </td>
 													<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
-				                                    <td  colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>												
+				                                    <td colspan="2" ><%=obj[11]%> </td>										
 				
 												</tr>		
 												<% }
@@ -1754,21 +1748,22 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 											<%} %>
 									</table> 
 									
-									<br>
+									<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										 <thead>
+										 	
 											 <tr >
-												 <th colspan="8" ><b class="mainsubtitle">Total Summary of Procurement</b></th>
+												 <th colspan="5" ><b class="mainsubtitle">Total Summary of Procurement</b></th>
 											 </tr>
 										 </thead>
 										 
 										 <tbody>
 										<tr >
 												 <th>No. of Demand</th>
-												 <th>Est. Cost (<span>Lakh</span> &#8377;)</th>
+												 <th>Est. Cost</th>
 										  	 	 <th>No. of Orders</th>
-										  	 	 <th>SO Cost (<span>Lakh</span> &#8377;)</th>
-										  	 	 <th>Expenditure (<span>Lakh</span> &#8377;)</th>
+										  	 	 <th>SO Cost</th>
+										  	 	 <th>Expenditure</th>
 										</tr>
 										 
 										 <%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
@@ -1898,7 +1893,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- ---------------------------------------------- -------------------------- ------------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;">
 				<%-- <a href="<%= HyperlinkPath+ "/MilestoneActivityList.htm?ProjectId="+projectid %>" target="_top" rel="noopener noreferrer" > --%>
-				<%if(Integer.parseInt(committeeid)==2){ %>
+				<%if(CommitteeCode.equalsIgnoreCase("EB")){ %>
    							<b class="sub-title">9. Action Plan for Next Six Months - Technical Milestones with Financial Outlay : </b>  
 				<%}else { %>
 							<b class="sub-title">9. Action Plan for Next Three Months - Technical Milestones with Financial Outlay : </b> 
@@ -2195,7 +2190,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 	
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting :</b></div>
+						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=CommitteeCode.toUpperCase() %> Meeting :</b></div>
 							<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
 								<hr style="margin-right: 10px !important"><br>
 							<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
@@ -2210,7 +2205,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 									
 					<div align="left" style="margin-left: 10px;"><b class="sub-title"> 
-   							<%if(Integer.parseInt(committeeid)==2){ %>
+   							<%if(CommitteeCode.equalsIgnoreCase("EB")){ %>
    								13. Other Relevant Points (if any) and Technical Work Carried Out For Last Six Months
 							<%}else { %>
 								13. Other Relevant Points (if any) and Technical Work Carried Out For Last Three Months

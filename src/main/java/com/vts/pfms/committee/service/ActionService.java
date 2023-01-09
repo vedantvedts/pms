@@ -28,7 +28,7 @@ public interface ActionService {
 	public int ActionSubDelete(String id,String UserId) throws Exception;
 	public int ActionForward(String mainid,String assignid,String UserId) throws Exception;
 	public List<Object[]> ForwardList(String EmpId) throws Exception;
-	public int ActionClosed(String id,String Remarks,String UserId ,String assignid) throws Exception;
+	public int ActionClosed(String id,String Remarks,String UserId ,String assignid , String levelcount) throws Exception;
 	public int ActionSendBack(String id,String Remarks,String UserId, String assignid) throws Exception;
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception;
 	public List<Object[]> ActionList(String EmpId) throws Exception;
@@ -75,5 +75,7 @@ public interface ActionService {
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	public List<Object[]> ActionSubList(String assignid) throws Exception;
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
+	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception;
 	
 }

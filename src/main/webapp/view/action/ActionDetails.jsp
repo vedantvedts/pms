@@ -73,8 +73,9 @@ h6{
     	
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%=Assignee[5] %> (<%=ActionNo %>)
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignor : <%=AssigneeName %></span>
+      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action :<%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=Assignee[10] %>) <%}%> 
+      				
+					<span style="float: right;font-size: 17px;margin-top: 5px">Assignor : <%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1]%>, <%=Assignee[2]%><%}%></span>
       				 </h6>
   
       			</div>
@@ -146,7 +147,7 @@ h6{
 						        %>
 						        <div  align="center">
 										<a  
-										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
 								
@@ -218,7 +219,7 @@ h6{
 						        %>
 						        <div  align="center">
 										<a  
-										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[7]%>" 
+										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
 	

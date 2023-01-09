@@ -783,6 +783,10 @@ public class MilestoneController {
 			String rev2=req.getParameter("SecondNo");
             int countA=1;
             int count1A=1;
+            
+            System.out.println(rev);
+            System.out.println(rev2);
+            
 			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),rev,rev).get(0));
 			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),rev,rev,"1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);

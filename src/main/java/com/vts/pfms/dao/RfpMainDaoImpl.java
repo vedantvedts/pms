@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import com.vts.pfms.committee.controller.ActionController;
+import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
@@ -43,7 +43,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String NOTICELIST="SELECT * FROM pfms_notice WHERE NoticeBy=:empid AND IsActive=1 AND MONTH(CreatedDate) = MONTH(CURRENT_DATE())";
 	private static final String NOTICE="SELECT n.noticeid,n.notice, e.EmpName FROM pfms_notice n, employee e   WHERE   DATE(NOW()) >=n.FromDate AND DATE(NOW()) <= n.ToDate AND e.EmpId=n.NoticeBy AND n.IsActive=1 AND n.labcode=:labcode ORDER BY n.NoticeId DESC";	
 	private static final String getEmpNoQuery="SELECT empno FROM employee WHERE empid =:empid";	
-	private static final String PROJECTLIST="SELECT a.projectid AS id,a.projectcode,a.projectname,a.projectmainid,a.projecttype,b.empname AS 'project_director',b.mobileno,'General' AS 'empid',a.sanctiondate,a.pdc FROM project_master a , employee b WHERE a.projectdirector=b.empid AND a.isactive=1 UNION SELECT 0 AS id,'General' AS projectcode,'General' AS projectname,'General' AS projectmainid,'General' AS projecttype,'-' AS projectdirector,0 AS mobileno ,'General' AS 'empid',0 AS sanctiondate, 0 AS pdc FROM DUAL ORDER BY id";
+	private static final String PROJECTLIST="SELECT a.projectid AS id,a.projectcode,a.projectname,a.projectmainid,a.projecttype,b.empname AS 'project_director',b.mobileno,a.projectdirector,a.sanctiondate,a.pdc FROM project_master a , employee b WHERE a.projectdirector=b.empid AND a.isactive=1 AND a.labcode = (SELECT labcode FROM employee WHERE empid=:empid)";
 	private static final String QUATERS="SELECT a.sanctiondate, a.pdc, TIMESTAMPDIFF(YEAR,a.sanctiondate,a.pdc)+1 FROM project_master a WHERE a.projectid=:projectid";
 	private static final String MILEQUATER="CALL Pfms_Milestone_Quarter(:proid,:Quater,:yr)"; 
 	private static final String GANTTCHARTLIST="SELECT milestoneactivityid,projectid,activityname,milestoneno,orgstartdate,orgenddate,startdate,enddate,progressstatus,revisionno FROM milestone_activity WHERE isactive=1 ";
@@ -51,7 +51,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	private static final String PROJECTTOTALHEALTHDATA="CALL Project_Health_Total_Data(:projectid,:empid,:logintype,:labcode,:isall )";
 	private static final String PROJECTHEALTHINSERTDATA="CALL Project_Health_Insert_Data(:projectid)";
 	private static final String PROJECTHEALTHDELETE="DELETE FROM project_health where projectid=:projectid";
-	private static final String PROJECTHOADELETE="TRUNCATE TABLE project_hoa";
+	private static final String PROJECTHOADELETE="DELETE FROM project_hoa WHERE labcode=:labcode";
 	private static final String CHANGESTOTALCOUNTDATA="CALL Project_Changes_Count_Data(:projectid) ";
 	private static final String MEETINGCHANGES="CALL Project_Changes_Meeting_Data(:projectid,:term,:labcode)";
 	private static final String MILESTONECHANGES="CALL Project_Changes_Milestone_Data(:projectid,:term,:labcode)";
@@ -278,7 +278,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	
 	@Override
 	public List<Object[]> ProjectBudgets() throws Exception {
-		Query query=manager.createNativeQuery("CALL Pfms_Dashboard_Finance();");
+		Query query=manager.createNativeQuery("CALL Pfms_Dashboard_Finance_Budgets();");
 		List<Object[]> ProjectsBudgets=(List<Object[]>)query.getResultList();
 		return ProjectsBudgets;
 	}
@@ -301,9 +301,10 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 
 	@Override
-	public List<Object[]> ProjectList() throws Exception {
+	public List<Object[]> ProjectList(String EmpId) throws Exception {
 		
 		Query query=manager.createNativeQuery(PROJECTLIST);
+		query.setParameter("empid", EmpId);
 
 		return (List<Object[]>) query.getResultList();
 	}
@@ -410,9 +411,10 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	@Override
-	public int ProjectHoaDelete() throws Exception{
+	public int ProjectHoaDelete(String LabCode) throws Exception{
 		
 		Query query = manager.createNativeQuery(PROJECTHOADELETE);
+		query.setParameter("labcode", LabCode);
 
 		return query.executeUpdate();
 	}
@@ -518,5 +520,38 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		}
 		
 	}
+	
+	private static final String CCMDATADELETE="DELETE FROM pfms_ccm_data where LabCode=:LabCode";
+	@Override
+	public int CCMDataDelete(String LabCode) throws Exception 
+	{
+		Query query = manager.createNativeQuery(CCMDATADELETE);
+		query.setParameter("LabCode", LabCode);
+		int count =(int)query.executeUpdate();
+		
+		return count ;
+	}
+	
+	@Override
+	public long CCMDataInsert(PFMSCCMData ccmdata )throws Exception
+	{
+		manager.persist(ccmdata);
+		manager.flush();
+		return ccmdata.getCCMDataId();
+	}
+	
+	private static final String GETCCMDATA = "CALL Project_Health_Finance_Data (:EmpId, :LoginType, :LabCode );";
+	@Override
+	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETCCMDATA);
+		query.setParameter("EmpId", EmpId);
+		query.setParameter("LoginType", LoginType);
+		query.setParameter("LabCode", LabCode);
+		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
+		
+		return CCMData ;
+	}
+	
 }
 

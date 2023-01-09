@@ -129,6 +129,7 @@ font-weight: bold;
 <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> DivisionMasterList=(List<Object[]>) request.getAttribute("DivisionMasterList");
+String Onboarding = (String)request.getAttribute("Onboarding");
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -166,8 +167,8 @@ List<Object[]> DivisionMasterList=(List<Object[]>) request.getAttribute("Divisio
 			<div class="row">
 				<div class="col-md-2"><h3>Division List</h3></div>
 				<div class="col-md-10" align="right">
+				 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 				  <form action="DivisionMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
-						
 					  		<table>
 						  		<tr>
 								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="DivisionMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
@@ -196,6 +197,7 @@ List<Object[]> DivisionMasterList=(List<Object[]>) request.getAttribute("Divisio
 					  </div>
 					</div>
 				  </form>
+				  <%}%>
 				</div>
 				
 				
@@ -248,7 +250,11 @@ List<Object[]> DivisionMasterList=(List<Object[]>) request.getAttribute("Divisio
           <%if(DivisionMasterList!=null&&DivisionMasterList.size()>0){%>
           		 <button type="submit" class="btn btn-warning btn-sm edit" name="sub" value="edit" onclick="Edit(frm1)"  >EDIT</button>&nbsp;&nbsp;
           <%}%>
+          <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+				<a class="btn btn-info btn-sm  back"   href="OnBoarding.htm">Back</a>
+				<%}else{%>
 				<a class="btn btn-info btn-sm  back"   href="MainDashBoard.htm">Back</a>
+			<%}%>	
 	</div>	
   	 
  	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />

@@ -39,7 +39,57 @@ h6{
 	    padding: 4px 3px !important;
 
 }
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
 
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
 </style>
 </head>
  
@@ -136,10 +186,11 @@ h6{
 															<th>Action Item</th>
 															<th >Assigned Date</th>
 															<th class="width-110px" >PDC</th>																							
-														 	<th class="width-140px">Assignee</th>
-														 	<th class="width-140px">Assigner</th>	
+														 	<th class="width-140px">Assigner</th>
+														 	<th class="width-140px"> Assignee</th>	
 														 	<th >Status</th>
 														 	<th class="width-115px">Progress</th>
+														 	<th> Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -153,14 +204,13 @@ h6{
 																		<td class="center"><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[10] %></button>
+																			   <button  type="submit" class="btn btn-outline-info"   ><%=obj[10] %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	           <input type="hidden" name="ActionNo" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="ActionAssignId" value="<%=obj[13]%>"/>
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-																			
 																			</form> 
                                                                         </td>
 																		<td> <%=obj[5]%></td>
@@ -196,7 +246,22 @@ h6{
 															            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
 															             Not Yet Started .
 															            </div>
-															            </div> <%} %></td>								
+															            </div> <%} %></td>		
+															            <td>  
+															            <form action="###" method="POST" >
+															            	<button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[13]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
+																			<div class="cc-rockmenu">
+																				 <div class="rolling">	
+																					   <figure class="rolling_icon">
+																					 	<img src="view/images/tree.png"  >
+																                       </figure>
+															                        	<span> Action Tree</span>
+															                      </div>
+															                  </div>
+																			</button> 
+																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+																		 </form>  	
+															            </td>						
 																	</tr>
 																<% count++;
 																	}									   					

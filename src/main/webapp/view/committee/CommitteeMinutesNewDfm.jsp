@@ -1061,12 +1061,18 @@ for(Object[] temp : invitedlist){
 									</table> 
 									<br><br>
 									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 975px;  border-collapse:collapse;" >
+											<thead>
+											 <tr >
+												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
+											 </tr>
+										 </thead>
+										
 									       <tr >
-												 <th class="std" style="max-width: 150px;">Total No. of Demand</th>
-												 <th class="std" style="max-width: 150px;">Total Est. Cost-Lakh &#8377;</th>
-										  	 	 <th class="std" style="max-width: 150px;">Total No. of Orders</th>
-										  	 	 <th class="std" style="max-width: 150px;">Total So Cost-Lakh &#8377; </th>
-										  	 	 <th class="std" style="max-width: 150px;">Total Expenditure-Lakh &#8377; </th>
+												 <th class="std" style="max-width: 150px;">No. of Demand</th>
+												 <th class="std" style="max-width: 150px;">Est. Cost-Lakh &#8377;</th>
+										  	 	 <th class="std" style="max-width: 150px;">No. of Orders</th>
+										  	 	 <th class="std" style="max-width: 150px;">So Cost-Lakh &#8377; </th>
+										  	 	 <th class="std" style="max-width: 150px;">Expenditure-Lakh &#8377; </th>
 											 </tr>
 									<%if(totalprocurementdetails!=null && totalprocurementdetails.size()>0){ 
 										 for(TotalDemand obj:totalprocurementdetails){

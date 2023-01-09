@@ -2028,16 +2028,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	}
 
-	@Override
-	public List<Object[]> RiskTypeList() throws Exception {
-		return dao.RiskTypeList();
-	}
-
-
-
-
-	
-
-
-
+		@Override
+		public List<Object[]> RiskTypeList() throws Exception 
+		{
+			return dao.RiskTypeList();
+		}
+		
 }

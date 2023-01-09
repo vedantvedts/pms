@@ -657,7 +657,7 @@ for(Object[] temp : invitedlist){
 			<div align="left" style="padding-right: 1.5rem;padding-bottom: 5rem;">
 				<br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp;
 				<div align="right" style="padding-right: 1.5rem;padding-bottom: 0rem;">
-				<br><%if(membersec!=null){%><%= membersec[6].toString().substring(membersec[6].toString().indexOf(".")+1) %><%} %>
+				<br><%if(membersec!=null){%><%= membersec[6].toString() %><%} %>
 				<br>(Member Secretary)
 			</div>
 			</div>

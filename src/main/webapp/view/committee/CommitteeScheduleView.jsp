@@ -102,26 +102,29 @@
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
+	
+	List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
+	
 %>
 	
-	<%String ses=(String)request.getParameter("result"); 
-	 String ses1=(String)request.getParameter("resultfail");
-		if(ses1!=null){
-		%>
-		<center>
-		<div class="alert alert-danger" role="alert" >
-	                     <%=ses1 %>
-	                    </div>
-		<%}if(ses!=null){ %>
-		</center><center>
-		<div class="alert alert-success" role="alert" >
-	                     <%=ses %>
-	                   </div>
-	                    <%} %>
-	</center>
+<%String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null)
+	{ %>
+		<div align="center">
+			<div class="alert alert-danger" role="alert" >
+	        	<%=ses1 %>
+	        </div>
+	    </div>
+	<%}if(ses!=null){ %>
+		<div align="center">
+			<div class="alert alert-success" role="alert" >
+	        	<%=ses %>
+	        </div>
+	    </div>
+	<%} %>
 	
-	
-	<div class="container">
+	<div class="container-fluid">
 			<div class="row" style="">
 			
 				<div class="col-md-12 ">
@@ -133,13 +136,13 @@
 							  <h4>
 							  		<%=committeescheduleeditdata[8] %> Meeting 
 									<%if(Long.parseLong(projectid)>0){ %>							  
-										(Project : <%=projectdetails[4] %> )
+										(Project : <%=projectdetails[4] %>)
 									<%} %>
 									<%if(Long.parseLong(divisionid)>0){ %>							  
-									  ( Division : <%=divisiondetails[1] %> )
+									  (Division : <%=divisiondetails[1] %>)
 									<%} %>
 									<%if(Long.parseLong(initiationid)>0){ %>							  
-									  ( Initiated Project : <%=initiationdetails[1] %> )
+									  (Initiated Project : <%=initiationdetails[1] %>)
 									<%} %>
 							  </h4>
 							 </div>
@@ -311,7 +314,7 @@
 			         	<table  class="table table-bordered table-hover table-striped table-condensed ">
 			            	<thead>
 			               		<tr>
-			                    	<th>Sn</th>
+			                    	<th>SN</th>
 			                       	<th>Agenda Item</th> 
 			                       	<th>Reference</th>
 			                       	<th>Remarks</th>
@@ -329,7 +332,7 @@
 							
 								<tr>
 										
-									<td><%=count%></td>
+									<td style="text-align: center;"><%=count%></td>
 									<td><%=obj[3] %></td>
 									<td><%=obj[4] %>  </td>									
 									<td><%=obj[6] %></td>									
@@ -337,12 +340,12 @@
 									<td><%=obj[12] %></td>
 									<td>
 								
-							 <table>
+							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 
 											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 												<tr>
 													<td><%=doc[3] %></td>
-													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+													<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 												<tr>													
 											<%} }%>
 										</table>
@@ -350,13 +353,10 @@
 									</td>
 									
 								</tr>
-							
-									
 							</tbody>
 				    		<%} %>
 	
 			             </table>
-
 			
 						<% }else if(Integer.parseInt(committeescheduleeditdata[10].toString())<5 ){ %>
 							<br>
@@ -369,7 +369,7 @@
 				
 			        	<div class="form-group" align="center" style="margin-top: 25px">		        			     		
 									<%	if(Integer.parseInt(committeescheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
-					   									 <%if(!committeeagendalist.isEmpty()){%>
+					   					 <%if(!committeeagendalist.isEmpty()){%>
 												 <%if(useraccess>1){ %>		 
 													 <form action="CommitteeScheduleAgenda.htm" method="post">
 														<input type="hidden"  name="scheduleid" value="<%=committeescheduleeditdata[6] %>" >
@@ -410,7 +410,7 @@
 						
 			           <%if(useraccess>=1){ %>
 							<%if(committeecons==1  ){ %>	
-							<div><h5 style="color:#07689f"> Operations 
+							<div><h5 style="color:#07689f"> Operations </h5>
 							
 								 <%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")  ){ %>
 								 
@@ -420,7 +420,7 @@
 									 	<a  class="btn  btn-sm view" href="MinutesAttachDownload.htm?attachmentid=<%=committeescheduleeditdata[20] %>" target="_blank" style="background-color:#009DAE ;color:white ;font-size:12px;" >ATTACHED MINUTES </a>
 									 	<%} %>
 									 	<%if(Long.parseLong(projectid)>0){ %>
-										<input type="submit" class="btn  btn-sm view" value="MINUTES 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">
+										<input type="submit" class="btn  btn-sm view" value="MINUTES 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" formmethod="get" style="background-color:#0e49b5 ;color:white ;font-size:12px;">
 										<%} %>
 										<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >VIEW MINUTES</button>
 										<button type="submit" class="btn  btn-sm view" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" >TABULAR MINUTES</button>
@@ -430,175 +430,173 @@
 									 </form>
 								 
 								 <%} %>
-								</h5>
+								
 							 </div> 
 							 
-							 <%}else{%>
-										<div class="row">
-										
-											<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span><span style="color: red"><%=committeescheduleeditdata[7] %>  <%if(Integer.parseInt(projectid)>0){ %>							  
-											 		For  <%=projectdetails[4] %> 
-											 	<%} %> is Not Constituted
-											</span></h5>
-										</div>
+							<%}else{ %>
+								<div class="row">
+									
+									<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span><span style="color: red"><%=committeescheduleeditdata[7] %>  <%if(Integer.parseInt(projectid)>0){ %>							  
+									 		For  <%=projectdetails[4] %> 
+									 	<%} %> is Not Constituted
+									</span></h5>
+								</div>
 							<%} %>
 							   	
 								
-								<hr>
-								<br>
+								<hr style="margin: 0.5rem 0rem !important;">
+								
 								<div class="form-block">
 								
-								<form action="CommitteeScheduleMinutes.htm" name="myfrm" id="myfrm" method="POST">
-									
-									
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
-																<button type="button"  class="btn  btn-sm submit"  style="background-color:green;color:white;margin: 5px 0px"> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Approved </button>
-													<%} %>	
-														
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
-															<button type="button"  class="btn  btn-sm submit"  style="background-color:#81b214;color:white;border-color:#81b214 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Meeting Kicked Off </button>
-													<%} %>	
-													
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA")){ %>
-															<button type="button"  class="btn  btn-sm submit"  style="background-color:#28a745;color:white;border-color:#28a745 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Approved </button>
-													<%} %>
-													
-													
-														
-									
-													
-									
-													<%if( committeeagendalist.size()>0  ){
-													if(Integer.parseInt(committeescheduleeditdata[10].toString())<3 && invitedlist.size()>0)
-														{%>
-															<input type="submit" id="submit" class="btn  btn-sm back" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
-														<%}
-														else if(invitedlist.size()>0 && Integer.parseInt(committeescheduleeditdata[10].toString())<8 ){ %>
-															<input type="submit" id="submit" class="btn  btn-sm submit" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white;border-color:#0e49b5 " />
-														<%}else if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") && committeecons==1 ) { %>
-															<input type="submit" id="submit" class="btn  btn-sm submit" value="Invite" onclick="invite()" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
+									<form action="CommitteeScheduleMinutes.htm" name="myfrm" id="myfrm" method="POST">
+										
+										
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+																	<button type="button"  class="btn  btn-sm submit"  style="background-color:green;color:white;margin: 5px 0px"> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Approved </button>
+														<%} %>	
 															
-														<%}
-													} %>
-													
-													
-													
-													
-													
-													
-													
-					
-													
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") ){ %>
-													
-														<input type="submit" id="submit" class="btn  btn-sm submit" value="Attendance" formaction="CommitteeAttendance.htm" style="background-color:#16697a ;color:white;border-color:#16697a " />
-														<input type="hidden" name="membertype" value="CC" />
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+																<button type="button"  class="btn  btn-sm submit"  style="background-color:#81b214;color:white;border-color:#81b214 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Meeting Kicked Off </button>
+														<%} %>	
 														
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA")){ %>
+																<button type="button"  class="btn  btn-sm submit"  style="background-color:#28a745;color:white;border-color:#28a745 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Approved </button>
 														<%} %>
 														
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
 														
-														<input type="submit" id="submit" class="btn  btn-sm submit" value="Minutes" style="background-color:#24a0ed;color:white;border-color:#24a0ed " />
+															
+										
 														
-				
-													<%} %>
+										
+														<%if( committeeagendalist.size()>0  ){
+														if(Integer.parseInt(committeescheduleeditdata[10].toString())<3 && invitedlist.size()>0)
+															{%>
+																<input type="submit" id="submit" class="btn  btn-sm back" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
+															<%}
+															else if(invitedlist.size()>0 && Integer.parseInt(committeescheduleeditdata[10].toString())<8 ){ %>
+																<input type="submit" id="submit" class="btn  btn-sm submit" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white;border-color:#0e49b5 " />
+															<%}else if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") && committeecons==1 ) { %>
+																<input type="submit" id="submit" class="btn  btn-sm submit" value="Invite" onclick="invite()" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
+																
+															<%}
+														} %>
 														
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV")){ %>
 														
 														
-														<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm"  onclick="return confirm('Are you sure to forward the Minutes ?')" style="background-color:#0e49b5 ;color:white" /> 
-				
-													<%} %>	
-													
-													<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")){ %>
-														<input type="submit" id="submit" class="btn  btn-sm view" name="sub" value="Re-Submit Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Are you sure to Re-submit the Minutes ?')" style="background-color:#0e49b5 	;color:white" /> 
-													<%} %>
 														
-													
 														
-													<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-													<input type="hidden" name="projectid" value="<%=projectid %>">	
+														
+														
+						
+														
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") ){ %>
+														
+															<input type="submit" id="submit" class="btn  btn-sm submit" value="Attendance" formaction="CommitteeAttendance.htm" style="background-color:#16697a ;color:white;border-color:#16697a " />
+															<input type="hidden" name="membertype" value="CC" />
+															
+															<%} %>
+															
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+															
+															<input type="submit" id="submit" class="btn  btn-sm submit" value="Minutes" style="background-color:#24a0ed;color:white;border-color:#24a0ed " />
+															
+					
+														<%} %>
+															
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV")){ %>
+															
+															
+															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm"  onclick="return confirm('Are you sure to forward the Minutes ?')" style="background-color:#0e49b5 ;color:white" /> 
+					
+														<%} %>	
+														
+														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")){ %>
+															<input type="submit" id="submit" class="btn  btn-sm view" name="sub" value="Re-Submit Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Are you sure to Re-submit the Minutes ?')" style="background-color:#0e49b5 	;color:white" /> 
+														<%} %>
+															
+														
+															
+														<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
+														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+														<input type="hidden" name="projectid" value="<%=projectid %>">	
+										
+							</form> 					
+									<form action="MeetingAgendaApproval.htm" name="myfrm1" id="myfrm1" method="post">
+									<%if(committeeagendalist.size()>0 && invitedlist.size()>0 ){ %>
 									
-						</form> 					
-						<form action="MeetingAgendaApproval.htm" name="myfrm1" id="myfrm1" method="post">
-						<%if(committeeagendalist.size()>0 && invitedlist.size()>0 ){ %>
-						
-								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") ) { %>
-									<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
-								<%} %>
-								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAF")){ %>
-									<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Forwarded </button>
-								<%} %>
-								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR")){ %>
-									<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Re-Submit Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
-								<%} %>
-								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF")){ %>
-									<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Forwarded </button>
-								<%} %>
-						
-						<%} %>
-						
-							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-							<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-							
-						</form>
-							
-						<form action="KickOffMeeting.htm" name="myfrm" id="myfrm" method="post">
-
-							<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && !todaydate.isBefore(scheduledate) ){ %>
+											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") ) { %>
+												<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
+											<%} %>
+											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAF")){ %>
+												<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Forwarded </button>
+											<%} %>
+											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR")){ %>
+												<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Re-Submit Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
+											<%} %>
+											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF")){ %>
+												<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Forwarded </button>
+											<%} %>
+									
+									<%} %>
+									
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
 										
-								<input type="submit" id="submit" name="sub" class="btn  btn-sm submit fa-input" value=" &#xf017; &nbsp;&nbsp;Kick Off Meeting "  onclick="return kickoff()"   style="background-color:#06623b ;color:white"  /> 
+									</form>
+								
+									<form action="KickOffMeeting.htm" name="myfrm" id="myfrm" method="post">
+			
+										<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && !todaydate.isBefore(scheduledate) ){ %>
+													
+											<input type="submit" id="submit" name="sub" class="btn  btn-sm submit fa-input" value=" &#xf017; &nbsp;&nbsp;Kick Off Meeting "  onclick="return kickoff()"   style="background-color:#06623b ;color:white"  /> 
+													
+										<%} %>
 										
-							<%} %>
-							
-							<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") ){ %>
+										<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") ){ %>
+														
+											<div style="margin-left:1%;display: -webkit-box;">
+												<span style="font-weight: 600">Enter OTP : </span>
+												<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=otp %>" <%} %> required="required"  value="" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
+												<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate"  onclick="" style="color:white" /> 
+												<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
+												
+											</div>
+													
+										<%} %>
 											
-								<div style="margin-left:1%;display: -webkit-box;">
-									<span style="font-weight: 600">Enter OTP : </span>
-									<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=otp %>" <%} %> required="required"  value="" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
-									<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate"  onclick="" style="color:white" /> 
-									<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
-									
-								</div>
-										
-							<%} %>
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="committeemainid" value="<%=committeescheduleeditdata[1] %>">
+										<input type="hidden" name="committeeshortname" value="<%=committeescheduleeditdata[8] %>">
+										<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2] %>">
+										<input type="hidden" name="meetingtime" value="<%=committeescheduleeditdata[3] %>">
+										<input type="hidden" name="meetingid" value="<%=committeescheduleeditdata[11] %>">
+										<input type="hidden" name="projectid" value="<%=projectid %>">
+										<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+												
+									</form>
+							
+								<%} else{ %>
+										<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span>
+										<span style="color: red">-</span></h5>
+								
+								<%} %>	
 								
 								
-							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-							<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">	
-							<input type="hidden" name="committeemainid" value="<%=committeescheduleeditdata[1] %>">
-							<input type="hidden" name="committeeshortname" value="<%=committeescheduleeditdata[8] %>">
-							<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2] %>">
-							<input type="hidden" name="meetingtime" value="<%=committeescheduleeditdata[3] %>">
-							<input type="hidden" name="meetingid" value="<%=committeescheduleeditdata[11] %>">
-							<input type="hidden" name="projectid" value="<%=projectid %>">
-							<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-									
-						</form>
-						
-						
-						<form  action="#" method="post" id="myfrm" target="_blank">
-							<% if(Long.parseLong(projectid)>0 &&committeescheduleeditdata[23].toString().equalsIgnoreCase("Y") ){%>
-								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get">
-							<%}else{%>
-								<input type="submit" class="btn btn-sm back" value="Briefing" formaction="ProjectBriefingPaper.htm"  style="margin: 0px 10px" >
-							<%} %>
-							
-							<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
-							<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-							<input type="hidden" name="projectid" value="<%=projectid %>">
-							<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-							
-						</form>
-						
-						
-							<%} else{ %>
-									<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span>
-									<span style="color: red">-</span></h5>
-							
-							<%} %>		
+								<hr style="margin: 0.5rem 0rem !important;">
+								<form  action="#" method="post" id="myfrm" target="_blank">
+									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=6) { %>
 										
+											<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
+												<img alt="" src="view/images/presentation.png" style="width:19px !important">
+											</button>
+									
+										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
+										<input type="hidden" name="projectid" value="<%=projectid %>">
+										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+									<%} %>
+								</form>	
 						</div>
 
 					</div>
@@ -607,7 +605,7 @@
 			</div>
 		</div>	
 	</div>
-	</body>
+</body>
 	
 	
 <script type="text/javascript">

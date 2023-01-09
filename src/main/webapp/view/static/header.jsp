@@ -223,9 +223,9 @@ String labcode= (String)session.getAttribute("labcode");
  --%>					
  							<%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
  			
-							<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")){ %>
+<%-- 							<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")){ %>
 								
-								
+								 --%>
 								<li class="nav-item dropdown">
 								    
 								    	
@@ -264,7 +264,7 @@ String labcode= (String)session.getAttribute("labcode");
 								
 								<%} %>
 								
-								<%} %>
+							<%-- 	<%} %> --%>
 								<!-- New Content from table start --------------------------------->
 								
 								<li class="nav-item dropdown">

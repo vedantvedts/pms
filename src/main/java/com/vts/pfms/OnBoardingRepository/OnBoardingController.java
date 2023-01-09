@@ -2,9 +2,9 @@ package com.vts.pfms.OnBoardingRepository;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.NumberToTextConverter;
@@ -36,6 +35,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.service.AdminService;
+import com.vts.pfms.committee.dto.ActionAssignDto;
+import com.vts.pfms.committee.dto.ActionMainDto;
+import com.vts.pfms.committee.model.ActionAssign;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.master.controller.MasterController;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
@@ -48,7 +51,7 @@ public class OnBoardingController {
 
 	@Autowired
 	ProjectService projectservice;
-	
+	                                       
 	@Autowired
 	ProjectMainRepository projectmainrepo;
 	
@@ -67,6 +70,8 @@ public class OnBoardingController {
 	@Autowired
 	EmployeeMasterRepository employeemasterrepo;
 	
+	@Autowired
+	ActionService actionservice;
 	
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -174,7 +179,7 @@ public class OnBoardingController {
 								} else {
 									redir.addAttribute("resultfail", "Group Adding Unsuccessfully");
 								}
-
+								redir.addAttribute("Onboard","Yes");
 								return "redirect:/GroupMaster.htm";
 							
 						} catch (Exception e) {
@@ -296,7 +301,7 @@ public class OnBoardingController {
 								} else {
 									redir.addAttribute("resultfail", "Division Adding Unsuccessfully");
 								}
-
+								redir.addAttribute("Onboard","Yes");
 								return "redirect:/DivisionMaster.htm";	
 							
 						} catch (Exception e) {
@@ -306,7 +311,6 @@ public class OnBoardingController {
 						
 					}	
 				}
-			           
 						req.setAttribute("DivisionMasterList",adminservice.DivisionMasterList(LabCode) );
 			          
 				}catch(Exception e){
@@ -493,7 +497,7 @@ public class OnBoardingController {
 								} else {
 									redir.addAttribute("resultfail", "Employee Adding Unsuccessfully");
 								}
-
+								redir.addAttribute("Onboard","Yes");
 								return "redirect:/Officer.htm";
 							
 						} catch (Exception e) {
@@ -749,6 +753,7 @@ public class OnBoardingController {
 					                	protype.setSanctionDate(date);
 					                	protype.setRevisionNo(0l);
 						                protype.setProjSancAuthority("DG");
+						                protype.setBoardReference("DMC");
 						                protype.setProjectTypeId(1l);
 						                protype.setCategoryId(1l);
 						                protype.setProjectDirector(1l);
@@ -767,7 +772,7 @@ public class OnBoardingController {
 								} else {
 									redir.addAttribute("resultfail", "Project Main Adding Unsuccessfully");
 								}
-
+								redir.addAttribute("Onboard","Yes");
 								return "redirect:/ProjectMain.htm";
 							
 						} catch (Exception e) {
@@ -801,7 +806,137 @@ public class OnBoardingController {
 			 return "print/OnBoarding";
 	 }
 	 
-	 
+	 @RequestMapping(value="ActionMainExcelUpload.htm" ,method = RequestMethod.POST)
+	 public String ActionMainExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside ActionMainExcelUpload.htm "+UserId);
+			 try{
+				String action = req.getParameter("Action"); 
+				
+				if("GenerateExcel".equalsIgnoreCase(action)) {
+					XSSFWorkbook workbook = new XSSFWorkbook();
+					XSSFSheet sheet =  workbook.createSheet("Project Master Details");
+					XSSFRow row=sheet.createRow(0);
+					
+					CellStyle unlockedCellStyle = workbook.createCellStyle();
+					unlockedCellStyle.setLocked(true);
+					
+					row.createCell(0).setCellValue("SN");
+					row.createCell(1).setCellValue("Action Item");
+
+						row=sheet.createRow(1);
+						row.createCell(0).setCellValue(String.valueOf(1));
+						row.createCell(1).setCellValue("");
+			
+					    res.setContentType("application/vnd.ms-excel");
+			            res.setHeader("Content-Disposition", "attachment; filename=ActionMain.xls");	
+			            workbook.write(res.getOutputStream());
+				}else if("UploadExcel".equalsIgnoreCase(action)){
+					
+					if(ServletFileUpload.isMultipartContent(req)) {
+						try {
+							
+							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
+							Part filePart = req.getPart("filename");
+
+							 Long count=0l;
+							 InputStream fileData = filePart.getInputStream();
+							   
+					            Workbook workbook = new XSSFWorkbook(fileData);
+					 
+					            Sheet sheet  = workbook.getSheetAt(0);
+					            int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();      
+					            
+					             
+					             //iterate over all the row to print the data present in each cell.
+					            for(int i=1;i<=rowCount;i++){
+					                 
+					                //get cell count in a row
+					                int cellcount=sheet.getRow(i).getLastCellNum();         
+					                ActionMainDto actionmain=new ActionMainDto();
+					                
+					                //iterate over each cell to print its value       
+					                for(int j=1;j<cellcount;j++){
+
+					                	if(sheet.getRow(i).getCell(j)!=null) {
+					                		if(j==1) {
+					                			switch (sheet.getRow(i).getCell(j).getCellType()){
+					                            case Cell.CELL_TYPE_BLANK:
+					                            	break;
+					                            case Cell.CELL_TYPE_NUMERIC:
+					                            	actionmain.setActionItem(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+					                            	break;
+					                            case Cell.CELL_TYPE_STRING:
+					                            	actionmain.setActionItem(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;
+							                	}
+					                		}
+					                	}
+					                	  
+					                }
+					               
+					                long millis=System.currentTimeMillis();  
+					                java.sql.Date date=new java.sql.Date(millis);  
+					               
+					                
+					                	actionmain.setActionDate(LocalDate.now().plusMonths(4).toString());
+					                	actionmain.setActionLevel(1l);
+					                	actionmain.setMainId("0");
+					                	actionmain.setActionParentId("0");
+					                	actionmain.setActionType("N");
+						                actionmain.setType("A");
+						                actionmain.setProjectId("0");
+						                actionmain.setActivityId("0");
+						                actionmain.setScheduleMinutesId("0");
+						                actionmain.setCategory("O");
+						                actionmain.setPriority("M");
+						                actionmain.setLabName(LabCode);
+						                actionmain.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+						                actionmain.setCreatedBy(UserId);
+						                actionmain.setCreatedDate(sdf1.format(new Date()));
+						                if(actionmain.getActionItem()!=null  ) {
+						                	ActionAssign assign = new ActionAssign();
+						                		assign.setEndDate(java.sql.Date.valueOf(LocalDate.now().plusMonths(4)));
+						                		assign.setPDCOrg(java.sql.Date.valueOf(LocalDate.now().plusMonths(4)));
+							        			assign.setAssignee( (Long) ses.getAttribute("EmpId"));
+							        			assign.setAssignor((Long) ses.getAttribute("EmpId"));
+							        			assign.setAssigneeLabCode(LabCode);
+							        			assign.setAssignorLabCode(LabCode);
+							        			assign.setRevision(0);
+							        			assign.setActionFlag("N");		
+							        			assign.setActionStatus("A");
+							        			assign.setCreatedBy(UserId);
+							        			assign.setIsActive(1);
+							        			count +=actionservice.ActionMainInsertFromOnboard(actionmain , assign);
+						                }
+					            }
+					                           
+					           
+								if (count > 0) {
+									redir.addAttribute("result", "Action Main Added Successfully");
+								} else {
+									redir.addAttribute("resultfail", "Action Main Adding Unsuccessfull");
+								}
+								redir.addAttribute("Onboard","Yes");
+								return "redirect:/ActionLaunch.htm";
+							
+						}catch(Exception e){
+							e.printStackTrace();
+							redir.addAttribute("resultfail", "Action Main Adding Unsuccessfull");
+							return "redirect:/ActionLaunch.htm";
+						}
+					}	
+				} 
+				}catch(Exception e){
+					e.printStackTrace();
+					logger.error(new Date() +"Inside ActionMainExcelUpload.htm "+UserId,e);
+				}
+		 
+			 return "redirect:/ActionLaunch.htm";
+		 
+	 }
 	 
 	 
 	 

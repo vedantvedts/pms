@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -441,34 +442,237 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionClosed(String id, String Remarks, String UserId ,String assignid) throws Exception {
-		logger.info(new Date() +"Inside SERVICE ActionClosed ");
+	public int ActionClosed(String id, String Remarks, String UserId ,String assignid , String levelcount) throws Exception {
+		logger.info(new Date() +"Inside Service ActionClosed ");
 		long unsuccess=0;
-		ActionAssign assign=new ActionAssign();
-		assign.setActionAssignId(Long.parseLong(assignid));
-		assign.setActionFlag("Y");
-		assign.setActionStatus("C");
-		assign.setRemarks(Remarks);
-		assign.setModifiedBy(UserId);
-		assign.setModifiedDate(sdf1.format(new Date()));
-		int result=dao.MainSendBack(assign);
-		if(result>0) {
-			Object[] data=dao.ActionNotification(id,assignid).get(0);
-			PfmsNotification notification=new PfmsNotification();
-			notification.setEmpId(Long.parseLong(data[2].toString()));
-			notification.setNotificationby(Long.parseLong(data[5].toString()));
-			notification.setNotificationDate(sdf1.format(new Date()));
-			notification.setScheduleId(unsuccess);
-			notification.setCreatedBy(assign.getCreatedBy());
-			notification.setCreatedDate(sdf1.format(new Date()));
-			notification.setIsActive(1);
-			notification.setNotificationUrl("ActionStatusList.htm");
-		    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
-		    notification.setStatus("MAR");
-            dao.ActionNotificationInsert(notification);
+		int result=0;
+		
+		if(levelcount!=null && Long.parseLong(levelcount)>1) {
+			List<Object[]> actionslist = dao.ActionSubLevelsList(assignid);
+			int startLevel = 0;
+			
+			if(actionslist.size()>0){
+				startLevel = Integer.parseInt(actionslist.get(0)[3].toString());
+			} 
+			for(Object[] action:actionslist) {
+				if(Integer.parseInt(action[3].toString()) == startLevel){
+					
+					System.out.println(action[23]  +"  " +action[10]  );
+					ActionAssign assign=new ActionAssign();
+					assign.setActionAssignId(Long.parseLong(action[10]+""));
+					assign.setActionFlag("Y");
+					assign.setActionStatus("C");
+					assign.setRemarks(Remarks);
+					assign.setModifiedBy(UserId);
+					assign.setModifiedDate(sdf1.format(new Date()));
+					
+					int result1=0;
+							if(action[20]!=null && !"C".equalsIgnoreCase(action[20].toString())) {
+								result1=dao.MainSendBack(assign);
+							}
+					if(result1>0) {
+						result++;
+						Object[] data=dao.ActionNotification(id,action[10].toString()).get(0);
+						PfmsNotification notification=new PfmsNotification();
+						notification.setEmpId(Long.parseLong(data[2].toString()));
+						notification.setNotificationby(Long.parseLong(data[5].toString()));
+						notification.setNotificationDate(sdf1.format(new Date()));
+						notification.setScheduleId(unsuccess);
+						notification.setCreatedBy(assign.getCreatedBy());
+						notification.setCreatedDate(sdf1.format(new Date()));
+						notification.setIsActive(1);
+						notification.setNotificationUrl("ActionStatusList.htm");
+					    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+					    notification.setStatus("MAR");
+			            dao.ActionNotificationInsert(notification);
+					}
+					for(Object[] action_L1 : actionslist){
+					 if(Integer.parseInt(action_L1[3].toString()) == startLevel+1 && Long.parseLong(action[0].toString()) == Long.parseLong(action_L1[1].toString())  
+					&&  action[18].toString().trim().equalsIgnoreCase(action_L1[16].toString().trim()) 
+					&& Long.parseLong(action[19].toString()) == Long.parseLong(action_L1[17].toString()) ){ 
+						 
+						 System.out.println(action_L1[23]  +"  " +action_L1[10]  );
+						 ActionAssign assign1=new ActionAssign();
+							assign1.setActionAssignId(Long.parseLong(action_L1[10].toString()));
+							assign1.setActionFlag("Y");
+							assign1.setActionStatus("C");
+							assign1.setRemarks(Remarks);
+							assign1.setModifiedBy(UserId);
+							assign1.setModifiedDate(sdf1.format(new Date()));
+							int result2=0;
+							if(action[20]!=null && !"C".equalsIgnoreCase(action_L1[20].toString())) {
+								result2=dao.MainSendBack(assign1);
+							}
+							
+							if(result2>0) {
+								result++;
+								Object[] data=dao.ActionNotification(id,action_L1[10].toString()).get(0);
+								PfmsNotification notification=new PfmsNotification();
+								notification.setEmpId(Long.parseLong(data[2].toString()));
+								notification.setNotificationby(Long.parseLong(data[5].toString()));
+								notification.setNotificationDate(sdf1.format(new Date()));
+								notification.setScheduleId(unsuccess);
+								notification.setCreatedBy(assign1.getCreatedBy());
+								notification.setCreatedDate(sdf1.format(new Date()));
+								notification.setIsActive(1);
+								notification.setNotificationUrl("ActionStatusList.htm");
+							    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+							    notification.setStatus("MAR");
+					            dao.ActionNotificationInsert(notification);
+							}
+						 for(Object[] action_L2 : actionslist){ 
+							 if(Integer.parseInt(action_L2[3].toString()) == startLevel+2 && Long.parseLong(action_L1[0].toString())== Long.parseLong(action_L2[1].toString())  
+							&& action_L1[18].toString().trim().equalsIgnoreCase(action_L2[16].toString().trim()) 
+							&& Long.parseLong(action_L1[19].toString()) == Long.parseLong(action_L2[17].toString()) ){ 
+								 
+								 System.out.println(action_L2[23]  +"  " +action_L2[10]  );
+								 ActionAssign assign2=new ActionAssign();
+									assign2.setActionAssignId(Long.parseLong(action_L2[10]+""));
+									assign2.setActionFlag("Y");
+									assign2.setActionStatus("C");
+									assign2.setRemarks(Remarks);
+									assign2.setModifiedBy(UserId);
+									assign2.setModifiedDate(sdf1.format(new Date()));
+									int result3=0;
+									if(action[20]!=null && !"C".equalsIgnoreCase(action_L2[20].toString())) {
+										result3=dao.MainSendBack(assign2);
+									}
+									if(result3>0) {
+										result++;
+										Object[] data=dao.ActionNotification(id,action_L2[10].toString()).get(0);
+										PfmsNotification notification=new PfmsNotification();
+										notification.setEmpId(Long.parseLong(data[2].toString()));
+										notification.setNotificationby(Long.parseLong(data[5].toString()));
+										notification.setNotificationDate(sdf1.format(new Date()));
+										notification.setScheduleId(unsuccess);
+										notification.setCreatedBy(assign2.getCreatedBy());
+										notification.setCreatedDate(sdf1.format(new Date()));
+										notification.setIsActive(1);
+										notification.setNotificationUrl("ActionStatusList.htm");
+									    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+									    notification.setStatus("MAR");
+							            dao.ActionNotificationInsert(notification);
+									}
+								 for(Object[] action_L3 : actionslist){ 
+									 if(Integer.parseInt(action_L3[3].toString()) == startLevel+3 && Long.parseLong(action_L2[0].toString())== Long.parseLong(action_L3[1].toString()) 
+									&&  action_L2[18].toString().trim().equalsIgnoreCase(action_L3[16].toString().trim()) 
+									&& Long.parseLong(action_L2[19].toString()) == Long.parseLong(action_L3[17].toString()) ){ 
+										
+										 System.out.println(action_L3[23]  +"  " +action_L3[10]  );
+										 ActionAssign assign3=new ActionAssign();
+											assign3.setActionAssignId(Long.parseLong(action_L3[10]+""));
+											assign3.setActionFlag("Y");
+											assign3.setActionStatus("C");
+											assign3.setRemarks(Remarks);
+											assign3.setModifiedBy(UserId);
+											assign3.setModifiedDate(sdf1.format(new Date()));
+											int result4=0;
+											if(action[20]!=null && !"C".equalsIgnoreCase(action_L3[20].toString())) {
+												result4=dao.MainSendBack(assign3);
+											}
+											 if(result4>0) {
+												result++;
+												Object[] data=dao.ActionNotification(id,action_L3[10].toString()).get(0);
+												PfmsNotification notification=new PfmsNotification();
+												notification.setEmpId(Long.parseLong(data[2].toString()));
+												notification.setNotificationby(Long.parseLong(data[5].toString()));
+												notification.setNotificationDate(sdf1.format(new Date()));
+												notification.setScheduleId(unsuccess);
+												notification.setCreatedBy(assign3.getCreatedBy());
+												notification.setCreatedDate(sdf1.format(new Date()));
+												notification.setIsActive(1);
+												notification.setNotificationUrl("ActionStatusList.htm");
+											    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+											    notification.setStatus("MAR");
+									            dao.ActionNotificationInsert(notification);
+											}
+										 
+										 for(Object[] action_L4 : actionslist){ 
+											 
+											 if(Integer.parseInt(action_L4[3].toString()) == startLevel+4 && Long.parseLong(action_L3[0].toString())== Long.parseLong(action_L4[1].toString())  
+											&& action_L3[18].toString().trim().equalsIgnoreCase(action_L4[16].toString().trim()) 
+											&& Long.parseLong(action_L3[19].toString()) == Long.parseLong(action_L4[17].toString()) ){ 
+											
+											 System.out.println(action_L4[23] +"  " +action_L4[10]  );
+													 ActionAssign assign4=new ActionAssign();
+														assign4.setActionAssignId(Long.parseLong(action_L4[10]+""));
+														assign4.setActionFlag("Y");
+														assign4.setActionStatus("C");
+														assign4.setRemarks(Remarks);
+														assign4.setModifiedBy(UserId);
+														assign4.setModifiedDate(sdf1.format(new Date()));
+														 
+														 int result5=0;
+															if(action[20]!=null && !"C".equalsIgnoreCase(action_L4[20].toString())) {
+																result5=dao.MainSendBack(assign4);
+															}
+													if(result5>0) {
+															result++;
+															Object[] data=dao.ActionNotification(id,action_L4[10].toString()).get(0);
+															PfmsNotification notification=new PfmsNotification();
+															notification.setEmpId(Long.parseLong(data[2].toString()));
+															notification.setNotificationby(Long.parseLong(data[5].toString()));
+															notification.setNotificationDate(sdf1.format(new Date()));
+															notification.setScheduleId(unsuccess);
+															notification.setCreatedBy(assign4.getCreatedBy());
+															notification.setCreatedDate(sdf1.format(new Date()));
+															notification.setIsActive(1);
+															notification.setNotificationUrl("ActionStatusList.htm");
+														    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+														    notification.setStatus("MAR");
+												           dao.ActionNotificationInsert(notification);
+														}
+	 
+											 }
+										 }
+							   /*--------------------------- Level 4------------------ */
+									 }
+								 }
+						    /*------------------------ Level 3-------------------*/
+							 	}
+							}
+						 /*--------------------------Level 2------------------*/
+					   }
+					}
+					/* ------------------------------Level 1---------- */
+				}
+			}
 		}else {
-			result=0;
+			
+			ActionAssign assign=new ActionAssign();
+			assign.setActionAssignId(Long.parseLong(assignid));
+			assign.setActionFlag("Y");
+			assign.setActionStatus("C");
+			assign.setRemarks(Remarks);
+			assign.setModifiedBy(UserId);
+			assign.setModifiedDate(sdf1.format(new Date()));
+			 result=dao.MainSendBack(assign);
+			if(result>0) {
+				Object[] data=dao.ActionNotification(id,assignid).get(0);
+				PfmsNotification notification=new PfmsNotification();
+				notification.setEmpId(Long.parseLong(data[2].toString()));
+				notification.setNotificationby(Long.parseLong(data[5].toString()));
+				notification.setNotificationDate(sdf1.format(new Date()));
+				notification.setScheduleId(unsuccess);
+				notification.setCreatedBy(assign.getCreatedBy());
+				notification.setCreatedDate(sdf1.format(new Date()));
+				notification.setIsActive(1);
+				notification.setNotificationUrl("ActionStatusList.htm");
+			    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+			    notification.setStatus("MAR");
+	            dao.ActionNotificationInsert(notification);
+			}else {
+				result=0;
+			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 		return result;
 	}
 
@@ -799,5 +1003,93 @@ public class ActionServiceImpl implements ActionService {
 	public List<Object[]> ActionSubList(String assignid) throws Exception 
 	{
 		return dao.ActionSubList(assignid);
+	}
+	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		return dao.ActionAssignDataAjax(assignid);
+	}	
+	@Override
+	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception 
+	{
+		try {
+			logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard ");
+			long success=1;
+			long unsuccess=0;
+			Object[] lab=null;
+			int count=0;
+			String ProjectCode=null;
+			try
+			{
+				lab=dao.LabDetails();
+				count=dao.ActionGenCount(main.getProjectId());
+				
+			}
+			catch (Exception e) 
+			{
+				logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard ",e);	
+				return unsuccess;
+			}
+			
+			ActionMain actionmain=new ActionMain();
+				actionmain.setActionLinkId(unsuccess);
+				actionmain.setMainId(0l);
+				actionmain.setActivityId(Long.parseLong(main.getActivityId()));
+				actionmain.setActionType(main.getActionType());
+				actionmain.setType(main.getType());
+				actionmain.setActionItem(main.getActionItem());
+				java.util.Date date = new java.util.Date();
+				java.util.Date sqlDate = new Date(date.getTime());
+				actionmain.setActionDate(sqlDate);
+				actionmain.setCategory(main.getCategory());
+				actionmain.setPriority(main.getPriority());
+				actionmain.setProjectId(0l);
+				actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
+				actionmain.setCreatedBy(main.getCreatedBy());
+				actionmain.setCreatedDate(sdf1.format(new Date()));
+				actionmain.setIsActive(1);
+				actionmain.setParentActionId(0l);
+				actionmain.setActionLevel(1l);
+			long result=dao.ActionMainInsert(actionmain);
+			
+			if(result>0) {
+			ActionAssign actionassign = new ActionAssign();
+				
+			count=count+1;
+			
+			if(lab!=null && main.getLabName()!=null) {
+		    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString());
+			     actionassign.setActionNo(main.getLabName()+"/GEN/"+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+			}else {
+				return unsuccess;
+			}
+			
+			actionassign.setEndDate(assign.getEndDate());
+			actionassign.setActionMainId(result);
+			actionassign.setPDCOrg(assign.getPDCOrg());
+			actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+			actionassign.setAssignee(assign.getAssignee());
+			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+			actionassign.setAssignor(assign.getAssignor());
+			actionassign.setRevision(assign.getRevision());
+			actionassign.setActionFlag(assign.getActionFlag());		
+			actionassign.setActionStatus(assign.getActionStatus());
+			actionassign.setCreatedBy(main.getCreatedBy());
+			actionassign.setCreatedDate(sdf1.format(new Date()));
+			actionassign.setIsActive(1);
+			long assignid=  dao.ActionAssignInsert(actionassign);
+					
+			}
+			if(result>0) {
+				return success;
+			}else {
+				return unsuccess;
+			}
+		} catch (Exception e) {
+			logger.info(new Date() +"Inside SERVICE ActionMainInsertFromOnboard "+ e);	
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

@@ -358,6 +358,7 @@ ul, #myUL {
 		   			<div class="col-md-12" style="padding-left: 0px">
 		   
 		   				<div class="table-responsive">
+		   				
 		    				<table class="table table-bordered table-hover  table-condensed" id="myTable3" style="margin-top: 20px;">
 								<thead>
 									<tr>
@@ -433,7 +434,7 @@ ul, #myUL {
 													if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 													<tr>
 														<td><%=doc[3] %></td>
-														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
 														<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
 													<tr>													
 												<%} }%>
@@ -466,6 +467,7 @@ ul, #myUL {
 										<%} %>
 								</tbody>
 							</table>
+						
 						</div> 
 					</div>
  <!-- ----------------------------- -->		 	
@@ -680,20 +682,20 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
  
   count++;
   
-  /* var id='\''+'file'+count+'\'';
   
-  $clone.find("input:file").prop("id", 'file'+count).attr("onchange", 'Filevalidation('+id+')').val("").end(); */
   $clone.find(".btnfileattachment").attr("onclick", 'openMainModal(\''+count+'\',\'a\')').val("").end();
   $clone.find(".hidden").prop("id", 'attachid_'+count).prop("name", 'attachid_'+count).val("").end();
   $clone.find(".attachlist").prop("id","attachlistdiv_"+count).html("").end();
   $clone.find(".attachname").prop("id", 'attachname_'+count).html("").end();
   $clone.find('.items presenterid' ).attr('id', 'select'+count);
   $clone.find(".PresLabCode").prop("id", 'PresLabCode_'+count).attr("onchange", 'AgendaPresentors(\''+count+'\')').end();
-  $clone.find(".presenterid").prop("id", 'presenterid_'+count).html('<option value="" selected disabled>Choose...</option>').end();
+  $clone.find(".presenterid").prop("id", 'presenterid_'+count).end();
   
   $('.items').select2();
   $clone.find('.items' ).select2('val', ''); 
   $clone.find("input").val("").end();
+  
+  AgendaPresentors(count+'');
   
 });
 
@@ -709,7 +711,6 @@ if(cl>1){
    var $clone = $tr.remove();
    $tr.after($clone);
    $('.items').select2();
-   /* $clone.find('.items').select2('val', ''); */
    
 }
    
@@ -1026,8 +1027,9 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 																					
 																					if(values[v3][4]!=0)
 																					{
-																						str += '<input type="radio" class="DocModalcheckbox" onchange="setagendaattachval(\''+ values[v3][7] +'\', \''+values[v3][3] +'\');" ></button>' ;
-																					}else
+																						str += '<input type="radio" class="DocModalcheckbox" onchange="setagendaattachval(\''+ values[v3][4] +'\', \''+values[v3][3] +'\');" ></button>' ;
+																					}
+																					else
 																					{
 																						str += '<input type="radio" class="DocModalcheckbox" disabled onclick="alert(\'Document Not Uploaded\');" ></button>' ;
 																					}
@@ -1119,19 +1121,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 <!--  -----------------------------------------------agenda attachment js ---------------------------------------------- -->
 
 
-
-<%-- <script type="text/javascript">
-    function Filevalidation (fileid) 
-    {
-        const fi = $('#'+fileid )[0].files[0].size;							 	
-        const file = Math.round((fi / 1024/1024));
-        if (file >= <%=filesize%> ) 
-        {
-        	alert("File too Big, please select a file less than <%=filesize%> mb");
-        } 
-    }
-</script> 
- --%>
 <script type="text/javascript">
 
 function editcheck(editfileid)

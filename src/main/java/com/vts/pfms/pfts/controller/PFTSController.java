@@ -96,6 +96,7 @@ public class PFTSController {
 	{
 		
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside AddNewDemandFile.htm "+UserId);		
 		try {
 			String projectId =req.getParameter("projectId");
@@ -108,6 +109,7 @@ public class PFTSController {
 			List<DemandDetails> demandList=null;
 	 		HttpHeaders headers = new HttpHeaders();
 	 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON)); 
+	 		headers.set("labcode", LabCode);
 	 		String jsonResult=null;
 			try {
 				HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -209,6 +211,7 @@ public class PFTSController {
 	public String upadteDemandFile(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside upadteDemandFile.htm "+UserId);		
 		try {
 			
@@ -224,6 +227,7 @@ public class PFTSController {
     				List<DemandOrderDetails> demandOrderList=null;
     		 		HttpHeaders headers = new HttpHeaders();
     		 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON)); 
+    		 		headers.set("labcode", LabCode);
     		 		String jsonResult=null;
     				try {
     					HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -338,6 +342,8 @@ public class PFTSController {
 	public String FileOrderRetrive(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+
 		logger.info(new Date() +"Inside FileOrderRetrive.htm "+UserId);		
 		try {
 			
@@ -349,6 +355,7 @@ public class PFTSController {
     				List<DemandOrderDetails> demandOrderList=null;
     		 		HttpHeaders headers = new HttpHeaders();
     		 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON)); 
+    		 		headers.set("labcode", LabCode);
     		 		String jsonResult=null;
     				try {
     					HttpEntity<String> entity = new HttpEntity<String>(headers);

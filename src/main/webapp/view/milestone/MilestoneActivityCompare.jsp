@@ -23,31 +23,22 @@ int revno=(Integer)request.getAttribute("Count");
 <body>
   <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
   <a class="navbar-brand"></a>
-  <form class="form-inline"  method="POST" action="MilestoneActivityCompareSubmit.htm" >
+  <form class="form-inline"  method="POST" action="MilestoneActivityCompare.htm" >
     <label style="margin-left: 10px;margin-right: 10px;" >First  No : <span class="mandatory" style="color: red;">*</span></label>
   <select class="form-control selectdee"    name="FirstNo"  id="FirstNo"  required="required"   data-live-search="true" style="margin-left: 10px;margin-right: 10px;width: 150px;">
 	<option value="" disabled="disabled" selected="selected"
 					hidden="true">Select</option>
-				 <%
-					for (int i=0;i<revno;i++) {
-				%>
+				 <% for (int i=0;i<revno;i++) { %>
 				<option value="<%=i%>" ><%=i%></option>
-				<%
-					}
-				%>
-
+				<% } %>
 			</select>   
    <label style="margin-left: 10px;margin-right: 10px;" >Second  No : <span class="mandatory" style="color: red;">*</span></label>
   <select class="form-control selectdee"    name="SecondNo"  id="SecondNo" required="required"    data-live-search="true" style="margin-left: 10px;margin-right: 10px;width: 150px;">
 	<option value="" disabled="disabled" selected="selected"
 					hidden="true">Select</option>
-				 <%
-					for (int i=0;i<revno;i++) {
-				%>
-				<option value="<%=i%>" ><%=i%></option>
-				<%
-					}
-				%>
+				 <% for (int i=0;i<revno;i++) { %>
+					<option value="<%=i%>" ><%=i%></option>
+				<% } %>
             
 			</select>  
       <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
@@ -55,11 +46,11 @@ int revno=(Integer)request.getAttribute("Count");
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
   <form class="form-inline"  method="POST" action="MilestoneActivityDetails.htm" >
-  <input type="submit" class="btn btn-primary btn-sm back "   value="Back" style="margin-left: 10px;" > 
+  		<input type="submit" class="btn btn-primary btn-sm back"   value="Back" style="margin-left: 10px;" > 
 			
 		
-      <input type="hidden" name="sub"	value="C" /> 
-      <input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
+      	<input type="hidden" name="sub"	value="C" /> 
+     	<input type="hidden" name="MilestoneActivityId"	value="<%=getMA[0] %>" /> 
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
 </nav>

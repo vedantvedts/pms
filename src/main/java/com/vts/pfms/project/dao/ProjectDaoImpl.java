@@ -2052,17 +2052,5 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			}
 		}
 
-	
-
-
-		
-
-	
-
-		
-
-	
-		
-		
 		
 }

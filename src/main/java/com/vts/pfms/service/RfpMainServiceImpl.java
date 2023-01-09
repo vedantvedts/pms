@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.dao.RfpMainDao;
+import com.vts.pfms.login.CCMView;
+import com.vts.pfms.login.PFMSCCMData;
 import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.FinanceChanges;
 import com.vts.pfms.model.IbasLabMaster;
@@ -346,7 +350,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 
 	@Override
 	public long ProjectHealthUpdate(String EmpId, String UserName) throws Exception {
-		List<Object[]> proList=dao.ProjectList().stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
+		List<Object[]> proList=dao.ProjectList(EmpId).stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
 		long result=0;
 		for(Object[] obj:proList) {
 			try {
@@ -402,7 +406,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	public long ProjectHoaUpdate(List<ProjectHoa> hoa,String Username,List<IbasLabMaster> LabDetails) throws Exception{
 		logger.info(new Date() +"Inside SERVICE ProjectHoaUpdate ");
 		long count1 =0 ;
-		long count = dao.ProjectHoaDelete();
+		long count = dao.ProjectHoaDelete(LabDetails.get(0).getLabCode());
 		for(ProjectHoa obj : hoa) {
 			obj.setCreatedBy(Username);
 			obj.setCreatedDate(sdf1.format(new Date()));
@@ -450,9 +454,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId) throws Exception {
+	public long ProjectFinanceChangesUpdate(List<FinanceChanges> Monthly, List<FinanceChanges> Weekly, List<FinanceChanges> Today, String UserId,String EmpId) throws Exception {
 		logger.info(new Date() +"Inside SERVICE ProjectFinanceChangesUpdate ");
-		List<Object[]> proList=dao.ProjectList();
+		List<Object[]> proList=dao.ProjectList(EmpId);
 		long result=0;
 		for(Object[] obj:proList) {
 			try {
@@ -483,4 +487,52 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return dao.ProjectData(projectid);
 	}
 	
+	
+	@Override
+	public long CCMViewDataUpdate(List<CCMView> CCMViewData,String LabCode,String ClusterId, String UserId,String EmpId) throws Exception
+	{
+		logger.info(new Date() +"Inside SERVICE CCMViewDataUpdate ");
+		List<Object[]> proList=dao.ProjectList(EmpId);
+		
+		
+		
+		long result=0;
+		
+		if(CCMViewData.size()>0) 
+		{
+			dao.CCMDataDelete(LabCode);
+		
+		
+			for(CCMView ccmdata:CCMViewData)
+			{
+				PFMSCCMData pfmsccm = PFMSCCMData.builder()
+								
+								.ClusterId(Long.parseLong(ClusterId))
+								.LabCode(LabCode)
+								.ProjectId(ccmdata.getProjectId())
+								.ProjectCode(ccmdata.getProjectCode().trim())
+								.BudgetHeadId(ccmdata.getBudgetHeadId())
+								.BudgetHeadDescription(ccmdata.getBudgetHeadDescription())
+								.AllotmentCost(ccmdata.getAllotmentCost())
+								.Expenditure(ccmdata.getExpenditure())
+								.Balance(ccmdata.getBalance())
+								.Q1CashOutGo(ccmdata.getQ1CashOutGo())
+								.Q2CashOutGo(ccmdata.getQ2CashOutGo())
+								.Q3CashOutGo(ccmdata.getQ3CashOutGo())
+								.Q4CashOutGo(ccmdata.getQ4CashOutGo())
+								.Required(ccmdata.getRequired())
+								.CreatedDate(sdf1.format(new Date()))
+								.build();
+				result= dao.CCMDataInsert(pfmsccm);
+				
+			}
+		}
+		return result;
+	}
+	
+	@Override
+	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
+	{
+		return dao.getCCMData(EmpId, LoginType, LabCode);
+	}
 }

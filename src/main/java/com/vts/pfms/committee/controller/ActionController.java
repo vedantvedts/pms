@@ -88,7 +88,7 @@ public class ActionController {
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ActionLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
@@ -107,6 +107,12 @@ public class ActionController {
 				req.setAttribute("ProjectData", projectdata);
 			}
 			
+			String onboard=req.getParameter("Onboarding");
+			if(onboard==null) {
+				Map md=model.asMap();
+				onboard=(String)md.get("Onboard");
+			}
+			req.setAttribute("Onboarding", onboard);
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));  
 			req.setAttribute("AssignedList", service.AssignedList(EmpId));
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
@@ -188,29 +194,30 @@ public class ActionController {
 			String CpLabCode = req.getParameter("LabCode");
 			String mainid = req.getParameter("MainId");
 
-			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid)){
+			if(mainid!=null && mainid!="" && !"0".equalsIgnoreCase(mainid))
+			{
 				
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
 					
 				}else{
-					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
-					{
+//					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+//					if(true) 
+//					{
 						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
-					}
+//					}
 				}
 			}else {
 				if(CpLabCode.trim().equalsIgnoreCase("@EXP")) 
 				{
 					EmployeeList = service.ClusterExpertsList();
 				}else{
-					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
-					if(Long.parseLong(clusterid) == Long.parseLong(CpLabClusterId)) 
-					{
+//					String CpLabClusterId = service.LabInfoClusterLab(CpLabCode)[1].toString(); 
+//					if(true) 
+//					{
 						EmployeeList = service.LabEmployeeList(CpLabCode.trim());
-					}
+//					}
 				}
 				
 			}
@@ -261,6 +268,7 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionDate(req.getParameter("MainPDC"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
+			mainDto.setScheduleId(req.getParameter("scheduleminutesid"));
 			mainDto.setActionStatus("A");
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("MainPriority"));
@@ -339,8 +347,9 @@ public class ActionController {
 			String AssignerName=req.getParameter("Assigner");
 			req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") ,req.getParameter("ActionAssignid")).get(0));
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignid")));
-			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
+			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
 			req.setAttribute("AssignerName", AssignerName);
+			
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("back", req.getParameter("back"));
@@ -451,15 +460,20 @@ public class ActionController {
 				  ActionAttachment attachment=service.ActionAttachmentDownload(req.getParameter("ActionSubId" ));
 		
 				  res.setContentType("application/octet-stream");
-				  res.setHeader("Content-Disposition", String.format("inline; filename=\"" + attachment.getAttachName()));
-				  res.setContentLength((int)attachment.getActionAttach().length);
-				  
-				  InputStream inputStream = new ByteArrayInputStream(attachment.getActionAttach()); 
-				  OutputStream outputStream = res.getOutputStream(); 
-				  FileCopyUtils.copy(inputStream, outputStream);
-				  
-				 inputStream.close(); 
-				 outputStream.close();
+				  File my_file=null;
+					
+					my_file = new File(uploadpath+attachment.getAttachFilePath()+File.separator+attachment.getAttachName()); 
+			        res.setHeader("Content-disposition","attachment; filename="+attachment.getAttachName().toString()); 
+			        OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -539,8 +553,6 @@ public class ActionController {
 		 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionForward.htm "+UserId);		
 			try { 
-				
-			
 			int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
 
 			if (count > 0) {
@@ -550,19 +562,18 @@ public class ActionController {
 
 			}
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
-			
+			redir.addFlashAttribute("Type", req.getParameter("Type"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
-
-			return "redirect:/AssigneeList.htm";
+			return "redirect:/ActionForwardList.htm";
 
 		}
 	 
 	 @RequestMapping(value = "ActionForwardList.htm", method = {RequestMethod.GET,RequestMethod.POST})
-		public String ForwardList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+		public String ForwardList(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
 		 
 		 	String UserId = (String) ses.getAttribute("Username");
@@ -571,12 +582,16 @@ public class ActionController {
 			try { 
 				
 					String type = req.getParameter("Type");
-					System.out.println("type         :"+type);
+					Map md = model.asMap();
+					
+					if(md.get("Type")!=null) {
+						type = (String) md.get("Type");
+					}
 					if(type!=null && !type.equalsIgnoreCase("F")) {
 						if(type.equalsIgnoreCase("A")) {
 							req.setAttribute("ForwardList", service.ForwardList(EmpId));
 						}else if (type.equalsIgnoreCase("NB")) {
-							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("N")).collect(Collectors.toList()));
+							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
 						}
 						req.setAttribute("type", type);
 					}else{
@@ -604,7 +619,7 @@ public class ActionController {
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 			req.setAttribute("AssigneeName", AssigneeName);
 			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
-			
+			req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -621,7 +636,7 @@ public class ActionController {
 			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);		
 			try { 
 				
-				int count = service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
+				int count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
 				if (count > 0) {
 					redir.addAttribute("result", "Action Sent Back Successfully");
@@ -647,9 +662,11 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside CloseSubmit.htm "+UserId);		
 			try { 
-
-			int count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
-
+				
+				String levelcount = req.getParameter("LevelCount");
+				int	count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
+				
+			 
 			if (count > 0) {
 				redir.addAttribute("result", "Action Closed Successfully");
 			} else {
@@ -659,8 +676,7 @@ public class ActionController {
 			if ("C".equalsIgnoreCase(req.getParameter("sub"))) {
 				return "redirect:/ActionLaunch.htm";
 			}
-			}
-			catch (Exception e) {
+			}catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside CloseSubmit.htm "+UserId, e);
 			}
@@ -708,9 +724,7 @@ public class ActionController {
 					{
 						tdate=sdf1.format(sdf.parse(tdate));				
 					}
-					
-					
-					
+
 					req.setAttribute("tdate",tdate);
 					req.setAttribute("fdate",fdate);
 					req.setAttribute("StatusList", service.StatusList(EmpId,fdate,tdate));
@@ -857,9 +871,9 @@ public class ActionController {
 			long count =service.ActionMainInsert(mainDto,assign);
 				
 			if (count > 0) {
-				redir.addAttribute("result", "Action Added Successfully For " +req.getParameter("ScheduleSpec"));
+				redir.addAttribute("result", "Action Assigned Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Action Add Unsuccessful");
+				redir.addAttribute("resultfail", "Action Assign Unsuccessful");
 			}
 			redir.addFlashAttribute("ScheduleId", req.getParameter("ScheduleId"));
 			redir.addFlashAttribute("specname", req.getParameter("specname"));
@@ -1223,6 +1237,7 @@ public class ActionController {
 						req.setAttribute("ActionMainId",req.getParameter("ActionMainId"));
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
 						req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") , req.getParameter("ActionAssignId")).get(0));
+						req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 						}
 						catch (Exception e) {
 							e.printStackTrace();
@@ -2210,4 +2225,24 @@ public class ActionController {
 		}
 		return json.toJson(ActionSubList);
 	}
+	
+	@RequestMapping(value = "ActionAssignDataAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionAssignDataAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionAssignDataAjax.htm "+UserId);	
+		Object[] ActionSubList =null;
+		try {
+			
+			ActionSubList =   service.ActionAssignDataAjax(req.getParameter("ActionAssignid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionAssignDataAjax.htm "+UserId, e);
+		}
+		return json.toJson(ActionSubList);
+	}
+	
+	
 }

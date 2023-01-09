@@ -325,6 +325,8 @@ $(document)
 			 $("#Item").find('option').remove();
 			
 			var projecttypeid = <%=ProjectDetailes[21]%>
+			console.log($BudgetHead);
+			console.log(projecttypeid);
 			$.ajax({
 
 						type : "GET",

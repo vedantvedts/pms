@@ -1115,6 +1115,8 @@ public class CommitteeController {
 			req.setAttribute("logintype", Logintype);
 			req.setAttribute("committeecons", committeecons); 
 			req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(CommitteeScheduleId));
+			req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
+			
 			int useraccess=service.ScheduleCommitteeEmpCheck
 					(new EmpAccessCheckDto(Logintype,CommitteeScheduleId,EmpId,
 							committeescheduleeditdata[1], committeecons,
@@ -1966,7 +1968,7 @@ public class CommitteeController {
 		}		
 	}
 	
-	@RequestMapping(value = "MeetingApprovalAgenda.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "MeetingApprovalAgenda.htm")
 	public String MeetingApprovalAgenda(HttpServletRequest req, RedirectAttributes redir, HttpSession ses)	throws Exception 
 	{
 		String UserId=(String)ses.getAttribute("Username");
@@ -3237,7 +3239,7 @@ public class CommitteeController {
 	}
 
 	@RequestMapping(value="MeetingMinutesApprovalSubmit.htm", method=RequestMethod.POST)
-	public String MeetingMinutesApprovalSubmit(HttpServletRequest req,RedirectAttributes redir, HttpSession ses) throws Exception{
+	public String MeetingMinutesApprovalSubmit(HttpServletRequest req,RedirectAttributes redir,HttpServletResponse res, HttpSession ses) throws Exception{
 		
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MeetingMinutesApprovalSubmit.htm "+UserId);
@@ -3245,30 +3247,25 @@ public class CommitteeController {
 		{
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			
-			String ScheduleId=req.getParameter("scheduleid");
+			String ScheduleId=req.getParameter("committeescheduleid");
 			String Option=req.getParameter("sub");
 			String Remarks=req.getParameter("Remark");
 			
-	
-			if(Option.equalsIgnoreCase("back")) {
-				
-				return "redirect:/MeetingApprovalAgenda.htm";
+			if(Option.equalsIgnoreCase("approve")) {
+				getMinutesFrozen(req, ses, res, redir);
 			}
-			else {
-	
-				int count = service.MeetingMinutesApprovalSubmit(ScheduleId, Remarks, UserId, EmpId,Option);		
-				if (count > 0) {					
-					if(Option.equalsIgnoreCase("approve")) {						
-						redir.addAttribute("result", "Meeting Approved Successfully");
-					}					
-					if(Option.equalsIgnoreCase("return")) {						
-						redir.addAttribute("result", "Meeting Returned Successfully");
-					}			
-				}else {					
-					redir.addAttribute("resultfail", "Meeting Forward Unsuccessful");
-				}
-	
+			int count = service.MeetingMinutesApprovalSubmit(ScheduleId, Remarks, UserId, EmpId,Option);		
+			if (count > 0) {					
+				if(Option.equalsIgnoreCase("approve")) {						
+					redir.addAttribute("result", "Meeting Minutes Approved Successfully");
+				}					
+				if(Option.equalsIgnoreCase("return")) {						
+					redir.addAttribute("result", "Meeting Minutes Returned Successfully");
+				}			
+			}else {					
+				redir.addAttribute("resultfail", "Meeting Minutes Forward Unsuccessful");
 			}
+	
 		}catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +"Inside MeetingMinutesApprovalSubmit.htm "+UserId,e);
 		}
@@ -5439,7 +5436,7 @@ public class CommitteeController {
 					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 				 		HttpHeaders headers = new HttpHeaders();
 				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
+				 		headers.set("labcode", LabCode);			    	 
 				 		String jsonResult=null;
 						try {
 							HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -5588,8 +5585,6 @@ public class CommitteeController {
 						in.close();
 						out.close();
 					
-					
-					
 				}
 				else 
 				{
@@ -5642,7 +5637,7 @@ public class CommitteeController {
 						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 					 		HttpHeaders headers = new HttpHeaders();
 					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-					    	 
+					 		headers.set("labcode", LabCode);
 					 		String jsonResult=null;
 							try {
 								HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -5723,6 +5718,7 @@ public class CommitteeController {
 						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
 						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+						 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
 	//					 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
 	//				}
 					
@@ -6205,7 +6201,7 @@ public class CommitteeController {
 					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 				 		HttpHeaders headers = new HttpHeaders();
 				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				    	 
+				 		headers.set("labcode", LabCode);
 				 		String jsonResult=null;
 						try {
 							HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -6778,7 +6774,7 @@ public class CommitteeController {
 						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 					 		HttpHeaders headers = new HttpHeaders();
 					 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-					    	 
+					 		headers.set("labcode", LabCode);
 					 		String jsonResult=null;
 							try {
 								HttpEntity<String> entity = new HttpEntity<String>(headers);

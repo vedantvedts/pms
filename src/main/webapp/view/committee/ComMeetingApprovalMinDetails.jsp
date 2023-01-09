@@ -123,17 +123,13 @@ p{
 				<div class="col-md-5" align="center">
 					<button type="submit"  name="sub" value="approve" class="btn btn-success" style="margin-top:10px; font-weight: 600" onclick="return confirm('Are You Sure To Approve ?')"><i class="fa fa-check" aria-hidden="true" ></i> Approve</button>
 					<button type="submit"  name="sub" value="return" class="btn btn-danger" onclick="remarks()" style="margin-top:10px;padding: 0.375rem 17px;font-weight: 600"><i class="fa fa-repeat" aria-hidden="true" ></i> Return</button>
-					<button type="submit"  name="sub" value="back" class="btn btn-primary back"  style="margin-top:10px;padding: 0.375rem 17px;"> Back</button>
+					<button type="submit"  name="sub" value="back" formaction="MeetingApprovalAgenda.htm" class="btn btn-primary back"  style="margin-top:10px;padding: 0.375rem 17px;"> Back</button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>"/>
+					<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>"/>
 				</div>
 			</div>
 		</form>			
 	</div>				
-						
-
-						
-
 
 	<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 		<div class="firstpage" id="firstpage">		

@@ -6,11 +6,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
 <jsp:include page="../static/header.jsp"></jsp:include>
 
  
 
-<title>Action Assignee</title>
+<title>Issue Update</title>
 <style type="text/css">
 label{
 font-weight: bold;
@@ -76,9 +79,9 @@ h6{
     	
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
-      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=actiono %>)<%}%>
-                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
-                      </h6>
+      				<%-- <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue :  <%=Assignee[5] %> (<%=actiono %>)
+                     <span style="float: right;font-size: 17px;margin-top: 5px">Assigner : <%=AssignerName %> </span>
+      				 </h6> --%>
       				
       			</div>
       		
@@ -107,7 +110,7 @@ h6{
 
 	          				<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
-				            	<%if("backToReview".equalsIgnoreCase(back)){%>
+				            	<%-- <%if("backToReview".equalsIgnoreCase(back)){%>
 				            		
 				            		<a type="button" class="btn  btn-sm back"  href="ActionForwardList.htm?Type=NB">BACK</a>
 				            	<%}else{%>
@@ -121,22 +124,22 @@ h6{
 	                           	<%} %> 
 	                           	<% if(SubList.size()>0){ %>  
 	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
-	                           	<%} %>
+	                           	<%} %> --%>
 	          				</div>
 	        			</div>
 	        		
-			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
+			        	<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
-			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
+			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />  --%>
 	      			</form>
 	      	
 	      	
-	      			<form action="ActionForward.htm" method="post" id="fwdfrm">
+	      			<%-- <form action="ActionForward.htm" method="post" id="fwdfrm">
 	      				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
-	      			</form>
+	      			</form> --%>
 				</div>
 	    		</div>
     		</div>
@@ -151,76 +154,7 @@ h6{
       		 <div class="row">
 				<div class="col-md-1"></div>
 				   <div class="col-md-10" style="padding-left: 0px">
-				   <% if(LinkList!=null && LinkList.size()>0){ %>  
-				   				<div class="table-responsive">
-				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
-										<thead>
-											<tr>
-												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details  <%=AssigneeDetails[0] %><%=AssigneeDetails[1] %> </th>									
-											</tr>	
-											<tr>					
-												<th style="text-align: left;">As On Date</th>
-												<th style="">Progress %</th>
-												<th style="">Remarks</th>								
-											 	<th style="">Attachment</th>
-												<th style="">Action</th>
-											</tr>
-										</thead>
-										<tbody>					
-										<%
-										for(Object[] obj: LinkList){ %>
-																		
-										<tr >
-												<td width="12%">
-													<%=sdf.format(obj[3])%>
-												</td>
-												
-												<td width="6%">
-													
-													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
-													</div>
-								
-														</td>
-												
-												<td style="text-align: left; width: 10%;"> 
-													<%=obj[4]%>
-												</td>
-												
-												<td style="text-align: left; width: 3%;">
-												
-												 <% 
-											        if( obj[6]!=null){
-											        %>
-											        <div  align="center">
-															<a  
-															 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
-															 target="_blank"><i class="fa fa-download"></i></a>
-														</div>
-													
-														
-													<%}else{ %>
-													
-													<div  align="center">-</div>
-													 <%} %>
-													
-										
-												</td>
-											
-																		
-												<td style="text-align: left; width: 6%;">
-											     Old Action
-												</td>
-										
-										</tr>
-																		
-											<%  } %>	
-													</tbody>
-									</table>
-								</div> 
-								<%} %>
-								
-								<% if(SubList.size()>0){ %>  
+								<% if(SubList!=null && SubList.size()>0){ %>  
 											
 											<div class="table-responsive">
 				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
@@ -233,7 +167,6 @@ h6{
 												<th style="">Progress %</th>
 												<th style="">Remarks</th>								
 											 	<th style="">Attachment</th>
-											 	<!-- <th style="">Upload</th> -->
 												<th style="">Action</th>
 											</tr>
 										</thead>
@@ -241,11 +174,8 @@ h6{
 									 	<%int  count=1;
 										for(Object[] obj: SubList){ %>
 																		
-										<tr >
+										<tr>
 										
-											 
-											
-						
 												<td width="12%">
 													<%=sdf.format(obj[3])%>
 												</td>
@@ -288,8 +218,7 @@ h6{
 													
 					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 						
-				<!-- 									<button type="submit" class="btn btn-warning btn-sm" name="action" value="edit" onclick="return confirm('Are you sure To Submit?')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-				 -->								<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+													<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
 									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
@@ -330,7 +259,7 @@ h6{
 
 
 		var fsizeindi=0;
-			  function Filevalidation (fileid) 
+			  <%-- function Filevalidation (fileid) 
 			    {
 			        const fi = $('#'+fileid )[0].files[0].size;							 	
 			        const file = Math.round((fi / 1024/1024));
@@ -343,7 +272,7 @@ h6{
 			        	fsizeindi=0;
 			        	document.getElementById("myBtn").disabled = false;
 			        }
-			    }
+			    } --%>
    		function formsubmit(formid)
    		{
    			if(fsizeindi>0)

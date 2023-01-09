@@ -99,7 +99,7 @@ font-weight: bold;
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> ProjectMainList=(List<Object[]>) request.getAttribute("ProjectMainList");
-
+String Onboarding = (String)request.getAttribute("Onboarding");
 DecimalFormat df=new DecimalFormat("0.00");
 NFormatConvertion nfc=new NFormatConvertion();
 %>
@@ -141,6 +141,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 	<div class="col-md-3"><h4><b>Project Main List</b></h4></div>
 	
 	<div class="col-md-9" align="right">
+	 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 				   <form action="ProjectMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
@@ -172,6 +173,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					  </div>
 					</div>
 					</form> 
+			<%}%>
 					</div>
 					</div>
   </div>
@@ -231,9 +233,14 @@ NFormatConvertion nfc1=new NFormatConvertion();
 </table>
 <table align="center">
 <tr>
-<td><button name="action" class="btn btn-success btn-sm add" type="submit" value="add" >ADD</button>&nbsp;&nbsp;</td>
-<td><button name="action" class="btn btn-warning btn-sm edit" type="submit" value="edit" Onclick="Edit(frm1)">EDIT</button>&nbsp;&nbsp;</td>
-<td> <a  class="btn btn-info btn-sm shadow-nohover back"  href="MainDashBoard.htm"  >BACK</a>&nbsp;&nbsp;</td>
+<td> <button name="action" class="btn btn-success btn-sm add" type="submit" value="add" >ADD</button>&nbsp;&nbsp;</td>
+<td> <button name="action" class="btn btn-warning btn-sm edit" type="submit" value="edit" Onclick="Edit(frm1)">EDIT</button>&nbsp;&nbsp;</td>
+<td>  <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
+				<a class="btn btn-info btn-sm  back"   href="OnBoarding.htm">Back</a>
+				<%}else{%>
+				<a class="btn btn-info btn-sm  back"   href="MainDashBoard.htm">Back</a>
+	 <%}%>&nbsp;&nbsp;
+</td>
 <!-- <td><button name="action" class="btn btn-warning" type="submit" value="revise" Onclick="Edit(frm1)">Revision</button>&nbsp;&nbsp;</td>
 <td><button name="action" class="btn btn-danger" type="submit" value="close" Onclick="Delete(frm1)">Close</button>&nbsp;&nbsp;</td>
 <td><button class="btn btn-primary" type="submit" formaction="UploadAttachmentSanction?act=view" Onclick="Edit(frm1)">Attach</button>&nbsp;&nbsp;</td>
