@@ -26,7 +26,8 @@ public class PfmsInitiation implements Serializable {
     private Long DivisionId;
     private String ProjectProgramme;
     private Long ProjectTypeId;
-    private Long CategoryId;
+	/* private Long CategoryId; */
+    private Long ClassificationId;
     private String ProjectShortName;
     private String ProjectTitle;
     private Double ProjectCost;

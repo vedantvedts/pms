@@ -11,7 +11,7 @@ public class PfmsInitiationDto {
     private String DivisionId;
     private String ProjectProgramme;
     private String ProjectTypeId;
-    private String CategoryId;
+    private String ClassificationId;
     private String ProjectShortName;
     private String ProjectTitle;
     private String ProjectCost;

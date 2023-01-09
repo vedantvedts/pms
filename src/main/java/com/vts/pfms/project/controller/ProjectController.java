@@ -123,7 +123,7 @@ public class ProjectController
 				String LabCode = (String)ses.getAttribute("labcode");
 		
 				if (Option.equalsIgnoreCase("add")) {
-					req.setAttribute("ProjectTypeList", service.ProjectTypeList());
+					req.setAttribute("ProjectTypeList", service.ProjectTypeList());	
 					req.setAttribute("PfmsCategoryList", service.PfmsCategoryList());
 					req.setAttribute("PfmsDeliverableList", service.PfmsDeliverableList());	
 					req.setAttribute("InitiatedProjectList", service.InitiatedProjectList());
@@ -221,6 +221,7 @@ public class ProjectController
 			req.setAttribute("DetailsEdit", DetailsEdit);
 			req.setAttribute("Details", Details);
 			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
+		//	req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)));
 			req.setAttribute("ProjectProgressCount", service.ProjectProgressCount(IntiationId));
 			req.setAttribute("TabId", TabId);
 			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(IntiationId));
@@ -286,7 +287,8 @@ public class ProjectController
 			pfmsinitiationdto.setDivisionId(Division);
 			pfmsinitiationdto.setProjectProgramme(req.getParameter("ProjectProgramme"));
 			pfmsinitiationdto.setProjectTypeId(req.getParameter("ProjectType"));
-			pfmsinitiationdto.setCategoryId(req.getParameter("Category"));
+			/* pfmsinitiationdto.setCategoryId(req.getParameter("Category")); */
+			pfmsinitiationdto.setClassificationId(req.getParameter("Category"));
 			pfmsinitiationdto.setProjectShortName(req.getParameter("ShortName"));
 			pfmsinitiationdto.setProjectTitle(req.getParameter("ProjectTitle"));
 			pfmsinitiationdto.setFeCost("0");
@@ -373,7 +375,8 @@ public class ProjectController
 				pfmsinitiationdto.setInitiationId(req.getParameter("IntiationId"));
 				pfmsinitiationdto.setProjectProgramme(req.getParameter("ProjectProgramme"));
 				pfmsinitiationdto.setProjectTypeId(req.getParameter("ProjectType"));
-				pfmsinitiationdto.setCategoryId(req.getParameter("Category"));
+				/* pfmsinitiationdto.setCategoryId(req.getParameter("Category")); */
+				pfmsinitiationdto.setClassificationId(req.getParameter("Category"));
 				pfmsinitiationdto.setNodalLab(req.getParameter("NodalLab"));
 				pfmsinitiationdto.setProjectTitle(req.getParameter("ProjectTitle"));
 				pfmsinitiationdto.setIsPlanned(req.getParameter("IsPlanned"));
