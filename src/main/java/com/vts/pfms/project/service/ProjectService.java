@@ -40,6 +40,7 @@ public interface ProjectService {
 	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto,String UserId,String EmpId,String EmpName ) throws Exception;
 	public Long ProjectShortNameCount(String ProjectShortName) throws Exception;
 	public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception;
+	//public Object[] ProjectDetailes(Long IntiationId) throws Exception;
 	public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception;
 	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto,String UserId ) throws Exception;
 	public List<Object[]> BudgetItem(String BudegtId) throws Exception;

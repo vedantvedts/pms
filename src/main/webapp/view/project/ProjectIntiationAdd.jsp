@@ -136,9 +136,9 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                        <div class="form-group">
 		                            <label class="control-label">Category</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                            	<select class="custom-select" id="Category" required="required" name="Category">
+		                            	<select class="custom-select" id="ProjectType" required="required" name="ProjectType">
 										    <option disabled="true"  selected value="">Choose...</option>
-											 <% for (Object[] obj : PfmsCategoryList) {%>
+											 <% for (Object[] obj : PfmsCategoryList ) {%>
 											<option value="<%=obj[0]%>"><%=obj[1]%></option>
 											<%} %>
 		  								</select>
@@ -150,7 +150,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                        <div class="form-group">
 		                            <label class="control-label">Security Classification</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-									    <select class="custom-select" id="ProjectType" required="required" name="ProjectType">
+									    <select class="custom-select" id="Category" required="required" name="Category">
 										    <option disabled="true"  selected value="">Choose...</option>
 										   	<% for (Object[] obj : ProjectTypeList) {%>
 											<option value="<%=obj[0]%>"><%=obj[1]%></option>

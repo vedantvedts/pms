@@ -154,7 +154,8 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiation.setDivisionId(Long.parseLong(pfmsinitiationdto.getDivisionId()));
 		pfmsinitiation.setProjectProgramme(pfmsinitiationdto.getProjectProgramme());
 		pfmsinitiation.setProjectTypeId(Long.parseLong(pfmsinitiationdto.getProjectTypeId()));
-		pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+		//pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+		pfmsinitiation.setClassificationId(Long.parseLong(pfmsinitiationdto.getClassificationId()));
 		pfmsinitiation.setProjectShortName(pfmsinitiationdto.getProjectShortName());
 		pfmsinitiation.setProjectTitle(pfmsinitiationdto.getProjectTitle());
 		pfmsinitiation.setFeCost(Double.parseDouble(pfmsinitiationdto.getFeCost()) * 100000);
@@ -514,7 +515,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 		pfmsinitiation.setProjectProgramme(pfmsinitiationdto.getProjectProgramme());
 		pfmsinitiation.setProjectTypeId(Long.parseLong(pfmsinitiationdto.getProjectTypeId()));
-		pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+		//pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+		pfmsinitiation.setClassificationId(Long.parseLong(pfmsinitiationdto.getClassificationId()));
 		pfmsinitiation.setNodalLab(Long.parseLong(pfmsinitiationdto.getNodalLab()));
 		pfmsinitiation.setProjectTitle(pfmsinitiationdto.getProjectTitle());
 		pfmsinitiation.setIsPlanned(pfmsinitiationdto.getIsPlanned());
@@ -547,7 +549,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 			pfmsinitiation.setProjectProgramme(pfmsinitiationdto.getProjectProgramme());
 			pfmsinitiation.setProjectTypeId(Long.parseLong(pfmsinitiationdto.getProjectTypeId()));
-			pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+			//pfmsinitiation.setCategoryId(Long.parseLong(pfmsinitiationdto.getCategoryId()));
+			pfmsinitiation.setClassificationId(Long.parseLong(pfmsinitiationdto.getClassificationId()));
 			pfmsinitiation.setNodalLab(Long.parseLong(pfmsinitiationdto.getNodalLab()));
 			pfmsinitiation.setModifiedDate(sdf1.format(new Date()));
 			pfmsinitiation.setIsActive(1);
