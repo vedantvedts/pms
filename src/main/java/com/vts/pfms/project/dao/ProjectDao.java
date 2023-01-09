@@ -53,6 +53,9 @@ public interface ProjectDao {
 	public List<Object[]> BudgetHead() throws Exception;
 	public Long ProjectScheduleAdd(List<PfmsInitiationSchedule> pfmsinitiationschedulelist, PfmsInitiation pfmsinitiation) throws Exception;
 	public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception;
+	//line added
+	public List<Object[]>ProjectScheduleTotalMonthList(String InitiationId)throws Exception;
+	/*L.A*/public List<Object[]>MileStonenoTotalMonths(String InitiationId,int msno) throws Exception;
 	public Object[] ProjectProgressCount(String InitiationId) throws Exception;
 	public  List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception;
 	public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Exception;
@@ -64,11 +67,17 @@ public interface ProjectDao {
 	public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Exception;
 	public Long ProjectInitiationDetailsUpdate(PfmsInitiationDetail pfmsinitiationdetail,String Details) throws Exception;
 	public int ProjectIntiationCostEdit(PfmsInitiationCost pfmsinitiationcost) throws Exception;
-	public int ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation) throws Exception;
+	public long ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation) throws Exception;
+//	public int ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation) throws Exception;
+	/*L.A*/	 public int MilestoneTotalMonthUpdate(int newMilestoneTotalMonth, String IntiationId, String milestoneno) throws Exception;
 	public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation) throws Exception;
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception;
+/*L.A*/	   public Integer ProjectDurationMonth(String InitiationId)throws Exception;
+/*L.A*/	public Integer MilestoneScheduleMonth(String initiationscheduleid,String IntiationId)throws Exception;
 	public int ProjectMileStoneNo(String InitiationId) throws Exception;
 	public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception;
+	/*L.A*/public int mileStonemonthprevious(String IntiationId, String milestoneno) throws Exception;
+	/*L.A*/public int milestonenototalmonth(String IntiationId, String milestoneno) throws Exception;
 	public Long ProjectInitiationAttachmentAdd(PfmsInitiationAttachment pfmsinitiationattachment,PfmsInitiationAttachmentFile pfmsinitiationattachmentfile) throws Exception;
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception;
 	public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception;
@@ -166,5 +175,8 @@ public interface ProjectDao {
 	public PfmsInitiationChecklistData InitiationChecklistCheck(PfmsInitiationChecklistData cldata) throws Exception;
 	public long InitiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	
+	public PfmsInitiationSchedule getInitiationSchedule(String InitiationScheduleId) throws Exception;
+	public int InitiationClearTotalMonth(String InitiationId) throws Exception;
+	public List<PfmsInitiationSchedule> IntiationScheduleList(String InitiationId) throws Exception;
+	public PfmsInitiationSchedule MilestoneData(long InitiationId, int MilestoneNo) throws Exception;
 }

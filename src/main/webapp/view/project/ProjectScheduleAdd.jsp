@@ -50,6 +50,9 @@ String IntiationId=(String) request.getAttribute("IntiationId");
 Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMonth");
+List<Object[]>MilestoneTotalMonth=(List<Object[]>)request.getAttribute("MilestoneTotalMonth");
+Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths");
+
 %>
 
 
@@ -104,9 +107,11 @@ Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMont
                                             <tr>
                                                 <th >Milestone</th>
                                                 <th >Milestone Activity</th>
+                                                <th> Started from</th>
                                                 <th >Milestone Month</th>
                                                  <th >Remarks</th>
-                                                <th >Link</th> 
+                                              <th >Link</th> 
+                                              <th>MileStoneTotalMonth</th> 
                                             </tr>
                                         </thead>
                                        <%} %>
@@ -122,19 +127,32 @@ Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMont
 				                     <input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
 				                      <input type="hidden" name="initiationscheduleid" value="<%=obj[3] %>" /> 	
 				                      	
-									 	<td>MILESTONE-<%=obj[0] %></td> 
-									 	<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>"></td> 
-									   	<td style="width: 200px;"><input type="number" class="form-control form-control" name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2] %>"></td>
-									   	<td><input type="text" class="form-control form-control" name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]%>"></td>
-									<td  style="width: 150px;">
+									 	<td><input type="hidden" name="milestoneno" value="<%=obj[0] %>" /> 	MIL-<%=obj[0] %></td> 
+									 	<td style="width: 300px;"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>"></td> 
+									 	<td >
+										<%--  	<select class="form-control selectdee"  name="MilestoneFrom">
+											 	<option <%if(obj[5]!=null) %> selected="selected" value="0"><%="0"%></option>
+												 	<%for(Object[]obje:ScheduleList){ %>
+												 		<%if(obje[0].toString().equalsIgnoreCase(obj[0].toString()))break;
+													 		else  { %>
+													 		<option value="<%=obje[0] %>" <%if(obj[5].toString().equalsIgnoreCase(obje[0].toString()) ){ %> selected="selected" <%} %>> <%=obje[0] %></option>
+												 	<%}} %>
+										 	</select>  --%>
+										 	 MIL-<%=obj[5] %> 
+									 		 <input type="hidden" name="MilestoneFrom" value="<%=obj[5]%>"> 
+									 	</td>
+									   	<td style="width: 200px;"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2] %>"></td>
+									   	<td><input type="text" class="form-control " name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]%>"></td>
+									    <td  style="width: 150px;">
 							
-									<button class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit this Schedule?');"></button>
+									  <button class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit this Schedule?');"></button>
+										
 										<%if(count==ScheduleList.size()){ %> 
 										&nbsp;
 										<button class="fa fa-trash btn " type="submit" formaction="ProjectScheduleDeleteSubmit.htm" onclick="return confirm('Are You Sure To Delete this Schedule?');"></button>
 										<%} %>										
 									</td>
-											
+											<td><%= obj[6]%></td>
 				
    
 								 	</tr>
@@ -158,15 +176,27 @@ Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMont
 
 		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
 													<thead>  
-													<tr><th style="width: 500px;"><div style=" ">Milestone Activity</div></th><th><div style="">Milestone Month</div></th>
-													<th style=" "><div style="">Remarks</div></th>
-													<th><div style="margin-bottom: -10px;"><i class="btn btn-sm fa fa-plus" style="color: green;"  onclick="MilestoneAdd()"></i></div></th></tr>
+													<tr>
+													<th style="width: 400px;"><div align="center">Milestone Activity</div></th>
+													<th><div>Started From</div></th>
+													<th><div style="">Milestone Month</div></th>
+													<th align="center"><div align="center">Remarks</div></th>
+													</tr>
 													<input type="hidden"  id="MilestoneAdd" value="1" />
 													<tr>
-														<td style="width: 400px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required"></td>                                                       
-														<td style="width: 200px;"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
-														<td style="width: 400px;"><input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required"></td>
-														<td style="width: 100px;"><i class="btn btn-sm fa fa-minus" style="color: red;" onclick="MilestoneSub()"></i></td>
+														<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required"></td>                               	
+														<td style="width: 150px;">
+														<select class="form-control selectdee" name="Milestonestarted" id="Milestonestarted0">
+														<option value="0 0"  selected="selected"	hidden="true">MIL-0</option>
+												 	    <%if(MilestoneTotalMonth.size()!=0){ %>
+														<%for(Object []obj:MilestoneTotalMonth) {%>
+															<option value="<%=obj[0]+" "+obj[1]%>">MIL-<%=obj[1] %></option>
+														<%}}%>
+														</select>
+														</td>
+		
+														<td style="width: 100px;"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
+														<td style="width: 300px;">	<input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required"></td>
 													</tr>
 													</thead>
 													</table>
@@ -192,15 +222,7 @@ Integer ProjectScheduleMonth=(Integer) request.getAttribute("ProjectScheduleMont
  	</form>
         
      </div>`     
-        
-
-
-
-
-
-
-
-
+   
         </div>
 </div>
 </div>
@@ -228,8 +250,7 @@ var TotalMilestoneMonth="<%=ProjectDetailes[9] %>";
 function MilestoneAdd(){
 	 
 	 var $MilestoneAdd = $("#MilestoneAdd").val(); 
-	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><i class='btn btn-sm fa fa-minus' style='color: red;' onclick='MilestoneSub("+$MilestoneAdd+")'></i></td></tr>");
-	 FimRowId=$MilestoneAdd+1;
+	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td></tr>");	 FimRowId=$MilestoneAdd+1;
 	 $("#MilestoneAdd").val($MilestoneAdd+1); 
 	 
 

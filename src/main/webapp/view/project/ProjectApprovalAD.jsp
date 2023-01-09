@@ -118,10 +118,13 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    			<td> <b>Security Classification</b> </td>
 						    			<td><%=obj[7] %></td>
 						    		</tr>
-						    		
 						    		<tr>
 						    			<td> <b>Deliverable</b> </td>
-						    			<td><%=obj[8] %></td>
+						    			<td><%if(obj[8]!=null && obj[8].toString().equalsIgnoreCase("")){ %><%=obj[8] %>
+						    			<%}else{ %>
+						    			<%="-" %>
+						    			<%} %>
+						    			<%-- <td><%=obj[8] %></td> --%>
 						    		</tr>
 						    		
 						    		<tr>

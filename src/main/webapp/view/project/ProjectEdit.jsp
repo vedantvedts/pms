@@ -310,7 +310,7 @@ Project Edit</h4>
 								class="form-control" maxlength="50" required="required">
 								
 								 --%>
-									<select required="required"
+								 	<select required="required"
 														name="bor"
 														class="form-control  form-control selectdee"
 														data-width="100%"

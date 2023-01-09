@@ -216,6 +216,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" >
 
 	                        </div>
+	                      
        					</div>
 	                    
 	                    
@@ -282,7 +283,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 									<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" >
 	                        </div>
 	                    </div>
-                    
+                      <input type="hidden" name="Deliverable" value="">
                   
                     
 

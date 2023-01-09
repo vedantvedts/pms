@@ -12,9 +12,11 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -136,7 +138,7 @@ public class ProjectController
 					req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(IntiationId));
 					req.setAttribute("IntiationAttachment", service.ProjectIntiationAttachment(IntiationId));
 					req.setAttribute("AuthorityAttachment", service.AuthorityAttachment(IntiationId));
-														
+											
 					Map<String, List<Object[]>> BudgetItemMapList = new LinkedHashMap<String, List<Object[]>>();
 		
 					List<Object[]> ItemList = service.ProjectIntiationItemList(IntiationId);
@@ -293,7 +295,7 @@ public class ProjectController
 			/* pfmsinitiationdto.setProjectDuration(req.getParameter("Duration")); */
 			pfmsinitiationdto.setIsPlanned(req.getParameter("IsPlanned"));
 			//pfmsinitiationdto.setIsMultiLab(req.getParameter("IsMultiLab"));
-			//pfmsinitiationdto.setDeliverableId(req.getParameter("Deliverable"));
+			pfmsinitiationdto.setDeliverableId(req.getParameter("Deliverable"));
 			pfmsinitiationdto.setNodalLab(req.getParameter("NodalLab"));
 			pfmsinitiationdto.setRemarks(req.getParameter("Remarks"));
 			pfmsinitiationdto.setIsMain(req.getParameter("ismain"));
@@ -892,9 +894,9 @@ public class ProjectController
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 
 	}
-
-	@RequestMapping(value = "ProjectScheduleAdd.htm", method = RequestMethod.POST)
-	public String ProjectScheduleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+	//ProjectScheduleAddLanding.htm
+	@RequestMapping(value = "ProjectScheduleAdd.htm", method = {RequestMethod.POST,RequestMethod.GET})
+	public String ProjectScheduleAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
@@ -902,13 +904,26 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectScheduleAdd.htm "+UserId);
 		
 		try {
-		String IntiationId = req.getParameter("IntiationId");
+			String IntiationId = req.getParameter("IntiationId");
+			
+			if(IntiationId==null)
+			{
+				Map md=model.asMap();
+				IntiationId=(String)md.get("IntiationId");				
+			}	
+			
+	
+			req.setAttribute("IntiationId", IntiationId);
+	
+			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
+			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(IntiationId));
+			req.setAttribute("ProjectScheduleMonth", service.ProjectScheduleMonth(IntiationId));
+			req.setAttribute("MilestoneTotalMonth",service.ProjectScheduleTotalMonthList(IntiationId));
 
-		req.setAttribute("IntiationId", IntiationId);
-
-		req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
-		req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(IntiationId));
-		req.setAttribute("ProjectScheduleMonth", service.ProjectScheduleMonth(IntiationId));
+			req.setAttribute("ScheduleTotalMonths",service.ProjectDurationMonth(IntiationId));
+			
+		
+		
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside ProjectScheduleAdd.htm "+UserId, e);
 			e.printStackTrace();
@@ -938,6 +953,9 @@ public class ProjectController
 		req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
 		req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(IntiationId));
 		req.setAttribute("ProjectScheduleMonth", service.ProjectScheduleMonth(IntiationId));
+		req.setAttribute("ProjectDurationMonth", service.ProjectDurationMonth(IntiationId));
+		//line added
+		req.setAttribute("MilestoneTotalMonth",service.ProjectScheduleTotalMonthList(IntiationId));
 		}catch (Exception e) {
 			logger.error(new Date() +" Inside ProjectScheduleAddLanding.htm "+UserId, e);
 			e.printStackTrace();
@@ -963,17 +981,64 @@ public class ProjectController
 			
 			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
 			Integer ProjectScheduleMonth = service.ProjectScheduleMonth(req.getParameter("IntiationId"));
+			/*Line added*/Integer ProjectDurationMonth=  service.ProjectDurationMonth(req.getParameter("IntiationId"));
 			Integer TotalMonthToAdd = 0;
-			String[] montharray=req.getParameterValues("MilestoneMonth");
+			String s=req.getParameter("Milestonestarted");
+			Integer totalExtendedBy=0;
 			
-			for (int i=0;i<montharray.length;i++) {
-				TotalMonthToAdd = TotalMonthToAdd + Integer.parseInt(montharray[i]);
-			}
-			Integer TotalMonth = TotalMonthToAdd + ProjectScheduleMonth;
+			  String[]startedfrom=s.split("\\s"); Integer
+			  milestonestarted=Integer.parseInt(startedfrom[0]); Integer
+			  Milestonestartedfrom=Integer.parseInt(startedfrom[1]); Integer
+			  MilestoneMonth=Integer.parseInt(req.getParameter("MilestoneMonth")); Integer
+			  MilestoneTotalMonth=milestonestarted+MilestoneMonth;
+			
+			  
+				/*
+				 * String extndBy=req.getParameter("Milestonestarted");
+				 * 
+				 * Integer extendedBy=Integer.parseInt(extndBy);
+				 * 
+				 * int extended=0;
+				 * 
+				 * while(extendedBy>=0) {
+				 * 
+				 * }
+				 */
+			
+			/*
+			 * String[] montharray=req.getParameterValues("MilestoneMonth");
+			 * 
+			 * for (int i=0;i<montharray.length;i++) { TotalMonthToAdd = TotalMonthToAdd +
+			 * Integer.parseInt(montharray[i]); }
+			 */
+			
+			
+			
+			//Integer TotalMonth = TotalMonthToAdd + ProjectScheduleMonth;
 			/* if(TotalMonth<=Integer.parseInt(ProjectDetailes[9].toString())) { */
-			Long count = service.ProjectScheduleAdd(req.getParameterValues("MilestoneActivity"),
-					req.getParameterValues("MilestoneMonth"), req.getParameterValues("MilestoneRemark"),
-					req.getParameter("IntiationId"), UserId, ProjectDetailes,TotalMonth);
+			/*
+			 * Long count =
+			 * service.ProjectScheduleAdd(req.getParameterValues("MilestoneActivity"),
+			 * req.getParameterValues("MilestoneMonth"),
+			 * req.getParameterValues("MilestoneRemark"), req.getParameter("IntiationId"),
+			 * UserId, ProjectDetailes,TotalMonth);
+			 */
+			 Long count=0L;
+			  
+			  if(MilestoneTotalMonth>=ProjectDurationMonth) {
+			   count =
+			  service.ProjectScheduleAdd(req.getParameterValues("MilestoneActivity"),
+			  req.getParameterValues("MilestoneMonth"),MilestoneTotalMonth,Milestonestartedfrom,
+			  req.getParameterValues("MilestoneRemark"), req.getParameter("IntiationId"),
+			  UserId, ProjectDetailes,MilestoneTotalMonth);
+			  }
+			  else {
+				   count =
+						  service.ProjectScheduleAdd(req.getParameterValues("MilestoneActivity"),
+						  req.getParameterValues("MilestoneMonth"),MilestoneTotalMonth,Milestonestartedfrom,
+						  req.getParameterValues("MilestoneRemark"), req.getParameter("IntiationId"),
+						  UserId, ProjectDetailes,ProjectDurationMonth);
+			  }
 
 			if (count > 0) {
 				redir.addAttribute("result", "Project Schedule Added Successfully");
@@ -998,58 +1063,209 @@ public class ProjectController
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 	}
 
-	
-	
 	@RequestMapping(value = "ProjectScheduleEditSubmit.htm", method=RequestMethod.POST)
-	public String ProjectScheduleEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-			throws Exception {
-
+	public String ProjectScheduleEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
-
 		logger.info(new Date() +"Inside ProjectScheduleEditSubmit.htm "+UserId);
-		
 		try {
-
-	      //Object[] ProjectDetailes=service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
-	      int oldmonth=service.ProjectScheduleEditData(req.getParameter("initiationscheduleid"));
-	      Integer ProjectScheduleMonth =service.ProjectScheduleMonth(req.getParameter("IntiationId"));
-
-	      Integer TotalMonth=Integer.parseInt(req.getParameter("MilestoneMonthEdit"))+ProjectScheduleMonth-oldmonth;
-	      	    
-			/* if(TotalMonth<=Integer.parseInt(ProjectDetailes[9].toString())) { */
-		
-	      ProjectScheduleDto projectschedule=new ProjectScheduleDto();
-	      projectschedule.setMileStoneActivity(req.getParameter("MilestoneActivityEdit"));
-	      projectschedule.setMileStoneMonth(req.getParameter("MilestoneMonthEdit"));
-	      projectschedule.setMileStoneRemark(req.getParameter("MilestoneRemarkEdit"));
-	      projectschedule.setInitiationScheduleId(req.getParameter("initiationscheduleid"));	      
-	      projectschedule.setUserId(UserId);
-	      projectschedule.setTotalMonth(TotalMonth);
-	      projectschedule.setInitiationId(req.getParameter("IntiationId"));
-	      
-	      
-		int count = service.ProjectScheduleEdit(projectschedule);
-
-		
-		
-		
-		if (count >0 ) {
-			redir.addAttribute("result", "Project Schedule Edited Successfully");
-		} else {
-			redir.addAttribute("resultfail", "Project Schedule Edit Unsuccessful");
-		}
-		
-		
-		redir.addFlashAttribute("IntiationId",req.getParameter("IntiationId"));
+			
+			String IntiationId = req.getParameter("IntiationId");
+			String initiationscheduleid = req.getParameter("initiationscheduleid");  //pk
+			String milestoneno = req.getParameter("milestoneno");
+			String MilestoneActivityEdit = req.getParameter("MilestoneActivityEdit");
+			String MilestoneFrom = req.getParameter("MilestoneFrom");
+			String MilestoneMonthEdit = req.getParameter("MilestoneMonthEdit");
+			String MilestoneRemarkEdit = req.getParameter("MilestoneRemarkEdit");
+			
+			
+			ProjectScheduleDto scheduledto =  ProjectScheduleDto.builder()
+												.InitiationScheduleId(initiationscheduleid)
+												.InitiationId(IntiationId)
+												.MileStoneActivity(MilestoneActivityEdit)
+												.MileStoneMonth(MilestoneMonthEdit)
+												.MileStoneRemark(MilestoneRemarkEdit)
+												.MileStoneMonth(MilestoneMonthEdit)
+												.Milestonestartedfrom(Integer.parseInt(MilestoneFrom))
+												.ModifiedBy(UserId)
+												.build();
+			
+			long count = service.ProjectScheduleEdit(scheduledto);
+			
+			
+			
+			redir.addFlashAttribute("IntiationId",IntiationId);
+			return "redirect:/ProjectScheduleAdd.htm";
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectScheduleEditSubmit.htm "+UserId, e);
 			return "static/Error";
 		}
+		
+	}
 	
-		return "redirect:/ProjectScheduleAddLanding.htm";
-
-}
+	
+	
+//	@RequestMapping(value = "ProjectScheduleEditSubmit.htm", method=RequestMethod.POST)
+//	public String ProjectScheduleEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+//			throws Exception {
+//
+//		String UserId = (String) ses.getAttribute("Username");
+//
+//		logger.info(new Date() +"Inside ProjectScheduleEditSubmit.htm "+UserId);
+//		
+//		try {
+//
+//	      //Object[] ProjectDetailes=service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
+//		     int msno=Integer.parseInt(req.getParameter("milestoneno"));
+//	      int oldmonth=service.ProjectScheduleEditData(req.getParameter("IntiationId"));
+//	      Integer ProjectScheduleMonth =service.ProjectScheduleMonth(req.getParameter("IntiationId"));
+//	      
+//	      int milestonemonthprevious=service.mileStonemonthprevious(req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	      
+//	      int milestonemonthnow=Integer.parseInt(req.getParameter("MilestoneMonthEdit"));
+//	      
+//	      int monthextended=milestonemonthnow-milestonemonthprevious;
+//	      
+//	      int milestonenototalmonth=service.milestonenototalmonth(req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	      
+//	      int newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+//	    
+//	     // service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth, req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	   
+//	      List<Object[]>MileStonenoTotalMonthsList=service.MileStonenoTotalMonths(req.getParameter("IntiationId"), msno);
+//	      
+//	      List<Integer>list1=new ArrayList<Integer>();
+//	      
+//	      if(!MileStonenoTotalMonthsList.isEmpty()) {
+//	    	  for(int i=0;i<MileStonenoTotalMonthsList.size();i++) {
+//	    		  list1.add((Integer)MileStonenoTotalMonthsList.get(i)[0]);
+//	    	  }
+//				/* while(!MileStonenoTotalMonthsList.isEmpty()) */
+//	      }
+//	      
+//	      System.out.println(list1.toString());
+//			/*
+//			 * Map<Integer, List<Object[]>> collect =
+//			 * MileStonenoTotalMonthsList.stream().collect(Collectors.groupingBy(e->
+//			 * Integer.valueOf(e[2].toString()) ,Collectors.toList() ));
+//			 * 
+//			 * List<String> keylist = new ArrayList<String>(); Set<String> iteratinglist =
+//			 * new HashSet<String>();
+//			 * 
+//			 * int size=0;
+//			 * 
+//			 * while(size==0) {
+//			 * 
+//			 * if(iteratinglist.size()==0) iteratinglist.add(String.valueOf(msno));
+//			 * keylist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * iteratinglist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * 
+//			 * System.out.println(iteratinglist);
+//			 * 
+//			 * for(String j : iteratinglist) {
+//			 * 
+//			 * System.out.println(j); System.out.println(collect.get(Integer.valueOf(j)));
+//			 * List<String> collect2 = collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList());
+//			 * System.out.println(collect2.size() + "" + collect2);
+//			 * keylist.addAll(collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * //iteratinglist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * if(collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()).size()==0) size=1; }
+//			 * 
+//			 * }
+//			 * 
+//			 * 
+//			 * System.out.println(iteratinglist); System.out.println("");
+//			 * System.out.println(keylist);
+//			 * 
+//			 * 
+//			 * 
+//			 * for(Integer mno : collect.keySet() ) {
+//			 * 
+//			 * if(collect.containsKey(mno)) { List<Object[]> list = collect.get(mno);
+//			 * List<String> collect2 = list.stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()); for(String i : collect2) {
+//			 * milestonenototalmonth=service.milestonenototalmonth(req.getParameter(
+//			 * "IntiationId"), i);
+//			 * newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+//			 * service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth,
+//			 * req.getParameter("IntiationId"), i); } }
+//			 * 
+//			 * 
+//			 * }
+//			 */
+//	      
+////	      if(collect.containsKey(msno)) {
+////			List<Object[]> list = collect.get(msno);
+////			List<String> collect2 = list.stream().map(e-> e[0].toString()).collect(Collectors.toList());
+////			for(String i : collect2) {
+////				milestonenototalmonth=service.milestonenototalmonth(req.getParameter("IntiationId"), i);
+////				newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+////			    service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth, req.getParameter("IntiationId"), i);
+//	      
+//	      
+//	      
+//	   
+//			/*
+//			 * if(MileStonenoTotalMonthsList.isEmpty()) {
+//			 * 
+//			 * System.out.println(msno+"-----"+milestonemonthnow+"----"+
+//			 * milestonemonthprevious+"--------"+monthextended+"------"+
+//			 * newMilestoneTotalMonth+"-------"); }
+//			 * 
+//			 * Map<Integer,Integer>map=new LinkedHashMap<Integer,Integer>();
+//			 * if(!MileStonenoTotalMonthsList.isEmpty()) { for(int
+//			 * i=0;i<MileStonenoTotalMonthsList.size();i++) {
+//			 * map.put((Integer)MileStonenoTotalMonthsList.get(i)[0],(Integer)
+//			 * MileStonenoTotalMonthsList.get(i)[1]); }
+//			 * 
+//			 * }
+//			 * 
+//			 * System.out.println(map);
+//			 */
+//	      	
+//	      //Integer TotalMonth=Integer.parseInt(req.getParameter("MilestoneMonthEdit"))+ProjectScheduleMonth-oldmonth;
+//	   		Integer TotalMonth=service.ProjectDurationMonth(req.getParameter("IntiationId"));
+//			/* if(TotalMonth<=Integer.parseInt(ProjectDetailes[9].toString())) { */
+//		
+//	      ProjectScheduleDto projectschedule=new ProjectScheduleDto();
+//	      projectschedule.setMileStoneActivity(req.getParameter("MilestoneActivityEdit"));
+//	      projectschedule.setMileStoneMonth(req.getParameter("MilestoneMonthEdit"));
+//	      projectschedule.setMileStoneRemark(req.getParameter("MilestoneRemarkEdit"));
+//	      projectschedule.setInitiationScheduleId(req.getParameter("initiationscheduleid"));	      
+//	      projectschedule.setUserId(UserId);
+//	      projectschedule.setTotalMonth(TotalMonth);
+//	      projectschedule.setInitiationId(req.getParameter("IntiationId"));
+//	      
+//	      
+//		int count = service.ProjectScheduleEdit(projectschedule);
+//
+//		
+//		
+//		
+//		if (count >0 ) {
+//			redir.addAttribute("result", "Project Schedule Edited Successfully");
+//		} else {
+//			redir.addAttribute("resultfail", "Project Schedule Edit Unsuccessful");
+//		}
+//		
+//		
+//		redir.addFlashAttribute("IntiationId",req.getParameter("IntiationId"));
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside ProjectScheduleEditSubmit.htm "+UserId, e);
+//			return "static/Error";
+//		}
+//	
+//		return "redirect:/ProjectScheduleAddLanding.htm";
+//
+//}
 
 	@RequestMapping(value = "ProjectScheduleDeleteSubmit.htm", method = RequestMethod.POST)
 	public String ProjectScheduleDeleteSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
@@ -1066,8 +1282,17 @@ public class ProjectController
 		Integer TotalMonth = ProjectScheduleMonth - Integer.parseInt(req.getParameter("MilestoneMonthEdit"));
 
 		String InitiationId = req.getParameter("IntiationId");
+		
+		
+		Integer MilestoneScheduleMonth=service.MilestoneScheduleMonth(req.getParameter("initiationscheduleid"),req.getParameter("IntiationId"));
+		
+		Integer ProjectDurationMonth=service.ProjectDurationMonth(req.getParameter("IntiationId"));
+		
+	
+		
+		
 
-		int count = service.ProjectScheduleDelete(req.getParameter("initiationscheduleid"), UserId, TotalMonth,
+		int count = service.ProjectScheduleDelete(req.getParameter("initiationscheduleid"), UserId, MilestoneScheduleMonth,
 				InitiationId);
 
 		if (count > 0) {
