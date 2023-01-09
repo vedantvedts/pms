@@ -343,7 +343,11 @@ td
     	
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=actionno %>
+	    		<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[10] %>
+				<%}else{%>
+					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[10] %>
+				<%}%>	
 					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)</span>
       				 </h6>
       			</div>
@@ -356,7 +360,11 @@ td
 	      						<table style="width: 100%;">
 	      							<tr>
 	      								<td style="width: 15%;">
-	      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
+		      								<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+		      									<label style="font-size: medium; padding-top: 10px;  "> Issue Item  :</label>
+		      									<%}else{%>
+		      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
+		      								<%}%>
 	      								</td>
 	      								<td >&nbsp;&nbsp;&nbsp;&nbsp;
 	      									 <%=Assignee[5] %>
@@ -432,12 +440,19 @@ td
 									<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){%>
 										<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="CloseAction(<%=Assignee[19] %>)" > Close Action</button>
 					        		<%}else{%>
-					        			<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  close5()" formaction="CloseSubmit.htm"> Close Action</button>
+						        			<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  close5()" formaction="CloseSubmit.htm"> Close Action</button>
 					        		<%}%>
-					        		<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
+					        		<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionIssue.htm"/>
+					        			<input type="hidden" name="Action"  value="F">
+					        		<%}else{%>
+					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
+					        		<%}%>
 					        		<input type="hidden" name="ActionMainId" value="<%=Assignee[0]%>" />	
 					        		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19]%>" />
 					        		<input type="hidden" name="LevelCount" value="<%=Assignee[20] %>" />
+					        		<input type="hidden" name="BACK" value="Issue" />
+					        		
 								</div>
 								
 							</div>
@@ -569,7 +584,11 @@ td
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 						<thead>
 						<tr>
-								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
+							<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Issue Updated Details </th>									
+							<%}else{%>
+								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>
+							<%}%>
 							</tr>	
 							<tr>					
 								<th style="text-align: left;">As On Date</th>
@@ -612,12 +631,12 @@ td
 						        %>
 						        <div  align="center">
 										<a  
-										 href="ActionAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
+										 href="ActionAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
 								
 									
-								<%}else{ %>
+								<%}else{%>
 								
 								<div  align="center">-</div>
 								

@@ -1,12 +1,10 @@
 package com.vts.pfms.committee.controller;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -17,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -67,6 +63,7 @@ import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.service.ActionService;
+import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.dto.MileEditDto;
 
 
@@ -84,6 +81,9 @@ public class ActionController {
 	
 	@Value("${File_Size}")
 	String file_size;
+	
+	@Autowired 
+	CommitteeService committeservice;
 	
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
@@ -633,30 +633,51 @@ public class ActionController {
 		public String SendBackSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 
 		 	String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);		
+			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);	
+			String back = req.getParameter("BACK");
+			int count=0;
 			try { 
 				
-				int count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
+				 count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
-				if (count > 0) {
-					redir.addAttribute("result", "Action Sent Back Successfully");
-				} else {
-					redir.addAttribute("resultfail", "Action SendBack Unsuccessful");
-	
+				if(back!=null && "Issue".equalsIgnoreCase(back)) {
+					if (count > 0) {
+						redir.addAttribute("result", "Issue Sent Back Successfully");
+					} else {
+						redir.addAttribute("resultfail", "Issue SendBack Unsuccessful");
+					}
+					return "redirect:/ActionForwardList.htm";
+				}else {
+					if (count > 0) {
+						redir.addAttribute("result", "Action Sent Back Successfully");
+					} else {
+						redir.addAttribute("resultfail", "Action SendBack Unsuccessful");
+		
+					}
+					return "redirect:/ActionForwardList.htm";
 				}
+
 			}
 			catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside SendBackSubmit.htm "+UserId, e);
+					if(back!=null && "Issue".equalsIgnoreCase(back)) {
+						redir.addAttribute("resultfail", "Issue SendBack Unsuccessful");
+						return "redirect:/ActionForwardList.htm";
+					}else {
+						redir.addAttribute("resultfail", "Action SendBack Unsuccessful");
+						return "redirect:/ActionForwardList.htm";
+					}
+					
 			}
 			
 
-			return "redirect:/ActionForwardList.htm";
+			
 
 		}
 	 
 	 
-	 @RequestMapping(value = "CloseSubmit.htm", method = RequestMethod.POST)
+	 	@RequestMapping(value = "CloseSubmit.htm", method = RequestMethod.POST)
 		public String CloseSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 
 		 	String UserId = (String) ses.getAttribute("Username");
@@ -2226,6 +2247,239 @@ public class ActionController {
 		return json.toJson(ActionSubList);
 	}
 	
+	@RequestMapping(value = "ActionIssue.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	public String ActionIssue(Model model , HttpServletRequest req, HttpSession ses ,RedirectAttributes redir) throws Exception {
+
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionIssue.htm "+UserId);
+		
+		try {
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String action = req.getParameter("Action");
+			
+			List<Object[]> issuedatalist= new ArrayList<>();
+			if(action!=null && "TA".equalsIgnoreCase(action)) {
+				issuedatalist=service.GetIssueList( EmpId).stream().filter(flag-> flag[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList());
+				action="TA";
+			}else if(action!=null && "FA".equalsIgnoreCase(action)){
+				issuedatalist=service.GetIssueList( EmpId).stream().filter(flag-> flag[10].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList());
+				action="FA";
+			}else if(action!=null && "F".equalsIgnoreCase(action)){
+				issuedatalist=service.GetIssueList( EmpId).stream().filter(flag-> flag[9].toString().equalsIgnoreCase("F") && flag[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList());
+				action="F";
+			}else {
+				issuedatalist=service.GetIssueList( EmpId);
+				action="All";
+			}
+			req.setAttribute("action", action);
+			req.setAttribute("issuedatalist", issuedatalist);
+			
+		return "Issue/Issuelist";
+		}catch(Exception e){
+
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ActionIssue.htm "+UserId, e);		
+			return "ststic/Error";	
+		}		
+	}
 	
+	@RequestMapping(value = "IssueUpdate.htm" , method = {RequestMethod.POST,RequestMethod.GET})
+	public String IssueUpdate(Model model , HttpServletRequest req, HttpSession ses ,RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside IssueUpdate.htm "+UserId);
+		
+		try{
+			String actionmainid=req.getParameter("ActionMainId");
+			String actionassignid=req.getParameter("ActionAssignid");
+			if(actionassignid==null && actionmainid==null){
+				Map md=model.asMap();
+				actionmainid=(String)md.get("ActionMainId");
+				actionassignid=(String)md.get("ActionAssignId");
+			}
+			
+			req.setAttribute("Assignee", service.AssigneeData(actionmainid ,actionassignid).get(0));
+			req.setAttribute("SubList", service.SubList(actionassignid));
+			req.setAttribute("filesize",file_size);
+			return "Issue/IssueUpdate";
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside IssueUpdate.htm "+UserId, e);		
+		}
+		return "Issue/IssueUpdate";
+	}
 	
+	@RequestMapping(value = "IssueSubSubmit.htm", method = RequestMethod.POST)
+	public String IssueSubSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+			@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception {
+		
+		String UserId  = (String) ses.getAttribute("Username");
+		String labCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside IssueSubSubmit.htm "+UserId);		
+		try {
+			
+			
+			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+			
+			
+				
+			ActionSubDto subDto=new ActionSubDto();
+				subDto.setLabCode(labCode);
+				subDto.setFileName(req.getParameter("FileName"));
+				subDto.setFileNamePath(FileAttach.getOriginalFilename());
+				subDto.setMultipartfile(FileAttach);
+	            subDto.setCreatedBy(UserId);
+	            subDto.setActionAssignId(req.getParameter("ActionAssignId"));
+	            subDto.setRemarks(req.getParameter("Remarks"));
+	            subDto.setProgress(req.getParameter("Progress"));
+	            subDto.setProgressDate(req.getParameter("AsOnDate"));
+			Long count=service.IssueSubInsert(subDto);
+            
+			if (count > 0) {
+				redir.addAttribute("result", "Issue  Updated Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Issue Update Unsuccessful");
+			}
+
+		}
+		catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside IssueSubSubmit.htm "+UserId, e);
+		}
+
+		return "redirect:/IssueUpdate.htm";
+	}
+	
+	 @RequestMapping(value = "IssueForward.htm", method = RequestMethod.POST)
+		public String IssueForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside IssueForward.htm "+UserId);		
+			try { 
+			int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
+
+			if (count > 0) {
+				redir.addAttribute("result", "Issue Forwarded Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Issue Forward Unsuccessful");
+
+			}
+			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+			
+			}
+			catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside IssueForward.htm "+UserId, e);
+			}
+			return "redirect:/ActionIssue.htm";
+
+		}
+	 
+	    @RequestMapping(value = "IssueForwardSub.htm", method = RequestMethod.POST)
+		public String IssueForwardSub(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+				throws Exception {
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside IssueForwardSub.htm "+UserId);		
+			try { 
+				req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId")).get(0));
+				req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
+			}
+			catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside IssueForwardSub.htm "+UserId, e);
+			}
+			return "Issue/CloseOrSendBack";
+		}
+	 
+	 	@RequestMapping(value = "Recommendation.htm" , method = {RequestMethod.GET , RequestMethod.POST })
+	 	public String RecommendationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	 	{
+	 		String UserId = (String) ses.getAttribute("Username");
+	 		logger.info(new Date() +"Inside RecommendationList.htm "+UserId);	
+	 		try {
+	 			String Logintype= (String)ses.getAttribute("LoginType");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String LabCode = (String)ses.getAttribute("labcode");
+	 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+	 			String projectid=req.getParameter("projectid");
+				String committeeid=req.getParameter("committeeid");
+				
+				if(projectdetailslist.size()==0) 
+				{				
+					redir.addAttribute("resultfail", "No Project is Assigned to you.");
+					return "redirect:/MainDashBoard.htm";
+				}
+				
+				if(committeeid==null)
+				{
+					committeeid="A";
+				}			
+				
+				
+				if(projectid==null || projectid.equals("null"))
+				{
+					projectid=projectdetailslist.get(0)[0].toString();
+				}
+
+				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
+				List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
+				
+				req.setAttribute("projectid",projectid);
+				req.setAttribute("committeeid",committeeid);
+				req.setAttribute("projectlist", projectdetailslist);
+				req.setAttribute("recomendation", recomendation);
+				req.setAttribute("projapplicommitteelist",projapplicommitteelist);
+			} catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside RecommendationList.htm "+UserId, e);
+			}
+	 		return "Issue/Recommendation";
+	 	}
+	 	
+	 	
+	 	@RequestMapping(value = "Decision.htm" , method = {RequestMethod.GET , RequestMethod.POST })
+	 	public String DecisionList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	 	{
+	 		String UserId = (String) ses.getAttribute("Username");
+	 		logger.info(new Date() +"Inside Decision.htm "+UserId);	
+	 		try {
+	 			String Logintype= (String)ses.getAttribute("LoginType");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String LabCode = (String)ses.getAttribute("labcode");
+	 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+	 			String projectid=req.getParameter("projectid");
+				String committeeid=req.getParameter("committeeid");
+				
+				if(projectdetailslist.size()==0) 
+				{				
+					redir.addAttribute("resultfail", "No Project is Assigned to you.");
+					return "redirect:/MainDashBoard.htm";
+				}
+				
+				if(committeeid==null)
+				{
+					committeeid="A";
+				}			
+				
+				
+				if(projectid==null || projectid.equals("null"))
+				{
+					projectid=projectdetailslist.get(0)[0].toString();
+				}
+
+				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
+				List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
+				
+				req.setAttribute("projectid",projectid);
+				req.setAttribute("committeeid",committeeid);
+				req.setAttribute("projectlist", projectdetailslist);
+				req.setAttribute("recomendation", recomendation);
+				req.setAttribute("projapplicommitteelist",projapplicommitteelist);
+			} catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside Decision.htm "+UserId, e);
+			}
+	 		return "Issue/Decision";
+	 	}
+
 }

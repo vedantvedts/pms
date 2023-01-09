@@ -9,7 +9,6 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -294,9 +293,16 @@ public class ActionServiceImpl implements ActionService {
 				notification.setCreatedBy(main.getCreatedBy());
 				notification.setCreatedDate(sdf1.format(new Date()));
 				notification.setIsActive(1);
-				notification.setNotificationUrl("AssigneeList.htm");
-			    notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
-			    notification.setStatus("MAR");
+				if("I".equalsIgnoreCase(actionmain.getType())) {
+					notification.setNotificationUrl("ActionIssue.htm");
+					 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+					    
+				} else {
+					notification.setNotificationUrl("AssigneeList.htm");
+					notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+					    
+				}
+				notification.setStatus("MAR");
 	            dao.ActionNotificationInsert(notification);
 			}else {
 				return unsuccess;
@@ -426,8 +432,13 @@ public class ActionServiceImpl implements ActionService {
 			notification.setCreatedBy(main.getCreatedBy());
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setIsActive(1);
-			notification.setNotificationUrl("ActionForwardList.htm");
-		    notification.setNotificationMessage("An Action No "+data[7]+" Forwarded by "+data[0]+", "+data[1]+".");
+			if(data!=null && data[8]!=null && "I".equalsIgnoreCase(data[8].toString())) {
+				notification.setNotificationUrl("ActionIssue.htm");
+				notification.setNotificationMessage("An Issue No "+data[7]+" Forwarded by "+data[0]+", "+data[1]+"."); 
+			}else {
+				notification.setNotificationUrl("ActionForwardList.htm");
+				notification.setNotificationMessage("An Action No "+data[7]+" Forwarded by "+data[0]+", "+data[1]+".");  
+			}
 		    notification.setStatus("MAR");
             dao.ActionNotificationInsert(notification);
 		}else {
@@ -657,9 +668,14 @@ public class ActionServiceImpl implements ActionService {
 				notification.setCreatedBy(assign.getCreatedBy());
 				notification.setCreatedDate(sdf1.format(new Date()));
 				notification.setIsActive(1);
-				notification.setNotificationUrl("ActionStatusList.htm");
-			    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
-			    notification.setStatus("MAR");
+				if(data!=null && data[8]!=null && "I".equalsIgnoreCase(data[8].toString())) {
+					notification.setNotificationUrl("ActionIssue.htm");
+				    notification.setNotificationMessage("An Issue No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+				}else{
+					notification.setNotificationUrl("ActionStatusList.htm");
+				    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+				}
+				notification.setStatus("MAR");
 	            dao.ActionNotificationInsert(notification);
 			}else {
 				result=0;
@@ -698,8 +714,16 @@ public class ActionServiceImpl implements ActionService {
 			notification.setCreatedBy(assign.getCreatedBy());
 			notification.setCreatedDate(sdf1.format(new Date()));
 			notification.setIsActive(1);
-			notification.setNotificationUrl("AssigneeList.htm");
-		    notification.setNotificationMessage("An Action No "+data[7]+" Send Back by "+data[3]+", "+data[4]+".");
+			if(data!=null && data[8]!=null &&"I".equalsIgnoreCase(data[8].toString()) ) {
+				notification.setNotificationUrl("ActionIssue.htm");
+				 notification.setNotificationMessage("An Issue No "+data[7]+" Send Back by "+data[3]+", "+data[4]+".");
+				   
+			}else {
+				notification.setNotificationUrl("AssigneeList.htm");
+				 notification.setNotificationMessage("An Action No "+data[7]+" Send Back by "+data[3]+", "+data[4]+".");
+				   
+			}
+			
 		    notification.setStatus("MAR");
             dao.ActionNotificationInsert(notification);
 		}else {
@@ -1088,4 +1112,102 @@ public class ActionServiceImpl implements ActionService {
 			return 0;
 		}
 	}
+	@Override
+	public List<Object[]> GetIssueList( String Empid )throws Exception
+	{
+		return dao.GetIssueList(Empid );
+	}
+
+	@Override
+	public long IssueSubInsert(ActionSubDto main ) throws Exception {
+		logger.info(new Date() +"Inside SERVICE IssueSubInsert ");
+		
+		Timestamp instant= Timestamp.from(Instant.now());
+		String LabCode = main.getLabCode();
+		String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+		
+		String Path = LabCode+"\\IssueData\\";
+		
+		ActionSub sub=new ActionSub();
+		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
+		sub.setRemarks(main.getRemarks());
+		sub.setProgress(Integer.parseInt(main.getProgress()));
+		sub.setProgressDate(new java.sql.Date(sdf.parse(main.getProgressDate()).getTime()));
+		sub.setCreatedBy(main.getCreatedBy());
+		sub.setCreatedDate(sdf1.format(new Date()));
+		sub.setIsActive(1);
+		long subresult=dao.ActionSubInsert(sub);
+		if(subresult>0) {
+			
+			ActionAssign updateassign=new ActionAssign();
+			updateassign.setActionAssignId(Long.parseLong(main.getActionAssignId()));
+			updateassign.setActionFlag("N");
+			updateassign.setActionStatus("I");
+			updateassign.setModifiedBy(main.getCreatedBy());
+			updateassign.setModifiedDate(sdf1.format(new Date()));
+			dao.AssignUpdate(updateassign);
+			ActionAttachment attach=new ActionAttachment();
+			
+			attach.setAttachFilePath(Path);
+			attach.setActionSubId(subresult);
+			attach.setAttachName(main.getFileNamePath());
+			if(!main.getMultipartfile().isEmpty()) {
+				attach.setAttachName("Issue"+timestampstr+"."+FilenameUtils.getExtension(main.getMultipartfile().getOriginalFilename()));
+				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
+			}else{
+				attach.setAttachFilePath(null);
+			}
+			attach.setCreatedBy(main.getCreatedBy());
+			attach.setCreatedDate(sdf1.format(new Date()));
+			if(!main.getMultipartfile().isEmpty()) {
+				dao.ActionAttachInsert(attach);
+			}
+		}else {
+			subresult=0;
+		}
+		return subresult;
+	}
+	
+	
+	@Override
+	public int IssueClosed(String id, String Remarks, String UserId ,String assignid ) throws Exception {
+		logger.info(new Date() +"Inside Service IssueClosed ");
+		
+		int result=0;
+		ActionAssign assign=new ActionAssign();
+		assign.setActionAssignId(Long.parseLong(assignid));
+		assign.setActionFlag("Y");
+		assign.setActionStatus("C");
+		assign.setRemarks(Remarks);
+		assign.setModifiedBy(UserId);
+		assign.setModifiedDate(sdf1.format(new Date()));
+		 result=dao.MainSendBack(assign);
+		if(result>0) {
+			Object[] data=dao.ActionNotification(id,assignid).get(0);
+			PfmsNotification notification=new PfmsNotification();
+			notification.setEmpId(Long.parseLong(data[2].toString()));
+			notification.setNotificationby(Long.parseLong(data[5].toString()));
+			notification.setNotificationDate(sdf1.format(new Date()));
+			notification.setScheduleId(0l);
+			notification.setCreatedBy(assign.getCreatedBy());
+			notification.setCreatedDate(sdf1.format(new Date()));
+			notification.setIsActive(1);
+			notification.setNotificationUrl("ActionStatusList.htm");
+		    notification.setNotificationMessage("An Action No "+data[7]+" Closed by "+data[3]+", "+data[4]+".");
+		    notification.setStatus("MAR");
+            dao.ActionNotificationInsert(notification);
+		}
+		return 1;
+	}
+	@Override
+	public List<Object[]> GetRecomendationList(String projectid ,  String committeid)throws Exception
+	{
+		return dao.GetRecomendationList(projectid,committeid);
+	}
+	@Override
+	public List<Object[]> GetDecisionList(String projectid ,  String committeid)throws Exception
+	{
+		return dao.GetDecisionList(projectid,committeid);
+	}
+	
 }

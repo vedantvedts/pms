@@ -146,6 +146,4 @@ public interface ProjectService {
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	public List<Object[]> GetIssueList(String projectid, String empid,String labcode)throws Exception;
-	public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception;
 }

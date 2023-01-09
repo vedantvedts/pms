@@ -1985,16 +1985,5 @@ public class ProjectServiceImpl implements ProjectService {
 		{
 			return dao.RiskTypeList();
 		}
-		
-		@Override
-		public List<Object[]> GetIssueList(String projectid,String Empid ,String labcode)throws Exception
-		{
-			return dao.GetIssueList(projectid,Empid ,labcode);
-		}
-		
-		@Override
-		public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception
-		{
-			return dao.IsuueDataPresentList(projectid , labcode);
-		}
+
 }

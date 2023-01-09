@@ -1897,26 +1897,4 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			Query query=manager.createNativeQuery(RISKTYPELIST);
 			return (List<Object[]>)query.getResultList();
 		}		
-		private static final String ISSULIST ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId , aas.actionassignid , aas.actionno FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='I' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:labcode END";
-		@Override
-		public List<Object[]> GetIssueList(String projectid ,String empid, String labcode)throws Exception
-		{
-			Query query = manager.createNativeQuery(ISSULIST);
-			query.setParameter("projectid", projectid);
-			query.setParameter("labcode", labcode);
-			return (List<Object[]>)query.getResultList();
-		}
-		
-		
-		private static final String LIST ="SELECT actionmainid FROM pfms_Issue WHERE projectid=:projectid ";
-		@Override
-		public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception
-		{
-			Query query = manager.createNativeQuery(LIST);
-			query.setParameter("projectid", projectid);
-			//query.setParameter("labcode", labcode);
-			return (List<Object>)query.getResultList();
-		}
-		
-		
 }
