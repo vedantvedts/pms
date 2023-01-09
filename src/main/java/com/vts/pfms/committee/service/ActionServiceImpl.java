@@ -1029,7 +1029,11 @@ public class ActionServiceImpl implements ActionService {
 		return dao.ActionSubList(assignid);
 	}
 	
-	
+	@Override
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
+	{
+		return dao.ActionAssignDataAjax(assignid);
+	}	
 	@Override
 	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception 
 	{

@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.ToString;
+
+@ToString
 @Entity
 @Table(name = "pfms_initiation_schedule")
 public class PfmsInitiationSchedule implements Serializable {
@@ -27,6 +30,27 @@ public class PfmsInitiationSchedule implements Serializable {
 	private int IsActive;
 	private String MilestoneRemark;
 	
+   private int Milestonestartedfrom;
+  // private int MonthExtendedBy;
+   private int MilestoneTotalMonth;
+
+	/*
+	 * public int getMonthExtendedBy() { return MonthExtendedBy; } public void
+	 * setMonthExtendedBy(int monthExtendedBy) { MonthExtendedBy = monthExtendedBy;
+	 * }
+	 */
+	public int getMilestonestartedfrom() {
+	return Milestonestartedfrom;
+}
+public void setMilestonestartedfrom(int milestonestartedfrom) {
+	Milestonestartedfrom = milestonestartedfrom;
+}
+
+
+  public int getMilestoneTotalMonth() { return MilestoneTotalMonth; } public
+  void setMilestoneTotalMonth(int milestoneTotalMonth) { MilestoneTotalMonth =
+  milestoneTotalMonth; }
+
 	public String getMilestoneRemark() {
 		return MilestoneRemark;
 	}

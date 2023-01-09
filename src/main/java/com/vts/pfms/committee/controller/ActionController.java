@@ -854,7 +854,7 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setActionDate(req.getParameter("DateCompletion"));
-			mainDto.setScheduleMinutesId(req.getParameter("ScheduleId"));
+			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("Priority"));
 			mainDto.setCategory(req.getParameter("Category"));
@@ -2281,6 +2281,23 @@ public class ActionController {
 			logger.error(new Date() +" Inside ActionIssue.htm "+UserId, e);		
 			return "ststic/Error";	
 		}		
+	}
+	@RequestMapping(value = "ActionAssignDataAjax.htm", method = RequestMethod.GET)
+	public @ResponseBody String ActionAssignDataAjax(HttpServletRequest req, HttpSession ses) throws Exception 
+	{
+		Gson json = new Gson();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionAssignDataAjax.htm "+UserId);	
+		Object[] ActionSubList =null;
+		try {
+			
+			ActionSubList =   service.ActionAssignDataAjax(req.getParameter("ActionAssignid"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionAssignDataAjax.htm "+UserId, e);
+		}
+		return json.toJson(ActionSubList);
 	}
 	
 	@RequestMapping(value = "IssueUpdate.htm" , method = {RequestMethod.POST,RequestMethod.GET})

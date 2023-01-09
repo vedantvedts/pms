@@ -1092,7 +1092,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</table>
 							</div>
 						
-							<%int t=0; %>
+							<%int t=1; %>
 							<div align="center" style="max-width:300px; display:inline-block; ;">
 								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
 									<thead>
@@ -1109,14 +1109,14 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										else if(ReviewMeetingListPMRC.size()>0)
 										  {
 										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-										<%-- <%if(t==21)break; %> --%>
+										<%if(t==21)break; %> 
 										<%if(t<=20){ %>
 											<tr>
-												<td  style="max-width: 55px;"><%=obj[1] %> #<%=++t %></td>												
+												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
 											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
-										<%};
+										<%}t++;
 										}}else{ %>
 										
 											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
@@ -1125,8 +1125,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</tbody>
 							</table>
 							</div>
-						<% if(t>20) {%>
-						<div align="left" style="max-width:300px; float:right; ;">
+							<% if(t>20) {%>
+							<div align="left" style="max-width:300px; float:right; ;">
 								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
 									<thead>
 										<tr>
@@ -1143,11 +1143,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										  {
 										for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
 											<tr>
+											<%if(t>=20){ %>
 												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
 											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
 											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
-										<%t++;
+										<%}t++;
 										}}else{ %>
 										
 											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
@@ -1156,7 +1157,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 								</tbody>
 							</table>
 							</div>
-			</div>
+						
+						</div>
 															
 					<%} %>
 			

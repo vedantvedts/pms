@@ -345,7 +345,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 							<div class="row details">
 							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
 							    <h6>Deliverable</h6>
-							    <p><%if(ProjectDetailes[12]!=null){%>	<%=ProjectDetailes[12] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=ProjectDetailes[12] %><%}else{ %>-<%} %></p>
 							  </div>
 							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
 							   <div class="row">
@@ -1222,12 +1222,12 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
                                 		
                                 					<div class="col-md-1" id="initiation" align="left">
  											<label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px; 	font-size: 20px; color:#07689f;">
- 											<h4 style="font-family: 'Lato',sans-serif"><b>Brief</b></h4>
+ 											<h5 style="font-family: 'Lato',sans-serif"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[22]!=null){%><%=obj[22] %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h4 style="font-family: 'Lato',sans-serif; " ><b>Detailed</b></h4></label></div>				                
+											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif; " ><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p></div>	
                                 						                
 										</div>
@@ -1877,7 +1877,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
 				                                <td><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-				                                <td align="left"><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
+				                                <td align="center" ><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
 				                                <td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 				                                 <td><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
 				                    
@@ -1952,7 +1952,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                        
 				                        	<%for(Object[] 	obj:IntiationAttachment){ %>
 				                            <tr>
-				                                <td>
+				                                <td align="left">
 				                                 	<form action="ProjectAttachmentEdit.htm" method="POST" name="myfrm5" id="myfrm5" >
 				                    
 				                    					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 

@@ -81,4 +81,5 @@ public interface ActionService {
 	public int IssueClosed(String id, String Remarks, String UserId ,String assignid)throws Exception;
 	public List<Object[]> GetRecomendationList(String projectid ,  String committeid)throws Exception;
 	public List<Object[]> GetDecisionList(String projectid ,  String committeid)throws Exception;
+	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
 }

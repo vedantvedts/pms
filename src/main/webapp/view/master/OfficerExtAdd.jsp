@@ -87,8 +87,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
 					 <div class="form-group">
 			                <label>Title</label><br>
-			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+			                 <select class="form-control selectdee"  id="title" name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof.">Prof.</option>
 								<option value="Lt.">Lt.</option>
 								<option value="Dr.">Dr.</option>
@@ -99,8 +99,8 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 	<div class="col-md-3">
 					 <div class="form-group">
 			                <label>Rank/Salutation</label><br>
-			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+			                 <select class="form-control selectdee" id="salutation" name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value="" selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr.">Mr.</option>
 								<option value="Ms.">Ms.</option>
 							</select>
@@ -189,7 +189,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-sm-5" ></div>
 	<div>
 		<input type="button" value="SUBMIT" onclick="return empNoCheck('myfrm');" class="btn btn-primary btn-sm submit" /></div>
-		<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="OfficerExtList.htm" formnovalidate="formnovalidate"  >BACK</button>
+		<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="OfficerExtList.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>
 	</div>
 
 	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -229,13 +229,19 @@ function empNoCheck(frmid)
 	var DronaEmail=$('#DronaEmail').val().trim();
 	var InternetEmail=$('#InternetEmail').val().trim();
 	var Division=$('#Division').val();
+	var title=$('#title').val();
+	var salutation=$('#salutation').val();
 	var $empno=$('#EmpNo').val().trim();
 	
 	if(labId=== "" || $empno==="" ||EmpName==="" ||Designation==="" ||  mobilenumber==="" || Email==="" || Division==="" ) /* ExtNo===null || DronaEmail==="" || InternetEmail==="" || */ 
 	{
 		alert('Please Fill All Mandatory Fields.');
 		
-	}else
+	}
+	else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+		alert('Please select either Title or Rank');
+	}
+	else
 	{
 			$.ajax({
 				
