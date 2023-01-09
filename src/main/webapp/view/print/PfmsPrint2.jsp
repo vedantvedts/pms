@@ -89,7 +89,7 @@ String lablogo=(String)request.getAttribute("lablogo");
  	.article{
  		font-family:Gadugi
  	}
- 	
+ 	                                                       
  	.lineheight td{
  		line-height: 40px;
  	}
@@ -110,9 +110,7 @@ String lablogo=(String)request.getAttribute("lablogo");
  	.break{
   page-break-before:always;
   }
-  
 
-    
     table tbody b{
 	background-color: #ADFF2F;
 }

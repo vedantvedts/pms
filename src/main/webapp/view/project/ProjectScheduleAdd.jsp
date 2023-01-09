@@ -111,7 +111,6 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
                                                 <th >Milestone Month</th>
                                                  <th >Remarks</th>
                                               <th >Link</th> 
-                                              <th>MileStoneTotalMonth</th> 
                                             </tr>
                                         </thead>
                                        <%} %>
@@ -152,9 +151,6 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
 										<button class="fa fa-trash btn " type="submit" formaction="ProjectScheduleDeleteSubmit.htm" onclick="return confirm('Are You Sure To Delete this Schedule?');"></button>
 										<%} %>										
 									</td>
-											<td><%= obj[6]%></td>
-				
-   
 								 	</tr>
 </form>
 									    <%} %>
