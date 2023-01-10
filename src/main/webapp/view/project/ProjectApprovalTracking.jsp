@@ -211,8 +211,8 @@ NFormatConvertion nfc=new NFormatConvertion();
 				</div>
 				<div class="col-md-6">
 					<form action="" method="POST" name="myfrm" id="myfrm" align="right" style="margin-bottom: 10px;margin-top: -25px">
-					    <button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
-						<button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint2.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
+					    <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
+						<button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
 					    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 					    <input type="hidden" name="IntiationId"	value="<%=InitiationId%>" /> 
 					</form>

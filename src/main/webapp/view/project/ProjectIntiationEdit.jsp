@@ -213,7 +213,7 @@ String LoginType = (String) session.getAttribute("LoginType");
 					         <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Duration (Months)</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>>
+		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
 		                        </div>
 		                    </div>
                      
@@ -227,7 +227,7 @@ String LoginType = (String) session.getAttribute("LoginType");
 		                     <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">P&C Remarks</label>
-										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=ProjectEditData[21]%>" <%}else{ %> value="" <%} %> >
+										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=ProjectEditData[21]%>" <%}else{ %> value="" <%} %> required>
 		                        </div>
 		                    </div> 
 		                    
