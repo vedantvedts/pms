@@ -391,7 +391,7 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat();
 
 int addcount=0; 
 NFormatConvertion nfc=new NFormatConvertion();
-Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
+//Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 String filePath=(String)request.getAttribute("filePath");
 String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
@@ -401,33 +401,33 @@ Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>> )request.getAttribute("ebandpmrccount");
-List<List<Object[]>> milestonesubsystems= (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
-List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
-List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
-List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
+//List<List<Object[]>> milestonesubsystems= (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
+//List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
+//List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
+//List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
 List<List<Object[]>> ganttchartlist=(List<List<Object[]>>)request.getAttribute("ganttchartlist");
-List<Object[]> projectdatadetails = (List<Object[]> )request.getAttribute("projectdatadetails");
-List<List<Object[]>> oldpmrcissueslist=(List<List<Object[]>>)request.getAttribute("oldpmrcissueslist");
+//List<Object[]> projectdatadetails = (List<Object[]> )request.getAttribute("projectdatadetails");
+//List<List<Object[]>> oldpmrcissueslist=(List<List<Object[]>>)request.getAttribute("oldpmrcissueslist");
 
-List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>)request.getAttribute("financialDetails");
-List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
-List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
-List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>)request.getAttribute("riskmatirxdata");
-List<Object[]> lastpmrcdecisions = (List<Object[]>)request.getAttribute("lastpmrcdecisions");
-List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
+//List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>)request.getAttribute("financialDetails");
+//List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
+//List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
+//List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>)request.getAttribute("riskmatirxdata");
+//List<Object[]> lastpmrcdecisions = (List<Object[]>)request.getAttribute("lastpmrcdecisions");
+//List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
 List<Object[]> TechWorkDataList=(List<Object[]>)request.getAttribute("TechWorkDataList");
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails"); 
 List<String> projectidlist = (List<String>)request.getAttribute("projectidlist");
-List<Object[]> pdffiles=(List<Object[]>)request.getAttribute("pdffiles");
-List<Object[]> milestoneactivitystatus =(List<Object[]>)request.getAttribute("milestoneactivitystatus");
+//List<Object[]> pdffiles=(List<Object[]>)request.getAttribute("pdffiles");
+//List<Object[]> milestoneactivitystatus =(List<Object[]>)request.getAttribute("milestoneactivitystatus");
 List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
 String ProjectId=(String)request.getAttribute("projectid");
-List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
-List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
-List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+//List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
+//List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+//List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
 
-List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
-List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
+//List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
+//List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
@@ -440,11 +440,11 @@ String levelid= (String) request.getAttribute("levelid");
 String No2=null;
 SimpleDateFormat sdfg=new SimpleDateFormat("yyyy");
 if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
-No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
+	No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 }else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
-				} 
- 
+} 
+
 %>
 
 
@@ -547,6 +547,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 	
 						<div class="card-body">	
 						
+				<%-- 		
 							 <details>					
 							    <summary role="button" tabindex="0"><b>1. Project Attributes </b>  </summary>
 								<div class="content">
@@ -559,12 +560,12 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										
 										<div>
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-											<%-- <form action="ProjectSubmit.htm" method="post" target="_blank">
+											<form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
 												<input type="hidden" name="ProjectId" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-											</form> --%>
+											</form>
 										</div>	
 										
 										
@@ -700,16 +701,16 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</div>
 						</details>
 
-
+ 				--%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
-				
+				<%-- 
 						<details>
 	   						<summary role="button" tabindex="0"><b>2. Schematic Configuration</b>   </summary>
 	   						<div class="content">
 	   						<%for(int z=0;z<projectidlist.size();z++){ %>
 	   						<div align="left" style="margin-left: 15px;">
 	   							
-								<%-- <%if(ProjectDetail.size()>1){ %> --%>
+								<%if(ProjectDetail.size()>1){ %>
 										<div>
 											<form action="ProjectData.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -718,7 +719,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
 										</div>	
-								<%-- <%} %> --%>
+								<%} %>
 	   							<table >
 									<tr>
 										<td style="border:0;"> 
@@ -786,9 +787,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%} %>
 							</div>
 						</details>
-	
-	<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-							
+				--%>
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+				<%-- 			
 						<details>
 	   						<summary role="button" tabindex="0"><b>3. Overall Product tree/WBS</b> </summary>
 							
@@ -832,9 +833,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</div>
 							<%} %>
 						</details>
- 
+  				--%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
-				
+				<%-- 
 						<details>
    						<summary role="button" tabindex="0"><b>4. Particulars of Meeting </b> </summary>
    						
@@ -900,7 +901,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
-									<%=obj[12] %><%-- , <%=obj[13] %> --%>
+									<%=obj[12] %>, <%=obj[13] %>
 								<%}else { %><span class="">Not Assigned</span> <%} %> 
 							</td>
 							<td  style="text-align: center; ">
@@ -988,7 +989,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 									<td  style="text-align: center;"><%=i %></td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<td  style="text-align: center;" >
-										<%-- <%= sdf.format(sdf1.parse(obj[3].toString()))%> --%>
+										<%= sdf.format(sdf1.parse(obj[3].toString()))%>
 										<%if(obj[6]!= null){ %><br><%=sdf.format(sdf1.parse(obj[6].toString()))%><% } %>
 										<%if(obj[5]!= null){ %><br><%=sdf.format(sdf1.parse(obj[5].toString()))%><% } %>
 										<%=sdf.format(sdf1.parse(obj[3].toString()))%>
@@ -1023,7 +1024,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%}else{ %> - <%} %>
 											
 									</td>
-									<td> <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+									<td> <%=obj[11] %>, <%=obj[12] %> </td>
 									<td  style="text-align: center;" > 
 										<%if(obj[15]!=null){ %>
 													
@@ -1081,7 +1082,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<tr>
 												
 												<td  style="max-width: 55px;"><%=obj[1] %> #<%=i %></td>												
-											<%-- 	<td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												<td  style="max-width: 200px;" ><%= obj[4]%></td>
 												<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%i++;
@@ -1113,7 +1114,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 										<%if(t<=20){ %>
 											<tr>
 												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
-											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												 <td  style="max-width: 200px;" ><%= obj[4]%></td>
 											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%}t++;
@@ -1145,7 +1146,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 											<tr>
 											<%if(t>=20){ %>
 												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
-											<%-- 	 <td  style="max-width: 200px;" ><%= obj[4]%></td> --%>
+												 <td  style="max-width: 200px;" ><%= obj[4]%></td>
 											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 											</tr>			
 										<%}t++;
@@ -1166,9 +1167,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 					 
 					 
 						</details>
-						
+				--%>	
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->				
-	
+				<%-- 
 						<details>
    						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 							<div class="content">
@@ -1345,8 +1346,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							<%} %>
 						</div>
 						</details>
-
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->					
+ 				--%>
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+				<%-- 	
 						<details>
    						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
@@ -1654,7 +1656,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 															<%}else{ %>-<%} %>
 														</td>
 															
-														<td  rowspan="1"><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+														<td  rowspan="1"><%=obj[7] %>,&nbsp;<%=obj[8] %></td>	
 														<td style="text-align: center" rowspan="1">
 															
 															<%if(obj[18]!=null){ %>
@@ -1681,10 +1683,10 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 														<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 														
 													</tr>	
-													<%-- <tr>
+													<tr>
 														<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
 														<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-													</tr> --%>
+													</tr>
 													
 													<tr>
 														<td style="text-align: center;" ><%=obj[1] %></td>
@@ -1717,8 +1719,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							
 									
 						</details>
+				 --%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-
+				<%-- 
 						<details>
    						<summary role="button" tabindex="0"><b>7. Details of Procurement Plan (Major Items)</b>  </summary>
 						<div class="content">
@@ -1906,8 +1909,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
                
 							</div>
 						</details>
-
+				--%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+				<%-- 	
 						<details>
    						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
    						
@@ -1981,7 +1985,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 			<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
 		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
 			<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-	<%-- 	<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%> --%>
+		<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%>
 		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
 			<%totReBalance+=(projectFinancialDetail.getReBalance());%>
 		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
@@ -2027,7 +2031,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 							</div> 		
 						
 						</details>
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+				--%>
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+<%-- 						
 					<details>
 						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    							<summary role="button" tabindex="0"><b>9. Action Plan for Next Six months </b>    </summary>
@@ -2160,7 +2166,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												
 											
 											</td>
-											<td ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
+											<td ><%=obj[24] %>(<%=obj[25] %>)</td>
 											<td style="text-align: center"><%=obj[16] %>%</td>											
 											<td  style="text-align: center">
 											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
@@ -2208,10 +2214,11 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</div>
 					
 					</details>
+ --%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						
-					<details>
-   						<summary role="button" tabindex="0"><b>10. GANTT chart of overall project schedule <!-- [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>] --></b>    </summary>
+					<details open>
+   						<summary role="button" tabindex="0"><b><!-- 10. --> GANTT chart of overall project schedule <!-- [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>] --></b>    </summary>
    						
 						    <div class="content">
 							    <%for(int z=0;z<projectidlist.size();z++){ %>
@@ -2268,7 +2275,8 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						</div>
 					
 					</details>
-<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
+<!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
+<%-- 						
 					<details>
    						<summary role="button" tabindex="0"><b>11. Issues</b></summary>
    						
@@ -2328,7 +2336,7 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 												<td  style="text-align: center;"> 
 													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
 												</td>
-												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
+												<td > <%=obj[11] %><%=obj[12] %></td>
 												<td  style=";text-align: center;"> 
 													<%if(obj[16]!=null && obj[13]!=null){ %>
 														<%if(obj[9].toString().equals("I")&&obj[15].toString().equals("F")&&(LocalDate.parse(obj[3].toString()).isAfter(LocalDate.parse(obj[13].toString()))||  LocalDate.parse(obj[3].toString()).isEqual(LocalDate.parse(obj[13].toString()))  )){ %>
@@ -2362,8 +2370,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						   </div>	
 						   
 					</details>
+ --%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-
+<%-- 
 					<details>
    						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
    						
@@ -2387,18 +2396,18 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 						  </div>	
 						   
 					</details>						
-					
+			 --%>		
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
-   						<summary role="button" tabindex="0"><b>13. Other Relevant Points (if any) 
+   						<summary role="button" tabindex="0"><b><!-- 13. --> Other Relevant Points (if any) 
    							<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    								and Technical Work Carried Out For Last Six Months
 							<%}else { %>
 								and Technical Work Carried Out For Last Three Months
 							<%} %>
    						
-   						
-   						</b></summary>
+   							</b>
+   						</summary>
    						
 						  <div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
@@ -2973,13 +2982,9 @@ No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 
 	
 			</div>	
-					
-					
-					
-					
-					
+				
 					          
-				</div>
+	</div>
 				
 					      
 			</div>
