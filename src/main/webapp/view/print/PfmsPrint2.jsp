@@ -1,4 +1,4 @@
-	<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -89,7 +89,7 @@ String lablogo=(String)request.getAttribute("lablogo");
  	.article{
  		font-family:Gadugi
  	}
- 	
+ 	                                                       
  	.lineheight td{
  		line-height: 40px;
  	}
@@ -110,9 +110,7 @@ String lablogo=(String)request.getAttribute("lablogo");
  	.break{
   page-break-before:always;
   }
-  
 
-    
     table tbody b{
 	background-color: #ADFF2F;
 }

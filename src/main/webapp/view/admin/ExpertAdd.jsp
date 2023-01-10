@@ -82,7 +82,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 						<h3 class="text-white">Add New Expert</h3>
 
 					</div>
-					<form action="ExpertAddSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" onsubmit="return confirm('Are you sure to submit');" >
+					<form action="ExpertAddSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" >
 					
 						<div class="card-body">
 							<div class="row">							
@@ -94,9 +94,9 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 								</div>
 							<div class="col-md-3">
 											 <div class="form-group">
-									                <label>Title<span class="mandatory">*</span></label><br>
-									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
-														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+									                <label>Title</label><br>
+									                 <select class="form-control selectdee" id="titleExp" name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
+														<option value=""  selected="selected"	hidden="true">--Select--</option>
 														<option value="Prof.">Prof.</option>
 														<option value="Lt.">Lt.</option>
 														<option value="Dr.">Dr.</option>	
@@ -105,9 +105,9 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							</div>
 							<div class="col-md-3">
 												 <div class="form-group">
-										                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-										                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
-															<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+										                <label>Rank/Salutation</label><br>
+										                 <select class="form-control selectdee" id="salutaionExp"  name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+															<option value=""  selected="selected"	hidden="true">--Select--</option>
 															<option value="Mr.">Mr.</option>
 															<option value="Ms.">Ms.</option>
 														</select>
@@ -117,7 +117,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Expert Name</label>
-										<input class="form-control" type="text" name="expertname" required>
+										<input class="form-control" type="text" id="expertname" name="expertname" required>
 									</div>
 								</div>
 								
@@ -156,7 +156,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Email</label>
-										<input class="form-control" type="email" name="email" required>
+										<input class="form-control" type="email" id="email"name="email" required>
 									</div>
 								</div>
 
@@ -164,7 +164,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 					     	<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Organization</label>
-										<input class="form-control" type="text" name="organization" required>
+										<input class="form-control" type="text" name="organization" id="organization" required>
 									</div>
 								</div>
 						</div>	
@@ -173,7 +173,8 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 					<div class="row" ><div class="col-md-5"></div><div class="col-md-3">
 						<div class="form-group">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT" >SUBMIT</button>
+							<input type="button"  class="btn btn-primary btn-sm submit" value="SUBMIT" onclick="return formCheck('addcommitteefrm');"/>
+						<!-- 	<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT" >SUBMIT</button> -->
 							<a class="btn btn-primary btn-sm back" href="Expert.htm" >BACK</a>
 							
 						</div>
@@ -209,6 +210,40 @@ $("#mobile").blur(function(){
 		    return false;
 		}	  
 	});
+
+
+function formCheck(frmid)
+{
+	var title=$('#titleExp').val();
+	var salutation=$('#salutaionExp').val();
+	var expertname=$('#expertname').val();
+	var selectDesig=$('#selectDesig').val();
+	var mobile=$('#mobile').val();
+	var email=$('#email').val();
+	var organization=$('#organization').val();
+	
+	//console.log(title+salutation+expertname+selectDesig+mobile+email+organization);
+	if(expertname===""||selectDesig===""||mobile===""||email===""||organization===""){
+		alert('Please Fill All the Fields ');
+	}
+	
+	else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+		window.alert('please select either Title or Rank');
+		event.preventDefault();
+		return false;
+	}
+ 	else{
+		if(window.confirm('Are you sure to save?')){
+			document.getElementById(frmid).submit(); 
+		}
+		else{
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+}
+
 
 </script>
 

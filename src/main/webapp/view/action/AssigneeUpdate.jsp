@@ -190,11 +190,11 @@ h6{
 												<td style="text-align: left; width: 3%;">
 												
 												 <% 
-											        if( obj[6]!=null){
+											        if( obj[5]!=null){
 											        %>
 											        <div  align="center">
 															<a  
-															 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
+															 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
 															 target="_blank"><i class="fa fa-download"></i></a>
 														</div>
 													
@@ -269,7 +269,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												

@@ -1120,101 +1120,123 @@
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
 
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
-					<div>
-						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
-					</div>
-					<%
-					}
-					%>
+						<% if (ProjectDetail.size() > 1) { %>
+						<div>
+							<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
+						</div>
+						<% } %>
 
-
-					<!-- <div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div> -->
-			
-					<div align="center">
-						
-						<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
-						
+						<div align="center">
 							
-							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
-								<thead>
-									<tr>
-										<th style="max-width: 70px;">Committee</th>
-										<th style="max-width: 80px;">Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<% if (ReviewMeetingList.get(z).size() == 0) { %>
-									<tr>
-										<td colspan="6" style="text-align: center;">Nil</td>
-									</tr>
-									<% } else if (ReviewMeetingList.size() > 0) {
-									int i = 1;
-										for (Object[] obj : ReviewMeetingList.get(z)) { %>
-										<tr>
-		
-											<td style="max-width: 70px;">
-												<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-													<%=obj[1]%> #<%=i%>
-												</button>
-											</td>
-											<td style="max-width: 80px; text-align: center;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>
-										<% i++;
-										}
-									} else {
-									%>
-									<tr>
-										<td colspan="4" style="text-align: center;">Nil</td>
-									</tr>
-									<%
-									}
-									%>
-								</tbody>
-							</table>
-							
-							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
-								<thead>
-									<tr>
-										<th style="max-width: 70px;">Committee</th>
-										<th style="max-width: 80px;">Date Held</th>
-									</tr>
-								</thead>
-								<tbody>
-									<% if (ReviewMeetingListPMRC.get(z).size() == 0) { %>
-									<tr>
-										<td colspan="6" style="text-align: center;">Nil</td>
-									</tr>
-									<% } else if (ReviewMeetingListPMRC.size() > 0) {
-									int i = 1;
-										for (Object[] obj : ReviewMeetingListPMRC.get(z)) { %>
-										<tr>
-											<td style="max-width: 70px;">
-												<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-													<%=obj[1]%> #<%=i%>
-												</button>
-											</td>
-											<td style="max-width: 80px; text-align: center;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-										</tr>
-										<% i++;
-										}
-									} else { %>
-										<tr>
-											<td colspan="4" style="text-align: center;">Nil</td>
-										</tr>
-	
-									<% } %>
-								</tbody>
-							</table>
+							<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
+									
+								<div align="center" style="width:990px">
+									<div align="center" style="margin-left:25px;max-width:300px;float:left;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingList.get(z).size()==0){ %>
+												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%}
+												else if(ReviewMeetingList.size()>0)
+												  {int i=1;
+												for(Object[] obj:ReviewMeetingList.get(z)){ %>
+													<tr>
+														<td >
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=i %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>				
+												<%i++;
+												}}else{ %>
+												<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												<%} %> 
+										</tbody>
+									</table>
+									</div>
+								
+									<%int t=1; %>
+									<div align="center" style="max-width:300px; display:inline-block; ;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+													<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%} else if(ReviewMeetingListPMRC.size()>0)
+												  { 
+													for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
+												
+												<%if(t<=20){ %>
+													<tr>
+														<td>
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=t++ %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>			
+												<%};
+												}}else{ %>
+												
+													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												
+											<%} %> 
+										</tbody>
+									</table>
+									</div>
+									<% if(t>20) { %>
+									<div align="left" style="max-width:300px; float:right; ;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%}
+												else if(ReviewMeetingListPMRC.size()>0)
+												  {
+												for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
+													<tr>
+														<td >
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=t++ %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>			
+												<%t++;
+												}}else{ %>
+												
+													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												
+											<%} %> 
+										</tbody>
+									</table>
+									</div>
+									<%} %>
+								</div>
+								
+							</form>
 						
-						</form>
-					</div>
+						</div>
 
 					<% } %>
 				</div>

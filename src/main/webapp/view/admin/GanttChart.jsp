@@ -118,8 +118,7 @@ h6{
 								<div class="col-md-12" style="float: right;" >
 									
 									<div class="row" style="margin-top: 5px;font-weight: bold;"   >
-										<div class="col-md-4"></div>
-										<div class="col-md-4"></div>
+										<div class="col-md-8"></div>
 										<div class="col-md-4">
 											<div style="font-weight: bold; " >
 												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
@@ -136,7 +135,6 @@ h6{
 						
 						</div>
 					
-						<div class="card-footer" align="right">&nbsp;</div>
 				</div>
 					
 		

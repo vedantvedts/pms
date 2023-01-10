@@ -89,7 +89,7 @@ h6{
 					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Action Id : </label>
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">                      
-					   						<input type="text" class="form-control form-control" name="ActionNo" maxlength="20" required="required">				   		
+					   						<input type="text" class="form-control form-control" name="ActionNo" required="required">				   		
 					   						<td >
 					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Position : </label>
 					   						</td>

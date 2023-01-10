@@ -40,6 +40,7 @@ public interface ProjectService {
 	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto,String UserId,String EmpId,String EmpName ) throws Exception;
 	public Long ProjectShortNameCount(String ProjectShortName) throws Exception;
 	public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception;
+	//public Object[] ProjectDetailes(Long IntiationId) throws Exception;
 	public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception;
 	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto,String UserId ) throws Exception;
 	public List<Object[]> BudgetItem(String BudegtId) throws Exception;
@@ -49,7 +50,12 @@ public interface ProjectService {
 	public List<Object[]> ProjectIntiationLabList(String InitiationId) throws Exception;
 	public List<Object[]> BudgetHead() throws Exception;
 	public Long ProjectScheduleAdd(String[] MilestoneActivity,String[] MilestoneMonth,String[] MilestoneRemark,String InitiationId,String UserId,Object[] ProjectDetailes,Integer TotalMonth) throws Exception;
+	//Line Added
+	public Long ProjectScheduleAdd(String[] MilestoneActivity,String[] MilestoneMonth,int MilestoneTotalMonth, int Milestonestartedfrom,String[] MilestoneRemark,String InitiationId,String UserId,Object[] ProjectDetailes,Integer TotalMonth) throws Exception;
 	public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception;
+	//Line Added
+	public List<Object[]>ProjectScheduleTotalMonthList(String InitiationId)throws Exception;
+	/*L.A*/public List<Object[]>MileStonenoTotalMonths(String InitiationId,int msno) throws Exception;
 	public Object[] ProjectProgressCount(String InitiationId) throws Exception;
 	public List<Object[]> ProjectIntiationDetailsList(String InitiationId) throws Exception;
 	public List<Object[]> ProjectIntiationCostList(String InitiationId) throws Exception;
@@ -58,14 +64,20 @@ public interface ProjectService {
 	public Double TotalIntiationCost(String IntiationId) throws Exception;
 	public List<Object[]> ProjectCostEditData(String InitiationCostId) throws Exception;
 	public int ProjectIntiationCostEdit(PfmsInitiationCostDto pfmsinitiationcostdto,String UserId,String InitiationId,String TotalCost ) throws Exception;
-	public int ProjectScheduleEdit(ProjectScheduleDto projectschedule) throws Exception;
-	public int ProjectScheduleDelete(String InitiationScheduleId,String UserId,Integer TotalMonth,String InitiationId) throws Exception;
+	public long ProjectScheduleEdit(ProjectScheduleDto projectschedule) throws Exception;
+	/*L.A*/public int MilestoneTotalMonthUpdate( int newMilestoneTotalMonth,String IntiationId, String milestoneno) throws Exception;
+	public int ProjectScheduleDelete(String InitiationScheduleId,String UserId,Integer MilestoneScheduleMonth,String InitiationId) throws Exception;
 	public Long ProjectInitiationDetailsUpdate(PfmsInitiationDetailDto pfmsinitiationdetaildto,String UserId,String Details) throws Exception;
 	public Integer ProjectScheduleMonth(String InitiationId) throws Exception;
+	public Integer ProjectDurationMonth(String InitiationId) throws Exception;
+	/*L.A*/public Integer MilestoneScheduleMonth(String initiationscheduleid,String IntiationId)throws Exception;
 	public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception;
+	/*L.A*/ public int mileStonemonthprevious(String IntiationId, String milestoneno) throws Exception;
+	/*L.A*/ public int milestonenototalmonth(String IntiationId, String milestoneno) throws Exception;
 	public Long ProjectInitiationAttachmentAdd(PfmsInitiationAttachmentDto pfmsinitiationattachmentdto,PfmsInitiationAttachmentFileDto pfmsinitiationattachmentfiledto,String UserId) throws Exception;
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception;
 	public List<Object[]> AuthorityAttachment(String InitiationId) throws Exception;
+	
 	public PfmsInitiationAttachmentFile ProjectIntiationAttachmentFile(String InitiationAttachmentId) throws Exception;
 	public Object[] ProjectIntiationFileName(long InitiationAttachmentId) throws Exception;
 	public int ProjectInitiationAttachmentDelete(String InitiationAttachmentId,String UserId) throws Exception;
@@ -146,6 +158,4 @@ public interface ProjectService {
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	public List<Object[]> GetIssueList(String projectid, String empid,String labcode)throws Exception;
-	public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception;
 }

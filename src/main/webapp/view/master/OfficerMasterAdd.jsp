@@ -75,9 +75,9 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+			                <label>Title</label><br>
+			                 <select class="form-control selectdee" id="title"  name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
+								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof.">Prof.</option>
 								<option value="Lt.">Lt.</option>
 								<option value="Dr.">Dr.</option>
@@ -87,14 +87,11 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-			                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-								<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
-								<option value="Shri.">Shri.</option>
-								<option value="Smt.">Smt.</option> 
+			                <label>Rank/Salutation</label><br>
+			                 <select class="form-control selectdee"  id="salutation" name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
+								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr.">Mr.</option>
-								<option value="Mrs.">Mrs.</option>
-								<option value="Miss.">Miss.</option>
+								<option value="Ms.">Ms.</option>
 							</select>
 					</div>
 	</div>
@@ -212,11 +209,15 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			var DronaEmail=$('#DronaEmail').val().trim();
 			var InternetEmail=$('#InternetEmail').val().trim();
 			var Division=$('#Division').val();
+			var title=$('#title').val();
+			var salutation=$('#salutation').val();
 			var $empno=$('#EmpNo').val().trim();
 			
-			if($empno==="" ||EmpName==="" ||Designation==="" || ExtNo===null || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division==="" ) 
+			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division===null ) 
 			{
 				alert('Please Fill All the Fields ');
+			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+				alert('Please select either Title or Rank');
 			}
 			else if(isNaN(mobilenumber))
 				{

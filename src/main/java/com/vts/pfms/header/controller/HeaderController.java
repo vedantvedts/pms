@@ -369,76 +369,75 @@ public class HeaderController {
 	
 	
 	@RequestMapping (value="GanttChartSub.htm", method=RequestMethod.POST)
-	public String GanttChartSub(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	public String GanttChartSub(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside GanttChartSub.htm "+UserId);		
-		try {
-		
-			List<Object[] > ProjectList= service.ProjectList();
-			String ProjectId=req.getParameter("ProjectId");
+			try {
 			
-			if(ProjectId==null) {
-				Object[] FirstProjectId=  ProjectList.get(0);
-				ProjectId= FirstProjectId[0].toString();
+				List<Object[] > ProjectList= service.ProjectList();
+				String ProjectId=req.getParameter("ProjectId");
 				
-			}
+				if(ProjectId==null) {
+					Object[] FirstProjectId=  ProjectList.get(0);
+					ProjectId= FirstProjectId[0].toString();
 					
-			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));	
-			req.setAttribute("ProjectList", ProjectList);	
-			req.setAttribute("ProjectId", ProjectId);	
-			
-			if(ProjectId!=null) {
-				List<Object[]> main=service.MilestoneActivityList(ProjectId);
-				List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
-				List<Object[]> MilestoneActivityB=new ArrayList<Object[]>();
-				List<Object[]> MilestoneActivityC=new ArrayList<Object[]>();
-				List<Object[]> MilestoneActivityD=new ArrayList<Object[]>();
-				List<Object[]> MilestoneActivityE=new ArrayList<Object[]>();
-				
-					for(Object[] objmain:main ) {
-						List<Object[]>  MilestoneActivityA1=service.MilestoneActivityLevel(objmain[0].toString(),"1");
-						MilestoneActivityA.addAll(MilestoneActivityA1);
+				}
 						
-						for(Object[] obj:MilestoneActivityA1) {
-							List<Object[]>  MilestoneActivityB1=service.MilestoneActivityLevel(obj[0].toString(),"2");
-							MilestoneActivityB.addAll(MilestoneActivityB1);
+				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));	
+				req.setAttribute("ProjectList", ProjectList);	
+				req.setAttribute("ProjectId", ProjectId);	
+				
+				if(ProjectId!=null) {
+					List<Object[]> main=service.MilestoneActivityList(ProjectId);
+					List<Object[]> MilestoneActivityA=new ArrayList<Object[]>();
+					List<Object[]> MilestoneActivityB=new ArrayList<Object[]>();
+					List<Object[]> MilestoneActivityC=new ArrayList<Object[]>();
+					List<Object[]> MilestoneActivityD=new ArrayList<Object[]>();
+					List<Object[]> MilestoneActivityE=new ArrayList<Object[]>();
+					
+						for(Object[] objmain:main ) {
+							List<Object[]>  MilestoneActivityA1=service.MilestoneActivityLevel(objmain[0].toString(),"1");
+							MilestoneActivityA.addAll(MilestoneActivityA1);
 							
-							for(Object[] obj1:MilestoneActivityB1) {
-								List<Object[]>  MilestoneActivityC1=service.MilestoneActivityLevel(obj1[0].toString(),"3");
-								MilestoneActivityC.addAll(MilestoneActivityC1);
+							for(Object[] obj:MilestoneActivityA1) {
+								List<Object[]>  MilestoneActivityB1=service.MilestoneActivityLevel(obj[0].toString(),"2");
+								MilestoneActivityB.addAll(MilestoneActivityB1);
 								
-								for(Object[] obj2:MilestoneActivityC1) {
-									List<Object[]>  MilestoneActivityD1=service.MilestoneActivityLevel(obj2[0].toString(),"4");
-									MilestoneActivityD.addAll( MilestoneActivityD1);
+								for(Object[] obj1:MilestoneActivityB1) {
+									List<Object[]>  MilestoneActivityC1=service.MilestoneActivityLevel(obj1[0].toString(),"3");
+									MilestoneActivityC.addAll(MilestoneActivityC1);
 									
-									for(Object[] obj3:MilestoneActivityD1) {
-										List<Object[]>  MilestoneActivityE1=service.MilestoneActivityLevel(obj3[0].toString(),"5");
-										MilestoneActivityE.addAll( MilestoneActivityE1);
+									for(Object[] obj2:MilestoneActivityC1) {
+										List<Object[]>  MilestoneActivityD1=service.MilestoneActivityLevel(obj2[0].toString(),"4");
+										MilestoneActivityD.addAll( MilestoneActivityD1);
+										
+										for(Object[] obj3:MilestoneActivityD1) {
+											List<Object[]>  MilestoneActivityE1=service.MilestoneActivityLevel(obj3[0].toString(),"5");
+											MilestoneActivityE.addAll( MilestoneActivityE1);
+										}
 									}
 								}
 							}
 						}
-					}
-				req.setAttribute("MilestoneActivityMain", main);
-				req.setAttribute("MilestoneActivityE", MilestoneActivityE);
-				req.setAttribute("MilestoneActivityD", MilestoneActivityD);
-				req.setAttribute("MilestoneActivityC", MilestoneActivityC);
-				req.setAttribute("MilestoneActivityB", MilestoneActivityB);
-				req.setAttribute("MilestoneActivityA", MilestoneActivityA);
-							
+					req.setAttribute("MilestoneActivityMain", main);
+					req.setAttribute("MilestoneActivityE", MilestoneActivityE);
+					req.setAttribute("MilestoneActivityD", MilestoneActivityD);
+					req.setAttribute("MilestoneActivityC", MilestoneActivityC);
+					req.setAttribute("MilestoneActivityB", MilestoneActivityB);
+					req.setAttribute("MilestoneActivityA", MilestoneActivityA);
+								
+				}
+			
+				return "admin/GanttChartSub";
 			}
-		
-		
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside GanttChartSub.htm "+UserId, e);
+				return "static/Error";
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside GanttChartSub.htm "+UserId, e);
-			return "static/Error";
-	}
 		
-		
-		return "admin/GanttChartSub";
 	}
 	
 	

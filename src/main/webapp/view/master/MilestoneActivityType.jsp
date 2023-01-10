@@ -113,7 +113,9 @@ font-weight: bold;
 .width{
 	width:270px !important;
 }
-
+th,td{
+text-align:center;
+}
 </style>
 
 </head>
@@ -173,7 +175,7 @@ font-weight: bold;
 	              <%for(Object[] obj:MilestoneActivityType) { %> 
 	               <tr>
 	                 <td><input type="radio" name="Did" value=<%=obj[0] %>></td>
-	                  <td style="text-align: left"> <%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %>
+	                  <td > <%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %>
 	               </tr> 
 	                 <%} %>
 	            </tbody> 

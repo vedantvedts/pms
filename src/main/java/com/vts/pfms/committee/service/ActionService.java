@@ -69,13 +69,17 @@ public interface ActionService {
 	public List<Object[]> AllLabList() throws Exception;
 	public Object[] GetActionMainData(String Actionmainid)throws Exception;
 	public List<Object[]> ClusterExpertsList() throws Exception;
-	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId) throws Exception;
+	public List<Object[]> ClusterFilterExpertsList(String Labcode , String MainId)throws Exception;
 	public Object[] LabInfoClusterLab(String LabCode) throws Exception;
 	public List<Object[]> LabEmployeeList(String LabCode) throws Exception;
-	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception;
+	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId)throws Exception;
 	public List<Object[]> ActionSubLevelsList(String ActionAssignId) throws Exception;
 	public List<Object[]> ActionSubList(String assignid) throws Exception;
+	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign)throws Exception;
+	public long IssueSubInsert(ActionSubDto main) throws Exception;
+	public List<Object[]> GetIssueList( String Empid )throws Exception;
+	public int IssueClosed(String id, String Remarks, String UserId ,String assignid)throws Exception;
+	public List<Object[]> GetRecomendationList(String projectid ,  String committeid)throws Exception;
+	public List<Object[]> GetDecisionList(String projectid ,  String committeid)throws Exception;
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception;
-	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception;
-	
 }

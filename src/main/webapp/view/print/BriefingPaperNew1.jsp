@@ -56,7 +56,6 @@ No2="P"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 }else if(CommitteeCode.equalsIgnoreCase("EB")){
 	No2="E"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 }
-String HyperlinkPath = "http://"+Inet4Address.getLocalHost().getHostAddress()+":"+	request.getLocalPort() + request.getContextPath();
 
 %>
 

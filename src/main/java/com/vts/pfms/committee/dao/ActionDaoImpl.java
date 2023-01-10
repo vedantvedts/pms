@@ -35,8 +35,8 @@ public class ActionDaoImpl implements ActionDao{
 	//isseen column has been removed  04-08-2021
 	//private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS remarks,a.revision FROM action_main a,  employee ab ,employee_desig dc WHERE a.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.assignor=:empid and a.actionflag<>'Y'";
 	private static final String ASSIGNEELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid  FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (d.assignee=:empid ) and d.actionflag in ('N','B') order by d.actionassignid desc";
-	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,e.actionflag,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=:mainid OR parentActionid=:mainid)) AS 'levelcount' FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.actionflag<>'Y' AND  e.assignee=d.empid AND a.actionmainid=:mainid AND e.actionassignid=:actionassignid";
-    private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.attachname,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,e.actionflag,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=:mainid OR parentActionid=:mainid)) AS 'levelcount' , a.projectid , a.type FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.actionflag<>'Y' AND  e.assignee=d.empid AND a.actionmainid=:mainid AND e.actionassignid=:actionassignid";
+    private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid,b.attachname FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
 	private static final String SUBDELETE="delete from action_sub where actionsubid=:subid";
 	private static final String ASSIGNUPDATE="UPDATE action_assign SET actionflag=:flag,actionstatus=:status,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assignid";
 	private static final String MAINFORWARD="UPDATE action_assign SET actionflag=:flag,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assign";
@@ -60,7 +60,7 @@ public class ActionDaoImpl implements ActionDao{
     private static final String LOGINPROJECTIDLIST="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a,project_employee b WHERE a.isactive=1 and a.projectid=b.projectid and b.empid=:empid";
     private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a WHERE a.isactive=1 ";
 	private static final String ACTIONWISE="CALL Pfms_Action_Wise_Reports(:term,:ProjectId)";
-    private static final String ACTIONNOTIFIC="SELECT ab.empname as emp,dc.designation as desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno  FROM action_main a,  employee ab ,employee_desig dc,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.empid  AND ab.isactive='1' AND dc.desigid=ab.desigid  and aas.actionassignid=:actionassignid";
+    private static final String ACTIONNOTIFIC="SELECT ab.empname as emp,dc.designation as desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a,  employee ab ,employee_desig dc,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.empid  AND ab.isactive='1' AND dc.desigid=ab.desigid  and aas.actionassignid=:actionassignid and a.actionmainid=:mainid";
 	private static final String ACTIONPDC="CALL Pfms_Action_PDC_Report(:empid,:ProjectId,:Position,:From,:To)";
     private static final String PROJECTCODE="SELECT projectcode FROM project_master WHERE   projectid=:ProjectId  AND isactive='1'";
 	private static final String SELFASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision  FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.assignee=:empid AND aas.actionflag<>'Y'";
@@ -420,7 +420,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> ActionNotification( String MainId , String assignid) throws Exception {
 		
 		Query query=manager.createNativeQuery(ACTIONNOTIFIC);
-		//query.setParameter("mainid",MainId);
+		query.setParameter("mainid",MainId);
 		query.setParameter("actionassignid", assignid);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -801,15 +801,53 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ActionSubLevelsList=(List<Object[]>)query.getResultList();
 		return ActionSubLevelsList;
 	 }
-	private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	 private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+	 
+	 @Override
+		public List<Object[]> ActionSubList(String assignid) throws Exception {
+			Query query=manager.createNativeQuery(ACTIONSUBLIST);
+			query.setParameter("assignid", assignid);
+			List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+			return AssignedList;
+		}
 	
-	@Override
-	public List<Object[]> ActionSubList(String assignid) throws Exception {
-		Query query=manager.createNativeQuery(ACTIONSUBLIST);
-		query.setParameter("assignid", assignid);
-		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
-		return AssignedList;
-	}
+		private static final String ISSULIST ="SELECT  am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId , aas.actionassignid , aas.actionno , (SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress ,aas.actionflag ,aas.assignee , aas.assignor FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='I' AND aas.actionflag<>'Y' AND  (aas.assignee=:empid or aas.assignor=:empid)";
+		@Override
+		public List<Object[]> GetIssueList(String empid )throws Exception
+		{
+			Query query = manager.createNativeQuery(ISSULIST);
+			
+			query.setParameter("empid", empid);
+			return (List<Object[]>)query.getResultList();
+		}
+		private static final String GETRECOMENDATIONLIST="SELECT b.scheduleminutesid, a.scheduleid ,a.meetingid, b.details , b.remarks FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck='R' AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeid THEN 1=1 ELSE a.committeeid=:committeid END) ";
+		@Override
+		public List<Object[]> GetRecomendationList(String projectid ,  String committeid)throws Exception
+		{
+			Query query = manager.createNativeQuery(GETRECOMENDATIONLIST);
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeid", committeid);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		private static final String GETDECISIONLIST="SELECT b.scheduleminutesid, a.scheduleid ,a.meetingid, b.details , b.remarks FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck='D' AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeid THEN 1=1 ELSE a.committeeid=:committeid END) ";
+		@Override
+		public List<Object[]> GetDecisionList(String projectid ,  String committeid)throws Exception
+		{
+			Query query = manager.createNativeQuery(GETDECISIONLIST);
+			query.setParameter("projectid", projectid);
+			query.setParameter("committeid", committeid);
+			return (List<Object[]>)query.getResultList();
+		}
+//	private static final String ACTIONSUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
+//	
+//	@Override
+//	public List<Object[]> ActionSubList(String assignid) throws Exception {
+//		Query query=manager.createNativeQuery(ACTIONSUBLIST);
+//		query.setParameter("assignid", assignid);
+//		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
+//		return AssignedList;
+//	}
 	
 	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,(SELECT asub.progress FROM action_sub asub WHERE createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=aas.actionassignid) AND asub.ActionAssignId = aas.ActionAssignId ) AS 'progress',am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name', CONCAT(IFNULL(asi.title,''), asi.empname) AS 'assignee name',am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus',aas.ActionFlag FROM action_main am, action_Assign aas, employee asn, employee asi WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.assignee= asi.empid AND aas.actionassignid=:assignid";
 	

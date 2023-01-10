@@ -93,10 +93,10 @@ String LoginType = (String) session.getAttribute("LoginType");
 		                    <div class="col-md-3 ">
 					        	<div class="form-group">
 					            	<label class="control-label">Category</label>
-									    <select class="custom-select" id="Category" required="required" name="Category" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled  <%} %>>
+									    <select class="custom-select" id="ProjectType" required="required" name="ProjectType" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled  <%} %>>
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : PfmsCategoryList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[5].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[4].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
 											<%} %>
 									  </select>
 					            </div>
@@ -105,10 +105,10 @@ String LoginType = (String) session.getAttribute("LoginType");
 		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Security Classification</label>
-		                              <select class="custom-select" id="ProjectType" required="required" name="ProjectType" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled="true"  <%} %> >
+		                              <select class="custom-select" id="Category" required="required" name="Category" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled="true"  <%} %> >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    	<% for (Object[] obj : ProjectTypeList) {%>
-											<option value="<%=obj[0]%>" <%if(ProjectEditData[4].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
+											<option value="<%=obj[0]%>" <%if(ProjectEditData[5].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%></option>
 												<%} %>
 		  								</select>
 		                        </div>
@@ -166,7 +166,7 @@ String LoginType = (String) session.getAttribute("LoginType");
 		                     <div class="col-md-4 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Deliverable</label>
-										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable"  <% if (ProjectEditData[12]!=null){ %>  value="<%=ProjectEditData[12]%>" <%}else {%> value="" <%} %> >
+										<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable"  <% if (ProjectEditData[12]!=null){ %>  value="<%=ProjectEditData[12]%>" <%}else {%> value="" <%} %> >
 		                        </div>
 		                    </div> 
 		                    

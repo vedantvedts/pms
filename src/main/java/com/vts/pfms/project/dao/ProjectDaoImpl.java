@@ -51,8 +51,8 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final Logger logger=LogManager.getLogger(ProjectDaoImpl.class);
 	java.util.Date loggerdate=new java.util.Date();
 
-	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.category,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd' FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
-	private static final String PROJECTTYPELIST="select categoryid,category from pfms_security_classification order by category";
+	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.classification,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd' FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
+	private static final String PROJECTTYPELIST="select classificationid,classification from pfms_security_classification order by classification";
 	private static final String PROJECTCATEGORYLIST="select projecttypeid,projecttype,projecttypeshort from project_type where isactive='1' ORDER BY projecttype";
 	private static final String PROJECTDELIVERABLELIST="select deliverableid,deliverable from pfms_deliverable order by deliverable ";
 	private static final String LABLIST="SELECT a.labid,a.labname,a.labcode FROM cluster_lab a WHERE   a.labid NOT IN (SELECT b.labid FROM pfms_initiation_lab b  WHERE  b.initiationid=:initiationid AND b.isactive='1')";
@@ -62,13 +62,16 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
-	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
+	/*L.A*/private static final String MILESTONENOTOTALMONTHS="SELECT milestoneno,MilestoneTotalMonth,Milestonestartedfrom FROM pfms_initiation_schedule WHERE isactive='1' AND initiationid=:InitiationId AND milestonestartedfrom=:milestonestartedfrom ";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";	private static final String PROJECTCOSTLIST="SELECT b.budgetheaddescription,c.headofaccounts,a.itemdetail,a.itemcost FROM pfms_initiation_cost a,budget_head b,budget_item_sanc c WHERE a.budgetheadid=b.budgetheadid AND a.budgetsancid=c.sanctionitemid AND a.initiationid=:initiationid order by a.budgetheadid asc";
-	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 UNION SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a ,pfms_initiation b WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
-	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,categoryid=:categoryid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTINTIEDITDATA="SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.classificationid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,a.projecttitle AS 'initiatedproject',a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a WHERE a.initiationid=:initiationid  AND a.isactive='1' AND a.mainid=0 UNION SELECT a.initiationid,a.empid,a.divisionid,a.projectprogramme,a.projecttypeid,a.categoryid,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.fecost,a.recost,a.nodallab,a.remarks,a.ismain,b.projecttitle ,a.pcduration,a.indicativecost,a.pcremarks FROM pfms_initiation a ,pfms_initiation b WHERE a.initiationid=:initiationid AND a.isactive='1' AND a.mainid=b.initiationid";
+	private static final String PROJECTINTIEDITUPDATE="update pfms_initiation set projectprogramme=:projectprogramme,projecttypeid=:projecttypeid,classificationid=:classificationid,projecttitle=:projecttitle,isplanned=:isplanned,ismultilab=:ismultilab,deliverable=:deliverable,modifiedby=:modifiedby,modifieddate=:modifieddate,nodallab=:nodallab,remarks=:remarks,empid=:empid,pcduration=:pcduration,pcremarks=:pcremarks,indicativecost=:indicativecost where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTITOTALCOST="select sum(ItemCost) from pfms_initiation_cost where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTINTICOSTDATA="select initiationcostid,initiationid,budgetheadid,budgetsancid,itemdetail,itemcost from pfms_initiation_cost where initiationcostid=:initiationcostid and isactive='1'";
 	private static final String PROJECTINTICOSTUPDATE="update pfms_initiation_cost set budgetsancid=:budgetitemid,itemdetail=:itemdetail,itemcost=:itemcost,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationcostid=:initiationcostid and isactive='1'";
+	/*L.A*/private static final String MILESTONETOTALMONTHUPDATE="UPDATE pfms_initiation_schedule SET MilestoneTotalMonth=:newMilestoneTotalMonth  WHERE  initiationid=:InitiationId AND isactive='1' AND milestoneno=:milestoneno";
 	private static final String PROJECTSHDULEUPDATE="update pfms_initiation_schedule set milestoneactivity=:milestoneactivity,milestonemonth=:milestonemonth,milestoneremark=:milestoneremark,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	private static final String PROJECTSHDULEDELETE="update pfms_initiation_schedule set modifiedby=:modifiedby,modifieddate=:modifieddate,isactive='0' where initiationscheduleid=:initiationscheduleid and isactive='1'";
 	private static final String PROJECTCOSTUPDATE="UPDATE pfms_initiation SET fecost=:fecost,recost=:recost,projectcost=:projectcost,modifieddate=:modifieddate, modifiedby=:modifiedby WHERE initiationid=:initiationid";	
@@ -85,8 +88,12 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTDETAILSREALIZATIONUPDATE="update pfms_initiation_detail set realizationplan=:realization, realizationbrief=:realizationbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String PROJECTDETAILSWORLDUPDATE="update pfms_initiation_detail set worldscenario=:worldscenario,worldscenariobrief=:worldbrief, modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid";	
 	private static final String PROJECTSCHTOTALMONTH="select sum(milestonemonth) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
+/*L.A*/private static final String PROJECTDURMONTH="SELECT MAX(MilestoneTotalMonth) FROM pfms_initiation_schedule WHERE InitiationId=:InitiationId AND isactive='1'";
+/*L.A*/ private static final String MILESCHMONTH="SELECT MAX(MilestoneTotalMonth) FROM pfms_initiation_schedule WHERE MilestoneTotalMonth !=(SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE InitiationScheduleId=:initiationscheduleid AND IsActive='1') AND InitiationId=:IntiationId AND IsActive='1';";	
 	private static final String MILESTONENO="select max(MilestoneNo) from pfms_initiation_schedule where InitiationId=:InitiationId and isactive='1'";
 	private static final String SCDULEMONTH="select milestonemonth from pfms_initiation_schedule where initiationscheduleid=:initiationscheduleid and isactive='1'";
+	/*L.A*/private static final String PREVIOUSMONTH="SELECT milestonemonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
+	/*L.A*/private static final String MILESTONENOTOTALMONTH="SELECT MilestoneTotalMonth FROM pfms_initiation_schedule WHERE milestoneno=:milestoneno AND initiationid=:IntiationId AND isactive='1'";
 	private static final String PROJECTINTATTACH="SELECT a.initiationattachmentid,a.initiationid,a.filename,a.filenamepath,a.createdby,a.createddate,b.initiationattachmentfileid FROM pfms_initiation_attachment a,pfms_initiation_attachment_file b WHERE isactive='1' AND initiationid=:initiationid AND a.initiationattachmentid=b.initiationattachmentid";
 	private static final String PROJECTINTATTACHDELETE="update pfms_initiation_attachment set isactive='0',modifiedby=:modifiedby, modifieddate=:modifieddate where initiationattachmentid=:initiationattachmentid";
 	private static final String PROJECTINTATTACHUPDATE="update pfms_initiation_attachment set filename=:filename,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationattachmentid=:initiationattachmentid";
@@ -98,9 +105,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
 	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item_sanc b  WHERE a.budgetsancid=b.sanctionitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
-	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.category,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.ProjectTypeId=c.CategoryId AND a.CategoryId=b.ProjectTypeId AND a.projectstatus=d.Status";
+	private static final String PROJECTSTATUSLIST="SELECT b.projecttypeshort,c.classification,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.ClassificationId=c.ClassifcationId AND a.ProjectTypeId=b.ProjectTypeId AND a.projectstatus=d.Status";
 	private static final String PROJECTAPPROVALTRACKING="SELECT a.projectapprovalid,a.empid,c.empname,d.designation,e.divisionname,a.actiondate,a.remarks,b.statusdetail FROM project_approval a, pfms_project_authority_actionlist b,employee c,employee_desig d,division_master e WHERE a.projectstatus=b.Status AND a.empid=c.empid  AND c.desigid=d.desigid AND c.divisionid=e.divisionid AND a.initiationid=:initiationid";
-	private static final String PROJECTINTIDATAPREVIEW="SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.category,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,f.projectshortname AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e,pfms_initiation f WHERE a.initiationid=:initiationid AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=f.initiationid UNION SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.category,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,a.projecttitle AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e WHERE a.initiationid=:initiationid AND a.projecttypeid=c.categoryid  AND a.categoryid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=0 ";
+	private static final String PROJECTINTIDATAPREVIEW="SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.classification,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,f.projectshortname AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e,pfms_initiation f WHERE a.initiationid=:initiationid AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=f.initiationid UNION SELECT a.initiationid,d.empname,e.divisioncode,a.projectprogramme,b.projecttype,c.classification,a.projectshortname,a.projecttitle,a.projectcost, a.projectduration,a.isplanned,a.ismultilab,a.deliverable,a.labcount,a.fecost,a.recost,a.ismain,a.projecttitle AS 'initiatedproject' FROM pfms_initiation a,project_type b,pfms_security_classification c,employee d,division_master e WHERE a.initiationid=:initiationid AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.empid=d.empid AND a.divisionid=e.divisionid AND a.isactive='1' AND a.mainid=0 ";
 	private static final String PROJECTINTITOTALFECOST="select sum(a.ItemCost) from pfms_initiation_cost a,budget_item_sanc b where a.initiationid=:initiationid and a.isactive='1' and a.budgetsancid=b.sanctionitemid and a.refe='FE' ";
 	private static final String PROJECTINTITOTALRECOST="select sum(a.ItemCost) from pfms_initiation_cost a,budget_item_sanc b where a.initiationid=:initiationid and a.isactive='1' and a.budgetsancid=b.sanctionitemid and a.refe='RE' ";
 	private static final String PROJECTDURATIONUPDATE="update pfms_initiation set projectduration=:duration where initiationid=:initiationid";
@@ -120,7 +127,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTDATASPECSREVFILEDATA  ="SELECT projectdatarevid,projectid,filespath, systemspecsfilename,systemconfigimgname,producttreeimgname,pearlimgname  FROM pfms_project_data_rev WHERE projectdatarevid=:projectdatarevid";
 	private static final String PROJECTDATAREVLIST="SELECT ProjectDataRevId,ProjectId,RevisionNo,RevisionDate FROM pfms_project_data_rev WHERE ProjectId=:projectid ORDER BY RevisionNo DESC";
 	private static final String INITIATEDPROJECT="SELECT initiationid,projecttitle,projectshortname,empid,divisionid,projectprogramme,projecttypeid,categoryid FROM pfms_initiation WHERE isactive=1 AND ismain='Y'";  
-    private static final String INITIATEDPROJECTDETAILS="SELECT a.initiationid,a.projectprogramme,a.categoryid,b.projecttype AS category, a.projecttypeid,c.category AS securityclassification,d.labid,d.labcode,d.labname, a.projectshortname, a.projecttitle FROM pfms_initiation a,project_type b,pfms_security_classification c ,cluster_lab d WHERE a.projecttypeid=c.categoryid AND a.categoryid=b.projecttypeid AND a.isactive=1 AND a.initiationid=:initiationid AND a.nodallab=d.labid";
+    private static final String INITIATEDPROJECTDETAILS="SELECT a.initiationid,a.projectprogramme,a.categoryid,b.projecttype AS category, a.projecttypeid,c.classification AS securityclassification,d.labid,d.labcode,d.labname, a.projectshortname, a.projecttitle FROM pfms_initiation a,project_type b,pfms_security_classification c ,cluster_lab d WHERE a.classificationid=c.classificationid AND a.projecttypeid=b.projecttypeid AND a.isactive=1 AND a.initiationid=:initiationid AND a.nodallab=d.labid";
 	private static final String NODALLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
     private static final String SUBPROJECTLIST="SELECT initiationid,projecttitle FROM pfms_initiation WHERE mainid=:initiationid AND isactive=1 AND ismain='N' ";
     private static final String PROJECTDATAREVDATA="SELECT ppdr.projectdatarevid,ppdr.projectid,ppdr.filespath,ppdr.systemconfigimgname,ppdr.SystemSpecsFileName,ppdr.ProductTreeImgName,ppdr.PEARLImgName,ppdr.CurrentStageId,ppdr.RevisionNo,pps.projectstagecode,pps.projectstage,ppdr.revisiondate FROM pfms_project_data_rev ppdr, pfms_project_stage pps WHERE ppdr.CurrentStageId=pps.projectstageid AND  ppdr.projectdatarevid=:projectdatarevid";
@@ -138,7 +145,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTMAINUPDATE="UPDATE project_main SET projecttypeid=:projecttypeid,projectcode=:projectcode,projectname=:projectname,projectdescription=:projectdescription, unitcode=:unitcode, sanctionno=:sanctionno, sanctiondate=:sanctiondate,sanctioncostre=:sanctioncostre, sanctioncostfe=:sanctioncostfe,totalsanctioncost=:totalsanctioncost,pdc=:pdc,projectdirector=:projectdirector,projsancauthority=:projsancauthority,boardreference=:boardreference,ismainwc=:ismainwc,workcenter=:workcenter,objective=:objective,deliverable=:deliverable,modifiedby=:modifiedby, modifieddate=:modifieddate, LabParticipating=:labparticipating, CategoryId=:categoryId, Scope=:scope  WHERE  projectmainid=:promainid  AND isactive='1' ";
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.projectmainid,b.projectcode as id from  project_main b WHERE  b.isactive='1' ";
-	private static final String PROJECTCATEGORY="select categoryid, category from pfms_security_classification";
+	private static final String PROJECTCATEGORY="select classificationid, classification from pfms_security_classification";
 	private static final String PROJECTCLOSE="update project_master set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectid=:projectid";
 	private static final String PROJECTEDITDATA="SELECT a.projectid,b.projectmainid,c.projecttype as id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.sanctioncostre, a.sanctioncostfe, a.totalsanctioncost, a.pdc,a.projectdirector,a.projsancauthority,a.boardreference,a.ismainwc,a.workcenter, a.revisionno,a.objective,a.deliverable,a.projectcategory, a.ProjectType ,a.ProjectShortName ,a.EndUser FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid and a.projectid=:proid and a.projectmainid=b.projectmainid and a.isactive='1' and b.isactive='1' ORDER BY a.projectid, a.projectmainid";
 	private static final String PROJECTITEMLIST11="SELECT a.projectid, a.projectcode,a.projectname FROM project_master a WHERE isactive='1'";
@@ -157,7 +164,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
 	
-	private static final String PROJECTREVLIST = "SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.category,pr.sanctionno,pr.sanctiondate, CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master p, project_master_rev pr , project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE p.projectid=pr.projectid AND pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.categoryid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND p.projectid=:projectid UNION SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.category,pr.sanctionno,pr.sanctiondate,CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master pr, project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE  pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.categoryid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND pr.projectid=:projectid ";
+	private static final String PROJECTREVLIST = "SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.classification,pr.sanctionno,pr.sanctiondate, CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master p, project_master_rev pr , project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE p.projectid=pr.projectid AND pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.classificationid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND p.projectid=:projectid UNION SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.classification,pr.sanctionno,pr.sanctiondate,CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master pr, project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE  pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.classificationid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND pr.projectid=:projectid ";
 	private static final String PROJECTMASTERATTACHLIST = "SELECT projectattachid,filename  FROM project_master_attach  WHERE projectid=:projectid";
 	private static final String PROJECTMASTERATTACHDATA = "SELECT projectattachid,filename,path,originalfilename,projectid  FROM project_master_attach  WHERE projectattachid= :projectattachid ";
 	private static final String PROJECTMASTERATTACHDELETE = "DELETE FROM  project_master_attach WHERE projectattachid=:projectattachid ";
@@ -368,6 +375,34 @@ public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws E
 	return ProjectIntiationScheduleList;
 }
 
+private static final String INTIATIONSCHEDULELIST = "from PfmsInitiationSchedule where InitiationId=:InitiationId and IsActive=1 ORDER BY Milestonestartedfrom ASC";
+@Override
+public List<PfmsInitiationSchedule> IntiationScheduleList(String InitiationId) throws Exception {
+	
+    Query query=manager.createQuery(INTIATIONSCHEDULELIST);
+    query.setParameter("InitiationId", Long.parseLong(InitiationId));
+    return (List<PfmsInitiationSchedule>)query.getResultList();		
+	
+}
+
+@Override
+public List<Object[]> ProjectScheduleTotalMonthList(String InitiationId) throws Exception {
+	// TODO Auto-generated method stub
+	Query query =manager.createNativeQuery(PROJECTSCHEDULETOTALMONTHLIST);
+	  query.setParameter("initiationid", InitiationId);
+	  List<Object[]>ProjectScheduleTotalMonthList=(List<Object[]>)query.getResultList();
+	  return ProjectScheduleTotalMonthList;
+}	
+@Override
+public List<Object[]> MileStonenoTotalMonths(String InitiationId, int msno) throws Exception {
+	// TODO Auto-generated method stub
+	Query query =manager.createNativeQuery(MILESTONENOTOTALMONTHS);
+	query.setParameter("InitiationId",InitiationId );
+	query.setParameter("milestonestartedfrom",msno);
+	  List<Object[]> MileStonenoTotalMonths=(List<Object[]>)query.getResultList();
+	  return  MileStonenoTotalMonths;
+}
+
 @Override
 public Object[] ProjectProgressCount(String InitiationId) throws Exception {
 	Query query=manager.createNativeQuery("CALL ProjectProgressBar(:InitiationId)");
@@ -414,7 +449,7 @@ public int ProjectIntiationEdit(PfmsInitiation pfmsinitiation) throws Exception 
 	    query.setParameter("initiationid", pfmsinitiation.getInitiationId());
 	    query.setParameter("projectprogramme", pfmsinitiation.getProjectProgramme());
 	    query.setParameter("projecttypeid", pfmsinitiation.getProjectTypeId());
-	    query.setParameter("categoryid", pfmsinitiation.getCategoryId());
+	    query.setParameter("classificationid", pfmsinitiation.getClassificationId());
 	    query.setParameter("nodallab", pfmsinitiation.getNodalLab());
 	    
 	    query.setParameter("projecttitle", pfmsinitiation.getProjectTitle());
@@ -496,25 +531,71 @@ return count;
 
 
 @Override
-public int ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
-
-	Query query=manager.createNativeQuery(PROJECTSHDULEUPDATE);
-    query.setParameter("initiationscheduleid", pfmsinitiationschedule.getInitiationScheduleId());
-    query.setParameter("milestoneactivity", pfmsinitiationschedule.getMilestoneActivity());
-    query.setParameter("milestonemonth", pfmsinitiationschedule.getMilestoneMonth());
-    query.setParameter("milestoneremark", pfmsinitiationschedule.getMilestoneRemark());
-    query.setParameter("modifiedby",   pfmsinitiationschedule.getModifiedBy());
-	query.setParameter("modifieddate", pfmsinitiationschedule.getModifiedDate());
-	int count1=query.executeUpdate();
-	
-	Query query1=manager.createNativeQuery(PROJECTSHDULEINITUPDATE);
-    query1.setParameter("initiationid", pfmsinitiation.getInitiationId());
-    query1.setParameter("milestonemonth", pfmsinitiation.getProjectDuration());
-    int count2=query1.executeUpdate();
-    
-    
-return count1+count2;
+public PfmsInitiationSchedule getInitiationSchedule(String InitiationScheduleId) throws Exception 
+{
+	return manager.find(PfmsInitiationSchedule.class,Long.parseLong(InitiationScheduleId));
 }
+
+
+@Override
+public long ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception 
+{
+	manager.merge(pfmsinitiationschedule);
+	manager.flush();
+	Query query=manager.createNativeQuery(PROJECTSHDULEINITUPDATE);
+	query.setParameter("initiationid", pfmsinitiation.getInitiationId());
+ 	query.setParameter("milestonemonth", pfmsinitiation.getProjectDuration());
+ 	int count2=query.executeUpdate();
+	
+	return pfmsinitiationschedule.getInitiationScheduleId();
+}
+
+
+	private static final String INITIATIONCLEARTOTALMONTH ="UPDATE pfms_initiation_schedule SET MilestoneTotalMonth = 0 WHERE InitiationId=:InitiationId";
+	@Override
+	public int InitiationClearTotalMonth(String InitiationId) throws Exception 
+	{
+		Query query1=manager.createNativeQuery(INITIATIONCLEARTOTALMONTH);
+		query1.setParameter("InitiationId",InitiationId);
+		return query1.executeUpdate();
+	}
+
+//@Override
+//public int ProjectScheduleEdit(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
+//
+//	Query query=manager.createNativeQuery(PROJECTSHDULEUPDATE);
+//    query.setParameter("initiationscheduleid", pfmsinitiationschedule.getInitiationScheduleId());
+//    query.setParameter("milestoneactivity", pfmsinitiationschedule.getMilestoneActivity());
+//    query.setParameter("milestonemonth", pfmsinitiationschedule.getMilestoneMonth());
+//    query.setParameter("milestoneremark", pfmsinitiationschedule.getMilestoneRemark());
+//    query.setParameter("modifiedby",   pfmsinitiationschedule.getModifiedBy());
+//	query.setParameter("modifieddate", pfmsinitiationschedule.getModifiedDate());
+//	int count1=query.executeUpdate();
+//	
+	//Query query1=manager.createNativeQuery(PROJECTSHDULEINITUPDATE);
+//    query1.setParameter("initiationid", pfmsinitiation.getInitiationId());
+//    query1.setParameter("milestonemonth", pfmsinitiation.getProjectDuration());
+//    int count2=query1.executeUpdate();
+//    
+//    
+//return count1+count2;
+//}
+@Override
+public int MilestoneTotalMonthUpdate(int newMilestoneTotalMonth, String IntiationId, String milestoneno)
+		throws Exception {
+	// TODO Auto-generated method stub
+	
+		Query query= manager.createNativeQuery(MILESTONETOTALMONTHUPDATE);
+		query.setParameter("newMilestoneTotalMonth", newMilestoneTotalMonth);
+		query.setParameter("InitiationId", IntiationId);
+		query.setParameter("milestoneno", milestoneno);
+		
+		int count=query.executeUpdate();
+		
+		return count;
+}
+
+
 @Override
 public int ProjectScheduleDelete(PfmsInitiationSchedule pfmsinitiationschedule,PfmsInitiation pfmsinitiation ) throws Exception {
 	
@@ -764,6 +845,35 @@ public Integer ProjectScheduleMonth(String InitiationId) throws Exception {
 	return ProjectScheduleMonth.intValue();
 }
 
+
+
+@Override/*L.A*/
+public Integer ProjectDurationMonth(String InitiationId) throws Exception {
+	// TODO Auto-generated method stub
+
+	 Query query=manager.createNativeQuery(PROJECTDURMONTH);
+   query.setParameter("InitiationId", InitiationId);
+   Integer ProjectDurationeMonth=(Integer)query.getSingleResult();		
+	if(ProjectDurationeMonth==null) {
+		return 0;
+	}
+	return ProjectDurationeMonth.intValue();
+}
+@Override/*L.A*/
+public Integer MilestoneScheduleMonth(String initiationscheduleid,String IntiationId) throws Exception {
+	// TODO Auto-generated method stub
+	 Query query=manager.createNativeQuery(MILESCHMONTH);
+	   query.setParameter("initiationscheduleid", initiationscheduleid);
+	   query.setParameter("IntiationId", IntiationId);
+	   Integer MilestoneScheduleMonth=(Integer)query.getSingleResult();		
+	  
+		if(MilestoneScheduleMonth==null) {
+			return 0;
+		}
+		return MilestoneScheduleMonth.intValue();
+	}
+
+
 @Override
 public int ProjectMileStoneNo(String InitiationId) throws Exception {
 	 Query query=manager.createNativeQuery(MILESTONENO);
@@ -777,15 +887,45 @@ public int ProjectMileStoneNo(String InitiationId) throws Exception {
 	return ProjectMileStoneNo.intValue();
 }
 
-@Override
 public int ProjectScheduleEditData(String InitiationScheduleId) throws Exception {
 	Query query=manager.createNativeQuery(SCDULEMONTH);
 	    query.setParameter("initiationscheduleid", InitiationScheduleId);
+	    
 	    Integer ProjectScheduleMonth=(Integer)query.getSingleResult();		
 		if(ProjectScheduleMonth==null) {
 			return 0;
 		}
 		return ProjectScheduleMonth.intValue();
+}
+
+
+
+@Override/*L.A*/
+public int mileStonemonthprevious(String IntiationId, String milestoneno) throws Exception {
+	
+	Query query=manager.createNativeQuery(PREVIOUSMONTH);
+    query.setParameter("IntiationId", IntiationId);
+    query.setParameter("milestoneno", milestoneno);
+    
+    Integer PreviousMilestoneMonth=(Integer)query.getSingleResult();		
+	if(PreviousMilestoneMonth==null) {
+		return 0;
+	}
+	return PreviousMilestoneMonth.intValue();
+}
+
+
+@Override/*L.A*/
+public int milestonenototalmonth(String IntiationId, String milestoneno) throws Exception {
+	// TODO Auto-generated method stub
+	Query query=manager.createNativeQuery(MILESTONENOTOTALMONTH);
+    query.setParameter("IntiationId", IntiationId);
+    query.setParameter("milestoneno", milestoneno);
+    Integer milestonenototalmonth=(Integer)query.getSingleResult();		
+  	if(milestonenototalmonth==null) {
+  		return 0;
+  	}
+  	return milestonenototalmonth.intValue();
 }
 
 @Override
@@ -1897,26 +2037,22 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			Query query=manager.createNativeQuery(RISKTYPELIST);
 			return (List<Object[]>)query.getResultList();
 		}		
-		private static final String ISSULIST ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId , aas.actionassignid , aas.actionno FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='I' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:labcode END";
+		
+   private static final String MILESTONEDATA ="FROM PfmsInitiationSchedule WHERE InitiationId=:InitiationId AND MilestoneNo=:MilestoneNo AND IsActive=1";
 		@Override
-		public List<Object[]> GetIssueList(String projectid ,String empid, String labcode)throws Exception
-		{
-			Query query = manager.createNativeQuery(ISSULIST);
-			query.setParameter("projectid", projectid);
-			query.setParameter("labcode", labcode);
-			return (List<Object[]>)query.getResultList();
+		public PfmsInitiationSchedule MilestoneData(long InitiationId, int milestoneno) throws Exception {
+			// TODO Auto-generated method stub
+		
+			Query query=manager.createQuery(MILESTONEDATA);
+			query.setParameter("InitiationId", InitiationId);	
+			query.setParameter("MilestoneNo", milestoneno);	
+			try {
+				return (PfmsInitiationSchedule)query.getSingleResult();
+			}catch (Exception e) {
+				return null;
+			}
 		}
-		
-		
-		private static final String LIST ="SELECT actionmainid FROM pfms_Issue WHERE projectid=:projectid ";
-		@Override
-		public List<Object> IsuueDataPresentList(String projectid,String labcode)throws Exception
-		{
-			Query query = manager.createNativeQuery(LIST);
-			query.setParameter("projectid", projectid);
-			//query.setParameter("labcode", labcode);
-			return (List<Object>)query.getResultList();
-		}
-		
+
+	
 		
 }

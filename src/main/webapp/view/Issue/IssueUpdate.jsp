@@ -39,12 +39,8 @@ h6{
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   Object[] Assignee=  (Object[]) request.getAttribute("Assignee");
   List<Object[]> SubList=(List<Object[]> ) request.getAttribute("SubList");
-  List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
-  String AssignerName=(String) request.getAttribute("AssignerName");
   Object[] AssigneeDetails=(Object[]) request.getAttribute("AssigneeDetails");
-  String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
-  String back = (String) request.getAttribute("back");
  %>
 
 
@@ -75,19 +71,13 @@ h6{
 
 		
     		<div class="card" style=" ">
-    	
-    	
-    	
-	    		<div class="card-header" style="background-color: #055C9D;">
-      				<%-- <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue :  <%=Assignee[5] %> (<%=actiono %>)
-                     <span style="float: right;font-size: 17px;margin-top: 5px">Assigner : <%=AssignerName %> </span>
-      				 </h6> --%>
-      				
-      			</div>
-      		
-      		
-	      		<div class="card-body">
-	      			<form method="post" action="SubSubmit.htm" enctype="multipart/form-data" id="subsubmitform">
+      				<div class="card-header" style="background-color: #055C9D;">
+      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=Assignee[10] %>)<%}%>
+                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
+                      </h6>
+      		</div>
+      		<div class="card-body">
+	      			<form method="post" action="IssueSubSubmit.htm" enctype="multipart/form-data" id="subsubmitform">
 	        
 	        			<div>
 	          			 	
@@ -103,43 +93,32 @@ h6{
 										<td width="10%"><input  class="form-control "  data-date-format="dd/mm/yyyy" name="AsOnDate" id="DateCompletion" required="required" readonly="readonly" ></td>
 										<td width="20%"><input type="text" name="Remarks" class="form-control item_name" maxlength="255"  required="required" /></td>      
 										<td width="10%"><input type="number" name="Progress" class="form-control item_name" max="100"  min="0"  required="required" /></td>								
-						         		<td  width="25%"><input type="file" name="FileAttach" id="FileAttach"  class="form-control wrap" aria-describedby="inputGroup-sizing-sm" maxlength="255" onchange="Filevalidation('FileAttach');"  /></td>										
+						         		<td width="25%"><input type="file" name="FileAttach" id="FileAttach"  class="form-control wrap" aria-describedby="inputGroup-sizing-sm" maxlength="255" onchange="Filevalidation('FileAttach');"  /></td>										
 									</tr>
 								</thead>
 							</table>
 
 	          				<div align="center">
+	          					<input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
-				            	<%-- <%if("backToReview".equalsIgnoreCase(back)){%>
-				            		
-				            		<a type="button" class="btn  btn-sm back"  href="ActionForwardList.htm?Type=NB">BACK</a>
-				            	<%}else{%>
-				            		<a type="button" class="btn  btn-sm back"    href="AssigneeList.htm"  >BACK</a>
-				            	<%}%>
-				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
-		          				<%if(!"0".equalsIgnoreCase(Assignee[8].toString())){ %>
-	 								<%if(Assignee[13].toString().equalsIgnoreCase("S")){ %>
-	      				 	  			<!-- <input type="submit" class="btn  btn-sm view" value="Meeting Content View" formaction="AgendaView.htm" formtarget="_blank"/> -->
-				       				<%} %>
-	                           	<%} %> 
-	                           	<% if(SubList.size()>0){ %>  
+	          					<input type="hidden" name="ActionMainId" <%if(Assignee!=null && Assignee[0]!=null){%> value="<%=Assignee[0]%>" <%}%>>
+	          					<input type="hidden" name="ActionAssignId" <%if(Assignee!=null && Assignee[19]!=null){%> value="<%=Assignee[19]%>" <%}%>>
+	          					<input type="hidden" name="ActionItem" <%if(Assignee!=null && Assignee[5]!=null){%> value="<%=Assignee[5]%>" <%}%>>
+	          					<input type="hidden" name="ProjectId" <%if(Assignee!=null && Assignee[21]!=null){%> value="<%=Assignee[21]%>" <%}%>>
+	          					<a class="btn btn-info btn-sm  back"   href="ActionIssue.htm">Back</a>
+	          					<% if(SubList.size()>0){ %>  
 	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
-	                           	<%} %> --%>
+	                           	<%} %>
 	          				</div>
 	        			</div>
-	        		
-			        	<%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
-			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
-			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />  --%>
 	      			</form>
-	      	
-	      	
-	      			<%-- <form action="ActionForward.htm" method="post" id="fwdfrm">
+
+					<form action="IssueForward.htm" method="post" id="fwdfrm">
 	      				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
-	      			</form> --%>
+	      			</form>
 				</div>
 	    		</div>
     		</div>
@@ -199,7 +178,7 @@ h6{
 										        %>
 										        <div  align="center">
 														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
+														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
 														 target="_blank"><i class="fa fa-download"></i></a>
 													</div>
 												
@@ -259,7 +238,7 @@ h6{
 
 
 		var fsizeindi=0;
-			  <%-- function Filevalidation (fileid) 
+			   function Filevalidation (fileid) 
 			    {
 			        const fi = $('#'+fileid )[0].files[0].size;							 	
 			        const file = Math.round((fi / 1024/1024));
@@ -272,7 +251,7 @@ h6{
 			        	fsizeindi=0;
 			        	document.getElementById("myBtn").disabled = false;
 			        }
-			    } --%>
+			    } 
    		function formsubmit(formid)
    		{
    			if(fsizeindi>0)

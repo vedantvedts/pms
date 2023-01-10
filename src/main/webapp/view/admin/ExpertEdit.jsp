@@ -91,7 +91,7 @@ if(details!=null){
 						<h3 class="text-white">Edit Expert</h3>
 
 					</div>
-					<form action="ExpertEditSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" onsubmit="return confirm('Are you sure to submit ?');" >
+					<form action="ExpertEditSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm1"  >
 					
 						<div class="card-body">
 							<div class="row">							
@@ -103,9 +103,9 @@ if(details!=null){
 								</div>
 									<div class="col-md-3">
 											 <div class="form-group">
-									                <label>Title<span class="mandatory">*</span></label><br>
-									                 <select class="form-control selectdee"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-														<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+									                <label>Title</label><br>
+									                 <select class="form-control selectdee" id="titleExp"  name="title" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+														<option value="" selected="selected"	hidden="true">--Select--</option>
 															<option value="Prof." 	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
 															<option value="Lt."  	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Lt.")){%>  selected="selected" <%}%>>  Lt.</option>
 															<option value="Dr."   	<%if(detail[1]!=null && detail[1].toString().equalsIgnoreCase("Dr.")){%>   selected="selected" <%}%>>  Dr.</option>
@@ -115,9 +115,9 @@ if(details!=null){
 									</div>
 								<div class="col-md-3">
 													 <div class="form-group">
-											                <label>Rank/Salutation<span class="mandatory">*</span></label><br>
-											                 <select class="form-control selectdee"  name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
-																<option value="" disabled="disabled" selected="selected"	hidden="true">--Select--</option>
+											                <label>Rank/Salutation</label><br>
+											                 <select class="form-control selectdee" id="salutationExp" name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
+																<option value=""  selected="selected"	hidden="true">--Select--</option>
 																<option value="Shree." <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Shree.")){%> selected="selected" <%}%>> Shree.</option>
 																<option value="Smt."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Smt.")){%>   selected="selected" <%}%>> Srimathi/Smt.</option> 
 																<option value="Mr."    <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
@@ -130,7 +130,7 @@ if(details!=null){
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Expert Name</label>
-										<input class="form-control" type="text" value="<%=detail[3]%>" name="expertname" required>
+										<input class="form-control" id="expertname" type="text" value="<%=detail[3]%>" name="expertname" required>
 									</div>
 								</div>
 							<%-- 	<%int i = Integer.parseInt((detail[4].toString()).replaceAll(" ", "")); %> --%>
@@ -153,7 +153,7 @@ if(details!=null){
 								<div class="form-group">
 									<label class="control-label">Designation</label>
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
-										<option disabled="true"  selected value="">Choose...</option>
+										<option value="" disabled="true"  selected value="">Choose...</option>
 										<%for(Object[] desig:desigList){ %>
 										<option  value="<%=desig[0]%>" <%if(detail[4].equals(desig[0])){ %> selected="selected" <%} %>><%=desig[2]%></option>
 										<%}%>
@@ -163,8 +163,8 @@ if(details!=null){
 							</div>
 							<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Mobile No.</label>
-										<input class="form-control" type="number" id="mobile" value="<%=detail[5]%>" name="mobilenumber" required  max="9999999999" min="1000000000">
+										<label class="control-label" id="mobile">Mobile No.</label>
+										<input class="form-control" type="number" id="mobileno" value="<%=detail[5]%>" name="mobilenumber" required  max="9999999999" min="1000000000">
 									</div>
 								</div>
 								
@@ -172,7 +172,7 @@ if(details!=null){
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Email</label>
-										<input class="form-control" type="email" value="<%=detail[6]%>" name="email" required>
+										<input class="form-control" id="email" type="email" value="<%=detail[6]%>" name="email" required>
 									</div>
 								</div>
 
@@ -180,7 +180,7 @@ if(details!=null){
 					     	<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Organization</label>
-										<input class="form-control" type="text" value="<%=detail[7]%>" name="organization" required>
+										<input class="form-control" type="text" value="<%=detail[7]%>" id="organization" name="organization" required>
 									</div>
 								</div>
 						</div>	
@@ -190,7 +190,8 @@ if(details!=null){
 								<input type="hidden" id="expId" name="expertId" value="<%=detail[0] %>" >
 								<div class="form-group">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-							<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT" onclick="checkExpert()">SUBMIT</button>
+							<input type="button" value="SUBMIT" onclick="return formEdit('addcommitteefrm1');" class="btn btn-primary btn-sm submit" />
+							<!-- <button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT" onclick="checkExpert()">SUBMIT</button> -->
 							<a class="btn btn-primary btn-sm back" href="Expert.htm" >BACK</a>
 							
 						</div>
@@ -232,13 +233,46 @@ $("#mobile").blur(function(){
 
 <script type="text/javascript">
 
-function checkExpert()
+/* function checkExpert()
 {
 	 if(confitm('Are You Sure to submit ?')){
 		 $("#addcommitteefrm").submit();
      } 
 	 
+} */
+
+function formEdit(frmid)
+{
+	var title=$('#titleExp').val();
+	var salutation=$('#salutationExp').val();
+	var expertname=$('#expertname').val();
+	var selectDesig=$('#selectDesig').val();
+	var mobileno=$('#mobileno').val();
+	var email=$('#email').val();
+	var organization=$('#organization').val();
+	
+	if(expertname===""||selectDesig===""||mobileno===""||email===""||organization===""){
+		alert('Please Fill All the Fields ');
+	}
+	
+	else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+		window.alert('please select either Title or Rank');
+		event.preventDefault();
+		return false;
+	}
+ 	 else{
+		if(window.confirm('Are you sure to save?')){
+			document.getElementById(frmid).submit(); 
+		}
+		else{
+			event.preventDefault();
+			return false;
+		}
+	} 
+	
 }
+
+
 
 /* 
 function checkExpert(){

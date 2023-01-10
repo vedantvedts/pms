@@ -120,8 +120,9 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    		</tr>
 						    		
 						    		<tr>
-						    			<td> <b>Deliverable</b> </td>
-						    			<td><%=obj[8] %></td>
+						    			<td> <b>Deliverable</b></td>
+						    			</td>
+						    			<td><%=obj[8]%></td>
 						    		</tr>
 						    		
 						    		<tr>

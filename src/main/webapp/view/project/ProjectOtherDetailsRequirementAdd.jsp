@@ -401,7 +401,7 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 						<div class="card-body">
 						
-											<div class="card-body">
+										
 									    		
 									    		<div class="row">
 												<div class="form-group">
@@ -413,16 +413,16 @@ String Parameter=(String) request.getAttribute("details_param");
 		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" placeholder="maximum 250 characters" >  
 		                        			   </div>
 		                   					   </div> 
+		                   							</div>		
 		                   					
-		                   					   </div>
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
 									    			  
-							<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+							   <div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 								<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										
-									<div  id="summernote" class="center">		</div>
+									<div  id="summernote" class="center"></div>
 												
 								</div>
 									  
@@ -441,7 +441,7 @@ String Parameter=(String) request.getAttribute("details_param");
 								<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 							</div>
 									 		
-							</div>		 		
+					 		
 									 		
 					</div>
 				</div>
@@ -600,7 +600,7 @@ String Parameter=(String) request.getAttribute("details_param");
 			                                       	 <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" placeholder="maximum 250 characters">  
 			                        			   </div>
 		                   					   </div> 
-		                   					
+		                   					</div>
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
@@ -626,8 +626,8 @@ String Parameter=(String) request.getAttribute("details_param");
 												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 											</div>
 									 		
-										</div>
 										
+										</div>
 								</div>
 							</div>
 					</form>
