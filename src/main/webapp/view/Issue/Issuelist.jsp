@@ -67,7 +67,57 @@ label{
 	font-size: 16px;
 	color:#07689f;
 } 
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
 
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
 </style>
 
 
@@ -81,8 +131,7 @@ label{
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String)request.getAttribute("projectid");
 List<Object[]> issuedatalist=(List<Object[]>)request.getAttribute("issuedatalist");
-List<String> issuedatapresentlist =(List<String>)request.getAttribute("issuedatapresentlist");
-
+String action = (String)request.getAttribute("action");
 %>
 
 
@@ -117,7 +166,7 @@ if(ses1!=null){
 							</div>
 							<!-- <div class="col-md-2"></div>		 -->				
 							<div class="col-md-6 justify-content-end" >
-								<table style="float: right;" >
+								<%-- <table style="float: right;" >
 									<tr>
 										<td ><h5>Project :</h5></td>
 										<td >
@@ -133,6 +182,22 @@ if(ses1!=null){
 											</form>
 										</td>
 									</tr>
+								</table> --%>
+								<table style="float: right;" >
+									<tr>
+										<td>
+											<form method="post" action="ActionIssue.htm" id="projectchange">
+												<select class="form-control items" name="Action"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+													<option disabled  selected value="">Choose...</option>
+													<option value="All" <%if(action!=null && "All".equalsIgnoreCase(action)){%> selected<%}%>>All</option>
+													<option value="TA" <%if(action!=null && "TA".equalsIgnoreCase(action)){%> selected<%}%>>Assigned To</option>
+													<option value="FA" <%if(action!=null && "FA".equalsIgnoreCase(action)){%> selected<%}%>>Assigned From</option>
+													<option value="F" <%if(action!=null && "F".equalsIgnoreCase(action)){%> selected <%}%>>Forwarded</option>
+												</select>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											</form>
+										</td>
+									</tr>
 								</table>							
 							</div>
 						 </div>
@@ -143,10 +208,11 @@ if(ses1!=null){
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
 							<thead>
 								<tr>
-									<th style="width: 10%;" data-field="0" tabindex="0" >SN</th>
-									<th style="width: 50%;">Issue Description</th>
-									<th style="width: 20%;" >Progress</th>
-									<th style="width: 20%;">View Or Add</th>
+									<th style="width: 5%;" data-field="0" tabindex="0" >SN</th>
+									<th style="width: 40%;"> Issue Description </th>
+									<th style="width: 20%;"> Status </th>
+									<th style="width: 15%;"> Progress </th>
+									<th style="width: 20%;"> Action </th>
 								</tr>
 							</thead>
 							<tbody>
@@ -166,19 +232,54 @@ if(ses1!=null){
 										Closed
 										<%} %>
 								</td>
+								<td><%if(issuedatalist!=null && issuedatalist.size()>0 && issuedatalist.get(i)[8]!=null){ %>
+															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=issuedatalist.get(i)[8]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%=issuedatalist.get(i)[8]%>
+															</div> 
+															</div> <%}else{ %>
+															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															Not Yet Started .
+															</div>
+															</div> <%} %></td>
 								<td class="center">
+								<%if(action!=null && !"F".equalsIgnoreCase(action)){%>
 									<form action="IssueUpdate.htm" method="post">
-										<%if(issuedatapresentlist.size()>0 && issuedatapresentlist .contains(issuedatalist.get(i)[0])){ %>
-											<button type="submit" class="btn"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
-										<%}else{ %>
-											<button type="submit" class="btn"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i></button>
-										<%} %>
-										<input type="hidden" name="actionmainid" value="<%=issuedatalist.get(i)[0]%>">
+										<button class="editable-click" name="sub" value="Details" 	>
+													<div class="cc-rockmenu">
+																<div class="rolling">
+																		<figure class="rolling_icon">
+																			<img src="view/images/preview3.png">
+																		</figure>
+																	<span>Details</span>
+																</div>
+													</div>
+										</button>
+										<input type="hidden" name="ActionMainId" value="<%=issuedatalist.get(i)[0]%>">
 										<input type="hidden" name="ActionAssignid" value="<%=issuedatalist.get(i)[6]%>">
-										<input type="hidden" name="actiono" value="<%=issuedatalist.get(i)[7]%>">
-										<input type="hidden" name="projectid" value="<%=projectid%>">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
+									
+								<%}else{%>
+									<form name="myForm1" id="myForm1" action="ForwardSub.htm" method="POST" 
+																	style="display: inline">
+
+																	<button class="editable-click" name="sub" value="Details" 	>
+																		<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+																	<input type="hidden" name="ActionMainId" value="<%=issuedatalist.get(i)[0]%>"/>
+																	<input type="hidden" name="ActionAssignId" value="<%=issuedatalist.get(i)[6]%>"/> 
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form> 
+								<%}%>					
 								</td>	
 							</tr>														
 						<%}

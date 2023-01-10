@@ -835,7 +835,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							
 							<div class="col-md-12" style="display: none" id="projectdropdown" >
 		
-								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  s>
+								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  >
 																
 									<option value="" disabled="disabled" selected="selected" hidden="true">--Choose Project--</option>
 											<%	for (Object[] obj2 : ProjectList) { %>
@@ -2326,7 +2326,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <hr>
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
-		      		 <div class="progress " id="pmrcgraph" data-value='<%=(ProjectHealthTotalData[30] )%>'>
+		      		 <div class="progress " id="pmrcgraph1" data-value='<%=(ProjectHealthTotalData[32] )%>'>
 			          <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[30].toString())<=25){%> border-success<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[30].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[30].toString())<=50)){%> border-warning<%}%>
@@ -2614,7 +2614,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				</table>
 	
 			   </div>
-		  	</div>	 s 
+		  	</div>	 
 		</div>
 
 		<div class="card" style="background: transparent;margin-top:5px" >
@@ -3264,9 +3264,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
 							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
 				  </h5>
-				  <form action="ProjectHoaUpdate.htm" method="get">
+				  <!-- <form action="ProjectHoaUpdate.htm" method="get">
 								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-				 </form> 
+				 </form>  -->
 			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
@@ -3693,6 +3693,9 @@ function overalldoc(){
 
  $(document).ready(function(){
 
+	 
+	/* document.getElementById('pmrcgraph1').setAttribute('data-value', '49'); */
+	 
 	var logintype = '<%=(String)request.getAttribute("logintype")%>'
 	 
 	 var DG= '<%=IsDG%>';
@@ -4266,15 +4269,14 @@ $projectid=value;
 			
 				/* logic to print the project wise data in card */	
 				
-				var s=  values[0] + '/' + values[2]
-				document.getElementById('meetingsvaluepmrc').innerHTML = s;
-				var t=  values[3] + '/' + values[5]
+				/*var s=  values[0] + '/' + values[2]
+				document.getElementById('meetingsvaluepmrc').innerHTML = s;*/
+				
+				/*var t=  values[3] + '/' + values[5]
 				document.getElementById('meetingsvalueeb').innerHTML = t;
 				
-				document.getElementById('pmrcprogress').innerHTML = values[29]+'%' ;
+				document.getElementById('pmrcprogress').innerHTML = values[30]+'%' ; */
 				
-				document.getElementById('pmrcgraph').setAttribute('data-value', 2);
-	
 				/* document.getElementById('financevalue').innerHTML = values[23].toLocaleString('en-IN');
 				document.getElementById('risksvalue').innerHTML = values[16] + ' / ' + values[18];
 				document.getElementById('actionvalue').innerHTML = values[14] + ' / ' + values[15];
@@ -4284,11 +4286,7 @@ $projectid=value;
 				document.getElementById('milestonepercentage').innerHTML = values[10] + '%';
 				else
 				document.getElementById('milestonepercentage').innerHTML = 'Nil'; 
-				
-				
-				
-				
-				
+
 				if(values[24]!='A')
 				document.getElementById('projecttitle').innerHTML = 'Project : ' + values[25];
 				else

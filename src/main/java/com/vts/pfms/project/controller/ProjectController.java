@@ -1270,6 +1270,169 @@ public class ProjectController
 //
 //}
 
+	
+	
+
+
+//package com.vts.pfms.project.controller;
+//
+//		String UserId = (String) ses.getAttribute("Username");
+//
+//		logger.info(new Date() +"Inside ProjectScheduleEditSubmit.htm "+UserId);
+//		
+//		try {
+//
+//	      //Object[] ProjectDetailes=service.ProjectDetailes(Long.parseLong(req.getParameter("IntiationId"))).get(0);
+//		     int msno=Integer.parseInt(req.getParameter("milestoneno"));
+//	      int oldmonth=service.ProjectScheduleEditData(req.getParameter("IntiationId"));
+//	      Integer ProjectScheduleMonth =service.ProjectScheduleMonth(req.getParameter("IntiationId"));
+//	      
+//	      int milestonemonthprevious=service.mileStonemonthprevious(req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	      
+//	      int milestonemonthnow=Integer.parseInt(req.getParameter("MilestoneMonthEdit"));
+//	      
+//	      int monthextended=milestonemonthnow-milestonemonthprevious;
+//	      
+//	      int milestonenototalmonth=service.milestonenototalmonth(req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	      
+//	      int newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+//	    
+//	     // service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth, req.getParameter("IntiationId"), req.getParameter("milestoneno"));
+//	   
+//	      List<Object[]>MileStonenoTotalMonthsList=service.MileStonenoTotalMonths(req.getParameter("IntiationId"), msno);
+//	      
+//	      List<Integer>list1=new ArrayList<Integer>();
+//	      
+//	      if(!MileStonenoTotalMonthsList.isEmpty()) {
+//	    	  for(int i=0;i<MileStonenoTotalMonthsList.size();i++) {
+//	    		  list1.add((Integer)MileStonenoTotalMonthsList.get(i)[0]);
+//	    	  }
+//				/* while(!MileStonenoTotalMonthsList.isEmpty()) */
+//	      }
+//	      
+//	      System.out.println(list1.toString());
+//			/*
+//			 * Map<Integer, List<Object[]>> collect =
+//			 * MileStonenoTotalMonthsList.stream().collect(Collectors.groupingBy(e->
+//			 * Integer.valueOf(e[2].toString()) ,Collectors.toList() ));
+//			 * 
+//			 * List<String> keylist = new ArrayList<String>(); Set<String> iteratinglist =
+//			 * new HashSet<String>();
+//			 * 
+//			 * int size=0;
+//			 * 
+//			 * while(size==0) {
+//			 * 
+//			 * if(iteratinglist.size()==0) iteratinglist.add(String.valueOf(msno));
+//			 * keylist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * iteratinglist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * 
+//			 * System.out.println(iteratinglist);
+//			 * 
+//			 * for(String j : iteratinglist) {
+//			 * 
+//			 * System.out.println(j); System.out.println(collect.get(Integer.valueOf(j)));
+//			 * List<String> collect2 = collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList());
+//			 * System.out.println(collect2.size() + "" + collect2);
+//			 * keylist.addAll(collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * //iteratinglist.addAll(collect.get(msno).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()));
+//			 * if(collect.get(Integer.valueOf(j)).stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()).size()==0) size=1; }
+//			 * 
+//			 * }
+//			 * 
+//			 * 
+//			 * System.out.println(iteratinglist); System.out.println("");
+//			 * System.out.println(keylist);
+//			 * 
+//			 * 
+//			 * 
+//			 * for(Integer mno : collect.keySet() ) {
+//			 * 
+//			 * if(collect.containsKey(mno)) { List<Object[]> list = collect.get(mno);
+//			 * List<String> collect2 = list.stream().map(e->
+//			 * e[0].toString()).collect(Collectors.toList()); for(String i : collect2) {
+//			 * milestonenototalmonth=service.milestonenototalmonth(req.getParameter(
+//			 * "IntiationId"), i);
+//			 * newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+//			 * service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth,
+//			 * req.getParameter("IntiationId"), i); } }
+//			 * 
+//			 * 
+//			 * }
+//			 */
+//	      
+////	      if(collect.containsKey(msno)) {
+////			List<Object[]> list = collect.get(msno);
+////			List<String> collect2 = list.stream().map(e-> e[0].toString()).collect(Collectors.toList());
+////			for(String i : collect2) {
+////				milestonenototalmonth=service.milestonenototalmonth(req.getParameter("IntiationId"), i);
+////				newMilestoneTotalMonth=milestonenototalmonth+monthextended;
+////			    service.MilestoneTotalMonthUpdate(newMilestoneTotalMonth, req.getParameter("IntiationId"), i);
+//	      
+//	      
+//	      
+//	   
+//			/*
+//			 * if(MileStonenoTotalMonthsList.isEmpty()) {
+//			 * 
+//			 * System.out.println(msno+"-----"+milestonemonthnow+"----"+
+//			 * milestonemonthprevious+"--------"+monthextended+"------"+
+//			 * newMilestoneTotalMonth+"-------"); }
+//			 * 
+//			 * Map<Integer,Integer>map=new LinkedHashMap<Integer,Integer>();
+//			 * if(!MileStonenoTotalMonthsList.isEmpty()) { for(int
+//			 * i=0;i<MileStonenoTotalMonthsList.size();i++) {
+//			 * map.put((Integer)MileStonenoTotalMonthsList.get(i)[0],(Integer)
+//			 * MileStonenoTotalMonthsList.get(i)[1]); }
+//			 * 
+//			 * }
+//			 * 
+//			 * System.out.println(map);
+//			 */
+//	      	
+//	      //Integer TotalMonth=Integer.parseInt(req.getParameter("MilestoneMonthEdit"))+ProjectScheduleMonth-oldmonth;
+//	   		Integer TotalMonth=service.ProjectDurationMonth(req.getParameter("IntiationId"));
+//			/* if(TotalMonth<=Integer.parseInt(ProjectDetailes[9].toString())) { */
+//		
+//	      ProjectScheduleDto projectschedule=new ProjectScheduleDto();
+//	      projectschedule.setMileStoneActivity(req.getParameter("MilestoneActivityEdit"));
+//	      projectschedule.setMileStoneMonth(req.getParameter("MilestoneMonthEdit"));
+//	      projectschedule.setMileStoneRemark(req.getParameter("MilestoneRemarkEdit"));
+//	      projectschedule.setInitiationScheduleId(req.getParameter("initiationscheduleid"));	      
+//	      projectschedule.setUserId(UserId);
+//	      projectschedule.setTotalMonth(TotalMonth);
+//	      projectschedule.setInitiationId(req.getParameter("IntiationId"));
+//	      
+//	      
+//		int count = service.ProjectScheduleEdit(projectschedule);
+//
+//		
+//		
+//		
+//		if (count >0 ) {
+//			redir.addAttribute("result", "Project Schedule Edited Successfully");
+//		} else {
+//			redir.addAttribute("resultfail", "Project Schedule Edit Unsuccessful");
+//		}
+//		
+//		
+//		redir.addFlashAttribute("IntiationId",req.getParameter("IntiationId"));
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date() +" Inside ProjectScheduleEditSubmit.htm "+UserId, e);
+//			return "static/Error";
+//		}
+//	
+//		return "redirect:/ProjectScheduleAddLanding.htm";
+//
+//}
+
 	@RequestMapping(value = "ProjectScheduleDeleteSubmit.htm", method = RequestMethod.POST)
 	public String ProjectScheduleDeleteSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
@@ -3148,52 +3311,7 @@ public class ProjectController
 	}
 	
 	
-	@RequestMapping(value = "ProjectDataSystemSpecsRevFileDownload.htm", method = RequestMethod.POST)
-	public void ProjectDataSystemSpecsRevFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
-			throws Exception 
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId);
-		try
-		{
-			String ftype=req.getParameter("filename");
-			String projectdatarevid=req.getParameter("projectdatarevid");
-			Object[] projectdatafiledata=service.ProjectDataSpecsRevFileData(projectdatarevid);
-			 
-			int index=3;
-			if(ftype.equalsIgnoreCase("sysconfig")) 
-			{
-				index=4;
-			}else if(ftype.equalsIgnoreCase("protree"))
-			{
-				index=5;
-			}else if(ftype.equalsIgnoreCase("pearl"))
-			{
-				index=6;
-			}else if(ftype.equalsIgnoreCase("sysspecs"))
-			{
-				index=3;
-			}
-			
-	        res.setContentType("Application/octet-stream"); 
-	        File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
-	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
-	 
-	        	 
-	        OutputStream out = res.getOutputStream();
-	        FileInputStream in = new FileInputStream(my_file);
-	        byte[] buffer = new byte[4096];
-	        int length;
-	        while ((length = in.read(buffer)) > 0){
-	           out.write(buffer, 0, length);
-	        }
-	        in.close();
-	        out.flush();
-	        out.close();
-		}catch (Exception e) {
-				 e.printStackTrace(); logger.error(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId,e);
-		}
-	}
+
 	
 	@RequestMapping(value = "ProjectRisk.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectRisk(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -3824,13 +3942,9 @@ public class ProjectController
 		
 
 	}
-	
-	
 
-}
-//=======
 //package com.vts.pfms.project.controller;
-//
+
 //import java.io.ByteArrayInputStream;
 //import java.io.DataOutputStream;
 //import java.io.File;
@@ -6968,6 +7082,77 @@ public class ProjectController
 //				}else {
 //					redir.addAttribute("result","Project Risk Data Edited Successfully");
 //				}
+//				projectdatarevdata[3]=ProjectDataRevDataRaw[0].toString();
+//				projectdatarevdata[4]=sdf2.format(sdf3.parse(ProjectDataRevDataRaw[11].toString()));	
+//				projectdatarevdata[5]=	ProjectDataRevDataRaw[10].toString();
+//			}
+//			req.setAttribute("projectdatarevid",projectdatarevid);
+//			req.setAttribute("projectdatarevlist",ProjectDataRevList);
+//			req.setAttribute("projectdatarevdata", projectdatarevdata);
+//			req.setAttribute("projectlist",service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
+//			req.setAttribute("projectid", projectid);
+//			return "project/ProjectDataRevView";
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace(); logger.error(new Date() +" Inside ProjectDataRevList.htm "+Username, e);
+//			return "static/Error";
+//		}
+//		
+//		
+//	}
+	
+	
+	@RequestMapping(value = "ProjectDataSystemSpecsRevFileDownload.htm", method = RequestMethod.POST)
+	public void ProjectDataSystemSpecsRevFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+			throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId);
+		try
+		{
+			String ftype=req.getParameter("filename");
+			String projectdatarevid=req.getParameter("projectdatarevid");
+			Object[] projectdatafiledata=service.ProjectDataSpecsRevFileData(projectdatarevid);
+			 
+			int index=3;
+			if(ftype.equalsIgnoreCase("sysconfig")) 
+			{
+				index=4;
+			}else if(ftype.equalsIgnoreCase("protree"))
+			{
+				index=5;
+			}else if(ftype.equalsIgnoreCase("pearl"))
+			{
+				index=6;
+			}else if(ftype.equalsIgnoreCase("sysspecs"))
+			{
+				index=3;
+			}
+			
+	        res.setContentType("Application/octet-stream"); 
+	        File my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
+	 
+	        	 
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0){
+	           out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+		}catch (Exception e) {
+				 e.printStackTrace(); logger.error(new Date() +"Inside ProjectDataSystemSpecsRevFileDownload.htm "+UserId,e);
+		}
+	}
+	
+
+	
+
+}
 //			}
 //			else
 //			{
@@ -7498,4 +7683,3 @@ public class ProjectController
 //	
 //
 //}
-//>>>>>>> branch 'master' of https://dineshvedts@bitbucket.org/susant-vedts/dgecs.git

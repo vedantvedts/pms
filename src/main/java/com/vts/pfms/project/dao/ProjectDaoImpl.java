@@ -2036,7 +2036,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		{
 			Query query=manager.createNativeQuery(RISKTYPELIST);
 			return (List<Object[]>)query.getResultList();
-		}
+		}		
+		
    private static final String MILESTONEDATA ="FROM PfmsInitiationSchedule WHERE InitiationId=:InitiationId AND MilestoneNo=:MilestoneNo AND IsActive=1";
 		@Override
 		public PfmsInitiationSchedule MilestoneData(long InitiationId, int milestoneno) throws Exception {

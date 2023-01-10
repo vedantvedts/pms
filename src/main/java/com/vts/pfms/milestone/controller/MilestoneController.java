@@ -557,7 +557,7 @@ public class MilestoneController {
 	
 	
 	@RequestMapping(value = "MA-PreviewRedirect.htm", method = RequestMethod.GET)
-	public String PreviewRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
+	public String previewRedirect(Model model,HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MA-PreviewRedirect.htm "+UserId);		
 		try {

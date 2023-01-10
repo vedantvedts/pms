@@ -93,11 +93,11 @@ h6{
 						<div class="col-md-3 justify-content-end" style="float:right">
 							<label>Interval : &nbsp;&nbsp;&nbsp; </label>
 							<select class="form-control selectdee " name="interval" id="interval" required="required"  data-live-search="true"  style="width:150px !important" >
-                                		<option value="quarter"> Quarterly </option>
-                                		 <option value="half" >Half-Yearly</option>
-                                		 <option value="year" >Yearly</option>
-                                		 <option value="month"> Monthly </option>
-								</select>
+                                <option value="quarter"> Quarterly </option>
+                                <option value="half" >Half-Yearly</option>
+                                <option value="year" >Yearly</option>
+                            	<option value="month"> Monthly </option>
+							</select>
 						</div>
 						
 							
@@ -111,13 +111,53 @@ h6{
 			   		</div>	   							
 
 					</div>
-						<div class="card-body "> 
+						<div class="card-body " style="padding: 10px;"> 
 							
-							<div class="row" style="margin-top: -18px;">
+								<div class="row" style="margin-bottom: 5px;font-weight: bold;"   >
+										<div class="col-md-4"></div>
+										<div class="col-md-4"></div>
+										<div class="col-md-4">
+											<div style="font-weight: bold; " >
+												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #046582;  padding: 0px 15px; border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
+												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+											</div>
+										</div>
+									</div>
+							<div class="row" >
 								
 								<div class="col-md-12" style="float: right;" align="center">
 							
 					   				<div class="flex-container" id="containers" ></div>
+
+                        		</div>
+						   	</div>
+						
+						</div>
+					
+				</div>
+					
+		
+		</div>
+	</div>
+</div>
+
+<script>
+
+$('#interval').on('change',function(){
+	
+	$('#containers').empty();
+	var interval = $("#interval").val()
+	chartprint('type',interval);
+	
+})
+
+$('#ProjectId').on('change',function(){
+	
+	$('#myform').submit();
+})
+
+</script>
 
 									<script>
 								      /* anychart.onDocumentReady(function () {  */  
@@ -600,35 +640,6 @@ h6{
 								    </script>
 																	
                         		
-                        		</div>
-						   	</div>
-						
-						</div>
-					
-				</div>
-					
-		
-				</div>
-			</div>
-		</div>
-
-<script>
-
-$('#interval').on('change',function(){
-	
-	$('#containers').empty();
-	var interval = $("#interval").val()
-	chartprint('type',interval);
-	
-})
-
-$('#ProjectId').on('change',function(){
-	
-	$('#myform').submit();
-})
-
-</script>
-
 
 
 </body>
