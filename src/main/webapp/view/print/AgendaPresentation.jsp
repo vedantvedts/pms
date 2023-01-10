@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalTime"%>
 <%@page import="java.net.Inet4Address"%>
 <%@page import="com.vts.pfms.Zipper"%>
 <%@page import="java.math.MathContext"%>
@@ -49,13 +51,17 @@
 		List<Object[]> AgendaDocList =  (List<Object[]>) request.getAttribute("AgendaDocList");
 		
 		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-		String lablogo=(String)request.getAttribute("lablogo");
+		String lablogo = (String)request.getAttribute("lablogo");
+		String Drdologo = (String)request.getAttribute("Drdologo");
 		Committee committeeData = (Committee) request.getAttribute("committeeData");
 		
 		String scheduleid = scheduledata[6].toString();
 		String committeeid = scheduledata[0].toString();
 		String CommitteeCode = committeeData.getCommitteeShortName().trim();
 		String projectid = scheduledata[9].toString();
+		
+		String ProjectCode=projectattributes[0].toString();
+		String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 				
 	%>
 
@@ -119,50 +125,64 @@
 			
 			<div class="carousel-item">
 
-				<div class="content-header  ">
-					<h3>Agenda
+				<div class="content-header row ">
 					
-					<form  action="#" method="post" id="myfrm" target="_blank" style="float: right;margin-right: 5px;">
-					
-					
-						<% if(Long.parseLong(projectid)>0  && SplCommitteeCodes.contains(CommitteeCode)){ %>
-						
-							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
-											
-								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
-											
-							<%}%>
-						
-							<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank"  data-toggle="tooltip" data-placement="bottom" title="Presentation"  >
-								<img src="view/images/presentation.png" style="width:19px !important">
-							</button>
-						<% } %>
-						<input type="hidden" name="scheduleid" value="<%=scheduleid%>">	
-						<input type="hidden" name="committeeid" value="<%=committeeid%>">
-						<input type="hidden" name="projectid" value="<%=projectid %>">
-						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-					</form>	
-								
-					
-					</h3>
+					<div class="col-md-1" >
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-1" align="left" style="padding-top:19px;" >
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1" align="right"  style="padding-top:19px;" >
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
 					
 				</div>
 				
 				<div class="content" >
-					
+				
+						
+							
+							
+					<% if(Long.parseLong(projectid)>0  && SplCommitteeCodes.contains(CommitteeCode)){ %>
+						<div class="row" style="float: right;">
+							<form  action="#" method="post" id="myfrm" target="_blank" style="float: right;margin-right: 25px;padding: 5px;">
+							
+							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
+								<input type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
+							<%}%>
+								
+							<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="BriefingPresentation.htm"  formmethod="post" formtarget="_blank"  data-toggle="tooltip" data-placement="bottom" title="Presentation"  >
+									<img src="view/images/presentation.png" style="width:19px !important">
+							</button>
+								<input type="hidden" name="scheduleid" value="<%=scheduleid%>">	
+								<input type="hidden" name="committeeid" value="<%=committeeid%>">
+								<input type="hidden" name="projectid" value="<%=projectid %>">
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							</form>	
+						</div>
+					<% } %>
+								
 		         		<table  class="table table-bordered table-hover table-striped table-condensed " style="margin-top:10px;width:100% ">
 			     	      	<thead>
 			            		<tr>
 			                    	<th style="width: 5%;">SN</th>
-			                       	<th style="width: 25%;">Agenda Item</th> 
+			                       	<th style="width: 22%;">Agenda Item</th> 
 			                       	<th style="width: 15%;">Reference</th>
-			                       	<th style="width: 13%;">Remarks</th>
-			                       	<th style="width: 25%;">Presenter</th>
-			                       	<th style="width: 7%;">Duration (Mins)</th>
+			                       	<th style="width: 10%;">Remarks</th>
+			                       	<th style="width: 24%;">Presenter</th>
+			                       	<th style="width: 14%;">Duration (Mins)</th>
 			                       	<th style="width: 10%;">Attachment</th>
 			                    </tr>
 			              	</thead> 
 			              	<tbody>
+			              		<%LocalTime starttime = LocalTime.parse(LocalTime.parse(scheduledata[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));  %>
 			              		<%	int count=0;
 								for(Object[] 	obj:AgendaList){ count++;%>  
 								<tr>
@@ -172,7 +192,11 @@
 									<td><%=obj[4] %>  </td>									
 									<td><%=obj[6] %></td>									
 									<td><%=obj[10]%>(<%=obj[11] %>)  </td>
-									<td><%=obj[12] %></td>
+									<td style="text-align: center;">
+										<%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %> - <%=starttime.plusMinutes(Long.parseLong(obj[12].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
+										<%starttime=starttime.plusMinutes(Long.parseLong(obj[12].toString()) /* + 1 */); %>
+									
+									</td>
 									<td>
 							 			<table>
 											<%for(Object[] doc : AgendaDocList) { 

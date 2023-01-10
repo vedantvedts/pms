@@ -229,38 +229,11 @@ public class PrintController {
 	        pdfw.close();
 			
 
-			
-	    	//byte[] data = html.getBytes();
-	    	//InputStream fis1=new ByteArrayInputStream(data);
-	    	//PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	//
-	    	//Document document = new Document(pdfDoc, PageSize.A4);
-	    	//document.setMargins(50, 50, 50, 50);
-	    	//ConverterProperties converterProperties = new ConverterProperties();
-	    	//FontProvider dfp = new DefaultFontProvider(true, true, true);
-	    	//converterProperties.setFontProvider(dfp);
-	        //HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-	        
 			res.setContentType("application/pdf");
 	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
 	        File f=new File(path+"/"+filename+".pdf");
 	        
-	       // FileInputStream fis = new FileInputStream(f);
-	       // DataOutputStream os = new DataOutputStream(res.getOutputStream());
-	       // res.setHeader("Content-Length",String.valueOf(f.length()));
-	       // byte[] buffer = new byte[1024];
-	       // int len = 0;
-	       // while ((len = fis.read(buffer)) >= 0) {
-	       //     os.write(buffer, 0, len);
-	       // } 
-	       // os.close();
-	       // fis.close();
-	         
-	            
-	        //Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
-	       // Files.delete(pathOfFile2);		
-	    	
-	       // document.close();
+	       
 	        
 	        OutputStream out = res.getOutputStream();
 			FileInputStream in = new FileInputStream(f);
@@ -3343,30 +3316,40 @@ public class PrintController {
 	    @RequestMapping(value="AgendaPresentation.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String AgendaPresentation(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
 		{
-	    	String scheduleid = req.getParameter("scheduleid");
-	    	String projectid = req.getParameter("projectid");
-	    	String committeeid= req.getParameter("committeeid");
-	    	
-	    	Committee committee = service.getCommitteeData(committeeid);
-	    	String projectLabCode = committee.getLabCode();
-	    	String CommitteeCode = committee.getCommitteeShortName().trim();
-	    	
-	    	
-	    	Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
-	    	
-	    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
-	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
-	    	req.setAttribute("committeeData", service.getCommitteeData(committeeid));
-	    	req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
-	    	req.setAttribute("AgendaList", service.AgendaList(scheduleid));
-	    	req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
-	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-	    	req.setAttribute("scheduledata", scheduledata);
-	    	req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
-	    	
-	    	req.setAttribute("projectid", projectid);
-	    	
-	    	return "print/AgendaPresentation";
+	    	String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside AgendaPresentation.htm "+UserId);		
+	    	try {
+		    	String scheduleid = req.getParameter("scheduleid");
+		    	String projectid = req.getParameter("projectid");
+		    	String committeeid= req.getParameter("committeeid");
+		    	
+		    	Committee committee = service.getCommitteeData(committeeid);
+		    	String projectLabCode = committee.getLabCode();
+		    	String CommitteeCode = committee.getCommitteeShortName().trim();
+		    	
+		    	
+		    	Object[] scheduledata=service.CommitteeScheduleEditData(scheduleid);
+		    	
+		    	req.setAttribute("labInfo", service.LabDetailes(projectLabCode));
+		    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
+		    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+		    	req.setAttribute("committeeData", service.getCommitteeData(committeeid));
+		    	req.setAttribute("projectattributes", service.ProjectAttributes(projectid));
+		    	req.setAttribute("AgendaList", service.AgendaList(scheduleid));
+		    	req.setAttribute("AgendaDocList",service.AgendaLinkedDocList(scheduleid));
+		    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+		    	req.setAttribute("scheduledata", scheduledata);
+		    	req.setAttribute("SplCommitteeCodes",SplCommitteeCodes);
+		    	
+		    	req.setAttribute("projectid", projectid);
+		    	
+		    	return "print/AgendaPresentation";
+	    	}catch (Exception e) {
+    			e.printStackTrace(); 
+    			logger.error(new Date() +" Inside AgendaPresentation.htm  "+UserId, e); 
+    			return "static/Error";
+    			
+    		}
 		}
 	    
 	    
