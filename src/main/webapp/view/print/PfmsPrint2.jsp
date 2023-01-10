@@ -1,4 +1,4 @@
-<%@page import="java.text.SimpleDateFormat"%>
+	<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -22,7 +22,7 @@ SimpleDateFormat sdf2=new SimpleDateFormat("MMMM yyyy");
 NFormatConvertion nfc=new NFormatConvertion();
 
 List<Object[]> costbreak = (List<Object[]>)request.getAttribute("costbreak");
-List<Object[]> PfmsInitiationList=(List<Object[]>)request.getAttribute("PfmsInitiationList");
+Object[] PfmsInitiationList=(Object[])request.getAttribute("PfmsInitiationList");
 List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
@@ -65,13 +65,13 @@ String lablogo=(String)request.getAttribute("lablogo");
 		}
 		
 		@top-right {
-             content: "Proposed Project: <%=PfmsInitiationList.get(0)[4]%>";
+             content: "Proposed Project: <%=PfmsInitiationList[4]%>";
              margin-top: 30px;
              font-size: 13px;
          }
          
         @top-left {
-             content: "<%=PfmsInitiationList.get(0)[3]%>";
+             content: "<%=PfmsInitiationList[3]%>";
              margin-top: 30px;
              font-size: 13px;
         }
@@ -244,18 +244,18 @@ String lablogo=(String)request.getAttribute("lablogo");
 		
 	
 		<tr>
-				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:35px"><%if(PfmsInitiationList.get(0)[5]!=null){ %><br><%=PfmsInitiationList.get(0)[5] %><%}else{ %><i>Project Title</i><%} %>
+				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:35px"><%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %>
 			</th>
 		</tr>
 	
 		<tr>
-			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:26px"><%if(PfmsInitiationList.get(0)[4]!=null){ %>(<%=PfmsInitiationList.get(0)[4] %>)<%}else{ %><i> - </i><%} %>
+			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:26px"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %>
 			</th>
 		</tr>
 	
 		<tr>
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 35px">
-				<%if(PfmsInitiationList.get(0)[10]!=null){%> <%=sdf2.format(PfmsInitiationList.get(0)[10])%><%}else{ %>-<%} %>
+				<%if(PfmsInitiationList[10]!=null){%> <%=sdf2.format(PfmsInitiationList[10])%><%}else{ %>-<%} %>
 			</th>
 		</tr>
 		
@@ -305,33 +305,31 @@ String lablogo=(String)request.getAttribute("lablogo");
 	</tbody>
 </table>
 <br>
-<% for (Object[] obj : PfmsInitiationList){ %>
 <table  class="brieftable executive" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:820px; font-size: 20px;border-collapse: collapse; ">
 	<tbody>
 		<tr>
 			<th  class="border_black weight_700 left" ><span >Title of the Project</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(obj[5]!=null){ %><%=obj[5] %><%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[5]!=null){ %><%=PfmsInitiationList[5] %><%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left" ><span >Cost</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(obj[6]!=null){ %><i>&#8377;</i> <%=nfc.convert(Double.parseDouble(obj[6].toString())/100000)%> Lakhs<%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[6]!=null){ %><i>&#8377;</i> <%=nfc.convert(Double.parseDouble(PfmsInitiationList[6].toString())/100000)%> Lakhs<%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th	 class="border_black weight_700 left" ><span >PDC</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(obj[7]!=null){ %><%=obj[7] %> Months <%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[7]!=null){ %><%=PfmsInitiationList[7] %> Months <%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left"> <span >Security Classification</span></th>
-			<td  class="border_black weight_700 left" ><span ><%if(obj[3]!=null){ %><%=obj[3] %><%}else{ %><i></i><%} %></span></td>
+			<td  class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[3]!=null){ %><%=PfmsInitiationList[3] %><%}else{ %><i></i><%} %></span></td>
 		</tr>
 		<tr>
 			<th  class="border_black weight_700 left"> <span >Whether Plan/Non-Plan</span></th>
-			<td class="border_black weight_700 left" ><span ><%if(obj[8]!=null){ if(obj[8].toString().equalsIgnoreCase("P")){%> Plan <%}if(obj[8].toString().equalsIgnoreCase("N")){ %>Non-Plan - <%if(obj[14]!=null){ %> (Remarks : <%=obj[14]%> ) <%}else{ %> No  Remarks <%} %> <%}}else{ %><%} %></span></td>
+			<td class="border_black weight_700 left" ><span ><%if(PfmsInitiationList[8]!=null){ if(PfmsInitiationList[8].toString().equalsIgnoreCase("P")){%> Plan <%}if(PfmsInitiationList[8].toString().equalsIgnoreCase("N")){ %>Non-Plan - <%if(PfmsInitiationList[14]!=null){ %> (Remarks : <%=PfmsInitiationList[14]%> ) <%}else{ %> No  Remarks <%} %> <%}}else{ %><%} %></span></td>
 		</tr> 
 		
 	</tbody>
 </table>
-<%} %>
 		
 <h1 class="break"></h1>
 
@@ -613,22 +611,22 @@ String lablogo=(String)request.getAttribute("lablogo");
  
 <table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
-			<%if(!PfmsInitiationList.isEmpty()){
+			<%if(PfmsInitiationList!=null){
 				
-				for(Object[] obj: PfmsInitiationList){
+			
 				
 				%>
 		<tr>
-		<%if(obj[11]!=null){  %>
+		<%if(PfmsInitiationList[11]!=null){  %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><br>
 		
 		
-		<%=obj[11] %></td>
+		<%=PfmsInitiationList[11] %></td>
 		<%}else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
 		<%} %>
 		</tr>
-	<%}} %>
+	<%} %>
 	</tbody>
 </table>
 
@@ -639,9 +637,9 @@ String lablogo=(String)request.getAttribute("lablogo");
 <!-- Participating Labs with Work Share -->
 
 
-<%for(Object[] obj : PfmsInitiationList){
+<%
 
-	if(obj[9]!=null){ if(obj[9].toString().equalsIgnoreCase("Y")){
+	if(PfmsInitiationList[9]!=null){ if(PfmsInitiationList[9].toString().equalsIgnoreCase("Y")){
 	
 	%>
 
@@ -672,7 +670,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 
  <h1 class="break"></h1>
 
- <%}}}%>
+ <%}}%>
  
  
 <!-- Brief of Earlier Work Done -->
@@ -997,10 +995,10 @@ for(Object[] obj : DetailsList){   %>
  <%
  
  double totalcost = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
- if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("1") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("2")|| PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("4") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("6") ||PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("7") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("8")){ 
+ if(PfmsInitiationList[18]!=null && PfmsInitiationList[18].toString().equalsIgnoreCase("1") ||
+		 PfmsInitiationList[18].toString().equalsIgnoreCase("2")|| PfmsInitiationList[18].toString().equalsIgnoreCase("4") ||
+		 PfmsInitiationList[18].toString().equalsIgnoreCase("6") ||PfmsInitiationList[18].toString().equalsIgnoreCase("7") ||
+		 PfmsInitiationList[18].toString().equalsIgnoreCase("8")){ 
 		 
 		 
 	  double transportation=0; 
@@ -1195,8 +1193,8 @@ for(Object[] obj : DetailsList){   %>
  </table>
  <h1 class="break"></h1>
   <%}%>
-  <%if(PfmsInitiationList.get(0)[18]!=null && PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("3") ||
-		 PfmsInitiationList.get(0)[18].toString().equalsIgnoreCase("5")){
+  <%if(PfmsInitiationList[18]!=null && PfmsInitiationList[18].toString().equalsIgnoreCase("3") ||
+		 PfmsInitiationList[18].toString().equalsIgnoreCase("5")){
 		 
 		  double grandtotal = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
 		  double transportation=0; 
@@ -1352,7 +1350,7 @@ for(Object[] obj : DetailsList){   %>
 			  	</tr>
 			  	<tr>
 			  		<td> Job Work/Contracts/Hiring of <br>Technical Services</td>
-			  		<td> <%=TechnicalServices %></td>
+			  		<%-- <td> <%=TechnicalServices %></td> --%>
 			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 			  		<td> 0.00</td>
 			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>

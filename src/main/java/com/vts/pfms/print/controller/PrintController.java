@@ -270,9 +270,9 @@ public class PrintController {
 	    try {
 	    
 	    	String InitiationId=req.getParameter("IntiationId");
-	    	List<Object[]> PfmsInitiationList= service.PfmsInitiationList(InitiationId);
-	    	String LabCode =PfmsInitiationList.get(0)[17].toString();
-	    	String projecttypeid = PfmsInitiationList.get(0)[18].toString();
+	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+	    	String LabCode =PfmsInitiationList[17].toString();
+	    	String projecttypeid =PfmsInitiationList[18].toString();
 	    	List<Object[]> CostBreak = service.GetCostBreakList(InitiationId,projecttypeid); 
 	    	req.setAttribute("costbreak", CostBreak);
 	    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  

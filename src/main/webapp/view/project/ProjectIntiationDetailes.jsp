@@ -307,8 +307,6 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				  <form action="ProjectLabAdd.htm" method="POST" name="myfrm" id="myfrm" >
 				 		
 					<div class="row" >
-	 					<div class="col-md-12" style="float:right; " align="right"><div style="margin-right: 35px;"><b>Cost in Lakhs</b></div></div>
-			 			
 			 			<div class="col-md-12" style="margin-left: 60px">
 			 			
 							<div class="row details">
