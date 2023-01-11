@@ -394,6 +394,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setTodayChanges(Long.parseLong(data[25].toString()));
 				health.setWeeklyChanges(Long.parseLong(data[26].toString()));
 				health.setMonthlyChanges(Long.parseLong(data[27].toString()));
+				health.setPDC(data[28].toString());			
 				result=dao.ProjectHealthInsert(health);
 			}catch (Exception e) {
 				e.printStackTrace();

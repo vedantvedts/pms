@@ -22,6 +22,7 @@ public class ProjectHealth {
 		private long ProjectId;
 		private String ProjectShortName;
 		private String ProjectCode;
+		private String PDC;
 		private Long PMRCHeld;
 		private Long PMRCPending;
 		private Long PMRCTotal;
