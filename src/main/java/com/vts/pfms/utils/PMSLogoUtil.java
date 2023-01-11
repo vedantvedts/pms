@@ -22,7 +22,14 @@ public class PMSLogoUtil
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		}catch (FileNotFoundException e) {
 			System.err.println("File Not Found at Path "+path);
-			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(LabLogoPath+"/images/lablogos/"+"lablogo"+".png")));
+			File lablogo = new File(LabLogoPath+"/images/lablogos/"+"lablogo"+".png");
+			if(lablogo.exists()) {
+				return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(lablogo));
+			}
+			else
+			{
+				return null;
+			}
 		}
 	}
 	
