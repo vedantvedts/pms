@@ -2592,7 +2592,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  %>
 				  <tbody>
 				    <tr>
-				      <th scope="row">Capital</th>
+				      <th scope="row">Revenue</th>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
@@ -2601,7 +2601,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
 				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
 				    <tr>
-				      <th scope="row">Revenue</th>
+				      <th scope="row">Capital</th>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
 				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>

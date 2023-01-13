@@ -183,7 +183,7 @@ NFormatConvertion nfc=new NFormatConvertion();
       <div class="col-md-12">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed " id="myTable"> 
-	   <thead>
+	   <thead style=" text-align: center;">
 	   <tr>
 	   <th style="width: 5%;">Select</th>
 			<th>SN</th>

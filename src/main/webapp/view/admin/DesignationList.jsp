@@ -159,7 +159,7 @@ label {
 								<table
 									class="table table-bordered table-hover table-striped table-condensed "
 									id="myTable">
-									<thead>
+									<thead style=" text-align: center;">
 										<tr>
 											<th>SN</th>
 											<th>SrNo</th>
