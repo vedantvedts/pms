@@ -3775,44 +3775,7 @@ public class CommitteeController {
 	        Files.delete(pathOfFile2);	
 	        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
 	        Files.delete(pathOfFile2);	
-			
-			
-			
-			
-//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//			req.getRequestDispatcher("/view/committee/MeetingTabularMinutes.jsp").forward(req, customResponse);
-//			String html = customResponse.getOutput();
-//			byte[] data = html.getBytes();
-//			InputStream fis1=new ByteArrayInputStream(data);
-//			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-//		    
-//		    Document document = new Document(pdfDoc, PageSize.A4);
-//		    //document.setMargins(50, 100, 150, 50);
-//		    document.setMargins(50, 50, 50, 50);
-//			ConverterProperties converterProperties = new ConverterProperties();
-//			FontProvider dfp = new DefaultFontProvider(true, true, true);
-//		    converterProperties.setFontProvider(dfp);
-//	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
-//	        res.setContentType("application/pdf");
-//	        res.setHeader("Content-disposition","attachment;filename="+filename+".pdf"); 
-//	        File f=new File(path+"/"+filename+".pdf");
-//	        FileInputStream fis = new FileInputStream(f);
-//	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
-//	        res.setHeader("Content-Length",String.valueOf(f.length()));
-//	        byte[] buffer = new byte[1024];
-//	        int len = 0;
-//	        while ((len = fis.read(buffer)) >= 0) {
-//	            os.write(buffer, 0, len);
-//	        } 
-//	        os.close();
-//	        fis.close();
-//	        
-//	        
-//	        Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
-//	        Files.delete(pathOfFile2);		
-//			
-//			document.close();
-	
+
 	
 	}
 	catch (Exception e) {
