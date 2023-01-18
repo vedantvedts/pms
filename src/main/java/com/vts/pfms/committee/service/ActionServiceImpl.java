@@ -205,7 +205,7 @@ public class ActionServiceImpl implements ActionService {
 			if(!main.getProjectId().equalsIgnoreCase("0")) {
 				if(main.getActionType().equalsIgnoreCase("S")) 
 				{
-					Object[] comishortname=dao.CommitteeShortName(main.getScheduleId());
+					Object[] comishortname=dao.CommitteeShortName(main.getScheduleMinutesId());
 					Project="/"+ProjectCode+"/"+comishortname[1]+"/";
 				}else if(main.getActionType().equalsIgnoreCase("N")) {
 					Project="/"+ProjectCode+"/";
@@ -1034,6 +1034,7 @@ public class ActionServiceImpl implements ActionService {
 	{
 		return dao.ActionAssignDataAjax(assignid);
 	}	
+	
 	@Override
 	public long ActionMainInsertFromOnboard(ActionMainDto main , ActionAssign assign) throws Exception 
 	{
@@ -1048,6 +1049,10 @@ public class ActionServiceImpl implements ActionService {
 			{
 				lab=dao.LabDetails();
 				count=dao.ActionGenCount(main.getProjectId());
+				if(!main.getProjectId().equalsIgnoreCase("0"))
+				{
+					ProjectCode=dao.ProjectCode(main.getProjectId());
+				}
 				
 			}
 			catch (Exception e) 
@@ -1063,12 +1068,10 @@ public class ActionServiceImpl implements ActionService {
 				actionmain.setActionType(main.getActionType());
 				actionmain.setType(main.getType());
 				actionmain.setActionItem(main.getActionItem());
-				java.util.Date date = new java.util.Date();
-				java.util.Date sqlDate = new Date(date.getTime());
-				actionmain.setActionDate(sqlDate);
+				actionmain.setActionDate(java.sql.Date.valueOf(main.getActionDate()));
 				actionmain.setCategory(main.getCategory());
 				actionmain.setPriority(main.getPriority());
-				actionmain.setProjectId(0l);
+				actionmain.setProjectId(Long.parseLong(main.getProjectId()));
 				actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
 				actionmain.setCreatedBy(main.getCreatedBy());
 				actionmain.setCreatedDate(sdf1.format(new Date()));
@@ -1081,10 +1084,27 @@ public class ActionServiceImpl implements ActionService {
 			ActionAssign actionassign = new ActionAssign();
 				
 			count=count+1;
+			String Project=null;
+			
+			if(!main.getProjectId().equalsIgnoreCase("0")) {
+				if(main.getActionType().equalsIgnoreCase("S")) 
+				{
+					Object[] comishortname=dao.CommitteeShortName(main.getScheduleId());
+					Project="/"+ProjectCode+"/"+comishortname[1]+"/";
+				}else if(main.getActionType().equalsIgnoreCase("N")) {
+					Project="/"+ProjectCode+"/";
+					
+				}else {
+					Project="/"+ProjectCode+"/MIL/";
+				}
+			}else{
+				Project="/GEN/";
+			}
+			
 			
 			if(lab!=null && main.getLabName()!=null) {
-		    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(new SimpleDateFormat("yyyy-MM-dd").format(new Date()).toString());
-			     actionassign.setActionNo(main.getLabName()+"/GEN/"+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+		    	 
+			     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(java.sql.Date.valueOf(main.getActionDate())).toString().toUpperCase().replace("-", "")+"/"+count);
 			}else {
 				return unsuccess;
 			}

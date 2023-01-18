@@ -153,7 +153,7 @@ if(ses1!=null){
 																<tr>
 																<td><%=++count %></td>
 																<td >
-																	<form action="CommitteeMinutesViewAll.htm" method="post" >
+																	<form action="CommitteeMinutesNewDownload.htm" method="get" >
 																					<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[2] %></button>
 																					<input type="hidden" name="committeescheduleid" value="<%=obj[1] %>" />
 																					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

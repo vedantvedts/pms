@@ -174,7 +174,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="DivisionMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
-							  		<td align="right"> <button type="submit" onclick="return confirm('Are you sure to submit?')" style="margin-left: -70px;" class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button></td>
+							  		
 							    </tr>
 					  		</table>	
 					     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
