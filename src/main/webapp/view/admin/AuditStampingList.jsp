@@ -215,7 +215,7 @@ h6{
 						<div class="card-body"> 
 					 		<div class="table-responsive">
 						  		<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-						   			<thead>
+						   			<thead style=" text-align: center;">
 						   				<tr>		
 											<th>Login Date</th>
 											<th>Login Time</th>

@@ -222,214 +222,237 @@ th,td
 
 
 <%if(invitedlist.size()>0){ %>
-<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
-//ArrayList<String> addlmembertypes=new ArrayList<String>(Arrays.asList("W","E","I","P")); %>
+	<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
 
-<% 
-int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
-int j=0;
-for(Object[] temp : invitedlist){
+	int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
+	int j=0;
+	for(Object[] temp : invitedlist){
 
-	if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
-	{ 
-		memPresent++;
-	}
-	else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
-	{
-		memAbscent++;
-	}
-	else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
-	{ 
-		ParPresent++;
-	}
-	else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
-	{ 
-		parAbscent++;
-	}
-}
-%>
-
-
-<div style="align : center;">
-<h2>ATTENDANCE</h2>
-<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >	
-	 <tr>
-		 <th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Present</th>
-	 </tr>
-	 
-	 <%if(memPresent > 0){ %>
-	 
-	 <% 
-	 	for(int i=0;i<invitedlist.size();i++)
+		if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
+		{ 
+			memPresent++;
+		}
+		else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
 		{
-	 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
-	 	{ j++;%>
-	 	
-	 	 <tr>
-	 	 <td style="border: 1px solid black; padding: 5px;text-align: center"><%=j%> .</td>
-	 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
-	 	  	
-	 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>  
-		 	</td>	
-		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
-		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
-				%>
-	 		</td>	
-	 		</tr>
-	 <%}
-	 }  %>
-	 
-	 <% } %>
-	 
-	 <%if(memAbscent > 0){ %>
-	 	
-	  	<tr >
-			<th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Absent</th>
-		</tr>
-	
-	 
-	 
-	<% 
-	int count=0;
-	for(int i=0;i<invitedlist.size();i++)
-	 {
-	 	if(invitedlist.get(i)[4].toString().equals("N")&& membertypes.contains( invitedlist.get(i)[3].toString()) )
-	 	{count++; j++; %>
-	 	 <tr > 	
-	 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> .</td>
-	 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-	 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
-	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
-	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
-				%>
-	 		</td>	
-	 	</tr>
-	 	
-	 <%}
-	 } %>
-	 
-	 <%if(count==0){ %>
-	 	<tr><th colspan="3" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th></tr>
-	 <%} %>
-	
-	<%} %>
-	
-	 <%if(ParPresent > 0){ %>
-	
-	 <tr>
-		 <th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants </th>
-	 </tr>
-	 
-	 <%
+			memAbscent++;
+		}
+		else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
+		{ 
+			ParPresent++;
+		}
+		else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
+		{ 
+			parAbscent++;
+		}
+	}
+	%>
+
+
+	<div style="align : center;">
+	<h2>ATTENDANCE</h2>
+	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse;" >	
 		
-	 for(int i=0;i<invitedlist.size();i++)
-		{
-	 	if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
-	 	{ j++;
-	 	addcount++;
-	 	%>
-	 	
-	 	 <tr>
-	 	 <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> .</td>
-	 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
-	 	  	
-	 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
-		 	</td>	
-		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
-		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
-				%>
-	 		</td>	
-	 		</tr>
-	 <%}
-	 } %>
-	 
-	  <%if(addcount==0)
-	  {%>
-		 	<tr><th colspan="3" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th> </tr>
-	  <%}%>
-	  <% } %>
-	  
-	  <%if(parAbscent > 0){ %>
-	  
-	 <tr >
-			<th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants Absent</th>
-		</tr>
-	
-	 
-	 
-	<% 
-	int count1=0;
-	for(int i=0;i<invitedlist.size();i++)
-	 {
-	 	if(invitedlist.get(i)[4].toString().equals("N")&& !membertypes.contains( invitedlist.get(i)[3].toString()) )
-	 	{count1++; j++; %>
-	 	 <tr > 	
-	 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> .</td>
-	 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
-	 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
-	 		</td>	<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
-	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External&nbsp;(<%=invitedlist.get(i)[11]%>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External&nbsp;(<%=invitedlist.get(i)[11] %>)<%}
-					else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
-				%>
-	 		</td>	
-	 	</tr>
-	 	
-	 <%}
-	 } %>
-	 
-	 <%if(count1==0){ %>
-	 	<tr><th colspan="3" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th></tr>
-	 <%} %>
-	
-	
-	 <%} %>
+		 <tr>
+			 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 10px; ">SN</th>
+			 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 380px; ">Name, Designation</th>
+			 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 120px; ">Estt. / Agency</th>
+			 <th style="text-align: center ;padding: 5px;border: 1px solid black;width: 140px; ">Role</th>
+		 </tr>
+		  <tr>
+			 <th colspan="4" style="text-align: left; font-weight: 700; border: 1px solid black; padding: 5px; padding-left: 15px">Members Present</th>
+		 </tr>
+		 <%if(memPresent > 0){ %>
+		 
+		 <% 
+		 	for(int i=0;i<invitedlist.size();i++)
+			{
+		 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
+		 	{ j++;%>
+		 	
+		 	 <tr>
+		 	 <td style="border: 1px solid black; padding: 5px;text-align: center"><%=j%> </td>
+		 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
+		 	  	
+		 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>  
+			 	</td>
+			 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
+		 	  	
+		 			<%= invitedlist.get(i)[11]%>  
+			 	</td>	
+			 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
+			 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					%>
+		 		</td>	
+		 		</tr>
+		 <%}
+		 } %>
+		 
+		 <% } %>
+		 
+		 <%if(memAbscent > 0){ %>
+		 	
+		  	<tr >
+				<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Absent</th>
+			</tr>
+		
+		 
+		 
+		<% 
+		int count=0;
+		for(int i=0;i<invitedlist.size();i++)
+		 {
+		 	if(invitedlist.get(i)[4].toString().equals("N")&& membertypes.contains( invitedlist.get(i)[3].toString()) )
+		 	{count++; j++; %>
+		 	 <tr > 	
+		 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
+		 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
+		 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+		 		</td>	
+		 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
+		 	  	
+		 			<%= invitedlist.get(i)[11]%>  
+			 	</td>
+		 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
+		 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					%>
+		 		</td>	
+		 	</tr>
+		 	
+		 <%}
+		 } %>
+		 
+		 <%if(count==0){ %>
+		 	<tr><th colspan="4" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th></tr>
+		 <%} %>
+		
+		<%} %>
+		
+		 <%if(ParPresent > 0){ %>
+		
+		 <tr>
+			 <th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants </th>
+		 </tr>
+		 
+		 <%
+			
+		 for(int i=0;i<invitedlist.size();i++)
+			{
+		 	if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
+		 	{ j++;
+		 	addcount++;
+		 	%>
+		 	
+		 	 <tr>
+		 	 <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
+		 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
+		 	  	
+		 			<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+			 	</td>	
+			 	<td style="border: 1px solid black; padding: 5px;text-align: left;">  
+		 	  	
+		 			<%= invitedlist.get(i)[11]%>  
+			 	</td>
+			 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
+			 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else {%> REP_<%=invitedlist.get(i)[3].toString()%>&nbsp; (<%=invitedlist.get(i)[11] %>)  <%}
+					%>
+		 		</td>	
+		 		</tr>
+		 <%}
+		 } %>
+		 
+		  <%if(addcount==0)
+		  {%>
+			 	<tr><th colspan="4" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th> </tr>
+		  <%}%>
+		  <% } %>
+		  
+		  <%if(parAbscent > 0){ %>
+		  
+		 <tr >
+				<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants Absent</th>
+			</tr>
+		
+		 
+		 
+		<% 
+		int count1=0;
+		for(int i=0;i<invitedlist.size();i++)	
+		 {
+		 	if(invitedlist.get(i)[4].toString().equals("N")&& !membertypes.contains( invitedlist.get(i)[3].toString()) )
+		 	{count1++; j++; %>
+		 	 <tr > 	
+		 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
+		 	 <td style="border: 1px solid black ;padding: 5px;text-align: left " >  
+		 		<%= invitedlist.get(i)[6]%>,&nbsp;<%=invitedlist.get(i)[7] %>
+		 		</td>	
+		 		<td style="border: 1px solid black; padding: 5px;text-align: left;">  
+		 	  	
+		 			<%= invitedlist.get(i)[11]%>  
+			 	</td>
+		 		
+		 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
+		 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11]%>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ){	 %>Presenter <%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("I")){	 %>Internal<%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("W") ){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("E") )    {%>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
+						else {%> REP_<%=invitedlist.get(i)[3].toString()%><%-- &nbsp; (<%=invitedlist.get(i)[11] %>) --%>  <%}
+					%>
+		 		</td>	
+		 	</tr>
+		 	
+		 <%}
+		 } %>
+		 
+		 <%if(count1==0){ %>
+		 	<tr><th colspan="4" style="text-align:center; font-weight: 20; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Nil</th></tr>
+		 <%} %>
+		
+		
+		 <%} %>
 
-	  
-	 <tr> <td></td>	</tr>
-</table>
+		  
+		 <tr> <td></td>	</tr>
+	</table>
 
 
 
-</div>
+	</div>
 <%} %>
 
  <h1 class="break"></h1> 

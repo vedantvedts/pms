@@ -213,7 +213,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 			                                <div class="datatable-dashv1-list custom-datatable-overright">
 			                    
 			                <table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
-			                      <thead>
+			                      <thead style=" text-align: center;">
 			                                         
 			                              <tr> 
 			                              		<th>Select</th>

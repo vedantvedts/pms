@@ -311,9 +311,7 @@ p{
 
 <%if(invitedlist.size()>0){ %>
 <% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
-//ArrayList<String> addlmembertypes=new ArrayList<String>(Arrays.asList("W","E","I","P")); %>
 
-<% 
 int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
 int j=0;
 for(Object[] temp : invitedlist){
@@ -895,15 +893,24 @@ for(Object[] temp : invitedlist){
 											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
 											<td class="std"  style="max-width: 70px;text-align: center;">
-											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
-														<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[22] %>	
-											</span>
+												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
+															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													<%=obj[22] %>	
+													
+													
+													<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) { %>
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
+													<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
+													<% } %>
+													
+													
+												</span>
 											
 											</td>
 											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
@@ -1357,22 +1364,24 @@ for(Object[] temp : invitedlist){
 											</td>
 											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
 											<td class="std"  style="text-align: center">
-											<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-														<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
-														<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-														<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-														<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-														<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-														<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-												<%=obj[27] %>	
-											</span>
-											
+												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
+															<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
+															<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
+															<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
+															<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
+															<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
+															<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
+													<%=obj[27] %>	
+													<% if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) { %>
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
+													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
+													<% } %>
+												</span>
 											</td>
 											<td  class="std"  style="max-width: 80px;">
-												<%if(obj[28]!=null){ %>
-												<%=obj[28] %>
-												<%} %>
-												</td>
+												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
+											</td>
 										</tr>
 									<%count1++;}} %>
 								<%} else{ %>

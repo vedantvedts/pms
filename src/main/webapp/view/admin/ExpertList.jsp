@@ -189,7 +189,7 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			                                 
 			                                    
 			                                   	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-			                                        <thead>
+			                                        <thead style=" text-align: center;">
 			                                         
 			                                            <tr>
 			                                                <th >Sr No.</th>
