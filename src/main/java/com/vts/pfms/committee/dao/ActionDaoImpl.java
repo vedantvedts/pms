@@ -76,7 +76,7 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final String ACTIONSELFREMINDERLIST="SELECT ActionId,EmpId,ActionItem,ActionDate,ActionTime,ActionType FROM pfms_action_self WHERE isactive='1' AND actiondate BETWEEN :fromdate AND :todate AND empid=:empid AND labcode=(SELECT labcode FROM employee WHERE empid= :empid ) ORDER BY ActionDate DESC";
 	private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) as 'empname' , ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
-	private static final String COMMITTEESHORTNAME="SELECT cs.committeeid, c.committeeshortname  FROM committee c,committee_schedule cs WHERE c.committeeid=cs.committeeid AND cs.scheduleid=:scheduleid AND cs.isactive=1 ";
+	private static final String COMMITTEESHORTNAME="SELECT cs.committeeid, c.committeeshortname  FROM committee c,committee_schedule cs , committee_schedules_minutes_details cmd WHERE c.committeeid=cs.committeeid AND cs.scheduleid=cmd.scheduleid AND cmd.scheduleminutesid=:scheduleid AND cs.isactive=1 ";
 	private static final String ASSIGNEESEENUPDATE="UPDATE action_assign SET isseen='1' WHERE assignee=:empid ";
 	public static final String ACTIONSELFREMINDERDELETE="UPDATE pfms_action_self SET isactive=0 WHERE actionid=:actionid";
 	private static final String PROJECTEMPLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b,project_employee pe  WHERE a.isactive='1' AND a.DesigId=b.DesigId  AND pe.empid=a.empid AND pe.projectid=:projectid ORDER BY a.srno=0,a.srno";
@@ -858,4 +858,5 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("assignid", assignid);
 		return (Object[])query.getResultList().get(0);	
 	}
+	
 }

@@ -130,6 +130,15 @@ i{
 									<i>Action Items</i>
 								</a>
 						</div>
+						
+						<div class="col-md-3">
+								<a class="btn shadow-nohover  btn-primary-2 btn-block btn-sm" href="UserManagerList.htm?Onboarding=Yes" style="text-align: left">
+									<span class="fa-stack" style="width:3em !important">
+									<span class="fa fa-square-o fa-stack-2x"></span>
+				   					<strong class="fa-stack-1x" style="font-size: 14px">6</strong></span>
+									<i>Login List</i>
+								</a>
+						</div>
 					</div>
 
 				</div>

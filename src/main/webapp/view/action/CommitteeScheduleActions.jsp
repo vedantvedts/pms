@@ -763,7 +763,7 @@ function changeempdd()
     		    	type : "GET",
     		    	url : "ScheduleActionList.htm",
     		    	data : {
-    		    		ScheduleMinutesId : scheduleid
+    		    		ScheduleMinutesId : scheduleminutesidadd
     		    		
     		    	},
     		    	datatype : 'json',

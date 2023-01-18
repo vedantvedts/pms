@@ -268,7 +268,6 @@ public class ActionController {
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionDate(req.getParameter("MainPDC"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
-			mainDto.setScheduleId(req.getParameter("scheduleminutesid"));
 			mainDto.setActionStatus("A");
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("MainPriority"));
@@ -863,7 +862,7 @@ public class ActionController {
 			mainDto.setActivityId("0");
 			mainDto.setCreatedBy(UserId);
 			mainDto.setMeetingDate(req.getParameter("meetingdate"));
-			mainDto.setScheduleId(req.getParameter("ScheduleId"));
+			
 			mainDto.setLabName(LabCode);
 			String actionlevel = req.getParameter("ActionLevel");
 			
