@@ -754,8 +754,6 @@ public class OnBoardingController {
 					                            	break;
 					                			}
 					                		}
-					                		
-					                	
 					                	}
 					                	  
 					                }
@@ -990,9 +988,6 @@ public class OnBoardingController {
 					                	}
 					                	  
 					                }
-					                
-					                
-					               
 					                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					                Date javaDate= DateUtil.getJavaDate(Double.parseDouble(actionmain.getActionDate()));
 					                if(actionmain.getActionDate()!=null && actionmain.getPDCDate()!=null) {
