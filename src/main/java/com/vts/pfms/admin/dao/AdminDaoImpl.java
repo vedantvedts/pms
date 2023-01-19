@@ -76,7 +76,7 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String FORMROLEACTIVELIST="SELECT isactive FROM pfms_form_role_access WHERE formroleaccessid=:formroleaccessid";
 	private static final String FORMROLEACTIVE0="UPDATE pfms_form_role_access SET isactive=:isactive WHERE formroleaccessid=:formroleaccessid";
 	private static final String FORMROLEACTIVE1="UPDATE pfms_form_role_access SET isactive=:isactive WHERE formroleaccessid=:formroleaccessid";
-	private static final String EMPLOYEEDATA ="SELECT empid, srno,empno,empname,desigid,divisionid FROM employee WHERE empid=:empid";
+	private static final String EMPLOYEEDATA ="SELECT a.empid, a.srno,a.empno,a.empname,a.desigid,a.divisionid ,b.groupid  FROM employee  a , division_master b WHERE a.divisionid =b.divisionid  AND a.empid=:empid";
 	private static final String LOGINTYPELIST1="select logintype,logindesc,logintypeid from login_type";	
 	private static final String LOGINEDITEMPLIST = "SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee WHERE labcode=:labcode ORDER BY srno ";
 	private static final String GETEXPERTLIST= "SELECT e.ExpertId, e.ExpertNo,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.ExpertName)AS 'ExpertName', d.Designation , e.MobileNo, e.ExtNo, e.Email, e.Organization, e.IsActive FROM expert e, employee_desig d WHERE  e.DesigId=d.DesigId ";

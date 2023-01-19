@@ -97,9 +97,9 @@ public class OnBoardingController {
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
-					row.createCell(0).setCellValue("SN");
-					row.createCell(1).setCellValue("Group Code");
-					row.createCell(2).setCellValue("Group Name");
+					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+					row.createCell(1).setCellValue("Group Code");sheet.setColumnWidth(1, 5000);
+					row.createCell(2).setCellValue("Group Name");sheet.setColumnWidth(2, 5000);
 
 					int r=0;
 					
@@ -167,7 +167,7 @@ public class OnBoardingController {
 					                	}
 					                	  
 					                }
-					                  dgm.setGroupHeadId(1l);
+					                  dgm.setGroupHeadId((Long)ses.getAttribute("EmpId"));
 						              dgm.setLabCode(LabCode);
 						              dgm.setIsActive(1);
 						              dgm.setCreatedBy(UserId);
@@ -223,9 +223,9 @@ public class OnBoardingController {
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
-					row.createCell(0).setCellValue("SN");
-					row.createCell(1).setCellValue("Division Code");
-					row.createCell(2).setCellValue("Division Name");
+					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+					row.createCell(1).setCellValue("Division Code");sheet.setColumnWidth(1, 5000);
+					row.createCell(2).setCellValue("Division Name");sheet.setColumnWidth(2, 5000);
 
 					int r=0;
 					
@@ -244,7 +244,7 @@ public class OnBoardingController {
 							
 							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
 							Part filePart = req.getPart("filename");
-
+							Object[] empdata =adminservice.EmployeeData(String.valueOf((Long)ses.getAttribute("EmpId")));
 							 List<DivisionMaster> div = new ArrayList<DivisionMaster>();
 							 InputStream fileData = filePart.getInputStream();
 							   
@@ -293,8 +293,14 @@ public class OnBoardingController {
 					                	 
 					                }
 					                  dmo.setLabCode(LabCode);
-						              dmo.setGroupId(6l);
-						              dmo.setDivisionHeadId(1l);
+					                  if(empdata!=null && empdata[6]!=null){
+					                	  dmo.setGroupId(Long.parseLong(empdata[6]+""));
+					                  }else {
+					                	  redir.addAttribute("resultfail", "Logged  In Employee Its Don't Have Group Id");
+					                	  redir.addFlashAttribute("Onboard","Yes");
+											return "redirect:/DivisionMaster.htm";	
+					                  }
+						              dmo.setDivisionHeadId((Long)ses.getAttribute("EmpId"));
 						              dmo.setIsActive(1);
 						              dmo.setCreatedBy(UserId);
 						              dmo.setCreatedDate(sdf1.format(new Date()));
@@ -349,14 +355,14 @@ public class OnBoardingController {
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
-					row.createCell(0).setCellValue("SN");
-					row.createCell(1).setCellValue("Employee Number");
-					row.createCell(2).setCellValue("Employee Name");
-					row.createCell(3).setCellValue("Extention Number");
-					row.createCell(4).setCellValue("Mobile Number");
-					row.createCell(5).setCellValue("Email");
-					row.createCell(6).setCellValue("Drona Email");
-					row.createCell(7).setCellValue("Internet Email");
+					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+					row.createCell(1).setCellValue("Employee Number");sheet.setColumnWidth(1, 5000);
+					row.createCell(2).setCellValue("Employee Name");sheet.setColumnWidth(2, 5000);
+					row.createCell(3).setCellValue("Extention Number");sheet.setColumnWidth(3, 5000);
+					row.createCell(4).setCellValue("Mobile Number");sheet.setColumnWidth(4, 5000);
+					row.createCell(5).setCellValue("Email");sheet.setColumnWidth(5, 5000);
+					row.createCell(6).setCellValue("Drona Email");sheet.setColumnWidth(6, 5000);
+					row.createCell(7).setCellValue("Internet Email");sheet.setColumnWidth(7, 5000);
 
 						row=sheet.createRow(1);
 						row.createCell(0).setCellValue(String.valueOf(1));
@@ -490,8 +496,8 @@ public class OnBoardingController {
 					                }
 					                emp.setLabCode(LabCode);
 					                emp.setSrNo(0l);
-					                emp.setDivisionId(1l);
-					                emp.setDesigId(1l);
+					                emp.setDivisionId((Long)ses.getAttribute("Division"));
+					                emp.setDesigId(Long.parseLong(ses.getAttribute("DesgId").toString()));
 					                emp.setIsActive(1);
 					                emp.setCreatedBy(UserId);
 					                emp.setCreatedDate(sdf1.format(new Date()));
@@ -549,19 +555,19 @@ public class OnBoardingController {
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
-					row.createCell(0).setCellValue("SN");
-					row.createCell(1).setCellValue("Project Code");
-					row.createCell(2).setCellValue("Project Name");
-					row.createCell(3).setCellValue("Project No");
-					row.createCell(4).setCellValue("Project Unit Code");
-					row.createCell(5).setCellValue("Project Sanction Letter No");
-					row.createCell(6).setCellValue("Total Sanction Cost");
-					row.createCell(7).setCellValue("Sanction Cost FE");
-					row.createCell(8).setCellValue("Sanction Cost RE");
-					row.createCell(9).setCellValue("Nodal & Participating Lab");
-					row.createCell(10).setCellValue("Scope");
-					row.createCell(11).setCellValue("Objective");
-					row.createCell(12).setCellValue("Deliverable");
+					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+					row.createCell(1).setCellValue("Project Code");sheet.setColumnWidth(1, 5000);
+					row.createCell(2).setCellValue("Project Name");sheet.setColumnWidth(2, 5000);
+					row.createCell(3).setCellValue("Project No");sheet.setColumnWidth(3, 5000);
+					row.createCell(4).setCellValue("Project Unit Code");sheet.setColumnWidth(4, 5000);
+					row.createCell(5).setCellValue("Project Sanction Letter No");sheet.setColumnWidth(5, 5000);
+					row.createCell(6).setCellValue("Total Sanction Cost");sheet.setColumnWidth(6, 5000);
+					row.createCell(7).setCellValue("Sanction Cost FE");sheet.setColumnWidth(7, 5000);
+					//row.createCell(8).setCellValue("Sanction Cost RE");sheet.setColumnWidth(8, 5000);
+					row.createCell(8).setCellValue("Nodal & Participating Lab");sheet.setColumnWidth(8, 5000);
+					row.createCell(9).setCellValue("Scope");sheet.setColumnWidth(9, 5000);
+					row.createCell(10).setCellValue("Objective");sheet.setColumnWidth(10, 5000);
+					row.createCell(11).setCellValue("Deliverable");sheet.setColumnWidth(11, 5000);
 
 					
 						row=sheet.createRow(1);
@@ -577,7 +583,7 @@ public class OnBoardingController {
 						row.createCell(9).setCellValue("");
 						row.createCell(10).setCellValue("");
 						row.createCell(11).setCellValue("");
-						row.createCell(12).setCellValue("");
+						
 					    res.setContentType("application/vnd.ms-excel");
 			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMaster.xls");	
 			            workbook.write(res.getOutputStream());
@@ -694,19 +700,8 @@ public class OnBoardingController {
 					                            	break;
 					                			}
 					                		}
+					                		
 					                		if(j==8) {
-					                			switch (sheet.getRow(i).getCell(j).getCellType()){
-					                            case Cell.CELL_TYPE_BLANK:
-					                            	break;
-					                            case Cell.CELL_TYPE_NUMERIC:
-					                            	protype.setSanctionCostRE(sheet.getRow(i).getCell(j).getNumericCellValue());
-					                            	break;
-					                            case Cell.CELL_TYPE_STRING:
-					                            	protype.setSanctionCostRE(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
-					                            	break;
-					                			}
-					                		}
-					                		if(j==9) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
@@ -718,7 +713,7 @@ public class OnBoardingController {
 					                            	break;
 							                	}
 					                		}
-					                		if(j==10) {
+					                		if(j==9) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
@@ -730,7 +725,7 @@ public class OnBoardingController {
 					                            	break;
 					                			}
 					                		}
-					                		if(j==11) {
+					                		if(j==10) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
@@ -742,7 +737,7 @@ public class OnBoardingController {
 					                            	break;
 					                			}
 					                		}
-					                		if(j==12) {
+					                		if(j==11) {
 					                			switch (sheet.getRow(i).getCell(j).getCellType()){
 					                            case Cell.CELL_TYPE_BLANK:
 					                            	break;
@@ -767,12 +762,16 @@ public class OnBoardingController {
 						                protype.setBoardReference("DMC");
 						                protype.setProjectTypeId(1l);
 						                protype.setCategoryId(1l);
-						                protype.setProjectDirector(1l);
+						                protype.setProjectDirector((Long)ses.getAttribute("EmpId"));
 						                protype.setIsActive(1);
 						                protype.setCreatedBy(UserId);
 						                protype.setCreatedDate(sdf1.format(new Date()));
 						                if(protype.getProjectCode()!=null && protype.getProjectName()!=null ) {
 						                	projectmain.add(protype);
+						                }else {
+						                	redir.addAttribute("resultfail", "Please Check Excel Data Properly");
+						                	redir.addFlashAttribute("Onboard","Yes");
+										return "redirect:/ProjectMain.htm";
 						                }
 					                
 					            }

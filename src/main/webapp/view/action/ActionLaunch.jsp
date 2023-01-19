@@ -936,6 +936,13 @@ excel_file.addEventListener('change', (event) => {
         	var ActionItemLength=[];
         var table_output ='<thead> <tr > <th>SNo</th> <th>Action Item</th> <th>Project Code</th> <th>Action Type</th>  <th>Action Date </th> <th>PDC Date  </th> <th>Priority </th> <th>Category</th>  </tr> </thead><tbody>'
         	var r=0;
+        var checkExcel=0;
+        
+    		if( "Action Item" != sheet_data[1][1]){  checkExcel++;}
+			if( "Project Code" != sheet_data[1][2]){  checkExcel++;}
+			if( "Action Type"   != sheet_data[1][3]){  checkExcel++;}
+			if( "Action Date" != sheet_data[1][4]){  checkExcel++;}
+			
             for(var row = 2; row < sheet_data.length; row++)
             {            	
             	  table_output += ' <tr> ';
@@ -943,6 +950,7 @@ excel_file.addEventListener('change', (event) => {
             	  if(row>0){table_output += '<td>'+ (++r) +'</td>';}
                 for(var cell = 0; cell < 8; cell++)
                 {
+                	
                 	
                 	if(row>0 && cell==1){
                 		
@@ -1099,14 +1107,18 @@ excel_file.addEventListener('change', (event) => {
                	} if(ActionItemLength.length>0){
                		msg+= "Action Item Data Is too Long at serial No : "+ ActionItemLength+"\n";
                	}
-             
-	              if(ActionItemLength.length>0 || actionitem.length>0 || code.length>0 || comparetwodates.length>0 || actionprojcode.length>0 || Actiondate.length>0 || Pdcdate.length>0 || type.length>0 || priority.length>0 || Category.length>0 || comparetwodates.length>0){
-	            	 alert(msg);
-	            	 excel_file.value = '';
-	             }else{
-	            	 $('#exampleModalLong').modal('show');
-	             }
-            	 
+               	
+               	if(checkExcel>0){
+       			 	alert("Please Upload Action Item Excel ");
+       				excel_file.value = '';
+       			} else {
+		              if(ActionItemLength.length>0 || actionitem.length>0 || code.length>0 || comparetwodates.length>0 || actionprojcode.length>0 || Actiondate.length>0 || Pdcdate.length>0 || type.length>0 || priority.length>0 || Category.length>0 || comparetwodates.length>0){
+		            	 alert(msg);
+		            	 excel_file.value = '';
+		             }else{
+		            	 $('#exampleModalLong').modal('show');
+		            }
+       			}	 
             }else{
             	alert("Please Select the Excel File!");
             	return false;

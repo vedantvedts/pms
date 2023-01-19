@@ -191,7 +191,7 @@ String ses1=(String)request.getParameter("resultfail");
 															style="color: red;">*</span>
 													</label></th>
 													<td><select name="ismainwc"
-														class="form-control selectpicker" data-width="80%">
+														class="form-control selectpicker" data-width="80%" required="required">
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="1">Yes</option>
 															<option value="0">No</option>

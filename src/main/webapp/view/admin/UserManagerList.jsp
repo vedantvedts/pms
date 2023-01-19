@@ -353,6 +353,12 @@ excel_file.addEventListener('change', (event) => {
             
         	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">User Name</th> <th style=" text-align: center;">Employee Number</th> <th style=" text-align: center;">Login Type</th> </tr> </thead><tbody>'
         	var index=0;
+        	var checkExcel=0;
+            
+    		if( "User Name" != sheet_data[1][1]){  checkExcel++;}
+			if( "Employee Number" != sheet_data[1][2]){  checkExcel++;}
+			if( "Login Type"   != sheet_data[1][3]){  checkExcel++;}
+			
             for(var row = 2; row < sheet_data.length; row++)
             {            	
             	  table_output += ' <tr> ';
@@ -415,7 +421,7 @@ excel_file.addEventListener('change', (event) => {
              var UserName=[];
              for (var i in sheet_data){
             	 if(i>1 && Empname.indexOf(sheet_data[i][1]+"")!==-1){
-            		 UserName.push(i-1)
+            		 UserName.push(i)
             	 }
           	}	
              const duplicates = Excelempno.filter((item, index) => index !== Excelempno.indexOf(item));  
@@ -428,7 +434,7 @@ excel_file.addEventListener('change', (event) => {
              loginlist.forEach(function(item){
             	  var isPresent = Excelempno.indexOf(item);
             	  if(isPresent !== -1){
-            		  dbDuplicate.push(isPresent); 
+            		  dbDuplicate.push(isPresent+1); 
             	  }
             	})
             	
@@ -446,13 +452,18 @@ excel_file.addEventListener('change', (event) => {
                 }if(CheckEmpno.length>0){
                 	msg += " Invalid Employee No at serial No :"+CheckEmpno+" \n";
                 }
+                
+                if(checkExcel>0){
+       			 	alert("Please Upload Login Master Excel ");
+       				excel_file.value = '';
+       			} else {
                 	 if(CheckEmpno.length>0 || Excellogintype.length>0 || dbDuplicate.length>0 || indexval.length>0 || Empcode.length > 0 ||UserName.length>0){
                 		 alert(msg);
                 		 excel_file.value = '';
                 	 }else{
                 		 $('#exampleModalLong').modal('show');
                 	 }
-             
+       			}
             }else{
             	alert("Please Select the Excel File!");
             	return false;
