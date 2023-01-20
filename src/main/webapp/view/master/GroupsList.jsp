@@ -305,6 +305,7 @@ excel_file.addEventListener('change', (event) => {
     	
     	const AcSno=[];
     	const gname=[];
+    	const groupname1=[];
         if(sheet_data.length > 0)
         {          
         	var table_output = ' <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > ';
@@ -335,6 +336,7 @@ excel_file.addEventListener('change', (event) => {
 		                		 if (groupname.trim().length > 250 ) {								     									 
 		                			 gname.push(row);
 								 }
+		                		 if(groupname.trim()=='' ||groupname.trim()=='undefined'){groupname1.push(row); }
 		                	}
                 	
 			                if(row>0 && cell==1){		
@@ -374,6 +376,9 @@ excel_file.addEventListener('change', (event) => {
             	})
             	
             	var msg='';
+	             if(groupname1.length>0){
+		       		 msg+="Enter Group Name at Serial No:"+ groupname1+"\n";
+	             }
 	              if(indexval.length>0){
 	        		  msg+="Duplicate Group Code Existed in Excel file at Serial No :"+ indexval+"\n";
             	
@@ -381,7 +386,7 @@ excel_file.addEventListener('change', (event) => {
 	            	  msg+="Group Code alredy Existed at serial No :"+ dbDuplicate+"\n";
    			      
             	} if(AcSno.length > 0){
-            		msg+="Enter valid Group Code at Serial No :"+ AcSno+"\n";
+            		msg+=" Group Code should be 3 letters at Serial No :"+ AcSno+"\n";
          		  }
             	if(gname.length>0){
             		msg+=" Group Name Length is too long at Serial No :"+ gname+"\n";
@@ -391,7 +396,7 @@ excel_file.addEventListener('change', (event) => {
          			excel_file.value = '';
          		}else{
             	
-	            	if(gname.length>0|| indexval.length>0 ||dbDuplicate.length>0 ||AcSno.length > 0){
+	            	if(groupname1.length>0 || gname.length>0|| indexval.length>0 ||dbDuplicate.length>0 ||AcSno.length > 0){
 	            		alert(msg);
 	            		excel_file.value = '';
 	            	}else{

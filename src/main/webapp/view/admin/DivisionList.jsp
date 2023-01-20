@@ -305,6 +305,7 @@ excel_file.addEventListener('change', (event) => {
     	
     	const code=[];
     	const gname=[];
+    	const divisionname1=[];
     	var checkExcel=0;
         if(sheet_data.length > 0)
         {          
@@ -333,6 +334,7 @@ excel_file.addEventListener('change', (event) => {
                 		if(divisionname.trim().length>250){
 							gname.push(row);
 						}
+                		if(divisionname.trim()=='' || divisionname.trim()=='undefined'){divisionname1.push(row);}
                 	}
 	                if(row>0 && cell==1){		
 	                	table_output += '<td>'+sheet_data[row][cell]+'</td>';
@@ -355,7 +357,7 @@ excel_file.addEventListener('change', (event) => {
                     
              var divisioncode=[];
              for (var i in sheet_data) {
-          	  divisioncode.push(sheet_data[i][1].toString())
+          	  divisioncode.push(sheet_data[i][1]+"")
           	}
              const duplicates = divisioncode.filter((item, index) => index !== divisioncode.indexOf(item));  
            
@@ -372,6 +374,9 @@ excel_file.addEventListener('change', (event) => {
             	})
             	
             	var msg='';
+             if(divisionname1.length>0){
+	       		 msg+="Enter Division Name at Serial No:"+ divisionname1+"\n";
+             }
              if(indexval.length>0){
        		     msg+="Duplicate Division Code Existed in Excel file at Serial No :"+ indexval+"\n";
             }if(dbDuplicate.length>0){
@@ -385,7 +390,7 @@ excel_file.addEventListener('change', (event) => {
      			 alert("Please Upload Division Master Excel ");
      			excel_file.value = '';
      		}else{
-     			if(gname.length>0|| indexval.length>0 ||dbDuplicate.length>0 ||code.length > 0){
+     			if(divisionname1.length>0 || gname.length>0|| indexval.length>0 ||dbDuplicate.length>0 ||code.length > 0){
             		alert(msg);
             		excel_file.value = '';
             	}else{

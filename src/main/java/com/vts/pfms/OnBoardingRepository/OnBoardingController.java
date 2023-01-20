@@ -755,6 +755,9 @@ public class OnBoardingController {
 					               
 					                long millis=System.currentTimeMillis();  
 					                java.sql.Date date=new java.sql.Date(millis);  
+					                
+					                double sanccostRE=protype.getTotalSanctionCost()-protype.getSanctionCostFE();
+					                	protype.setSanctionCostRE(sanccostRE);
 					                	protype.setPDC(date);
 					                	protype.setSanctionDate(date);
 					                	protype.setRevisionNo(0l);
@@ -769,9 +772,9 @@ public class OnBoardingController {
 						                if(protype.getProjectCode()!=null && protype.getProjectName()!=null ) {
 						                	projectmain.add(protype);
 						                }else {
-						                	redir.addAttribute("resultfail", "Please Check Excel Data Properly");
-						                	redir.addFlashAttribute("Onboard","Yes");
-										return "redirect:/ProjectMain.htm";
+							                	redir.addAttribute("resultfail", "Please Check Excel Data Properly");
+							                	redir.addFlashAttribute("Onboard","Yes");
+											return "redirect:/ProjectMain.htm";
 						                }
 					                
 					            }
