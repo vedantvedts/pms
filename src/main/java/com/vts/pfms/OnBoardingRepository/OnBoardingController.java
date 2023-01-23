@@ -549,7 +549,7 @@ public class OnBoardingController {
 				
 				if("GenerateExcel".equalsIgnoreCase(action)){
 					XSSFWorkbook workbook = new XSSFWorkbook();
-					XSSFSheet sheet =  workbook.createSheet("Project Master Details");
+					XSSFSheet sheet =  workbook.createSheet("Project Main Details");
 					XSSFRow row=sheet.createRow(0);
 					
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
@@ -585,7 +585,7 @@ public class OnBoardingController {
 						row.createCell(11).setCellValue("");
 						
 					    res.setContentType("application/vnd.ms-excel");
-			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMaster.xls");	
+			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMain.xls");	
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					

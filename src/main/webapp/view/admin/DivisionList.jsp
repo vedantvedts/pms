@@ -340,7 +340,7 @@ excel_file.addEventListener('change', (event) => {
 	                	table_output += '<td>'+sheet_data[row][cell]+'</td>';
 						var divisioncode = ""+sheet_data[row][cell]+"";
 							
-							if (divisioncode.trim().length > 3 ){								     									 
+							if (divisioncode=='' || divisioncode.trim().length > 3 ){								     									 
 								code.push(row);
 							}
 							

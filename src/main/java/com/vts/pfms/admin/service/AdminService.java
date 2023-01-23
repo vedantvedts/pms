@@ -31,6 +31,7 @@ public interface AdminService {
 	public Login UserManagerEditData(String LoginId )throws Exception;
 	public int UserManagerDelete(String LoginId,String Userid)throws Exception;
 	public Long UserManagerInsert(UserManageAdd UserManageAdd, String LogId)throws Exception;
+	public Long UserManagerInsertFromExcel(UserManageAdd UserManageAdd, String Userid) throws Exception;
 	public int UserManagerUpdate(UserManageAdd UserManageAdd,String Userid)throws Exception;
 	public List<Object[]> GetExpertList() throws Exception;
 	public List<Object[]> GetDesignation() throws Exception;
