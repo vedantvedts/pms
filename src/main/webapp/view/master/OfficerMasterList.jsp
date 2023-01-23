@@ -350,6 +350,7 @@ function Delete(myfrm){
          	 var phoneno=[];
          	 var ExtNo=[];
          	 var EmpEmail=[];
+         	 var empname1=[];
              for(var row = 0; row < sheet_data.length; row++)
              {            	
              	  table_output += ' <tr> ';
@@ -384,7 +385,10 @@ function Delete(myfrm){
                  		var EMAIL_REGEXP = new RegExp('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$', 'i');
                  		if(!EMAIL_REGEXP.test(email)){ EmpEmail.push(row); }
                  	}
-                 	
+                 	if(row>0 && cell==2){
+                 		var name= ''+sheet_data[row][cell]+'';
+                 		if(name.trim()=='' ||name.trim()=='undefined'){empname1.push(row); }
+                 	}
                  	if(row>0 && cell>0){
                  		table_output += '<td>'+sheet_data[row][cell]+'</td>';
                  	}
@@ -421,6 +425,9 @@ function Delete(myfrm){
              	})
              	 
              	 var msg='';
+              	if(empname1.length>0){
+              		msg+="Enter Employee Name at Serial No :"+ empname1+"\n";
+              	}
 	            if(phoneno.length>0){
 	            	msg+="Employee Phone Number should be Numeric and 10 digit at Serial No :"+ phoneno+"\n";
 	            }
@@ -444,7 +451,7 @@ function Delete(myfrm){
         			 alert("Please Upload Employee Master Excel ");
         			excel_file.value = '';
         		} else {
-	            	if(EmpEmail.length>0 || ExtNo.length>0 || phoneno.length>0 || Employeeno.length>0 || dbDuplicate.length>0|| indexval.length>0  ){
+	            	if(empname1.length>0 || EmpEmail.length>0 || ExtNo.length>0 || phoneno.length>0 || Employeeno.length>0 || dbDuplicate.length>0|| indexval.length>0  ){
 	            		alert(msg);
 	            		excel_file.value = '';
 	            	} else {
