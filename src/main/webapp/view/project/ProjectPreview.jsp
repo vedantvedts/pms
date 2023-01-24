@@ -437,9 +437,7 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						                    <h3>Requirement</h3><hr>
 											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; font-family: Lato; color:#07689f;">Brief</label>
 											<p><%if(obj[13]!=null){%><%=obj[13] %><%}else{ %>-<%} %></p><hr>				                
-											<div>
-											<label style="margin-top:0px; margin-bottom:0px; margin-left:0px;font-weight: 800; font-family: Lato;	font-size: 20px; color:#07689f;">Detailed</label>
-											<p style="margin-top:0px;!important"><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p></div>
+										
 						                </div>
 						                <div class="tab-pane fade" id="obj-vertical" role="tabpanel" aria-labelledby="obj-vertical-tab">
 						                    <h3>Objective</h3><hr>

@@ -272,6 +272,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 											                  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 											                  <input type="hidden" name="projectcode" value="<%=obj[4] %>"/>   
 											                  <input type="hidden" name="pdd" value="<%=obj[9] %>"/> 
+											                  <input type="hidden" name="labcode" value="<%=obj[10] %>"> 
 											             </form>  
 											               
 											              

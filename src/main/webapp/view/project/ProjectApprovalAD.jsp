@@ -120,7 +120,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    		</tr>
 						    		<tr>
 						    			<td> <b>Deliverable</b> </td>
-						    			<td><%if(obj[8]!=null && obj[8].toString().equalsIgnoreCase("")){ %><%=obj[8] %>
+						    			<td><%if(obj[8]!=null && !obj[8].toString().equalsIgnoreCase("")){ %><%=obj[8] %>
 						    			<%}else{ %>
 						    			<%="-" %>
 						    			<%} %>
@@ -154,6 +154,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 						  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									<input type="hidden" name="IntiationId"	value="<%=obj[5] %>" />
 									<input type="hidden" name="projectcode"	value="<%=obj[1] %>" />  
+									<input type="hidden" name="labcode" value="<%=obj[15]%>">
 						 	
 						 
 						   
