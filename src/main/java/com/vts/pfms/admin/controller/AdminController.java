@@ -34,11 +34,15 @@ import com.vts.pfms.admin.dto.UserManageAdd;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.service.AdminService;
+import com.vts.pfms.master.service.MasterService;
 
 @Controller
 public class AdminController {
 	@Autowired 
 	AdminService service;
+	
+	@Autowired
+	MasterService masterservice;
 	
 	private static final Logger logger=LogManager.getLogger(AdminController.class);
 	
@@ -434,12 +438,23 @@ public class AdminController {
 		}
 	    
 	    @RequestMapping(value = "UserManagerList.htm", method = RequestMethod.GET)
-		public String UserManagerList(HttpServletRequest req, HttpSession ses) throws Exception {
+		public String UserManagerList(Model model, HttpServletRequest req, HttpSession ses) throws Exception {
 	    	final String UserId = (String)ses.getAttribute("Username");
 	        AdminController.logger.info(new Date() + "Inside UserManagerList.htm " + UserId);
 	    	String LabCode = (String) ses.getAttribute("labcode");
 	    	
-			req.setAttribute("UserManagerList", service.UserManagerList(LabCode));
+	    	try {
+	    		String onboard=req.getParameter("Onboarding");
+				if(onboard==null) {
+					Map md=model.asMap();
+					onboard=(String)md.get("Onboard");
+				}
+				req.setAttribute("Onboarding", onboard);
+				req.setAttribute("UserManagerList", service.UserManagerList(LabCode));
+				req.setAttribute("OfficerList", masterservice.OfficerList());
+			}catch( Exception e) {
+				e.printStackTrace();
+			}
 			return "admin/UserManagerList";
 		}
 	    

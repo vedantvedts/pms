@@ -144,14 +144,14 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="row">
 <div class="col-md-3">
               <div class="form-group">
-					<label >Drona Email:<span class="mandatory" style="color: red;">*</span></label>
+					<label >Drona Email:</label>
 					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Drona Email">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Internet Email:<span class="mandatory" style="color: red;">*</span></label>
+					<label >Internet Email:</label>
                     <input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
 			   </div>
 </div>
@@ -206,16 +206,16 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			var ExtNo=$('#ExtNo').val().trim();
 			var mobilenumber=$('#mobilenumber').val().trim();
 			var Email=$('#Email').val().trim();	
-			var DronaEmail=$('#DronaEmail').val().trim();
-			var InternetEmail=$('#InternetEmail').val().trim();
+			//var DronaEmail=$('#DronaEmail').val().trim();
+			//var InternetEmail=$('#InternetEmail').val().trim();
 			var Division=$('#Division').val();
 			var title=$('#title').val();
 			var salutation=$('#salutation').val();
 			var $empno=$('#EmpNo').val().trim();
 			
-			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division===null ) 
+			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" || Email==="" || Division===null ) 
 			{
-				alert('Please Fill All the Fields ');
+				alert('Please Fill All the Mandatory Fields ');
 			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 				alert('Please select either Title or Rank');
 			}

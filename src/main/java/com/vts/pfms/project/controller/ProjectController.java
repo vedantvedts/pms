@@ -2572,13 +2572,18 @@ public class ProjectController
 
 
 	@RequestMapping(value ="ProjectMain.htm")
-	public String ProjectMain(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public String ProjectMain(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectMain.htm "+Username);
 	try {
+		String onboard=req.getParameter("Onboarding");
 		
+		if(onboard==null) {
+			Map md=model.asMap();
+			onboard=(String)md.get("Onboard");
+		}
 		req.setAttribute("ProjectMainList", service.ProjectMainList());
-		
+		req.setAttribute("Onboarding", onboard);
 	}catch (Exception e) {
 		e.printStackTrace(); logger.error(new Date() +" Inside ProjectMain.htm "+Username, e);
 	}

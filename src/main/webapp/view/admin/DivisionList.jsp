@@ -174,7 +174,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="DivisionMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
-							  		<td align="right"> <button type="submit" onclick="return confirm('Are you sure to submit?')" style="margin-left: -70px;" class="btn btn-sm add" name="Action" value="UploadExcel"> Upload</button></td>
+							  		
 							    </tr>
 					  		</table>	
 					     <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
@@ -213,7 +213,7 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 			                                <div class="datatable-dashv1-list custom-datatable-overright">
 			                    
 			                <table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
-			                      <thead>
+			                      <thead style=" text-align: center;">
 			                                         
 			                              <tr> 
 			                              		<th>Select</th>
@@ -304,11 +304,14 @@ excel_file.addEventListener('change', (event) => {
         var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]], {header:1});  
     	
     	const code=[];
+    	const gname=[];
+    	const divisionname1=[];
+    	var checkExcel=0;
         if(sheet_data.length > 0)
         {          
         	var table_output = ' <table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" > ';
             
-        	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">LabCode</th> <th style=" text-align: center;">Group Code</th> <th style=" text-align: center;">Group Name</th> <th style=" text-align: center;">Group HeadId</th></tr> </thead><tbody>'
+        	table_output+='<thead> <tr > <th style=" text-align: center;">SNo</th> <th style=" text-align: center;">LabCode</th> <th style=" text-align: center;">Division Code</th> <th style=" text-align: center;">Division Name</th> <th style=" text-align: center;">Group HeadId</th></tr> </thead><tbody>'
         	
             for(var row = 0; row < sheet_data.length; row++)
             {            	
@@ -317,21 +320,30 @@ excel_file.addEventListener('change', (event) => {
             	  if(row>0){table_output += '<td>'+ row +'</td>';}
                 for(var cell = 0; cell < 3; cell++)
                 {
+                	
+                	if(row==0){
+        				if(cell==1 && "Division Code" != sheet_data[row][cell]){  checkExcel++;}
+        				if(cell==2 && "Division Name" != sheet_data[row][cell]){  checkExcel++;}
+        			}
                 	if(row>0 && cell==0){
                 		table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';
                 	}
                 	if(row>0 && cell==2){
                 		table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                		var divisionname = ""+sheet_data[row][cell]+"";
+                		if(divisionname.trim().length>250){
+							gname.push(row);
+						}
+                		if(divisionname.trim()=='' || divisionname.trim()=='undefined'){divisionname1.push(row);}
                 	}
-        	
 	                if(row>0 && cell==1){		
 	                	table_output += '<td>'+sheet_data[row][cell]+'</td>';
 						var divisioncode = ""+sheet_data[row][cell]+"";
-						
 							
-							if (divisioncode.trim().length > 3 ){								     									 
+							if (divisioncode=='' || divisioncode.trim().length > 3 ){								     									 
 								code.push(row);
 							}
+							
 					}		
                 }
                
@@ -345,7 +357,7 @@ excel_file.addEventListener('change', (event) => {
                     
              var divisioncode=[];
              for (var i in sheet_data) {
-          	  divisioncode.push(sheet_data[i][1].toString())
+          	  divisioncode.push(sheet_data[i][1]+"")
           	}
              const duplicates = divisioncode.filter((item, index) => index !== divisioncode.indexOf(item));  
            
@@ -361,18 +373,30 @@ excel_file.addEventListener('change', (event) => {
             	  }
             	})
             	
-            	if(indexval.length>0){
-            		 alert("Duplicate Division Code Existed in Excel file at Serial No :"+ indexval);
-   			      excel_file.value = '';
-            	}else if(dbDuplicate.length>0){
-            		 alert("Division Code alredy Existed at serial No :"+ dbDuplicate);
-   			      excel_file.value = '';
-            	}else if(code.length > 0){
-               	 alert("Division Code should be 3 character at Serial No :"+ code);
-			      excel_file.value = '';
-                }else{
-                	 $('#exampleModalLong').modal('show');
-                }
+            	var msg='';
+             if(divisionname1.length>0){
+	       		 msg+="Enter Division Name at Serial No:"+ divisionname1+"\n";
+             }
+             if(indexval.length>0){
+       		     msg+="Duplicate Division Code Existed in Excel file at Serial No :"+ indexval+"\n";
+            }if(dbDuplicate.length>0){
+            	 msg+="Division Code alredy Existed at serial No :"+ dbDuplicate+"\n"; 
+            }if(code.length > 0){
+            	 msg+="Division Code should be 3 character at Serial No :"+ code+"\n";
+            }if(gname.length>0){
+            	msg+="Division Name is too long at Serial No :"+ gname+"\n";
+            }
+             if(checkExcel>0){
+     			 alert("Please Upload Division Master Excel ");
+     			excel_file.value = '';
+     		}else{
+     			if(divisionname1.length>0 || gname.length>0|| indexval.length>0 ||dbDuplicate.length>0 ||code.length > 0){
+            		alert(msg);
+            		excel_file.value = '';
+            	}else{
+         			 $('#exampleModalLong').modal('show');
+         		}
+     		}
 
             }else{
             	alert("Please Select the Excel File!");

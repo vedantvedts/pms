@@ -122,7 +122,7 @@ String divisionid=divisiondata[0].toString();
       <div class="col-md-12">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-	   <thead>
+	   <thead style=" text-align: center;">
 	   <tr style="background-color: white;color: black">
 	   <th colspan="5">List Of User Assigned for <%if(divisiondata!=null){ %><%=divisiondata[1]%><%} %></th>
 	  </tr>
@@ -130,7 +130,7 @@ String divisionid=divisiondata[0].toString();
 	   <th style="width:5%; ">Select</th>
 	  
 	   <th >Employee Name</th>
-	  <th>Desig</th>
+	  <th>Designation</th>
 	  
 	  
 	  </tr>

@@ -61,9 +61,26 @@
 				<div class="card-body">
 				
 					<form action="FeedBackAdd.htm" method="POST" id="Feedbackadd">
+						<div class="form-group">
+				                <label>Feedback Type</label><br>
+				                 
+						</div>
+						
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16">
 								<thead>
+									<tr>
+									<th style="text-align: left;"><label>Feedback Type: <span class="mandatory" style="color: red;">*</span></label></th>
+										<td>
+											<select class="form-control selectdee"  id="title" name="feedbacktype" data-container="body" data-live-search="true"   style="font-size: 5px;">
+												<option value=""  selected="selected"	hidden="true">--Select--</option>
+												<option value="B">Bug</option>
+												<option value="C">Content Change</option>
+												<option value="U">User Interface</option>
+												<option value="N">New Requirement</option>
+											</select>
+										</td>
+									</tr>
 									<tr>
 										<th style="text-align: left;"><label>Feed Back: <span class="mandatory" style="color: red;">*</span></label></th>
 										<td colspan="3">
@@ -102,24 +119,12 @@
 </body>
 <script type="text/javascript">
 
-		
-		
-		
-		
-		
-
-
 	  $("#Feedbackadd").on('submit', function (e) {
 
 		  var data =CKEDITOR.instances['summernote'].getData();
 		  
-		  
-	      
 			  $('textarea[name=Feedback]').val(data);
-
-	              	                    
-	                    
-	                });
+});
 
 	            
 

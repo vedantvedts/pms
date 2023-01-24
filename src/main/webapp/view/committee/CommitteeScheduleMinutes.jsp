@@ -289,7 +289,7 @@ if(formname!=null){
 
 	</a>
 	
-	<form class="form-inline" method="POST" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
+	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 	
 			<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 			    <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
@@ -297,16 +297,13 @@ if(formname!=null){
 				<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
 				
 			<%} %>
-			
 			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >MINUTES</button>
-
 			<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			 
-			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 			<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
-			
-			<a  class="btn  btn-sm back" href="CommitteeScheduleView.htm?scheduleid=<%=committeescheduleeditdata[6] %>&membertype=<%=membertype%>"   style=" font-size:12px;" >BACK</a>			
+			<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+			<input type="hidden" name="membertype" value="<%=membertype%>">
+			<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
 	</form>
 </nav>    
 <div class="container-fluid">          
@@ -315,11 +312,9 @@ if(formname!=null){
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     	<div class="card-body" style="margin-top: -8px" >
         	
-        	<%--  <form method="POST" action="CommitteeMinutesViewAll.htm" name="myfrm" id="myfrm"> 
+        	
         	
 				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; ">MINUTES</b> 
-				<!-- <button type="submit" class="btn btn-sm prints" formtarget="_blank"  style="margin-left: 10px; font-size:11px;font-weight: bold;width:110px; margin-top: -2px; float:right" >VIEW MINUTES</button>	
-				<i class="fa fa-download" style=" float:right" onclick="submitForm('download');"></i> -->																		
 				<hr><br>
 				
 				<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">

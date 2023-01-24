@@ -209,7 +209,7 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	   <thead>
+	   <thead style=" text-align: center;">
 	   <tr>
 		  <th>Select</th>
 		  <th>SrNo</th>
@@ -345,25 +345,74 @@ function Delete(myfrm){
          	
              
          var table_output ='<thead> <tr > <th>SNo</th> <th>LabCode</th> <th>Emp No</th> <th>Emp Name</th> <th>Ext No</th> <th>Mobile No</th> <th>Email</th> <th>Drona Email</th> <th>Internet Email</th> <th>Designation</th> <th>Division</th></tr> </thead><tbody>'
-         	
+        	 var checkExcel=0;
+         	 var Employeeno=[]; 
+         	 var phoneno=[];
+         	 var ExtNo=[];
+         	 var EmpEmail=[];
+         	 var empname1=[];
+         	 var dronaEmail=[];
+         	 var InternetEmail=[];
              for(var row = 0; row < sheet_data.length; row++)
              {            	
              	  table_output += ' <tr> ';
-              	 console.log("length   :"+sheet_data[row].length);
+              	 
              	  if(row>0){table_output += '<td>'+ row +'</td>';}
                  for(var cell = 0; cell < 8; cell++)
                  {
+                	 if(row==0){
+         				
+         				if(cell==1 && "Employee Number"!=sheet_data[row][cell]){ console.log("1"); checkExcel++;}
+         				if(cell==2 && "Employee Name"!=sheet_data[row][cell]){ console.log("2"); checkExcel++;}
+         				if(cell==3 && "Extention Number"!=sheet_data[row][cell]){ console.log("3"); checkExcel++;}
+         				if(cell==4 && "Mobile Number"!=sheet_data[row][cell]){ console.log("4"+sheet_data[row][cell]); checkExcel++;}
+         			}
                  	if(row>0 && cell==0){
                  		table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';
                  	}
-                 	if(row>0 && cell>0){
+                 	if(row>0 && cell==1){
+                 		var empno = sheet_data[row][cell];
+                 		if(!/^[a-zA-Z0-9]+$/.test(empno)){ Employeeno.push(row);}	
+                 	}
+                 	if(row>0 && cell==3){
+                 		var Exno = ''+sheet_data[row][cell]+'';
+                 		if(!/^\d+$/.test(Exno) || Exno.length!=4){ ExtNo.push(row);}	
+                 	}
+                 	if(row>0 && cell==4){
+                 		var pno = ''+sheet_data[row][cell]+'';
+                 		if(!/^\d+$/.test(pno) || pno.length!=10){ phoneno.push(row);}	
+                 	}
+                 	if(row>0 && cell==5){
+                 		var email= ''+sheet_data[row][cell]+'';
+                 		var EMAIL_REGEXP = new RegExp('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$', 'i');
+                 		if(!EMAIL_REGEXP.test(email)){ EmpEmail.push(row); }
+                 	}
+                 	if(row>0 && cell==2){
+                 		var name= ''+sheet_data[row][cell]+'';
+                 		if(name.trim()=='' ||name.trim()=='undefined'){empname1.push(row); }
+                 	}
+                 	if(row>0 && cell>0 && cell!=6 && cell!=7){
                  		table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                 	}
+                 	if(row>0 && cell>0 && (cell==6 ||cell==7)){
+                 		var email= ''+sheet_data[row][cell]+'';
+                 		console.log("email   :"+email);
+                 		if(email=='' || email=='undefined'){
+                 			table_output += '<td> - </td>';
+                 		}else{
+                 			
+                     		var EMAIL_REGEXP = new RegExp('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$', 'i');
+                     		if(email!='' && email!='undefined' && cell==6 && !EMAIL_REGEXP.test(email)){ dronaEmail.push(row); }
+                     		if(email!='' && email!='undefined' && cell==7 && !EMAIL_REGEXP.test(email)){ InternetEmail.push(row); }
+                 			table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                 			
+                 		}
                  	}
 	
                  }
                 
-                 if(row>0){table_output += '<td>'+ 1 +'</td>';}
-                 if(row>0){table_output += '<td>'+ 1 +'</td>';}
+                 if(row>0){table_output += '<td>'+ <%=session.getAttribute("DesgId")%> +'</td>';}
+                 if(row>0){table_output += '<td>'+ <%=session.getAttribute("Division")%> +'</td>';}
                  table_output += '</tr>';
               }
              table_output += ' <tbody>';
@@ -382,7 +431,7 @@ function Delete(myfrm){
               for(var i in duplicates){
              	 indexval.push(employeeNo.indexOf(duplicates[i]))
               }
-              console.log(EmployeeNojsArray);
+              
               var dbDuplicate = [];                      
               EmployeeNojsArray.forEach(function(item){
              	  var isPresent = employeeNo.indexOf(item);
@@ -390,16 +439,46 @@ function Delete(myfrm){
              		  dbDuplicate.push(isPresent); 
              	  }
              	})
-             	
+             	 
+             	 var msg='';
+              	if(empname1.length>0){
+              		msg+="Enter Employee Name at Serial No :"+ empname1+"\n";
+              	}
+	            if(phoneno.length>0){
+	            	msg+="Employee Phone Number should be Numeric and 10 digit at Serial No :"+ phoneno+"\n";
+	            }
+             	if(Employeeno.length>0){
+             		msg+="Employee Number should be Alpha Numeric at Serial No :"+ Employeeno+"\n";
+              	}
              	if(indexval.length>0){
-             		 alert("Duplicate Employee Number Existed in Excel file at Serial No :"+ indexval);
-    			      excel_file.value = '';
-             	}else if(dbDuplicate.length>0){
-             		 alert("Employee Number already Existed at serial No :"+ dbDuplicate);
-    			      excel_file.value = '';
-             	}else{
-                 	 $('#exampleModalLong').modal('show');
-                }
+             		msg+="Duplicate Employee Number Existed in Excel file at Serial No :"+ indexval+"\n";
+             	} 
+             	if(dbDuplicate.length>0){
+             		msg+="Employee Number already Existed at serial No :"+ dbDuplicate+"\n";
+             	}
+             	if(ExtNo.length>0){
+             		msg+="Extension Number should be Numeric and 4 digit at serial No :"+ ExtNo+"\n";
+             	}
+             	if(EmpEmail.length>0){
+             		msg+="Email is not valid at serial No :"+ EmpEmail +"\n";
+             	}
+             	if(dronaEmail.length>0){
+             		msg+="Drona Email is not valid at serial No :"+ dronaEmail +"\n";
+             	}	
+             	if(InternetEmail.length>0){
+             		msg+="Internet Email is not valid at serial No :"+ InternetEmail +"\n";
+             	}
+             	if(checkExcel>0){
+        			 alert("Please Upload Employee Master Excel ");
+        			excel_file.value = '';
+        		} else {
+	            	if(InternetEmail.length>0 || dronaEmail.length>0 || empname1.length>0 || EmpEmail.length>0 || ExtNo.length>0 || phoneno.length>0 || Employeeno.length>0 || dbDuplicate.length>0|| indexval.length>0  ){
+	            		alert(msg);
+	            		excel_file.value = '';
+	            	} else {
+	         			 $('#exampleModalLong').modal('show');
+	         		}
+        		}
 
              }else{
              	alert("Please Select the Excel File!");

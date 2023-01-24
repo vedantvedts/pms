@@ -288,7 +288,7 @@ a:hover {
 									  <div class="modal-dialog modal-xl" role="document">
 									    <div class="modal-content"  >
 									      <div class="modal-header">
-									        <h5 class="modal-title" id="exampleModalLongTitle">Project Master Details</h5>
+									        <h5 class="modal-title" id="exampleModalLongTitle">Action Item Details</h5>
 									        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									          <span aria-hidden="true">&times;</span>
 									        </button>
@@ -930,42 +930,195 @@ excel_file.addEventListener('change', (event) => {
 
         var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]], {header:1});  
     	
-    
+    	
         if(sheet_data.length > 0)
-        {          
-        	
-            
-        var table_output ='<thead> <tr > <th>SNo</th> <th>Action Item</th> <th>AssineeLabCode</th> <th>AssignorLabCode</th>  <th>Action Type </th> <th>Project  </th> <th>Priority </th> <th>Category</th>  </tr> </thead><tbody>'
-        	
-            for(var row = 0; row < sheet_data.length; row++)
+        {       
+        	var ActionItemLength=[];
+        var table_output ='<thead> <tr > <th>SNo</th> <th>Action Item</th> <th>Project Code</th> <th>Action Type</th>  <th>Action Date </th> <th>PDC Date  </th> <th>Priority </th> <th>Category</th>  </tr> </thead><tbody>'
+        	var r=0;
+        var checkExcel=0;
+        
+    		if( "Action Item" != sheet_data[1][1]){  checkExcel++;}
+			if( "Project Code" != sheet_data[1][2]){  checkExcel++;}
+			if( "Action Type"   != sheet_data[1][3]){  checkExcel++;}
+			if( "Action Date" != sheet_data[1][4]){  checkExcel++;}
+			
+            for(var row = 2; row < sheet_data.length; row++)
             {            	
             	  table_output += ' <tr> ';
              	
-            	  if(row>0){table_output += '<td>'+ row +'</td>';}
-                for(var cell = 0; cell < 2; cell++)
+            	  if(row>0){table_output += '<td>'+ (++r) +'</td>';}
+                for(var cell = 0; cell < 8; cell++)
                 {
                 	
-                	if(row>0 && cell>0){
+                	
+                	if(row>0 && cell==1){
+                		
+                		if(sheet_data[row][cell].toString().length > 990){
+                			ActionItemLength.push(row-1);
+                		}
                 		table_output += '<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;">'+sheet_data[row][cell]+'</td>';
                 	}
-	
+                	if(row>0 && cell==2){
+                		table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                	}
+                	if(row>0 && cell==3){
+                		var type=sheet_data[row][cell]+"";
+                		if("A" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Action' +'</td>';
+                		}else if("I" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Issue' +'</td>';
+                		}else if("R" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Risk' +'</td>';
+                		}	
+                	}
+                	if(row>0 && cell==4){
+                		
+                		table_output += '<td>'+ DateFormate((sheet_data[row][cell]-1)) +'</td>';
+                	}
+                	if(row>0 && cell==5){
+                		
+                		table_output += '<td>'+ DateFormate((sheet_data[row][cell]-1)) +'</td>';
+                	}
+                	if(row>0 && cell==6){
+                		var type=sheet_data[row][cell]+"";
+                		if("H" === type.toUpperCase()){
+                			table_output += '<td>'+ 'High' +'</td>';
+                		}else if("L" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Low' +'</td>';
+                		}else if("I" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Immediate' +'</td>';
+                		}else if("M" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Medium' +'</td>';
+                		}	
+                	}
+                	if(row>0 && cell==7){
+                		var type=sheet_data[row][cell]+"";
+                		if("T" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Technical' +'</td>';
+                		}else if("F" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Finance' +'</td>';
+                		}else if("M" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Managerial' +'</td>';
+                		}else if("L" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Logistic' +'</td>';
+                		}else if("O" === type.toUpperCase()){
+                			table_output += '<td>'+ 'Others' +'</td>';
+                		}	
+                	}
                 }
-               
-                 if(row>0){table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';}
-                if(row>0){table_output += '<td>'+'<%=session.getAttribute("labcode")%>'+'</td>';} 
-                if(row>0){table_output += '<td>'+'Action'+'</td>';}
-                if(row>0){table_output += '<td>'+'General '+'</td>';} 
-                if(row>0){table_output += '<td>'+'Medium '+'</td>';}
-                if(row>0){table_output += '<td>'+'Others'+'</td>';}
-                
-                
+
                 table_output += '</tr>';
              }
-            table_output += ' <tbody>';
-            document.getElementById('myTable1').innerHTML = table_output;
-			 $('#exampleModalLong').modal('show');
-               
+             table_output += ' <tbody>';
+             document.getElementById('myTable1').innerHTML = table_output;
+             
+              var projectcode = [<%int i=0; for (Object[] obj:ProjectList) { %>"<%= obj[4].toString().toUpperCase() %>"<%= i + 1 < ProjectList.size() ? ",":"" %><% } %>];
+              
+            
+              var code = []; 
+             for (var i in sheet_data){
+	            if(i>1 && sheet_data[i][2].toString().toUpperCase()!='GEN' &&!projectcode.includes(sheet_data[i][2].toString().toUpperCase())){
+	            	code.push(i-1)
+	            }
+          	}
+             var actionitem =[];
+             for (var i in sheet_data){
+            	 if(i>1 && sheet_data[i][1]+'' === 'undefined' || sheet_data[i][1]+'' ===''|| sheet_data[i][1]+''=='null' && sheet_data[i][1]+''==null){
+            		 actionitem.push(i-1)
+             	}
+          	}
+             var actionprojcode =[];
+            
+             for (var i in sheet_data){
+            	 if(i>1 && sheet_data[i][2]+'' === 'undefined' || sheet_data[i][2]+'' ===''|| sheet_data[i][2]+''=='null' && sheet_data[i][2]+''==null){
+            		 actionprojcode.push(i-1)
+             	}
+            	
+          	}
+ 
 
+             var Actiondate = [];
+          	var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+             for (var i in sheet_data){
+            	  if(i>1 && !pattern.test(DateFormate( sheet_data[i][4]-1))){
+            		 Actiondate.push(i-1);
+            	 } 
+             }
+             
+             var Pdcdate = [];
+             for (var i in sheet_data){
+            	  if(i>1 && !pattern.test(DateFormate( sheet_data[i][5]-1))){
+            		 Pdcdate.push(i-1);
+            	 }  
+             }
+             
+             var type=[];
+ 			for (var i in sheet_data){
+            	 if(i>1 && sheet_data[i][3]+''!='A' && sheet_data[i][3]+''!='I' && sheet_data[i][3]+''!='K'){
+            		 type.push(i-1);
+            	 }
+             }
+ 			
+ 			 var priority=[];
+  			for (var i in sheet_data){
+             	 if(i>1 && sheet_data[i][6]+''!='H' && sheet_data[i][6]+''!='L' && sheet_data[i][6]+''!='M' && sheet_data[i][6]+''!='I'){
+             		priority.push(i-1);
+             	 } 
+              }
+  			
+  			 var Category=[];
+   			for (var i in sheet_data){
+              	 if(i>1 && sheet_data[i][7]+''!='T' && sheet_data[i][7]+''!='F' && sheet_data[i][7]+''!='M'&& sheet_data[i][7]+''!='L' && sheet_data[i][7]+''!='O'){
+              		Category.push(i-1);
+              	 } 
+               }
+   			
+   		 var comparetwodates=[];
+			for (var i in sheet_data){
+				const actiondate = ExcelDate( sheet_data[i][4]+''); 
+				const pdcdate = ExcelDate( sheet_data[i][5]+'');
+	           	  if(i>1 && dateCompare( actiondate ,pdcdate )){
+					comparetwodates.push(i-1);
+	           	 }  
+            }
+             
+              
+            	
+            	var msg='';
+	              if(actionitem.length>0){
+	        		  msg+="Enter Action Item at serial No :"+ actionitem+"\n";
+	        	} if(actionprojcode.length>0){
+	        		  msg+="Enter Project Code at serial No :"+ actionprojcode+"\n";
+	        	} if(Actiondate.length>0){
+            		  msg+="Action Date Is Not Proper at serial No :"+ Actiondate+"\n";
+            	} if(Pdcdate.length>0){
+            		msg+= "PDC Date Is Not Proper at serial No : "+ Pdcdate+"\n";
+            	} if(type.length>0){
+            		msg+= "Enter Action Type According the Note at serial No : "+ type+"\n";
+               	} if(priority.length>0){
+               		msg+= "Enter Priority According the Note at serial No : "+ priority+"\n";
+               	} if(Category.length>0){
+               		msg+= "Enter Category According the Note at serial No : "+ Category+"\n";	
+               	} if(comparetwodates.length>0){
+               		msg+= "Action Date Should be less than PDC Date at serial No : "+ comparetwodates+"\n";
+               	} if(code.length>0){
+               		msg+= "Invalid Project Code at serial No : "+ code+"\n";
+               	} if(ActionItemLength.length>0){
+               		msg+= "Action Item Data Is too Long at serial No : "+ ActionItemLength+"\n";
+               	}
+               	
+               	if(checkExcel>0){
+       			 	alert("Please Upload Action Item Excel ");
+       				excel_file.value = '';
+       			} else {
+		              if(ActionItemLength.length>0 || actionitem.length>0 || code.length>0 || comparetwodates.length>0 || actionprojcode.length>0 || Actiondate.length>0 || Pdcdate.length>0 || type.length>0 || priority.length>0 || Category.length>0 || comparetwodates.length>0){
+		            	 alert(msg);
+		            	 excel_file.value = '';
+		             }else{
+		            	 $('#exampleModalLong').modal('show');
+		            }
+       			}	 
             }else{
             	alert("Please Select the Excel File!");
             	return false;
@@ -984,10 +1137,48 @@ $(document).ready(function(){
 	 "pagingType": "simple"
 	});
 });
+
+
+function DateFormate(exceldate)
+{
+	const today = new Date((exceldate - (25567 + 1))*86400*1000);
+	const yyyy = today.getFullYear();
+	let mm = today.getMonth() + 1; 
+	let dd = today.getDate();
+	
+	if (dd < 10) dd = '0' + dd;
+	if (mm < 10) mm = '0' + mm;
+
+	const formattedToday = dd + '/' + mm + '/' + yyyy;
+	return formattedToday;
+}
+function ExcelDate(exceldate)
+{
+	const today = new Date((exceldate - (25567 + 1))*86400*1000);
+	const yyyy = today.getFullYear();
+	let mm = today.getMonth() + 1; 
+	let dd = today.getDate();
+
+	if (dd < 10) dd = '0' + dd;
+	if (mm < 10) mm = '0' + mm;
+
+	const formattedToday = yyyy + '-' + mm + '-' + dd;
+	
+	return formattedToday;
+			
+}
+
+function dateCompare(d1, d2){
+    const date1 = new Date(d1);
+    const date2 = new Date(d2);
+    if(date1 > date2){
+        return true;
+    } 
+}
 </script> 
 				
 				
 				
 				
-		</body>
-		</html>
+</body>
+</html>

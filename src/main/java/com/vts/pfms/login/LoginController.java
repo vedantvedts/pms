@@ -200,7 +200,7 @@ public class LoginController {
 			     req.setAttribute("logintype",LoginType);
 			     req.setAttribute("selfremindercount",rfpmainservice.SelfActionsList(EmpId).size() );
 			     //req.setAttribute("NotiecList",rfpmainservice.getAllNotice());
-			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
+//			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			     req.setAttribute("ibasUri",ibasUri);
 			     req.setAttribute("interval", interval);
 			     req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId,LoginType).size());
@@ -273,15 +273,15 @@ public class LoginController {
 					}
 					catch(HttpClientErrorException  | ResourceAccessException e) {
 						
-//						e.printStackTrace();
+						e.printStackTrace();
 					
-						req.setAttribute("budgetlist",new ArrayList<Object[]>());
+						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
 						req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
 
 					}catch(Exception e)
 					{
 						e.printStackTrace();
-						req.setAttribute("budgetlist",new ArrayList<Object[]>());
+						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
 						req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
 					}
 					
@@ -295,7 +295,6 @@ public class LoginController {
 							req.setAttribute("budgetlist",projectDetails);
 							
 						} catch (JsonProcessingException e) {
-							
 	
 							e.printStackTrace();
 						}

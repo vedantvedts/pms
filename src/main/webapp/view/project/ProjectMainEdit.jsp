@@ -191,7 +191,7 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 </label>
 </th>
  <td >
-	<select name="ismainwc" class="form-control " data-width="100%">
+	<select name="ismainwc" class="form-control " data-width="100%" required="required">
 							<option value="1"  <%if("1".equalsIgnoreCase(ProjectMainEditData[16].toString())){ %>
 								 selected="selected"  <%} %>
 							>Yes</option>

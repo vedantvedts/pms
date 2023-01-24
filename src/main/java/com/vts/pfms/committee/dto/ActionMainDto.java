@@ -27,8 +27,14 @@ public class ActionMainDto {
 	private String MeetingDate;
 	private String ScheduleId;
 	private String LabName;
-	
+	private String PDCDate;
 
+	public String getPDCDate() {
+		return PDCDate;
+	}
+	public void setPDCDate(String pDCDate) {
+		PDCDate = pDCDate;
+	}
 	public String getLabName() {
 		return LabName;
 	}

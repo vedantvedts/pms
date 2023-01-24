@@ -137,14 +137,14 @@ String seslabid=(String)session.getAttribute("labid");
 <div class="row">
 <div class="col-md-3">
               <div class="form-group">
-					<label >Drona Email: <span class="mandatory" style="color: red;">*</span></label>
+					<label >Drona Email: </label>
 					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Internet Email:<span class="mandatory" style="color: red;">*</span></label>
+					<label >Internet Email:</label>
 					<input  class="form-control form-control" type="email" name="InternetEmail" id="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
 			  </div>
 </div>
@@ -254,20 +254,15 @@ function Delete(myfrm){
 			var ExtNo=$('#ExtNo').val();
 			var mobilenumber=$('#mobilenumber').val();
 			var Email=$('#Email').val();
-			var DronaEmail=$('#DronaEmail').val();
-			var InternetEmail=$('#InternetEmail').val();
+			//var DronaEmail=$('#DronaEmail').val();
+			//var InternetEmail=$('#InternetEmail').val();
 			var Division=$('#Division').val();
 			
-			console.log(title+salutation+EmpName+Designation+ExtNo+mobilenumber+Email+DronaEmail+InternetEmail+Division);
 			
-			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || DronaEmail==="" || InternetEmail==="" || Division===null ) 
+			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null ) 
 			{
-				alert('Please Fill All the Fields ');
-			}
-			
-			
-			
-			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+				alert('Please Fill All the Mandatory Fields ');
+			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 				window.alert('please select either Title or Rank');
 				event.preventDefault();
 				return false;
