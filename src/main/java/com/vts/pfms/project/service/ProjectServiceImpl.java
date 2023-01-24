@@ -36,6 +36,7 @@ import com.vts.pfms.project.dto.PfmsInitiationAuthorityFileDto;
 import com.vts.pfms.project.dto.PfmsInitiationCostDto;
 import com.vts.pfms.project.dto.PfmsInitiationDetailDto;
 import com.vts.pfms.project.dto.PfmsInitiationDto;
+import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
@@ -52,6 +53,7 @@ import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
+import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRisk;
@@ -1121,7 +1123,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int ProjectApproveAd(String InitiationId, String Remark, String UserId, String EmpId, String ProjectCode,
-			String Status) throws Exception {
+			String Status,String LabCode ) throws Exception {
 		logger.info(new Date() + "Inside SERVICE ProjectApproveAd ");
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
 		PfmsApproval pfmsapproval = new PfmsApproval();
@@ -1148,7 +1150,7 @@ public class ProjectServiceImpl implements ProjectService {
 		BigInteger Empid = dao.EmpId(InitiationId);
 		BigInteger DivisionHeadId = dao.DivisionHeadId(Empid.toString());
 		BigInteger DORTMTDId = dao.RtmddoId();
-		BigInteger TccChairpersonId = dao.TccChairpersonId();
+		BigInteger TccChairpersonId = dao.TccChairpersonId(LabCode);
 		if (Status.equalsIgnoreCase("ADR")) {
 			notification.setEmpId(TccChairpersonId.longValue());
 			notification.setNotificationMessage("Pending Project " + massage + " for " + ProjectCode + " from AD");
@@ -1240,7 +1242,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public int ProjectApproveTcc(String InitiationId, String Remark, String UserId, String EmpId, String ProjectCode,
-			String Status) throws Exception {
+			String Status, String Labcode) throws Exception {
 
 		logger.info(new Date() + "Inside SERVICE ProjectApproveTcc ");
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
@@ -1268,7 +1270,7 @@ public class ProjectServiceImpl implements ProjectService {
 		BigInteger Empid = dao.EmpId(InitiationId);
 		BigInteger DivisionHeadId = dao.DivisionHeadId(Empid.toString());
 		BigInteger TccChairpersonId = dao.AdId();
-		BigInteger CcmChairpersonId = dao.CcmChairpersonId();
+		BigInteger CcmChairpersonId = dao.CcmChairpersonId(Labcode);
 		BigInteger DORTMTDId = dao.RtmddoId();
 		if (Status.equalsIgnoreCase("PTA") || Status.equalsIgnoreCase("PDR")) {
 			notification.setEmpId(CcmChairpersonId.longValue());
@@ -2035,6 +2037,80 @@ public class ProjectServiceImpl implements ProjectService {
 		public List<Object[]> RiskTypeList() throws Exception 
 		{
 			return dao.RiskTypeList();
+		}
+
+		@Override
+		public List<Object[]> RequirementTypeList() throws Exception {
+			// TODO Auto-generated method stub
+			return dao.RequirementTypeList();
+		}
+
+		@Override
+		public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId) throws Exception {
+			// TODO Auto-generated method stu
+			logger.info(new Date() + "Inside SERVICE ProjectRequirementAdd ");
+			PfmsInititationRequirement pir=new PfmsInititationRequirement();
+			pir.setInitiationId(prd.getInitiationId());
+			pir.setReqTypeId(prd.getReqTypeId());
+			pir.setRequirementBrief(prd.getRequirementBrief());
+			pir.setRequirementDesc(prd.getRequirementDesc());
+			pir.setRequirementId(prd.getRequirementId());
+			
+			pir.setCreatedBy(UserId);
+			pir.setCreatedDate(sdf1.format(new Date()));
+			pir.setIsActive(1);
+			
+			
+			return dao.ProjectRequirementAdd(pir);
+		}
+
+		@Override
+		public Object RequirementList(String intiationId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.RequirementList(intiationId);
+		}
+
+		@Override
+		public long ProjectRequirementDelete(long initiationReqId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProjectRequirementDelete(initiationReqId);
+		}
+
+		@Override
+		public Object[] Requirement(long InitiationReqId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.Requirement(InitiationReqId);
+		}
+
+		@Override
+		public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId) throws Exception {
+			// TODO Auto-generated method stub
+			logger.info(new Date() + "Inside SERVICE RequirementUpdate ");
+			PfmsInititationRequirement pir=new PfmsInititationRequirement();
+			pir.setInitiationId(prd.getInitiationId());
+			pir.setInitiationId(prd.getInitiationId());
+			pir.setReqTypeId(prd.getReqTypeId());
+			pir.setRequirementBrief(prd.getRequirementBrief());
+			pir.setRequirementDesc(prd.getRequirementDesc());
+			pir.setRequirementId(prd.getRequirementId());
+			pir.setModifiedBy(userId);
+			pir.setModifiedDate(sdf1.format(new Date()));
+			/* pir.setIsActive(1); */
+			
+			return dao.RequirementUpdate(pir,initiationReqId);
+		
+		}
+
+		@Override
+		public long numberOfReqTypeId(String intiationId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.numberOfReqTypeId(intiationId);
+		}
+
+		@Override
+		public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BudgetHeadList(projecttypeid);
 		}
 
 		

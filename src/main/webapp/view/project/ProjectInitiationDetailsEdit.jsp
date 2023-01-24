@@ -116,13 +116,13 @@ small{
 		                   			</div>
 							</div>
 						<div class="card-body">
-									    		<label >Detailed: </label>
+									    <!-- 		<label >Detailed: </label> -->
 						  	<div id="content">
 								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<%-- 	<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
 										<div  id="summernote" class="center"><%if(obj[0]!=null && !obj[0].equals("-")){%><%=obj[0]%><%}else{%><%}%></div>
 									</div>
-									<textarea name="Requirements" style="display:none;" ></textarea>
+									<textarea name="Requirements" style="display:none;" ></textarea> --%>
 									<input type="hidden" name="details" value="requirement" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   	

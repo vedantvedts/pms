@@ -395,7 +395,7 @@ String Parameter=(String) request.getAttribute("details_param");
 							<div class="card" >
 					
 								<h3 class="card-header">
-							Requirements
+							Requirement
 						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7] %>(<%=ProjectDetailes[6] %>)</small>
 						</h3>				
 											
@@ -417,7 +417,8 @@ String Parameter=(String) request.getAttribute("details_param");
 		                   					
 												</div>
 												<div class="card-body">
-									    		<label class="control-label">Detailed: </label>
+												<div id="content">
+									<!--     		<label class="control-label">Detailed: </label>
 									    			  
 							   <div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
 								<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
@@ -426,15 +427,17 @@ String Parameter=(String) request.getAttribute("details_param");
 												
 								</div>
 									  
-								<textarea name="Requirements" style="display:none;"></textarea>
-									  
+								<textarea name="Requirements" style="display:none;"></textarea> -->
+								
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 								<input type="hidden" name="IntiationId" value="<%=IntiationId %>" /> 
 								<input type="hidden" name="details" value="requirement"> 	
-							</div>  
+							  
 						
 								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 						</div>
+							</div>
+							</div>  
 									 		
 							<div class="form-group" align="center"  style=" margin-top:10px;">
 								<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>

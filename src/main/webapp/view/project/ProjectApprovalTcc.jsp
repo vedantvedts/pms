@@ -197,6 +197,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                  	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									<input type="hidden" name="IntiationId"	value="<%=obj[5] %>" /> 
 									<input type="hidden" name="projectcode"	value="<%=obj[1] %>" /> 
+									<input type="hidden" name="labcode" value="<%=obj[15]%>">
 	
 				<table class="table table-bordered table-hover table-striped table-condensed ">
 					      <tbody>
