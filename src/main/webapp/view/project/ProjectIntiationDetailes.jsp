@@ -1472,7 +1472,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	 			 <%int i=1; 
 	 			 if(RequirementList!=null)
 	 				 for(Object obj[]:RequirementList){
-	 			 %>
+	 			 %>     
 	 			 	 <tr style="position:inherit;">
 	 				<td><%=i %></td>
 	 			 	<td><%=obj[1] %></td>
