@@ -49,7 +49,6 @@
 
 
 	<div class="row">
-	
 		<div class="col-md-12 ">
 			<div class="card shadow-nohover" >
 				<div class="card-header" >
@@ -61,8 +60,6 @@
 				<div class="card-body">
 				
 					<form action="FeedBackAdd.htm" method="POST" id="Feedbackadd">
-						
-						
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16">
 								<thead>
@@ -98,11 +95,7 @@
 					</form>
 															
 				</div>
-													
-			
 			</div>
-		
-		
 		</div>
 	</div>	
 
