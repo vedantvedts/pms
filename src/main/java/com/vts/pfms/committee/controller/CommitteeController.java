@@ -45,14 +45,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -101,20 +98,13 @@ import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
-import com.vts.pfms.print.model.MinutesActionList;
-import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
  
 @Controller
 public class CommitteeController {
 
-	@Autowired 
-	CommitteeService service;
+	@Autowired CommitteeService service;
 	
 	@Autowired 
 	private JavaMailSender javaMailSender;
@@ -1559,33 +1549,29 @@ public class CommitteeController {
 		  return json.toJson(DisDesc); 
 		}
 		  
-		  @RequestMapping(value = "CommitteeMinutesSpecEdit.htm", method = RequestMethod.GET)
-			public @ResponseBody String CommitteeMinutesSpecEdit(HttpSession ses, HttpServletRequest req) throws Exception {
-	
-			 
-			  Object[] DisDesc = null;
-			  String UserId=(String)ses.getAttribute("Username");
-				logger.info(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId);
-				try
-				{
-					String Username = (String) ses.getAttribute("Username");
-					CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
-					committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
-					DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
-				}
-		  
+		@RequestMapping(value = "CommitteeMinutesSpecEdit.htm", method = RequestMethod.GET)
+		public @ResponseBody String CommitteeMinutesSpecEdit(HttpSession ses, HttpServletRequest req) throws Exception 
+		{
+			Object[] DisDesc = null;
+			String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId);
+			try
+			{
+				String Username = (String) ses.getAttribute("Username");
+				CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
+				committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
+				DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
+			}
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId,e);
 			}
-				
-					Gson json = new Gson();
-					return json.toJson(DisDesc);
+			Gson json = new Gson();
+			return json.toJson(DisDesc);
 		}
 	  
 	  @RequestMapping(value="CommitteeMinutesEditSubmit.htm", method=RequestMethod.POST)
-	  public String CommitteeMinutesEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
-			
-			
+	  public String CommitteeMinutesEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
+	  {
 			String UserId=(String)ses.getAttribute("Username");
 			logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
 			try
@@ -1610,9 +1596,6 @@ public class CommitteeController {
 				if (count > 0) {
 					redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
 					redir.addAttribute("membertype",req.getParameter("membertype"));
-					
-					
-					
 				} else {
 					redir.addAttribute("resultfail", " Schedule Minutes Update Unsuccessful");
 				}
@@ -6069,6 +6052,23 @@ public class CommitteeController {
 
 		}
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		@RequestMapping(value = "PreDefinedAgendaDelete.htm", method = RequestMethod.POST)
 		public String PreDefinedAgendaDelete(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,RedirectAttributes redir)throws Exception 
 		{
@@ -6102,7 +6102,7 @@ public class CommitteeController {
 		}
 		
 		
-		@RequestMapping(value = "getMinutesFrozen.htm", method = RequestMethod.POST)
+		@RequestMapping(value = "getMinutesFrozen.htm")
 		public String getMinutesFrozen(HttpServletRequest req, HttpSession ses,HttpServletResponse res,RedirectAttributes redir) throws Exception 
 		{	
 			String UserId = (String) ses.getAttribute("Username");

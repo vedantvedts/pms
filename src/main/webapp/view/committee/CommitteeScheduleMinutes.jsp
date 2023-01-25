@@ -290,42 +290,28 @@ if(formname!=null){
 	</a>
 	
 	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-	
-			<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-			    <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-				<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-				<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
-				
-			<%} %>
-			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >MINUTES</button>
-			<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
-			<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
-			<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
-			<input type="hidden" name="membertype" value="<%=membertype%>">
-			<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
+		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
+		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
+			<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
+		<%} %>
+		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >MINUTES</button>
+		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
+		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
+		<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+		<input type="hidden" name="membertype" value="<%=membertype%>">
+		<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
 	</form>
+	
+	
 </nav>    
 <div class="container-fluid">          
 <div class="row"> 
 <div class="col-md-5" >
 	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     	<div class="card-body" style="margin-top: -8px" >
-        	
-        	
-        	
-				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; ">MINUTES</b> 
-				<hr><br>
-				
-				<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-					
-			</form>  --%>
-			
-			
-					
          <div class="panel panel-info" style="margin-top: 10px;" >
-         
       		<div class="panel-heading ">
         		<h4 class="panel-title">
           			<span  style="font-size:14px">1. Introduction </span>  
@@ -342,13 +328,12 @@ if(formname!=null){
 	         		
 	         		<tbody>
 	         		
-				       <%
+				      <%
 				      if(!dis.isEmpty()){
 				    	  for(Object[] hlo:dis){
 				      if("1".equalsIgnoreCase(hlo[0].toString())){
 				    	   /* GenId="GenEdit";  */ 
 				       %>   
-      	
 	      				<tr>
 	
 				      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
