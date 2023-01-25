@@ -55,6 +55,8 @@ public class MasterController {
 		}
 		req.setAttribute("Onboarding", onboard);
 		req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
+		req.setAttribute("AllOfficerList", service.OfficerList());         
+		
 		return "master/OfficerMasterList";
 	}
 	
