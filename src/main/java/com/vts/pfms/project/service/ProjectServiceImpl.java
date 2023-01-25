@@ -1826,7 +1826,7 @@ public class ProjectServiceImpl implements ProjectService {
 			list.add(temp);
 		}
 
-		list.addAll(dao.DoRtmdAdEmpData());
+		list.addAll(dao.DoRtmdAdEmpData(LabCode));
 
 		temp = dao.DirectorEmpData(LabCode);
 		if (temp != null) {

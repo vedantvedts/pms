@@ -156,7 +156,7 @@ public interface ProjectDao {
 	public Long AuthorityFileUpdate(PfmsInitiationAuthorityFile pfmsinitiationauthorityfile) throws Exception;
 	public List<Object[]> getProjectCatSecDetalis(Long projectId)throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid, String Logintype ,String LabCode) throws Exception;
-	public List<Object[]> DoRtmdAdEmpData() throws Exception;
+	public List<Object[]> DoRtmdAdEmpData(String Labcode) throws Exception;
 	public Object[] DirectorEmpData(String LabCode) throws Exception;
 	public Object[] EmpDivHeadData(String empid) throws Exception;
 	public ProjectMain ProjectMainObj(String projectmainid) throws Exception;

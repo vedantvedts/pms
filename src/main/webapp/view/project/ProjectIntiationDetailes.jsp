@@ -1448,8 +1448,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						
 				 <div class="table-responsive">
 				<!--  <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5"> -->
-				 <div style="height: 325px; overflow: auto">
-	 			 <table class="table" id="myTableReq" style="height: 300px"> 
+				<%  int i=1;%>
+				 <div style="height: 300px; overflow: auto">
+	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
 	 			 <thead>
 	 			 <tr style="background-color: #055C9D;color:white; top:0; position: sticky;">
 <!-- 	 			  <th style="width: 5%;">Select</th> -->
@@ -1469,7 +1470,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 			<!-- 	<th style="width:20%">ADD</th> -->
 	 			 <tbody>
 	 		
-	 			 <%int i=1; 
+	 			 <%
 	 			 if(RequirementList!=null)
 	 				 for(Object obj[]:RequirementList){
 	 			 %>     
