@@ -49,13 +49,12 @@
 
 
 	<div class="row">
-	
 		<div class="col-md-12 ">
 			<div class="card shadow-nohover" >
 				<div class="card-header" >
 					<div class="row">
 						<div class="col-md-6"><h3>FEEDBACK</h3></div>
-						<div class="col-md-6"><a class="btn btn-sm back" href="MainDashBoard.htm" style="float: right;">BACK</a></div>
+						<div class="col-md-6"><a class="btn btn-sm back" href="FeedBack.htm" style="float: right;">BACK</a></div>
 					</div>
 				</div>
 				<div class="card-body">
@@ -65,7 +64,19 @@
 							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16">
 								<thead>
 									<tr>
-										<th style="text-align: left;"><label>Feed Back: <span class="mandatory" style="color: red;">*</span></label></th>
+										<th style="text-align: left;"><label>Feedback Type: <span class="mandatory" style="color: red;">*</span></label></th>
+										<td>
+											<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"   style="font-size: 5px;">
+												<option value=""  selected="selected"	hidden="true">--Select--</option>
+												<option value="B">Bug</option>
+												<option value="C">Content Change</option>
+												<option value="U">User Interface</option>
+												<option value="N">New Requirement</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th style="text-align: left;"><label>Feedback: <span class="mandatory" style="color: red;">*</span></label></th>
 										<td colspan="3">
 							            	<textarea  id="summernote" class="center"></textarea>
 											<textarea name="Feedback" style="display: none;"></textarea>
@@ -77,18 +88,14 @@
 						</div>
 						
 						<div align="center">
-							<input type="submit" class="btn btn-primary btn-sm editbasic"  value="ADD FEEDBACK"  name="sub" onclick="return confirm('Are You Sure to Submit?');"/>
+							<input type="submit" class="btn btn-primary btn-sm editbasic"  value="Submit"  name="sub" onclick="return confirm('Are You Sure to Submit?');"/>
 						</div>
 																	
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
 															
 				</div>
-													
-			
 			</div>
-		
-		
 		</div>
 	</div>	
 
@@ -102,24 +109,23 @@
 </body>
 <script type="text/javascript">
 
-		
-		
-		
-		
-		
-
-
 	  $("#Feedbackadd").on('submit', function (e) {
 
 		  var data =CKEDITOR.instances['summernote'].getData();
-		  
-		  
-	      
+		  console.log(data);
+		  var feedbacktype = $('#ftype').val();
+		  if(data=='' ){
+			  alert("Please Enter Feedback!");
+			  return false;
+		  }else if(feedbacktype=='' ){
+			  alert("Please Select Feedback Type!");
+			  return false;
+		  }else{
 			  $('textarea[name=Feedback]').val(data);
-
-	              	                    
-	                    
-	                });
+			  return true;
+		  }
+			  
+});
 
 	            
 

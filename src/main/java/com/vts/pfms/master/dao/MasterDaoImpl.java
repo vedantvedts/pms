@@ -60,7 +60,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
-	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode";
+	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
 
 	
 	@PersistenceContext
@@ -500,7 +500,16 @@ public class MasterDaoImpl implements MasterDao {
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}
-
+	private static final String FEEDBACKLISTFORUSER="SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND a.empid=:empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
+	@Override
+	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception
+	{
+		Query query = manager.createNativeQuery(FEEDBACKLISTFORUSER);
+		query.setParameter("labcode", LabCode);
+		query.setParameter("empid", empid);
+		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
+		return FeedbackList;
+	}
 
 	private static final String FEEDBACKCONTENT = "SELECT a.feedbackid,b.empname,a.createddate,a.feedback FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND feedbackid=:feedbackid";
 	

@@ -118,11 +118,8 @@ if(details!=null){
 											                <label>Rank/Salutation</label><br>
 											                 <select class="form-control selectdee" id="salutationExp" name="salutation" data-container="body" data-live-search="true"  required="required" style="font-size: 5px;">
 																<option value=""  selected="selected"	hidden="true">--Select--</option>
-																<option value="Shree." <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Shree.")){%> selected="selected" <%}%>> Shree.</option>
-																<option value="Smt."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Smt.")){%>   selected="selected" <%}%>> Srimathi/Smt.</option> 
 																<option value="Mr."    <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>
-																<option value="Mrs."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Mrs.")){%>   selected="selected" <%}%>> Mrs.</option>
-																<option value="Miss."  <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Miss.")){%>  selected="selected" <%}%>> Miss.</option>
+																<option value="Ms."   <%if(detail[2]!=null && detail[2].toString().equalsIgnoreCase("Ms.")){%>   selected="selected" <%}%>> Ms.</option>
 															</select>
 													</div>
 									</div>

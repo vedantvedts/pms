@@ -129,6 +129,7 @@ font-weight: bold;
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 String Onboarding = (String)request.getAttribute("Onboarding");
 List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
+List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerList");
 
 %>
 
@@ -351,6 +352,8 @@ function Delete(myfrm){
          	 var ExtNo=[];
          	 var EmpEmail=[];
          	 var empname1=[];
+         	 var dronaEmail=[];
+         	 var InternetEmail=[];
              for(var row = 0; row < sheet_data.length; row++)
              {            	
              	  table_output += ' <tr> ';
@@ -389,8 +392,22 @@ function Delete(myfrm){
                  		var name= ''+sheet_data[row][cell]+'';
                  		if(name.trim()=='' ||name.trim()=='undefined'){empname1.push(row); }
                  	}
-                 	if(row>0 && cell>0){
+                 	if(row>0 && cell>0 && cell!=6 && cell!=7){
                  		table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                 	}
+                 	if(row>0 && cell>0 && (cell==6 ||cell==7)){
+                 		var email= ''+sheet_data[row][cell]+'';
+                 		console.log("email   :"+email);
+                 		if(email=='' || email=='undefined'){
+                 			table_output += '<td> - </td>';
+                 		}else{
+                 			
+                     		var EMAIL_REGEXP = new RegExp('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$', 'i');
+                     		if(email!='' && email!='undefined' && cell==6 && !EMAIL_REGEXP.test(email)){ dronaEmail.push(row); }
+                     		if(email!='' && email!='undefined' && cell==7 && !EMAIL_REGEXP.test(email)){ InternetEmail.push(row); }
+                 			table_output += '<td>'+sheet_data[row][cell]+'</td>';
+                 			
+                 		}
                  	}
 	
                  }
@@ -402,7 +419,7 @@ function Delete(myfrm){
              table_output += ' <tbody>';
              document.getElementById('myTable1').innerHTML = table_output;
               
-              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:OfficerList) { %>"<%= obj[1] %>"<%= i + 1 < OfficerList.size() ? ",":"" %><% } %>];
+              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:AllOfficerlist) { %>"<%= obj[1] %>"<%= i + 1 < AllOfficerlist.size() ? ",":"" %><% } %>];
                      
               var employeeNo=[];
               for (var i in sheet_data) {
@@ -446,12 +463,17 @@ function Delete(myfrm){
              	if(EmpEmail.length>0){
              		msg+="Email is not valid at serial No :"+ EmpEmail +"\n";
              	}
-             		
+             	if(dronaEmail.length>0){
+             		msg+="Drona Email is not valid at serial No :"+ dronaEmail +"\n";
+             	}	
+             	if(InternetEmail.length>0){
+             		msg+="Internet Email is not valid at serial No :"+ InternetEmail +"\n";
+             	}
              	if(checkExcel>0){
         			 alert("Please Upload Employee Master Excel ");
         			excel_file.value = '';
         		} else {
-	            	if(empname1.length>0 || EmpEmail.length>0 || ExtNo.length>0 || phoneno.length>0 || Employeeno.length>0 || dbDuplicate.length>0|| indexval.length>0  ){
+	            	if(InternetEmail.length>0 || dronaEmail.length>0 || empname1.length>0 || EmpEmail.length>0 || ExtNo.length>0 || phoneno.length>0 || Employeeno.length>0 || dbDuplicate.length>0|| indexval.length>0  ){
 	            		alert(msg);
 	            		excel_file.value = '';
 	            	} else {

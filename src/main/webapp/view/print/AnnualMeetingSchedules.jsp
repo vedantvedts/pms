@@ -127,7 +127,7 @@ SimpleDateFormat sdf5 = new SimpleDateFormat("dd-MM-yyyy");
 String year=(String)request.getAttribute("year");
 
 %>
-<div class="row" style="top: 10px;" > 
+<div class="row" style="top: 10px;padding:12px;" > 
 <div class="col-sm-12"  >
 <div class="card" >
 <div  class="card-header">
@@ -140,7 +140,7 @@ String year=(String)request.getAttribute("year");
                  <input class="form-control  form-control" type="text" id="year" value="<%=year %>"  name="year" style="width: 70px; height: 100%;">
                  </div>  
                  <div class="col-md-1" >
-                 <input type="submit"  class="btn btn-primary btn-sm " />
+                 <input type="submit"  class="btn btn-success btn-sm " />
                  </div> 
                  </div>
                  

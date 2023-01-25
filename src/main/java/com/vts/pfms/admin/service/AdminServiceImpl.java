@@ -122,6 +122,44 @@ public class AdminServiceImpl implements AdminService{
 			throw new Exception();
 		}
 	}
+	
+	
+	@Override
+	public Long UserManagerInsertFromExcel(UserManageAdd UserManageAdd, String Userid) throws Exception 
+	{
+		logger.info(new Date() +"Inside SERVICE UserManagerInsert ");
+		if(dao.UserNamePresentCount(UserManageAdd.getUserName())==0) {
+		Login login=new Login();
+		DivisionEmployee logindivision=new DivisionEmployee();
+		login.setUsername(UserManageAdd.getUserName());
+		login.setPassword("$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui");
+		login.setPfms("Y");
+		login.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
+		login.setFormRoleId(Long.parseLong(UserManageAdd.getRole()));
+		login.setCreatedBy(Userid);
+		login.setCreatedDate(sdf1.format(new Date()));
+		login.setIsActive(1);
+		login.setLoginType(UserManageAdd.getLoginType());
+		if(UserManageAdd.getEmployee()!=null) {
+		login.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
+		}else {
+			login.setEmpId(Long.parseLong("0"));
+		}
+		
+		//HashSet< Role> Roles=new HashSet<Role>();
+		//Roles.add(roleRepository.findAll().get(Integer.parseInt(UserManageAdd.getRole())-1));
+		//login.setRoles(Roles);
+		
+	    logindivision.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
+	    logindivision.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
+	    logindivision.setCreatedBy(Userid);
+	    logindivision.setCreatedDate(sdf1.format(new Date()));
+	    logindivision.setIsActive(1);
+		return dao.UserManagerInsert(login,logindivision) ;
+		}else {
+			return 0l;
+		}
+	}
 
 
 	@Override

@@ -1,3 +1,4 @@
+
 	<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
@@ -1114,78 +1115,78 @@ for(Object[] obj : DetailsList){   %>
 		  <tbody>
 				  	<tr>	
 				  		<td rowspan="10">052 <br>(Code Head-929/25)*</td>	
-				  		<td> Transportation (Movement of Stores)</td>
+				  		<td style="padding:10px;"> Transportation (Movement of Stores)</td>
 				  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
-				  		<td>0.00</td>
+				  		<td align="right">0.00</td>
 				  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000) %>)</td>
 				   </tr>
 				   <tr>
-				   		<td> Equipment/Stores</td>
+				   		<td  style="padding:10px;"> Equipment/Stores</td>
 				   		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
-				  		<td>0.00</td>
+				  		<td align="right">0.00</td>
 				  		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 				   </tr>	 	
 				  <tr>
-				 		<td> CARS/CAPSI </td>
+				 		<td  style="padding:10px;"> CARS/CAPSI </td>
 				  		<td><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
-				  		<td>0.00</td>
+				  		<td align="right">0.00</td>
 				  		<td><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
 				  </tr>
 				  <tr>
-				 		<td> Consultancy Contracts </td>
+				 		<td  style="padding:10px;"> Consultancy Contracts </td>
 				  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
-				  		<td> 0.00</td>
+				  		<td align="right"> 0.00</td>
 				  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
 				  </tr> 
 				  <tr>
-				  		<td> Job Work/Contracts/Technical Services</td>
+				  		<td  style="padding:10px;"> Job Work/Contracts/Technical Services</td>
 				  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
-				  		<td> 0.00</td>
+				  		<td align="right"> 0.00</td>
 				  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 				  </tr>
 
 				  <tr>
-				 	 <td> Hiring of Transport </td>
+				 	 <td  style="padding:10px;"> Hiring of Transport </td>
 				 	 <td><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
-				  	 <td> 0.00</td>
+				  	 <td align="right"> 0.00</td>
 				  	 <td><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
 				 </tr>
 				 <tr>
-				 	<td> Fuel/Oil/Lubricants for Project Vehicles</td>
+				 	<td  style="padding:10px;"> Fuel/Oil/Lubricants for Project Vehicles</td>
 				 	<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
-				  	<td> 0.00</td>
+				  	<td align="right"> 0.00</td>
 				    <td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
 				 </tr>	
 				  <tr>
-				 	<td> Contingency & Miscellaneous</td>
+				 	<td  style="padding:10px;"> Contingency & Miscellaneous</td>
 				 	<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
-				  	<td> 0.00</td>
+				  	<td align="right"> 0.00</td>
 				  	<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 				 </tr>	 
 				 <tr>
-				  	<td> Plant & Machinery</td>
+				  	<td  style="padding:10px;"> Plant & Machinery</td>
 				  	<td><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
-				  	<td> 0.00</td>
+				  	<td align="right"> 0.00</td>
 				  	<td><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
 				</tr>
 			    <tr>
-			  		<td> Project related Vehicles </td>
+			  		<td  style="padding:10px;"> Project related Vehicles </td>
 			  		<td><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
-				  	<td> 0.00</td>
+				  	<td align="right"> 0.00</td>
 				  	<td><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
 			  	</tr>
 			  	 <tr>
-			  		<td> 111 </td>
+			  		<td  style="padding:10px;"> 111 </td>
 			  		<td> Works</td>
 			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
-				  	<td> 0.00</td>
+				  	<td align="right"> 0.00</td>
 				  	<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
 				  	
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total </td>
 			  		<td><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
-			  		<td>0.00</td>
+			  		<td align="right">0.00</td>
 			  		<td><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td></td>
 			  	</tr>
 		  </tbody>
@@ -1315,81 +1316,81 @@ for(Object[] obj : DetailsList){   %>
 		  <tbody>
 			  	<tr>
 			  		<td> 105</td>
-			  		<td> Transportation (Movement of Stores) </td>
+			  		<td style="padding:10px;"> Transportation (Movement of Stores) </td>
 			  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
 			  	</tr>
 			  	
 			  	<tr>
 			  		<td rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
-			  		<td> Equipment/Stores </td>
+			  		<td style="padding:10px;"> Equipment/Stores </td>
 			     	<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td> CARS</td>
+			  		<td style="padding:10px;"> CARS</td>
 			  		<td><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td> CAPSI</td>
+			  		<td style="padding:10px;"> CAPSI</td>
 			  		<td><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td> Consultancy Contracts </td>
+			  		<td style="padding:10px;"> Consultancy Contracts </td>
 			  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td> Job Work/Contracts/Hiring of <br>Technical Services</td>
-			  		<%-- <td> <%=TechnicalServices %></td> --%>
+			  		<td style="padding:10px;"> Job Work/Contracts/Hiring of <br>Technical Services</td>
+			  		<%--  <td> <%=TechnicalServices %></td> --%> 
 			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 
 			  	</tr> 
 				<tr>
-			  		<td> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
+			  		<td style="padding:10px;"> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
 			  		<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td>Contingency & Miscellaneous</td>
+			  		<td style="padding:10px;">Contingency & Miscellaneous</td>
 			  		<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 
 			  	</tr>
 			  	<tr>
 			 	 	<td> 111</td>
-			  		<td> Works</td>
+			  		<td style="padding:10px;"> Works</td>
 			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total (Revenue)</td>
 			  	    <td><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
 			  	    (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks)/100000)%>)</td>	
-			  		<td>0.00</td>
+			  		<td align="right">0.00</td>
 			  		<td><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
 			  		(<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			 	 	<td rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
-			  		<td> Plant & Machinery </td>
+			  		<td style="padding:10px;"> Plant & Machinery </td>
 			  		<td rowspan="2"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
-			  		<td rowspan="2">0.00</td>
+			  		<td rowspan="2" align="right">0.00</td>
 			  		<td rowspan="2"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
 			  	</tr>
 			  	<tr>
@@ -1397,9 +1398,9 @@ for(Object[] obj : DetailsList){   %>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td> Works </td>
+			  		<td style="padding:10px;"> Works </td>
 			  		<td> <%=nfc.convert(Works/100000) %> (<%=nfc.convert(FEWorks/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td> <%=nfc.convert(Works/100000) %> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  	</tr>
 			  	
@@ -1408,13 +1409,13 @@ for(Object[] obj : DetailsList){   %>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total (Capital)</td>
 			  		<td><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+Works)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
-			  		<td>0.00</td>
+			  		<td align="right">0.00</td>
 			  		<td><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+Works)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Grand Total (Revenue & Capital)</td>
 			  		<td> <%=nfc.convert(grandtotal/100000)%>   (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+ FEPlantMachinery + FEProjectrelatedVehicles)/100000)%>)</td>
-			  		<td> 0.00</td>
+			  		<td align="right"> 0.00</td>
 			  		<td> <%=nfc.convert(grandtotal/100000)%></td>
 			  	</tr>
 		  </tbody>

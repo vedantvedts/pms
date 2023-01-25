@@ -1,6 +1,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.util.*"%>
+	pageEncoding="ISO-8859-1" import="java.util.* , java.text.DateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,12 +80,29 @@ a:hover {
 
 </head>
 <body>
-
+<%String ses=(String)request.getParameter("result"); 
+ 	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+%>
+	<div align="center">
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+	</div>
+<%} %>
 
 		
 
 			<%
+				DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+				SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				List<Object[]> FeedbackList = (List<Object[]>) request.getAttribute("FeedbackList");
 			%>
 
@@ -102,7 +119,7 @@ a:hover {
 						</div>
 					</div>	
 					<div class="card-body"> 
-					
+					<form action="##">
 							 <div class="datatable-dashv1-list custom-datatable-overright">
 			                    
 			                <table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
@@ -121,10 +138,10 @@ a:hover {
 								<tr>
 									<td style=""><%=++count%></td>
 									<td style="text-align: center;"><%=obj[1]%></td>
-									<td style="text-align: left;"><%=sdf.format(obj[2]) %></td>
+									<td style="text-align: left;"><%=sdf.format(inputFormatter.parse(obj[2].toString()) ) %></td>
 									<td style="text-align: left;">
 									
-										<button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal(<%=obj[0]%>)">
+										<button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal('<%=obj[0]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
 											<div class="cc-rockmenu">
 												<div class="rolling">
 													<figure class="rolling_icon">
@@ -134,10 +151,7 @@ a:hover {
 												</div>
 											</div>
 										</button>
-									
-									
 									</td>
-									
 								</tr>
 								<%
 									}
@@ -145,9 +159,12 @@ a:hover {
 							</tbody>
 						</table>
 					</div>
+					 <div align="center"> 
+					 	<button type="submit" class="btn btn-primary btn-sm add" formaction="FeedBackPage.htm" formmethod="get">ADD Feedback </button>
+					 	
+					 </div>
+					 </form>		
 				</div>
-
-
 			</div>
 		</div>
 	</div>
@@ -183,7 +200,7 @@ a:hover {
 
 <script>
 
-function feedbackmodal(feedbackid)
+function feedbackmodal(feedbackid , feedbackdate)
 {
 	
 	$.ajax({
@@ -205,7 +222,8 @@ function feedbackmodal(feedbackid)
 				return result[e]
 				
 			})
-			$('#feedby').html(values[1]+' on '+values[2]);
+			
+			$('#feedby').html(values[1]+' on '+feedbackdate);
 			$('#feedbackdiv').html(values[3]);
 			$('#feedbackdata').modal('toggle');
 			

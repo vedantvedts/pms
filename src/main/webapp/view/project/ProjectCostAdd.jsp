@@ -56,6 +56,7 @@ Double TotalIntiationCost=(Double)request.getAttribute("TotalIntiationCost");
 Map<String,List<Object[]>> BudgetItemMap=(Map<String,List<Object[]>>)request.getAttribute("BudgetItemMap");
 Map<String,List<Object[]>> BudgetItemMapList=(Map<String,List<Object[]>>)request.getAttribute("BudgetItemMapList");
 NFormatConvertion nfc=new NFormatConvertion();
+List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadList");
 %>
 
 
@@ -116,7 +117,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					            	<label class="control-label">Budget Head </label>
 										 <select class="custom-select" id="BudgetHead" required="required" name="BudgetHead">
 										    <option disabled="true"  selected value="">Choose...</option>
-										    <% for (Object[] obj : BudgetHead) {%>
+										    <% for (Object[] obj : BudgetHeadList) {%>
 										<option value="<%=obj[0]%>"><%=obj[1]%></option>
 										<%} %>
 										  </select>

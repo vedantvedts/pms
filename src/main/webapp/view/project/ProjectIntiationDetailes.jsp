@@ -55,15 +55,33 @@ padding-left:0px;
 	font-weight: 400;
 	font-style: italic;
 }
-
+.requirement{
+background-color:#80d8ff;
+padding:0px 5px 0px 5px; 
+border-radius:5px;
+height:36px;
+}
+#reqbtn{
+font-family: 'Lato',sans-serif;
+margin-right:16px;
+margin-top:3px;
+color:buttonshadow;
+height:22px;
+width:27px;
+}
+#addreq{
+width:40%;
+}
 .nav-link{
 	text-align: left;
 }
-
 .nav-tabs>.nav-item>.nav-link{
-	padding: 11px 40px !important;
+	padding: 11px 15px !important;
 }
-
+/* .nav-tabs>.nav-item>#nav{
+	padding: 0px 5px !important;
+}
+ */
 body { 
    overflow-x: hidden;
 }
@@ -71,6 +89,67 @@ body {
 .text-center{
 	text-align: left !imporatant;
 }
+#req{
+background-color: rgba(50, 115, 220, 0.3);
+margin-top:7px;
+border-radius:5px;
+ height:28px; 
+
+}
+#reqbtn1{  
+ height:20px;
+ margin-left:0px;
+
+ font-size:13px;
+ width:30px;
+
+}
+#reqbtn2{
+ float:left;
+ height:20px;
+ margin-left:31px;
+ margin-top:4px;
+ font-size:13px;
+ width:30px;
+
+}
+s/
+
+/*  .table .font{
+	  font-family:'Muli', sans-serif !important;
+	  font-style: normal;
+	  font-size: 13px;
+	  font-weight: 400 !important;
+	 
+} */
+
+
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+} */
+
+
 
 </style>
 </head>
@@ -90,7 +169,8 @@ SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 String Details=(String)request.getAttribute("Details");
 String DetailsEdit=(String)request.getAttribute("DetailsEdit");
-
+List<Object[]>ReqTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
+List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
 %>
 
 
@@ -135,7 +215,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
       <div class="card slider">
       
       
-        <div class="card-header slider_header">
+        <div class="card-header slider_header" style="padding:0px; font-size:12px!important">
         
              <h3 class="category">Initiation Details 
              
@@ -159,9 +239,9 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
              </h3> 
         <hr style=" margin: 0 !important;">
         
-          <ul class="nav nav-tabs justify-content-center" role="tablist">
-            <li class="nav-item">
-             <%if(TabId==null){ %> <a class="nav-link active " data-toggle="tab" href="#home" role="tab"><%}else{ %>
+          <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+            <li class="nav-item" id="nav">
+             <%if(TabId==null){ %> <a class="nav-link active " data-toggle="tab" href="#home" id="nav" role="tab"><%}else{ %>
                <a class="nav-link  " data-toggle="tab" href="#home" role="tab">
                <%} %>  
                 <svg height="12pt" viewBox="-7 0 503 503.62701" width="15pt" ><path d="m289 338.503906 27.683594-4.488281c1.914062-.3125 3.878906 0 5.597656.898437l163.320312 85.546876c3.375 1.769531 5.265626 5.476562 4.714844 9.25-.546875 3.773437-3.417968 6.789062-7.160156 7.519531l-339.203125 66.230469c-2.527344.492187-5.140625-.117188-7.1875-1.683594l-132.921875-101.652344c-2.851562-2.179688-4.132812-5.847656-3.257812-9.328125s3.738281-6.109375 7.28125-6.679687l144.78125-23.425782zm0 0" fill="#7d6599"/><path d="m281.097656 376.230469 29.460938-4.8125c1.921875-.320313 3.894531-.003907 5.625.898437l62.085937 32.542969c3.375 1.769531 5.265625 5.480469 4.714844 9.253906-.550781 3.773438-3.425781 6.785157-7.167969 7.515625l-222.890625 43.476563c-2.523437.492187-5.140625-.117188-7.1875-1.679688l-53.894531-41.214843c-2.84375-2.175782-4.121094-5.839844-3.25-9.316407.871094-3.476562 3.730469-6.101562 7.265625-6.679687l73.925781-12.019532zm0 0" fill="#3d324c"/><path d="m14.226562 243.742188c1.25-1.097657 14.300782 5.648437 15.648438 6.242187 13.253906 5.828125 26.085938 12.578125 38.390625 20.210937 31.863281 19.5 58.582031 46.359376 77.914063 78.324219 15.730468 26.195313 27.640624 74.871094 65.664062 74.871094 18.214844 0 38.917969.589844 52.761719-13.304687 16.921875-17.003907 17.226562-41.820313 22.457031-63.773438 25.917969-103.535156 75.414062-199.675781 144.617188-280.929688 4.25-5.082031 8.566406-10.113281 12.941406-15.089843 8.886718-9.988281 18.316406-19.480469 28.242187-28.4375 1.347657-1.222657 3.683594-3.726563 6.46875-6.585938 2.550781-2.601562 3.277344-6.488281 1.835938-9.835937-1.4375-3.347656-4.757813-5.496094-8.402344-5.433594-57.191406 1.816406-193.269531 31.753906-269.90625 261.707031 0 0-116.773437-80.84375-188.632813-17.964843zm0 0" fill="#4fba6f"/><g fill="#71c285"><path d="m301.667969 162.898438c-1.523438 0-3.019531-.386719-4.347657-1.132813-4.335937-2.40625-5.898437-7.871094-3.496093-12.207031 45.730469-82.324219 100.363281-110.320313 102.632812-111.472656 4.4375-2.230469 9.839844-.445313 12.074219 3.988281 2.230469 4.4375.445312 9.839843-3.988281 12.074219-.683594.347656-52.222657 27.152343-94.988281 104.125-1.589844 2.863281-4.613282 4.636718-7.886719 4.625zm0 0"/><path d="m274.71875 207.808594c-3.113281 0-6-1.613282-7.636719-4.257813-1.636719-2.648437-1.785156-5.953125-.394531-8.738281l8.984375-17.964844c1.433594-2.871094 4.292969-4.757812 7.496094-4.949218 3.207031-.191407 6.269531 1.339843 8.035156 4.019531 1.769531 2.679687 1.972656 6.097656.539063 8.96875l-8.984376 17.964843c-1.523437 3.042969-4.636718 4.960938-8.039062 4.957032zm0 0"/></g></svg>
@@ -171,12 +251,12 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
             
             
             
-             <li class="nav-item">
+             <li class="nav-item"   >
              
              <%if(Integer.parseInt(ProjectProgressCount[4].toString())>0){ %>
               
                   <%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %>
-              <a class="nav-link active" data-toggle="tab" href="#authority" role="tab" >
+              <a class="nav-link active" data-toggle="tab" href="#authority" id="nav"role="tab" >
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#authority" role="tab" >
                 <%} %>
@@ -196,12 +276,12 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
              <%} %> 
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item"  >
              
              <%if(Integer.parseInt(ProjectProgressCount[0].toString())>0){ %>
               
                   <%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %>
-              <a class="nav-link active" data-toggle="tab" href="#profile" role="tab" >
+              <a class="nav-link active" id="nav" data-toggle="tab" href="#profile" role="tab" >
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#profile" role="tab" >
                 <%} %>
@@ -221,10 +301,34 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 						</form>	
              <%} %> 
             </li>
-            <li class="nav-item">
+                <li class="nav-item"  >
+          <%if(Integer.parseInt(ProjectProgressCount[5].toString())>0){ %>
+               <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
+              <a class="nav-link active" id="nav" data-toggle="tab" href="#requirement" role="tab" >
+              <%}else{ %>
+              <a class="nav-link" data-toggle="tab" href="#requirement" role="tab" >
+                <%} %>
+             <!--  <i class="fa fa-th-large" aria-hidden="true" style="color:#005086"></i> -->
+              <img src="view/images/requirement.png" style="vertical-align: sub">
+				REQUIREMENTS
+              </a>
+               <%} else{%>
+               <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
+                  <a class="nav-link condn-nav-link" data-toggle="tab" href="#requirement" role="tab" onclick='$("#ReqAdd").submit()'>
+		<!-- 		<i class="fa fa-th-large" aria-hidden="true" style="color:#005086"></i> -->
+		 <img src="view/images/requirement.png" style="vertical-align: sub">
+				REQUIREMENTS
+              </a>
+                   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+						</form>	
+               <%} %> 
+            </li> 
+            
+            <li class="nav-item" >
             <%if(Integer.parseInt(ProjectProgressCount[1].toString())>0){ %>
                <%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %>
-              <a class="nav-link active" data-toggle="tab" href="#messages" role="tab" >
+              <a class="nav-link active" id="nav" data-toggle="tab" href="#messages" role="tab" >
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#messages" role="tab" >
                 <%} %>
@@ -243,10 +347,10 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 						</form>	
                 <%} %>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" >
              <%if(Integer.parseInt(ProjectProgressCount[2].toString())>0){ %>
               <%if(TabId!=null&&TabId.equalsIgnoreCase("3")){ %>
-              <a class="nav-link active" data-toggle="tab" href="#settings" role="tab" >
+              <a class="nav-link active" id="nav" data-toggle="tab" href="#settings" role="tab" >
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#settings" role="tab" >
                 <%} %>
@@ -265,10 +369,10 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
                 <%} %>
             </li>
             
-                      <li class="nav-item">
+                      <li class="nav-item" >
              <%if(Integer.parseInt(ProjectProgressCount[3].toString())>0){ %>
               <%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %>
-              <a class="nav-link active" data-toggle="tab" href="#attachment" role="tab" >
+              <a class="nav-link active" id="nav" data-toggle="tab" href="#attachment" role="tab" >
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#attachment" role="tab" >
                 <%} %>
@@ -434,7 +538,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
                 <%} %>
             
           
-                <div class="table-responsive">
+                <div class="table-responsive" style="width: 97%; margin-left: 24px;">
 				                    <table class="table">
 				                       <thead class="thead" style="color:white!important;background-color: #055C9D">
 				                            <tr>
@@ -551,13 +655,9 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
             
 
              <div class="container-fluid">
-
 		        <div class="row">
 		            <div class="col-md-12 details_container">
-       
-       
 						        <div class="tab-vertical">
-						        
        						 <%for(Object[] 	obj:DetailsList){ %> 
        						
 						            <ul class="nav nav-tabs" id="myTab3" role="tablist">
@@ -574,7 +674,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 						            
 						            	<li class="nav-item">
 
-						                   <%if(obj[0]!=null){ %> 
+						                   <%if(obj[13]!=null){ %> 
 											
 						            		<a class="nav-link <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> active <%} %>  " id="req-vertical-tab" data-toggle="tab" href="#req-vertical" role="tab" aria-controls="contact" aria-selected="false">Requirement <img src="view/images/check.png" align="right"></a> 
 							                
@@ -820,7 +920,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Requirements</b></h4>
+				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Requirement</b></h4>
 				                            		</div>
 				                            		
 					                   				<div class="col-md-2" style="margin-bottom: 2px">
@@ -838,19 +938,12 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
 	
 											</form>
-<%--  							<p><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p> 
- --%> 								
- 											<div class="col-md-1"  id="initiation" ;style="padding-left:0px !important;" align="left">
+											<div class="col-md-1"  id="initiation" ;style="padding-left:0px !important;" align="left">
  											<label style="margin-top:0px;  margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
  											<h5 style="font-family: 'Lato',sans-serif;" ><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[13]!=null){%><%=obj[13] %><%}else{ %>-<%} %></p>	
-											<hr>
-											<div class="col-md-1" id="initiation"  ><label style="margin-top:0px; margin-left:0px; margin-bottom:0px; font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p></div>
-						               
- 
 						                </div>
 						                
 						                
@@ -1321,406 +1414,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
             
         </div>
     </div> 
-						           <%--  <div class="tab-content" id="myTabContent3">
-						            
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("requirement")){ %> show active <%} %>  " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm" id="myForm">
-                            	
-				                            	<div class="row ">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Requirements</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 2px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="requirement" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-                            
- 											<p><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></p>
- 
-						                </div>
-						                
-						                
-						                
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("objective")){ %> show active <%} %> " id="obj-vertical" role="tabpanel" aria-labelledby="obj-vertical-tab"> 
-											<form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm1" id="myForm1">
-                            
-				                            	<div class="row ">
-				                            		
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Objective</b></h4>
-				                            		</div>
-				                            	
-					                   				<div class="col-md-1" >
-														<button class="share-button" style="border: none;font-size:13px" form="myForm1" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm1">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="objective" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-											<p><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></p>
-											
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("scope")){ %> show active <%} %> " id="scope-vertical" role="tabpanel" aria-labelledby="scope-vertical-tab">
-						                    
-											<form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm2" id="myForm2">
-                            
-				                            	<div class="row ">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Scope</b></h4>
-				                            		</div>
-				                            	
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm2" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm2">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="scope" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></p>
-
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null && Details.equalsIgnoreCase("multilab")){ %> show active <%} %>" id="multilab-vertical" role="tabpanel" aria-labelledby="multilab-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm3" id="myForm3">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Multi-Lab Work Share	</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm3" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm3">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="multilab" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></p>				                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("earlierwork")){ %> show active <%} %>" id="earlierwork-vertical" role="tabpanel" aria-labelledby="earlierwork-vertical-tab">
-						                    
-											<form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm4" id="myForm4">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Earlier Work</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm4" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm4">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="earlierwork" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></p>
-                                									                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("competency")){ %> show active <%} %> " id="competency-vertical" role="tabpanel" aria-labelledby="competency-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm5" id="myForm5">
-                            
-				                            	<div class="row ">
-				                            		
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Competency</b></h4>
-				                            		</div>
-				                            	
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm5" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm5">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="competency" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p>
-                                				                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("needofproject")){ %> show active <%} %> <%if(Details==null){ %> show active <%} %> " id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm6" id="myForm6">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Need of Project</b></h4>
-				                            		</div>
-				                            	
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm6" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm6">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="needofproject" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p>					                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("technology")){ %> show active <%} %> " id="technology-vertical" role="tabpanel" aria-labelledby="technology-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm7" id="myForm7">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Technology Challenges</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm7" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm7">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-	                            	
-	                            				<hr>
-	                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="technology" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                				<p><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></p>
-                                									                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("riskmitigation")){ %> show active <%} %> " id="risk-vertical" role="tabpanel" aria-labelledby="risk-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm8" id="myForm8">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Risk Mitigation</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm8" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm8">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-                            	
-                            					<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="riskmitigation" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></p>						                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("proposal")){ %> show active <%} %> " id="proposal-vertical" role="tabpanel" aria-labelledby="proposal-vertical-tab">
-						                   
-						                   <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm9" id="myForm9">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Proposal</b></h4>
-				                            		</div>
-				                            		
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm9" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm9">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-	                            	
-	                            				<hr>
-	                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="proposal" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                                			<p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p>						                
-										</div>
-										
-										
-										
-						                <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("realization")){ %> show active <%} %> " id="realization-vertical" role="tabpanel" aria-labelledby="realization-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm10" id="myForm10">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Realization Plan</b></h4>
-				                            		</div>
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm10" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm10">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-	                            	
-	                            				<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="realization" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                               	 				<p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p>						                
-										</div>
-										
-										 <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("worldscenario")){ %> show active <%} %>    " id="worldscenario-vertical" role="tabpanel" aria-labelledby="worldscenario-vertical-tab">
-						                    
-						                    <form action="ProjectInitiationDetailsEdit.htm" method="POST" name="myForm11" id="myForm11">
-                            
-				                            	<div class="row">
-				                            	
-				                            		<div class="col-md-1"></div>
-				                            		<div class="col-md-9" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>World Scenario</b></h4>
-				                            		</div>
-					                   				<div class="col-md-1" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm11" >
-											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm11">			 
-														</button>
-													</div>       			  	
-				                            	</div>
-	                            	
-	                            				<hr>
-                            	
-		                            			<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-												<input type="hidden" name="details" value="worldscenario" />
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
-	
-											</form>
-								
-                               	 				<p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p>						                
-										</div>
-										
-										
-										
-						            </div>
-						            
-						            <%} %>
-						            
-						        </div> <!-- tab-vertical ends -->
-
-            	</div>
-            
-        </div>
-    </div>
- --%>
-
-          <!-- </form> -->
+						      
 	           
 	            <div class="navigation_btn"  style="text-align: right;">
             		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
@@ -1729,7 +1423,118 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
             
             </div>
             
-            
+    			<!--Requirements  -->
+                 <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
+               <div class="tab-pane active" id="requirement" role="tabpanel">
+              	<%}else{ %>
+ 				<div class="tab-pane" id="requirement" role="tabpanel" style=" margin-top: -12px;">
+                <%} %> 
+                <div class="col-md-12">
+            <%--      <div class="requirement" align="justify" >
+						            <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
+                   					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+				                  	<label style="font-family: 'Lato',sans-serif; font-size:25px; margin-left:0px;color: #005086"><% %></label>
+				                  	  	<button type="submit" class="btn btn-success btn-sm" id="reqbtn">
+				                 		<i class="fa fa-plus" aria-hidden="true"></i>
+				                 	 </button>
+				                  	</form>	
+				                 	 </div> --%>
+                						</div>
+                 <div class="container-fluid" style="margin-top:7px;">
+		        <div class="row">
+		            <div class="col-md-12 details_container">
+						        <div class="tab-vertical">
+						
+				 <div class="table-responsive">
+				<!--  <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5"> -->
+				<%  int i=1;%>
+				 <div style="height: 300px; overflow: auto">
+	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
+	 			 <thead>
+	 			 <tr style="background-color: #055C9D;color:white; top:0; position: sticky;">
+<!-- 	 			  <th style="width: 5%;">Select</th> -->
+				<th style="width: 3%; ">SN</th>
+				<th style="width:8%" class="text-nowrap">ID</th>
+				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
+				<th style="width:70%" class="text-nowrap" >Brief</th>
+				<th style="width:14%"> 
+				       <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
+                   					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+				                  	  	Action  <button type="submit" class="btn btn-success btn-sm" id="reqbtn" style="margin-left: 22px;">
+				                 		<i class="fa fa-plus" aria-hidden="true" style="float:left"></i>
+				                 	 </button>
+				                  	</form>
+				</th>
+			<!-- 	<th style="width:20%">ADD</th> -->
+	 			 <tbody>
+	 		
+	 			 <%
+	 			 if(RequirementList!=null)
+	 				 for(Object obj[]:RequirementList){
+	 			 %>     
+	 			 	 <tr style="position:inherit;">
+	 				<td><%=i %></td>
+	 			 	<td><%=obj[1] %></td>
+	 			  	<%-- <td><%=obj[2] %></td> --%>
+	 			   	<td style="text-align:left; padding-left: 44px !important;"><%=obj[3] %></td>
+	 				<td>
+	 			 <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5">
+					<input type="hidden" name="InitiationReqId" value="<%=obj[0]%>">
+					<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+					<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+					<button type="submit" class="btn btn-warning btn-sm" name="action" value="EDIT" id="reqbtn1" >
+					<i class="fa fa-pencil" aria-hidden="true" style="color:green; font-size: 10px; float:right;"></i>
+					</button>
+			
+					<button type="button" class=""    id="reqbtn2" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
+<!-- 				<i class="fa fa-eye" aria-hidden="true" style="color:orange; font-size: 10px; float:right;"></i>  -->
+					<div class="cc-rockmenu">
+					 <div class="rolling">
+					<figure class="rolling_icon"><img src="view/images/preview3.png" style="width:18px;" ></figure>
+					</div> 
+					</button>
+				</form>
+					</td>
+	 				 </tr>
+	 			 <%
+	 			 i++;
+	 				 } %>
+	 			
+	 			 </tbody>
+	 			 </table>
+	 			</div>
+								</form>			
+	 			</div>
+	 			 		<div class="modal fade  bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" style="">
+ 					 <div class="modal-dialog modal-lg" role="document">
+    				<div class="modal-content">
+      				<div class="modal-header" style="background: antiquewhite;">
+     			   <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Lato',sans-serif;color: #005086; font-size:28px; ">
+     			  <b>Requirement Description</b> </h5><span style="font-family: 'Lato',sans-serif;color: #005086; margin-left:5px;margin-top:20px; font-size:12px; float:right;">(<b id="reqid"></b>)</span>
+       				 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        			  <span aria-hidden="true">&times;</span>
+       					 </button>
+    					  </div>
+     						 <div class="modal-body" style="padding:0px;background: aliceblue;" >
+     						        <div id="reqmodalbody" style="text-align:justify;!important; padding:20px ;font-family: 'Lato'"> </div>
+    								  </div>
+  								  </div>
+  									</div>
+										</div>
+				 </div> 
+						        </div>
+						        </div>
+						        </div>
+                  <div class="navigation_btn"  style="text-align: right;">
+            		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+					<button class="btn btn-info btn-sm next">Next</button>
+				</div>
+                
+                </div> 
+                
             
   <!-- *********** COST  ***********      -->       
             
@@ -1853,7 +1658,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
            	<form action="ProjectScheduleAdd.htm" method="POST" name="myfrm" id="myfrm" >
 				 	
 				    <div class="row">
-				        <div class="col-12">
+				        <div class="col-12"  style="max-width: 97%;margin-left: 24px;">
 				            <div class="card">
 				               
 				                <div class="table-responsive">
@@ -1932,7 +1737,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
                 <%} %>
             
           
-                <div class="table-responsive">
+                <div class="table-responsive" style="width: 97%;margin-left: 24px;">
 				                    <table class="table">
 				                       <thead class="thead" style="color:white!important;background-color: #055C9D">
 				                            <tr>
@@ -2042,7 +1847,7 @@ String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 
       </div><!-- card end -->
     </div>
-    
+    </div>
 
   </div>
 </div>
@@ -2167,12 +1972,54 @@ tabcontrol(); */
 		  	  tab_value[select_value].style.display = "block";
 		}
 	
-	
-	
-	
+	function submitForm()
+	{ 
+	  document.getElementById('myreqfrm').submit(); 
+	} 
 	
 </script>
 
+<!--  Get the modal
+
+
+ /*   function modal(){
+var modal = document.getElementById("myModal");
+
+console.log(modal);
+// Get the button that opens the modal
+var btn = document.getElementById("reqbtn2");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+}   -->
+<script type="text/javascript">
+function showdata(reqid,reqid1){
+	console.log($('#Req'+reqid).val());
+    $('#exampleModalLong').modal('show');
+    document.getElementById('reqmodalbody').innerHTML =$('#Req'+reqid).val();
+    document.getElementById('reqid').innerHTML =reqid1;
+}
+
+
+
+</script>
 
 
 
@@ -2180,3 +2027,4 @@ tabcontrol(); */
 
 </body>
 </html>
+       									
