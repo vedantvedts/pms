@@ -1592,14 +1592,15 @@ public class ProjectServiceImpl implements ProjectService {
 		logger.info(new Date() + "Inside SERVICE ProjectDataRevSubmit ");
 		Object[] projectdatadetails = dao.ProjectDataDetails(dto.getProjectId());
 		PfmsProjectDataRev model = new PfmsProjectDataRev();
+		
 		model.setProjectId(Long.parseLong(projectdatadetails[1].toString()));
-		model.setFilesPath(projectdatadetails[2].toString());
-		model.setSystemConfigImgName(projectdatadetails[3].toString());
-		model.setSystemSpecsFileName(projectdatadetails[4].toString());
-		model.setProductTreeImgName(projectdatadetails[5].toString());
-		model.setPEARLImgName(projectdatadetails[6].toString());
-		model.setCurrentStageId(Integer.parseInt(projectdatadetails[7].toString()));
-		model.setRevisionNo(Long.parseLong(projectdatadetails[8].toString()));
+		model.setFilesPath(projectdatadetails[2]+"");
+		model.setSystemConfigImgName(projectdatadetails[3]+"");
+		model.setSystemSpecsFileName(projectdatadetails[4]+"");
+		model.setProductTreeImgName(projectdatadetails[5]+"");
+		model.setPEARLImgName(projectdatadetails[6]+"");
+		model.setCurrentStageId(Integer.parseInt(projectdatadetails[7]+""));
+		model.setRevisionNo(Long.parseLong(projectdatadetails[8]+""));
 		model.setRevisionDate(sdf1.format(new Date()));
 		model.setCreatedBy(dto.getModifiedBy());
 		model.setCreatedDate(sdf1.format(new Date()));

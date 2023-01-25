@@ -1212,7 +1212,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		       <div class="card" style="background: transparent;display:none" id="mytasks">
 						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >My Tasks</a>
+								<a class="navbar-brand" style="color:white"; >My Tasks</a><a style="color:white"; href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
 							</nav>					
 											
 								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">

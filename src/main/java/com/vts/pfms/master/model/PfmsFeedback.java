@@ -13,11 +13,19 @@ public class PfmsFeedback implements Serializable {
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Long FeedbackId;
 	    private Long EmpId;
+	    private String FeedbackType;
 	    private String Feedback;
 	    private String CreatedBy;
 	    private String CreatedDate;
 	    private int isActive;
 	    
+	    
+		public String getFeedbackType() {
+			return FeedbackType;
+		}
+		public void setFeedbackType(String feedbackType) {
+			FeedbackType = feedbackType;
+		}
 		public Long getFeedbackId() {
 			return FeedbackId;
 		}

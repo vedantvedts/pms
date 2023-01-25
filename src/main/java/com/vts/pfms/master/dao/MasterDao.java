@@ -55,6 +55,7 @@ public interface MasterDao  {
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
 	public Long FeedbackInsert(PfmsFeedback feedback) throws Exception;
 	public List<Object[]> FeedbackList(String LabCode) throws Exception;
+	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
 	
 	
