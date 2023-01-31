@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +23,10 @@ import com.vts.pfms.admin.dto.UserManageAdd;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
-import com.vts.pfms.login.PfmsLoginRole;
-import com.vts.pfms.login.Role;
 import com.vts.pfms.login.RoleRepository;
 import com.vts.pfms.master.model.DivisionEmployee;
 
@@ -336,9 +334,9 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public List<Object[]> UserManagerList(String LabCode) throws Exception {
+	public List<Object[]> UserManagerList( ) throws Exception {
 	
-		return dao.UserManagerList(LabCode);
+		return dao.UserManagerList();
 	}
 
 	
@@ -614,6 +612,31 @@ public class AdminServiceImpl implements AdminService{
 			return dao.LabHqChange(FormRoleAccessid, Value);
 		}
 
-	
+		@Override
+		public int updateformroleaccess(String formroleaccessid,String detailsid,String isactive,String logintype, String UserId)throws Exception{
+			
+				if(isactive!=null && isactive.equals("0")){
+					isactive="1";
+				}else {
+					isactive="0";
+				}
+			int result = dao.checkavaibility(logintype,detailsid);
+			
+			if(result == 0) {
+				PfmsFormRoleAccess formrole = new PfmsFormRoleAccess();
+				formrole.setLoginType(logintype);
+				formrole.setFormDetailId(Long.parseLong(detailsid));
+				formrole.setLabHQ("B");
+				formrole.setIsActive(1);
+				formrole.setCreatedBy(UserId);
+				formrole.setCreatedDate(sdf1.format(new Date()));	
+				Long value=dao.insertformroleaccess(formrole);
+				return value.intValue();
+			}else {
+			
+				return dao.updateformroleaccess(formroleaccessid,isactive,UserId);
+			}
+			
+		}
 	
 }

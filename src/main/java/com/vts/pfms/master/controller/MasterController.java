@@ -935,7 +935,7 @@ public class MasterController {
 		Long EmpId = (Long) ses.getAttribute("EmpId");
 		String Feedback=req.getParameter("Feedback");
 		String feedbacktype=req.getParameter("feedbacktype");
-		if(Feedback.trim().equalsIgnoreCase("")) {			
+		if(Feedback ==null || Feedback.trim().equalsIgnoreCase("")) {			
 			redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
 			return "redirect:/FeedBack.htm";
 		}
@@ -966,10 +966,6 @@ public class MasterController {
 		return "master/FeedbackList";
 	}
 	
-	
-	
-	
-	
 	 @RequestMapping(value = "FeedbackContent.htm", method = RequestMethod.GET)
 	  public @ResponseBody String FeedbackContent(HttpSession ses, HttpServletRequest req) throws Exception 
 	  {
@@ -990,6 +986,26 @@ public class MasterController {
 		  
 	}
 	 
+	 @RequestMapping( value = "CloseFeedBack.htm" , method = RequestMethod.POST)
+	 public String CloseFeedback(HttpSession ses, HttpServletRequest req ,RedirectAttributes redir)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CloseFeedBack.htm "+UserId);
+		 try {
+			String feedbackid = req.getParameter("feedbackid");
+			 String remarks = req.getParameter("Remarks");
+			 int count = service.CloseFeedback(feedbackid , remarks,UserId);
+			 if(count > 0) {
+					redir.addAttribute("result" , "Feedback Closed Successfully ");
+				}else {
+					redir.addAttribute("resultfail", "Feedback Close Unsuccessful");
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside CloseFeedBack.htm "+UserId,e);
+		}
+		 return "redirect:/FeedBackList.htm";
+	 }
 	
 
 }

@@ -169,21 +169,21 @@ if(ses1!=null){
 									<td ><%=count %></td>
 									<td><%=obj[2] %></td>
 									<td>
-											<input name="access"  onchange="FormNameEdit(<%=obj[0]%>)"  type="checkbox"  <%if(obj[1].toString().equalsIgnoreCase("A")){ %> disabled <%} %> <%if((obj[3]).toString().equalsIgnoreCase("1")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="105" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> Active" data-off="<i class='fa fa-times' aria-hidden='true'></i> Inactive" >
-											<input 	type="hidden" name="sample" value="attendance<%=count %>" >	
+											<input name="access"  value="<%=obj[0]%>"  onchange="UpdateIsActive('<%=obj[0]%>','<%=obj[5]%>','<%=obj[3]%>','<%=moduleid%>','<%=logintype%>');"  type="checkbox"  <%if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("A")){ %> disabled <%} %> <%if(obj[3]!=null && obj[3].toString().equalsIgnoreCase("1")){ %>checked<%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="105" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> Active" data-off="<i class='fa fa-times' aria-hidden='true'></i> Inactive" >
+											<input type="hidden" name="sample" value="attendance<%=count %>" >	
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									</td>
 									<td>
 											<div class="form-check form-check-inline">
-											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>"  onchange="radioChange(this,<%=obj[0] %>)" id="RadioL<%=obj[0]%>" value="L" <%if(obj[4].toString().equalsIgnoreCase("L")){ %> checked <%} %>>
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>"  onchange="radioChange(this,<%=obj[0] %>)" id="RadioL<%=obj[0]%>" value="L" <%if(obj[4]!=null && obj[4].toString().equalsIgnoreCase("L")){ %> checked <%} %>>
 											  <label class="form-check-label" for="RadioL<%=obj[0]%>">Lab</label>
 											</div>
 											<div class="form-check form-check-inline">
-											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioH<%=obj[0]%>" value="H" <%if(obj[4].toString().equalsIgnoreCase("H")){ %> checked <%} %> >
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioH<%=obj[0]%>" value="H" <%if(obj[4]!=null && obj[4].toString().equalsIgnoreCase("H")){ %> checked <%} %> >
 											  <label class="form-check-label" for="RadioB<%=obj[0]%>">HQ</label>
 											</div>
 											<div class="form-check form-check-inline">
-											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioB<%=obj[0]%>" value="B" <%if(obj[4].toString().equalsIgnoreCase("B")){ %> checked <%} %> >
+											  <input class="form-check-input" type="radio" name="inlineRadioOptions<%=obj[0]%>" onchange="radioChange(this,<%=obj[0] %>)"  id="RadioB<%=obj[0]%>" value="B" <%if(obj[4]!=null && obj[4].toString().equalsIgnoreCase("B")){ %> checked <%} %> >
 											  <label class="form-check-label" for="RadioB<%=obj[0]%>">Both</label>
 											</div>
 									</td>
@@ -226,7 +226,36 @@ function submitForm()
   document.getElementById('myform').submit(); 
 } 
 
-function FormNameEdit(id){
+function UpdateIsActive(formroleaccsid, detailsid,isactive,moduleid,logintype)
+{
+	 $.ajax({
+
+			type : "GET",
+			url : "UpdateRoleAcess.htm",
+			data : {
+						formroleaccessid : formroleaccsid,
+						detailsid        : detailsid,
+						isactive         : isactive,
+						moduleid         : moduleid,
+						logintype        : logintype
+				   },
+			datatype : 'json',
+			success : function(result) {
+
+			var result = JSON.parse(result);
+	
+			var values = Object.keys(result).map(function(e) {
+		 				 return result[e]
+		  
+							});
+				}
+				   
+			});
+}
+
+
+
+/* function FormNameEdit(id){
 		 $.ajax({
 
 			type : "GET",
@@ -247,7 +276,7 @@ function FormNameEdit(id){
 				   
 			});
 	 
-}
+} */
 
 
 

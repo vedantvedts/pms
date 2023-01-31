@@ -405,6 +405,7 @@ public class MasterServiceImpl implements MasterService {
 		logger.info(new Date() +" Inside SERVICE FeedbackInsert ");
 		PfmsFeedback feedback=new PfmsFeedback();
 		    feedback.setEmpId(EmpId);
+		    feedback.setStatus("O");
 		    feedback.setFeedbackType(feedbacktype);
 		    feedback.setFeedback(Feedback);
 		    feedback.setCreatedBy(UserId);
@@ -428,5 +429,9 @@ public class MasterServiceImpl implements MasterService {
 	{	
 		return dao.FeedbackContent(feedbackid);
 	}
-	
+	@Override
+	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception
+	{
+		return dao.CloseFeedback(feedbackId , remarks,username);
+	}
 }

@@ -57,6 +57,6 @@ public interface MasterDao  {
 	public List<Object[]> FeedbackList(String LabCode) throws Exception;
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
-	
+	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
 	
 }

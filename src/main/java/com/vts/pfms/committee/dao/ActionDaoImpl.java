@@ -858,5 +858,14 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("assignid", assignid);
 		return (Object[])query.getResultList().get(0);	
 	}
+	private static final String GETDECISIONSOUGHT="SELECT b.scheduleminutesid, a.scheduleid ,a.meetingid, a.pmrcdecisions , a.reference  FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck='R' AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeeid THEN 1=1 ELSE a.committeeid=:committeeid END)";
+	@Override
+	public List<Object[]> GetDecisionSoughtList(String projectid,String  committeeid)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETDECISIONSOUGHT);
+		query.setParameter("projectid", projectid);
+		query.setParameter("committeeid", committeeid);
+		return (List<Object[]>)query.getResultList();
+	}
 	
 }
