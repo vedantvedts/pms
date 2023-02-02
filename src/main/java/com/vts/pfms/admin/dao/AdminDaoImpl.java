@@ -1,6 +1,7 @@
 package com.vts.pfms.admin.dao;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.vts.pfms.admin.dto.EmployeeDesigDto;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
@@ -29,6 +31,7 @@ import com.vts.pfms.master.model.DivisionEmployee;
 public class AdminDaoImpl implements AdminDao{
 	
 	private static final Logger logger=LogManager.getLogger(AdminDaoImpl.class);
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private static final String LOGINTYPELIST ="SELECT a.username,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.divisionname,d.rolename,a.loginid FROM login a,employee b,division_master c,pfms_role_security d,pfms_login_role_security e WHERE a.empid=b.empid AND a.divisionid=c.divisionid AND a.loginid=e.loginid AND e.roleid=d.roleid AND a.isactive='1' AND a.pfms='Y' AND b.isactive=1 ORDER BY b.srno";
 	private static final String EMPLOYEELIST ="SELECT a.loginid,a.username,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' FROM login a, employee b WHERE a.empid=b.empid AND b.isactive=1 AND a.isactive='1' AND a.pfms='N' ORDER BY b.srno ";
@@ -48,7 +51,7 @@ public class AdminDaoImpl implements AdminDao{
     private static final String AUDITSTAMPING="SELECT a.username,a.logindate, a.logindatetime,a.ipaddress, a.macaddress, ( CASE WHEN a.logouttype='L' THEN 'Logout' ELSE 'Session Expired' END ) AS logouttype, 	a.logoutdatetime FROM auditstamping a WHERE a.`LoginDate` BETWEEN :fromdate AND :todate AND a.loginid=:loginid ORDER BY a.`LoginDateTime` DESC ";
 	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',e.labcode FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
 	private static final String LOGINEDITDATA="FROM Login WHERE LOGINID=:LoginId";
-	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname', d.designation ,lt.logindesc ,e.empno FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype AND e.labcode=:labcode";
+	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname', d.designation ,lt.logindesc ,e.empno ,e.labcode FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype ";
 	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive='1'";
 	private static final String EMPLOYEELIST1="SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee e WHERE e.isactive='1' AND labcode=:labcode AND empid NOT IN (SELECT empid FROM login WHERE isactive=1) ORDER BY srno ";
 	private static final String LOGINUPDATE="update login set divisionid=:divisionid ,formroleid=:formroleid,logintype=:logintype,empid=:empid, Pfms=:pfms, modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";
@@ -71,7 +74,8 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String LISTOFDESIGSENIORITYNUMBER ="SELECT DesigSr,desigid FROM employee_desig WHERE DesigSr!=0 ORDER BY Desigsr ASC ";
 	private static final String DESIGUPDATESRNO="UPDATE employee_desig SET DesigSr=:srno WHERE Desigid=:desigid";
 	private static final String LOGINTYPEROLES="SELECT LoginTypeId,LoginType,LoginDesc FROM login_type";
-	private static final String FORMDETAILSLIST="SELECT a.formroleaccessid,a.logintype,b.formname,a.isactive,a.labhq FROM pfms_form_role_access a,pfms_form_detail b WHERE a.logintype=:logintype AND a.formdetailid=b.formdetailid AND CASE WHEN :moduleid <> 'A' THEN b.formmoduleid=:moduleid ELSE 1=1 END";
+	//private static final String FORMDETAILSLIST="SELECT a.formroleaccessid,a.logintype,b.formname,a.isactive,a.labhq FROM pfms_form_role_access a,pfms_form_detail b WHERE a.logintype=:logintype AND a.formdetailid=b.formdetailid AND CASE WHEN :moduleid <> 'A' THEN b.formmoduleid=:moduleid ELSE 1=1 END";
+	private static final String FORMDETAILSLIST="SELECT b.formroleaccessid,b.logintype,a.formname,b.isactive ,b.labhq ,a.formdetailid FROM  (SELECT fd.formdetailid,fd.formmoduleid,fd.formname FROM pfms_form_detail fd WHERE CASE WHEN :moduleid <> 'A' THEN fd.formmoduleid =:moduleid ELSE 1=1 END) AS a LEFT JOIN  (SELECT b.formroleaccessid,b.logintype,a.formname,b.isactive ,b.labhq , b.formdetailid FROM pfms_form_detail a ,pfms_form_role_access b  WHERE a.formdetailid=b.formdetailid AND b.logintype=:logintype AND  CASE WHEN :moduleid <> 'A' THEN a.formmoduleid =:moduleid ELSE 1=1 END ) AS b ON a.formdetailid = b.formdetailid";
 	private static final String FORMMODULELIST="SELECT FormModuleId,FormModuleName,ModuleUrl,IsNav,IsActive FROM pfms_form_module WHERE isactive=1";
 	private static final String FORMROLEACTIVELIST="SELECT isactive FROM pfms_form_role_access WHERE formroleaccessid=:formroleaccessid";
 	private static final String FORMROLEACTIVE0="UPDATE pfms_form_role_access SET isactive=:isactive WHERE formroleaccessid=:formroleaccessid";
@@ -416,9 +420,9 @@ public class AdminDaoImpl implements AdminDao{
 		}
 		
 		@Override
-		public List<Object[]> UserManagerList(String LabCode) throws Exception {
+		public List<Object[]> UserManagerList( ) throws Exception {
 			Query query = manager.createNativeQuery(USERMANAGELIST);
-			query.setParameter("labcode", LabCode);
+			
 			List<Object[]> UserManagerList = query.getResultList();
 			return UserManagerList;
 		}
@@ -757,6 +761,37 @@ public class AdminDaoImpl implements AdminDao{
 			
 		}
 		
+		@Override
+		public int checkavaibility(String logintype,String detailsid)throws Exception{
+			Query query = manager.createNativeQuery("SELECT COUNT(formroleaccessid)  FROM `pfms_form_role_access` WHERE logintype=:logintype  AND  formdetailid=:detailsid");
+			query.setParameter("logintype", logintype);
+			query.setParameter("detailsid",detailsid );
+			
+			BigInteger result = (BigInteger) query.getSingleResult();
+			return result.intValue();
+		}
+		@Override
+		public Long insertformroleaccess(PfmsFormRoleAccess main) throws Exception {
+			logger.info(new Date() + "Inside insertformroleaccess()");
+			try {
+				manager.persist(main);
+				manager.flush();
+				return (long)main.getFormRoleAccessId();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return 0l;
+			}
 		
+		}
+		@Override
+		public int updateformroleaccess(String formroleid,String active,String auth)throws Exception{
+			Query query = manager.createNativeQuery("UPDATE pfms_form_role_access SET isactive=:isactive , modifieddate=:modifieddate , modifiedby=:modifiedby WHERE formroleaccessid=:formroleaccessid");
+			query.setParameter("formroleaccessid", formroleid);
+			query.setParameter("isactive", active);
+			query.setParameter("modifieddate",sdf1.format(new Date()));
+			query.setParameter("modifiedby", auth);
+			
+			return query.executeUpdate();
+		}
 
 }

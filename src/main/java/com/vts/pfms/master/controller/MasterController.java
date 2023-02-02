@@ -55,6 +55,8 @@ public class MasterController {
 		}
 		req.setAttribute("Onboarding", onboard);
 		req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
+		req.setAttribute("AllOfficerList", service.OfficerList());         
+		
 		return "master/OfficerMasterList";
 	}
 	
@@ -890,8 +892,39 @@ public class MasterController {
 	@RequestMapping(value = "FeedBack.htm", method = RequestMethod.GET)
 	public String FeedBack(HttpServletRequest req, HttpSession ses) throws Exception {
 		String Userid= (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		String logintype=(String)ses.getAttribute("LoginType");
 		logger.info(new Date() +" Inside FeedBack.htm "+Userid);
+		
+		
+		if(logintype!=null && logintype.equalsIgnoreCase("A")) {
+			List<Object[]> list = service.FeedbackList(LabCode);
+			if(list!=null && list.size()>0) {
+				req.setAttribute("FeedbackList", list);
+				return "master/FeedbackList";
+			}else {
+				return "master/FeedBack";
+			}
+		}else {
+			String empid =  String.valueOf((Long) ses.getAttribute("EmpId"));
+			List<Object[]> list = service.FeedbackListForUser(LabCode , empid);
+			if(list!=null && list.size()>0) {
+				req.setAttribute("FeedbackList", list);
+				return "master/FeedbackList";
+			}else {
+				return "master/FeedBack";
+			}
+		}
+		
+	}
+	@RequestMapping(value = "FeedBackPage.htm", method = RequestMethod.GET)
+	public String FeedBackpage(HttpServletRequest req, HttpSession ses) throws Exception {
+		String Userid= (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +" Inside FeedBack.htm "+Userid);
+	
 		return "master/FeedBack";
+		
 	}
 	
 	@RequestMapping(value = "FeedBackAdd.htm", method = RequestMethod.POST)
@@ -901,24 +934,28 @@ public class MasterController {
 		logger.info(new Date() +" Inside FeedBackAdd.htm "+UserId);
 		Long EmpId = (Long) ses.getAttribute("EmpId");
 		String Feedback=req.getParameter("Feedback");
-		
-		if(Feedback.trim().equalsIgnoreCase("")) {			
+		String feedbacktype=req.getParameter("feedbacktype");
+		if(Feedback ==null || Feedback.trim().equalsIgnoreCase("")) {			
 			redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
 			return "redirect:/FeedBack.htm";
 		}
-		Long Feedbackid=service.FeedbackInsert(Feedback, UserId, EmpId);
+		if(feedbacktype==null) {
+			redir.addAttribute("resultfail", "Please Select the FeedbackType");
+			return "redirect:/FeedBack.htm";
+		}
+		Long Feedbackid=service.FeedbackInsert(Feedback, UserId, EmpId, feedbacktype);
 		
 		if (Feedbackid>0) {
 			redir.addAttribute("result", " Feedback Add Successful");
 		} else {
 			redir.addAttribute("resultfail", "Feedback Add UnSuccessful");
 		}
-		return "redirect:/MainDashBoard.htm";
+		return "redirect:/FeedBack.htm";
 	}
 	
 	
 	
-	@RequestMapping(value = "FeedBackList.htm")
+	@RequestMapping(value = "FeedBackList.htm" , method= {RequestMethod.GET,RequestMethod.POST})
 	public String FeedbackList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
@@ -928,10 +965,6 @@ public class MasterController {
 		req.setAttribute("FeedbackList", service.FeedbackList(LabCode));
 		return "master/FeedbackList";
 	}
-	
-	
-	
-	
 	
 	 @RequestMapping(value = "FeedbackContent.htm", method = RequestMethod.GET)
 	  public @ResponseBody String FeedbackContent(HttpSession ses, HttpServletRequest req) throws Exception 
@@ -953,6 +986,26 @@ public class MasterController {
 		  
 	}
 	 
+	 @RequestMapping( value = "CloseFeedBack.htm" , method = RequestMethod.POST)
+	 public String CloseFeedback(HttpSession ses, HttpServletRequest req ,RedirectAttributes redir)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CloseFeedBack.htm "+UserId);
+		 try {
+			String feedbackid = req.getParameter("feedbackid");
+			 String remarks = req.getParameter("Remarks");
+			 int count = service.CloseFeedback(feedbackid , remarks,UserId);
+			 if(count > 0) {
+					redir.addAttribute("result" , "Feedback Closed Successfully ");
+				}else {
+					redir.addAttribute("resultfail", "Feedback Close Unsuccessful");
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside CloseFeedBack.htm "+UserId,e);
+		}
+		 return "redirect:/FeedBackList.htm";
+	 }
 	
 
 }

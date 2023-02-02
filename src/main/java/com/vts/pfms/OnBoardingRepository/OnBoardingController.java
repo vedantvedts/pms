@@ -549,7 +549,7 @@ public class OnBoardingController {
 				
 				if("GenerateExcel".equalsIgnoreCase(action)){
 					XSSFWorkbook workbook = new XSSFWorkbook();
-					XSSFSheet sheet =  workbook.createSheet("Project Master Details");
+					XSSFSheet sheet =  workbook.createSheet("Project Main Details");
 					XSSFRow row=sheet.createRow(0);
 					
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
@@ -585,7 +585,7 @@ public class OnBoardingController {
 						row.createCell(11).setCellValue("");
 						
 					    res.setContentType("application/vnd.ms-excel");
-			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMaster.xls");	
+			            res.setHeader("Content-Disposition", "attachment; filename=ProjectMain.xls");	
 			            workbook.write(res.getOutputStream());
 				}else if("UploadExcel".equalsIgnoreCase(action)){
 					
@@ -837,17 +837,23 @@ public class OnBoardingController {
 					XSSFWorkbook workbook = new XSSFWorkbook();
 					XSSFSheet sheet =  workbook.createSheet("Project Master Details");
 					XSSFRow row=sheet.createRow(0);
-					XSSFFont font = workbook.createFont();
-					XSSFCellStyle cellstyle = workbook.createCellStyle();
-					font.setBold(true);
+					
 				
-					cellstyle.setFont(font);
+				
 					sheet.addMergedRegion(new CellRangeAddress(0,0,0,9));
 				
 					 XSSFCell headerCell = row.createCell(0);
-					 headerCell.setCellValue("Note :- Action Type( A-Action , I-Issue , K-Risk)  Date Format (DD-MM-YYYY) Priority(H-High, L-Low , M-Medium , I-Immediate) Category(T-Technical , F-Finance M-Managerial ,L-Logistic , O-Others)");
-					 row.setHeight((short)500);
-					
+					 headerCell.setCellValue("Note :- Action Type( A-Action , I-Issue , K-Risk)  Date Format (DD-MM-YYYY) Priority(H-High, L-Low , M-Medium , I-Immediate) Category(T-Technical , F-Finance M-Managerial ,L-Logistic , O-Others) \n Project Code :-General (GEN)  Note: Change the Excel Format in your Excel file (Right click on the cell---> Format Cell --->Number -->select category---> Date --->Type (YYYY-MM-DD))");
+					 XSSFCellStyle cellstyle = workbook.createCellStyle();
+					 XSSFFont font = workbook.createFont();		
+					 font.setBold(true);
+					 CellStyle cs = workbook.createCellStyle();  
+			          cs.setWrapText(true);
+			          cs.setFont(font);
+			            headerCell.setCellStyle(cs);  
+			            row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));  
+			            sheet.autoSizeColumn(2);
+					 
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
@@ -1083,19 +1089,24 @@ public class OnBoardingController {
 					XSSFWorkbook workbook = new XSSFWorkbook();
 					XSSFSheet sheet =  workbook.createSheet("Login Master Details");
 					XSSFRow row=sheet.createRow(0);
-					XSSFFont font = workbook.createFont();
-					XSSFCellStyle cellstyle = workbook.createCellStyle();
-					font.setBold(true);
-				
-					cellstyle.setFont(font);
+					
 					sheet.addMergedRegion(new CellRangeAddress(0,0,0,4));
 				
 					 XSSFCell headerCell = row.createCell(0);
 					 headerCell.setCellValue("Note :- Login Type( A-Admin , E-P&C DO , U-User ,T-GHDH , P-Project Director , Z-Director)  ");
-					 row.setHeight((short)500);
-					
+					 XSSFCellStyle cellstyle = workbook.createCellStyle();
+					 XSSFFont font = workbook.createFont();		
+					 font.setBold(true);
+					 CellStyle cs = workbook.createCellStyle();  
+			          cs.setWrapText(true);
+			          cs.setFont(font);
+			            headerCell.setCellStyle(cs);  
+			            row.setHeightInPoints((2*sheet.getDefaultRowHeightInPoints()));  
+			            sheet.autoSizeColumn(2);
+					 
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
+					
 					
 					row=sheet.createRow(1);
 					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
@@ -1141,7 +1152,7 @@ public class OnBoardingController {
 					                for(int j=1;j<cellcount;j++){
 					                	
 					                	if(j==1) {
-					                		System.out.println(" uname   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1155,7 +1166,7 @@ public class OnBoardingController {
 				                		}
 					                	
 					                	if(j==3) {
-					                		System.out.println(" logintype   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1170,7 +1181,7 @@ public class OnBoardingController {
 				                		}
 					                	
 					                	if(j==2) {
-					                		System.out.println(" setEmployee   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1198,7 +1209,7 @@ public class OnBoardingController {
 				                	}
 					    			UserManageAdd.setRole("1"); 
 					    			
-					               count +=adminservice.UserManagerInsert(UserManageAdd , Userid);
+					               count +=adminservice.UserManagerInsertFromExcel(UserManageAdd , Userid);
 						                
 					            }
 					                           

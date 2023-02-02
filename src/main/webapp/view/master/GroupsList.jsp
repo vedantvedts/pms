@@ -342,8 +342,7 @@ excel_file.addEventListener('change', (event) => {
 			                if(row>0 && cell==1){		
 			                	table_output += '<td>'+sheet_data[row][cell]+'</td>';
 								var groupcode = ""+sheet_data[row][cell]+"";
-								
-								 if (groupcode.trim().length > 3 ) {								     									 
+								 if (groupcode=='' || groupcode.trim().length > 3 ) {		
 									 AcSno.push(row);
 								 }
 							}		

@@ -450,8 +450,9 @@ public class AdminController {
 					onboard=(String)md.get("Onboard");
 				}
 				req.setAttribute("Onboarding", onboard);
-				req.setAttribute("UserManagerList", service.UserManagerList(LabCode));
+				req.setAttribute("UserManagerList", service.UserManagerList().stream().filter(e-> LabCode.equalsIgnoreCase(e[9].toString())).collect(Collectors.toList()));
 				req.setAttribute("OfficerList", masterservice.OfficerList());
+				req.setAttribute("UserManager", service.UserManagerList());
 			}catch( Exception e) {
 				e.printStackTrace();
 			}
@@ -908,25 +909,38 @@ public class AdminController {
 	    
 	    
 	    @RequestMapping(value = "Role.htm" )
-		public String RoleFormAccess(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+		public String RoleFormAccess(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside Role.htm "+UserId);		
 			try {
+				String logintype=req.getParameter("logintype");
+				Map md=model.asMap();
+				if(logintype==null) {
+					logintype=(String)md.get("logintype");
+					if(logintype==null) {
+						logintype="A";
+					}	
+				}
 				
+				String moduleid=req.getParameter("moduleid");
+				if(moduleid==null) {
+					moduleid=(String)md.get("moduleid");
+					if(moduleid==null) {
+						moduleid="A";
+					}		
+				}
 
 				req.setAttribute("LoginTypeRoles",service.LoginTypeRoles());
-				req.setAttribute("FormDetailsList", service.FormDetailsList(req.getParameter("logintype"),req.getParameter("moduleid")));
+				req.setAttribute("FormDetailsList", service.FormDetailsList(logintype,moduleid));
 				req.setAttribute("FormModulesList", service.FormModulesList());
-				req.setAttribute("logintype", req.getParameter("logintype"));
-				req.setAttribute("moduleid", req.getParameter("moduleid"));
+				req.setAttribute("logintype", logintype);
+				req.setAttribute("moduleid", moduleid);
 				req.setAttribute("AllLabsList", service.AllLabList());
 			}
 			catch (Exception e) {
 					e.printStackTrace(); logger.error(new Date() +" Inside Role.htm "+UserId, e);
 			}
-			
-		
 			 return "admin/RoleFormAccess";
 		}
 	    
@@ -1070,7 +1084,29 @@ public class AdminController {
 	    	return "admin/GroupMasterOnBoard";
 	    }
 	    
-	    
+	    @RequestMapping(value="UpdateRoleAcess.htm" ,method = RequestMethod.GET)
+		public @ResponseBody String RoleAccess(HttpSession ses, HttpServletRequest req , RedirectAttributes redir )throws Exception
+		{
+			String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside UpdateRoleAcess.htm "+UserId);
+			try {
+				String formroleaccessid = (String)req.getParameter("formroleaccessid");
+				String moduleid  = (String)req.getParameter("moduleid");
+				String LoginType  = (String)req.getParameter("logintype");
+				String detailsid  = (String)req.getParameter("detailsid");
+				String isactive   = (String)req.getParameter("isactive");
+		
+				int result = service.updateformroleaccess(formroleaccessid,detailsid, isactive,LoginType , UserId);
+				
+				redir.addFlashAttribute("logintype",LoginType);
+				redir.addFlashAttribute("moduleid",moduleid );
+			} catch (Exception e) {
+				logger.error(new Date() +"Inside UpdateRoleAcess.htm "+UserId,e);
+				e.printStackTrace();
+				return "static/Error";
+			}
+			return "redirect:/Role.htm";
+		}
 	    
 	    
 	    

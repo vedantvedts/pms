@@ -1,6 +1,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1" import="java.util.*"%>
+	pageEncoding="ISO-8859-1" import="java.util.* , java.text.DateFormat"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,13 +80,31 @@ a:hover {
 
 </head>
 <body>
-
+<%String ses=(String)request.getParameter("result"); 
+ 	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+%>
+	<div align="center">
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
+	</div>
+<%} %>
 
 		
 
 			<%
+				DateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+				SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				List<Object[]> FeedbackList = (List<Object[]>) request.getAttribute("FeedbackList");
+				String logintype=(String)session.getAttribute("LoginType");
 			%>
 
 			<div class="container-fluid">	
@@ -102,42 +120,67 @@ a:hover {
 						</div>
 					</div>	
 					<div class="card-body"> 
-					
+					<form action="##">
 							 <div class="datatable-dashv1-list custom-datatable-overright">
 			                    
 			                <table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
 			                    <thead>
 								<tr>
 									<th style="text-align: center ; width:5%; ">SN.</th>
-									<th style="text-align: center ;width:40%;">Employee Name</th>
-									<th style="text-align: center ;width:25%;">Date</th>
-									<th style="text-align: center ;width:20%;">View</th>
+									<th style="text-align: center ;width:15%;">Name</th>
+									<th style="text-align: center ;width:10%;">Type</th>
+									<th style="text-align: center ;width:10%;">Date</th>
+									<th style="text-align: center ;width:35%;">View</th>
+									<th style="text-align: center ;width:15%;">
+									<%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %>
+										Action
+									<%}else{%>
+										Status
+									<%}%>
+									</th>
 								</tr>
 							</thead>
 							<tbody>
 								<% int count=0;
 									for (Object[] obj : FeedbackList) {
+										String feedback = obj[3].toString();
+										String feedbacktype=obj[4].toString();		
+										if(feedbacktype.equalsIgnoreCase("B")){
+											feedbacktype="BUG";
+										}else if(feedbacktype.equalsIgnoreCase("C")){
+											feedbacktype="Content Change";
+										}else if(feedbacktype.equalsIgnoreCase("U")){
+											feedbacktype="User Interface";
+										}else if(feedbacktype.equalsIgnoreCase("N")){
+											feedbacktype="New Requirement";
+										}
 								%>
 								<tr>
 									<td style=""><%=++count%></td>
-									<td style="text-align: center;"><%=obj[1]%></td>
-									<td style="text-align: left;"><%=sdf.format(obj[2]) %></td>
-									<td style="text-align: left;">
-									
-										<button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal(<%=obj[0]%>)">
-											<div class="cc-rockmenu">
-												<div class="rolling">
-													<figure class="rolling_icon">
-														<img src="view/images/preview3.png">
-													</figure>
-													<span>View</span>
-												</div>
-											</div>
-										</button>
-									
-									
+									<td style="text-align: left;"><%=obj[1]%></td>  
+									<td style="text-align: left;"><%=feedbacktype%></td>
+									<td style="text-align: center;"><%=sdf.format(inputFormatter.parse(obj[2].toString()) ) %></td>
+									<td style="text-align: left; "><span <% if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%> style="color:#649d1a;" <%}%>><%if(feedback.length()<90){%> <%=feedback%> <%}else{%> <% %><%=feedback.substring(0,90)%> 
+									</span>
+										 <button type="button" class="editable-click" name="sub" value="Modify" onclick="feedbackmodal('<%=obj[0]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
+													<b><span style="color:#1176ab;font-size: 14px;">......(View More)</span></b>
+										</button> <%}%>
 									</td>
-									
+									<td><%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %>
+										<button class="editable-click" name="sub" value="Details" 	onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
+											<div class="cc-rockmenu">
+													<div class="rolling">
+													   <figure class="rolling_icon">
+															<i class="fa fa-times-circle" aria-hidden="true"></i>
+														</figure>
+													<span>Close</span>
+													</div>
+												</div>
+										  </button> 
+										  <%}else{%> 
+										  <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>CLOSED <%}else{%>OPENED<%}%>
+									 <%}%>
+									 </td>
 								</tr>
 								<%
 									}
@@ -145,9 +188,11 @@ a:hover {
 							</tbody>
 						</table>
 					</div>
+					 <div align="center"> 
+					 		<button type="submit" class="btn btn-primary btn-sm add" formaction="FeedBackPage.htm" formmethod="get">ADD Feedback </button>				 	
+					 </div>
+					 </form>		
 				</div>
-
-
 			</div>
 		</div>
 	</div>
@@ -177,13 +222,41 @@ a:hover {
 			</div>
 		</div>
 	
+	<div class="modal fade" id="Closefeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
+				<div class="modal-content" style="min-height: 45%;" >
+				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+				    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Close Feedback <!-- By <span id="feedby1"></span> --></h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				     <div class="modal-body">
+  	      
+  	      	<form action="CloseFeedBack.htm" method="POST">
+  	      		<div class="row">
+					<div class="col-md-12" > <b>Remarks : </b><br>
+  	      		    		<textarea rows="2" style="display:block; " class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  required="required"></textarea>
+  	      		    </div>
+  	      		</div>
+  	      		<br>
+  	      		<div align="center">
+  	      			<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="Submit" name="sub"  onclick="return confirm('Are You Sure To Submit ?')" > 
+  	      		</div>
+  	      		<input type="hidden" name="feedbackid" id="FEEDBACKID">
+  	      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+  	      	</form>
+  	      </div>
+				</div>
+			</div>
+		</div>
 	
 
 </body>
 
 <script>
 
-function feedbackmodal(feedbackid)
+function feedbackmodal(feedbackid , feedbackdate)
 {
 	
 	$.ajax({
@@ -197,15 +270,14 @@ function feedbackmodal(feedbackid)
 		},
 		datatype : 'json',
 		success : function(result) {
-			console.log(result);
-			
 			var result= JSON.parse(result);
 			var values= Object.keys(result).map(function(e){
 				
 				return result[e]
 				
 			})
-			$('#feedby').html(values[1]+' on '+values[2]);
+			
+			$('#feedby').html(values[1]+' on '+feedbackdate);
 			$('#feedbackdiv').html(values[3]);
 			$('#feedbackdata').modal('toggle');
 			
@@ -214,6 +286,13 @@ function feedbackmodal(feedbackid)
 	});
 }
 
+function Closefeedbackmodal(feedbackid ,feedbackby , feedbackdate)
+{
+	/* $('#feedby1').html(feedbackby+' on '+feedbackdate); */
+	$("#FEEDBACKID").val(feedbackid);
+	$('#Closefeedback').modal('toggle');
+	
+}
 
 </script>
 

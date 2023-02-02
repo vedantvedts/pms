@@ -1,5 +1,6 @@
 package com.vts.pfms.project.service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
@@ -10,6 +11,7 @@ import com.vts.pfms.project.dto.PfmsInitiationAuthorityFileDto;
 import com.vts.pfms.project.dto.PfmsInitiationCostDto;
 import com.vts.pfms.project.dto.PfmsInitiationDetailDto;
 import com.vts.pfms.project.dto.PfmsInitiationDto;
+import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsProjectTccDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
@@ -40,6 +42,7 @@ public interface ProjectService {
 	public Long ProjectIntiationAdd(PfmsInitiationDto pfmsinitiationdto,String UserId,String EmpId,String EmpName ) throws Exception;
 	public Long ProjectShortNameCount(String ProjectShortName) throws Exception;
 	public List<Object[]> ProjectDetailes(Long IntiationId) throws Exception;
+	public List<Object[]>RequirementTypeList() throws Exception;
 	//public Object[] ProjectDetailes(Long IntiationId) throws Exception;
 	public List<Object[]> ProjectDetailsPreview(Long IntiationId) throws Exception;
 	public Long ProjectIntiationAdd(PfmsInitiationDetailDto pfmsinitiationdetaildto,String UserId ) throws Exception;
@@ -97,7 +100,7 @@ public interface ProjectService {
 	public List<Object[]> ProjectApproveRtmddoList(String EmpId) throws Exception;
 	public int ProjectApproveRtmddo(String InitiationId,String Remark,String UserId,String EmpId,String ProjectCode,String Status) throws Exception;
 	public List<Object[]> ProjectApproveTccList(String EmpId) throws Exception;
-	public int ProjectApproveTcc(String InitiationId,String Remark,String UserId,String EmpId,String ProjectCode,String Status) throws Exception;
+	public int ProjectApproveTcc(String InitiationId,String Remark,String UserId,String EmpId,String ProjectCode,String Status,String Labcode) throws Exception;
 	public Double TotalIntiationFeCost(String IntiationId) throws Exception;
 	public Double TotalIntiationReCost(String IntiationId) throws Exception;
 	public List<Object[]> ProjectCost(Long IntiationId) throws Exception;
@@ -117,7 +120,7 @@ public interface ProjectService {
 	public Long ProjectAssignAdd(ProjectAssignDto proAssigndto ) throws Exception;
 	public Long ProjectRevoke(ProjectAssign proAssign ) throws Exception;
 	public List<Object[]> ProjectApproveAdList(String EmpId) throws Exception;
-	public int ProjectApproveAd(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status) throws Exception;
+	public int ProjectApproveAd(String InitiationId, String Remark, String UserId, String EmpId,String ProjectCode,String Status,String LabCode) throws Exception;
 	public List<Object[]> ApprovalStutusList(String InitiationId) throws Exception;
 	public long ProjectDataSubmit(PfmsProjectDataDto dto) throws Exception;
 	public List<Object[]> ProjectStageDetailsList() throws Exception;
@@ -158,4 +161,11 @@ public interface ProjectService {
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
+	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId) throws  Exception;
+	public Object RequirementList(String intiationId) throws Exception;
+	public long ProjectRequirementDelete(long initiationReqId) throws Exception;
+	public Object[] Requirement(long InitiationReqId) throws Exception ;
+	public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId)throws Exception;
+	public long numberOfReqTypeId(String intiationId) throws Exception;
+	public List<Object[]> BudgetHeadList(BigInteger projecttypeid)throws Exception;
 }

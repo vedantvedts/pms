@@ -401,14 +401,16 @@ public class MasterServiceImpl implements MasterService {
 	}
 	
 	@Override
-	public Long FeedbackInsert(String Feedback, String UserId,Long EmpId) throws Exception {
+	public Long FeedbackInsert(String Feedback, String UserId,Long EmpId ,String feedbacktype) throws Exception {
 		logger.info(new Date() +" Inside SERVICE FeedbackInsert ");
 		PfmsFeedback feedback=new PfmsFeedback();
-    feedback.setEmpId(EmpId);
-    feedback.setFeedback(Feedback);
-    feedback.setCreatedBy(UserId);
-    feedback.setCreatedDate(sdf1.format(new Date()));
-    feedback.setIsActive(1);
+		    feedback.setEmpId(EmpId);
+		    feedback.setStatus("O");
+		    feedback.setFeedbackType(feedbacktype);
+		    feedback.setFeedback(Feedback);
+		    feedback.setCreatedBy(UserId);
+		    feedback.setCreatedDate(sdf1.format(new Date()));
+		    feedback.setIsActive(1);
 		return dao.FeedbackInsert(feedback);
 	}
 	
@@ -418,9 +420,18 @@ public class MasterServiceImpl implements MasterService {
 		return dao.FeedbackList(LabCode);
 	}
 	@Override
+	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception
+	{
+		return dao.FeedbackListForUser(LabCode , empid);
+	}
+	@Override
 	public Object[] FeedbackContent(String feedbackid)throws Exception
 	{	
 		return dao.FeedbackContent(feedbackid);
 	}
-	
+	@Override
+	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception
+	{
+		return dao.CloseFeedback(feedbackId , remarks,username);
+	}
 }

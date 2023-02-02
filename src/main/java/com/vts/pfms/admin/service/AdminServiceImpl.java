@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +23,10 @@ import com.vts.pfms.admin.dto.UserManageAdd;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
-import com.vts.pfms.login.PfmsLoginRole;
-import com.vts.pfms.login.Role;
 import com.vts.pfms.login.RoleRepository;
 import com.vts.pfms.master.model.DivisionEmployee;
 
@@ -120,6 +118,44 @@ public class AdminServiceImpl implements AdminService{
 		return dao.UserManagerInsert(login,logindivision) ;
 		}else {
 			throw new Exception();
+		}
+	}
+	
+	
+	@Override
+	public Long UserManagerInsertFromExcel(UserManageAdd UserManageAdd, String Userid) throws Exception 
+	{
+		logger.info(new Date() +"Inside SERVICE UserManagerInsert ");
+		if(dao.UserNamePresentCount(UserManageAdd.getUserName())==0) {
+		Login login=new Login();
+		DivisionEmployee logindivision=new DivisionEmployee();
+		login.setUsername(UserManageAdd.getUserName());
+		login.setPassword("$2y$12$QTTMcjGKiCVKNvNa242tVu8SPi0SytTAMpT3XRscxNXHHu1nY4Kui");
+		login.setPfms("Y");
+		login.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
+		login.setFormRoleId(Long.parseLong(UserManageAdd.getRole()));
+		login.setCreatedBy(Userid);
+		login.setCreatedDate(sdf1.format(new Date()));
+		login.setIsActive(1);
+		login.setLoginType(UserManageAdd.getLoginType());
+		if(UserManageAdd.getEmployee()!=null) {
+		login.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
+		}else {
+			login.setEmpId(Long.parseLong("0"));
+		}
+		
+		//HashSet< Role> Roles=new HashSet<Role>();
+		//Roles.add(roleRepository.findAll().get(Integer.parseInt(UserManageAdd.getRole())-1));
+		//login.setRoles(Roles);
+		
+	    logindivision.setDivisionId(Long.parseLong(UserManageAdd.getDivision()));
+	    logindivision.setEmpId(Long.parseLong(UserManageAdd.getEmployee()));
+	    logindivision.setCreatedBy(Userid);
+	    logindivision.setCreatedDate(sdf1.format(new Date()));
+	    logindivision.setIsActive(1);
+		return dao.UserManagerInsert(login,logindivision) ;
+		}else {
+			return 0l;
 		}
 	}
 
@@ -298,9 +334,9 @@ public class AdminServiceImpl implements AdminService{
 	}
 	
 	@Override
-	public List<Object[]> UserManagerList(String LabCode) throws Exception {
+	public List<Object[]> UserManagerList( ) throws Exception {
 	
-		return dao.UserManagerList(LabCode);
+		return dao.UserManagerList();
 	}
 
 	
@@ -576,6 +612,31 @@ public class AdminServiceImpl implements AdminService{
 			return dao.LabHqChange(FormRoleAccessid, Value);
 		}
 
-	
+		@Override
+		public int updateformroleaccess(String formroleaccessid,String detailsid,String isactive,String logintype, String UserId)throws Exception{
+			
+				if(isactive!=null && isactive.equals("0")){
+					isactive="1";
+				}else {
+					isactive="0";
+				}
+			int result = dao.checkavaibility(logintype,detailsid);
+			
+			if(result == 0) {
+				PfmsFormRoleAccess formrole = new PfmsFormRoleAccess();
+				formrole.setLoginType(logintype);
+				formrole.setFormDetailId(Long.parseLong(detailsid));
+				formrole.setLabHQ("B");
+				formrole.setIsActive(1);
+				formrole.setCreatedBy(UserId);
+				formrole.setCreatedDate(sdf1.format(new Date()));	
+				Long value=dao.insertformroleaccess(formrole);
+				return value.intValue();
+			}else {
+			
+				return dao.updateformroleaccess(formroleaccessid,isactive,UserId);
+			}
+			
+		}
 	
 }

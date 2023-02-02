@@ -50,8 +50,9 @@ public interface MasterService {
 	public int OfficerExtDelete(String OfficerId, String UserId) throws Exception;
 	public List<Object[]> empNoCheckAjax(String empno) throws Exception;
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
-	public Long FeedbackInsert(String Feedback, String UserId, Long EmpId) throws Exception;
+	public Long FeedbackInsert(String Feedback, String UserId, Long EmpId,String feedbacktype) throws Exception;
 	public List<Object[]> FeedbackList(String LabCode) throws Exception;
+	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
-
+	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
 }

@@ -156,7 +156,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 					  <div class="modal-dialog modal-xl" role="document">
 					    <div class="modal-content"  >
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLongTitle">Project Master Details</h5>
+					        <h5 class="modal-title" id="exampleModalLongTitle">Project Main Details</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -564,7 +564,7 @@ excel_file.addEventListener('change', (event) => {
 					msg+="Enter Project  Sanction Cost FE at serial No :"+ sanccostFe3 +"\n";
 				}
             	if(checkExcel>0){
-        			 alert("Please Upload Project Master Excel ");
+        			 alert("Please Upload Project Main Excel ");
         			excel_file.value = '';
         		}else{
         			if(sanccostFe3.length>0 || sanccostFe2.length>0 || sanccostFe1.length>0 || sanccost.length>0 || costvalidation.length>0 || Deliverable1.length>0 || Deliverable2.length>0 || Objective2.length>0 || Objective1.length>0 || Scope2.length>0 || Scope1.length>0 || nodalparticipat2.length>0 || nodalparticipat1.length>0 || sancost.length>0 || totalsancost.length>0 || letterNo.length>0 || pslno.length>0 || projectunitcode.length>0 || unitcode.length>0 || projcode.length>0 || procode.length>0 || indexval.length>0 ||dbDuplicate.length>0 ){

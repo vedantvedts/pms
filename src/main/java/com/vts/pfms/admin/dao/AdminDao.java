@@ -8,6 +8,7 @@ import com.vts.pfms.admin.dto.EmployeeDesigDto;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.EmployeeDesig;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
@@ -47,7 +48,7 @@ public interface AdminDao {
 	public List<Object[]> DivisionList()throws Exception;
 	public Login UserManagerEditData(Long LoginId )throws Exception;
 	public int UserManagerDelete(Login login )throws Exception;
-	public List<Object[]> UserManagerList(String LabCode)throws Exception;
+	public List<Object[]> UserManagerList( )throws Exception;
 	public int UserNamePresentCount(String UserName )throws Exception;
 	public Long pfmsRoleInsert(PfmsLoginRole pfmsrole)throws Exception ;
 	public Object checkUser(Long loginId)throws Exception ;
@@ -80,4 +81,7 @@ public interface AdminDao {
 	public long GetExpertsCount() throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
 	public Long LabHqChange(String FormRoleAccessId, String Value) throws Exception;
+	public int checkavaibility(String logintype,String detailsid)throws Exception;
+	public Long insertformroleaccess(PfmsFormRoleAccess main) throws Exception;
+	public int updateformroleaccess(String formroleid,String active,String auth)throws Exception;
   }

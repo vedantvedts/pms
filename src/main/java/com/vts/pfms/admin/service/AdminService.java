@@ -31,6 +31,7 @@ public interface AdminService {
 	public Login UserManagerEditData(String LoginId )throws Exception;
 	public int UserManagerDelete(String LoginId,String Userid)throws Exception;
 	public Long UserManagerInsert(UserManageAdd UserManageAdd, String LogId)throws Exception;
+	public Long UserManagerInsertFromExcel(UserManageAdd UserManageAdd, String Userid) throws Exception;
 	public int UserManagerUpdate(UserManageAdd UserManageAdd,String Userid)throws Exception;
 	public List<Object[]> GetExpertList() throws Exception;
 	public List<Object[]> GetDesignation() throws Exception;
@@ -41,7 +42,7 @@ public interface AdminService {
 	public Long editExpert( Expert p0) throws Exception;
 	public List<Object[]> AuditStampingList(String loginid,String Fromdateparam,String Todateparam)  throws Exception ;
 	public List<Object[]> UsernameList() throws Exception ;
-	public List<Object[]> UserManagerList(String LabCode)throws Exception;
+	public List<Object[]> UserManagerList()throws Exception;
 	public int UserNamePresentCount(String UserName )throws Exception;
 	public List<Object[]> presentEmpList()throws Exception;
 	public List<Object[]> DesignationList() throws Exception;
@@ -66,4 +67,6 @@ public interface AdminService {
 	public String GenExpertNo() throws Exception;
 	public List<Object[]> AllLabList() throws Exception;
 	public Long LabHqChange(String FormRoleAccessId, String Value ) throws Exception;
+	public int updateformroleaccess(String formroleaccessid,String detailsid,String isactive,String logintype, String UserId)throws Exception;
+		
 }
