@@ -1234,4 +1234,10 @@ public class ActionServiceImpl implements ActionService {
 		return dao.GetDecisionList(projectid,committeid);
 	}
 	
+	@Override
+	public List<Object[]> GetDecisionSoughtList(String projectid,String  committeeid)throws Exception{
+		return dao.GetDecisionSoughtList(projectid,committeeid);
+	}
+	
+	
 }

@@ -127,7 +127,7 @@ label {
 	List<Object[]> UserManagerList=(List<Object[]>)request.getAttribute("UserManagerList"); 
 	String Onboarding = (String)request.getAttribute("Onboarding");
 	List<Object[]> officerlist = (List<Object[]>)request.getAttribute("OfficerList");
-			
+	List<Object[]> usermanager = (List<Object[]>)request.getAttribute("UserManager");
 	%>
 	
 	<%String ses=(String)request.getParameter("result"); 
@@ -393,7 +393,7 @@ excel_file.addEventListener('change', (event) => {
             document.getElementById('myTable1').innerHTML = table_output;
              
              var loginlist = [<%int i=0; for (Object[] obj:UserManagerList) { %>"<%= obj[8] %>"<%= i + 1 < UserManagerList.size() ? ",":"" %><% } %>];
-             var Empname = [<%int j=0; for (Object[] obj:UserManagerList) { %>"<%= obj[1] %>"<%= j + 1 < UserManagerList.size() ? ",":"" %><% } %>];
+             var Empname = [<%int j=0; for (Object[] obj:usermanager) { %>"<%= obj[1] %>"<%= j + 1 < usermanager.size() ? ",":"" %><% } %>];
              var officerlist = [<%int k=0; for (Object[] obj:officerlist) { %>"<%= obj[1] %>"<%= k + 1 < officerlist.size() ? ",":"" %><% } %>];
                 
              

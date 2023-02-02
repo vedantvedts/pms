@@ -1,5 +1,7 @@
 package com.vts.pfms.master.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -20,6 +22,8 @@ import com.vts.pfms.model.LabMaster;
 @Transactional
 @Repository
 public class MasterDaoImpl implements MasterDao {
+	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
@@ -60,7 +64,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
-	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
+	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate , a.feedback , a.feedbacktype , a.status FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
 
 	
 	@PersistenceContext
@@ -500,7 +504,7 @@ public class MasterDaoImpl implements MasterDao {
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}
-	private static final String FEEDBACKLISTFORUSER="SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND a.empid=:empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
+	private static final String FEEDBACKLISTFORUSER="SELECT a.feedbackid,b.empname,a.createddate , a.feedback ,a.feedbacktype , a.status FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND a.empid=:empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
 	@Override
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception
 	{
@@ -520,5 +524,17 @@ public class MasterDaoImpl implements MasterDao {
 	   query.setParameter("feedbackid", feedbackid);
 	   return  (Object[])query.getSingleResult();
 	}
-	
+	private final static String CLOSEFEEDBACK="UPDATE pfms_feedback SET STATUS=:status , remarks=:remarks , ModifiedBy=:modifiedby , ModifiedDate=:modifieddate WHERE feedbackid=:feedbackId";
+	@Override
+	public int CloseFeedback(String feedbackId , String remarks , String username)throws Exception
+	{
+		Query query=manager.createNativeQuery(CLOSEFEEDBACK);   
+		query.setParameter("feedbackId", feedbackId);
+		query.setParameter("remarks", remarks);
+		query.setParameter("status", "C");
+		query.setParameter("modifiedby", username);
+		query.setParameter("modifieddate", sdf1.format(new Date()));
+		int count =(int)query.executeUpdate();
+		return count ;
+	}
 }
