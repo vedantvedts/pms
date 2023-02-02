@@ -80,16 +80,6 @@
 	font-size: 16px !important
 }
 
-.small-list{
-	margin: 0px !important;
-	font-size: 11px;
-	text-align: left;
-	padding: 0px !important;
-}
-
-.small-list li{
-	display: inline-block;
-}
 
 .overall-card{
 	box-shadow: 5px 10px 11px -3px rgb(0 0 0 / 20%);
@@ -112,7 +102,7 @@
 	color:#007bff!important;
 }
 
-.small-list span, .countstable span,.normalfont span, .shadow{
+/* .small-list span, .countstable span,.normalfont span, .shadow{
 	font-size: 12px;
 	 text-shadow:
     -1px -1px 0 #000,
@@ -120,6 +110,21 @@
     -1px 1px 0 #000,
     1px 1px 0 #000;
 }
+.small-list{
+	margin: 0px !important;
+	font-size: 11px;
+	text-align: left;
+	padding: 0px !important;
+}
+
+.small-list li{
+	display: inline-block;
+}
+
+.small-list{
+	font-size: 14px;
+}
+ */
 
 .legend-shadow{
 	text-shadow:
@@ -136,9 +141,6 @@
 	color:white;
 }
 
-.small-list{
-	font-size: 14px;
-}
 
 .overall-card h3{
 	line-height: inherit;
@@ -1207,7 +1209,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		       <div class="card" style="background: transparent;display:none" id="mytasks">
 						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >My Tasks</a><a style="color:white"; href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+								<a class="navbar-brand" style="color:white"; >My Tasks</a><a style="color:white" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
 							</nav>					
 											
 								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
@@ -2309,10 +2311,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      		 <div class="progress " data-value='<%=ProjectHealthTotalData[29]%>'>
 			          <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
-																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
-																"></span>             
+														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
+														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
+														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
+														"></span>             
 			          </span>
 			          <span class="progress-right">
 			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>

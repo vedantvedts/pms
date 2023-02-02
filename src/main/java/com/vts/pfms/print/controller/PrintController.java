@@ -1494,8 +1494,13 @@ public class PrintController {
 	    try {
 	    	String projectid=req.getParameter("projectid");
 	    	String committeeid= req.getParameter("committeeid");
-	    	
-	    	long nextScheduleId=service.getNextScheduleId(projectid, committeeid);
+	    	String scheduleid= req.getParameter("committeescheduleid");
+	    	long nextScheduleId=0;
+	    	if(scheduleid==null) {
+	    		nextScheduleId=service.getNextScheduleId(projectid, committeeid);
+	    	}else {
+	    		nextScheduleId=Long.parseLong(scheduleid);
+	    	}
 		    if(nextScheduleId>0) 
 		    {
 		    	String freezeflag = service.getNextScheduleFrozen(nextScheduleId);

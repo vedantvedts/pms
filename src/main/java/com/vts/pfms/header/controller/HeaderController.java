@@ -461,7 +461,35 @@ public class HeaderController {
 
 	}
 	
+	@RequestMapping(value = "AboutPFM.htm", method = RequestMethod.GET)
+	public void AboutPFM(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside AboutPFM.htm "+UserId);		
+		try {
 
+		String path = req.getServletContext().getRealPath("/UserManual/" + "aboutpms.pdf");
+
+		res.setContentType("application/pdf");
+		res.setHeader("Content-Disposition", String.format("inline; filename=AboutPMS.pdf"));
+
+		File my_file = new File(path);
+
+		OutputStream out = res.getOutputStream();
+		FileInputStream in = new FileInputStream(my_file);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+		out.close();
+		}
+		catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside AboutPFM.htm "+UserId, e);
+		}
+	}
 	
 }
 
