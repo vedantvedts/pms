@@ -2739,7 +2739,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 				      <!-- <td class="normalfont" style="width:10rem">
 				      	<span style="color:#083AA9">&#x220E;</span> &nbsp;CAP <span style="color:#E14D2A" >&#x220E;</span> &nbsp;REV <span style="color:#3E6D9C">&#x220E;</span> &nbsp;OTH
 				      </td> -->
-				      
 				      <% 
 				      	BigDecimal AllotCap = new BigDecimal(0.0);
 				      	BigDecimal ExpCap = new BigDecimal(0.0);
