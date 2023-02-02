@@ -1845,7 +1845,6 @@ public class CommitteeController {
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
 			
 			if (count > 0) {				
-				
 				redir.addAttribute("result", " Member(s) Invited Successfully");
 			} else {
 				redir.addAttribute("resultfail", " Member(s) Invite Unsuccessful");
