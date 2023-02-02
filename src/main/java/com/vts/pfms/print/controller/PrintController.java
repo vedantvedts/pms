@@ -2515,7 +2515,6 @@ public class PrintController {
 	    	    	
 	    	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 	    	    	
-	    	    	
 	    	    	List<List<ProjectFinancialDetails>> financialDetails=new ArrayList<List<ProjectFinancialDetails>>();
 	    	    	List<List<Object[]>> procurementOnDemandlist  = new ArrayList<List<Object[]>>();
 	        		List<List<Object[]>> procurementOnSanctionlist = new ArrayList<List<Object[]>>();
