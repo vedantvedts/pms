@@ -1102,7 +1102,7 @@ public class MasterController {
 			e.printStackTrace();
 			logger.error(new Date() +"Inside CloseFeedBack.htm "+UserId,e);
 		}
-		 return "redirect:/FeedBackList.htm";
+		 return "redirect:/FeedBack.htm";
 	 }
 	 
 
