@@ -76,23 +76,18 @@
 										<th style="text-align: left;"><label>Feedback: <span class="mandatory" style="color: red;">*</span></label></th>
 										<td colspan="3">
 										    <textarea rows="4" style="display:block; margin-top: 10px;" class="form-control"  id="summernote1" name="Feedback"  placeholder="Enter Feedback..!!"  ></textarea>
-									
 										</td>
 									</tr>
 									<tr>
-										
 									</tr>
 								</thead>
 							</table>
 						</div>
-						
 						<div align="center">
 							<input type="submit" class="btn btn-primary btn-sm editbasic"  value="Submit"  name="sub" onclick="return confirm('Are You Sure to Submit?');"/>
-						</div>
-																	
+						</div>									
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					</form>
-															
+					</form>									
 				</div>
 			</div>
 		</div>
