@@ -48,18 +48,19 @@
 				<div class="card-header" >
 					<div class="row">
 						<div class="col-md-6"><h3>FEEDBACK</h3></div>
+						
 						<div class="col-md-6"><a class="btn btn-sm back" href="FeedBack.htm" style="float: right;">BACK</a></div>
 					</div>
 				</div>
 				<div class="card-body">
 				
-					<form action="FeedBackAdd.htm" method="POST" id="Feedbackadd">
+					<form action="FeedBackAdd.htm" method="POST" id="Feedbackadd" enctype="multipart/form-data">
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-striped table-condensed " id="myTable16" style="width: 90%;">
 								<thead>
 									<tr>
 										<th style="text-align: left;"><label>Feedback Type: <span class="mandatory" style="color: red;">*</span></label></th>
-										<td colspan="3">
+										<td >
 											<select class="form-control selectdee" id="ftype" name="feedbacktype" data-container="body" data-live-search="true"   style="font-size: 5px;">
 												<option value=""  selected="selected"	hidden="true">--Select--</option>
 												<option value="B">Bug</option>
@@ -68,6 +69,8 @@
 												<option value="N">New Requirement</option>
 											</select>
 										</td>
+										<th style="text-align: left;"> <label>File :</label> </th>
+										<td > <input type="file" name="FileAttach" style="margin-right: -110px;"> </td>
 									</tr>
 									<tr>
 										<th style="text-align: left;"><label>Feedback: <span class="mandatory" style="color: red;">*</span></label></th>
@@ -76,7 +79,9 @@
 									
 										</td>
 									</tr>
-							
+									<tr>
+										
+									</tr>
 								</thead>
 							</table>
 						</div>
