@@ -15,8 +15,6 @@
 
 
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-
-
 List<Object[]> DesignationList=(List<Object[]>)request.getAttribute("DesignationList");
 List<Object[]> DivisionList=(List<Object[]>)request.getAttribute("OfficerDivisionList");
 List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
