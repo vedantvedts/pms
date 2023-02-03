@@ -1152,7 +1152,7 @@ public class OnBoardingController {
 					                for(int j=1;j<cellcount;j++){
 					                	
 					                	if(j==1) {
-					                		System.out.println(" uname   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1166,7 +1166,7 @@ public class OnBoardingController {
 				                		}
 					                	
 					                	if(j==3) {
-					                		System.out.println(" logintype   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1181,7 +1181,7 @@ public class OnBoardingController {
 				                		}
 					                	
 					                	if(j==2) {
-					                		System.out.println(" setEmployee   :"+sheet.getRow(i).getCell(j));
+					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1209,7 +1209,7 @@ public class OnBoardingController {
 				                	}
 					    			UserManageAdd.setRole("1"); 
 					    			
-					               count +=adminservice.UserManagerInsert(UserManageAdd , Userid);
+					               count +=adminservice.UserManagerInsertFromExcel(UserManageAdd , Userid);
 						                
 					            }
 					                           

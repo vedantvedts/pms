@@ -1,5 +1,7 @@
 package com.vts.pfms.master.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,17 +11,21 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
+import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.model.LabMaster;
 
 @Transactional
 @Repository
 public class MasterDaoImpl implements MasterDao {
+	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	private static final String OFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' , b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid, a.SrNo, a.isactive,a.labcode  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.srno=0,a.srno ";
 	private static final String DESIGNATIONLIST="SELECT desigid, desigcode, designation, desiglimit FROM employee_desig";
@@ -60,7 +66,6 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String LABSLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' , empno FROM employee WHERE empno=:empno"; 
 	private static final String EXTEMPNOCHECKAJAX="SELECT empid, empname , empno FROM employee_external WHERE empno=:empno";
-	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' and a.empid=b.empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
 
 	
 	@PersistenceContext
@@ -493,14 +498,27 @@ public class MasterDaoImpl implements MasterDao {
 	}
 	
 	@Override
-	public List<Object[]> FeedbackList(String LabCode) throws Exception 
-	{
+	public long FeedbackAttachInsert(PfmsFeedbackAttach main) throws Exception {
+		
+		manager.persist(main);
+		manager.flush();
+		return main.getFeedbackAttachId();
+	}
+	
+	private static final String FEEDBACKLIST = "SELECT a.feedbackid,b.empname,a.createddate , a.feedback , a.feedbacktype , a.status , a.remarks FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid  AND CASE WHEN 'A'<>:feedbacktype THEN a.feedbacktype=:feedbacktype ELSE 1=1 END and CASE WHEN 'A'<>:empid THEN a.empid=:empid ELSE 1=1 END AND CAST(a.createddate AS DATE) BETWEEN :fromdate AND :todate AND b.labcode=:labcode  ORDER BY feedbackid DESC";
+
+	@Override
+	public List<Object[]> FeedbackList(String fromdate , String todate , String empid ,String LabCode,String feedbacktype) throws Exception{
 		Query query = manager.createNativeQuery(FEEDBACKLIST);
+		query.setParameter("empid", empid);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
 		query.setParameter("labcode", LabCode);
+		query.setParameter("feedbacktype", feedbacktype);
 		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
 		return FeedbackList;
 	}
-	private static final String FEEDBACKLISTFORUSER="SELECT a.feedbackid,b.empname,a.createddate FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND a.empid=:empid AND b.labcode=:labcode ORDER BY a.feedbackid DESC";
+	private static final String FEEDBACKLISTFORUSER="SELECT a.feedbackid,b.empname,a.createddate , a.feedback , a.feedbacktype , a.status , a.remarks FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid  AND CASE WHEN :empid<>'A' THEN a.empid=:empid ELSE 1=1 END AND MONTH(a.createddate)=MONTH(NOW())-1 AND b.labcode=:labcode UNION SELECT a.feedbackid,b.empname,a.createddate , a.feedback , a.feedbacktype , a.status , a.remarks FROM pfms_feedback a,employee b WHERE a.isactive='1' AND a.empid=b.empid AND CASE WHEN :empid<>'A' THEN a.empid=:empid ELSE 1=1 END AND a.status IN('O') AND b.labcode=:labcode ORDER BY feedbackid DESC";
 	@Override
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception
 	{
@@ -520,5 +538,41 @@ public class MasterDaoImpl implements MasterDao {
 	   query.setParameter("feedbackid", feedbackid);
 	   return  (Object[])query.getSingleResult();
 	}
+	private final static String CLOSEFEEDBACK="UPDATE pfms_feedback SET STATUS=:status , remarks=:remarks , ModifiedBy=:modifiedby , ModifiedDate=:modifieddate WHERE feedbackid=:feedbackId";
+	@Override
+	public int CloseFeedback(String feedbackId , String remarks , String username)throws Exception
+	{
+		Query query=manager.createNativeQuery(CLOSEFEEDBACK);   
+		query.setParameter("feedbackId", feedbackId);
+		query.setParameter("remarks", remarks);
+		query.setParameter("status", "C");
+		query.setParameter("modifiedby", username);
+		query.setParameter("modifieddate", sdf1.format(new Date()));
+		int count =(int)query.executeUpdate();
+		return count ;
+	}
+	private static final String ATTACHLIST="SELECT a.feedbackid, a.FeedbackAttachId ,a.path , a.filename  FROM pfms_feedback_attach a , pfms_feedback b WHERE a.feedbackid=b.feedbackid AND a.isactive=1";
+	@Override
+	public List<Object[]> GetfeedbackAttch()throws Exception
+	{
+		Query query = manager.createNativeQuery(ATTACHLIST);
+		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
+		return FeedbackList;
+	}
+	private static final String USERATTCHFEEDBACK="SELECT a.feedbackid,a.FeedbackAttachId ,a.path , a.filename  FROM pfms_feedback_attach a , pfms_feedback b WHERE a.feedbackid=b.feedbackid AND b.empid=:empid AND a.isactive=1";
+	@Override
+	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(USERATTCHFEEDBACK);
+		query.setParameter("empid", empid);
+		List<Object[]> FeedbackList = (List<Object[]>) query.getResultList();
+		return FeedbackList;
+	}
 	
+	@Override
+	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception
+	{
+		PfmsFeedbackAttach Attachment= manager.find(PfmsFeedbackAttach.class,Long.parseLong(achmentid));
+		return Attachment;
+	}
 }

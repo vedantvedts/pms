@@ -129,6 +129,7 @@ font-weight: bold;
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 String Onboarding = (String)request.getAttribute("Onboarding");
 List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
+List<Object[]> AllOfficerlist =(List<Object[]>)request.getAttribute("AllOfficerList");
 
 %>
 
@@ -418,7 +419,7 @@ function Delete(myfrm){
              table_output += ' <tbody>';
              document.getElementById('myTable1').innerHTML = table_output;
               
-              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:OfficerList) { %>"<%= obj[1] %>"<%= i + 1 < OfficerList.size() ? ",":"" %><% } %>];
+              var EmployeeNojsArray = [<%int i=0; for (Object[] obj:AllOfficerlist) { %>"<%= obj[1] %>"<%= i + 1 < AllOfficerlist.size() ? ",":"" %><% } %>];
                      
               var employeeNo=[];
               for (var i in sheet_data) {

@@ -391,7 +391,7 @@ SimpleDateFormat sdf1=fc.getSqlDateFormat();
 
 int addcount=0; 
 NFormatConvertion nfc=new NFormatConvertion();
-//Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
+Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 String filePath=(String)request.getAttribute("filePath");
 String projectLabCode=(String)request.getAttribute("projectLabCode");
 List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
@@ -401,38 +401,38 @@ Committee committee=(Committee)request.getAttribute("committeeData");
 
 List<Object[]> projectattributeslist = (List<Object[]> )request.getAttribute("projectattributes");
 List<List<Object[]>> ebandpmrccount = (List<List<Object[]>> )request.getAttribute("ebandpmrccount");
-//List<List<Object[]>> milestonesubsystems= (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
-//List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
-//List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
-//List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
+List<List<Object[]>> milestonesubsystems= (List<List<Object[]>>)request.getAttribute("milestonesubsystems");
+List<List<Object[]>> milestones= (List<List<Object[]>>)request.getAttribute("milestones");
+List<List<Object[]>> lastpmrcactions = (List<List<Object[]>>)request.getAttribute("lastpmrcactions");
+List<List<Object[]>> lastpmrcminsactlist = (List<List<Object[]>>)request.getAttribute("lastpmrcminsactlist");
 List<List<Object[]>> ganttchartlist=(List<List<Object[]>>)request.getAttribute("ganttchartlist");
-//List<Object[]> projectdatadetails = (List<Object[]> )request.getAttribute("projectdatadetails");
-//List<List<Object[]>> oldpmrcissueslist=(List<List<Object[]>>)request.getAttribute("oldpmrcissueslist");
+List<Object[]> projectdatadetails = (List<Object[]> )request.getAttribute("projectdatadetails");
+List<List<Object[]>> oldpmrcissueslist=(List<List<Object[]>>)request.getAttribute("oldpmrcissueslist");
 
-//List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>)request.getAttribute("financialDetails");
-//List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
-//List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
-//List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>)request.getAttribute("riskmatirxdata");
-//List<Object[]> lastpmrcdecisions = (List<Object[]>)request.getAttribute("lastpmrcdecisions");
-//List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
+List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<ProjectFinancialDetails>>)request.getAttribute("financialDetails");
+List<List<Object[]>> procurementOnDemand = (List<List<Object[]>>)request.getAttribute("procurementOnDemandlist");
+List<List<Object[]>> procurementOnSanction = (List<List<Object[]>>)request.getAttribute("procurementOnSanctionlist");
+List<List<Object[]>> riskmatirxdata = (List<List<Object[]>>)request.getAttribute("riskmatirxdata");
+List<Object[]> lastpmrcdecisions = (List<Object[]>)request.getAttribute("lastpmrcdecisions");
+List<List<Object[]>> actionplanthreemonths = (List<List<Object[]>>)request.getAttribute("actionplanthreemonths");
 List<Object[]> TechWorkDataList=(List<Object[]>)request.getAttribute("TechWorkDataList");
 List<Object[]> ProjectDetail=(List<Object[]>)request.getAttribute("ProjectDetails"); 
 List<String> projectidlist = (List<String>)request.getAttribute("projectidlist");
-//List<Object[]> pdffiles=(List<Object[]>)request.getAttribute("pdffiles");
-//List<Object[]> milestoneactivitystatus =(List<Object[]>)request.getAttribute("milestoneactivitystatus");
+List<Object[]> pdffiles=(List<Object[]>)request.getAttribute("pdffiles");
+List<Object[]> milestoneactivitystatus =(List<Object[]>)request.getAttribute("milestoneactivitystatus");
 List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
 String ProjectId=(String)request.getAttribute("projectid");
-//List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
-//List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
-//List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
+List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
+List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
+List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
 
-//List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
-//List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
+List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
+List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
-
+LocalDate before6months = LocalDate.now().minusMonths(6);
 Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
@@ -547,7 +547,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	
 						<div class="card-body">	
 						
-				<%-- 		
+				 		
 							 <details>					
 							    <summary role="button" tabindex="0"><b>1. Project Attributes </b>  </summary>
 								<div class="content">
@@ -559,7 +559,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<%if(projectattributes!=null){ %>
 										
 										<div>
-											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+											<%-- <b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b> --%>
 											<form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
@@ -701,9 +701,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							</div>
 						</details>
 
- 				--%>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
-				<%-- 
+				 
 						<details>
 	   						<summary role="button" tabindex="0"><b>2. Schematic Configuration</b>   </summary>
 	   						<div class="content">
@@ -787,9 +786,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<%} %>
 							</div>
 						</details>
-				--%>
+				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-				<%-- 			
+				 			
 						<details>
 	   						<summary role="button" tabindex="0"><b>3. Overall Product tree/WBS</b> </summary>
 							
@@ -833,9 +832,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							</div>
 							<%} %>
 						</details>
-  				--%>
+  				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->		
-				<%-- 
+				
 						<details>
    						<summary role="button" tabindex="0"><b>4. Particulars of Meeting </b> </summary>
    						
@@ -895,9 +894,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<td style="text-align: center;"><%=i %></td>
 							<td style="text-align: justify; "><%=obj[2] %></td>
 							<td style=" text-align: center;">
-								<%if(obj[8]!= null){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
-								<%if(obj[7]!= null){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
-								<%if(obj[4]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
+								<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
 							</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
@@ -989,9 +988,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<td  style="text-align: center;"><%=i %></td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<td  style="text-align: center;" >
-										<%= sdf.format(sdf1.parse(obj[3].toString()))%>
-										<%if(obj[6]!= null){ %><br><%=sdf.format(sdf1.parse(obj[6].toString()))%><% } %>
-										<%if(obj[5]!= null){ %><br><%=sdf.format(sdf1.parse(obj[5].toString()))%><% } %>
+										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
+										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 										<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 									</td>
 									<td   style="text-align: center;"> 
@@ -1062,114 +1060,122 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						
 							
 						<div align="center" style="width:990px">
-							<div align="center" style="margin-left:25px;max-width:300px;float:left;">
-								<!-- <div align="center" style="max-width:400px;float:left;"> -->
-								<table class="subtables" style="align: left; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;max-width:200px;  border-collapse:collapse;" >
-									<thead>
-										<tr>
-											 <th  style="max-width: 55px; ">Committee</th>
-											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-											 <th  style="max-width: 55px; "> Date Held</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%if(ReviewMeetingList.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingList.size()>0)
-										  {int i=1;
-										for(Object[] obj:ReviewMeetingList.get(z)){ %>
-											<tr>
+
+							<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
+									
+								<div align="center" style="width:990px">
+									<div align="center" style="margin-left:25px;max-width:300px;float:left;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingList.get(z).size()==0){ %>
+												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%}
+												else if(ReviewMeetingList.size()>0)
+												  {int i=1;
+												for(Object[] obj:ReviewMeetingList.get(z)){ %>
+													<tr>
+														<td >
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=i %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>				
+												<%i++;
+												}}else{ %>
+												<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												<%} %> 
+										</tbody>
+									</table>
+									</div>
+								
+									<%int t=1; %>
+									<div align="center" style="max-width:300px; display:inline-block; ;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+													<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%} else if(ReviewMeetingListPMRC.size()>0)
+												  { 
+													for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
 												
-												<td  style="max-width: 55px;"><%=obj[1] %> #<%=i %></td>												
-												<td  style="max-width: 200px;" ><%= obj[4]%></td>
-												<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%i++;
-										}}else{ %>
-										<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										<%} %> 
-								</tbody>
-							</table>
-							</div>
+												<%if(t<=20){ %>
+													<tr>
+														<td>
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=t++ %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>			
+												<%};
+												}}else{ %>
+												
+													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												
+											<%} %> 
+										</tbody>
+									</table>
+									</div>
+									<% if(t>20) { %>
+									<div align="left" style="max-width:300px; float:right; ;">
+										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
+											<thead>
+												<tr>
+													 <th  style="width: 140px; ">Committee</th>
+													 <th  style="width: 140px; "> Date Held</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
+												<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+												<%}
+												else if(ReviewMeetingListPMRC.size()>0)
+												  {
+												for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
+													<tr>
+														<td >
+															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+																<%=obj[1]%> #<%=t %>
+															</button>
+														</td>												
+														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
+													</tr>			
+												<%t++;
+												}}else{ %>
+												
+													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
+												
+											<%} %> 
+										</tbody>
+									</table>
+									</div>
+									<%} %>
+								</div>
+								
+							</form>
 						
-							<%int t=1; %>
-							<div align="center" style="max-width:300px; display:inline-block; ;">
-								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
-									<thead>
-										<tr>
-											 <th  style="max-width: 55px; ">Committee</th>
-											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-											 <th  style="max-width: 55px; "> Date Held</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingListPMRC.size()>0)
-										  {
-										for(Object[] obj:ReviewMeetingListPMRC.get(z)){ %>
-										<%if(t==21)break; %> 
-										<%if(t<=20){ %>
-											<tr>
-												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
-												 <td  style="max-width: 200px;" ><%= obj[4]%></td>
-											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%}t++;
-										}}else{ %>
-										
-											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										
-									<%} %> 
-								</tbody>
-							</table>
-							</div>
-							<% if(t>20) {%>
-							<div align="left" style="max-width:300px; float:right; ;">
-								<table class="subtables" style="align: left; padding-left:0px; margin-top: 0px; margin-bottom: 10px; margin-left: 25px;max-width:200px;  border-collapse:collapse; " >
-									<thead>
-										<tr>
-											 <th  style="max-width: 55px; ">Committee</th>
-											 <!-- <th  style="max-width: 200px; "> MeetingId</th> -->
-											 <th  style="max-width: 55px; "> Date Held</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%if(ReviewMeetingListPMRC.get(z).size()==0){ %>
-										<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
-										<%}
-										else if(ReviewMeetingListPMRC.size()>0)
-										  {
-										for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
-											<tr>
-											<%if(t>=20){ %>
-												<td  style="max-width: 55px;"><%=obj[1] %> #<%=t %></td>												
-												 <td  style="max-width: 200px;" ><%= obj[4]%></td>
-											<td  style="max-width: 55px;text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
-											</tr>			
-										<%}t++;
-										}}else{ %>
-										
-											<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-										
-									<%}} %> 
-								</tbody>
-							</table>
-							</div>
 						
 						</div>
 															
 					<%} %>
-			
 					 
-					 
-					 
-						</details>
-				--%>	
+				</details>
+				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->				
-				<%-- 
+				 
 						<details>
    						<summary role="button" tabindex="0"><b>5. Milestones achieved prior to this <%=committeeData.getCommitteeShortName().trim().toUpperCase() %> period.</b>  </summary>
 							<div class="content">
@@ -1224,7 +1230,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										%>
 										<%int serial=1;for(Object[] obj:milestones.get(z)){
 											
-											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
+													/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
 											%>
 											<tr>
 												<td style="text-align: center"><%=serial%></td>
@@ -1334,7 +1341,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											</tr>
 										<%count1++;serial++;}} %>
 									<%} else{ %>
-									<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+									<tr><td colspan="10" style="text-align:center; "> Nil</td></tr>
 									
 									
 									<%} %>
@@ -1345,10 +1352,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								
 							<%} %>
 						</div>
-						</details>
- 				--%>
+				</details>
+ 				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-				<%-- 	
+				 	
 						<details>
    						<summary role="button" tabindex="0" id="leveltab"><b>6. Details of work and current status of sub system with major milestones (since last <%=committeeData.getCommitteeShortName().trim().toUpperCase()%>)</b>  </summary>
 						<div class="content">
@@ -1403,11 +1410,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								<th  style="width: 60px; ">L</th>
 								<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
 								<th  style="width: 150px; "> PDC</th>
-								<th  style="width: 150px; "> ADC</th>
 								<th  style="width: 60px; "> Progress</th>
 								<th  style="width: 50px; "> Status(DD)</th>
 							 	<th  style="width: 260px; "> Remarks</th>
-							 	<th  style="max-width: 30px; "> Info </th>
 							</tr>
 							</thead>
 								<% if( MilestoneDetails6.get(z).size()>0) { 
@@ -1487,22 +1492,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<%}%>
 												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 											</td>
-											<td style="text-align: center">
-												<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
-													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
-															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-													 
-														<%= sdf.format(sdf1.parse(obj[24].toString()))%> 
-													</span>
-												<%}else{%>
-													-
-												<%} %>
-											</td>
+											
 											<td style="text-align: center"><%=obj[17] %>%</td>											
 											<td style="text-align: center">
 											<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
@@ -1523,15 +1513,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											
 											</td>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
-                                            <td >
-												<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
-													<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
-												</a>
-											</td>
 										</tr>
 									<%count1++;serial++;}} %>
 								<%} else{ %>
-								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+										<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
 								
 								
 								<%} %>
@@ -1569,159 +1554,160 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									</table>
 								</div>
 								<div align="left" style="margin-left: 15px;">(c) Risk Matrix/Management Plan/Status. </div>
-
+									
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>	
-											
-											<tr>
-												<td colspan="9" style="border: 0">
-													<p style="font-size: 10px;text-align: center"> 
-														<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-														<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-														<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-														<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-														<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-														<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-														<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-														<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-														<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-														<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-													</p>
-								   				</td>									
-											</tr>
-							
-											<tr>
-												<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-												<th style="width: 330px; "  colspan="3">Risk</th>
-												<th style="width: 100px; " rowspan="1" > PDC</th>
-												<th style="width: 100px; " rowspan="1"> ADC</th>
-												<th style="width: 160px; " rowspan="1"> Responsibility</th>
-												<th style="width: 50px; " rowspan="1">Status(DD)</th>
-												<th style="width: 215px;" rowspan="1">Remarks</th>	
-											</tr>
-										<!-- 	<tr>
-												<th  style="text-align: center;width: 100px;"> Category</th>
-												<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-											</tr> -->
-											<tr>
-												<th  style="text-align: center;width: 110px; " > Severity</th>
-												<th  style="text-align: center;width: 110px;"> Probability</th>
-												<th  style="text-align: center;width: 110px;"> RPN</th>
-												<th  style="width:210px" colspan="3" > Mitigation Plans</th>
-												<th  style="width:215px" colspan="2"> Impact</th>		
-											</tr>
-										
+												<tr>
+													<td colspan="9" style="border: 0">
+														<p style="font-size: 10px;text-align: center"> 
+															<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+															<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+															<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+															<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+															<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
+															<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
+															<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
+															<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+															<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
+															<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
+														</p>
+									   				</td>									
+												</tr>
+												<tr>
+													<td colspan="9" style="border:0;text-align: right; "><b>RPN :</b> Risk Priority Number</td>
+												</tr>
+												<tr>
+													<th style="width: 15px;text-align: center " rowspan="2">SN</th>
+													<th style="width: 330px; " colspan="3">Risk</th>
+													<th style="width: 100px; " rowspan="1" > PDC</th>
+													<th style="width: 100px; " rowspan="1"> ADC</th>
+													<th style="width: 160px; " rowspan="1"> Responsibility</th>
+													<th style="width: 50px; "  rowspan="1">Status(DD)</th>
+													<th style="width: 215px; " rowspan="1">Remarks</th>	
+												</tr>
+												<tr>
+													<th  style="text-align: center;width: 110px; " > Severity<br>(1-10)</th>
+													<th  style="text-align: center;width: 110px;"> Probability<br>(1-10)</th>
+													<th  style="text-align: center;width: 110px;"> RPN<br>(1-100)</th>
+													<th  style="width:210px" colspan="3" > Mitigation Plans</th>
+													<th  style="width:315px" colspan="2"> Impact</th>		
+												</tr>
+															
 										</thead>
-																		
+																							
 										<tbody>
-												<%if(riskmatirxdata.get(z).size()>0){
-												int i=0;
-												%> 
+											<%if(riskmatirxdata.get(z).size()>0){
+												int i=0;%> 
 													<%for(Object[] obj : riskmatirxdata.get(z)){
 													i++;%>
-													<tr>
-														<td style="text-align: center" rowspan="2"><%=i %></td>
-														<td style="text-align: justify;color: red; " colspan="3" >
-															<%=obj[0] %><span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
-														</td>
-														<td style="text-align: center" rowspan="1">
-															<%if(obj[11]!= null){ %><br><%=sdf.format(sdf1.parse(obj[11].toString()))%><%} %>
-															<%if(obj[10]!= null){ %><br><%=sdf.format(sdf1.parse(obj[10].toString()))%><%} %>
-															<%=sdf.format(sdf1.parse(obj[9].toString())) %>
-														</td>
-														
-														<td style="text-align: center" rowspan="1">
-															<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
-
+														<tr>
+															<td style="text-align: center" rowspan="2"><%=i %></td>
+															<td style="text-align: justify;color: red; " colspan="3" >
+																<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+															</td>
+															<td style="text-align: center" rowspan="1">
+																<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
+																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
+																<%=sdf.format(sdf1.parse(obj[9].toString()))%>
+															</td>
+															
+															<td style="text-align: center" rowspan="1">
+																<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
+																	<%if(obj[18]!=null){ %>
+																		<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
+																			<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																			<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																			<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
+																			<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																			<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
+																		   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
+																		<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
+																		<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<%}
+																		}else if(obj[15].toString().equals("C")){ %>
+																	        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																	    <% }else{ %>
+																	      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
+																	<%} %> 
+																		
+																<%}else{ %>-<%} %>
+															</td>
+																		
+															<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+															<td style="text-align: center" rowspan="1">
+																	
 																<%if(obj[18]!=null){ %>
 																	<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
-																		<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<span class="ongoing">RC</span>
 																	<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-																		<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<span class="delay">FD</span>
 																	<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
-																		<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
+																		<span class="completed">CO</span>
 																	<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-																	   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
-																	<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
-																	<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																	<%}
-																	}else if(obj[15].toString().equals("C")){ %>
-																        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-																    <% }else{ %>
-																      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
-																<%} %> 
+																	   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.now()) )){  %> 
+																	<span class="ongoing">OG</span>
+																	<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.now())){  %> 
+																	<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>) </span>
+																<%}
+																}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
+															        <span class="completed">CO</span>
+															    <% }else{ %>
+															      	<span class="assigned">AA</span> 
+																<% } %> 
 																
-															<%}else{ %>-<%} %>
-														</td>
-															
-														<td  rowspan="1"><%=obj[7] %>,&nbsp;<%=obj[8] %></td>	
-														<td style="text-align: center" rowspan="1">
-															
-															<%if(obj[18]!=null){ %>
-																<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
-																	<span class="ongoing">RC</span>
-																<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-																	<span class="delay">FD</span>
-																<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
-																	<span class="completed">CO</span>
-																<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-																   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
-																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.now()) )){  %> 
-																<span class="ongoing">OG</span>
-																<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.now())){  %> 
-																<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>) </span>
-															<%}
-															}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
-														        <span class="completed">CO</span>
-														    <% }else{ %>
-														      	<span class="assigned">AA</span> 
-															<% } %> 
-											
-														</td>
-														<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+																			
+															</td>
+															<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+																
+														</tr>	
 														
-													</tr>	
-													<tr>
-														<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
-														<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-													</tr>
-													
-													<tr>
-														<td style="text-align: center;" ><%=obj[1] %></td>
-														<td style="text-align: center;" ><%=obj[2] %></td>
-														<td style="text-align: center;" ><%=obj[22] %></td>
-														<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
-														<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
-													</tr>
-													
-													<%if(riskmatirxdata.get(z).size() > i){ %>
+														<%-- <tr>
+															<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
+															<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
+														</tr> --%>
+																		
 														<tr>
-															<td colspan="9" style="color:transparent ;">.</td>
+															<td style="text-align: center;" ><%=obj[1] %></td>
+															<td style="text-align: center;" ><%=obj[2] %></td>
+															<td style="text-align: center;">
+																<%=obj[22]%>
+																<% int RPN =Integer.parseInt(obj[22].toString());
+																		if(RPN>=1 && RPN<=25){ %>(Low)
+																		<%}else if(RPN>=26 && RPN<=50){ %>(Medium)
+																		<%}else if(RPN>=51 && RPN<=75){ %>(High)
+																		<%}else if(RPN>=76){ %>(Very High)
+																		<%} %>
+															</td>
+															<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
+															<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
 														</tr>
-													<%} %>		
-															
-													<%}%>
-													
-													
-												<%}else{%>
-													<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
-												<%} %>
-												
-												
-												
-											</tbody>		
-										</table>
-										
-									<% } %>
-									</div>
+																	
+														<%if(riskmatirxdata.get(z).size() > i){ %>
+															<tr>
+																<td colspan="9" style="color:transparent ;">.</td>
+															</tr>
+														<%} %>	
+														<%}%>
+													<%}else{%>
+														<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
+													<%} %>
+												</tbody>		
+											</table>
+ 	 
+									
+								
+								<% } %>
+							</div>
 							
 									
 						</details>
-				 --%>
+				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-				<%-- 
+				 
 						<details>
    						<summary role="button" tabindex="0"><b>7. Details of Procurement Plan (Major Items)</b>  </summary>
 						<div class="content">
@@ -1734,11 +1720,14 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									
 									<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
-										 <thead>
-											 <tr>
-											 	<th colspan="8" ><span class="mainsubtitle">Demand Details ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> ) <%} else {%> -  )<%} %> </span> </th>
-											 </tr>
-										</thead>
+									<thead>
+										<tr>
+											<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+													<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
+												</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
+											</th>
+										</tr>
+									</thead>
 										
 										
 										<tr>
@@ -1783,10 +1772,14 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											<%} %>
 									
 										<thead>
-											 <tr >
-											 	<th colspan="8" ><span class="mainsubtitle">Order Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> <span class="currency">Lakhs</span> ) <%} else {%> -  )<%} %> </span> </th>
-											 </tr>
-										 </thead>
+											<tr>
+												<th colspan="8"><span class="mainsubtitle">
+														Orders Placed ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+														<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
+														</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
+												</th>
+											</tr>
+										</thead>
 										
 										
 										  	 	 <tr>	
@@ -1909,9 +1902,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
                
 							</div>
 						</details>
-				--%>
+				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
-				<%-- 	
+				 	
 						<details>
    						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
    						
@@ -1963,34 +1956,33 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
 			 
 			                         <tr>
-			<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
-			<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
-			<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
-			<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
-			<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
-			<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
-			<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-		    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
-			<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-			<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
-			<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-			<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
-	       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-			<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-			<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-		<%double balance=(res.getDouble("SanctionCost")-(res.getDouble("Expenditure")+res.getDouble("OutCommitment")+res.getDouble("Dipl"));%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-			<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-		 <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-			<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
-		</tr>
+										<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
+										<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+										<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+										<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+										<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+										<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+										<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
+									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+										<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+										<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
+										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+								       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+										<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+										<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+										<%totReBalance+=(projectFinancialDetail.getReBalance());%>
+										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+										<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
+									</tr>
 			<%} }%>
 			</tbody>
 					<tr>
@@ -2031,9 +2023,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							</div> 		
 						
 						</details>
-				--%>
+				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-<%-- 						
+						
 					<details>
 						<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    							<summary role="button" tabindex="0"><b>9. Action Plan for Next Six months </b>    </summary>
@@ -2205,8 +2197,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								
 								</tbody>
 								
-									
-								
 							</table>
 		
 		
@@ -2214,11 +2204,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						</div>
 					
 					</details>
- --%>
+
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						
-					<details open>
-   						<summary role="button" tabindex="0"><b><!-- 10. --> GANTT chart of overall project schedule <!-- [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>] --></b>    </summary>
+					<details >
+   						<summary role="button" tabindex="0"><b> 10. GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]</b>    </summary>
    						
 						    <div class="content">
 							    <%for(int z=0;z<projectidlist.size();z++){ %>
@@ -2276,7 +2266,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 					
 					</details>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-<%-- 						
+ 						
 					<details>
    						<summary role="button" tabindex="0"><b>11. Issues</b></summary>
    						
@@ -2329,9 +2319,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
-													<%if(obj[6] != null){ %> <%= sdf.format(sdf1.parse(obj[6].toString()))%> <%} %>
-													<%if(obj[5] != null){ %> <%= sdf.format(sdf1.parse(obj[5].toString()))%> <%} %>
-													<%= sdf.format(sdf1.parse(obj[3].toString()))%>
+													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 												<td  style="text-align: center;"> 
 													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
@@ -2370,9 +2360,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						   </div>	
 						   
 					</details>
- --%>
+
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
-<%-- 
+ 
 					<details>
    						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
    						
@@ -2396,10 +2386,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						  </div>	
 						   
 					</details>						
-			 --%>		
+			 		
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
-   						<summary role="button" tabindex="0"><b><!-- 13. --> Other Relevant Points (if any) 
+   						<summary role="button" tabindex="0"><b> 13. Other Relevant Points (if any) 
    							<%if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){ %>
    								and Technical Work Carried Out For Last Six Months
 							<%}else { %>

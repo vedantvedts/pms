@@ -51,6 +51,7 @@ import com.vts.pfms.master.dto.ProjectSanctionDetailsMaster;
 import com.vts.pfms.model.FinanceChanges;
 import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
+import com.vts.pfms.pfmsserv.feign.PFMSServeFeignClient;
 import com.vts.pfms.service.RfpMainService;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -71,6 +72,8 @@ public class LoginController {
 	@Autowired
 	CommitteeService comservice;
 
+	@Autowired
+	PFMSServeFeignClient PFMSServ;
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -214,6 +217,8 @@ public class LoginController {
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
 			     req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
+			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
+			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
 			     
@@ -594,7 +599,7 @@ public class LoginController {
     	final String localUri3=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=W";
     	final String localUri4=uri+"/pfms_serv/pfms-finance-changes?projectCode=A&interval=T";
     	final String localUri5=uri+"/pfms_serv/labdetails";
-    	final String CCMDataURI=uri+"/pfms_serv/getCCMViewData";
+//    	final String CCMDataURI=uri+"/pfms_serv/getCCMViewData";
     	
     	String MonthlyData=null;
     	String WeeklyData=null;
@@ -616,14 +621,14 @@ public class LoginController {
 			ResponseEntity<String> weeklyresponse=restTemplate.exchange(localUri3, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> todayresponse=restTemplate.exchange(localUri4, HttpMethod.POST, entity, String.class);
 			ResponseEntity<String> labdata=restTemplate.exchange(localUri5, HttpMethod.POST, entity, String.class);
-			ResponseEntity<List<CCMView>> CCMData=restTemplate.exchange(CCMDataURI, HttpMethod.POST,entity, new ParameterizedTypeReference<List<CCMView>>() {});
-			
+//			ResponseEntity<List<CCMView>> CCMData=restTemplate.exchange(CCMDataURI, HttpMethod.POST,entity, new ParameterizedTypeReference<List<CCMView>>() {});
+//			List<CCMView> CCMData =PFMSServ.getCCMViewData();
 			
 			MonthlyData=monthlyresponse.getBody();
 			WeeklyData=weeklyresponse.getBody();
 			TodayData=todayresponse.getBody();
 			LabData=labdata.getBody();
-			CCMViewData= CCMData.getBody();
+			CCMViewData= PFMSServ.getCCMViewData(LabCode);
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) 
     	{

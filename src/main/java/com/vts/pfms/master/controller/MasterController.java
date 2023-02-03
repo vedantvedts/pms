@@ -1,6 +1,10 @@
 package com.vts.pfms.master.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +17,26 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.MilestoneActivityType;
+import com.vts.pfms.master.model.PfmsFeedback;
+import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.master.service.MasterService;
 
 
@@ -39,6 +49,8 @@ public class MasterController {
 	@Autowired
 	AdminService adminservice;
 	
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	private static final Logger logger=LogManager.getLogger(MasterController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@RequestMapping(value="Officer.htm", method=RequestMethod.GET)
@@ -55,6 +67,8 @@ public class MasterController {
 		}
 		req.setAttribute("Onboarding", onboard);
 		req.setAttribute("OfficerList", service.OfficerList().stream().filter(e-> e[11]!=null).filter(e-> LabCode.equalsIgnoreCase(e[11].toString())).collect(Collectors.toList()));         
+		req.setAttribute("AllOfficerList", service.OfficerList());         
+		
 		return "master/OfficerMasterList";
 	}
 	
@@ -893,12 +907,15 @@ public class MasterController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		String logintype=(String)ses.getAttribute("LoginType");
 		logger.info(new Date() +" Inside FeedBack.htm "+Userid);
-		
-		
+		req.setAttribute("fromdate", new FormatConverter().SqlToRegularDate( LocalDate.now().minusMonths(1).toString()));
+		req.setAttribute("todate",new FormatConverter().SqlToRegularDate( LocalDate.now().toString()));
 		if(logintype!=null && logintype.equalsIgnoreCase("A")) {
-			List<Object[]> list = service.FeedbackList(LabCode);
+			List<Object[]> list = service.FeedbackListForUser(LabCode,"A");
+			List<Object[]> Attch = service.GetfeedbackAttch(); 
 			if(list!=null && list.size()>0) {
 				req.setAttribute("FeedbackList", list);
+				req.setAttribute("Attchment", Attch);
+				req.setAttribute("feedbacktype", "A");
 				return "master/FeedbackList";
 			}else {
 				return "master/FeedBack";
@@ -906,8 +923,11 @@ public class MasterController {
 		}else {
 			String empid =  String.valueOf((Long) ses.getAttribute("EmpId"));
 			List<Object[]> list = service.FeedbackListForUser(LabCode , empid);
+			List<Object[]> Attch = service.GetfeedbackAttchForUser( empid); 
 			if(list!=null && list.size()>0) {
 				req.setAttribute("FeedbackList", list);
+				req.setAttribute("Attchment", Attch);
+				req.setAttribute("feedbacktype", "A");
 				return "master/FeedbackList";
 			}else {
 				return "master/FeedBack";
@@ -915,6 +935,41 @@ public class MasterController {
 		}
 		
 	}
+	
+	@RequestMapping(value = "FeedbackAttachDownload.htm", method = RequestMethod.GET)
+	 public void FeedbackAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
+	 {	 
+		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ActionAttachDownload.htm "+UserId);		
+			try { 
+		 
+					res.setContentType("Application/octet-stream");	
+					System.out.println(req.getParameter("attachid"));
+					PfmsFeedbackAttach attach=service.FeedbackAttachmentDownload(req.getParameter("attachid"));
+					
+					File my_file=null;
+				
+					my_file = new File(uploadpath+attach.getPath()+File.separator+attach.getFileName()); 
+			        res.setHeader("Content-disposition","attachment; filename="+attach.getFileName().toString()); 
+			        OutputStream out = res.getOutputStream();
+			        FileInputStream in = new FileInputStream(my_file);
+			        byte[] buffer = new byte[4096];
+			        int length;
+			        while ((length = in.read(buffer)) > 0){
+			           out.write(buffer, 0, length);
+			        }
+			        in.close();
+			        out.flush();
+			        out.close();
+
+			}
+			catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside ActionAttachDownload.htm "+UserId, e);
+			}
+	 }
+	
+	
 	@RequestMapping(value = "FeedBackPage.htm", method = RequestMethod.GET)
 	public String FeedBackpage(HttpServletRequest req, HttpSession ses) throws Exception {
 		String Userid= (String) ses.getAttribute("Username");
@@ -926,47 +981,88 @@ public class MasterController {
 	}
 	
 	@RequestMapping(value = "FeedBackAdd.htm", method = RequestMethod.POST)
-	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir)	throws Exception 
+	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir,
+			@RequestPart("FileAttach") MultipartFile FileAttach)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside FeedBackAdd.htm "+UserId);
-		Long EmpId = (Long) ses.getAttribute("EmpId");
-		String Feedback=req.getParameter("Feedback");
-		String feedbacktype=req.getParameter("feedbacktype");
-		if(Feedback.trim().equalsIgnoreCase("")) {			
-			redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
-			return "redirect:/FeedBack.htm";
-		}
-		if(feedbacktype==null) {
-			redir.addAttribute("resultfail", "Please Select the FeedbackType");
-			return "redirect:/FeedBack.htm";
-		}
-		Long Feedbackid=service.FeedbackInsert(Feedback, UserId, EmpId, feedbacktype);
-		
-		if (Feedbackid>0) {
-			redir.addAttribute("result", " Feedback Add Successful");
-		} else {
+		try {
+			Long EmpId = (Long) ses.getAttribute("EmpId");
+			String Feedback=req.getParameter("Feedback");
+			String feedbacktype=req.getParameter("feedbacktype");
+			if(!FileAttach.isEmpty()){
+				
+			}
+			if(Feedback ==null || Feedback.trim().equalsIgnoreCase("")) {			
+				redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
+				return "redirect:/FeedBack.htm";
+			}
+			if(feedbacktype==null) {
+				redir.addAttribute("resultfail", "Please Select the FeedbackType");
+				return "redirect:/FeedBack.htm";
+			}
+			PfmsFeedback feedback=new PfmsFeedback();
+		    feedback.setEmpId(EmpId);
+		    feedback.setStatus("O");
+		    feedback.setFeedbackType(feedbacktype);
+		    feedback.setFeedback(Feedback);
+		    feedback.setCreatedBy(UserId);
+		    feedback.setCreatedDate(sdf1.format(new Date()));
+		    feedback.setIsActive(1);
+		    
+			Long Feedbackid=service.FeedbackInsert(feedback , FileAttach,LabCode);
+			
+			if (Feedbackid>0) {
+				redir.addAttribute("result", " Feedback Add Successful");
+			} else {
+				redir.addAttribute("resultfail", "Feedback Add UnSuccessful");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			redir.addAttribute("resultfail", "Feedback Add UnSuccessful");
 		}
+		
 		return "redirect:/FeedBack.htm";
 	}
 	
 	
 	
-	@RequestMapping(value = "FeedBackList.htm" , method= {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "FeedbackList.htm" , method= {RequestMethod.GET,RequestMethod.POST})
 	public String FeedbackList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +" Inside FeedBackList.htm "+UserId);
-		String LabCode =(String) ses.getAttribute("labcode");
-		
-		req.setAttribute("FeedbackList", service.FeedbackList(LabCode));
+		logger.info(new Date() +" Inside FeedbackList.htm "+UserId);
+	
+		try {
+			String LabCode =(String) ses.getAttribute("labcode");
+			String empid =  String.valueOf((Long) ses.getAttribute("EmpId"));
+			String logintype=(String)ses.getAttribute("LoginType");
+			String fromdate = req.getParameter("Fromdate");
+			String todate = req.getParameter("Todate");
+			String feedbacktype = req.getParameter("feedbacktype");
+			if(feedbacktype==null) {
+				feedbacktype="A";
+			}
+			if(logintype!=null && logintype.equalsIgnoreCase("A")) {
+				List<Object[]> Attch = service.GetfeedbackAttch(); 
+				req.setAttribute("FeedbackList", service.FeedbackList(fromdate,todate,"A" ,LabCode,feedbacktype));
+				req.setAttribute("Attchment", Attch);
+			}else {
+				List<Object[]> Attch = service.GetfeedbackAttchForUser( empid); 
+				req.setAttribute("FeedbackList", service.FeedbackList(fromdate,todate,empid,LabCode,feedbacktype));
+				req.setAttribute("Attchment", Attch);
+			}
+			req.setAttribute("fromdate", fromdate);
+			req.setAttribute("todate", todate);
+			req.setAttribute("feedbacktype", feedbacktype);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside FeedbackList.htm "+UserId,e);
+		}
 		return "master/FeedbackList";
 	}
-	
-	
-	
-	
 	
 	 @RequestMapping(value = "FeedbackContent.htm", method = RequestMethod.GET)
 	  public @ResponseBody String FeedbackContent(HttpSession ses, HttpServletRequest req) throws Exception 
@@ -988,6 +1084,28 @@ public class MasterController {
 		  
 	}
 	 
-	
+	 @RequestMapping( value = "CloseFeedBack.htm" , method = RequestMethod.POST)
+	 public String CloseFeedback(HttpSession ses, HttpServletRequest req ,RedirectAttributes redir)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside CloseFeedBack.htm "+UserId);
+		 try {
+			String feedbackid = req.getParameter("feedbackid");
+			 String remarks = req.getParameter("Remarks");
+			 int count = service.CloseFeedback(feedbackid , remarks,UserId);
+			 if(count > 0) {
+					redir.addAttribute("result" , "Feedback Closed Successfully ");
+				}else {
+					redir.addAttribute("resultfail", "Feedback Close Unsuccessful");
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside CloseFeedBack.htm "+UserId,e);
+		}
+		 return "redirect:/FeedBackList.htm";
+	 }
+	 
+
+	 
 
 }

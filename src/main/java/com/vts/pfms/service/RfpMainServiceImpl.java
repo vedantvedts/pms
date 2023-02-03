@@ -1,5 +1,6 @@
 package com.vts.pfms.service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -535,5 +536,25 @@ public class RfpMainServiceImpl implements RfpMainService {
 	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception
 	{
 		return dao.getCCMData(EmpId, LoginType, LabCode);
+	}
+	@Override
+	public List<Object[]> DashboardFinanceCashOutGo(String LoginType,String EmpId,String LabCode,String ClusterId)
+	{
+		List<Object[]> CashOutGo = dao.DashboardFinanceCashOutGo(LoginType, EmpId, LabCode, ClusterId);
+		BigDecimal onecrore = new BigDecimal(10000000);
+		for(Object[] OutGo : CashOutGo)
+		{ 
+			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[3].toString()) ;
+			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
+			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
+			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[6].toString()) ;
+			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[7].toString()) ;
+			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[8].toString()) ;
+			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[9].toString()) ;
+			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[10].toString()) ;
+		}
+		
+		
+		return CashOutGo;
 	}
 }

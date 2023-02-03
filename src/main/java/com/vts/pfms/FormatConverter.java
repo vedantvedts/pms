@@ -12,6 +12,7 @@ import java.util.Locale;
 
 public class FormatConverter 
 {
+	
 	private SimpleDateFormat regularDateFormat=new SimpleDateFormat("dd-MM-yyyy");
 	private SimpleDateFormat sqlDateFormat=new SimpleDateFormat("yyyy-MM-dd");
 	private SimpleDateFormat sqlDateAndTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
@@ -205,6 +206,9 @@ public class FormatConverter
 	{
 		return regularDateFormat.format(sqlDateFormat.parse(sqldate));
 	}
-	
+	public String RegularToSqlDate (String regulardate) throws ParseException
+	{
+		return sqlDateFormat.format(regularDateFormat.parse(regulardate));
+	}
 	
 }

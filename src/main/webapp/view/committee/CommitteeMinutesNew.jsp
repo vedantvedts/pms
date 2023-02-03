@@ -732,15 +732,15 @@ for(Object[] temp : invitedlist){
 											<td class="std"  align="center"><%=i %></td>
 											<td class="std" style="text-align: justify;"><%=obj[2] %></td>
 											<td class="std" align="center">
-												<%if(obj[8]!= null){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>
-												<%if(obj[7]!= null){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
+												<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>
+												<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
 												<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
 											</td>
 											<td class="std" align="center" > 
 												<%if(obj[3].toString().equals("A") ){ %>		 A
 												<%}else if(obj[3].toString().equals("I") ){  %>  I
 												<%}else if(obj[3].toString().equals("R") ){  %>  R
-												<%}else if(obj[3].toString().equals("D") ){  %>   D
+												<%}else if(obj[3].toString().equals("D") ){  %>  D
 												<%}else if(obj[3].toString().equals("C") ){  %>  C
 												<%}else if(obj[3].toString().equals("K") ){  %>  K
 												<%} %>  

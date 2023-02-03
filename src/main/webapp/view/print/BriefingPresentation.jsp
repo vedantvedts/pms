@@ -97,10 +97,10 @@
 	Committee committeeData = (Committee) request.getAttribute("committeeData");
 	String CommitteeCode = committeeData.getCommitteeShortName().trim();
 
-	String HyperlinkPath = "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + request.getLocalPort() + request.getContextPath();
 	
 	String ProjectCode=projectattributeslist.get(0)[0].toString();
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
+	LocalDate before6months = LocalDate.now().minusMonths(6);
 	%>
 	
 	
@@ -682,15 +682,8 @@
 					</div>
 					<div class="col-md-8">
 						<h3>
-							4 (a)
-							<% if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) { %>
-							Approval
-							<% } else { %>
-							Ratification
-							<% } %>
-							of <b>Recommendations</b> of last
-							<%=committee.getCommitteeShortName().trim().toUpperCase()%>
-							Meeting
+							4 (a) <% if (committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")) { %> Approval
+							<% } else { %> Ratification <% } %> of <b>Recommendations</b> of last <%=committee.getCommitteeShortName().trim().toUpperCase()%> Meeting
 						</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
@@ -755,12 +748,9 @@
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<% if (obj[8] != null) { %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br>
-									<% } %> 
-									<% if (obj[7] != null) { %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br>
-									<% } %> 
-									<% if (obj[4] != null) { %><%=sdf.format(sdf1.parse(obj[6].toString()))%>
-									<% } %>
+									<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
+									<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
+									<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
 								</td>
 								<td>
 									<% if (obj[4] != null) { %>
@@ -925,8 +915,8 @@
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<% if (obj[6] != null) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-									<% if (obj[5] != null) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
+									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 								</td>
 								<td style="text-align: center;">
@@ -1175,16 +1165,14 @@
 													<tr>
 														<td >
 															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t++ %>
+																<%=obj[1]%> #<%=t %>
 															</button>
 														</td>												
 														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													</tr>			
 												<%t++;
 												}}else{ %>
-												
 													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-												
 											<%} %> 
 										</tbody>
 									</table>
@@ -1291,7 +1279,8 @@
 						int serial = 1;
 						for (Object[] obj : milestones.get(z)) {
 
-							if (Integer.parseInt(obj[21].toString()) <= Integer.parseInt(levelid)) {
+							if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
+									/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
 						%>
 						<tr>
 							<td style="text-align: center"><%=serial%></td>
@@ -1356,27 +1345,18 @@
 																	&nbsp;&nbsp;<%=obj[13]%> <%
 									 } else if (obj[21].toString().equals("4")) {
 									 %>
-																	&nbsp;&nbsp;<%=obj[14]%> <%
-									 } else if (obj[21].toString().equals("5")) {
-									 %>
-																	&nbsp;&nbsp;<%=obj[15]%> <%
-									 }
-									 %>
+																	&nbsp;&nbsp;<%=obj[14]%> <% } else if (obj[21].toString().equals("5")) { %>
+																	&nbsp;&nbsp;<%=obj[15]%> <% } %>
 							</td>
 							<td style="text-align: center">
-								<%
-								if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) {
-								%>
-								<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> <%
-								 }
-								 %> <%=sdf.format(sdf1.parse(obj[9].toString()))%>
+								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
+									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+								<%}%> 
+								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 							</td>
 							<td style="text-align: center">
-								<%
-								if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) {
-								%>
-								<span
-								class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
+								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
+								<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 															<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 															<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 															<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
@@ -1385,11 +1365,7 @@
 															<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
 
 									<%=sdf.format(sdf1.parse(obj[24].toString()))%>
-								</span> <%
-									 } else {
-									 %> - <%
-									 }
-									 %>
+								</span> <% } else {  %> - <% } %>
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<td style="text-align: center"><span
@@ -1509,12 +1485,11 @@
 								<th style="width: 20px;">SN</th>
 								<th style="width: 30px;">MS</th>
 								<th style="width: 60px;">L</th>
-								<th style="width: 350px;">System/ Subsystem/ Activities</th>
+								<th style="width: 450px;">System/ Subsystem/ Activities</th>
 								<th style="width: 150px;">PDC</th>
-								<th style="width: 150px;">ADC</th>
 								<th style="width: 60px;">Progress</th>
 								<th style="width: 50px;">Status(DD)</th>
-								<th style="width: 260px;">Remarks</th>
+								<th style="width: 310px;">Remarks</th>
 								<th style="width: 30px;">Info</th>
 							</tr>
 						</thead>
@@ -1580,56 +1555,26 @@
 								%>
 							</td>
 
-							<td
-								style="<%if (obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
-								<%
-								if (obj[21].toString().equals("0")) {
-								%> <%=obj[10]%> <%
- } else if (obj[21].toString().equals("1")) {
- %>
-								&nbsp;&nbsp;<%=obj[11]%> <%
- } else if (obj[21].toString().equals("2")) {
- %>
-								&nbsp;&nbsp;<%=obj[12]%> <%
- } else if (obj[21].toString().equals("3")) {
- %>
-								&nbsp;&nbsp;<%=obj[13]%> <%
- } else if (obj[21].toString().equals("4")) {
- %>
-								&nbsp;&nbsp;<%=obj[14]%> <%
- } else if (obj[21].toString().equals("5")) {
- %>
-								&nbsp;&nbsp;<%=obj[15]%> <%
- }
- %>
+							<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>text-align: justify;">
+									<%if(obj[21].toString().equals("0")) {%>
+										<%=obj[10] %>
+									<%}else if(obj[21].toString().equals("1")) { %>
+										&nbsp;&nbsp;<%=obj[11] %>
+									<%}else if(obj[21].toString().equals("2")) { %>
+										&nbsp;&nbsp;<%=obj[12] %>
+									<%}else if(obj[21].toString().equals("3")) { %>
+										&nbsp;&nbsp;<%=obj[13] %>
+									<%}else if(obj[21].toString().equals("4")) { %>
+										&nbsp;&nbsp;<%=obj[14] %>
+									<%}else if(obj[21].toString().equals("5")) { %>
+										&nbsp;&nbsp;<%=obj[15] %>
+									<%} %>
 							</td>
 							<td style="text-align: center">
-								<%
-								if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) {
-								%>
-								<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> <%
-								 }
-								 %> <%=sdf.format(sdf1.parse(obj[9].toString()))%>
-							</td>
-							<td style="text-align: center">
-								<%
-								if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) {
-								%>
-								<span
-								class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-															<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-															<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-															<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-															<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-															<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-															<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-
-									<%=sdf.format(sdf1.parse(obj[24].toString()))%>
-								</span> <%
-								 } else {
-								 %> - <%
-								 }
-								 %>
+								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
+									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+								<% } %> 
+								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<td style="text-align: center">
@@ -1649,14 +1594,10 @@
 
 								</span>
 							</td>
-							<td
-								style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
-								<%
-								if (obj[23] != null) {
+							<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
+								<% if (obj[23] != null) {
 								%><%=obj[23]%>
-								<%
-								}
-								%>
+								<%}%>
 							</td>
 							<td style="text-align: center">
 								<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
@@ -1664,28 +1605,20 @@
 								</a>
 							</td>
 						</tr>
-						<%
-						count1++;
+						<% count1++;
 						serial++;
 						}
-						}
-						%>
-						<%
-						} else {
-						%>
+						} %>
+						<% } else { %>
 						<tr>
 							<td colspan="10" style="text-align: center;">Nil</td>
 						</tr>
 
 
-						<%
-						}
-						%>
+						<%}%>
 					</table>
 
-					<%
-					}
-					%>
+					<%}%>
 				</div>
 
 			</div>
@@ -1809,7 +1742,7 @@
 						<thead>
 
 							<tr>
-								<td colspan="9" style="border: 0">
+								<td colspan="10" style="border: 0">
 									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
@@ -1824,7 +1757,9 @@
 									</p>
 								</td>
 							</tr>
-
+							<tr>
+								<td colspan="10" style="border:0;text-align: right; "><b>RPN :</b> Risk Priority Number</td>
+							</tr>
 							<tr>
 								<th style="width: 15px; text-align: center" rowspan="2">SN</th>
 								<th style="width: 325px;" colspan="3">Risk</th>
@@ -1835,14 +1770,10 @@
 								<th style="width: 200px;" rowspan="1">Remarks</th>
 								<th style="width: 20px;" rowspan="2">Info</th>
 							</tr>
-							<!-- <tr>
-											<th  style="text-align: center;width: 100px;"> Category</th>
-											<th  style="text-align: center;width: 100px;" colspan="2"> Type</th>
-										</tr> -->
 							<tr>
-								<th style="text-align: center; width: 110px;">Severity</th>
-								<th style="text-align: center; width: 110px;">Probability</th>
-								<th style="text-align: center; width: 110px;">RPN</th>
+								<th style="text-align: center; width: 110px;">Severity<br>(1-10)</th>
+								<th style="text-align: center; width: 110px;">Probability<br>(1-10)</th>
+								<th style="text-align: center; width: 110px;">RPN<br>(1-100)</th>
 								<th style="width: 200px" colspan="3">Mitigation Plans</th>
 								<th style="width: 205px" colspan="2">Impact</th>
 							</tr>
@@ -1850,9 +1781,9 @@
 						</thead>
 
 						<tbody>
-							<% if (riskmatirxdata.get(z).size() > 0) { 
+							<% 	if (riskmatirxdata.get(z).size() > 0) { 
 								int i = 0; %>
-							<% for (Object[] obj : riskmatirxdata.get(z)) {
+							<% 	for (Object[] obj : riskmatirxdata.get(z)) {
 								i++; %>
 							<tr>
 								<td style="text-align: center" rowspan="2"><%=i%></td>
@@ -1860,8 +1791,8 @@
 									<%=obj[0]%>  <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
 								</td>
 								<td style="text-align: center" rowspan="1">
-									<% if (obj[11] != null) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-									<% if (obj[10] != null) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
+									<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
+									<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
 									<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 								</td>
 
@@ -1974,7 +1905,15 @@
 							<tr>
 								<td style="text-align: center;"><%=obj[1]%></td>
 								<td style="text-align: center;"><%=obj[2]%></td>
-								<td style="text-align: center;"><%=obj[22]%></td>
+								<td style="text-align: center;">
+									<%=obj[22]%>
+									<% int RPN =Integer.parseInt(obj[22].toString());
+											if(RPN>=1 && RPN<=25){ %>(Low)
+											<%}else if(RPN>=26 && RPN<=50){ %>(Medium)
+											<%}else if(RPN>=51 && RPN<=75){ %>(High)
+											<%}else if(RPN>=76){ %>(Very High)
+											<%} %>
+								</td>
 								<td style="text-align: justify;" colspan="3"><%=obj[3]%></td>
 								<td style="text-align: justify;" colspan="2"><%=obj[21]%></td>
 							</tr>
@@ -2041,12 +1980,11 @@
 					</div>
 					<% } %>
 
-					<table
-						style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
+					<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse: collapse;">
 						<thead>
 							<tr>
 								<th colspan="8"><span class="mainsubtitle">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
-										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
+										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
 									</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
 								</th>
 							</tr>
@@ -2078,10 +2016,8 @@
 							<td><%=obj[10]%></td>
 							<td><%=obj[11]%></td>
 						</tr>
-						<%
-						estcost += Double.parseDouble(obj[5].toString());
-						}
-						%>
+						<% estcost += Double.parseDouble(obj[5].toString());
+						} %>
 
 						<tr>
 							<td colspan="5" style="text-align: right;"><b>Total</b></td>
@@ -2090,30 +2026,19 @@
 						</tr>
 
 
-						<%
-						} else {
-						%>
+						<% } else { %>
 						<tr>
 							<td colspan="8" style="text-align: center;">Nil</td>
 						</tr>
-						<%
-						}
-						%>
+						<% } %>
 
 						<thead>
 							<tr>
-								<th colspan="8"><span class="mainsubtitle">Orders
-										Placed ( > &#8377; <%
-									 if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) {
-									 %>
-										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%>
-										) <%
-										} else {
-										%> - )<%
-										}
-										%>
-								</span> <span class="currency" style="float: right;">(In &#8377;
-										Lakhs)</span></th>
+								<th colspan="8"><span class="mainsubtitle">
+										Orders Placed ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
+										<%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "")%> Lakhs) <% } else { %> - )<% } %>
+										</span> <span class="currency" style="float: right;">(In &#8377; Lakhs)</span>
+								</th>
 							</tr>
 						</thead>
 
@@ -2762,8 +2687,8 @@
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<% if (obj[6] != null) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-									<% if (obj[5] != null) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 								</td>
 								<td style="text-align: center;">

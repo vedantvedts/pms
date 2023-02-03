@@ -68,5 +68,6 @@ public interface RfpMainDao {
 	public int CCMDataDelete(String LabCode) throws Exception;
 	public long CCMDataInsert(PFMSCCMData ccmdata) throws Exception;
 	public List<Object[]> getCCMData(String EmpId, String LoginType, String LabCode) throws Exception;
+	public List<Object[]> DashboardFinanceCashOutGo(String LoginType, String EmpId, String LabCode, String ClusterId);
 
 }

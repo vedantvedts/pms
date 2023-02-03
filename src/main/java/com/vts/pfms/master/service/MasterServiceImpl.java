@@ -1,16 +1,28 @@
 package com.vts.pfms.master.service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.vts.pfms.master.controller.MasterController;
+import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.master.dao.MasterDao;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
@@ -18,9 +30,9 @@ import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
-import com.vts.pfms.master.model.EmployeeExternal;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
+import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.model.LabMaster;
 
 @Service
@@ -33,6 +45,8 @@ public class MasterServiceImpl implements MasterService {
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	@Autowired
 	MasterDao dao;
+	@Value("${ApplicationFilesDrive}")
+	String uploadpath;
 	
 	@Override
 	public List<Object[]> OfficerList() throws Exception {
@@ -401,22 +415,58 @@ public class MasterServiceImpl implements MasterService {
 	}
 	
 	@Override
-	public Long FeedbackInsert(String Feedback, String UserId,Long EmpId ,String feedbacktype) throws Exception {
+	public Long FeedbackInsert(PfmsFeedback feedback ,MultipartFile FileAttach , String LabCode) throws Exception {
 		logger.info(new Date() +" Inside SERVICE FeedbackInsert ");
-		PfmsFeedback feedback=new PfmsFeedback();
-		    feedback.setEmpId(EmpId);
-		    feedback.setFeedbackType(feedbacktype);
-		    feedback.setFeedback(Feedback);
-		    feedback.setCreatedBy(UserId);
-		    feedback.setCreatedDate(sdf1.format(new Date()));
-		    feedback.setIsActive(1);
-		return dao.FeedbackInsert(feedback);
+		
+		Long feedbackid = dao.FeedbackInsert(feedback);
+		if(!FileAttach.isEmpty()) {
+			Timestamp instant= Timestamp.from(Instant.now());
+			String timestampstr = instant.toString().replace(" ","").replace(":", "").replace("-", "").replace(".","");
+			String Path = LabCode+"\\Feedback\\";
+			PfmsFeedbackAttach attach = new PfmsFeedbackAttach();
+			attach.setFeedbackId(feedbackid);
+			attach.setPath(Path);
+			attach.setCreatedBy(feedback.getCreatedBy());
+			attach.setCreatedDate(feedback.getCreatedDate());
+			attach.setIsActive(1);
+			attach.setFileName("Feedback"+timestampstr+"."+FilenameUtils.getExtension(FileAttach.getOriginalFilename()));
+			dao.FeedbackAttachInsert(attach);
+			saveFile(uploadpath+Path, attach.getFileName(), FileAttach);
+		}
+		return feedbackid;
 	}
-	
+	  public static void saveFile(String uploadpath, String fileName, MultipartFile multipartFile) throws IOException 
+	    {
+	    	logger.info(new Date() +"Inside SERVICE saveFile ");
+	        Path uploadPath = Paths.get(uploadpath);
+	          
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+	        
+	        try (InputStream inputStream = multipartFile.getInputStream()) {
+	            Path filePath = uploadPath.resolve(fileName);
+	            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+	        } catch (IOException ioe) {       
+	            throw new IOException("Could not save image file: " + fileName, ioe);
+	        }     
+	    }
 	@Override
-	public List<Object[]> FeedbackList(String LabCode) throws Exception {
-
-		return dao.FeedbackList(LabCode);
+	public List<Object[]> FeedbackList(String fromdate , String todate , String empid ,String LabCode,String feedbacktype) throws Exception{
+		
+		String FromDate = new FormatConverter().RegularToSqlDate(fromdate);
+		String ToDate = new FormatConverter().RegularToSqlDate(todate);
+		return dao.FeedbackList(FromDate,ToDate,empid ,LabCode,feedbacktype);
+	}
+	@Override
+	public List<Object[]> GetfeedbackAttch()throws Exception
+	{
+		return dao.GetfeedbackAttch();
+	}
+	@Override
+	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception
+	{
+		return dao.GetfeedbackAttchForUser(empid);
 	}
 	@Override
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception
@@ -428,5 +478,14 @@ public class MasterServiceImpl implements MasterService {
 	{	
 		return dao.FeedbackContent(feedbackid);
 	}
+	@Override
+	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception
+	{
+		return dao.CloseFeedback(feedbackId , remarks,username);
+	}
+	@Override
 	
+	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception {
+		return dao.FeedbackAttachmentDownload(achmentid);
+	}
 }

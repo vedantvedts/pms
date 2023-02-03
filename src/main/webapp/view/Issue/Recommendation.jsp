@@ -44,7 +44,7 @@ String projectid = (String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 List<Object[]>  projapplicommitteelist=(List<Object[]>)request.getAttribute("projapplicommitteelist");
 List<Object[]> recomlist = (List<Object[]>)request.getAttribute("recomendation");
-
+String RecOrDecision = (String)request.getAttribute("recOrDecision");
 
 %>
 
@@ -75,14 +75,17 @@ if(ses1!=null){
 						<form class="form-inline " method="post" action="Recommendation.htm" id="myform" >
 						  
 						<div class="row card-header">
-				   			<div class="col-md-4">
-								<h3>Recommendation List</h3>
+				   			<div class="col-md-3">
+				   			<%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
+									<h3 style="font-size: 1.65rem;">Recommendation List</h3>
+								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> <h3>Decision List </h3><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> 
+								<h3>Decision Sought </h3><%}%>
 							</div>
 										
-							<div class="col-md-4 justify-content-end" >
-								<table style="float: right;" >
+							<div class="col-md-3 justify-content-end" >
+								<table>
 									<tr>
-										<td><h4>Project :</h4></td>
+										<td><h4>Proj:</h4></td>
 										<td>
 												<select class="form-control items" name="projectid" id="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm1();' >
 													<option disabled  selected value="">Choose...</option>
@@ -95,11 +98,25 @@ if(ses1!=null){
 									</tr>	
 								</table>							
 							</div>
-							
-							<div class="col-md-4 justify-content-end" >
-								<table style="float: right;">
+							<div class="col-md-3 justify-content-end" >
+								<table >
 							        <tr>
-										<td><h4>Commitee :</h4></td>
+										<td><h4>Type:</h4></td>
+										<td>
+											<select class="form-control items" name="recOrDecision"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
+													<option disabled  selected value="">Choose...</option>
+													<option value="D"  <%if(RecOrDecision!=null && RecOrDecision.equals("D")){ %>selected <%} %> >Decision</option>
+									   				<option value="R"  <%if(RecOrDecision!=null && RecOrDecision.equals("R")){ %>selected <%} %> >Recommendation</option>
+									   				<option value="S"  <%if(RecOrDecision!=null && RecOrDecision.equals("S")){ %>selected <%} %> >Decision Sought</option>
+											</select>	
+										</td>
+									</tr>
+								</table>	
+							</div>
+							<div class="col-md-3 justify-content-end" >
+								<table >
+							        <tr>
+										<td><h4>Comm:</h4></td>
 										<td>
 											<select class="form-control items" name="committeeid" id="committeeid" required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>
@@ -142,8 +159,13 @@ if(ses1!=null){
 														<tr>
 															<th> SN</th>
 															<th> Meeting Id</th>
-															<th> Recommendation</th>
-															<th> Remarks</th>
+															<th> <%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
+																	Recommendation List
+																<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%>
+																	Decision List 
+																<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> Decision Sought<%} %>
+															</th>
+															<th><%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%>Reference<%}else{%>  Remarks <%}%></th>
 														</tr>
 													</thead>
 													<tbody>

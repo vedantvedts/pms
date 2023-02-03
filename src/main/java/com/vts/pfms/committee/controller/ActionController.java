@@ -2419,31 +2419,40 @@ public class ActionController {
 	 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	 			String projectid=req.getParameter("projectid");
 				String committeeid=req.getParameter("committeeid");
-				
+				String recorDecision=req.getParameter("recOrDecision");
 				if(projectdetailslist.size()==0) 
 				{				
 					redir.addAttribute("resultfail", "No Project is Assigned to you.");
 					return "redirect:/MainDashBoard.htm";
 				}
 				
-				if(committeeid==null)
+				if(committeeid==null && recorDecision==null)
 				{
 					committeeid="A";
-				}			
-				
+					recorDecision="R";
+				}		
 				
 				if(projectid==null || projectid.equals("null"))
 				{
 					projectid=projectdetailslist.get(0)[0].toString();
 				}
-
-				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
-				List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
 				
+				if(recorDecision!=null && recorDecision.equalsIgnoreCase("D")) {
+					List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
+					req.setAttribute("recomendation", recomendation);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("R")) {
+					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
+					req.setAttribute("recomendation", recomendation);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
+					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
+					req.setAttribute("recomendation", DecisionSought);
+				}
+				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
+				
+				req.setAttribute("recOrDecision", recorDecision);
 				req.setAttribute("projectid",projectid);
 				req.setAttribute("committeeid",committeeid);
 				req.setAttribute("projectlist", projectdetailslist);
-				req.setAttribute("recomendation", recomendation);
 				req.setAttribute("projapplicommitteelist",projapplicommitteelist);
 			} catch(Exception e){
 				e.printStackTrace();
@@ -2465,31 +2474,39 @@ public class ActionController {
 	 			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	 			String projectid=req.getParameter("projectid");
 				String committeeid=req.getParameter("committeeid");
-				
+				String recorDecision=req.getParameter("recOrDecision");
 				if(projectdetailslist.size()==0) 
 				{				
 					redir.addAttribute("resultfail", "No Project is Assigned to you.");
 					return "redirect:/MainDashBoard.htm";
 				}
 				
-				if(committeeid==null)
+				if(committeeid==null && recorDecision==null)
 				{
 					committeeid="A";
-				}			
-				
+					recorDecision="D";
+				}
 				
 				if(projectid==null || projectid.equals("null"))
 				{
 					projectid=projectdetailslist.get(0)[0].toString();
 				}
-
+				if(recorDecision!=null && recorDecision.equalsIgnoreCase("D")) {
+					List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
+					req.setAttribute("recomendation", recomendation);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("R")) {
+					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
+					req.setAttribute("recomendation", recomendation);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
+					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
+					req.setAttribute("recomendation", DecisionSought);
+				}
 				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
-				List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
 				
+				req.setAttribute("recOrDecision", recorDecision);
 				req.setAttribute("projectid",projectid);
 				req.setAttribute("committeeid",committeeid);
 				req.setAttribute("projectlist", projectdetailslist);
-				req.setAttribute("recomendation", recomendation);
 				req.setAttribute("projapplicommitteelist",projapplicommitteelist);
 			} catch(Exception e){
 				e.printStackTrace();
