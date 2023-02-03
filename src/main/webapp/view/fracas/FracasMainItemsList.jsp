@@ -167,6 +167,7 @@ a:hover {
   List<Object[]>  projectslist=(List<Object[]>)request.getAttribute("projectlist");
   List<Object[]>  projectmainitemslist=(List<Object[]>)request.getAttribute("projectmainitemslist");
   String projectid=(String)request.getAttribute("projectid");
+  String LabCode=(String)request.getAttribute("LabCode");
   
 %>
 
@@ -282,7 +283,7 @@ a:hover {
 																				</div>
 																			</div>
 																		</button>
-																		
+																		<input type="hidden" name="LabCode"	value="<%=LabCode %>" /> 
 																		<input type="hidden" name="fracasmainid"	value="<%=projectmainitemslist.get(i)[0] %>" /> 
 																		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	</form>

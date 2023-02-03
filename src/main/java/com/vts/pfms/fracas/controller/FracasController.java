@@ -73,6 +73,7 @@ public class FracasController {
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("projectmainitemslist",service.ProjectFracasItemsList(projectid, LabCode));
 			req.setAttribute("projectlist",projectslist);
+			req.setAttribute("LabCode", LabCode);
 			return "fracas/FracasMainItemsList";
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -119,6 +120,9 @@ public class FracasController {
 			dto.setFracasDate(req.getParameter("date"));
 			dto.setCreatedBy(UserId);
 			dto.setLabCode(LabCode);
+			
+		System.out.println(LabCode+"-----------------------");
+			
 			
 			long count=service.FracasMainAddSubmit(dto);
 			
@@ -177,6 +181,8 @@ public class FracasController {
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside FracasAssign.htm "+UserId);
+		
+	
 		try
 		{
 			String fracasmainid=req.getParameter("fracasmainid");
@@ -192,6 +198,7 @@ public class FracasController {
 			req.setAttribute("employeelist",service.EmployeeList(LabCode));
 			req.setAttribute("fracasassignedlist",service.FracasAssignedList(EmpId,fracasmainid));
 			req.setAttribute("filesize",file_size);
+			req.setAttribute("LabCode", LabCode);/*Line added*/
 			return "fracas/FracasItemAssign";
 		}catch (Exception e) {
 			e.printStackTrace(); 
@@ -206,6 +213,9 @@ public class FracasController {
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		
+		String Labcode=req.getParameter("LabCode");
+
 		logger.info(new Date() +"Inside FracasAssignSubmit.htm "+UserId);
 		try
 		{
@@ -219,6 +229,7 @@ public class FracasController {
 			dto.setPDC(req.getParameter("pdc"));
 			dto.setRemarks(req.getParameter("remarks"));
 			dto.setCreatedBy(UserId);
+			dto.setLabCode(Labcode);
 			long count=service.FracasAssignSubmit(dto);
 			
 			if (count > 0) {

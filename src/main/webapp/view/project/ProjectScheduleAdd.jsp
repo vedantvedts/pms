@@ -127,7 +127,7 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
 				                      <input type="hidden" name="initiationscheduleid" value="<%=obj[3] %>" /> 	
 				                      	
 									 	<td><input type="hidden" name="milestoneno" value="<%=obj[0] %>" /> 	MIL-<%=obj[0] %></td> 
-									 	<td style="width: 300px;"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>"></td> 
+									 	<td style="width: 300px;"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td> 
 									 	<td >
 										<%--  	<select class="form-control selectdee"  name="MilestoneFrom">
 											 	<option <%if(obj[5]!=null) %> selected="selected" value="0"><%="0"%></option>
@@ -173,14 +173,14 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
 		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
 													<thead>  
 													<tr>
-													<th style="width: 400px;"><div align="center">Milestone Activity</div></th>
+													<th style="width: 400px; "><div align="center">Milestone Activity</div></th>
 													<th><div>Started From</div></th>
-													<th><div style="">Milestone Month</div></th>
+													<th style="width: 146px;"><div style="">Milestone Month</div></th>
 													<th align="center"><div align="center">Remarks</div></th>
 													</tr>
 													<input type="hidden"  id="MilestoneAdd" value="1" />
 													<tr>
-														<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required"></td>                               	
+														<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td>                               	
 														<td style="width: 150px;">
 														<select class="form-control selectdee" name="Milestonestarted" id="Milestonestarted0">
 														<option value="0 0"  selected="selected"	hidden="true">MIL-0</option>
@@ -192,7 +192,7 @@ Integer ScheduleTotalMonths=(Integer) request.getAttribute("ScheduleTotalMonths"
 														</td>
 		
 														<td style="width: 100px;"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
-														<td style="width: 300px;">	<input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required"></td>
+														<td style="width: 300px;">	<input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required" placeholder="Maximum 250 Chararcters" maxlength="250"></td>
 													</tr>
 													</thead>
 													</table>

@@ -74,4 +74,5 @@ public interface PrintDao {
 	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception;
 	public List<Object[]> AgendaList(String scheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
+	public Object RequirementList(String initiationId) throws Exception;
 }

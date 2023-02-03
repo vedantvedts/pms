@@ -104,6 +104,9 @@ border-radius:5px;
  width:30px;
 
 }
+.reqtable::-webkit-scrollbar{
+display:none;
+}
 #reqbtn2{
  float:left;
  height:20px;
@@ -1449,7 +1452,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				 <div class="table-responsive">
 				<!--  <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5"> -->
 				<%  int i=1;%>
-				 <div style="height: 300px; overflow: auto">
+				 <div class="reqtable" style="height: 300px; overflow: auto">
 	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
 	 			 <thead>
 	 			 <tr style="background-color: #055C9D;color:white; top:0; position: sticky;">
@@ -1477,7 +1480,6 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	 			 	 <tr style="position:inherit;">
 	 				<td><%=i %></td>
 	 			 	<td><%=obj[1] %></td>
-	 			  	<%-- <td><%=obj[2] %></td> --%>
 	 			   	<td style="text-align:left; padding-left: 44px !important;"><%=obj[3] %></td>
 	 				<td>
 	 			 <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5">

@@ -504,5 +504,11 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.AgendaLinkedDocList(scheduleid);
 	}
+
+	@Override
+	public Object RequirementList(String initiationId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.RequirementList(initiationId);
+	}
 	
 }

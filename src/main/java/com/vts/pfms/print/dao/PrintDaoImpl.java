@@ -791,4 +791,15 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> AgendaLinkedDocList=(List<Object[]>)query.getResultList();
 			return AgendaLinkedDocList;
 		}
+
+		private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc FROM pfms_initiation_req a WHERE initiationid=:initiationid AND isActive='1'";
+		@Override
+		public Object RequirementList(String intiationId) throws Exception {
+			// TODO Auto-generated method stub
+			 Query query=manager.createNativeQuery(REQLIST);
+			 query.setParameter("initiationid", intiationId);
+			 
+			 List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
+			return RequirementList;
+		}
 }

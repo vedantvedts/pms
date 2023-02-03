@@ -29,6 +29,7 @@ List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetails
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 Object[] LabList=(Object[])request.getAttribute("LabList");
 String lablogo=(String)request.getAttribute("lablogo");
+List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
 
 
 
@@ -198,7 +199,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 }
 
 .brieftable td,.brieftable th{
-	padding: 15px;
+	padding: 15px; 
 }
 
 .editor-text table{
@@ -227,7 +228,7 @@ String lablogo=(String)request.getAttribute("lablogo");
 	</form> 
 </div> --%>
 
-
+ 
 
 
 
@@ -378,43 +379,64 @@ String lablogo=(String)request.getAttribute("lablogo");
 
 <!-- Requirements -->
 
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
-	<tbody>
+<!-- <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" > -->
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border:;font-family:Gadugi ;" >
+		<tbody>
 		<tr>
-			<th colspan="4"  style="text-align:center;" class="heading heading-color">Requirements</th>
-		</tr>
-		<tr>
+		<th colspan="4"  style="text-align:center;" class="heading heading-color">Requirements</th></tr>
+			<tr>
 			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
 		</tr>
 	</tbody>
-</table>
+		</table>
+		
+		<% if(!RequirementList.isEmpty()){ %>
+		<table style="width:90%;margin-left:70px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
 
+				<thead  style="margin-top:40px; borde:1px solid black">
+	 			 <tr style="margin-top:40px; padding:20px!important">
+<!-- 	 	     <th style="width: 5%;">Select</th> -->
+			    <th style="width: 3%; padding:8px;font-size: 22px; text-decoration: underline">SN</th>
+				<th style="width:8% ; font-size:22px; text-decoration: underline">ID</th>
+				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
+				<th style="width:70% ;font-size: 22px;text-decoration: underline" >Brief</th>
+				</tr>
+				</thead>
+<tbody>
+  <%int i=1;
+  if(!RequirementList.isEmpty()){
+  for(Object obj[]:RequirementList){ %>
+  <tr>
+		<td style="font-size: 17px;  padding:10px;"><%=i+"." %></td>
+ 			 	<td style="font-size: 17px; padding:7px;"><%=obj[1] %></td>
+	 			   	<td style="text-align:left; font-size: 17px; padding-top:7px; padding-left: 40px !important;"><%=obj[3] %></td>
+	 			   	 </tr>
+	 		
+ <%
+ i++;
+ } %>
+ <%}else{ %>
+ 		
+ <tr>
+  <td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+ </tr>
+ <%} %>
+
+ </tbody>
+</table>
+<hr style="width:90%">
+<span style="margin-left:60px;margin-top:30px; font-size: 16px;">Note-(Requirement Descriptions are attached with <b> Annexure-A.)</b></span>
+<%}else{%>
 <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
 	<tbody>
-<%if(!DetailsList.isEmpty()){
-	
-	for(Object[] obj: DetailsList){
-	%>
-	
-		<tr>
-		<%if(obj[0]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[0] %></td>
-		<%}else{ %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
-		<%} %>
-		</tr>
-
-	<%}}else{ %>
-
-<tr>
+	<tr>
 	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
 </tr>
+	</tbody>
+	</table>
+
 
 <%} %>
-
-	</tbody>
-</table>
-
 <h1 class="break"></h1>
 
 
@@ -542,61 +564,6 @@ String lablogo=(String)request.getAttribute("lablogo");
   
    <h1 class="break"></h1>
   
-  
-<%-- 
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
-	<tbody>
-		<tr>
-			<th colspan="4"  style="text-align:center;" class="heading heading-color">Objective & Scope</th>
-		</tr>
-		<tr>
-			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
-		</tr>
-	</tbody>
-</table>
-
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
-	<tbody>
-<%if(!DetailsList.isEmpty()){
-	
-	for(Object[] obj: DetailsList){
-	
-	%>
-		<tr>
-		<th colspan="8" style="  text-align: left; padding: 0 5px 5px;font-size:20px;font-family:Gadugi">Objective : 
-		</tr>
-		<tr>
-		<%if(obj[1]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[1] %></td>
-		<%}else{ %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" ><i class="normal">To be filled</i></td>
-		<%} %>
-		</tr>
-		
-		<tr>
-		<th colspan="8" style="  text-align: left; padding: 0 5px 5px;font-size:20px;font-family:Gadugi">Scope : 
-		</tr>
-		<tr>
-		<%if(obj[2]!=null){  %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><%=obj[2] %></td>
-		<%}else{ %>
-		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
-		<%} %>
-		</tr>
-
-<%}}else{ %>
-
-<tr>
-	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
-</tr>
-
-<%} %>
-
-	</tbody>
-</table>
-
- <h1 class="break"></h1>
-  --%>
 <!-- Deliverables-->
 
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
@@ -609,27 +576,37 @@ String lablogo=(String)request.getAttribute("lablogo");
 		</tr>
 	</tbody>
 </table>
- 
+ <%if(PfmsInitiationList!=null){%>
 <table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
-			<%if(PfmsInitiationList!=null){
-				
 			
-				
-				%>
 		<tr>
 		<%if(PfmsInitiationList[11]!=null){  %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px" class="editor-text"><br>
 		
 		
 		<%=PfmsInitiationList[11] %></td>
-		<%}else{ %>
+		<%}
+		else{ %>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal">To be filled</i></td>
-		<%} %>
+		<%}%>
 		</tr>
-	<%} %>
-	</tbody>
+			</tbody>
 </table>
+	<%} else{%>
+	   <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+		 <tbody>
+		<tr>
+		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
+	</tr>
+		</tbody>
+		</table>
+
+
+	<%} %>
+	
+	
+
 
  
 <h1 class="break"></h1> 
@@ -1531,6 +1508,24 @@ for(Object[] obj : DetailsList){   %>
 	</tbody>
 </table>
 
-
+<%if(!RequirementList.isEmpty()){ %>
+ <h1 class="break"></h1>
+ <br>
+ <div align="center" style="font-size: 24px"><b>Annexure - A </b></div>
+ <table class="editor-text-font" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 30px; width: 950px; border-collapse:collapse;font-size: 17px !important" >
+ <tr style="">
+			<td  class="border_black  center" style=";width:140px;font-weight: 600;padding:5px !important;">Requirement ID</td>
+				<td class="border_black  center" style="font-weight: 600"><span >Description</span></td>
+ </tr>
+ <%if(!RequirementList.isEmpty()) 
+ for(Object obj[]:RequirementList){
+ %>
+ <tr style="font-size: 16px;">
+ 	<td  class="border_black  center" style=";width:140px;"><%=obj[1]%></td>
+	<td class="border_black  center" style="text-align: justify;padding:10px;"><span ><%=obj[4] %></span></td>
+ </tr>
+ <%} %>
+ </table>
+<%} %>
 </body>
 </html>

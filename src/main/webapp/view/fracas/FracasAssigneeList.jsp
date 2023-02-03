@@ -139,7 +139,7 @@ a:hover {
 										<th class="width-110px">Assigned Date</th>								
 									 	<th style="">Assigner</th>	
 									 	<th>Remarks</th>
-									 	<th>Attachmen</th>
+									 	<th>Attachment</th>
 									 	<th>Action</th>
 									</tr>
 							</thead>

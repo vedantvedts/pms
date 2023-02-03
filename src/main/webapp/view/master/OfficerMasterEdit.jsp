@@ -254,15 +254,18 @@ function Delete(myfrm){
 			var ExtNo=$('#ExtNo').val();
 			var mobilenumber=$('#mobilenumber').val();
 			var Email=$('#Email').val();
-			//var DronaEmail=$('#DronaEmail').val();
-			//var InternetEmail=$('#InternetEmail').val();
+			var DronaEmail=$('#DronaEmail').val();
+			var InternetEmail=$('#InternetEmail').val();
 			var Division=$('#Division').val();
-			
+		
 			
 			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null ) 
 			{
 				alert('Please Fill All the Mandatory Fields ');
-			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+			} else if(!Email.includes("@")||!DronaEmail.includes("@")||!InternetEmail.includes("@")){
+				alert('please use correct email format(E.g. abc1@gmail.com)');
+			} 
+			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 				window.alert('please select either Title or Rank');
 				event.preventDefault();
 				return false;
