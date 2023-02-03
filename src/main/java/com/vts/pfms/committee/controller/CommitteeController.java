@@ -1845,7 +1845,6 @@ public class CommitteeController {
 			long count =  service.CommitteeInvitationCreate(committeeinvitationdto);
 			
 			if (count > 0) {				
-				
 				redir.addAttribute("result", " Member(s) Invited Successfully");
 			} else {
 				redir.addAttribute("resultfail", " Member(s) Invite Unsuccessful");
@@ -2361,15 +2360,21 @@ public class CommitteeController {
 		
 		 try {
 				
-			pt.freezeBriefingPaper(req, res, ses, redir);
+			String ret = pt.freezeBriefingPaper(req, res, ses, redir);
 			Object[] obj= service.KickOffMeeting(req, redir);
 		    req=(HttpServletRequest)obj[0];
 		    redir=(RedirectAttributes)obj[1];
-
+		    
+		    if(ret.equalsIgnoreCase("static/Error"))
+		    {
+		    	redir.addAttribute("resultfail", "Briefing Paper Freezing Failed !!");
+		    }
+		    
 		 }catch (Exception e) {			
 		 	e.printStackTrace(); 
 		 	logger.error(new Date() +"Inside KickOffMeeting.htm "+UserId,e);
-		 	return "static/Error";
+		 	
+		 	
 		}
 		redir.addFlashAttribute("scheduleid",CommitteeScheduleId);
 		return "redirect:/CommitteeScheduleView.htm";

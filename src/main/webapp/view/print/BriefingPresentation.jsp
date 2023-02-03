@@ -100,6 +100,7 @@
 	
 	String ProjectCode=projectattributeslist.get(0)[0].toString();
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
+	LocalDate before6months = LocalDate.now().minusMonths(6);
 	%>
 	
 	
@@ -1164,16 +1165,14 @@
 													<tr>
 														<td >
 															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t++ %>
+																<%=obj[1]%> #<%=t %>
 															</button>
 														</td>												
 														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													</tr>			
 												<%t++;
 												}}else{ %>
-												
 													<tr><td colspan="4" style="text-align: center;" > Nil</td></tr>
-												
 											<%} %> 
 										</tbody>
 									</table>
@@ -1280,7 +1279,8 @@
 						int serial = 1;
 						for (Object[] obj : milestones.get(z)) {
 
-							if (Integer.parseInt(obj[21].toString()) <= Integer.parseInt(levelid)) {
+							if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
+									/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
 						%>
 						<tr>
 							<td style="text-align: center"><%=serial%></td>

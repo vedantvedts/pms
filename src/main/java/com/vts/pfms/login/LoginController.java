@@ -217,6 +217,8 @@ public class LoginController {
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
 			     req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
+			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
+			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
 			     

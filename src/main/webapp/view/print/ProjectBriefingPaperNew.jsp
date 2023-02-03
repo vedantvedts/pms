@@ -432,7 +432,7 @@ List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
-
+LocalDate before6months = LocalDate.now().minusMonths(6);
 Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
@@ -1148,7 +1148,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<tr>
 														<td >
 															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t++ %>
+																<%=obj[1]%> #<%=t %>
 															</button>
 														</td>												
 														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
@@ -1230,7 +1230,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										%>
 										<%int serial=1;for(Object[] obj:milestones.get(z)){
 											
-											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
+													/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
 											%>
 											<tr>
 												<td style="text-align: center"><%=serial%></td>
@@ -1340,7 +1341,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											</tr>
 										<%count1++;serial++;}} %>
 									<%} else{ %>
-									<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+									<tr><td colspan="10" style="text-align:center; "> Nil</td></tr>
 									
 									
 									<%} %>
@@ -1351,7 +1352,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								
 							<%} %>
 						</div>
-						</details>
+				</details>
  				
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 				 	
