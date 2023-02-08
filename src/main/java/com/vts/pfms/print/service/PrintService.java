@@ -81,4 +81,5 @@ public interface PrintService {
 	public long FreezeBriefingMultipartUpdate(String scheduleid, MultipartFile file) throws Exception;
 	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
 	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception;
+	public Object RequirementList(String initiationId) throws Exception;
 }

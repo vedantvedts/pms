@@ -6,9 +6,9 @@ import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.Employee;
-import com.vts.pfms.master.model.EmployeeExternal;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
+import com.vts.pfms.master.model.PfmsFeedbackAttach;
 import com.vts.pfms.model.LabMaster;
 
 public interface MasterDao  {
@@ -54,9 +54,12 @@ public interface MasterDao  {
 	public List<Object[]> empNoCheckAjax(String empno) throws Exception;
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
 	public Long FeedbackInsert(PfmsFeedback feedback) throws Exception;
-	public List<Object[]> FeedbackList(String LabCode) throws Exception;
+	public long FeedbackAttachInsert(PfmsFeedbackAttach main) throws Exception;
+	public List<Object[]> FeedbackList(String fromdate , String todate , String empid ,String LabCode,String feedbacktype) throws Exception;
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
 	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
-	
+	public List<Object[]> GetfeedbackAttch()throws Exception;
+	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception;
+	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception;
 }

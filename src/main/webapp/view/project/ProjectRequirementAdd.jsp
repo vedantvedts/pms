@@ -215,12 +215,12 @@ function reqCheck(frmid){
 
 	if(description===null||description===""||reqbrief===null||reqbrief===""){
 		window.alert('Please fill all the fields');
-	}/* else if
+	}else if
 		(description.length>4000){
 			var extra=description.length-4000;
-			window.alert('Description is only allowed of 4000 characters, '+extra+'characters are extra')
+			window.alert('Description exceed 4000 characters, '+extra+'characters are extra')
 			return false;
-		} */
+		} 
 	else{
 
 	if(window.confirm('Are you sure to save?')){

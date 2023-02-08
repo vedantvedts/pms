@@ -16,6 +16,14 @@ public class PfmsFracasAssignDto {
 	private String ModifiedDate;
 	private String IsActive;
 	
+	public String getLabCode() {
+		return LabCode;
+	}
+	public void setLabCode(String labCode) {
+		LabCode = labCode;
+	}
+	private String LabCode;
+	
 	public String getFracasAssignId() {
 		return FracasAssignId;
 	}

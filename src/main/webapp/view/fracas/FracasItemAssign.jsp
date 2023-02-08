@@ -167,6 +167,8 @@ a:hover {
     String fracasmainid=fracasitemdata[0].toString();
     List<Object[]>  fracasassignedlist=(List<Object[]>)request.getAttribute("fracasassignedlist");
     
+    String LabCode=(String)request.getAttribute("LabCode");
+    
 %>
 
 
@@ -199,7 +201,7 @@ a:hover {
 					<form method="post" action="FracasAssignSubmit.htm" enctype="multipart/form-data" >
 							<div class="row">		
 							
-							
+								
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="control-label">Assignee</label>
@@ -229,13 +231,14 @@ a:hover {
 							<div class="row" style="">
 								<div class="col-md-4"> </div>
 								<div class="col-md-4" align="center">
+								
 									<button type="submit" class="btn btn-sm btn-primary submit"  onclick="return confirm('Are you Sure To Add this FRACAS Item?');">SUBMIT</button>
 									<button type="button" class="btn btn-sm btn-primary back" onclick="submitForm()">BACK</button>
 									<!-- <a class="btn btn-sm btn-primary  back"  href="MainDashBoard.htm" >BACK</a> -->
 								 </div>
 							</div>
 							<input type="hidden" name="fracasmainid" value="<%=fracasmainid %>" >
-							
+							<input type="hidden" name="LabCode" value="<%=LabCode %>" > <!--line added  -->
 							
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>

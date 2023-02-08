@@ -154,8 +154,8 @@ public class FracasServiceImpl implements FracasService {
 			Object[] fracasdata=dao.FracasItemData(dto.getFracasMainId());			
 			Object[] labdata=dao.LabDetails();
 			
-			fracasno=fracasno+labdata[1];
-			
+			/* fracasno=fracasno+labdata[1]; */
+			 fracasno=fracasno+dto.getLabCode();
 			if(Long.parseLong(fracasdata[4].toString())==0) {
 				fracasno=fracasno+"/GEN";
 			}else {
@@ -167,6 +167,7 @@ public class FracasServiceImpl implements FracasService {
 			fracasno=fracasno+"/Item-"+dto.getFracasMainId()+"/"+assigncount;
 			//fracasno=fracasno+"/"+assigncount;
 					
+			
 			
 			PfmsFracasAssign assign=new PfmsFracasAssign();
 			assign.setFracasMainId(Long.parseLong(dto.getFracasMainId()));

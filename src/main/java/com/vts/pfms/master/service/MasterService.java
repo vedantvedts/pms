@@ -2,12 +2,15 @@ package com.vts.pfms.master.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionGroup;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
+import com.vts.pfms.master.model.PfmsFeedbackAttach;
 
 public interface MasterService {
 	
@@ -50,9 +53,12 @@ public interface MasterService {
 	public int OfficerExtDelete(String OfficerId, String UserId) throws Exception;
 	public List<Object[]> empNoCheckAjax(String empno) throws Exception;
 	public List<Object[]> extEmpNoCheckAjax(String empno) throws Exception;
-	public Long FeedbackInsert(String Feedback, String UserId, Long EmpId,String feedbacktype) throws Exception;
-	public List<Object[]> FeedbackList(String LabCode) throws Exception;
+	public Long FeedbackInsert(PfmsFeedback feedback ,MultipartFile FileAttach , String labcode) throws Exception;
+	public List<Object[]> FeedbackList(String fromdate , String todate , String empid,String LabCode,String feedbacktype) throws Exception;
+	public List<Object[]> GetfeedbackAttch()throws Exception;
+	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception;
 	public List<Object[]> FeedbackListForUser(String LabCode , String empid) throws Exception;
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
 	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
+	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception;
 }

@@ -15,8 +15,6 @@
 
 
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-
-
 List<Object[]> DesignationList=(List<Object[]>)request.getAttribute("DesignationList");
 List<Object[]> DivisionList=(List<Object[]>)request.getAttribute("OfficerDivisionList");
 List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
@@ -136,7 +134,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
+					<input  class="form-control form-control"  type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
 			 </div>
 </div>
 </div>
@@ -145,14 +143,14 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 <div class="col-md-3">
               <div class="form-group">
 					<label >Drona Email:</label>
-					<input  class="form-control form-control" type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Drona Email">
+					<input  class="form-control form-control"  type="email" name="DronaEmail" id="DronaEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Drona Email">
 			  </div>
 </div>
 
 <div class="col-md-3">
               <div class="form-group">
 					<label >Internet Email:</label>
-                    <input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
+                    <input  class="form-control form-control"  type="email"id="InternetEmail" name="InternetEmail" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Internet Email">
 			   </div>
 </div>
 
@@ -206,17 +204,21 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			var ExtNo=$('#ExtNo').val().trim();
 			var mobilenumber=$('#mobilenumber').val().trim();
 			var Email=$('#Email').val().trim();	
-			//var DronaEmail=$('#DronaEmail').val().trim();
-			//var InternetEmail=$('#InternetEmail').val().trim();
+			var DronaEmail=$('#DronaEmail').val().trim();
+			var InternetEmail=$('#InternetEmail').val().trim();
 			var Division=$('#Division').val();
 			var title=$('#title').val();
 			var salutation=$('#salutation').val();
 			var $empno=$('#EmpNo').val().trim();
 			
-			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" || Email==="" || Division===null ) 
+			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" ||  Division===null ) 
 			{
 				alert('Please Fill All the Mandatory Fields ');
-			}else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
+			}else if(!Email.includes("@")||!DronaEmail.includes("@")||!InternetEmail.includes("@")){
+				alert('please use correct email format(E.g. abc1@gmail.com)')
+			} 
+			
+			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){
 				alert('Please select either Title or Rank');
 			}
 			else if(isNaN(mobilenumber))
