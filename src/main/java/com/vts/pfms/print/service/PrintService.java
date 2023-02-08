@@ -77,4 +77,8 @@ public interface PrintService {
 	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception;
 	public List<Object[]> AgendaList(String scheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
+	public long FreezeBriefingMultipart(CommitteeProjectBriefingFrozen briefing) throws Exception;
+	public long FreezeBriefingMultipartUpdate(String scheduleid, MultipartFile file) throws Exception;
+	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
+	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception;
 }

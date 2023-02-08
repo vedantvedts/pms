@@ -178,8 +178,8 @@ String LabCode=(String) request.getAttribute("LabCode");
 			      	<form method="post" action="CommitteeScheduleView.htm">
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 						<input type="hidden" name="scheduleid" value="<%=committeescheduleid %>">
-						<button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
-						<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button>
+						<!-- <button type="button" class="btn btn-sm add" id="addrep" onclick="showaddladd();">Add Additional Members</button>
+						<button type="button" class="btn btn-sm add" id="addrep" onclick="showrepadd();">Add Representative</button> -->
 						<button class="btn btn-info btn-sm  shadow-nohover back" >Back</button>
 					</form>									
 				 </div>

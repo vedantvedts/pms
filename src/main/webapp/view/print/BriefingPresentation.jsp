@@ -1,3 +1,5 @@
+<%@page import="java.time.LocalTime"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
 <%@page import="com.vts.pfms.Zipper"%>
 <%@page import="java.math.MathContext"%>
@@ -86,6 +88,7 @@
 	List<List<TechImages>> TechImages = (List<List<TechImages>>) request.getAttribute("TechImages");
 
 	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
+	Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 	
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String lablogo = (String)request.getAttribute("lablogo");
@@ -113,38 +116,65 @@
 			<!-- ---------------------------------------- P-0  Div ----------------------------------------------------- -->
 			<div class="carousel-item active">
 				
-				<div class="content" align="center" style="height:93vh !important;padding-top: 50px;">
+				<div class="content" align="center" style="height:93vh !important;padding-top: 15px;">
 					
 					<div class="firstpage"  > 
 
-						<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h1></div>
-						<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
+						<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation</h2></div>
+						<div align="center" ><h3 style="color: #145374 !important">for</h3></div>
 							
 						<div align="center" >
-							<h2 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2>
+							<h3 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h3>
 				   		</div>
 						
-						<div align="center" ><h2 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h2></div>
+						<div align="center" ><h3 style="color: #4C9100 !important"><%= projectattributeslist.get(0)[1] %> (<%= projectattributeslist.get(0)[0] %>)</h3></div>
 						
+							<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
+								<tr>			
+									<th colspan="8" style="text-align: center; font-weight: 700;">
+									<img class="logo" style="width:120px;height: 120px;x"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
+									<br>
+									</th>
+									
+								</tr>
+							</table>	
+						
+						<% if(nextMeetVenue!=null){ %>
+							<!-- <div style="border: 1px solid black;border-radius: 5px;max-width: 650px;"> -->
+							<table style="align: center;width: 650px;  "  >
+								<tr style="margin-top: 10px">
+									 <th  style="text-align: center;font-size: 18px;border:0px !important; "> <u>Meeting Id </u> </th></tr><tr>
+									 <th  style="text-align: center;font-size: 18px;border:0px !important;  "> <%=nextMeetVenue[1] %> </th>				
+								 </tr>
+							</table>
+							<table style="align: left; width: 650px; "  >
+								<tr>
+									 <th  style="text-align: center; width: 50%;font-size: 18px;border:0px !important; "> <u> Meeting Date </u></th>
+									 <th  style="text-align: center;  width: 50%;font-size: 18px;border:0px !important;  "><u> Meeting Time </u></th>
+								</tr>
+								<tr>
+									<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
+									 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important;"> <b><%=sdf.format(sdf1.parse(nextMeetVenue[2].toString()))%></b></td>
+									 <td  style="text-align: center; width: 50%;font-size: 18px ;padding-top: 5px;border:0px !important; "> <b><%=nextMeetVenue[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */%></b></td>
+								</tr>
+							</table>
+							<table style="align: center; width: 650px;"  >
+								<tr style="margin-top: 10px">
+									 <th  style="text-align: center;font-size: 18px;border:0px !important; "> <u>Meeting Venue</u> </th></tr><tr>
+									 <th  style="text-align: center;;font-size: 18px ;border:0px !important; "> <% if(nextMeetVenue[5]!=null){ %><%=nextMeetVenue[5] %> <%}else{ %> - <%} %></th>				
+								 </tr>
+							</table>
+							<!-- </div> -->
+						<%}else{ %>
+							<br><br><br><br><br><br><br><br><br>
+						<%} %>
 						
 						<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
-						<%
-						if(labInfo!=null){
-						 %>
-							<tr>			
-								<th colspan="8" style="text-align: center; font-weight: 700;">
-								<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
-								<br><br>
-								</th>
-								
-							</tr>
-							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
-							</tr>
-							
-							<% } %>
-						
-						
+						<% if(labInfo!=null){ %>
+						<tr>
+							<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
+						</tr>
+						<%}%>
 						<tr>
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
 						</tr>
@@ -152,7 +182,7 @@
 							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
 						</tr>
 						<tr>
-							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> <br><br><br></th>
+							<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> </th>
 						</tr>
 						</table>			
 						
@@ -742,8 +772,8 @@
 							} else if (lastpmrcminsactlist.get(z).size() > 0) {
 							int i = 1;
 							for (Object[] obj : lastpmrcminsactlist.get(z)) {
-								if (obj[3].toString().equalsIgnoreCase("R")) {
-							%>
+								if (obj[3].toString().equalsIgnoreCase("R")&& (!obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      )
+								{ %>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
@@ -1280,8 +1310,8 @@
 						for (Object[] obj : milestones.get(z)) {
 
 							if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-									/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
-						%>
+									 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
+							%>
 						<tr>
 							<td style="text-align: center"><%=serial%></td>
 							<td>M<%=obj[0]%></td>
@@ -2682,7 +2712,8 @@
 							</tr>
 							<% } else if (oldpmrcissueslist.get(z).size() > 0) {
 							int i = 1;
-							for (Object[] obj : oldpmrcissueslist.get(z)) { %>
+							for (Object[] obj : oldpmrcissueslist.get(z)) {
+								if(!obj[9].toString().equals("C")  || (obj[9].toString().equals("C") && obj[13]!=null && before6months.isBefore(LocalDate.parse(obj[13].toString())) )){ %>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
@@ -2742,7 +2773,7 @@
 									<%}%>
 								</td>
 							</tr>
-							<% i++; }
+							<% i++; }}
 							} %>
 						</tbody>
 					</table>

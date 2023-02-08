@@ -150,7 +150,7 @@ if(ses1!=null){
 														%>
 
 												</select></td>
-												<th><label>PFMS Login: <span class="mandatory"
+												<th><label>PMS Login: <span class="mandatory"
 														style="color: red;">*</span>
 												</label></th>
 												<td colspan="3"><select class="form-control"

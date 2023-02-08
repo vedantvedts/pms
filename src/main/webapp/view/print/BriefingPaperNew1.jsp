@@ -1,3 +1,5 @@
+<%@page import="java.time.LocalTime"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
 <%@page import="com.vts.pfms.committee.model.Committee"%>
@@ -390,7 +392,7 @@ String levelid= (String) request.getAttribute("levelid");
 List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
 
 String AppFilesPath= (String) request.getAttribute("AppFilesPath");
-
+Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 
 
 %>
@@ -398,38 +400,63 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 
 <body>
 
-	<div class="firstpage" id="firstpage"> 
+	<div class="firstpage" id="firstpage" align="center" > 
 
 		<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Briefing Paper </h1></div>
 		
-		<div align="center" ><h2 style="color: #145374 !important">for</h2></div>
+		<!-- <div align="center" ><h2 style="color: #145374 !important">for</h2></div> -->
 		
-			
 			<div align="center" ><h2 style="color: #145374 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2></div>
 		
 			<div align="center" ><h2 style="color: #145374 !important"><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
 		
 		
+			<table class="executive" style="align: center;margin-left: auto;margin-right:auto;  font-size: 16px;"  >
+				<tr>			
+					<th colspan="8" style="text-align: center; font-weight: 700;">
+					<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
+					</th>
+				</tr>
+			</table>
+		
+						<% if(nextMeetVenue!=null){ %>
+							<div class="executive" align="center">
+							<table style="margin-left: auto;margin-right:auto; " >
+								<tr >
+									 <th  style="text-align: center; font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
+									 <th  style="text-align: center;  font-size: 20px  "> <%=nextMeetVenue[1] %> </th>				
+								 </tr>
+							</table>
+							
+							 <table style="margin-left: auto;margin-right:auto;width:900px; " >
+								 <tr>
+									 <th  style="text-align: center; width: 50%;font-size: 20px "> <u> Meeting Date </u></th>
+									 <th  style="text-align: center;  width: 50%;font-size: 20px  "><u> Meeting Time </u></th>
+								 </tr>
+								 <tr>
+								 	<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
+									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding-top: 5px;border:0px !important;"> <b><%=sdf.format(sdf1.parse(nextMeetVenue[2].toString()))%></b></td>
+									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding-top: 5px;border:0px !important;"> <b><%=nextMeetVenue[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */ %></b></td>
+								 </tr>
+							 </table>
+							 <table style=" margin-left: auto;margin-right:auto; " >
+								<tr >
+									 <th  style="text-align: center; font-size: 20px "> <u>Meeting Venue</u> </th></tr><tr>
+									 <th  style="text-align: center;  font-size: 20px  "> <% if(nextMeetVenue[5]!=null){ %><%=nextMeetVenue[5] %> <%}else{ %> - <%} %></th>				
+								 </tr>
+							</table>
+							</div>
+						<%}else{ %>
+							<br><br><br><br><br><br><br><br><br><br><br><br>
+						<%} %>
 		<table class="executive" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;  font-size: 16px;"  >
-		<%
-		if(labInfo!=null){
-		 %>
-			<tr>			
-				<th colspan="8" style="text-align: center; font-weight: 700;">
-				<img class="logo" style="width:120px;height: 120px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
-				<br><br>
-				</th>
-				
-			</tr>
+		<% if(labInfo!=null){ %>
 			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 			</tr>
-			
-			<% } %>
-		
-		
+		<% } %>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Government of India, Ministry of Defence</th>
 		</tr>
 		<tr>
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
@@ -734,7 +761,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
-									if(obj[3].toString().equalsIgnoreCase("R")){%>
+									if(obj[3].toString().equalsIgnoreCase("R")&& (!obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
 						<tr>
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
@@ -1042,7 +1069,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 									<%int serial=1;for(Object[] obj:milestones.get(z)){
 										
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-												/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
+												 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
 										%>
 										<tr>
 											<td style="text-align: center"><%=serial%></td>
@@ -1135,7 +1162,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 														<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 													<%=obj[22] %>	
 													
-													<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+													<%if( obj[19].toString().equalsIgnoreCase("5")  && obj[24]!=null){ %>
 														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
 													<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
 														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
@@ -2027,7 +2054,9 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 										<%}
 										else if(oldpmrcissueslist.get(z).size()>0)
 										  {int i=1;
-										for(Object[] obj:oldpmrcissueslist.get(z)){ %>
+										for(Object[] obj:oldpmrcissueslist.get(z)){ 
+											if(!obj[9].toString().equals("C")  || (obj[9].toString().equals("C") && obj[13]!=null &&  before6months.isBefore(LocalDate.parse(obj[13].toString())) )){
+										%>
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
@@ -2065,7 +2094,7 @@ String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 												<td > <%if(obj[17]!=null){ %> <%=obj[17] %> <%} %> </td>			
 											</tr>			
 										<%i++;
-										}} %>
+										}} }%>
 								</tbody>			
 							</table>
 	

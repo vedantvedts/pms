@@ -12,7 +12,7 @@
  %>
 
 <meta charset="ISO-8859-1">
-<title>PFMS Print</title>
+<title>PMS Print</title>
 <%if(isprint==null || !isprint.equalsIgnoreCase("1")){ %>
 <jsp:include page="../static/dependancy.jsp"></jsp:include> 
 <%} %>

@@ -596,7 +596,7 @@ public class PrintController {
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-    		
+    		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
     		
     		String LevelId= "2";
 			
@@ -1144,7 +1144,7 @@ public class PrintController {
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-    		
+    		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
     		
     		String LevelId= "2";
 			
@@ -1560,21 +1560,30 @@ public class PrintController {
 	@RequestMapping(value = "MeetingBriefingPaper.htm")
 	public void MeetingBriefingPaper(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
 	{
-		String ScheduleId = req.getParameter("scheduleid");
-		CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
-			res.setContentType("application/pdf");
-		    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
-		    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
-		    FileInputStream fis = new FileInputStream(file);
-		    DataOutputStream os = new DataOutputStream(res.getOutputStream());
-		    res.setHeader("Content-Length",String.valueOf(file.length()));
-		    byte[] buffer = new byte[1024];
-		    int len = 0;
-		    while ((len = fis.read(buffer)) >= 0) {
-		        os.write(buffer, 0, len);
-		    } 
-		    os.close();
-		    fis.close();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectBriefing.htm "+UserId);		
+	    try { 
+			String ScheduleId = req.getParameter("scheduleid");
+			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+				res.setContentType("application/pdf");
+			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
+			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getBriefingFileName());
+			    FileInputStream fis = new FileInputStream(file);
+			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			    res.setHeader("Content-Length",String.valueOf(file.length()));
+			    byte[] buffer = new byte[1024];
+			    int len = 0;
+			    while ((len = fis.read(buffer)) >= 0) {
+			        os.write(buffer, 0, len);
+			    } 
+			    os.close();
+			    fis.close();
+	    }
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside ProjectBriefingFreeze.htm "+UserId, e);
+    		e.printStackTrace();
+	
+    	}		
 	}
 	
 	
@@ -1733,25 +1742,20 @@ public class PrintController {
     		req.setAttribute("actionplanthreemonths" , actionplanthreemonths);  	
     		req.setAttribute("projectdatadetails",projectdatadetails);
     		req.setAttribute("ProjectRevList", ProjectRevList);
-    		
-    		
     		req.setAttribute("financialDetails",financialDetails);
     		req.setAttribute("procurementOnDemandlist",procurementOnDemandlist);
     		req.setAttribute("procurementOnSanctionlist",procurementOnSanctionlist);
     		req.setAttribute("ReviewMeetingList",ReviewMeetingList);
-        	
     		req.setAttribute("projectidlist",Pmainlist);
     		req.setAttribute("projectid",projectid);
     		req.setAttribute("committeeid",committeeid);
-	    	
-	    	
 	    	req.setAttribute("ProjectCost",ProjectCost);
-    		
 	    	req.setAttribute("isprint", "0");
-	    	
 	    	req.setAttribute("labInfo", service.LabDetailes(LabCode));
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
     		req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
+    		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+    		
     		
     		String LevelId= "2";
 			
@@ -1873,6 +1877,9 @@ public class PrintController {
     		
     		List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
     		List<List<TechImages>> TechImages =new ArrayList<List<TechImages>>();
+    		List<Object[]> LastMeetingDates =new ArrayList<Object[]>();
+    		
+    		
 	    	List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 	    	for(String proid : Pmainlist) 
 	    	{	   
@@ -1897,6 +1904,7 @@ public class PrintController {
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, CommitteeCode)); /* CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode ) */	    	 	
 	    		Object[] prodetails=service.ProjectDataDetails(proid);
+	    		LastMeetingDates.add(null);
 	    		projectdatadetails.add(prodetails);
 	    		
 	   
@@ -2089,6 +2097,8 @@ public class PrintController {
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
 	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
+	    	req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+	    	
 	    	
     		String LevelId= "2";
 			
@@ -2680,7 +2690,7 @@ public class PrintController {
 	                req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
 	        		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
 	        		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-	        		
+	        		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
 	        		
 	        		String LevelId= "2";
 	    			
@@ -3377,5 +3387,124 @@ public class PrintController {
     		}
 		}
 	    
+	    
+	    @RequestMapping(value="FrozenBriefingAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String FrozenBriefingAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper)	throws Exception 
+		{
+	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	    	String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside FrozenBriefingAdd.htm "+UserId);		
+	    	try {
+		    	String scheduleid = req.getParameter("scheduleid");
+		    	String projectid=req.getParameter("projectid");
+		    	String committeecode=req.getParameter("committeecode");
+		    	
+		    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+		    	CommitteeProjectBriefingFrozen briefing = CommitteeProjectBriefingFrozen.builder()
+						.ScheduleId(Long.parseLong(scheduleid))
+						.FreezeByEmpId(Long.parseLong(EmpId))
+						.BriefingFileMultipart(BPaper)
+						.LabCode(projectLabCode)
+						.IsActive(1)
+						.build();
+
+		    	long count = service.FreezeBriefingMultipart(briefing);
+		    	if(count>0)
+    			{
+    				int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid));
+    				redir.addAttribute("result", "Briefing Paper Added Successfully");
+    			}
+    			else 
+    			{
+    				redir.addAttribute("resultfail", "Briefing Paper Adding Failed");	
+    			}
+		    	redir.addFlashAttribute("projectid",projectid);
+		    	redir.addFlashAttribute("committeecode",committeecode);
+		    	return "redirect:/FroozenBriefingList.htm";
+	    	}catch (Exception e) {
+    			e.printStackTrace(); 
+    			logger.error(new Date() +" Inside FrozenBriefingAdd.htm  "+UserId, e); 
+    			return "static/Error";
+    			
+    		}
+		}
+	    
+	    
+	    @RequestMapping(value="FrozenBriefingUpdate.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		public String FrozenBriefingUpdate(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper)	throws Exception 
+		{
+	    	String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside FrozenBriefingUpdate.htm "+UserId);		
+	    	try {
+		    	String scheduleid = req.getParameter("scheduleid");
+		    	String projectid=req.getParameter("projectid");
+		    	String committeecode=req.getParameter("committeecode");
+		    	
+		    	long count = service.FreezeBriefingMultipartUpdate(scheduleid, BPaper);
+		    	if(count>0)
+    			{
+    				redir.addAttribute("result", "Briefing Paper Added Successfully");
+    			}
+    			else 
+    			{
+    				redir.addAttribute("resultfail", "Briefing Paper Adding Failed");	
+    			}
+
+		    	redir.addFlashAttribute("projectid",projectid);
+		    	redir.addFlashAttribute("committeecode",committeecode);
+		    	return "redirect:/FroozenBriefingList.htm";
+	    	}catch (Exception e) {
+    			e.printStackTrace(); 
+    			logger.error(new Date() +" Inside FrozenBriefingUpdate.htm  "+UserId, e); 
+    			return "static/Error";
+    			
+    		}
+		}
+	    
+		
+		@RequestMapping(value = "FroozenBriefingList.htm")
+		public String FroozenBriefingList(Model model, HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception 
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	    	String Logintype= (String)ses.getAttribute("LoginType");
+			logger.info(new Date() +"Inside FroozenBriefingList.htm "+UserId);		
+			try {
+				
+				String projectid= req.getParameter("projectid");
+				String committeecode= req.getParameter("committeecode");
+				
+				List<Object[]> projectslist  =service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+				
+				if(projectslist.size()==0) 
+				{
+					redir.addAttribute("resultfail","Project is Not Assigned!" );
+					return "redirect:/MainDashBoard.htm";
+				}
+				if(projectid==null || committeecode==null) 
+		    	{
+		    		Map md = model.asMap();	    	
+		    		projectid = (String) md.get("projectid");
+		    		committeecode = (String) md.get("committeecode");
+		    	}
+				if(projectid==null) {
+					projectid  = projectslist.get(0)[0].toString();
+					committeecode = "PMRC";
+				}
+				
+				req.setAttribute("projectid",projectid);
+				req.setAttribute("committeecode",committeecode);
+				req.setAttribute("projectslist", projectslist);
+				req.setAttribute("BriefingScheduleList", service.BriefingScheduleList(LabCode, committeecode, projectid));
+				return "print/ScheduleBriefingList";
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside FroozenBriefingList.htm "+UserId, e);
+				return "static/error";
+			}
+		}
+		
 	    
 }

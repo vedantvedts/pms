@@ -2882,4 +2882,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		CommitteeMeetingDPFMFrozen dpfm=(CommitteeMeetingDPFMFrozen)query.getResultList().get(0);
 		return dpfm;
 	}
+	
+
+
+	
 }
+
+

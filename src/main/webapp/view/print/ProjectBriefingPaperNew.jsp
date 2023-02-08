@@ -433,6 +433,7 @@ List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
 
 LocalDate before6months = LocalDate.now().minusMonths(6);
+
 Committee committeeData=(Committee)request.getAttribute("committeeData");
 long ProjectCost = (long)request.getAttribute("ProjectCost"); 
 String levelid= (String) request.getAttribute("levelid");
@@ -440,8 +441,10 @@ String levelid= (String) request.getAttribute("levelid");
 String No2=null;
 SimpleDateFormat sdfg=new SimpleDateFormat("yyyy");
 if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
+	before6months = LocalDate.now().minusMonths(3);
 	No2="P"+(Long.parseLong(ebandpmrccount.get(0).get(0)[1].toString())+1);
 }else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
+	before6months = LocalDate.now().minusMonths(6);
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 } 
 
@@ -889,7 +892,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
-									if(obj[3].toString().equalsIgnoreCase("R")){%>
+									// only recommendations and the if recommendation is completed or closed then only those actions whicha are completed after last meeting
+									if(obj[3].toString().equalsIgnoreCase("R") 
+											&& (!obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
 						<tr>
 							<td style="text-align: center;"><%=i %></td>
 							<td style="text-align: justify; "><%=obj[2] %></td>
@@ -1046,7 +1051,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									      	<span class="assigned">AA</span> 
 										<%} %> 
 									</td>	
-									<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
+									<td style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 								</tr>			
 							<%i++;
 							}} %>
@@ -1231,7 +1236,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<%int serial=1;for(Object[] obj:milestones.get(z)){
 											
 											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-													/* && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) */){
+													 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
 											%>
 											<tr>
 												<td style="text-align: center"><%=serial%></td>
@@ -1324,7 +1329,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 														<%=obj[22] %>	
 														
-														<%if((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5") )&& obj[24]!=null){ %>
+														<%if(obj[19].toString().equalsIgnoreCase("5") && obj[24]!=null){ %>
 															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
 														<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
 															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
@@ -1426,7 +1431,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									%>
 									<%int serial=1;for(Object[] obj:MilestoneDetails6.get(z)){
 										
-										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) ){
+										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) )){
 										%>
 										<tr>
 											<td style="text-align: center"><%=serial%></td>
@@ -2313,8 +2318,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<tr><td colspan="7" style="text-align: center;" > Nil</td></tr>
 										<%}
 										else if(oldpmrcissueslist.get(z).size()>0)
-										  {int i=1;
-										for(Object[] obj:oldpmrcissueslist.get(z)){ %>
+										{
+											int i=1;
+										for(Object[] obj:oldpmrcissueslist.get(z)){
+											if(!obj[9].toString().equals("C")  || (obj[9].toString().equals("C") && obj[13]!=null && before6months.isBefore(LocalDate.parse(obj[13].toString())) )){
+											%>
 											<tr>
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
@@ -2352,7 +2360,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<td > <%if(obj[17]!=null){ %> <%=obj[17] %> <%} %> </td>			
 											</tr>			
 										<%i++;
-										}} %>
+										}}} %>
 								</tbody>			
 							</table>
 	

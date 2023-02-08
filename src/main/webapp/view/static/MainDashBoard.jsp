@@ -1710,11 +1710,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 							<div class="multi-button" id="quicklinks" style="display: none">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
 									  
-									  <%for(Object[] obj : QuickLinkList){ %>
-									  	<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>
-									  <%} %>
-							</div>
-							<%} %>
+									<%for(Object[] obj : QuickLinkList){ %>
+										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
+										</div>
+									<%} %>
 							
 							<%} %>
 							

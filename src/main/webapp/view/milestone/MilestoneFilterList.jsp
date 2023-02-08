@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>PMS</title>
 <link rel="shortcut icon" type="image/png" href="view/images/drdologo.png">
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
  <style type="text/css">

@@ -475,7 +475,7 @@ h5,h6{
 										{%>	
 						
 							<br>
-								<label class="control-label">Internal </label>
+								<label class="control-label">Internal</label>
 								
 							<%break;}} %>	
 								
@@ -487,28 +487,28 @@ h5,h6{
 									
 										if(committeeinvitedlist.get(i)[3].toString().equals("I"))
 										{%>								
-											<tr >
+											<tr>
 
 												<td>
 													<%=intcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)
 												</td>
-											<%if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
-														<td style="padding-left: 10px">
-													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
-														</td>
-													<%} %>
-											<td style="padding-left: 30px">
-											
-												<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){%>
-												<form action="CommitteeInvitationDelete.htm" method="post">
-													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-													<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
-													<input type="hidden" name="committeeinvitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
-													<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
-												</form>
+												<%if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
+													<td style="padding-left: 10px">
+												 		<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+													</td>
 												<%} %>
+												<td style="padding-left: 30px">
 												
-											</td>  
+													<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){%>
+														<form action="CommitteeInvitationDelete.htm" method="post">
+															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+															<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
+															<input type="hidden" name="committeeinvitationid" value="<%=committeeinvitedlist.get(i)[1]%>">
+															<button type="submit" class="btn" onclick="return confirm('Are you sure To Remove this Member?')" > <i class="fa fa-trash" aria-hidden="true" ></i> </button>
+														</form>
+													<%} %>
+													
+												</td>  
 											
 											</tr>	
 														
@@ -550,7 +550,7 @@ h5,h6{
 										<td><%=extcountwithin%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>) (<%=committeeinvitedlist.get(i)[11]%>)</td> 
 										<td style="padding-left: 30px">
 										
-										<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){ %>
+										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
@@ -616,7 +616,7 @@ h5,h6{
 										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]%> (<%=committeeinvitedlist.get(i)[7]%>)(<%=committeeinvitedlist.get(i)[11]%>)</td> 
 										<td style="padding-left: 30px">
 										
-										<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){ %>
+										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">
