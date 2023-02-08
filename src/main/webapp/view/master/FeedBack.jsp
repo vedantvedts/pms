@@ -65,8 +65,8 @@
 												<option value=""  selected="selected"	hidden="true">--Select--</option>
 												<option value="B">Bug</option>
 												<option value="C">Content Change</option>
-												<option value="U">User Interface</option>
 												<option value="N">New Requirement</option>
+												<option value="U">User Interface</option>
 											</select>
 										</td>
 										<th style="text-align: left;"> <label>File :</label> </th>
