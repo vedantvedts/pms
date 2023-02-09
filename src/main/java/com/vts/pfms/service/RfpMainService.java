@@ -59,5 +59,6 @@ public interface RfpMainService {
 	public Object[] ProjectData(String projectid) throws Exception;
 	public long CCMViewDataUpdate(List<CCMView> CCMViewData, String LabCode, String ClusterId, String UserId, String EmpId) throws Exception;
 	public List<Object[]> getCCMData(String EmpId,String LoginType,String LabCode)throws Exception;
-	public List<Object[]> DashboardFinanceCashOutGo(String LoginType, String EmpId, String LabCode, String ClusterId);
+	public List<Object[]> DashboardFinanceCashOutGo(String LoginType, String EmpId, String LabCode, String ClusterId) throws Exception;
+	public List<Object[]> DashboardFinance(String LoginType, String EmpId, String LabCode, String ClusterId) throws Exception;
 }

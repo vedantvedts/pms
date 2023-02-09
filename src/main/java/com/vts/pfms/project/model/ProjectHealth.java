@@ -26,9 +26,11 @@ public class ProjectHealth {
 		private Long PMRCHeld;
 		private Long PMRCPending;
 		private Long PMRCTotal;
+		private long PMRCTotalToBeHeld;
 		private Long EBHeld;
 		private Long EBPending;
 		private Long EBTotal;
+		private long EBTotalToBeHeld;
 		private Long MilPending;
 		private Long MilDelayed;
 		private Long MilCompleted;

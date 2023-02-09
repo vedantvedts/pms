@@ -555,9 +555,23 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	
 	private static final String DASHBOARDFINANCECASHOUTGO = "CALL Pfms_Dashboard_Finance_CashOutGo ( :LoginType,:EmpId, :LabCode, :ClusterId );";
 	@Override
-	public List<Object[]> DashboardFinanceCashOutGo(String LoginType,String EmpId,String LabCode,String ClusterId)
+	public List<Object[]> DashboardFinanceCashOutGo(String LoginType,String EmpId,String LabCode,String ClusterId)throws Exception
 	{
 		Query query = manager.createNativeQuery(DASHBOARDFINANCECASHOUTGO);
+		query.setParameter("LoginType", LoginType);
+		query.setParameter("EmpId", EmpId);
+		query.setParameter("LabCode", LabCode);
+		query.setParameter("ClusterId", ClusterId);
+		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
+		
+		return CCMData ;
+	}
+	
+	private static final String DASHBOARDFINANCE = "CALL Pfms_Dashboard_Finance( :LoginType,:EmpId, :LabCode, :ClusterId );";
+	@Override
+	public List<Object[]> DashboardFinance(String LoginType,String EmpId,String LabCode,String ClusterId)throws Exception
+	{
+		Query query = manager.createNativeQuery(DASHBOARDFINANCE);
 		query.setParameter("LoginType", LoginType);
 		query.setParameter("EmpId", EmpId);
 		query.setParameter("LabCode", LabCode);

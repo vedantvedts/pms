@@ -214,8 +214,9 @@ public class LoginController {
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
-			     req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
+			     //req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
+			     req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance(LoginType,EmpId,LabCode,ClusterId ));
 			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
@@ -629,6 +630,7 @@ public class LoginController {
 			TodayData=todayresponse.getBody();
 			LabData=labdata.getBody();
 			CCMViewData= PFMSServ.getCCMViewData(LabCode);
+			
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) 
     	{
@@ -657,7 +659,7 @@ public class LoginController {
 				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId,LabDetails);
 				
 			} catch (JsonProcessingException e) {
-
+				
 				e.printStackTrace();
 			}
 		}

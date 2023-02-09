@@ -572,8 +572,9 @@ List<Object[]> QuickLinkList=(List<Object[]>)request.getAttribute("QuickLinkList
 List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
 Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealthtotal"); 
 //Object[] ChangesTotalData =(Object[])request.getAttribute("changestotalcount");
-List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData");
+/* List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData"); */
 List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo");
+List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("DashboardFinance");
 
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf=fc.getRegularDateFormat();
@@ -2278,27 +2279,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 			<div class="container-fluid" style="display: none" id="overalltable">
 			
-			
-		<!--  ************************ Project Attributes ******************************** -->	
-			
-	<!-- 	<div class="card detailscard">
-		    <div class="card-body">
-		      <h5 class="card-title"><img src="view/images/discuss.png" /> Project Attributes</h5>
-				<div class="row">
-					<div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">Group Code</label><span class="mandatory">*</span>
-                            <label class="control-label">Group Code</label><span class="mandatory">*</span>
-                        </div>
-                    </div>
-				</div>	
-		    </div>
-		    
-		  </div> -->
-			
-			
-		<!--  ************************ Project Attributes End ******************************** -->	
-			
 
 			<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
 		  <div class="card detailscard">
@@ -2308,14 +2288,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
 		      		 <div class="progress " data-value='<%=ProjectHealthTotalData[29]%>'>
-			          <span class="progress-left">
+			         <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
 														"></span>             
-			          </span>
-			          <span class="progress-right">
+			         </span>
+			         <span class="progress-right">
 			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
@@ -2330,8 +2310,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<td style="font-size: 14px">PMRC: </td>
-			        		<td style="font-size: 14px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<th style="font-size: 14px">PMRC </th>
+			        	</tr>
+				        <tr>
+			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held" >
+			        			<%if(ProjectHealthTotalData !=null){%>
+			        				<span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span>
+			        			<%}%>
+			        		</td>
 			        	</tr>
 			        </table>
 		      	</div>
@@ -2359,8 +2345,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
-				        		<td style="font-size: 14px">EB: </td>
-				        		<td style="font-size: 14px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<th style="font-size: 14px">EB </th>
+				        	</tr>
+				        	<tr>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -2562,7 +2550,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <div class="card-body">
 		    	<div style="display: inline-flex">
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
-							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+							<img src="view/images/rupee.png" /> Finance <!-- <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
 				 	<form action="ProjectHoaUpdate.htm" method="get">
 								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
@@ -2573,49 +2561,50 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				     	22-23
+				     	(In &#8377; k Cr)
 				      </th>
-				      <th scope="col">Allot</th>
+				      <th scope="col">Sanc</th>
 				      <th scope="col">Exp</th>
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
 				  <%
-				  		BigDecimal allotment=new BigDecimal(0.00);
+				  		BigDecimal sanction=new BigDecimal(0.00);
 					  	BigDecimal expenditure=new BigDecimal(0.00);
 					  	BigDecimal balance=new BigDecimal(0.00);
 				  %>
 				  <tbody>
+				  	<tr>
+				      <th scope="row">Revenue</th>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[5] %></td>
+				    </tr>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(1)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(1)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(1)[5].toString())); %>
 				     <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[5] %></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(0)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(0)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(0)[5].toString())); %>
+				    
 				    <tr>
-				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
-				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
-				    <%-- <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
-				    </tr> --%>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[5] %></td>
+				    </tr> 
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(2)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(2)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(2)[5].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=sanction%></td>
 				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
 				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
@@ -3362,7 +3351,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
 			        		<td style="font-size: 14px">Held: </td>
-			        		<td style="font-size: 14px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held" >
+			        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span> <%}%>
+			        		</td>
 			        	</tr>
 			        </table>
 		      	</div>
@@ -3391,7 +3382,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
 				        		<td style="font-size: 14px">Held: </td>
-				        		<td style="font-size: 14px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held"  >
+				        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %></span> <%}%>
+				        		</td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -3565,7 +3558,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <div class="card-body">
 		    	<div style="display: inline-flex">
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
-							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+					<img src="view/images/rupee.png" /> Finance<!--  <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
 				 	<!-- <form action="ProjectHoaUpdate.htm" method="get">
 								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
@@ -3576,49 +3569,49 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				     	22-23
+				     	(In &#8377; k Cr)
 				      </th>
-				      <th scope="col">Allot</th>
+				      <th scope="col">Sanc</th>
 				      <th scope="col">Exp</th>
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
 				  <%
-				  		 allotment=new BigDecimal(0.00);
-					  	 expenditure=new BigDecimal(0.00);
-					  	 balance=new BigDecimal(0.00);
+				  		sanction=new BigDecimal(0.00);
+					  	expenditure=new BigDecimal(0.00);
+					  	balance=new BigDecimal(0.00);
 				  %>
 				  <tbody>
 				    <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[5] %></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(0)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(0)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(0)[5].toString())); %>
 				    <tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[5] %></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(1)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(1)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(1)[5].toString())); %>
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[5] %></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(2)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(2)[4].toString())); %>
+				     <% balance	= balance.add(new BigDecimal(DashboardFinance.get(2)[5].toString())); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=sanction%></td>
 				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
 				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
@@ -4010,6 +4003,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 
 <script type="text/javascript">
+$(function () {
+    $("[data-toggle='tooltip']").tooltip();
+});
 
 $(function() {
 
