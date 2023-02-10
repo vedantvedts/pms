@@ -203,7 +203,7 @@ a:hover {
 												<div class="cc-rockmenu">
 														<div class="rolling">
 														   <figure class="rolling_icon">
-																<i class="fa fa-reply" aria-hidden="true"></i>
+																<i class="fa fa-eye fa-3x" aria-hidden="true" style="color: blue;"></i>
 															</figure>
 														<span>Remarks</span>
 														</div>
