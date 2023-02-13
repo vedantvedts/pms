@@ -103,7 +103,7 @@ List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String)request.getAttribute("projectid");
 
 List<Object[]> risktypelist=(List<Object[]>)request.getAttribute("risktypelist");
-
+String logintype =(String)session.getAttribute("LoginType");
 Object[] riskdata=(Object[] )request.getAttribute("riskdata");
 Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
 List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
@@ -240,7 +240,7 @@ if(ses1!=null){
 							    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
 							    		<tr>
 							    			<td style="width: 20%">
-							    				<label ><b>Mitigation Plans</b>  </label> 
+							    				<label ><b>Mitigation Plans</b>  :<span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="5" style="max-width: 40%">
 									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="200">							    				
@@ -248,7 +248,7 @@ if(ses1!=null){
 							    		</tr>		
 							    		<tr>
 							    			<td style="width: 20%">
-							    				<label ><b>Impact</b>  </label> 
+							    				<label ><b>Impact</b> : <span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="5" style="max-width: 40%">
 									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000">							    				
@@ -256,7 +256,7 @@ if(ses1!=null){
 							    		</tr>	
 							    		<tr>
 							    			<td style="width: 20%">
-							    				<label ><b>Category</b>  </label> 
+							    				<label ><b>Category</b>  : <span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="1" style="max-width: 40%">
 									    		<select class="form-control" name="category" required="required" style="width:20% ">
@@ -267,7 +267,7 @@ if(ses1!=null){
 							    		</tr>	
 							    		<tr>
 							    			<td style="width: 20%">
-							    				<label ><b>Type</b>  </label> 
+							    				<label ><b>Type</b>  : <span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="1" style="max-width: 40%">
 									    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
@@ -380,7 +380,7 @@ if(ses1!=null){
 								    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
 								    		<tr>
 								    			<td style="width: 12%">
-								    				<label ><b>Mitigation Plans :</b>  </label> 
+								    				<label ><b>Mitigation Plans :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
 										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6] %>" required  maxlength="200">							    				
@@ -388,7 +388,7 @@ if(ses1!=null){
 								    		</tr>		
 								    		<tr>
 								    			<td style="width: 12%">
-								    				<label ><b>Impact :</b>  </label> 
+								    				<label ><b>Impact :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
 										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000">							    				
@@ -396,7 +396,7 @@ if(ses1!=null){
 								    		</tr>	
 								    		<tr>
 								    			<td style="width: 20%">
-								    				<label ><b>Category</b>  </label> 
+								    				<label ><b>Category</b>: <span class="mandatory" style="color: red;">*</span></label> 
 								    			</td> 
 								    			<td colspan="1" style="max-width: 40%">
 										    		<select class="form-control" name="category" required="required" style="width:20% ">
@@ -407,7 +407,7 @@ if(ses1!=null){
 								    		</tr>	
 								    		<tr>
 								    			<td style="width: 20%">
-								    				<label ><b>Type</b>  </label> 
+								    				<label ><b>Type</b> : <span class="mandatory" style="color: red;">*</span></label> 
 								    			</td> 
 								    			<td colspan="1" style="max-width: 40%">
 										    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
@@ -420,11 +420,14 @@ if(ses1!=null){
 								    							
 								    		<tr>
 								    			<td colspan="2" class="center" >
-									    			<%if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
+									    			<%if(riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O")){if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
 									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
-									    			<%} %>
+									    			<%}%>
 									    				<button type="button" class="btn btn-sm submit"  style="margin-top: 15px;" onclick="return appendrev('editrevform');" >REVISE</button>
-									    			
+									    			<%}if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O") && logintype!=null && logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("P") || logintype.equalsIgnoreCase("Z")){%>
+									   <!--------------------------------- Close button Only for Admin , Director , project Director  ----------------------------->
+									    				<button type="button" class="btn btn-danger btn-sm revoke" style="margin-top: 15px;" onclick="CloseRiskmodal('<%=riskmatrixdata[0]%>','<%=riskdata[0]%>');"  >CLOSE RISK </button>
+									    			<%}%>	
 									    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');"  >BACK</button>
 									    		</td>
 								    		</tr>	    		
@@ -503,6 +506,57 @@ if(ses1!=null){
 		</div>
 	
 	</div>
+	<div class="modal fade" id="Closefeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
+				<div class="modal-content "  style="min-height: 45%;">
+				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+				    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Close Risk </h4>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+					          <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				     <div class="modal-body">
+  	      
+  	      	<form action="CloseProjectRisk.htm" method="POST">
+  	      		<div class="row">
+	  	      		<div class="col-md-4">
+	  	      			<label> <b>Project : </b> </label> &nbsp;&nbsp; <%if(Long.parseLong(projectid)==0){ %>
+								    					General
+								    				<%}else if(Long.parseLong(projectid)>0){ 					    					
+														for(Object[] obj : projectslist){ %>
+															<%if(projectid!=null && projectid.equals(obj[0].toString())) { %><%=obj[1] %> <%} 
+														} 
+													}%>
+	  	      		</div>
+	  	      		<div class="col-md-4">
+	  	      		<%if(riskdata[5].toString().equalsIgnoreCase(riskdata[6].toString())){%>
+								    <label ><b>PDC : </b></label> <%=sdf2.format(riskdata[5])%>
+					<%}else{%>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								    <label ><b>PDC : </b></label> <%=sdf2.format(riskdata[6])%> 
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								    <label ><b>PDC Org : </b></label> <%=sdf2.format(riskdata[5])%> 
+					<%}%>
+	  	      		</div>
+	  	      		<div class="col-md-12">
+	  	      			<label ><b>Description : </b></label> <%=riskdata[1] %>
+	  	      		</div>
+					<div class="col-md-12" > <label ><b>Remarks : </b></label><br>
+  	      		    		<textarea rows="3" maxlength="999"  style="display:block; " class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  required="required"></textarea>
+  	      		    </div>
+  	      		</div>
+  	      		<br>
+  	      		<div align="center">
+  	      			<input type="submit" class="btn btn-primary btn-sm submit " id="sub" value="Submit" name="sub"  onclick="return confirm('Are You Sure To Submit ?')" > 
+  	      		</div>
+  	      		<input type="hidden" name="RiskId" id="RISKID">
+  	      		<input type="hidden" name="ProjectId"  value="<%=projectid%>">
+  	      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+  	      	</form>
+  	      </div>
+				</div>
+			</div>
+		</div>
 </div>
 <script type="text/javascript">
 
@@ -525,12 +579,12 @@ function appendrev(frmid){
 	
 	
 
-$(document).ready(function(){
-	$("#myTable").DataTable({
-		"lengthMenu": [  5,10,25, 50, 75, 100 ],
-	 	"pagingType": "simple"
-	});
-});
+		$(document).ready(function(){
+			$("#myTable").DataTable({
+				"lengthMenu": [  5,10,25, 50, 75, 100 ],
+			 	"pagingType": "simple"
+			});
+		});
 
   		function calculateRPN()
   		{
@@ -539,6 +593,14 @@ $(document).ready(function(){
   			$('#RPN').html( Number($sev) * Number($pro) );
   		}
   		$(document).ready(calculateRPN());
+  		
+  		function CloseRiskmodal(riskid ,actionid)
+  		{
+  			$("#RISKID").val(riskid);
+  			$("#ACTIONID").val(actionid);
+  			$('#Closefeedback').modal('toggle');
+  		}
+
 </script>
 
 

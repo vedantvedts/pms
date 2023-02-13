@@ -1650,6 +1650,13 @@ public class ProjectServiceImpl implements ProjectService {
 	public Object[] ProjectRiskData(String actionmainid) throws Exception {
 		return dao.ProjectRiskData(actionmainid);
 	}
+	@Override
+	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception
+	{
+		dto.setStatusDate(sdf1.format(new Date()));
+		dto.setModifiedDate(sdf1.format(new Date()));
+		return dao.CloseProjectRisk(dto);
+	}
 
 	@Override
 	public long ProjectRiskDataSubmit(PfmsRiskDto dto) throws Exception {
@@ -1668,6 +1675,7 @@ public class ProjectServiceImpl implements ProjectService {
 		model.setRevisionNo(Long.parseLong("0"));
 		model.setCategory(dto.getCategory());
 		model.setRiskTypeId(Integer.parseInt(dto.getRiskTypeId()));
+		model.setStatus(dto.getStatus());
 		model.setCreatedBy(dto.getCreatedBy());
 		model.setCreatedDate(sdf1.format(new Date()));
 		model.setIsActive(1);
