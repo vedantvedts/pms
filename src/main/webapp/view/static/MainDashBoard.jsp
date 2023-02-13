@@ -1750,7 +1750,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		  <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
 		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
-		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
 		        </form>
 		        <button class="btn btn1">Action</button>
 		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%><%if (IsDG.equalsIgnoreCase("Yes") ){%>display:none<%} %>">Project</button>
@@ -2102,7 +2102,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							       		
 							       		<form action="ProjectHoaUpdate.htm" method="get">
 									       <h6 class="text-left" style="margin-bottom: 3px !important;">Finance 
-									       	<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 17px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+									       	<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 17px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 									    </form>
 							       		<ul class="small-list">
 								           	<li><span class="green">&#x220E;</span> E</li>
@@ -2317,7 +2317,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        		<th style="font-size: 14px">PMRC </th>
 			        	</tr>
 				        <tr>
-			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held" >
+			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
 			        			<%if(ProjectHealthTotalData !=null){%>
 			        				<span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span>
 			        			<%}%>
@@ -2352,7 +2352,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				        		<th style="font-size: 14px">EB </th>
 				        	</tr>
 				        	<tr>
-				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %><%}%></td>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -2402,12 +2402,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height: 2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %>
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending"  >
+				  		<td data-toggle="tooltip" title="Pending"  >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %>
@@ -2463,17 +2463,17 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height:2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %>
 				  		</td>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" >
 				  			<span class="blue">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Forward &nbsp;</span>
 				  			<%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %>
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" >
+				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %>
@@ -2530,12 +2530,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height: 2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  		<span class="yellow">&#x220E;</span>
 				  		<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  		&nbsp;0
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" >
+				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %>
@@ -2557,7 +2557,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							<img src="view/images/rupee.png" /> Finance <!-- <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
 				 	<form action="ProjectHoaUpdate.htm" method="get">
-								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 				 </form>
 			   </div>
 		      <hr style="margin:3px 10px !important">
@@ -2692,9 +2692,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 														
 														<div class="row">
 															<div class="col-md-11">
-															    <div class="progress"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> / <%=obj[8] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[6]%> / <%=obj[8] %>" ></div>
+															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> <br> PMRC To Be Held : <%=obj[8] %><br> Total PMRC To Be Held : <%=obj[48] %>"  >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -2718,9 +2718,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<%if(Integer.parseInt(obj[13].toString())>0){ %>
 														<div class="row">
 															<div class="col-md-11">
-																<div class="progress" >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[9]%> / <%=obj[13] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;" data-toggle="tooltip" title="EB Pending :  <%=obj[11]%> / <%=obj[13] %>" ></div>
+																<div class="progress" data-toggle="tooltip" title="EB Held : <%=obj[9]%> <br> EB To Be Held : <%=obj[13] %><br> Total EB To Be Held : <%=obj[49] %>">
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;"></div>
 																</div>
 															</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -2875,8 +2875,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden ">
 			<div  style="float: right;margin: 10px">
 				<!-- <button class="btn btn-sm back" onclick="overalldetails('A')">BACK</button> -->
-				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" data-placement="top" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" data-placement="top" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
 				<br>
 				<!-- <button class="btn btn-sm back" style="margin-top: 10px;padding: 3px 19px;" onclick="overalldoc()"><i class="fa fa-file-text-o" aria-hidden="true"></i> DOC </button> -->
 			</div>
@@ -3071,7 +3071,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
 			        		<td style="font-size: 14px">Held: </td>
-			        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held" >
+			        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
 			        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span> <%}%>
 			        		</td>
 			        	</tr>
@@ -3102,7 +3102,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
 				        		<td style="font-size: 14px">Held: </td>
-				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" data-placement="top" title="Held / To be Held / Total to be Held"  >
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
 				        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %></span> <%}%>
 				        		</td>
 				        	</tr>
@@ -3154,8 +3154,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  		<td data-toggle="tooltip" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
@@ -3207,9 +3207,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
@@ -3262,8 +3262,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;0</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;0</td>
+				  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
 				  	</tr>
 				  </thead>
 				 <tbody>
@@ -3280,9 +3280,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
 					<img src="view/images/rupee.png" /> Finance<!--  <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
-				 	<!-- <form action="ProjectHoaUpdate.htm" method="get">
-								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-				 </form> -->
 			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
@@ -3640,7 +3637,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 <script type="text/javascript">
 $(function () {
-    $("[data-toggle='tooltip']").tooltip();
+    $("[data-toggle='tooltip']").tooltip({
+        animated: 'fade',
+        placement: 'top',
+        html : true,
+    });
 });
 
 $(function() {
@@ -3779,7 +3780,8 @@ function overalldetails(value){
 
 $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
-    placement: 'bottom'
+    placement: 'bottom',
+    html : true,
 });
 
 $('.btn-toggle').click(function() {
