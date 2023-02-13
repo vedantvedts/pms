@@ -556,8 +556,6 @@ public class RfpMainServiceImpl implements RfpMainService {
 			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[9].toString()) ;
 			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[10].toString()) ;
 		}
-		
-		
 		return CashOutGo;
 	}
 	

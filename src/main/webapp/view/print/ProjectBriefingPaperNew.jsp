@@ -894,7 +894,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
 									// only recommendations and the if recommendation is completed or closed then only those actions whicha are completed after last meeting
 									if(obj[3].toString().equalsIgnoreCase("R") 
-											&& (!obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
+											&& (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
 						<tr>
 							<td style="text-align: center;"><%=i %></td>
 							<td style="text-align: justify; "><%=obj[2] %></td>
@@ -2409,8 +2409,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
    						
 						  <div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ %>
+						  	<%if(z!=0){ break;} %>
 								<div>
-									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
+									<b>Project : <%=ProjectDetail.get(z)[1] %> 		</b>
 								</div>	
 								
 								<div class="card-body" style="width:100%"  >

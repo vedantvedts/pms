@@ -761,7 +761,7 @@ Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
-									if(obj[3].toString().equalsIgnoreCase("R")&& (!obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
+									if(obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
 						<tr>
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
