@@ -2403,7 +2403,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<%}else { %>
 								and Technical Work Carried Out For Last Three Months
 							<%} %>
-   						
    							</b>
    						</summary>
    						
