@@ -156,7 +156,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
-	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId FROM pfms_risk WHERE actionmainid=:actionmainid";
+	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId , status FROM pfms_risk WHERE actionmainid=:actionmainid";
 	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact, Category=:Category, RiskTypeId=:RiskTypeId WHERE riskid=:riskid";
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid ";  
@@ -1715,6 +1715,20 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				ProjectRiskData=null;
 			}
 			return ProjectRiskData;		
+		}
+		private static final String PROJECTCLOSERISK="UPDATE pfms_risk SET status=:status, statusdate=:statusdate , remarks=:remarks , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE riskid=:riskid";
+		@Override
+		public long CloseProjectRisk(PfmsRiskDto dto)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTCLOSERISK);
+				query.setParameter("riskid", dto.getRiskId());
+				query.setParameter("status", dto.getStatus());
+				query.setParameter("statusdate", dto.getStatusDate());
+				query.setParameter("remarks", dto.getRemarks());
+				query.setParameter("modifiedby", dto.getModifiedBy());
+				query.setParameter("modifieddate", dto.getModifiedDate());
+				long count=query.executeUpdate();
+			return count;
 		}
 		
 		@Override

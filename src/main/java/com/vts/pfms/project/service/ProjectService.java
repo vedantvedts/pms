@@ -135,6 +135,7 @@ public interface ProjectService {
 	public Object[] ProjectDataRevData(String projectdatarevid) throws Exception;
 	public List<Object[]> ProjectRiskDataList(String projectid,String LabCode) throws Exception;
 	public Object[] ProjectRiskData(String actionmainid) throws Exception;
+	public long CloseProjectRisk(PfmsRiskDto dto)throws Exception;
 	public long ProjectRiskDataSubmit(PfmsRiskDto dto) throws Exception;
 	public Object[] ProjectRiskMatrixData(String actionmainid) throws Exception;
 	public long ProjectRiskDataEdit(PfmsRiskDto dto) throws Exception;

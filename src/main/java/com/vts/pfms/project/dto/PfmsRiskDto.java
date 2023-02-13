@@ -14,6 +14,9 @@ public class PfmsRiskDto {
 	    private String MitigationPlans;
 	    private String Impact;
 	    private String RevisionNo;
+	    private String Status;
+	    private String StatusDate;
+	    private String Remarks;
 	    private String CreatedBy;
 	    private String CreatedDate;
 	    private String ModifiedBy;

@@ -3610,6 +3610,7 @@ public class ProjectController
 			dto.setProjectId(projectid);
 			dto.setCreatedBy(Username);		
 			dto.setLabCode(LabCode);
+			dto.setStatus("O");
 			long count=service.ProjectRiskDataSubmit(dto);
 			
 			if(count>0) 
@@ -3629,6 +3630,36 @@ public class ProjectController
 		}
 	}
 	
+	@RequestMapping(value = "CloseProjectRisk.htm" , method = RequestMethod.POST)
+	public String CloseProjectRisk(HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
+	{
+		String Username = (String) ses .getAttribute("Username");
+		logger.info(new Date() +"Inside CloseProjectRisk.htm "+Username);
+		try {
+			String riskId = req.getParameter("RiskId");
+			String remarks = req.getParameter("Remarks");
+			PfmsRiskDto dto=new PfmsRiskDto();
+			dto.setRiskId(riskId);
+			dto.setStatus("C");
+			dto.setRemarks(remarks);
+			dto.setModifiedBy(Username);
+			
+			long result = service.CloseProjectRisk(dto);
+			if(result>0) 
+			{
+				redir.addAttribute("result","Project Risk Data Closed Successfully");
+			}else{
+				redir.addAttribute("resultfail","Project Risk Data Closed Unsuccessfully");
+			}		
+			redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));			
+			return "redirect:/ProjectRisk.htm";
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CloseProjectRisk.htm "+Username, e);
+			return "static/Error";
+		}
+	}
 	
 	
 	@RequestMapping(value = "ProjectRiskDataEdit.htm", method = {RequestMethod.GET,RequestMethod.POST})
