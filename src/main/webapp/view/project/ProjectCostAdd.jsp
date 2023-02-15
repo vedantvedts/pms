@@ -185,20 +185,22 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 	    			    	<%Double cost=0.0;
 									    for(Object[] 	obj:entry.getValue()){ 
 							%>
+							<!-- (obj[6].toString().equalsIgnoreCase(obj2[2].toString())) -->
 							
 							
 							
 								<tr>
+						
 								<form action="ProjectCostEditSubmit.htm" method="POST" name="myfrm<%=obj[0] %>" id="myfrm<%=obj[0] %>" >	
 									
 		 							<td style="width: 400px;">
-		 								
+		 						
 		 								<select class="custom-select" id="Item" required="required" name="Item" >
 									    	<option disabled="true"  selected value="">Choose...</option>
 												<% for (Object[] obj2 : BudgetItemMap.get(entry.getKey())) { 
 												if(obj2[3].toString().equalsIgnoreCase(ProjectDetailes[21].toString())){
 												%>
-												<option value="<%=obj2[0]%>" <%if(obj[3].toString().equalsIgnoreCase(obj2[1].toString())){ %> selected="selected" <%} %>><%=obj2[1]%> (<%=obj2[2]%>) (<%=obj2[4]%>)</option>
+												<option value="<%=obj2[0]%>" <%if((obj[3].toString().equalsIgnoreCase(obj2[1].toString()))&&(obj[6].toString().equalsIgnoreCase(obj2[2].toString())) ){ %> selected="selected" <%} %>><%=obj2[1]%> (<%=obj2[2]%>) (<%=obj2[4]%>)</option>
 												<%} }%>
 	 							 		</select>
 	 							 		

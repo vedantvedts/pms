@@ -393,6 +393,10 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 
 String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
+
+List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
+
+
 Committee committeeData = (Committee) request.getAttribute("committeeData");
 if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
 	before6months = LocalDate.now().minusMonths(3);
@@ -2199,16 +2203,37 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=CommitteeCode.toUpperCase() %> Meeting :</b></div>
-							<div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
+							<%-- <div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
 								<hr style="margin-right: 10px !important"><br>
 							<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
 							<%}else{ %>
 							<div align="center">
 								Nil 
-							</div>
-										  	
+							</div>	  	
 							<br><br><br>
-							<%} %></div>	
+							<%} %>
+							</div> --%>
+							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+			
+											<thead>
+												<tr><th style="width: 5%;">SN</th><th style="width: 10%;">Type</th><th style="width: 85%;">Details</th></tr>
+											</thead>
+											<tbody>
+												<%int i=0; if(RecDecDetails!=null && RecDecDetails.size()>0){ 
+												for(Object[] obj :RecDecDetails){%>
+												<tr>
+													<td style="width: 5%; text-align: center;"> <%=++i%></td>
+													<td style="width: 10%; text-align: center;"> 
+													<%if(obj[2].toString().equalsIgnoreCase("D")){%> 
+															Decision
+													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> Recommendation													 
+													  <%}%></td>
+													<td style="width: 85%;  word-wrap: break-word;"> <%=obj[3]%></td>
+													
+												</tr>
+												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
+					</tbody>
+					</table>	
 						<h1 class="break"></h1>								
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 									

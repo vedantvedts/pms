@@ -38,7 +38,16 @@
   text-align: justify;
   text-justify: inter-word;
 }
-
+.form-check-input:checked ~ .form-check-label::before {
+    color: #fff;
+    border-color: #7B1FA2;
+    background-color: red;
+}
+.form-check-input:checked ~ .form-check-label::before {
+    color: #fff;
+    border-color: #7B1FA2;
+    background-color: red;
+}
  th
  {
  	border: 1px solid black;
@@ -194,8 +203,8 @@ ul, #myUL {
 }
 </style>
 
-<!-- ---------------- tree ----------------- -->
-<!-- -------------- model  tree   ------------------- -->
+<!------------------- tree -------------------->
+<!----------------- model  tree   ---------------------->
 <style>
 
 .caret-1 {
@@ -448,6 +457,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	No2="E"+(Long.parseLong(ebandpmrccount.get(0).get(1)[1].toString())+1);
 } 
 
+Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
+List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
 %>
 
 
@@ -482,11 +493,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="row card-header">
+					<div class="row card-header" style="">
 			   			<div class="col-md-4">
 							<h3>Project Briefing Paper</h3>
 						</div>							
-						<div class="col-md-8 justify-content-end" style="float: right;">
+						<div class="col-md-8 justify-content-end" style="float: right;margin-top: -15px;">
 						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
@@ -2543,7 +2554,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
    						<summary role="button" tabindex="0"><b>12. Decision/Recommendations sought from <%=committeeData.getCommitteeShortName().trim().toUpperCase() %></b>     </summary>
    						
 						  <div class="content">
-						  <%for(int z=0;z<projectidlist.size();z++){ %>
+						 
+						 <%--  <%for(int z=0;z<projectidlist.size();z++){ %>
 						  	<%if(ProjectDetail.size()>1){ %>
 								<div>
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
@@ -2557,7 +2569,81 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						  	
 						  	<%} %>
 						  
-						  <%} %>
+						  <%} %> --%>
+						  
+						  <%if(nextMeetVenue!=null && nextMeetVenue[0]!=null){%>
+						  
+						  	<form action="RecDecDetailsAdd.htm" method="post" id="recdecdetails">
+								<div class="row" style="margin-top: 10px;">
+									<div class="col-md-4"> 
+										<table class="table table-bordered table-hover table-striped table-condensed ">
+											<thead>
+												<tr><th style="width: 5%;">SN</th><th style="width: 80%;">Type</th><th style="width: 5%;">Action</th></tr>
+											</thead>
+											<tbody>
+											<%int i=0; if(RecDecDetails!=null && RecDecDetails.size()>0){ 
+												for(Object[] obj :RecDecDetails){
+												String pointdata= "";
+												if(obj[3].toString().length()>30){
+													pointdata=obj[3].toString();
+												}else{
+													pointdata=obj[3].toString();
+												}
+												%>
+												<tr>
+													<td style="width: 5%; text-align: center;"> <%=++i%></td>
+													<td style="width: 80%;"> <%if(obj[2].toString().equalsIgnoreCase("D")){%> 
+													
+													<b style="color: #145374;">Dec :-</b>
+													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
+													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> <b style="color: #145374;">Rec:- </b>
+													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
+													  <%}%></td>
+													<td style="text-align: center;width: 5%;"> 
+													<input type="hidden" id="type<%=obj[0]%>" value="<%=obj[2]%>">
+													<input type="hidden" id="point<%=obj[0]%>" value="<%=obj[3]%>">
+													<input class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"/></td>
+												</tr>
+												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
+											</tbody>
+										</table>
+										<div align="center">
+											<button type="button" class="btn btn-info btn-sm add" onclick="RecDecEdit('')"> ADD</button>
+										</div>
+									</div>
+									<div class="col-md-8"> 
+									<div class="card" >
+										<div class="card-header" style="height: 40px;">
+											<div align="center" id="drcdiv"  >
+			  									<div class="form-check form-check-inline">
+												  <input class="form-check-input" type="radio" name="darc" id="decision" value="D" required="required">
+												  <label class="form-check-label" for="decision"><b> Decision </b></label>
+												</div>
+												<div class="form-check form-check-inline">
+												  <input class="form-check-input" type="radio" name="darc" id="recommendation" value="R" required="required">
+												  <label class="form-check-label" for="recommendation"> <b>Recommendation </b></label>
+												</div>
+			  								</div>
+										</div>
+										 <div class="card-body">
+										    <textarea class="form-control" name="RecDecPoints" id="ckeditor1" rows="5" cols="20" maxlength="5"  required="required"></textarea>
+											<div align="center">
+												<input type="hidden" name="RedDecID" id="recdecid">
+												<input type="hidden" name="schedulid" value="<%=nextMeetVenue[0]%>">
+												<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData('recdecdetails')">Submit </button>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="projectid" value="<%=projectid%>"/>
+												<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
+											</div>
+										</div>
+										
+								    </div>
+									</div>
+								</div>	
+								</form>
+								<%}else{%>
+										 <h5>Meeting is Not Scheduled!</h5>
+								<%}%>
 						  	<br><br><br><br><br>
 						  </div>	
 						   
@@ -3202,7 +3288,25 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	</div>
 	
 
-
+	<div class="modal fade" id="recdecmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
+				<div class="modal-content" style="min-height: 45%;" >
+				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+				    	<h4 class="modal-title" id="model-card-header" style="color: #145374"> <span id="val1"></span> </h4>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				     <div class="modal-body">
+		  	      		<div class="row">
+							<div class="col-md-12" > 
+									<span id="recdecdata"></span>
+		  	      		    </div>
+		  	      		</div>
+  	      				</div>
+				</div>
+			</div>
+		</div>
 
 
 
@@ -4118,7 +4222,7 @@ $("table").on('click','.tr_clone_addbtn' ,function() {
 <script type="text/javascript">
 
 
-CKEDITOR.replace( 'ckeditor', {
+var editor_config = {
 	
 	maxlength: '4000',
 	toolbar: [{
@@ -4223,7 +4327,10 @@ CKEDITOR.replace( 'ckeditor', {
 		
 		
 		
-	} );
+	} ;
+	
+CKEDITOR.replace('ckeditor', editor_config );
+CKEDITOR.replace('ckeditor1', editor_config );
 
 $(document).ready(function() {
 	var locked=0;
@@ -4266,6 +4373,58 @@ $(document).ready(function() {
 	   
 	});
 
+
+
+
+function RecDecEdit(recdescid ){
+	
+	var type = $("#type"+recdescid).val();
+	
+		if(type=='D'){
+			 $('#decision').prop('checked',true);
+		}else if(type=='R'){
+			 $('#recommendation').prop('checked',true);
+		}else{
+			 $('#decision').prop('checked',false);
+			 $('#recommendation').prop('checked',false);
+		}
+	
+	$("#recdecid").val(recdescid);
+	CKEDITOR.instances['ckeditor1'].setData($("#point"+recdescid).val());
+	
+}
+
+function RecDecmodal(recdescid)
+{
+	var type = $("#type"+recdescid).val();
+	if(type=='D'){
+		$("#val1").html("Decision");
+	}else if(type=='R'){
+		$("#val1").html("Recommendation");
+	}
+	$("#recdecdata").html($("#point"+recdescid).val());
+	$('#recdecmodel').modal('toggle');
+}
+function checkData(formid)
+{
+	var recdec = CKEDITOR.instances['ckeditor1'].getData(); 
+	var fields = $("input[name='darc']").serializeArray();
+	if(recdec!='' && fields!=0){
+		if( recdec.length>999){
+			alert("Data is Too long !");
+			return false;
+		}else{
+			if(confirm("Are you sure to submit!")){
+				document.getElementById(formid).submit();
+				return true;
+			}
+		}
+	}else{
+		alert("Fill all the details!");
+		return false;
+	}
+	
+}
 </script>
 
 

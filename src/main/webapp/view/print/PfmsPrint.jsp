@@ -32,7 +32,8 @@ List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
 List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 String lablogo=(String)request.getAttribute("lablogo");
-
+List<Object[]>headofaccountsList=(List<Object[]>)request.getAttribute("headofaccountsList");
+String projecttypeid=(String)request.getAttribute("projecttypeid");
 %>
 <style>
 
@@ -524,13 +525,13 @@ String lablogo=(String)request.getAttribute("lablogo");
 		
 		<br>
 		<div align="center" style="font-size: 20px"><b>Annexure - A </b></div>
-		<table class="editor-text-font" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px; border-collapse:collapse;font-size: 17px !important" >
+<table class="editor-text-font" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px; border-collapse:collapse;font-size: 17px !important" >
 			
 			
 			<tr>
 				<td colspan="1" class="border_black  center" style=";width:7%;font-weight: 600"><span >SN</span></td>
-				<td colspan="2" class="border_black  center" style="font-weight: 600;width:20%;"><span >Head Code</span></td>
-				<td colspan="5" class="border_black  center" style=";width:35%;font-weight: 600" ><span >Budget Item</span></td>
+			<!-- 	<td colspan="2" class="border_black  center" style="font-weight: 600;width:20%;"><span >Head Code</span></td> -->
+				<td colspan="5" class="border_black  center" style=";width:50%;font-weight: 600" ><span >Budget Item</span></td>
 				<td colspan="2" class="border_black  center" style=";width:25%;font-weight: 600"><span >Item Cost (Lakhs)</span></td>
 			
 			</tr>
@@ -543,8 +544,8 @@ String lablogo=(String)request.getAttribute("lablogo");
 			 
 			<tr>
 			<td colspan="1" class="border_black  center" style=";width:7%"><span ><%=count %>. </span></td>
-			<td colspan="2" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1] %><%}else{ %> - <%} %></span></td>
-			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=obj[0] %><%}else{ %> - <%} %></span></td>
+		<%-- 	<td colspan="2" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1] %><%}else{ %> - <%} %></span></td> --%>
+			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=obj[0]+"("+obj[5]+")"+"("+obj[1]+")" %><%}else{ %> - <%} %></span></td>
 			<td colspan="2" class="border_black right"  ><span ><%if(obj[3]!=null && Double.parseDouble(obj[3].toString()) >0){ %>&#8377; <span><%=nfc.convert(Double.parseDouble(obj[3].toString())/100000)%></span> <%}else{ %> - <%} %></span></td>
 			</tr> 
 			
@@ -553,8 +554,8 @@ String lablogo=(String)request.getAttribute("lablogo");
 			
 			<%if(PfmsInitiation!= null) { Object[] obj = PfmsInitiation; %>
 			
-			<tr>
-				<td colspan="12" class="border_black right"  ><span ><%if(obj[6]!=null && Double.parseDouble(obj[6].toString()) >0 ){ %>Total Cost : &#8377; <span><%=nfc.convert(Double.parseDouble(obj[6].toString())/100000)%></span> <%}else{ %>  <%} %> Lakhs</span></td>
+		    <tr>
+				<td colspan="12" class="border_black weight_700 right"  ><span ><%if(obj[6]!=null && Double.parseDouble(obj[6].toString()) >0 ){ %>Total Cost : &#8377; <span><%=nfc.convert(Double.parseDouble(obj[6].toString())/100000)%></span> <%}else{ %>  <%} %> Lakhs</span></td>
 			</tr>
 			
 			<%} }else{%>
@@ -574,8 +575,9 @@ String lablogo=(String)request.getAttribute("lablogo");
 			
 			<tr>
 			<td colspan="1" class="border_black  left" style=";width:10%;font-weight: 600"><span >Mil No</span></td>
-			<td colspan="5" class="border_black  center" style=";width:40%;font-weight: 600" ><span >Milestone Activity</span></td>
-			<td colspan="2" class="border_black  center" style="font-weight: 600"><span >Mil Month</span></td>
+			<td colspan="5" class="border_black  center" style=";width:30%;font-weight: 600" ><span >Milestone Activity</span></td>
+			<td colspan="4" class="border_black  center" style="font-weight: 600"><span >Milestone TotalMonth</span></td>
+		<!-- 	<td colspan="1" class="border_black  center" style="font-weight: 600"><span >Mil Month</span></td> -->
 			<td colspan="2" class="border_black  center" style="font-weight: 600"><span >Milestone Remarks</span></td>
 			</tr>
 			
@@ -587,12 +589,23 @@ String lablogo=(String)request.getAttribute("lablogo");
 			<tr>
 			<td colspan="1" class="border_black  center" ><span ><%if(obj[0]!=null){ %><%=obj[0] %><%}else{ %> - <%} %></span></td>
 			<td colspan="5" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1] %><%}else{ %> - <%} %></span></td>
-			<td colspan="2" class="border_black center" ><span ><%if(obj[2]!=null){ %><%=obj[2] %><%}else{ %> - <%} %></span></td>
+<!-- 			<td colspan="1" class="border_black  left" ><span ></span></td> -->
+			<td colspan="4" class="border_black center" ><span ><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=obj[5] %></sub><%="+"%><%=obj[2]%><%}else{ %> - <%} %>
+			
+			</span></td>
 			<td colspan="2" class="border_black  left" ><span ><%if(obj[4]!=null){ %><%=obj[4] %><%}else{ %> - <%} %></span></td>
 			</tr> 
 			
 			<%
-			} }else{%>
+			} }%>
+			
+						<%if(PfmsInitiation!= null) { Object[] obj = PfmsInitiation; %>
+			
+			<tr style="  font-weight: bold;">
+				<td colspan="12" class="border_black right"  ><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %><span ><b>Total Duration : <%=obj[7]+"Months" %></b></span><%}%></td>
+			</tr>
+			
+			<%}else{%>
 			
 				<tr>
 					<th colspan="12" class="border_black 700 center" ><span >No Data Available</span></th>
@@ -600,10 +613,9 @@ String lablogo=(String)request.getAttribute("lablogo");
 			
 			
 			<%} %>
-			
 			</table> 
 
-			
+
 	</div>
 
 </div>

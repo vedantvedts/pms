@@ -177,7 +177,50 @@ body{
 	margin-top: 1rem;
 	background-color: #e2ebf0;
 }
+#reqbtn2{
 
+ height:20px;
+
+ margin-top:4px;
+ font-size:13px;
+ width:30px;
+
+}
+#reqmodal{
+ width: 140%;
+ margin-left: -121px;
+ margin-top: 56px;
+ }
+#v-pills-prints{
+min-height: 8rem !important;
+ display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#v-pills-authority{
+min-height: 13rem !important;
+
+}
+#v-pills-authority .row{
+margin-top:1%;
+}
+#v-pills-profile{
+min-height: 32rem !important;
+}
+
+.prints{
+border-radius:8px;
+}
+
+#v-pills-home{
+min-height: 18rem !important;
+}
+#v-pills-requirement{
+min-height: 22rem !important;
+}
+#v-pills-settings{
+min-height: 8rem !important;
+}
 </style>
 </head>
 <body>
@@ -193,7 +236,7 @@ List<Object[]> IntiationAttachment=(List<Object[]>)request.getAttribute("Intiati
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("AuthorityAttachment");  
-
+List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
 
 %>
 
@@ -231,7 +274,11 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
                     <a class="nav-link mb-3 shadow custom_width" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                         <i class="fa fa-check mr-2"></i>
                         <span class="font-weight-bold large text-uppercase">Details</span></a>
-
+					
+					 <a class="nav-link mb-3 shadow custom_width" id="v-pills-requirement-tab" data-toggle="pill" href="#v-pills-requirement" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                   <i class="fa fa-list-alt" aria-hidden="true"></i>
+                     <span class="font-weight-bold large text-uppercase">Requirement</span></a>
+                        
                     <a class="nav-link mb-3 shadow custom_width" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
                         <i class="fa fa-star mr-2"></i>
                         <span class="font-weight-bold large text-uppercase">Cost</span></a>
@@ -380,19 +427,11 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
  										<a  href="ProjectAuthorityDownload.htm?AuthorityFileId=<%=AuthorityAttachment[7] %>" target="_blank"><i class="fa fa-download fa-2x" style="padding: 0px 25px; margin-top: 5px"></i>
 				                    </a>							 
 				                </div>
-							
-							  
-							</div>
-
+				                </div>
 			 			</div>
-			 			
 			 			<%} %>
-	
 	 			</div>
-                        
       		</div>   
-                         
-                    
                     
 <!--  **** DETAILS *********************     -->
                     
@@ -528,7 +567,68 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 						    </div>
 						</div>    
                     </div>
+                    <!--****Requirements****-->
                     
+                                 <div class="tab-pane fade shadow rounded bg-white p-3" id="v-pills-requirement" role="tabpanel" aria-labelledby="v-pills-requirement-tab">
+
+                    
+	 				       
+				               
+				                <div class="table-responsive" <%if(RequirementList !=null){%> style="height:300px;overflow:auto;"<%}else{ %>style="height:63px;"<%} %>>
+				                    <table class="table">
+				                        <thead class="thead" style="color:white!important;background-color: #055C9D;top:-2px; position: sticky; ">
+				                            <tr>
+<!-- 				                                <th> <label class="customcheckbox m-b-20"> <input type="checkbox" id="mainCheckbox"> <span class="checkmark"></span> </label> </th>
+ -->				                            <th style="width:15%; text-align:center;">ID</th>
+				                                <th style="width:55%; text-align:center; ">Brief</th>
+				                                <th style="width:20%; text-align:center;">Description</th>
+				                            </tr>
+				                        </thead>
+				                      <tbody class="customtable" >
+				                        <%if(RequirementList !=null){
+				                          for(Object []obj :RequirementList){%>
+				                          <tr>
+				                 						<td><%=obj[1] %></td>
+				                 		          		<td><%=obj[3] %></td>
+				                 		          		<td style="text-align: center;">
+				                 		          		<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
+					<button type="button" class=""    id="reqbtn2" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
+<!-- 				<i class="fa fa-eye" aria-hidden="true" style="color:orange; font-size: 10px; float:right;"></i>  -->
+					<div class="cc-rockmenu">
+					 <div class="rolling">
+					<figure class="rolling_icon"><img src="view/images/preview3.png" style="width:18px;" ></figure>
+					</div> 
+					</button>
+				    </td>
+				                           </tr>
+				                           <%} }%>
+				                        </tbody> 
+				                    </table>
+				                </div>
+				                
+				                
+				                
+				         
+					<div class="modal fade  bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" style="">
+ 						 <div class="modal-dialog modal-lg" role="document">
+    						<div class="modal-content" id="reqmodal">
+      						<div class="modal-header" style="background: antiquewhite;">
+     			  			 <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Lato',sans-serif;color: #005086; font-size:28px; ">
+     					  	<b>Requirement Description</b> </h5><span style="font-family: 'Lato',sans-serif;color: #005086; margin-left:5px;margin-top:20px; font-size:12px; float:right;">(<b id="reqid"></b>)</span>
+       					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        				  <span aria-hidden="true">&times;</span>
+       						 </button>
+    					  </div>
+     						 <div class="modal-body" style="padding:0px;background: aliceblue;" >
+     						        <div id="reqmodalbody" style="text-align:justify;!important; padding:20px ;font-family: 'Lato'"> </div>
+    								  </div>
+  								  </div>
+  									</div>
+										</div>
+					
+	 		
+                        
+      		</div>  
                     
  <!--  **** COST *********************     -->                   
                     
@@ -558,7 +658,7 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
 				                                <td><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[1]!=null){%><%=obj[1]+"("+obj[4]+")" %><%}else{ %>-<%} %></td>
 				                                <td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 				                                <td class="right">&#8377; <%if(obj[3]!=null && Double.parseDouble(obj[3].toString())>0){%><%=Double.parseDouble(obj[3].toString())/100000 %> Lakhs<%}else{ %>0.00<%} %></td>
 				                    
@@ -581,12 +681,10 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
                     <div class="tab-pane fade shadow rounded bg-white p-3" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                        <!--  <h4 class="font-italic mb-4">Schedule</h4> -->
                         
-                        <div class="row">
-				        <div class="col-12">
-				            <div class="card">
+                     
 				               
-				                <div class="table-responsive">
-				                    <table class="table">
+				              
+				                    <table class="table" id="scheduleTable">
 				                        <thead class="thead" style="color:white!important;background-color: #055C9D">
 				                            <tr>
 <!-- 				                                <th> <label class="customcheckbox m-b-20"> <input type="checkbox" id="mainCheckbox"> <span class="checkmark"></span> </label> </th>
@@ -612,13 +710,10 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 				                           
 				                        </tbody>
 				                    </table>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
-                        
-                        
-                    </div>
+				                    
+
+
+						</div>
                     
          
          <!-- ********* ATTACHMENT *****************  -->           
@@ -678,7 +773,7 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
 				        <div class="col-12">
 				         
 				                <form action="" method="POST" name="myfrm" id="myfrm">
-				                
+			
 				                	<button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 							 
 							 		<button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
@@ -706,6 +801,22 @@ List<Object[]> AuthorityAttachments=(List<Object[]>)request.getAttribute("Author
     </div>
 </section>
 
+<script type="text/javascript">
+function showdata(reqid,reqid1){
+	console.log($('#Req'+reqid).val());
+    $('#exampleModalLong').modal('show');
+    document.getElementById('reqmodalbody').innerHTML =$('#Req'+reqid).val();
+    document.getElementById('reqid').innerHTML =reqid1;
+}
+
+$(document).ready(function(){
+    $("button").click(function(){
+      var rowCount = $("#scheduleTable tr").length;
+      alert(rowCount); 
+    });
+  });
+
+</script>
 
 </body>
 </html>

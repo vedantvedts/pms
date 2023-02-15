@@ -72,6 +72,11 @@ width:27px;
 #addreq{
 width:40%;
 }
+#reqmodal{
+ width: 140%;
+ margin-left: -164px;
+ margin-top: 45px;
+ }
 .nav-link{
 	text-align: left;
 }
@@ -218,7 +223,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
       <div class="card slider">
       
       
-        <div class="card-header slider_header" style="padding:0px; font-size:12px!important">
+        <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
         
              <h3 class="category">Initiation Details 
              
@@ -1454,8 +1459,8 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				<%  int i=1;%>
 				 <div class="reqtable" style="height: 300px; overflow: auto">
 	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
-	 			 <thead>
-	 			 <tr style="background-color: #055C9D;color:white; top:0; position: sticky;">
+	 			 <thead style="background-color: #055C9D;color:white; top:-2px; position: sticky;">
+	 			 <tr >
 <!-- 	 			  <th style="width: 5%;">Select</th> -->
 				<th style="width: 3%; ">SN</th>
 				<th style="width:8%" class="text-nowrap">ID</th>
@@ -1487,7 +1492,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 					<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
 					<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
-					<button type="submit" class="btn btn-warning btn-sm" name="action" value="EDIT" id="reqbtn1" >
+					<button type="submit" title="EDIT" class="btn btn-warning btn-sm" name="action" value="EDIT" id="reqbtn1" >
 					<i class="fa fa-pencil" aria-hidden="true" style="color:green; font-size: 10px; float:right;"></i>
 					</button>
 			
@@ -1508,17 +1513,17 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	 			 </tbody>
 	 			 </table>
 	 			</div>
-								</form>			
+				</form>			
 	 			</div>
 	 			 		<div class="modal fade  bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" style="">
- 					 <div class="modal-dialog modal-lg" role="document">
-    				<div class="modal-content">
-      				<div class="modal-header" style="background: antiquewhite;">
-     			   <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Lato',sans-serif;color: #005086; font-size:28px; ">
-     			  <b>Requirement Description</b> </h5><span style="font-family: 'Lato',sans-serif;color: #005086; margin-left:5px;margin-top:20px; font-size:12px; float:right;">(<b id="reqid"></b>)</span>
-       				 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        			  <span aria-hidden="true">&times;</span>
-       					 </button>
+ 						 <div class="modal-dialog modal-lg" role="document">
+    						<div class="modal-content" id="reqmodal">
+      						<div class="modal-header" style="background: antiquewhite;">
+     			  			 <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Lato',sans-serif;color: #005086; font-size:28px; ">
+     					  	<b>Requirement Description</b> </h5><span style="font-family: 'Lato',sans-serif;color: #005086; margin-left:5px;margin-top:20px; font-size:12px; float:right;">(<b id="reqid"></b>)</span>
+       					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        				  <span aria-hidden="true">&times;</span>
+       						 </button>
     					  </div>
      						 <div class="modal-body" style="padding:0px;background: aliceblue;" >
      						        <div id="reqmodalbody" style="text-align:justify;!important; padding:20px ;font-family: 'Lato'"> </div>
@@ -1578,6 +1583,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	    										<td align="left">
 	    											<b><%=entry.getKey()%></b>
 	    										</td>
+	    							
 	    									</tr>
 	    									
 	    			    		<%Double cost=0.0;

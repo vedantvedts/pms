@@ -160,7 +160,7 @@ if(ses1!=null){
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
-						<div class="row card-header">
+						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-6">
 								<h3>Issue List</h3>
 							</div>

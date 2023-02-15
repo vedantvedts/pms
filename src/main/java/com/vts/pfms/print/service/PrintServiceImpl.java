@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
 
@@ -38,6 +40,7 @@ public class PrintServiceImpl implements PrintService{
 	@Autowired
 	PrintDao dao;
 	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
@@ -552,6 +555,13 @@ public class PrintServiceImpl implements PrintService{
 		// TODO Auto-generated method stub
 		return dao.RequirementList(initiationId);
 	}
+
+	@Override
+	public Object headofaccountsList(String projecttypeid) throws Exception {
+		// TODO Auto-generated method stub
+	
+		return dao.headofaccountsList(projecttypeid);
+	}
 	
 	@Override
 	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception
@@ -565,8 +575,29 @@ public class PrintServiceImpl implements PrintService{
 		return dao.BriefingMeetingVenue(projectid, committeeid);
 	}
 	
+	@Override
+	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception
+	{
+		return dao.GetRecDecDetails(scheduledid);
+	}
 	
-	
+	@Override
+	public Long RedDecAdd(RecDecDetails recdec, String userid)throws Exception
+	{
+		long val=0;
+		if(recdec.getRecDecId()!=null){
+			recdec.setModifiedBy(userid);
+			recdec.setModifiedDate(sdf1.format(new Date()));
+			val = dao.RecDecUpdate(recdec);
+		}else{
+			recdec.setIsActive(1);
+			recdec.setCreatedBy(userid);
+			recdec.setCreatedDate(sdf1.format(new Date()));
+			val = dao.RedDecAdd(recdec);
+		}
+		return val;
+	}
+
 	
 	
 }

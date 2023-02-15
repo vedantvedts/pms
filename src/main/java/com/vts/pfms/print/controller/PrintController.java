@@ -84,6 +84,7 @@ import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -135,15 +136,22 @@ public class PrintController {
 	    	try {
 	    		String InitiationId=req.getParameter("IntiationId");
 	    		
+	    		
+	    		
 	    		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+	    		
+	    		
 	    		String labcode=PfmsInitiationList[17].toString().toLowerCase();
 	    		
 	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
 	    		req.setAttribute("LabList", service.LabList(labcode));
+	  
+	    		
 	    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 	    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+			
 	    	}
 				
 	    	catch(Exception e) {	    		
@@ -166,16 +174,23 @@ public class PrintController {
 	    try {
 	    	String InitiationId=req.getParameter("IntiationId");		
 	    		
+	    	
 	 		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
     		String labcode=PfmsInitiationList[17].toString().toLowerCase();
     		
    		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
     		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+    		
+    	
+    	
 	    	req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    	req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    	req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
 	    	req.setAttribute("LabList", service.LabList(labcode));
 	    	req.setAttribute("LabLogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+	    	
+			
+			 
 	    	
 	    	}
 				
@@ -200,14 +215,21 @@ public class PrintController {
 	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
 	    	List<Object[]> costDetailsList = service.CostDetailsList(InitiationId);
 	    	String labcode=PfmsInitiationList[17].toString();
-   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
+   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode)); 
+   			
+   		 	req.setAttribute("projecttypeid",PfmsInitiationList[19].toString() );
     		req.setAttribute("LabList", service.LabList(labcode));
     		req.setAttribute("PfmsInitiationList",PfmsInitiationList);
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 			req.setAttribute("CostDetailsList", costDetailsList);
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("isprint", "1");
-    		
+    	
+			req.setAttribute("headofaccountsList",service.headofaccountsList( PfmsInitiationList[19].toString()) );
+			
+			
+			
+			
     		
     		costDetailsList.stream().filter(e-> Collections.frequency(costDetailsList, e[4])<1).collect(Collectors.toList());    		
     		
@@ -271,7 +293,7 @@ public class PrintController {
 	    	String InitiationId=req.getParameter("IntiationId");
 	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
 	    	String LabCode =PfmsInitiationList[17].toString();
-	    	String projecttypeid =PfmsInitiationList[18].toString();
+	    	String projecttypeid =PfmsInitiationList[19].toString();
 	    	List<Object[]> CostBreak = service.GetCostBreakList(InitiationId,projecttypeid); 
 	    	req.setAttribute("costbreak", CostBreak);
 	    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  
@@ -596,7 +618,11 @@ public class PrintController {
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-    		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+    		Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
     		
     		String LevelId= "2";
 			
@@ -751,7 +777,7 @@ public class PrintController {
 			    }
 	        	}
 	        	if(objData!=null && objData[4]!=null) {
-			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf")) {
+			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf") && new File(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]).exists()) {
 			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
@@ -857,10 +883,11 @@ public class PrintController {
 				    }
 	        	}
 	        	
+	        	
 	        	//Point 13
 	        	try {
 	        	
-	        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
+	        	 if(TechWorkDataList.get(z) !=null &&FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
 	        		 Zipper zip=new Zipper();
 	                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
 				    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));
@@ -2097,7 +2124,11 @@ public class PrintController {
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
 	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-	    	req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
 	    	
 	    	
     		String LevelId= "2";
@@ -3506,5 +3537,58 @@ public class PrintController {
 			}
 		}
 		
+		
+		@RequestMapping(value = "RecDecDetailsAdd.htm" ,method = RequestMethod.POST)
+		public String RecDecAdd(HttpServletRequest req , HttpSession ses , RedirectAttributes redir)throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside RecDecDetailsAdd.htm "+UserId);	
+			try {
+				String committeeid = req.getParameter("committeeid");
+				String projectid = req.getParameter("projectid");
+				
+				String recid  = req.getParameter("RedDecID");
+				String recdec = req.getParameter("RecDecPoints");
+				String type = req.getParameter("darc");
+				String schedulid = req.getParameter("schedulid");
+				String val="";
+				if(type.equalsIgnoreCase("D")) {
+					val="Decision";
+				}else {
+					val="Recommendations";
+				}
+				RecDecDetails rcdc = new RecDecDetails();
+				
+				if(recid!=null && recid!=""){
+					rcdc.setRecDecId(Long.parseLong(recid));
+				}
+				rcdc.setType(type);
+				rcdc.setPoint(recdec);
+				rcdc.setScheduleId(Long.parseLong(schedulid));
+				long result  =service.RedDecAdd(rcdc,UserId);
+				if(recid!=null && recid!="") {
+					if(result>0)
+	    			{
+	    				redir.addAttribute("result", val+" Updated Successfully");
+	    			}else{
+	    				redir.addAttribute("resultfail", val+" Update Failed");	
+	    			}
+				}else {
+					if(result>0)
+	    			{
+	    				redir.addAttribute("result", val+" Added Successfully");
+	    			}else{
+	    				redir.addAttribute("resultfail", val+" Adding Failed");	
+	    			}
+				}
+				redir.addFlashAttribute("projectid",projectid);
+				redir.addFlashAttribute("committeeid",committeeid);
+				return "redirect:/ProjectBriefingPaper.htm";
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside RecDecDetailsAdd.htm "+UserId, e);
+				return "static/error";
+			}
+		}
 	    
 }
