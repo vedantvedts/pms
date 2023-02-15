@@ -2014,7 +2014,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 											<th>16</th>
 											<th>17</th>
 											<th style="width: 25px">When It Will Reach Stage 17</th>
-											<th style="width: 25px;">As per Revised Project Schedule When the Item Needs to be Available for Integration</th>
+											<th style="width: 25px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2025,9 +2025,9 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 										%>
 										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
 											<tr>
-												<td><%=psn %></td>
+												<td style="text-align:center; "><%=psn %></td>
 												<td><%=proc[8] %></td>
-												<td><%=proc[5] %></td>
+												<td style="text-align: right;"><%=proc[5] %></td>
 												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
 												<%for(int tdc=1;tdc<=17;tdc++){%>
 													
@@ -2051,13 +2051,68 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 										
 										<%if(psn ==0 ){ %>
 											<tr>
-										      <td colspan="22" style="text-align: center;">Nil/td>
+										      <td colspan="22" style="text-align: center;">Nil</td>
 										   </tr>
 										<%} %>
 										
 								 	</tbody>
 								</table>
-									  
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+									<tr>
+										<td style="width: 25px;">1</td>
+										<td>Demand Released from Division</td>
+										<td style="width: 25px;">10</td>
+										<td>Order Placement</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>SPC Cleared</td>
+										<td>11</td>
+										<td>Issue of CDEC / EDEC</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>Tender Opening</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
+									</tr>
+									<tr>
+										<td>7</td>
+										<td>TCEC Approved</td>
+										<td>16</td>
+										<td>Payment Process</td>
+									</tr>
+									<tr>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>17</td>
+										<td>Payment Released</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td>Financial Sanction</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
 									  
                				<% } %>
 							</div>
