@@ -30,16 +30,15 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-
+<link rel="shortcut icon" type="image/png" href="view/images/drdologo.png">
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
 
 <title>Briefing Presentation</title>
 
-<meta charset="ISO-8859-1">
-
 </head>
+
 <body style="background-color: #F9F2DF66;" class="slides-container" id="slides-container">
 	<%
 	DecimalFormat df = new DecimalFormat("####################.##");
@@ -105,6 +104,12 @@
 	String ProjectCode=projectattributeslist.get(0)[0].toString();
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	LocalDate before6months = LocalDate.now().minusMonths(6);
+	if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
+		before6months = LocalDate.now().minusMonths(3);
+	}else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
+		before6months = LocalDate.now().minusMonths(6);
+	} 
+
 	%>
 	
 	
@@ -1385,8 +1390,19 @@
 								<%}%> 
 								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 							</td>
+							<% 
+								LocalDate StartDate = LocalDate.parse(obj[7].toString());
+								LocalDate EndDate = LocalDate.parse(obj[8].toString());
+								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
+								int Progess = Integer.parseInt(obj[17].toString());
+								LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
+								
+								LocalDate Today = LocalDate.now();
+								
+							%>
+							
 							<td style="text-align: center">
-								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
+								<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
 								<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 															<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 															<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -1395,11 +1411,31 @@
 															<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
 															<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
 
-									<%=sdf.format(sdf1.parse(obj[24].toString()))%>
-								</span> <% } else {  %> - <% } %>
+									<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
+									<% } else {  %> - <% } %> --%>
+								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
+									<span 
+										<%if(Progess==0){ %>
+											class="assigned"
+										<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
+											class="ongoing"
+										<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
+											class="delay"
+										<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
+											class="completed"
+										<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
+											class="completeddelay"
+										<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
+											class="inactive"
+										<%}else{ %>
+											class="assigned"
+										<%} %>
+										> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
+									
+								 <% } else {  %> - <% } %>
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
-							<td style="text-align: center"><span
+							<%-- 	<td style="text-align: center"><span
 								class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 														<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -1413,7 +1449,28 @@
 									<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
 										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
 									<% } %>
-							</span></td>
+							</span></td> --%>
+							
+							<td style="text-align: center">	
+								
+									<%if(Progess==0){ %>
+										<span class="assigned"> AA </span>
+									<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
+										<span class="ongoing"> OG </span>
+									<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
+										<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+									<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
+										<span class="completed"> CO</span>
+									<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
+										<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
+									<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
+										<span class="inactive">IA</span>
+									<%}else{ %>
+										<span class="assigned">AA</span>
+									<%} %>
+								
+							</td>
+							
 							<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
 								<% if (obj[23] != null) { %><%=obj[23]%> <% } %>
 							</td>
@@ -1601,6 +1658,14 @@
 										&nbsp;&nbsp;<%=obj[15] %>
 									<%} %>
 							</td>
+							<% 
+								LocalDate StartDate = LocalDate.parse(obj[7].toString());
+								LocalDate EndDate = LocalDate.parse(obj[8].toString());
+								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
+								int Progess = Integer.parseInt(obj[17].toString());
+								LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
+								LocalDate Today = LocalDate.now();
+							%>
 							<td style="text-align: center">
 								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
 									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
@@ -1609,7 +1674,7 @@
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<td style="text-align: center">
-								<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
+								<%-- <span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 														<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 														<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 														<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
@@ -1623,7 +1688,25 @@
 										(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
 									<% } %>
 
-								</span>
+								</span> --%>
+								
+								
+									<%if(Progess==0){ %>
+										<span class="assigned"> AA </span>
+									<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
+										<span class="ongoing"> OG </span>
+									<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
+										<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+									<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
+										<span class="completed"> CO</span>
+									<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
+										<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
+									<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
+										<span class="inactive">IA</span>
+									<%}else{ %>
+										<span class="assigned">AA</span>
+									<%} %>
+								
 							</td>
 							<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
 								<% if (obj[23] != null) {
@@ -2511,8 +2594,17 @@
 								</td>
 								<td><%=obj[24]%><%-- (<%=obj[25] %>) --%></td>
 								<td style="text-align: center"><%=obj[16]%>%</td>
+								
+								<% 
+									LocalDate StartDate = LocalDate.parse(obj[7].toString());
+									LocalDate EndDate = LocalDate.parse(obj[8].toString());
+									LocalDate OrgEndDate = LocalDate.parse(obj[29].toString());
+									int Progess = Integer.parseInt(obj[16].toString());
+									LocalDate CompletionDate =obj[18]!=null ? LocalDate.parse(obj[18].toString()) : null;
+									LocalDate Today = LocalDate.now();
+								%>
 								<td style="text-align: center">
-									<span class="<%if (obj[20].toString().equalsIgnoreCase("0")) {%>assigned
+									<%-- <span class="<%if (obj[20].toString().equalsIgnoreCase("0")) {%>assigned
 											<%} else if (obj[20].toString().equalsIgnoreCase("1")) {%> assigned
 											<%} else if (obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
 											<%} else if (obj[20].toString().equalsIgnoreCase("3")) {%> completed
@@ -2527,7 +2619,24 @@
 											(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
 										<% } %>
 
-									</span>
+									</span> --%>
+									
+									<%if(Progess==0){ %>
+										<span class="assigned"> AA </span>
+									<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
+										<span class="ongoing"> OG </span>
+									<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
+										<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+									<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
+										<span class="completed"> CO</span>
+									<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
+										<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
+									<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
+										<span class="inactive">IA</span>
+									<%}else{ %>
+										<span class="assigned">AA</span>
+									<%} %>
+												
 								</td>
 								<td>
 									<% if (obj[28] != null) { %> <%=obj[28]%> <% } %>
