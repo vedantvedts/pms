@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,5 +43,7 @@ public class CommitteeProjectBriefingFrozen implements Serializable
 	private String MeetingId;
 	@Transient
 	private String LabCode;
+	@Transient
+	private MultipartFile BriefingFileMultipart;
 	
 }

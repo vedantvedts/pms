@@ -517,15 +517,19 @@
 	}
 
 	.cashoutgo .primary{
-			background-color:#083AA9 !important; 
+			/* background-color:#083AA9 !important; */
+			background-color: #5C192F !important; 
 		}
 		
 	.cashoutgo .bg-success{
-			background-color:#FF8B13 !important; 
+			/* background-color:#FF8B13 !important; */
+			background-color:#466136 !important; 
 		}
 		
 	.cashoutgo .bg-info{
-			background-color:#3E6D9C !important; 
+			/* background-color:#3E6D9C !important; */
+			background-color:#591A69 !important;
+			 
 		}
 	
 
@@ -572,8 +576,9 @@ List<Object[]> QuickLinkList=(List<Object[]>)request.getAttribute("QuickLinkList
 List<Object[]> ProjectHealthData = (List<Object[]>)request.getAttribute("projecthealthdata");
 Object[] ProjectHealthTotalData = (Object[])request.getAttribute("projecthealthtotal"); 
 //Object[] ChangesTotalData =(Object[])request.getAttribute("changestotalcount");
-List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData");
+/* List<Object[]> CCMFinanceData = (List<Object[]>)request.getAttribute("CCMFinanceData"); */
 List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo");
+List<Object[]> DashboardFinance= (List<Object[]>)request.getAttribute("DashboardFinance");
 
 FormatConverter fc=new FormatConverter(); 
 SimpleDateFormat sdf=fc.getRegularDateFormat();
@@ -1710,11 +1715,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 							<div class="multi-button" id="quicklinks" style="display: none">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
 									  
-									  <%for(Object[] obj : QuickLinkList){ %>
-									  	<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>
-									  <%} %>
-							</div>
-							<%} %>
+									<%for(Object[] obj : QuickLinkList){ %>
+										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0] %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
+										</div>
+									<%} %>
 							
 							<%} %>
 							
@@ -1746,7 +1750,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		  <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
 		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
-		        	<button type="submit" class="btn btn4" data-toggle="tooltip" data-placement="top" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
 		        </form>
 		        <button class="btn btn1">Action</button>
 		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%><%if (IsDG.equalsIgnoreCase("Yes") ){%>display:none<%} %>">Project</button>
@@ -2098,7 +2102,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							       		
 							       		<form action="ProjectHoaUpdate.htm" method="get">
 									       <h6 class="text-left" style="margin-bottom: 3px !important;">Finance 
-									       	<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 17px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+									       	<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 17px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 									    </form>
 							       		<ul class="small-list">
 								           	<li><span class="green">&#x220E;</span> E</li>
@@ -2279,27 +2283,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 			<div class="container-fluid" style="display: none" id="overalltable">
 			
-			
-		<!--  ************************ Project Attributes ******************************** -->	
-			
-	<!-- 	<div class="card detailscard">
-		    <div class="card-body">
-		      <h5 class="card-title"><img src="view/images/discuss.png" /> Project Attributes</h5>
-				<div class="row">
-					<div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">Group Code</label><span class="mandatory">*</span>
-                            <label class="control-label">Group Code</label><span class="mandatory">*</span>
-                        </div>
-                    </div>
-				</div>	
-		    </div>
-		    
-		  </div> -->
-			
-			
-		<!--  ************************ Project Attributes End ******************************** -->	
-			
 
 			<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
 		  <div class="card detailscard">
@@ -2309,14 +2292,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 		      <div class="row">
 		      	<div class="col-md-6 circular-progress">
 		      		 <div class="progress " data-value='<%=ProjectHealthTotalData[29]%>'>
-			          <span class="progress-left">
+			         <span class="progress-left">
 			          		<span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
 														<%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>75) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=100)){%> border-success <%}%>
 														"></span>             
-			          </span>
-			          <span class="progress-right">
+			         </span>
+			         <span class="progress-right">
 			                <span class="progress-bar <%if(Integer.parseInt(ProjectHealthTotalData[29].toString())<=25){%> border-danger<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>25) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=50)){%> border-orange<%}%>
 																								   <%if( (Integer.parseInt(ProjectHealthTotalData[29].toString())>50) && (Integer.parseInt(ProjectHealthTotalData[29].toString())<=75)){%> border-warning <%}%>
@@ -2331,8 +2314,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<td style="font-size: 14px">PMRC: </td>
-			        		<td style="font-size: 14px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<th style="font-size: 14px">PMRC </th>
+			        	</tr>
+				        <tr>
+			        		<td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
+			        			<%if(ProjectHealthTotalData !=null){%>
+			        				<span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span>
+			        			<%}%>
+			        		</td>
 			        	</tr>
 			        </table>
 		      	</div>
@@ -2360,8 +2349,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
-				        		<td style="font-size: 14px">EB: </td>
-				        		<td style="font-size: 14px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<th style="font-size: 14px">EB </th>
+				        	</tr>
+				        	<tr>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><%if(ProjectHealthTotalData !=null){%><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %><%}%></td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -2411,12 +2402,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height: 2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %>
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending"  >
+				  		<td data-toggle="tooltip" title="Pending"  >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %>
@@ -2472,17 +2463,17 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height:2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  			<span class="yellow">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %>
 				  		</td>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" >
 				  			<span class="blue">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Forward &nbsp;</span>
 				  			<%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %>
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" >
+				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %>
@@ -2539,12 +2530,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead style="height: 2rem">
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >
 				  		<span class="yellow">&#x220E;</span>
 				  		<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>
 				  		&nbsp;0
 				  		</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" >
+				  		<td data-toggle="tooltip" title="Pending" >
 				  			<span class="red">&#x220E;</span>
 				  			<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>
 				  			<%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %>
@@ -2563,10 +2554,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <div class="card-body">
 		    	<div style="display: inline-flex">
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
-							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+							<img src="view/images/rupee.png" /> Finance <!-- <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
 				 	<form action="ProjectHoaUpdate.htm" method="get">
-								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 				 </form>
 			   </div>
 		      <hr style="margin:3px 10px !important">
@@ -2574,49 +2565,53 @@ String IsDG = (String)request.getAttribute("IsDG");
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				     	22-23
+				     	(In &#8377; k Cr)
 				      </th>
-				      <th scope="col">Allot</th>
+				      <th scope="col">Sanc</th>
 				      <th scope="col">Exp</th>
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
 				  <%
-				  		BigDecimal allotment=new BigDecimal(0.00);
+				  		BigDecimal sanction=new BigDecimal(0.00);
 					  	BigDecimal expenditure=new BigDecimal(0.00);
 					  	BigDecimal balance=new BigDecimal(0.00);
 				  %>
 				  <tbody>
+				  	<tr>
+				      <th scope="row">Revenue</th>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+				      <% BigDecimal revBal = new BigDecimal(DashboardFinance.get(0)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(0)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=revBal%></td>
+				    </tr>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(0)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(0)[4].toString())); %>
+				     <% balance	= balance.add(revBal); %>
 				     <tr>
 				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+				      <% BigDecimal capBal = new BigDecimal(DashboardFinance.get(1)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(1)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=capBal %></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(1)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(1)[4].toString())); %>
+				     <% balance	= balance.add(capBal); %>
+				    
 				    <tr>
-				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
-				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
-				    <%-- <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
-				    </tr> --%>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+				      <% BigDecimal othBal = new BigDecimal(DashboardFinance.get(2)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(2)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=othBal %></td>
+				    </tr> 
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(2)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(2)[4].toString())); %>
+				     <% balance	= balance.add(othBal); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=sanction%></td>
 				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
 				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
@@ -2627,294 +2622,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		  	</div>	 
 		</div>
 
-		
-		<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
-		<div class="card-body row" style="padding: 3px !important">
-			<div class="col-md-12">
-				<table class="table cashoutgotable" >
-				  <thead>
-				    <tr>
-				      <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;&nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
-				      <!-- <th scope="col">22-23</th> -->
-				      <th scope="col">Allot</th>
-				      <th scope="col">Exp</th>
-				      <th scope="col">Bal</th>
-				      <th scope="col">COG-Q1</th>
-				      <th scope="col">COG-Q2</th>
-				      <th scope="col">COG-Q3</th>
-				      <th scope="col">COG-Q4</th>
-				      <th scope="col">Addl(-)/Surr(+)</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    <tr>
-				      
-				      <% 
-				      	BigDecimal AllotCap = new BigDecimal(0.0);
-				      	BigDecimal ExpCap = new BigDecimal(0.0);
-				      	BigDecimal BalCap = new BigDecimal(0.0);
-				      	BigDecimal Q1Cap = new BigDecimal(0.0);
-				      	BigDecimal Q2Cap = new BigDecimal(0.0);
-				      	BigDecimal Q3Cap = new BigDecimal(0.0);
-				      	BigDecimal Q4Cap = new BigDecimal(0.0);
-				      	BigDecimal AddlCap = new BigDecimal(0.0);
-				      	
-				      	BigDecimal AllotRev = new BigDecimal(0.0);
-				      	BigDecimal ExpRev = new BigDecimal(0.0);
-				      	BigDecimal BalRev = new BigDecimal(0.0);
-				      	BigDecimal Q1Rev = new BigDecimal(0.0);
-				      	BigDecimal Q2Rev = new BigDecimal(0.0);
-				      	BigDecimal Q3Rev = new BigDecimal(0.0);
-				      	BigDecimal Q4Rev = new BigDecimal(0.0);
-				      	BigDecimal AddlRev = new BigDecimal(0.0);
-				      	
-				      	BigDecimal AllotOth = new BigDecimal(0.0);
-				      	BigDecimal ExpOth = new BigDecimal(0.0);
-				      	BigDecimal BalOth = new BigDecimal(0.0);
-				      	BigDecimal Q1Oth = new BigDecimal(0.0);
-				      	BigDecimal Q2Oth = new BigDecimal(0.0);
-				      	BigDecimal Q3Oth = new BigDecimal(0.0);
-				      	BigDecimal Q4Oth = new BigDecimal(0.0);
-				      	BigDecimal AddlOth = new BigDecimal(0.0);
-				      
-				      %>
-				      
-				      <th scope="row" style="text-align: left"><span class="shadow" style="color:#083AA9">&#x220E;</span>&nbsp;CAP&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Project</span></th>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[3] %></div>
-						  <% AllotCap=AllotCap.add(new BigDecimal( CashOutGo.get(0)[3].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[3] %></div>
-						  <% AllotRev=AllotRev.add(new BigDecimal( CashOutGo.get(1)[3].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[3] %></div>
-						  <% AllotOth=AllotOth.add(new BigDecimal( CashOutGo.get(2)[3].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[4] %></div>
-						  <% ExpCap=ExpCap.add(new BigDecimal( CashOutGo.get(0)[4].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[4] %></div>
-						  <% ExpRev=ExpRev.add(new BigDecimal( CashOutGo.get(1)[4].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[4] %></div>
-						  <% ExpOth=ExpOth.add(new BigDecimal( CashOutGo.get(2)[4].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[5] %></div>
-						  <% BalCap=BalCap.add(new BigDecimal( CashOutGo.get(0)[5].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[5] %></div>
-						  <% BalRev=BalRev.add(new BigDecimal( CashOutGo.get(1)[5].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[5] %></div>
-						  <% BalOth=BalOth.add(new BigDecimal( CashOutGo.get(2)[5].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[6] %></div>
-						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(0)[6].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[6] %></div>
-						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(1)[6].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[6] %></div>
-						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(2)[6].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[7] %></div>
-						  <% Q2Cap=Q2Cap.add(new BigDecimal( CashOutGo.get(0)[7].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[7] %></div>
-						  <% Q2Rev=Q2Rev.add(new BigDecimal( CashOutGo.get(1)[7].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[7] %></div>
-						  <% Q2Oth=Q2Oth.add(new BigDecimal( CashOutGo.get(2)[7].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[8] %></div>
-						  <% Q3Cap=Q3Cap.add(new BigDecimal( CashOutGo.get(0)[8].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[8] %></div>
-						  <% Q3Rev=Q3Rev.add(new BigDecimal( CashOutGo.get(1)[8].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[8] %></div>
-						  <% Q3Oth=Q3Oth.add(new BigDecimal( CashOutGo.get(2)[8].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[9] %></div>
-						  <% Q4Cap=Q4Cap.add(new BigDecimal( CashOutGo.get(0)[9].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[9] %></div>
-						  <% Q4Rev=Q4Rev.add(new BigDecimal( CashOutGo.get(1)[9].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[9] %></div>
-						  <% Q4Oth=Q4Oth.add(new BigDecimal( CashOutGo.get(2)[9].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(0)[10] %></div>
-						  <% AddlCap=AddlCap.add(new BigDecimal( CashOutGo.get(0)[10].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(1)[10] %></div>
-						  <% AddlRev=AddlRev.add(new BigDecimal( CashOutGo.get(1)[10].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(2)[10] %></div>
-						  <% AddlOth=AddlOth.add(new BigDecimal( CashOutGo.get(2)[10].toString())); %>
-						</div>
-				      </td>
-				    </tr>
-				    <tr>
-				      <!-- <td class="normalfont" style="width:10rem">
-				      	<span style="color:#083AA9">&#x220E;</span> &nbsp;CAP <span style="color:#E14D2A" >&#x220E;</span> &nbsp;REV <span style="color:#3E6D9C">&#x220E;</span> &nbsp;OTH
-				      </td> -->
-				      <th scope="row" style="text-align: left"><span class="shadow" style="color:#E14D2A">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span></th>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[3] %></div>
-						  <% AllotCap = AllotCap.add(new BigDecimal( CashOutGo.get(3)[3].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[3] %></div>
-						  <% AllotRev=AllotRev.add(new BigDecimal( CashOutGo.get(4)[3].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[3] %></div>
-						  <% AllotOth=AllotOth.add(new BigDecimal( CashOutGo.get(5)[3].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[4] %></div>
-						  <% ExpCap=ExpCap.add(new BigDecimal( CashOutGo.get(3)[4].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[4] %></div>
-						  <% ExpRev=ExpRev.add(new BigDecimal( CashOutGo.get(4)[4].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[4] %></div>
-						  <% ExpOth=ExpOth.add(new BigDecimal( CashOutGo.get(5)[4].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[5] %></div>
-						  <% BalCap=BalCap.add(new BigDecimal( CashOutGo.get(3)[5].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[5] %></div>
-						  <% BalRev=BalRev.add(new BigDecimal( CashOutGo.get(4)[5].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[5] %></div>
-						  <% BalOth=BalOth.add(new BigDecimal( CashOutGo.get(5)[5].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[6] %></div>
-						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(3)[6].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[6] %></div>
-						  <% Q1Rev=Q1Rev.add(new BigDecimal( CashOutGo.get(4)[6].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[6] %></div>
-						  <% Q1Oth=Q1Oth.add(new BigDecimal( CashOutGo.get(5)[6].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[7] %></div>
-						  <% Q2Cap=Q2Cap.add(new BigDecimal( CashOutGo.get(3)[7].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[7] %></div>
-						  <% Q2Rev=Q2Rev.add(new BigDecimal( CashOutGo.get(4)[7].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[7] %></div>
-						  <% Q2Oth=Q2Oth.add(new BigDecimal( CashOutGo.get(5)[7].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[8] %></div>
-						  <% Q3Cap=Q3Cap.add(new BigDecimal( CashOutGo.get(3)[8].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[8] %></div>
-						  <% Q3Rev=Q3Rev.add(new BigDecimal( CashOutGo.get(4)[8].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[8] %></div>
-						  <% Q3Oth=Q3Oth.add(new BigDecimal( CashOutGo.get(5)[8].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[9] %></div>
-						  <% Q4Cap=Q4Cap.add(new BigDecimal( CashOutGo.get(3)[9].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[9] %></div>
-						  <% Q4Rev=Q4Rev.add(new BigDecimal( CashOutGo.get(4)[9].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[9] %></div>
-						  <% Q4Oth=Q4Oth.add(new BigDecimal( CashOutGo.get(5)[9].toString())); %>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(3)[10] %></div>
-						  <% AddlCap=AddlCap.add(new BigDecimal( CashOutGo.get(3)[10].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=CashOutGo.get(4)[10] %></div>
-						  <% AddlRev=AddlRev.add(new BigDecimal( CashOutGo.get(4)[10].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=CashOutGo.get(5)[10] %></div>
-						  <% AddlOth=AddlOth.add(new BigDecimal( CashOutGo.get(5)[10].toString())); %>
-						</div>
-				      </td>
-				    </tr>
-				    <tr>
-				      <!-- <td class="normalfont" style="width:10rem">
-				      	<span style="color:#083AA9">&#x220E;</span> &nbsp;CAP <span style="color:#E14D2A" >&#x220E;</span> &nbsp;REV <span style="color:#3E6D9C">&#x220E;</span> &nbsp;OTH
-				      </td> -->
-				      <th scope="row" style="text-align: left"><span class="shadow" style="color:#3E6D9C ">&#x220E;</span>&nbsp;OTH&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span></th>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=AllotCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  ><%=AllotRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" ><%=AllotOth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=ExpCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=ExpRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=ExpOth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=BalCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=BalRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=BalOth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=Q1Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=Q1Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=Q1Oth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=Q2Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=Q2Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=Q2Oth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=Q3Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=Q3Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=Q3Oth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=Q4Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=Q4Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=Q4Oth %></div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"><%=AddlCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><%=AddlRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"><%=AddlOth %></div>
-						</div>
-				      </td>
-				    </tr>
-				  </tbody>
-				</table>
-			</div>
-			   </div>
-		  	</div>	 
-	
+		<jsp:include page="Dashboard-COG.jsp" />
 
 		<div class="card" style="background: transparent;margin-top:5px" >
 		
@@ -2928,7 +2636,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 												</td>
 												<td class="tableprojectnametd"style="width:15%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
-												<!-- <td colspan="2" style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">Meetings </span></td> -->
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
@@ -2942,11 +2649,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 										
 											<%for(Object[] obj : ProjectHealthData){
 												
-												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) {
+												if(ProjectList!=null){  for(Object[] obj2 : ProjectList) 
+												{
 												
-													if(obj[2].equals(obj2[0])){
-													 
-												%>
+													if(obj[2].equals(obj2[0]))
+													{
+											%>
 										
 											<tr>
 												<td><a href="javascript:ProjectDetails('<%=obj[2]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
@@ -2984,9 +2692,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 														
 														<div class="row">
 															<div class="col-md-11">
-															    <div class="progress"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> / <%=obj[8] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" data-toggle="tooltip" title="PMRC Pending : <%=obj[6]%> / <%=obj[8] %>" ></div>
+															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> <br> PMRC To Be Held : <%=obj[8] %><br> Total PMRC To Be Held : <%=obj[48] %>"  >
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" ></div>
 																</div>
 														  	</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -3010,9 +2718,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<%if(Integer.parseInt(obj[13].toString())>0){ %>
 														<div class="row">
 															<div class="col-md-11">
-																<div class="progress" >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;" data-toggle="tooltip" title="EB Held : <%=obj[9]%> / <%=obj[13] %>" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;" data-toggle="tooltip" title="EB Pending :  <%=obj[11]%> / <%=obj[13] %>" ></div>
+																<div class="progress" data-toggle="tooltip" title="EB Held : <%=obj[9]%> <br> EB To Be Held : <%=obj[13] %><br> Total EB To Be Held : <%=obj[49] %>">
+																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;"></div>
 																</div>
 															</div>
 															<div class="col-md-1" style="padding-left: 0px !important">
@@ -3167,8 +2875,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden ">
 			<div  style="float: right;margin: 10px">
 				<!-- <button class="btn btn-sm back" onclick="overalldetails('A')">BACK</button> -->
-				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" data-placement="top" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" data-placement="top" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
 				<br>
 				<!-- <button class="btn btn-sm back" style="margin-top: 10px;padding: 3px 19px;" onclick="overalldoc()"><i class="fa fa-file-text-o" aria-hidden="true"></i> DOC </button> -->
 			</div>
@@ -3363,7 +3071,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
 			        		<td style="font-size: 14px">Held: </td>
-			        		<td style="font-size: 14px" id="meetingsvaluepmrc" ><%if(ProjectHealthTotalData[0] !=null){%><%=ProjectHealthTotalData[0] %><%}%><%if(ProjectHealthTotalData[2] !=null){%> / <%=ProjectHealthTotalData[2] %><%}%></td>
+			        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
+			        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span> <%}%>
+			        		</td>
 			        	</tr>
 			        </table>
 		      	</div>
@@ -3392,7 +3102,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
 				        		<td style="font-size: 14px">Held: </td>
-				        		<td style="font-size: 14px" id="meetingsvalueeb" ><%if(ProjectHealthTotalData[3] !=null){%><%=ProjectHealthTotalData[3] %><%}%><%if(ProjectHealthTotalData[5] !=null){%> / <%=ProjectHealthTotalData[5] %><%}%></td>
+				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
+				        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %></span> <%}%>
+				        		</td>
 				        	</tr>
 				     </table>
 		      	</div>
@@ -3442,8 +3154,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;<%if(ProjectHealthTotalData[7] !=null){%><%=ProjectHealthTotalData[7] %><%} %></td>
+				  		<td data-toggle="tooltip" title="Pending"  >&nbsp;<%if(ProjectHealthTotalData[6] !=null){%><%=ProjectHealthTotalData[6] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
@@ -3495,9 +3207,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><%if(ProjectHealthTotalData[13] !=null){%>&nbsp;<%=ProjectHealthTotalData[13] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" ><%if(ProjectHealthTotalData[12] !=null){%> &nbsp;<%=ProjectHealthTotalData[12] %><%} %></td>
+				  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[11] !=null){%>&nbsp;<%=ProjectHealthTotalData[11] %><%} %></td>
 				  	</tr>
 				  </thead>
 				  <tbody>
@@ -3550,8 +3262,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">
 				  <thead>
 				  	<tr>
-				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" data-placement="top" title="Delayed" >&nbsp;0</td>
-				  		<td data-toggle="tooltip" data-placement="top" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
+				  		<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >&nbsp;0</td>
+				  		<td data-toggle="tooltip" title="Pending" ><%if(ProjectHealthTotalData[17] !=null){%>&nbsp;<%=ProjectHealthTotalData[17] %><%} %></td>
 				  	</tr>
 				  </thead>
 				 <tbody>
@@ -3566,60 +3278,64 @@ String IsDG = (String)request.getAttribute("IsDG");
 		    <div class="card-body">
 		    	<div style="display: inline-flex">
 			      <h5 class="card-title" style="margin-bottom: 8px !important">
-							<img src="view/images/rupee.png" /> Finance <span style="font-size: 14px !important">(&#8377;Cr)</span>
+					<img src="view/images/rupee.png" /> Finance<!--  <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
-				 	<!-- <form action="ProjectHoaUpdate.htm" method="get">
-								<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" data-placement="top" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
-				 </form> -->
 			   </div>
 		      <hr style="margin:3px 10px !important">
 				<table class="table  financetable" >
 				  <thead>
 				    <tr>
 				      <th scope="col">
-				     	22-23
+				     	(In &#8377; k Cr)
 				      </th>
-				      <th scope="col">Allot</th>
+				      <th scope="col">Sanc</th>
 				      <th scope="col">Exp</th>
 				      <th scope="col">Bal</th>
 				    </tr>
 				  </thead>
 				  <%
-				  		 allotment=new BigDecimal(0.00);
-					  	 expenditure=new BigDecimal(0.00);
-					  	 balance=new BigDecimal(0.00);
+				  		sanction=new BigDecimal(0.00);
+					  	expenditure=new BigDecimal(0.00);
+					  	balance=new BigDecimal(0.00);
+					  	revBal=new BigDecimal(0.00);
+					  	capBal=new BigDecimal(0.00);
+					  	othBal=new BigDecimal(0.00);
 				  %>
 				  <tbody>
-				    <tr>
-				      <th scope="row">Capital</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(0)[4] %></td>
-				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(0)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(0)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(0)[4].toString())); %>
-				    <tr>
+				  	<tr>
 				      <th scope="row">Revenue</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(1)[4] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(0)[4] %></td>
+				      <%  revBal = new BigDecimal(DashboardFinance.get(0)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(0)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=revBal%></td>
 				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(1)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(1)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(1)[4].toString())); %>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(0)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(0)[4].toString())); %>
+				     <% balance	= balance.add(revBal); %>
+				     <tr>
+				      <th scope="row">Capital</th>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(1)[4] %></td>
+				      <%  capBal = new BigDecimal(DashboardFinance.get(1)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(1)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=capBal %></td>
+				    </tr>
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(1)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(1)[4].toString())); %>
+				     <% balance	= balance.add(capBal); %>
+				    
 				    <tr>
 				      <th scope="row">Others</th>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[2] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[3] %></td>
-				      <td><span style="color:green">&#8377;</span> <%=CCMFinanceData.get(2)[4] %></td>
-				    </tr>
-				     <% allotment	= allotment.add(new BigDecimal(CCMFinanceData.get(2)[2].toString())); %>
-				     <% expenditure	= expenditure.add(new BigDecimal(CCMFinanceData.get(2)[3].toString())); %>
-				     <% balance	= balance.add(new BigDecimal(CCMFinanceData.get(2)[4].toString())); %>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[3] %></td>
+				      <td><span style="color:green">&#8377;</span> <%=DashboardFinance.get(2)[4] %></td>
+				      <%  othBal = new BigDecimal(DashboardFinance.get(2)[3].toString()).subtract(new BigDecimal(DashboardFinance.get(2)[4].toString())) ; %>
+				      <td><span style="color:green">&#8377;</span> <%=othBal %></td>
+				    </tr> 
+				     <% sanction	= sanction.add(new BigDecimal(DashboardFinance.get(2)[3].toString())); %>
+				     <% expenditure	= expenditure.add(new BigDecimal(DashboardFinance.get(2)[4].toString())); %>
+				     <% balance	= balance.add(othBal); %>
 				    <tr>
 				      <th scope="row">Total</th>
-				      <td><span style="color:green">&#8377;</span> <%=allotment%></td>
+				      <td><span style="color:green">&#8377;</span> <%=sanction%></td>
 				      <td><span style="color:green">&#8377;</span> <%=expenditure %></td>
 				      <td><span style="color:green">&#8377;</span> <%=balance %></td>
 				    </tr>
@@ -3631,97 +3347,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 		</div>
 		</div>
 
-<!-- ****************************************************************** CASH OUT GO START ********************************************************************************* -->
-	
-	<div class="container-fluid">	
-	<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
-		<div class="card-body row" style="padding: 3px !important">
-			<div class="col-md-12">
-				<table class="table cashoutgotable" >
-				  <thead>
-				    <tr>
-				     <th><img src="view/images/rupee.png" /> &nbsp;&nbsp;Cash Out Go</th>
-				      <th scope="col">22-23</th>
-				      <th scope="col">Allot</th>
-				      <th scope="col">Exp</th>
-				      <th scope="col">Bal</th>
-				      <th scope="col">Q1</th>
-				      <th scope="col">Q2</th>
-				      <th scope="col">Q3</th>
-				      <th scope="col">Q4</th>
-				      <th scope="col">Addl(-)/Surr(+)</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    <tr>
-				      <td class="normalfont" style="width:10rem"><span style="color:#007bff">&#x220E;</span> &nbsp;CAP <span style="color:#28a745" >&#x220E;</span> &nbsp;REV <span style="color:#17a2b8">&#x220E;</span> &nbsp;OTH</td>
-				      <th scope="row" style="text-align: center">Cost (<span style="color: green">&#8377;</span>Cr)</th>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" >1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  >2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" >4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				      <td>
-				      	<div class="progress">
-						  <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">1000</div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">2452</div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">4566</div>
-						</div>
-				      </td>
-				    </tr>
-				  </tbody>
-				</table>
-			</div>
-			   </div>
-		  	</div>	 
-		</div>
-
-
-<!-- ****************************************************************** CASH OUT GO END ********************************************************************************* -->
 
 
 		<div class="container-fluid">
@@ -4011,6 +3636,13 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 
 <script type="text/javascript">
+$(function () {
+    $("[data-toggle='tooltip']").tooltip({
+        animated: 'fade',
+        placement: 'top',
+        html : true,
+    });
+});
 
 $(function() {
 
@@ -4148,7 +3780,8 @@ function overalldetails(value){
 
 $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
-    placement: 'bottom'
+    placement: 'bottom',
+    html : true,
 });
 
 $('.btn-toggle').click(function() {

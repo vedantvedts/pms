@@ -373,7 +373,6 @@ $(document).ready(function(){
 <script type="text/javascript">
 
 function openEditform(fileId , demandid){
-	var count=0;
 	var x=x+'<option disabled="true"  value="" style="font-size:20px;">Choose...</option>';
 	$.ajax({
 		type : "GET",
@@ -387,23 +386,10 @@ function openEditform(fileId , demandid){
 		var values = JSON.parse(result);
 
 		for(i = 0; i < values.length; i++){
-			     if(values[i][0]!=10){
-				 x=x+"<option value="+values[i][0]+">"
-				+ values[i][2]
-				+ "</option>"; 
-			     }
-			     
-			     if( values.length == i+1){
-			    	 count=values[i][0];
-			    	 
-			     }
-			     
+				 x=x+"<option value="+values[i][0]+">"+ values[i][2]+ "</option>"; 
+			  			   		     
 			}
-			 console.log(count);		
-		
-	        if(values.length>0 && count > 9 ){
-            x=x+"<option value='10'>Revised DP</option>";
-	        }
+	        
 			$("#selectDemand").html(x); 
 			$("#DemandNo").val(demandid); 
             $("#updateFileId").val(fileId);

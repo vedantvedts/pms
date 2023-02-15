@@ -207,7 +207,7 @@ label {
 											<th>Employee</th>
 											<th>User Name</th>
 											<th>Division Name</th>
-											<th style="width: 10%;">PFMS Login</th>
+											<th style="width: 10%;">PMS Login</th>
 											<th>Login type</th>
 										</tr>
 									</thead>

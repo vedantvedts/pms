@@ -132,8 +132,9 @@ a:hover {
 												<option value="A" <%if(feedbacktype!=null && "A".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%> >All</option>
 												<option value="B" <%if(feedbacktype!=null && "B".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>Bug</option>
 												<option value="C" <%if(feedbacktype!=null && "C".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>Content Change</option>
-												<option value="U" <%if(feedbacktype!=null && "U".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>User Interface</option>
 												<option value="N" <%if(feedbacktype!=null && "N".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>New Requirement</option>
+												<option value="U" <%if(feedbacktype!=null && "U".equalsIgnoreCase(feedbacktype)){%> selected="selected" <%}%>>User Interface</option>
+
 											</select>
 										</td>
 										<th>From Date:</th>
@@ -165,11 +166,11 @@ a:hover {
 									<th style="text-align: center ;width:10%;">Date</th>
 									<th style="text-align: center ;width:35%;">View</th>
 									<th style="text-align: center ;width:15%;">
-									<%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %>
+									<%-- <%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %> --%>
 										Action
-									<%}else{%>
+									<%-- <%}else{%>
 										Status
-									<%}%>
+									<%}%> --%>
 									</th>
 								</tr>
 							</thead>
@@ -190,40 +191,44 @@ a:hover {
 										</button> <%}%>
 									</td>
 									<td>
-									<%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %>
+									<%
+								
+										
+										if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C") ){
+											
+										%>
+										
+											<input id="remarks<%=obj[0]%>" value="<%=obj[6]%>" type="hidden">
+											<button class="editable-click" type="button" name="sub" value="Details" 	onclick="ClosefeedbackmodalRemarks( '<%=obj[0]%>')">
+												<div class="cc-rockmenu">
+														<div class="rolling">
+														   <figure class="rolling_icon">
+																<i class="fa fa-eye fa-3x" aria-hidden="true" style="color: blue;"></i>
+															</figure>
+														<span>Remarks</span>
+														</div>
+													</div>
+											  </button> 
+										 <%}else{  if(logintype.equalsIgnoreCase("A")){%>
+											<button class="editable-click" type="button" name="sub" value="Details" 	onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
+												<div class="cc-rockmenu">
+														<div class="rolling">
+														   <figure class="rolling_icon">
+																<i class="fa fa-times-circle" aria-hidden="true"></i>
+															</figure>
+														<span>Close</span>
+														</div>
+													</div>
+											  </button> 
+										  <%}}%>
 									
-									<%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>
-									<input id="remarks<%=obj[0]%>" value="<%=obj[6]%>" type="hidden">
-										<button class="editable-click" name="sub" value="Details" 	onclick="ClosefeedbackmodalRemarks( '<%=obj[0]%>')">
-											<div class="cc-rockmenu">
-													<div class="rolling">
-													   <figure class="rolling_icon">
-															<i class="fa fa-reply" aria-hidden="true"></i>
-														</figure>
-													<span>Remarks</span>
-													</div>
-												</div>
-										  </button> 
-									 <%}else{%>
-										<button class="editable-click" name="sub" value="Details" 	onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
-											<div class="cc-rockmenu">
-													<div class="rolling">
-													   <figure class="rolling_icon">
-															<i class="fa fa-times-circle" aria-hidden="true"></i>
-														</figure>
-													<span>Close</span>
-													</div>
-												</div>
-										  </button> 
-										  <%}%>
-										  <%}else{%> 
-										  <%if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>CLOSED <%}else{%>OPENED<%}%>
-									 <%}%>
+											  <%-- <%if(!logintype.equalsIgnoreCase("A")){ if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>CLOSED <%}else{%>OPENED<%}}%>
+									 --%>
 									
 									<% List<Object[]> list = attachment.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 									if(list!=null && list.size()>0){
 									%>
-										<a href="FeedbackAttachDownload.htm?attachid=<%=list.get(0)[1]%>"><i class="fa fa-download fa-2x" aria-hidden="true" style="width: 10px;"></i></a>
+										<a href="FeedbackAttachDownload.htm?attachid=<%=list.get(0)[1]%>" title="Download"><i class="fa fa-download fa-2x" aria-hidden="true" style="width: 10px;"></i></a>
 									 <%}%>
 									 </td>
 								</tr>
@@ -238,7 +243,7 @@ a:hover {
 					 		<button type="submit" class="btn btn-primary btn-sm add" formaction="FeedBackPage.htm" formmethod="get">ADD Feedback </button>				 	
 					 </div>
 					 <div align="center">
-					 	<span style="float: left;"> <b style="color: red; ">Note: </b> C=Content Change , U=User Interface , N=New Requirement , B=Bug</span>
+					 	<span style="float: left;"> <b style="color: red; ">Note: </b> B=Bug, C=Content Change , N=New Requirement, U=User Interface   </span>
 					 </div>
 					 </form>		
 				</div>

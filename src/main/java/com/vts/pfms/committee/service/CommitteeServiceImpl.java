@@ -3249,4 +3249,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	{
 		return dao.getFrozenDPFMMinutes(scheduleId);
 	}
+	
+	
 }

@@ -471,10 +471,10 @@
 														<%if( committeeagendalist.size()>0  ){
 														if(Integer.parseInt(committeescheduleeditdata[10].toString())<3 && invitedlist.size()>0)
 															{%>
-																<input type="submit" id="submit" class="btn  btn-sm back" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
+																<input type="submit" id="submit" class="btn  btn-sm back" value="Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
 															<%}
 															else if(invitedlist.size()>0 && Integer.parseInt(committeescheduleeditdata[10].toString())<8 ){ %>
-																<input type="submit" id="submit" class="btn  btn-sm submit" value="View Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white;border-color:#0e49b5 " />
+																<input type="submit" id="submit" class="btn  btn-sm submit" value="Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white;border-color:#0e49b5 " />
 															<%}else if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") && committeecons==1 ) { %>
 																<input type="submit" id="submit" class="btn  btn-sm submit" value="Invite" onclick="invite()" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
 																
@@ -596,6 +596,11 @@
 										<input type="hidden" name="projectid" value="<%=projectid %>">
 										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 									<%} %>
+									<% if(committeescheduleeditdata[23].toString().equalsIgnoreCase("Y")){%>
+										<button type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=committeescheduleeditdata[6] %>" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
+											BRIEFING
+										</button>
+									<%}%>
 								</form>	
 						</div>
 

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.model.Committee;
-import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
@@ -30,6 +30,7 @@ import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
 
@@ -39,6 +40,7 @@ public class PrintServiceImpl implements PrintService{
 	@Autowired
 	PrintDao dao;
 	
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
@@ -470,6 +472,47 @@ public class PrintServiceImpl implements PrintService{
 		return dao.FreezeBriefingAdd(briefing);
 	}
 	
+	@Override
+	public long FreezeBriefingMultipart(CommitteeProjectBriefingFrozen briefing) throws Exception 
+	{
+		Object[] scheduledata = dao.CommitteeScheduleEditData(String.valueOf(briefing.getScheduleId()));
+		String meedtingId = scheduledata[11].toString().replaceAll("[&.:?|<>/]", "").replace("\\", "") ;
+		String LabCode = briefing.getLabCode();
+		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\Briefing\\";
+		int count=0;
+		String filename = "Briefing-"+meedtingId;
+		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		{
+			filename = "Briefing-"+meedtingId;
+			filename = filename+" ("+ ++count+")";
+		}
+		MultipartFile file = briefing.getBriefingFileMultipart();
+		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
+		
+		briefing.setBriefingFileName(filename+".pdf");
+		briefing.setFrozenBriefingPath(filepath);
+		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
+		return dao.FreezeBriefingAdd(briefing);
+	}
+	
+	@Override
+	public long FreezeBriefingMultipartUpdate(String scheduleid,MultipartFile file) throws Exception 
+	{
+		CommitteeProjectBriefingFrozen Existingbriefing = getFrozenProjectBriefing(scheduleid);
+		
+		String filename = Existingbriefing.getBriefingFileName();
+		String filepath =Existingbriefing.getFrozenBriefingPath();
+		long count=0; 
+		try {
+			saveFile(uploadpath+filepath ,filename ,file );
+			count++;
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside SERVICE FreezeBriefingMultipartUpdate "+ e);
+		}
+		return count;
+	}
+	
 	public void saveFile(String uploadpath, String fileName, File fileToSave) throws IOException 
 	{
 	   logger.info(new Date() +"Inside SERVICE saveFile ");
@@ -487,6 +530,8 @@ public class PrintServiceImpl implements PrintService{
 	   }     
 	}
 	
+	 
+	 
 	@Override
 	public CommitteeProjectBriefingFrozen getFrozenProjectBriefing(String scheduleId)throws Exception
 	{
@@ -517,5 +562,42 @@ public class PrintServiceImpl implements PrintService{
 	
 		return dao.headofaccountsList(projecttypeid);
 	}
+	
+	@Override
+	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception
+	{
+		return dao.BriefingScheduleList(labcode, committeeshortname, projectid);
+	}
+
+	@Override
+	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception 
+	{
+		return dao.BriefingMeetingVenue(projectid, committeeid);
+	}
+	
+	@Override
+	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception
+	{
+		return dao.GetRecDecDetails(scheduledid);
+	}
+	
+	@Override
+	public Long RedDecAdd(RecDecDetails recdec, String userid)throws Exception
+	{
+		long val=0;
+		if(recdec.getRecDecId()!=null){
+			recdec.setModifiedBy(userid);
+			recdec.setModifiedDate(sdf1.format(new Date()));
+			val = dao.RecDecUpdate(recdec);
+		}else{
+			recdec.setIsActive(1);
+			recdec.setCreatedBy(userid);
+			recdec.setCreatedDate(sdf1.format(new Date()));
+			val = dao.RedDecAdd(recdec);
+		}
+		return val;
+	}
+
+	
 	
 }

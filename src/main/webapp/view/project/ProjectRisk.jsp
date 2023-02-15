@@ -124,11 +124,11 @@ if(ses1!=null){
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
-						<div class="row card-header">
+						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-6">
 								<h3>Project Risk List</h3>
 							</div>
-							<!-- <div class="col-md-2"></div>		 -->				
+										
 							<div class="col-md-6 justify-content-end" >
 								<table style="float: right;" >
 									<tr>
@@ -158,7 +158,7 @@ if(ses1!=null){
 								<tr>
 									<th style="width: 10%;" data-field="0" tabindex="0" >SN</th>
 									<th style="width: 50%;">Risk Description</th>
-									<th style="width: 20%;" >Progress</th>
+									<th style="width: 20%;">Progress</th>
 									<th style="width: 20%;">View Or Add</th>
 								</tr>
 							</thead>
@@ -181,12 +181,13 @@ if(ses1!=null){
 								</td>
 								<td class="center">
 									<form action="ProjectRiskData.htm" method="post">
-										<%if(riskdatapresentlist.contains(riskdatalist.get(i)[0])){ %>
-											<button type="submit" class="btn"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
-										<%}else{ %>
+										<%if(riskdatapresentlist.contains(riskdatalist.get(i)[0])){%>
+											<button type="submit" class="btn"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>											
+										<%}else{%>
 											<button type="submit" class="btn"><i class="fa fa-plus-square fa-lg" aria-hidden="true"></i></button>
-										<%} %>
+										<%}%>
 										<input type="hidden" name="actionmainid" value="<%=riskdatalist.get(i)[0]%>">
+										<input type="hidden" name="actionassignid" value="<%=riskdatalist.get(i)[6]%>">
 										<input type="hidden" name="projectid" value="<%=projectid%>">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>

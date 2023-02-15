@@ -925,7 +925,6 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeScheduleAgenda.htm "+UserId);
 		try
 		{
-			
 			String CommitteeScheduleId= null;			
 			if (req.getParameter("scheduleid") != null) 
 			{
@@ -6935,5 +6934,9 @@ public class CommitteeController {
 				
 				
 			}
+		
+
+		
+	
 		
 }

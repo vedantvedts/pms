@@ -32,6 +32,9 @@ public class PfmsRisk implements Serializable {
     private String Category;
     private int RiskTypeId;
     private Long RevisionNo;
+    private String Status;
+    private String StatusDate;
+    private String Remarks; 
     private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

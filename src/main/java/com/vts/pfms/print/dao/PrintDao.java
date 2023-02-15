@@ -9,6 +9,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
 public interface PrintDao {
@@ -74,6 +75,11 @@ public interface PrintDao {
 	public Object[] ProjectCommitteeMeetingsCount(String projectid, String CommitteeCode) throws Exception;
 	public List<Object[]> AgendaList(String scheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
+	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
+	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception;
 	public Object RequirementList(String initiationId) throws Exception;
 	public Object headofaccountsList(String projecttypeid) throws Exception;
+	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception;
+	public Long RedDecAdd(RecDecDetails recdec)throws Exception;
+	public long RecDecUpdate(RecDecDetails recdec)throws Exception;
 }

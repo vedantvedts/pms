@@ -10,7 +10,6 @@
 <meta charset="ISO-8859-1">
 <META HTTP-EQUIV="Refresh" CONTENT="60">
 
-	<title>PFMS</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 

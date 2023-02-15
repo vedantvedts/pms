@@ -74,7 +74,7 @@ if(ses1!=null){
 					<div class="col-md-12">
 						<form class="form-inline " method="post" action="Recommendation.htm" id="myform" >
 						  
-						<div class="row card-header">
+						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-3">
 				   			<%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
 									<h3 style="font-size: 1.65rem;">Recommendation List</h3>

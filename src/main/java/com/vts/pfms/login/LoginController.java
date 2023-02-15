@@ -21,7 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -106,13 +105,11 @@ public class LoginController {
 	             model.addAttribute("message", "You have been logged out successfully.");
 	    	
 	    	try {
-	    		
-
 	    	
 	    	}
 				catch(Exception e) {
 	    		e.printStackTrace();
-	    		logger.error(new Date() +" Inside login.htm ");
+	    		logger.error(new Date() +" Inside login.htm "+ e);
 	    	}
 	        return "static/login";
 	    }
@@ -178,6 +175,7 @@ public class LoginController {
     @RequestMapping(value = "MainDashBoard.htm", method = RequestMethod.GET)
     public String MainDashBoard(HttpServletRequest req,HttpSession ses) throws Exception {
    
+    	String UserId = (String) ses.getAttribute("Username");
     	String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
     	String LoginId=String.valueOf(ses.getAttribute("LoginId"));
@@ -216,8 +214,9 @@ public class LoginController {
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
-			     req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
+			     //req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
+			     req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance(LoginType,EmpId,LabCode,ClusterId ));
 			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
@@ -277,7 +276,7 @@ public class LoginController {
 						
 					}
 					catch(HttpClientErrorException  | ResourceAccessException e) {
-						
+						logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
 						e.printStackTrace();
 					
 						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
@@ -285,6 +284,7 @@ public class LoginController {
 
 					}catch(Exception e)
 					{
+						logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
 						e.printStackTrace();
 						req.setAttribute("budgetlist",new ArrayList<ProjectSanctionDetailsMaster>());
 						req.setAttribute("errorMsg", "IBAS Server Not Responding !!");
@@ -324,9 +324,9 @@ public class LoginController {
 
 			     } catch (Exception e) {
 			    	   
-			    	 
-			    	    e.printStackTrace();
-			    	} 
+			    	 logger.error(new Date() +" Inside MainDashboard.htm "+UserId, e);
+			    	 e.printStackTrace();
+	    	} 
 			    	
 
      return "static/MainDashBoard";
@@ -388,6 +388,7 @@ public class LoginController {
       	  rfpmainservice.LoginStampingUpdate(LogId, "S");
       	}
       	catch (Exception e) {
+      		
 				e.printStackTrace();
 			}
     	
@@ -629,13 +630,17 @@ public class LoginController {
 			TodayData=todayresponse.getBody();
 			LabData=labdata.getBody();
 			CCMViewData= PFMSServ.getCCMViewData(LabCode);
+			
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) 
     	{
+    		logger.error(new Date() +" Inside ProjectHoaUpdate.htm pfms_serv Not Responding.htm "+UserId, e);
+    		e.printStackTrace();
     		ibasserveron = 1;
 		}
     	catch(Exception e)
 		{
+    		logger.error(new Date() +" Inside ProjectHoaUpdate.htm "+UserId, e);
 			e.printStackTrace();
 		}
 
@@ -654,7 +659,7 @@ public class LoginController {
 				count = rfpmainservice.ProjectHoaUpdate(projectDetails1,UserId,LabDetails);
 				
 			} catch (JsonProcessingException e) {
-
+				
 				e.printStackTrace();
 			}
 		}
@@ -671,6 +676,7 @@ public class LoginController {
 				
 			} catch (JsonProcessingException e) {
 
+				logger.error(new Date() +" Inside ProjectHoaUpdate.htm "+UserId, e);
 				e.printStackTrace();
 			}
 		}
@@ -734,6 +740,7 @@ public class LoginController {
 
     	}catch(Exception e)
 		{
+    		logger.error(new Date() +" Inside ProjectHoaUpdateAuto "+ e);
 			e.printStackTrace();
 			
 		}
@@ -753,6 +760,7 @@ public class LoginController {
 				
 			} catch (JsonProcessingException e) {
 
+				logger.error(new Date() +" Inside ProjectHoaUpdateAuto "+ e);
 				e.printStackTrace();
 			}
 		}
@@ -768,6 +776,7 @@ public class LoginController {
 				
 			} catch (JsonProcessingException e) {
 
+				logger.error(new Date() +" Inside ProjectHoaUpdateAuto "+ e);
 				e.printStackTrace();
 			}
 		}
@@ -852,10 +861,12 @@ public class LoginController {
 			FinanceChanges=response1.getBody();
     	}
     	catch(HttpClientErrorException  | ResourceAccessException e) {
+    		logger.error(new Date() +" Inside ChangesinProject.htm pfms_serv not Responding "+ e);
     		ibasserveron = 1;
 		}
     	catch(Exception e)
 		{
+    		logger.error(new Date() +" Inside ChangesinProject.htm  "+ e);
 			e.printStackTrace();
 		}
 
@@ -866,6 +877,7 @@ public class LoginController {
 				FinanceDetails = mao.readValue(FinanceChanges, mao.getTypeFactory().constructCollectionType(List.class, FinanceChanges.class));
 			} catch (JsonProcessingException e) {
 
+				logger.error(new Date() +" Inside ChangesinProject.htm pfms_serv not Responding "+ e);
 				e.printStackTrace();
 			}
 		}
@@ -887,6 +899,7 @@ public class LoginController {
 			try {
 				return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), sdf.format(sdf1.parse(c.getCreatedDate().toString())), "-" };
 			} catch (ParseException e) {
+				logger.error(new Date() +" Inside ChangesinProject.htm"+ e);
 				e.printStackTrace();
 			}
 			return new Object[] {"Finance", c.getType(),c.getFirstName(),c.getDesignation(), "-" ,"-" };
@@ -907,7 +920,7 @@ public class LoginController {
 
     	}
     	catch(Exception e) {
-    		
+    		logger.error(new Date() +" Inside ChangesinProject.htm"+ e);
     		e.printStackTrace();
     	}
 
@@ -920,7 +933,7 @@ public class LoginController {
     	String LabCode = req.getParameter("labcode");
     	String EmpId =  ses.getAttribute("EmpId").toString();
     	String LoginType=(String)ses.getAttribute("LoginType");
-
+    	String UserId = (String) ses.getAttribute("Username");
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
 			ProjectId=req.getParameter("projectid");
@@ -944,6 +957,7 @@ public class LoginController {
     		
     	}
     	catch(Exception e) {
+    		logger.error(new Date() +" Inside LabWiseProjectDetails.htm"+UserId+ e);
     		e.printStackTrace();
     	}
     	

@@ -362,9 +362,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setProjectId(Long.parseLong(data[1].toString()));
 				health.setProjectShortName(data[2].toString());
 				health.setPMRCHeld(Long.parseLong(data[3].toString()));
-				health.setPMRCPending(Long.parseLong(data[4].toString()));
+				health.setPMRCPending( Long.parseLong(data[4].toString())>=0 ?  Long.parseLong(data[4].toString()) : 0 );
 				health.setEBHeld(Long.parseLong(data[5].toString()));
-				health.setEBPending(Long.parseLong(data[6].toString()));
+				health.setEBPending(  Long.parseLong(data[6].toString())>=0 ? Long.parseLong(data[6].toString()) : 0 );
 				health.setMilPending(Long.parseLong(data[7].toString()));
 				health.setMilDelayed(Long.parseLong(data[8].toString()));
 				health.setMilCompleted(Long.parseLong(data[9].toString()));
@@ -379,6 +379,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setProjectCode(data[22].toString());
 				health.setPMRCTotal(Long.parseLong(data[23].toString()));
 				health.setEBTotal(Long.parseLong(data[24].toString()));
+				
 				if(data[16]!=null) {
 				health.setExpenditure(Double.parseDouble(data[16].toString()));
 				health.setDipl(Double.parseDouble(data[17].toString()));
@@ -395,7 +396,9 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setTodayChanges(Long.parseLong(data[25].toString()));
 				health.setWeeklyChanges(Long.parseLong(data[26].toString()));
 				health.setMonthlyChanges(Long.parseLong(data[27].toString()));
-				health.setPDC(data[28].toString());			
+				health.setPDC(data[28].toString());		
+				health.setPMRCTotalToBeHeld(Long.parseLong(data[29].toString()));
+				health.setEBTotalToBeHeld(Long.parseLong(data[30].toString()));
 				result=dao.ProjectHealthInsert(health);
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -538,23 +541,38 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return dao.getCCMData(EmpId, LoginType, LabCode);
 	}
 	@Override
-	public List<Object[]> DashboardFinanceCashOutGo(String LoginType,String EmpId,String LabCode,String ClusterId)
+	public List<Object[]> DashboardFinanceCashOutGo(String LoginType,String EmpId,String LabCode,String ClusterId)throws Exception
 	{
 		List<Object[]> CashOutGo = dao.DashboardFinanceCashOutGo(LoginType, EmpId, LabCode, ClusterId);
 		BigDecimal onecrore = new BigDecimal(10000000);
 		for(Object[] OutGo : CashOutGo)
 		{ 
-			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[3].toString()) ;
-			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
-			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
-			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[6].toString()) ;
-			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[7].toString()) ;
-			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[8].toString()) ;
-			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[9].toString()) ;
-			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore ).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[10].toString()) ;
+			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[3].toString()) ;
+			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
+			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
+			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[6].toString()) ;
+			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[7].toString()) ;
+			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[8].toString()) ;
+			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[9].toString()) ;
+			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[10].toString()) ;
+		}
+		return CashOutGo;
+	}
+	
+	
+	@Override
+	public List<Object[]> DashboardFinance(String LoginType,String EmpId,String LabCode,String ClusterId)throws Exception
+	{
+		List<Object[]> DashboardFinance = dao.DashboardFinance(LoginType, EmpId, LabCode, ClusterId);
+		BigDecimal thousandcrore = new BigDecimal("10000000000");
+		for(Object[] OutGo : DashboardFinance)
+		{ 
+			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN ) : new BigDecimal(OutGo[3].toString()) ;
+			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
+			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(thousandcrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
 		}
 		
 		
-		return CashOutGo;
+		return DashboardFinance;
 	}
 }
