@@ -89,6 +89,7 @@
 
 	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
 	Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
+	List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
 	
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String lablogo = (String)request.getAttribute("lablogo");
@@ -2809,7 +2810,7 @@
 				</div>
 
 				<div class="content align-items-center" align="left">
-					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<%-- <% for (int z = 0; z < projectidlist.size(); z++) { %>
 						<% if (ProjectDetail.size() > 1) { %>
 						<div>
 							<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
@@ -2827,9 +2828,28 @@
 
 						<% } %>
 
-					<% } %>
+					<% } %> --%>
+					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
+											<thead>
+												<tr><th style="width: 5%;">SN</th><th style="width: 10%;">Type</th><th style="width: 85%;">Details</th></tr>
+											</thead>
+											<tbody>
+												<%int i=0; if(RecDecDetails!=null && RecDecDetails.size()>0){ 
+												for(Object[] obj :RecDecDetails){%>
+												<tr>
+													<td style="width: 5%; text-align: center;"> <%=++i%></td>
+													<td style="width: 10%; text-align: center;"> 
+													<%if(obj[2].toString().equalsIgnoreCase("D")){%> 
+															Decision
+													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> Recommendation													 
+													  <%}%></td>
+													<td style="width: 85%;  word-wrap: break-word;"> <%=obj[3]%></td>
+													
+												</tr>
+												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
+					</tbody>
+					</table>
 				</div>
-
 			</div>
 
 			<!-- ---------------------------------------- Decision/Recommendations sought Div ----------------------------------------------------- -->

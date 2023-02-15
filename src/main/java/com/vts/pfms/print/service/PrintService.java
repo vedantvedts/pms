@@ -10,6 +10,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
 public interface PrintService {
@@ -82,4 +83,7 @@ public interface PrintService {
 	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
 	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception;
 	public Object RequirementList(String initiationId) throws Exception;
+	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception;
+	public Long RedDecAdd(RecDecDetails recdec, String userid)throws Exception;
+	
 }

@@ -30,6 +30,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
 
@@ -827,5 +828,33 @@ public class PrintDaoImpl implements PrintDao {
 			 
 			 List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
 			return RequirementList;
+		}
+		private static final String GETRECDEC="SELECT a.recdecid , a.scheduleid , a.type , a.point FROM pfms_recdec_point a WHERE a.scheduleid=:scheduledid order by a.recdecid desc";
+		@Override
+		public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception
+		{
+			 Query query=manager.createNativeQuery(GETRECDEC);
+			 query.setParameter("scheduledid", scheduledid);
+			 List<Object[]> RequirementList=(List<Object[]> )query.getResultList();	
+			return RequirementList;
+		}
+		@Override
+		public Long RedDecAdd(RecDecDetails recdec)throws Exception
+		{
+			manager.persist(recdec);
+			manager.flush();
+			return recdec.getRecDecId();
+		}
+		private static final String UPDATERECDEC="UPDATE pfms_recdec_point  SET ModifiedBy=:modifiedby,ModifiedDate=:modifieddate , type=:type , point=:point WHERE recdecid=:recdecid";
+		@Override
+		public long RecDecUpdate(RecDecDetails recdec)throws Exception
+		{
+			 Query updatequery=manager.createNativeQuery(UPDATERECDEC);
+			    updatequery.setParameter("recdecid", recdec.getRecDecId());
+		        updatequery.setParameter("point", recdec.getPoint()); 
+		        updatequery.setParameter("type", recdec.getType());
+		        updatequery.setParameter("modifiedby", recdec.getModifiedBy());
+		        updatequery.setParameter("modifieddate", recdec.getModifiedDate());
+		        return updatequery.executeUpdate();
 		}
 }

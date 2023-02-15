@@ -136,7 +136,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String PROJECTDATAREVDATA="SELECT ppdr.projectdatarevid,ppdr.projectid,ppdr.filespath,ppdr.systemconfigimgname,ppdr.SystemSpecsFileName,ppdr.ProductTreeImgName,ppdr.PEARLImgName,ppdr.CurrentStageId,ppdr.RevisionNo,pps.projectstagecode,pps.projectstage,ppdr.revisiondate FROM pfms_project_data_rev ppdr, pfms_project_stage pps WHERE ppdr.CurrentStageId=pps.projectstageid AND  ppdr.projectdatarevid=:projectdatarevid";
     private static final String STATUSDETAILS="SELECT statusdetail FROM pfms_project_authority_actionlist WHERE status=:status ";
     private static final String INTEMPID="select empid from pfms_initiation where initiationid=:id";
-    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode END"; 
+    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode END"; 
 	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND am.actionmainid=:actionmainid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
@@ -156,10 +156,10 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String USERLIST="SELECT  b.empid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',b.labcode,c.designation FROM employee b, employee_desig c  WHERE  b.isactive=1 AND b.desigid=c.desigid AND b.EmpId NOT IN( SELECT EmpId FROM project_employee WHERE ProjectId=:projectid AND IsActive='1')";
 	private static final String PROJECTDATA="SELECT a.projectid, a.projectcode FROM project_master a WHERE a.projectid=:proid";
 	private static final String PROJECTASSIGNREVOKE="update project_employee set modifiedby=:modifiedby, modifieddate=:modifieddate,isactive='0'  WHERE isactive='1' and projectemployeeid=:proempid";
-	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId , status FROM pfms_risk WHERE actionmainid=:actionmainid";
+	private static final String PROJECTRISKMATRIXDATA="SELECT riskid,projectid,actionmainid,description, severity,probability,mitigationplans,revisionno,LabCode,RPN,Impact,Category,RiskTypeId , status , remarks FROM pfms_risk WHERE actionmainid=:actionmainid";
 	private static final String PROJECTRISKDATAEDIT="UPDATE pfms_risk SET severity =:severity , probability=:probability , mitigationplans=:mitigationplans ,revisionno=:revisionno, modifiedby=:modifiedby , modifieddate=:modifieddate, RPN=:RPN,Impact=:Impact, Category=:Category, RiskTypeId=:RiskTypeId WHERE riskid=:riskid";
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
-	private static final String RISKDATAPRESENTLIST="SELECT actionmainid FROM pfms_risk WHERE projectid=:projectid ";  
+	private static final String RISKDATAPRESENTLIST="SELECT actionmainid , status FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
 	
 	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
@@ -1717,9 +1717,18 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return ProjectRiskData;		
 		}
 		private static final String PROJECTCLOSERISK="UPDATE pfms_risk SET status=:status, statusdate=:statusdate , remarks=:remarks , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE riskid=:riskid";
+		private static final String ACTIONRISK="UPDATE action_assign SET actionstatus=:actionstatus , modifiedby=:modifiedby, modifieddate=:modifieddate WHERE actionassignid=:actionassignid";
 		@Override
 		public long CloseProjectRisk(PfmsRiskDto dto)throws Exception
 		{
+			
+			
+			Query query1=manager.createNativeQuery(ACTIONRISK);
+			query1.setParameter("actionassignid", dto.getActionMainId());
+			query1.setParameter("actionstatus", dto.getStatus());
+			query1.setParameter("modifiedby", dto.getModifiedBy());
+			query1.setParameter("modifieddate", dto.getModifiedDate());
+			query1.executeUpdate();
 			Query query=manager.createNativeQuery(PROJECTCLOSERISK);
 				query.setParameter("riskid", dto.getRiskId());
 				query.setParameter("status", dto.getStatus());

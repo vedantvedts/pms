@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +84,7 @@ import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -597,7 +597,11 @@ public class PrintController {
             req.setAttribute("milestonedatalevel6", milestonesubsystemsnew);
     		req.setAttribute("ApplicationFilesDrive",env.getProperty("ApplicationFilesDrive"));
     		req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-    		req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+    		Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
     		
     		String LevelId= "2";
 			
@@ -2098,7 +2102,11 @@ public class PrintController {
 	    	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(projectLabCode));
 	    	req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
 	    	req.setAttribute("committeeMetingsCount", service.ProjectCommitteeMeetingsCount(projectid, CommitteeCode) );
-	    	req.setAttribute("nextMeetVenue", service.BriefingMeetingVenue(projectid, committeeid));
+	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
+	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
+	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
+	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    	}
 	    	
 	    	
     		String LevelId= "2";
@@ -3507,5 +3515,58 @@ public class PrintController {
 			}
 		}
 		
+		
+		@RequestMapping(value = "RecDecDetailsAdd.htm" ,method = RequestMethod.POST)
+		public String RecDecAdd(HttpServletRequest req , HttpSession ses , RedirectAttributes redir)throws Exception
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside RecDecDetailsAdd.htm "+UserId);	
+			try {
+				String committeeid = req.getParameter("committeeid");
+				String projectid = req.getParameter("projectid");
+				
+				String recid  = req.getParameter("RedDecID");
+				String recdec = req.getParameter("RecDecPoints");
+				String type = req.getParameter("darc");
+				String schedulid = req.getParameter("schedulid");
+				String val="";
+				if(type.equalsIgnoreCase("D")) {
+					val="Decision";
+				}else {
+					val="Recommendations";
+				}
+				RecDecDetails rcdc = new RecDecDetails();
+				
+				if(recid!=null && recid!=""){
+					rcdc.setRecDecId(Long.parseLong(recid));
+				}
+				rcdc.setType(type);
+				rcdc.setPoint(recdec);
+				rcdc.setScheduleId(Long.parseLong(schedulid));
+				long result  =service.RedDecAdd(rcdc,UserId);
+				if(recid!=null && recid!="") {
+					if(result>0)
+	    			{
+	    				redir.addAttribute("result", val+" Updated Successfully");
+	    			}else{
+	    				redir.addAttribute("resultfail", val+" Update Failed");	
+	    			}
+				}else {
+					if(result>0)
+	    			{
+	    				redir.addAttribute("result", val+" Added Successfully");
+	    			}else{
+	    				redir.addAttribute("resultfail", val+" Adding Failed");	
+	    			}
+				}
+				redir.addFlashAttribute("projectid",projectid);
+				redir.addFlashAttribute("committeeid",committeeid);
+				return "redirect:/ProjectBriefingPaper.htm";
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside RecDecDetailsAdd.htm "+UserId, e);
+				return "static/error";
+			}
+		}
 	    
 }

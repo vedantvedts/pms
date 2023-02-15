@@ -103,7 +103,8 @@ List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectlist");
 String projectid=(String)request.getAttribute("projectid");
 
 List<Object[]> risktypelist=(List<Object[]>)request.getAttribute("risktypelist");
-String logintype =(String)session.getAttribute("LoginType");
+String logintype =(String)session.getAttribute("LoginType"); 
+String actionassignid =(String)request.getAttribute("actionassignid");
 Object[] riskdata=(Object[] )request.getAttribute("riskdata");
 Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
 List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
@@ -132,7 +133,7 @@ if(ses1!=null){
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
-					<div class="row card-header">
+					<div class="row card-header" style="margin-left: -13px;width: 102%;">
 			   			<div class="col-md-6">
 			   			<%if(riskmatrixdata==null){ %>
 							<h3>Add Risk Data</h3>
@@ -417,7 +418,21 @@ if(ses1!=null){
 										    		</select>							    				
 								    			</td>
 								    		</tr>
-								    							
+								    <%if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("C")){ %>
+								    		<tr>
+								    			<td style="width: 20%">
+								    				<label ><b>Status</b> : </label> 
+								    			</td> 
+								    			<td colspan="1" style="max-width: 40%">Closed</td>
+								    		</tr>
+								    		
+								    		<tr>
+								    			<td style="width: 20%">
+								    				<label ><b>Remarks</b> : </label> 
+								    			</td> 
+								    			<td colspan="1" style="max-width: 40%"><%=riskmatrixdata[14]%></td>
+								    		</tr>	
+								    	<%}%>						
 								    		<tr>
 								    			<td colspan="2" class="center" >
 									    			<%if(riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O")){if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
@@ -467,7 +482,7 @@ if(ses1!=null){
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >		
 							<thead>
 								<tr>
-									<th style="width: 5%;" >Revision No</th>
+									<th style="width: 5%;" >No</th>
 									<th style="width: 25%;" >Description</th>
 									<th style="width: 5%;" >Severity</th> 
 									<th style="width: 5%;" >Probability</th>
@@ -551,6 +566,7 @@ if(ses1!=null){
   	      		</div>
   	      		<input type="hidden" name="RiskId" id="RISKID">
   	      		<input type="hidden" name="ProjectId"  value="<%=projectid%>">
+  	      		<input type="hidden" name="actionAssignId"  value="<%=actionassignid%>">
   	      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   	      	</form>
   	      </div>

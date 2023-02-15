@@ -1655,6 +1655,7 @@ public class ProjectServiceImpl implements ProjectService {
 	{
 		dto.setStatusDate(sdf1.format(new Date()));
 		dto.setModifiedDate(sdf1.format(new Date()));
+		
 		return dao.CloseProjectRisk(dto);
 	}
 
