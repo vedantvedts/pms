@@ -223,7 +223,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
       <div class="card slider">
       
       
-        <div class="card-header slider_header" style="padding:0px; font-size:12px!important">
+        <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
         
              <h3 class="category">Initiation Details 
              
