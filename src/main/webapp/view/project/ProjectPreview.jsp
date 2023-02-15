@@ -809,12 +809,7 @@ function showdata(reqid,reqid1){
     document.getElementById('reqid').innerHTML =reqid1;
 }
 
-$(document).ready(function(){
-    $("button").click(function(){
-      var rowCount = $("#scheduleTable tr").length;
-      alert(rowCount); 
-    });
-  });
+
 
 </script>
 
