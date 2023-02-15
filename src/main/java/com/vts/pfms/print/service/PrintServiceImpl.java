@@ -510,5 +510,12 @@ public class PrintServiceImpl implements PrintService{
 		// TODO Auto-generated method stub
 		return dao.RequirementList(initiationId);
 	}
+
+	@Override
+	public Object headofaccountsList(String projecttypeid) throws Exception {
+		// TODO Auto-generated method stub
+	
+		return dao.headofaccountsList(projecttypeid);
+	}
 	
 }

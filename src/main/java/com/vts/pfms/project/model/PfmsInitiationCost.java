@@ -16,6 +16,7 @@ public class PfmsInitiationCost implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long InitiationCostId;
+
 	private Long InitiationId;
     private Long BudgetHeadId;
     private Long BudgetSancId;
@@ -26,6 +27,7 @@ public class PfmsInitiationCost implements Serializable {
     private String ModifiedBy;
     private String ModifiedDate;
 	private int IsActive;
+	
 	public Long getInitiationCostId() {
 		return InitiationCostId;
 	}

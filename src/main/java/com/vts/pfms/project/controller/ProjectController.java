@@ -779,7 +779,7 @@ public class ProjectController
 	
 			if (option.equalsIgnoreCase("SUBMIT")) {
 			
-	
+			
 				Object[] ProjectCost = service.ProjectCost(Long.parseLong(req.getParameter("IntiationId"))).get(0);
 	
 				PfmsInitiationCostDto pfmsinitiationcostdto = new PfmsInitiationCostDto();

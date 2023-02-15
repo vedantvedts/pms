@@ -304,7 +304,13 @@ public class ProjectServiceImpl implements ProjectService {
 		pfmsinitiationcost.setInitiationId(Long.parseLong(pfmsinitiationcostdto.getInitiationId()));
 		pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
 
+
+		
+		
+		
 		String Item = pfmsinitiationcostdto.getBudgetSancId();
+		
+		System.out.println(pfmsinitiationcostdto.getInitiationId()+ "----"+pfmsinitiationcostdto.getBudgetHeadId()+"-----"+Item);
 
 		String[] temp = null;
 		String ReFe = "";
@@ -314,6 +320,8 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 
 		pfmsinitiationcost.setBudgetSancId(Long.parseLong(temp[0]));
+		
+
 
 //		Double FeCost=Double.parseDouble(pfmsinitiationcostdto.getItemCost());
 //		Double ReCost=Double.parseDouble(pfmsinitiationcostdto.getItemCost());

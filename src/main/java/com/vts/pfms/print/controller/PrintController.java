@@ -136,15 +136,22 @@ public class PrintController {
 	    	try {
 	    		String InitiationId=req.getParameter("IntiationId");
 	    		
+	    		
+	    		
 	    		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+	    		
+	    		
 	    		String labcode=PfmsInitiationList[17].toString().toLowerCase();
 	    		
 	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
 	    		req.setAttribute("LabList", service.LabList(labcode));
+	  
+	    		
 	    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 	    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+			
 	    	}
 				
 	    	catch(Exception e) {	    		
@@ -167,16 +174,23 @@ public class PrintController {
 	    try {
 	    	String InitiationId=req.getParameter("IntiationId");		
 	    		
+	    	
 	 		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
     		String labcode=PfmsInitiationList[17].toString().toLowerCase();
     		
    		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
     		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+    		
+    	
+    	
 	    	req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    	req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    	req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
 	    	req.setAttribute("LabList", service.LabList(labcode));
 	    	req.setAttribute("LabLogo", LogoUtil.getLabLogoAsBase64String(LabCode));
+	    	
+			
+			 
 	    	
 	    	}
 				
@@ -201,14 +215,21 @@ public class PrintController {
 	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
 	    	List<Object[]> costDetailsList = service.CostDetailsList(InitiationId);
 	    	String labcode=PfmsInitiationList[17].toString();
-   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
+   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode)); 
+   			
+   		 	req.setAttribute("projecttypeid",PfmsInitiationList[19].toString() );
     		req.setAttribute("LabList", service.LabList(labcode));
     		req.setAttribute("PfmsInitiationList",PfmsInitiationList);
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 			req.setAttribute("CostDetailsList", costDetailsList);
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("isprint", "1");
-    		
+    	
+			req.setAttribute("headofaccountsList",service.headofaccountsList( PfmsInitiationList[19].toString()) );
+			
+			
+			
+			
     		
     		costDetailsList.stream().filter(e-> Collections.frequency(costDetailsList, e[4])<1).collect(Collectors.toList());    		
     		
@@ -272,7 +293,7 @@ public class PrintController {
 	    	String InitiationId=req.getParameter("IntiationId");
 	    	Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
 	    	String LabCode =PfmsInitiationList[17].toString();
-	    	String projecttypeid =PfmsInitiationList[18].toString();
+	    	String projecttypeid =PfmsInitiationList[19].toString();
 	    	List<Object[]> CostBreak = service.GetCostBreakList(InitiationId,projecttypeid); 
 	    	req.setAttribute("costbreak", CostBreak);
 	    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  
