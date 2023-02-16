@@ -87,8 +87,8 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h3 class="col-md-12">Action Reports</h3>  
-							<div class="col-md-12" style="float: right;">
+						 <h4 class="col-md-2">Action Reports</h4>  <br>
+							<div class="col-md-10" style="float: right; margin-top: -8px;">
 					   			<form method="post" action="ActionPdcReport.htm" name="dateform" id="dateform">
 					   				<table >
 					   					<tr>

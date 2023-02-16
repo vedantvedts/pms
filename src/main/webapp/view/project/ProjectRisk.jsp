@@ -126,13 +126,13 @@ if(ses1!=null){
 					<div class="col-md-12">
 						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-6">
-								<h3>Project Risk List</h3>
+								<h4>Project Risk List</h4>
 							</div>
 										
-							<div class="col-md-6 justify-content-end" >
+							<div class="col-md-6 justify-content-end" style="margin-top: -8px;">
 								<table style="float: right;" >
 									<tr>
-										<td ><h4>Project :</h4></td>
+										<td ><h5>Project :</h5></td>
 										<td >
 											<form method="post" action="ProjectRisk.htm" id="projectchange">
 												<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">

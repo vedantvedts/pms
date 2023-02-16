@@ -190,9 +190,9 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 			<div class="card-header">	
 				<div class="row">
 					<div class="col-md-6">
-						<h3>
+						<h4>
 							Committees List 	<%if(Long.parseLong(projectid)>0){ %>	(Project : <%=projectdetails[4] %>)		<%} %>
-						</h3>
+						</h4>
 					</div>
 					<div class="col-md-6">
 						<table style="float:right; border: 0px">
@@ -200,7 +200,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 								<td>
 									<%if(Long.parseLong(projectid)==0){ %>
 									<span style=" font-size :20px">Type  :&nbsp;&nbsp;</span> 
-									<form method="post" action="CommitteeList.htm" id="selectfrm" style="float:right;">
+									<form method="post" action="CommitteeList.htm" id="selectfrm" style="float:right; margin-top: -10px;">
 										<select class="form-control " name="projectappliacble" required="required" id="projectappliacble" onchange="return  projectselectsubmit('selectfrm');" >
 											<option <%if( projectappliacble.equalsIgnoreCase("N")){ %> selected <%} %> value="N">Non - Project</option>
 											<option <%if(projectappliacble.equalsIgnoreCase("P") ){ %> selected <%} %> value="P">Project</option>
@@ -218,10 +218,10 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 									</form>
 									<%} %>
 								</td>
-								<td style="padding-left: 30px">
+								<td style="padding-left: 30px;">
 									<form method="post" action="CommitteeAdd.htm" >
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										<button type="submit" name="projectid" value="<%=projectid %>" class="btn btn-sm add" >ADD COMMITTEE</button>											
+										<button type="submit"  style="margin-top: -10px; " name="projectid" value="<%=projectid %>" class="btn btn-sm add" >ADD COMMITTEE</button>											
 										<input type="hidden" name="projectappliacble" id="projectappliacble" value="<%=projectappliacble %>" />						
 									</form>
 								</td>					

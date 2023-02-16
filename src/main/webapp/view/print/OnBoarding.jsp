@@ -82,7 +82,7 @@ i{
 					<div class="col-md-12">
 						<div class="row card-header">
 				   			<div class="col-md-12">
-								<h3> OnBoarding </h3>
+								<h4> OnBoarding </h4>
 							</div>
 						 </div>
 					</div>

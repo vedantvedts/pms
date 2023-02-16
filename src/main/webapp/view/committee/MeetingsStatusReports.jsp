@@ -50,8 +50,8 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h3 class="col-md-8">Meetings Status Reports</h3>  
-							<div class="col-md-4" style="float: right;">
+						<h5 class="col-md-8">Meetings Status Reports</h5>  
+							<div class="col-md-4" style="float: right; margin-top: -8px;">
 							<table >
 					   					<tr>
 					   					<td >

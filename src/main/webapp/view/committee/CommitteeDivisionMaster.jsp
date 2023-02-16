@@ -77,10 +77,10 @@ if(ses1!=null){
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-6">	
+						<div class="col-md-6" style="margin-top: -8px;">	
 							<form class="form-inline" method="post" action="DivisionCommitteeMaster.htm" id="myform">
 									<h4 class="control-label" > Division : </h4> &nbsp;&nbsp;&nbsp;
-									 <select class="form-control" id="divisionid" required="required" name="divisionid" onchange='submitForm();' >
+									 <select class="form-control" id="divisionid" required="required"  name="divisionid" onchange='submitForm();' >
 					   						<% for (Object[] obj : divisionlist) {%>
 											<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(divisionid)){ %>selected<% divisionname=obj[2].toString(); } %> ><%=obj[2]%><%-- (<%=obj[2]%>) --%></option>
 											<%} %>

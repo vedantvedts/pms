@@ -131,7 +131,7 @@ a:hover {
 					<div class="col-sm-9" align="left">
 						<h5 >Action Review & Close</h5>
 						</div>
-						<div class="col-sm-3" align="left">
+						<div class="col-sm-3" align="left" style="margin-top: -8px;">
 						<form action="ActionForwardList.htm" method="post">
 										<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" onchange="this.form.submit();">                                                     
 											<option value="A" <%if("A".equalsIgnoreCase(type)){%>selected="selected" <%}%>>  All</option>	

@@ -137,9 +137,9 @@ a:hover {
 				<div class="card shadow-nohover">
 					<div class="card-header row">
 						<div class="col-md-6">
-							<h3 class="">Schedule Briefing Papers List</h3>
+							<h4 class="">Schedule Briefing Papers List</h4>
 						</div>
-						<div class="col-md-6" align="right">
+						<div class="col-md-6" align="right" style="margin-top: -8px;">
 							<form method="post" action="FroozenBriefingList.htm" >
 								<table>
 									<tr>
