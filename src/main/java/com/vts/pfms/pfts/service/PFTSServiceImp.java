@@ -25,7 +25,8 @@ public class PFTSServiceImp implements PFTSService{
 	
 	private static final Logger logger=LogManager.getLogger(PFTSServiceImp.class);
 	
-	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+	private  SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Override
@@ -128,7 +129,7 @@ public class PFTSServiceImp implements PFTSService{
 			break;
 			
 		    case "13":
-		    	update="ReceiptDate";
+		    	update="RealizationDate";
 			break;
 		   
 		/* Added by Dinesh - ATP/QTP Completed */
@@ -137,7 +138,7 @@ public class PFTSServiceImp implements PFTSService{
 			break;
 			
 		    case "15":
-		    	update="CrvDate";
+		    	update="DeliveryDate";
 	        break;
 		   
 		    case "16":
@@ -204,7 +205,7 @@ public class PFTSServiceImp implements PFTSService{
 		    
 		}
 		
-		Date eventDateSql=new java.sql.Date(sdf.parse(eventDate).getTime());
+		Date eventDateSql=new java.sql.Date(rdf.parse(eventDate).getTime());
 		return dao.upadteDemandFile(fileId,statusId,eventDateSql,update, remarks);
 	}
 	
@@ -238,5 +239,18 @@ public class PFTSServiceImp implements PFTSService{
 		return dao.FileInActive(fileId, userId);
 	}
 	
+	@Override
+	public Object[] getFilePDCInfo(String fileid)throws Exception
+	{
+		return dao.getFilePDCInfo(fileid);
+	}
 	
+	@Override
+	public long UpdateFilePDCInfo (String fileid,String PDCDate,String IntegrationDate,String UserId)throws Exception
+	{
+		PFTSFile fileFetch = dao.getPftsFile(fileid);
+		fileFetch.setPDC(sdf.format(rdf.parse(PDCDate)));
+		fileFetch.setIntegrationDate(sdf.format(rdf.parse(IntegrationDate)));
+		return dao.addDemandfile(fileFetch);
+	}
 }
