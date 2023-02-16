@@ -125,7 +125,7 @@ h6{
 				<div class="card shadow-nohover">
 				<div class="row card-header">
 			     <div class="col-md-10">
-					<h3 >Milestone List</h3>
+					<h4 >Milestone List</h4>
 					</div>
 					<div class="col-md-2 justify-content-end" style="float: right;">
 				

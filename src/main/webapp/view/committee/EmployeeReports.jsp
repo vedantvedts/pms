@@ -77,7 +77,7 @@ th ,td {
 				<div class="card shadow-nohover">
 					<div class="card-header ">  
 						<div class="row">
-							<h3 class="col-md-3">Schedule Reports</h3>  
+							<h4 class="col-md-3">Schedule Reports</h4>  
 							
 			   			</div>	   							
 					</div>

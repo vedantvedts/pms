@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.net.Inet4Address"%>
@@ -1652,7 +1653,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										</table>
 								
 								
-										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
 										<thead>
 											 <tr >
 											 	<th colspan="8" ><b class="mainsubtitle">Orders Placed ( > &#8377; <% if(projectdatadetails.get(0)!=null && projectdatadetails.get(0)[13] != null){ %>  <%=projectdatadetails.get(0)[13].toString().replaceAll("\\.\\d+$", "") %> Lakhs) <%} else {%> -  )<%} %> </b> </th>
@@ -1711,17 +1712,13 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				
 												</tr>		
 												<% }
-										  	 		
 										  	 		Double value = 0.00;
 										  	 		if(obj[6]!=null){
 										  	 			value=Double.parseDouble(obj[6].toString());
 										  	 		}
-										  	 		
 										  	 		estcost += Double.parseDouble(obj[5].toString());
 										  	 		socost +=  value;
-										  	 		
-										  	 	 } 
-										   	%>
+										  	 	 } %>
 										   	 
 										    <tr>
 										    	<td colspan="6" style="text-align: right;"><b>Total</b></td>
@@ -1770,6 +1767,141 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										   <%} %>
 										   </tbody>
 									  </table>
+									  
+									 <div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
+									 
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 0px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+									<thead>
+										<tr>
+											<th colspan="22" ><span class="mainsubtitle">Procurement Status</span></th>
+									 	</tr>
+									</thead>
+								</table>	 
+							 	<table class="subtables" style="align: left; margin-top: 00px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+									<thead>
+									 	<tr>
+											<th style="width: 45px;">SN</th>
+											<th style="width: 200px;">FileName</th>
+											<th style="width: 110px;">Cost <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 25px;">1</th>
+											<th style="width: 25px;">2</th>
+											<th style="width: 25px;">3</th>
+											<th style="width: 25px;">4</th>
+											<th style="width: 25px;">5</th>
+											<th style="width: 25px;">6</th>
+											<th style="width: 25px;">7</th>
+											<th style="width: 25px;">8</th>
+											<th style="width: 25px;">9</th>
+											<th style="width: 25px;">10</th>
+											<th style="width: 25px;">11</th>
+											<th style="width: 25px;">12</th>
+											<th style="width: 25px;">13</th>
+											<th style="width: 25px;">14</th>
+											<th style="width: 25px;">15</th>
+											<th style="width: 25px;">16</th>
+											<th style="width: 25px;">17</th>
+											<th style="width: 100px">When It Will Reach Stage 17</th>
+											<th style="width: 100px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
+									 	</tr>
+									</thead>
+									<tbody>
+										<%	List<Object[]> procuremntsList = new ArrayList<>();
+											
+											if( procurementOnDemand.get(z)!=null ){  procuremntsList.addAll(procurementOnDemand.get(z)); }
+											if( procurementOnSanction.get(z)!=null ){  procuremntsList.addAll(procurementOnSanction.get(z)); }
+										%>
+										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
+											<tr>
+												<td style="text-align:center; "><%=psn %></td>
+												<td><%=proc[8] %></td>
+												<td style="text-align: right;"><%=proc[5] %></td>
+												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
+												<%for(int tdc=1;tdc<=17;tdc++){%>
+													
+													<%if(filestatus>11){  filestatus--; } %>
+													<%if(filestatus>17){  filestatus--; } %>
+													
+													
+													<%if(tdc < (filestatus+1)){ %>
+														<td style="background-color: green;"></td>
+													<%}else if(tdc == (filestatus+1)){ %>
+														<td style="background-color: #F96E16;text-align: center; ">*</td>
+													<%}else if(tdc >(filestatus+1)){ %>
+														<td style=""></td>
+													<%} %>
+													
+												<%} %>
+												<td></td>
+												<td></td>
+											</tr>
+										<%} %>
+										
+										<%if(psn ==0 ){ %>
+											<tr>
+										      <td colspan="22" style="text-align: center;">Nil</td>
+										   </tr>
+										<%} %>
+										
+								 	</tbody>
+								</table>
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+									<tr>
+										<td style="width: 25px;">1</td>
+										<td>Demand Released from Division</td>
+										<td style="width: 25px;">10</td>
+										<td>Order Placement</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>SPC Cleared</td>
+										<td>11</td>
+										<td>Issue of CDEC / EDEC</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>Tender Opening</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
+									</tr>
+									<tr>
+										<td>7</td>
+										<td>TCEC Approved</td>
+										<td>16</td>
+										<td>Payment Process</td>
+									</tr>
+									<tr>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>17</td>
+										<td>Payment Released</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td>Financial Sanction</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table> 
+									  
+									  
                
 <!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
 							<h1 class="break"></h1>

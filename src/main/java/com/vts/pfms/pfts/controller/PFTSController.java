@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -222,7 +221,7 @@ public class PFTSController {
              String remarks=req.getParameter("remarks");
              String demandNo=req.getParameter("demandNo");
              redir.addAttribute("projectid",projectId);
-             if(statusId.equals("9")) {
+             if(statusId.equals("10")) {
             	   	final String localUri=uri+"/pfms_serv/newDemandsOrderDetails?demandNo="+demandNo;
     				List<DemandOrderDetails> demandOrderList=null;
     		 		HttpHeaders headers = new HttpHeaders();

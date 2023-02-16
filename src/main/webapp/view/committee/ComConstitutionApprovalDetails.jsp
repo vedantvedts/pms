@@ -174,14 +174,14 @@ String ses=(String)request.getParameter("result");
 					<div class="card-header">						
 						<div class="row">										
 							<div class="col-md-12">
-							<h3 style="color:  #055C9D" ><%=committeedata[8] %>
+							<h4 style="color:  #055C9D" ><%=committeedata[8] %>
 							
 								<p style="float: right;">
 									
 										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project : <%=initiationdata[1]%> <%} %> (Approval Pending)
 									
 								</p>
-							</h3>
+							</h4>
 							</div>	
 																	
 						

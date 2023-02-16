@@ -777,7 +777,7 @@ public class PrintController {
 			    }
 	        	}
 	        	if(objData!=null && objData[4]!=null) {
-			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf")) {
+			    if(FilenameUtils.getExtension(objData[4].toString()).equalsIgnoreCase("pdf") && new File(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]).exists()) {
 			    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+objData[2]+"\\"+objData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
 			        Document document5 = new Document(pdfDocument2,PageSize.A4);
 			        document5.setMargins(50, 50, 50, 50);
@@ -883,10 +883,11 @@ public class PrintController {
 				    }
 	        	}
 	        	
+	        	
 	        	//Point 13
 	        	try {
 	        	
-	        	 if(FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
+	        	 if(TechWorkDataList.get(z) !=null &&FilenameUtils.getExtension(TechWorkDataList.get(z)[8].toString()).equalsIgnoreCase("pdf")) {
 	        		 Zipper zip=new Zipper();
 	                 zip.unpack(env.getProperty("ApplicationFilesDrive")+TechWorkDataList.get(z)[6].toString()+TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip",path,TechWorkDataList.get(z)[9].toString());
 				    	PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(path+File.separator+TechWorkDataList.get(z)[8].toString()),new PdfWriter(path+File.separator+filename+"temp.pdf"));

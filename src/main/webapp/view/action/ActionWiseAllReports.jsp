@@ -62,12 +62,12 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h3 class="col-md-6">
+						<h4 class="col-md-6">
 						<%if("F".equalsIgnoreCase(ActionType)){ %>Forwarded <%} %>
 						<%if("Y".equalsIgnoreCase(ActionType)){ %>Completed  <%} %>
 						<%if("P".equalsIgnoreCase(ActionType)){ %>Pending    <%} %>
-						<%if("E".equalsIgnoreCase(ActionType)){ %>Delayed  <%} %> Action Reports</h3>  
-							<div class="col-md-6" style="float: right;">
+						<%if("E".equalsIgnoreCase(ActionType)){ %>Delayed  <%} %> Action Reports</h4>  
+							<div class="col-md-6" style="float: right; margin-top: -8px;">
 								 <table>
 								 	<tr style="">
 								 		

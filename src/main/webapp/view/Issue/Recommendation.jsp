@@ -77,15 +77,15 @@ if(ses1!=null){
 						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-3">
 				   			<%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
-									<h3 style="font-size: 1.65rem;">Recommendation List</h3>
-								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> <h3>Decision List </h3><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> 
-								<h3>Decision Sought </h3><%}%>
+									<h4 style="font-size: 1.65rem;">Recommendation List</h4>
+								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> <h4>Decision List </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> 
+								<h4>Decision Sought </h4><%}%>
 							</div>
 										
-							<div class="col-md-3 justify-content-end" >
+							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
 								<table>
 									<tr>
-										<td><h4>Proj:</h4></td>
+										<td><h5>Proj:</h5></td>
 										<td>
 												<select class="form-control items" name="projectid" id="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm1();' >
 													<option disabled  selected value="">Choose...</option>
@@ -98,10 +98,10 @@ if(ses1!=null){
 									</tr>	
 								</table>							
 							</div>
-							<div class="col-md-3 justify-content-end" >
+							<div class="col-md-3 justify-content-end" style="margin-top: -8px;" >
 								<table >
 							        <tr>
-										<td><h4>Type:</h4></td>
+										<td><h5>Type:</h5></td>
 										<td>
 											<select class="form-control items" name="recOrDecision"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>
@@ -113,10 +113,10 @@ if(ses1!=null){
 									</tr>
 								</table>	
 							</div>
-							<div class="col-md-3 justify-content-end" >
+							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
 								<table >
 							        <tr>
-										<td><h4>Comm:</h4></td>
+										<td><h5>Comm:</h5></td>
 										<td>
 											<select class="form-control items" name="committeeid" id="committeeid" required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>

@@ -89,7 +89,7 @@ if(ses1!=null){
 						<div class="row">
 		
 							<div class="col-sm-6">
-								<h3 class="control-label" > Forms List</h3>
+								<h4 class="control-label" > Forms List</h4>
 							</div>
 						<!-- 	<div class="col-sm-1 half">
 								<h6 class="control-label" > Lab :</h6>
@@ -110,7 +110,7 @@ if(ses1!=null){
 							</div>		
 								
 							<div class="col-sm-2">			
-										 <select class="form-control" id="logintype" required="required" name="logintype" onchange='submitForm();' >
+										 <select class="form-control" id="logintype" required="required" name="logintype" style="margin-top: -9px;" onchange='submitForm();' >
 						   						<% for (Object[] obj : LoginTypeRoles) {%>
 												<option value="<%=obj[1]%>" <%if(obj[1].toString().equalsIgnoreCase(logintype)){ %>selected<% } %> ><%=obj[2]%></option>
 												<%} %>
@@ -125,7 +125,7 @@ if(ses1!=null){
 							
 							<div class="col-sm-2">	
 	
-										 <select class="form-control" id="moduleid" required="required" name="moduleid" onchange='submitForm();' >
+										 <select class="form-control" id="moduleid" required="required" name="moduleid" style="margin-top: -9px;" onchange='submitForm();' >
 										 		<option value="A" >All </option>
 						   						<% for (Object[] obj : FormModulesList) {%>
 												<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(moduleid)){ %>selected<% } %> ><%=obj[1]%></option>

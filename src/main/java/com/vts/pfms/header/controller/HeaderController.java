@@ -216,7 +216,7 @@ public class HeaderController {
 			String path = req.getServletContext().getRealPath("/UserManual/" + "User Manual-PFMS.pdf");
 	
 			res.setContentType("application/pdf");
-			res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+			res.setHeader("Content-Disposition", String.format("inline; filename=User Manual-PFMS.pdf"));
 	
 			File my_file = new File(path);
 	
@@ -247,7 +247,7 @@ public class HeaderController {
 		String path = req.getServletContext().getRealPath("/UserManual/" + "PFMS Work Flow.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=PFMS Work Flow.pdf"));
 
 		File my_file = new File(path);
 
@@ -278,7 +278,7 @@ public class HeaderController {
 		String path = req.getServletContext().getRealPath("/UserManual/" + "MilestoneManual.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=MilestoneManual.pdf"));
 
 		File my_file = new File(path);
 

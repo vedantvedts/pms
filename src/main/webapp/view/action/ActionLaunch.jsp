@@ -146,7 +146,7 @@ a:hover {
 										<%}%>
 									</h3>
 								</div>     
-								<div class="col-sm-5" align="left" >       
+								<div class="col-sm-5" align="left" style="margin-top: -8px;">       
 									<div class="input-group">
 										<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">
 										<div class="input-group-append">

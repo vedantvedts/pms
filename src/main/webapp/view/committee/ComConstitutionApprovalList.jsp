@@ -195,10 +195,10 @@ List<Object[]> committeelist=(List<Object[]>)request.getAttribute("approvallist"
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-6">
-								<h3>Committee Constitution Approval List</h3>
+								<h4>Committee Constitution Approval List</h4>
 							</div>
 							<div class="col-md-6">
-								<a class="btn btn-primary btn-sm back" type="button" style="float: right;" href="MainDashBoard.htm" >BACK</a>
+								<a class="btn btn-primary btn-sm back" type="button" style="float: right; margin-top: -5px;" href="MainDashBoard.htm" >BACK</a>
 							</div>
 						</div>
 					</div>

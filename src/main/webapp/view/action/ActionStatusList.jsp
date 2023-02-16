@@ -132,8 +132,8 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h3 class="col-md-6">Assigned List</h3>  
-							<div class="col-md-6" style="float: right;">
+						<h4 class="col-md-4">Assigned List</h4>  
+							<div class="col-md-8" style="float: right; margin-top: -10px;">
 					   			<form method="post" action="ActionStatusList.htm" name="dateform" id="dateform">
 					   				<table border="0">
 					   					<tr>

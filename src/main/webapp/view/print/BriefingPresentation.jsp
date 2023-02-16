@@ -2197,29 +2197,13 @@
 								<% } else { %> - <% } %>
 							</td>
 						</tr>
-						<%
-						demand = obj[1].toString();
-						}
-						%>
+						<% demand = obj[1].toString(); } %>
 						<tr>
 							<td>
-								<%
-								if (obj[2] != null) {
-								%> <%=obj[2]%> <%
-								 } else {
-								 %>-<%
-								 }
-								 %>
+								<% if (obj[2] != null) { %> <%=obj[2]%> <% } else { %>-<% } %>
 							</td>
 							<td style="text-align: center">
-								<%
-								if (obj[4] != null) {
-								%> <%=sdf.format(sdf1.parse(obj[4].toString()))%>
-								<%
-								} else {
-								%> - <%
-								}
-								%>
+								<% if (obj[4] != null) { %> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <% } else { %> - <% }%>
 							</td>
 							<td colspan="2"><%=obj[12]%></td>
 							<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
@@ -2227,13 +2211,13 @@
 						</tr>
 						<% }
 
-						Double value = 0.00;
-						if (obj[6] != null) {
-						value = Double.parseDouble(obj[6].toString());
-						}
-
-						estcost += Double.parseDouble(obj[5].toString());
-						socost += value;
+							Double value = 0.00;
+							if (obj[6] != null) {
+								value = Double.parseDouble(obj[6].toString());
+							}
+	
+							estcost += Double.parseDouble(obj[5].toString());
+							socost += value;
 
 						} %>
 
@@ -2249,7 +2233,7 @@
 						<% } %>
 					</table>
 
-					<% } %>
+					
 
 					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px;  border-collapse: collapse;">
 						<thead>
@@ -2280,9 +2264,7 @@
 								<td style="text-align: center;"><%=obj.getTotalOrderCost()%></td>
 								<td style="text-align: center;"><%=obj.getTotalExpenditure()%></td>
 							</tr>
-							<% }
-							}
-							} else { %>
+							<% } } } else { %>
 							<tr>
 								<td class="std" colspan="5" style="text-align: center;">IBAS
 									Server Could Not Be Connected</td>
@@ -2290,7 +2272,137 @@
 							<% } %>
 						</tbody>
 					</table>
-
+					
+							 	<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1370px;" >
+									<thead>
+										<tr>
+											<th colspan="22" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
+										</tr>
+										<tr>
+											<th colspan="22" ><span class="mainsubtitle">Procurement Status</span></th>
+									 	</tr>
+									 	<tr>
+											<th style="width: 40x">SN</th>
+											<th style="width: 180px;">FileName</th>
+											<th style="width: 125px;">Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 45px">1</th>
+											<th style="width: 45px">2</th>
+											<th style="width: 45px">3</th>
+											<th style="width: 45px">4</th>
+											<th style="width: 45px">5</th>
+											<th style="width: 45px">6</th>
+											<th style="width: 45px">7</th>
+											<th style="width: 45px">8</th>
+											<th style="width: 45px">9</th>
+											<th style="width: 45px">10</th>
+											<th style="width: 45px">11</th>
+											<th style="width: 45px">12</th>
+											<th style="width: 45px">13</th>
+											<th style="width: 45px">14</th>
+											<th style="width: 45px">15</th>
+											<th style="width: 45px">16</th>
+											<th style="width: 45px">17</th>
+											<th style="width: 130px">When It Will Reach Stage 17</th>
+											<th style="width: 130px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
+									 	</tr>
+									</thead>
+									<tbody>
+										<%	List<Object[]> procuremntsList = new ArrayList<>();
+											
+											if( procurementOnDemand.get(z)!=null ){  procuremntsList.addAll(procurementOnDemand.get(z)); }
+											if( procurementOnSanction.get(z)!=null ){  procuremntsList.addAll(procurementOnSanction.get(z)); }
+										%>
+										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
+											<tr>
+												<td style="text-align:center; "><%=psn %></td>
+												<td><%=proc[8] %></td>
+												<td style="text-align: right;"><%=proc[5] %></td>
+												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
+												<%for(int tdc=1;tdc<=17;tdc++){%>
+													
+													<%if(filestatus>11){  filestatus--; } %>
+													<%if(filestatus>17){  filestatus--; } %>
+													
+													
+													<%if(tdc < (filestatus+1)){ %>
+														<td style="background-color: green;"></td>
+													<%}else if(tdc == (filestatus+1)){ %>
+														<td style="background-color: #F96E16;text-align: center; ">*</td>
+													<%}else if(tdc >(filestatus+1)){ %>
+														<td style=""></td>
+													<%} %>
+													
+												<%} %>
+												<td></td>
+												<td></td>
+											</tr>
+										<%} %>
+										
+										<%if(psn ==0 ){ %>
+											<tr>
+										      <td colspan="22" style="text-align: center;">Nil</td>
+										   </tr>
+										<%} %>
+										
+								 	</tbody>
+								</table>
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+									<tr>
+										<td style="width: 25px;">1</td>
+										<td>Demand Released from Division</td>
+										<td style="width: 25px;">10</td>
+										<td>Order Placement</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>SPC Cleared</td>
+										<td>11</td>
+										<td>Issue of CDEC / EDEC</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>Tender Opening</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
+									</tr>
+									<tr>
+										<td>7</td>
+										<td>TCEC Approved</td>
+										<td>16</td>
+										<td>Payment Process</td>
+									</tr>
+									<tr>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>17</td>
+										<td>Payment Released</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td>Financial Sanction</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
+						<% } %>
 				</div>
 
 			</div>

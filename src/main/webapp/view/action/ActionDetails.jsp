@@ -72,37 +72,18 @@ h6{
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D;">
+	    		<div class="card-header" style="background-color: #055C9D;height: 100%;">
       				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action :<%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=Assignee[10] %>) <%}%> 
       				
 					<span style="float: right;font-size: 17px;margin-top: 5px">Assignor : <%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1]%>, <%=Assignee[2]%><%}%></span>
       				 </h6>
-  
       			</div>
-      		
-      		
-	    
-   	</div>   
-   </div>  
-</div> 
- <div class="row" style="margin-top: 20px;">
- 
- 
- 
- 
- 
-	<div class="col-md-12">
-    	
-    	<div class="card" style="">
-      		
       		<div class="card-body" >
+      			 <div class="row">
       		
-      		
-      		 <div class="row">
-      		
-<div class="col-md-1"></div>
+
    
-   <div class="col-md-10" style="padding-left: 0px">
+   <div class="col-md-12" style="padding-left: 0px">
     <% if(LinkList.size()>0){ %>  
    				<div class="table-responsive">
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
@@ -214,21 +195,15 @@ h6{
 								
 								<td style="text-align: left; width: 3%;">
 								
-							 <% 
-						        if(obj[5]!=null && obj[5].toString().length()!=0  ){
-						        %>
+							 <% if(obj[5]!=null && obj[5].toString().length()!=0  ){%>
 						        <div  align="center">
 										<a  
 										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
 										 target="_blank"><i class="fa fa-download"></i></a>
 									</div>
-	
 								<%}else{ %>
-								
 								<div  align="center">-</div>
-								
 								 <%} %>
-
 						</tr>
 							<% count++; } }else{%>
 							<tr align="center">
@@ -238,19 +213,29 @@ h6{
 						</tbody>
 					</table>
 				</div> 
-	
 				<div align="center" >
-				
 					<a type="button" class="btn  btn-sm back" href="ActionStatusList.htm"  >BACK</a>
-				
 				</div>
-	
-					
-	
-	
 				</div>
-			 	
   			</div>
+      		</div>
+   	</div>   
+   </div>  
+</div> 
+ <div class="row" style="margin-top: 20px;">
+ 
+ 
+ 
+ 
+ 
+	<div class="col-md-12">
+    	
+    	<div class="card" style="">
+      		
+      		<div class="card-body" >
+      		
+      		
+      		
 
 </div>
 

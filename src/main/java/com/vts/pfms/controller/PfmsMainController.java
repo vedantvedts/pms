@@ -106,7 +106,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "PM_2020.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=PM_2020.pdf"));
 
 		File my_file = new File(path);
 
@@ -132,7 +132,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "PM_2016.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=PM_2016.pdf"));
 
 		File my_file = new File(path);
 
@@ -157,7 +157,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "MM_FORMS_2020.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=MM_FORMS_2020.pdf"));
 
 		File my_file = new File(path);
 
@@ -186,7 +186,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "DemandInstruction.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=DemandInstruction.pdf"));
 
 		File my_file = new File(path);
 
@@ -221,7 +221,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "PPFM-2016.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=PPFM-2016.pdf"));
 
 		File my_file = new File(path);
 
@@ -246,7 +246,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "DPFM_2021_DIR.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=DPFM_2021_DIR.pdf"));
 
 		File my_file = new File(path);
 
@@ -272,7 +272,7 @@ public class PfmsMainController {
 		String path = req.getServletContext().getRealPath("/PurchaseManuals/" + "DPFM_2021_HB.pdf");
 
 		res.setContentType("application/pdf");
-		res.setHeader("Content-Disposition", String.format("inline; filename=\"" + req.getParameter("path") + "\""));
+		res.setHeader("Content-Disposition", String.format("inline; filename=DPFM_2021_HB.pdf"));
 
 		File my_file = new File(path);
 
