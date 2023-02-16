@@ -75,7 +75,7 @@ if(ses1!=null){
 					
 					<div class="row">
 					
-					<div class="col">	
+					<div class="col" style="margin-top: -8px;">	
 			
 						
 						<form class="form-inline " method="post" action="ProjectBasedSchedule.htm" id="myform" style="width: 108% !important">
@@ -111,7 +111,7 @@ if(ses1!=null){
 						
 					</div>
 					
-					<div class="col">		
+					<div class="col" style="margin-top: -8px;">		
 					
 					<%if(!committeeid.equals("all") && Long.parseLong(committeeid)>0 ){ %>
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" > 

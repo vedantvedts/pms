@@ -191,7 +191,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 				<div class="card shadow-nohover">
 					<div class="row card-header">
 			   			<div class="col-md-6">
-							<h3>Procurement Status</h3>
+							<h4>Procurement Status</h4>
 						</div>
 						<div class="col-md-3">
 							<%-- <form method="post" action="ProjectBriefing.htm" target="_blank">

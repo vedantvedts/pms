@@ -76,7 +76,7 @@ if(ses1!=null){
 					
 					<div class="row">
 					
-					<div class="col">	
+					<div class="col" style="margin-top: -8px;">	
 					<%if(Long.parseLong(divisionid)>0){ %>
 						<form class="form-inline" method="post" action="DivisionBasedSchedule.htm" id="myform">
 		

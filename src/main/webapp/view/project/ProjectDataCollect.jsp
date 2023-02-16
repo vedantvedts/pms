@@ -142,14 +142,14 @@ if(ses1!=null){
 				<div class="card shadow-nohover">
 					<div class="row card-header">
 			   			<div class="col-md-6">
-							<h3>Add Project Data </h3>
+							<h4>Add Project Data </h4>
 						</div>
 						<div class="col-md-6 justify-content-end" >
 							<table style="float: right;" >
 								<tr>
-									<td ><h4>Project :</h4></td>
+									<td ><h5 style="margin-top: -12px;">Project :</h5></td>
 									<td >
-										<form method="post" action="ProjectData.htm" id="projectchange">
+										<form method="post" action="ProjectData.htm" id="projectchange" style="margin-top: -14px;">
 											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<option disabled  selected value="">Choose...</option>
 												<%for(Object[] obj : projectslist){ %>

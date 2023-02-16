@@ -39,13 +39,10 @@
 	background: #D3CCE3;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #E9E4F0, #D3CCE3);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #E9E4F0, #D3CCE3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-	
 }
 i{
 	font-style: normal !important;
 }
-
 @keyframes swing {
     
     30% {
@@ -72,8 +69,6 @@ i{
 </style>
 </head>
 <body>
-
-
 <div class="container-fluid" >
 		<div class="row" >
 			<div class="col-md-12" >
@@ -82,7 +77,7 @@ i{
 					<div class="col-md-12">
 						<div class="row card-header">
 				   			<div class="col-md-12">
-								<h3> OnBoarding </h3>
+								<h4> OnBoarding </h4>
 							</div>
 						 </div>
 					</div>
@@ -130,7 +125,6 @@ i{
 									<i>Action Items</i>
 								</a>
 						</div>
-						
 						<div class="col-md-3">
 								<a class="btn shadow-nohover  btn-primary-2 btn-block btn-sm" href="UserManagerList.htm?Onboarding=Yes" style="text-align: left">
 									<span class="fa-stack" style="width:3em !important">
@@ -140,7 +134,6 @@ i{
 								</a>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

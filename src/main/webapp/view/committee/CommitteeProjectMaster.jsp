@@ -86,7 +86,7 @@ if(ses1!=null){
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-6">	
+						<div class="col-md-6" style="margin-top: -8px;">	
 							<%if(projectid!=null && Long.parseLong(projectid)>0){ %>
 								<form class="form-inline" method="post" action="ProjectMaster.htm" id="myform">
 									
@@ -120,7 +120,7 @@ if(ses1!=null){
 							<%} %>
 						</div>
 							
-						<div class="col-md-6">	
+						<div class="col-md-6" style="margin-top: -6px;">	
 							<%if(projectmasterlist!=null&&projectmasterlist.size()>0){ %>
 								<%if(Long.parseLong(projectid)>0){ %>
 								<form method="post" action="CommitteeAutoSchedule.htm" id="form" >

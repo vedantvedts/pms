@@ -40,7 +40,7 @@ List<Object[]>  committeeschedulelist=(List<Object[]>)request.getAttribute("comm
 		<div class="col-md-6">
 			<h4>Committee Meeting Schedules</h4>
 		</div>
-		<div class="col-md-6" align="right">
+		<div class="col-md-6" align="right" style="margin-top: -8px;">
 			<form method="post" action="CommitteeScheduleList.htm" id="myform">
 			
 			  <table><tr><td>

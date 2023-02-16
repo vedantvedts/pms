@@ -88,7 +88,7 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h3 class="col-md-3">Meeting Reports</h3>  
+						<h4 class="col-md-3">Meeting Reports</h4>  
 							<div class="col-md-9" style="float: right;">
 					   		
 		   					</div>

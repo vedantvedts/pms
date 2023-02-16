@@ -70,9 +70,9 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 		<div class="card">
 		<div class="card-header">
 			<div class="row">
-				<div class="col-md-10"><h3>Project Assign</h3></div>
+				<div class="col-md-10"><h4>Project Assign</h4></div>
 				<div class="col-md-2">		      
-					<a class="btn btn-info btn-sm  back"  style="margin-left: 4.2rem; "   href="MainDashBoard.htm">Back</a>
+					<a class="btn btn-info btn-sm  back"  style="margin-left: 4.2rem; margin-top: -5px;"   href="MainDashBoard.htm">Back</a>
 				</div>
 			</div>
 		</div>

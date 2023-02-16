@@ -162,10 +162,10 @@ if(ses1!=null){
 					<div class="col-md-12">
 						<div class="row card-header" style="margin-left: -13px;width: 102%;">
 				   			<div class="col-md-6">
-								<h3>Issue List</h3>
+								<h4>Issue List</h4>
 							</div>
 							<!-- <div class="col-md-2"></div>		 -->				
-							<div class="col-md-6 justify-content-end" >
+							<div class="col-md-6 justify-content-end" style="margin-top: -8px;">
 								<%-- <table style="float: right;" >
 									<tr>
 										<td ><h5>Project :</h5></td>
