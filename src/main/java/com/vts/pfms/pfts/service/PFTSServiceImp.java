@@ -97,42 +97,111 @@ public class PFTSServiceImp implements PFTSService{
 		    case "4":
 		    	update="TenderDate";
 		    break;	
+		    
+		/* Added by Dinesh - Receipt of Quotations */
 		    case "5":
+		    	update="QuotationsDate";
+			break;	
+			
+		    case "6":
 		    	update="TocDate";
 			break;	
-		    case "6":
+		    case "7":
 		    	update="TecDate";
 		    break;
-		    case "7":
+		    case "8":
 		    	update="TpcDate";
 		    break;	
-		    case "8":
+		    case "9":
 		    	update="SanctionDate";
 			break;	
-		    case "9":
+		    case "10":
 		    	update="OrderDate";
 			break;	
-		    case "10":
+		    case "11":
 		    	update="RevisedDp";
 			break;	
-		    case "11":
+			
+		/* Added by Dinesh - Issue of CDEC / EDEC */
+		    case "12":
+		    	update="CDECEDECDate";
+			break;
+			
+		    case "13":
 		    	update="ReceiptDate";
 			break;
-		    case "12":
-		    	update="InspectionDate";
-		    break;
-		    case "13":
+		   
+		/* Added by Dinesh - ATP/QTP Completed */
+		    case "14":
+		    	update="ATPQTPDate ";
+			break;
+			
+		    case "15":
 		    	update="CrvDate";
 	        break;
-		    case "14":
+		   
+		    case "16":
+		    	update="InspectionDate";
+		    break;
+		    case "17":
 		    	update="PaymentDate";
 			break;	
-		    case "15":
+		    case "18":
 		    	update="PartialChequeDate";
 		    break;	
-		    case "16":
+		    case "19":
 		    	update="FinalChequeDate";
 		    break;
+		    
+		  
+		    /*       Old Code        */
+		    
+//		    case "2" :
+//		    	update="SpcDate";
+//		    break ;	
+//		    case "3":
+//		    	update="EPCDate";
+//            break;
+//		    case "4":
+//		    	update="TenderDate";
+//		    break;	
+//		    case "5":
+//		    	update="TocDate";
+//			break;	
+//		    case "6":
+//		    	update="TecDate";
+//		    break;
+//		    case "7":
+//		    	update="TpcDate";
+//		    break;	
+//		    case "8":
+//		    	update="SanctionDate";
+//			break;	
+//		    case "9":
+//		    	update="OrderDate";
+//			break;	
+//		    case "10":
+//		    	update="RevisedDp";
+//			break;	
+//		    case "11":
+//		    	update="ReceiptDate";
+//			break;
+//		    case "12":
+//		    	update="InspectionDate";
+//		    break;
+//		    case "13":
+//		    	update="CrvDate";
+//	        break;
+//		    case "14":
+//		    	update="PaymentDate";
+//			break;	
+//		    case "15":
+//		    	update="PartialChequeDate";
+//		    break;	
+//		    case "16":
+//		    	update="FinalChequeDate";
+//		    break;
+		    
 		}
 		
 		Date eventDateSql=new java.sql.Date(sdf.parse(eventDate).getTime());
