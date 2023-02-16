@@ -1187,7 +1187,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													
 												 <% } else {  %> - <% } %>
 											</td>
-											<td style="text-align: center"><%=obj[17] %>%</td>							
 											<td style="text-align: center"><%=obj[17]%>%</td>
 											<%-- 	<td style="text-align: center"><span
 												class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
@@ -1591,12 +1590,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								<%} %>
 							</tbody>		
 						</table>
- 	 
 
-<!-- ----------------------------------------------5.Particulars of Meeting------------------------------------------------- -->
- 						<h1 class="break"></h1>
-<!-- ----------------------------------------------7. Procurement Status------------------------------------------------- -->
-						<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement plan (Major Items): </b></div>
+ 						
+<!-- ----------------------------------------------7a. Procurement Status------------------------------------------------- -->
+						<h1 class="break"></h1>
+						<div align="left" style="margin-left: 10px;"><b class="sub-title">7. Details of Procurement</b></div>
+							<div align="left" style="margin-left: 15px;margin-top: 5px;"><b class="mainsubtitle">(a) Details of Procurement plan (Major Items) </b></div>
 							<div align="right"> <span class="currency" style="font-weight: bold;width: 970px !important;" >(In &#8377; Lakhs)</span></div>
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
 											
@@ -1767,9 +1766,13 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										   <%} %>
 										   </tbody>
 									  </table>
-									  
-									 <div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
-									 
+								
+<!-- ----------------------------------------------7b. Procurement Status------------------------------------------------- -->								
+					  <h1 class="break"></h1>
+								
+								<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(b) Procurement Status</b></div>
+								<div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
+								
 								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 0px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
 									<thead>
 										<tr>
@@ -1777,30 +1780,30 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									 	</tr>
 									</thead>
 								</table>	 
-							 	<table class="subtables" style="align: left; margin-top: 00px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+							 	<table class="subtables" style="align: left; margin-top: 00px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
 									<thead>
 									 	<tr>
-											<th style="width: 45px;">SN</th>
-											<th style="width: 200px;">FileName</th>
-											<th style="width: 110px;">Cost <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th style="width: 25px;">1</th>
-											<th style="width: 25px;">2</th>
-											<th style="width: 25px;">3</th>
-											<th style="width: 25px;">4</th>
-											<th style="width: 25px;">5</th>
-											<th style="width: 25px;">6</th>
-											<th style="width: 25px;">7</th>
-											<th style="width: 25px;">8</th>
-											<th style="width: 25px;">9</th>
-											<th style="width: 25px;">10</th>
-											<th style="width: 25px;">11</th>
-											<th style="width: 25px;">12</th>
-											<th style="width: 25px;">13</th>
-											<th style="width: 25px;">14</th>
-											<th style="width: 25px;">15</th>
-											<th style="width: 25px;">16</th>
-											<th style="width: 25px;">17</th>
-											<th style="width: 100px">When It Will Reach Stage 17</th>
+											<th style="width: 30px;">SN</th>
+											<th style="width: 280px;">Item Name</th>
+											<th style="width: 130px;">Cost<br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 20px;">1</th>
+											<th style="width: 20px;">2</th>
+											<th style="width: 20px;">3</th>
+											<th style="width: 20px;">4</th>
+											<th style="width: 20px;">5</th>
+											<th style="width: 20px;">6</th>
+											<th style="width: 20px;">7</th>
+											<th style="width: 20px;">8</th>
+											<th style="width: 20px;">9</th>
+											<th style="width: 20px;">10</th>
+											<th style="width: 20px;">11</th>
+											<th style="width: 20px;">12</th>
+											<th style="width: 20px;">13</th>
+											<th style="width: 20px;">14</th>
+											<th style="width: 20px;">15</th>
+											<th style="width: 20px;">16</th>
+											<th style="width: 20px;">17</th>
+											<th style="width: 100px">PDC</th>
 											<th style="width: 100px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
 									 	</tr>
 									</thead>
@@ -1813,8 +1816,20 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
 											<tr>
 												<td style="text-align:center; "><%=psn %></td>
-												<td><%=proc[8] %></td>
-												<td style="text-align: right;"><%=proc[5] %></td>
+												<td>
+													<%if(proc[8].toString().length()>50){ %>
+													<%=proc[8].toString().substring(0,50) %> ...
+													<%}else{ %>
+													<%=proc[8]%>
+													<%} %>
+												</td>
+												<td style="text-align: right;">
+													<%if(proc[8].toString().equalsIgnoreCase("S")){ %>
+														<%=proc[6] %>
+													<%}else{ %>
+														<%=proc[5] %>
+													<%} %>
+												</td>
 												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
 												<%for(int tdc=1;tdc<=17;tdc++){%>
 													
@@ -1831,8 +1846,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<%} %>
 													
 												<%} %>
-												<td></td>
-												<td></td>
+												<td style="text-align: center;">
+													<%if(proc[14]!=null){ %> <%=sdf.format(sdf1.parse(proc[14].toString()))%> <%}else{ %> - <%} %>
+												</td>
+												<td style="text-align: center;">
+													<%if(proc[15]!=null){ %> <%=sdf.format(sdf1.parse(proc[15].toString()))%> <%}else{ %> - <%} %>
+												</td>
 											</tr>
 										<%} %>
 										
@@ -1844,69 +1863,63 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										
 								 	</tbody>
 								</table>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;font-size: 12px;" >
 									<tr>
-										<td style="width: 25px;">1</td>
-										<td>Demand Released from Division</td>
-										<td style="width: 25px;">10</td>
-										<td>Order Placement</td>
+										<td style="width: 3%;">1</td>
+										<td style="width: 22%;">Demand Released from Division</td>
+										<td style="width: 3%;">6</td>
+										<td style="width: 22%;">Tender Opening</td>
+										<td style="width: 3%;">11</td>
+										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 3%;">16</td>
+										<td style="width: 22%;">Payment Process</td>
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>SPC Cleared</td>
-										<td>11</td>
-										<td>Issue of CDEC / EDEC</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>EPC Approved</td>
-										<td>12</td>
-										<td>Realization Completed</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Tender Enquiry Floated</td>
-										<td>13</td>
-										<td>ATP/QTP Completed</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Receipt of Quotations</td>
-										<td>14</td>
-										<td>Delivery at Stores</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>Tender Opening</td>
-										<td>15</td>
-										<td>Inward Inspection Clerance</td>
-									</tr>
-									<tr>
 										<td>7</td>
 										<td>TCEC Approved</td>
-										<td>16</td>
-										<td>Payment Process</td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>TPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
 										<td>17</td>
 										<td>Payment Released</td>
 									</tr>
 									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
 										<td>9</td>
 										<td>Financial Sanction</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>10</td>
+										<td>Order Placement</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
 										<td></td>
 										<td></td>
 									</tr>
 								</table> 
 									  
-									  
                
-<!-- ----------------------------------------------6. Procurement Status------------------------------------------------- -->
-							<h1 class="break"></h1>
-<!-- ----------------------------------------------7. Overall financial Status------------------------------------------------- -->
-
+							
+<!-- ----------------------------------------------8. Overall financial Status------------------------------------------------- -->
+					<h1 class="break"></h1>	
 		 
    					<div align="left" style="margin-left: 10px;"><b class="sub-title">8. Overall Financial Status </b></div><div align="right"><b><span class="currency" >(&#8377; <span>Crore</span>)</span></b></div>
 						 

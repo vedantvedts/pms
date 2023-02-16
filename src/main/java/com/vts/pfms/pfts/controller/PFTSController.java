@@ -395,4 +395,57 @@ public class PFTSController {
 		}
 	}
 	
+
+	@RequestMapping(value = "getFilePDCInfo.htm", method = RequestMethod.GET)
+	public @ResponseBody String getFilePDCInfo(HttpServletRequest request, HttpSession ses) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside getFilePDCInfo.htm "+UserId);		
+		try {
+			String fileid=request.getParameter("fileid");
+			Object[] statusList=service.getFilePDCInfo(fileid);
+			Gson json = new Gson();
+			return json.toJson(statusList);
+		}
+		catch (Exception e) 
+		{			
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside getFilePDCInfo.htm "+UserId, e); 
+			return "";
+		}
+
+	}
+	
+	@RequestMapping(value = "UpdateFilePDCInfo.htm", method = RequestMethod.POST)
+	public String UpdateFilePDCInfo(HttpServletRequest request, HttpSession ses,RedirectAttributes redir) throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside UpdateFilePDCInfo.htm "+UserId);		
+		try {
+			String fileid=request.getParameter("fileId");
+			String PDCDate=request.getParameter("PDCDate");
+			String IntegrationDate=request.getParameter("IntegrationDate");
+			String projectId=request.getParameter("projectId");
+			
+			long result = service.UpdateFilePDCInfo(fileid, PDCDate, IntegrationDate, UserId);
+			
+			if(result>0) {
+ 				redir.addAttribute("result","Demand Order Updated successfully");
+ 			}else {
+ 				redir.addAttribute("resultfail","Something went worng");
+ 			}
+			redir.addAttribute("projectid",projectId);
+			return "redirect:/ProcurementStatus.htm";
+			
+		}
+		catch (Exception e) 
+		{			
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside UpdateFilePDCInfo.htm "+UserId, e); 
+			return "static/Error";
+		}
+
+	}
+	
 }
+

@@ -2058,7 +2058,7 @@
 
 			<!-- ----------------------------------------   P-6c Div ----------------------------------------------------- -->
 
-			<!-- ---------------------------------------- P-7  Details of Procurement Plan Div ----------------------------------------------------- -->
+			<!-- ---------------------------------------- P-7a  Details of Procurement Plan Div ----------------------------------------------------- -->
 
 			<div class="carousel-item ">
 
@@ -2071,7 +2071,7 @@
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>7. Details of Procurement Plan (Major Items)</h3>
+						<h3>7 (a) Details of Procurement Plan (Major Items)</h3>
 					</div>
 					<div class="col-md-1" align="right"  style="padding-top:19px;" >
 						<b style="margin-right: -35px;"><%=MeetingNo %></b>
@@ -2083,12 +2083,8 @@
 				</div>
 
 				<div class="content">
-					<%
-					for (int z = 0; z < projectidlist.size(); z++) {
-					%>
-					<%
-					if (ProjectDetail.size() > 1) {
-					%>
+					<% for (int z = 0; z < projectidlist.size(); z++) { %>
+					<% if (ProjectDetail.size() > 1) { %>
 					<div>
 						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
 					</div>
@@ -2113,8 +2109,7 @@
 							<th style="width: 50px;">Status</th>
 							<th style="width: 195px;">Remarks</th>
 						</tr>
-						<%
-						int k = 0;
+						<% int k = 0;
 						if (procurementOnDemand.get(z) != null && procurementOnDemand.get(z).size() > 0) {
 							Double estcost = 0.0;
 							Double socost = 0.0;
@@ -2157,8 +2152,7 @@
 						</thead>
 
 						<tr>
-							<th rowspan="2"
-								style="width: 15px !important; text-align: center;">SN</th>
+							<th rowspan="2" style="width: 15px !important; text-align: center;">SN</th>
 							<th style="width: 150px;">Demand No</th>
 							<th style="width: 80px;">Demand Date</th>
 							<th colspan="2" style="width: 295px;">Nomenclature</th>
@@ -2235,7 +2229,7 @@
 
 					
 
-					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px;  border-collapse: collapse;">
+					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px;margin-bottom:10px;  border-collapse: collapse;">
 						<thead>
 							<tr>
 								<th colspan="5" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
@@ -2272,8 +2266,52 @@
 							<% } %>
 						</tbody>
 					</table>
+			
+				<% } %>
+				</div>
+
+			</div>
+
+			<!-- ----------------------------------------  Details of Procurement Plan Div ----------------------------------------------------- -->
+			
+			<!-- ---------------------------------------- P-7b  Procurement status Report Div ----------------------------------------------------- -->
+
+			<div class="carousel-item ">
+
+				<div class="content-header row ">
 					
-							 	<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1370px;" >
+					<div class="col-md-1" >
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					<div class="col-md-1" align="left" style="padding-top:19px;" >
+						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>7 (b) Procurement Status</h3>
+					</div>
+					<div class="col-md-1" align="right"  style="padding-top:19px;" >
+						<b style="margin-right: -35px;"><%=MeetingNo %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+					</div>
+					
+				</div>
+
+				<div class="content">
+					<%
+					for (int z = 0; z < projectidlist.size(); z++) {
+					%>
+					<%
+					if (ProjectDetail.size() > 1) {
+					%>
+					<div>
+						<b>Project : <%=ProjectDetail.get(z)[1]%> <% if (z != 0) {  %>(SUB)<% }  %> </b>
+					</div>
+					<% } %>
+
+			
+							 	<table  style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;width: 1370px;font-size: 12px;" >
 									<thead>
 										<tr>
 											<th colspan="22" style="text-align: right; border: 0px;"><span class="currency">(In &#8377; Lakhs)</span></th>
@@ -2283,27 +2321,27 @@
 									 	</tr>
 									 	<tr>
 											<th style="width: 40x">SN</th>
-											<th style="width: 180px;">FileName</th>
-											<th style="width: 125px;">Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th style="width: 45px">1</th>
-											<th style="width: 45px">2</th>
-											<th style="width: 45px">3</th>
-											<th style="width: 45px">4</th>
-											<th style="width: 45px">5</th>
-											<th style="width: 45px">6</th>
-											<th style="width: 45px">7</th>
-											<th style="width: 45px">8</th>
-											<th style="width: 45px">9</th>
-											<th style="width: 45px">10</th>
-											<th style="width: 45px">11</th>
-											<th style="width: 45px">12</th>
-											<th style="width: 45px">13</th>
-											<th style="width: 45px">14</th>
-											<th style="width: 45px">15</th>
-											<th style="width: 45px">16</th>
-											<th style="width: 45px">17</th>
-											<th style="width: 130px">When It Will Reach Stage 17</th>
-											<th style="width: 130px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
+											<th style="width: 280px;">Item Name</th>
+											<th style="width: 155px;">Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 35px">1</th>
+											<th style="width: 35px">2</th>
+											<th style="width: 35px">3</th>
+											<th style="width: 35px">4</th>
+											<th style="width: 35px">5</th>
+											<th style="width: 35px">6</th>
+											<th style="width: 35px">7</th>
+											<th style="width: 35px">8</th>
+											<th style="width: 35px">9</th>
+											<th style="width: 35px">10</th>
+											<th style="width: 35px">11</th>
+											<th style="width: 35px">12</th>
+											<th style="width: 35px">13</th>
+											<th style="width: 35px">14</th>
+											<th style="width: 35px">15</th>
+											<th style="width: 35px">16</th>
+											<th style="width: 35px">17</th>
+											<th style="width: 150px">PDC</th>
+											<th style="width: 150px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2315,8 +2353,20 @@
 										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
 											<tr>
 												<td style="text-align:center; "><%=psn %></td>
-												<td><%=proc[8] %></td>
-												<td style="text-align: right;"><%=proc[5] %></td>
+												<td>
+													<%if(proc[8].toString().length()>60){ %>
+													<%=proc[8].toString().substring(0,60) %> ...
+													<%}else{ %>
+													<%=proc[8]%>
+													<%} %>
+												</td>
+												<td style="text-align: right;">
+													<%if(proc[8].toString().equalsIgnoreCase("S")){ %>
+														<%=proc[6] %>
+													<%}else{ %>
+														<%=proc[5] %>
+													<%} %>
+												</td>
 												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
 												<%for(int tdc=1;tdc<=17;tdc++){%>
 													
@@ -2333,8 +2383,12 @@
 													<%} %>
 													
 												<%} %>
-												<td></td>
-												<td></td>
+												<td style="text-align: center;">
+													<%if(proc[14]!=null){ %> <%=sdf.format(sdf1.parse(proc[14].toString()))%> <%}else{ %> - <%} %>
+												</td>
+												<td style="text-align: center;">
+													<%if(proc[15]!=null){ %> <%=sdf.format(sdf1.parse(proc[15].toString()))%> <%}else{ %> - <%} %>
+												</td>
 											</tr>
 										<%} %>
 										
@@ -2346,58 +2400,54 @@
 										
 								 	</tbody>
 								</table>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:1370px !important;  border-collapse:collapse;font-size: 12px;" >
 									<tr>
-										<td style="width: 25px;">1</td>
-										<td>Demand Released from Division</td>
-										<td style="width: 25px;">10</td>
-										<td>Order Placement</td>
+										<td style="width: 3%;">1</td>
+										<td style="width: 22%;">Demand Released from Division</td>
+										<td style="width: 3%;">6</td>
+										<td style="width: 22%;">Tender Opening</td>
+										<td style="width: 3%;">11</td>
+										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 3%;">16</td>
+										<td style="width: 22%;">Payment Process</td>
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>SPC Cleared</td>
-										<td>11</td>
-										<td>Issue of CDEC / EDEC</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>EPC Approved</td>
-										<td>12</td>
-										<td>Realization Completed</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Tender Enquiry Floated</td>
-										<td>13</td>
-										<td>ATP/QTP Completed</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Receipt of Quotations</td>
-										<td>14</td>
-										<td>Delivery at Stores</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>Tender Opening</td>
-										<td>15</td>
-										<td>Inward Inspection Clerance</td>
-									</tr>
-									<tr>
 										<td>7</td>
 										<td>TCEC Approved</td>
-										<td>16</td>
-										<td>Payment Process</td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>TPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
 										<td>17</td>
 										<td>Payment Released</td>
 									</tr>
 									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
 										<td>9</td>
 										<td>Financial Sanction</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>10</td>
+										<td>Order Placement</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
 										<td></td>
 										<td></td>
 									</tr>
@@ -2407,7 +2457,7 @@
 
 			</div>
 
-			<!-- ----------------------------------------  Details of Procurement Plan Div ----------------------------------------------------- -->
+			<!-- ---------------------------------------- Procurement status Report Div ----------------------------------------------------- -->
 
 			<!-- ---------------------------------------- P-8  Overall Financial Status Div ----------------------------------------------------- -->
 
@@ -3327,19 +3377,20 @@
 			<li data-target="#presentation-slides" data-slide-to="9"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (a) Work carried out, Achievements, test result etc"><b>6(a)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="10" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (b) TRL table with TRL at sanction stage and current stage indicating overall PRI"><b>6(b)</b></li>
 			<li data-target="#presentation-slides" data-slide-to="11" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="6 (c) Risk Matrix/Management Plan/Status."><b>6 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7. Details of Procurement Plan"><b>7</b></li>
-			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
-			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
-			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
-			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
-			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
-			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
-			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
+			<li data-target="#presentation-slides" data-slide-to="12" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (a) Details of Procurement Plan"><b>7(a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="13" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="7 (b) Procurement Status"><b>7(b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="14" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="8. Overall Financial Status"><b>8</b></li>
+			<li data-target="#presentation-slides" data-slide-to="15" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="9. Action Plan"><b>9</b></li>
+			<li data-target="#presentation-slides" data-slide-to="16" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="10. GANTT chart of overall project schedule"><b>10</b></li>
+			<li data-target="#presentation-slides" data-slide-to="17" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="11. Issues"><b>11</b></li>
+			<li data-target="#presentation-slides" data-slide-to="18" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="12. Decision/Recommendations"><b>12</b></li>
+			<li data-target="#presentation-slides" data-slide-to="19" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (a) Other Relevant Points"><b>13 (a)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="20" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (b) Technical Work Carried out"><b>13 (b)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="21" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="13 (c) Technical Images"><b>13 (c)</b></li>
+			<li data-target="#presentation-slides" data-slide-to="22" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
 			
-			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 25px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
-			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 25px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>
 			
 		</ol>
 	</div>

@@ -193,20 +193,20 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 			   			<div class="col-md-6">
 							<h3>Procurement Status</h3>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<%-- <form method="post" action="ProjectBriefing.htm" target="_blank">
 								<input type="hidden" name="projectid" value="<%=projectid%>"/>
 								<button type="submit" ><img src="view/images/preview3.png"></button>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form> --%>
 						</div>						
-						<div class="col-md-4 justify-content-end" style="float: right;">
-							<table >
+						<div class="col-md-3 justify-content-end" style="float: right;">
+							<table style="margin-top: -10px;">
 								<tr>
 									<td  style="border: 0 "><h4>Project :</h4></td>
 									<td  style="border: 0 ">
-										<form method="post" action="ProcurementStatus.htm" id="projectchange">
-											<select class="form-control items selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+										<form method="post" action="ProcurementStatus.htm" id="projectchange" >
+											<select class="form-control selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<%for(Object[] obj : projectslist){ %>
 												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4] %></option>
 												<%} %>
@@ -249,21 +249,22 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                                   </td>
                                                    <td style="margin-left:5px;">  
                                                    <form action="FileInActive.htm" method="post">
-                                                   <input type="hidden" name="fileId" value="<%=fileStatus[0]%>" />
-                                                   <input type="hidden" name="projectId" value=<%=projectId%> />
-                                                   <input type="hidden" name="demandNo" value="<%=fileStatus[1]%>" />
-                                                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                         
-                                                   <button class="btn btn-sm"  onclick="return confirm('Are You Sure To InActive ?')"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                                    <%if(Long.parseLong(fileStatus[7].toString())>8){ %>
-                                                   <button class="btn btn-sm "  formaction="FileOrderRetrive.htm" title="Refresh Order"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
-                                                   <%} %>
+	                                                   <input type="hidden" name="fileId" value="<%=fileStatus[0]%>" />
+	                                                   <input type="hidden" name="projectId" value=<%=projectId%> />
+	                                                   <input type="hidden" name="demandNo" value="<%=fileStatus[1]%>" />
+	                                                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                                         
+	                                                   <button class="btn btn-sm"  onclick="return confirm('Are You Sure To InActive ?')"><i class="fa fa-times" aria-hidden="true"></i></button>
+	                                                   <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#PDCModal" onclick="openPDCform('<%=fileStatus[0]%>')">
+                                                  	  	<i class="fa fa-calendar" aria-hidden="true"></i>
+                                                  	  </button>
+	                                                   <%if(Long.parseLong(fileStatus[7].toString())>8){ %>
+	                                                   <button class="btn btn-sm "  formaction="FileOrderRetrive.htm" title="Refresh Order"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
+	                                                   <%} %>
                                                    </form>
                                                    </td>
                                                   <%} %>
                                                </tr>
                                               </table>
-                                              
-                                              
                                             </td>
 	                                      </tr>
 	                                      <%} }%>
@@ -284,73 +285,104 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	</div>
 	
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-    <form action="upadteDemandFile.htm" method="post" onsubmit="return confirm('Are you sure to submit');">
-      <div class="modal-header">
-      <div id="headerId"> <h5 class="modal-title" id="exampleModalLabel">Modal title</h5></div>
-       
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <div class="row">
-                           <div class="col-md-8">
-								<table style="border:none; margin-top: -6px;">
-								<tr><td style="border:none; padding-bottom: .2rem;"><label class="control-label">Event Status</label></td></tr>
-								<tr><td style="border:none; padding: 0px; ">
-							<select class="custom-select selectdee" style="width:20rem;" id="selectDemand" required="required" name="statusId">
-										<option disabled="true"  selected value="">Choose...</option>
-										
-									</select>
-								</td></tr>
-								</table>
-							</div>
-						   
-						   <div class="col-md-4">
-						     	<label class="control-label">Event Date</label>
-						     	<input type="text" class="form-control" name="eventDate" id="eventDate" required="required" readonly="readonly" >
-						   </div>
-                      </div>
-                    
-<!--                    <div class="row" id="orderDetails" style="display:none;">
-                           <div class="col-md-4">
-						     	<label class="control-label">Order No</label>
-						     	<input type="text" class="form-control" name="orderNo" id="orderNoId"  >
-						   </div>
-						   
-						    <div class="col-md-4">
-						     	<label class="control-label">Order Cost</label>
-						     	<input type="number" class="form-control" name="orderCost" max="9999999999" id="orderCostId"  >
-						   </div>
-						   
-						   <div class="col-md-4">
-						     	<label class="control-label">DP Date</label>
-						     	<input type="text" class="form-control" name="dpDate" id="DPdateId" readonly="readonly" >
-						   </div>
-                  </div> -->
-                  
-                    <div class="row">
-                       <div class="col-md-12">
-						     	<label class="control-label">Remarks</label>
-						     	<input type="text" class="form-control" name="remarks" id="remarksId" value="Nil" required="required">
-						   </div>
-                      </div>
-      </div>
-      <div class="modal-footer">
-      <input type="hidden" name="projectId" value="<%=projectId%>" />
-        <input type="hidden" name="fileId" id="updateFileId" />
-         <input type="hidden" name="demandNo" id="DemandNo" />
-      	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn submit">Submit</button>
-      </div>
-         </form>
-    </div>
-  </div>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form action="upadteDemandFile.htm" method="post" onsubmit="return confirm('Are you sure to submit');">
+				<div class="modal-header">
+					<div id="headerId">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					</div>
+
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-8">
+							<table style="border: none; margin-top: -6px;">
+								<tr>
+									<td style="border: none; padding-bottom: .2rem;">
+										<label class="control-label">Event Status</label>
+									</td>
+								</tr>
+								<tr>
+									<td style="border: none; padding: 0px;">
+										<select	class="custom-select selectdee" style="width: 20rem;" id="selectDemand" required="required" name="statusId">
+											<option disabled="true" selected value="">Choose...</option>
+	
+										</select>
+									</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="col-md-4">
+							<label class="control-label">Event Date</label> <input
+								type="text" class="form-control" name="eventDate" id="eventDate"
+								required="required" readonly="readonly">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<label class="control-label">Remarks</label> <input type="text" class="form-control" name="remarks" id="remarksId" value="Nil" required="required">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="projectId" value="<%=projectId%>" /> 
+					<input type="hidden" name="fileId" id="updateFileId" /> 
+					<input type="hidden" name="demandNo" id="DemandNo" /> 
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn submit">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-	<script type="text/javascript">
+
+<div class="modal fade" id="PDCModal" tabindex="-1" role="dialog" aria-labelledby="PDCModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form action="UpdateFilePDCInfo.htm" method="post" >
+				<div class="modal-header">
+					<div>
+						<h5 class="modal-title" id="PDCModalLabel">Modal title</h5>
+					</div>
+
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-4">
+							<label class="control-label">PDC</label> 
+							<input type="text" class="form-control" name="PDCDate" id="PDCDate" required="required" readonly="readonly">
+						</div>
+
+						<div class="col-md-8">
+							<label class="control-label">Available for Integration by</label> 
+							<input type="text" class="form-control" name="IntegrationDate" id="IntegrationDate" required="required" readonly="readonly" style="width: 50%;">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="projectId" value="<%=projectId%>" /> 
+					<input type="hidden" name="fileId" id="pdcFileId" /> 
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button>
+					<button type="submit" class="btn btn-sm submit">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
 
 function submitForm(frmid)
 { 
@@ -473,27 +505,57 @@ $('#exampleModal').on('shown.bs.modal', function () {
 
 </script>
 
-<!-- <script type="text/javascript">
 
-		var coll = document.getElementsByClassName("collapsiblediv");
-		var i;
-		
-		for (i = 0; i < coll.length; i++) {
-		  coll[i].addEventListener("click", function() {
-		    this.classList.toggle("activea");
-		    var content = this.nextElementSibling;
-		    if (content.style.display === "block") {
-		      content.style.display = "none";
-		    } else {
-		      content.style.display = "block";
-		    }
-		  });
+<script type="text/javascript">
+
+function openPDCform(fileId){
+	$.ajax({
+		type : "GET",
+		url : "getFilePDCInfo.htm",
+		data : {
+			fileid : fileId,
+		},
+		datatype : 'json',
+		success : function(result) {
+			var values = JSON.parse(result);
+            $("#pdcFileId").val(fileId);
+            
+            var PDCDate = new Date();
+            var IntegrationDate = new Date();
+            if(values[5]!==null){     PDCDate =  new Date(values[5]); }
+            if(values[6]!==null){     IntegrationDate = new Date(values[6]); }
+            console.log(values[6]);
+            $('#PDCDate').daterangepicker({
+            	"singleDatePicker" : true,
+            	"linkedCalendars" : false,
+            	"showCustomRangeLabel" : true,
+                "startDate" : PDCDate,
+            	"cancelClass" : "btn-default",
+            	showDropdowns : true,
+            	locale : {
+            		format : 'DD-MM-YYYY'
+            	}
+            });
+            $('#IntegrationDate').daterangepicker({
+            	"singleDatePicker" : true,
+            	"linkedCalendars" : false,
+            	"showCustomRangeLabel" : true,
+            	"startDate" : IntegrationDate,
+            	"cancelClass" : "btn-default",
+            	showDropdowns : true,
+            	locale : {
+            		format : 'DD-MM-YYYY'
+            	}
+            });
+            
+            $("#PDCModalLabel").html('Demand No : '+result[1]);
 		}
-		
-		
-
-</script> -->
+	});	
+	
 
 
+}
+
+</script>
 </body>
 </html>
