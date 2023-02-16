@@ -82,4 +82,5 @@ public interface PrintDao {
 	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception;
 	public Long RedDecAdd(RecDecDetails recdec)throws Exception;
 	public long RecDecUpdate(RecDecDetails recdec)throws Exception;
+	public Object[] GetRecDecData(String recdecid)throws Exception;
 }

@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collector"%>
 <%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
@@ -2647,23 +2648,18 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												%>
 												<tr>
 													<td style="width: 5%; text-align: center;"> <%=++i%></td>
-													<td style="width: 80%;"> <%if(obj[2].toString().equalsIgnoreCase("D")){%> 
-													
-													<b style="color: #145374;">Dec :-</b>
-													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
-													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> <b style="color: #145374;">Rec:- </b>
-													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
-													  <%}%></td>
+													<td style="width: 80%; word-wrap: break-word;">
+													<b style="color: #145374;"><%=obj[2]%> :-</b>
+													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=pointdata%><%}%>
+													  </td>
 													<td style="text-align: center;width: 5%;"> 
-													<input type="hidden" id="type<%=obj[0]%>" value="<%=obj[2]%>">
-													<input type="hidden" id="point<%=obj[0]%>" value="<%=obj[3]%>">
-													<input class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"/></td>
+													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o" style="color:#100f0e;" aria-hidden="true"></i></button></td>
 												</tr>
 												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
 											</tbody>
 										</table>
 										<div align="center">
-											<button type="button" class="btn btn-info btn-sm add" onclick="RecDecEdit('')"> ADD</button>
+											<button type="button" class="btn btn-info btn-sm add" onclick="RecDecEdit('0')"> ADD</button>
 										</div>
 									</div>
 									<div class="col-md-8"> 
@@ -2691,7 +2687,6 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
 											</div>
 										</div>
-										
 								    </div>
 									</div>
 								</div>	
@@ -4331,7 +4326,7 @@ var editor_config = {
 		disallowedContent: 'img{width,height,float}',
 		extraAllowedContent: 'img[width,height,align]',
 
-		height: 500,
+		height: 300,
 		
 		contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
 
@@ -4421,11 +4416,7 @@ $(document).ready(function() {
 		    	  locked = 0;
 		      }
 		   }
-			
 	   }   
-	   
-	  
-	   
 	});
 
 
@@ -4433,32 +4424,60 @@ $(document).ready(function() {
 
 function RecDecEdit(recdescid ){
 	
-	var type = $("#type"+recdescid).val();
-	
-		if(type=='D'){
-			 $('#decision').prop('checked',true);
-		}else if(type=='R'){
-			 $('#recommendation').prop('checked',true);
-		}else{
+	 if(recdescid=='0'){
+		     CKEDITOR.instances['ckeditor1'].setData("");
+			 $("#recdecid").val("");
 			 $('#decision').prop('checked',false);
 			 $('#recommendation').prop('checked',false);
-		}
-	
-	$("#recdecid").val(recdescid);
-	CKEDITOR.instances['ckeditor1'].setData($("#point"+recdescid).val());
-	
+	 }else{
+			$.ajax({
+				type : "GET",
+				url : "Getrecdecdata.htm",
+				data : {
+					recdesid : recdescid,
+				},
+				datatype : 'json',
+				success : function(result){
+					var result = JSON.parse(result);
+					var type = result[2];
+					
+					if(type=='D'){
+						 $('#decision').prop('checked',true);
+					}else if(type=='R'){
+						 $('#recommendation').prop('checked',true);
+					}else{
+						 $('#decision').prop('checked',false);
+						 $('#recommendation').prop('checked',false);
+					}
+					$("#recdecid").val(result[0]);
+					CKEDITOR.instances['ckeditor1'].setData(result[3]);
+				}
+			});
+	 }
 }
 
 function RecDecmodal(recdescid)
 {
-	var type = $("#type"+recdescid).val();
-	if(type=='D'){
-		$("#val1").html("Decision");
-	}else if(type=='R'){
-		$("#val1").html("Recommendation");
-	}
-	$("#recdecdata").html($("#point"+recdescid).val());
-	$('#recdecmodel').modal('toggle');
+	$.ajax({
+			type : "GET",
+			url : "Getrecdecdata.htm",
+			data : {
+				recdesid : recdescid,
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				var type = result[2];
+				if(type=='D'){
+					$("#val1").html("Decision");
+				}else if(type=='R'){
+					$("#val1").html("Recommendation");
+				}
+				$("#recdecdata").html(result[3]);
+				$('#recdecmodel').modal('toggle');
+			}
+	});
+	
 }
 function checkData(formid)
 {

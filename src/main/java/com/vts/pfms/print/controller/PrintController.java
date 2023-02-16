@@ -3590,5 +3590,18 @@ public class PrintController {
 				return "static/error";
 			}
 		}
-	    
+		
+		@RequestMapping(value = "Getrecdecdata.htm" ,method = RequestMethod.GET)
+		public @ResponseBody String Getrecdecdata(HttpServletRequest req)throws Exception
+		{
+			Object[] list=null;
+			try {
+				String recdecid = req.getParameter("recdesid");
+				 list = service.GetRecDecData(recdecid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Gson json = new Gson();
+			return json.toJson(list);
+		}
 }

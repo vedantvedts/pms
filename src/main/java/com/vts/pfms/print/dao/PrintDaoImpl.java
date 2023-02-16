@@ -869,4 +869,17 @@ public class PrintDaoImpl implements PrintDao {
 		        updatequery.setParameter("modifieddate", recdec.getModifiedDate());
 		        return updatequery.executeUpdate();
 		}
+		private static final String GETRECDECDATA="SELECT a.recdecid , a.scheduleid , a.type , a.point FROM pfms_recdec_point a WHERE a.recdecid=:recdecid ";
+		@Override
+		public Object[] GetRecDecData(String recdecid)throws Exception
+		{
+			 Query query=manager.createNativeQuery(GETRECDECDATA);
+			 query.setParameter("recdecid", recdecid);
+			 Object[] result=null;
+			 List<Object[]> list=(List<Object[]> )query.getResultList();
+			 if(list!=null && list.size()>0) {
+				 result=list.get(0);
+			 }
+			return result;
+		}
 }
