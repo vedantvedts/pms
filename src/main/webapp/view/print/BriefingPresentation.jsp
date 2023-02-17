@@ -3102,23 +3102,18 @@
 					<% } %> --%>
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 											<thead>
-												<tr><th style="width: 5%;">SN</th><th style="width: 10%;">Type</th><th style="width: 85%;">Details</th></tr>
+												<tr><th style="width: 5%;">SN</th><th style="width: 5%;">Type</th><th style="width: 85%;">Details</th></tr>
 											</thead>
 											<tbody>
 												<%int i=0; if(RecDecDetails!=null && RecDecDetails.size()>0){ 
 												for(Object[] obj :RecDecDetails){%>
 												<tr>
 													<td style="width: 5%; text-align: center;"> <%=++i%></td>
-													<td style="width: 10%; text-align: center;"> 
-													<%if(obj[2].toString().equalsIgnoreCase("D")){%> 
-															Decision
-													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> Recommendation													 
-													  <%}%></td>
+													<td style="width: 5%; text-align: center;"> <%=obj[2]%></td>
 													<td style="width: 85%;  word-wrap: break-word;"> <%=obj[3]%></td>
-													
 												</tr>
 												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
-					</tbody>
+											</tbody>
 					</table>
 				</div>
 			</div>

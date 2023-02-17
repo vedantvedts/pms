@@ -86,4 +86,5 @@ public interface PrintService {
 	public Object headofaccountsList(String projecttypeid) throws Exception;
 	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception;
 	public Long RedDecAdd(RecDecDetails recdec, String userid)throws Exception;
+	public Object[] GetRecDecData(String recdecid)throws Exception;
 }

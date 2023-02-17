@@ -1107,7 +1107,6 @@ public class OnBoardingController {
 					CellStyle unlockedCellStyle = workbook.createCellStyle();
 					unlockedCellStyle.setLocked(true);
 					
-					
 					row=sheet.createRow(1);
 					row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
 					row.createCell(1).setCellValue("User Name");sheet.setColumnWidth(1, 5000);
@@ -1119,7 +1118,6 @@ public class OnBoardingController {
 						row.createCell(1).setCellValue("");
 						row.createCell(2).setCellValue("");
 						row.createCell(3).setCellValue("");
-
 			
 					    res.setContentType("application/vnd.ms-excel");
 			            res.setHeader("Content-Disposition", "attachment; filename=LoginMaster.xls");	
@@ -1150,9 +1148,7 @@ public class OnBoardingController {
 					                
 					                //iterate over each cell to print its value       
 					                for(int j=1;j<cellcount;j++){
-					                	
 					                	if(j==1) {
-					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
 				                            case Cell.CELL_TYPE_BLANK:
 				                            	break;
@@ -1164,7 +1160,6 @@ public class OnBoardingController {
 				                            	break;
 						                	}
 				                		}
-					                	
 					                	if(j==3) {
 					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
@@ -1179,7 +1174,6 @@ public class OnBoardingController {
 				                            	break;
 						                	}
 				                		}
-					                	
 					                	if(j==2) {
 					                		
 				                			switch (sheet.getRow(i).getCell(j).getCellType()){
@@ -1194,9 +1188,7 @@ public class OnBoardingController {
 				                            	break;
 						                	}
 				                		}
-					                	
 					                }
-					                
 					                String Userid = (String) ses.getAttribute("Username");
 					                List<Object[]> emplist= officerlist.stream().filter(e-> UserManageAdd.getEmployee().equalsIgnoreCase(e[1].toString())).collect(Collectors.toList());
 				                	if(emplist !=null && emplist.size()>0) {
@@ -1208,12 +1200,8 @@ public class OnBoardingController {
 				                		return "redirect:/UserManagerList.htm";
 				                	}
 					    			UserManageAdd.setRole("1"); 
-					    			
-					               count +=adminservice.UserManagerInsertFromExcel(UserManageAdd , Userid);
-						                
+					               count +=adminservice.UserManagerInsertFromExcel(UserManageAdd , Userid);    
 					            }
-					                           
-					           
 								if (count > 0) {
 									redir.addAttribute("result", "USER ADD SUCCESSFULLY");
 								} else {

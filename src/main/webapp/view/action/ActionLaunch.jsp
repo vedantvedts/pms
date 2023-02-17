@@ -535,7 +535,7 @@ a:hover {
 															%>
 														     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
 															<%}}}%>
-															<option value="@EXP"> Expert</option>
+															<!-- <option value="@EXP"> Expert</option> -->
 														</select>	
 				                              </div>
 			                         </div>
