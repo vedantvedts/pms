@@ -494,15 +494,15 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="row card-header" style="">
-			   			<div class="col-md-4">
+			   			<div class="col-md-5"  style="margin-top: -8px;">
 							<h3>Project Briefing Paper</h3>
 						</div>							
-						<div class="col-md-8 justify-content-end" style="float: right;margin-top: -15px;">
+						<div class="col-md-7 justify-content-end" style="float: right;margin-top: -17px;">
 						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
-									<td  style="border: 0 "><h6>Project </h6></td>
-									<td  style="border: 0 ">
+									<td  style="border: 0 ;padding-top: 13px;"><h6>Project </h6></td>
+									<td  style="border: 0 ;">
 										
 										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<%for(Object[] obj : projectslist){ %>
@@ -510,7 +510,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 											<%} %>
 										</select>
 									</td>
-									<td  style="border: 0 "><h6>Committee</h6></td>
+									<td  style="border: 0;padding-top: 13px; "><h6>Committee</h6></td>
 									<td  style="border: 0 ">
 										
 										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
