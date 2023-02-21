@@ -517,17 +517,14 @@
 	}
 
 	.cashoutgo .primary{
-			/* background-color:#083AA9 !important; */
 			background-color: #5C192F !important; 
 		}
 		
 	.cashoutgo .bg-success{
-			/* background-color:#FF8B13 !important; */
 			background-color:#466136 !important; 
 		}
 		
 	.cashoutgo .bg-info{
-			/* background-color:#3E6D9C !important; */
 			background-color:#591A69 !important;
 			 
 		}
@@ -2657,7 +2654,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 											%>
 										
 											<tr>
-												<td><a href="javascript:ProjectDetails('<%=obj[2]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td><a href="javascript:ProjectDetails('<%=obj[2]%>','<%=obj[46]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td   style="font-weight: 800; font-size:1rem;text-align:left;
 												
 														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>color: green<%} 
@@ -2874,11 +2871,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 	<div class="card" style="background: white;display:none;margin: -2px 10px" id="projectgraph">
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden ">
 			<div  style="float: right;margin: 10px">
-				<!-- <button class="btn btn-sm back" onclick="overalldetails('A')">BACK</button> -->
 				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
 				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
 				<br>
-				<!-- <button class="btn btn-sm back" style="margin-top: 10px;padding: 3px 19px;" onclick="overalldoc()"><i class="fa fa-file-text-o" aria-hidden="true"></i> DOC </button> -->
 			</div>
 			
 			<div class="row">
@@ -2897,10 +2892,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 						<div id="containerh3"></div>
 					</figure>
 				</div>
-				<!-- <div class="col-md-1">
-					<button class="btn btn-sm back" style="float: right;margin: 10px" onclick="overalldetails('A')">Details</button>
-					<button class="btn btn-sm back" style="float: right;margin: 10px" onclick="overalldetails('A')">DOC</button>
-				</div> -->
 			</div>
 			<hr>
 			<div class="row">
@@ -3635,6 +3626,54 @@ String IsDG = (String)request.getAttribute("IsDG");
 	</form>
 
 
+
+
+<script type="text/javascript">
+
+
+function ProjectDetails(value,ProjectCode)
+{
+	$("#overalldiv").css("display","none");
+	$('#projectgraph').css("display","block");
+	
+	$('#projectiddoc').val(value);
+	$('#projectidchanges').val(value);
+	charts(value);
+	
+	$('#COG-Buildup-row').hide();
+	$('#COG-Total-row').hide();
+	$('#cashoutgotable').scrollTop(0);
+	CashOutGoProject(ProjectCode);
+}
+
+function LabDetails(value){
+	
+	$("#labcode").val(value);
+	$('#labdetailsform').submit();
+	
+}
+
+
+function overalldetails(value){
+	
+	$("#overalldiv").css("display","block");
+	$('#projectgraph').css("display","none");
+	$('#projectidchanges').val("A");
+	
+	charts(value);
+	
+	$('#COG-Buildup-row').show();
+	$('#COG-Total-row').show();
+	CashOutGoProject('0');
+}
+
+
+
+
+
+</script>
+
+
 <script type="text/javascript">
 $(function () {
     $("[data-toggle='tooltip']").tooltip({
@@ -3747,36 +3786,6 @@ function overalldoc(){
 
 <script type="text/javascript">
 
-function ProjectDetails(value){
-	
-	$("#overalldiv").css("display","none");
-	$('#projectgraph').css("display","block");
-	
-	$('#projectiddoc').val(value);
-	$('#projectidchanges').val(value);
-	/* individualprojectdetails(value); */
-	charts(value);
-	
-}
-
-function LabDetails(value){
-	
-	$("#labcode").val(value);
-	$('#labdetailsform').submit();
-	
-}
-
-
-function overalldetails(value){
-	
-	$("#overalldiv").css("display","block");
-	$('#projectgraph').css("display","none");
-	$('#projectidchanges').val("A");
-	
-	/* individualprojectdetails(value); */
-	charts(value);
-	
-}
 
 $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
@@ -3797,9 +3806,6 @@ $('.btn-toggle').click(function() {
     
     
 });
-
-/* $('.btn1').css('background-color','green');
-$('.btn1').css('color','white'); */
 
 $('.btn4').hide(); 
 
@@ -4273,9 +4279,7 @@ function charts(value){
 	
 $projectid=value;
 	
-	$
-		
-		.ajax({
+	$.ajax({
 		
 			type:"GET",
 			url:"IndividualProjectDetails.htm",
@@ -4868,8 +4872,7 @@ $projectid=value;
 		
 				
 				
-		$
-		.ajax({
+		$.ajax({
 		
 			type:"GET",
 			url:"ChangesDataTotalCount.htm",
@@ -4890,8 +4893,6 @@ $projectid=value;
 				document.getElementById('todaychangescount').innerHTML = values[0] + values[3] + values[6] + values[9] ;
 				document.getElementById('weeklychangescount').innerHTML = values[1] + values[4] + values[7] + values[10] ;
 				document.getElementById('monthlychangescount').innerHTML = values[2] + values[5] + values[8] + values[11] ;
-				
-				
 			}
 
 		})
