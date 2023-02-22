@@ -3680,6 +3680,7 @@ $(function () {
         animated: 'fade',
         placement: 'top',
         html : true,
+        boundary: 'window'
     });
 });
 
@@ -3791,6 +3792,7 @@ $('.progress-bar[data-toggle="tooltip"]').tooltip({
     animated: 'fade',
     placement: 'bottom',
     html : true,
+    boundary: 'window'
 });
 
 $('.btn-toggle').click(function() {
