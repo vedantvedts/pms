@@ -45,6 +45,11 @@ String committeeid=(String)request.getAttribute("committeeid");
 List<Object[]>  projapplicommitteelist=(List<Object[]>)request.getAttribute("projapplicommitteelist");
 List<Object[]> recomlist = (List<Object[]>)request.getAttribute("recomendation");
 String RecOrDecision = (String)request.getAttribute("recOrDecision");
+
+Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Object[]>>>)request.getAttribute("actualRecDecought");
+
+
+
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -77,8 +82,8 @@ if(ses1!=null){
 				   			<div class="col-md-3">
 				   			<%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("R")){%>
 								<h4 style="font-size: 1.65rem;">Recommendation List</h4>
-								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> <h4>Decision List </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> 
-								<h4>Decision Sought </h4><%}%>
+								<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%> <h4>Decision List </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> 
+								<h4>Decision Sought </h4><%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("RS")){%> <h4 style="font-size: 1.4rem;">Recommendation Sought </h4><%}%>
 							</div>		
 							<div class="col-md-3 justify-content-end" style="margin-top: -8px;">
 								<table  >
@@ -104,9 +109,10 @@ if(ses1!=null){
 										<td>
 											<select class="form-control items" name="recOrDecision"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange='submitForm();' >
 													<option disabled  selected value="">Choose...</option>
-													<option value="D"  <%if(RecOrDecision!=null && RecOrDecision.equals("D")){ %>selected <%} %> >Decision</option>
-									   				<option value="R"  <%if(RecOrDecision!=null && RecOrDecision.equals("R")){ %>selected <%} %> >Recommendation</option>
-									   				<option value="S"  <%if(RecOrDecision!=null && RecOrDecision.equals("S")){ %>selected <%} %> >Decision Sought</option>
+													<option value="D"  <%if(RecOrDecision!=null && RecOrDecision.equals("D")){ %>selected <%}%> >Decision</option>
+									   				<option value="R"  <%if(RecOrDecision!=null && RecOrDecision.equals("R")){ %>selected <%}%> >Recommendation</option>
+									   				<option value="S"  <%if(RecOrDecision!=null && RecOrDecision.equals("S")){ %>selected <%}%> >Decision Sought</option>
+									   				<option value="RS"  <%if(RecOrDecision!=null && RecOrDecision.equals("RS")){ %>selected <%}%> >Recommendation Sought</option>
 											</select>	
 										</td>
 									</tr>
@@ -154,8 +160,12 @@ if(ses1!=null){
 													data-resizable="true" data-cookie="true"
 													data-cookie-id-table="saveId" data-show-export="true"
 													data-click-to-select="true" data-toolbar="#toolbar">
+													
+													
+															
+															<%int count=0; if(!RecOrDecision.equalsIgnoreCase("S") && !RecOrDecision.equalsIgnoreCase("RS")){
+																%>
 													<thead>
-
 														<tr>
 															<th> SN</th>
 															<th> Meeting Id</th>
@@ -163,32 +173,80 @@ if(ses1!=null){
 																	Recommendation List
 																<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("D")){%>
 																	Decision List 
-																<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%>Decision Sought<%} %>
+																<%}else if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%>Actual Decision Sought<%} %>
 															</th>
-															<th><%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%>Reference<%}else{%>  Remarks <%}%></th>														</tr>
+															<th><%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%>Decision Sought <%}else{%>  Remarks <%}%></th>														
+														</tr>
+														
 													</thead>
-													<tbody>
-													
-															
-															<%int count=0; if(recomlist!=null && recomlist.size()>0){for(Object[] obj :recomlist){%>
-																<tr>
-																<td><%=++count %></td>
-																<td >
+																
+														<tbody>	
+																<%if(recomlist!=null && recomlist.size()>0){for(Object[] obj :recomlist){%>
+														<tr>
+																<td style="text-align: center;"><%=++count %></td>
+																<td>
 																	<form action="CommitteeMinutesNewDownload.htm" method="get" >
 																					<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[2] %></button>
 																					<input type="hidden" name="committeescheduleid" value="<%=obj[1] %>" />
 																					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	</form>
 																</td>
-																<td> <%=obj[3] %></td>
-																<td> <%=obj[4] %></td>
+																<td>
+																	<%=obj[3]%>
+																 </td>
+																<td> <%=obj[4] %> </td>
+														</tr>
+														<%}%> </tbody>
+															<%}}else{%>
+													<thead>
+														<tr>
+															<th> SN</th>
+															<th> Meeting Id</th>
+															<th> <%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> Decision Sought<%}else{%> Recommendation  Sought <%}%>
+															</th>
+															<th><%if(RecOrDecision!=null && RecOrDecision.equalsIgnoreCase("S")){%> Taken Decision  <%}else{%> Taken Recomendation  <%}%></th>														</tr>
+													</thead>
+																<tbody>
+																<% if(actualdecisionsought!=null && actualdecisionsought.size()>0){ 
+																	for (Map.Entry<String, List<List<Object[]>>> entry : actualdecisionsought.entrySet()) {
+																		  String[] key = entry.getKey().split("//"); 
+																		  List<List<Object[]>> value = entry.getValue();
+																		  List<Object[]> actualsought =value.get(0);
+																		  List<Object[]> sought = value.get(1);
+															%>
+															<tr>
+																	<td style="text-align: center;"><%=++count %></td>
+																	<td>
+																		<form action="CommitteeMinutesNewDownload.htm" method="get" >
+																						<button  type="submit" class="btn btn-outline-info" formtarget="_blank" > <%=key[0]%></button>
+																						<input type="hidden" name="committeescheduleid" value="<%=key[1]%>" />
+																						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																		</form>
+																	</td>
+																	<td> 
+																		<table style="border: 1px solid black; border-collapse: collapse;">
+																		<% int i=0;for(Object[] obj : actualsought){%>
+																			<tr style="border: 1px solid black; border-collapse: collapse;">
+																				<td style="border: 1px solid black; border-collapse: collapse;"><%=++i %></td>
+																				<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[1] %></td>
+																			</tr>
+																			<%}%>
+																		</table>
+																	</td>
+																	<td> 
+																		<table style="border: 1px solid black; border-collapse: collapse;">
+																		<% int j=0;for(Object[] obj : sought){%>
+																		<tr style="border: 1px solid black; border-collapse: collapse;">
+																			<td style="border: 1px solid black; border-collapse: collapse;"><%=++j %></td>
+																			<td style="border: 1px solid black; border-collapse: collapse;"><%=obj[0] %></td>
+																		</tr>
+																		<%}%>
+																		</table>
+																	 </td>
 																</tr>
+															<%}%>   
+															</tbody>
 															<%}}%>
-															
-															
-															
-															
-													</tbody>
 												</table>												
 											</div>
 										</div>
