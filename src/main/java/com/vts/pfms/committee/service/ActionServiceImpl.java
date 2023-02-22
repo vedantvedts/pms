@@ -977,6 +977,8 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	 public int ActionAssignEdit(ActionAssign assign) throws Exception
 	 {
+		
+		assign.setModifiedDate(sdf1.format(new Date()));
 		return dao.ActionAssignEdit(assign);
 	 }
 	
@@ -1235,9 +1237,20 @@ public class ActionServiceImpl implements ActionService {
 	}
 	
 	@Override
-	public List<Object[]> GetDecisionSoughtList(String projectid,String  committeeid)throws Exception{
-		return dao.GetDecisionSoughtList(projectid,committeeid);
+	public List<Object[]> GetRecDecSoughtList(String projectid,String  committeeid , String type)throws Exception{
+		return dao.GetRecDecSoughtList(projectid,committeeid,type);
 	}
 	
+	@Override
+	public List<Object[]> getActualDecOrRecSought(String scheduleid, String type)throws Exception
+	{
+		
+		return dao.getActualDecOrRecSought(scheduleid , type);
+	}
 	
+	@Override
+	public List<Object[]> getDecOrRecSought(String scheduleid , String type)throws Exception
+	{
+		return dao.getDecOrRecSought(scheduleid, type);
+	}
 }

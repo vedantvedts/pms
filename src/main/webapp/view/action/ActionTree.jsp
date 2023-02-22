@@ -1,7 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.List , java.util.stream.Collectors"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -176,6 +176,16 @@
 	border-bottom-left-radius: 10px;
 }
 
+.action-box-body1
+{
+	padding:5px;
+	text-align: center;
+	background-color: #ffffff;
+	display: block;
+    flex-wrap: wrap;
+    border-bottom-right-radius : 10px;
+	border-bottom-left-radius: 10px;
+}
 .card-body-table
 {
 	width:100%;
@@ -316,14 +326,13 @@ td
 			                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
 			                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
 			                          									'<%=action[23].toString().trim()%>', <!-- assignee -->
-			                          									'<%=action[6]%>' <!-- action type -->
-			                          									);" >
-			                          				<%=action[11] %>
-			                          		</span >           
-			                          		
+			                          									'<%=action[6]%>', <!-- action type -->
+			                          									this);" >
+			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
 			                          	</div>
-			                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
-			                          		<table class="card-body-table">
+			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+										<div <%if(level0!=null && level0.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
+											<table class="card-body-table">
 			                          			<tr>
 			                          				<th style="width: 40%;">Assignee :</th>
 			                          				<td  >&emsp;<%=action[23] %></td>
@@ -353,6 +362,9 @@ td
 			                          				</td>
 			                          			</tr>
 			                          		</table>  
+			                          		<%if(level0!=null && level0.size()>0){ %>
+											<div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
+											<%}else{%><div style="margin-top:12px;" ></div><%}%>
 			                          	</div>
 			                        </div>
 			                    </div>
@@ -380,9 +392,7 @@ td
 						                          		<%}else if(  progress_L1 >= 76 && progress_L1 <= 100 ){ %>
 						                          			class="action-box-header Q4"
 						                          		<%} %>
-						                          		
 						                          	  >
-													    
 													    <span style="cursor:pointer;font-weight: 600;" 
 							                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
 							                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
@@ -393,13 +403,14 @@ td
 							                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
 							                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
 							                          									'<%=action_L1[23].toString().trim()%>', <!-- assignee -->
-							                          									'<%=action_L1[6]%>' <!-- action type -->
-							                          									);" >                      		
+							                          									'<%=action_L1[6]%>', <!-- action type -->
+							                          									this);" >                      		
 														
-														<%=action_L1[11] %></span >    
+														 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L1[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L1[11]%>" aria-hidden="true"></i></span >    
 														       
 													</div>
-													<div class="action-box-body" align="center" style="cursor: pointer ;">
+													<%List<Object[]> level1 =actionslist.stream().filter(e->  Long.parseLong(action_L1[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+													<div <%if(level1!=null && level1.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
 														<table class="card-body-table">
 															<tr>
 						                          				<th style="width: 40%;">Assignee :</th>
@@ -430,6 +441,9 @@ td
 						                          				</td>
 						                          			</tr>
 														</table>
+														<%if(level1!=null && level1.size()>0){ %>
+														 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
+														<%}else{%><div style="margin-top:12px;" ></div><%}%>
 													</div>
 												</div>
 											</div>
@@ -473,13 +487,12 @@ td
 									                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
 									                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
 									                          									'<%=action_L2[23].toString().trim()%>', <!-- assignee -->
-							                          											'<%=action_L2[6]%>' <!-- action type -->
-									                          									);" >              
-																	
-																	
-																	<%=action_L2[11] %></span >           
+							                          											'<%=action_L2[6]%>', <!-- action type -->
+									                          									this);" > 
+																	 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L2[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L2[11]%>" aria-hidden="true"></i></span >           
 																</div>
-																<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
+																<%List<Object[]> level2 =actionslist.stream().filter(e->  Long.parseLong(action_L2[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+																	<div <%if(level2!=null && level2.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
 																	<table class="card-body-table">
 																		<tr>
 									                          				<th style="width: 40%;">Assignee :</th>
@@ -510,6 +523,9 @@ td
 									                          				</td>
 									                          			</tr>
 																	</table>
+																 <%if(level2!=null && level2.size()>0){ %>
+																 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
+																 <%}else{%><div style="margin-top:12px;" ></div><%}%>
 																</div>
 															</div>
 														</div>
@@ -550,13 +566,12 @@ td
 													                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
 													                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
 													                          									'<%=action_L3[23].toString().trim()%>', <!-- assignee -->
-							                          															'<%=action_L3[6]%>' <!-- action type -->
-													                          									);" >      
-																									
-																					<%=action_L3[11] %></span >           
-																				      
+							                          															'<%=action_L3[6]%>', <!-- action type -->
+													                          									this);" >      
+																									&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L3[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L3[11]%>" aria-hidden="true"></i></span >     
 																				</div>
-																				<div class="action-box-body" align="center" style="cursor: pointer ;">
+																					<%List<Object[]> level3 =actionslist.stream().filter(e->  Long.parseLong(action_L3[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+																				<div <%if(level3!=null && level3.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
 																					<table class="card-body-table">
 																						<tr>
 													                          				<th style="width: 40%;">Assignee :</th>
@@ -587,6 +602,9 @@ td
 													                          				</td>
 													                          			</tr>
 																					</table>
+																				<%if(level3!=null && level3.size()>0){ %>
+																				 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
+																				 <%}else{%><div style="margin-top:12px;" ></div><%}%>
 																				</div>
 																			</div>
 																		</div>
@@ -627,14 +645,12 @@ td
 																		                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
 																		                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
 																		                          									'<%=action_L4[23].toString().trim()%>', <!-- assignee -->
-							                          																				'<%=action_L4[6]%>' <!-- action type -->
-																		                          									);" >
-																										
-																										
-																										<%=action_L4[11] %></span >           
-																									     
+							                          																				'<%=action_L4[6]%>', <!-- action type -->
+																		                          									this);" >
+																										&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L4[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L4[11]%>" aria-hidden="true"></i></span > 
 																									</div>
-																									<div class="action-box-body"  style="cursor: pointer ;">
+																								<%List<Object[]> level4 =actionslist.stream().filter(e->  Long.parseLong(action_L4[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+																									<div <%if(level4!=null && level4.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">																			
 																										<table class="card-body-table">
 																											<tr>
 																		                          				<th style="width: 40%;">Assignee :</th>
@@ -665,11 +681,12 @@ td
 																		                          				</td>
 																		                          			</tr>
 																										</table>
+																									<%if(level4!=null && level4.size()>0){ %>
+																									 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
+																									 <%}else{%><div style="margin-top:12px;" ></div><%}%>
 																									</div>
 																								</div>
 																							</div>
-																					    
-																					    
 															                		</li>
 																				<% } %>
 																			<%} %>
@@ -798,8 +815,15 @@ $(function () {
     $('.genealogy-tree li .action-box-body').on('click', function (e) {
 		
         var children = $(this).parent().parent().parent().find('> ul');
-        if (children.is(":visible")) children.hide('fast').removeClass('active');
-        else children.show('fast').addClass('active');
+        if (children.is(":visible")) {
+        	children.hide('fast').removeClass('active');
+        	$(this).find('i').removeClass('fa fa-caret-down');
+        	$(this).find('i').addClass('fa fa-caret-up');
+        } else {
+        	children.show('fast').addClass('active');
+        	$(this).find('i').removeClass('fa fa-caret-up');
+        	$(this).find('i').addClass('fa fa-caret-down');
+    	}
         e.stopPropagation();
     });
 });
@@ -810,7 +834,7 @@ $(function () {
 
 <script type="text/javascript">
 
-function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg, InAssignor,InAssignee, InActionType	)
+function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg, InAssignor,InAssignee, InActionType ,	Inobj)
 {
 		$("#modal_progress_table").DataTable().destroy();
 		$.ajax({		
@@ -909,13 +933,10 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 				}
 				setModalDataTable();
 				$('#modal_progress_table_body').html(htmlStr);
-				
-				
+				document.getElementById(InActionNo).className = "fa fa-minus-circle fa-lg";
 				$('#action_modal').modal('toggle');
 			}
 		});
-		
-		
 	}
 	setModalDataTable();
 	function setModalDataTable()
@@ -926,6 +947,11 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 			"pageLength": 5
 		});
 	}
+	
+	$('#action_modal').on('hide.bs.modal', function(){
+		var id= $("#modal_action_no").html();
+		document.getElementById(id).className = "fa fa-plus-circle fa-lg"; 
+	})
 </script>
 
 </body>

@@ -49,7 +49,7 @@ h6{
 	float: left;
 	z-index: 9;
 	display: inline-block;
-	width: 28px;
+	width: 29px;
 	height: 52px;
 	box-sizing: border-box;
 	margin: 0 5px 0 0;
@@ -339,12 +339,12 @@ a:hover {
 														<tr>
 															<th>SN</th>
 															<th style="text-align: left;">Action Item</th>
-															<th class="width-110px">PDC</th>
+															<th class="width-110px" >PDC</th>
 															<th class="width-110px">Assigned Date</th>									
 														 	<th>Assignee</th>	
-														 	<th class="width-125px" >Progress</th>
-														 	<th >Is Seen</th>
-														 	<th  >Action</th>
+														 	<th style="width: 100.5312px"> Progress</th>
+														 	<th> Is Seen</th>
+														 	<th> Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -355,10 +355,10 @@ a:hover {
 														<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
-															<td class="width-30px"><%=sdf.format(obj[4])%></td>
+															<td class="width-30px" ><%=sdf.format(obj[4])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td ><%=obj[1]%>, <%=obj[2]%></td>
-															<td style="width:10% !important; "><%if(obj[11]!=null){ %>
+															<td style="width:20% !important; "><%if(obj[11]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[11]%>
@@ -387,21 +387,13 @@ a:hover {
 											                        <span>Actions</span>
 											                      </div>
 											                     </div> 
-															</button>
-															
-															<%-- <button type="submit"  class="editable-click" name="ActionAssignid" value="<%=obj[15]%>" formtarget="blank"  formaction="ActionTree.htm" formmethod="POST"  >
-																
-																<i class="fa fa-solid fa-sitemap"></i>
-															    
-															</button> --%>
-															                  
+															</button>                 
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 														    <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 														    <input type="hidden" name="ActionAssignId" value="<%=obj[15]%>"/>
 														 
 														
-														<%if(obj[11]==null && "0".equals(obj[16].toString())){ %>	
-															
+														<%if(obj[11]==null && "0".equals(obj[16].toString())){%>
 																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[15]%>'); ">
 																	<div class="cc-rockmenu">
 											                    	  <div class="rolling">
@@ -410,8 +402,7 @@ a:hover {
 																	  </div>
 																	</div>
 																</button>  
-												            
-                                                        <%} %>
+                                                        <%}%>
 											         	
 											         		</form> 
 														</td>
@@ -420,29 +411,20 @@ a:hover {
 												<tr>
 													<td colspan="6" style="text-align: center">No List Found</td>
 												</tr>
-												<%} %>
+												<%}%>
 												</tbody>
 												</table>
-														
 														<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-
-
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-
 							</div>
-							
 						</div>
-
-						
 					</div>
-
 				</div>
-
 			</div>
 			
 			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="newfilemodal">
@@ -457,14 +439,14 @@ a:hover {
 						<div class="modal-body" align="center">
 							<form action="ActionEditSubmit.htm" method="post" autocomplete="off" id="editform" >
 								<table style="width: 100% ; padding: 15px;">
-									<tr >
-										<th style="padding: 10px 0px; width: 20% ;"> Action Item </th>
+									<tr>
+										<th style="padding: 10px 0px; width: 20% ;"> Action Item :</th>
 										<td style="padding: 10px 0px; "> 
 											<textarea name="actionitem" class="form-control" id="modalactionitem" maxlength="500" required="required" rows="4" cols="60"></textarea>
 										</td>
 									</tr>
 									<tr>
-										<th>Lab</th>
+										<th>Lab  :</th>
 										<td>
 										<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" style=" width: 100% !important ;" onchange="AssigneeEmpListForEdit(0);" >
 											 <%if(AllLabList!=null && AllLabList.size()>0){
@@ -473,12 +455,12 @@ a:hover {
 											 %>
 												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
 											<%}}}%> 
-											<option value="@EXP">Expert</option>
+											<!-- <option value="@EXP">Expert</option> -->
 										</select>
 										</td>
 									</tr>
 									<tr>
-										<th style="padding: 10px 0px; width: 20% ;" >Assignee</th>
+										<th style="padding: 10px 0px; width: 20% ;" >Assignee  :</th>
 										<td style="padding: 10px 0px; width: 50% !important ;" >
 											<select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
 												<%-- <%for(Object[] obj:EmpListmodal){ %>	
@@ -488,7 +470,7 @@ a:hover {
 										</td>
 									</tr>
 									<tr>
-										<th style="padding: 10px 0px; width: 20% ;"> PDC </th>
+										<th style="padding: 10px 0px; width: 20% ;"> PDC  :</th>
 										<td style="padding: 10px 0px;  width: 30% ; "  >
 											<input type="text" name="newPDC" value="" class="form-control" id="modalipdc1"  readonly required >
 											<input type="text" name="newPDC1" value="" class="form-control" id="modalipdc2"  readonly required onclick="alert('PDC Revision Limit Exceded !!');">
@@ -496,13 +478,11 @@ a:hover {
 									</tr>
 								</table>
 								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn"  >SUBMIT</button>
-								
 								<input type="hidden" name="actionmainid" id="modalactionmainid" value="">
 								<input type="hidden" name="actionassigneid" id="modalactionassignid" value="">
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 							</form>
 						</div>
-						
 					</div>
 				</div>
 			</div>
@@ -519,13 +499,12 @@ a:hover {
 						<div class="modal-body" >
 							<form name="specadd" id="specadd" action="ActionSubmit.htm" method="post">
   
-				   			<div class="row" >
-								
-									  <div class="col-2" ></div>
+				   			<div class="row">
+									  <div class="col-2"></div>
 				  				      
-			                          <div class="col-3" >
+			                          <div class="col-3">
 				                             <div class="form-group">
-				                                      <label > Lab : <span class="mandatory" style="color: red;">* </span></label>
+				                                      <label> Lab : <span class="mandatory" style="color: red;">* </span></label>
 				                                       <br>
 				                                       <select class=" form-control selectdee" style="width: 100%;" name="AssigneeLabCode" id="AssigneeLabCode" required="required" style="margin-top: -5px" onchange="AssigneeEmpList()" >
 															<option disabled="disabled"  selected value="" >Choose...</option>
@@ -540,12 +519,10 @@ a:hover {
 				                              </div>
 			                         </div>
 			
-			
-			                         <div class="col-4"  >
+			                         <div class="col-4">
 			                               <div class="form-group">
-											    <label > Assignee : </label><br>
+											    <label> Assignee : </label><br>
 												<select class="form-control selectdee" style="width: 100%;" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
-													
 												</select>
 											</div>
 									</div>

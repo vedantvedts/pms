@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -84,6 +85,8 @@ public class ActionController {
 	
 	@Autowired 
 	CommitteeService committeservice;
+	
+	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
@@ -2135,6 +2138,8 @@ public class ActionController {
 			main.setActionItem(req.getParameter("actionitem"));
 			main.setModifiedBy(UserId);
 			ActionAssign assign=new ActionAssign();
+			assign.setPDCOrg(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
+			assign.setEndDate(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
 			assign.setAssigneeLabCode(req.getParameter("modelAssigneeLabCode"));
 			assign.setAssignee(Long.parseLong(req.getParameter("Assignee")));
 			assign.setActionAssignId(Long.parseLong(req.getParameter("actionassigneid")));
@@ -2144,7 +2149,7 @@ public class ActionController {
 			 count = service.ActionAssignEdit(assign);
 			
 			if(count>0) {
-				service.ActionExtendPdc(req.getParameter("actionmainid"),req.getParameter("newPDC"), UserId , req.getParameter("actionassigneid"));
+				//service.ActionExtendPdc(req.getParameter("actionmainid"),req.getParameter("newPDC"), UserId , req.getParameter("actionassigneid"));
 			}
 	
 			if (count > 0) {
@@ -2444,8 +2449,31 @@ public class ActionController {
 					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
 					req.setAttribute("recomendation", recomendation);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
-					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
-					req.setAttribute("recomendation", DecisionSought);
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"D");
+					
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "D"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "D"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+					
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("RS")) {
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"R");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "R"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "R"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+					
 				}
 				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
 				
@@ -2492,14 +2520,35 @@ public class ActionController {
 					projectid=projectdetailslist.get(0)[0].toString();
 				}
 				if(recorDecision!=null && recorDecision.equalsIgnoreCase("D")) {
-					List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
-					req.setAttribute("recomendation", recomendation);
+					List<Object[]> decision = service.GetDecisionList(projectid,committeeid);
+					req.setAttribute("recomendation", decision);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("R")) {
 					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
 					req.setAttribute("recomendation", recomendation);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
-					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
-					req.setAttribute("recomendation", DecisionSought);
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"D");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "D"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "D"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("RS")) {
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"R");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "R"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "R"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
 				}
 				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
 				
