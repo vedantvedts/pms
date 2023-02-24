@@ -891,4 +891,15 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
+	
+	
+	private static final String ACTIONMONITORING="CALL Pfms_Action_Monitoring (:ProjectId ,:Status);";
+	@Override
+	public List<Object[]> ActionMonitoring(String ProjectId , String Status)throws Exception
+	{
+		Query query = manager.createNativeQuery(ACTIONMONITORING);
+		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("Status", Status);
+		return (List<Object[]>)query.getResultList();
+	}
 }

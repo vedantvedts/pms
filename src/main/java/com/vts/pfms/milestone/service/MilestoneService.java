@@ -78,4 +78,5 @@ public interface MilestoneService {
 	public void excelCellValuesSet(Sheet sheet, Object[] hlo, CellStyle wrapname, int rowcount) throws Exception;
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto)throws Exception;
 	public int MileActivityAssignCheck(MilestoneActivityDto dto)throws Exception;
+	public long MainMilestoneDOCUpdate(String MainId, String DateOfCompletion, String UserId) throws Exception;
 }

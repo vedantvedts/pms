@@ -51,6 +51,11 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Value("${ApplicationFilesDrive}")
     private String FilePath;
 	
+	private  SimpleDateFormat rdf=fc.getRegularDateFormat();
+	private  SimpleDateFormat sdf=fc.getSqlDateFormat();
+	private  SimpleDateFormat sdtf=fc.getSqlDateAndTimeFormat();
+	
+	
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
 		
@@ -1481,4 +1486,18 @@ public class MilestoneServiceImpl implements MilestoneService {
 
 		return Total;
 	}
+	
+	
+	
+	@Override
+	public long MainMilestoneDOCUpdate(String MainId,String DateOfCompletion, String UserId) throws Exception
+	{
+		MilestoneActivity mainms = dao.MileActivityDetails(Long.parseLong(MainId));
+		mainms.setDateOfCompletion(fc.RegularToSqlDate(DateOfCompletion));
+		mainms.setModifiedBy(UserId);
+		mainms.setModifiedDate(sdtf.format(new Date()));
+		
+		return dao.MileActivityDetailsUpdtae(mainms);
+	}
+	
 }

@@ -117,7 +117,7 @@ h6{
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
                                                          	  <option value="A"  <%if(Project.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option>	
                                                          	  <option value="0"  <%if(Project.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
-                                                           <% for(Object[] obj:ProjectList){ %>
+                                                           	<% for(Object[] obj:ProjectList){ %>
 															   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
 															<%} %>
 														</select>	        

@@ -302,10 +302,8 @@ th,td
 		 <%if(memAbscent > 0){ %>
 		 	
 		  	<tr >
-				<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Absent</th>
+				<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Following Members Could not Attend due to Prior Commitments</th>
 			</tr>
-		
-		 
 		 
 		<% 
 		int count=0;

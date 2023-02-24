@@ -2717,4 +2717,30 @@ public class MilestoneController {
 		
 		}
 		
+		
+		@RequestMapping(value = "MainMilestoneDOCUpdate.htm", method = RequestMethod.POST)
+		public String MainMilestoneDOCUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+		{
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside MainMilestoneDOCUpdate.htm "+UserId);		
+			try {
+				String MainId = req.getParameter("MSMainid");
+				String DateOfCompletion = req.getParameter("DateOfCompletion");
+				long count =service.MainMilestoneDOCUpdate(MainId, DateOfCompletion, UserId) ;
+			
+				if (count > 0) {
+					redir.addAttribute("result", "Milestone Completion Date Updated Successfuly.");
+				} else {
+					redir.addAttribute("resultfail", "Milestone Completion Date Update Unsuccessful");
+				}
+				redir.addFlashAttribute("ProjectId",req.getParameter("projectid"));
+				return "redirect:/MilestoneActivityList.htm";
+			
+			}catch (Exception e) {
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside MainMilestoneDOCUpdate.htm "+UserId, e); 
+					return "static/Error";
+			}
+		}
+		
 }

@@ -415,9 +415,8 @@ if(MinutesBack==null){
 										<label>Action Item: <span class="mandatory"
 											style="color: red;">*</span>
 										</label><br>
-										<b id="iditem" style="font-size: 18px"></b> <input
-											type="hidden" name="Item" id="additem" style="width: 100%"
-											maxlength="1000">
+										<b id="iditem" style="font-size: 18px"></b> 
+										<input type="hidden" name="Item" id="additem" style="width: 100%" maxlength="1000">
 									</div>
 								</div>
 								<div class="col-md-1" align="left"></div>
@@ -425,17 +424,15 @@ if(MinutesBack==null){
 								<div class="col-sm-3" align="left">
 									<div class="form-group">
 										<label>PDC: <span class="mandatory"
-											style="color: red;">* </span></label> <input class="form-control "
-											name="DateCompletion" id="DateCompletion" required="required"
-											placeholder=""> <input type="hidden"
-											name="meetingdate" value="<%=committeescheduleeditdata[2]%>">
+											style="color: red;">*</span></label> 
+											<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder=""> 
+											<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2]%>">
 									</div>
 								</div>
 
 								<div class="col-sm-4" align="left">
-									<label> Priority : </label> <br> <select
-										class="form-control selectdee " name="Priority" id="Priority"
-										required="required" data-live-search="true">
+									<label> Priority : </label> <br> 
+									<select class="form-control selectdee " name="Priority" id="Priority" required="required" data-live-search="true">
 										<option value="H">High</option>
 										<option value="L">Low</option>
 										<option value="M">Medium</option>
@@ -444,9 +441,8 @@ if(MinutesBack==null){
 								</div>
 
 								<div class="col-sm-4" align="left">
-									<label> Category : </label> <br> <select
-										class="form-control selectdee " name="Category" id="Category"
-										required="required" data-live-search="true">
+									<label> Category : </label> <br> 
+									<select class="form-control selectdee " name="Category" id="Category" required="required" data-live-search="true">
 										<option value="T">Technical</option>
 										<option value="F">Finance</option>
 										<option value="M">Managerial</option>
