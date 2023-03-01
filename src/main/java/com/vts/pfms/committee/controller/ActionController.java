@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -84,6 +85,8 @@ public class ActionController {
 	
 	@Autowired 
 	CommitteeService committeservice;
+	
+	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
@@ -305,6 +308,7 @@ public class ActionController {
 			assign.setCreatedBy(UserId);
 			assign.setIsActive(1);
 			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			assign.setPDCOrg(req.getParameter("MainPDC"));
 			long count =service.ActionMainInsert(mainDto , assign);
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully");
@@ -822,7 +826,6 @@ public class ActionController {
 			{
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			}
-			System.out.println("CommitteeScheduleId  :"+CommitteeScheduleId);
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
 			
 			}
@@ -852,7 +855,6 @@ public class ActionController {
 			mainDto.setActionItem(req.getParameter("Item"));
 			mainDto.setProjectId(req.getParameter("ProjectId"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
-			mainDto.setActionDate(req.getParameter("DateCompletion"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
 			mainDto.setPriority(req.getParameter("Priority"));
@@ -877,7 +879,7 @@ public class ActionController {
 			
 		ActionAssignDto assign = new ActionAssignDto();
 			
-			assign.setActionDate(req.getParameter("DateCompletion"));
+			assign.setActionDate(req.getParameter("meetingdate"));
 			assign.setAssigneeList(req.getParameterValues("Assignee"));
 			assign.setAssignor((Long) ses.getAttribute("EmpId"));
 			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
@@ -887,7 +889,8 @@ public class ActionController {
 			assign.setActionStatus("A");
 			assign.setCreatedBy(UserId);
 			assign.setIsActive(1);
-			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			assign.setPDCOrg(req.getParameter("DateCompletion"));
+			assign.setMeetingDate(req.getParameter("meetingdate"));
 			long count =service.ActionMainInsert(mainDto,assign);
 				
 			if (count > 0) {
@@ -905,7 +908,7 @@ public class ActionController {
 			}
 		
 		
-		return "redirect:/CommitteeAction.htm";
+			return "redirect:/CommitteeAction.htm";
 		}
 
 		
@@ -1457,56 +1460,56 @@ public class ActionController {
 		logger.info(new Date() +"Inside MilActionSubmit.htm "+UserId);		
 		try {
 		
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
-		redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
-		redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
-		redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
-		
-		ActionMainDto mainDto=new ActionMainDto();
-		mainDto.setLabName(LabCode);
-		mainDto.setMainId(req.getParameter("MainActionId"));
-		mainDto.setActionItem(req.getParameter("Item"));
-		mainDto.setProjectId(req.getParameter("ProjectId"));
-		mainDto.setActionLinkId(req.getParameter("OldActionNo"));
-		mainDto.setActionDate(req.getParameter("DateCompletion"));
-		mainDto.setScheduleMinutesId(req.getParameter("MilestoneActivityId"));
-		mainDto.setActionType("A");
-		mainDto.setActionStatus("A");
-		mainDto.setCategory(req.getParameter("Category"));
-		mainDto.setPriority(req.getParameter("Priority"));
-		mainDto.setActivityId(req.getParameter("ActivityId"));
-		mainDto.setType("A");
-		mainDto.setCreatedBy(UserId);
-		mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-		String actionlevel = req.getParameter("ActionLevel");
-		if(actionlevel!=null) {
-			long level = Long.parseLong(actionlevel)+1;
-			mainDto.setActionLevel(level);
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+			redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
+			redir.addFlashAttribute("ProjectId", req.getParameter("ProjectId"));
+			redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
 			
-		}else{
-			mainDto.setActionLevel(1L);
-		}
-		
-		ActionAssignDto assign = new ActionAssignDto();
-		
-		assign.setActionDate(req.getParameter("DateCompletion"));
-		assign.setAssigneeList(req.getParameterValues("Assignee"));
-		assign.setAssignor((Long) ses.getAttribute("EmpId"));
-		assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
-		assign.setAssignorLabCode(LabCode);
-		assign.setRevision(0);
-		assign.setActionFlag("N");		
-		assign.setActionStatus("A");
-		assign.setCreatedBy(UserId);
-
-		long count =service.ActionMainInsert(mainDto , assign);
-
-		if (count > 0) {
-			redir.addAttribute("result", "Action Added Successfully ");
-		} else {
-			redir.addAttribute("resultfail", "Action Add Unsuccessful");
-		}
+			ActionMainDto mainDto=new ActionMainDto();
+			mainDto.setLabName(LabCode);
+			mainDto.setMainId(req.getParameter("MainActionId"));
+			mainDto.setActionItem(req.getParameter("Item"));
+			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
+			mainDto.setActionDate(req.getParameter("DateCompletion"));
+			mainDto.setScheduleMinutesId(req.getParameter("MilestoneActivityId"));
+			mainDto.setActionType("A");
+			mainDto.setActionStatus("A");
+			mainDto.setCategory(req.getParameter("Category"));
+			mainDto.setPriority(req.getParameter("Priority"));
+			mainDto.setActivityId(req.getParameter("ActivityId"));
+			mainDto.setType("A");
+			mainDto.setCreatedBy(UserId);
+			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+			String actionlevel = req.getParameter("ActionLevel");
+			if(actionlevel!=null) {
+				long level = Long.parseLong(actionlevel)+1;
+				mainDto.setActionLevel(level);
+				
+			}else{
+				mainDto.setActionLevel(1L);
+			}
+			
+			ActionAssignDto assign = new ActionAssignDto();
+			
+			assign.setActionDate(req.getParameter("DateCompletion"));
+			assign.setAssigneeList(req.getParameterValues("Assignee"));
+			assign.setAssignor((Long) ses.getAttribute("EmpId"));
+			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
+			assign.setAssignorLabCode(LabCode);
+			assign.setRevision(0);
+			assign.setActionFlag("N");		
+			assign.setActionStatus("A");
+			assign.setCreatedBy(UserId);
+			assign.setPDCOrg(req.getParameter("DateCompletion"));
+			long count =service.ActionMainInsert(mainDto , assign);
+	
+			if (count > 0) {
+				redir.addAttribute("result", "Action Added Successfully ");
+			} else {
+				redir.addAttribute("resultfail", "Action Add Unsuccessful");
+			}
 		
 		
 		}
@@ -2092,36 +2095,7 @@ public class ActionController {
 		
 	
 	
-	@RequestMapping(value = "ActionMonitor.htm")
-	public String ActionMonitor(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{
-		String UserId =(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside ActionMonitor.htm "+UserId);		
-		try {	
-			
-			String Logintype= (String)ses.getAttribute("LoginType");
-			String fdate=req.getParameter("fdate");
-			String tdate=req.getParameter("tdate");
-			String assigneeid=req.getParameter("assigneeid");
-			
-			if(fdate==null) 
-			{	
-				
-			}
-			
-			req.setAttribute("fdate", fdate);
-		    req.setAttribute("tdate", tdate);
-		    req.setAttribute("assigneeid", assigneeid);
-		    req.setAttribute("Logintype", Logintype);
-			return "action/ActionMonitoring";
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside ActionMonitor.htm "+UserId, e);
-			return "static/Error";
-		}	
-		
-	}
+	
 	
 	@RequestMapping(value = "ActionEditSubmit.htm", method = RequestMethod.POST)
 	public String ActionEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
@@ -2135,6 +2109,8 @@ public class ActionController {
 			main.setActionItem(req.getParameter("actionitem"));
 			main.setModifiedBy(UserId);
 			ActionAssign assign=new ActionAssign();
+			assign.setPDCOrg(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
+			assign.setEndDate(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
 			assign.setAssigneeLabCode(req.getParameter("modelAssigneeLabCode"));
 			assign.setAssignee(Long.parseLong(req.getParameter("Assignee")));
 			assign.setActionAssignId(Long.parseLong(req.getParameter("actionassigneid")));
@@ -2144,7 +2120,7 @@ public class ActionController {
 			 count = service.ActionAssignEdit(assign);
 			
 			if(count>0) {
-				service.ActionExtendPdc(req.getParameter("actionmainid"),req.getParameter("newPDC"), UserId , req.getParameter("actionassigneid"));
+				//service.ActionExtendPdc(req.getParameter("actionmainid"),req.getParameter("newPDC"), UserId , req.getParameter("actionassigneid"));
 			}
 	
 			if (count > 0) {
@@ -2444,8 +2420,31 @@ public class ActionController {
 					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
 					req.setAttribute("recomendation", recomendation);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
-					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
-					req.setAttribute("recomendation", DecisionSought);
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"D");
+					
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "D"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "D"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+					
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("RS")) {
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"R");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "R"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "R"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+					
 				}
 				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
 				
@@ -2492,14 +2491,35 @@ public class ActionController {
 					projectid=projectdetailslist.get(0)[0].toString();
 				}
 				if(recorDecision!=null && recorDecision.equalsIgnoreCase("D")) {
-					List<Object[]> recomendation = service.GetDecisionList(projectid,committeeid);
-					req.setAttribute("recomendation", recomendation);
+					List<Object[]> decision = service.GetDecisionList(projectid,committeeid);
+					req.setAttribute("recomendation", decision);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("R")) {
 					List<Object[]> recomendation = service.GetRecomendationList(projectid,committeeid);
 					req.setAttribute("recomendation", recomendation);
 				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("S")) {
-					List<Object[]> DecisionSought = service.GetDecisionSoughtList(projectid,committeeid);
-					req.setAttribute("recomendation", DecisionSought);
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"D");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "D"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "D"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
+				}else if(recorDecision!=null && recorDecision.equalsIgnoreCase("RS")) {
+					List<Object[]> DecisionSought = service.GetRecDecSoughtList(projectid,committeeid,"R");
+					Map<String,List<List<Object[]>>> actualdecisionsought=new HashMap<String,List<List<Object[]>>>(); 
+					
+					for(Object[] obj :DecisionSought){
+						String keyval = obj[1].toString() +"//"+ obj[0].toString();
+						List<List<Object[]>> list = new ArrayList<List<Object[]>>();
+						list.add(service.getActualDecOrRecSought(obj[0].toString() , "R"));
+						list.add(service.getDecOrRecSought(obj[0].toString() , "R"));
+						actualdecisionsought.put(keyval, list);
+					}
+					req.setAttribute("actualRecDecought", actualdecisionsought);
 				}
 				List<Object[]> projapplicommitteelist=committeservice.ProjectApplicableCommitteeList(projectid);
 				
@@ -2514,5 +2534,61 @@ public class ActionController {
 			}
 	 		return "Issue/Decision";
 	 	}
-
+	 	
+	 	@RequestMapping(value = "ToDoReviews.htm" , method = RequestMethod.GET)
+	 	public String ToDoList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	 	{
+	 		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ToDoReviews.htm "+UserId);
+	 		try {
+	 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				List<Object[]> actionlist = service.GetActionList(EmpId);
+				
+				req.setAttribute("actionassigneelist", actionlist.stream().filter(e->  e[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
+				req.setAttribute("actionassignorlist", actionlist.stream().filter(e->  e[12].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
+			
+	 		}catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ToDoReviews.htm "+UserId, e);
+			}
+	 		return "action/ToDoReview";
+	 	}
+	 	
+	 	@RequestMapping(value = "ActionMonitoring.htm")
+		public String ActionMonitoring(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	 	{
+			String UserId = (String) ses.getAttribute("Username");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode = (String)ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside ActionMonitoring.htm "+UserId);		
+			try {
+				List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+				String projectid=req.getParameter("projectid");
+				String status=req.getParameter("status");
+				
+				if(projectid==null && projectdetailslist.size()==0)
+				{
+					redir.addAttribute("resultfail", "Reminder Removal Unsuccessful");		
+					return "MainDashBoard.htm";
+				}
+				if(projectid==null) 
+				{
+					projectid = projectdetailslist.get(0)[0].toString();
+					status = "P";
+				}
+	 			
+				req.setAttribute("projectid",projectid);
+				req.setAttribute("status",status);
+				req.setAttribute("ProjectsList",projectdetailslist);
+				req.setAttribute("ActionsList",service.ActionMonitoring(projectid, status));
+				return "action/ActionMonitoring";
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ActionMonitoring.htm "+UserId, e);
+				return "static/Error";
+			}
+			
+		}
 }

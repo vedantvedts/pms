@@ -18,4 +18,6 @@ public interface PFTSService {
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype,String LabCode) throws Exception;
 	public int FileInActive(String fileId, String userId)throws Exception;
 	public Object[] ProjectData(String projectid) throws Exception;
+	public Object[] getFilePDCInfo(String ileid) throws Exception;
+	public long UpdateFilePDCInfo(String fileid, String PDCDate, String IntegrationDate, String UserId) throws Exception;
 }

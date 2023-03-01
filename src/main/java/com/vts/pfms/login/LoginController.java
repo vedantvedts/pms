@@ -965,4 +965,32 @@ public class LoginController {
     }
    
     
+    @RequestMapping(value = "CashoutgoProject.htm", method = RequestMethod.GET)
+   	public @ResponseBody String cashoutgoProject(HttpServletRequest req, HttpSession ses) throws Exception 
+    {
+    	List<Object[]> cashoutgo=null;
+    	String LabCode=(String)ses.getAttribute("labcode");
+    	String EmpId =  ses.getAttribute("EmpId").toString();
+    	String LoginType=(String)ses.getAttribute("LoginType");
+    	String UserId = (String) ses.getAttribute("Username");
+    	String ClusterId =(String)ses.getAttribute("clusterid");
+   		logger.info(new Date() +"Inside CashoutgoProject.htm "+UserId);		
+   		try {
+   			String ProjectCode = req.getParameter("ProjectCode");
+   			
+   			if(ProjectCode.equalsIgnoreCase("0")) {
+   				cashoutgo = rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId );
+   			}else
+   			{
+   				cashoutgo = rfpmainservice.DashboardProjectFinanceCashOutGo(ProjectCode);	
+   			}
+   		}
+   		catch (Exception e) {
+   			e.printStackTrace();
+   			 logger.error(new Date() +" Inside CashoutgoProject.htm "+UserId, e);
+   		}
+   		Gson convertedgson = new Gson();
+   		return convertedgson.toJson(cashoutgo);
+   	}
+    
 }

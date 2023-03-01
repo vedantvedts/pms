@@ -121,8 +121,8 @@ a:hover {
 					<div class="card-header">
 					<form action="FeedbackList.htm" method="post">
 						<div class="row">
-							<div class="col-md-3"><h3>Feedback List</h3></div>
-							<div class="col-md-8">
+							<div class="col-md-3"><h4>Feedback List</h4></div>
+							<div class="col-md-8" style="margin-top: -10px;">
 								<table> 
 										<tr>
 										<th> Type: </th>
@@ -148,7 +148,7 @@ a:hover {
 										</tr>
 								</table>
 							</div>
-							<div class="col-md-1"><a class="btn btn-sm back" href="MainDashBoard.htm" style="float: right;">BACK</a></div>
+							<div class="col-md-1" style="margin-top: -6px;"><a class="btn btn-sm back" href="MainDashBoard.htm" style="float: right;">BACK</a></div>
 						</div>
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 						</form>

@@ -918,6 +918,7 @@ public class MasterController {
 				req.setAttribute("feedbacktype", "A");
 				return "master/FeedbackList";
 			}else {
+				req.setAttribute("FeedbackList", list);
 				return "master/FeedBack";
 			}
 		}else {
@@ -930,6 +931,7 @@ public class MasterController {
 				req.setAttribute("feedbacktype", "A");
 				return "master/FeedbackList";
 			}else {
+				req.setAttribute("FeedbackList", list);
 				return "master/FeedBack";
 			}
 		}
@@ -974,8 +976,16 @@ public class MasterController {
 	public String FeedBackpage(HttpServletRequest req, HttpSession ses) throws Exception {
 		String Userid= (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
+		String logintype=(String)ses.getAttribute("LoginType");
 		logger.info(new Date() +" Inside FeedBack.htm "+Userid);
-	
+		if(logintype!=null && logintype.equalsIgnoreCase("A")) {
+			List<Object[]> list = service.FeedbackListForUser(LabCode,"A");
+			req.setAttribute("FeedbackList", list);
+		}else {
+			String empid =  String.valueOf((Long) ses.getAttribute("EmpId"));
+			List<Object[]> list = service.FeedbackListForUser(LabCode , empid);
+			req.setAttribute("FeedbackList", list);
+		}
 		return "master/FeedBack";
 		
 	}

@@ -27,6 +27,8 @@
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	int meetingcount= (int) request.getAttribute("meetingcount");
 	
+	String[] no=committeescheduleeditdata[11].toString().split("/");
+	
 	FormatConverter fc=new FormatConverter(); 
 	SimpleDateFormat sdf=fc.getRegularDateFormat();
 	SimpleDateFormat sdf1=fc.getSqlDateFormat();
@@ -81,9 +83,16 @@ p{
           @top-left {
           	margin-top: 30px;
             margin-left: 10px;
-            content: "<%=committeescheduleeditdata[11] %>";
+            content: "<%=no[0]+"/"+no[1]+"/"+no[2] %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %><%="/"+no[3]%>";
              font-size: 13px;
           }      
+          
+          @top-center { 
+           font-size: 13px;
+          margin-top: 30px;
+          content: "<%=committeescheduleeditdata[15]%>"; 
+          
+          }
           
            @bottom-center { 
              font-size: 13px;
@@ -267,11 +276,8 @@ for(Object[] temp : invitedlist){
 	 <%if(memAbscent > 0){ %>
 	 	
 	  	<tr >
-			<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Members Absent</th>
+			<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Following Members Could not Attend due to Prior Commitments</th>
 		</tr>
-	
-	 
-	 
 	<% 
 	int count=0;
 	for(int i=0;i<invitedlist.size();i++)

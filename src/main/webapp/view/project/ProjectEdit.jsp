@@ -316,8 +316,8 @@ Project Edit</h4>
 														data-width="100%"
 														data-live-search="true" >
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
-														<option value="DMC" <%if(ProjectEditData[15].equals("DMC")){ %> selected<%} %>>DMC</option>
-														<option value="CCM" <%if(ProjectEditData[15].equals("CCM")){ %> selected<%} %>>CCM</option>														
+														<option value="DMC" <%if(ProjectEditData[15]!=null && ProjectEditData[15].equals("DMC")){ %> selected<%} %>>DMC</option>
+														<option value="CCM" <%if(ProjectEditData[15]!=null && ProjectEditData[15].equals("CCM")){ %> selected<%} %>>CCM</option>														
 									</select>
 								
 								

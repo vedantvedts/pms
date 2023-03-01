@@ -666,7 +666,10 @@ public class ActionDaoImpl implements ActionDao{
 	 public int ActionAssignEdit(ActionAssign assign) throws Exception
 	 {
 		 ActionAssign detach = manager.find(ActionAssign.class, assign.getActionAssignId());
-		
+		 	detach.setModifiedDate(assign.getModifiedDate());
+		 	detach.setModifiedBy(assign.getModifiedBy());
+		 	detach.setPDCOrg(assign.getPDCOrg());
+		 	detach.setEndDate(assign.getEndDate());
 			detach.setAssignee(assign.getAssignee());
 			detach.setAssigneeLabCode(assign.getAssigneeLabCode());
 			if(manager.merge(detach)!=null) {
@@ -858,14 +861,53 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("assignid", assignid);
 		return (Object[])query.getResultList().get(0);	
 	}
-	private static final String GETDECISIONSOUGHT="SELECT b.scheduleminutesid, a.scheduleid ,a.meetingid, a.pmrcdecisions , a.reference  FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck='R' AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeeid THEN 1=1 ELSE a.committeeid=:committeeid END)";
+	private static final String GETDECISIONSOUGHT="SELECT DISTINCT (a.scheduleid) ,a.meetingid, a.pmrcdecisions , a.reference  FROM committee_schedule a, committee_schedules_minutes_details b WHERE idarck=:type AND a.scheduleid = b.scheduleid AND (CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END)  AND (CASE WHEN 'A'=:committeeid THEN 1=1 ELSE a.committeeid=:committeeid END)";
 	@Override
-	public List<Object[]> GetDecisionSoughtList(String projectid,String  committeeid)throws Exception
+	public List<Object[]> GetRecDecSoughtList(String projectid,String  committeeid , String type)throws Exception
 	{
 		Query query = manager.createNativeQuery(GETDECISIONSOUGHT);
 		query.setParameter("projectid", projectid);
 		query.setParameter("committeeid", committeeid);
+		query.setParameter("type", type);
 		return (List<Object[]>)query.getResultList();
 	}
 	
+	private static final String RECDECSOUGHT="SELECT a.recdecid , a.point FROM  pfms_recdec_point a WHERE a.isactive=1 AND a.type=:type and a.scheduleid=:scheduleid ORDER BY a.recdecid DESC";
+	@Override
+	public List<Object[]> getActualDecOrRecSought(String scheduleid, String type)throws Exception
+	{
+		Query query = manager.createNativeQuery(RECDECSOUGHT);
+		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("type", type);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String ACTUALDECISIONSOUGHT="SELECT a.details , a.scheduleid FROM committee_schedules_minutes_details a WHERE a.idarck=:type AND a.scheduleid=:scheduleid ORDER BY a.ScheduleMinutesId DESC";
+	@Override
+	public List<Object[]> getDecOrRecSought(String scheduleid , String type)throws Exception
+	{
+		Query query = manager.createNativeQuery(ACTUALDECISIONSOUGHT);
+		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("type", type);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	private static final String ALLACTIONLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress , d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND c.desigid=b.desigid AND (d.assignee=:empid OR d.assignor=:empid) AND d.actionflag IN ('N','B','F') ORDER BY d.actionassignid DESC";
+	@Override
+	public List<Object[]> GetActionList(String empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(ALLACTIONLIST);
+		query.setParameter("empid", empid);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String ACTIONMONITORING="CALL Pfms_Action_Monitoring (:ProjectId ,:Status);";
+	@Override
+	public List<Object[]> ActionMonitoring(String ProjectId , String Status)throws Exception
+	{
+		Query query = manager.createNativeQuery(ACTIONMONITORING);
+		query.setParameter("ProjectId", ProjectId);
+		query.setParameter("Status", Status);
+		return (List<Object[]>)query.getResultList();
+	}
 }

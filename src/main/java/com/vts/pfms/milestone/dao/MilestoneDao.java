@@ -110,5 +110,6 @@ public interface MilestoneDao {
 	public List<Object[]> MilestoneActivityListNew(String ProjectId) throws Exception;
 	public int MilestoneRemarkUpdate(MilestoneActivityDto dto)throws Exception;
 	public List<FileDocMaster> FileLevelSublevelNameCheck(String levelname, String LabCode) throws Exception;
+	public long MileActivityDetailsUpdtae(com.vts.pfms.milestone.model.MilestoneActivity mainmile) throws Exception;
 
 }

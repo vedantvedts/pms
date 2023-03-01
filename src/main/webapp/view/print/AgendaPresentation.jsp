@@ -64,7 +64,11 @@
 		String CommitteeCode = committeeData.getCommitteeShortName().trim();
 		String projectid = scheduledata[9].toString();
 		
-		String ProjectCode=projectattributes[0].toString();
+		String ProjectCode="General";
+				if(projectattributes!=null){
+					ProjectCode=projectattributes[0].toString();
+				}
+				
 		String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	%>
 
@@ -88,7 +92,7 @@
 							<h3 style="color: #4C9100 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h3>
 				   		</div>
 						
-						<div align="center" ><h3 style="color: #4C9100 !important"><%= projectattributes[1] %> (<%= projectattributes[0] %>)</h3></div>
+						<div align="center" ><h3 style="color: #4C9100 !important"><%if(projectattributes!=null){%> <%= projectattributes[1] %> (<%= projectattributes[0] %>) <%}%></h3></div>
 						
 							<table class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
 								<tr>			

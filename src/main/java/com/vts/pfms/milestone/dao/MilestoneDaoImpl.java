@@ -42,7 +42,7 @@ import com.vts.pfms.milestone.model.MilestoneSchedule;
 @Repository
 public class MilestoneDaoImpl implements MilestoneDao {
 
-	private static final String MALIST="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,CONCAT(IFNULL(c.title,''),c.empname) as 'emp',CONCAT(IFNULL(d.title,''),d.empname )as 'employee',(SELECT MAX(e.revisionno) FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev,a.acceptedby,a.isaccepted,a.statusremarks,a.progressstatus,a.Weightage,a.activitystatusid,b.projectid from milestone_activity a,project_master b, employee c,employee d where a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.projectid=:ProjectId";
+	private static final String MALIST="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,CONCAT(IFNULL(c.title,''),c.empname) as 'emp',CONCAT(IFNULL(d.title,''),d.empname )as 'employee',(SELECT MAX(e.revisionno) FROM milestone_activity_rev e WHERE a.milestoneactivityid=e.milestoneactivityid) AS rev,a.acceptedby,a.isaccepted,a.statusremarks,a.progressstatus,a.Weightage,a.activitystatusid,b.projectid,a.dateofcompletion from milestone_activity a,project_master b, employee c,employee d where a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.projectid=:ProjectId";
 	private static final String PROJECTMASTER="SELECT a.projectid,a.projectcode,a.projectname FROM project_master a WHERE  a.isactive='1'";
 	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
     private static final String MILESTONECOUNT="Select count(*) from milestone_activity where isactive='1' and projectid=:ProjectId";
@@ -1083,6 +1083,14 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("userid",dto.getCreatedBy());
 		int result=query.executeUpdate();
 		return result;
+	}
+	
+	@Override
+	public long MileActivityDetailsUpdtae(MilestoneActivity mainmile) throws Exception {
+
+		manager.merge(mainmile);
+		manager.flush();
+		return mainmile.getMilestoneActivityId();
 	}
 
 }

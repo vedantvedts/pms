@@ -597,7 +597,11 @@ public class PrintServiceImpl implements PrintService{
 		}
 		return val;
 	}
-
 	
+	@Override
+	public Object[] GetRecDecData(String recdecid)throws Exception
+	{
+		return dao.GetRecDecData(recdecid);
+	}
 	
 }

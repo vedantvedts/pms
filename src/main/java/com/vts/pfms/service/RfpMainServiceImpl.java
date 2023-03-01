@@ -399,6 +399,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setPDC(data[28].toString());		
 				health.setPMRCTotalToBeHeld(Long.parseLong(data[29].toString()));
 				health.setEBTotalToBeHeld(Long.parseLong(data[30].toString()));
+				health.setSanctionDate(data[31].toString());
 				result=dao.ProjectHealthInsert(health);
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -547,14 +548,14 @@ public class RfpMainServiceImpl implements RfpMainService {
 		BigDecimal onecrore = new BigDecimal(10000000);
 		for(Object[] OutGo : CashOutGo)
 		{ 
-			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[3].toString()) ;
-			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[4].toString()) ;
-			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[5].toString()) ;
-			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[6].toString()) ;
-			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[7].toString()) ;
-			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[8].toString()) ;
-			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[9].toString()) ;
-			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN) : new BigDecimal(OutGo[10].toString()) ;
+			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[3].toString()).toString() ;
+			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[4].toString()).toString() ;
+			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[5].toString()).toString() ;
+			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[6].toString()).toString();
+			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[7].toString()).toString() ;
+			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[8].toString()).toString() ;
+			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[9].toString()).toString() ;
+			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[10].toString()).toString() ;
 		}
 		return CashOutGo;
 	}
@@ -575,4 +576,25 @@ public class RfpMainServiceImpl implements RfpMainService {
 		
 		return DashboardFinance;
 	}
+	
+	
+	@Override
+	public List<Object[]> DashboardProjectFinanceCashOutGo(String projectcode)throws Exception
+	{
+		List<Object[]> CashOutGo = dao.DashboardProjectFinanceCashOutGo(projectcode);
+		BigDecimal onecrore = new BigDecimal(10000000);
+		for(Object[] OutGo : CashOutGo)
+		{ 
+			OutGo[3] = Double.parseDouble(OutGo[3].toString())!=0 ?  new BigDecimal(OutGo[3].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[3].toString()).toString() ;
+			OutGo[4] = Double.parseDouble(OutGo[4].toString())!=0 ?  new BigDecimal(OutGo[4].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[4].toString()).toString() ;
+			OutGo[5] = Double.parseDouble(OutGo[5].toString())!=0 ?  new BigDecimal(OutGo[5].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[5].toString()).toString() ;
+			OutGo[6] = Double.parseDouble(OutGo[6].toString())!=0 ?  new BigDecimal(OutGo[6].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[6].toString()).toString() ;
+			OutGo[7] = Double.parseDouble(OutGo[7].toString())!=0 ?  new BigDecimal(OutGo[7].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[7].toString()).toString() ;
+			OutGo[8] = Double.parseDouble(OutGo[8].toString())!=0 ?  new BigDecimal(OutGo[8].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[8].toString()).toString() ;
+			OutGo[9] = Double.parseDouble(OutGo[9].toString())!=0 ?  new BigDecimal(OutGo[9].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[9].toString()).toString() ;
+			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[10].toString()).toString() ;
+		}
+		return CashOutGo;
+	}
+	
 }

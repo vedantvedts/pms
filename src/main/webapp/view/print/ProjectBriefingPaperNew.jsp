@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collector"%>
 <%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
 <%@page import="java.time.temporal.ChronoUnit"%>
@@ -494,15 +495,15 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="row card-header" style="">
-			   			<div class="col-md-4">
+			   			<div class="col-md-5"  style="margin-top: -8px;">
 							<h3>Project Briefing Paper</h3>
 						</div>							
-						<div class="col-md-8 justify-content-end" style="float: right;margin-top: -15px;">
+						<div class="col-md-7 justify-content-end" style="float: right;margin-top: -17px;">
 						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
-									<td  style="border: 0 "><h6>Project </h6></td>
-									<td  style="border: 0 ">
+									<td  style="border: 0 ;padding-top: 13px;"><h6>Project </h6></td>
+									<td  style="border: 0 ;">
 										
 										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<%for(Object[] obj : projectslist){ %>
@@ -510,7 +511,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 											<%} %>
 										</select>
 									</td>
-									<td  style="border: 0 "><h6>Committee</h6></td>
+									<td  style="border: 0;padding-top: 13px; "><h6>Committee</h6></td>
 									<td  style="border: 0 ">
 										
 										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
@@ -1797,7 +1798,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 				 
 						<details>
-   						<summary role="button" tabindex="0"><b>7. Details of Procurement Plan (Major Items)</b>  </summary>
+   						<summary role="button" tabindex="0"><b>7. Details of Procurement</b>  </summary>
 						<div class="content">
 							<%for(int z=0;z<projectidlist.size();z++){ %>
 								<%if(ProjectDetail.size()>1){ %>
@@ -1805,8 +1806,9 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>
-									
-									<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
+								
+								<div align="left" style="margin-left: 15px;"><b>(a) Details of Procurement Plan (Major Items)</b></div>
+								<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
 							   	<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;" >
 									<thead>
 										<tr>
@@ -1946,12 +1948,8 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 									</table> 
 									
 								
-																	
-								
-								
-								
 								<div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
 										 <thead>
 											 <tr >
 												 <th colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
@@ -1986,35 +1984,37 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 										   </tbody>
 									  </table>
 									  
+									  
+								<div align="left" style="margin-left: 15px;"><b>(b) Procurement Status</b></div>
 								<div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
-							 	<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+							 	<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
 									<thead>
 										<tr>
 											<th colspan="22" ><span class="mainsubtitle">Procurement Status</span></th>
 									 	</tr>
 									 	<tr>
-											<th style="width: 15px">SN</th>
-											<th style="width: 25px;">FileName</th>
-											<th style="width: 25px;">Cost <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th>1</th>
-											<th>2</th>
-											<th>3</th>
-											<th>4</th>
-											<th>5</th>
-											<th>6</th>
-											<th>7</th>
-											<th>8</th>
-											<th>9</th>
-											<th>10</th>
-											<th>11</th>
-											<th>12</th>
-											<th>13</th>
-											<th>14</th>
-											<th>15</th>
-											<th>16</th>
-											<th>17</th>
-											<th style="width: 25px">When It Will Reach Stage 17</th>
-											<th style="width: 25px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
+											<th style="width: 30px;">SN</th>
+											<th style="width: 250px;">Item Name</th>
+											<th style="width: 130px;">Cost<br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 20px;">1</th>
+											<th style="width: 20px;">2</th>
+											<th style="width: 20px;">3</th>
+											<th style="width: 20px;">4</th>
+											<th style="width: 20px;">5</th>
+											<th style="width: 20px;">6</th>
+											<th style="width: 20px;">7</th>
+											<th style="width: 20px;">8</th>
+											<th style="width: 20px;">9</th>
+											<th style="width: 20px;">10</th>
+											<th style="width: 20px;">11</th>
+											<th style="width: 20px;">12</th>
+											<th style="width: 20px;">13</th>
+											<th style="width: 20px;">14</th>
+											<th style="width: 20px;">15</th>
+											<th style="width: 20px;">16</th>
+											<th style="width: 20px;">17</th>
+											<th style="width: 140px">PDC</th>
+											<th style="width: 90px;"><!-- As per Revised Project Schedule When the Item Needs to be --> Available for Integration</th>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2027,7 +2027,13 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 											<tr>
 												<td style="text-align:center; "><%=psn %></td>
 												<td><%=proc[8] %></td>
-												<td style="text-align: right;"><%=proc[5] %></td>
+												<td style="text-align: right;">
+													<%if(proc[8].toString().equalsIgnoreCase("S")){ %>
+														<%=proc[6] %>
+													<%}else{ %>
+														<%=proc[5] %>
+													<%} %>
+												</td>
 												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
 												<%for(int tdc=1;tdc<=17;tdc++){%>
 													
@@ -2044,8 +2050,12 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 													<%} %>
 													
 												<%} %>
-												<td></td>
-												<td></td>
+												<td style="text-align: center;">
+													<%if(proc[14]!=null){ %> <%=sdf.format(sdf1.parse(proc[14].toString()))%> <%}else{ %> - <%} %>
+												</td>
+												<td style="text-align: center;">
+													<%if(proc[15]!=null){ %> <%=sdf.format(sdf1.parse(proc[15].toString()))%> <%}else{ %> - <%} %>
+												</td>
 											</tr>
 										<%} %>
 										
@@ -2057,58 +2067,54 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 										
 								 	</tbody>
 								</table>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:550px !important;  border-collapse:collapse;" >
+								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
 									<tr>
-										<td style="width: 25px;">1</td>
-										<td>Demand Released from Division</td>
-										<td style="width: 25px;">10</td>
-										<td>Order Placement</td>
+										<td style="width: 3%;">1</td>
+										<td style="width: 22%;">Demand Released from Division</td>
+										<td style="width: 3%;">6</td>
+										<td style="width: 22%;">Tender Opening</td>
+										<td style="width: 3%;">11</td>
+										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 3%;">16</td>
+										<td style="width: 22%;">Payment Process</td>
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>SPC Cleared</td>
-										<td>11</td>
-										<td>Issue of CDEC / EDEC</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>EPC Approved</td>
-										<td>12</td>
-										<td>Realization Completed</td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>Tender Enquiry Floated</td>
-										<td>13</td>
-										<td>ATP/QTP Completed</td>
-									</tr>
-									<tr>
-										<td>5</td>
-										<td>Receipt of Quotations</td>
-										<td>14</td>
-										<td>Delivery at Stores</td>
-									</tr>
-									<tr>
-										<td>6</td>
-										<td>Tender Opening</td>
-										<td>15</td>
-										<td>Inward Inspection Clerance</td>
-									</tr>
-									<tr>
 										<td>7</td>
 										<td>TCEC Approved</td>
-										<td>16</td>
-										<td>Payment Process</td>
-									</tr>
-									<tr>
-										<td>8</td>
-										<td>TPC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
 										<td>17</td>
 										<td>Payment Released</td>
 									</tr>
 									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+										<td>8</td>
+										<td>TPC Approved</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
 										<td>9</td>
 										<td>Financial Sanction</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>10</td>
+										<td>Order Placement</td>
+										<td>15</td>
+										<td>Inward Inspection Clerance</td>
 										<td></td>
 										<td></td>
 									</tr>
@@ -2647,23 +2653,18 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												%>
 												<tr>
 													<td style="width: 5%; text-align: center;"> <%=++i%></td>
-													<td style="width: 80%;"> <%if(obj[2].toString().equalsIgnoreCase("D")){%> 
-													
-													<b style="color: #145374;">Dec :-</b>
-													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
-													  <%}else if(obj[2].toString().equalsIgnoreCase("R")){%> <b style="color: #145374;">Rec:- </b>
-													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <b><span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"> ...View More</span></b> <%}else{%> <%=pointdata%><%}%>
-													  <%}%></td>
+													<td style="width: 80%; word-wrap: break-word;">
+													<b style="color: #145374;"><%=obj[2]%> :-</b>
+													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=pointdata%><%}%>
+													  </td>
 													<td style="text-align: center;width: 5%;"> 
-													<input type="hidden" id="type<%=obj[0]%>" value="<%=obj[2]%>">
-													<input type="hidden" id="point<%=obj[0]%>" value="<%=obj[3]%>">
-													<input class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"/></td>
+													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o" style="color:#100f0e;" aria-hidden="true"></i></button></td>
 												</tr>
 												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
 											</tbody>
 										</table>
 										<div align="center">
-											<button type="button" class="btn btn-info btn-sm add" onclick="RecDecEdit('')"> ADD</button>
+											<button type="button" class="btn btn-info btn-sm add" onclick="RecDecEdit('0')"> ADD</button>
 										</div>
 									</div>
 									<div class="col-md-8"> 
@@ -2691,7 +2692,6 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
 											</div>
 										</div>
-										
 								    </div>
 									</div>
 								</div>	
@@ -4331,7 +4331,7 @@ var editor_config = {
 		disallowedContent: 'img{width,height,float}',
 		extraAllowedContent: 'img[width,height,align]',
 
-		height: 500,
+		height: 300,
 		
 		contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
 
@@ -4421,11 +4421,7 @@ $(document).ready(function() {
 		    	  locked = 0;
 		      }
 		   }
-			
 	   }   
-	   
-	  
-	   
 	});
 
 
@@ -4433,32 +4429,60 @@ $(document).ready(function() {
 
 function RecDecEdit(recdescid ){
 	
-	var type = $("#type"+recdescid).val();
-	
-		if(type=='D'){
-			 $('#decision').prop('checked',true);
-		}else if(type=='R'){
-			 $('#recommendation').prop('checked',true);
-		}else{
+	 if(recdescid=='0'){
+		     CKEDITOR.instances['ckeditor1'].setData("");
+			 $("#recdecid").val("");
 			 $('#decision').prop('checked',false);
 			 $('#recommendation').prop('checked',false);
-		}
-	
-	$("#recdecid").val(recdescid);
-	CKEDITOR.instances['ckeditor1'].setData($("#point"+recdescid).val());
-	
+	 }else{
+			$.ajax({
+				type : "GET",
+				url : "Getrecdecdata.htm",
+				data : {
+					recdesid : recdescid,
+				},
+				datatype : 'json',
+				success : function(result){
+					var result = JSON.parse(result);
+					var type = result[2];
+					
+					if(type=='D'){
+						 $('#decision').prop('checked',true);
+					}else if(type=='R'){
+						 $('#recommendation').prop('checked',true);
+					}else{
+						 $('#decision').prop('checked',false);
+						 $('#recommendation').prop('checked',false);
+					}
+					$("#recdecid").val(result[0]);
+					CKEDITOR.instances['ckeditor1'].setData(result[3]);
+				}
+			});
+	 }
 }
 
 function RecDecmodal(recdescid)
 {
-	var type = $("#type"+recdescid).val();
-	if(type=='D'){
-		$("#val1").html("Decision");
-	}else if(type=='R'){
-		$("#val1").html("Recommendation");
-	}
-	$("#recdecdata").html($("#point"+recdescid).val());
-	$('#recdecmodel').modal('toggle');
+	$.ajax({
+			type : "GET",
+			url : "Getrecdecdata.htm",
+			data : {
+				recdesid : recdescid,
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				var type = result[2];
+				if(type=='D'){
+					$("#val1").html("Decision");
+				}else if(type=='R'){
+					$("#val1").html("Recommendation");
+				}
+				$("#recdecdata").html(result[3]);
+				$('#recdecmodel').modal('toggle');
+			}
+	});
+	
 }
 function checkData(formid)
 {

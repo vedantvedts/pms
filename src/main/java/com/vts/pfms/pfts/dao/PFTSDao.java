@@ -19,4 +19,7 @@ public interface PFTSDao {
 	public int FileInActive(String fileId, String userId)throws Exception;
 	public Long addDemandfileOrder(PftsFileOrder pfo)throws Exception;
 	public Object[] ProjectData(String projectid) throws Exception;
+	public Object[] getFilePDCInfo(String fileid) throws Exception;
+	public PFTSFile getPftsFile(String pftsFileId) throws Exception;
+	public long editPftsFile(PFTSFile file) throws Exception;
 }

@@ -218,127 +218,130 @@ if(ses1!=null){	%>
 															<td  style="width:15% !important; "><%=obj[6]%></td>
 															<td  style="width:7% !important; " align="center"><%=obj[13]%></td>	
 															<td>
-															<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
-															<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
-															<%} else if(obj[14].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
-															<%} else if(obj[14].toString().equalsIgnoreCase("4")){ %>
-															  bg-danger
-															<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
-															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[12] %>
-															</div> 
-															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-															Not Started
-															</div>
-															</div> <%} %>
+																<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																<div class="progress-bar progress-bar-striped
+																<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
+																 bg-success
+																<%} else if(obj[14].toString().equalsIgnoreCase("3")){ %>
+																  bg-info
+																<%} else if(obj[14].toString().equalsIgnoreCase("4")){ %>
+																  bg-danger
+																<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
+																  bg-warning
+																<%}  %>
+																" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<%=obj[12] %>
+																</div> 
+																</div> <%}else{ %>
+																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																Not Started
+																</div>
+																</div> <%} %>
 															</td>
 															<td  style="width:20% !important; text-align: center;">		
-																	
-														 <form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
-															<%if(Integer.parseInt(obj[12].toString())<100){ %>
-																<button  class="editable-click" name="sub" value="B">  
-																	<div class="cc-rockmenu">
-												                      <div class="rolling">
-												                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
-												                        <span>Details</span>
-												                      </div>
-												                     </div> 
-																</button>
-															<%} %>
-															  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
-                                                              <button  class="editable-click" name="sub" value="C" >
-																<div class="cc-rockmenu">
-																 <div class="rolling">	
-											                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
-											                        <span>Edit/Weightage</span>
-											                      </div>
-											                     </div>
-											                  </button> 
-                                                             <button type="submit"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
-																<div class="cc-rockmenu">
-																 <div class="rolling">	
-											                        <figure class="rolling_icon"><img src="view/images/assign.jpg" ></figure>
-											                        <span>Assign</span>
-											                      </div>
-											                     </div>
-											                  </button>  
-											                  
-                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
-                                                               <button  class="editable-click" name="sub" value="C" >
-																<div class="cc-rockmenu">
-																 <div class="rolling">	
-											                        <figure class="rolling_icon"><img src="view/images/clipboard.png" ></figure>
-											                        <span>Base Line </span>
-											                      </div>
-											                     </div>
-											                  </button>    
-                                                               <%} %>
-                                                               	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-														    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
-														     <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
-															
-															
-													 </form> 
-													 														 <form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
-													 
-                                                               <%if("B".equalsIgnoreCase(obj[10].toString())){ %>
-                                                              
-                                                             <button type="button"  class="editable-click" name="sub" value="Back"   data-toggle="modal" data-target="#exampleModal<%=obj[0]%>" data-whatever="@mdo" >
-																<div class="cc-rockmenu">
-																 <div class="rolling">	
-											                        <figure class="rolling_icon"><img src="view/images/message.png" ></figure>
-											                        <span>Message</span>
-											                      </div>
-											                     </div>
-											                  </button>
+																<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+																	<%if(Integer.parseInt(obj[12].toString())<100){ %>
+																		<button  class="editable-click" name="sub" value="B">  
+																			<div class="cc-rockmenu">
+														                      <div class="rolling">
+														                        <figure class="rolling_icon"><img src="view/images/preview3.png"  ></figure>
+														                        <span>Details</span>
+														                      </div>
+														                     </div> 
+																		</button>
+																	<%}else if(Integer.parseInt(obj[12].toString())==100){ %>
+																		<button  class="editable-click" type="button" onclick="MainDOCEditModal(<%=obj[0]%>,'<%=obj[16]%>')">  
+																			<div class="cc-rockmenu">
+														                      <div class="rolling">
+														                        <figure class="rolling_icon"><i class="fa fa-calendar-o" aria-hidden="true"></i></figure>
+														                        <span>Date of Completion</span>
+														                      </div>
+														                     </div> 
+																		</button>
+																	<%} %>
+																	  <%if("N".equalsIgnoreCase(obj[10].toString())){ %>
+		                                                              <button  class="editable-click" name="sub" value="C" >
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
+													                        <span>Edit/Weightage</span>
+													                      </div>
+													                     </div>
+													                  </button> 
+		                                                             <button type="submit"  class="editable-click" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="if('0'=='<%=obj[13].toString() %>'){alert('Please add Weightage first then you able to assign.');return false; }else{ return confirm('Are You Sure To Assign ?') }"   >
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/assign.jpg" ></figure>
+													                        <span>Assign</span>
+													                      </div>
+													                     </div>
+													                  </button>  
+													                  
+		                                                              <%}else if("Y".equalsIgnoreCase(obj[10].toString())){ %>
+		                                                               <button  class="editable-click" name="sub" value="C" >
+																		<div class="cc-rockmenu">
+																		 <div class="rolling">	
+													                        <figure class="rolling_icon"><img src="view/images/clipboard.png" ></figure>
+													                        <span>Base Line </span>
+													                      </div>
+													                     </div>
+													                  </button>    
+		                                                               <%} %>
+		                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+																    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
+																    <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
+															 </form> 
 															 
-															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-														    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
-															 <div class="modal fade" id="exampleModal<%=obj[0]%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                              <div class="modal-dialog">
-                                          <div class="modal-content">
-                                             <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Send Back Remarks</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                     <span aria-hidden="true">&times;</span>
-                                       </button>
-                                        </div>
-                                         <div class="modal-body">
-          	                                  <div class="row">
-                       				 
-                                     <div class="col-md-12">
-										<div class="form-group">
-											<label class="control-label">Remark</label> 
-										    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11] %>  </textarea>
-										</div>
-									</div>       
-
-									
-                                         </div>
-                                       <div class="modal-footer">
-        
-                                         <button  class="btn btn-sm btn-success" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Assign ?')" >Assign Again</button>
-        								 <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
-   
-                                                </div>
-                                                 </div>
-                                                   </div>
-                                                  </div>
-											           </div> 
-														<%} %>	
-													 </form> 
-																
-																		
+															 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+														 
+	                                                            <%if("B".equalsIgnoreCase(obj[10].toString())){ %>
+	                                                              
+	                                                             <button type="button"  class="editable-click" name="sub" value="Back"   data-toggle="modal" data-target="#exampleModal<%=obj[0]%>" data-whatever="@mdo" >
+																	<div class="cc-rockmenu">
+																	 <div class="rolling">	
+												                        <figure class="rolling_icon"><img src="view/images/message.png" ></figure>
+												                        <span>Message</span>
+												                      </div>
+												                     </div>
+												                 </button>
+																 
+																<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+															    <input type="hidden" name="MilestoneActivityId" value="<%=obj[0]%>"/>
+																 <div class="modal fade" id="exampleModal<%=obj[0]%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						                                              <div class="modal-dialog">
+						                                          <div class="modal-content">
+						                                             <div class="modal-header">
+						                                            <h5 class="modal-title" id="exampleModalLabel">Send Back Remarks</h5>
+								                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								                                     <span aria-hidden="true">&times;</span>
+								                                       </button>
+						                                        </div>
+						                                         <div class="modal-body">
+						          	                                  <div class="row">
+						                       				 
+									                                     <div class="col-md-12">
+																			<div class="form-group">
+																				<label class="control-label">Remark</label> 
+																			    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11] %>  </textarea>
+																			</div>
+																		</div>       
+															
+							                                         	</div>
+							                                     		<div class="modal-footer">
+							        
+									                                         <button  class="btn btn-sm btn-success" name="sub" value="Assign"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Assign ?')" >Assign Again</button>
+									        								 <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
+							   
+							                                           	</div>
+						                                            </div>
+						                                            </div>
+						                                            </div>
+																	</div> 
+																	<%} %>	
+																 </form> 
 															</td>
-		
 														</tr>
 														 <tr class="collapse row<%=count %>" style="font-weight: bold;">
                                                          <td></td>
@@ -471,19 +474,19 @@ if(ses1!=null){	%>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
-															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
-															<%} else if(objC[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
-															<%} else if(objC[9].toString().equalsIgnoreCase("4")){ %>
-															  bg-danger
-															<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
-															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=objC[5] %>
-															</div> 
+																<div class="progress-bar progress-bar-striped
+																	<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
+																	 bg-success
+																	<%} else if(objC[9].toString().equalsIgnoreCase("3")){ %>
+																	  bg-info
+																	<%} else if(objC[9].toString().equalsIgnoreCase("4")){ %>
+																	  bg-danger
+																	<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
+																	  bg-warning
+																	<%}  %>
+																	" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																	<%=objC[5] %>
+																</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
@@ -619,8 +622,65 @@ if(ses1!=null){	%>
 	
 			</div>
 
+
+
+<div class="modal" id="MainDOCEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Date of Completion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" align="center">
+        <form action="MainMilestoneDOCUpdate.htm" method="post">
+        	<table style="width: 80%;">
+        		<tr>
+        			<th style="width: 40%;">Date of Completion : &nbsp; </th>
+        			<td style="width: 60%;"><input type="text" class="form-control" name="DateOfCompletion" id="MainDOCDate" value="" readonly="readonly"></td>
+        		</tr>
+        		<tr>
+        			<td colspan="2" style="text-align: center;">
+        				<br>
+        				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
+        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        			</td>
+        		</tr>
+        	</table>
+        	
+        	<input type="hidden" id="MSMainid" name="MSMainid" value="" >
+        	<input type="hidden" name="projectid" value="<%=ProjectId %>" >
+        	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
 	
-   
+<script type="text/javascript">
+function MainDOCEditModal(mainid, DOC)
+{
+	$('#MSMainid').val(mainid);			
+	$('#MainDOCDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		"startDate" : new Date(DOC),
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	$('#MainDOCEditModal').modal('toggle');
+	
+}
+															 
+</script>  
 
   
 <script>
@@ -676,10 +736,7 @@ function ChangeButton(id) {
 		}
 	});
 	
-	
-	
-	
-	</script>  
+</script>  
 
 
 </body>

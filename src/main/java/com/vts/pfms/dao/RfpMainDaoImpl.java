@@ -582,5 +582,16 @@ public class RfpMainDaoImpl implements RfpMainDao {
 	}
 	
 	
+	private static final String DASHBOARDPROJECTFINANCECASHOUTGO = "CALL Pfms_Finance_CashOutGo_Project (:projectcode)";
+	@Override
+	public List<Object[]> DashboardProjectFinanceCashOutGo(String projectcode)throws Exception
+	{
+		Query query = manager.createNativeQuery(DASHBOARDPROJECTFINANCECASHOUTGO);
+		query.setParameter("projectcode", projectcode);
+		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
+		
+		return CCMData ;
+	}
+	
 }
 

@@ -145,6 +145,26 @@ public  class PFTSDaoImpl implements PFTSDao{
 		return pfo.getPftsFileOrderId();
 	}
 	
+	private static final String GETFILEPDCINFO ="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature,f.PDC,f.IntegrationDate  FROM pfts_file f WHERE  f.PftsFileId=:fileid ";
+	@Override
+	public Object[] getFilePDCInfo(String fileid)throws Exception
+	{
+		Query query=manager.createNativeQuery(GETFILEPDCINFO);
+		query.setParameter("fileid", fileid);
+		return ( Object[])query.getSingleResult();
+	}
 	
+	@Override
+	public PFTSFile getPftsFile(String pftsFileId) throws Exception {
+		PFTSFile file= manager.find(PFTSFile.class, Long.parseLong(pftsFileId));
+		
+		return file;
+	}
 	
+	@Override
+	public long editPftsFile(PFTSFile file) throws Exception {
+		manager.merge(file);
+		manager.flush();
+		return file.getPftsFileId();
+	}
 }
