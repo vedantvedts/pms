@@ -216,10 +216,10 @@ border-radius:8px;
 min-height: 18rem !important;
 }
 #v-pills-requirement{
-min-height: 22rem !important;
+min-height: 13rem !important;
 }
 #v-pills-settings{
-min-height: 8rem !important;
+min-height: 13rem !important;
 }
 </style>
 </head>
@@ -391,7 +391,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
                 <div class="tab-pane fade shadow rounded bg-white p-3" id="v-pills-authority" role="tabpanel" aria-labelledby="v-pills-authority-tab">
 
                         <div class="row" >
-	 		
+	 					<%if(!AuthorityAttachments.isEmpty()) {%>
 			 			<%for(Object[] AuthorityAttachment : AuthorityAttachments ){ %>
 			 			
 			 			<div class="col-md-12" style="margin-left: 43px">
@@ -409,7 +409,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 					   						<% if(AuthorityAttachment[2].toString().equals("6")) {%>User Army <%} %> 
 					   						<% if(AuthorityAttachment[2].toString().equals("7")) {%>User Airforce <%} %> 
 					   						<% if(AuthorityAttachment[2].toString().equals("8")) {%>User Navy <%} %> 
-					   						<% if(AuthorityAttachment[2].toString().equals("9")) {%>ADA  <%}else{ %> - <%} %>
+					   						<% if(AuthorityAttachment[2].toString().equals("9")) {%>ADA  <%} %>
 							    
 							    <%}else{ %> - <%}%>
 							    </p>
@@ -429,7 +429,32 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                </div>
 				                </div>
 			 			</div>
-			 			<%} %>
+			 			<%}}else{ %>
+			 			<div class="col-md-12" style="margin-left: 43px">
+			 			
+							<div class="row details">
+							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;border-top-left-radius: 5px">
+							    <h6>Authority Name</h6>
+							    <p>- </p>
+							  </div>
+							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+							    <h6>Letter Date</h6>
+							    <p>-</p>
+							  </div>
+							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
+							    <h6>Letter Number</h6>
+							    <p>-</p>
+							  </div>
+							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+							    <h6>Letter</h6>
+							    <P>-</P>				 	
+				                </div>
+				                </div>
+			 					</div> 
+			 					<% }%>
+			 			
+			 		
+
 	 			</div>
       		</div>   
                     
@@ -688,8 +713,8 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				                        <thead class="thead" style="color:white!important;background-color: #055C9D">
 				                            <tr>
 <!-- 				                                <th> <label class="customcheckbox m-b-20"> <input type="checkbox" id="mainCheckbox"> <span class="checkmark"></span> </label> </th>
- -->				                            <th scope="col" class="center">Milestone No</th>
-				                                <th scope="col">Milestone Activity</th>
+ -->				                            <th scope="col" class="center" style="width: 12%;">Milestone No</th>
+				                                <th scope="col " style="width: 74%;">Milestone Activity</th>
 				                                <th scope="col" class="center">Milestone Month</th>
 				                                
 				                            </tr>

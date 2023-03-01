@@ -190,4 +190,9 @@ public interface ProjectDao {
 	public long RequirementUpdate(PfmsInititationRequirement pir, String initiationReqId) throws Exception;
 	public long numberOfReqTypeId(String intiationId)throws Exception;
 	public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception;
+	public List<Integer> reqcountList(String initiationId) throws Exception;
+	public int deleteRequirement(String initiationReqId)throws Exception;
+	public String getReqId(int i, String initiationId)throws Exception;
+	public int updateReqId(int last, String s, int first, String initiationId)throws Exception;
+	
 }

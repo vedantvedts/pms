@@ -166,6 +166,7 @@ font-weight: bold;
 List<Object[]> ProjectIntiationList=(List<Object[]>) request.getAttribute("ProjectIntiationList");
 List<Object[]> projectapprovalflowempdata=(List<Object[]>) request.getAttribute("projectapprovalflowempdata");
 
+
 DecimalFormat df=new DecimalFormat("0.00");
 NFormatConvertion nfc=new NFormatConvertion();
 %>
@@ -204,7 +205,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 			
 				<h4 class="card-header">
 					Initiation List
-				
+		
 				</h4>
 				
 				<div class="card-body"> 
@@ -360,6 +361,12 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                		<td class="trup" style="background: #FBC7F7;" >
 				                			TCM
 				                		</td>
+				                		<td rowspan="2">
+				                			<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+				                		</td>
+				                		<td class="trup" style="background: #FBC7F7;" >
+				                			CCM
+				                		</td>
 				                			                		
 				                	</tr>			   
 				                	
@@ -397,10 +404,13 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                			<%if(projectapprovalflowempdata.size()>0){ %>
 							                     <%for(Object[] obj : projectapprovalflowempdata){ %>
 							                     	<%if(obj[3].toString().equals("TCM") ){ %>
-							                     		<%=obj[1] %>,<%=obj[2] %>
+							                     		<%=obj[1] %>,<br><%=obj[2] %>
 							                     	<%} %>
 							                     <%} %>
 							               <%} %>
+				                		</td>
+				                		<td class="trdown" style="background: #FBC7F7;" >	
+				                			
 				                		</td>
 				                	</tr>             	
 				                </table>			             

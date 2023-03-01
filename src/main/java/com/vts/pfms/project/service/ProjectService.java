@@ -169,4 +169,8 @@ public interface ProjectService {
 	public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId)throws Exception;
 	public long numberOfReqTypeId(String intiationId) throws Exception;
 	public List<Object[]> BudgetHeadList(BigInteger projecttypeid)throws Exception;
+	public List<Integer> reqcountList(String initiationId) throws Exception;
+	public int deleteRequirement(String initiationReqId) throws Exception;
+	public String getReqId(int i, String initiationId)throws Exception;
+	public int updateReqId(int last, String s, int initial, String initiationId)throws Exception;
 }

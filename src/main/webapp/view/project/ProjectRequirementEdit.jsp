@@ -126,7 +126,12 @@ padding-bottom:0px;
 padding-top:0px;
 padding-bottom:0px;
 }
-
+#reqdiv{
+ display: flex;
+  align-items: center;
+  justify-content: center; 
+  min-width:100%;
+}
 </style>
 </head>
 <body>
@@ -138,9 +143,9 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
 	<form class="form-horizontal" role="form" action="ProjectRequirementEditSubmit.htm" method="POST" id="myform" >
 	<div class="container-fluid">		
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-12" id="reqdiv">
 			<%if(Requirement!=null) %>
-			<div class="card shadow-nohover" >
+			<div class="card shadow-nohover"  style="min-width: 60%; margin-top:2%;box-shadow: 10px 10px 5px lightgrey;">
 			 <div class="card-header" style=" background-color: #055C9D;margin-top: ;padding:5px;">
                     <h3 class="text-white" style="margin-top:10px;margin-left: 24px;">Requirements <label style="color:white; float:right; font-size:12px;margin-right: 22px;">ID-<%=Requirement[4] %></label></h3>
                    
@@ -148,10 +153,10 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
         			<div class="card-body" id="cardbody">
         			<div class="row">
         			<div class="col-md-3">
-      				  <label style="margin:10px; font-size:16px">Type of Requirement:<span class="mandatory" style="color: red;">*</span></label>
+      				  <label style="font-size: 16px;margin-top: 5%; margin-left: 0.1rem">Type of Requirement:<span class="mandatory" style="color: red;">*</span></label>
         			</div>
 
-								<div class="col-md-8" style="margin-top: 10px">
+								<div class="col-md-3" style="margin-top: 10px">
 									<div class="form-group">
 										<select required="required" id="select" name="reqtype" class="form-control selectpicker" data-width="80%" data-live-search="true">
 							<option disabled="disabled" value="" selected="selected">Choose..</option>
@@ -159,6 +164,23 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
 							for(Object[] obj:RequirementTypeList){ %>
 							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>" <%if(Requirement[1].toString().equalsIgnoreCase(obj[0].toString())) {%> selected="selected"<%}%>><%=obj[2]%></option>
 							<%}} %>
+							</select>
+									</div>
+								</div>
+								
+											<div class="col-md-2" style="display: flex;justify-content: end;">
+      				  <label style="margin:10px; font-size:16px;">Priority:<span class="mandatory" style="color: red;">*</span></label>
+        			</div>
+
+								<div class="col-md-3" style="margin-top: 5px">
+									<div class="form-group">
+										<select required="required" id="select" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true">
+							<option disabled="disabled" value="" selected="selected">Choose..</option>
+							<option value="Low" <%if(Requirement[5].toString().equalsIgnoreCase("Low")) {%>selected="selected"<%} %>>Low</option>
+							<option  value="Medium" <%if(Requirement[5].toString().equalsIgnoreCase("Medium")) {%>selected="selected"<%} %>>Medium</option>
+							<option  value="High
+							
+							" <%if(Requirement[5].toString().equalsIgnoreCase("High")) {%>selected="selected"<%} %>>High</option>
 							</select>
 									</div>
 								</div>
@@ -181,7 +203,7 @@ Object[]Requirement=(Object[])request.getAttribute("Requirement");
 			</div>
 				<div class="card-body" id="cardbody1">
         			<div class="row">
-        			<div class="col-md-12">
+        			<div class="col-md-4">
       				  <label style="margin:10px ;font-size:16px">Requirement Description:<span class="mandatory" style="color: red;">*</span></label>
         			</div>
 

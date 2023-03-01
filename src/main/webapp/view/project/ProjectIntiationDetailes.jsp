@@ -62,12 +62,11 @@ border-radius:5px;
 height:36px;
 }
 #reqbtn{
-font-family: 'Lato',sans-serif;
+font-weight: 800;
 margin-right:16px;
 margin-top:3px;
 color:buttonshadow;
-height:22px;
-width:27px;
+font-family: 'Montserrat', sans-serif;
 }
 #addreq{
 width:40%;
@@ -102,11 +101,10 @@ border-radius:5px;
 
 }
 #reqbtn1{  
- height:20px;
- margin-left:0px;
+
+margin-top: 1%;
 
  font-size:13px;
- width:30px;
 
 }
 .reqtable::-webkit-scrollbar{
@@ -115,7 +113,7 @@ display:none;
 #reqbtn2{
  float:left;
  height:20px;
- margin-left:31px;
+margin-left: 20%;
  margin-top:4px;
  font-size:13px;
  width:30px;
@@ -156,7 +154,11 @@ s/
   text-decoration: none;
   cursor: pointer;
 } */
-
+#reqaction{
+display:flex;
+align-items: center;
+justify-content: center;
+}
 
 
 </style>
@@ -223,7 +225,10 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
       <div class="card slider">
       
       
-        <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
+        <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;
+        
+        
+        ">
         
              <h3 class="category">Initiation Details 
              
@@ -309,7 +314,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						</form>	
              <%} %> 
             </li>
-                <li class="nav-item"  >
+             <%--    <li class="nav-item"  >
           <%if(Integer.parseInt(ProjectProgressCount[5].toString())>0){ %>
                <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
               <a class="nav-link active" id="nav" data-toggle="tab" href="#requirement" role="tab" >
@@ -331,7 +336,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
 						</form>	
                <%} %> 
-            </li> 
+            </li>  --%>
             
             <li class="nav-item" >
             <%if(Integer.parseInt(ProjectProgressCount[1].toString())>0){ %>
@@ -1438,16 +1443,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
  				<div class="tab-pane" id="requirement" role="tabpanel" style=" margin-top: -12px;">
                 <%} %> 
                 <div class="col-md-12">
-            <%--      <div class="requirement" align="justify" >
-						            <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
-                   					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-				                  	<label style="font-family: 'Lato',sans-serif; font-size:25px; margin-left:0px;color: #005086"><% %></label>
-				                  	  	<button type="submit" class="btn btn-success btn-sm" id="reqbtn">
-				                 		<i class="fa fa-plus" aria-hidden="true"></i>
-				                 	 </button>
-				                  	</form>	
-				                 	 </div> --%>
+      
                 						</div>
                  <div class="container-fluid" style="margin-top:7px;">
 		        <div class="row">
@@ -1457,7 +1453,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				 <div class="table-responsive">
 				<!--  <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5"> -->
 				<%  int i=1;%>
-				 <div class="reqtable" style="height: 300px; overflow: auto">
+				 <div class="reqtable" style="height: 300px; overflow: auto;border: 1px solid aliceblue; box-shadow: 2px 2px 5px lightgrey;">
 	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
 	 			 <thead style="background-color: #055C9D;color:white; top:-2px; position: sticky;">
 	 			 <tr >
@@ -1466,45 +1462,42 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				<th style="width:8%" class="text-nowrap">ID</th>
 				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
 				<th style="width:70%" class="text-nowrap" >Brief</th>
-				<th style="width:14%"> 
-				       <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
-                   					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-				                  	  	Action  <button type="submit" class="btn btn-success btn-sm" id="reqbtn" style="margin-left: 22px;">
-				                 		<i class="fa fa-plus" aria-hidden="true" style="float:left"></i>
-				                 	 </button>
-				                  	</form>
-				</th>
+				<th style="width:14%">Action</th>
 			<!-- 	<th style="width:20%">ADD</th> -->
-	 			 <tbody>
+	 			 <tbody style="background-color:whitesmoke;">
 	 		
 	 			 <%
 	 			 if(RequirementList!=null)
 	 				 for(Object obj[]:RequirementList){
 	 			 %>     
 	 			 	 <tr style="position:inherit;">
-	 				<td><%=i %></td>
+	 				<td><%=i+"." %></td>
 	 			 	<td><%=obj[1] %></td>
 	 			   	<td style="text-align:left; padding-left: 44px !important;"><%=obj[3] %></td>
 	 				<td>
+	 				<div id="reqaction">
 	 			 <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5">
 					<input type="hidden" name="InitiationReqId" value="<%=obj[0]%>">
 					<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
 					<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
-					<button type="submit" title="EDIT" class="btn btn-warning btn-sm" name="action" value="EDIT" id="reqbtn1" >
+					<button type="submit" title="EDIT" class="btn btn-warning" name="action" value="EDIT" id="reqbtn1" >
 					<i class="fa fa-pencil" aria-hidden="true" style="color:green; font-size: 10px; float:right;"></i>
 					</button>
 			
-					<button type="button" class=""    id="reqbtn2" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
-<!-- 				<i class="fa fa-eye" aria-hidden="true" style="color:orange; font-size: 10px; float:right;"></i>  -->
+					<button type="button" class=""    id="reqbtn2" title="View" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
 					<div class="cc-rockmenu">
 					 <div class="rolling">
 					<figure class="rolling_icon"><img src="view/images/preview3.png" style="width:18px;" ></figure>
-					</div> 
+					</div> </div>
+					</button>
+					
+					<button type="submit" title="DELETE" class="btn btn-danger " name="action" value="Delete" id="" style="float:right;margin-top:2%;margin-right: 24% " >
+					<i class="fa fa-trash" aria-hidden="true" style="color:white; font-size: 10px; float:right;"></i>
 					</button>
 				</form>
 					</td>
+					</div>
 	 				 </tr>
 	 			 <%
 	 			 i++;
@@ -1513,7 +1506,14 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	 			 </tbody>
 	 			 </table>
 	 			</div>
-				</form>			
+	 			<hr>
+				</form>	
+				  <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
+                   					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
+				                  	  	 <button type="submit" class="btn btn-success " id="reqbtn" style="margin-left: 22px;">ADD
+				                 	 </button>
+				                  	</form>		
 	 			</div>
 	 			 		<div class="modal fade  bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" style="">
  						 <div class="modal-dialog modal-lg" role="document">
@@ -1535,6 +1535,8 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						        </div>
 						        </div>
 						        </div>
+						        
+						        
                   <div class="navigation_btn"  style="text-align: right;">
             		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 					<button class="btn btn-info btn-sm next">Next</button>

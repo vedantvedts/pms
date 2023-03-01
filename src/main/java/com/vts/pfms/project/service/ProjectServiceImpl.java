@@ -2073,7 +2073,9 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setRequirementBrief(prd.getRequirementBrief());
 			pir.setRequirementDesc(prd.getRequirementDesc());
 			pir.setRequirementId(prd.getRequirementId());
-			
+			pir.setReqCount(prd.getReqCount());
+			pir.setPriority(prd.getPriority());
+			pir.setLinkedRequirements(prd.getLinkedRequirements());
 			pir.setCreatedBy(UserId);
 			pir.setCreatedDate(sdf1.format(new Date()));
 			pir.setIsActive(1);
@@ -2110,6 +2112,7 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setReqTypeId(prd.getReqTypeId());
 			pir.setRequirementBrief(prd.getRequirementBrief());
 			pir.setRequirementDesc(prd.getRequirementDesc());
+			pir.setPriority(prd.getPriority());
 			pir.setRequirementId(prd.getRequirementId());
 			pir.setModifiedBy(userId);
 			pir.setModifiedDate(sdf1.format(new Date()));
@@ -2129,6 +2132,30 @@ public class ProjectServiceImpl implements ProjectService {
 		public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception {
 			// TODO Auto-generated method stub
 			return dao.BudgetHeadList(projecttypeid);
+		}
+
+		@Override
+		public List<Integer> reqcountList(String initiationId) throws Exception {
+			// TODO Auto-generated method stub
+		return	dao.reqcountList(initiationId);
+		}
+
+		@Override
+		public int deleteRequirement(String initiationReqId) throws Exception {
+			// TODO Auto-generated method stub
+		return	dao.deleteRequirement(initiationReqId);
+		}
+
+		@Override
+		public String getReqId(int i, String initiationId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.getReqId(i,initiationId);
+		}
+
+		@Override
+		public int updateReqId(int last, String s, int first, String initiationId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.updateReqId(last,s,first,initiationId);
 		}
 
 		

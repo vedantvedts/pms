@@ -11,5 +11,7 @@ public class PfmsInitiationRequirementDto {
 	private Long ReqTypeId;
 	private String RequirementBrief;
 	private String RequirementDesc;
-	
+	private int ReqCount;
+	private String priority;
+	private String linkedRequirements;
 }

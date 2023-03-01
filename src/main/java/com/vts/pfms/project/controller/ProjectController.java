@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -109,6 +110,48 @@ public class ProjectController
 		
 	}
 
+	@RequestMapping(value = "ProjectRequirement.htm")
+	public String ProjectRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectRequirement.htm "+UserId);
+		try {
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Option = req.getParameter("sub");
+			//String IntiationId = req.getParameter("btSelectItem");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			String Project=req.getParameter("project");
+			
+			if(Project!=null) {
+			String[]project=Project.split("/");
+			
+			String initiationid=project[0];
+			String projectshortName=project[1];
+			String projectTitle=project[2];
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("projectshortName",projectshortName );
+			req.setAttribute("projectTitle", projectTitle);
+			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
+			System.out.println(initiationid+"-------------------"+projectshortName+"------------"+projectTitle);
+			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+			req.setAttribute("reqTypeList", service.RequirementTypeList());
+			}
+			else {
+				req.setAttribute("reqTypeList", service.RequirementTypeList());
+				req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+			}
+			
+		}
+		catch(Exception e) {
+           e.printStackTrace(); logger.error(new Date() +" Inside ProjectRequirement.htm "+UserId, e);
+			
+    		return "static/Error";
+		}
+		return "project/ProjectRequirements";
+	}
+		
 	@RequestMapping(value = "ProjectIntiationListSubmit.htm", method = RequestMethod.POST)
 	public String ProjectIntiationListSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
 	{
@@ -120,7 +163,8 @@ public class ProjectController
 				String IntiationId = req.getParameter("btSelectItem");
 				String Logintype= (String)ses.getAttribute("LoginType");
 				String LabCode = (String)ses.getAttribute("labcode");
-				System.out.println(IntiationId+"---------------");
+				
+			
 				if (Option.equalsIgnoreCase("add")) {
 					req.setAttribute("ProjectTypeList", service.ProjectTypeList());	
 					req.setAttribute("PfmsCategoryList", service.PfmsCategoryList());
@@ -169,6 +213,14 @@ public class ProjectController
 				req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
 				return "project/ProjectStatusList";
 			}
+			
+			/*
+			 * if(Option.equalsIgnoreCase("requirements")) {
+			 * req.setAttribute("ProjectIntiationList",
+			 * service.ProjectIntiationList(EmpId,Logintype,LabCode)); return
+			 * "project/ProjectRequirements"; }
+			 */
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +" Inside ProjectIntiationListSubmit.htm "+UserId, e);
@@ -179,6 +231,9 @@ public class ProjectController
 		return "project/ProjectIntiationAdd";
 	}
 
+	
+	
+	
 	
 	@RequestMapping(value = "InitiatedProjectDetails.htm", method = RequestMethod.GET)
 	public @ResponseBody String InitiatedProjectDetails(HttpServletRequest req, HttpSession ses) throws Exception {
@@ -514,9 +569,12 @@ public class ProjectController
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String InitiationId=req.getParameter("IntiationId");
+		String projectshortName=req.getParameter("projectshortName");
 		try {
 			req.setAttribute("RequirementTypeList", service.RequirementTypeList());
 			req.setAttribute("InititationId", InitiationId);
+			req.setAttribute("projectshortName", projectshortName);
+			req.setAttribute("RequirementList", service.RequirementList(InitiationId) );
 		}catch(Exception e){
 			e.printStackTrace();logger.error(new Date() +" Inside ProjectRequirementAdd.htm "+UserId, e);
 			return "static/Error";
@@ -525,12 +583,14 @@ public class ProjectController
 	}
 	
 	@RequestMapping(value = "ProjectRequirementAddSubmit.htm", method=RequestMethod.POST)
-	public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+	public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectRequirementAddSubmit.htm "+UserId);
 		
 		String option=req.getParameter("action");
+		System.out.println(option+"----------");
+		
 		try {
 		
 			if(option.equalsIgnoreCase("SUBMIT")) 
@@ -548,6 +608,19 @@ public class ProjectController
 				
 				String RequirementDesc=req.getParameter("description");
 				String RequirementBrief=req.getParameter("reqbrief");
+				String linkedRequirements="";
+				if(req.getParameterValues("linkedRequirements")!=null) {
+				String []linkedreq= req.getParameterValues("linkedRequirements");
+				
+				
+				for(int i=0;i<linkedreq.length;i++) {
+					linkedRequirements=linkedRequirements+linkedreq[i];
+					if(i!=linkedreq.length-1) {
+						linkedRequirements=linkedRequirements+",";
+					}
+				}
+				}
+				
 				Long IntiationId=Long.parseLong(req.getParameter("IntiationId"));
 				PfmsInitiationRequirementDto prd= new PfmsInitiationRequirementDto();
 				prd.setInitiationId(IntiationId);
@@ -555,6 +628,9 @@ public class ProjectController
 				prd.setRequirementId(requirementId);
 				prd.setRequirementBrief(RequirementBrief);
 				prd.setRequirementDesc(RequirementDesc);
+				prd.setReqCount(a.intValue()+1);
+				prd.setPriority(req.getParameter("priority"));
+				prd.setLinkedRequirements(linkedRequirements);
 				
 				long count=service.ProjectRequirementAdd(prd,UserId);
 				if (count > 0) {
@@ -562,33 +638,41 @@ public class ProjectController
 				} else {
 					redir.addAttribute("resultfail", "Project Requirement Add Unsuccessful");
 				}
-				redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
-				redir.addFlashAttribute("TabId", "6");
-				return "redirect:/ProjectIntiationDetailesLanding.htm";
+				redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
+				/* redir.addFlashAttribute("TabId", "6"); */
+				redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
+				redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+				return "redirect:/ProjectRequirement.htm";
 			}
-			redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
-			redir.addFlashAttribute("TabId", "6");
+			redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
+			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
+			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+			/* redir.addFlashAttribute("TabId", "6"); */
 		}
 		catch(Exception e){
 			e.printStackTrace();
 			logger.error(new Date() +"Inside ProjectRequirementAddSubmit.htm  "+UserId, e);
 	 		return "static/Error";
 		}
-		return "redirect:/ProjectIntiationDetailesLanding.htm";
+		return "redirect:/ProjectRequirement.htm";
 	}
 	
 	
-	 @RequestMapping(value = "ProjectRequirementUpdate.htm",
-	 method=RequestMethod.POST) public String ProjectRequirementUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {  
+	 @RequestMapping(value = "ProjectRequirementUpdate.htm", method=RequestMethod.POST) 
+	 public String ProjectRequirementUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {  
 		 String UserId = (String) ses.getAttribute("Username"); 
 		 logger.info(new Date() +"Inside ProjectRequirementUpdate.htm "+UserId);
 	 String InitiationId=req.getParameter("IntiationId"); 
+	 String initiationReqId=req.getParameter("InitiationReqId");
 	 String option=req.getParameter("action"); 
+	 
+	
 	 long InitiationReqId=Long.parseLong(req.getParameter("InitiationReqId"));
 	
 	 
-	System.out.println(InitiationId+"----------------"+InitiationReqId);
+	if(option.equalsIgnoreCase("EDIT")) {
 	 try {
+		 
 		 req.setAttribute("InitiationId", InitiationId);
 		 req.setAttribute("InitiationReqId", req.getParameter("InitiationReqId"));
 		 req.setAttribute("RequirementTypeList", service.RequirementTypeList());
@@ -602,8 +686,62 @@ public class ProjectController
 	 }
 	 
 	 return "project/ProjectRequirementEdit";
-	 
-	 
+	}
+	else {
+		try {
+		List<Integer>reqcountlist1=service.reqcountList(InitiationId);
+		int []a=reqcountlist1.stream().map(i ->(i==null?0:i)).mapToInt(Integer::intValue).toArray();	
+		int count = service.deleteRequirement(initiationReqId);
+		int sum=0;
+		for(int i:a) {
+			sum=sum+i;
+		}
+		
+		List<Integer>reqcountlist2=service.reqcountList(InitiationId);
+		int[]b=reqcountlist2.stream().map(i->(i==null?0:i)).mapToInt(Integer::intValue).toArray();
+		for(int i:b) {
+			sum=sum-i;
+		}
+		
+		int []c=new int[b.length];
+		String reqid="";
+		String s="";
+		for(int i=0;i<c.length;i++) {
+			if(b[i]<sum) {
+				c[i]=b[i];
+			 reqid= service.getReqId(b[i],InitiationId).substring(0, 5);
+			 if(c[i]<10) {
+			 s=reqid+"000"+(c[i]*10);
+			 service.updateReqId(c[i],s,b[i],InitiationId);
+			 }
+			 else {
+				 s=reqid+"00"+(c[i]*10);
+				 service.updateReqId(c[i],s,b[i],InitiationId);
+			 }
+			}else {
+				c[i]=b[i]-1;
+				 reqid= service.getReqId(b[i],InitiationId).substring(0, 5);
+				 if(c[i]<10) {
+				 s=reqid+"000"+(c[i]*10);
+				 service.updateReqId(c[i],s,b[i],InitiationId);
+				 }
+				 else {
+					 s=reqid+"00"+(c[i]*10);
+					 service.updateReqId(c[i],s,b[i],InitiationId);
+				 }
+			}
+		}
+		
+		redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+		redir.addFlashAttribute("TabId", "6");
+		}
+		catch(Exception e) {
+			 e.printStackTrace(); 
+			 logger.info(new Date() +"Inside ProjectRequirementUpdate.htm "+UserId);
+			 return "static/Error";
+		}
+	}
+	return "redirect:/ProjectIntiationDetailesLanding.htm";
 }
 	
 	
@@ -1828,6 +1966,8 @@ public class ProjectController
 
 		logger.info(new Date() +"Inside ProjectRequirementEditSubmit.htm "+UserId);
 		String option=req.getParameter("action");
+		
+
 		try {
 		
 			if(option.equalsIgnoreCase("SUBMIT")) 
@@ -1848,6 +1988,7 @@ public class ProjectController
 		prd.setRequirementId(requirementId);
 		prd.setRequirementBrief(RequirementBrief);
 		prd.setRequirementDesc(RequirementDesc);
+		prd.setPriority(req.getParameter("priority"));
 		
 		
 		long count=service.RequirementUpdate(prd,UserId,InitiationReqId);
@@ -1860,9 +2001,12 @@ public class ProjectController
 		redir.addFlashAttribute("TabId", "6");
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 		
-		}
+	} /*
+		 * else { System.out.println("action"+"-------------"+option); }
+		 */
 			redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
 			redir.addFlashAttribute("TabId", "6");
+			
 		}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -4169,6 +4313,31 @@ public class ProjectController
 		
 
 	}
+	
+	@RequestMapping(value="RequirementJsonValue.htm",method=RequestMethod.GET)
+    public @ResponseBody String RequirementJsonValue(HttpSession ses, HttpServletRequest req) throws Exception {
+   	 Gson json = new Gson();
+   	 String UserId=(String)ses.getAttribute("Username");
+		BigInteger duplicate=null;
+	
+		logger.info(new Date() +"Inside RequirementJsonValue.htm"+UserId);
+		try
+		{	  
+			long inititationReqId=Long.parseLong(req.getParameter("inititationReqId"));
+			  Object[]requirementList=service.Requirement(inititationReqId);
+			  
+			  
+			  for(int i=0;i<requirementList.length;i++) {
+				  System.out.println(requirementList[i].toString()+"--------------");
+			  }
+			  
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside RequirementJsonValue.htm"+UserId ,e);
+				e.printStackTrace(); 
+		}
+		  return json.toJson(service.Requirement(Long.parseLong(req.getParameter("inititationReqId"))));
+	}
+	
 
 //package com.vts.pfms.project.controller;
 

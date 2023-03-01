@@ -26,6 +26,9 @@ public class PfmsInititationRequirement implements Serializable {
 	private Long ReqTypeId;
 	private String RequirementBrief;
 	private String RequirementDesc;
+	private int ReqCount;
+	private String priority;
+	private String LinkedRequirements;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

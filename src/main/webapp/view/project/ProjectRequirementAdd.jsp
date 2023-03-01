@@ -127,46 +127,106 @@ padding-top:0px;
 padding-bottom:0px;
 }
 
+.card-body{
+background-color:white;
+}
+#reqdiv{
+ display: flex;
+  align-items: center;
+  justify-content: center; 
+  min-width:100%;
+}
+
+#reqlabel{
+ display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+
+
+
 
 </style>
 </head>
 <body>
 <%List<Object[]>RequirementTypeList=(List<Object[]>)request.getAttribute("RequirementTypeList"); 
 String InitiationId=(String)request.getAttribute("InititationId");
-
+String projectshortName=(String)request.getAttribute("projectshortName");
+List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
 %>
+
 	<form class="form-horizontal" role="form" action="ProjectRequirementAddSubmit.htm" method="POST" id="myform" >
-	<div class="container-fluid">		
-	<div class="row">
-		<div class="col-md-12">
+	<div class="container-fluid" >		
+	<div class="row" >
+		<div class="col-md-12" id="reqdiv">
 		
-			<div class="card shadow-nohover" >
+			<div class="card shadow-nohover" style="min-width: 60%; margin-top:2%;box-shadow: 10px 10px 5px lightgrey;" >
 			 <div class="card-header" style=" background-color: #055C9D;margin-top: ;padding:5px;">
                     <h3 class="text-white" style="margin-left:15px; margin-top:5px; ">Requirements</h3>
         		</div>
         			<div class="card-body"  id="cardbody">
         			<div class="row">
-        			<div class="col-md-3">
-      				  <label style="margin:10px; font-size:16px">Type of Requirement:<span class="mandatory" style="color: red;">*</span></label>
+        			<div class="col-md-3" style="margin-left:1%" >
+      				  <label style="font-size: 16px;margin-top: 5%;  margin-left: 0.1rem">Type of Requirement:<span class="mandatory" style="color: red;">*</span></label>
         			</div>
 
-								<div class="col-md-8" style="margin-top: 5px">
+								<div class="col-md-3" style="margin-top: 5px">
 									<div class="form-group">
 										<select required="required" id="select" name="reqtype" class="form-control selectpicker" data-width="80%" data-live-search="true">
 							<option disabled="disabled" value="" selected="selected">Choose..</option>
 							<%if(!RequirementTypeList.isEmpty()){
 							for(Object[] obj:RequirementTypeList){ %>
-							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[2]%></option>
+							<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
 							<%}} %>
+							</select>
+									</div>
+								</div>
+								
+								<!--line added  -->
+								<div class="col-md-2" style="display: flex;justify-content: end;">
+      				  <label style="margin:10px; font-size:16px;">Priority:<span class="mandatory" style="color: red;">*</span></label>
+        			</div>
+
+								<div class="col-md-3" style="margin-top: 5px">
+									<div class="form-group">
+										<select required="required" id="select" name="priority" class="form-control selectpicker" data-width="80%" data-live-search="true">
+							<option disabled="disabled" value="" selected="selected">Choose..</option>
+							<option value="Low">Low</option>
+							<option  value="Medium">Medium</option>
+							<option  value="High">High</option>
 							</select>
 									</div>
 								</div>
 							</div>
         		
 			</div>
+			<!-- Line added  -->
+			<div class="card-body"  id="cardbody">
+        			<div class="row">
+        			<div class="col-md-3" style="margin-left:1%"  >
+      				  <label style="font-size: 16px;margin-top: 5%;  margin-left: 0.1rem">Linked Requirements<span class="mandatory" style="color: red;">*</span></label>
+        			</div>
+
+								<div class="col-md-5" style="margin-top: 5px">
+									<div class="form-group">
+											 <select class="form-control selectdee" name="linkedRequirements" id="linkedRequirements"  data-live-search="true"   data-placeholder="Choose" multiple required>
+					
+							<%if(!RequirementList.isEmpty()){
+							for(Object[] obj:RequirementList){ %>
+							<option value="<%=obj[1]%>"><%=obj[1]%></option>
+							<%}} %>
+							</select>
+									</div>
+								</div>
+								</div>
+								</div>
+			
+			
+
 				<div class="card-body"  id="cardbody1">
         			<div class="row">
-        			<div class="col-md-3">
+        			<div class="col-md-3"  >
       				  <label style="margin:10px ;font-size:16px">Requirement Brief:<span class="mandatory" style="color: red;">*</span></label>
         			</div>
 
@@ -180,7 +240,7 @@ String InitiationId=(String)request.getAttribute("InititationId");
 			</div>
 				<div class="card-body" id="cardbody1">
         			<div class="row">
-        			<div class="col-md-12">
+        			<div class="col-md-4"  >
       				  <label style="margin:0px ;padding-left: 10px;font-size:16px">Requirement Description:<span class="mandatory" style="color: red;">*</span></label>
         			</div>
 
@@ -192,9 +252,10 @@ String InitiationId=(String)request.getAttribute("InititationId");
 							</div>
 							<%-- <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> --%>
 												<input type="hidden" name="IntiationId" value="<%=InitiationId %>" /> 
+												<input type="hidden" name="projectshortName" value="<%=projectshortName %>" /> 
         										<div class="form-group" align="center" >
         										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-												<button type="submit" class="btn btn-primary btn-sm submit" name="action" value="SUBMIT" onclick= "return reqCheck('myform');">SUBMIT</button>
+												<button type="submit" class="btn btn-primary btn-sm submit" name="action" value="SUBMIT" onclick= "return reqCheck('myform1');">SUBMIT</button>
 												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate" name="action" value="BACK" >
 											</div>
 			</div>

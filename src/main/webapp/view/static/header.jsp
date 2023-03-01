@@ -252,6 +252,13 @@ String labcode= (String)session.getAttribute("labcode");
 										  	 	</form>
 									  		</li>
 									  		
+									  			<li>
+										  		<form action="ProjectRequirement.htm" method="POST" name="myfrm2"  style="display: inline">
+										  			<input type="hidden" name="sub" value="requirements"/>
+										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+										 	 		<button class="dropdown-item" >Requirements</button>
+										  	 	</form>
+									  		</li>
 								    	</ul>
 								</li>
 								
