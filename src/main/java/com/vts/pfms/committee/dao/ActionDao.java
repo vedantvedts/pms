@@ -91,4 +91,5 @@ public interface ActionDao {
 	public List<Object[]> getActualDecOrRecSought(String scheduleid, String type)throws Exception;
 	public List<Object[]> getDecOrRecSought(String scheduleid , String type)throws Exception;
 	public List<Object[]> GetActionList(String empid)throws Exception;
+	public List<Object[]> ActionMonitoring(String ProjectId, String Status) throws Exception;
  }

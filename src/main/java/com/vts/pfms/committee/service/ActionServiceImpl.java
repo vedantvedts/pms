@@ -36,8 +36,9 @@ import com.vts.pfms.committee.model.PfmsNotification;
 public class ActionServiceImpl implements ActionService {
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	private  SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MMM-yyyy");
+	private  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
@@ -119,7 +120,7 @@ public class ActionServiceImpl implements ActionService {
 		actionmain.setActionType(main.getActionType());
 		actionmain.setType(main.getType());
 		actionmain.setActionItem(main.getActionItem());
-		actionmain.setActionDate(new java.sql.Date(sdf.parse(main.getMeetingDate()).getTime()));
+		actionmain.setActionDate(new java.sql.Date(rdf.parse(main.getMeetingDate()).getTime()));
 		actionmain.setCategory(main.getCategory());
 		actionmain.setPriority(main.getPriority());
 		actionmain.setProjectId(Long.parseLong(main.getProjectId()));
@@ -141,9 +142,9 @@ public class ActionServiceImpl implements ActionService {
 		}else {
 			return unsuccess;
 		}
-		actionassign.setEndDate(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionassign.setEndDate(new java.sql.Date(rdf.parse(main.getActionDate()).getTime()));
 		actionassign.setActionMainId(result);
-		actionassign.setPDCOrg(new java.sql.Date(sdf.parse(main.getActionDate()).getTime()));
+		actionassign.setPDCOrg(new java.sql.Date(rdf.parse(main.getActionDate()).getTime()));
 //		actionassign.setAssigneeLabCode(main.getAssigneeLabCode());
 //		actionassign.setAssignee(Long.parseLong(main.getAssigneeList()[i]));
 //		actionassign.setAssignorLabCode(main.getAssignorLabCode());
@@ -237,9 +238,7 @@ public class ActionServiceImpl implements ActionService {
 			actionmain.setActionType(main.getActionType());
 			actionmain.setType(main.getType());
 			actionmain.setActionItem(main.getActionItem());
-			java.util.Date date = new java.util.Date();
-			java.util.Date sqlDate = new Date(date.getTime());
-			actionmain.setActionDate(sqlDate);
+			actionmain.setActionDate(java.sql.Date.valueOf(main.getMeetingDate()));
 			actionmain.setCategory(main.getCategory());
 			actionmain.setPriority(main.getPriority());
 			//actionmain.setActionStatus(main.getActionStatus());
@@ -268,10 +267,10 @@ public class ActionServiceImpl implements ActionService {
 				return unsuccess;
 			}
 			
-			actionassign.setEndDate(new java.sql.Date(sdf.parse(assign.getActionDate()).getTime()));
 			
 			actionassign.setActionMainId(result);
-			actionassign.setPDCOrg(new java.sql.Date(sdf.parse(assign.getActionDate()).getTime()));
+			actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+			actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
 			actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
 			actionassign.setAssignee(Long.parseLong(assign.getAssigneeList()[i]));
 			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
@@ -349,7 +348,7 @@ public class ActionServiceImpl implements ActionService {
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
 		sub.setProgress(Integer.parseInt(main.getProgress()));
-		sub.setProgressDate(new java.sql.Date(sdf.parse(main.getProgressDate()).getTime()));
+		sub.setProgressDate(new java.sql.Date(rdf.parse(main.getProgressDate()).getTime()));
 		sub.setCreatedBy(main.getCreatedBy());
 		sub.setCreatedDate(sdf1.format(new Date()));
 		sub.setIsActive(1);
@@ -817,7 +816,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> ActionPdcReports(String Emp, String ProjectId,String Position, String From, String To) throws Exception {
-		return dao.ActionPdcReports(Emp, ProjectId,Position, new java.sql.Date(sdf.parse(From).getTime()), new java.sql.Date(sdf.parse(To).getTime()));
+		return dao.ActionPdcReports(Emp, ProjectId,Position, new java.sql.Date(rdf.parse(From).getTime()), new java.sql.Date(rdf.parse(To).getTime()));
 	}
 
 	@Override
@@ -833,7 +832,7 @@ public class ActionServiceImpl implements ActionService {
 		if(assignid!=null) {
 		assign.setActionAssignId(Long.parseLong(assignid));
 		}
-		assign.setEndDate(new java.sql.Date(sdf.parse(date).getTime()));
+		assign.setEndDate(new java.sql.Date(rdf.parse(date).getTime()));
 		assign.setActionMainId(Long.parseLong(id));
 		assign.setModifiedBy(UserId);
 		assign.setModifiedDate(sdf1.format(new Date()));
@@ -879,7 +878,7 @@ public class ActionServiceImpl implements ActionService {
 		logger.info(new Date() +"Inside SERVICE ActionSelfReminderAddSubmit ");
 		ActionSelf actionself=new ActionSelf();
 		actionself.setEmpId(Long.parseLong(actionselfdao.getEmpId()));
-		actionself.setActionDate(new java.sql.Date(sdf.parse(actionselfdao.getActionDate()).getTime()));
+		actionself.setActionDate(new java.sql.Date(rdf.parse(actionselfdao.getActionDate()).getTime()));
 		actionself.setActionTime(actionselfdao.getActionTime());
 		actionself.setActionItem(actionselfdao.getActionItem());
 		actionself.setActionType(actionselfdao.getActionType());
@@ -1158,7 +1157,7 @@ public class ActionServiceImpl implements ActionService {
 		sub.setActionAssignId(Long.parseLong(main.getActionAssignId()));
 		sub.setRemarks(main.getRemarks());
 		sub.setProgress(Integer.parseInt(main.getProgress()));
-		sub.setProgressDate(new java.sql.Date(sdf.parse(main.getProgressDate()).getTime()));
+		sub.setProgressDate(new java.sql.Date(rdf.parse(main.getProgressDate()).getTime()));
 		sub.setCreatedBy(main.getCreatedBy());
 		sub.setCreatedDate(sdf1.format(new Date()));
 		sub.setIsActive(1);
@@ -1253,10 +1252,16 @@ public class ActionServiceImpl implements ActionService {
 	{
 		return dao.getDecOrRecSought(scheduleid, type);
 	}
+
 	@Override
     public List<Object[]> GetActionList(String empid)throws Exception
     {
     	return dao.GetActionList(empid);
     }
 
+	@Override
+	public List<Object[]> ActionMonitoring(String ProjectId , String Status)throws Exception
+	{
+		return dao.ActionMonitoring(ProjectId, Status);
+	}
 }

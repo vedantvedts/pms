@@ -399,6 +399,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setPDC(data[28].toString());		
 				health.setPMRCTotalToBeHeld(Long.parseLong(data[29].toString()));
 				health.setEBTotalToBeHeld(Long.parseLong(data[30].toString()));
+				health.setSanctionDate(data[31].toString());
 				result=dao.ProjectHealthInsert(health);
 			}catch (Exception e) {
 				e.printStackTrace();

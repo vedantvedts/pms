@@ -228,7 +228,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
 								if(date1.compareTo(date2) == 0){%>
-								<tr>
+								<tr>                            
 									<td style="text-align: center;"> <%=++l1%></td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
