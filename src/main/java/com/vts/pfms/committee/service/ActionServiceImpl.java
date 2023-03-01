@@ -1253,4 +1253,10 @@ public class ActionServiceImpl implements ActionService {
 	{
 		return dao.getDecOrRecSought(scheduleid, type);
 	}
+	@Override
+    public List<Object[]> GetActionList(String empid)throws Exception
+    {
+    	return dao.GetActionList(empid);
+    }
+
 }

@@ -2563,5 +2563,23 @@ public class ActionController {
 			}
 	 		return "Issue/Decision";
 	 	}
-
+	 	
+	 	@RequestMapping(value = "ToDoReviews.htm" , method = RequestMethod.GET)
+	 	public String ToDoList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	 	{
+	 		 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ToDoReviews.htm "+UserId);
+	 		try {
+	 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				List<Object[]> actionlist = service.GetActionList(EmpId);
+				
+				req.setAttribute("actionassigneelist", actionlist.stream().filter(e->  e[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
+				req.setAttribute("actionassignorlist", actionlist.stream().filter(e->  e[12].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
+			
+	 		}catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ToDoReviews.htm "+UserId, e);
+			}
+	 		return "action/ToDoReview";
+	 	}
 }
