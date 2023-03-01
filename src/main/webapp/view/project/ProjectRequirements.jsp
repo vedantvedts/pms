@@ -253,8 +253,6 @@ for(Object []obj:RequirementList) {%>
 <button type="button" class="btn btn-secondary <%if(count==RequirementList.size() ){%>viewbtn1<%}else {%>viewbtn<%} %>" id="" value="<%=obj[0]%>"><%=obj[1] %></button>
 <%count++;} %>
 </div>
-
-
 <div class="container" id="container">
 <div class="row" >
 		<div class="col-md-12" id="reqdiv">
