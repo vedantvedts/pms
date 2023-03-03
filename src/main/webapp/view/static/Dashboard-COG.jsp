@@ -9,8 +9,34 @@
 <body>
 <% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); %>
 
+	<div  class="card  cashoutgo" id="project-attributes">
+		<div class="card-body row" style="padding: 3px !important">
+			<div class="col-md-12">
+				
+				<table class="table cashoutgotable" >
+					 <thead>
+					    <tr>
+					      <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;&nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
+					      <th scope="col" style="width:10rem">Allot</th>
+					      <th scope="col" style="width:10rem">Exp</th>
+					      <th scope="col" style="width:10rem">Bal</th>
+					      <th scope="col" style="width:10rem">COG-Q1</th>
+					      <th scope="col" style="width:10rem">COG-Q2</th>
+					      <th scope="col" style="width:10rem">COG-Q3</th>
+					      <th scope="col" style="width:10rem">COG-Q4</th>
+					      <th scope="col" style="width:10rem">Addl(-)/Surr(+)</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					  </tbody>
+				</table>
+				
+			</div>
+		</div>	
+	</div>
+
 		
-		<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
+	<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
 		<div class="card-body row" style="padding: 3px !important">
 			<div class="col-md-12">
 				
@@ -60,7 +86,10 @@
 				  <tbody>
 				  
 				    <tr>
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#5C192F" >&#x220E;</span>&nbsp;<span class="COGLegend">CAP</span>&nbsp; <span style="border-left: 2px solid darkgrey" id="COGProject">&nbsp;&nbsp; Project</span></th>
+				      <th scope="row" style="text-align: left">
+				      	<!-- <span class="shadow COGLegend" style="color:#5C192F" >&#x220E;</span>&nbsp;<span class="COGLegend">CAP</span>&nbsp;  -->
+				      	<span style="border-left: 2px solid darkgrey" id="COGProject">&nbsp;&nbsp; Project</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="Allotment" id="ProAllotCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[3] %> Cr" ><%=CashOutGo.get(0)[3] %></div>
@@ -144,7 +173,10 @@
 				    </tr>
 				
 				    <tr id="COG-Buildup-row">
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#466136">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span></th>
+				      <th scope="row" style="text-align: left">
+					      <!-- <span class="shadow " style="color:#466136">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; --> 
+					      <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Capital : <%=CashOutGo.get(3)[3] %> Cr"  ><%=CashOutGo.get(3)[3] %></div>
@@ -228,7 +260,10 @@
 				    </tr>
 				  
 				    <tr id="COG-Total-row">
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#591A69 ">&#x220E;</span>&nbsp;OTH&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span></th>
+				      <th scope="row" style="text-align: left">
+				      	<!-- <span class="shadow " style="color:#591A69 ">&#x220E;</span>&nbsp;OTH&nbsp;  -->
+				      	<span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AllotCap %> Cr" ><%=AllotCap %></div>
@@ -291,7 +326,7 @@
 				</table>
 			</div>
 			   </div>
-		  	</div>	 
+	</div>	 
 	
 
 <script type="text/javascript">
@@ -311,11 +346,9 @@ function CashOutGoProject($ProjectCode)
 			
 			if($ProjectCode==='0'){
 				$('#COGProject').html('&nbsp;&nbsp;Project');
-				$('.COGLegend').show();
 			}else
 			{
 				$('#COGProject').html('&nbsp;&nbsp;'+$ProjectCode);
-				$('.COGLegend').hide();
 			}
 			$('#ProAllotCap').html(values[0][3]).attr('data-original-title','Project Capital : '+values[0][3] +' Cr');
 			$('#ProAllotRev').html(values[1][3]).attr('data-original-title','Project Revenue : '+values[1][3] +' Cr');

@@ -904,9 +904,8 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;
 								for(Object[] obj:lastpmrcminsactlist.get(z)){
-									// only recommendations and the if recommendation is completed or closed then only those actions whicha are completed after last meeting
-									if(obj[3].toString().equalsIgnoreCase("R") 
-											&& (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      ){ %>
+									// only recommendations and the if recommendation is completed or closed then only those actions which are completed after last meeting
+									if( obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) )) ){ %>
 						<tr>
 							<td style="text-align: center;"><%=i %></td>
 							<td style="text-align: justify; "><%=obj[2] %></td>

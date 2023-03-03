@@ -804,7 +804,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 					 	
 				<!-- Below 2 divs are for overall tab -->
 					 	
-				<div style="display: none" class="overallheader">
+				<div style="display: none" class="overallheader" id="changes-tab">
 					
 			          	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
 			          	<button type="button" class="btn " style="background-color: #145374;color: white;font-size: 13px" onclick="ChangesForm('A')" ><i class="fa fa-arrows-alt" aria-hidden="true"></i> Changes</button>
@@ -1156,7 +1156,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 					    chart.startAngle(90);
 					    
 					    // set the chart title
-					    <%-- chart.title('<%=obj.getProjectCode()%> (SANC : <%=obj.getSancAmt()%>L)'); --%>
 
 					    // set the container id
 					    chart.container('container<%=obj.getSno()%>');
@@ -1633,10 +1632,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="text-align:justify; "><%=obj[2] %></td>
 												<td style="width:100px"><%=sdf.format(obj[4]) %></td>
-												<td><%=obj[12] %></td>
+												<td><%=obj[12] %>
 
-												<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
-												
+													<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
 														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
 		                                                <input type="hidden" name="ActionLinkId" value="<%=obj[15]%>"/>
 														<input type="hidden" name="ActionNo" value="<%=obj[1]%>"/>
@@ -1644,12 +1642,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 												<input type="hidden" name="fracasassignid" value="<%=obj[0]%>"/>
 		 												<input type="hidden" name="ActionAssignid" value="<%=obj[16]%>"/>
 		 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		 												
-		 												
+													</form> 
 												
-												</form> 
-												
-												
+												</td>
 												
 											</tr>
 											
@@ -1868,9 +1863,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
 													       			</tr> 
 												       	
-													<%}%>
+															<%}%>
 				
-													<%} %>
+														<%} %>
 													
 													<%} %>
 				
@@ -1962,7 +1957,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 													
 																 <%formcount++;}} }else{%>
 																 	
-																 	<br>
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
 																 
@@ -2035,7 +2029,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 													
 																 <%formcount1++;} }}else{%>
 																 	
-																 	<br>
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
 																 
@@ -2250,7 +2243,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 <!-- ****************************************************************** OVERALL MODULE ********************************************************************************* -->
 
-			<div class="container-fluid" style="display: none" id="overalltable">
+	<div class="container-fluid" style="display: none" id="overalltable">
 			
 
 		<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
@@ -2604,7 +2597,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">Sanc</span></td>
+												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
@@ -2790,22 +2783,27 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<td class="custom-td">
 													<%
 													BigInteger number = new BigInteger(obj[43].toString());
+													BigInteger total = new BigInteger("0");
 													if(number.compareTo(new BigInteger("0")) >0){ %>
 													<div class="row">
 														<div class="col-md-10">
 															<div class="progress" onclick="overallfinance()">
 															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>" ></div>
+															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))); %>
 															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> " ></div>
+															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))); %>
 															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> " ></div>
+															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))); %>
 															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> " ></div>
+															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))); %>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																	<span class="health-circle" style="<%if(Integer.parseInt(obj[42].toString())<=25){%> background-color:red<%}%>
+														<div class="col-md-1" style="padding-left: 0px !important;">
+																	<span class="health-circle"  style="cursor: pointer;<%if(Integer.parseInt(obj[42].toString())<=25){%> background-color:red<%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>
-																	"><%=obj[42] %></span>
+																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
+																	data-toggle="tooltip" title="Total : &#8377; <%=nfc.rupeeFormat(total.toString())%>"><%=obj[42] %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>
@@ -3614,17 +3612,11 @@ function ProjectDetails(value,ProjectCode)
 	
 	$('#COG-Buildup-row').hide();
 	$('#COG-Total-row').hide();
+	$('#overallmodulecarddeck').hide();
+	$('#changes-tab').hide();
 	
 	CashOutGoProject(ProjectCode);
 }
-
-function LabDetails(value){
-	
-	$("#labcode").val(value);
-	$('#labdetailsform').submit();
-	
-}
-
 
 function overalldetails(value){
 	
@@ -3636,11 +3628,17 @@ function overalldetails(value){
 	
 	$('#COG-Buildup-row').show();
 	$('#COG-Total-row').show();
+	$('#overallmodulecarddeck').show();
+	$('#changes-tab').show();
 	CashOutGoProject('0');
 }
 
-
-
+function LabDetails(value){
+	
+	$("#labcode").val(value);
+	$('#labdetailsform').submit();
+	
+}
 
 
 </script>
@@ -3890,6 +3888,9 @@ $('.btn3').click(function(){
 	$('.btn2').css('background-color','white');
 	$('.btn2').css('color','black');
 	
+	overalldetails('A');
+
+	
 	$("#overalltable").css("display","block");
 	$("#force-btn").css("display","block");
 	$("#overallcard1").css("display","block");
@@ -4013,20 +4014,16 @@ function actionformtask(term,type){
 		$('#Action'+mainid).submit();
 		
 	}
-	
-	
 	function MyTaskDetails(mainid){
 		
 		$('#MyTaskDetails'+mainid).submit();
 	}
-
 
 	$('#actionsubmit').on('click',function(){
 		
 		$('#actionform').submit();
 		
 	})
-
 
      $(".action").each(function() {
         var i = $(this).next();

@@ -196,7 +196,7 @@ p{
  <h1 class="break"></h1> 
 <!-- ------------------------------------------------------- members --------------------------------- -->
 <%if(invitedlist.size()>0){ %>
-<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
+<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
 
 int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
 int j=0;
@@ -256,6 +256,7 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -296,6 +297,7 @@ for(Object[] temp : invitedlist){
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -346,6 +348,7 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -394,6 +397,7 @@ for(Object[] temp : invitedlist){
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -439,8 +443,7 @@ for(Object[] temp : invitedlist){
 					<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 				</tr>
 				<tr>
-						<%
-							int count = 0;
+						<% int count = 0;
 
 						for (Object[] speclist : speclists)
 						{
@@ -464,9 +467,7 @@ for(Object[] temp : invitedlist){
 								</div>
 							</td>
 
-						<%
-							}
-						%>
+						<% } %>
 
 				
 				</tr>
@@ -525,10 +526,7 @@ for(Object[] temp : invitedlist){
 			<div align="center">
 				<table style="margin-top: -10px; width: 650px; font-size: 16px; border-collapse: collapse;">
 					<tbody>
-									
-						<%
-												
-						for (Object[] speclist : speclists)
+						<% for (Object[] speclist : speclists)
 						{
 							if (speclist[3].toString().equals(committeemin[0].toString())) 
 							{
@@ -536,7 +534,7 @@ for(Object[] temp : invitedlist){
 								%>
 							
 									<tr>
-										<td class="summary" style="text-align: justify;padding-left: 30px;">
+										<td class="" style="text-align: justify;padding-left: 15px;">
 											<%if(speclist[1]!=null && !speclist[1].toString().trim().equalsIgnoreCase("")){%> <%=speclist[1]%>  <%}else{ %> - <%} %>  
 										</td>
 									</tr>							
@@ -550,10 +548,10 @@ for(Object[] temp : invitedlist){
 				
 	<%}%>
 	
-	<div align="center">
+	<div >
 		<div style="width: 650px;margin-left: 15px; ">
-			<div align="center" style="padding-left: 2.5rem;">
-				<p>These Minutes are issued with the approval of The Chairperson. </p>
+			<div align="left" >
+				These Minutes are issued with the approval of The Chairperson.
 			</div>
 			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px">
 				<br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp;
