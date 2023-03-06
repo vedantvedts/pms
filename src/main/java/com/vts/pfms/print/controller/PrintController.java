@@ -135,18 +135,11 @@ public class PrintController {
 		logger.info(new Date() +"Inside PfmsPrint.htm "+UserId);		
 	    	try {
 	    		String InitiationId=req.getParameter("IntiationId");
-	    		
-	    		
-	    		
 	    		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
-	    		
-	    		
 	    		String labcode=PfmsInitiationList[17].toString().toLowerCase();
 	    		
 	   		 	req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));                     
 	    		req.setAttribute("LabList", service.LabList(labcode));
-	  
-	    		
 	    		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 	    		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));

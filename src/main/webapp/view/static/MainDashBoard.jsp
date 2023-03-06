@@ -469,7 +469,7 @@
 		margin: 0px 10px !important;
 	}
 	
-	.cashoutgotable tr td{
+	.cashoutgotable tr {
 		font-size: 13px !important;
 		font-weight: 600 !important;
 	}
@@ -512,10 +512,6 @@
 
 <body>
 <%
-
-/* List<Object[]> loginTypeList=(List<Object[]>)request.getAttribute("loginTypeList");
-String LoginAs=(String)session.getAttribute("LoginAs");
-Object[] DashboardDemandCount=(Object[])request.getAttribute("DashboardDemandCount"); */
 
 String Username =(String)session.getAttribute("Username");  
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
@@ -583,19 +579,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 <%
  String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	
  if(ses1!=null){
-	%>	
-	
-<center><div class="alert alert-danger" role="alert"><%=ses1 %></div></center>
-	
-	<%}
+%>	
+<div align="center"><div class="alert alert-danger" role="alert"><%=ses1 %></div></div>
+<%}
  
- if(ses!=null){ %>
-	
-<center><div class="alert alert-success" role="alert" ><%=ses %></div></center>
-                    
-   <%} %>
+if(ses!=null){ %>
+<div align="center"><div class="alert alert-success" role="alert" ><%=ses %></div></div>
+<%} %>
 
 
 
@@ -603,7 +594,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 
 <!-------------------- Main Row------------------------------------ ------------>
-		<div class="row">
+		<div class="row" style="margin-bottom: -20px;">
 	
 <!-------------------- Main row col-md-9------------------------------------ -->			
 			<div class="col-md-9" >
@@ -710,10 +701,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 																			
 												<%count++; }} }}%>
 								
-												<%if(count==0) {%>
-												
-													<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
-													
+												<%if(count==0) { %>
+													<ul>
+														<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
+													</ul>
 												<%} %>
 											
 											</div>
@@ -1299,18 +1290,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 <!-------------------- Nested row Gantt Chart start  removal------------------------------------------ -->		
 	      
 	      
-			      <div class="col-md-12">
-			      
+			    <div class="col-md-12">
+			    	
 			      	<%if(ProjectList!=null){ %>
-	
-						<div class="card" style="background: transparent;display: none" id="ganttchart">
+						<div style="background: transparent;display: none" id="ganttchart" >
+						<div class="card"  >
 				
 							<div id="carouselExampleControls2" class="" data-ride=""  >
-							
-							
 								<div class="carousel-inner">
-								
-			                      
 								 <%if(ProjectList!=null) {for(Object[] obj1 : ProjectList){ 
 								 if(!"0".equalsIgnoreCase(obj1[0].toString())){
 								 %>
@@ -1350,27 +1337,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 								</div> 
 			
 							</div>
+						</div>	
 							
-							
-					<%if(ProjectList!=null){for(Object[] obj1 : ProjectList){%> 
+					<%if(ProjectList!=null){
+						for(Object[] obj1 : ProjectList){%> 
 					
 						<script>
-								      
-
-						anychart.onDocumentReady(function () {
-
-
+							anychart.onDocumentReady(function () {
 								    	  var data = [
-								    		  
-								    		  
-								    		  
 								    		  <%
-								    		  
-								    		  
 								    		  for(Object[] obj : ganttchartlist){
 								    			  if(obj1[0].toString().equalsIgnoreCase(obj[1].toString())){
 								    			  %>	
-								    		  
 								    		  {
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
@@ -1426,10 +1404,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 									          "Progress: {%progress}<br>" 
 									          
 									        ); 
-									        
-									        
-								        	 
-								        	 
 								        	 
 								        /* Hover */
 								        
@@ -1516,12 +1490,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 								    </script>	
 							
-							
-						<%} } %>
+						<% } } %>
 
-			<%} %> 
-
-			</div>
+					<%} %> 
+		
+				</div>
 			
 			
 				<!------------------------------------ Upcoming Schedules Start ------------------------------------------------------------------ -->
@@ -1705,7 +1678,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 	
 <!------- Main row col-md-3 Start -------------------->
-		  <div class="col-md-3" >
+		 <div class="col-md-3" >
 		  	
 		  	
 		 <!------- Toggle Button  --------------------> 	
@@ -2244,8 +2217,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 <!-- ****************************************************************** OVERALL MODULE ********************************************************************************* -->
 
 	<div class="container-fluid" style="display: none" id="overalltable">
-			
-
 		<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
 		  <div class="card detailscard">
 		    <div class="card-body">
@@ -2787,15 +2758,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 													if(number.compareTo(new BigInteger("0")) >0){ %>
 													<div class="row">
 														<div class="col-md-10">
-															<div class="progress" onclick="overallfinance()">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>" ></div>
-															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))); %>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> " ></div>
-															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))); %>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> " ></div>
-															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))); %>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> " ></div>
-															  <%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))); %>
+															<div class="progress" onclick="overallfinance()" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>
+																																		<br>OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> 
+																																		<br>DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> 
+																																		<br>Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> 
+																																		<br><b>Total : &#8377; <%=nfc.rupeeFormat(total.toString())%> </b>
+																																																		">
+
+															  	<div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%"  > </div>
+															 	<div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" > </div>
+															  	<div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%"  > </div>
+															  	<div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" > </div>
+															  	
 															</div>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important;">
@@ -2803,7 +2781,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
-																	data-toggle="tooltip" title="Total : &#8377; <%=nfc.rupeeFormat(total.toString())%>"><%=obj[42] %></span>
+																	><%=obj[42] %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>
@@ -3924,8 +3902,7 @@ $('.btn3').click(function(){
 	$('#mainactivitystatus').css("display","none");	
 	$('#projectgraph').css("display","none");
 	
-	<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
-	document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
+	<%-- document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')'; --%>	
 	$('#dgdashboard').css("display","none");
 	
 })

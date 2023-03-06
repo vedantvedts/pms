@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -595,6 +593,12 @@ public class RfpMainServiceImpl implements RfpMainService {
 			OutGo[10] = Double.parseDouble(OutGo[10].toString())!=0 ?  new BigDecimal(OutGo[10].toString()).divide(onecrore).setScale(2, BigDecimal.ROUND_HALF_EVEN).toString() : new BigDecimal(OutGo[10].toString()).toString() ;
 		}
 		return CashOutGo;
+	}
+	
+	@Override
+	public Object[] ProjectAttributes(String projectcode)throws Exception
+	{
+		return dao.ProjectAttributes(projectcode);
 	}
 	
 }
