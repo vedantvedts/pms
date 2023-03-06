@@ -1,6 +1,7 @@
 package com.vts.pfms.committee.dao;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
+import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
 
 
@@ -908,6 +910,33 @@ public class ActionDaoImpl implements ActionDao{
 		Query query = manager.createNativeQuery(ACTIONMONITORING);
 		query.setParameter("ProjectId", ProjectId);
 		query.setParameter("Status", Status);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String GETACTIONFORFEVORITE="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress ,d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND c.desigid=b.desigid   AND d.actionflag NOT IN ('C') AND d.actionassignid NOT IN (SELECT actionassignid FROM Pfms_Favourite_List WHERE empid=:empid) AND c.desigsr <=(SELECT ed.desigsr FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid AND e.empid=:empid) AND a.projectid=:projectid AND a.actiondate BETWEEN :fromdate AND :todate ORDER BY d.actionassignid DESC";
+	@Override
+	public List<Object[]> GetActionListForFevorite(Date fromdate , Date todate , String projectid , String  empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETACTIONFORFEVORITE);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("projectid", projectid);
+		query.setParameter("empid", empid);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public Long AddFavouriteList(FavouriteList fav) throws Exception
+	{
+		manager.persist(fav);
+		manager.flush();
+		return fav.getFavouriteId();
+	}
+	private static final String GETFAVOURITE="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress ,d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e , Pfms_Favourite_List fl WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND fl.actionassignid = d.actionassignid AND c.desigid=b.desigid AND d.actionflag NOT IN ('C') AND fl.empid=:empid order by fl.FavouriteId desc";
+	@Override
+	public List<Object[]> GetFavouriteList(String empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETFAVOURITE);
+		query.setParameter("empid", empid);
 		return (List<Object[]>)query.getResultList();
 	}
 }

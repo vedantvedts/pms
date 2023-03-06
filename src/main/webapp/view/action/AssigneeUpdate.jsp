@@ -75,7 +75,7 @@ h6{
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D;">
+	    		<div class="card-header" style="background-color: #055C9D; height: 80px;">
       				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=actiono %>)<%}%>
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
@@ -108,8 +108,9 @@ h6{
 	          				<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
 				            	<%if("backToReview".equalsIgnoreCase(back)){%>
-				            		
 				            		<a type="button" class="btn  btn-sm back"  href="ActionForwardList.htm?Type=NB">BACK</a>
+				            	<%}else if("backTotodo".equalsIgnoreCase(back)){%>
+				            	<a type="button" class="btn  btn-sm back"    href="ToDoReviews.htm"  >BACK</a>
 				            	<%}else{%>
 				            		<a type="button" class="btn  btn-sm back"    href="AssigneeList.htm"  >BACK</a>
 				            	<%}%>
@@ -117,7 +118,7 @@ h6{
 		          				<%if(!"0".equalsIgnoreCase(Assignee[8].toString())){ %>
 	 								<%if(Assignee[13].toString().equalsIgnoreCase("S")){ %>
 	      				 	  			<!-- <input type="submit" class="btn  btn-sm view" value="Meeting Content View" formaction="AgendaView.htm" formtarget="_blank"/> -->
-				       				<%} %>
+				       				<%}%>
 	                           	<%} %> 
 	                           	<% if(SubList.size()>0){ %>  
 	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>

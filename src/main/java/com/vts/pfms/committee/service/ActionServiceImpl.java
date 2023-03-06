@@ -30,6 +30,7 @@ import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
+import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
 
 @Service
@@ -1263,5 +1264,31 @@ public class ActionServiceImpl implements ActionService {
 	public List<Object[]> ActionMonitoring(String ProjectId , String Status)throws Exception
 	{
 		return dao.ActionMonitoring(ProjectId, Status);
+	}
+	@Override
+	public List<Object[]> GetActionListForFevorite(String fromdate , String todate , String projectid , String  empid)throws Exception
+	{
+		return dao.GetActionListForFevorite( new java.sql.Date(rdf.parse(fromdate).getTime()),new java.sql.Date(rdf.parse(todate).getTime()) ,projectid,empid);
+	}
+	@Override
+	public Long AddFavouriteList(String[] favoriteid , Long empid ,String userid)throws Exception
+	{
+		Long count =0l;
+		for(int i=0; i<favoriteid.length;i++){
+			FavouriteList fav = new FavouriteList();
+			fav.setActionAssignId(Long.parseLong(favoriteid[i]));
+			fav.setEmpId(empid);
+			fav.setCreatedBy(userid);
+			fav.setCreatedDate(sdf1.format(new Date()));
+			fav.setIsActive(1);
+			count=+ dao.AddFavouriteList(fav);
+		}
+		return count;
+		
+	}
+	@Override
+	public List<Object[]> GetFavouriteList(String empid)throws Exception
+	{
+		return dao.GetFavouriteList(empid);
 	}
 }

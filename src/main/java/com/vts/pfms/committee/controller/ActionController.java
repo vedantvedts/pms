@@ -1261,6 +1261,7 @@ public class ActionController {
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
 						req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") , req.getParameter("ActionAssignId")).get(0));
 						req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
+						req.setAttribute("back", req.getParameter("back"));
 						}
 						catch (Exception e) {
 							e.printStackTrace();
@@ -2542,11 +2543,14 @@ public class ActionController {
 			logger.info(new Date() +"Inside ToDoReviews.htm "+UserId);
 	 		try {
 	 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	 			String Logintype=(String)ses.getAttribute("LoginType");
+	 			String LabCode=(String)ses.getAttribute("labcode");
 				List<Object[]> actionlist = service.GetActionList(EmpId);
 				
 				req.setAttribute("actionassigneelist", actionlist.stream().filter(e->  e[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
 				req.setAttribute("actionassignorlist", actionlist.stream().filter(e->  e[12].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
-			
+				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode)); 
+				req.setAttribute("FavouriteList", service.GetFavouriteList(EmpId));
 	 		}catch(Exception e){
 				e.printStackTrace();
 				logger.error(new Date() +" Inside ToDoReviews.htm "+UserId, e);
@@ -2589,6 +2593,53 @@ public class ActionController {
 				logger.error(new Date() +" Inside ActionMonitoring.htm "+UserId, e);
 				return "static/Error";
 			}
-			
+
 		}
+	 	
+	 	@RequestMapping(value = "GetActionListForFavourite.htm", method = RequestMethod.GET)
+		public @ResponseBody String ActionListForFavourite(HttpServletRequest req, HttpSession ses) throws Exception 
+		{
+			Gson json = new Gson();
+			List<Object[]> list=null;
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside GetActionListForFavourite.htm "+UserId);		
+			try {
+				
+				String fromdate = req.getParameter("Fromdate");
+				String todate = req.getParameter("Todate");
+				String projectid = req.getParameter("Projectid");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				
+				list = service.GetActionListForFevorite(fromdate,todate,projectid,EmpId);
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside GetActionListForFavourite.htm "+UserId, e);
+				list=new ArrayList<>();
+			}
+			return json.toJson(list);
+		}
+	 	
+	 	@RequestMapping(value = "AddFavouriteList.htm", method = { RequestMethod.GET , RequestMethod.POST})
+		public  String AddFavouriteList(HttpServletRequest req, HttpSession ses , RedirectAttributes redir) throws Exception 
+		{
+	 		String UserId = (String) ses.getAttribute("Username");
+	 		logger.info(new Date() +"Inside GetActionListForFavourite.htm "+UserId);		
+			try {
+				String[] asiignid = req.getParameterValues("favourite");
+				
+				Long EmpId = (Long) ses.getAttribute("EmpId");
+				long count  = service.AddFavouriteList(asiignid , EmpId , UserId);
+				if (count > 0) {
+					redir.addAttribute("result", "Favourite List Add Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Favourite List Add Unsuccessful");
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside AddFavouriteList.htm "+UserId, e);
+			}
+			return "redirect:/ToDoReviews.htm";
+		}
+	 	
+	 	
 }
