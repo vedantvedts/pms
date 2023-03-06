@@ -248,16 +248,9 @@ public class LoginController {
 			     
 			     req.setAttribute("projecthealthtotaldg", labdatalist);
 			     
-			     
-			    // req.setAttribute("changestotalcount", rfpmainservice.ChangesTotalCountData(ProjectId));
-
-//			     if(LoginType.equalsIgnoreCase("P") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("Q") )
-			     
 			     if(!LoginType.equalsIgnoreCase("U") || !LoginType.equalsIgnoreCase("K")  )
 			     {
 
-			    	//req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
-			    	 
 			    	//code for pfms service call to get data for project pie chart
 
 			    	final String localUri=uri+"/pfms_serv/pfms-chart-service?inType="+LoginType+"&employeeNo="+empNo;

@@ -166,11 +166,7 @@ a:hover {
 									<th style="text-align: center ;width:10%;">Date</th>
 									<th style="text-align: center ;width:35%;">View</th>
 									<th style="text-align: center ;width:15%;">
-									<%-- <%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %> --%>
 										Action
-									<%-- <%}else{%>
-										Status
-									<%}%> --%>
 									</th>
 								</tr>
 							</thead>
@@ -209,7 +205,7 @@ a:hover {
 														</div>
 													</div>
 											  </button> 
-										 <%}else{  if(logintype.equalsIgnoreCase("A")){%>
+										 <%}else{  if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("C")|| logintype.equalsIgnoreCase("I")){%>
 											<button class="editable-click" type="button" name="sub" value="Details" 	onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
 												<div class="cc-rockmenu">
 														<div class="rolling">
@@ -222,8 +218,6 @@ a:hover {
 											  </button> 
 										  <%}}%>
 									
-											  <%-- <%if(!logintype.equalsIgnoreCase("A")){ if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>CLOSED <%}else{%>OPENED<%}}%>
-									 --%>
 									
 									<% List<Object[]> list = attachment.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 									if(list!=null && list.size()>0){

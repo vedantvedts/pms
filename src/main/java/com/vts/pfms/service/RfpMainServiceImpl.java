@@ -181,7 +181,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	public Object[] AllSchedulesCount(String LoginType, String loginid) throws Exception {
 		logger.info(new Date() +"Inside SERVICE AllSchedulesCount ");
 		Object[] allschedulescount = null;
-		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L") )
+		if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("E") || LoginType.equalsIgnoreCase("L")|| LoginType.equalsIgnoreCase("C")|| LoginType.equalsIgnoreCase("I") )
 	     {
 			allschedulescount = dao. AllSchedulesCount("0");
 	     }

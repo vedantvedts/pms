@@ -439,7 +439,7 @@ if(ses1!=null){
 									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
 									    			<%}%>
 									    				<button type="button" class="btn btn-sm submit"  style="margin-top: 15px;" onclick="return appendrev('editrevform');" >REVISE</button>
-									    			<%}if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O") && logintype!=null && logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("P") || logintype.equalsIgnoreCase("Z")){%>
+									    			<%}if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O") && logintype!=null && logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("P") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("C")|| logintype.equalsIgnoreCase("I")  ){%>
 									   <!--------------------------------- Close button Only for Admin , Director , project Director  ----------------------------->
 									    				<button type="button" class="btn btn-danger btn-sm revoke" style="margin-top: 15px;" onclick="CloseRiskmodal('<%=riskmatrixdata[0]%>','<%=riskdata[0]%>');"  >CLOSE RISK </button>
 									    			<%}%>	

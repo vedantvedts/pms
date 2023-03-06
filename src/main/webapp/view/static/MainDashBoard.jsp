@@ -562,7 +562,7 @@ String logintype="U";
 String View="";
 if(logintype!=null ){
 	logintype=(String)request.getAttribute("logintype"); 
-	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") ){
+	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") || logintype.equalsIgnoreCase("C") || logintype.equalsIgnoreCase("I") ){
 		logintype="A";
 	}
 }
@@ -2882,7 +2882,7 @@ if(ses!=null){ %>
 				<div class="modal-body">
 						
 					<%
-					 if(!IsDG.equalsIgnoreCase("Yes") ) {%>	
+					 if(!IsDG.equalsIgnoreCase("Yes") ) { %>	
 						
 					<div class="row">
 						<div style="text-align: left">
@@ -2906,7 +2906,7 @@ if(ses!=null){ %>
 								<p style="margin-bottom: 0px !important;margin-left:10px">Project Health (Completed %)</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
+									<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
 						           	<li><span class="modal-span" style="color:#EE5007;">&#8226;</span><span class="modal-text">25-50%</span></li>
 						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">50-75%</span></li>
 						           	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">75-100%</span></li>
@@ -2963,7 +2963,17 @@ if(ses!=null){ %>
 					            </ul>
 							</div>
 					</div>
-				
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Cash Out Go</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						          	<li><span class="modal-span" style="color:#5C192F;">&#8226;</span><span class="modal-text">Capital</span></li>
+						           	<li><span class="modal-span" style="color:#466136;">&#8226;</span><span class="modal-text">Revenue</span></li>
+						           	<li><span class="modal-span" style="color:#591A69;">&#8226;</span><span class="modal-text">Others</span></li>
+					            </ul>
+							</div>
+					</div>
 					          
 				</div>
 				
@@ -3299,7 +3309,7 @@ if(ses!=null){ %>
 										<thead style=" background: #1363DF; color: white;">												
 											<tr>
 												<td style="width:4%">
-													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+													<!-- <a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a> -->
 												</td>
 												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>

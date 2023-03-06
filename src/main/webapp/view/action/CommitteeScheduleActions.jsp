@@ -378,7 +378,7 @@ if(MinutesBack==null){
 								<h6 style="color: white; font-weight: bold; font-size: 1.2rem !important" align="left"></h6>
 							</div>
 							<div class="col-sm-7" align="left">
-								<div class="input-group">
+								<div class="input-group" style="margin-top: -8px;">
 									<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">
 									<div class="input-group-append">
 										<button class="btn btn-secondary" type="button" style="font-size: 10px;" id="ItemDescriptionSearchBtn">
@@ -386,14 +386,12 @@ if(MinutesBack==null){
 										</button>
 									</div>
 								</div>
-							</div>
+								</div>
 						</div>
 					</div>
 					<div class="card-body" >
 						<form name="specadd" id="specadd" action="CommitteeActionSubmit.htm" method="post" >
-
 							<div class="row" style="margin-top: -35px">
-
 								<div class="col-md-12" align="left">
 									<label> <b id="iditemspec" style="font-size: 18px"></b>
 										<b id="iditemsubspecofsub" style="font-size: 18px"></b> <b

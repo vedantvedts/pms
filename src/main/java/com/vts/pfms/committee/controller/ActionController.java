@@ -1331,7 +1331,7 @@ public class ActionController {
 								ProjectId="A";
 							}
 
-							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") )                             
+							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") )                             
 							{
 								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,"0",ProjectId));
 							}
