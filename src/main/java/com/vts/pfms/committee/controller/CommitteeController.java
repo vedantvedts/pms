@@ -1086,7 +1086,7 @@ public class CommitteeController {
 				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 			}
 			
-			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z")) 
+			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
 			{
 				if(md.get("otp")!=null) {
 					req.setAttribute("otp", md.get("otp"));
@@ -3273,7 +3273,7 @@ public class CommitteeController {
 	
 			if(req.getParameter("search")!=null) {
 			
-				if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A") ) 
+				if(LoginType.equalsIgnoreCase("P")|| LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("A")  || LoginType.equalsIgnoreCase("C")|| LoginType.equalsIgnoreCase("I")) 
 				{
 					req.setAttribute("meetingsearch", service.MeetingSearchList(req.getParameter("search") ,LabCode));
 				}
@@ -4236,7 +4236,7 @@ public class CommitteeController {
 			String loginid= ses.getAttribute("LoginId").toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
 			
-			if(Logintype.equals("A") || Logintype.equals("Z") || Logintype.equals("Y"))
+			if(Logintype.equals("A") || Logintype.equals("Z") || Logintype.equals("Y") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I"))
 			{	//all projects for admin, associate director and director
 				req.setAttribute("projectslist", service.allprojectdetailsList());
 			} 

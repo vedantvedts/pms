@@ -205,7 +205,7 @@ a:hover {
 														</div>
 													</div>
 											  </button> 
-										 <%}else{  if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("C")|| logintype.equalsIgnoreCase("I")){%>
+										 <%}else{  if(logintype.equalsIgnoreCase("A")){%>
 											<button class="editable-click" type="button" name="sub" value="Details" 	onclick="Closefeedbackmodal( '<%=obj[0]%>','<%=obj[1]%>' , '<%=sdf1.format(inputFormatter.parse(obj[2].toString()) )%>')">
 												<div class="cc-rockmenu">
 														<div class="rolling">

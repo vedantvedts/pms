@@ -232,7 +232,7 @@ String labcode= (String)session.getAttribute("labcode");
 									  		
 									  		
 									  		
-										  		<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y") ) {%>									  		
+										  		<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")  || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") ) {%>									  		
 										  		
 										  		<li>
 										  			<form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm"  style="display: inline">

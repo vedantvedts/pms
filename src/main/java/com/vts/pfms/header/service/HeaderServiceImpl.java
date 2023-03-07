@@ -137,7 +137,7 @@ public class HeaderServiceImpl implements HeaderService {
 	
 	
 	
-		if(LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("C") || LoginType.equalsIgnoreCase("I")) 
+		if(LoginType.equalsIgnoreCase("A")) 
 		{
 			loginTypeListnew=loginTypeList;
 		}
