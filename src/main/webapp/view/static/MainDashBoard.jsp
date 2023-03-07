@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>PMS MAIN</title>
+<title>PMS</title>
 
 <jsp:include page="../static/header.jsp"></jsp:include>
 
@@ -3723,14 +3723,14 @@ function overalldoc(){
 	 var DG= '<%=IsDG%>';
 	 
 	 	if(DG=='Yes'){
-	 		if(logintype =='A' || logintype=='Z' || logintype=='X' || logintype=='K'  ){
+	 		if(logintype =='A' || logintype=='Z' || logintype=='X' || logintype=='K' || logintype=='C' || logintype=='I'  ){
 	 			$('.btn5').click();
 	 		}else{
 	 			$('.btn1').click();
 	 		}
 	 		
 	 	}
-	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){	
+	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E' || logintype=='C' || logintype=='I'){	
 				$('.btn3').click();
 		} else{
 			$('.btn1').click();

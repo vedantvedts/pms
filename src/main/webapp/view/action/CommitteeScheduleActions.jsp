@@ -516,8 +516,7 @@ if(MinutesBack==null){
 							<!-- Form End -->
 
 							<div class="table-responsive">
-								<table
-									class="table table-bordered table-hover table-striped table-condensed"
+								<table class="table table-bordered table-hover table-striped table-condensed"
 									id="myTabl" style="margin-top: 20px; width: 98%;">
 									<thead>
 										<tr>
