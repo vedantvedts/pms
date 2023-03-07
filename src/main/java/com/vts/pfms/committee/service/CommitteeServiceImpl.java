@@ -2790,7 +2790,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		String confidential = dto.getConfidential();
 		int useraccess=0;
 		
-		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H") );
+		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H","C","I") );
 		ArrayList<String> memtypes=new ArrayList<String>( Arrays.asList("CS","CC","PS") );
 			if(logintypes.contains(logintype)) 
 			{

@@ -567,7 +567,7 @@ if(logintype!=null ){
 	}
 }
 
-String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K"}  ;
+String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K","C","I"}  ;
 
 int ProjectCount = 0;
 
