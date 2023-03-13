@@ -349,8 +349,7 @@ a:hover {
 													</thead>
 													<tbody>
 														<%int  count=1;
-															
-														 	if(AssignedList!=null&&AssignedList.size()>0){
+														 	if(AssignedList!=null && AssignedList.size()>0){
 															for(Object[] obj: AssignedList){ %>
 														<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
@@ -366,9 +365,10 @@ a:hover {
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																Not Yet Started .
+																0
 															</div>
-															</div> <%} %></td>
+															</div> <%} %>
+															</td>
 															<td class="talign" >
 														
 																	<%if(obj[14].toString().equals("1")){ %>

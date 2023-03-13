@@ -593,5 +593,15 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		return CCMData ;
 	}
 	
+	private static final String PROJECTATTRIBUTES = "SELECT pm.projectcode, pm.projectname, pm.ProjectDescription, pm.sanctiondate, pm.objective, pm.deliverable, pm.pdc,   ROUND(pm.TotalSanctionCost/100000,2) AS 'TotalSanctionCost',   ROUND(pm.SanctionCostRE/100000,2) AS 'SanctionCostRE', ROUND(pm.SanctionCostFE/100000,2) AS 'SanctionCostFE', pm.WorkCenter, pm.projectcategory,pc.classification,  pm.projecttype AS 'projecttypeid',pt.projecttype ,pma.labparticipating,  (SELECT ps.projectstage FROM pfms_project_stage ps, pfms_project_data pd WHERE ps.projectstageid=pd.CurrentStageId AND pd.projectid=pm.projectid ) AS 'projectstage'FROM project_master pm, pfms_security_classification pc, project_type pt , project_main pma  WHERE pm.projectcategory=pc.classificationid AND pm.projecttype=pt.projecttypeid AND pm.projectmainid=pma.projectmainid AND pm.projectcode=:projectcode  ";
+	@Override
+	public Object[] ProjectAttributes(String projectcode)throws Exception
+	{
+		Query query = manager.createNativeQuery(PROJECTATTRIBUTES);
+		query.setParameter("projectcode", projectcode);
+		Object[] ProMaster =(Object[])query.getSingleResult();
+		return ProMaster ;
+	}
+	
 }
 

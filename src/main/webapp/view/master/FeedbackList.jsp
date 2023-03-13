@@ -166,11 +166,7 @@ a:hover {
 									<th style="text-align: center ;width:10%;">Date</th>
 									<th style="text-align: center ;width:35%;">View</th>
 									<th style="text-align: center ;width:15%;">
-									<%-- <%if(logintype!=null && logintype.equalsIgnoreCase("A")) { %> --%>
 										Action
-									<%-- <%}else{%>
-										Status
-									<%}%> --%>
 									</th>
 								</tr>
 							</thead>
@@ -222,8 +218,6 @@ a:hover {
 											  </button> 
 										  <%}}%>
 									
-											  <%-- <%if(!logintype.equalsIgnoreCase("A")){ if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("C")){%>CLOSED <%}else{%>OPENED<%}}%>
-									 --%>
 									
 									<% List<Object[]> list = attachment.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 									if(list!=null && list.size()>0){

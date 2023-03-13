@@ -91,10 +91,10 @@ public class ActionController {
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
-		
+	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ActionLaunch.htm "+UserId);		
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -122,13 +122,14 @@ public class ActionController {
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("LabCode", LabCode);
 			
-		
+			return "action/ActionLaunch";
 		}
 		catch (Exception e) {
-				e.printStackTrace();
-				logger.error(new Date() +" Inside ActionLaunch.htm "+UserId, e);
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionLaunch.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "action/ActionLaunch";
+		
 	}
 
 	@RequestMapping(value = "ActionStatus.htm" , method = RequestMethod.POST)
@@ -919,16 +920,7 @@ public class ActionController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ScheduleActionList.htm "+UserId);		
 			try {
-			
-			
-			
-			try {
-			ItemDescriptionSearchLedger =   service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
-			}catch (Exception e) {
-				
-			}
-			
-			
+				ItemDescriptionSearchLedger =   service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -1331,7 +1323,7 @@ public class ActionController {
 								ProjectId="A";
 							}
 
-							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") )                             
+							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") )                             
 							{
 								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,"0",ProjectId));
 							}

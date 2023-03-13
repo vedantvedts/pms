@@ -9,26 +9,24 @@
 <body>
 <% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); %>
 
-	<div  class="card  cashoutgo" id="project-attributes">
-		<div class="card-body row" style="padding: 3px !important">
-			<div class="col-md-12">
-				
-				<table class="table cashoutgotable" >
-					 <thead>
+	<div  class="card " id="project-attributes" style="margin:0px 0px 5px 0px;background-color: rgba(0,0,0,0.1) !important;display: none;">
+		<div class="card-body" style="padding: 0px !important">
+			<div class="col-md-12" align="left">
+				<table class="table" style="margin-bottom: -5px !important; margin-top: -5px !important;" >
 					    <tr>
-					      <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;&nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
-					      <th scope="col" style="width:10rem">Allot</th>
-					      <th scope="col" style="width:10rem">Exp</th>
-					      <th scope="col" style="width:10rem">Bal</th>
-					      <th scope="col" style="width:10rem">COG-Q1</th>
-					      <th scope="col" style="width:10rem">COG-Q2</th>
-					      <th scope="col" style="width:10rem">COG-Q3</th>
-					      <th scope="col" style="width:10rem">COG-Q4</th>
-					      <th scope="col" style="width:10rem">Addl(-)/Surr(+)</th>
+					      <th>Project :</th>
+					      <td id="pro-attr-name"></td>
+					      <th>DoS :</th>
+					      <td id="pro-attr-DoS"></td>
+					      <th>PDC :</th>
+					      <td id="pro-attr-PDC"></td>
+					      <th>Sanc Cost :</th>
+					      <td id="pro-attr-sanc"></td>
+					      <th>Category : </th>
+					      <td id="pro-attr-category"></td>
+					      <th>Stage : </th>
+					      <td id="pro-attr-stage"></td>
 					    </tr>
-					  </thead>
-					  <tbody>
-					  </tbody>
 				</table>
 				
 			</div>
@@ -331,8 +329,44 @@
 
 <script type="text/javascript">
 
+function showProjectAttributes($ProjectCode)
+{
+	if($ProjectCode!='0')
+	{
+		$.ajax({
+			
+			type:"GET",
+			url:"ProjectAttribures.htm",
+			data :{
+				ProjectCode : $ProjectCode
+			},
+			datatype : 'json',
+			success : function(result) {
+				var values = JSON.parse(result);
+				console.log(values);
+				$('#pro-attr-name').html(values[1]+' - '+values[0]);
+				$('#pro-attr-DoS').html(moment(values[3]).format('DD-MM-YYYY'));
+				$('#pro-attr-PDC').html(moment(values[6]).format('DD-MM-YYYY'));
+				$('#pro-attr-sanc').html((Number(values[7])/10000000).toFixed(2)+' Cr (<b>Fe : </b>'+(Number(values[9])/10000000).toFixed(2)+' Cr'+')');
+				$('#pro-attr-category').html(values[14]);
+				if(values[16]!=null){
+					$('#pro-attr-stage').html(values[16]);
+				}else{
+					$('#pro-attr-stage').html('     -      ');
+				}
+				$('#project-attributes').show();
+				$('#projecttitle').html(values[0]);
+				
+			}
+	
+		})
+	}
+}
+
+
 function CashOutGoProject($ProjectCode)
 {
+	
 	$.ajax({
 		
 		type:"GET",
@@ -346,8 +380,11 @@ function CashOutGoProject($ProjectCode)
 			
 			if($ProjectCode==='0'){
 				$('#COGProject').html('&nbsp;&nbsp;Project');
+				$('#project-attributes').hide();
+				$('#projecttitle').html('PROJECT HEALTH');
 			}else
 			{
+				showProjectAttributes($ProjectCode);
 				$('#COGProject').html('&nbsp;&nbsp;'+$ProjectCode);
 			}
 			$('#ProAllotCap').html(values[0][3]).attr('data-original-title','Project Capital : '+values[0][3] +' Cr');

@@ -2727,28 +2727,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		String logintype=logindata[4].toString();
 		ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList(logintype, EmpId));
-//		
-//		if(logintype.equals("G") || logintype.equals("J") || logintype.equals("T") )
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DO", EmpId));
-//		}
-//		
-//		if(rtmddo!=null)
-//		{
-//			if(rtmddo[1].toString().equals(logindata[2].toString()))
-//			{
-//				ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("RT", EmpId));
-//			}
-//		}
-//		
-//		if(logintype.equals("Z"))
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DR", EmpId));
-//		}
-//		if(logintype.equals("A"))
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("A", EmpId));
-//		}
 		
 		return ProposedCommitteesApprovalList;
 	}
@@ -2812,7 +2790,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		String confidential = dto.getConfidential();
 		int useraccess=0;
 		
-		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H") );
+		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H","C","I") );
 		ArrayList<String> memtypes=new ArrayList<String>( Arrays.asList("CS","CC","PS") );
 			if(logintypes.contains(logintype)) 
 			{

@@ -2465,7 +2465,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 								    <div class="row">
 								    	<div class="col-md-9 ">
 											<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
-												<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="application/pdf,image/jpeg"/>
+												<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="image/png"/>
 												<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
 												<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
 												<button type="submit" formtarget="_blank" class="btn btn-sm back" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" style="float:right; background-color: #DE834D; font-weight: 600;border:0px;">Sub Level</button>

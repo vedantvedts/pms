@@ -432,50 +432,51 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<div class="executive" align="center">
 							<table style="margin-left: auto;margin-right:auto; " >
 								<tr >
-									 <th  style="text-align: center; font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
-									 <th  style="text-align: center;  font-size: 20px  "> <%=nextMeetVenue[1] %> </th>				
+									 <th  style="text-align: center; font-size: 20px;padding: 0px; "> <u>Meeting Id </u> </th></tr><tr>
+									 <th  style="text-align: center;  font-size: 20px;padding: 0px;  "> <%=nextMeetVenue[1] %> </th>				
 								 </tr>
 							</table>
 							
 							 <table style="margin-left: auto;margin-right:auto;width:900px; " >
 								 <tr>
-									 <th  style="text-align: center; width: 50%;font-size: 20px "> <u> Meeting Date </u></th>
-									 <th  style="text-align: center;  width: 50%;font-size: 20px  "><u> Meeting Time </u></th>
+									 <th  style="text-align: center; width: 50%;font-size: 20px;padding: 0px; "> <u> Meeting Date </u></th>
+									 <th  style="text-align: center;  width: 50%;font-size: 20px;padding: 0px; "><u> Meeting Time </u></th>
 								 </tr>
 								 <tr>
 								 	<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
-									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding-top: 5px;border:0px !important;"> <b><%=sdf.format(sdf1.parse(nextMeetVenue[2].toString()))%></b></td>
-									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding-top: 5px;border:0px !important;"> <b><%=nextMeetVenue[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */ %></b></td>
+									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding: 0px;border:0px !important;"> <b><%=sdf.format(sdf1.parse(nextMeetVenue[2].toString()))%></b></td>
+									 <td  style="text-align: center;  width: 50%;font-size: 20px ;padding: 0px;border:0px !important;"> <b><%=nextMeetVenue[3]/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */ %></b></td>
 								 </tr>
 							 </table>
 							 <table style=" margin-left: auto;margin-right:auto; " >
 								<tr >
-									 <th  style="text-align: center; font-size: 20px "> <u>Meeting Venue</u> </th></tr><tr>
-									 <th  style="text-align: center;  font-size: 20px  "> <% if(nextMeetVenue[5]!=null){ %><%=nextMeetVenue[5] %> <%}else{ %> - <%} %></th>				
+									 <th  style="text-align: center; font-size: 20px;padding: 0px "> <u>Meeting Venue</u> </th></tr><tr>
+									 <th  style="text-align: center;  font-size: 20px;padding: 0px  "> <% if(nextMeetVenue[5]!=null){ %><%=nextMeetVenue[5] %> <%}else{ %> - <%} %></th>				
 								 </tr>
 							</table>
 							</div>
 						<%}else{ %>
 							<br><br><br><br><br><br><br><br><br><br><br><br>
 						<%} %>
-		<table class="executive" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;  font-size: 16px;"  >
+						
+						<br><br><br>
+		<table class="executive" style="align: center;margin-bottom:0px; margin-left: auto;margin-right:auto;  font-size: 16px;"  >
 		<% if(labInfo!=null){ %>
 			<tr>
-				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px;padding-bottom: 0px;"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
 			</tr>
 		<% } %>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Government of India, Ministry of Defence</th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;">Government of India, Ministry of Defence</th>
 		</tr>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;">Defence Research & Development Organization</th>
 		</tr>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> <br><br><br></th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> <br><br><br></th>
 		</tr>
 		</table>			
 		
-		<br><br>
 	</div>
 <h1 class="break"></h1>
 <%for(int z=0 ; z<projectidlist.size();z++){  %>
@@ -2225,7 +2226,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 				</b>
 			</div>
 			
-              <% if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg").exists()){ %>
+              <% if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".png").exists()){ %>
 				<div style="font-weight: bold;" align="right" >
 					<br>
 					<span >
@@ -2233,9 +2234,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						<span style="margin:0px 0px 10px  15px;">Ongoing : &ensp; <span style=" background-color: #81b214;  padding: 0px 15px;border-radius: 3px;"></span></span>
 						<span style="margin:0px 0px 10px  15px;">Revised : &ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
 					</span>
-				</div>	
+				</div>
 				<div align="center"><br>
-					<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".jpg")))%>" alt="confi" > 
+					<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".png")))%>" alt="confi" > 
 				</div>
 				
               <%} else if(new File(filePath+projectLabCode+"\\gantt\\grantt_"+projectidlist.get(z)+"_"+No2+".pdf").exists()){ %>
@@ -2308,9 +2309,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
-													<%if(obj[6] != null){ %> <%= sdf.format(sdf1.parse(obj[6].toString()))%> <%} %>
-													<%if(obj[5] != null){ %> <%= sdf.format(sdf1.parse(obj[5].toString()))%> <%} %>
-													<%= sdf.format(sdf1.parse(obj[3].toString()))%>
+													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 												<td  style="text-align: center;"> 
 													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
@@ -2348,16 +2349,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<h1 class="break"></h1>		
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 						<div align="left" style="margin-left: 10px;"><b class="sub-title">12. Decision/Recommendations sought from <%=CommitteeCode.toUpperCase() %> Meeting :</b></div>
-							<%-- <div align="left" style="margin: 10px;"><%if(lastpmrcdecisions.get(z)!=null && lastpmrcdecisions.get(z)[0]!=null && !lastpmrcdecisions.get(z)[0].toString().trim().equals("")){ %>
-								<hr style="margin-right: 10px !important"><br>
-							<div style="white-space: pre-wrap;font-weight: 600 !important;font-size:18px !important;padding:15px !important;"><%=lastpmrcdecisions.get(z)[0] %></div>
-							<%}else{ %>
-							<div align="center">
-								Nil 
-							</div>	  	
-							<br><br><br>
-							<%} %>
-							</div> --%>
+							
 							<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
 			
 											<thead>
