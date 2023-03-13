@@ -1000,9 +1000,7 @@ if(ses!=null){ %>
 					 
 					 </div>
 					 
-					 <div style="display: none" class="overallheader">
-						<h2 style="color: transparent">.</h2>
-					</div>
+					 
 
 			      </div>
 			      

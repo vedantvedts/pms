@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1885,7 +1886,7 @@ public class CommitteeController {
 					req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 				}
 				List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-				HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+				HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 				
 				for(Object obj[] : actionlist) {
 						
@@ -2456,7 +2457,7 @@ public class CommitteeController {
 			}
 			
 			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-			HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 			
 			for(Object obj[] : actionlist) {
 					
@@ -3188,7 +3189,7 @@ public class CommitteeController {
 				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 			}
 			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-			HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 			
 			for(Object obj[] : actionlist) {
 					
@@ -3603,7 +3604,7 @@ public class CommitteeController {
 			}
 			
 			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-			HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 			
 			for(Object obj[] : actionlist) {
 					
@@ -3667,7 +3668,7 @@ public class CommitteeController {
 			}
 			
 			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-			HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 			
 			for(Object obj[] : actionlist) {
 					
@@ -5322,188 +5323,7 @@ public class CommitteeController {
 			}
 		}
 		
-		
-		@RequestMapping(value="CommitteeMinutesNew.htm", method = {RequestMethod.POST,RequestMethod.GET})
-		public String CommitteeMinutesNew(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
-			{
-			String UserId=(String)ses.getAttribute("Username");
-			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside CommitteeMinutesNew.htm "+UserId);
-			try
-			{		
-				String committeescheduleid = req.getParameter("committeescheduleid");			
-				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
-				String projectid= committeescheduleeditdata[9].toString();
-				String committeeid=committeescheduleeditdata[0].toString();
-				
-				
-				Object[] projectdetails = null;
-				
-				if(projectid!=null && Integer.parseInt(projectid)>0)
-				{
-					projectdetails = service.projectdetails(projectid);
-					req.setAttribute("projectdetails", projectdetails);
-				}
-				String divisionid= committeescheduleeditdata[16].toString();
-				if(divisionid!=null && Integer.parseInt(divisionid)>0)
-				{
-					req.setAttribute("divisiondetails", service.DivisionData(divisionid));
-				}
-				String initiationid= committeescheduleeditdata[17].toString();
-				if(initiationid!=null && Integer.parseInt(initiationid)>0)
-				{
-					req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
-				}
-				
-				Committee committee = printservice.getCommitteeData(committeeid);
 
-				long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);	
-				req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
-				req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
-	//			req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
-				req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
-	//			req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
-				req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
-				req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
-				req.setAttribute("isprint", "N");	
-				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
-				
-				
-				req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
-				req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
-				
-				req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
-	    		String LevelId= "2";
-				if(printservice.MileStoneLevelId(projectid,committeeid) != null) {
-					LevelId= printservice.MileStoneLevelId(projectid,committeeid)[0].toString();
-				}
-				req.setAttribute("levelid", LevelId);
-				req.setAttribute("labInfo", service.LabDetailes(LabCode));
-
-		/*---------------------------------------------------------------------------------------------------------------*/
-				if(Long.parseLong(projectid) > 0 && committeescheduleeditdata[22].toString().equals("N") ) {
-					
-					 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
-				 		HttpHeaders headers = new HttpHeaders();
-				 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-				 		headers.set("labcode", LabCode);			    	 
-				 		String jsonResult=null;
-						try {
-							HttpEntity<String> entity = new HttpEntity<String>(headers);
-							ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-							jsonResult=response.getBody();						
-						}catch(Exception e) {
-							req.setAttribute("errorMsg", "errorMsg");
-							 logger.error(new Date() +"Inside  financialDetails"+UserId,e);
-						}
-						ObjectMapper mapper = new ObjectMapper();
-						mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-						mapper.setVisibility(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-						List<ProjectFinancialDetails> projectDetails=null;
-						if(jsonResult!=null) {
-							try {
-								projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
-								req.setAttribute("financialDetails",projectDetails);
-							} catch (JsonProcessingException e) {
-								 logger.error(new Date() +"Inside  financialDetails"+UserId,e);
-								e.printStackTrace();
-							}
-						}
-		 	
-		
-					 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
-					 	List<Object[]> procurementOnDemand=null;
-					 	List<Object[]> procurementOnSanction=null;
-		 	
-					
-					 	 if(procurementStatusList!=null){
-					 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-					 		Collection<?> keys = map.keySet();
-					 		for(Object key:keys){
-					 		    if(key.toString().equals("D")) {
-					 		    	procurementOnDemand=map.get(key);
-					 		    }else if(key.toString().equals("S")) {
-					 		    	procurementOnSanction=map.get(key);
-					 		    }
-					 		 }
-					 	}
-					 	List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
-						HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
-						
-						for(Object obj[] : actionlist) {
-								
-								ArrayList<Object[]> values=new ArrayList<Object[]>(); 
-								for(Object obj1[] : actionlist ) {
-									if(obj1[0].equals(obj[0])) {
-										values.add(obj1);
-									}
-								}
-								if(!actionsdata.containsKey(obj[0].toString())) {
-									actionsdata.put(obj[0].toString(), values);
-								}
-						} 
-						req.setAttribute("actionlist",actionsdata);
-					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
-					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
-					 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
-					 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
-					 	
-					 	req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
-			    		
-			    		
-					 	
-				}else if(committeescheduleeditdata[22].toString().equals("Y") ){
-					List<Object[]> procurementStatusList=(List<Object[]>)service.getMinutesProcure(committeescheduleid);
-				 	List<Object[]> procurementOnDemand=null;
-				 	List<Object[]> procurementOnSanction=null;
-	 	
-				
-				 	 if(procurementStatusList!=null){
-				 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-				 		Collection<?> keys = map.keySet();
-				 		for(Object key:keys){
-				 		    if(key.toString().equals("D")) {
-				 		    	procurementOnDemand=map.get(key);
-				 		    }else if(key.toString().equals("S")) {
-				 		    	procurementOnSanction=map.get(key);
-				 		    }
-				 		 }
-				 	}
-				 	req.setAttribute("financialDetails",service.getMinutesFinance(committeescheduleid));
-					req.setAttribute("milestonesubsystems", service.getMinutesSubMile(committeescheduleid));
-					req.setAttribute("ActionPlanSixMonths", service.getMinutesMile(committeescheduleid));
-					req.setAttribute("procurementOnDemand", procurementOnDemand);
-				 	req.setAttribute("procurementOnSanction", procurementOnSanction);
-				 	List<Object[]> actionlist= service.getMinutesAction(committeescheduleid);
-					HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
-					
-					for(Object obj[] : actionlist) {
-							
-							ArrayList<Object[]> values=new ArrayList<Object[]>(); 
-							for(Object obj1[] : actionlist ) {
-								if(obj1[0].equals(obj[0])) {
-									values.add(obj1);
-								}
-							}
-							if(!actionsdata.containsKey(obj[0].toString())) {
-								actionsdata.put(obj[0].toString(), values);
-							}
-					} 
-					req.setAttribute("actionlist",actionsdata);
-
-				}
-		/*---------------------------------------------------------------------------------------------------------------*/			
-				
-				
-			}
-			catch (Exception e) {
-					e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesNew.htm "+UserId,e);
-			}
-				
-			return "committee/CommitteeMinutesNew";
-		}
-		
-		
 		@RequestMapping(value="CommitteeMinutesNewDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
 		public void CommitteeMinutesNewDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
@@ -5523,7 +5343,6 @@ public class CommitteeController {
 					res.setContentType("application/pdf");
 					res.setHeader("Content-Disposition", "inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+ dpfm.getDPFMFileName());
 			        File f=new File(uploadpath+dpfm.getFrozenDPFMPath() +dpfm.getDPFMFileName());
-				         
 
 				        OutputStream out = res.getOutputStream();
 						FileInputStream in = new FileInputStream(f);
@@ -5559,7 +5378,7 @@ public class CommitteeController {
 					
 					Committee committee = printservice.getCommitteeData(committeeid);
 					
-					HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+					HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 					long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
 					
 					req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
@@ -5567,7 +5386,6 @@ public class CommitteeController {
 					req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
 					req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
 					req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
-					req.setAttribute("isprint", "Y");	
 					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
 					req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
 					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
@@ -5664,55 +5482,12 @@ public class CommitteeController {
 						} 
 						
 						 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
-							req.setAttribute("actionlist",actionsdata);
+//							req.setAttribute("actionlist",actionsdata);
 						 	req.setAttribute("procurementOnDemand", procurementOnDemand);
 						 	req.setAttribute("procurementOnSanction", procurementOnSanction);
 						 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
 						 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
-	//					 	req.setAttribute("milestonesubsystems", service.MilestoneSubsystems(projectid));
-	//				}
-					
-	//				else if(committeescheduleeditdata[22].toString().equals("Y") ){
-	//					List<Object[]> procurementStatusList=(List<Object[]>)service.getMinutesProcure(committeescheduleid);
-	//				 	List<Object[]> procurementOnDemand=null;
-	//				 	List<Object[]> procurementOnSanction=null;
-	//		 						
-	//				 	 if(procurementStatusList!=null){
-	//				 		Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
-	//				 		Collection<?> keys = map.keySet();
-	//				 		for(Object key:keys){
-	//				 		    if(key.toString().equals("D")) {
-	//				 		    	procurementOnDemand=map.get(key);
-	//				 		    }else if(key.toString().equals("S")) {
-	//				 		    	procurementOnSanction=map.get(key);
-	//				 		    }
-	//				 		 }
-	//				 	}
-	//				 	 
-	//				 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(Long.parseLong(committeescheduleid),committeeid,projectid,committeescheduleeditdata[22]+""));
-	//				 	req.setAttribute("financialDetails",service.getMinutesFinance(committeescheduleid));
-	////					req.setAttribute("milestonesubsystems", service.getMinutesSubMile(committeescheduleid));
-	//					req.setAttribute("ActionPlanSixMonths", service.getMinutesMile(committeescheduleid));
-	//					req.setAttribute("procurementOnDemand", procurementOnDemand);
-	//				 	req.setAttribute("procurementOnSanction", procurementOnSanction);
-	//				 	List<Object[]> actionlist= service.getMinutesAction(committeescheduleid);
-	//					
-	//					
-	//					for(Object obj[] : actionlist) {
-	//							
-	//							ArrayList<Object[]> values=new ArrayList<Object[]>(); 
-	//							for(Object obj1[] : actionlist ) {
-	//								if(obj1[0].equals(obj[0])) {
-	//									values.add(obj1);
-	//								}
-	//						}
-	//							if(!actionsdata.containsKey(obj[0].toString())) {
-	//								actionsdata.put(obj[0].toString(), values);
-	//							}
-	//					} 
-	//					req.setAttribute("actionlist",actionsdata);
-	//				}
-				/*---------------------------------------------------------------------------------------------------------------*/			
+
 					String filename=committeescheduleeditdata[11].toString().replace("/", "-");
 						
 						
@@ -6140,7 +5915,7 @@ public class CommitteeController {
 				
 				Committee committee = printservice.getCommitteeData(committeeid);
 				
-				HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+				HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 				long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
 				
 				req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
@@ -6348,7 +6123,6 @@ public class CommitteeController {
 				{
 					redir.addAttribute("resultfail", "DPFM Freezing Unsucessful");
 				}		
-				
 				Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
 			    Files.delete(pathOfFile2);		
 			    pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
@@ -6713,7 +6487,7 @@ public class CommitteeController {
 					
 					Committee committee = printservice.getCommitteeData(committeeid);
 					
-					HashMap< String, ArrayList<Object[]>> actionsdata=new HashMap<String, ArrayList<Object[]>>();
+					HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 					long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
 					
 					req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );

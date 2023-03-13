@@ -129,6 +129,7 @@ public class ActionServiceImpl implements ActionService {
 		actionmain.setCreatedBy(main.getCreatedBy());
 		actionmain.setCreatedDate(sdf1.format(new Date()));
 		actionmain.setIsActive(1);
+		
 		long result=dao.ActionMainInsert(actionmain);
 		//for(int i=0;i<main.getAssigneeList().length;i++) {
 		ActionAssign actionassign = new ActionAssign();
@@ -151,11 +152,13 @@ public class ActionServiceImpl implements ActionService {
 //		actionassign.setAssignorLabCode(main.getAssignorLabCode());
 //		actionassign.setAssignor(Long.parseLong(main.getAssignor()));
 		actionassign.setRevision(0);
-		actionassign.setActionFlag("N");		
+//		actionassign.setActionFlag("N");		
 		actionassign.setActionStatus("A");
 		actionassign.setCreatedBy(main.getCreatedBy());
 		actionassign.setCreatedDate(sdf1.format(new Date()));
 		actionassign.setIsActive(1);
+		actionassign.setProgress(0);
+		
 		long assignid=  dao.ActionAssignInsert(actionassign);
 		if(result>0) {
 			Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
@@ -277,11 +280,12 @@ public class ActionServiceImpl implements ActionService {
 			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
 			actionassign.setAssignor(assign.getAssignor());
 			actionassign.setRevision(0);
-			actionassign.setActionFlag("N");		
+//			actionassign.setActionFlag("N");		
 			actionassign.setActionStatus("A");
 			actionassign.setCreatedBy(main.getCreatedBy());
 			actionassign.setCreatedDate(sdf1.format(new Date()));
 			actionassign.setIsActive(1);
+			actionassign.setProgress(0);
 			long assignid=  dao.ActionAssignInsert(actionassign);
 			if(result>0) {
 				Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
@@ -337,6 +341,11 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
+	public ActionAssign getActionAssign(String actionassignId) throws Exception 
+	{
+		return dao.getActionAssign(actionassignId);
+	}
+	@Override
 	public long ActionSubInsert(ActionSubDto main) throws Exception {
 		logger.info(new Date() +"Inside SERVICE ActionSubInsert ");
 		
@@ -355,29 +364,30 @@ public class ActionServiceImpl implements ActionService {
 		sub.setIsActive(1);
 		long subresult=dao.ActionSubInsert(sub);
 		if(subresult>0) {
-			ActionAssign updateassign=new ActionAssign();
-			updateassign.setActionAssignId(Long.parseLong(main.getActionAssignId()));
-			updateassign.setActionFlag("N");
+			ActionAssign updateassign=getActionAssign(main.getActionAssignId());
+//			updateassign.setActionFlag("N");
 			updateassign.setActionStatus("I");
 			updateassign.setModifiedBy(main.getCreatedBy());
 			updateassign.setModifiedDate(sdf1.format(new Date()));
+			updateassign.setProgress(Integer.parseInt(main.getProgress()));
+			updateassign.setProgressDate(sdf.format(rdf.parse(main.getProgressDate())));
 			dao.AssignUpdate(updateassign);
-			ActionAttachment attach=new ActionAttachment();
-			//attach.setActionAttach(main.getFilePath());
-			attach.setAttachFilePath(Path);
-			attach.setActionSubId(subresult);
-			attach.setAttachName(main.getFileNamePath());
-			if(!main.getMultipartfile().isEmpty()) {
+			
+			
+			if(!main.getMultipartfile().isEmpty()) 
+			{
+				ActionAttachment attach=new ActionAttachment();
+				attach.setAttachFilePath(Path);
+				attach.setActionSubId(subresult);
+				attach.setAttachName(main.getFileNamePath());
+				attach.setCreatedBy(main.getCreatedBy());
+				attach.setCreatedDate(sdf1.format(new Date()));
 				attach.setAttachName("Action"+timestampstr+"."+FilenameUtils.getExtension(main.getMultipartfile().getOriginalFilename()));
 				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
-			}else{
-				attach.setAttachFilePath(null);
+				dao.ActionAttachInsert(attach);
 			}
-			attach.setCreatedBy(main.getCreatedBy());
-			attach.setCreatedDate(sdf1.format(new Date()));
-			if(!main.getMultipartfile().isEmpty()) {
-			dao.ActionAttachInsert(attach);
-			}
+			
+			
 		}else {
 			subresult=0;
 		}
@@ -418,7 +428,8 @@ public class ActionServiceImpl implements ActionService {
 		long unsuccess=0;
 		ActionAssign main=new ActionAssign();
 		main.setActionAssignId(Long.parseLong(assignid));
-		main.setActionFlag("F");
+//		main.setActionFlag("F");
+		main.setActionStatus("F");
 		main.setModifiedBy(UserId);
 		main.setModifiedDate(sdf1.format(new Date()));
 		int result=dao.MainForward(main);
@@ -453,10 +464,10 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public int ActionClosed(String id, String Remarks, String UserId ,String assignid , String levelcount) throws Exception {
+	public long ActionClosed(String id, String Remarks, String UserId ,String assignid , String levelcount) throws Exception {
 		logger.info(new Date() +"Inside Service ActionClosed ");
 		long unsuccess=0;
-		int result=0;
+		long result=0;
 		
 		if(levelcount!=null && Long.parseLong(levelcount)>1) {
 			List<Object[]> actionslist = dao.ActionSubLevelsList(assignid);
@@ -468,16 +479,17 @@ public class ActionServiceImpl implements ActionService {
 			for(Object[] action:actionslist) {
 				if(Integer.parseInt(action[3].toString()) == startLevel){
 					
-					System.out.println(action[23]  +"  " +action[10]  );
-					ActionAssign assign=new ActionAssign();
-					assign.setActionAssignId(Long.parseLong(action[10]+""));
-					assign.setActionFlag("Y");
+					ActionAssign assign=getActionAssign(action[10].toString());
+//					assign.setActionFlag("Y");
 					assign.setActionStatus("C");
 					assign.setRemarks(Remarks);
 					assign.setModifiedBy(UserId);
 					assign.setModifiedDate(sdf1.format(new Date()));
-					
-					int result1=0;
+					if(assign.getProgressDate()==null) {
+						assign.setProgressDate(sdf.format(new Date())); 
+					}
+					assign.setClosedDate(sdf.format(new Date()));
+					long result1=0;
 							if(action[20]!=null && !"C".equalsIgnoreCase(action[20].toString())) {
 								result1=dao.MainSendBack(assign);
 							}
@@ -502,15 +514,18 @@ public class ActionServiceImpl implements ActionService {
 					&&  action[18].toString().trim().equalsIgnoreCase(action_L1[16].toString().trim()) 
 					&& Long.parseLong(action[19].toString()) == Long.parseLong(action_L1[17].toString()) ){ 
 						 
-						 System.out.println(action_L1[23]  +"  " +action_L1[10]  );
-						 ActionAssign assign1=new ActionAssign();
-							assign1.setActionAssignId(Long.parseLong(action_L1[10].toString()));
-							assign1.setActionFlag("Y");
+						 ActionAssign assign1=getActionAssign(action_L1[10].toString());
+//							assign1.setActionAssignId(Long.parseLong(action_L1[10].toString()));
+//							assign1.setActionFlag("Y");
 							assign1.setActionStatus("C");
 							assign1.setRemarks(Remarks);
 							assign1.setModifiedBy(UserId);
 							assign1.setModifiedDate(sdf1.format(new Date()));
-							int result2=0;
+							if(assign1.getProgressDate()==null) {
+								assign1.setProgressDate(sdf.format(new Date())); 
+							}
+							assign1.setClosedDate(sdf.format(new Date()));
+							long result2=0;
 							if(action[20]!=null && !"C".equalsIgnoreCase(action_L1[20].toString())) {
 								result2=dao.MainSendBack(assign1);
 							}
@@ -536,15 +551,18 @@ public class ActionServiceImpl implements ActionService {
 							&& action_L1[18].toString().trim().equalsIgnoreCase(action_L2[16].toString().trim()) 
 							&& Long.parseLong(action_L1[19].toString()) == Long.parseLong(action_L2[17].toString()) ){ 
 								 
-								 System.out.println(action_L2[23]  +"  " +action_L2[10]  );
-								 ActionAssign assign2=new ActionAssign();
-									assign2.setActionAssignId(Long.parseLong(action_L2[10]+""));
-									assign2.setActionFlag("Y");
+								 ActionAssign assign2=getActionAssign(action_L2[10].toString());;
+//									assign2.setActionAssignId(Long.parseLong(action_L2[10]+""));
+//									assign2.setActionFlag("Y");
 									assign2.setActionStatus("C");
 									assign2.setRemarks(Remarks);
 									assign2.setModifiedBy(UserId);
 									assign2.setModifiedDate(sdf1.format(new Date()));
-									int result3=0;
+									if(assign2.getProgressDate()==null) {
+										assign2.setProgressDate(sdf.format(new Date())); 
+									}
+									assign2.setClosedDate(sdf.format(new Date()));
+									long result3=0;
 									if(action[20]!=null && !"C".equalsIgnoreCase(action_L2[20].toString())) {
 										result3=dao.MainSendBack(assign2);
 									}
@@ -569,15 +587,18 @@ public class ActionServiceImpl implements ActionService {
 									&&  action_L2[18].toString().trim().equalsIgnoreCase(action_L3[16].toString().trim()) 
 									&& Long.parseLong(action_L2[19].toString()) == Long.parseLong(action_L3[17].toString()) ){ 
 										
-										 System.out.println(action_L3[23]  +"  " +action_L3[10]  );
-										 ActionAssign assign3=new ActionAssign();
-											assign3.setActionAssignId(Long.parseLong(action_L3[10]+""));
-											assign3.setActionFlag("Y");
+										 ActionAssign assign3=getActionAssign(action_L3[10].toString());;
+//											assign3.setActionAssignId(Long.parseLong(action_L3[10]+""));
+//											assign3.setActionFlag("Y");
 											assign3.setActionStatus("C");
 											assign3.setRemarks(Remarks);
 											assign3.setModifiedBy(UserId);
 											assign3.setModifiedDate(sdf1.format(new Date()));
-											int result4=0;
+											assign3.setClosedDate(sdf.format(new Date()));
+											if(assign3.getProgressDate()==null) {
+												assign3.setProgressDate(sdf.format(new Date())); 
+											}
+											long result4=0;
 											if(action[20]!=null && !"C".equalsIgnoreCase(action_L3[20].toString())) {
 												result4=dao.MainSendBack(assign3);
 											}
@@ -604,16 +625,18 @@ public class ActionServiceImpl implements ActionService {
 											&& action_L3[18].toString().trim().equalsIgnoreCase(action_L4[16].toString().trim()) 
 											&& Long.parseLong(action_L3[19].toString()) == Long.parseLong(action_L4[17].toString()) ){ 
 											
-											 System.out.println(action_L4[23] +"  " +action_L4[10]  );
-													 ActionAssign assign4=new ActionAssign();
+													 ActionAssign assign4=getActionAssign(action_L4[10].toString());;
 														assign4.setActionAssignId(Long.parseLong(action_L4[10]+""));
-														assign4.setActionFlag("Y");
+//														assign4.setActionFlag("Y");
 														assign4.setActionStatus("C");
 														assign4.setRemarks(Remarks);
 														assign4.setModifiedBy(UserId);
 														assign4.setModifiedDate(sdf1.format(new Date()));
-														 
-														 int result5=0;
+														assign4.setClosedDate(sdf.format(new Date()));
+														if(assign4.getProgressDate()==null) {
+															assign4.setProgressDate(sdf.format(new Date())); 
+														}
+														long result5=0;
 															if(action[20]!=null && !"C".equalsIgnoreCase(action_L4[20].toString())) {
 																result5=dao.MainSendBack(assign4);
 															}
@@ -650,14 +673,18 @@ public class ActionServiceImpl implements ActionService {
 			}
 		}else {
 			
-			ActionAssign assign=new ActionAssign();
+			ActionAssign assign=getActionAssign(assignid);;
 			assign.setActionAssignId(Long.parseLong(assignid));
-			assign.setActionFlag("Y");
+//			assign.setActionFlag("Y");
 			assign.setActionStatus("C");
 			assign.setRemarks(Remarks);
 			assign.setModifiedBy(UserId);
 			assign.setModifiedDate(sdf1.format(new Date()));
-			 result=dao.MainSendBack(assign);
+			assign.setClosedDate(sdf.format(new Date()));
+			if(assign.getProgressDate()==null) {
+				assign.setProgressDate(sdf.format(new Date())); 
+			}
+			result=dao.MainSendBack(assign);
 			if(result>0) {
 				Object[] data=dao.ActionNotification(id,assignid).get(0);
 				PfmsNotification notification=new PfmsNotification();
@@ -681,29 +708,22 @@ public class ActionServiceImpl implements ActionService {
 				result=0;
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
+				
 		return result;
 	}
 
 	@Override
-	public int ActionSendBack(String id, String Remarks, String UserId , String assignid) throws Exception {
+	public long ActionSendBack(String id, String Remarks, String UserId , String assignid) throws Exception {
 		logger.info(new Date() +"Inside SERVICE ActionSendBack ");
 		long unsuccess=0;
-		ActionAssign assign=new ActionAssign();
-		assign.setActionAssignId(Long.parseLong(assignid));
-		assign.setActionFlag("B");
-		assign.setActionStatus("I");
+		ActionAssign assign=getActionAssign(assignid);
+//		assign.setActionAssignId(Long.parseLong(assignid));
+//		assign.setActionFlag("B");
+		assign.setActionStatus("B");
 		assign.setRemarks(Remarks);
 		assign.setModifiedBy(UserId);
 		assign.setModifiedDate(sdf1.format(new Date()));
-		int result=dao.MainSendBack(assign);
+		long result=dao.MainSendBack(assign);
 		if(result>0) {
 			Object[] data=dao.ActionNotification(id,assignid).get(0);
 			PfmsNotification notification=new PfmsNotification();
@@ -1119,11 +1139,12 @@ public class ActionServiceImpl implements ActionService {
 			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
 			actionassign.setAssignor(assign.getAssignor());
 			actionassign.setRevision(assign.getRevision());
-			actionassign.setActionFlag(assign.getActionFlag());		
+//			actionassign.setActionFlag(assign.getActionFlag());		
 			actionassign.setActionStatus(assign.getActionStatus());
 			actionassign.setCreatedBy(main.getCreatedBy());
 			actionassign.setCreatedDate(sdf1.format(new Date()));
 			actionassign.setIsActive(1);
+			actionassign.setProgress(0);
 			long assignid=  dao.ActionAssignInsert(actionassign);
 					
 			}
@@ -1165,12 +1186,13 @@ public class ActionServiceImpl implements ActionService {
 		long subresult=dao.ActionSubInsert(sub);
 		if(subresult>0) {
 			
-			ActionAssign updateassign=new ActionAssign();
-			updateassign.setActionAssignId(Long.parseLong(main.getActionAssignId()));
-			updateassign.setActionFlag("N");
-			updateassign.setActionStatus("I");
+			ActionAssign updateassign=getActionAssign(main.getActionAssignId());
+//			updateassign.setActionFlag("N");
+			updateassign.setActionStatus("A");
 			updateassign.setModifiedBy(main.getCreatedBy());
 			updateassign.setModifiedDate(sdf1.format(new Date()));
+			updateassign.setProgress(Integer.parseInt(main.getProgress()));
+			updateassign.setProgressDate(sdf.format(rdf.parse(main.getProgressDate())));
 			dao.AssignUpdate(updateassign);
 			ActionAttachment attach=new ActionAttachment();
 			
@@ -1199,14 +1221,18 @@ public class ActionServiceImpl implements ActionService {
 	public int IssueClosed(String id, String Remarks, String UserId ,String assignid ) throws Exception {
 		logger.info(new Date() +"Inside Service IssueClosed ");
 		
-		int result=0;
-		ActionAssign assign=new ActionAssign();
+		long result=0;
+		ActionAssign assign=getActionAssign(assignid);
 		assign.setActionAssignId(Long.parseLong(assignid));
-		assign.setActionFlag("Y");
+//		assign.setActionFlag("Y");
 		assign.setActionStatus("C");
 		assign.setRemarks(Remarks);
 		assign.setModifiedBy(UserId);
 		assign.setModifiedDate(sdf1.format(new Date()));
+		assign.setClosedDate(sdf.format(new Date()));
+		if(assign.getProgressDate()==null) {
+			assign.setProgressDate(sdf.format(new Date())); 
+		}
 		 result=dao.MainSendBack(assign);
 		if(result>0) {
 			Object[] data=dao.ActionNotification(id,assignid).get(0);

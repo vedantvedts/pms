@@ -1,11 +1,9 @@
 package com.vts.pfms.committee.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.committee.dto.CommitteeConstitutionApprovalDto;
@@ -27,16 +25,10 @@ import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
-import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 
 public interface CommitteeService {
 	
@@ -245,17 +237,8 @@ public interface CommitteeService {
 	public int MeetingNo(Object[] scheduledata) throws Exception;
 	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception;
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception;
-	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception;
-	public long insertMinutesAction(MinutesActionList action) throws Exception;
-	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception;
-	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception;
-	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception;
     public int updateMinutesFrozen(String schduleid)throws Exception;
     public List<ProjectFinancialDetails> getMinutesFinance(String scheduleid) throws Exception;
-    public List<Object[]> getMinutesAction(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;   
 	public List<Object[]> ClusterList() throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;

@@ -11,7 +11,7 @@
 
 <%	
 	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");	
-	HashMap< String, ArrayList<Object[]>> actionlist = (HashMap< String, ArrayList<Object[]>>) request.getAttribute("tableactionlist");
+	LinkedHashMap< String, ArrayList<Object[]>> actionlist = (LinkedHashMap< String, ArrayList<Object[]>>) request.getAttribute("tableactionlist");
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
 		

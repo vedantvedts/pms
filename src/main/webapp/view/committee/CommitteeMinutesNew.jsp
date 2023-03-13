@@ -14,12 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
-<%
-	HashMap< String, ArrayList<Object[]>> actionlist = (HashMap< String, ArrayList<Object[]>>) request.getAttribute("actionlist");
-	
-	
+	<%
 	List<Object[]> speclists = (List<Object[]>) request.getAttribute("committeeminutesspeclist");
 	List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
 	List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
@@ -31,22 +26,21 @@
 	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
 
-
 	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
 	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-	
+	String levelid= (String) request.getAttribute("levelid");
+	int meetingcount= (int) request.getAttribute("meetingcount");
+	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
 	DecimalFormat df=new DecimalFormat("####################.##");
-	int meetingcount= (int) request.getAttribute("meetingcount");
 	FormatConverter fc=new FormatConverter(); 
 	SimpleDateFormat sdf3=fc.getRegularDateFormat();
 	SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 	SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
-	String isprint=(String)request.getAttribute("isprint"); 
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 	String projectid= committeescheduleeditdata[9].toString();
 	String divisionid= committeescheduleeditdata[16].toString();
@@ -56,9 +50,7 @@
 	
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
-	String levelid= (String) request.getAttribute("levelid");
 	
-	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
 	%>
 <style type="text/css">
@@ -918,14 +910,10 @@ for(Object[] temp : invitedlist){
 										</tr>
 									<%milcount1++;}} %>
 								<%} else{ %>
-								<tr><td class="std" colspan="5" style="text-align: center;" > No SubSystems</td></tr>
+								<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
 								<%}}else{ %>
-									<tr><td class="std" colspan="5" style="text-align: center;" > No SubSystems</td></tr>
+									<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
 								<%} %>
-									
-			
-								<!-- New code by tharun end -->	
-									
 
 						</tbody>
 					</table>
@@ -1484,66 +1472,6 @@ for(Object[] temp : invitedlist){
 			</div>
 		</div> 
 	
-	<%if( isprint.equals("N")){ %>
-		<div class="break"></div>	
-		<br>
-						
-				<div align="center">
-			<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEMS DETAILS</h2></div>
-		
-			<table style="margin-top: -5px; margin-left: 5px; width: 670px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
-			<tbody>
-				<tr>
-					<th  class="sth" style=" max-width: 30px"> SN. </th>
-					<th  class="sth" style=" max-width: 70px"> Action Id</th>	
-					<th  class="sth" style=" max-width: 600px"> Item</th>				
-					<th  class="sth" style=" max-width: 70px"> Responsibility</th>					
-					<th  class="sth" style=" width: 90px"> PDC</th>
-				</tr>
-				
-				<% 	int count =0;
-				 	Iterator actIterator = actionlist.entrySet().iterator();
-					while(actIterator.hasNext()){	
-					Map.Entry mapElement = (Map.Entry)actIterator.next();
-		            String key = ((String)mapElement.getKey());
-		            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
-		            count++;
-				%>
-					<tr>
-						<td class="std" style="text-align: center ;" > <%=count%></td>
-						<td  class="std" style="text-align: left;" >
-							
-							<%	int count1=0;
-								for(Object obj[]:values){
-									 count1++; %>
-									<%if(count1==1 ){ %>
-										<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
-									<%}else if(count1==values.size() ){ %>
-										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
-									<%} %>
-							<%} %>
-							
-						</td>
-						
-						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
-						<td  class="std" style="text-align: left;" >
-							<%	int count2=0;
-							for(Object obj[]:values){ %>
-							<%if(obj[13]!=null){ %> <%= obj[13]%><%-- ,&nbsp;<%=obj[14] %> --%>
-								<%if(count2>=0 && count2<values.size()-1){ %>
-								,&nbsp;
-								<%} %>
-							<%}else{ %> - <%} %>
-						<%count2++;} %>
-						</td>                       						
-						<td  class="std" style="text-align: center;"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
-					</tr>				
-				<% } %>
-			</tbody>
-		</table>
-	</div>
-	<br>
-	<%} %>
 	
 	</div>
 	

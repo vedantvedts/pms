@@ -2367,18 +2367,20 @@
 														<%=proc[5] %>
 													<%} %>
 												</td>
-												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
-												<%for(int tdc=1;tdc<=17;tdc++){%>
+												<% int filestatus = Integer.parseInt(proc[13].toString());
+													int tempstatus = filestatus;
+												%>
+												<%for(int tdc=1;tdc<=17;tdc++){ %>
+												
+													<%if(filestatus>11){  filestatus--;  } %>
+													<%if(filestatus>17){  filestatus--;  } %>
 													
-													<%if(filestatus>11){  filestatus--; } %>
-													<%if(filestatus>17){  filestatus--; } %>
 													
-													
-													<%if(tdc < (filestatus+1)){ %>
+													<%if(tdc < (tempstatus)){ %>
 														<td style="background-color: green;"></td>
-													<%}else if(tdc == (filestatus+1)){ %>
+													<%}else if(tdc == (tempstatus)){ %>
 														<td style="background-color: #F96E16;text-align: center; ">*</td>
-													<%}else if(tdc >(filestatus+1)){ %>
+													<%}else if(tdc >(tempstatus)){ %>
 														<td style=""></td>
 													<%} %>
 													

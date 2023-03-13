@@ -24,10 +24,10 @@ public interface ActionDao {
 	public long ActionAttachInsert(ActionAttachment main)throws Exception;
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception;
 	public int ActionSubDelete(String id) throws Exception;
-	public int AssignUpdate(ActionAssign assign) throws Exception;
+	public long AssignUpdate(ActionAssign assign) throws Exception;
 	public int MainForward(ActionAssign assign) throws Exception;
 	public List<Object[]> ForwardList(String EmpId) throws Exception;
-	public int MainSendBack(ActionAssign assign) throws Exception;
+	public long MainSendBack(ActionAssign assign) throws Exception;
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception;
 	public List<Object[]> ActionList(String EmpId) throws Exception;
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception;
@@ -96,5 +96,6 @@ public interface ActionDao {
 	public List<Object[]> GetActionListForFevorite(Date fromdate , Date todate , String projectid , String  empid)throws Exception;
 	public Long AddFavouriteList(FavouriteList fav) throws Exception;	
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
+	public ActionAssign getActionAssign(String actionassignId) throws Exception;
 	
  }

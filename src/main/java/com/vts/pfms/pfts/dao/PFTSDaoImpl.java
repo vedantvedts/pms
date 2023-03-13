@@ -23,8 +23,8 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName,  s.PftsStatusId  FROM pfts_file f, pfts_status s WHERE f.ProjectId=:projectid AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 and f.isactive='1'";
-	private static final String  PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
+	private static final String FILESTATUS="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName,  s.PftsStatusId  FROM pfts_file f, pfts_status s WHERE f.ProjectId=:projectid AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<19 and f.isactive='1'";
+	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
 	private static final String INACTIVEFILE="UPDATE pfts_file SET isactive='0' where PftsFileId=:fileid ";

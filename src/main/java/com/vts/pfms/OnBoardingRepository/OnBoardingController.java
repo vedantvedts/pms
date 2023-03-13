@@ -1039,7 +1039,7 @@ public class OnBoardingController {
 							        			assign.setAssigneeLabCode(LabCode);
 							        			assign.setAssignorLabCode(LabCode);
 							        			assign.setRevision(0);
-							        			assign.setActionFlag("N");		
+//							        			assign.setActionFlag("N");		
 							        			assign.setActionStatus("A");
 							        			assign.setCreatedBy(UserId);
 							        			assign.setIsActive(1);

@@ -110,10 +110,9 @@ a:hover {
 	<%}if(ses!=null){ %>
 	<div align="center">
 	<div class="alert alert-success" role="alert"  >
-                     <%=ses %>
-                   </div></div>
-                    <%} %>
-
+        <%=ses %>
+        </div></div>
+        <%} %>
     <br />
     
 
@@ -128,10 +127,7 @@ a:hover {
 
 						<div class="data-table-area mg-b-15">
 							<div class="container-fluid">
-
-
 								<!-- <form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm" > -->
-
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="sparkline13-list">
 
@@ -171,12 +167,12 @@ a:hover {
 										   			   %>
 														<tr>
 															<td class="center"><%=count %></td>
-															<td><%=obj[10] %></td>
+															<td><%=obj[9] %></td>
 															<td><%=obj[5] %></td>
 															<td><%=sdf.format(obj[4])%></td>
 															<td><%=sdf.format(obj[3])%></td>
 															<td><%=obj[1]%>, <%=obj[2]%></td>
-															<td><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></td>
+															<td><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>
 															
 															
 															<td class="left width">		
@@ -195,13 +191,13 @@ a:hover {
 																		</div>
 																	</button>
 												                    <input type="hidden" name="Assigner" value="<%=obj[1]%>,<%=obj[2]%>"/>													
-                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[9]%>"/>
+                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[8]%>"/>
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
-																	<input type="hidden" name="ActionNo" value="<%=obj[10]%>"/>
-																	<input type="hidden" name="ActionAssignid" value="<%=obj[11]%>"/>
-																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[9]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="ProjectId" value="<%=obj[14]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-																	<%if(obj[14]!=null && obj[12]!=null && EmpId.equalsIgnoreCase(obj[12].toString()) && Integer.valueOf(obj[14].toString())< 5){ %>
+																	<%if(obj[13]!=null && obj[11]!=null && EmpId.equalsIgnoreCase(obj[11].toString()) && Integer.valueOf(obj[13].toString())< 5){ %>
 																		      <button type="submit"  class="btn btn-sm editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
 																				<div class="cc-rockmenu">
 																				 <div class="rolling">	
@@ -212,11 +208,11 @@ a:hover {
 															                      </div>
 															                     </div>
 															                  </button> 
-															                 <%-- <button type="submit"  class="btn btn-sm" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
+															                 <%-- <button type="submit"  class="btn btn-sm" name="ActionAssignid" value="<%=obj[10]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
 																				<!-- <i class="fa fa-solid fa-sitemap" style=" font-size: 30px; color: #CE7777;"></i> -->
 																				<img src="view/images/tree.png"  >
 																		    </button>  --%>
-																		    <button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[11]%>" formtarget="blank" title="Action Tree"    formaction="ActionTree.htm" formmethod="POST"  >
+																		    <button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[10]%>" formtarget="blank" title="Action Tree"    formaction="ActionTree.htm" formmethod="POST"  >
 																				<div class="cc-rockmenu">
 																				 <div class="rolling">	
 																				 <figure class="rolling_icon">

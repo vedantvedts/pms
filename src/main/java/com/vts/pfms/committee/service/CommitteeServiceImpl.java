@@ -74,12 +74,7 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService{
@@ -3081,37 +3076,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception {
-        procure.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesProcurement(procure);
-	}
-
-	@Override
-	public long insertMinutesAction(MinutesActionList action) throws Exception {
-	    action.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesAction(action);
-	}
-
-	@Override
-	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception {
-		lastpmrc.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesLastPmrc(lastpmrc);
-	}
-
-	@Override
-	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception {
-		Mile.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesMileActivity(Mile);
-		
-	}
-
-	@Override
-	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception {
-		submile.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesSubMile(submile);
-	}
-
-	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
 		
 		return dao.updateMinutesFrozen(schduleid);
@@ -3143,30 +3107,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return finlist;
 	}
 
-	@Override
-	public List<Object[]> getMinutesAction(String scheduleid) throws Exception {
-		
-		return dao.getMinutesAction(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
-		
-		return dao.getMinutesProcure(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
-		
-		return dao.getMinutesMile(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception {
-		
-		return dao.getMinutesSubMile(scheduleid);
-	}
-	
 	@Override
 	public List<Object[]> ClusterList() throws Exception {
 		

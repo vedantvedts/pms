@@ -44,12 +44,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 
 @Transactional
 @Repository
@@ -2231,10 +2226,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 		
 	}
-	
-	
-	
-	
+		
 	@Override
 	public List<Object[]> ProposedCommitteList() throws Exception
 	{
@@ -2522,11 +2514,11 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
-		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid,:isFrozen)");	   
+		Query query=manager.createNativeQuery("CALL last_pmrc_actions_list_new(:scheduleid,:committeeid,:proid)");	   
 		query.setParameter("scheduleid", scheduleid);
 		query.setParameter("committeeid",committeeid);
 		query.setParameter("proid",proid);
-		query.setParameter("isFrozen",isFrozen);
+//		query.setParameter("isFrozen",isFrozen);
 		List<Object[]> LastPMRCActions=(List<Object[]>)query.getResultList();			
 		return LastPMRCActions;		
 	}
@@ -2716,45 +2708,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	}
 
 
-	@Override
-	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception {
-		manager.persist(procure);
-		manager.flush();
-		return procure.getMinutesProcurementId();
-	}
-
-
-	@Override
-	public long insertMinutesAction(MinutesActionList action) throws Exception {
-		manager.persist(action);
-		manager.flush();
-		return action.getMinutesActionId();
-	}
-
-
-	@Override
-	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception {
-		manager.persist(lastpmrc);
-		manager.flush();
-		return lastpmrc.getMinutesLastPmrcId();
-	}
-
-
-	@Override
-	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception {
-		manager.persist(Mile);
-		manager.flush();
-		return Mile.getMinutesMileId();
-	}
-
-
-	@Override
-	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception {
-		manager.persist(submile);
-		manager.flush();
-		return submile.getMinutesSubMileId();
-	}
-
     private static final String UPDATEFROZEN="update committee_schedule set MinutesFrozen='Y' where scheduleid=:schduleid";
 	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
@@ -2774,46 +2727,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return getMinutesFinance;
 	
 	}
-	
-	private static final String MINUTESACTION="SELECT a.schduleminutesid, a.details,a.idrck,a.actionno,a.actiondate,a.enddate,a.assignor,a.assignee,a.actionitem,a.actionstatus,a.actionflag,a.AssignorName,a.AssignerDesig,a.AssigneeName,a.AssigneeDesig   FROM  pfms_minutes_action a WHERE a.commiteescheduleid =:scheduleid ORDER BY a.schduleminutesid ASC";
-	
-	@Override
-	public List<Object[]> getMinutesAction(String scheduleid) throws Exception {
-		Query query=manager.createNativeQuery(MINUTESACTION);
-		query.setParameter("scheduleid", scheduleid);
-		List<Object[]> getMinutesFinance=( List<Object[]>)query.getResultList();
-		return getMinutesFinance;
-	
-	}
 
-	private static final String MINUTESPROCURE="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, f.EstimatedCost, f.OrderCost, f.RevisedDp ,f.ItemNomenclature, f.PftsStatus, f.PftsStageName, f.Remarks, f.vendorname, f.PftsStatusId  AS id  FROM pfms_minutes_procurement f WHERE f.commiteescheduleid=:scheduleid ";
-	@Override
-	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
-		Query query=manager.createNativeQuery(MINUTESPROCURE);
-		query.setParameter("scheduleid", scheduleid);
-		List<Object[]> getMinutesFinance=( List<Object[]>)query.getResultList();
-		return getMinutesFinance;
-	
-	}
-
-	private static final String MINUTESMILE="SELECT MilestoneNo AS 'Main',MainId,AId,BId,CId,DId,EId,StartDate,EndDate,MileStoneMain,MileStoneA,MileStoneB,MileStoneC,MileStoneD,MileStoneE,ActivityType,ProgressStatus,Weightage,DateOfCompletion,Activitystatus,ActivityStatusId,RevisionNo,MilestoneNo, OicEmpId,EmpName,Designation,LevelId,ActivityShort,StatusRemarks FROM pfms_minutes_mile a WHERE a.committeescheduleid=:scheduleid";
-	@Override
-	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
-		Query query=manager.createNativeQuery(MINUTESMILE);
-		query.setParameter("scheduleid", scheduleid);
-		List<Object[]> getMinutesMile=( List<Object[]>)query.getResultList();
-		return getMinutesMile;
-	}
-	
-	private static final String MINUTESSUBMILE="SELECT a.activityId, a.Parentactivityid, a.activityname, a.orgenddate, a.enddate,a.activitystatusid,a.activityshort, a.Progress,a.milestoneno, a.StatusRemarks FROM pfms_minutes_submile a WHERE a.committeescheduleid=:scheduleid ORDER BY a.milestoneno ASC";
-	@Override
-	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception {
-		Query query=manager.createNativeQuery(MINUTESSUBMILE);
-		query.setParameter("scheduleid", scheduleid);
-		List<Object[]> getMinutesSubMile=( List<Object[]>)query.getResultList();
-		return getMinutesSubMile;
-	}
-	
 	private static final String CLUSTERLIST="SELECT clusterid,clustername, clustershortname FROM cluster WHERE clustertype='Technology Cluster' ";
 	@Override
 	public List<Object[]> ClusterList() throws Exception{

@@ -28,8 +28,8 @@ public interface ActionService {
 	public int ActionSubDelete(String id,String UserId) throws Exception;
 	public int ActionForward(String mainid,String assignid,String UserId) throws Exception;
 	public List<Object[]> ForwardList(String EmpId) throws Exception;
-	public int ActionClosed(String id,String Remarks,String UserId ,String assignid , String levelcount) throws Exception;
-	public int ActionSendBack(String id,String Remarks,String UserId, String assignid) throws Exception;
+	public long ActionClosed(String id,String Remarks,String UserId ,String assignid , String levelcount) throws Exception;
+	public long ActionSendBack(String id,String Remarks,String UserId, String assignid) throws Exception;
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception;
 	public List<Object[]> ActionList(String EmpId) throws Exception;
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception;
@@ -90,4 +90,5 @@ public interface ActionService {
 	public List<Object[]> GetActionListForFevorite(String fromdate , String todate , String projectid , String  empid)throws Exception;
 	public Long AddFavouriteList(String[] favoriteid , Long empid ,String userid)throws Exception;
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
+	public ActionAssign getActionAssign(String actionassignId) throws Exception;
 }

@@ -1632,8 +1632,6 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												<%}else{ %>
 													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=pdffiles.get(z)[2]%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
 												<%} %>
-												
-												
 											<% }else{ %>
 												File Not Found
 											<%} %>
@@ -1781,7 +1779,7 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 														<%} %>	
 														<%}%>
 													<%}else{%>
-														<tr><td colspan="7"  style="text-align: center;">Nil </td></tr>
+														<tr><td colspan="9"  style="text-align: center;">Nil </td></tr>
 													<%} %>
 												</tbody>		
 											</table>
@@ -2033,18 +2031,20 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 														<%=proc[5] %>
 													<%} %>
 												</td>
-												<% int filestatus = Integer.parseInt(proc[13].toString()); %>
-												<%for(int tdc=1;tdc<=17;tdc++){%>
+												<% int filestatus = Integer.parseInt(proc[13].toString()); 
+													int tempstatus = filestatus;
+													%>
+												<%for(int tdc=1;tdc<=17;tdc++){ %>
 													
-													<%if(filestatus>11){  filestatus--; } %>
-													<%if(filestatus>17){  filestatus--; } %>
+													<%if(filestatus>11){  filestatus--;  } %>
+													<%if(filestatus>17){  filestatus--;  } %>
 													
 													
-													<%if(tdc < (filestatus+1)){ %>
+													<%if(tdc < (tempstatus)){ %>
 														<td style="background-color: green;"></td>
-													<%}else if(tdc == (filestatus+1)){ %>
+													<%}else if(tdc == (tempstatus)){ %>
 														<td style="background-color: #F96E16;text-align: center; ">*</td>
-													<%}else if(tdc >(filestatus+1)){ %>
+													<%}else if(tdc >(tempstatus)){ %>
 														<td style=""></td>
 													<%} %>
 													

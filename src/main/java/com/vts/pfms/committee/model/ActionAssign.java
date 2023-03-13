@@ -33,7 +33,10 @@ public class ActionAssign {
 	private Long Assignee;
 	private String Remarks;
 	private String ActionStatus;
-	private String ActionFlag;
+//	private String ActionFlag;
+	private int Progress;
+	private String ProgressDate;
+	private String ClosedDate;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
