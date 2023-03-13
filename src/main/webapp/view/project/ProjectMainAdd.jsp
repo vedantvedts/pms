@@ -83,57 +83,41 @@ String ses1=(String)request.getParameter("resultfail");
 
 										<!-- changed the style -->
 
-										<table
-											class="table table-bordered table-hover table-striped table-condensed "
-											style="border: 1px solid black !important; background-color: white; font-family: 'Montserrat', sans-serif;">
+										<table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important; background-color: white; font-family: 'Montserrat', sans-serif;">
 											<thead>
-
-
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Project Code: <span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" name="pcode"
-														class="form-control" maxlength="20" required="required">
-
-													</td>
-													<th><label style="margin-bottom: -10px;">
-															Project Name: <span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" name="pname"
-														class="form-control" maxlength="255" required="required">
-
-
-													</td>
+													<th><label style="margin-bottom: -10px;">Project Code: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text" name="pcode" placeholder="Ente Project Code"class="form-control" maxlength="20" required="required"></td>
+													<th><label style="margin-bottom: -10px;">Project Name: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text" name="pname" placeholder="Ente Project Name" class="form-control" maxlength="255" required="required"></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Project Number: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" name="desc"
-														class="form-control" maxlength="100" required="required">
-
-													</td>
-													<th><label style="margin-bottom: -10px;">
-															Project Unit Code: <span class="mandatory"
-															style="color: red;"></span>
-													</label></th>
-													<td><input type="text" name="unicode"
-														class="form-control" maxlength="20" >
-
-													</td>
+													<th><label style="margin-bottom: -10px;">Project Number: <span class="mandatory"style="color: red;">*</span></label></th>
+													<td><input type="text" name="desc" placeholder="Ente Project No" class="form-control" maxlength="100" required="required"></td>
+													<th><label style="margin-bottom: -10px;">Project Unit Code: <span class="mandatory" style="color: red;"></span></label></th>
+													<td><input type="text" name="unicode" placeholder="Ente Project Unit Code" class="form-control" maxlength="20" ></td>
 												</tr>
-
+												
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Category: <span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td><select required="required" id="selectbasic"
-														name="projecttype"
-														class="form-control form-control selectpicker"
-														data-width="80%" data-live-search="true">
+													<th><label style="margin-bottom: -10px;"> End User:<span class="mandatory" style="color: red;">*</span></label></th>
+													<td>
+														<select name="enduser" 	class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
+															<option disabled="disabled" selected="selected" value="">Choose...</option>
+															<option value="IA">Indian Army</option>
+															<option value="IN">Indian Navy</option>
+															<option value="IAF">Indian Air Force</option>
+															<option value="IH">Home Land Security</option>
+															<option value="DRDO">DRDO</option>
+															<option value="OH">Others</option>
+														</select>
+													</td>
+													<th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name"	class="form-control" maxlength="20" required="required"></td> 
+												</tr>
+												<tr>
+													<th><label style="margin-bottom: -10px;">Category: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><select required="required" id="selectbasic"name="projecttype" class="form-control form-control selectpicker" data-width="80%" data-live-search="true">
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
 															for (Object[] protype : ProjectTypeList) {
@@ -144,14 +128,8 @@ String ses1=(String)request.getParameter("resultfail");
 															%>
 													</select></td>
 													
-													<th><label style="margin-bottom: -10px;">
-															Security Classification: <span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td>
-														<select required="required" id="selectbasic"
-															name="securityClassification"
-															class="form-control form-control selectpicker"
-															data-width="80%" data-live-search="true">
+													<th> <label style="margin-bottom: -10px;">Security Classification: <span class="mandatory" style="color: red;">*</span> </label></th>
+													<td><select required="required" id="selectbasic"	name="securityClassification" class="form-control form-control selectpicker" data-width="80%" data-live-search="true">
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
 															if(securityClassificationList!=null && securityClassificationList.size()>0){ 
@@ -168,15 +146,8 @@ String ses1=(String)request.getParameter("resultfail");
 												<tr>
 										              
 													
-													<th><label style="margin-bottom: -10px;">
-															Project Director: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><select required="required"
-														name="projectdirector"
-														class="form-control  form-control selectdee"
-														id="officerPunchNo" data-width="100%"
-														data-live-search="true" >
+													<th><label style="margin-bottom: -10px;">	Project Director: <span class="mandatory"	style="color: red;">*</span></label></th>
+													<td><select required="required" name="projectdirector" class="form-control  form-control selectdee" id="officerPunchNo" data-width="100%"	data-live-search="true" >
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
 															if(OfficerList!=null && OfficerList.size()>0){for (Object[] protype : OfficerList) {
@@ -186,43 +157,16 @@ String ses1=(String)request.getParameter("resultfail");
 															}}
 															%>
 													</select></td>
-														<th><label style="margin-bottom: -10px;">
-															Is Main Work Center: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><select name="ismainwc"
-														class="form-control selectpicker" data-width="80%" required="required">
+													<th><label style="margin-bottom: -10px;">Is Main Work Center: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><select name="ismainwc"	class="form-control selectpicker" data-width="80%" required="required">
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="1">Yes</option>
 															<option value="0">No</option>
 													</select></td>
 												</tr>
-                                           <!-- <tr>
-	
-													<th><label style="margin-bottom: -10px;">
-															WorkCenter Name: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td colspan="3"><input type="text" name="wcname"
-														class="form-control" maxlength="100" required="required">
-
-													</td>
-												</tr> -->
-
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Project Sanc Authority: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><!-- <input type="text" class="form-control"
-														name="ProjectsancAuthority" maxlength="100"
-														required="required"> -->
-														
-														<select required="required"
-														name="ProjectsancAuthority"
-														class="form-control  form-control selectdee"
-														data-width="100%"
-														data-live-search="true" >
+													<th><label style="margin-bottom: -10px;">	Project Sanc Authority: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><select required="required" name="ProjectsancAuthority" class="form-control  form-control selectdee" data-width="100%" data-live-search="true" >
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="DIR" >DIR</option>
 															<option value="DG" >DG</option>
@@ -233,114 +177,54 @@ String ses1=(String)request.getParameter("resultfail");
 														</select>
 															
 													</td>
-													<th><label style="margin-bottom: -10px;">
-															Project Sanction Letter No: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" name="sano"
-														class="form-control" maxlength="100" required="required">
-													</td>
+													<th><label style="margin-bottom: -10px;">Project Sanction Letter No: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text" name="sano" placeholder="Enter Project Sanc Letter No" class="form-control" maxlength="100" required="required"></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Project Sanction Date: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" data-date-format="dd/mm/yyyy"
-														readonly id="sanc-date" name="sadate" value=""
-														class="form-control form-control"></td>
-													<th><label style="margin-bottom: -10px;">Total
-															Sanction Cost (&#8377;): <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text"
-														id="totalcostid" name="tsancost"
-														class="form-control number-only"  value="0.0" ></td>
+													<th><label style="margin-bottom: -10px;">Project Sanction Date: <span class="mandatory"style="color: red;">*</span></label></th>
+													<td><input type="text" data-date-format="dd/mm/yyyy"readonly id="sanc-date" name="sadate" value=""class="form-control form-control"></td>
+													<th><label style="margin-bottom: -10px;">Total Sanction Cost (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text" id="totalcostid" name="tsancost" class="form-control number-only"  value="0.0" ></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">
-															Board Of Reference: <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><!-- <input type="text" name="bor"
-														class="form-control" maxlength="50" required="required"> -->
-														
-														<select required="required"
-														name="bor"
-														class="form-control  form-control selectdee"
-														data-width="100%"
-														data-live-search="true" >
-														<option disabled="disabled" value="" selected="selected">Choose..</option>
-														<option value="DMC">DMC</option>
-														<option value="CCM">CCM</option>
-														
+													<th><label style="margin-bottom: -10px;">Board Of Reference: <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><select required="required" name="bor" class="form-control  form-control selectdee" data-width="100%" data-live-search="true" >
+															<option disabled="disabled" value="" selected="selected">Choose..</option>
+															<option value="DMC">DMC</option>
+															<option value="CCM">CCM</option>
 														</select>
-														
-														
 													</td>
-													<th><label style="margin-bottom: -10px;">
-															Sanction Cost FE (&#8377;): <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" id="fecostid" name="sancostfe"
-														class="form-control number-only" value="0.0"
-														maxlength="18" required="required"></td>
-												</tr>
-
-												<tr>
-													<th><label style="margin-bottom: -10px;">PDC:
-															<span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td><input id="pdc-date"
-														data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
-														class="form-control form-control"></td>
-													<th><label style="margin-bottom: -10px;">
-															Sanction Cost RE (&#8377;): <span class="mandatory"
-															style="color: red;">*</span>
-													</label></th>
-													<td><input type="text" name="sancostre" id="Recostid"
-														class="form-control number-only" value="0.0"
-														maxlength="18" required="required"  readonly="readonly" ></td>
-												</tr>
-												
-													<tr>
-													<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:
-															<span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td colspan="3"><input required="required"
-															name="Nodal" class="form-control" maxlength="5000" />
-															
-								</td>
+													<th><label style="margin-bottom: -10px;">Sanction Cost FE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+													<td><input type="text" id="fecostid" name="sancostfe"class="form-control number-only" value="0.0"	maxlength="18" required="required"></td>
 												</tr>
 								<tr>
-										<th colspan="1"><label style="margin-bottom: -10px;">Scope:
-											<span class="mandatory" style="color: red;">*</span>
-										</label></th>
-										<td colspan="3"><textarea required="required"
-												name="scope" class="form-control " maxlength="5000"
-												rows="3" cols="53"></textarea>
-										</td>
+										<th><label style="margin-bottom: -10px;">PDC:<span class="mandatory" style="color: red;">*</span></label></th>
+										<td><input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" value="" class="form-control form-control"></td>
+										<th><label style="margin-bottom: -10px;">Sanction Cost RE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+										<td><input type="text" name="sancostre" id="Recostid" class="form-control number-only" value="0.0" maxlength="18" required="required"  readonly="readonly" ></td>
+								</tr>	
+								<tr>
+									   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+									   <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" /></td>
+								</tr>
+								<tr>
+										<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+										<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"></textarea></td>
+								</tr>
+								<tr>
+										<th colspan="1"><label style="margin-bottom: -10px;">Scope:<span class="mandatory" style="color: red;">*</span></label></th>
+										<td colspan="3"><textarea required="required" placeholder="Enter maximum 5000 charcters" name="scope" class="form-control " maxlength="5000" rows="3" cols="53"></textarea></td>
 								</tr>		
-												<tr>
-													<th colspan="1"><label style="margin-bottom: -10px;">Objective:
-															<span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td colspan="3"><textarea required="required"
-															name="Objective" class="form-control " maxlength="5000"
-															rows="3" cols="53"></textarea>
-								</td>
-												</tr>
-												<tr>
-													<th colspan="1"><label style="margin-bottom: -10px;">Deliverable:
-															<span class="mandatory" style="color: red;">*</span>
-													</label></th>
-													<td colspan="3"><textarea required="required"
-															name="Deliverable" class="form-control " maxlength="5000"
-															rows="3" cols="53"></textarea>
-								</td>
-												</tr>
+								<tr>
+									<th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
+									<td colspan="3"><textarea required="required"name="Objective" placeholder="Enter maximum 5000 charcters" class="form-control " maxlength="5000"rows="3" cols="53"></textarea></td>
+								</tr>
+								<tr>
+									<th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>
+									<td colspan="3"><textarea required="required"	name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters" maxlength="5000" rows="3" cols="53"></textarea></td>
+								</tr>
 											</thead>
 										</table>
 									</div>

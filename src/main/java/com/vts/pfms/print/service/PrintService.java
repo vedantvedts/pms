@@ -10,8 +10,10 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
+import com.vts.pfms.project.dto.ProjectSlideDto;
 
 public interface PrintService {
 
@@ -87,4 +89,9 @@ public interface PrintService {
 	public List<Object[]> GetRecDecDetails(String scheduledid)throws Exception;
 	public Long RedDecAdd(RecDecDetails recdec, String userid)throws Exception;
 	public Object[] GetRecDecData(String recdecid)throws Exception;
+	public Object[] GetProjectdata(String projectid)throws Exception;
+	public Long AddProjectSlideData( ProjectSlideDto slide )throws Exception;
+	public Long EditProjectSlideData( ProjectSlideDto slide )throws Exception;
+	public Object[] GetProjectSildedata(String projectid)throws Exception;
+	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
 }

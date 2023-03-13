@@ -2,6 +2,8 @@ package com.vts.pfms.print.dao;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
@@ -9,6 +11,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
@@ -83,4 +86,9 @@ public interface PrintDao {
 	public Long RedDecAdd(RecDecDetails recdec)throws Exception;
 	public long RecDecUpdate(RecDecDetails recdec)throws Exception;
 	public Object[] GetRecDecData(String recdecid)throws Exception;
+	public Object[] GetProjectdata(String projectid)throws Exception;
+	public Long AddProjectSlideData( ProjectSlides slide )throws Exception;
+	public Object[] GetProjectSildedata(String projectid)throws Exception;
+	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
+	public Long EditProjectSlideData(ProjectSlides slide)throws Exception;
 }

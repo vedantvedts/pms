@@ -132,6 +132,20 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 </td>
  </tr>
  
+ <tr>
+	<th><label style="margin-bottom: -10px;"> End User:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td><select name="enduser" 	class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
+				<option disabled="disabled" selected="selected" value="">Choose...</option>
+				<option value="IA" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("IA")){ %> selected<%} %>>Indian Army</option>
+				<option value="IN" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("IN")){ %> selected<%} %>>Indian Navy</option>
+				<option value="IAF" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("IAF")){ %> selected<%} %>>Indian Air Force</option>
+				<option value="IH" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("IH")){ %> selected<%} %>>Home Land Security</option>
+				<option value="DRDO" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("DRDO")){ %> selected<%} %>>DRDO</option>
+				<option value="OH" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("OH")){ %> selected<%} %>>Others</option>
+	</select></td>  
+ <th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
+<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=ProjectMainEditData[26]%>" <%}%>	class="form-control" maxlength="20" required="required"></td> 
+ </tr>
   <tr>
   <th>
  <label style="margin-bottom: -10px;"> Category:
@@ -302,8 +316,8 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 														data-width="100%"
 														data-live-search="true" >
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
-														<option value="DMC" <%if(ProjectMainEditData[15].equals("DMC")){ %> selected<%} %>>DMC</option>
-														<option value="CCM" <%if(ProjectMainEditData[15].equals("CCM")){ %> selected<%} %>>CCM</option>														
+														<option value="DMC" <%if(ProjectMainEditData[15]!=null && ProjectMainEditData[15].equals("DMC")){ %> selected<%} %>>DMC</option>
+														<option value="CCM" <%if(ProjectMainEditData[15]!=null && ProjectMainEditData[15].equals("CCM")){ %> selected<%} %>>CCM</option>														
 														</select>
 								
 								
@@ -352,17 +366,14 @@ List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute(
 
 
  </tr>
- 								<tr>
-									<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:
-										<span class="mandatory" style="color: red;">*</span>
-									</label></th>
-									<td colspan="3">
-										<input required="required"	name="Nodal" class="form-control " maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" />
-									</td>
-								</tr>
- 
- 
- 
+ <tr>
+		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><input required="required"	name="Nodal" class="form-control " maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=ProjectMainEditData[21] %><%} %>" /></td>
+</tr>
+ <tr>
+		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=ProjectMainEditData[25]%> <%}%></textarea></td>
+</tr>
  <tr>
 	<th colspan="1"><label style="margin-bottom: -10px;">Scope:
 		<span class="mandatory" style="color: red;">*</span>
