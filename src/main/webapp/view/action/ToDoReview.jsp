@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.util.List , java.util.stream.Collectors,com.vts.pfms.*"%>
 <!DOCTYPE html>
@@ -130,6 +130,9 @@ if(ses1!=null){
 	</div>
 	<%} %>
 <div class="container-fluid">
+	<div class="card shadow-nohover">
+	<div class="card-header" style="height: 30px;"> <h5 style="margin-top: -8px;"> To-Do Review</h5> </div>
+		<div class="card-body">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card shadow-nohover">
@@ -149,18 +152,19 @@ if(ses1!=null){
 								           
 								            </div>
 									        <hr style="margin: 5px !important">
-									       <h6><span class="blue">&#x220E;</span> To Do</h6>
+									       <h6 style="margin-left: -14px;"><span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
 								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Today')">
 								      		 <%int todayreview=0; for(Object[] obj: actionassignorlist){
+								      			if(!obj[11].toString().equalsIgnoreCase(empid)){
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) == 0){%><% ++todayreview;}}%>
+												if(date1.compareTo(date2) == 0){%><% ++todayreview;}}}%>
 					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=todayreview%> </span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								    </div>
@@ -179,19 +183,20 @@ if(ses1!=null){
 					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=todayupcoming %></span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									       <h6> <span class="blue">&#x220E;</span> To Do</h6>
+									       <h6 style="margin-left: -14px;"> <span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
 								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Upcoming')">
 					                				 <%int upcomingreview=0; for(Object[] obj: actionassignorlist){
-												Date date1=sdf.parse(sdf.format(obj[4]));
-												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) > 0){%><% ++upcomingreview;}}%>
+					                					 if(!obj[11].toString().equalsIgnoreCase(empid)){
+														Date date1=sdf.parse(sdf.format(obj[4]));
+														Date date2=sdf.parse(sdf.format(new Date()));
+														if(date1.compareTo(date2) > 0){%><% ++upcomingreview;}}}%>
 					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"   ><%=upcomingreview%> </span>
 								            </div>
 									       
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								    </div>
@@ -210,26 +215,27 @@ if(ses1!=null){
 					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=missedtodo%></span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									       	 <h6> <span class="blue">&#x220E;</span> To Do</h6>
+									       	 <h6 style="margin-left: -14px;"> <span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
 								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Missed')" >
 					                		<%int missedreview=0; for(Object[] obj: actionassignorlist){
+					                			if(!obj[11].toString().equalsIgnoreCase(empid)){
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) < 0){%><% ++missedreview;}}%>
+												if(date1.compareTo(date2) < 0){%><% ++missedreview;}}}%>
 					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=missedreview%> </span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								  </div>
 							</div>
 						</div>
 					</div>
-			<hr style="margin: 8px 70px !important; ">
-				<div style="margin-top: 10px;">
+			<hr style="margin: 4px 30px !important; ">
+				<div >
 					<div class="card shadow-nohover">
 						<div class="card-body">
 							
@@ -284,7 +290,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
@@ -346,7 +352,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
@@ -405,7 +411,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
@@ -431,6 +437,7 @@ if(ses1!=null){
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 								<tbody id="modal_Review_Today_Action" style="display: none;">
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
 								String[] input = obj[9].toString().split("/");
 								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
@@ -463,7 +470,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
@@ -481,7 +488,7 @@ if(ses1!=null){
 									</td> 
 									
 								</tr>
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 						<!----------------------- close Today Action List  --------------------------->	
 							
 							<!----------------------- start Upcoming Action List  --------------------------->
@@ -489,6 +496,7 @@ if(ses1!=null){
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 								<tbody id="modal_Review_Upcoming_Action" style="display: none;">
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
 								String[] input = obj[9].toString().split("/");
 								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
@@ -521,7 +529,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
@@ -539,7 +547,7 @@ if(ses1!=null){
 									</td> 
 								</tr>
 							
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 							<!----------------------- Close Upcoming Action List  --------------------------->
 							
 							<!----------------------- start Missed Action List  --------------------------->
@@ -547,6 +555,7 @@ if(ses1!=null){
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 							<tbody id="modal_Review_Missed_Action" style="display: none;">	
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
 								String[] input = obj[9].toString().split("/");
 								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
@@ -579,7 +588,7 @@ if(ses1!=null){
 			                          									);" 
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
 									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
 									<td style="width: 100px; "><%if(obj[14]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
@@ -594,7 +603,7 @@ if(ses1!=null){
 										</div> <%}%>
 									</td> 
 								</tr>
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 							<!----------------------- start Missed Action List  --------------------------->
 							</table>
 						   
@@ -604,7 +613,7 @@ if(ses1!=null){
 			</div>
 				<div class="col-md-6" >
 					<div class="card shadow-nohover">
-						<div class="card-header"><h4>Favourite List <button type="button" class="btn btn-success btn-sm add" style="float: right;margin-top: -4px;" onclick="Modelfavourite()">Add Favourite</button></h4></div>
+						<div class="card-header" style="height: 42px;"><h5 style="margin-top: -5px;">Favourite List <button type="button" class="btn btn-success btn-sm add" style="float: right;margin-top: -4px;" onclick="Modelfavourite()">Add Favourite</button></h5></div>
 						<div class="card-body">
 								<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
 							<thead>
@@ -641,7 +650,7 @@ if(ses1!=null){
 									 >  &nbsp;<%=ActionNo%></button>
 									</td>
 									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=obj[13]%></td>
+									<td style="text-align: left;font-size: 14px;font-weight: 600;"><%=obj[13]%></td>
 									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%if(obj[11]!=null){%>
 										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
@@ -661,6 +670,8 @@ if(ses1!=null){
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
 </div>
 	<!---------------------------------------------------------------- action modal ------------------------------------------------------->
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
@@ -773,13 +784,13 @@ if(ses1!=null){
 							<table class="table meeting"  >
 									<thead style = "height: 0px;">
 										<tr>
-											<th>SN</th>
-											<th style="width: 450px;">Action Item</th>
-											<th>PDC</th>
-											<th>Assignee</th>
-											<th>Assigner</th>
-											<th>Progress</th>
-											<th>Action</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">SN</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;width: 450px;">Action Item</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">PDC</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Assignee</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Assigner</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Prog</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Action</th>
 										</tr>
 									</thead>
 									<tbody id="favourite_list" style="max-height: 25rem; overflow-y:auto;"> 
@@ -1002,15 +1013,15 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;" >'+ (v+1) + '</td>';
 							htmlStr += '<td class="tabledata" style="text-left: center;font-size: 15px;font-weight: 600;" >'+ result[v][5] + ' </td>';
 							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;" >'+ moment(new Date(result[v][4]) ).format('DD-MM-YYYY') + '</td>';
-							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;">'+ result[v][16] + '</td>';
-							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;">'+ result[v][1] +'</td>';
+							htmlStr += '<td class="tabledata" style="text-align: left;font-size: 14px;font-weight: 600;">'+ result[v][16] + '</td>';
+							htmlStr += '<td class="tabledata" style="text-align: left;font-size: 14px;font-weight: 600;">'+ result[v][1] +'</td>';
 							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;">';
 							if(result[v][14]!=null){
 								htmlStr += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
-								htmlStr += '<div class="progress-bar progress-bar-striped" role="progressbar" style=" width:' + result[v][14] +' %;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >'+result[v][14] +'</div> </div>'; 
+								htmlStr += '<div class="progress-bar progress-bar-striped" role="progressbar" style=" width:' + result[v][14] +'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >'+result[v][14] +'</div> </div>'; 
 							}else{
 								htmlStr += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
-								htmlStr += '<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;">Not Yet Started .</div></div> ';
+								htmlStr += '<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;">N S</div></div> ';
 							}
 							htmlStr += '</td>';
 							htmlStr += '<td align="center"><input type="checkbox" class="form-group1" name="favourite"  value="'+result[v][10]+'"></td>';
@@ -1040,9 +1051,9 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 	
 	 $(document).ready(function(){
 	 	  $("#myTable").DataTable({
-	 	 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+	 	 "lengthMenu": [10,25, 50, 75, 100 ],
 	 	 "pagingType": "simple",
-	 	 "pageLength": 5
+	 	 "pageLength": 10
 	 });
 	 });	
 </script>

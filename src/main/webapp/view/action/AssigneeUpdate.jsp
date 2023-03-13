@@ -74,7 +74,7 @@ h6{
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D; height: 80px;">
+	    		<div class="card-header" style="background-color: #055C9D; height: 110px;">
       				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=actiono %>)<%}%>
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>

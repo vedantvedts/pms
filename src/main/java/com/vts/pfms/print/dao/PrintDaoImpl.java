@@ -23,13 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sun.xml.bind.annotation.OverrideAnnotationOf;
+import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
@@ -881,5 +885,63 @@ public class PrintDaoImpl implements PrintDao {
 				 result=list.get(0);
 			 }
 			return result;
+		}
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projectcategory=b.projecttypeid";
+		@Override
+		public Object[] GetProjectdata(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTDATA);
+			 query.setParameter("projectid", projectid);
+			 Object[] result=null;
+			 List<Object[]> list=(List<Object[]> )query.getResultList();
+			 if(list!=null && list.size()>0) {
+				 result=list.get(0);
+			 }
+			return result;
+		}
+		
+		@Override
+		public Long AddProjectSlideData( ProjectSlides slide )throws Exception
+		{
+			manager.persist(slide);
+			manager.flush();
+			return slide.getSlideId();
+		}
+		
+		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
+		@Override
+		public Long EditProjectSlideData(ProjectSlides slide)throws Exception
+		{
+			Query query=manager.createNativeQuery(UPDATEPROJECTSLIDE);
+				query.setParameter("SlideId", slide.getSlideId());
+				query.setParameter("Slide", slide.getSlide());
+				query.setParameter("Status", slide.getStatus());
+				query.setParameter("Path", slide.getPath());
+				query.setParameter("ImageName", slide.getImageName());
+				query.setParameter("AttachmentName", slide.getAttachmentName());
+				query.setParameter("ModifiedBy", slide.getModifiedBy());
+				query.setParameter("ModifiedDate", slide.getModifiedDate());
+			return (long)query.executeUpdate();
+		}		
+		
+		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
+		@Override
+		public Object[] GetProjectSildedata(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTSLIDEDATA);
+			 query.setParameter("projectid", projectid);
+			 Object[] result=null;
+			 List<Object[]> list=(List<Object[]> )query.getResultList();
+			 if(list!=null && list.size()>0) {
+				 result=list.get(0);
+			 }
+			return result;
+		}
+		
+		@Override
+		public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception
+		{
+			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
+			return Attachment;
 		}
 }

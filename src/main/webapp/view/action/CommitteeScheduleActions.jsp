@@ -377,6 +377,7 @@ if(MinutesBack==null){
 							<div class="col-sm-5" align="left">
 								<h6 style="color: white; font-weight: bold; font-size: 1.2rem !important" align="left"></h6>
 							</div>
+
 							<div class="col-sm-7" align="left">
 								<div class="input-group" style="margin-top: -8px;">
 									<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">

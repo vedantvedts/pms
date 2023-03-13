@@ -2757,7 +2757,8 @@ public class ProjectController
 	     		 String pcode=req.getParameter("pcode");
 	     		 String pname=req.getParameter("pname");
 	     		 String desc=req.getParameter("desc");
-	     		
+	     		 String enduser = req.getParameter("enduser");
+	     		 String application = req.getParameter("application");
 	     		 String projectdirector=req.getParameter("projectdirector");
 	     		 String ProjectsancAuthority=req.getParameter("ProjectsancAuthority");
 	     		
@@ -2777,7 +2778,7 @@ public class ProjectController
 	     		 String NodalName=req.getParameter("Nodal");
 	     		 String securityClassification=req.getParameter("securityClassification");
 	     		 String scope=req.getParameter("scope");
-	     		 
+	     		 String projectshortname = req.getParameter("projectshortname"); 
 	     		 
 	     		 ProjectMain protype=new ProjectMain();
 	     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
@@ -2796,7 +2797,9 @@ public class ProjectController
 				 protype.setTotalSanctionCost(Double.parseDouble(tsancost.trim()));
 				 protype.setSanctionCostRE(Double.parseDouble(sancostre.trim()));
 				 protype.setScope(scope);
-				 
+				 protype.setEndUser(enduser);
+				 protype.setApplication(application);
+				 protype.setProjectShortName(projectshortname);
 				 if(sancostfe!=null && sancostfe.length() >0)
 				 {
 					 protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -2873,7 +2876,9 @@ public class ProjectController
 	     		 String Deliverable=req.getParameter("Deliverable");
 	     		 String NodalLab=req.getParameter("Nodal");
 	     		 String scope=req.getParameter("scope");
-	     		
+	     		 String application = req.getParameter("application");
+	     		 String enduser = req.getParameter("enduser");
+	     		 String projectshortname = req.getParameter("projectshortname");
 	     		 ProjectMain protype=new ProjectMain();
 	     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
 				 protype.setWorkCenter(WCname);
@@ -2891,6 +2896,9 @@ public class ProjectController
 				 protype.setTotalSanctionCost(Double.parseDouble(tsancost.trim()));
 				 protype.setSanctionCostRE(Double.parseDouble(sancostre.trim()));
 				 protype.setScope(scope);
+				 protype.setApplication(application);
+				 protype.setEndUser(enduser);
+				 protype.setProjectShortName(projectshortname);
 				 if(sancostfe!=null && sancostfe.length() >0)
 				 {
 					 protype.setSanctionCostFE(Double.parseDouble(sancostfe.trim()));
@@ -2996,7 +3004,7 @@ public class ProjectController
      		
      		 String projectdirector=req.getParameter("projectdirector");
      		 String ProjectsancAuthority=req.getParameter("ProjectsancAuthority");
-     		
+     		 String nodallab = req.getParameter("Nodal");
      		 String unicode=req.getParameter("unicode");
      		 String sano=req.getParameter("sano");
      		 String sadate=req.getParameter("sadate");
@@ -3018,10 +3026,13 @@ public class ProjectController
      		 String Objective=req.getParameter("Objective");
      		 String Deliverable=req.getParameter("Deliverable");
     		 String projectTypeID=req.getParameter("projectTypeID");
-
+    		 String scope = req.getParameter("scope");
+    		 String application = req.getParameter("application");
      		 ProjectMaster protype=new ProjectMaster();
 //     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
      		 protype.setProjectShortName(projectshortname);
+     		 protype.setScope(scope);
+     		 protype.setApplication(application);
      		 protype.setEndUser(enduser);
      		 protype.setIsMainWC(0);
      		 protype.setWorkCenter(WCname);
@@ -3051,6 +3062,7 @@ public class ProjectController
        	     protype.setCreatedBy(Username);
          	 protype.setCreatedDate(sdf1.format(new Date()));
          	 protype.setLabCode(LabCode);
+         	 protype.setLabParticipating(nodallab);
         	
         	 count=service.ProjectMasterAdd(protype);
         	 if(count>0) {
@@ -3100,6 +3112,9 @@ public class ProjectController
      		 String Objective=req.getParameter("Objective");
      		 String Deliverable=req.getParameter("Deliverable");
      		 String projectTypeID=req.getParameter("projectTypeID");
+     		 String application = req.getParameter("application");
+     		 String scope = req.getParameter("scope"); 
+     		 String nodallab = req.getParameter("Nodal");
      		 ProjectMaster protype=new ProjectMaster();
 //     		 protype.setIsMainWC(Integer.parseInt(isMainWC));
 //			 protype.setWorkCenter(WCname);
@@ -3125,12 +3140,15 @@ public class ProjectController
 			  }
 			 protype.setPDC(new java.sql.Date(sdf2.parse(pdc).getTime()));
 			 protype.setObjective(Objective.trim());
+			 protype.setScope(scope);
+			 protype.setApplication(application);
 			 protype.setDeliverable(Deliverable.trim());
 			 protype.setRevisionNo(Long.parseLong("0"));
 			 protype.setIsActive(1);
 			 protype.setModifiedBy(Username);
          	 protype.setModifiedDate(sdf1.format(new Date()));
          	 protype.setProjectId(Long.parseLong(ProjectId));
+         	 protype.setLabParticipating(nodallab);
         	 count=service.ProjectEdit(protype);
         	 if(count>0) {
   				redir.addAttribute("result","Project  Edited Successfully");

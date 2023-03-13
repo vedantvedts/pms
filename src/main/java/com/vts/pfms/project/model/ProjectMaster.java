@@ -36,8 +36,11 @@ public class ProjectMaster implements Serializable{
     private String BoardReference;
     private Long RevisionNo;
     private String WorkCenter;
+    private String LabParticipating;
     private String Objective;
     private String Deliverable;
+    private String Scope;
+    private String Application;
     private String EndUser;
 	private String CreatedBy;
     private String CreatedDate;
@@ -47,7 +50,26 @@ public class ProjectMaster implements Serializable{
     private int IsMainWC;
     private String LabCode;
     
-  	public String getLabCode() {
+    
+  	public String getLabParticipating() {
+		return LabParticipating;
+	}
+	public void setLabParticipating(String labParticipating) {
+		LabParticipating = labParticipating;
+	}
+	public String getScope() {
+		return Scope;
+	}
+	public void setScope(String scope) {
+		Scope = scope;
+	}
+	public String getApplication() {
+		return Application;
+	}
+	public void setApplication(String application) {
+		Application = application;
+	}
+	public String getLabCode() {
 		return LabCode;
 	}
 	public void setLabCode(String labCode) {
