@@ -45,7 +45,6 @@ h6{
  %>
 
 
-
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
