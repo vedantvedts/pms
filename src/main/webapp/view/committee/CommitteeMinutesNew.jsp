@@ -744,29 +744,33 @@ for(Object[] temp : invitedlist){
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
-												<%if(obj[4]!= null){
-													if(obj[18]!=null && Integer.parseInt(obj[18].toString())>0){ %>
-												  
-												  
-													<%if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString()))  )){ %>
-														<span class="ongoing">UF</span>
-													<%}else if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-														<span class="delay">FD</span>
-													<%}else if(obj[10].toString().equals("C") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString())) )){  %>
-														<span class="completed">CO</span>
-													<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
-													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.now()) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.now()) )){  %> 
-														<span class="ongoing">OG</span>
-													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.now())){  %> 
-														<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.now())  %>) </span>
-													<%}else{ %>
-														<span class="ongoing">OG</span>
-													<%} 
-													}else if(obj[18]!=null && obj[10]!=null && obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
-												        <span class="completed">CO</span>
-												      <% }else{ %><span class="notyet">NS</span> 
-												<%}}else { %> <span class="notassign">NA</span> <%} %> 
+												<%if(obj[4]!= null){ %> 
+													<%	String actionstatus = obj[10].toString();
+														int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[6].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> 
+													<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+															<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+																<span class="completed">CO</span>
+															<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+																<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+															<%} %>	
+														<%}else{ %>
+															<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+																<span class="ongoing">RC</span>												
+															<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+																<span class="delay">FD</span>
+															<%}else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
+																<span class="ongoing">OG</span>
+															<%}else if(pdcorg.isBefore(today)){  %>
+																<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+															<%} %>									
+													<%} %>
+												<%}else { %>
+													<span class="notassign">NA</span>
+												<%} %> 
 											</td>				
 										</tr>			
 									<%i++;

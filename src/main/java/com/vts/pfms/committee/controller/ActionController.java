@@ -708,10 +708,9 @@ public class ActionController {
 		}
 	 
 	 
-	 @RequestMapping(value = "ActionStatusList.htm")
-		public String ActionStatusList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-				throws Exception {
-		 
+	 	@RequestMapping(value = "ActionStatusList.htm")
+		public String ActionStatusList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	 	{
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionStatusList.htm "+UserId);		
 			try {
@@ -734,7 +733,6 @@ public class ActionController {
 						}
 					}else
 					{
-						
 						fdate=sdf1.format(sdf.parse(fdate));		    
 					}
 					
@@ -750,17 +748,16 @@ public class ActionController {
 					req.setAttribute("tdate",tdate);
 					req.setAttribute("fdate",fdate);
 					req.setAttribute("StatusList", service.StatusList(EmpId,fdate,tdate));
-			}
-			catch (Exception e) {
+			}catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionStatusList.htm "+UserId, e);
 			}
 			return "action/ActionStatusList";
 		}
 	 
-	 @RequestMapping(value = "ActionList.htm", method = RequestMethod.GET)
-		public String ActionList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-				throws Exception {
+	@RequestMapping(value = "ActionList.htm", method = RequestMethod.GET)
+	public String ActionList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		 
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionList.htm "+UserId);		
