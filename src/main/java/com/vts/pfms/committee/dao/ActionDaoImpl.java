@@ -71,7 +71,6 @@ public class ActionDaoImpl implements ActionDao{
 	private static final String MEETINGTODAY="CALL Pfms_Meeting_Msg_Today(:empid)";
 	private static final String MEETINGTOMMO="CALL Pfms_Meeting_Msg_Tommo(:empid)";
 	
-	
 	private static final String ACTIONSELFREMINDERLIST="SELECT ActionId,EmpId,ActionItem,ActionDate,ActionTime,ActionType FROM pfms_action_self WHERE isactive='1' AND actiondate BETWEEN :fromdate AND :todate AND empid=:empid AND labcode=(SELECT labcode FROM employee WHERE empid= :empid ) ORDER BY ActionDate DESC";
 	private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) as 'empname' , ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
 	private static final String COMMITTEESHORTNAME="SELECT cs.committeeid, c.committeeshortname  FROM committee c,committee_schedule cs , committee_schedules_minutes_details cmd WHERE c.committeeid=cs.committeeid AND cs.scheduleid=cmd.scheduleid AND cmd.scheduleminutesid=:scheduleid AND cs.isactive=1 ";
