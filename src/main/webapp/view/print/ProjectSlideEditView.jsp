@@ -206,23 +206,9 @@ if(ses1!=null){
 										</table>
 								  	<hr style="border-top: 1.9px solid #170960;">
 								  	 	<table class="table meeting" style="margin-top: -11px;">
-											<%-- <tr>
-												<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Objectives :</td>
-												<td style="width: 382px;"><%=projectdata[7]%></td>
-											</tr>
-											<tr>
-												<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Scope :</td>
-												<td><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td>
-											</tr>
-											<tr>
-												<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Deliverables :</td>
-												<td><%=projectdata[8]%></td>
-											</tr> --%>
-											
 											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%=projectdata[7]%></td></tr>
 											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td></tr>
 											<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%=projectdata[8]%></td></tr>
-										
 										</table>
 								<div class="row">
 									<div class="col-md-12" align="left">
@@ -291,23 +277,9 @@ if(ses1!=null){
 							</div>
 							<div class="col-md-8">
 								<table class="table meeting">
-								
 										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Objectives : </b> <%=projectdata[7]%></td></tr>
 										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Scope : </b><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td></tr>
 										<tr><td><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Deliverables : </b> <%=projectdata[8]%></td></tr>
-										
-									<%-- <tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Objectives :</td>
-										<td style="width: 695px;"><%=projectdata[7]%></td>
-									</tr>
-									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Scope :</td>
-										<td ><%if(projectdata!=null && projectdata[9]!=null){%><%=projectdata[9]%><%}else{%> -- <%}%></td>
-									</tr>
-									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold;color: #115bc9;">Deliverables :</td>
-										<td ><%=projectdata[8]%></td>
-									</tr> --%>
 								</table>
 							</div>
 						</div>	
@@ -365,7 +337,8 @@ if(ses1!=null){
 									<div align="center">
 										<input type="hidden" name="ProjectslideId" value="<%=projectslidedata[4]%>">
 										<input type="hidden" name="ProjectId" value="<%=projectdata[0]%>">
-										<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData()">Submit </button>
+										<button type="button"  class="btn btn-primary btn-sm add"  onclick="return checkData()">SUBMIT </button>
+										<button type="button"  class="btn btn-sm prints my-2 my-sm-0"  data-toggle="modal" data-target="#newfilemodal">FREEZE </button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</div>
 							</div>
@@ -382,11 +355,48 @@ if(ses1!=null){
 			<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 		</a>
 	</div>
-</div>			
+</div>
+
+<!-- Modal -->
+<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="newfilemodal">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Project Slide Freeze </h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" align="center">
+							<form action="SlideFreezeSubmit.htm" method="post" autocomplete="off" id="editform" >
+								<table  class="">
+									<tr>
+										<th style="padding: 10px 0px;border: 0px solid black; width: 10% ;"> Review  :</th>
+										<td style="padding: 10px 0px; border: 0px solid black; "> 
+											<textarea name="review" class="form-control" id="reviewby" maxlength="500" required="required" rows="4" cols="60"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<th style="padding: 10px 0px;border: 0px solid black; width: 10% ;"> Review Date  :</th>
+										<td style="padding: 10px 0px;border: 0px solid black;  width: 30% ; "  >
+											<input type="text" style="width: 150px;" name="reviewdate" value="" class="form-control" id="modalipdc1"  readonly required >
+										</td>
+									</tr>
+								</table>
+								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn" onclick="confirm('Are you sure to submit?')" >SUBMIT</button>
+										<input type="hidden" name="ProjectId" value="<%=projectdata[0]%>">
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 </body>
 <script type="text/javascript">
-$( document ).ready(function() {
-	CKEDITOR.instances['ckeditor1'].setData(" ");
+ AjaxForStatus()
+
+function AjaxForStatus() {
+	//CKEDITOR.instances['ckeditor1'].setData(" ");
 	 $.ajax({
 		type : "GET",
 		url : "GetSlidedata.htm",
@@ -398,8 +408,10 @@ $( document ).ready(function() {
 			var result = JSON.parse(results);
 			CKEDITOR.instances['ckeditor1'].setData(result.Status);
 		}
-	}); 
-});
+	});
+}
+	 
+
 
 var editor_config = {
 	
@@ -542,8 +554,18 @@ window.setTimeout(function() {
 }, 4000);
 
 
-function OPenpdf(pdfUrl){
-	window.open(pdfUrl, "_blank");
-}
+$('#modalipdc1').daterangepicker({
+	
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,
+	"startDate" : new Date(),
+	"cancelClass" : "btn-default",
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	},
+});
+
 </script>
 </html>

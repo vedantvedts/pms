@@ -307,7 +307,7 @@ td
 			      			</h6>
 			  	        </div>     
 			  	        <div class="col-sm-7" align="right" style="color: white;font-weight: bold;font-size: 1.2rem !important " >       
-			  	        		Action Id : <%=Assignee[10] %>
+			  	        		Action Id : <%=Assignee[9] %>
 						</div>
 					</div>
       			</div>
@@ -331,13 +331,13 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
 	      								<td>
-	      								<%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)
+	      								<%=Assignee[11] %> &nbsp;(<%=Assignee[17] %>)
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
 	      								<td>
-	      								<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
+	      								<%=Assignee[1]%> &nbsp;(<%=Assignee[16] %>)
 	      								</td>	
 	      								<td style="padding-left: 15px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
@@ -351,17 +351,17 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC Original :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[14])%>
+	      									<%=sdf.format(Assignee[13])%>
 	      								</td>	
 	      								     
-	      							<% int revision=Integer.parseInt(Assignee[11].toString());
+	      							<% int revision=Integer.parseInt(Assignee[10].toString());
 	      							for(int i=1;i<=revision;i++){%>
 	      							
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[15+i-1])%>
+	      									<%=sdf.format(Assignee[14+i-1])%>
 	      								</td>	
 	      							
 	      							<%}%>
@@ -379,20 +379,20 @@ td
 								<textarea rows="2" style="display:block; margin-top: -15px;" class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  ></textarea>
 							</div>
 							<div class="col-md-3">
-								<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){ %>
-									<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick=" CloseAction(<%=Assignee[19] %>)" > Close Action</button>
+								<%if(Assignee[19]!=null && Long.parseLong(Assignee[19].toString())>1){ %>
+									<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick=" CloseAction(<%=Assignee[18] %>)" > Close Action</button>
 								<%}else{%>
 									<button type="submit" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="return confirm('Are You Sure To Submit ?')" formaction="CloseSubmit.htm"> Close Action</button>
 								<%}%>
 								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
-								<input type="hidden" name="LevelCount" value="<%=Assignee[20] %>" />	
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
+								<input type="hidden" name="LevelCount" value="<%=Assignee[19] %>" />	
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 							</div>
 						</div>						
 	      			</form>	      			      			      			
 	    		
-	    		<%if(Integer.parseInt(Assignee[11].toString())<2){ %> 
+	    		<%if(Integer.parseInt(Assignee[10].toString())<2){ %> 
 	    		<br>
 	    		<hr><br>
 	    		<form method="post"  action="ExtendPdc.htm" >
@@ -407,7 +407,7 @@ td
 							<div class="col-md-4">
 								<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
 								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
-								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 							</div>
 						</div>
@@ -430,7 +430,7 @@ td
       		</div>
   	 	</div>   
 	</div>
-	<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){ 
+	<%if(Assignee[19]!=null && Long.parseLong(Assignee[19].toString())>1){ 
 		List<Object[]> actionslist = (List<Object[]>)request.getAttribute("actionslist");
 	%>
  <div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">

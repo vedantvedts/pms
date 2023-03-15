@@ -130,7 +130,7 @@ a:hover {
 					
 					<div class="card" style=" ">
 
-						<div class="card-header" style="background-color: #055C9D;">
+						<div class="card-header" style="background-color: #055C9D; height: 100px;">
 							<div class="row"> 
 
 								<div class="col-sm-7" align="left"  >

@@ -929,32 +929,35 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 	}
 	ModelForList("Today");
 	function ModelForList(value) {
+		console.log(value);
 		document.getElementById("modal_Review_Today_Action").style.display = 'none';
 		document.getElementById("modal_Today_Action").style.display = 'none';
 		document.getElementById("modal_Review_Upcoming_Action").style.display = 'none';
 		document.getElementById("modal_Upcoming_Action").style.display = 'none';
 		document.getElementById("modal_Review_Missed_Action").style.display = 'none';
 		document.getElementById("modal_Missed_Action").style.display = 'none';
+		
 		 if(value=='Today'){
 			document.getElementById("modal_Review_Today_Action").style.display = '';
 			document.getElementById("modal_Today_Action").style.display = '';
 			var val = <%=i1+l1%>;
+			console.log(<%=i1%> +": jk :"+<%=l1%>);
 			if(val==0){
 				$("#modal_Review_Today_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
 			}
 		}else if(value=='Upcoming'){
 			document.getElementById("modal_Review_Upcoming_Action").style.display = '';
 			document.getElementById("modal_Upcoming_Action").style.display = '';
-			var val = <%=j1+m1%>;
-			if(val==0){
-				$("#modal_Review_Today_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
+			var val1 = <%=j1+m1%>;
+			if(val1==0){
+				$("#modal_Review_Upcoming_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
 			}
 		}else if(value=='Missed'){
 			document.getElementById("modal_Review_Missed_Action").style.display = '';
 			document.getElementById("modal_Missed_Action").style.display = '';
-			var val = <%=k1+n1%>;
-			if(val==0){
-				$("#modal_Review_Today_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
+			var val2 = <%=k1+n1%>;
+			if(val2==0){
+				$("#modal_Review_Missed_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
 			}
 		}
 	}
