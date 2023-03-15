@@ -371,6 +371,7 @@ public class ActionServiceImpl implements ActionService {
 			updateassign.setModifiedDate(sdf1.format(new Date()));
 			updateassign.setProgress(Integer.parseInt(main.getProgress()));
 			updateassign.setProgressDate(sdf.format(rdf.parse(main.getProgressDate())));
+			updateassign.setProgressRemark(main.getRemarks());
 			dao.AssignUpdate(updateassign);
 			
 			
@@ -1193,6 +1194,7 @@ public class ActionServiceImpl implements ActionService {
 			updateassign.setModifiedDate(sdf1.format(new Date()));
 			updateassign.setProgress(Integer.parseInt(main.getProgress()));
 			updateassign.setProgressDate(sdf.format(rdf.parse(main.getProgressDate())));
+			updateassign.setProgressRemark(main.getRemarks());
 			dao.AssignUpdate(updateassign);
 			ActionAttachment attach=new ActionAttachment();
 			

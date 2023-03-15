@@ -515,22 +515,22 @@
 
 String Username =(String)session.getAttribute("Username");  
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
-List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist");
+/* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
 Integer selfremindercount=(Integer)request.getAttribute("selfremindercount");  
 Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").toString());
-List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList");
+/* List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList"); */
 Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
 
-Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount");
+/* Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount"); */
 
 List<ProjectSanctionDetailsMaster>  budgetlist=(List<ProjectSanctionDetailsMaster>)request.getAttribute("budgetlist");
 String empNo=(String)session.getAttribute("empNo"); 
 String ibasUri=(String)request.getAttribute("ibasUri");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectMeetingCount=(List<Object[]>)request.getAttribute("ProjectMeetingCount");
-Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount");
+/* Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount"); */
 List<Object[]> ganttchartlist=(List<Object[]>)request.getAttribute("ganttchartlist");
 String interval =(String)request.getAttribute("interval");
 String error = (String) request.getAttribute("errorMsg");
@@ -1583,8 +1583,6 @@ if(ses!=null){ %>
 												<td ><span style="font-size :15px;font-weight: bold; ">Action Item</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;">PDC </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Assigned By</span></td>
-												
-												
 											</tr>
 										</thead>
 										

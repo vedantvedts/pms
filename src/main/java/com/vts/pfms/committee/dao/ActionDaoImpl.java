@@ -862,7 +862,7 @@ public class ActionDaoImpl implements ActionDao{
 //		return AssignedList;
 //	}
 	
-	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,(SELECT asub.progress FROM action_sub asub WHERE createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=aas.actionassignid) AND asub.ActionAssignId = aas.ActionAssignId ) AS 'progress',am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name', CONCAT(IFNULL(asi.title,''), asi.empname) AS 'assignee name',am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus',aas.ActionFlag FROM action_main am, action_Assign aas, employee asn, employee asi WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.assignee= asi.empid AND aas.actionassignid=:assignid";
+	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,aas.progress,am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name',CASE WHEN aas.assigneelabcode <> '@EXP' THEN (SELECT CONCAT(IFNULL(asi.title,''), asi.empname) FROM employee asi WHERE aas.assignee= asi.empid)  ELSE (SELECT CONCAT(IFNULL(asi.title,''), asi.expertname)  FROM expert asi WHERE aas.assignee= asi.expertid )END AS 'assignee name' ,am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus' FROM action_main am, action_Assign aas, employee asn WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.actionassignid=:assignid";
 	
 	@Override
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
