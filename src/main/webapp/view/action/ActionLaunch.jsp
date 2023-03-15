@@ -392,7 +392,7 @@ a:hover {
 														    <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 														    <input type="hidden" name="ActionAssignId" value="<%=obj[9]%>"/>
 														
-															<%if(obj[7]==null && "0".equals(obj[10].toString())){%>
+															<%if(obj[7]!=null && "0".equals(obj[7].toString()) && "0".equals(obj[10].toString())){%>
 																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[9]%>'); ">
 																	<div class="cc-rockmenu">
 											                    	  <div class="rolling">

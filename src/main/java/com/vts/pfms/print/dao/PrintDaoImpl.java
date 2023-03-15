@@ -886,7 +886,7 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projectcategory=b.projecttypeid";
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
