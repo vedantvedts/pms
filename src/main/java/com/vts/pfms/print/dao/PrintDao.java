@@ -91,4 +91,5 @@ public interface PrintDao {
 	public Object[] GetProjectSildedata(String projectid)throws Exception;
 	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
 	public Long EditProjectSlideData(ProjectSlides slide)throws Exception;
+	public List<Object[]> RiskTypes() throws Exception;
 }

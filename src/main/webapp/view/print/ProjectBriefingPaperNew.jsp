@@ -460,6 +460,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 
 Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
+
+List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 %>
 
 
@@ -472,8 +474,9 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 	<div align="center">
 	
 		<div class="alert alert-danger" role="alert">
-	                     <%=ses1 %>
-	                    </div></div>
+	       <%=ses1 %>
+	    </div>
+	</div>
 		<%}if(ses!=null){ %>
 		<div align="center">
 		<div class="alert alert-success" role="alert" >
@@ -1681,7 +1684,10 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 												</tr>
 												<tr>
 													<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-													<th style="width: 330px; " colspan="3">Risk</th>
+													<th style="width: 330px; " colspan="3">
+														Risk
+														<a data-toggle="modal" class="fa faa-pulse animated " data-target="#RiskTypesModal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer"><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+													</th>
 													<th style="width: 100px; " rowspan="1" > PDC</th>
 													<th style="width: 100px; " rowspan="1"> ADC</th>
 													<th style="width: 160px; " rowspan="1"> Responsibility</th>
@@ -1715,17 +1721,17 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 															</td>
 															
 															<td style="text-align: center" rowspan="1">
-																<%	String actionstatus = obj[9].toString();
-																	int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
-																	LocalDate pdcorg = LocalDate.parse(obj[3].toString());
-																	LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
+																<%	String actionstatus = obj[15].toString();
+																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
+																	LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
 																	LocalDate today = LocalDate.now();
+																	int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
 																%> 
 																	<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 																		<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
-																		<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+																		<span class="completed"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
 																		<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																		<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+																		<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
 																		<%} %>	
 																	<%}else{ %>
 																		-									
@@ -2584,17 +2590,26 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 												<td  style="text-align: center;"> 
-													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
-												</td>
-												<td > <%=obj[11] %><%=obj[12] %></td>
-												<td  style=";text-align: center;"> 
-													<%if(obj[4]!= null){ %> 
-														<%	String actionstatus = obj[9].toString();
+													<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 															LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
 															LocalDate today = LocalDate.now();
-														%> 
+													%> 
+													<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+														<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+														<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+														<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+														<%} %>	
+													<%}else{ %>
+															-									
+													<%} %>
+												</td>
+												<td > <%=obj[11] %><%=obj[12] %></td>
+												<td  style=";text-align: center;"> 
+													<%if(obj[4]!= null){ %> 
+														
 														<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 																<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																	<span class="completed">CO</span>
@@ -3410,7 +3425,65 @@ List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetai
 
 <!--  -----------------------------------------------Tech data attachment js ---------------------------------------------- -->
 
+<!-- -------------------------------------------- Risk Types Modal  -------------------------------------------------------- -->
+
+		<div class="modal fade" id="RiskTypesModal" tabindex="-1" role="dialog" aria-labelledby="RiskTypesModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
+		
+				<div class="modal-content" >
+					   
+				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+				      
+				    	<h4 class="modal-title"  style="color: #145374">Risk Types</h4>
 	
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				        				        
+				    </div>
+					<div class="modal-body"  style="padding: 0.5rem !important;">
+							
+							<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
+			
+								<div class="row" align="center">
+									<div class="table-responsive"> 
+										<table class="table table-bordered table-hover table-striped table-condensed " style="width:70%">
+											<thead>
+												<tr>
+													<th style="width:10%">SN</th>
+													<th style="width:20%">Risk Type</th>
+													<th style="width:70%">Description</th>
+												</tr>
+											</thead>
+											<tbody>
+												<% int riskcount=0;
+												for(Object[] risktype : RiskTypes ){ %>
+												<tr>
+													<td style="text-align: center;"><%=++riskcount %></td>
+													<td style="text-align: center;"><b>I<%=risktype[2] %></b></td>
+													<td>Internal <%=risktype[1] %></td>
+												</tr>
+												<%} %>
+												<%for(Object[] risktype : RiskTypes ){ %>
+												<tr>
+													<td style="text-align: center;"><%=++riskcount %></td>
+													<td style="text-align: center;"><b>E<%=risktype[2] %></b></td>
+													<td>External <%=risktype[1] %></td>
+												</tr>
+												<%} %>
+											</tbody>
+										</table>
+									</div>	
+											
+				             	</div>					
+							</div>
+						
+					</div>
+				</div>
+			</div> 
+		</div>
+		
+<!-- --------------------------------------------  Risk Types Modal   -------------------------------------------------------- -->
 
 <script>
 

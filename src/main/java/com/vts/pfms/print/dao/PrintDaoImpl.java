@@ -944,4 +944,13 @@ public class PrintDaoImpl implements PrintDao {
 			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
 			return Attachment;
 		}
+		
+		private static final String RISKTYPES = "SELECT Risktypeid,risktype,riskcode FROM pfms_risk_type";
+		@Override
+		public List<Object[]> RiskTypes() throws Exception 
+		{
+			Query query=manager.createNativeQuery(RISKTYPES);
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
 }

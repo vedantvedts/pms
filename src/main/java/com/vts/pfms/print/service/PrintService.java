@@ -94,4 +94,5 @@ public interface PrintService {
 	public Long EditProjectSlideData( ProjectSlideDto slide )throws Exception;
 	public Object[] GetProjectSildedata(String projectid)throws Exception;
 	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
+	public List<Object[]> RiskTypes() throws Exception;
 }

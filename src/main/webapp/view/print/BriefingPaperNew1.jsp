@@ -382,7 +382,7 @@ List<List<Object[]>> ebandpmrccount = (List<List<Object[]>>)request.getAttribute
 
 List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribute("ReviewMeetingList");
 List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
-
+List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 AESCryptor cryptor = new AESCryptor();
 long ProjectCost = (long)request.getAttribute("ProjectCost");
 
@@ -1508,52 +1508,48 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										</td>
 										
 										<td style="text-align: center" rowspan="1">
-											<%if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
-												<%if(obj[18]!=null){ %>
-													<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
-														<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-													<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-														<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-														<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
-														<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-														<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-													   <span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-													<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){  %> 
-													<span class="ongoing"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-													<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %> 
-													<span class="delay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-													<%}
-													}else if(obj[15].toString().equals("C")){ %>
-												        <span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
-												    <% }else{ %>
-												      	<span class="assigned"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span> 
-												<%} %> 
-													
-											<%}else{ %>-<%} %>
+										<%	String actionstatus = obj[15].toString();
+																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
+																	LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																	LocalDate today = LocalDate.now();
+																	int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
+																%> 
+																	<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+																		<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+																		<span class="completed"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
+																		<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+																		<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
+																		<%} %>	
+																	<%}else{ %>
+																		-									
+																	<%} %>
 										</td>
 													
 										<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
 										<td style="text-align: center" rowspan="1">
 												
-											<%if(obj[18]!=null){ %>
-												<%if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && (LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString())) || LocalDate.parse(obj[9].toString()).isEqual(LocalDate.parse(obj[20].toString())) )){ %>
-													<span class="ongoing">RC</span>
-												<%}else if(obj[15].toString().equals("I") && obj[16].toString().equals("F") && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-													<span class="delay">FD</span>
-												<%}else if(obj[15].toString().equals("C")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.parse(obj[20].toString()))||obj[9].equals(obj[20]))){  %>
+											<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
+												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 													<span class="completed">CO</span>
-												<%}else if(obj[15].toString().equals("C")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(obj[20].toString()))){  %>
-												   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[20].toString())) %>) </span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&(LocalDate.parse(obj[9].toString()).isAfter(LocalDate.now())|| LocalDate.parse(obj[9].toString()).isEqual(LocalDate.now()) )){  %> 
-												<span class="ongoing">OG</span>
-												<%}else if(!obj[16].toString().equals("F")&&obj[15].toString().equals("I")&&LocalDate.parse(obj[9].toString()).isBefore(LocalDate.now())){  %> 
-												<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>) </span>
-											<%}
-											}else if(obj[15].toString().equals("C")  && obj[20]!=null){ %>
-										        <span class="completed">CO</span>
-										    <% }else{ %>
-										      	<span class="assigned">AA</span> 
-											<% } %> 
+												<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+													<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+												<%} %>	
+											<%}else{ %>
+												<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+													<span class="ongoing">RC</span>												
+												<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+													<span class="delay">FD</span>
+												<%}else if(actionstatus.equals("A") && progress==0){  %>
+													<span class="assigned">
+														AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
+													</span>
+												<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
+													<span class="ongoing">OG</span>
+												<%}else if(pdcorg.isBefore(today)){  %>
+													<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+												<%} %>					
+																							
+											<%} %>
 											
 														
 										</td>
@@ -1589,7 +1585,31 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								<%} %>
 							</tbody>		
 						</table>
-
+				
+				
+					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;width:600px !important;"  >
+						<thead>
+							<tr>
+								<th style="width:10%">Risk Type</th>
+								<th style="width:40%">Description</th>
+								<th style="width:10%">Risk Type</th>
+								<th style="width:40%">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% int riskcount=0;
+							for(Object[] risktype : RiskTypes ){ %>
+							<tr>
+								<td style="text-align: center;"><b>I<%=risktype[2] %></b></td>
+								<td>Internal <%=risktype[1] %></td>
+								<td style="text-align: center;"><b>E<%=risktype[2] %></b></td>
+								<td>External <%=risktype[1] %></td>
+								</tr>
+							</tr>
+							<%} %>
+						</tbody>
+					</table>
+				
  						
 <!-- ----------------------------------------------7a. Procurement Status------------------------------------------------- -->
 						<h1 class="break"></h1>
@@ -2314,17 +2334,26 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 												<td  style="text-align: center;"> 
-													<%if(obj[13]!=null && obj[9].toString().equals("C")){ %> <%= sdf.format(sdf1.parse(obj[13].toString()))%> <%}else{ %>- <%} %>
-												</td>
-												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
-												<td  style=";text-align: center;"> 
-													<%if(obj[4]!= null){ %> 
-														<%	String actionstatus = obj[9].toString();
+													<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 															LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
 															LocalDate today = LocalDate.now();
-														%> 
+													%> 
+													<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+														<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+														<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+														<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+														<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+														<%} %>	
+													<%}else{ %>
+															-									
+													<%} %>
+												</td>
+												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
+												<td  style=";text-align: center;"> 
+													<%if(obj[4]!= null){ %> 
+														
 														<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 																<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																	<span class="completed">CO</span>
@@ -2344,7 +2373,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 																	<span class="ongoing">OG</span>
 																<%}else if(pdcorg.isBefore(today)){  %>
 																	<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
-																<%} %>									
+																<%} %>										
 														<%} %>
 													<%}else { %>
 														-

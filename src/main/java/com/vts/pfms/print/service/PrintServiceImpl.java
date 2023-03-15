@@ -690,4 +690,10 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.SlideAttachmentDownload(achmentid);
 	}
+	@Override
+	public List<Object[]> RiskTypes() throws Exception 
+	{
+		return dao.RiskTypes();
+		
+	}
 }

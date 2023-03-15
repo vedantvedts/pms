@@ -618,6 +618,7 @@ public class PrintController {
 	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
 	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
 	    	}
+	    	req.setAttribute("RiskTypes", service.RiskTypes());
     		
     		String LevelId= "2";
 			
@@ -2122,8 +2123,10 @@ public class PrintController {
 	    	Object[] nextmeetVenue = (Object[])service.BriefingMeetingVenue(projectid, committeeid);
 	    	req.setAttribute("nextMeetVenue", nextmeetVenue);
 	    	if(nextmeetVenue!=null && nextmeetVenue[0]!=null) {
-	    	req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
+	    		req.setAttribute("recdecDetails", service.GetRecDecDetails(nextmeetVenue[0].toString()));
 	    	}
+	    	req.setAttribute("RiskTypes", service.RiskTypes());
+	    	
 	    	
 	    	
     		String LevelId= "2";
