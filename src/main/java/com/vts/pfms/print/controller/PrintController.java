@@ -2274,7 +2274,6 @@ public class PrintController {
     		return "static/Error";
 	
     	}		
-
 	}
 	
 	@RequestMapping(value = "getMeetingSchedules.htm", method = RequestMethod.GET)

@@ -195,7 +195,7 @@ public class LoginController {
 			     req.setAttribute("loginTypeList", headerservice.loginTypeList(LoginType));
 			     req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));			   
 			     req.setAttribute("todayschedulelist", headerservice.TodaySchedulesList(EmpId,LocalDate.now().toString()));
-			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId));
+//			     req.setAttribute("todayactionlist", headerservice.TodayActionList(EmpId)); // CALL Pfms_Action_PDC(:empid)
 			     req.setAttribute("dashbordNotice", rfpmainservice.GetNotice(LabCode));
 			     req.setAttribute("noticeEligibility", rfpmainservice.GetNoticeEligibility(EmpId));
 			     req.setAttribute("logintype",LoginType);
@@ -205,9 +205,10 @@ public class LoginController {
 			     req.setAttribute("ibasUri",ibasUri);
 			     req.setAttribute("interval", interval);
 			     req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId,LoginType).size());
-			     req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId));
+			     req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId)); 
 			     req.setAttribute("approvallist", headerservice.ApprovalList(EmpId,LoginType));
-			     req.setAttribute("mytaskdetails", headerservice.MyTaskDetails(EmpId));
+					req.setAttribute("mytaskdetails",
+							headerservice.MyTaskDetails(EmpId)); /* CALL `Dashboard_Mytask_Details` (:empid) */
 			     req.setAttribute("dashboardactionpdc", headerservice.DashboardActionPdc(EmpId,LoginType));
 			     req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
 			     req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
