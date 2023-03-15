@@ -208,7 +208,7 @@ a:hover {
 															</div> <%} %></td>
 
 															<td class="left width1">		
-																<%if(obj[7]!=null && "N".equalsIgnoreCase(obj[7].toString()) || "B".equalsIgnoreCase(obj[7].toString())){%> 
+																<%if(obj[6]!=null && "A".equalsIgnoreCase(obj[6].toString()) || "B".equalsIgnoreCase(obj[6].toString())){%> 
 																
 																<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
 																	style="display: inline">
@@ -235,7 +235,7 @@ a:hover {
 																</form>
 																
 																
-																<%}else if(obj[7]!=null && "F".equalsIgnoreCase(obj[7].toString())){%>
+																<%}else if(obj[6]!=null && "F".equalsIgnoreCase(obj[6].toString())){%>
 															<form name="myForm1" id="myForm1" action="ForwardSub.htm" method="POST" 
 																	style="display: inline">
 

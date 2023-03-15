@@ -293,144 +293,11 @@ td
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String back = (String)request.getAttribute("back");
+  int countflag=0;
 %>
 	
-   
-	<div class="container-fluid">
-		<div class="container" style="margin-bottom:20px;">	
-    		<div class="card">   	
-	    		<div class="card-header" style="background-color: #055C9D;">
-		    		<div class="row"> 
-		                <div class="col-sm-5" align="left"  >
-		      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left">
-			      				Action 
-			      			</h6>
-			  	        </div>     
-			  	        <div class="col-sm-7" align="right" style="color: white;font-weight: bold;font-size: 1.2rem !important " >       
-			  	        		Action Id : <%=Assignee[10] %>
-						</div>
-					</div>
-      			</div>
-      		
-	      		<div class="card-body">
-	      				<div class="row">
-	      					<div class="col-md-12">
-	      						<table style="width: 100%;">
-	      							<tr>
-	      								<td style="width: 15%;">
-	      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
-	      								</td>	      	
-	      								<td>&nbsp;&nbsp;
-	      									 <%=Assignee[5]%>
-	      								</td>							
-	      							</tr>
-	      						</table>
-	      						<table>
-	      							<tr>
-	      								<td>
-	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
-	      								</td>	      	
-	      								<td>
-	      								<%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)
-	      								</td>
-	      								<td style="padding-left: 50px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
-	      								</td>	      	
-	      								<td>
-	      								<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
-	      								</td>	
-	      								<td style="padding-left: 15px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
-	      								</td>	      	
-	      								<td >
-	      									<%=sdf.format(Assignee[4])%>
-	      								</td>	
-	      							</tr>
-	      							<tr>
-	      								<td>
-	      									<label style="font-size: medium; padding-top: 10px;  "> PDC Original :</label>
-	      								</td>	      	
-	      								<td>&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[14])%>
-	      								</td>	
-	      								     
-	      							<% int revision=Integer.parseInt(Assignee[11].toString());
-	      							for(int i=1;i<=revision;i++){%>
-	      							
-	      								<td style="padding-left: 50px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
-	      								</td>	      	
-	      								<td>&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[15+i-1])%>
-	      								</td>	
-	      							
-	      							<%}%>
-	      							</tr>	
-	      						</table>      						      					
-	      					</div>      				
-	      				</div>      		
-	      				<br>		
-	      				<hr>
-	      				<br>
-	      			<form method="post"  action="##" >
-	          			<div class="row"> 
-							<div class="col-md-2"><label style="font-size: medium; padding-top: 10px;  " >Remarks:</label></div>	
-							<div class="col-md-7">
-								<textarea rows="2" style="display:block; margin-top: -15px;" class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  ></textarea>
-							</div>
-							<div class="col-md-3">
-								<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){ %>
-									<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick=" CloseAction(<%=Assignee[19] %>)" > Close Action</button>
-								<%}else{%>
-									<button type="submit" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="return confirm('Are You Sure To Submit ?')" formaction="CloseSubmit.htm"> Close Action</button>
-								<%}%>
-								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
-								<input type="hidden" name="LevelCount" value="<%=Assignee[20] %>" />	
-								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-							</div>
-						</div>						
-	      			</form>	      			      			      			
-	    		
-	    		<%if(Integer.parseInt(Assignee[11].toString())<2){ %> 
-	    		<br>
-	    		<hr><br>
-	    		<form method="post"  action="ExtendPdc.htm" >
-	          			<div class="row"> 
-							
-							<div class="col-sm-2" >
-                            	<label>Extend PDC: <span class="mandatory" style="color: red;">* </span></label>
-                            </div>
-                            <div class="col-sm-2"  >
-                            	<input class="form-control " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>" style=" margin-top: -4px;">
-                            </div>
-							<div class="col-md-4">
-								<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
-								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
-								<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
-								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-							</div>
-						</div>
-	      			</form>
-	      			<br>
-	      			<hr>
-	      			<%} %>
-	    		
-	    		</div>
-	    		<%if(back!=null && back.equalsIgnoreCase("backTotodo")){%>
-	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ToDoReviews.htm">BACK</a></div>
-	    		<%}else{%>
-	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionLaunch.htm">BACK</a></div>
-	    		<%}%>
-    		</div>
-    		<div class="card-header" style="background-color: #055C9D; height: 50px;">
-		    	<div class="row"> 
-		               
-				</div>
-      		</div>
-  	 	</div>   
-	</div>
-	<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){ 
+
+	<% 
 		List<Object[]> actionslist = (List<Object[]>)request.getAttribute("actionslist");
 	%>
  <div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
@@ -472,7 +339,9 @@ td
 			                    <div class="member-view-box action-view-box">
 			                        <div class=" action-box" >
 			                          	<div 			                          		
-			                          		<% int progress = action[25]!=null ? Integer.parseInt(action[25].toString()) : 0 ; %>
+			                          		<% int progress = action[25]!=null ? Integer.parseInt(action[25].toString()) : 0 ; 
+			                          			countflag++;
+			                          		%>
 			                          		<% if( action[20]!=null && "C".equalsIgnoreCase(action[20]+"") ){ %>
 			                          			class="action-box-header Q5"
 			                          		<%}else if( progress >= 0 && progress <= 25  ){ %>
@@ -549,7 +418,8 @@ td
 											<div class="member-view-box action-view-box">
 												<div class=" action-box" >
 													<div 			                          		
-						                          		<% int progress_L1 = action_L1[25]!=null ? Integer.parseInt(action_L1[25].toString()) : 0 ; %>
+						                          		<% int progress_L1 = action_L1[25]!=null ? Integer.parseInt(action_L1[25].toString()) : 0 ; 
+						                          		countflag++;%>
 						                          		<% if(action_L1[20]!=null && "C".equalsIgnoreCase(action_L1[20]+"") ){ %>
 			                          						class="action-box-header Q5"
 			                          					<%}else if( progress_L1 >= 0 && progress_L1 <= 25  ){ %>
@@ -629,7 +499,7 @@ td
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
 																<div 			                          		
-									                          		<% int progress_L2 = action_L2[25]!=null ? Integer.parseInt(action_L2[25].toString()) : 0 ; %>
+									                          		<% int progress_L2 = action_L2[25]!=null ? Integer.parseInt(action_L2[25].toString()) : 0 ; countflag++;%>
 									                          		<% if( action_L2[20]!=null && "C".equalsIgnoreCase(action_L2[20]+"") ){ %>
 			                          									class="action-box-header Q5"
 			                          								<%}else if( progress_L2 >= 0 && progress_L2 <= 25  ){ %>
@@ -706,7 +576,7 @@ td
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																				<div 			                          		
-													                          		<% int progress_L3 = action_L3[25]!=null ? Integer.parseInt(action_L3[25].toString()) : 0 ; %>
+													                          		<% int progress_L3 = action_L3[25]!=null ? Integer.parseInt(action_L3[25].toString()) : 0 ;  countflag++; %>
 													                          		<% if( action_L3[20]!=null && "C".equalsIgnoreCase(action_L3[20]+"") ){ %>
 			                          													class="action-box-header Q5"
 			                          												<%}else if( progress_L3 >= 0 && progress_L3 <= 25  ){ %>
@@ -784,7 +654,7 @@ td
 																						<div class="member-view-box action-view-box">
 																								<div class=" action-box" >
 																									<div 			                          		
-																		                          		<% int progress_L4 = action_L4[25]!=null ? Integer.parseInt(action_L4[25].toString()) : 0 ; %>
+																		                          		<% int progress_L4 = action_L4[25]!=null ? Integer.parseInt(action_L4[25].toString()) : 0 ; countflag++; %>
 																		                          		<% if( action_L4[20]!=null && "C".equalsIgnoreCase(action_L4[20]+"") ){ %>
 			                          																		class="action-box-header Q5"
 			                          																	<%}else if( progress_L4 >= 0 && progress_L4 <= 25  ){ %>
@@ -895,6 +765,8 @@ td
 	    </div>
 	</div>
 </div>
+
+
 	<!-- model Footer -->
 		 <div class="modal-footer" >
 			<div  style="margin-right: 650px;"> 
@@ -984,8 +856,143 @@ td
 
 
 <!---------------------------------------------------------------- action modal ----------------------------------------------------- -->
-
-
+   
+	<div class="container-fluid">
+		<div class="container" style="margin-bottom:20px;">	
+    		<div class="card">   	
+	    		<div class="card-header" style="background-color: #055C9D;">
+		    		<div class="row"> 
+		                <div class="col-sm-5" align="left"  >
+		      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left">
+			      				Action 
+			      			</h6>
+			  	        </div>     
+			  	        <div class="col-sm-7" align="right" style="color: white;font-weight: bold;font-size: 1.2rem !important " >       
+			  	        		Action Id : <%=Assignee[9] %>
+						</div>
+					</div>
+      			</div>
+      		
+	      		<div class="card-body">
+	      				<div class="row">
+	      					<div class="col-md-12">
+	      						<table style="width: 100%;">
+	      							<tr>
+	      								<td style="width: 15%;">
+	      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
+	      								</td>	      	
+	      								<td>&nbsp;&nbsp;
+	      									 <%=Assignee[5]%>
+	      								</td>							
+	      							</tr>
+	      						</table>
+	      						<table>
+	      							<tr>
+	      								<td>
+	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
+	      								</td>	      	
+	      								<td>
+	      								<%=Assignee[11] %> &nbsp;(<%=Assignee[17] %>)
+	      								</td>
+	      								<td style="padding-left: 50px;" >
+	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
+	      								</td>	      	
+	      								<td>
+	      								<%=Assignee[1]%> &nbsp;(<%=Assignee[16] %>)
+	      								</td>	
+	      								<td style="padding-left: 15px;" >
+	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
+	      								</td>	      	
+	      								<td >
+	      									<%=sdf.format(Assignee[4])%>
+	      								</td>	
+	      							</tr>
+	      							<tr>
+	      								<td>
+	      									<label style="font-size: medium; padding-top: 10px;  "> PDC Original :</label>
+	      								</td>	      	
+	      								<td>&nbsp;&nbsp;
+	      									<%=sdf.format(Assignee[13])%>
+	      								</td>	
+	      								     
+	      							<% int revision=Integer.parseInt(Assignee[10].toString());
+	      							for(int i=1;i<=revision;i++){%>
+	      							
+	      								<td style="padding-left: 50px;" >
+	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
+	      								</td>	      	
+	      								<td>&nbsp;&nbsp;
+	      									<%=sdf.format(Assignee[14+i-1])%>
+	      								</td>	
+	      							
+	      							<%}%>
+	      							</tr>	
+	      						</table>      						      					
+	      					</div>      				
+	      				</div>      		
+	      				<br>		
+	      				<hr>
+	      				<br>
+	      			<form method="post"  action="##" >
+	          			<div class="row"> 
+							<div class="col-md-2"><label style="font-size: medium; padding-top: 10px;  " >Remarks:</label></div>	
+							<div class="col-md-7">
+								<textarea rows="2" style="display:block; margin-top: -15px;" class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  ></textarea>
+							</div>
+							<div class="col-md-3">
+								<%if(countflag>1){ %>
+									<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick=" CloseAction(<%=Assignee[18] %>)" > Close Action</button>
+								<%}else{%>
+									<button type="submit" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="return confirm('Are You Sure To Submit ?')" formaction="CloseSubmit.htm"> Close Action</button>
+								<%}%>
+								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
+								<input type="hidden" name="LevelCount" value="<%=Assignee[19] %>" />	
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							</div>
+						</div>						
+	      			</form>	      			      			      			
+	    		
+	    		<%if(Integer.parseInt(Assignee[10].toString())<2){ %> 
+	    		<br>
+	    		<hr><br>
+	    		<form method="post"  action="ExtendPdc.htm" >
+	          			<div class="row"> 
+							
+							<div class="col-sm-2" >
+                            	<label>Extend PDC: <span class="mandatory" style="color: red;">* </span></label>
+                            </div>
+                            <div class="col-sm-2"  >
+                            	<input class="form-control " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>" style=" margin-top: -4px;">
+                            </div>
+							<div class="col-md-4">
+								<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
+								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+							</div>
+						</div>
+	      			</form>
+	      			<br>
+	      			<hr>
+	      			<%} %>
+	    		
+	    		</div>
+	    		<%if(back!=null && back.equalsIgnoreCase("backTotodo")){%>
+	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ToDoReviews.htm">BACK</a></div>
+	    		<%}else{%>
+	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionLaunch.htm">BACK</a></div>
+	    		<%}%>
+    		</div>
+    		<div class="card-header" style="background-color: #055C9D; height: 50px;">
+		    	<div class="row"> 
+		               
+				</div>
+      		</div>
+  	 	</div>   
+	</div>
+	
+	
 <!-- ------------------------------- tree script ------------------------------- -->
 <script type="text/javascript">
 function close5(){
@@ -1145,7 +1152,7 @@ $(function () {
 	}
 </script>  
 
-<%}%>
+
 <script>
 var from ="<%=sdf.format(Assignee[4])%>".split("-");
 var dt = new Date(from[2], from[1] - 1, from[0]);

@@ -114,11 +114,7 @@ h6{
 				            		<a type="button" class="btn  btn-sm back"    href="AssigneeList.htm"  >BACK</a>
 				            	<%}%>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
-		          				<%if(!"0".equalsIgnoreCase(Assignee[8].toString())){ %>
-	 								<%if(Assignee[13].toString().equalsIgnoreCase("S")){ %>
-	      				 	  			<!-- <input type="submit" class="btn  btn-sm view" value="Meeting Content View" formaction="AgendaView.htm" formtarget="_blank"/> -->
-				       				<%}%>
-	                           	<%} %> 
+		          				 
 	                           	<% if(SubList.size()>0){ %>  
 	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
@@ -127,13 +123,13 @@ h6{
 	        		
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
-			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
+			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      			</form>
 	      	
 	      	
 	      			<form action="ActionForward.htm" method="post" id="fwdfrm">
 	      				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
-	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
+	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
 	      			</form>
@@ -233,83 +229,49 @@ h6{
 												<th style="">Progress %</th>
 												<th style="">Remarks</th>								
 											 	<th style="">Attachment</th>
-											 	<!-- <th style="">Upload</th> -->
-												<th style="">Action</th>
+												<!-- <th style="">Action</th> -->
 											</tr>
 										</thead>
 										<tbody>					
 									 	<%int  count=1;
 										for(Object[] obj: SubList){ %>
 																		
-										<tr >
-										
-											 
-											
-						
-												<td width="12%">
-													<%=sdf.format(obj[3])%>
-												</td>
-												
-												<td width="6%">
-													
+										<tr>
+											<td width="12%"><%=sdf.format(obj[3])%></td>
+											<td width="6%">
 													<div class="progress" style="background-color:#cdd0cb !important">
 				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
 													</div>
-								
-														</td>
-												
-												<td style="text-align: left; width: 10%;"> 
-													<%=obj[4]%>
-												</td>
-												
-												<td style="text-align: left; width: 3%;">
-												
-											 <% 
-										        if( obj[5]!=null){
-										        %>
-										        <div  align="center">
-														<a  
-														 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>" 
-														 target="_blank"><i class="fa fa-download"></i></a>
+											</td>
+											<td style="text-align: left; width: 10%;"><%=obj[4]%></td>
+											<td style="text-align: left; width: 3%;">
+												<%if( obj[5]!=null){%>
+											        <div  align="center">
+															<a  href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>"  target="_blank"><i class="fa fa-download"></i></a>
 													</div>
-												
-													
-												<%}else{ %>
-												
+												<%}else{%>
 												<div  align="center">-</div>
-												 <%} %>
-													
-										
+												 <%}%>
 												</td>
-												
-																		
-												<td style="text-align: left; width: 6%;">
+											<%-- <td style="text-align: left; width: 6%;">
 												<form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
-													
 					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
-						
-				<!-- 									<button type="submit" class="btn btn-warning btn-sm" name="action" value="edit" onclick="return confirm('Are you sure To Submit?')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-				 -->								<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+				 									<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" /> 
+									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
 											        </form>
-												</td>
-										
-											</tr>
-																		
+												</td> --%>
+											</tr>				
 											<% count++; } %>
 										</tbody>
 									</table>
 								</div> 
-							<%} %>
-								</div>
-			 	
+							<%}%>
+							</div>
   						</div>
-
 				</div>
-
 			</div>
 		</div>
 	</div>

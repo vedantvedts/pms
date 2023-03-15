@@ -84,6 +84,7 @@ import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
@@ -3816,6 +3817,74 @@ public class PrintController {
 				}
 				Gson json = new Gson();
 				return json.toJson(attach);
+		 }
+		 
+		 @RequestMapping(value = "SlideFreezeSubmit.htm" , method = RequestMethod.POST)
+		 public String ProjectSlideFreeze(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside SlideFreezeSubmit.htm "+UserId);	
+			 try {
+				 Long EmpId = (Long) ses.getAttribute("EmpId");
+				 String review = req.getParameter("review");
+				 String reviewdate = req.getParameter("reviewdate");
+				 String projectid = req.getParameter("ProjectId");
+				 ProjectSlideFreeze freeze = new ProjectSlideFreeze();
+					 freeze.setReview(review);
+					 freeze.setReviewDate(new java.sql.Date(sdf.parse(reviewdate).getTime()));
+					 freeze.setProjectId(Long.parseLong(projectid));
+					 freeze.setEmpId(EmpId);
+					 
+					    Object[] projectdata = (Object[])service.GetProjectdata(projectid);
+						Object[] projectslidedata = (Object[])service.GetProjectSildedata(projectid);
+						req.setAttribute("filepath", ApplicationFilesDrive);
+						req.setAttribute("projectslidedata", projectslidedata);
+						req.setAttribute("projectdata", projectdata);
+					 
+					    String filename="ProjectProposal";	
+				    	String path=req.getServletContext().getRealPath("/view/temp");
+						req.setAttribute("path",path);
+						CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+						req.getRequestDispatcher("/view/print/ProjectSlideFreeze.jsp").forward(req, customResponse);
+						String html = customResponse.getOutput();
+
+						ConverterProperties converterProperties = new ConverterProperties();
+				    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+				    	converterProperties.setFontProvider(dfp);
+				    	
+						HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+						PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+						PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+						PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+						pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
+						pdfDocument.close();
+						pdf1.close();	       
+				        pdfw.close();
+				        
+						res.setContentType("application/pdf");
+				        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+				        File f=new File(path+"/"+filename+".pdf");
+				      
+				        OutputStream out = res.getOutputStream();
+						FileInputStream in = new FileInputStream(f);
+						byte[] buffer = new byte[4096];
+						int length;
+						while ((length = in.read(buffer)) > 0) {
+							out.write(buffer, 0, length);
+						}
+						in.close();
+						out.flush();
+						out.close();
+						
+						Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+				        Files.delete(pathOfFile2);
+				        redir.addFlashAttribute("projectid", projectid);
+			}catch (Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside SlideFreezeSubmit.htm "+UserId, e);
+			}
+				
+				return "redirect:/PfmsProjectSlides.htm";
 		 }
 		 
 }

@@ -320,7 +320,9 @@ td
 			                          			onclick="ActionDetails(	'<%=action[10] %>' );" >
 			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
 			                          	</div>
-			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());
+			                          	System.out.println("level0  "+ level0.size());
+			                          	%>
 										<div <%if(level0!=null && level0.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
 											<table class="card-body-table">
 			                          			<tr>

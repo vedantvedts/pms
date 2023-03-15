@@ -343,12 +343,12 @@ td
     	
     	
 	    		<div class="card-header" style="background-color: #055C9D;">
-	    		<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[10] %>
+	    		<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
+      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[9] %>
 				<%}else{%>
-					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[10] %>
+					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[9] %>
 				<%}%>	
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[12] %> &nbsp;(<%=Assignee[18] %>)</span>
+					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[11] %> &nbsp;(<%=Assignee[17] %>)</span>
       				 </h6>
       			</div>
       		
@@ -360,7 +360,7 @@ td
 	      						<table style="width: 100%;">
 	      							<tr>
 	      								<td style="width: 15%;">
-		      								<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+		      								<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
 		      									<label style="font-size: medium; padding-top: 10px;  "> Issue Item  :</label>
 		      									<%}else{%>
 		      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
@@ -377,13 +377,13 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[12] %>&nbsp;(<%=Assignee[18] %>)
+	      									<%=Assignee[11] %>&nbsp;(<%=Assignee[17] %>)
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[17] %>)
+	      									<%=Assignee[1]%> &nbsp;(<%=Assignee[16] %>)
 	      								</td>	
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
@@ -397,17 +397,17 @@ td
 	      									<label style="font-size: medium; padding-top: 10px;  ">  Original PDC :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[14])%>
+	      									<%=sdf.format(Assignee[13])%>
 	      								</td>	
 	      								     
-	      							<% int revision=Integer.parseInt(Assignee[11].toString());
+	      							<% int revision=Integer.parseInt(Assignee[10].toString());
 	      							for(int i=1;i<=revision;i++){ %>
 	      							
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revised - <%=i%> PDC:</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=sdf.format(Assignee[15+i-1])%>
+	      									<%=sdf.format(Assignee[14+i-1])%>
 	      								</td>	
 	      							
 	      							<%} %>
@@ -437,20 +437,20 @@ td
 								
 								<div class="col-md-4">
 									<button type="submit" class="btn btn-warning btn-sm edit"  onclick="return back()" >Send Back </button>
-									<%if(Assignee[20]!=null && Long.parseLong(Assignee[20].toString())>1){%>
-										<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="CloseAction(<%=Assignee[19] %>)" > Close Action</button>
+									<%if(Assignee[19]!=null && Long.parseLong(Assignee[19].toString())>1){%>
+										<button type="button" class="btn btn-danger btn-sm revoke" name="sub" value="C"  onclick="CloseAction(<%=Assignee[18] %>)" > Close Action</button>
 					        		<%}else{%>
 						        			<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  close5()" formaction="CloseSubmit.htm"> Close Action</button>
 					        		<%}%>
-					        		<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+					        		<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
 					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionIssue.htm"/>
 					        			<input type="hidden" name="Action"  value="F">
 					        		<%}else{%>
 					        			<input type="submit" class="btn btn-primary btn-sm back" value="Back" onclick="close2()" formaction="ActionForwardList.htm"/>
 					        		<%}%>
 					        		<input type="hidden" name="ActionMainId" value="<%=Assignee[0]%>" />	
-					        		<input type="hidden" name="ActionAssignId" value="<%=Assignee[19]%>" />
-					        		<input type="hidden" name="LevelCount" value="<%=Assignee[20] %>" />
+					        		<input type="hidden" name="ActionAssignId" value="<%=Assignee[18]%>" />
+					        		<input type="hidden" name="LevelCount" value="<%=Assignee[19] %>" />
 					        		<input type="hidden" name="BACK" value="Issue" />
 					        		
 								</div>
@@ -461,7 +461,7 @@ td
 						
 						
 						
-				<%if(Integer.parseInt(Assignee[11].toString())<2){ %> 
+				<%if(Integer.parseInt(Assignee[10].toString())<2){ %> 
 		    		<br>
 		    		<hr><br>
 		    		<form method="post"  action="ExtendPdc.htm" >
@@ -478,7 +478,7 @@ td
 				                           	<td style="width: 20%; " >
 												<button type="submit" class="btn btn-danger btn-sm submit" style="margin-left: 20px;"  onclick="return confirm('Are You Sure To Submit ?')" > UPDATE</button>
 												<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
-												<input type="hidden" name="ActionAssignId" value="<%=Assignee[19] %>" />
+												<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
 												<input type="hidden" name="froward" value="Y" />
 												<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 											</td>
@@ -512,7 +512,7 @@ td
 <div class="col-md-1"></div>
    
    <div class="col-md-10" style="padding-left: 0px">
-    <% if(LinkList.size()>0){ %>  
+    <% if(LinkList!=null && LinkList.size()>0){ %>  
    				<div class="table-responsive">
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 						<thead>
@@ -584,7 +584,7 @@ td
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 						<thead>
 						<tr>
-							<%if(Assignee!=null && Assignee[22]!=null && "I".equalsIgnoreCase( Assignee[22].toString())){%>
+							<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
 								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Issue Updated Details </th>									
 							<%}else{%>
 								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>
