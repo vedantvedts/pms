@@ -192,25 +192,25 @@ Project List</h3>
 	 for(Object[] obj:ProjectList){ %>
 <tr>
 <td align="center">
-<%if(Integer.parseInt(obj[11].toString())==0){ %>
+<%if(Integer.parseInt(obj[20].toString())==0){ %>
 <input type="radio" name="ProjectId" value="<%=obj[0] %>" onchange="$('#editbtn').attr('disabled',false); "  > 
-<%}else if(Integer.parseInt(obj[11].toString())>0){  %>
+<%}else if(Integer.parseInt(obj[20].toString())>0){  %>
 <input type="radio" name="ProjectId" value="<%=obj[0] %>" onchange="$('#editbtn').attr('disabled',true); " > 
 <%} %>
 </td>
 <td><%=count %></td>
-<td><%=obj[2] %></td>
-<td align="center"><%=obj[3] %></td>
-<td ><%=obj[4]%></td>
+<td><%=obj[21] %></td>
+<td align="center"><%=obj[4] %></td>
+<td ><%=obj[1]%></td>
 <%-- <td ><%=projectDescription %></td> --%>
 <%-- <td ><%=unitCode %></td> --%>
 
 <%
 
  %>
-<td><%=sdf.format(obj[8]) %></td>
+<td><%=sdf.format(obj[12]) %></td>
 <%DecimalFormat df1 = new DecimalFormat( "################.00"); 
-String v = df1.format((Double.valueOf(obj[9].toString()).doubleValue()/100000 )); 
+String v = df1.format((Double.valueOf(obj[19].toString()).doubleValue()/100000 )); 
 NFormatConvertion nfc1=new NFormatConvertion();
 %>
 <td ><%=v%></td>
@@ -218,9 +218,9 @@ NFormatConvertion nfc1=new NFormatConvertion();
 
  %>
 
-<td class="text-nowrap"><%=sdf.format(obj[10]) %></td>
+<td class="text-nowrap"><%=sdf.format(obj[9]) %></td>
 
-<td ><%=obj[11]%></td>
+<td ><%=obj[20]%></td>
 </tr>
 
 <%count++;} }%>

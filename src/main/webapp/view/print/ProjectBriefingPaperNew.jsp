@@ -1723,15 +1723,15 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 															<td style="text-align: center" rowspan="1">
 																<%	String actionstatus = obj[15].toString();
 																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
-																	LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+																	LocalDate lastdate = obj[20]!=null ? LocalDate.parse(obj[20].toString()): null;
 																	LocalDate today = LocalDate.now();
 																	int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
 																%> 
 																	<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 																		<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
-																		<span class="completed"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
+																		<span class="completed"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
 																		<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																		<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[14].toString()))%> </span>
+																		<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[20].toString()))%> </span>
 																		<%} %>	
 																	<%}else{ %>
 																		-									
