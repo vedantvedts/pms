@@ -21,7 +21,7 @@ public class ProjectSlideFreeze {
 	private Long FreezeId;
 	private Long ProjectId;
 	private Long EmpId;
-	private String Review;
+	private String Reviewby;
 	private Date ReviewDate;
 	private String Path;
 	private String AttachName;

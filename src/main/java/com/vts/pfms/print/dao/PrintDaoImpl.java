@@ -33,6 +33,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
@@ -943,5 +944,12 @@ public class PrintDaoImpl implements PrintDao {
 		{
 			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
 			return Attachment;
+		}
+		@Override
+		public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
+		{
+			manager.persist(freeze);
+			manager.flush();
+			return freeze.getFreezeId();
 		}
 }

@@ -113,7 +113,7 @@ if(ses1!=null){
 							<div class="col-md-4">
 								<table class="table meeting">
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
+										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 100px;">Project No :</td>
 										<td style="width: 286px;"><%=projectdata[11]%></td>
 									</tr>
 									<tr>
@@ -176,7 +176,7 @@ if(ses1!=null){
 							<div class="col-md-5">
 								<table class="table meeting" style="margin-bottom: -11px;">
 											<tr>
-												<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
+												<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 100px;">Project No :</td>
 												<td style="width: 286px;"><%=projectdata[11]%></td>
 											</tr>
 											<tr>
@@ -246,7 +246,7 @@ if(ses1!=null){
 							<div class="col-md-4">
 								<table class="table meeting">
 									<tr>
-										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>
+										<td style="font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 100px;">Project No :</td>
 										<td style="width: 286px;"><%=projectdata[11]%></td>
 									</tr>
 									<tr>
@@ -369,11 +369,11 @@ if(ses1!=null){
 						</div>
 						<div class="modal-body" align="center">
 							<form action="SlideFreezeSubmit.htm" method="post" autocomplete="off" id="editform" >
-								<table  class="">
+								<table  >
 									<tr>
-										<th style="padding: 10px 0px;border: 0px solid black; width: 10% ;"> Review  :</th>
+										<th style="padding: 10px 0px;border: 0px solid black; width: 10% ;"> Review By :</th>
 										<td style="padding: 10px 0px; border: 0px solid black; "> 
-											<textarea name="review" class="form-control" id="reviewby" maxlength="500" required="required" rows="4" cols="60"></textarea>
+											<input type="text" name="review" class="form-control" id="reviewby" maxlength="500" required="required">
 										</td>
 									</tr>
 									<tr>
@@ -383,7 +383,7 @@ if(ses1!=null){
 										</td>
 									</tr>
 								</table>
-								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn" onclick="confirm('Are you sure to submit?')" >SUBMIT</button>
+								<button type="submit" class="btn btn-sm submit" id="modalsubmitbtn" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
 										<input type="hidden" name="ProjectId" value="<%=projectdata[0]%>">
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 							</form>

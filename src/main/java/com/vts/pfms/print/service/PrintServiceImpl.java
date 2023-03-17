@@ -32,6 +32,7 @@ import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
@@ -690,4 +691,11 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.SlideAttachmentDownload(achmentid);
 	}
+	@Override
+	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
+	{
+		freeze.setCreatedDate(sdf1.format(new Date()));
+		return dao.AddFreezeData(freeze);
+	}
+
 }

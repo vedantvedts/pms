@@ -10,6 +10,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
@@ -94,4 +95,5 @@ public interface PrintService {
 	public Long EditProjectSlideData( ProjectSlideDto slide )throws Exception;
 	public Object[] GetProjectSildedata(String projectid)throws Exception;
 	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
+	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception;
 }

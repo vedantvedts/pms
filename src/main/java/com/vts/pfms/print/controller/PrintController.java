@@ -11,7 +11,10 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -3623,6 +3626,7 @@ public class PrintController {
 				if(projectslidedata!=null) {
 					req.setAttribute("filepath", ApplicationFilesDrive);
 					req.setAttribute("projectslidedata", projectslidedata);
+					//return "print/ProjectSlideFreeze";
 					return "print/ProjectSlideEditView";
 				}
 				return "print/ProjectSlide";
@@ -3822,12 +3826,14 @@ public class PrintController {
 			 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside SlideFreezeSubmit.htm "+UserId);	
 			 try {
+				 String LabCode = (String) ses.getAttribute("labcode");
+				 
 				 Long EmpId = (Long) ses.getAttribute("EmpId");
 				 String review = req.getParameter("review");
 				 String reviewdate = req.getParameter("reviewdate");
 				 String projectid = req.getParameter("ProjectId");
 				 ProjectSlideFreeze freeze = new ProjectSlideFreeze();
-					 freeze.setReview(review);
+					 freeze.setReviewby(review);
 					 freeze.setReviewDate(new java.sql.Date(sdf.parse(reviewdate).getTime()));
 					 freeze.setProjectId(Long.parseLong(projectid));
 					 freeze.setEmpId(EmpId);
@@ -3850,31 +3856,36 @@ public class PrintController {
 				    	converterProperties.setFontProvider(dfp);
 				    	
 						HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-						PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-						PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-						PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-						pdfDocument.setDefaultPageSize(PageSize.A4.rotate());
-						pdfDocument.close();
-						pdf1.close();	       
-				        pdfw.close();
-				        
-						res.setContentType("application/pdf");
-				        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+
 				        File f=new File(path+"/"+filename+".pdf");
-				      
-				        OutputStream out = res.getOutputStream();
+
 						FileInputStream in = new FileInputStream(f);
-						byte[] buffer = new byte[4096];
-						int length;
-						while ((length = in.read(buffer)) > 0) {
-							out.write(buffer, 0, length);
-						}
-						in.close();
-						out.flush();
-						out.close();
+						Timestamp instant = Timestamp.from(Instant.now());
+						String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+				       String filesname="SlideFreeze"+timestampstr+".pdf";
 						
+						String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
+						
+				        Path uploadPath = Paths.get(Path);
+				        if (!Files.exists(uploadPath)) {
+				            Files.createDirectories(uploadPath);
+				        }
+						 Path filePath = uploadPath.resolve(filesname);
+				         Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
+						in.close();
 						Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
 				        Files.delete(pathOfFile2);
+				        
+				        freeze.setAttachName(filesname);
+				        freeze.setPath(LabCode+"\\FreezedProjectSlide\\");
+				        freeze.setCreatedBy(UserId);
+				        long count  = service.AddFreezeData(freeze);
+						if(count>0)
+		    			{
+		    				redir.addAttribute("result", "Project Slide Freezed Successfully");
+		    			}else{
+		    				redir.addAttribute("resultfail", "Project Slide Freezed Failed");	
+		    			}
 				        redir.addFlashAttribute("projectid", projectid);
 			}catch (Exception e){
 				e.printStackTrace();
@@ -3882,6 +3893,21 @@ public class PrintController {
 			}
 				
 				return "redirect:/PfmsProjectSlides.htm";
+		 }
+		 
+		 
+		 @RequestMapping(value = "ProjectSlide.htm")
+		 public String ProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ProjectSlide.htm "+UserId);	
+			 try {
+				//List<>
+			} catch(Exception e){
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ProjectSlide.htm "+UserId, e);
+			}
+			 return "print/ProjectSlideList";
 		 }
 		 
 }
