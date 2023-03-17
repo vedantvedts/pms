@@ -2954,10 +2954,13 @@ public class ProjectController
 	public String ProjectList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String Username = (String) ses.getAttribute("Username");
 		String LabCode=(String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside ProjectList.htm "+Username);
 	try {
 		
-		req.setAttribute("ProjectList", service.ProjectList().stream().filter(e-> e[14]!=null).filter(e->LabCode.equalsIgnoreCase(e[14].toString())).collect(Collectors.toList()) );
+		req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype, LabCode) );
+//		req.setAttribute("ProjectList", service.ProjectList().stream().filter(e-> e[14]!=null).filter(e->LabCode.equalsIgnoreCase(e[14].toString())).collect(Collectors.toList()) );
 		
 	}catch (Exception e) {
 		e.printStackTrace(); logger.error(new Date() +" Inside ProjectList.htm "+Username, e);

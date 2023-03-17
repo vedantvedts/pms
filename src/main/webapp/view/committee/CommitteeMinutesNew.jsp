@@ -1109,7 +1109,7 @@ for(Object[] temp : invitedlist){
 					</table>	
 					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
 							
-								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 10px; width: 660px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								    <thead>
 								        <tr>
 								           	<td class="std" colspan="2" align="center"><b>Head</b></td>
@@ -1122,7 +1122,7 @@ for(Object[] temp : invitedlist){
 								        </tr>
 									    <tr>
 											<th class="std" >SN</th>
-										    <th  class="std" >Head</th>
+										    <th class="std" >Head</th>
 										    <th class="std" >RE</th>
 										    <th class="std" >FE</th>
 										    <th class="std" >RE</th>

@@ -952,4 +952,12 @@ public class PrintDaoImpl implements PrintDao {
 			manager.flush();
 			return freeze.getFreezeId();
 		}
+		private static final String RISKTYPES = "SELECT Risktypeid,risktype,riskcode FROM pfms_risk_type";
+		@Override
+		public List<Object[]> RiskTypes() throws Exception 
+		{
+			Query query=manager.createNativeQuery(RISKTYPES);
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
 }

@@ -697,5 +697,10 @@ public class PrintServiceImpl implements PrintService{
 		freeze.setCreatedDate(sdf1.format(new Date()));
 		return dao.AddFreezeData(freeze);
 	}
-
+	@Override
+	public List<Object[]> RiskTypes() throws Exception 
+	{
+		return dao.RiskTypes();
+		
+	}
 }

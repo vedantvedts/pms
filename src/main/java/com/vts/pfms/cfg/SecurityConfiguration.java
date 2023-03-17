@@ -61,9 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		  .antMatchers("/webjars/**").permitAll()
 		  .antMatchers("/resources/**").permitAll()
 		  .antMatchers("/view/**").permitAll()
-		  //.antMatchers("/view/images/**").permitAll()
 		  .antMatchers("/LoginPage/*").permitAll()
-		  .antMatchers("/download/**").permitAll()
 		  .antMatchers("/pfms-dg/*").permitAll()
 		  .antMatchers("/login").permitAll()
 		  
