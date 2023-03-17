@@ -214,7 +214,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 			if($empno==="" ||EmpName==="" ||Designation===null || ExtNo===null || mobilenumber==="" ||  Division===null ) 
 			{
 				alert('Please Fill All the Mandatory Fields ');
-			}else if(!Email.includes("@")||!DronaEmail.includes("@")||!InternetEmail.includes("@")){
+			}else if(!Email.includes("@")){
 				alert('please use correct email format(E.g. abc1@gmail.com)')
 			} 
 			

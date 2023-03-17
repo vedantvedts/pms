@@ -22,6 +22,7 @@ import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
+import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.ProjectAssign;
@@ -184,7 +185,7 @@ public interface ProjectDao {
 	public List<PfmsInitiationSchedule> IntiationScheduleList(String InitiationId) throws Exception;
 	public PfmsInitiationSchedule MilestoneData(long InitiationId, int MilestoneNo) throws Exception;
 	public long ProjectRequirementAdd(PfmsInititationRequirement pir) throws Exception;
-	public Object RequirementList(String intiationId) throws Exception;
+	public List<Object[]> RequirementList(String intiationId) throws Exception;
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception;
 	public Object[] Requirement(long InitiationReqId) throws Exception;
 	public long RequirementUpdate(PfmsInititationRequirement pir, String initiationReqId) throws Exception;
@@ -194,5 +195,12 @@ public interface ProjectDao {
 	public int deleteRequirement(String initiationReqId)throws Exception;
 	public String getReqId(int i, String initiationId)throws Exception;
 	public int updateReqId(int last, String s, int first, String initiationId)throws Exception;
+	public Object[] reqType(String r) throws Exception;
+	//public long RequirementAttachmentAdd(List<PfmsRequirementAttachment> pfmsRequirementAttachmentList)throws Exception;
+	public long RequirementAttachmentAdd(PfmsRequirementAttachment pra) throws Exception;
+	public List<Object[]> RequirementAttachmentList(String inititationReqId)throws Exception;
+	public Object[] reqAttachDownload(String attachmentid) throws Exception;
+	public long requirementAttachmentDelete(String attachmentid)throws Exception;
+
 	
 }

@@ -3,6 +3,8 @@ package com.vts.pfms.project.service;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
@@ -162,8 +164,8 @@ public interface ProjectService {
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId) throws  Exception;
-	public Object RequirementList(String intiationId) throws Exception;
+	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId,String LabCode) throws  Exception;
+	public List<Object[]> RequirementList(String intiationId) throws Exception;
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception;
 	public Object[] Requirement(long InitiationReqId) throws Exception ;
 	public long RequirementUpdate(PfmsInitiationRequirementDto prd, String userId, String initiationReqId)throws Exception;
@@ -173,4 +175,9 @@ public interface ProjectService {
 	public int deleteRequirement(String initiationReqId) throws Exception;
 	public String getReqId(int i, String initiationId)throws Exception;
 	public int updateReqId(int last, String s, int initial, String initiationId)throws Exception;
+	public Object[] reqType(String r) throws Exception;
+	public long RequirementAttachmentAdd(long initiationReqId, MultipartFile[] fileAttach, String labCode)throws Exception;
+	public List<Object[]> RequirementAttachmentList(String parameter) throws Exception;
+	public Object[] reqAttachDownload(String attachmentid)throws Exception;
+	public long requirementAttachmentDelete(String attachmentid)throws Exception;
 }

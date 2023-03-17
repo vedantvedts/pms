@@ -6,4 +6,6 @@ public interface DownloadDao {
 
 	public Object[] ProjectDataSpecsFileData(String projectdataid) throws Exception;
 
+	public Object[] reqAttachDownload(String attachmentid)throws Exception;
+
 }

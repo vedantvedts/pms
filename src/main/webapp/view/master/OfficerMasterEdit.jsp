@@ -262,7 +262,7 @@ function Delete(myfrm){
 			if(EmpName==="" ||Designation===null || ExtNo==="" || mobilenumber==="" || Email==="" || Division===null ) 
 			{
 				alert('Please Fill All the Mandatory Fields ');
-			} else if(!Email.includes("@")||!DronaEmail.includes("@")||!InternetEmail.includes("@")){
+			} else if(!Email.includes("@")){
 				alert('please use correct email format(E.g. abc1@gmail.com)');
 			} 
 			else if((title==="" && salutation==="")||(title!=="" && salutation!=="")){

@@ -361,12 +361,12 @@ NFormatConvertion nfc=new NFormatConvertion();
 				                		<td class="trup" style="background: #FBC7F7;" >
 				                			TCM
 				                		</td>
-				                		<td rowspan="2">
+				                <!-- 		<td rowspan="2">
 				                			<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-				                		</td>
-				                		<td class="trup" style="background: #FBC7F7;" >
+				                		</td> -->
+				                	<!-- 	<td class="trup" style="background: #FBC7F7;" >
 				                			CCM
-				                		</td>
+				                		</td> -->
 				                			                		
 				                	</tr>			   
 				                	
@@ -409,9 +409,9 @@ NFormatConvertion nfc=new NFormatConvertion();
 							                     <%} %>
 							               <%} %>
 				                		</td>
-				                		<td class="trdown" style="background: #FBC7F7;" >	
+				                		<!-- <td class="trdown" style="background: #FBC7F7;" >	
 				                			
-				                		</td>
+				                		</td> -->
 				                	</tr>             	
 				                </table>			             
 						 	</div>

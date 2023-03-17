@@ -54,4 +54,16 @@ public class DownloadDaoImpl implements DownloadDao{
 		return ProjectDataSpecsFileData;
 		
 	}
+
+	private static final String REQATTACHDOWNLOAD="SELECT a.attachmentid,a.InitiationreqId,a.Filespath, a.AttachmentsName FROM pfms_initiation_req_attach a WHERE a.attachmentid=:attachmentid";
+	@Override
+	public Object[] reqAttachDownload(String attachmentid) throws Exception {
+		// TODO Auto-generated method stub
+		logger.info(new java.util.Date() +"Inside DAO reqAttachDownload ");
+		Query query =manager.createNativeQuery(REQATTACHDOWNLOAD);
+		
+		query.setParameter("attachmentid", attachmentid);
+		Object[]reqAttachDownload=(Object[])query.getSingleResult();
+		return reqAttachDownload;
+	}
 }

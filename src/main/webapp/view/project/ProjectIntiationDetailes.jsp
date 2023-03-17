@@ -493,11 +493,11 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							  </div>
 							   <div class="column a" style="width:23%;border-bottom: 4px solid #394989;">
 							   	<h6>Indicative Duration (Months)</h6>
-							    <p><%if(ProjectDetailes[18]!=null){%>	<%=ProjectDetailes[18] %><%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><%=ProjectDetailes[9]%><%}else if(ProjectDetailes[18]!=null){ %><%=ProjectDetailes[18]%><%}else{ %>-<%} %></p>
 							  </div>
 							  <div class="column b" style="width:23%;border-bottom: 4px solid #394989;">
 							    <h6>Indicative Cost (&#8377;.) </h6> 	
-							    <p><%if(ProjectDetailes[20]!=null &&  Double.parseDouble( ProjectDetailes[20].toString())>0 ){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[20].toString())/100000 )%>&nbsp;&nbsp;Lakhs<%}else{ %>-<%} %></p>
+							    <p><%if(ProjectDetailes[8]!=null && Double.parseDouble(ProjectDetailes[8].toString())>0){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[8].toString())/100000 )%> &nbsp;&nbsp;Lakhs<%} else if(ProjectDetailes[20]!=null &&  Double.parseDouble( ProjectDetailes[20].toString())>0 ){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[20].toString())/100000 )%>&nbsp;&nbsp;Lakhs<%}else{ %>-<%} %></p>
 							  </div>  
  							<div class="column a" style="width:23%;border-bottom: 4px solid #394989;border-bottom-right-radius: 5px">
 							    <h6>P&C Remarks</h6>

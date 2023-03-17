@@ -1,5 +1,7 @@
 package com.vts.pfms.project.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -14,4 +16,7 @@ public class PfmsInitiationRequirementDto {
 	private int ReqCount;
 	private String priority;
 	private String linkedRequirements;
+	private String NeedType;
+	
+
 }

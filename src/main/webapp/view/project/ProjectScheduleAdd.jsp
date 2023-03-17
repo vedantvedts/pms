@@ -246,7 +246,10 @@ var TotalMilestoneMonth="<%=ProjectDetailes[9] %>";
 function MilestoneAdd(){
 	 
 	 var $MilestoneAdd = $("#MilestoneAdd").val(); 
-	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td></tr>");	 FimRowId=$MilestoneAdd+1;
+	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td></tr>");	
+	
+	 
+	 FimRowId=$MilestoneAdd+1;
 	 $("#MilestoneAdd").val($MilestoneAdd+1); 
 	 
 

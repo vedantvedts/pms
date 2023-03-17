@@ -56,6 +56,7 @@ import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
+import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.ProjectAssign;
@@ -303,14 +304,8 @@ public class ProjectServiceImpl implements ProjectService {
 		PfmsInitiationCost pfmsinitiationcost = new PfmsInitiationCost();
 		pfmsinitiationcost.setInitiationId(Long.parseLong(pfmsinitiationcostdto.getInitiationId()));
 		pfmsinitiationcost.setBudgetHeadId(Long.parseLong(pfmsinitiationcostdto.getBudgetHeadId()));
-
-
-		
-		
-		
+	
 		String Item = pfmsinitiationcostdto.getBudgetSancId();
-		
-		System.out.println(pfmsinitiationcostdto.getInitiationId()+ "----"+pfmsinitiationcostdto.getBudgetHeadId()+"-----"+Item);
 
 		String[] temp = null;
 		String ReFe = "";
@@ -467,8 +462,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 		return dao.ProjectScheduleAdd(pfmsinitiationschedulelist, pfmsinitiation);
 	}
-
 	
+
 	@Override
 	public List<Object[]> ProjectIntiationScheduleList(String InitiationId) throws Exception {
 
@@ -665,11 +660,6 @@ public class ProjectServiceImpl implements ProjectService {
 				}
 			}
 		}
-		
-		System.out.println("----------"+dao.ProjectDurationMonth(projectscheduledto.getInitiationId())+"-------------"+projectscheduledto.getInitiationId());
-		
-		
-		
 		
 		return 0L; 
 	}
@@ -874,6 +864,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 		return dao.ProjectInitiationAttachmentAdd(pfmsinitiationattachment, pfmsinitiationattachmentfile);
 	}
+
 
 	@Override
 	public List<Object[]> ProjectIntiationAttachment(String InitiationId) throws Exception {
@@ -1540,6 +1531,44 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	public long RequirementAttachmentAdd(long initiationReqId, MultipartFile[] fileAttach, String labCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		logger.info(new Date() + "Inside SERVICE RequirementAttachmentAdd ");
+		List<PfmsRequirementAttachment>PfmsRequirementAttachmentList=new ArrayList<PfmsRequirementAttachment>();
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+		String Path = labCode + "\\ProjectRequirement\\";
+		long count=0;
+
+		
+		for(int i=0;i<fileAttach.length;i++) {
+			PfmsRequirementAttachment pra=new PfmsRequirementAttachment();
+			pra.setInitiationReqId(initiationReqId);
+			if(!fileAttach[i].isEmpty()) {
+				File theDir = new File(uploadpath + Path);
+				if (!theDir.exists()) {
+					theDir.mkdirs();
+				}
+				pra.setAttachmentsName(fileAttach[i].getOriginalFilename());
+				saveFile(uploadpath+Path,pra.getAttachmentsName(),fileAttach[i]);
+			}else {
+				pra.setAttachmentsName(null);
+			}
+			pra.setFilespath(Path);
+			pra.setIsActive(Integer.parseInt("1"));
+			count =dao.RequirementAttachmentAdd(pra);
+			
+		}
+		
+
+		return count;
+	}
+	
+	
+	@Override
 	public long ProjectDataEditSubmit(PfmsProjectDataDto dto) throws Exception {
 		logger.info(new Date() + "Inside SERVICE ProjectDataSubmit ");
 
@@ -2064,9 +2093,15 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 
 		@Override
-		public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId) throws Exception {
+		public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId, String LabCode) throws Exception {
 			// TODO Auto-generated method stu
 			logger.info(new Date() + "Inside SERVICE ProjectRequirementAdd ");
+			
+			Timestamp instant = Timestamp.from(Instant.now());
+			String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+			
+			String Path = LabCode + "\\ProjectRequirement\\";
+			
 			PfmsInititationRequirement pir=new PfmsInititationRequirement();
 			pir.setInitiationId(prd.getInitiationId());
 			pir.setReqTypeId(prd.getReqTypeId());
@@ -2076,16 +2111,26 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setReqCount(prd.getReqCount());
 			pir.setPriority(prd.getPriority());
 			pir.setLinkedRequirements(prd.getLinkedRequirements());
+			pir.setNeedType(prd.getNeedType());
+			//-----------------------------------------------------------------------//	
+			
+			//--------------------------------------------------------------------//	
 			pir.setCreatedBy(UserId);
 			pir.setCreatedDate(sdf1.format(new Date()));
 			pir.setIsActive(1);
-			
+			File theDir = new File(uploadpath + Path);
+			if (!theDir.exists()) {
+				theDir.mkdirs();
+			}
 			
 			return dao.ProjectRequirementAdd(pir);
 		}
 
+		
+		
+		
 		@Override
-		public Object RequirementList(String intiationId) throws Exception {
+		public List<Object[]> RequirementList(String intiationId) throws Exception {
 			// TODO Auto-generated method stub
 			return dao.RequirementList(intiationId);
 		}
@@ -2113,11 +2158,13 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setRequirementBrief(prd.getRequirementBrief());
 			pir.setRequirementDesc(prd.getRequirementDesc());
 			pir.setPriority(prd.getPriority());
+			pir.setReqCount(prd.getReqCount());
+			pir.setLinkedRequirements(prd.getLinkedRequirements());
 			pir.setRequirementId(prd.getRequirementId());
+			pir.setNeedType(prd.getNeedType());
 			pir.setModifiedBy(userId);
 			pir.setModifiedDate(sdf1.format(new Date()));
 			/* pir.setIsActive(1); */
-			
 			return dao.RequirementUpdate(pir,initiationReqId);
 		
 		}
@@ -2158,5 +2205,29 @@ public class ProjectServiceImpl implements ProjectService {
 			return dao.updateReqId(last,s,first,initiationId);
 		}
 
+		@Override
+		public Object[] reqType(String r) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.reqType(r);
+		}
+
+		@Override
+		public List<Object[]> RequirementAttachmentList(String inititationReqId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.RequirementAttachmentList(inititationReqId);
+		}
+
+	
+		@Override
+		public Object[] reqAttachDownload(String attachmentid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.reqAttachDownload( attachmentid);
+		}
+
+		@Override
+		public long requirementAttachmentDelete(String attachmentid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.requirementAttachmentDelete(attachmentid);
+		}
 		
 }

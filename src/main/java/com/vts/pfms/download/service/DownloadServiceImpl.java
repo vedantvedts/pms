@@ -29,5 +29,11 @@ public class DownloadServiceImpl implements DownloadService
 	{
 		return dao.ProjectDataSpecsFileData(projectdataid);
 	}
+
+	@Override
+	public Object[] reqAttachDownload(String attachmentid) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.reqAttachDownload( attachmentid);
+	}
 	
 }

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +17,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "pfms_initiation_req")
-
 public class PfmsInititationRequirement implements Serializable {
 
 	@Id
@@ -29,6 +30,9 @@ public class PfmsInititationRequirement implements Serializable {
 	private int ReqCount;
 	private String priority;
 	private String LinkedRequirements;
+	
+	private String NeedType;
+	
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;
