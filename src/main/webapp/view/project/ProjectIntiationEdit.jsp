@@ -198,7 +198,7 @@ String LoginType = (String) session.getAttribute("LoginType");
                      		<div class="col-md-3 ">
 					        	<div class="form-group">
 					            	<label class="control-label">PDD</label>
-									    <select class="custom-select" id="PDD" name="PDD" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> disabled <%} %>  >
+									    <select class="custom-select" id="PDD" name="PDD" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")   ) {%> disabled <%} %>  >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <% for (Object[] obj : EmployeeList) {%>
 											<option value="<%=obj[0]%>" <%if(ProjectEditData[1].toString().equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1]%> (<%=obj[2] %>)</option>
@@ -213,21 +213,21 @@ String LoginType = (String) session.getAttribute("LoginType");
 					         <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Duration (Months)</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
+		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration"  <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %>  <% if (ProjectEditData[19]!=null){ %>  value="<%=ProjectEditData[19]%>" <%}else{ %> value="" <%} %>required>
 		                        </div>
 		                    </div>
                      
                      		<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Cost (&#8377;)</label>
-		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=ProjectEditData[20]%>" <%}else{ %> value="" <%} %>>
+		  								<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly<%} %> <% if (ProjectEditData[20]!=null){ %>  value="<%=ProjectEditData[20]%>" <%}else{ %> value="" <%} %>>
 		                        </div>
 		                    </div>
                      
 		                     <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">P&C Remarks</label>
-										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E")) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=ProjectEditData[21]%>" <%}else{ %> value="" <%} %> required>
+										<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" <%if( !LoginType.equalsIgnoreCase("Z") && !LoginType.equalsIgnoreCase("A") && !LoginType.equalsIgnoreCase("E") || !LoginType.equalsIgnoreCase("C")|| !LoginType.equalsIgnoreCase("I")  ) {%> readonly <%} %> <% if (ProjectEditData[21]!=null){ %>  value="<%=ProjectEditData[21]%>" <%}else{ %> value="" <%} %> required>
 		                        </div>
 		                    </div> 
 		                    

@@ -8,6 +8,7 @@ import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
+import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
 
 public interface ActionDao {
@@ -23,10 +24,10 @@ public interface ActionDao {
 	public long ActionAttachInsert(ActionAttachment main)throws Exception;
 	public ActionAttachment ActionAttachmentDownload(String achmentid) throws Exception;
 	public int ActionSubDelete(String id) throws Exception;
-	public int AssignUpdate(ActionAssign assign) throws Exception;
+	public long AssignUpdate(ActionAssign assign) throws Exception;
 	public int MainForward(ActionAssign assign) throws Exception;
 	public List<Object[]> ForwardList(String EmpId) throws Exception;
-	public int MainSendBack(ActionAssign assign) throws Exception;
+	public long MainSendBack(ActionAssign assign) throws Exception;
 	public List<Object[]> StatusList(String EmpId,String fdate, String tdate) throws Exception;
 	public List<Object[]> ActionList(String EmpId) throws Exception;
 	public List<Object[]> CommitteeActionList(String EmpId) throws Exception;
@@ -92,4 +93,9 @@ public interface ActionDao {
 	public List<Object[]> getDecOrRecSought(String scheduleid , String type)throws Exception;
 	public List<Object[]> GetActionList(String empid)throws Exception;
 	public List<Object[]> ActionMonitoring(String ProjectId, String Status) throws Exception;
+	public List<Object[]> GetActionListForFevorite(Date fromdate , Date todate , String projectid , String  empid)throws Exception;
+	public Long AddFavouriteList(FavouriteList fav) throws Exception;	
+	public List<Object[]> GetFavouriteList(String empid)throws Exception;
+	public ActionAssign getActionAssign(String actionassignId) throws Exception;
+	
  }

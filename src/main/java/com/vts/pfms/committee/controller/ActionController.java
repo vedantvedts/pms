@@ -91,10 +91,10 @@ public class ActionController {
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
 	FormatConverter fc=new FormatConverter();
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
-	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
-		
+	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
+		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ActionLaunch.htm "+UserId);		
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -122,13 +122,14 @@ public class ActionController {
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("LabCode", LabCode);
 			
-		
+			return "action/ActionLaunch";
 		}
 		catch (Exception e) {
-				e.printStackTrace();
-				logger.error(new Date() +" Inside ActionLaunch.htm "+UserId, e);
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ActionLaunch.htm "+UserId, e);
+			return "static/Error";
 		}
-		return "action/ActionLaunch";
+		
 	}
 
 	@RequestMapping(value = "ActionStatus.htm" , method = RequestMethod.POST)
@@ -303,7 +304,7 @@ public class ActionController {
 			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			assign.setAssignorLabCode(LabCode);
 			assign.setRevision(0);
-			assign.setActionFlag("N");		
+//			assign.setActionFlag("N");		
 			assign.setActionStatus("A");
 			assign.setCreatedBy(UserId);
 			assign.setIsActive(1);
@@ -347,6 +348,7 @@ public class ActionController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ActionSubLaunch.htm "+UserId);		
 		try {		 
+			
 			String AssignerName=req.getParameter("Assigner");
 			req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") ,req.getParameter("ActionAssignid")).get(0));
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignid")));
@@ -375,8 +377,7 @@ public class ActionController {
 		try {
 			
 			
-			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
-			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+			
 			ActionSubDto subDto=new ActionSubDto();
 			subDto.setLabCode(labCode);
 			subDto.setFileName(req.getParameter("FileName"));
@@ -395,7 +396,8 @@ public class ActionController {
 				redir.addAttribute("resultfail", "Action Update Unsuccessful");
 			}
 
-		
+			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 		
 		}
 		catch (Exception e) {
@@ -431,12 +433,11 @@ public class ActionController {
 		     
 		     
 		     req.setAttribute("Assignee", data);
-		     req.setAttribute("SubList", service.SubList(data[19].toString()));
+		     req.setAttribute("SubList", service.SubList(data[18].toString()));
 		     req.setAttribute("AssignerName", AssignerName);
-			 req.setAttribute("LinkList", service.SubList(""));
-			 req.setAttribute("actiono",data[10].toString() );
+			 req.setAttribute("actiono",data[9].toString());
 			 req.setAttribute("filesize",file_size);
-			 List<Object[]> AssigneeDetails=service.AssigneeDetails(data[19].toString());
+			 List<Object[]> AssigneeDetails=service.AssigneeDetails(data[18].toString());
 			 
 			 if(AssigneeDetails.size()>0) 
 			 {
@@ -516,56 +517,54 @@ public class ActionController {
 			}
 	 }
 	 
-	 @RequestMapping(value = "ActionSubDelete.htm", method = RequestMethod.POST)
-		public String TCCMemberDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	@RequestMapping(value = "ActionSubDelete.htm", method = RequestMethod.POST)
+	public String TCCMemberDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 
-		 String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside ActionSubDelete.htm "+UserId);		
-			try { 
-			ActionAttachment attach=service.ActionAttachmentDownload(req.getParameter("ActionAttachid" ));	
-			int count = service.ActionSubDelete(req.getParameter("ActionSubId"), UserId);
-			
-			File my_file=null;
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ActionSubDelete.htm "+UserId);		
+		try { 
+			ActionAttachment attach = null;
+			if(req.getParameter("ActionAttachid" )!=null) {
+				attach=service.ActionAttachmentDownload(req.getParameter("ActionAttachid" ));	
+				File my_file=null;
 			       
-			my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
-		       
-			if(my_file.exists()) {
-				my_file.delete();
+				my_file = new File(uploadpath+attach.getAttachFilePath()+File.separator+attach.getAttachName()); 
+				       
+				if(my_file.exists()) {
+					my_file.delete();
+				}
 			}
-			
+			int count = service.ActionSubDelete(req.getParameter("ActionSubId"), UserId);	
 			if (count > 0) {
 				redir.addAttribute("result", "Action Sub Deleted Successfully");
 			} else {
 				redir.addAttribute("resultfail", "Action Sub Delete Unsuccessful");
-
 			}
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
-			}
-			catch (Exception e) {
-					e.printStackTrace();
-					logger.error(new Date() +" Inside ActionSubDelete.htm "+UserId, e);
-			}
-
 			return "redirect:/ActionSubLaunchRedirect.htm";
-
+		}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ActionSubDelete.htm "+UserId, e);
+				return "static/Error";
+		}
 		}
 	 
-	 @RequestMapping(value = "ActionForward.htm", method = RequestMethod.POST)
+	 	@RequestMapping(value = "ActionForward.htm", method = RequestMethod.POST)
 		public String ActionForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionForward.htm "+UserId);		
-			try { 
-			int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
-
-			if (count > 0) {
-				redir.addAttribute("result", "Action Forwarded Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Action Forward Unsuccessful");
-
-			}
-			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
-			redir.addFlashAttribute("Type", req.getParameter("Type"));
+			try {
+				int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
+	
+				if (count > 0) {
+					redir.addAttribute("result", "Action Forwarded Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Action Forward Unsuccessful");
+				}
+				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+				redir.addFlashAttribute("Type", req.getParameter("Type"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -594,11 +593,11 @@ public class ActionController {
 						if(type.equalsIgnoreCase("A")) {
 							req.setAttribute("ForwardList", service.ForwardList(EmpId));
 						}else if (type.equalsIgnoreCase("NB")) {
-							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("N") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
+							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[6].toString().equalsIgnoreCase("A") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
 						}
 						req.setAttribute("type", type);
 					}else{
-						req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("F")).collect(Collectors.toList()));
+						req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[6].toString().equalsIgnoreCase("F")).collect(Collectors.toList()));
 						req.setAttribute("type", "F");
 					}
 
@@ -621,7 +620,7 @@ public class ActionController {
 			req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId")).get(0));
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 			req.setAttribute("AssigneeName", AssigneeName);
-			req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
+			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 			req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
 			}
 			catch (Exception e) {
@@ -638,7 +637,7 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);	
 			String back = req.getParameter("BACK");
-			int count=0;
+			long count=0;
 			try { 
 				
 				 count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
@@ -688,7 +687,7 @@ public class ActionController {
 			try { 
 				
 				String levelcount = req.getParameter("LevelCount");
-				int	count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
+				long count = service.ActionClosed(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId") ,levelcount);
 				
 			 
 			if (count > 0) {
@@ -710,10 +709,9 @@ public class ActionController {
 		}
 	 
 	 
-	 @RequestMapping(value = "ActionStatusList.htm")
-		public String ActionStatusList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-				throws Exception {
-		 
+	 	@RequestMapping(value = "ActionStatusList.htm")
+		public String ActionStatusList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	 	{
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionStatusList.htm "+UserId);		
 			try {
@@ -736,7 +734,6 @@ public class ActionController {
 						}
 					}else
 					{
-						
 						fdate=sdf1.format(sdf.parse(fdate));		    
 					}
 					
@@ -752,17 +749,16 @@ public class ActionController {
 					req.setAttribute("tdate",tdate);
 					req.setAttribute("fdate",fdate);
 					req.setAttribute("StatusList", service.StatusList(EmpId,fdate,tdate));
-			}
-			catch (Exception e) {
+			}catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionStatusList.htm "+UserId, e);
 			}
 			return "action/ActionStatusList";
 		}
 	 
-	 @RequestMapping(value = "ActionList.htm", method = RequestMethod.GET)
-		public String ActionList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-				throws Exception {
+	@RequestMapping(value = "ActionList.htm", method = RequestMethod.GET)
+	public String ActionList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+	{
 		 
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ActionList.htm "+UserId);		
@@ -885,7 +881,7 @@ public class ActionController {
 			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			assign.setAssignorLabCode(LabCode);
 			assign.setRevision(0);
-			assign.setActionFlag("N");		
+//			assign.setActionFlag("N");		
 			assign.setActionStatus("A");
 			assign.setCreatedBy(UserId);
 			assign.setIsActive(1);
@@ -919,16 +915,7 @@ public class ActionController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ScheduleActionList.htm "+UserId);		
 			try {
-			
-			
-			
-			try {
-			ItemDescriptionSearchLedger =   service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
-			}catch (Exception e) {
-				
-			}
-			
-			
+				ItemDescriptionSearchLedger =   service.ScheduleActionList(req.getParameter("ScheduleMinutesId"));
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -1219,40 +1206,37 @@ public class ActionController {
 				}
 				
 				
-				 @RequestMapping(value = "ExtendPdc.htm", method = RequestMethod.POST)
-					public String ExtendPdc(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+				@RequestMapping(value = "ExtendPdc.htm", method = RequestMethod.POST)
+				public String ExtendPdc(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+				{
 
 					 	String UserId = (String) ses.getAttribute("Username");
 						logger.info(new Date() +"Inside ExtendPdc.htm "+UserId);		
 						try { 
 
-						int count = service.ActionExtendPdc(req.getParameter("ActionMainId"),req.getParameter("ExtendPdc"), UserId ,req.getParameter("ActionAssignId"));
-
-						if (count > 0) {
-							redir.addAttribute("result", "Action PDC Extended Successfully");
-						} else {
-							redir.addAttribute("resultfail", "Action PDC Extend Unsuccessful");
-
-						}
-						String fwd=req.getParameter("froward");
-						if(fwd!=null && fwd.equalsIgnoreCase("Y")) {
-							return "redirect:/ActionForwardList.htm";
-						}
-						
-						
+							int count = service.ActionExtendPdc(req.getParameter("ActionMainId"),req.getParameter("ExtendPdc"), UserId ,req.getParameter("ActionAssignId"));
+	
+							if (count > 0) {
+								redir.addAttribute("result", "Action PDC Extended Successfully");
+							} else {
+								redir.addAttribute("resultfail", "Action PDC Extend Unsuccessful");
+	
+							}
+							String fwd=req.getParameter("froward");
+							if(fwd!=null && fwd.equalsIgnoreCase("Y")) {
+								return "redirect:/ActionForwardList.htm";
+							}
 						}
 						catch (Exception e) {
 								e.printStackTrace();
 								logger.error(new Date() +" Inside ExtendPdc.htm "+UserId, e);
 						}
-					
-
 						return "redirect:/ActionLaunch.htm";
-					}
+				}
 				 
 					@RequestMapping(value = "CloseAction.htm", method = RequestMethod.POST)
-					public String CloseAction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
-							throws Exception {
+					public String CloseAction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
+					{
 						String UserId =(String)ses.getAttribute("Username");
 						logger.info(new Date() +"Inside CloseAction.htm "+UserId);		
 						try {
@@ -1261,6 +1245,7 @@ public class ActionController {
 						req.setAttribute("ActionAssignId",req.getParameter("ActionAssignId"));
 						req.setAttribute("Assignee", service.AssigneeData(req.getParameter("ActionMainId") , req.getParameter("ActionAssignId")).get(0));
 						req.setAttribute("actionslist", service.ActionSubLevelsList(req.getParameter("ActionAssignId")));
+						req.setAttribute("back", req.getParameter("back"));
 						}
 						catch (Exception e) {
 							e.printStackTrace();
@@ -1271,24 +1256,17 @@ public class ActionController {
 					} 	
 		 
 					@RequestMapping(value = "ActionSelfList.htm", method = {RequestMethod.GET,RequestMethod.POST})
-					public String ActionSelf(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
-						
+					public String ActionSelf(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+					{	
 						String UserId = (String) ses.getAttribute("Username");
 						logger.info(new Date() +"Inside ActionSelfList.htm "+UserId);		
 						try {
-						String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-						
-						
-
-						req.setAttribute("AssignedList", service.ActionSelfList(EmpId));
-						
-						}
-						catch (Exception e) {
+							String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+							req.setAttribute("AssignedList", service.ActionSelfList(EmpId));
+						}catch(Exception e){
 								e.printStackTrace();
 								logger.error(new Date() +" Inside ActionSelfList.htm "+UserId, e);
 						}
-						
-
 						return "action/ActionSelf";
 					}	
 					
@@ -1330,7 +1308,7 @@ public class ActionController {
 								ProjectId="A";
 							}
 
-							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") )                             
+							if(Logintype.equalsIgnoreCase("Y") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") )                             
 							{
 								req.setAttribute("StatusList", service.ActionWiseAllReport(ActionType,"0",ProjectId));
 							}
@@ -1499,7 +1477,7 @@ public class ActionController {
 			assign.setAssigneeLabCode(req.getParameter("AssigneeLabCode"));
 			assign.setAssignorLabCode(LabCode);
 			assign.setRevision(0);
-			assign.setActionFlag("N");		
+//			assign.setActionFlag("N");		
 			assign.setActionStatus("A");
 			assign.setCreatedBy(UserId);
 			assign.setPDCOrg(req.getParameter("DateCompletion"));
@@ -2542,11 +2520,14 @@ public class ActionController {
 			logger.info(new Date() +"Inside ToDoReviews.htm "+UserId);
 	 		try {
 	 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	 			String Logintype=(String)ses.getAttribute("LoginType");
+	 			String LabCode=(String)ses.getAttribute("labcode");
 				List<Object[]> actionlist = service.GetActionList(EmpId);
 				
 				req.setAttribute("actionassigneelist", actionlist.stream().filter(e->  e[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
 				req.setAttribute("actionassignorlist", actionlist.stream().filter(e->  e[12].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
-			
+				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode)); 
+				req.setAttribute("FavouriteList", service.GetFavouriteList(EmpId));
 	 		}catch(Exception e){
 				e.printStackTrace();
 				logger.error(new Date() +" Inside ToDoReviews.htm "+UserId, e);
@@ -2589,6 +2570,53 @@ public class ActionController {
 				logger.error(new Date() +" Inside ActionMonitoring.htm "+UserId, e);
 				return "static/Error";
 			}
-			
+
 		}
+	 	
+	 	@RequestMapping(value = "GetActionListForFavourite.htm", method = RequestMethod.GET)
+		public @ResponseBody String ActionListForFavourite(HttpServletRequest req, HttpSession ses) throws Exception 
+		{
+			Gson json = new Gson();
+			List<Object[]> list=null;
+			String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside GetActionListForFavourite.htm "+UserId);		
+			try {
+				
+				String fromdate = req.getParameter("Fromdate");
+				String todate = req.getParameter("Todate");
+				String projectid = req.getParameter("Projectid");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				
+				list = service.GetActionListForFevorite(fromdate,todate,projectid,EmpId);
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside GetActionListForFavourite.htm "+UserId, e);
+				list=new ArrayList<>();
+			}
+			return json.toJson(list);
+		}
+	 	
+	 	@RequestMapping(value = "AddFavouriteList.htm", method = { RequestMethod.GET , RequestMethod.POST})
+		public  String AddFavouriteList(HttpServletRequest req, HttpSession ses , RedirectAttributes redir) throws Exception 
+		{
+	 		String UserId = (String) ses.getAttribute("Username");
+	 		logger.info(new Date() +"Inside GetActionListForFavourite.htm "+UserId);		
+			try {
+				String[] asiignid = req.getParameterValues("favourite");
+				
+				Long EmpId = (Long) ses.getAttribute("EmpId");
+				long count  = service.AddFavouriteList(asiignid , EmpId , UserId);
+				if (count > 0) {
+					redir.addAttribute("result", "Favourite List Add Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Favourite List Add Unsuccessful");
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside AddFavouriteList.htm "+UserId, e);
+			}
+			return "redirect:/ToDoReviews.htm";
+		}
+	 	
+	 	
 }

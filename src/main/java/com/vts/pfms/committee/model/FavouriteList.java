@@ -1,4 +1,7 @@
-package com.vts.pfms.docs.model;
+package com.vts.pfms.committee.model;
+
+
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,23 +12,20 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "pfms_doc_content")
-public class PfmsDocContent {
-	
+@Table(name="Pfms_Favourite_List")
+public class FavouriteList {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long TempContentId;
-	private long PfmsDocId;
-	private long TemplateItemId;
-	private String ItemContent;
-	private String IsDependent;
-	private int IsActive;
+	private Long FavouriteId;
+	private Long EmpId;
+	private Long ActionAssignId;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
+	private int IsActive;
 }

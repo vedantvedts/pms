@@ -1,4 +1,4 @@
-<%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%>
+<%-- <%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%> --%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -52,7 +52,7 @@
 </style>
 </head>
 <body>
-
+<%-- 
 <%
 	Object[] doc = (Object[])request.getAttribute("docdata");
 	List<PfmsDocTemplate> docitemslist=(List<PfmsDocTemplate>)request.getAttribute("doctemplatelist");
@@ -102,6 +102,6 @@
 			}%>
 	</table>
 </div>
-
+ --%>
 </body>
 </html>

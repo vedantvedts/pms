@@ -204,12 +204,12 @@ h6{
 																		<td class="center"><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																			   <button  type="submit" class="btn btn-outline-info"   ><%=obj[10] %></button>
-																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
+																			   <button  type="submit" class="btn btn-outline-info"   ><%=obj[9] %></button>
+																			   <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
-																	           <input type="hidden" name="ActionNo" value="<%=obj[10]%>"/>
-																	           <input type="hidden" name="ActionAssignId" value="<%=obj[13]%>"/>
+																	           <input type="hidden" name="ActionNo" value="<%=obj[9]%>"/>
+																	           <input type="hidden" name="ActionAssignId" value="<%=obj[12]%>"/>
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			</form> 
                                                                         </td>
@@ -217,29 +217,29 @@ h6{
 																		<td><%=sdf.format(obj[3])%></td>
 																		<td><%=sdf.format(obj[4])%></td>																		
 																		<td><%=obj[1]%>, <%=obj[2]%></td>
-																	  	<td><%=obj[8]%>, <%=obj[9]%></td>
+																	  	<td><%=obj[7]%>, <%=obj[8]%></td>
 																		<td>
-																			<%if(obj[7].toString().equals("N"))
+																			<%if(obj[6]!=null && obj[6].toString().equals("A"))
 																			{%>
 																				Assigned
 																			<%}
-																			else if(obj[7].toString().equals("F"))
+																			else if(obj[6]!=null && obj[6].toString().equals("F"))
 																			{%>
 																				Forwarded
 																			<% }
-																			else if(obj[7].toString().equals("B"))
+																			else if(obj[6]!=null && obj[6].toString().equals("B"))
 																			{%>
 																				Sent Back
 																			<%}
-																			else if(obj[7].toString().equals("Y"))
+																			else if(obj[6]!=null && obj[6].toString().equals("C"))
 																			{%>
 																				Completed
 																			<%}	%>												
 																		</td>
-																		<td style="width:8% !important; "><%if(obj[12]!=null){ %>
+																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															            <%=obj[12]%>
+															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															            <%=obj[11]%>
 															            </div> 
 															            </div> <%}else{ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
@@ -249,7 +249,7 @@ h6{
 															            </div> <%} %></td>		
 															            <td>  
 															            <form action="###" method="POST" >
-															            	<button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[13]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
+															            	<button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[12]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
 																			<div class="cc-rockmenu">
 																				 <div class="rolling">	
 																					   <figure class="rolling_icon">
@@ -329,31 +329,13 @@ $('#tdate').daterangepicker({
 function Prints(myfrm){
 	
 	 var fields = $("input[name='btSelectItem']").serializeArray();
-
-	 
-	  if (fields.length === 0){
+	 	 if (fields.length === 0){
 		  myalert();
-	 event.preventDefault();
-	return false;
-	}
-	 
-	
-	
-		 
-	
+			 event.preventDefault();
+				return false;
+		}
 		  return true;
-	 
-			
-	}
-
-/* $(document).ready(function(){
-	
-	$("#table").DataTable({
-		"pageLength": 10
-	})
-})
- */
-
+}
 </script>
 
 

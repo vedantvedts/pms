@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>PMS MAIN</title>
+<title>PMS</title>
 
 <jsp:include page="../static/header.jsp"></jsp:include>
 
@@ -469,7 +469,7 @@
 		margin: 0px 10px !important;
 	}
 	
-	.cashoutgotable tr td{
+	.cashoutgotable tr {
 		font-size: 13px !important;
 		font-weight: 600 !important;
 	}
@@ -513,28 +513,24 @@
 <body>
 <%
 
-/* List<Object[]> loginTypeList=(List<Object[]>)request.getAttribute("loginTypeList");
-String LoginAs=(String)session.getAttribute("LoginAs");
-Object[] DashboardDemandCount=(Object[])request.getAttribute("DashboardDemandCount"); */
-
 String Username =(String)session.getAttribute("Username");  
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
-List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist");
+/* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
 Integer selfremindercount=(Integer)request.getAttribute("selfremindercount");  
 Integer noticeElib= Integer.parseInt(request.getAttribute("noticeEligibility").toString());
-List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList");
+/* List<Object[]> noticeList =(List<Object[]>)request.getAttribute("NotiecList"); */
 Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
 
-Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount");
+/* Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount"); */
 
 List<ProjectSanctionDetailsMaster>  budgetlist=(List<ProjectSanctionDetailsMaster>)request.getAttribute("budgetlist");
 String empNo=(String)session.getAttribute("empNo"); 
 String ibasUri=(String)request.getAttribute("ibasUri");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectMeetingCount=(List<Object[]>)request.getAttribute("ProjectMeetingCount");
-Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount");
+/* Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount"); */
 List<Object[]> ganttchartlist=(List<Object[]>)request.getAttribute("ganttchartlist");
 String interval =(String)request.getAttribute("interval");
 String error = (String) request.getAttribute("errorMsg");
@@ -566,12 +562,12 @@ String logintype="U";
 String View="";
 if(logintype!=null ){
 	logintype=(String)request.getAttribute("logintype"); 
-	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") ){
+	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") || logintype.equalsIgnoreCase("C") || logintype.equalsIgnoreCase("I") ){
 		logintype="A";
 	}
 }
 
-String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K"}  ;
+String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K","C","I"}  ;
 
 int ProjectCount = 0;
 
@@ -583,19 +579,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 <%
  String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	
  if(ses1!=null){
-	%>	
-	
-<center><div class="alert alert-danger" role="alert"><%=ses1 %></div></center>
-	
-	<%}
+%>	
+<div align="center"><div class="alert alert-danger" role="alert"><%=ses1 %></div></div>
+<%}
  
- if(ses!=null){ %>
-	
-<center><div class="alert alert-success" role="alert" ><%=ses %></div></center>
-                    
-   <%} %>
+if(ses!=null){ %>
+<div align="center"><div class="alert alert-success" role="alert" ><%=ses %></div></div>
+<%} %>
 
 
 
@@ -603,7 +594,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 
 <!-------------------- Main Row------------------------------------ ------------>
-		<div class="row">
+		<div class="row" style="margin-bottom: -20px;">
 	
 <!-------------------- Main row col-md-9------------------------------------ -->			
 			<div class="col-md-9" >
@@ -710,10 +701,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 																			
 												<%count++; }} }}%>
 								
-												<%if(count==0) {%>
-												
-													<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
-													
+												<%if(count==0) { %>
+													<ul>
+														<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
+													</ul>
 												<%} %>
 											
 											</div>
@@ -804,7 +795,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 					 	
 				<!-- Below 2 divs are for overall tab -->
 					 	
-				<div style="display: none" class="overallheader">
+				<div style="display: none" class="overallheader" id="changes-tab">
 					
 			          	<div class="btn-group" role="group" aria-label="Basic example" style="margin-bottom: 12px">
 			          	<button type="button" class="btn " style="background-color: #145374;color: white;font-size: 13px" onclick="ChangesForm('A')" ><i class="fa fa-arrows-alt" aria-hidden="true"></i> Changes</button>
@@ -1009,9 +1000,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 					 
 					 </div>
 					 
-					 <div style="display: none" class="overallheader">
-						<h2 style="color: transparent">.</h2>
-					</div>
+					 
 
 			      </div>
 			      
@@ -1156,7 +1145,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 					    chart.startAngle(90);
 					    
 					    // set the chart title
-					    <%-- chart.title('<%=obj.getProjectCode()%> (SANC : <%=obj.getSancAmt()%>L)'); --%>
 
 					    // set the container id
 					    chart.container('container<%=obj.getSno()%>');
@@ -1300,18 +1288,14 @@ String IsDG = (String)request.getAttribute("IsDG");
 <!-------------------- Nested row Gantt Chart start  removal------------------------------------------ -->		
 	      
 	      
-			      <div class="col-md-12">
-			      
+			    <div class="col-md-12">
+			    	
 			      	<%if(ProjectList!=null){ %>
-	
-						<div class="card" style="background: transparent;display: none" id="ganttchart">
+						<div style="background: transparent;display: none" id="ganttchart" >
+						<div class="card"  >
 				
 							<div id="carouselExampleControls2" class="" data-ride=""  >
-							
-							
 								<div class="carousel-inner">
-								
-			                      
 								 <%if(ProjectList!=null) {for(Object[] obj1 : ProjectList){ 
 								 if(!"0".equalsIgnoreCase(obj1[0].toString())){
 								 %>
@@ -1351,27 +1335,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 								</div> 
 			
 							</div>
+						</div>	
 							
-							
-					<%if(ProjectList!=null){for(Object[] obj1 : ProjectList){%> 
+					<%if(ProjectList!=null){
+						for(Object[] obj1 : ProjectList){%> 
 					
 						<script>
-								      
-
-						anychart.onDocumentReady(function () {
-
-
+							anychart.onDocumentReady(function () {
 								    	  var data = [
-								    		  
-								    		  
-								    		  
 								    		  <%
-								    		  
-								    		  
 								    		  for(Object[] obj : ganttchartlist){
 								    			  if(obj1[0].toString().equalsIgnoreCase(obj[1].toString())){
 								    			  %>	
-								    		  
 								    		  {
 								    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
@@ -1427,10 +1402,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 									          "Progress: {%progress}<br>" 
 									          
 									        ); 
-									        
-									        
-								        	 
-								        	 
 								        	 
 								        /* Hover */
 								        
@@ -1517,12 +1488,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 								    </script>	
 							
-							
-						<%} } %>
+						<% } } %>
 
-			<%} %> 
-
-			</div>
+					<%} %> 
+		
+				</div>
 			
 			
 				<!------------------------------------ Upcoming Schedules Start ------------------------------------------------------------------ -->
@@ -1613,8 +1583,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<td ><span style="font-size :15px;font-weight: bold; ">Action Item</span></td>
 												<td ><span style="font-size :15px;font-weight: bold;">PDC </span></td>
 												<td ><span style="font-size :15px;font-weight: bold;  ">Assigned By</span></td>
-												
-												
 											</tr>
 										</thead>
 										
@@ -1633,10 +1601,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
 												<td style="text-align:justify; "><%=obj[2] %></td>
 												<td style="width:100px"><%=sdf.format(obj[4]) %></td>
-												<td><%=obj[12] %></td>
+												<td><%=obj[12] %>
 
-												<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
-												
+													<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
 														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
 		                                                <input type="hidden" name="ActionLinkId" value="<%=obj[15]%>"/>
 														<input type="hidden" name="ActionNo" value="<%=obj[1]%>"/>
@@ -1644,12 +1611,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 												<input type="hidden" name="fracasassignid" value="<%=obj[0]%>"/>
 		 												<input type="hidden" name="ActionAssignid" value="<%=obj[16]%>"/>
 		 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		 												
-		 												
+													</form> 
 												
-												</form> 
-												
-												
+												</td>
 												
 											</tr>
 											
@@ -1710,7 +1674,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 	
 	
 <!------- Main row col-md-3 Start -------------------->
-		  <div class="col-md-3" >
+		 <div class="col-md-3" >
 		  	
 		  	
 		 <!------- Toggle Button  --------------------> 	
@@ -1868,9 +1832,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 															            <td><button type="button" onclick="submitForm('E','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; ">0 </button></td>					
 													       			</tr> 
 												       	
-													<%}%>
+															<%}%>
 				
-													<%} %>
+														<%} %>
 													
 													<%} %>
 				
@@ -1962,7 +1926,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 													
 																 <%formcount++;}} }else{%>
 																 	
-																 	<br>
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
 																 
@@ -2035,7 +1998,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 													
 																 <%formcount1++;} }}else{%>
 																 	
-																 	<br>
 																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
 																 	</li>
 																 
@@ -2250,9 +2212,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 <!-- ****************************************************************** OVERALL MODULE ********************************************************************************* -->
 
-			<div class="container-fluid" style="display: none" id="overalltable">
-			
-
+	<div class="container-fluid" style="display: none" id="overalltable">
 		<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
 		  <div class="card detailscard">
 		    <div class="card-body">
@@ -2604,7 +2564,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">Sanc</span></td>
+												<td style="width:2%"></td>
+												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB </span></td>
@@ -2655,6 +2616,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 													</div>
 												
 												</td>
+												<td><a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" > <img src="view/images/silde.png" style="width: 25px;"/></a></td>
 												<td style="font-size: 13px;font-weight: 600; "><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
 												<td style="font-size: 13px;font-weight: 600; <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>color:maroon<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
 												<td class="custom-td">
@@ -2790,22 +2752,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<td class="custom-td">
 													<%
 													BigInteger number = new BigInteger(obj[43].toString());
+													BigInteger total = new BigInteger("0");
 													if(number.compareTo(new BigInteger("0")) >0){ %>
 													<div class="row">
 														<div class="col-md-10">
-															<div class="progress" onclick="overallfinance()">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> " ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> " ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> " ></div>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))); %>
+															<%total = total.add(new BigInteger(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))); %>
+															<div class="progress" onclick="overallfinance()" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[35].toString() ))))%>
+																																		<br>OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[37].toString() ))))%> 
+																																		<br>DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[39].toString() ))))%> 
+																																		<br>Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[41].toString() ))))%> 
+																																		<br><b>Total : &#8377; <%=nfc.rupeeFormat(total.toString())%> </b>
+																																																		">
+
+															  	<div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%"  > </div>
+															 	<div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" > </div>
+															  	<div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%"  > </div>
+															  	<div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" > </div>
+															  	
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																	<span class="health-circle" style="<%if(Integer.parseInt(obj[42].toString())<=25){%> background-color:red<%}%>
+														<div class="col-md-1" style="padding-left: 0px !important;">
+																	<span class="health-circle"  style="cursor: pointer;<%if(Integer.parseInt(obj[42].toString())<=25){%> background-color:red<%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
 																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>
-																	"><%=obj[42] %></span>
+																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
+																	><%=obj[42] %></span>
 														</div>
 														<div class="col-md-1" style="padding-left: 0px !important">
 														</div>
@@ -2906,7 +2880,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 				<div class="modal-body">
 						
 					<%
-					 if(!IsDG.equalsIgnoreCase("Yes") ) {%>	
+					 if(!IsDG.equalsIgnoreCase("Yes") ) { %>	
 						
 					<div class="row">
 						<div style="text-align: left">
@@ -2930,7 +2904,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 								<p style="margin-bottom: 0px !important;margin-left:10px">Project Health (Completed %)</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
+									<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
 						           	<li><span class="modal-span" style="color:#EE5007;">&#8226;</span><span class="modal-text">25-50%</span></li>
 						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">50-75%</span></li>
 						           	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">75-100%</span></li>
@@ -2987,7 +2961,17 @@ String IsDG = (String)request.getAttribute("IsDG");
 					            </ul>
 							</div>
 					</div>
-				
+					<div class="row">
+						<div style="text-align: left">
+								<p style="margin-bottom: 0px !important;margin-left:10px">Cash Out Go</p>
+								<hr class="modal-hr">
+								<ul class="modal-list">
+						          	<li><span class="modal-span" style="color:#5C192F;">&#8226;</span><span class="modal-text">Capital</span></li>
+						           	<li><span class="modal-span" style="color:#466136;">&#8226;</span><span class="modal-text">Revenue</span></li>
+						           	<li><span class="modal-span" style="color:#591A69;">&#8226;</span><span class="modal-text">Others</span></li>
+					            </ul>
+							</div>
+					</div>
 					          
 				</div>
 				
@@ -3323,7 +3307,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 										<thead style=" background: #1363DF; color: white;">												
 											<tr>
 												<td style="width:4%">
-													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+													<!-- <a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a> -->
 												</td>
 												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>
@@ -3538,7 +3522,6 @@ String IsDG = (String)request.getAttribute("IsDG");
 	<!-- *************************************** DG View End ****************************************************** -->
 
 
-
 	<form method="post" action="ActionWiseAllReport.htm" name="dateform" id="dateform">                                                    	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 													
 		<input type="hidden" name="ActionType"  id="TypeId" />
@@ -3614,17 +3597,11 @@ function ProjectDetails(value,ProjectCode)
 	
 	$('#COG-Buildup-row').hide();
 	$('#COG-Total-row').hide();
+	$('#overallmodulecarddeck').hide();
+	$('#changes-tab').hide();
 	
 	CashOutGoProject(ProjectCode);
 }
-
-function LabDetails(value){
-	
-	$("#labcode").val(value);
-	$('#labdetailsform').submit();
-	
-}
-
 
 function overalldetails(value){
 	
@@ -3636,11 +3613,17 @@ function overalldetails(value){
 	
 	$('#COG-Buildup-row').show();
 	$('#COG-Total-row').show();
+	$('#overallmodulecarddeck').show();
+	$('#changes-tab').show();
 	CashOutGoProject('0');
 }
 
-
-
+function LabDetails(value){
+	
+	$("#labcode").val(value);
+	$('#labdetailsform').submit();
+	
+}
 
 
 </script>
@@ -3737,14 +3720,14 @@ function overalldoc(){
 	 var DG= '<%=IsDG%>';
 	 
 	 	if(DG=='Yes'){
-	 		if(logintype =='A' || logintype=='Z' || logintype=='X' || logintype=='K'  ){
+	 		if(logintype =='A' || logintype=='Z' || logintype=='X' || logintype=='K' || logintype=='C' || logintype=='I'  ){
 	 			$('.btn5').click();
 	 		}else{
 	 			$('.btn1').click();
 	 		}
 	 		
 	 	}
-	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E'){	
+	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E' || logintype=='C' || logintype=='I'){	
 				$('.btn3').click();
 		} else{
 			$('.btn1').click();
@@ -3890,6 +3873,9 @@ $('.btn3').click(function(){
 	$('.btn2').css('background-color','white');
 	$('.btn2').css('color','black');
 	
+	overalldetails('A');
+
+	
 	$("#overalltable").css("display","block");
 	$("#force-btn").css("display","block");
 	$("#overallcard1").css("display","block");
@@ -3923,8 +3909,7 @@ $('.btn3').click(function(){
 	$('#mainactivitystatus').css("display","none");	
 	$('#projectgraph').css("display","none");
 	
-	<%-- document.getElementById('projecttitle').innerHTML = 'Project Count : ' + <%=ProjectCount%>;	 --%>
-	document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')';	
+	<%-- document.getElementById('projecttitle').innerHTML = 'PROJECT HEALTH (' + <%=ProjectCount%> + ')'; --%>	
 	$('#dgdashboard').css("display","none");
 	
 })
@@ -4013,20 +3998,16 @@ function actionformtask(term,type){
 		$('#Action'+mainid).submit();
 		
 	}
-	
-	
 	function MyTaskDetails(mainid){
 		
 		$('#MyTaskDetails'+mainid).submit();
 	}
-
 
 	$('#actionsubmit').on('click',function(){
 		
 		$('#actionform').submit();
 		
 	})
-
 
      $(".action").each(function() {
         var i = $(this).next();

@@ -23,13 +23,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.sun.xml.bind.annotation.OverrideAnnotationOf;
+import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
 
@@ -57,7 +62,7 @@ public class PrintDaoImpl implements PrintDao {
 
 	private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,pps.stagecolor,pm.projectcode,ppd.proclimit/100000  FROM pfms_project_data ppd, pfms_project_stage pps,project_master pm WHERE ppd.projectid=pm.projectid AND ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
 	private static final String PROCUREMETSSTATUSLIST="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(f.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,'' AS vendorname,f.PftsStatusId,f.PDC, f.IntegrationDate  FROM pfts_file f, pfts_status s  WHERE f.ProjectId=:projectid AND f.EstimatedCost> (SELECT ppd.proclimit FROM pfms_project_data ppd WHERE ppd.ProjectId=f.ProjectId )   AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<19 AND f.PftsFileId NOT IN(SELECT PftsFileId FROM pfts_file_order) UNION SELECT f.PftsFileId, f.DemandNo, o.OrderNo, f.DemandDate, o.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(o.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,o.vendorname,f.PftsStatusId,f.PDC, f.IntegrationDate FROM pfts_file f, pfts_status s,pfts_file_order o  WHERE f.ProjectId=:projectid AND f.PftsFileId=o.PftsFileId  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<19 AND o.OrderCost>(SELECT ppd.proclimit FROM pfms_project_data ppd WHERE ppd.ProjectId=f.ProjectId ) ORDER BY  DemandNo , PftsStatusId ASC";
-	private static final String RISKMATIRXDATA="SELECT pr.description, pr.severity, pr.probability, pr.mitigationplans, pr.revisionno,pr.projectid,pr.actionmainid ,e.empname, ed.designation,asi.pdcorg, asi.pdc1,asi.pdc2,asi.revision, asi.actionno, am.actiondate,asi.actionstatus,asi.actionflag,asi.enddate ,(SELECT  progress FROM action_sub  WHERE  createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=asi.actionassignid) AND   actionassignid=asi.actionassignid) AS 'progess',(SELECT  remarks FROM action_sub  WHERE  createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=asi.actionassignid) AND   actionassignid=asi.actionassignid) AS 'remarks' ,(SELECT  MAX(progressdate) FROM action_sub  WHERE actionassignid=asi.actionassignid) AS 'lastdate',pr.impact,pr.RPN, pr.category, prt.riskcode,asi.actionassignid FROM pfMs_risk pr, action_main am, employee e, employee_desig ed , action_assign asi ,pfms_risk_type prt WHERE prt.risktypeid=pr.risktypeid AND  pr.projectid=:projectid AND pr.status='O' AND am.actionmainid=asi.actionmainid AND asi.actionmainid= pr.actionmainid AND pr.probability<>0 AND asi.assignee = e.empid AND e.desigid=ed.desigid";
+	private static final String RISKMATIRXDATA="SELECT pr.description, pr.severity, pr.probability, pr.mitigationplans, pr.revisionno,pr.projectid,pr.actionmainid , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation,asi.pdcorg, asi.pdc1,asi.pdc2,asi.revision, asi.actionno, am.actiondate,asi.actionstatus,asi.actionstatus AS 'actionflag',asi.enddate ,asi.progress,asi.progressremark,asi.progressdate,pr.impact,pr.RPN, pr.category, prt.riskcode,asi.actionassignid FROM pfMs_risk pr, action_main am, employee e, employee_desig ed , action_assign asi ,pfms_risk_type prt WHERE prt.risktypeid=pr.risktypeid  AND pr.status='O' AND am.actionmainid=asi.actionmainid AND asi.actionmainid= pr.actionmainid AND asi.assignee = e.empid AND e.desigid=ed.desigid AND asi.assigneelabcode<>'@EXP' AND pr.projectid=:projectid UNION SELECT pr.description, pr.severity, pr.probability, pr.mitigationplans, pr.revisionno,pr.projectid,pr.actionmainid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.expertname) AS 'empname' ,'Expert' AS 'designation',asi.pdcorg, asi.pdc1,asi.pdc2,asi.revision, asi.actionno, am.actiondate,asi.actionstatus,asi.actionstatus AS 'actionflag',asi.enddate ,asi.progress,asi.progressremark,asi.progressdate,pr.impact,pr.RPN, pr.category, prt.riskcode,asi.actionassignid FROM pfMs_risk pr, action_main am, Expert e,  action_assign asi ,pfms_risk_type prt WHERE prt.risktypeid=pr.risktypeid  AND pr.status='O' AND am.actionmainid=asi.actionmainid AND asi.actionmainid= pr.actionmainid AND asi.assignee = e.Expertid AND asi.assigneelabcode='@EXP' AND   pr.projectid=:projectid";
 	private static final String LASTPMRCDECISIONS="SELECT cs.pmrcdecisions,cs.scheduleid,cs.scheduledate FROM committee_schedule cs ,committee_meeting_status cms  WHERE cs.committeeid=:committeeid AND cs.isactive=1 AND cs.projectid=:projectid AND cs.scheduleflag=cms.meetingstatus AND cms.meetingstatusid>=7 ORDER BY cs.scheduledate DESC LIMIT 1";
 	private static final String MILESTONESCHANGE="SELECT ma.milestoneactivityid,ma.projectid,ma.milestoneno,ma.activityname,ma.orgstartdate,ma.orgenddate,ma.startdate,ma.enddate, ma.activitytype AS 'activitytypeid' ,mat.activitytype,ma.activitystatusid,mas.activityshort, ma.ProgressStatus,IFNULL(ma.StatusRemarks,'-') AS 'Status Remarks' FROM milestone_activity ma, milestone_activity_type mat ,milestone_activity_status mas WHERE ma.activitytype=mat.activitytypeid AND ma.activitystatusid=mas.activitystatusid AND projectid=:projectid AND CASE WHEN :milestoneactivitystatusid='A' THEN 1=1 ELSE ma.activitystatusid =:milestoneactivitystatusid END  AND ma.progressstatus <> 0";
 	
@@ -881,5 +886,78 @@ public class PrintDaoImpl implements PrintDao {
 				 result=list.get(0);
 			 }
 			return result;
+		}
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
+		@Override
+		public Object[] GetProjectdata(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTDATA);
+			 query.setParameter("projectid", projectid);
+			 Object[] result=null;
+			 List<Object[]> list=(List<Object[]> )query.getResultList();
+			 if(list!=null && list.size()>0) {
+				 result=list.get(0);
+			 }
+			return result;
+		}
+		
+		@Override
+		public Long AddProjectSlideData( ProjectSlides slide )throws Exception
+		{
+			manager.persist(slide);
+			manager.flush();
+			return slide.getSlideId();
+		}
+		
+		private static final String UPDATEPROJECTSLIDE="UPDATE pfms_project_slides SET Status=:Status , Slide=:Slide , AttachmentName=:AttachmentName ,Imagename=:ImageName  ,  Path=:Path , ModifiedBy=:ModifiedBy , ModifiedDate=:ModifiedDate WHERE SlideId=:SlideId";
+		@Override
+		public Long EditProjectSlideData(ProjectSlides slide)throws Exception
+		{
+			Query query=manager.createNativeQuery(UPDATEPROJECTSLIDE);
+				query.setParameter("SlideId", slide.getSlideId());
+				query.setParameter("Slide", slide.getSlide());
+				query.setParameter("Status", slide.getStatus());
+				query.setParameter("Path", slide.getPath());
+				query.setParameter("ImageName", slide.getImageName());
+				query.setParameter("AttachmentName", slide.getAttachmentName());
+				query.setParameter("ModifiedBy", slide.getModifiedBy());
+				query.setParameter("ModifiedDate", slide.getModifiedDate());
+			return (long)query.executeUpdate();
+		}		
+		
+		private static final String PROJECTSLIDEDATA="SELECT a.status ,  a.slide , a.ImageName , a.path ,a.SlideId ,a.attachmentname FROM pfms_project_slides a WHERE a.isactive=1 AND a.projectid=:projectid";
+		@Override
+		public Object[] GetProjectSildedata(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTSLIDEDATA);
+			 query.setParameter("projectid", projectid);
+			 Object[] result=null;
+			 List<Object[]> list=(List<Object[]> )query.getResultList();
+			 if(list!=null && list.size()>0) {
+				 result=list.get(0);
+			 }
+			return result;
+		}
+		
+		@Override
+		public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception
+		{
+			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
+			return Attachment;
+		}
+		@Override
+		public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
+		{
+			manager.persist(freeze);
+			manager.flush();
+			return freeze.getFreezeId();
+		}
+		private static final String RISKTYPES = "SELECT Risktypeid,risktype,riskcode FROM pfms_risk_type";
+		@Override
+		public List<Object[]> RiskTypes() throws Exception 
+		{
+			Query query=manager.createNativeQuery(RISKTYPES);
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
 		}
 }

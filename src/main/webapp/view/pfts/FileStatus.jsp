@@ -243,7 +243,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                               <table style="margin-left:4rem;">
                                                <tr>
                                                 <td><%=fileStatus[6]%></td>
-                                                <%if(!fileStatus[7].toString().equals("16")){ %>
+                                                <%if(!fileStatus[7].toString().equals("19")){ %>
                                                    <td>
                                                       <button class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                                   </td>
@@ -257,7 +257,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                                   <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#PDCModal" onclick="openPDCform('<%=fileStatus[0]%>')">
                                                   	  	<i class="fa fa-calendar" aria-hidden="true"></i>
                                                   	  </button>
-	                                                   <%if(Long.parseLong(fileStatus[7].toString())>8){ %>
+	                                                   <%if(Long.parseLong(fileStatus[7].toString())>9){ %>
 	                                                   <button class="btn btn-sm "  formaction="FileOrderRetrive.htm" title="Refresh Order"> <i class="fa fa-refresh" aria-hidden="true"></i></button>
 	                                                   <%} %>
                                                    </form>

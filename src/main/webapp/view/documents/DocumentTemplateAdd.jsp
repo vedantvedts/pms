@@ -1,4 +1,4 @@
-<%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%>
+<%-- <%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%> --%>
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
@@ -365,7 +365,7 @@ ul, #myUL {
 
 </head>
 <body style="background-color: #e2ebf0" >
-
+<%-- 
 <%
 
 List<Object[]> parentlist=(List<Object[]>) request.getAttribute("parentlist");
@@ -530,7 +530,7 @@ if(ses1!=null){
 										        		<span  style="font-size:14px" id="span-text-<%=item.getTemplateItemId() %>" >
 										        			<%=count %> ) <%=item.getItemName() %>
 											        		<i class="btn btn-sm fa fa-pencil-square-o " aria-hidden="true" onclick="itemeditenable(<%=item.getTemplateItemId()%>);"></i>
-											        		<%-- <i class="btn btn-sm fa fa-trash " aria-hidden="true" onclick="itemeditsubmit('<%=item.getTemplateItemId()%>','D');"></i> --%>
+											        		<i class="btn btn-sm fa fa-trash " aria-hidden="true" onclick="itemeditsubmit('<%=item.getTemplateItemId()%>','D');"></i>
 										        		</span>
 										        		<span style="font-size:14px;display: none;"  id="span-edit-<%=item.getTemplateItemId() %>"  >								        				
 										        			<%=count %> . <input type="text" id="edit-itemname-<%=item.getTemplateItemId() %>" class="hiddeninput" value="<%=item.getItemName()  %>" required="required" maxlength="255">
@@ -847,6 +847,6 @@ $(document).ready(function(){
 
 
 </script>
-
+ --%>
 </body>
 </html>

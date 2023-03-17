@@ -9,8 +9,32 @@
 <body>
 <% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); %>
 
+	<div  class="card " id="project-attributes" style="margin:0px 0px 5px 0px;background-color: rgba(0,0,0,0.1) !important;display: none;">
+		<div class="card-body" style="padding: 0px !important">
+			<div class="col-md-12" align="left">
+				<table class="table" style="margin-bottom: -5px !important; margin-top: -5px !important;" >
+					    <tr>
+					      <th>Project :</th>
+					      <td id="pro-attr-name"></td>
+					      <th>DoS :</th>
+					      <td id="pro-attr-DoS"></td>
+					      <th>PDC :</th>
+					      <td id="pro-attr-PDC"></td>
+					      <th>Sanc Cost :</th>
+					      <td id="pro-attr-sanc"></td>
+					      <th>Category : </th>
+					      <td id="pro-attr-category"></td>
+					      <th>Stage : </th>
+					      <td id="pro-attr-stage"></td>
+					    </tr>
+				</table>
+				
+			</div>
+		</div>	
+	</div>
+
 		
-		<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
+	<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
 		<div class="card-body row" style="padding: 3px !important">
 			<div class="col-md-12">
 				
@@ -60,7 +84,10 @@
 				  <tbody>
 				  
 				    <tr>
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#5C192F" >&#x220E;</span>&nbsp;<span class="COGLegend">CAP</span>&nbsp; <span style="border-left: 2px solid darkgrey" id="COGProject">&nbsp;&nbsp; Project</span></th>
+				      <th scope="row" style="text-align: left">
+				      	<!-- <span class="shadow COGLegend" style="color:#5C192F" >&#x220E;</span>&nbsp;<span class="COGLegend">CAP</span>&nbsp;  -->
+				      	<span style="border-left: 2px solid darkgrey" id="COGProject">&nbsp;&nbsp; Project</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="Allotment" id="ProAllotCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[3] %> Cr" ><%=CashOutGo.get(0)[3] %></div>
@@ -144,7 +171,10 @@
 				    </tr>
 				
 				    <tr id="COG-Buildup-row">
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#466136">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span></th>
+				      <th scope="row" style="text-align: left">
+					      <!-- <span class="shadow " style="color:#466136">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; --> 
+					      <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Capital : <%=CashOutGo.get(3)[3] %> Cr"  ><%=CashOutGo.get(3)[3] %></div>
@@ -228,7 +258,10 @@
 				    </tr>
 				  
 				    <tr id="COG-Total-row">
-				      <th scope="row" style="text-align: left"><span class="shadow COGLegend" style="color:#591A69 ">&#x220E;</span>&nbsp;OTH&nbsp; <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span></th>
+				      <th scope="row" style="text-align: left">
+				      	<!-- <span class="shadow " style="color:#591A69 ">&#x220E;</span>&nbsp;OTH&nbsp;  -->
+				      	<span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span>
+				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
 						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AllotCap %> Cr" ><%=AllotCap %></div>
@@ -291,13 +324,49 @@
 				</table>
 			</div>
 			   </div>
-		  	</div>	 
+	</div>	 
 	
 
 <script type="text/javascript">
 
+function showProjectAttributes($ProjectCode)
+{
+	if($ProjectCode!='0')
+	{
+		$.ajax({
+			
+			type:"GET",
+			url:"ProjectAttribures.htm",
+			data :{
+				ProjectCode : $ProjectCode
+			},
+			datatype : 'json',
+			success : function(result) {
+				var values = JSON.parse(result);
+				console.log(values);
+				$('#pro-attr-name').html(values[1]+' - '+values[0]);
+				$('#pro-attr-DoS').html(moment(values[3]).format('DD-MM-YYYY'));
+				$('#pro-attr-PDC').html(moment(values[6]).format('DD-MM-YYYY'));
+				$('#pro-attr-sanc').html((Number(values[7])/10000000).toFixed(2)+' Cr (<b>Fe : </b>'+(Number(values[9])/10000000).toFixed(2)+' Cr'+')');
+				$('#pro-attr-category').html(values[14]);
+				if(values[16]!=null){
+					$('#pro-attr-stage').html(values[16]);
+				}else{
+					$('#pro-attr-stage').html('     -      ');
+				}
+				$('#project-attributes').show();
+				$('#projecttitle').html(values[0]);
+				
+			}
+	
+		})
+	}
+}
+
+
 function CashOutGoProject($ProjectCode)
 {
+	
 	$.ajax({
 		
 		type:"GET",
@@ -311,11 +380,12 @@ function CashOutGoProject($ProjectCode)
 			
 			if($ProjectCode==='0'){
 				$('#COGProject').html('&nbsp;&nbsp;Project');
-				$('.COGLegend').show();
+				$('#project-attributes').hide();
+				$('#projecttitle').html('PROJECT HEALTH');
 			}else
 			{
+				showProjectAttributes($ProjectCode);
 				$('#COGProject').html('&nbsp;&nbsp;'+$ProjectCode);
-				$('.COGLegend').hide();
 			}
 			$('#ProAllotCap').html(values[0][3]).attr('data-original-title','Project Capital : '+values[0][3] +' Cr');
 			$('#ProAllotRev').html(values[1][3]).attr('data-original-title','Project Revenue : '+values[1][3] +' Cr');

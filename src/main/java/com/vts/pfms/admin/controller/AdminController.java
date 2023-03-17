@@ -834,6 +834,7 @@ public class AdminController {
 	    @RequestMapping(value = "DivisionMasterAddSubmit.htm",method=RequestMethod.POST )
 		public String DivisionAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
+	    	String LabCode =(String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside DivisionMasterAddSubmit.htm "+UserId);		
 			try {				
 				String divisionCode=req.getParameter("dCode");
@@ -846,6 +847,8 @@ public class AdminController {
 				dmo.setDivisionName(divisionName);
 			    dmo.setGroupId(Long.valueOf(Long.parseLong(groupId)));
 				dmo.setDivisionHeadId(Long.valueOf(Long.parseLong(DivisionHeadName)));
+				dmo.setLabCode(LabCode);
+				dmo.setCreatedBy(UserId);
 				// dmo.setIsActive(1);
 				long count=service.DivisionAddSubmit(dmo);
 				if (count > 0) {

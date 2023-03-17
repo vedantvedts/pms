@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@page import="java.util.List , java.util.stream.Collectors,com.vts.pfms.*"%>
 <!DOCTYPE html>
@@ -37,7 +37,6 @@
 	    font-size: 20px; 
 	    font-weight: 700;
 	    display: flex;
-	    margin: -7px 0px;
 	}
 	.counter.blue{
 	    color: #36AE7C;
@@ -64,8 +63,8 @@
 	
 	@media screen and (min-width: 1501px) {
 		.counter {
-			width : 180px;
-			height: 180px;
+			width : 84px;
+			height: 100px;
 			padding: 49px 19px 19px;
 		}
 		.counter .counter-value {
@@ -79,8 +78,8 @@
 			font-size: 11px
 		}
 		.counter {
-			width : 135px;
-			height: 135px;
+			width : 84px;
+			height: 100px;
 		}
 		.counter .counter-value{
 			font-size: 17px;
@@ -94,24 +93,53 @@
 	.blue{
 	color: #36AE7C;
 	}
+
+	.modal-xl{
+		max-width: 1100px;
+	}
+	
+
+
 </style>
 </head>
 <body>
 <%
 List<Object[]> actionassigneelist = (List<Object[]>)request.getAttribute("actionassigneelist"); 
 List<Object[]> actionassignorlist = (List<Object[]>)request.getAttribute("actionassignorlist"); 
+List<Object[]> ProjectList = (List<Object[]>)request.getAttribute("ProjectList");
+List<Object[]> favouritelist = (List<Object[]>)request.getAttribute("FavouriteList");
 String empid = ((Long) session.getAttribute("EmpId")).toString();
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 %>
+<%String ses=(String)request.getParameter("result"); 
+String ses1=(String)request.getParameter("resultfail");
+if(ses1!=null){
+%>
+	<div align="center">
+	
+		<div class="alert alert-danger" role="alert">
+			<%=ses1 %>
+		</div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=ses %>
+		</div>
 
+	</div>
+	<%} %>
 <div class="container-fluid">
+	<div class="card shadow-nohover">
+	<div class="card-header" style="height: 30px;"> <h5 style="margin-top: -8px;"> To-Do Review</h5> </div>
+		<div class="card-body">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card shadow-nohover">
 						<div class="row">
 							<div class="col-md-4"> 
 								 <div class="card-body">
-								      <h6 class="card-title" align="center"><img src="view/images/action1.png" /> Today</h6>
+								      <h6 class="card-title" align="center" onclick="ModelForList('Today')" style="cursor: pointer;"><img src="view/images/action1.png" /> Today</h6>
 								      <hr>
 								      <div class="row">
 								      	<div class="col-md-6 ">
@@ -120,29 +148,30 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
 												if(date1.compareTo(date2) == 0){%> <% ++todaytodo;}}%>
-					                				<span class="counter-value" style="text-align: center; " > <%=todaytodo%></span>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center" > <%=todaytodo%></span>
 								           
 								            </div>
 									        <hr style="margin: 5px !important">
-									       <h6><span class="blue">&#x220E;</span> To Do</h6>
+									       <h6 style="margin-left: -14px;"><span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
 								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Today')">
 								      		 <%int todayreview=0; for(Object[] obj: actionassignorlist){
+								      			if(!obj[11].toString().equalsIgnoreCase(empid)){
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) == 0){%><% ++todayreview;}}%>
-					                				<span class="counter-value"  ><%=todayreview%> </span>
+												if(date1.compareTo(date2) == 0){%><% ++todayreview;}}}%>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=todayreview%> </span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								    </div>
 							</div>
 								<div class="col-md-4"> 
 									 <div class="card-body">
-								      <h6 class="card-title" align="center"><img src="view/images/upcoming.png" style="width: 22px;"/> Upcoming</h6>
+								      <h6 class="card-title" align="center" onclick="ModelForList('Upcoming')" style="cursor: pointer;"><img src="view/images/upcoming.png" style="width: 22px;"/> Upcoming</h6>
 								      <hr>
 								      <div class="row">
 								      	<div class="col-md-6 ">
@@ -151,29 +180,30 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
 												if(date1.compareTo(date2) > 0){%><% ++todayupcoming;}}%>
-					                				<span class="counter-value"  ><%=todayupcoming %></span>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=todayupcoming %></span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									       <h6> <span class="blue">&#x220E;</span> To Do</h6>
+									       <h6 style="margin-left: -14px;"> <span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
 								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Upcoming')">
 					                				 <%int upcomingreview=0; for(Object[] obj: actionassignorlist){
-												Date date1=sdf.parse(sdf.format(obj[4]));
-												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) > 0){%><% ++upcomingreview;}}%>
-					                				<span class="counter-value"  ><%=upcomingreview%> </span>
+					                					 if(!obj[11].toString().equalsIgnoreCase(empid)){
+														Date date1=sdf.parse(sdf.format(obj[4]));
+														Date date2=sdf.parse(sdf.format(new Date()));
+														if(date1.compareTo(date2) > 0){%><% ++upcomingreview;}}}%>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"   ><%=upcomingreview%> </span>
 								            </div>
 									       
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								    </div>
 							</div>
 							<div class="col-md-4"> 
 								 <div class="card-body">
-								      <h6 class="card-title" align="center"><img src="view/images/missed.png" style="width: 22px; background-color: fff;" /> Missed</h6>
+								      <h6 class="card-title" align="center" onclick="ModelForList('Missed')" style="cursor: pointer;"><img src="view/images/missed.png" style="width: 22px; background-color: fff;" /> Missed</h6>
 								      <hr>
 								      <div class="row">
 								      	<div class="col-md-6" style="cursor: pointer;" onclick="ModelForList('Missed')">
@@ -182,57 +212,71 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 											Date date2=sdf.parse(sdf.format(new Date()));
 											if(date1.compareTo(date2) < 0){%><%++missedtodo;}}%>
 								      		 <div class="counter blue" >
-					                				<span class="counter-value"  ><%=missedtodo%></span>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=missedtodo%></span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									       	 <h6> <span class="blue">&#x220E;</span> To Do</h6>
+									       	 <h6 style="margin-left: -14px;"> <span class="blue">&#x220E;</span> To Do</h6>
 								      	</div>
 								      	<div class="col-md-6">
-								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Missed')">
+								      		 <div class="counter purple" style="cursor: pointer;" onclick="ModelForList('Missed')" >
 					                		<%int missedreview=0; for(Object[] obj: actionassignorlist){
+					                			if(!obj[11].toString().equalsIgnoreCase(empid)){
 												Date date1=sdf.parse(sdf.format(obj[4]));
 												Date date2=sdf.parse(sdf.format(new Date()));
-												if(date1.compareTo(date2) < 0){%><% ++missedreview;}}%>
-					                				<span class="counter-value"  ><%=missedreview%> </span>
+												if(date1.compareTo(date2) < 0){%><% ++missedreview;}}}%>
+					                				<span class="counter-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"  ><%=missedreview%> </span>
 								            </div>
 									        <hr style="margin: 5px !important">
-									        <h6 style="margin-left: -28px;"><span class="purple">&#x220E;</span> To Review</h6>
+									        <h6 style="margin-left: -30px;"><span class="purple">&#x220E;</span> To Review</h6>
 								      	</div>
 								      </div>
 								  </div>
 							</div>
 						</div>
 					</div>
-			<hr style="margin: 8px 70px !important; ">
-				<div style="margin-top: 10px;">
+			<hr style="margin: 4px 30px !important; ">
+				<div >
 					<div class="card shadow-nohover">
 						<div class="card-body">
-							<table class="table table-bordered table-hover table-striped table-condensed ">
-										<thead>
+							
+							<table class="table meeting" style="margin-top: -16px;">
+										<thead style="height: 0px;">
 											<tr>
-												<th>SN</th> 
-												<th>Action No</th>
-												<th>Date</th> 
-												<th>PDC</th>
-												<th>Progress</th>
-												<th>Action</th>
+												<th style="font-weight: 100;">SN</th> 
+												<th style="font-weight: 100;">Action No</th>
+												<th style="font-weight: 100;">Act with</th> 
+												<th style="font-weight: 100;">PDC</th>
+												<th style="font-weight: 100;">Prog</th>
+												
 											</tr>
 										</thead>
 										<!----------------------- start Today Action List  --------------------------->
 							<%int l1=0; 
 							if(actionassigneelist!=null && actionassigneelist.size()>0){%>
 							<tbody id="modal_Today_Action" style="display: none;">
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Do - Today Action List</b> </td></tr>
-							
+								
 							<%for(Object[] obj: actionassigneelist){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) == 0){%>
+								if(date1.compareTo(date2) == 0){++l1;%>
 								<tr>                            
-									<td style="text-align: center;"> <%=++l1%></td>
+									<td style="text-align: center;"> 
+									<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" style="display: inline">
+
+																	<button class="btn btn-sm " name="sub" style="background-color: white;" title="To Do"><i class="fa fa-hand-o-right" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i></button>
+												                    <input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[2]%>"/>	
+																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[9]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="back" value="backTotodo"/>
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form>
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#009bf1; font-weight: 600;"
 									 onclick="ActionDetails('<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -244,24 +288,25 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
 									
-									</td> <td></td>
+									</td> 
+									
 								</tr>
 							<%}}%></tbody><%}%>
 						<!----------------------- close Today Action List  --------------------------->	
@@ -270,17 +315,30 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 							<%int m1=0; 
 							if(actionassigneelist!=null && actionassigneelist.size()>0){%>
 							<tbody id="modal_Upcoming_Action" style="display: none;">
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Do - Upcoming Action List</b> </td></tr>
-							
+								
 							<%for(Object[] obj: actionassigneelist){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) > 0){%>
+								if(date1.compareTo(date2) > 0){ ++m1;%>
 								<tr>
-									<td style="text-align: center;"> <%=++m1%></td>
+									
+									<td style="text-align: center;"> 
+									<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" style="display: inline">
+
+																	<button class="btn btn-sm " name="sub" style="background-color: white;" title="To Do"><i class="fa fa-hand-o-right" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i></button>
+												                    <input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[2]%>"/>	
+																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[9]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="back" value="backTotodo"/>
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form>
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#dd2fd8; font-weight: 600;"
 									 onclick="ActionDetails(			'<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -292,41 +350,54 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
 									
-									</td> <td></td>
+									</td> 
 								</tr>
 						<%}}%></tbody><%}%>
 							<!----------------------- Close Upcoming Action List  --------------------------->
 							
 							<!----------------------- start Missed Action List  --------------------------->
-							<%if(actionassigneelist!=null && actionassigneelist.size()>0){%>
+							<%int n1=0;if(actionassigneelist!=null && actionassigneelist.size()>0){%>
 							<tbody id="modal_Missed_Action" style="display: none;">
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Do - Missed Action List</b> </td></tr>
-							<%int n1=0;for(Object[] obj: actionassigneelist){
+							<%for(Object[] obj: actionassigneelist){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) < 0){%>
+								if(date1.compareTo(date2) < 0){++n1;%>
 								<tr>
-									<td style="text-align: center;"> <%=++n1%></td>
+									
+									<td style="text-align: center;"> 
+									<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" style="display: inline">
+
+																	<button class="btn btn-sm " name="sub"  title="To Do" style="background-color: white;"><i class="fa fa-hand-o-right" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i></button>
+												                    <input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[2]%>"/>	
+																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[9]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="back" value="backTotodo"/>
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									</form>
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#f1931f; font-weight: 600;"
 									 onclick="ActionDetails(	'<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -338,24 +409,25 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[1]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
 									
-									</td> <td></td>
+									</td> 
+									
 								</tr>
 							<%}}%></tbody><%}%>
 							<!----------------------- start Missed Action List  --------------------------->
@@ -364,17 +436,27 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 							<%int i1=0; 
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 								<tbody id="modal_Review_Today_Action" style="display: none;">
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Review - Today Action List</b> </td></tr>
-							
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) == 0){%>
-								<tr>
-									<td style="text-align: center;"> <%=++i1%></td>
+								if(date1.compareTo(date2) == 0){ ++i1;%>
+								<tr> 
+									
+									<td style="text-align: center;">
+										<form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+											<button  class="btn btn-sm editable-click" name="sub" style="background-color: white;" title="To Review"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></button>                 
+											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+											<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+											<input type="hidden" name="ActionAssignId" value="<%=obj[10]%>"/>	
+											<input type="hidden" name="back" value="backTotodo"/>          	
+									</form> 
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#009bf1; font-weight: 600;"
 									 onclick="ActionDetails(	'<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -386,43 +468,54 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
 									
-									</td> <td></td>
+									</td> 
+									
 								</tr>
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 						<!----------------------- close Today Action List  --------------------------->	
 							
 							<!----------------------- start Upcoming Action List  --------------------------->
 							<%int j1=0; 
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 								<tbody id="modal_Review_Upcoming_Action" style="display: none;">
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Review - Upcoming Action List</b> </td></tr>
-							
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) > 0){%>
+								if(date1.compareTo(date2) > 0){++j1;%>
 								<tr>
-									<td style="text-align: center;"> <%=++j1%></td>
+									
+									<td style="text-align: center;">
+										<form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+											<button  class="btn btn-sm editable-click" name="sub" style="background-color: white;" title="To Review"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></button>                 
+											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+											<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+											<input type="hidden" name="ActionAssignId" value="<%=obj[10]%>"/>	
+											<input type="hidden" name="back" value="backTotodo"/>          	
+									</form> 
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#dd2fd8; font-weight: 600;"
 									 onclick="ActionDetails(	'<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -434,43 +527,54 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td>
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600; width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px;">
 									<%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
 									
-									</td> <td></td>
+									</td> 
 								</tr>
 							
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 							<!----------------------- Close Upcoming Action List  --------------------------->
 							
 							<!----------------------- start Missed Action List  --------------------------->
 							<%int k1=0; 
 							if(actionassignorlist!=null && actionassignorlist.size()>0){%>
 							<tbody id="modal_Review_Missed_Action" style="display: none;">	
-								<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>To Review - Missed Action List</b> </td></tr>
 							<%for(Object[] obj: actionassignorlist){
+								if(!obj[11].toString().equalsIgnoreCase(empid)){
+								String[] input = obj[9].toString().split("/");
+								String ActionNo = input[input.length-2]+"/"+input[input.length-1];
 								Date date1=sdf.parse(sdf.format(obj[4]));
 								Date date2=sdf.parse(sdf.format(new Date()));
-								if(date1.compareTo(date2) < 0){%>
+								if(date1.compareTo(date2) < 0){ ++k1;%>
 								<tr>
-									<td style="text-align: center;"> <%=++k1%></td>
+									
+									<td style="text-align: center;">
+										<form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+											<button  class="btn btn-sm editable-click" name="sub" style="background-color: white;" title="To Review"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></button>                 
+											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+											<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
+											<input type="hidden" name="ActionAssignId" value="<%=obj[10]%>"/>	
+											<input type="hidden" name="back" value="backTotodo"/>          	
+									</form> 
+									</td>
 									<td class="editable-click">
 									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
-									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#f1931f; font-weight: 600;"
 									 onclick="ActionDetails(	'<%=obj[10] %>',   <!-- assignid -->
 			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=obj[9] %>',   <!-- action No -->
@@ -482,58 +586,92 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 			                          									'<%=obj[16].toString().trim()%>', <!-- assignee -->
 			                          									'<%=obj[17]%>' <!-- action type -->
 			                          									);" 
-									 >  &nbsp;<%=obj[9]%></button>
+									 >  &nbsp;<%=ActionNo%></button>
 									</td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[3])%></td>
-									<td style="text-align: center;font-size: 11px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
-									<td><%if(obj[14]!=null){%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+									<td style="text-align: left;font-size: 13px;font-weight: 600;"><%=obj[16]%></td>
+									<td style="text-align: center;font-size: 13px;font-weight: 600;width: 80px;"><%=sdf.format(obj[4])%></td>
+									<td style="width: 100px; "><%if(obj[14]!=null){%>
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											<%=obj[14]%>
 										</div> 
 										</div> <%}else{%>
-										<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
 										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
-												Not Yet Started .
+												N S
 										</div>
 										</div> <%}%>
-									</td> <td></td>
+									</td> 
 								</tr>
-							<%}}%></tbody><%}%>
+							<%}}}%></tbody><%}%>
 							<!----------------------- start Missed Action List  --------------------------->
 							</table>
+						   
 					    </div>
 					</div>
 				</div> 
-				</div>
+			</div>
 				<div class="col-md-6" >
 					<div class="card shadow-nohover">
-						<h4 class="card-header">Favorite List</h4>
+						<div class="card-header" style="height: 42px;"><h5 style="margin-top: -5px;">Favourite List <button type="button" class="btn btn-success btn-sm add" style="float: right;margin-top: -4px;" onclick="Modelfavourite()">Add Favourite</button></h5></div>
 						<div class="card-body">
-							<table >
-					   					<tr>
-
-					   						<td >
-					   							<label class="control-label" style="font-size: 14px;font-weight:600; margin-bottom: .0rem;"> From Date : </label>
-					   						</td>
-					   						<td style="max-width: 160px; padding-right: 10px">
-					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="">
-					   						</td>
-					   						<td>
-					   							<label class="control-label" style="font-size: 14px;font-weight:600; margin-bottom: .0rem;"> To Date : </label>
-					   						</td>
-					   						<td style="width: 160px; padding-right: 30px">
-					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="">
-					   						</td>
-					   						<td>
-					   							<input type="submit" value="SUBMIT" class="btn  btn-sm submit	 "/>
-					   						</td>			
-					   					</tr>   					   				
-					   				</table>
+								<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
+							<thead>
+								<tr>
+									  <th>SN</th>
+									  <th>Action No</th>
+									  <th style="width: 48.7969px;">PDC</th>
+									  <th>Assignee</th>
+									  <th>Prog</th>
+								</tr>
+							</thead>
+							<tbody>
+							<% int sn=0;if(favouritelist!=null &&favouritelist.size()>0){
+								for(Object[] obj :favouritelist) {
+									String[] input = obj[6].toString().split("/");
+									String ActionNo = input[input.length-2]+"/"+input[input.length-1];
+								%>
+								<tr>
+									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=++sn%></td>
+									<td class="editable-click" style="text-align: center;font-size: 14px;font-weight: 600;">
+									 <button class="btn btn-sm btn-link w-100 "  formtarget="_blank" 
+									 data-toggle="tooltip" data-placement="top" title="Action No" style="color:#424b50; font-weight: 600;"
+									 onclick="ActionDetails(	'<%=obj[10] %>',   <!-- assignid -->
+			                          									'<%=obj[5].toString().trim() %>',   <!-- action item -->
+			                          									'<%=obj[6] %>',   <!-- action No -->
+			                          									'<%if(obj[11]!=null){ %> <%=obj[11] %>% <%}else{ %>0<%} %>', <!-- progress -->
+			                          									'<%=sdf.format(obj[3]) %>', <!-- action date -->
+			                          									'<%=sdf.format(obj[4]) %>', <!-- enddate -->
+			                          									'<%=sdf.format(obj[12]) %>', <!-- orgpdc -->
+			                          									'<%=obj[1].toString().trim()%>', <!-- assignor -->
+			                          									'<%=obj[13].toString().trim()%>', <!-- assignee -->
+			                          									'<%=obj[14]%>' <!-- action type -->
+			                          									);" 
+									 >  &nbsp;<%=ActionNo%></button>
+									</td>
+									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%=sdf.format(obj[4])%></td>
+									<td style="text-align: left;font-size: 14px;font-weight: 600;"><%=obj[13]%></td>
+									<td style="text-align: center;font-size: 14px;font-weight: 600;"><%if(obj[11]!=null){%>
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
+										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+											<%=obj[11]%>
+										</div> 
+										</div> <%}else{%>
+										<div class="progress" style="background-color:#cdd0cb !important;width:75px; height: 1.4rem !important;">
+										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;"  >
+												N S
+										</div>
+										</div> <%}%></td>
+								</tr>
+								<%}}%>
+							</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
 </div>
 	<!---------------------------------------------------------------- action modal ------------------------------------------------------->
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
@@ -583,7 +721,7 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 								<thead> 
 									<tr style="background-color: #055C9D; color: white;">
 										<th style="text-align: center;width:5% !important;">SN</th>
-										<th style="text-align: center;width:10% !important;"> Date</th>
+										<th style="text-align: center;width:14% !important;"> Date</th>
 										<th style="text-align: center;width:15% !important;"> Progress</th>
 										<th style="width:65% !important;">Remarks</th>
 										<th style="text-align: center;width:5% !important;">Download</th>
@@ -597,6 +735,84 @@ SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 		</div>
 	</div>
 <!---------------------------------------------------------------- action modal ----------------------------------------------------- -->
+
+	<!---------------------------------------------------------------- Favorite modal ------------------------------------------------------->
+	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="Favorite_modal">
+		<div class="modal-dialog modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color: #FFE0AD; height: 50px;">
+					<div class="row w-100"  style="margin-top: -10px;">
+					<div class="col-md-3"> <h4>Favourite List</h4></div>
+						<div class="col-md-9" >
+							<table>
+					   				<tr>
+					   					<td>
+					   						<label class="control-label" style="font-size: 14px;font-weight:600;">Project : </label>
+					   					</td>
+					   					<td >
+					   						<select class="form-control selectdee "  style="width: 113px;" name="Project"  id="Project" required="required"   data-live-search="true" id="projectid" >                                                     
+												<option value="0" >General</option>	
+												<%for(Object[] obj:ProjectList){%>
+													<option value="<%=obj[0] %>" ><%=obj[4]%></option>	
+												<%}%>
+											</select>	
+					   					</td>
+					   					<td style="margin-left: 30px;">
+					   						<label class="control-label" style="font-size: 14px;font-weight:600; margin-bottom: .0rem;"> From Date : </label>
+					   					</td>
+					   					<td style="max-width: 160px; padding-right: 50px">
+					   						<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="">
+					   					</td>
+					   					<td>
+					   						<label class="control-label" style="font-size: 14px;font-weight:600; margin-bottom: .0rem;"> To Date : </label>
+					   					</td>
+					   					<td style="width: 160px; padding-right: 50px">
+					   						<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="">
+					   					</td>
+					   					<td>
+					   						<button type="button"  onclick="GetActionList()" class="btn  btn-sm submit">Submit</button>
+					   					</td>		
+					   				</tr>   					   				
+					   		</table>
+					   		 
+						</div>
+					</div>
+				</div>
+				 <form action="AddFavouriteList.htm" method="POST" id="frm1">
+				<div class="modal-body" align="center" style="max-height: 30rem; overflow-y:auto;">	
+					
+							<table class="table meeting"  >
+									<thead style = "height: 0px;">
+										<tr>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">SN</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;width: 450px;">Action Item</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">PDC</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Assignee</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Assigner</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Prog</th>
+											<th style="text-align: center;font-size: 14px;font-weight: 100;">Action</th>
+										</tr>
+									</thead>
+									<tbody id="favourite_list" style="max-height: 25rem; overflow-y:auto;"> 
+										<tr>
+										    <td colspan="7" style="text-align: center;font-size: 14px;font-weight: 600; ">data not available!</td>
+										</tr>	
+									</tbody>
+							</table>
+							<hr> 
+				</div>
+				<div class="model-footer" style="height: 50px;">
+						<div align="center">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<button type="button" id="favId" style="display: none; " class="btn btn-primary btn-sm submit" onclick="AddFavourite()"> SUBMIT</button>
+						</div>	
+				</div>
+				</form>	
+			</div>
+		</div>
+	</div>
+<!---------------------------------------------------------------- Favorite modal ----------------------------------------------------- -->
+
 <script type="text/javascript">
 
 function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg, InAssignor,InAssignee, InActionType )
@@ -713,33 +929,45 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 	}
 	ModelForList("Today");
 	function ModelForList(value) {
+		console.log(value);
 		document.getElementById("modal_Review_Today_Action").style.display = 'none';
 		document.getElementById("modal_Today_Action").style.display = 'none';
 		document.getElementById("modal_Review_Upcoming_Action").style.display = 'none';
 		document.getElementById("modal_Upcoming_Action").style.display = 'none';
 		document.getElementById("modal_Review_Missed_Action").style.display = 'none';
 		document.getElementById("modal_Missed_Action").style.display = 'none';
+		
 		 if(value=='Today'){
 			document.getElementById("modal_Review_Today_Action").style.display = '';
 			document.getElementById("modal_Today_Action").style.display = '';
+			var val = <%=i1+l1%>;
+			console.log(<%=i1%> +": jk :"+<%=l1%>);
+			if(val==0){
+				$("#modal_Review_Today_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
+			}
 		}else if(value=='Upcoming'){
 			document.getElementById("modal_Review_Upcoming_Action").style.display = '';
 			document.getElementById("modal_Upcoming_Action").style.display = '';
+			var val1 = <%=j1+m1%>;
+			if(val1==0){
+				$("#modal_Review_Upcoming_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
+			}
 		}else if(value=='Missed'){
 			document.getElementById("modal_Review_Missed_Action").style.display = '';
 			document.getElementById("modal_Missed_Action").style.display = '';
-		}else{
-			//$("#Actionvalue").val("");
+			var val2 = <%=k1+n1%>;
+			if(val2==0){
+				$("#modal_Review_Missed_Action").html('<tr><td colspan="6" style="text-align: center;padding: 0.1rem !important;"> <b>No Record Found</b> </td></tr>');
+			}
 		}
 	}
-	
-	
-	
+
 	$('#fdate').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
 		"showCustomRangeLabel" : true,
 		"cancelClass" : "btn-default",
+		"startDate": moment().subtract(30, 'days'),
 		showDropdowns : true,
 		locale : {
 			format : 'DD-MM-YYYY'
@@ -756,6 +984,81 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 		}
 	});
 
+	function Modelfavourite()
+	{
+		GetActionList();
+		$('#Favorite_modal').modal('toggle');
+	}
+	
+	function GetActionList() {
+		
+		var Infromdate= $("#fdate").val();
+		var Intodate= $("#tdate").val();
+		var Inprojectid= $("#Project").val();
+		
+		$.ajax({		
+			type : "GET",
+			url : "GetActionListForFavourite.htm",
+			data : {
+				Fromdate : Infromdate,
+				Todate:Intodate,
+				Projectid:Inprojectid
+			},
+			datatype : 'json',
+			success : function(results) {
+				var result = JSON.parse(results);
+				var htmlStr='';
+				if(result!=null && result.length>0){
+					document.getElementById("favId").style.display = '';
+					for(var v=0;v<result.length;v++)
+					{	
+						htmlStr += '<tr>';
+							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;" >'+ (v+1) + '</td>';
+							htmlStr += '<td class="tabledata" style="text-left: center;font-size: 15px;font-weight: 600;" >'+ result[v][5] + ' </td>';
+							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;" >'+ moment(new Date(result[v][4]) ).format('DD-MM-YYYY') + '</td>';
+							htmlStr += '<td class="tabledata" style="text-align: left;font-size: 14px;font-weight: 600;">'+ result[v][16] + '</td>';
+							htmlStr += '<td class="tabledata" style="text-align: left;font-size: 14px;font-weight: 600;">'+ result[v][1] +'</td>';
+							htmlStr += '<td class="tabledata" style="text-align: center;font-size: 14px;font-weight: 600;">';
+							if(result[v][14]!=null){
+								htmlStr += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
+								htmlStr += '<div class="progress-bar progress-bar-striped" role="progressbar" style=" width:' + result[v][14] +'%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >'+result[v][14] +'</div> </div>'; 
+							}else{
+								htmlStr += '<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">';
+								htmlStr += '<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;">N S</div></div> ';
+							}
+							htmlStr += '</td>';
+							htmlStr += '<td align="center"><input type="checkbox" class="form-group1" name="favourite"  value="'+result[v][10]+'"></td>';
+						htmlStr += '</tr>';
+					}
+				}else{
+					htmlStr += '<tr> <td colspan="7" style="text-align: center;font-size: 18px;font-weight: 600;color: #1e73cf;">No Record Found !</td></tr>';	
+				}
+				$('#favourite_list').html(htmlStr);
+			}
+		});
+	}
+	
+	function AddFavourite(myfrm){
+		var fields = $("input[name='favourite']").serializeArray();
+
+		if (fields.length === 0){
+			alert("Please Select A Record");
+			 event.preventDefault();	
+			return false;
+		}else{
+			if(confirm("Are you sure to Submit?")){
+				document.getElementById("frm1").submit();
+			}	
+		}
+	}
+	
+	 $(document).ready(function(){
+	 	  $("#myTable").DataTable({
+	 	 "lengthMenu": [10,25, 50, 75, 100 ],
+	 	 "pagingType": "simple",
+	 	 "pageLength": 10
+	 });
+	 });	
 </script>
 </body>
 </html>

@@ -113,7 +113,7 @@ h6{
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Name </label>
 					   						</td>
 					   						
-					   						<%if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("P")  ) {%>
+					   						<%if(LoginType.equalsIgnoreCase("Z") || LoginType.equalsIgnoreCase("Y") || LoginType.equalsIgnoreCase("P") || LoginType.equalsIgnoreCase("L") || LoginType.equalsIgnoreCase("C")|| LoginType.equalsIgnoreCase("I")  ) {%>
 					   						
 					   						<td style=" padding-right: 25px">
                                                         <select class="form-control selectdee " name="EmpId" id="EmpId" required="required"  data-live-search="true"  >

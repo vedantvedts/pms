@@ -14,12 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-
-<%
-	HashMap< String, ArrayList<Object[]>> actionlist = (HashMap< String, ArrayList<Object[]>>) request.getAttribute("actionlist");
-	
-	
+	<%
 	List<Object[]> speclists = (List<Object[]>) request.getAttribute("committeeminutesspeclist");
 	List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
 	List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
@@ -31,22 +26,21 @@
 	List<TotalDemand> totalprocurementdetails = (List<TotalDemand>)request.getAttribute("TotalProcurementDetails");
 	List<Object[]> MilestoneDetails6 = (List<Object[]>)request.getAttribute("milestonedatalevel6");
 
-
 	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
 	Object[] labdetails = (Object[]) request.getAttribute("labdetails");
 	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-	
+	String levelid= (String) request.getAttribute("levelid");
+	int meetingcount= (int) request.getAttribute("meetingcount");
+	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
 	DecimalFormat df=new DecimalFormat("####################.##");
-	int meetingcount= (int) request.getAttribute("meetingcount");
 	FormatConverter fc=new FormatConverter(); 
 	SimpleDateFormat sdf3=fc.getRegularDateFormat();
 	SimpleDateFormat sdf=fc.getRegularDateFormatshort();
 	SimpleDateFormat sdf1=fc.getSqlDateFormat(); int addcount=0; 
-	String isprint=(String)request.getAttribute("isprint"); 
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 	String projectid= committeescheduleeditdata[9].toString();
 	String divisionid= committeescheduleeditdata[16].toString();
@@ -56,9 +50,7 @@
 	
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
-	String levelid= (String) request.getAttribute("levelid");
 	
-	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
 	%>
 <style type="text/css">
@@ -310,7 +302,7 @@ p{
 
 
 <%if(invitedlist.size()>0){ %>
-<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO"));
+<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
 
 int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
 int j=0;
@@ -370,6 +362,7 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -410,6 +403,7 @@ for(Object[] temp : invitedlist){
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -460,6 +454,7 @@ for(Object[] temp : invitedlist){
 		 	<td style="border: 1px solid black;padding: 5px ;text-align: left">
 		 		<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -508,6 +503,7 @@ for(Object[] temp : invitedlist){
 	 		<td style="border: 1px solid black ;padding: 5px ;text-align: left "> 
 	 			<%  if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {		 %>Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); %> Member Secretary<%}
+					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ){ %> Co-Chairperson<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) { %>Member Secretary&nbsp;(Proxy) <%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI")){   %>Internal<%}
 					else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")){	 %>External<%-- &nbsp;(<%=invitedlist.get(i)[11] %>) --%><%}
@@ -748,29 +744,33 @@ for(Object[] temp : invitedlist){
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
 											<td class="std"  align="center"> 
-												<%if(obj[4]!= null){
-													if(obj[18]!=null && Integer.parseInt(obj[18].toString())>0){ %>
-												  
-												  
-													<%if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString()))  )){ %>
-														<span class="ongoing">UF</span>
-													<%}else if(!obj[10].toString().equals("C") && obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-														<span class="delay">FD</span>
-													<%}else if(obj[10].toString().equals("C") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.parse(obj[14].toString())) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.parse(obj[14].toString())) )){  %>
-														<span class="completed">CO</span>
-													<%}else if(obj[10].toString().equals("C") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.parse(obj[14].toString()))){  %>
-													   <span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.parse(obj[14].toString())) %>)  </span>
-													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && (LocalDate.parse(obj[6].toString()).isAfter(LocalDate.now()) || LocalDate.parse(obj[6].toString()).isEqual(LocalDate.now()) )){  %> 
-														<span class="ongoing">OG</span>
-													<%}else if(!obj[10].toString().equals("C") && !obj[16].toString().equals("F") && LocalDate.parse(obj[6].toString()).isBefore(LocalDate.now())){  %> 
-														<span class="delay">DO (<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[6].toString()), LocalDate.now())  %>) </span>
-													<%}else{ %>
-														<span class="ongoing">OG</span>
-													<%} 
-													}else if(obj[18]!=null && obj[10]!=null && obj[10].toString().equals("C") && Integer.parseInt(obj[18].toString())>0){ %>
-												        <span class="completed">CO</span>
-												      <% }else{ %><span class="notyet">NS</span> 
-												<%}}else { %> <span class="notassign">NA</span> <%} %> 
+												<%if(obj[4]!= null){ %> 
+													<%	String actionstatus = obj[10].toString();
+														int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[6].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> 
+													<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+															<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+																<span class="completed">CO</span>
+															<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+																<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+															<%} %>	
+														<%}else{ %>
+															<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+																<span class="ongoing">RC</span>												
+															<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+																<span class="delay">FD</span>
+															<%}else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
+																<span class="ongoing">OG</span>
+															<%}else if(pdcorg.isBefore(today)){  %>
+																<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+															<%} %>									
+													<%} %>
+												<%}else { %>
+													<span class="notassign">NA</span>
+												<%} %> 
 											</td>				
 										</tr>			
 									<%i++;
@@ -914,14 +914,10 @@ for(Object[] temp : invitedlist){
 										</tr>
 									<%milcount1++;}} %>
 								<%} else{ %>
-								<tr><td class="std" colspan="5" style="text-align: center;" > No SubSystems</td></tr>
+								<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
 								<%}}else{ %>
-									<tr><td class="std" colspan="5" style="text-align: center;" > No SubSystems</td></tr>
+									<tr><td class="std" colspan="8" style="text-align: center;" > No SubSystems</td></tr>
 								<%} %>
-									
-			
-								<!-- New code by tharun end -->	
-									
 
 						</tbody>
 					</table>
@@ -1113,7 +1109,7 @@ for(Object[] temp : invitedlist){
 					</table>	
 					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
 							
-								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 10px; width: 660px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								    <thead>
 								        <tr>
 								           	<td class="std" colspan="2" align="center"><b>Head</b></td>
@@ -1126,7 +1122,7 @@ for(Object[] temp : invitedlist){
 								        </tr>
 									    <tr>
 											<th class="std" >SN</th>
-										    <th  class="std" >Head</th>
+										    <th class="std" >Head</th>
 										    <th class="std" >RE</th>
 										    <th class="std" >FE</th>
 										    <th class="std" >RE</th>
@@ -1480,66 +1476,6 @@ for(Object[] temp : invitedlist){
 			</div>
 		</div> 
 	
-	<%if( isprint.equals("N")){ %>
-		<div class="break"></div>	
-		<br>
-						
-				<div align="center">
-			<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEMS DETAILS</h2></div>
-		
-			<table style="margin-top: -5px; margin-left: 5px; width: 670px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
-			<tbody>
-				<tr>
-					<th  class="sth" style=" max-width: 30px"> SN. </th>
-					<th  class="sth" style=" max-width: 70px"> Action Id</th>	
-					<th  class="sth" style=" max-width: 600px"> Item</th>				
-					<th  class="sth" style=" max-width: 70px"> Responsibility</th>					
-					<th  class="sth" style=" width: 90px"> PDC</th>
-				</tr>
-				
-				<% 	int count =0;
-				 	Iterator actIterator = actionlist.entrySet().iterator();
-					while(actIterator.hasNext()){	
-					Map.Entry mapElement = (Map.Entry)actIterator.next();
-		            String key = ((String)mapElement.getKey());
-		            ArrayList<Object[]> values=(ArrayList<Object[]>)mapElement.getValue();
-		            count++;
-				%>
-					<tr>
-						<td class="std" style="text-align: center ;" > <%=count%></td>
-						<td  class="std" style="text-align: left;" >
-							
-							<%	int count1=0;
-								for(Object obj[]:values){
-									 count1++; %>
-									<%if(count1==1 ){ %>
-										<%if(obj[3]!=null){ %> <%= obj[3]%><%}else{ %> - <%} %>
-									<%}else if(count1==values.size() ){ %>
-										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
-									<%} %>
-							<%} %>
-							
-						</td>
-						
-						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
-						<td  class="std" style="text-align: left;" >
-							<%	int count2=0;
-							for(Object obj[]:values){ %>
-							<%if(obj[13]!=null){ %> <%= obj[13]%><%-- ,&nbsp;<%=obj[14] %> --%>
-								<%if(count2>=0 && count2<values.size()-1){ %>
-								,&nbsp;
-								<%} %>
-							<%}else{ %> - <%} %>
-						<%count2++;} %>
-						</td>                       						
-						<td  class="std" style="text-align: center;"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
-					</tr>				
-				<% } %>
-			</tbody>
-		</table>
-	</div>
-	<br>
-	<%} %>
 	
 	</div>
 	

@@ -130,7 +130,7 @@ a:hover {
 					
 					<div class="card" style=" ">
 
-						<div class="card-header" style="background-color: #055C9D;">
+						<div class="card-header" style="background-color: #055C9D; height: 100px;">
 							<div class="row"> 
 
 								<div class="col-sm-7" align="left"  >
@@ -349,8 +349,7 @@ a:hover {
 													</thead>
 													<tbody>
 														<%int  count=1;
-															
-														 	if(AssignedList!=null&&AssignedList.size()>0){
+														 	if(AssignedList!=null && AssignedList.size()>0){
 															for(Object[] obj: AssignedList){ %>
 														<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
@@ -358,22 +357,23 @@ a:hover {
 															<td class="width-30px" ><%=sdf.format(obj[4])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td ><%=obj[1]%>, <%=obj[2]%></td>
-															<td style="width:20% !important; "><%if(obj[11]!=null){ %>
+															<td style="width:20% !important; "><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[11]%>
+															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[7]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%=obj[7]%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-																Not Yet Started .
+																0
 															</div>
-															</div> <%} %></td>
+															</div> <%} %>
+															</td>
 															<td class="talign" >
 														
-																	<%if(obj[14].toString().equals("1")){ %>
+																	<%if(obj[8].toString().equals("1")){ %>
 																		<p style="color: green;">Seen</p>																		
-																	<%}else if(obj[14].toString().equals("0")){ %>
+																	<%}else if(obj[8].toString().equals("0")){ %>
 																		<p style="color: red; font-weight: bold;">UnSeen</p>
 																	<%} %>
 														</td>
@@ -390,19 +390,18 @@ a:hover {
 															</button>                 
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 														    <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
-														    <input type="hidden" name="ActionAssignId" value="<%=obj[15]%>"/>
-														 
+														    <input type="hidden" name="ActionAssignId" value="<%=obj[9]%>"/>
 														
-														<%if(obj[11]==null && "0".equals(obj[16].toString())){%>
-																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[15]%>'); ">
+															<%if(obj[7]!=null && "0".equals(obj[7].toString()) && "0".equals(obj[10].toString())){%>
+																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[9]%>'); ">
 																	<div class="cc-rockmenu">
 											                    	  <div class="rolling">
 																		<figure class="rolling_icon"><img src="view/images/edit.png"></figure>
-																		 <span>Edit</span>
+																		<span>Edit</span>
 																	  </div>
 																	</div>
 																</button>  
-                                                        <%}%>
+                                                       		<%}%>
 											         	
 											         		</form> 
 														</td>
@@ -455,7 +454,7 @@ a:hover {
 											 %>
 												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
 											<%}}}%> 
-											<!-- <option value="@EXP">Expert</option> -->
+											<option value="@EXP">Expert</option>
 										</select>
 										</td>
 									</tr>
@@ -514,7 +513,7 @@ a:hover {
 															%>
 														     	<option value="<%=obj[3]%>" <%if(LabCode!=null && LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
 															<%}}}%>
-															<!-- <option value="@EXP"> Expert</option> -->
+															<option value="@EXP"> Expert</option>
 														</select>	
 				                              </div>
 			                         </div>

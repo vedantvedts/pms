@@ -27,12 +27,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 
 public interface CommitteeDao {
 
@@ -266,17 +261,8 @@ public interface CommitteeDao {
 	public int CommProScheduleList(String projectid, String committeeid,String sdate) throws Exception;
 	public long insertMinutesFinance(MinutesFinanceList finance) throws Exception;
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception;
-	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception;
-	public long insertMinutesAction(MinutesActionList action) throws Exception;
-	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception;
-	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception;
-	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception;
     public int updateMinutesFrozen(String schduleid)throws Exception;
 	public List<MinutesFinanceList> getMinutesFinance(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesAction(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesMile(String scheduleid) throws Exception;
-	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception;
 	public List<Object[]> ClusterList() throws Exception;
 	public List<Object[]> ClusterExpertsList(String committeemainid) throws Exception;
 	public List<Object[]> ClusterExpertsListForCommitteeSchdule() throws Exception;
@@ -289,6 +275,7 @@ public interface CommitteeDao {
 	public long FreezeDPFMMinutesAdd(CommitteeMeetingDPFMFrozen dpfm) throws Exception;
 	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
 	public Object[] ProjectDataDetails(String projectid) throws Exception;
+	
 
 
 }

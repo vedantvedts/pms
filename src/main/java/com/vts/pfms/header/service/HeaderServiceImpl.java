@@ -95,15 +95,6 @@ public class HeaderServiceImpl implements HeaderService {
 	}
 	
 
-	if(LoginType.equalsIgnoreCase("C")) {
-		for(Object[] obj:loginTypeList) {
-			if(obj[0].toString().equalsIgnoreCase("D")||obj[0].toString().equalsIgnoreCase("G")||obj[0].toString().equalsIgnoreCase("T")||obj[0].toString().equalsIgnoreCase("C")) {
-				loginTypeListnew.add(obj);
-			}
-		}
-	
-	}
-	
 	
 	
 	if(LoginType.equalsIgnoreCase("M")) {
@@ -125,17 +116,7 @@ public class HeaderServiceImpl implements HeaderService {
 	}	
 	
 	
-	if(LoginType.equalsIgnoreCase("I")) {
-		for(Object[] obj:loginTypeList) {
-			if(obj[0].toString().equalsIgnoreCase("I")) {
-				loginTypeListnew.add(obj);
-			}
-		}
-	
-	}
-	
-	
-	
+		
 	if(LoginType.equalsIgnoreCase("U")) {
 		for(Object[] obj:loginTypeList) {
 			if(obj[0].toString().equalsIgnoreCase("U")) {
@@ -156,13 +137,12 @@ public class HeaderServiceImpl implements HeaderService {
 	
 	
 	
-	if(LoginType.equalsIgnoreCase("A")) {
-	
-				loginTypeListnew=loginTypeList;
+		if(LoginType.equalsIgnoreCase("A")) 
+		{
+			loginTypeListnew=loginTypeList;
+		}
 		
-	}
-	
-	return loginTypeListnew;
+		return loginTypeListnew;
 	}
 
 	@Override

@@ -74,12 +74,7 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
-import com.vts.pfms.print.model.MinutesActionList;
 import com.vts.pfms.print.model.MinutesFinanceList;
-import com.vts.pfms.print.model.MinutesLastPmrc;
-import com.vts.pfms.print.model.MinutesMileActivity;
-import com.vts.pfms.print.model.MinutesProcurementList;
-import com.vts.pfms.print.model.MinutesSubMile;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService{
@@ -2727,28 +2722,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 		String logintype=logindata[4].toString();
 		ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList(logintype, EmpId));
-//		
-//		if(logintype.equals("G") || logintype.equals("J") || logintype.equals("T") )
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DO", EmpId));
-//		}
-//		
-//		if(rtmddo!=null)
-//		{
-//			if(rtmddo[1].toString().equals(logindata[2].toString()))
-//			{
-//				ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("RT", EmpId));
-//			}
-//		}
-//		
-//		if(logintype.equals("Z"))
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("DR", EmpId));
-//		}
-//		if(logintype.equals("A"))
-//		{
-//			ProposedCommitteesApprovalList.addAll(dao.ProposedCommitteesApprovalList("A", EmpId));
-//		}
 		
 		return ProposedCommitteesApprovalList;
 	}
@@ -2812,7 +2785,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		String confidential = dto.getConfidential();
 		int useraccess=0;
 		
-		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H") );
+		ArrayList<String> logintypes=new ArrayList<String>( Arrays.asList("A","Z","Y","E","H","C","I") );
 		ArrayList<String> memtypes=new ArrayList<String>( Arrays.asList("CS","CC","PS") );
 			if(logintypes.contains(logintype)) 
 			{
@@ -3103,37 +3076,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 	}
 
 	@Override
-	public long insertMinutesProcurement(MinutesProcurementList procure) throws Exception {
-        procure.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesProcurement(procure);
-	}
-
-	@Override
-	public long insertMinutesAction(MinutesActionList action) throws Exception {
-	    action.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesAction(action);
-	}
-
-	@Override
-	public long insertMinutesLastPmrc(MinutesLastPmrc lastpmrc) throws Exception {
-		lastpmrc.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesLastPmrc(lastpmrc);
-	}
-
-	@Override
-	public long insertMinutesMileActivity(MinutesMileActivity Mile) throws Exception {
-		Mile.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesMileActivity(Mile);
-		
-	}
-
-	@Override
-	public long insertMinutesSubMile(MinutesSubMile submile) throws Exception {
-		submile.setCreatedDate(sdf1.format(new Date()));
-		return dao.insertMinutesSubMile(submile);
-	}
-
-	@Override
 	public int updateMinutesFrozen(String schduleid) throws Exception {
 		
 		return dao.updateMinutesFrozen(schduleid);
@@ -3165,30 +3107,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		return finlist;
 	}
 
-	@Override
-	public List<Object[]> getMinutesAction(String scheduleid) throws Exception {
-		
-		return dao.getMinutesAction(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesProcure(String scheduleid) throws Exception {
-		
-		return dao.getMinutesProcure(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesMile(String scheduleid) throws Exception {
-		
-		return dao.getMinutesMile(scheduleid);
-	}
-
-	@Override
-	public List<Object[]> getMinutesSubMile(String scheduleid) throws Exception {
-		
-		return dao.getMinutesSubMile(scheduleid);
-	}
-	
 	@Override
 	public List<Object[]> ClusterList() throws Exception {
 		

@@ -19,7 +19,7 @@ public class ActionMainDto {
 	private String ActionType;
 	private String ActivityId;
 	private String ActionStatus;
-	private String ActionFlag;
+	
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
@@ -138,12 +138,6 @@ public class ActionMainDto {
 	}
 	public void setActionStatus(String actionStatus) {
 		ActionStatus = actionStatus;
-	}
-	public String getActionFlag() {
-		return ActionFlag;
-	}
-	public void setActionFlag(String actionFlag) {
-		ActionFlag = actionFlag;
 	}
 	public String getCreatedBy() {
 		return CreatedBy;

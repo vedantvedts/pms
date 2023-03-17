@@ -1,4 +1,4 @@
-package com.vts.pfms.docs.model;
+package com.vts.pfms.print.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,29 +9,23 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "pfms_doc_content_freeze")
-public class PfmsDocContentFreeze {
-	
+@Table(name ="pfms_project_slides")
+public class ProjectSlides {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long TempContentFrzId;
-	private long TemplateItemId;
-	private long TempContentId;
-	private int LevelNo;
-	private long ParentLevelId;
-	private long PfmsDocId;
-	private String ItemName;
-	private String ItemContent;
-	private int VersionNo;
-	private String RevisionDate;
-	private String IsDependent;
+	private Long SlideId;
+	private Long ProjectId;
+	private String Status;
+	private String Slide;
+	private String Path;
+	private String ImageName;
+	private String AttachmentName;
 	private int IsActive;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
 }

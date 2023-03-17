@@ -317,20 +317,12 @@ td
 			                          	  >
 			                          		
 			                          		<span style="cursor:pointer;font-weight: 600;" 
-			                          			onclick="ActionDetails(	'<%=action[10] %>',   <!-- assignid -->
-			                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
-			                          									'<%=action[11] %>',   <!-- action No -->
-			                          									'<%if(action[25]!=null){ %> <%=action[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
-			                          									'<%=sdf.format(action[4]) %>', <!-- action date -->
-			                          									'<%=sdf.format(action[24]) %>', <!-- enddate -->
-			                          									'<%=sdf.format(action[12]) %>', <!-- orgpdc -->
-			                          									'<%=action[22].toString().trim()%>', <!-- assignor -->
-			                          									'<%=action[23].toString().trim()%>', <!-- assignee -->
-			                          									'<%=action[6]%>', <!-- action type -->
-			                          									this);" >
+			                          			onclick="ActionDetails(	'<%=action[10] %>' );" >
 			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
 			                          	</div>
-			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
+			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());
+			                          	System.out.println("level0  "+ level0.size());
+			                          	%>
 										<div <%if(level0!=null && level0.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
 											<table class="card-body-table">
 			                          			<tr>
@@ -345,7 +337,7 @@ td
 			                          				<th style="">Progress (%) :</th>
 			                          				<td style="padding-left: 10px;">
 			                          					
-			                          					<%if(action[25]!=null){ %>
+			                          					<%if(action[25]!=null && Integer.parseInt(action[25].toString())>0){ %>
 					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	<%=action[25]%>
@@ -394,17 +386,7 @@ td
 						                          		<%} %>
 						                          	  >
 													    <span style="cursor:pointer;font-weight: 600;" 
-							                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
-							                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
-							                          									'<%=action_L1[11] %>',   <!-- action No -->
-							                          									'<%if(action_L1[25]!=null){ %> <%=action_L1[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
-							                          									'<%=sdf.format(action_L1[4]) %>', <!-- action date -->
-							                          									'<%=sdf.format(action_L1[24]) %>', <!-- enddate -->
-							                          									'<%=sdf.format(action_L1[12]) %>', <!-- orgpdc -->
-							                          									'<%=action_L1[22].toString().trim()%>', <!-- assignor -->
-							                          									'<%=action_L1[23].toString().trim()%>', <!-- assignee -->
-							                          									'<%=action_L1[6]%>', <!-- action type -->
-							                          									this);" >                      		
+							                          			onclick="ActionDetails('<%=action_L1[10] %>' );" >                      		
 														
 														 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L1[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L1[11]%>" aria-hidden="true"></i></span >    
 														       
@@ -424,7 +406,7 @@ td
 						                          				<th style="">Progress (%) :</th>
 						                          				<td style="padding-left: 10px;">
 						                          					
-						                          					<%if(action_L1[25]!=null){ %>
+						                          					<%if(action_L1[25]!=null && Integer.parseInt(action_L1[25].toString())>0){ %>
 								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=action_L1[25]%>
@@ -478,17 +460,7 @@ td
 									                          	  >
 																	
 																	<span style="cursor:pointer;font-weight: 600;" 
-									                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
-									                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
-									                          									'<%=action_L2[11] %>',   <!-- action No -->
-									                          									'<%if(action_L2[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
-									                          									'<%=sdf.format(action_L2[4]) %>', <!-- action date -->
-									                          									'<%=sdf.format(action_L2[24]) %>', <!-- enddate -->
-									                          									'<%=sdf.format(action_L2[12]) %>', <!-- orgpdc -->
-									                          									'<%=action_L2[22].toString().trim()%>', <!-- assignor -->
-									                          									'<%=action_L2[23].toString().trim()%>', <!-- assignee -->
-							                          											'<%=action_L2[6]%>', <!-- action type -->
-									                          									this);" > 
+									                          			onclick="ActionDetails('<%=action_L2[10] %>');" > 
 																	 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L2[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L2[11]%>" aria-hidden="true"></i></span >           
 																</div>
 																<%List<Object[]> level2 =actionslist.stream().filter(e->  Long.parseLong(action_L2[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
@@ -506,7 +478,7 @@ td
 									                          				<th style="">Progress (%) :</th>
 									                          				<td style="padding-left: 10px;">
 									                          					
-									                          					<%if(action_L2[25]!=null){ %>
+									                          					<%if(action_L2[25]!=null && Integer.parseInt(action_L2[25].toString())>0){ %>
 											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																							<%=action_L2[25]%>
@@ -557,17 +529,7 @@ td
 													                          	  >
 																				                          		
 																					<span style="cursor:pointer;font-weight: 600;" 
-													                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
-													                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
-													                          									'<%=action_L3[11] %>',   <!-- action No -->
-													                          									'<%if(action_L3[25]!=null){ %> <%=action_L2[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
-													                          									'<%=sdf.format(action_L3[4]) %>', <!-- action date -->
-													                          									'<%=sdf.format(action_L3[24]) %>', <!-- enddate -->
-													                          									'<%=sdf.format(action_L3[12]) %>', <!-- orgpdc -->
-													                          									'<%=action_L3[22].toString().trim()%>', <!-- assignor -->
-													                          									'<%=action_L3[23].toString().trim()%>', <!-- assignee -->
-							                          															'<%=action_L3[6]%>', <!-- action type -->
-													                          									this);" >      
+													                          			onclick="ActionDetails('<%=action_L3[10] %>');" >      
 																									&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L3[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L3[11]%>" aria-hidden="true"></i></span >     
 																				</div>
 																					<%List<Object[]> level3 =actionslist.stream().filter(e->  Long.parseLong(action_L3[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
@@ -585,7 +547,7 @@ td
 													                          				<th style="">Progress (%) :</th>
 													                          				<td style="padding-left: 10px;">
 													                          					
-													                          					<%if(action_L3[25]!=null){ %>
+													                          					<%if(action_L3[25]!=null && Integer.parseInt(action_L3[25].toString())>0){ %>
 															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																											<%=action_L3[25]%>
@@ -636,17 +598,7 @@ td
 													                          						>
 																									                          		
 																										<span style="cursor:pointer;font-weight: 600;" 
-																		                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
-																		                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
-																		                          									'<%=action_L4[11] %>',   <!-- action No -->
-																		                          									'<%if(action_L4[25]!=null){ %> <%=action_L4[25] %>% <%}else{ %>0<%} %>', <!-- progress -->
-																		                          									'<%=sdf.format(action_L4[4]) %>', <!-- action date -->
-																		                          									'<%=sdf.format(action_L4[24]) %>', <!-- enddate -->
-																		                          									'<%=sdf.format(action_L4[12]) %>', <!-- orgpdc -->
-																		                          									'<%=action_L4[22].toString().trim()%>', <!-- assignor -->
-																		                          									'<%=action_L4[23].toString().trim()%>', <!-- assignee -->
-							                          																				'<%=action_L4[6]%>', <!-- action type -->
-																		                          									this);" >
+																		                          			onclick="ActionDetails('<%=action_L4[10] %>');" >
 																										&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L4[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L4[11]%>" aria-hidden="true"></i></span > 
 																									</div>
 																								<%List<Object[]> level4 =actionslist.stream().filter(e->  Long.parseLong(action_L4[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
@@ -664,7 +616,7 @@ td
 																		                          				<th style="">Progress (%) :</th>
 																		                          				<td style="padding-left: 10px;">
 																		                          					
-																		                          					<%if(action_L4[25]!=null){ %>
+																		                          					<%if(action_L4[25]!=null && Integer.parseInt(action_L4[25].toString())>0) { %>
 																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
 																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																																<%=action_L4[25]%>
@@ -832,14 +784,16 @@ $(function () {
 </script>
 <!-- ------------------------------- tree script ------------------------------- -->
 
+
 <script type="text/javascript">
 
-function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDate,InEndDate,InPDCOrg, InAssignor,InAssignee, InActionType ,	Inobj)
+function ActionDetails(InAssignId)
 {
 		$("#modal_progress_table").DataTable().destroy();
+		
 		$.ajax({		
 			type : "GET",
-			url : "ActionSubListAjax.htm",
+			url : "ActionAssignDataAjax.htm",
 			data : {
 				ActionAssignid : InAssignId
 			},
@@ -847,13 +801,14 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 			success : function(result) {
 				var result = JSON.parse(result);
 				
-				$('#modal_action_no').html(InActionNo);
-				$('#modal_action_item').html(InActionItem);
-				$('#modal_action_date').html(InActionDate);
-				$('#modal_action_PDC').html(InEndDate);
-				$('#modal_action_assignor').html(InAssignor);
-				$('#modal_action_assignee').html(InAssignee);
+				$('#modal_action_item').html(result[1]);
+				$('#modal_action_no').html(result[2]);
+				$('#modal_action_date').html(moment(new Date(result[5]) ).format('DD-MM-YYYY'));
+				$('#modal_action_PDC').html(moment(new Date(result[6]) ).format('DD-MM-YYYY'));
+				$('#modal_action_assignor').html(result[8]);
+				$('#modal_action_assignee').html(result[9]);
 				
+				var InActionType = result[9];
 				var ActionType = 'Action';
 				
 				if(InActionType==='A')
@@ -883,6 +838,12 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 				
 				$('#modal_action_type').html(ActionType);
 				
+				var InProgress = '0'
+				if(result[4]!=null){
+					InProgress=result[4]+'';
+				}
+				
+				
 				if(InProgress.trim() === '0')
 				{
 					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
@@ -894,12 +855,29 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 				else
 				{
 					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
-					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+';  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >';
+					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+'%;  " aria-valuemin="0" aria-valuemax="100" >';
 					progressBar +=		InProgress
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
 				}
 				$('#modal_action_progress').html(progressBar);
+			}
+		});
+		
+		
+		
+		
+		
+		$.ajax({		
+			type : "GET",
+			url : "ActionSubListAjax.htm",
+			data : {
+				ActionAssignid : InAssignId
+			},
+			datatype : 'json',
+			success : function(result) {
+				var result = JSON.parse(result);
+				
 				
 				var htmlStr='';
 				if(result.length> 0){
@@ -933,10 +911,13 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 				}
 				setModalDataTable();
 				$('#modal_progress_table_body').html(htmlStr);
-				document.getElementById(InActionNo).className = "fa fa-minus-circle fa-lg";
+				
+				
 				$('#action_modal').modal('toggle');
 			}
 		});
+		
+		
 	}
 	setModalDataTable();
 	function setModalDataTable()
@@ -947,11 +928,6 @@ function ActionDetails(InAssignId,InActionItem,InActionNo,InProgress,InActionDat
 			"pageLength": 5
 		});
 	}
-	
-	$('#action_modal').on('hide.bs.modal', function(){
-		var id= $("#modal_action_no").html();
-		document.getElementById(id).className = "fa fa-plus-circle fa-lg"; 
-	})
 </script>
 
 </body>

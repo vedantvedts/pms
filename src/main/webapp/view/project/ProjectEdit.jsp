@@ -266,7 +266,7 @@ Project Edit</h4>
 		</select>
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanction No:
+ <label style="margin-bottom: -10px;"> Project Sanction Letter No:
 <span class="mandatory" style="color: red;">*</span>
 </label>
 </th>
@@ -316,8 +316,8 @@ Project Edit</h4>
 														data-width="100%"
 														data-live-search="true" >
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
-														<option value="DMC" <%if(ProjectEditData[15]!=null && ProjectEditData[15].equals("DMC")){ %> selected<%} %>>DMC</option>
-														<option value="CCM" <%if(ProjectEditData[15]!=null && ProjectEditData[15].equals("CCM")){ %> selected<%} %>>CCM</option>														
+														<option value="DMC" <%if(ProjectEditData[15]!=null && ProjectEditData[15].toString().equalsIgnoreCase("DMC")){ %> selected<%} %>>DMC</option>
+														<option value="CCM" <%if(ProjectEditData[15]!=null && ProjectEditData[15].toString().equalsIgnoreCase("CCM")){ %> selected<%} %>>CCM</option>														
 									</select>
 								
 								
@@ -378,43 +378,34 @@ Project Edit</h4>
 </label>
 </th>
  <td >
-<select required="required" name="projectcategory" class="form-control form-control selectdee" id="selectbasic2" data-width="80%" data-live-search="true" >
-							<%for(Object[] protype:CategoryList ){
-	
-	                           %>
-	                           
-								<option value="<%=protype[0] %>"
+		<select required="required" name="projectcategory" class="form-control form-control selectdee" id="selectbasic2" data-width="80%" data-live-search="true" >
+			<%for(Object[] protype:CategoryList ){%>
+				<option value="<%=protype[0] %>"
 								 <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[21].toString())){ %>
-								 selected="selected"  <%} %>
-								><%=protype[1].toString() %></option>
-								<%} %>
-							</select>
-							
-							<%-- <input name="projectcategory" id="projectcategoryID" hidden="hidden"  value="<%=ProjectEditData[21].toString() %>"> --%>
+								 selected="selected"  <%} %>><%=protype[1].toString() %></option>
+								<%}%>
+		</select>			
 </td>
-
- </tr>
+</tr>
+<tr>
+	   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+	  <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control" maxlength="250" <%if(ProjectEditData!=null && ProjectEditData[27]!=null){%>value="<%=ProjectEditData[27]%>" <%}%> /></td>
+</tr>
  <tr>
-  <th colspan="1">
- <label style="margin-bottom: -10px;">Objective:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td colspan="3">
-	<textarea required="required"  name="Objective" 
-	class="form-control " maxlength="5000" rows="5" cols="53"><%=ProjectEditData[19] %></textarea>
-</td>
+		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><textarea required="required" placeholder="Enter maximum 50 charcters " name="application" class="form-control " maxlength="50" rows="1" cols="53"><%=ProjectEditData[26]%></textarea></td>
+</tr>
+<tr>
+		<th colspan="1"><label style="margin-bottom: -10px;">Scope:<span class="mandatory" style="color: red;">*</span></label></th>
+		<td colspan="3"><textarea required="required" name="scope" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[25] %></textarea></td>
+</tr>
+ <tr>
+		  <th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
+		  <td colspan="3"><textarea required="required"  name="Objective" class="form-control " placeholder="Enter maximum 5000 charcters " maxlength="5000" rows="3" cols="53"><%=ProjectEditData[19] %></textarea></td>	 
  </tr>
   <tr>
-  <th colspan="1">
- <label style="margin-bottom: -10px;">Deliverable:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td colspan="3">
-	<textarea required="required" name="Deliverable" 
-	class="form-control "  maxlength="5000" rows="5" cols="53"><%=ProjectEditData[20] %></textarea>
-</td>
+		  <th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>
+		  <td colspan="3"><textarea required="required" name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters "  maxlength="5000" rows="3" cols="53"><%=ProjectEditData[20] %></textarea></td>
  </tr>
  </thead>
  </table>
@@ -445,14 +436,6 @@ Project Edit</h4>
 	</div>
 	</div></div></div></div>
 </div>
-
-
-
-
-
-
-
-
 
 <script>
 function Edit(myfrm){

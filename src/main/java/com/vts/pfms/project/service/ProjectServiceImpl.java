@@ -1891,6 +1891,10 @@ public class ProjectServiceImpl implements ProjectService {
 		master.setProjectMainId(main.getProjectMainId());
 		master.setProjectCode(main.getProjectCode());
 		// ProjectImmsCd
+		master.setProjectShortName(main.getProjectShortName());
+		master.setEndUser(main.getEndUser());
+		master.setScope(main.getScope());
+		master.setApplication(main.getApplication());
 		master.setProjectName(main.getProjectName());
 		master.setProjectDescription(main.getProjectDescription());
 		master.setUnitCode(main.getUnitCode());
@@ -1914,7 +1918,7 @@ public class ProjectServiceImpl implements ProjectService {
 		master.setCreatedBy(user);
 		master.setCreatedDate(sdf1.format(new Date()));
 		master.setLabCode(LabCode);
-
+		master.setLabParticipating(main.getLabParticipating());
 		return dao.ProjectMasterAdd(master);
 	}
 

@@ -1,7 +1,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
-<%@page import="com.vts.pfms.docs.model.PfmsDoc"%>
-<%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%>
+<%-- <%@page import="com.vts.pfms.docs.model.PfmsDoc"%>
+<%@page import="com.vts.pfms.docs.model.PfmsDocTemplate"%> --%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>

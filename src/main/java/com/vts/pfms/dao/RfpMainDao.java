@@ -21,17 +21,9 @@ public interface RfpMainDao {
 	public LabMaster LabDetailes()throws Exception;
 	public List<Object[]> LabDetails()throws Exception;
 	public String DesgId(String Empid)throws Exception;
-	
-	///Rajat Changes///Notice
 	public List<Object[]> getIndividualNoticeList(String userId)throws Exception;
 	public Long addNotice(Notice notice)throws Exception;
-
-
 	public List<Object[]> AllActionsCount(String empid,String ProjectId) throws Exception;
-
-
-	
-
 	public List<Object[]> GetNotice(String LabCode)throws Exception;
     public List<Object[]> getAllNotice()throws Exception;
     public List<Object> GetNoticeEligibility(String empId)throws Exception;
@@ -71,5 +63,6 @@ public interface RfpMainDao {
 	public List<Object[]> DashboardFinanceCashOutGo(String LoginType, String EmpId, String LabCode, String ClusterId)throws Exception;
 	public List<Object[]> DashboardFinance(String LoginType, String EmpId, String LabCode, String ClusterId) throws Exception;
 	public List<Object[]> DashboardProjectFinanceCashOutGo(String projectcode) throws Exception;
+	public Object[] ProjectAttributes(String projectcode) throws Exception;
 
 }

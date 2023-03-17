@@ -22,6 +22,7 @@ public class ProjectMain implements Serializable{
 	private String ProjectCode;
     private String ProjectName;
     private String ProjectDescription;
+    private String ProjectShortName;
     private String UnitCode;
     private String SanctionNo;
     private Date SanctionDate;
@@ -34,9 +35,11 @@ public class ProjectMain implements Serializable{
     private String BoardReference;
     private Long RevisionNo;
     private String WorkCenter;
+    private String EndUser;
     private String Objective;
     private String Deliverable;
     private String LabParticipating;
+    private String Application;
     private String Scope;
 	private String CreatedBy;
     private String CreatedDate;
@@ -44,7 +47,26 @@ public class ProjectMain implements Serializable{
     private String ModifiedDate;
     private int isActive;
     private int IsMainWC;
+
     
+	public String getProjectShortName() {
+		return ProjectShortName;
+	}
+	public void setProjectShortName(String projectShortName) {
+		ProjectShortName = projectShortName;
+	}
+	public String getEndUser() {
+		return EndUser;
+	}
+	public void setEndUser(String endUser) {
+		EndUser = endUser;
+	}
+	public String getApplication() {
+		return Application;
+	}
+	public void setApplication(String application) {
+		Application = application;
+	}
 	public int getIsMainWC() {
 		return IsMainWC;
 	}

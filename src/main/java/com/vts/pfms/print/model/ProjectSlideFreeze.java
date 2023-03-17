@@ -1,6 +1,6 @@
-package com.vts.pfms.docs.model;
+package com.vts.pfms.print.model;
 
-import java.io.Serializable;
+import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,25 +11,22 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name = "pfms_doc")
-public class PfmsDoc implements Serializable 
-{
-	private static final long serialVersionUID = 1L;
+@Table(name ="pfms_project_slides_freeze")
+public class ProjectSlideFreeze {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long PfmsDocId;
-	private long ProjectId;
-	private long FileRepMasterId;
-	private long FileUploadMasterId;
-	private int VersionNo;
-	private String IsFrozen;
-	private int IsActive;
+	private Long FreezeId;
+	private Long ProjectId;
+	private Long EmpId;
+	private String Reviewby;
+	private Date ReviewDate;
+	private String Path;
+	private String AttachName;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
-	
 }

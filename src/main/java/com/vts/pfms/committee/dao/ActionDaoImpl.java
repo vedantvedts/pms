@@ -1,6 +1,7 @@
 package com.vts.pfms.committee.dao;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
+import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
 
 
@@ -28,30 +30,26 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final Logger logger=LogManager.getLogger(ActionDaoImpl.class);
 	
-
-
 	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND LabCode=:LabCode ORDER BY a.srno=0,a.srno ";
-	private static final String ASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS emp,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision,aas.IsSeen , aas.actionassignid , (SELECT COUNT(am.actionmainid) FROM action_main am WHERE am.ParentActionid = a.actionmainid ) AS 'ChildActionCount' FROM action_main a,  employee ab ,employee_desig dc ,action_assign aas WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.actionflag<>'Y' ORDER BY aas.actionassignid DESC";
+	private static final String ASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS emp,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.progress, aas.IsSeen , aas.actionassignid , (SELECT COUNT(am.actionmainid) FROM action_main am WHERE am.ParentActionid = a.actionmainid ) AS 'ChildActionCount' FROM action_main a,  employee ab ,employee_desig dc ,action_assign aas WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid  AND aas.actionstatus<>'C' AND aas.assigneelabcode <> '@EXP' AND aas.assignor=:empid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS emp,'Expert' AS 'designation',a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.progress, aas.IsSeen , aas.actionassignid , (SELECT COUNT(am.actionmainid) FROM action_main am WHERE am.ParentActionid = a.actionmainid ) AS 'ChildActionCount' FROM action_main a,  expert ab , action_assign aas WHERE aas.actionmainid=a.actionmainid AND aas.assignee=ab.expertid AND ab.isactive='1' AND aas.actionstatus<>'C' AND aas.assigneelabcode = '@EXP' AND aas.assignor=:empid ORDER BY actionassignid DESC";
 	//isseen column has been removed  04-08-2021
 	//private static final String ASSIGNEDLIST="SELECT a.actionmainid,ab.empname,dc.designation,a.actiondate,a.enddate,a.actionitem,a.actionstatus,a.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionmainid = a.actionmainid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionmainid = a.actionmainid) )  AS remarks,a.revision FROM action_main a,  employee ab ,employee_desig dc WHERE a.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND a.assignor=:empid and a.actionflag<>'Y'";
-	private static final String ASSIGNEELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid  FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (d.assignee=:empid ) and d.actionflag in ('N','B') order by d.actionassignid desc";
-	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,e.actionflag,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=:mainid OR parentActionid=:mainid)) AS 'levelcount' , a.projectid , a.type FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.actionflag<>'Y' AND  e.assignee=d.empid AND a.actionmainid=:mainid AND e.actionassignid=:actionassignid";
+	private static final String ASSIGNEELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.remarks,a.actionlinkid,d.actionno ,d.actionassignid ,d.assignee ,d.assignor , a.actionlevel ,a.projectid  FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND (d.assignee=:empid ) AND d.actionstatus IN ('I','A','B') AND d.assigneelabcode<>'@EXP' ORDER BY d.actionassignid DESC";
+	private static final String ASSIGNEEDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=a.actionmainid OR parentActionid=a.actionmainid)) AS 'levelcount' , a.projectid , a.type FROM  action_main a, employee b ,employee_desig c ,employee d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.assignee=d.empid AND e.assigneelabcode <>'@EXP'  AND a.actionmainid=e.actionmainid AND e.actionassignid=:actionassignid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignor' ,c.designation,a.actiondate,e.enddate,a.actionitem,e.actionstatus,a.scheduleminutesid,a.actionlinkid,e.actionno,e.revision,CONCAT(IFNULL(CONCAT(d.title,' '),''), d.expertname) AS 'assignee',a.actiontype,e.pdcorg,e.pdc1,e.pdc2 ,e.assignorlabcode,e.assigneelabcode , e.actionassignid , (SELECT COUNT(actionmainid) FROM  action_main WHERE (actionmainid=a.actionmainid OR parentActionid=a.actionmainid)) AS 'levelcount' , a.projectid , a.type FROM  action_main a, employee b ,employee_desig c ,expert d ,action_assign e WHERE e.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND  e.assignee=d.expertid AND e.assigneelabcode = '@EXP'  AND a.actionmainid=e.actionmainid AND e.actionassignid=:actionassignid";
     private static final String SUBLIST="SELECT a.actionsubid,a.actionassignid,a.progress,a.progressdate,a.remarks,b.actionattachid,b.attachname FROM action_sub a LEFT JOIN action_attachment b ON (a.actionsubid=b.actionsubid) WHERE a.actionassignid=:assignid ORDER BY actionsubid ASC";
 	private static final String SUBDELETE="delete from action_sub where actionsubid=:subid";
-	private static final String ASSIGNUPDATE="UPDATE action_assign SET actionflag=:flag,actionstatus=:status,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assignid";
-	private static final String MAINFORWARD="UPDATE action_assign SET actionflag=:flag,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assign";
-	private static final String FORWARDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionflag IN ('F','N','B') AND aas.assignor=:empid order by aas.actionassignid desc";
-	private static final String MAINSENDBACK="UPDATE action_assign SET remarks=:remarks,actionstatus=:status,actionflag=:flag,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assignid";
+	private static final String MAINFORWARD="UPDATE action_assign SET  actionstatus=:actionstatus, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assign"; //actionflag=:flag,
+	private static final String FORWARDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus as 'status' ,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionstatus IN ('F','A','B') AND aas.assignor=:empid AND aas.assigneelabcode <> '@EXP' UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS 'empname' ,'Expert' AS 'designation',a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionstatus as 'status',a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,a.actionlinkid,aas.actionno, aas.actionassignid ,a.projectid FROM action_main a,  expert ab , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.expertid AND ab.isactive='1'  AND aas.actionstatus IN ('F','A','B') AND aas.assignor=:empid AND aas.assigneelabcode = '@EXP'ORDER BY actionassignid DESC";
 	private static final String ACTIONLIST ="SELECT DISTINCT(a.scheduleid), a.committeeid, a.committeemainid, b.committeename, a.scheduledate, a.schedulestarttime  FROM committee_schedule a, committee b, committee_schedules_minutes_details c,committee_main d ,committee_member cm WHERE a.committeeid=b.committeeid AND a.scheduledate<=CURDATE() AND a.scheduleid=c.scheduleid AND c.idarck IN('A','K','I','R')  AND a.committeemainid=d.committeemainid  AND d.isactive=1 AND a.isactive=1   AND d.committeemainid=cm.committeemainid AND cm.membertype IN ('CS','PS','CC','CH') AND cm.empid=:empid";
 	private static final String COMMITTEEDATA="CALL Pfms_Action_List(:scheduleid)";
 	private static final String COMMITTEESCHEDULEEDITDATA="SELECT a.committeeid,a.committeemainid,a.scheduledate,a.schedulestarttime,a.scheduleflag,a.schedulesub,a.scheduleid,b.committeename,b.committeeshortname,a.projectid FROM committee_schedule a,committee b WHERE scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND a.isactive=1 ";
-	private static final String SCHEDULELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag ,d.assigneelabcode FROM  action_main a, employee b ,employee_desig c ,action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignee=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND a.scheduleminutesid=:schid";
+	private static final String SCHEDULELIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,d.assigneelabcode FROM  action_main a, employee b ,employee_desig c ,action_assign d WHERE d.assigneelabcode <> '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND a.scheduleminutesid=:schid UNION SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.expertname) AS 'empname','Expert' AS 'designation',a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status' ,'Expert' as 'assigneelabcode' FROM  action_main a, expert b ,action_assign d WHERE d.assigneelabcode = '@EXP' AND a.actionmainid=d.actionmainid AND d.assignee=b.expertid AND b.isactive='1' AND a.scheduleminutesid=:schid ";
     private static final String CONTENT="SELECT a.actionmainid,b.details,b.minutesid,b.minutessubid,b.minutessubofsubid,b.minutesunitid,b.idarck FROM action_main a, committee_schedules_minutes_details b WHERE a.scheduleminutesid=b.scheduleminutesid AND a.actionmainid=:aid";
-    private static final String ACTIONSEARCH="SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname',dc.designation FROM action_main a,  employee ab ,employee_desig dc,action_assign  aas WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.actionno LIKE :actionno";
-    private static final String STATUSLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'assignoremp',c.designation,a.actiondate,f.enddate,a.actionitem,f.actionstatus,f.actionflag, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assigneemp',e.designation AS desig,f.actionno,a.actionlinkid,(SELECT g.progress FROM action_sub g  WHERE g.actionassignid = f.actionassignid AND g.actionsubid = (SELECT MAX(s.actionsubid) FROM action_sub s WHERE s.actionassignid = f.actionassignid) )  AS progress , f.actionassignid  FROM  action_main a, employee b ,employee_desig c, employee d ,employee_desig e ,action_assign f WHERE a.actionmainid = f.actionmainid  AND f.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND f.assignee=d.empid AND d.isactive='1' AND d.desigid=e.desigid AND f.assignee=:empid AND a.actiondate BETWEEN :fdate AND :tdate ORDER BY a.actionmainid DESC";
+    private static final String ACTIONSEARCH="SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) AS 'empname',dc.designation FROM action_main a,  employee ab ,employee_desig dc,action_assign  aas WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.AssigneeLabCode <> '@EXP' AND aas.actionno LIKE :actionno union SELECT a.actionmainid,aas.actionno,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.expertname) AS 'empname','Expert' AS 'designation' FROM action_main a,  expert ab ,action_assign  aas  WHERE aas.actionmainid=a.actionmainid AND aas.assignor=ab.expertid AND ab.isactive='1' AND aas.AssigneeLabCode = '@EXP' AND aas.actionno LIKE :actionno";
+    private static final String STATUSLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'assignoremp',c.designation,a.actiondate,f.enddate,a.actionitem,f.actionstatus, CONCAT(IFNULL(CONCAT(d.title,' '),''), d.empname) AS 'assigneemp',e.designation AS desig,f.actionno,a.actionlinkid,(SELECT g.progress FROM action_sub g  WHERE g.actionassignid = f.actionassignid AND g.actionsubid = (SELECT MAX(s.actionsubid) FROM action_sub s WHERE s.actionassignid = f.actionassignid) )  AS progress , f.actionassignid  FROM  action_main a, employee b ,employee_desig c, employee d ,employee_desig e ,action_assign f WHERE a.actionmainid = f.actionmainid  AND f.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid AND f.assignee=d.empid AND d.isactive='1' AND d.desigid=e.desigid AND f.assignee=:empid AND a.actiondate BETWEEN :fdate AND :tdate AND f.AssigneeLabCode <> '@EXP' ORDER BY a.actionmainid DESC";
 	private static final String LABDETAILS = "select * from lab_master"; 
     private static final String ACTIONGENCOUNT="SELECT COUNT(*) FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND (CASE WHEN :projectid=0 THEN a.projectid=:projectid AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(a.actiondate, \"%Y\") ELSE a.projectid=:projectid END ) AND a.isactive='1'";
-	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno FROM action_assign WHERE actionassignid=:assignid";
+	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno, assigneelabcode, assignorlabcode FROM action_assign WHERE actionassignid=:assignid";
 	private static final String SCHEDULEITEM="SELECT a.scheduleminutesid,a.details FROM  committee_schedules_minutes_details a WHERE  a.scheduleminutesid=:schid";
     private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type)";
     private static final String ACTIONSEARCHNO="CALL Pfms_ActionNo_Search(:empid,:no,:position)";
@@ -60,19 +58,18 @@ public class ActionDaoImpl implements ActionDao{
     private static final String LOGINPROJECTIDLIST="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a,project_employee b WHERE a.isactive=1 and a.projectid=b.projectid and b.empid=:empid";
     private static final String ALLPROJECTDETAILSLIST ="SELECT a.projectid,a.projectcode,a.projectname,a.ProjectMainId,a.ProjectDescription,a.UnitCode,a.ProjectType,a.ProjectCategory,a.SanctionNo,a.SanctionDate,a.PDC,a.ProjectDirector FROM project_master a WHERE a.isactive=1 ";
 	private static final String ACTIONWISE="CALL Pfms_Action_Wise_Reports(:term,:ProjectId)";
-    private static final String ACTIONNOTIFIC="SELECT ab.empname as emp,dc.designation as desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a,  employee ab ,employee_desig dc,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.empid  AND ab.isactive='1' AND dc.desigid=ab.desigid  and aas.actionassignid=:actionassignid and a.actionmainid=:mainid";
+    private static final String ACTIONNOTIFIC="SELECT ab.empname AS emp,dc.designation AS desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a,  employee ab ,employee_desig dc,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.empid  AND ab.isactive='1' AND aas.AssigneeLabCode <> '@EXP' AND dc.desigid=ab.desigid  AND aas.actionassignid=:actionassignid AND a.actionmainid=:mainid UNION SELECT ab.expertname AS emp,'Expert' AS desig,aas.assignee,b.empname,c.designation,aas.assignor,aas.revision,aas.actionno , a.type FROM action_main a, expert ab ,employee b ,employee_desig c ,action_assign aas   WHERE   aas.assignor=b.empid  AND b.isactive='1' AND c.desigid=b.desigid AND aas.assignee=ab.expertid  AND ab.isactive='1' AND aas.AssigneeLabCode = '@EXP'   AND aas.actionassignid=:actionassignid AND a.actionmainid=:mainid";
 	private static final String ACTIONPDC="CALL Pfms_Action_PDC_Report(:empid,:ProjectId,:Position,:From,:To)";
     private static final String PROJECTCODE="SELECT projectcode FROM project_master WHERE   projectid=:ProjectId  AND isactive='1'";
-	private static final String SELFASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,aas.actionflag,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision  FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.assignee=:empid AND aas.actionflag<>'Y'";
-	private static final String SEARCHDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,a.scheduleminutesid,a.actionlinkid,d.actionno,d.revision FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid  AND a.actionmainid=:mainid AND d.actionassignid=:assignid";
+	private static final String SELFASSIGNEDLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(ab.title,' '),''), ab.empname) as 'empname' ,dc.designation,a.actiondate,aas.enddate,a.actionitem,aas.actionstatus,a.createdby,a.createddate,(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) AS subid,(SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress, (SELECT c.remarks FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS remarks,aas.revision  FROM action_main a,  employee ab ,employee_desig dc , action_assign aas WHERE a.actionmainid=aas.actionmainid AND aas.assignee=ab.empid AND ab.isactive='1' AND dc.desigid=ab.desigid AND aas.assignor=:empid AND aas.assignee=:empid AND aas.actionstatus<>'C'";
+	private static final String SEARCHDATA="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) as 'empname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status',a.scheduleminutesid,a.actionlinkid,d.actionno,d.revision FROM  action_main a, employee b ,employee_desig c , action_assign d WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND c.desigid=b.desigid  AND a.actionmainid=:mainid AND d.actionassignid=:assignid";
 	private static final String ACTIONWISEALLREPORT="CALL Pfms_Action_Wise_All_Reports (:term,:empid,:projectid);";
 	private static final String ACTIONALERT="CALL Pfms_Actions_Msg()";
-	private static final String ACTIONTODAY="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE() AND a.actionmainid=b.actionmainid  AND b.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND  b.assignee=:empid ";
-	private static final String ACTIONTOMMO="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE()+1 AND a.actionmainid=b.actionmainid  AND b.actionflag IN('N','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND b.assignee=:empid ";
+	private static final String ACTIONTODAY="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE() AND a.actionmainid=b.actionmainid  AND b.actionstatus IN('A','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND  b.assignee=:empid AND b.AssigneeLabCode <> '@EXP'  ";
+	private static final String ACTIONTOMMO="SELECT b.actionno,a.projectid FROM action_main a , action_assign b WHERE  b.enddate=CURDATE()+1 AND a.actionmainid=b.actionmainid  AND b.actionstatus IN('A','B','F') AND (CASE WHEN 'AI'=:AI THEN a.Actiontype IN ('S','N') ELSE a.Actiontype IN ('A','B','C') END) AND b.assignee=:empid AND b.AssigneeLabCode <> '@EXP' ";
 	private static final String MEETINGALERT="CALL Pfms_Meeting_Msg()";
 	private static final String MEETINGTODAY="CALL Pfms_Meeting_Msg_Today(:empid)";
 	private static final String MEETINGTOMMO="CALL Pfms_Meeting_Msg_Tommo(:empid)";
-	
 	
 	private static final String ACTIONSELFREMINDERLIST="SELECT ActionId,EmpId,ActionItem,ActionDate,ActionTime,ActionType FROM pfms_action_self WHERE isactive='1' AND actiondate BETWEEN :fromdate AND :todate AND empid=:empid AND labcode=(SELECT labcode FROM employee WHERE empid= :empid ) ORDER BY ActionDate DESC";
 	private static final String ALLEMPNAMEDESIGLIST="SELECT e.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) as 'empname' , ed.designation FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid";
@@ -155,7 +152,7 @@ public class ActionDaoImpl implements ActionDao{
 	public List<Object[]> AssigneeData(String mainid ,String assignid) throws Exception {
 		
 		Query query=manager.createNativeQuery(ASSIGNEEDATA);
-		query.setParameter("mainid", mainid);
+//		query.setParameter("mainid", mainid);
 		query.setParameter("actionassignid", assignid);
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
@@ -202,16 +199,25 @@ public class ActionDaoImpl implements ActionDao{
 	}
 
 	@Override
-	public int AssignUpdate(ActionAssign assign) throws Exception 
+	public ActionAssign getActionAssign(String actionassignId) throws Exception 
 	{
-		Query query=manager.createNativeQuery(ASSIGNUPDATE);
-		query.setParameter("assignid",assign.getActionAssignId());
-		query.setParameter("flag", assign.getActionFlag());
-		query.setParameter("status",assign.getActionStatus());
-		query.setParameter("modifiedby",assign.getModifiedBy());
-		query.setParameter("modifieddate",assign.getModifiedDate());
-		int result=query.executeUpdate();
-		return result;
+		ActionAssign actionassign = manager.find(ActionAssign.class, Long.parseLong(actionassignId));
+		return actionassign;
+	}
+	@Override
+	public long AssignUpdate(ActionAssign assign) throws Exception 
+	{
+//		Query query=manager.createNativeQuery(ASSIGNUPDATE);
+//		query.setParameter("assignid",assign.getActionAssignId());
+//		query.setParameter("flag", assign.getActionFlag());
+//		query.setParameter("status",assign.getActionStatus());
+//		query.setParameter("modifiedby",assign.getModifiedBy());
+//		query.setParameter("modifieddate",assign.getModifiedDate());
+//		int result=query.executeUpdate();
+		
+		manager.merge(assign);
+		manager.flush();
+		return assign.getActionAssignId();
 	}
 
 	@Override
@@ -219,7 +225,7 @@ public class ActionDaoImpl implements ActionDao{
 		
 		Query query=manager.createNativeQuery(MAINFORWARD);
 		query.setParameter("assign",assign.getActionAssignId());
-		query.setParameter("flag", assign.getActionFlag());
+		query.setParameter("actionstatus", assign.getActionStatus());
 		query.setParameter("modifiedby",assign.getModifiedBy());
 		query.setParameter("modifieddate",assign.getModifiedDate());
 		int result=query.executeUpdate();
@@ -234,19 +240,23 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
+//     private static final String MAINSENDBACK="UPDATE action_assign SET remarks=:remarks,actionstatus=:status,actionflag=:flag,ModifiedBy=:modifiedby, ModifiedDate=:modifieddate WHERE actionassignid=:assignid";
 
 	@Override
-	public int MainSendBack(ActionAssign assign) throws Exception {
+	public long MainSendBack(ActionAssign assign) throws Exception {
 		
-		Query query=manager.createNativeQuery(MAINSENDBACK);
-		query.setParameter("assignid",assign.getActionAssignId());
-		query.setParameter("remarks", assign.getRemarks());
-		query.setParameter("flag", assign.getActionFlag());
-		query.setParameter("status",assign.getActionStatus());
-		query.setParameter("modifiedby",assign.getModifiedBy());
-		query.setParameter("modifieddate",assign.getModifiedDate());
-		int result=query.executeUpdate();
-		return result;
+//		Query query=manager.createNativeQuery(MAINSENDBACK);
+//		query.setParameter("assignid",assign.getActionAssignId());
+//		query.setParameter("remarks", assign.getRemarks());
+//		query.setParameter("flag", assign.getActionFlag());
+//		query.setParameter("status",assign.getActionStatus());
+//		query.setParameter("modifiedby",assign.getModifiedBy());
+//		query.setParameter("modifieddate",assign.getModifiedDate());
+//		int result=query.executeUpdate();
+		
+		manager.merge(assign);
+		
+		return assign.getActionAssignId();
 	}
 
 	@Override
@@ -751,8 +761,7 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> ChairpersonEmployeeListFormation=(List<Object[]>)query.getResultList();
 		return ChairpersonEmployeeListFormation;
 	}
-	private static final String LABEMPFILTERFORACTION="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname',a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.empid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid)) AND a.labcode=:labcode\r\n"
-			+ "";
+	private static final String LABEMPFILTERFORACTION="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) as 'empname',a.empno,b.designation FROM employee a,employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid AND a.empid NOT IN (SELECT b.assignee FROM  action_main a, action_assign b WHERE a.actionmainid=b.actionmainid AND b.assigneelabcode=:labcode AND (a.mainid=:mainid OR a.actionmainid=:mainid)) AND a.labcode=:labcode";
 	@Override
 	public List<Object[]> LabEmpListFilterForAction(String LabCode , String MainId) throws Exception
 	{
@@ -814,7 +823,7 @@ public class ActionDaoImpl implements ActionDao{
 			return AssignedList;
 		}
 	
-		private static final String ISSULIST ="SELECT  am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId , aas.actionassignid , aas.actionno , (SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress ,aas.actionflag ,aas.assignee , aas.assignor FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='I' AND aas.actionflag<>'Y' AND  (aas.assignee=:empid or aas.assignor=:empid)";
+		private static final String ISSULIST ="SELECT  am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId , aas.actionassignid , aas.actionno , (SELECT c.progress FROM action_sub c  WHERE c.actionassignid = aas.actionassignid AND c.actionsubid = (SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = aas.actionassignid) )  AS progress ,aas.actionstatus as 'status' ,aas.assignee , aas.assignor FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='I' AND aas.actionstatus<>'C' AND ((aas.assignee=:empid AND aas.AssigneeLabCode <> '@EXP' ) OR aas.assignor=:empid)";
 		@Override
 		public List<Object[]> GetIssueList(String empid )throws Exception
 		{
@@ -852,7 +861,7 @@ public class ActionDaoImpl implements ActionDao{
 //		return AssignedList;
 //	}
 	
-	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,(SELECT asub.progress FROM action_sub asub WHERE createddate=(SELECT  MAX(createddate) FROM action_sub  WHERE actionassignid=aas.actionassignid) AND asub.ActionAssignId = aas.ActionAssignId ) AS 'progress',am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name', CONCAT(IFNULL(asi.title,''), asi.empname) AS 'assignee name',am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus',aas.ActionFlag FROM action_main am, action_Assign aas, employee asn, employee asi WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.assignee= asi.empid AND aas.actionassignid=:assignid";
+	private static final String ACTIONASSIGNDATAAJAX="SELECT aas.ActionAssignId,am.actionitem,aas.ActionNo,am.actionmainid,aas.progress,am.actiondate, aas.enddate,aas.PDCOrg,CONCAT(IFNULL(asn.title,''), asn.empname) AS  'assignor name',CASE WHEN aas.assigneelabcode <> '@EXP' THEN (SELECT CONCAT(IFNULL(asi.title,''), asi.empname) FROM employee asi WHERE aas.assignee= asi.empid)  ELSE (SELECT CONCAT(IFNULL(asi.title,''), asi.expertname)  FROM expert asi WHERE aas.assignee= asi.expertid )END AS 'assignee name' ,am.type,aas.Assignor,aas.Assignee,aas.ActionStatus AS 'assignedstatus' FROM action_main am, action_Assign aas, employee asn WHERE am.actionmainid=aas.actionmainid  AND am.isactive=1 AND aas.isactive=1 AND  aas.assignor= asn.empid AND aas.actionassignid=:assignid";
 	
 	@Override
 	public Object[] ActionAssignDataAjax(String assignid) throws Exception 
@@ -892,7 +901,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String ALLACTIONLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionflag,d.remarks,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress , d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND c.desigid=b.desigid AND (d.assignee=:empid OR d.assignor=:empid) AND d.actionflag IN ('N','B','F') ORDER BY d.actionassignid DESC";
+	private static final String ALLACTIONLIST="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status',d.remarks,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress , d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND c.desigid=b.desigid AND (d.assignee=:empid OR d.assignor=:empid) AND d.actionstatus IN ('A','B','F') ORDER BY d.actionassignid DESC";
 	@Override
 	public List<Object[]> GetActionList(String empid)throws Exception
 	{
@@ -908,6 +917,33 @@ public class ActionDaoImpl implements ActionDao{
 		Query query = manager.createNativeQuery(ACTIONMONITORING);
 		query.setParameter("ProjectId", ProjectId);
 		query.setParameter("Status", Status);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String GETACTIONFORFEVORITE="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionstatus,d.actionstatus as 'status',d.remarks,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress ,d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND c.desigid=b.desigid   AND d.actionstatus NOT IN ('C') AND d.actionassignid NOT IN (SELECT actionassignid FROM Pfms_Favourite_List WHERE empid=:empid) AND c.desigsr <=(SELECT ed.desigsr FROM employee e, employee_desig ed WHERE e.desigid=ed.desigid AND e.empid=:empid) AND a.projectid=:projectid AND a.actiondate BETWEEN :fromdate AND :todate ORDER BY d.actionassignid DESC";
+	@Override
+	public List<Object[]> GetActionListForFevorite(Date fromdate , Date todate , String projectid , String  empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETACTIONFORFEVORITE);
+		query.setParameter("fromdate", fromdate);
+		query.setParameter("todate", todate);
+		query.setParameter("projectid", projectid);
+		query.setParameter("empid", empid);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	@Override
+	public Long AddFavouriteList(FavouriteList fav) throws Exception
+	{
+		manager.persist(fav);
+		manager.flush();
+		return fav.getFavouriteId();
+	}
+	private static final String GETFAVOURITE="SELECT a.actionmainid,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'assignorempname',c.designation,a.actiondate,d.enddate,a.actionitem,d.actionno ,d.actionassignid ,d.assignee ,d.assignor ,a.actionlevel ,(SELECT c.progress FROM action_sub c  WHERE  c.actionassignid = d.actionassignid AND c.actionsubid =(SELECT MAX(b.actionsubid) FROM action_sub b WHERE b.actionassignid = d.actionassignid))  AS progress ,d.pdcorg, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'assigneeempname' , a.type FROM  action_main a, employee b ,employee_desig c , action_assign d , employee e , Pfms_Favourite_List fl WHERE a.actionmainid=d.actionmainid AND d.assignor=b.empid AND b.isactive='1' AND d.assignee=e.empid AND fl.actionassignid = d.actionassignid AND c.desigid=b.desigid AND d.actionstatus NOT IN ('C') AND fl.empid=:empid order by fl.FavouriteId desc";
+	@Override
+	public List<Object[]> GetFavouriteList(String empid)throws Exception
+	{
+		Query query = manager.createNativeQuery(GETFAVOURITE);
+		query.setParameter("empid", empid);
 		return (List<Object[]>)query.getResultList();
 	}
 }

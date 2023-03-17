@@ -522,15 +522,12 @@ public class AdminServiceImpl implements AdminService{
 		}
 		
 		@Override
-		public long DivisionAddSubmit(DivisionMaster dmo) throws Exception 
+		public long DivisionAddSubmit(DivisionMaster model) throws Exception 
 		{
 			logger.info(new Date() +"Inside SERVICE DivisionAddSubmit ");
-			DivisionMaster model=new DivisionMaster();
-			model.setDivisionCode(dmo.getDivisionCode());
-			model.setDivisionName(dmo.getDivisionName());
-			model.setGroupId(dmo.getGroupId());
-			model.setDivisionHeadId(dmo.getDivisionHeadId());	
+			
 			model.setIsActive(1);
+			model.setCreatedDate(sdf1.format(new Date()));
 			return dao.DivisionAddSubmit(model);
 		}
 		

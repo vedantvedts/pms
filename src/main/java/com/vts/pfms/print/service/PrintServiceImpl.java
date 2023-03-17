@@ -8,7 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,8 +32,11 @@ import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.ProjectSlideFreeze;
+import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
 import com.vts.pfms.print.model.TechImages;
+import com.vts.pfms.project.dto.ProjectSlideDto;
 
 
 @Service
@@ -603,5 +608,99 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.GetRecDecData(recdecid);
 	}
-	
+	@Override
+	public Object[] GetProjectdata(String projectid)throws Exception
+	{
+		return dao.GetProjectdata(projectid);
+	}
+	@Override
+	public Long AddProjectSlideData( ProjectSlideDto slidedata )throws Exception
+	{
+		String LabCode = slidedata.getLabcode();
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		ProjectSlides slide = new ProjectSlides();
+		String Path = LabCode + "\\ProjectSlide\\";
+		slide.setStatus(slidedata.getStatus());
+		slide.setSlide(slidedata.getSlide());
+		slide.setProjectId(slidedata.getProjectId());
+		slide.setPath(Path);
+		slide.setIsActive(slidedata.getIsActive());
+		slide.setImageName("SlideImage" + timestampstr + "."+slidedata.getImageAttach().getOriginalFilename().split("\\.")[1]);
+		slide.setAttachmentName("SlidePdf" + timestampstr + "."+slidedata.getPdfAttach().getOriginalFilename().split("\\.")[1]);
+		slide.setCreatedBy(slidedata.getCreatedBy());
+		slide.setCreatedDate(sdf1.format(new Date()));
+		if(!slidedata.getImageAttach().isEmpty()) {
+			saveFile(uploadpath + Path, slide.getImageName(),slidedata.getImageAttach());
+		}
+		if(!slidedata.getPdfAttach().isEmpty()) {
+			saveFile(uploadpath + Path, slide.getAttachmentName(),slidedata.getPdfAttach());
+		}
+		return dao.AddProjectSlideData(slide);
+	}
+	@Override
+	public Long EditProjectSlideData( ProjectSlideDto slidedata )throws Exception
+	{
+		String LabCode = slidedata.getLabcode();
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+
+		String Path = LabCode + "\\ProjectSlide\\";
+		
+		ProjectSlides slides  =	dao.SlideAttachmentDownload(String.valueOf(slidedata.getSlideId()));
+		ProjectSlides slide = new ProjectSlides();
+		slide.setSlideId(slidedata.getSlideId());
+		slide.setSlide(slidedata.getSlide());
+		slide.setStatus(slidedata.getStatus());
+		slide.setModifiedBy(slidedata.getModifiedBy());
+		slide.setModifiedDate(sdf1.format(new Date()));
+		if(!slidedata.getImageAttach().isEmpty()) {
+			slide.setPath(Path);
+			slide.setImageName("SlideIamge" + timestampstr + "."+ slidedata.getImageAttach().getOriginalFilename().split("\\.")[1]);
+			File f=new File(uploadpath+slide.getPath()+slides.getImageName());
+			if(f.exists()) {
+				f.delete();
+			}
+			saveFile(uploadpath + Path, slide.getImageName(),slidedata.getImageAttach());
+		}else {
+		  slide.setPath(slides.getPath());	
+		  slide.setImageName(slides.getImageName());
+		}
+		if(!slidedata.getPdfAttach().isEmpty()) {
+			slide.setPath(Path);
+			slide.setAttachmentName("SlidePdf" + timestampstr + "."+ slidedata.getPdfAttach().getOriginalFilename().split("\\.")[1]);
+			File f=new File(uploadpath+slide.getPath()+slides.getAttachmentName());
+			if(f.exists()) {
+				f.delete();
+			}
+			saveFile(uploadpath + Path, slide.getAttachmentName(),slidedata.getPdfAttach());
+		}else {
+		  slide.setPath(slides.getPath());	
+		  slide.setAttachmentName(slides.getAttachmentName());
+		}
+		return dao.EditProjectSlideData(slide);
+	}
+
+	@Override
+	public Object[] GetProjectSildedata(String projectid)throws Exception
+	{
+		return dao.GetProjectSildedata(projectid);
+	}
+	@Override
+	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception
+	{
+		return dao.SlideAttachmentDownload(achmentid);
+	}
+	@Override
+	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
+	{
+		freeze.setCreatedDate(sdf1.format(new Date()));
+		return dao.AddFreezeData(freeze);
+	}
+	@Override
+	public List<Object[]> RiskTypes() throws Exception 
+	{
+		return dao.RiskTypes();
+		
+	}
 }
