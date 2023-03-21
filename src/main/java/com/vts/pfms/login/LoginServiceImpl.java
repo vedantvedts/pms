@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
     	login.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
         HashSet<Role> test=new HashSet<Role>();
         test.add(roleRepository.findAll().get(0));
-        login.setRoles(test);
+//        login.setRoles(test);
         loginRepository.save(login);
     }
 

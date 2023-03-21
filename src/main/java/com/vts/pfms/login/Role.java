@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.ToString;
+@ToString
 @Entity
 @Table(name = "pfms_role_security")
 public class Role {
