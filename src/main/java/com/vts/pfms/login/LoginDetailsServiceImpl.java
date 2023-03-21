@@ -35,11 +35,18 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
 	@Autowired
     private LoginRepository loginRepository;
 
+	@Autowired	
+	private PFMSLoginClient loginclient;
+	
     @Override
     @Transactional(readOnly = false)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
     	Login login = loginRepository.findByUsername(username);
+//    	Login login = loginclient.LoginDetails(username);
+    	
+    	System.out.println(login);
+    	
         if(login != null && login.getIsActive()==1 && login.getPfms().equalsIgnoreCase("Y")) {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : login.getRoles()){
@@ -50,15 +57,15 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
         String macAddress ="Not Available"; 	
      		
      		try{
-     		
-     		 IpAddress = request.getRemoteAddr();
-     		 
-     		if("0:0:0:0:0:0:0:1".equalsIgnoreCase(IpAddress))
-     		{
      			
-     			InetAddress ip = InetAddress.getLocalHost();
-     			IpAddress= ip.getHostAddress();
-     		}
+     			IpAddress = request.getRemoteAddr();
+     		 
+	     		if("0:0:0:0:0:0:0:1".equalsIgnoreCase(IpAddress))
+	     		{
+	     			
+	     			InetAddress ip = InetAddress.getLocalHost();
+	     			IpAddress= ip.getHostAddress();
+	     		}
      		
      		}
      		catch(Exception e)
