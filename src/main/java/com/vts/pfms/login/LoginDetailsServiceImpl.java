@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vts.pfms.dao.RfpMainDao;
+import com.vts.pfms.master.proxy.MasterServiceProxy;
 import com.vts.pfms.model.LoginStamping;
 
 @Service
@@ -36,7 +36,7 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
     private LoginRepository loginRepository;
 
 	@Autowired	
-	private PFMSLoginClient loginclient;
+	private MasterServiceProxy loginclient;
 	
     @Override
     @Transactional(readOnly = false)
@@ -45,13 +45,11 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
     	Login login = loginRepository.findByUsername(username);
 //    	Login login = loginclient.LoginDetails(username);
     	
-    	System.out.println(login);
-    	
         if(login != null && login.getIsActive()==1 && login.getPfms().equalsIgnoreCase("Y")) {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : login.getRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-        }
+//        for (Role role : login.getRoles()){
+//            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+//        }
         String IpAddress="Not Available";
         String str = ""; 
         String macAddress ="Not Available"; 	

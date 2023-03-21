@@ -1,26 +1,22 @@
 package com.vts.pfms.login;
 
 
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import lombok.ToString;
+import lombok.Data;
 
-@ToString
+@Data
 @Entity
 @Table(name = "login")
 public class Login {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long LoginId;
-    private String Username;
+    private String username;
     private String Password;
     private Long EmpId;
     private Long DivisionId;
@@ -32,105 +28,4 @@ public class Login {
     private String CreatedDate;
     private String ModifiedBy;
     private String ModifiedDate;
-    private Set<Role> roles;
- 
-    @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    
-    public Long getLoginId() {
-		return LoginId;
-	}
-	public void setLoginId(Long loginId) {
-		LoginId = loginId;
-	}
-	public String getUsername() {
-		return Username;
-	}
-	public void setUsername(String username) {
-		this.Username = username;
-	}
-	public String getPassword() {
-		return Password;
-	}
-	public void setPassword(String password) {
-		Password = password;
-	}
-	
-	public Long getEmpId() {
-		return EmpId;
-	}
-	public void setEmpId(Long empId) {
-		EmpId = empId;
-	}
-	@ManyToMany
-    @JoinTable(name = "pfms_login_role_security", joinColumns = @JoinColumn(name = "LoginId"), inverseJoinColumns = @JoinColumn(name = "RoleId"))
-	public Set<Role> getRoles() {
-		return roles;
-	}
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
-	public Long getDivisionId() {
-		return DivisionId;
-	}
-	public void setDivisionId(Long divisionId) {
-		DivisionId = divisionId;
-	}
-	public Long getFormRoleId() {
-		return FormRoleId;
-	}
-	public void setFormRoleId(Long formRoleId) {
-		FormRoleId = formRoleId;
-	}
-	
-	public String getLoginType() {
-		return LoginType;
-	}
-	public void setLoginType(String loginType) {
-		LoginType = loginType;
-	}
-	
-	
-	public String getPfms() {
-		return Pfms;
-	}
-	public void setPfms(String pfms) {
-		Pfms = pfms;
-	}
-	public int getIsActive() {
-		return IsActive;
-	}
-	public void setIsActive(int isActive) {
-		IsActive = isActive;
-	}
-	
-	public String getCreatedDate() {
-		return CreatedDate;
-	}
-	public void setCreatedDate(String createdDate) {
-		CreatedDate = createdDate;
-	}
-	
-	public String getCreatedBy() {
-		return CreatedBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		CreatedBy = createdBy;
-	}
-	public String getModifiedBy() {
-		return ModifiedBy;
-	}
-	public void setModifiedBy(String modifiedBy) {
-		ModifiedBy = modifiedBy;
-	}
-	public String getModifiedDate() {
-		return ModifiedDate;
-	}
-	public void setModifiedDate(String modifiedDate) {
-		ModifiedDate = modifiedDate;
-	}
-    
-	
-    
-   
 }
