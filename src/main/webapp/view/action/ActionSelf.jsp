@@ -178,10 +178,10 @@ h6{
 															<td class="width-30px"><%=sdf.format(obj[4])%></td>
 															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
 															<td style="width:18% !important; "><%=obj[1]%>, <%=obj[2]%></td>
-															<td style="width:8% !important; "><%if(obj[11]!=null){ %>
+															<td style="width:8% !important; "><%if(obj[10]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
-															<%=obj[11]%>
+															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[10]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%=obj[10]%>
 															</div> 
 															</div> <%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">

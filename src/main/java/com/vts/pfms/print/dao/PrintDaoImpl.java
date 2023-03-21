@@ -945,6 +945,13 @@ public class PrintDaoImpl implements PrintDao {
 			ProjectSlides Attachment= manager.find(ProjectSlides.class,Long.parseLong(achmentid));
 			return Attachment;
 		}
+		@Override	
+		public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception
+		{
+			ProjectSlideFreeze Attachment= manager.find(ProjectSlideFreeze.class,Long.parseLong(achmentid));
+			return Attachment;
+		}
+		
 		@Override
 		public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
 		{
@@ -957,6 +964,33 @@ public class PrintDaoImpl implements PrintDao {
 		public List<Object[]> RiskTypes() throws Exception 
 		{
 			Query query=manager.createNativeQuery(RISKTYPES);
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
+		private static final String PROJECTSLIDELIST="SELECT a.freezeid , a.reviewby , a.reviewdate , CONCAT(IFNULL(CONCAT(c.title,' '),''), c.empname) as 'empname' FROM pfms_project_slides_freeze a , project_master b , employee c WHERE a.projectid=b.projectid AND a.empid=c.empid AND a.projectid=:projectid ORDER BY  a.freezeid DESC";
+		@Override
+		public List<Object[]> getProjectSlideList(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(PROJECTSLIDELIST);
+			query.setParameter("projectid", projectid);
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
+		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate FROM pfms_project_slides_freeze a ORDER BY a.freezeid DESC";
+		@Override
+		public List<Object[]> GetAllProjectSildedata()throws Exception
+		{
+			Query query=manager.createNativeQuery(ALLPROJECTSLIDEDATA);
+			
+			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
+			return RiskTypes;
+		}
+		private static final String TODATFREEZEDSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate FROM pfms_project_slides_freeze a WHERE a.projectid=:projectid AND a.reviewdate=CURRENT_DATE ORDER BY a.freezeid DESC";
+		@Override
+		public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception
+		{
+			Query query=manager.createNativeQuery(TODATFREEZEDSLIDEDATA);
+			query.setParameter("projectid", projectid);
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}

@@ -1,5 +1,7 @@
 package com.vts.pfms.print.controller;
 
+
+
 import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -33,6 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -3627,6 +3630,10 @@ public class PrintController {
 					return "redirect:/MainDashBoard.htm";
 				}
 				if(projectslidedata!=null) {
+					List<Object[]> getTodatfreezedSlidedata= service.GetTodayFreezedSlidedata(projectid);
+					List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata(projectid);
+					req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+					req.setAttribute("freezedSlidedata", getTodatfreezedSlidedata);
 					req.setAttribute("filepath", ApplicationFilesDrive);
 					req.setAttribute("projectslidedata", projectslidedata);
 					//return "print/ProjectSlideFreeze";
@@ -3842,10 +3849,12 @@ public class PrintController {
 					 freeze.setEmpId(EmpId);
 					 
 					    Object[] projectdata = (Object[])service.GetProjectdata(projectid);
-						Object[] projectslidedata = (Object[])service.GetProjectSildedata(projectid);
+						Object[] projectslidedata = service.GetProjectSildedata(projectid);
 						req.setAttribute("filepath", ApplicationFilesDrive);
 						req.setAttribute("projectslidedata", projectslidedata);
 						req.setAttribute("projectdata", projectdata);
+						req.setAttribute("review", review);
+						req.setAttribute("reviewdate", reviewdate);
 					 
 					    String filename="ProjectProposal";	
 				    	String path=req.getServletContext().getRealPath("/view/temp");
@@ -3898,19 +3907,130 @@ public class PrintController {
 				return "redirect:/PfmsProjectSlides.htm";
 		 }
 		 
-		 
-		 @RequestMapping(value = "ProjectSlide.htm")
-		 public String ProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 @RequestMapping(value = "ProjectSlide.htm" , method = {RequestMethod.GET, RequestMethod.POST})
+		 public String ProjectSlide(Model model, HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
 		 {
 			 String UserId = (String) ses.getAttribute("Username");
+				String LabCode = (String) ses.getAttribute("labcode");
+				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		    	String Logintype= (String)ses.getAttribute("LoginType");
 			logger.info(new Date() +"Inside ProjectSlide.htm "+UserId);	
 			 try {
-				//List<>
+				 String projectid= req.getParameter("projectid");
+					
+					List<Object[]> projectslist  =service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+					
+					if(projectslist.size()==0) 
+					{
+						redir.addAttribute("resultfail","Project is Not Assigned!" );
+						return "redirect:/MainDashBoard.htm";
+					}
+					if(projectid==null) 
+			    	{
+			    		Map md = model.asMap();	    	
+			    		projectid = (String) md.get("projectid");
+			    	}
+					if(projectid==null) {
+						projectid  = projectslist.get(0)[0].toString();
+					}
+					req.setAttribute("projectid",projectid);
+					req.setAttribute("projectslist", projectslist);
+					req.setAttribute("ProjectSlideFreezedList", service.getProjectSlideList(projectid));
+					
 			} catch(Exception e){
 				e.printStackTrace();
 				logger.error(new Date() +" Inside ProjectSlide.htm "+UserId, e);
 			}
 			 return "print/ProjectSlideList";
 		 }
+		 @RequestMapping(value = "freezedSlideAttachDownload.htm", method = RequestMethod.GET)
+		 public void ProjectSlideAttachDownload(HttpServletRequest	 req, HttpSession ses, HttpServletResponse res) throws Exception 
+		 {	 
+			 String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside ProjectSlideAttachDownload.htm "+UserId);		
+				try { 
+			 
+						res.setContentType("application/pdf");
+						ProjectSlideFreeze attach=service.FreezedSlideAttachmentDownload(req.getParameter("freezedId" ));
+						
+						File my_file=null;
+					
+						my_file = new File(ApplicationFilesDrive+attach.getPath()+File.separator+attach.getAttachName()); 
+				        res.setHeader("Content-disposition","attachment; filename="+attach.getAttachName().toString()); 
+				        OutputStream out = res.getOutputStream();
+				        FileInputStream in = new FileInputStream(my_file);
+				        byte[] buffer = new byte[4096];
+				        int length;
+				        while ((length = in.read(buffer)) > 0){
+				           out.write(buffer, 0, length);
+				        }
+				        in.close();
+				        out.flush();
+				        out.close();
+	 
+				}
+				catch (Exception e) {
+						e.printStackTrace();
+						logger.error(new Date() +" Inside ProjectSlideAttachDownload.htm "+UserId, e);
+				}
+		 }
 		 
+		 @RequestMapping(value = "GetAllProjectSlide.htm")
+		 public String GetAllProjectSlide(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);	
+			 try {
+				 String labcode = ses.getAttribute("labcode").toString();
+				req.setAttribute("labInfo", service.LabDetailes(labcode));
+			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+			    req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+				List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata("All");
+				req.setAttribute("filepath", ApplicationFilesDrive);
+				req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside GetAllProjectSlide.htm "+UserId, e);
+			}
+			 return "print/ProjectSlideFreezedViewAll"; 
+		 } 
+	
+		 
+		 @RequestMapping(value = "downloadMaduguru.htm")
+		 public void FreezedSlidesInpdf(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			logger.info(new Date() +"Inside GetAllProjectSlide.htm "+UserId);	
+			 try {
+					List<Object[]> getAllProjectSlidedata= service.GetAllProjectSildedata("All");
+					 String path=req.getServletContext().getRealPath("/view/temp");
+					
+					 PDFMergerUtility utility = new PDFMergerUtility();
+					 utility.setDestinationFileName(path +File.separator+ "merged.pdf");
+					 for(Object[] obj : getAllProjectSlidedata) 
+					 {
+						File file = new File(ApplicationFilesDrive+ obj[1].toString()+obj[2].toString());			 
+				        utility.addSource(file);
+					 }
+					 utility.mergeDocuments();
+					
+					
+				        res.setContentType("application/pdf");
+				        res.setHeader("Content-disposition","attachment; filename=FreezedProjectSlides.pdf");
+				        File f=new File(path +File.separator+ "merged.pdf");
+
+					        OutputStream out = res.getOutputStream();
+							FileInputStream in = new FileInputStream(f);
+							byte[] buffer = new byte[4096];
+							int length;
+							while ((length = in.read(buffer)) > 0) {
+								out.write(buffer, 0, length);
+							}
+							in.close();
+							out.close();
+					       
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		 } 
 }

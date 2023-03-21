@@ -2564,7 +2564,7 @@ if(ses!=null){ %>
 													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 												</td>
 												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:2%"></td>
+												<td style="width:2%"><div data-toggle="tooltip" title="View All"><a style="cursor: pointer;" href="GetAllProjectSlide.htm" target="_blank"  ><img src="view/images/silde.png" style="width: 25px;"/></a></div></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
 												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
 												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC </span></td>

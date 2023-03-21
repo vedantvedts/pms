@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -692,6 +693,11 @@ public class PrintServiceImpl implements PrintService{
 		return dao.SlideAttachmentDownload(achmentid);
 	}
 	@Override
+	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception
+	{
+		return dao.FreezedSlideAttachmentDownload(achmentid);
+	}
+	@Override
 	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception
 	{
 		freeze.setCreatedDate(sdf1.format(new Date()));
@@ -700,7 +706,27 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public List<Object[]> RiskTypes() throws Exception 
 	{
-		return dao.RiskTypes();
-		
+		return dao.RiskTypes();	
 	}
+	@Override
+	public List<Object[]> getProjectSlideList(String projectid)throws Exception
+	{
+		return dao.getProjectSlideList(projectid);
+	}
+	@Override
+	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception
+	{
+		if(projectid.equalsIgnoreCase("All")) {
+			return dao.GetAllProjectSildedata();
+		}else {
+			return dao.GetAllProjectSildedata().stream().filter(e->e[3].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());
+		}
+	}
+	@Override
+	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception
+	{
+		return dao.GetTodayFreezedSlidedata(projectid);
+	}
+
+	
 }
