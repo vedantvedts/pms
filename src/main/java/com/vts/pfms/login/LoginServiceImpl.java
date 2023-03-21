@@ -15,8 +15,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginRepository loginRepository;
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
+  
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     private static final Logger logger=LogManager.getLogger(LoginServiceImpl.class);
@@ -25,8 +24,8 @@ public class LoginServiceImpl implements LoginService {
     public void save(Login login) {
     	logger.info(new Date() +"Inside save");
     	login.setPassword(bCryptPasswordEncoder.encode(login.getPassword()));
-        HashSet<Role> test=new HashSet<Role>();
-        test.add(roleRepository.findAll().get(0));
+//        HashSet<Role> test=new HashSet<Role>();
+//        test.add(roleRepository.findAll().get(0));
 //        login.setRoles(test);
         loginRepository.save(login);
     }

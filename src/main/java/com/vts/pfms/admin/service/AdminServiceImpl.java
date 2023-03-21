@@ -27,7 +27,6 @@ import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
-import com.vts.pfms.login.RoleRepository;
 import com.vts.pfms.master.model.DivisionEmployee;
 
 @Service
@@ -36,18 +35,14 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	AdminDao dao;
 	
-	@Autowired
-	RoleRepository roleRepository;
-	
 	private static final Logger logger=LogManager.getLogger(AdminServiceImpl.class);
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     FormatConverter fc=new FormatConverter();
 	@Override
-	public List<Object[]> LoginTypeList() throws Exception {
-		
+	public List<Object[]> LoginTypeList() throws Exception 
+	{
 		return dao.LoginTypeList();
-		
 	}
 
 	@Override
