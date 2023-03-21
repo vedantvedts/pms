@@ -9,5 +9,4 @@ public interface PFMSLoginClient
 {
 	@PostMapping("getLoginDetails.htm")
 	public Login LoginDetails (@RequestParam String UserName);
-
 }
