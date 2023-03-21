@@ -94,4 +94,8 @@ public interface PrintDao {
 	public Long EditProjectSlideData(ProjectSlides slide)throws Exception;
 	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception;
 	public List<Object[]> RiskTypes() throws Exception;
+	public List<Object[]> getProjectSlideList(String projectid)throws Exception;
+	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
+	public List<Object[]> GetAllProjectSildedata()throws Exception;
+	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 }

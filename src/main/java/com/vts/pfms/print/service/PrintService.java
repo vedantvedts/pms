@@ -97,4 +97,8 @@ public interface PrintService {
 	public ProjectSlides SlideAttachmentDownload(String achmentid) throws Exception;
 	public Long AddFreezeData (ProjectSlideFreeze freeze)throws Exception;
 	public List<Object[]> RiskTypes() throws Exception;
+	public List<Object[]> getProjectSlideList(String projectid)throws Exception;
+	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
+	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception;
+	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 }
