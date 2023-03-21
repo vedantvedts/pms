@@ -56,10 +56,8 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 }else if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equalsIgnoreCase("OH")){
 	enduser="Others";
 }
-
 %>
-
-		<div class="container-fluid" >
+<div class="container-fluid" >
 			<%if(projectslidedata[0]!=null && projectslidedata[1].toString().equalsIgnoreCase("2")){%>
 			 <%if(review!=null && reviewdate!=null){%><div align="left" style="margin-top: -5px;"> <b>Review By :- </b><%=review%> &nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=reviewdate %></div><%}%>
 				<div align="center" ><h2 style="margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%> </h2></div>
@@ -98,7 +96,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 										<td><%if(projectdata!=null && projectdata[10]!=null){%><%=projectdata[10]%><%}else{%> -- <%}%></td>
 									</tr>		
 					</table>
-					<hr >
+					<hr>
 					<table class="table meeting">
 						<tr>
 								<td   style="width: 1150px;"><b style="font-size: 1.09rem;font-weight: bold;color: #115bc9;">Status : </b> </td>
@@ -115,7 +113,6 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 								</td>
 					      </tr>
 					</table>
-
 				<%}else{%>
 				<%if(review!=null && reviewdate!=null){%><div align="center" style="margin-top: -5px;"> <b>Review By :- </b><%=review%> &nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=reviewdate %></div><%}%>
 				<div align="center" ><h2 style="margin-bottom:5px; margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%> </h2></div>
@@ -173,7 +170,6 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 									</tr>
 						</table>
 				<%}%>			
-			</div>	
-		
+</div>
 </body>
 </html>
