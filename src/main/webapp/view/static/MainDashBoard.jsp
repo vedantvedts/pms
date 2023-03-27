@@ -2484,7 +2484,7 @@ if(ses!=null){ %>
 							<img src="view/images/rupee.png" /> Finance <!-- <span style="font-size: 14px !important">(&#8377;Cr)</span> -->
 				  </h5>
 				 	<form action="ProjectHoaUpdate.htm" method="get">
-						<button type="submit" class="btn btn4 btn-sm" style=" padding: 0px 10px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
+						<button type="submit" class="btn btn4 btn-sm" style="padding: 0px 10px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6>  
 				 	</form>
 			   	</div>
 		      <hr style="margin:3px 10px !important">
