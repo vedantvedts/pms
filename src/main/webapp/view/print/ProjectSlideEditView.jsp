@@ -247,6 +247,7 @@ if(ses1!=null){
 		</div>
 		<!-- ----------------------------------------  View  Close ----------------------------------------------------- -->
 		
+		
 		<!-- ----------------------------------------  Edit  Div ----------------------------------------------------- -->
 		 <div class="carousel-item ">
 			<div class="container-fluid">
@@ -305,7 +306,7 @@ if(ses1!=null){
 									</div>
 									<textarea class="form-control" placeholder="Enter Maximum 5000 charcters" name="Status" id="ckeditor1" rows="5" cols="20" maxlength="5"   required="required"> </textarea>
 									<div class="row" style="margin-top: 10px;"> 
-			                    		<div class="col-md-2">
+			                    		<div class="col-md-3">
 			                        		<div class="form-group">
 			                            		<label >  <b>Slide 1 :</b> <span class="mandatory">*</span>
 				                              		<input type="radio" name="silde" value="1" <%if(projectslidedata!=null && projectslidedata[1].toString().equalsIgnoreCase("1")){%> checked="checked" <%}%>>
@@ -318,10 +319,11 @@ if(ses1!=null){
 			                            		<label  > <b>Slide 2 : </b><span class="mandatory">*</span>
 				                              		<input type="radio" name="silde" value="2" <%if(projectslidedata!=null && projectslidedata[1].toString().equalsIgnoreCase("2")){%> checked="checked" <%}%>>
 				                              		<img src="view/images/Slide2.png" alt="Option 2" style="height: 70px; width: 80px;" />
+				                              		
 			  									</label>
 			                        		</div>
 			                    		</div>
-			                    		<div class="col-md-3">
+			                    		<div class="col-md-2">
 			                        		<div class="form-group">
 			                            		<label  ><b> Image : </b></label><span class="mandatory">*</span>
 			                              		<input  class="form-control form-control"  type="file"  name="Attachment1" accept="image/png, image/jpeg" id="Attachment1" required="required" maxlength="3" style="font-size: 15px;"> 
@@ -344,7 +346,7 @@ if(ses1!=null){
 			                        		</div>
 			                        	</div>
 			                    	</div>
-			                    	
+			                    	<p><b style="color: red;">Note:-</b> Slide-1 Image Dimensions :- 3400 * 4600  &nbsp;&nbsp;&nbsp;  Slide-2 Image Dimensions :- 6000 * 3300</p>
 									<hr>
 									<div align="center">
 										<input type="hidden" name="ProjectslideId" value="<%=projectslidedata[4]%>">
@@ -446,8 +448,6 @@ function AjaxForStatus() {
 		}
 	});
 }
-	 
-
 
 var editor_config = {
 	
