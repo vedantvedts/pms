@@ -53,7 +53,6 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
         String IpAddress="Not Available";
         String str = ""; 
         String macAddress ="Not Available"; 	
-     		
      		try{
      			
      			IpAddress = request.getRemoteAddr();
