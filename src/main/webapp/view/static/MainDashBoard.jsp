@@ -574,18 +574,20 @@ int ProjectCount = 0;
 List<Object[]> projecthealthtotaldg = (List<Object[]>)request.getAttribute("projecthealthtotaldg");
 String IsDG = (String)request.getAttribute("IsDG");
 
-
 %>
 <%
  String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
  if(ses1!=null){
 %>	
-<div align="center"><div class="alert alert-danger" role="alert"><%=ses1 %></div></div>
-<%}
- 
+	<div align="center">
+		<div class="alert alert-danger" role="alert"><%=ses1 %></div>
+	</div>
+<%} 
 if(ses!=null){ %>
-<div align="center"><div class="alert alert-success" role="alert" ><%=ses %></div></div>
+<div align="center">
+	<div class="alert alert-success" role="alert" ><%=ses %></div>
+</div>
 <%} %>
 
 
@@ -829,13 +831,9 @@ if(ses!=null){ %>
 							<div class="col-md-12" style="display: none" id="projectdropdown" >
 		
 								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  >
-																
-									<option value="" disabled="disabled" selected="selected" hidden="true">--Choose Project--</option>
-											<%	for (Object[] obj2 : ProjectList) { %>
-											
-													<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]%></option>
-													
-											<%} %>
+									<%	for (Object[] obj2 : ProjectList) { %>
+										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]%></option>
+									<%} %>
 								</select>
 								<br><br>
 								
@@ -2815,53 +2813,57 @@ if(ses!=null){ %>
 
 	<!-- ******************************************************** INDIVIDUAL PROJECT DETAILS ******************************************* -->
 	
-	<div class="card" style="background: white;display:none;margin: -2px 10px" id="projectgraph">
-		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden ">
-			<div  style="float: right;margin: 10px">
-				<button class="btn btn-sm back" style="padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
-				<button class="btn btn-sm prints" style="padding: 3px 7px;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+	<div class="card" style="background: white;display:none;margin: -2px 10px" id="projectgraph" >
+		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden " align="center">
+			<div  style="margin: 5px">
+				<span class="ProjecChartCardTitle" style="color: #145374;font-size: 20px;text-decoration: underline;"></span>
+				<button class="btn btn-sm prints" style="float: right;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn btn-sm back" style="float: right;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Back" ><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></button>
+				
 				<br>
 			</div>
-			
-			<div class="row">
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh"></div>
-					</figure>
+		</div>
+				<div class="row">
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh"></div>
+						</figure>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh2"></div>
+						</figure>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh3"></div>
+						</figure>
+					</div>
 				</div>
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh2"></div>
-					</figure>
+				<hr>
+				<div class="row">
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh4"></div>
+						</figure>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh5"></div>
+						</figure>
+					</div>
+					<div class="col-md-1"></div>
+					<div class="col-md-3">
+	 					<figure class="highcharts-figure">
+							<div id="containerh6"></div>
+						</figure>
+					</div>
 				</div>
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh3"></div>
-					</figure>
-				</div>
-			</div>
-			<hr>
-			<div class="row">
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh4"></div>
-					</figure>
-				</div>
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh5"></div>
-					</figure>
-				</div>
-				<div class="col-md-4">
- 					<figure class="highcharts-figure">
-						<div id="containerh6"></div>
-					</figure>
-				</div>
-			</div>
-			
 			
 		</div>
-	</div>		
 
 	<!-- ************************Informative Modal********************* -->
 
@@ -2988,7 +2990,7 @@ if(ses!=null){ %>
 	
 		<div class="container-fluid">
 	
-		<div class="card-deck" style="margin-top: -20px;" >
+		<div class="card-deck" style="margin-top: -20px;margin-bottom: 5px;" >
 		  <div class="card detailscard">
 		    <div class="card-body">
 		      <h5 class="card-title"><img src="view/images/discuss.png" /> Meeting</h5>
@@ -3018,7 +3020,6 @@ if(ses!=null){ %>
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 			        	<tr>
-			        		<td style="font-size: 14px">Held: </td>
 			        		<td style="font-size: 14px" id="meetingsvaluepmrc" data-toggle="tooltip" title="Held / To be Held / Total to be Held" >
 			        			<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[0] %> / <%=ProjectHealthTotalData[2] %> / <%=ProjectHealthTotalData[46] %></span> <%}%>
 			        		</td>
@@ -3049,7 +3050,6 @@ if(ses!=null){ %>
 			        <hr style="margin: 5px !important">
 			        <table class="countstable" style="margin: 0px auto">
 				        	<tr>
-				        		<td style="font-size: 14px">Held: </td>
 				        		<td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  >
 				        		<%if(ProjectHealthTotalData !=null){%> <span><%=ProjectHealthTotalData[3] %> / <%=ProjectHealthTotalData[5] %> / <%=ProjectHealthTotalData[47] %></span> <%}%>
 				        		</td>
@@ -3326,7 +3326,7 @@ if(ses!=null){ %>
 											<tr>
 											
 												<td><a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td   style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
+												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45] %>	</td>
 												<td class="custom-td">
 													<%if(Integer.parseInt(obj[2].toString())>0){ %>
 														
@@ -3585,6 +3585,10 @@ if(ses!=null){ %>
 
 <script type="text/javascript">
 
+function scrollProjectAttributesTop(e) 
+{ 
+    $('html, body').animate({ scrollTop: $('#overalltable').offset().top }, 'slow'); 
+}
 
 function ProjectDetails(value,ProjectCode)
 {
@@ -3599,7 +3603,7 @@ function ProjectDetails(value,ProjectCode)
 	$('#COG-Total-row').hide();
 	$('#overallmodulecarddeck').hide();
 	$('#changes-tab').hide();
-	
+	scrollProjectAttributesTop(this);
 	CashOutGoProject(ProjectCode);
 }
 

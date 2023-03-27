@@ -154,8 +154,7 @@ public class PrintController {
 	    		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
 	    		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
 			
-	    	}
-				
+	    	}				
 	    	catch(Exception e) {	    		
 	    		logger.error(new Date() +" Inside PfmsPrint.htm "+UserId, e);
 	    		e.printStackTrace();
@@ -165,6 +164,68 @@ public class PrintController {
 	    return "print/PfmsPrint";
 		
 	}
+	
+	@RequestMapping(value = "CCMReport.htm")
+	public void CCMReport(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+	{
+		try {
+			req.setAttribute("DRDOLogo", LogoUtil.getDRDOLogoAsBase64String());
+			
+			String filename="CCMReport";		
+	    	
+	    	String path=req.getServletContext().getRealPath("/view/temp");
+	    	req.setAttribute("path",path); 
+	    	CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+	    	req.getRequestDispatcher("/view/print/CCMReport.jsp").forward(req, customResponse);
+	    	String html = customResponse.getOutput();
+	    	byte[] data = html.getBytes();
+	    	InputStream fis1=new ByteArrayInputStream(data);
+	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+	    	
+	    	ConverterProperties converterProperties = new ConverterProperties();
+	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	converterProperties.setFontProvider(dfp);
+	        HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+            ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
+	        
+	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+	        Rectangle pageSizeMain;
+	        PdfCanvas canvasMAin;
+	        int main = pdfDocMain.getNumberOfPages();
+	        for (int i = 1; i <= main; i++) 
+	        {
+	            PdfPage pageMain = pdfDocMain.getPage(i);
+	            pageSizeMain = pageMain.getPageSize();
+	            canvasMAin = new PdfCanvas(pageMain);
+	            Rectangle rectaMain=new Rectangle(54,pageSizeMain.getHeight()-34,34,33);
+	            canvasMAin.addImage(leftLogo, rectaMain, false);
+	        }
+	        pdfDocMain.close();
+	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+	        Files.delete(pathOfFileMain);	
+	        
+	        res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+File.separator+filename+"Maintemp.pdf");
+	        
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+//			return "staic/Error";
+		}
+//		return "print/CCMReport";
+	 }
+	
 	
 	@RequestMapping(value="PfmsPrint2.htm", method = RequestMethod.POST)
 	public String PfmsPrint2(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)
@@ -278,8 +339,6 @@ public class PrintController {
 	    catch(Exception e) {	    		
     		logger.error(new Date() +" Inside ExecutiveSummaryDownload.htm "+UserId, e);
     		e.printStackTrace();
-			
-	
     	}		
 	}
 	
@@ -659,14 +718,14 @@ public class PrintController {
             ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
 	        
-	        
 	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
 	        Document docMain = new Document(pdfDocMain,PageSize.A4);
 	        docMain.setMargins(50, 50, 50, 50);
 	        Rectangle pageSizeMain;
 	        PdfCanvas canvasMAin;
 	        int main = pdfDocMain.getNumberOfPages();
-	        for (int i = 1; i <= main; i++) {
+	        for (int i = 1; i <= main; i++) 
+	        {
 	            PdfPage pageMain = pdfDocMain.getPage(i);
 	            pageSizeMain = pageMain.getPageSize();
 	            canvasMAin = new PdfCanvas(pageMain);
@@ -674,8 +733,6 @@ public class PrintController {
 	            canvasMAin.addImage(leftLogo, rectaMain, false);
 	            Rectangle rectaMain2=new Rectangle(pageSizeMain.getWidth()-64,pageSizeMain.getHeight()-34,34,33);
 	            canvasMAin.addImage(rightLogo, rectaMain2, false);
-
-
 	        }
 	        docMain.close();
 	        pdfDocMain.close();
@@ -883,6 +940,8 @@ public class PrintController {
 			        pdf2.close();
 			        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
 			        Files.delete(pathOfFile);	
+			        
+			        
 				    }
 	        	}
 	        	
@@ -2289,15 +2348,9 @@ public class PrintController {
 	@RequestMapping(value = "getMeetingSchedules.htm", method = RequestMethod.GET)
 	public @ResponseBody String getWorkingHours(HttpServletRequest req, HttpServletResponse response, HttpSession ses) throws Exception 
 	{
-		
-				
 		List<Object[]> getWorkingHours =new ArrayList<Object[]>();
 		try {
-		
 			getWorkingHours = service.getMeetingSchedules(req.getParameter("projectId"),req.getParameter("month"),req.getParameter("year"));
-
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -640,8 +640,8 @@ for(Object[] temp : invitedlist){
 						<tr>
 							<th  class="sth" style="text-align :center !important; max-width: 30px"> SN</th>
 							<th  class="sth" style="text-align :center !important; max-width: 35px"> Type</th>
-							<th  class="sth" style=" max-width: 600px"> Item</th>				
-							<th  class="sth" style="width: 195px"> Remarks</th>	
+							<th  class="sth" style=" max-width: 795px"> Item</th>				
+							<!-- <th  class="sth" style="width: 195px"> Remarks</th> -->	
 						</tr>
 					</thead>
 					<tbody>
@@ -667,7 +667,7 @@ for(Object[] temp : invitedlist){
 								</p> 				
 								</td>
 								<td  class="std" style="border:1px solid black;padding:  5px 5px 5px 5px ;width: 600px;text-align: justify;"><%=speclists.get(i)[1]%></td>
-								<td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td>
+								<%-- <td class="std" style="text-align :center;border:1px solid black;padding:  5px 5px 5px 5px;"  > <%if( speclists.get(i)[8]!=null && !speclists.get(i)[8].toString().equalsIgnoreCase("nil")){ %> <%= speclists.get(i)[8]%> <%}else{ %> - <%} %></td> --%>
 							</tr>
 							<%} 
 							}%>
