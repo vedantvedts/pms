@@ -1,7 +1,6 @@
-<%@page import="com.vts.pfms.FormatConverter"%>
-<%@page import="com.ibm.icu.text.DecimalFormat"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.stream.Collectors, java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
+    pageEncoding="ISO-8859-1" import="java.util.stream.Collectors, java.util.*"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
@@ -55,19 +54,26 @@
 .highcharts-data-table tr:hover {
   background: #f1f7ff;
 }
+
+
+
 </style>
 </head>
 <body>
   <%
-  FormatConverter fc=new FormatConverter(); 
-  SimpleDateFormat sdf=fc.getRegularDateFormat();
   List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
   List<Object[]> actionlist = (List<Object[]>)request.getAttribute("ActionList");
   String projectid=(String)request.getAttribute("projectid");
-  List<Object[]> Actiontotal = actionlist.stream().filter(e-> e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
-  List<Object[]> Meetingtotal = actionlist.stream().filter(e-> e[13].toString().equalsIgnoreCase("S")).collect(Collectors.toList());
-  List<Object[]> Milestonestotal = actionlist.stream().filter(e-> !e[13].toString().equalsIgnoreCase("S") && !e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
-
+  List<Object[]> Actiontotal = null;
+  List<Object[]> Meetingtotal = null;
+  List<Object[]> Milestonestotal= null;
+  
+  if(actionlist!=null && actionlist.size()>0){
+	   Actiontotal = actionlist.stream().filter(e-> e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
+	   Meetingtotal = actionlist.stream().filter(e-> e[13].toString().equalsIgnoreCase("S")).collect(Collectors.toList());
+	   Milestonestotal = actionlist.stream().filter(e-> !e[13].toString().equalsIgnoreCase("S") && !e[13].toString().equalsIgnoreCase("N")).collect(Collectors.toList());
+  }
+   
   int Actionactive = 0;
   int ActionInprogress  = 0;
   int ActionClose  =0;
@@ -101,6 +107,7 @@
 	   MilestonesInprogress  = Milestonestotal.stream().filter(e-> !e[8].toString().equalsIgnoreCase("C") && !e[8].toString().equalsIgnoreCase("A")).collect(Collectors.toList()).size();
 	   MilestonesClose  = Milestonestotal.stream().filter(e->e[8].toString().equalsIgnoreCase("C")).collect(Collectors.toList()).size(); 
   }
+  int total = acttotal + Meetingttl + Miletotal;
  %>
 <div class="container-fluid">
 		<div class="row">
@@ -132,19 +139,27 @@
 					   	</div>
 		   			</div>
 					</div>
-						<div class="card-body "> 
+					<div class="card-body "> 
 						<div class="row" style="margin-top: -18px;">
-						<div class="col-md-6" style="float: right;" align="center">
-							<figure class="highcharts-figure">
-							<div id="container"></div>
-							<div align="center">
-								<button onclick="submitForm('M','N');" class="btn btn-sm " style="margin-right:85px;float:right; background-color: #b70000;color:white; padding: 4px 13px; "> <b><%=Miletotal%></b> </button>
-		                        <button onclick="submitForm('N','N');" class="btn btn-sm " style="margin-left:-55px;margin-right:80px;background-color: #cd3a66;color:white; padding: 4px 13px; "> <b> <%=acttotal%></b> </button>
-		                        <button onclick="submitForm('S','N');" class="btn btn-sm " style="margin-left:59px;margin-right: -60px; background-color: #8544b1;color:white; padding: 4px 13px; "> <b><%=Meetingttl%></b> </button>
-	                      	</div>
-							</figure>
+							<div class="col-md-6" style="float: right;" align="center">
+								<figure class="highcharts-figure">
+								<div id="container"></div>
+								<div align="center">
+									<button onclick="submitForm('M','N');" class="btn btn-sm " style="margin-right:85px;float:right; background-color: #b70000;color:white; padding: 4px 13px; "> <b><%=Miletotal%></b> </button>
+			                        <button onclick="submitForm('N','N');" class="btn btn-sm " style="margin-left:-55px;margin-right:80px;background-color: #cd3a66;color:white; padding: 4px 13px; "> <b> <%=acttotal%></b> </button>
+			                        <button onclick="submitForm('S','N');" class="btn btn-sm " style="margin-left:59px;margin-right: -60px; background-color: #8544b1;color:white; padding: 4px 13px; "> <b><%=Meetingttl%></b> </button>
+		                      	</div>
+								</figure>
+							</div>
+							<div class="col-md-6"  >
+								<figure class="highcharts-figure">
+								  <div id="container1"></div>
+								</figure>
+							</div>
 						</div>
-		</div></div></div></div>					
+				    </div>
+		      </div>
+		</div>					
 </div>
 </div>
 <form action="ActionReportSubmit.htm" id="submitform" method="post">
@@ -226,6 +241,188 @@ function submitForm(type, status)
    $("#STATUS").val(status);
    document.getElementById('submitform').submit(); 
 }
+</script>
+<%
+int actiontaotalperc=0;
+int actionactive=0;
+int actioninprogress=0;
+int actionclosed=0;
+if(acttotal>0){    actiontaotalperc=(acttotal*100)/ total;}
+if(Actionactive>0){   actionactive=(Actionactive*100)/total; }
+if(ActionInprogress>0){ actioninprogress=(ActionInprogress*100)/total;}
+if(ActionClose>0){ actionclosed=(ActionClose*100)/total;}
+
+int Meetingtotalperc=0;
+int Meetingactiveperc=0;
+int Meetinginprogressperc=0;
+int Meetingclosedperc=0;
+if(Meetingttl>0){    Meetingtotalperc=(Meetingttl*100)/ total;}
+if(Meetingactive>0){   Meetingactiveperc=(Meetingactive*100)/total; }
+if(MeetingInprogress>0){ Meetinginprogressperc=(MeetingInprogress*100)/total;}
+if(MeetingClose>0){ Meetingclosedperc=(MeetingClose*100)/total;}
+
+int Milestonestotalperc=0;
+int Milestonesactiveperc=0;
+int Milestonesinprogressperc=0;
+int Milestonesclosedperc=0;
+if(Miletotal>0){    Milestonestotalperc=(Miletotal*100)/ total;}
+if(Milestonesactive>0){   Milestonesactiveperc=(Milestonesactive*100)/total; }
+if(MilestonesInprogress>0){ Milestonesinprogressperc=(MilestonesInprogress*100)/total;}
+if(MilestonesClose>0){ Milestonesclosedperc=(MilestonesClose*100)/total;}
+
+%>
+<script type="text/javascript">
+var colors = Highcharts.getOptions().colors,
+categories = [
+  'Action',
+  'Meetings',
+  'Milestone',
+],
+data = [
+  {
+    y: <%=actiontaotalperc%>,
+    color: colors[4],
+    drilldown: {
+      name: 'Action',
+      categories: [
+        'Active',
+        'Inprogress',
+        'Closed'
+      ],
+      data: [
+        <%=actionactive%>,
+        <%=actioninprogress%>,
+        <%=actionclosed%>
+      ]
+    }
+  },
+  {
+    y: <%=Meetingtotalperc%>,
+    color: colors[5],
+    drilldown: {
+      name: 'Meetings',
+      categories: [
+        'Active',
+        'Inprogress',
+        'Closed'
+      ],
+      data: [
+    	  <%=Meetingactiveperc%>,
+          <%=Meetinginprogressperc%>,
+          <%=Meetingclosedperc%>
+      ]
+    }
+  },
+  {
+    y: <%=Milestonestotalperc%>,
+    color: colors[6],
+    drilldown: {
+      name: 'Milestone',
+      categories: [
+        'Active',
+        'Inprogress',
+        'Closed'
+      ],
+      data: [
+    	  <%=Milestonesactiveperc%>,
+          <%=Milestonesinprogressperc%>,
+          <%=Milestonesclosedperc%>
+      ]
+    }
+  },
+],
+browserData = [],
+versionsData = [],
+i,
+j,
+dataLen = data.length,
+drillDataLen,
+brightness;
+
+
+//Build the data arrays
+for (i = 0; i < dataLen; i += 1) {
+
+// add browser data
+browserData.push({
+  name: categories[i],
+  y: data[i].y,
+  color: data[i].color
+});
+
+// add version data
+drillDataLen = data[i].drilldown.data.length;
+for (j = 0; j < drillDataLen; j += 1) {
+  brightness = 0.2 - (j / drillDataLen) / 5;
+  versionsData.push({
+    name: data[i].drilldown.categories[j],
+    y: data[i].drilldown.data[j],
+    color: Highcharts.color(data[i].color).brighten(brightness).get()
+  });
+}
+}
+
+//Create the chart
+Highcharts.chart('container1', {
+chart: {
+  type: 'pie'
+},
+title: {
+  text: 'Action Pie Chart',
+  align: 'center'
+},
+plotOptions: {
+  pie: {
+    shadow: false,
+    center: ['50%', '50%']
+  }
+},
+tooltip: {
+  valueSuffix: '%'
+},
+series: [{
+  name: 'Actions',
+  data: browserData,
+  size: '60%',
+  dataLabels: {
+    formatter: function () {
+      return this.y > 5 ? this.point.name : null;
+    },
+    color: '#ffffff',
+    distance: -30
+  }
+}, {
+  name: 'Actions',
+  data: versionsData,
+  size: '80%',
+  innerSize: '60%',
+  dataLabels: {
+    formatter: function () {
+      // display only if larger than 1
+      return this.y > 1|| this.y == 1 ? '<b>' + this.point.name + ':</b> ' +
+        this.y + '%' : null;
+    }
+  },
+  id: 'versions'
+}],
+responsive: {
+  rules: [{
+    condition: {
+      maxWidth: 400
+    },
+    chartOptions: {
+      series: [{
+      }, {
+        id: 'versions',
+        dataLabels: {
+          enabled: false
+        }
+      }]
+    }
+  }]
+}
+});
+
 </script>
 </body>
 </html>

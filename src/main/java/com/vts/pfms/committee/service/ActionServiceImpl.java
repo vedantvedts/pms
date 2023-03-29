@@ -803,6 +803,7 @@ public class ActionServiceImpl implements ActionService {
 
 	@Override
 	public List<Object[]> ActionReports(String EmpId, String Term, String Position,String Type,String LabCode) throws Exception {
+		
 		return dao.ActionReports(EmpId, Term, Position,Type,LabCode);
 	}
 
