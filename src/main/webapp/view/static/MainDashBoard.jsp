@@ -488,22 +488,24 @@
 	}
 	
 	label{
-	font-weight: bold;
-	  font-size: 13px;
+		font-weight: bold;
+	  	font-size: 13px;
 	}
 
 	.cashoutgo .primary{
-			background-color: #5C192F !important; 
-		}
+			/* background-color: #5C192F !important; */
+			background-color: #8D0404 !important; 
+	}
 		
 	.cashoutgo .bg-success{
-			background-color:#466136 !important; 
-		}
+			/* background-color: #466136 !important; */
+			background-color: #39850C !important; 
+	}
 		
 	.cashoutgo .bg-info{
-			background-color:#591A69 !important;
-			 
-		}
+			/* background-color:#591A69 !important; */
+			background-color: #7F109B !important;			 
+	}
 	
 
 </style>

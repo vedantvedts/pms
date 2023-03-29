@@ -39,6 +39,7 @@ import com.vts.pfms.project.dto.PfmsInitiationDto;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
+import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
@@ -59,6 +60,7 @@ import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -1530,42 +1532,64 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectDataSubmit(model);
 	}
 
+	/*
+	 * @Override public long RequirementAttachmentAdd(long initiationReqId,
+	 * MultipartFile[] fileAttach, String labCode) throws Exception { // TODO
+	 * Auto-generated method stub logger.info(new Date() +
+	 * "Inside SERVICE RequirementAttachmentAdd ");
+	 * List<PfmsRequirementAttachment>PfmsRequirementAttachmentList=new
+	 * ArrayList<PfmsRequirementAttachment>();
+	 * 
+	 * Timestamp instant = Timestamp.from(Instant.now()); String timestampstr =
+	 * instant.toString().replace(" ", "").replace(":", "").replace("-",
+	 * "").replace(".", "");
+	 * 
+	 * String Path = labCode + "\\ProjectRequirement\\"; long count=0;
+	 * 
+	 * 
+	 * for(int i=0;i<fileAttach.length;i++) { PfmsRequirementAttachment pra=new
+	 * PfmsRequirementAttachment(); pra.setInitiationReqId(initiationReqId);
+	 * if(!fileAttach[i].isEmpty()) { File theDir = new File(uploadpath + Path); if
+	 * (!theDir.exists()) { theDir.mkdirs(); }
+	 * pra.setAttachmentsName(fileAttach[i].getOriginalFilename());
+	 * saveFile(uploadpath+Path,pra.getAttachmentsName(),fileAttach[i]); }else {
+	 * pra.setAttachmentsName(null); } pra.setFilespath(Path);
+	 * pra.setIsActive(Integer.parseInt("1")); count
+	 * =dao.RequirementAttachmentAdd(pra);
+	 * 
+	 * }
+	 * 
+	 * 
+	 * return count; }
+	 */
+	
+	
 	@Override
-	public long RequirementAttachmentAdd(long initiationReqId, MultipartFile[] fileAttach, String labCode)
+	public long preProjectFileupload(PreprojectFileDto pfd, MultipartFile fileAttach, String labCode,String UserId,Double version)
 			throws Exception {
-		// TODO Auto-generated method stub
-		logger.info(new Date() + "Inside SERVICE RequirementAttachmentAdd ");
-		List<PfmsRequirementAttachment>PfmsRequirementAttachmentList=new ArrayList<PfmsRequirementAttachment>();
-		
-		Timestamp instant = Timestamp.from(Instant.now());
-		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
-
+		logger.info(new Date() + "Inside SERVICE preProjectFileupload ");
 		String Path = labCode + "\\ProjectRequirement\\";
 		long count=0;
-
-		
-		for(int i=0;i<fileAttach.length;i++) {
-			PfmsRequirementAttachment pra=new PfmsRequirementAttachment();
-			pra.setInitiationReqId(initiationReqId);
-			if(!fileAttach[i].isEmpty()) {
-				File theDir = new File(uploadpath + Path);
-				if (!theDir.exists()) {
-					theDir.mkdirs();
-				}
-				pra.setAttachmentsName(fileAttach[i].getOriginalFilename());
-				saveFile(uploadpath+Path,pra.getAttachmentsName(),fileAttach[i]);
-			}else {
-				pra.setAttachmentsName(null);
-			}
-			pra.setFilespath(Path);
-			pra.setIsActive(Integer.parseInt("1"));
-			count =dao.RequirementAttachmentAdd(pra);
-			
+		PreprojectFile pf=new PreprojectFile();
+		pf.setInitiationId(pfd.getInitiationId());
+		pf.setStepId(pfd.getStepId());
+		pf.setDocumentName(pfd.getDocumentName());
+		if(!fileAttach.isEmpty()) {
+			pf.setFileName(fileAttach.getOriginalFilename());
+			saveFile(uploadpath+Path,pf.getFileName(),fileAttach);
 		}
+		pf.setFilePath(Path);
+		pf.setVersionDoc(version);
+		pf.setDescription(pfd.getDescription());
+		pf.setDocumentId(pfd.getDocumentId());
+		pf.setCreatedDate(sdf1.format(new Date()));
+		pf.setCreatedBy(UserId);
+		pf.setIsActive(1);
 		
-
-		return count;
+		
+		return dao.preProjectFileUpload(pf);
 	}
+	
 	
 	
 	@Override
@@ -2101,11 +2125,6 @@ public class ProjectServiceImpl implements ProjectService {
 			// TODO Auto-generated method stu
 			logger.info(new Date() + "Inside SERVICE ProjectRequirementAdd ");
 			
-			Timestamp instant = Timestamp.from(Instant.now());
-			String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
-			
-			String Path = LabCode + "\\ProjectRequirement\\";
-			
 			PfmsInititationRequirement pir=new PfmsInititationRequirement();
 			pir.setInitiationId(prd.getInitiationId());
 			pir.setReqTypeId(prd.getReqTypeId());
@@ -2116,16 +2135,11 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setPriority(prd.getPriority());
 			pir.setLinkedRequirements(prd.getLinkedRequirements());
 			pir.setNeedType(prd.getNeedType());
-			//-----------------------------------------------------------------------//	
-			
-			//--------------------------------------------------------------------//	
+			pir.setRemarks(prd.getRemarks());
+			pir.setLinkedDocuments(prd.getLinkedDocuments());
 			pir.setCreatedBy(UserId);
 			pir.setCreatedDate(sdf1.format(new Date()));
 			pir.setIsActive(1);
-			File theDir = new File(uploadpath + Path);
-			if (!theDir.exists()) {
-				theDir.mkdirs();
-			}
 			
 			return dao.ProjectRequirementAdd(pir);
 		}
@@ -2166,6 +2180,8 @@ public class ProjectServiceImpl implements ProjectService {
 			pir.setLinkedRequirements(prd.getLinkedRequirements());
 			pir.setRequirementId(prd.getRequirementId());
 			pir.setNeedType(prd.getNeedType());
+			pir.setRemarks(prd.getRemarks());
+			pir.setLinkedDocuments(prd.getLinkedDocuments());
 			pir.setModifiedBy(userId);
 			pir.setModifiedDate(sdf1.format(new Date()));
 			/* pir.setIsActive(1); */
@@ -2187,51 +2203,84 @@ public class ProjectServiceImpl implements ProjectService {
 
 		@Override
 		public List<Integer> reqcountList(String initiationId) throws Exception {
-			// TODO Auto-generated method stub
+		
 		return	dao.reqcountList(initiationId);
 		}
 
 		@Override
 		public int deleteRequirement(String initiationReqId) throws Exception {
-			// TODO Auto-generated method stub
+		
 		return	dao.deleteRequirement(initiationReqId);
 		}
 
 		@Override
 		public String getReqId(int i, String initiationId) throws Exception {
-			// TODO Auto-generated method stub
+	
 			return dao.getReqId(i,initiationId);
 		}
 
 		@Override
 		public int updateReqId(int last, String s, int first, String initiationId) throws Exception {
-			// TODO Auto-generated method stub
+
 			return dao.updateReqId(last,s,first,initiationId);
 		}
 
 		@Override
 		public Object[] reqType(String r) throws Exception {
-			// TODO Auto-generated method stub
+	
 			return dao.reqType(r);
 		}
 
 		@Override
 		public List<Object[]> RequirementAttachmentList(String inititationReqId) throws Exception {
-			// TODO Auto-generated method stub
+			
 			return dao.RequirementAttachmentList(inititationReqId);
 		}
 
 	
 		@Override
-		public Object[] reqAttachDownload(String attachmentid) throws Exception {
-			// TODO Auto-generated method stub
-			return dao.reqAttachDownload( attachmentid);
+		public Object[] reqAttachDownload(String DocumentId,String VersionDoc,String initiationid, String stepid) throws Exception {
+
+			return dao.reqAttachDownload( DocumentId,VersionDoc,initiationid,stepid);
 		}
 
 		@Override
 		public long requirementAttachmentDelete(String attachmentid) throws Exception {
-			// TODO Auto-generated method stub
+			
 			return dao.requirementAttachmentDelete(attachmentid);
 		}
+
+		@Override
+		public Object inititionSteps() throws Exception {
+	
+			return dao.initiationSteps();
+		}
+
+		@Override
+		public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
+
+			return dao.getProjectFilese(initiationid,stepid);
+		}
+
+		@Override
+		public long filecount(String stepid, String initiationid) throws Exception {
+
+			return dao.filecount(stepid,initiationid);
+		}
+
+		@Override
+		public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount)
+				throws Exception {
+			// TODO Auto-generated method stub
+			return dao.projectfilesList(inititationid,stepid,documentcount);
+		}
+
+		@Override
+		public List<Object[]> requirementFiles(String initiationid, int stepid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.requirementFiles(initiationid,stepid);
+		}
+
+		
 		
 }

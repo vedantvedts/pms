@@ -25,6 +25,7 @@ import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -197,10 +198,16 @@ public interface ProjectDao {
 	public int updateReqId(int last, String s, int first, String initiationId)throws Exception;
 	public Object[] reqType(String r) throws Exception;
 	//public long RequirementAttachmentAdd(List<PfmsRequirementAttachment> pfmsRequirementAttachmentList)throws Exception;
-	public long RequirementAttachmentAdd(PfmsRequirementAttachment pra) throws Exception;
+	//public long RequirementAttachmentAdd(PfmsRequirementAttachment pra) throws Exception;
 	public List<Object[]> RequirementAttachmentList(String inititationReqId)throws Exception;
-	public Object[] reqAttachDownload(String attachmentid) throws Exception;
+	public Object[] reqAttachDownload(String DocumentId,String VersionDoc,String initiationid, String stepid) throws Exception;
 	public long requirementAttachmentDelete(String attachmentid)throws Exception;
+	public Object initiationSteps()throws Exception;
+	public long preProjectFileUpload(PreprojectFile pf) throws Exception;
+	public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception;
+	public long filecount(String stepid, String initiationid)throws Exception;
+	public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount)throws Exception;
+	public List<Object[]> requirementFiles(String initiationid, int stepid)throws Exception;
 
 	
 }

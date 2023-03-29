@@ -55,6 +55,7 @@ import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsRequirementAttachmentDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
+import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
@@ -141,6 +142,10 @@ public class ProjectController
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 			req.setAttribute("reqTypeList", service.RequirementTypeList());
 			req.setAttribute("filesize",file_size);
+			req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+			
+			System.out.println(initiationid+"-----");
+			
 			}
 			else {
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
@@ -149,6 +154,7 @@ public class ProjectController
 				req.setAttribute("filesize",file_size);
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("projectshortName",projectshortName );
+				req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 				if(!service.RequirementList(initiationid).isEmpty()) {
 					req.setAttribute("initiationReqId", service.RequirementList(initiationid).get(0)[0].toString());
 					}
@@ -163,6 +169,49 @@ public class ProjectController
 		}
 		return "project/ProjectRequirements";
 	}
+	
+	@RequestMapping(value="PreProjectFileUpload.htm")
+	public String PreProjectFileUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"PreProjectFileUpload.htm "+UserId);
+		
+		try {
+			String Project=req.getParameter("project");
+			if(Project!=null) {
+				String[]project=Project.split("/");
+				
+				String initiationid=project[0];
+				String projectshortName=project[1];
+				String projectTitle=project[2];
+				req.setAttribute("initiationid", initiationid);
+				req.setAttribute("projectshortName",projectshortName );
+				req.setAttribute("projectTitle", projectTitle);
+			}else {
+				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
+				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
+				req.setAttribute("initiationid", initiationid);
+				req.setAttribute("projectshortName",projectshortName );
+		
+			
+			}
+			req.setAttribute("filesize",file_size);
+			req.setAttribute("stepsName",service.inititionSteps());
+			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" PreProjectFileUpload.htm "+UserId, e); 
+			return "static/Error";
+		}
+		return "filerepo/PreProjectFileUpload";
+		
+	}
+	
+	
+	
 	@RequestMapping(value = "ProjectIntiationListSubmit.htm", method = RequestMethod.POST)
 	public String ProjectIntiationListSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)	throws Exception 
 	{
@@ -594,7 +643,7 @@ public class ProjectController
 	}
 	
 	@RequestMapping(value = "ProjectRequirementAddSubmit.htm", method=RequestMethod.POST)
-	public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir , @RequestPart("Attachment") MultipartFile FileAttach[] ) throws Exception {
+	public String ProjectRequirementAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir  ) throws Exception {
 		
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectRequirementAddSubmit.htm "+UserId);
@@ -634,6 +683,21 @@ public class ProjectController
 					}
 				}
 				}
+				String linkedAttachements="";
+				if(req.getParameterValues("linkedAttachements")!=null) {
+					String []linkedreq= req.getParameterValues("linkedAttachements");
+					
+					
+					for(int i=0;i<linkedreq.length;i++) {
+						linkedAttachements=linkedAttachements+linkedreq[i];
+						if(i!=linkedreq.length-1) {
+							linkedAttachements=linkedAttachements+",";
+						}
+					}
+					}
+				
+				
+				
 				Long IntiationId=Long.parseLong(req.getParameter("IntiationId"));
 				PfmsInitiationRequirementDto prd= new PfmsInitiationRequirementDto();
 				prd.setInitiationId(IntiationId);
@@ -645,12 +709,15 @@ public class ProjectController
 				prd.setPriority(req.getParameter("priority"));
 				prd.setLinkedRequirements(linkedRequirements);
 				prd.setNeedType(needType);
+				prd.setRemarks(req.getParameter("remarks"));
+				prd.setLinkedDocuments(linkedAttachements);
+				
 				long count= service.ProjectRequirementAdd(prd,UserId,LabCode);
 				long initiationReqId=count;
 			
 				
 				
-				long count1=service.RequirementAttachmentAdd(initiationReqId,FileAttach,LabCode);
+			//	long count1=service.RequirementAttachmentAdd(initiationReqId,FileAttach,LabCode);
 				
 				
 				if (count > 0) {
@@ -675,91 +742,125 @@ public class ProjectController
 	}
 	
 	
-	 @RequestMapping(value = "ProjectRequirementUpdate.htm", method=RequestMethod.POST) 
-	 public String ProjectRequirementUpdate(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {  
-		 String UserId = (String) ses.getAttribute("Username"); 
-		 logger.info(new Date() +"Inside ProjectRequirementUpdate.htm "+UserId);
-	 String InitiationId=req.getParameter("IntiationId"); 
-	 String initiationReqId=req.getParameter("InitiationReqId");
-	 String option=req.getParameter("action"); 
-	 
-	
-	 long InitiationReqId=Long.parseLong(req.getParameter("InitiationReqId"));
-	
-	 
-	if(option.equalsIgnoreCase("EDIT")) {
-	 try {
+	@RequestMapping(value="PreProjectFileSubmit.htm",method=RequestMethod.POST)
+	public String PreprojectFileSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestParam("Attachment") MultipartFile FileAttach)throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		 logger.info(new Date() +"Inside PreProjectFileSubmit.htm "+UserId);
+		 try {
+		 String initiationId=req.getParameter("IntiationId");
+		 String projectshortName=req.getParameter("projectshortName");
+		 PreprojectFileDto pfd=new PreprojectFileDto();
+		 String versionvalue=req.getParameter("versionvalue");
+		 Double version=0.0;
+		 if(versionvalue.equals("")) {
+		 version=1.0;
+		  System.out.println(version+"***********");
+		 }else {
+			 version=Double.parseDouble(versionvalue);
+			  System.out.println(version+"***********");
+		 }
 		 
-		 req.setAttribute("InitiationId", InitiationId);
-		 req.setAttribute("InitiationReqId", req.getParameter("InitiationReqId"));
-		 req.setAttribute("RequirementTypeList", service.RequirementTypeList());
-		 req.setAttribute("Requirement", service.Requirement(InitiationReqId));
+		 long documentCount=service.filecount(req.getParameter("stepid"),req.getParameter("IntiationId"));
+		 	
+		 String doccount=req.getParameter("doccount");
+		 
+		 	if(doccount==null) {
+			 pfd.setDocumentId(documentCount+1);
+		 	}
+		 	else {
+		 		pfd.setDocumentId(Long.parseLong(doccount));
+		 	}
+		 
+		System.out.println(documentCount+"---");
+		 
+		 pfd.setInitiationId(Long.parseLong(req.getParameter("IntiationId")));
+		 pfd.setStepId(Long.parseLong(req.getParameter("stepid")));
+		 pfd.setDocumentName(req.getParameter("filename"));
+		 pfd.setDescription(req.getParameter("description"));
+		 
+		 long count=service.preProjectFileupload(pfd,FileAttach,LabCode,UserId,version);
+		 
+		 
 
-	 }
-	 catch(Exception e) {
-		 e.printStackTrace(); 
-		 logger.info(new Date() +"Inside ProjectRequirementUpdate.htm "+UserId);
-		 return "static/Error";
-	 }
-	 
-	 return "project/ProjectRequirementEdit";
-	}
-	else {
-		try {
-		List<Integer>reqcountlist1=service.reqcountList(InitiationId);
-		int []a=reqcountlist1.stream().map(i ->(i==null?0:i)).mapToInt(Integer::intValue).toArray();	
-		int count = service.deleteRequirement(initiationReqId);
-		int sum=0;
-		for(int i:a) {
-			sum=sum+i;
-		}
-		
-		List<Integer>reqcountlist2=service.reqcountList(InitiationId);
-		int[]b=reqcountlist2.stream().map(i->(i==null?0:i)).mapToInt(Integer::intValue).toArray();
-		for(int i:b) {
-			sum=sum-i;
-		}
-		
-		int []c=new int[b.length];
-		String reqid="";
-		String s="";
-		for(int i=0;i<c.length;i++) {
-			if(b[i]<sum) {
-				c[i]=b[i];
-			 reqid= service.getReqId(b[i],InitiationId).substring(0, 5);
-			 if(c[i]<10) {
-			 s=reqid+"000"+(c[i]*10);
-			 service.updateReqId(c[i],s,b[i],InitiationId);
-			 }
-			 else {
-				 s=reqid+"00"+(c[i]*10);
-				 service.updateReqId(c[i],s,b[i],InitiationId);
-			 }
-			}else {
-				c[i]=b[i]-1;
-				 reqid= service.getReqId(b[i],InitiationId).substring(0, 5);
-				 if(c[i]<10) {
-				 s=reqid+"000"+(c[i]*10);
-				 service.updateReqId(c[i],s,b[i],InitiationId);
-				 }
-				 else {
-					 s=reqid+"00"+(c[i]*10);
-					 service.updateReqId(c[i],s,b[i],InitiationId);
-				 }
+			if (count > 0) {
+				redir.addAttribute("result", "Document uploaded Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Document uploading Unsuccessful");
 			}
-		}
-		
-		redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
-		redir.addFlashAttribute("TabId", "6");
-		}
-		catch(Exception e) {
+		 
+			redir.addFlashAttribute("initiationid",req.getParameter("IntiationId"));
+			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+			redir.addFlashAttribute("filesize",file_size);
+			redir.addFlashAttribute("stepsName",service.inititionSteps());
+			redir.addFlashAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+			return "redirect:/PreProjectFileUpload.htm";
+			
+		 }
+		 catch(Exception e) {
 			 e.printStackTrace(); 
-			 logger.info(new Date() +"Inside ProjectRequirementUpdate.htm "+UserId);
+			 logger.info(new Date() +"Inside PreProjectFileSubmit.htm "+UserId);
 			 return "static/Error";
-		}
+		 }
+			/* return "filerepo/PreProjectFileUpload"; */
 	}
-	return "redirect:/ProjectIntiationDetailesLanding.htm";
-}
+	
+	/*
+	 * @RequestMapping(value = "ProjectRequirementUpdate.htm",
+	 * method=RequestMethod.POST) public String
+	 * ProjectRequirementUpdate(HttpServletRequest req, HttpSession ses,
+	 * RedirectAttributes redir) throws Exception { String UserId = (String)
+	 * ses.getAttribute("Username"); logger.info(new Date()
+	 * +"Inside ProjectRequirementUpdate.htm "+UserId); String
+	 * InitiationId=req.getParameter("IntiationId"); String
+	 * initiationReqId=req.getParameter("InitiationReqId"); String
+	 * option=req.getParameter("action");
+	 * 
+	 * 
+	 * long InitiationReqId=Long.parseLong(req.getParameter("InitiationReqId"));
+	 * 
+	 * 
+	 * if(option.equalsIgnoreCase("EDIT")) { try {
+	 * 
+	 * req.setAttribute("InitiationId", InitiationId);
+	 * req.setAttribute("InitiationReqId", req.getParameter("InitiationReqId"));
+	 * req.setAttribute("RequirementTypeList", service.RequirementTypeList());
+	 * req.setAttribute("Requirement", service.Requirement(InitiationReqId));
+	 * 
+	 * } catch(Exception e) { e.printStackTrace(); logger.info(new Date()
+	 * +"Inside ProjectRequirementUpdate.htm "+UserId); return "static/Error"; }
+	 * 
+	 * return "project/ProjectRequirementEdit"; } else { try {
+	 * List<Integer>reqcountlist1=service.reqcountList(InitiationId); int
+	 * []a=reqcountlist1.stream().map(i
+	 * ->(i==null?0:i)).mapToInt(Integer::intValue).toArray(); int count =
+	 * service.deleteRequirement(initiationReqId); int sum=0; for(int i:a) {
+	 * sum=sum+i; }
+	 * 
+	 * List<Integer>reqcountlist2=service.reqcountList(InitiationId);
+	 * int[]b=reqcountlist2.stream().map(i->(i==null?0:i)).mapToInt(Integer::
+	 * intValue).toArray(); for(int i:b) { sum=sum-i; }
+	 * 
+	 * int []c=new int[b.length]; String reqid=""; String s=""; for(int
+	 * i=0;i<c.length;i++) { if(b[i]<sum) { c[i]=b[i]; reqid=
+	 * service.getReqId(b[i],InitiationId).substring(0, 5); if(c[i]<10) {
+	 * s=reqid+"000"+(c[i]*10); service.updateReqId(c[i],s,b[i],InitiationId); }
+	 * else { s=reqid+"00"+(c[i]*10); service.updateReqId(c[i],s,b[i],InitiationId);
+	 * } }else { c[i]=b[i]-1; reqid=
+	 * service.getReqId(b[i],InitiationId).substring(0, 5); if(c[i]<10) {
+	 * s=reqid+"000"+(c[i]*10); service.updateReqId(c[i],s,b[i],InitiationId); }
+	 * else { s=reqid+"00"+(c[i]*10); service.updateReqId(c[i],s,b[i],InitiationId);
+	 * } } }
+	 * 
+	 * redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+	 * redir.addFlashAttribute("TabId", "6"); } catch(Exception e) {
+	 * e.printStackTrace(); logger.info(new Date()
+	 * +"Inside ProjectRequirementUpdate.htm "+UserId); return "static/Error"; } }
+	 * return "redirect:/ProjectIntiationDetailesLanding.htm"; }
+	 */
 	
 	
 	
@@ -1980,7 +2081,7 @@ public class ProjectController
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 	}
 	@RequestMapping(value = "ProjectRequirementEditSubmit.htm", method = RequestMethod.POST)
-	public String ProjectRequirementEditSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses, @RequestPart("Attachedit") MultipartFile FileAttach[] ) {
+	public String ProjectRequirementEditSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
 
@@ -2007,6 +2108,20 @@ public class ProjectController
 							}
 						}
 						}
+						String linkedAttachements="";
+						if(req.getParameterValues("linkedAttachements")!=null) {
+							String []linkedreq= req.getParameterValues("linkedAttachements");
+							
+							
+							for(int i=0;i<linkedreq.length;i++) {
+								linkedAttachements=linkedAttachements+linkedreq[i];
+								if(i!=linkedreq.length-1) {
+									linkedAttachements=linkedAttachements+",";
+								}
+							}
+							}
+						
+					System.out.println(req.getParameterValues("linkedAttachements")+"===============");
 		PfmsInitiationRequirementDto prd= new PfmsInitiationRequirementDto();
 		prd.setInitiationId(Long.parseLong(req.getParameter("IntiationId")));
 		prd.setReqTypeId(Long.parseLong(req.getParameter("editreqtype")));
@@ -2017,24 +2132,28 @@ public class ProjectController
 		prd.setLinkedRequirements(linkedRequirements);
 		prd.setReqCount(Integer.parseInt(requirementId.substring(5)));
 		prd.setNeedType(req.getParameter("needtype"));
+		prd.setLinkedDocuments(linkedAttachements);
+		prd.setRemarks(req.getParameter("remarks"));
 		
 		long count=service.RequirementUpdate(prd,UserId,InitiationReqId);
-		long count1=service.RequirementAttachmentAdd(Long.parseLong(InitiationReqId),FileAttach,LabCode);
+		
 		if (count > 0) {
 			redir.addAttribute("result", "Project Requirement Edited Successfully");
 		} else {
 			redir.addAttribute("resultfail", "Project Requirement Edited Unsuccessful");
 		}
-
+		redir.addFlashAttribute("initiationReqId", String.valueOf(InitiationReqId));
 		redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
 	redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
 	redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+	redir.addFlashAttribute("RequirementFiles",service.requirementFiles(req.getParameter("IntiationId"), 1));
 	return "redirect:/ProjectRequirement.htm";
 		
 	} 
 			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
 			redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
 			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+			redir.addFlashAttribute("RequirementFiles",service.requirementFiles(req.getParameter("IntiationId"), 1));
 			
 		}
 			catch(Exception e) {
@@ -4476,6 +4595,55 @@ public class ProjectController
 		}
 		return json.toJson(reqCount);
 	}
+	
+	@RequestMapping(value="PreprojectFiles.htm",method=RequestMethod.GET)
+	public @ResponseBody String PreprojectFiles(HttpSession ses,HttpServletRequest req) {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside PreprojectFiles.htm"+UserId);
+		List<Object[]>ProjectFiles=new ArrayList<Object[]>();
+	
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String stepid=req.getParameter("stepid");
+			
+			
+			ProjectFiles=service.getProjectFilese(initiationid,stepid);
+			
+			System.out.println(initiationid+"----"+stepid);
+			
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside PreprojectFiles.htm"+UserId);
+			e.printStackTrace();
+		}
+		return json.toJson(ProjectFiles);
+	}
+	
+	@RequestMapping(value="projectFilesList.htm",method=RequestMethod.GET)
+	public @ResponseBody String PreprojectFilesList(HttpSession ses,HttpServletRequest req) {
+		
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside projectFilesList.htm"+UserId);
+		List<Object[]>ProjectFiles=new ArrayList<Object[]>();
+		try {
+			String inititationid=req.getParameter("inititationid");
+			String stepid=req.getParameter("stepid");
+			String  documentcount=req.getParameter("documentcount");
+			
+
+			ProjectFiles=service.projectfilesList(inititationid,stepid,documentcount);
+			
+		
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	return json.toJson(ProjectFiles);
+	}
+	
 	@RequestMapping(value="RequirementAttachmentJsonValue.htm",method=RequestMethod.GET)
 	 public @ResponseBody String RRequirementAttachmentJsonValue(HttpSession ses, HttpServletRequest req) throws Exception {
 	 
@@ -4495,9 +4663,9 @@ public class ProjectController
 			logger.error(new Date()+"Inside RequirementAttachmentJsonValue.htm"+UserId);
 			e.printStackTrace();
 		}
+		
 	return json.toJson(AttachmentMapList);
 	}
-
 	@RequestMapping(value="ProjectRequirementAttachmentDownload.htm" , method ={RequestMethod.POST,RequestMethod.GET})
 	public void RequirementAttachmentDownload(HttpServletRequest req,HttpSession ses,HttpServletResponse res )throws Exception
 	{
@@ -4508,13 +4676,23 @@ public class ProjectController
 			String initiationId=req.getParameter("IntiationId");
 			String attachmentid=req.getParameter("attachmentid");
 			
+			String docid=req.getParameter("DocId");
 			
-			Object[]reqAttachDownload=service.reqAttachDownload(attachmentid);
+	
+		String []doc=docid.split(",");
+		
+		String DocumentId=doc[0];
+		String VersionDoc=doc[1];
+		String initiationid=doc[2];
+		String stepid=doc[3];
+		
 			
+			Object[]reqAttachDownload=service.reqAttachDownload(DocumentId,VersionDoc,initiationid,stepid);
+	
 			File my_file=null;
 			my_file=new File(uploadpath+reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
 			res.setContentType("Application/octet-stream");	
-			 res.setHeader("Content-disposition","attachment; filename="+reqAttachDownload[3].toString()); 
+			 res.setHeader("Content-disposition","inline; filename="+reqAttachDownload[3].toString()); 
 			  OutputStream out = res.getOutputStream();
 		        FileInputStream in = new FileInputStream(my_file);
 		        byte[] buffer = new byte[4096];
@@ -4534,6 +4712,10 @@ public class ProjectController
 			logger.error(new Date() +"Inside ProjectRequirementAttachmentDownload.htm "+UserId,e);
 		}
 	}
+	
+	
+	
+
 //package com.vts.pfms.project.controller;
 
 //import java.io.ByteArrayInputStream;

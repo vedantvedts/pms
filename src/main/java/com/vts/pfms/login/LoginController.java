@@ -929,14 +929,16 @@ public class LoginController {
     	String ProjectId="A";
 		if(req.getParameter("projectid")!=null) {
 			ProjectId=req.getParameter("projectid");
-		}
-    	
+		}    	
     	try {
-    		req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData("A",EmpId,LoginType,LabCode,"N"));
-    		req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
-    		req.setAttribute("logintype", LoginType);
-    		
     		String ClusterId = headerservice.LabDetails(LabCode)[1].toString();
+    		req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData("A",EmpId,"A",LabCode,"N"));
+    		req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
+    		req.setAttribute("ProjectList", rfpmainservice.ProjectList("A",EmpId,LabCode));
+    		req.setAttribute("logintype", LoginType);
+    		req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo("A",EmpId,LabCode,ClusterId ));
+    		
+    		
     		req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance("A",EmpId,LabCode,ClusterId ));
     		List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
     		List<Object[]> labdatalist = new ArrayList<Object[]>();
@@ -945,15 +947,13 @@ public class LoginController {
 		    {
 		    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,"N"));
 		    }
-		    req.setAttribute("projecthealthtotaldg", labdatalist);
-    		
+		    req.setAttribute("projecthealthtotaldg", labdatalist);    		
     	}
     	catch(Exception e) {
     		logger.error(new Date() +" Inside LabWiseProjectDetails.htm"+UserId+ e);
     		e.printStackTrace();
-    	}
-    	
-    	return "admin/LabProjectDetails";
+    	}    	
+    	return "static/LabProjectDetails";
     }
    
     

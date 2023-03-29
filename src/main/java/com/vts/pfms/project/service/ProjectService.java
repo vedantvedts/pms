@@ -17,6 +17,7 @@ import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsProjectTccDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
+import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
@@ -176,8 +177,14 @@ public interface ProjectService {
 	public String getReqId(int i, String initiationId)throws Exception;
 	public int updateReqId(int last, String s, int initial, String initiationId)throws Exception;
 	public Object[] reqType(String r) throws Exception;
-	public long RequirementAttachmentAdd(long initiationReqId, MultipartFile[] fileAttach, String labCode)throws Exception;
+	//public long RequirementAttachmentAdd(long initiationReqId, MultipartFile[] fileAttach, String labCode)throws Exception;
 	public List<Object[]> RequirementAttachmentList(String parameter) throws Exception;
-	public Object[] reqAttachDownload(String attachmentid)throws Exception;
+	public Object[] reqAttachDownload(String DocumentId,String VersionDoc, String initiationid, String stepid)throws Exception;
 	public long requirementAttachmentDelete(String attachmentid)throws Exception;
+	public Object inititionSteps() throws Exception;
+	public long preProjectFileupload(PreprojectFileDto pfd, MultipartFile fileAttach, String labCode,String UserId,Double version) throws Exception;
+	public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception;
+	public long filecount(String stepid, String initiationid) throws Exception;
+	public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount) throws Exception;
+	public List<Object[]>requirementFiles(String initiationid, int stepid)throws Exception;
 }
