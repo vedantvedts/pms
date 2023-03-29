@@ -93,6 +93,7 @@
 	  ActionInprogress  = Actiontotal.stream().filter(e-> !e[8].toString().equalsIgnoreCase("C") && !e[8].toString().equalsIgnoreCase("A")).collect(Collectors.toList()).size();
 	  ActionClose  = Actiontotal.stream().filter(e->e[8].toString().equalsIgnoreCase("C")).collect(Collectors.toList()).size();
   }
+  
   int Meetingttl=0;
   if(Meetingtotal!=null && Meetingtotal.size()>0){
 	  Meetingttl=Meetingtotal.size();
@@ -100,6 +101,7 @@
 	   MeetingInprogress  = Meetingtotal.stream().filter(e-> !e[8].toString().equalsIgnoreCase("C") && !e[8].toString().equalsIgnoreCase("A")).collect(Collectors.toList()).size();
 	   MeetingClose  = Meetingtotal.stream().filter(e->e[8].toString().equalsIgnoreCase("C")).collect(Collectors.toList()).size();
   }
+  
   int Miletotal=0;
   if(Milestonestotal!=null && Milestonestotal.size()>0){
 	  Miletotal=Milestonestotal.size();
@@ -107,6 +109,7 @@
 	   MilestonesInprogress  = Milestonestotal.stream().filter(e-> !e[8].toString().equalsIgnoreCase("C") && !e[8].toString().equalsIgnoreCase("A")).collect(Collectors.toList()).size();
 	   MilestonesClose  = Milestonestotal.stream().filter(e->e[8].toString().equalsIgnoreCase("C")).collect(Collectors.toList()).size(); 
   }
+  
   int total = acttotal + Meetingttl + Miletotal;
  %>
 <div class="container-fluid">
@@ -247,6 +250,7 @@ int actiontaotalperc=0;
 int actionactive=0;
 int actioninprogress=0;
 int actionclosed=0;
+
 if(acttotal>0){    actiontaotalperc=(acttotal*100)/ total;}
 if(Actionactive>0){   actionactive=(Actionactive*100)/total; }
 if(ActionInprogress>0){ actioninprogress=(ActionInprogress*100)/total;}
@@ -256,6 +260,7 @@ int Meetingtotalperc=0;
 int Meetingactiveperc=0;
 int Meetinginprogressperc=0;
 int Meetingclosedperc=0;
+
 if(Meetingttl>0){    Meetingtotalperc=(Meetingttl*100)/ total;}
 if(Meetingactive>0){   Meetingactiveperc=(Meetingactive*100)/total; }
 if(MeetingInprogress>0){ Meetinginprogressperc=(MeetingInprogress*100)/total;}
@@ -265,11 +270,11 @@ int Milestonestotalperc=0;
 int Milestonesactiveperc=0;
 int Milestonesinprogressperc=0;
 int Milestonesclosedperc=0;
+
 if(Miletotal>0){    Milestonestotalperc=(Miletotal*100)/ total;}
 if(Milestonesactive>0){   Milestonesactiveperc=(Milestonesactive*100)/total; }
 if(MilestonesInprogress>0){ Milestonesinprogressperc=(MilestonesInprogress*100)/total;}
 if(MilestonesClose>0){ Milestonesclosedperc=(MilestonesClose*100)/total;}
-
 %>
 <script type="text/javascript">
 var colors = Highcharts.getOptions().colors,
