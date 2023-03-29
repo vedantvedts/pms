@@ -158,11 +158,8 @@ public class LoginController {
 		 	req.setAttribute("loginTypeList", headerservice.loginTypeList(Repository.findByUsername(req.getUserPrincipal().getName()).getLoginType()));
 		    req.setAttribute("DashboardDemandCount", headerservice.DashboardDemandCount().get(0));
 		
-		    
-		    
-		    
-		     String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
-		     ses.setAttribute("empNo", empNo);
+		    String empNo=rfpmainservice.getEmpNo(Repository.findByUsername(req.getUserPrincipal().getName()).getEmpId());
+		    ses.setAttribute("empNo", empNo);
       }catch (Exception e) {
     	e.printStackTrace();
     	 logger.error(new Date() +" Login Problem Occures When Login By "+req.getUserPrincipal().getName(), e);
@@ -940,7 +937,7 @@ public class LoginController {
     		req.setAttribute("logintype", LoginType);
     		
     		String ClusterId = headerservice.LabDetails(LabCode)[1].toString();
-    		
+    		req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance("A",EmpId,LabCode,ClusterId ));
     		List<Object[]> LabMasterList = headerservice.LabMasterList(ClusterId).stream().filter(e-> "N".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()) ;
     		List<Object[]> labdatalist = new ArrayList<Object[]>();
     		

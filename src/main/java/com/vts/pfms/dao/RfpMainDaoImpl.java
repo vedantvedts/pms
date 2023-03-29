@@ -576,8 +576,7 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		query.setParameter("EmpId", EmpId);
 		query.setParameter("LabCode", LabCode);
 		query.setParameter("ClusterId", ClusterId);
-		List<Object[]> CCMData =(List<Object[]>)query.getResultList();
-		
+		List<Object[]> CCMData =(List<Object[]>)query.getResultList();		
 		return CCMData ;
 	}
 	

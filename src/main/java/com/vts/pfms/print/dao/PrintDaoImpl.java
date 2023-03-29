@@ -459,7 +459,7 @@ public class PrintDaoImpl implements PrintDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String SCHEDULELIST="SELECT cs.scheduledate,cs.scheduleflag,cms.meetingstatusid,cs.meetingid,cs.scheduledate<DATE(SYSDATE()),(SELECT COUNT(*)+1 FROM  committee_schedule css ,committee_meeting_status mss WHERE css.committeeid=c.committeeid AND css.projectid=cs.projectid AND css.isactive=1 AND  mss.meetingstatus=css.scheduleflag AND mss.meetingstatusid > 6 AND css.scheduledate<cs.scheduledate) AS countid,cs.scheduleid FROM committee_schedule cs, committee c,committee_meeting_status cms WHERE c.committeeid=cs.committeeid  AND c.committeeId IN (1,2) AND cs.scheduleflag=cms.meetingstatus AND cs.projectid=:ProjectId AND YEAR(cs.scheduledate)=:InYear AND MONTH(cs.scheduledate)=:InMonth";
+	private static final String SCHEDULELIST="SELECT cs.scheduledate,cs.scheduleflag,cms.meetingstatusid,cs.meetingid,cs.scheduledate<DATE(SYSDATE()),(SELECT COUNT(*)+1 FROM  committee_schedule css ,committee_meeting_status mss WHERE css.committeeid=c.committeeid AND css.projectid=cs.projectid AND css.isactive=1 AND  mss.meetingstatus=css.scheduleflag AND mss.meetingstatusid > 6 AND css.scheduledate<cs.scheduledate) AS countid,cs.scheduleid FROM committee_schedule cs, committee c,committee_meeting_status cms WHERE c.committeeid=cs.committeeid  AND c.committeeShortName IN ('PMRC','EB') AND cs.scheduleflag=cms.meetingstatus AND cs.projectid=:ProjectId AND YEAR(cs.scheduledate)=:InYear AND MONTH(cs.scheduledate)=:InMonth";
 	
 	@Override
 	public List<Object[]> getMeetingSchedules(String ProjectId, String Month, String Year) throws Exception {
@@ -544,18 +544,16 @@ public class PrintDaoImpl implements PrintDao {
 	public Object[] MileStoneLevelId(String ProjectId, String Committeeid) throws Exception{
 
 		try {
-		Query query=manager.createNativeQuery(MILESTONELEVELID);
-		query.setParameter("projectid", ProjectId);
-		query.setParameter("committeeid", Committeeid);
-		Object[] MileStoneLevelId = (Object[]) query.getSingleResult();
-		return MileStoneLevelId;
+			Query query=manager.createNativeQuery(MILESTONELEVELID);
+			query.setParameter("projectid", ProjectId);
+			query.setParameter("committeeid", Committeeid);
+			Object[] MileStoneLevelId = (Object[]) query.getSingleResult();
+			return MileStoneLevelId;
 	
 		} catch(NoResultException e) {
 			logger.error(new Date() +" Inside DAO MileStoneLevelId "+ e);
 			return null;
-		}
-
-	
+		}	
 	}
 	
 	@Override 

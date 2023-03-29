@@ -329,6 +329,7 @@
 
 <script type="text/javascript">
 
+
 function showProjectAttributes($ProjectCode)
 {
 	if($ProjectCode!='0')
@@ -356,7 +357,7 @@ function showProjectAttributes($ProjectCode)
 				}
 				$('#project-attributes').show();
 				$('#projecttitle').html(values[0]);
-				
+				$('.ProjecChartCardTitle').html(values[0]);
 			}
 	
 		})
@@ -422,7 +423,7 @@ function CashOutGoProject($ProjectCode)
 			
 			
 		}
-
+		
 	})
 	
 }

@@ -196,7 +196,7 @@ public class MilestoneController {
 				Map md=model.asMap();
 				ProjectId=(String)md.get("ProjectId");
 			}	
-	        List<Object[] > projlist=service.LoginProjectDetailsList(EmpId,"A",LabCode);
+	        List<Object[] > projlist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 	        if(ProjectId==null) {
 	        	try {
 	        		Object[] pro=projlist.get(0);

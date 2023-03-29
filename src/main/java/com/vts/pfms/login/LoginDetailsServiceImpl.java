@@ -43,7 +43,7 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
     	Login login = loginRepository.findByUsername(username);
-//    	Login login = loginclient.LoginDetails(username);
+//    	Login login = loginclient.LoginDetails("VEDTS",username);
     	
         if(login != null && login.getIsActive()==1 && login.getPfms().equalsIgnoreCase("Y")) {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -53,7 +53,6 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
         String IpAddress="Not Available";
         String str = ""; 
         String macAddress ="Not Available"; 	
-     		
      		try{
      			
      			IpAddress = request.getRemoteAddr();
