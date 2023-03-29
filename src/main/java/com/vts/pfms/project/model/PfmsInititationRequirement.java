@@ -30,9 +30,9 @@ public class PfmsInititationRequirement implements Serializable {
 	private int ReqCount;
 	private String priority;
 	private String LinkedRequirements;
-	
 	private String NeedType;
-	
+	private String Remarks;
+	private String LinkedDocuments;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

@@ -41,6 +41,7 @@ import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
+import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -2120,7 +2121,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 			return 0;
 		}
-		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 		@Override
 		public Object[] Requirement(long InitiationReqId) throws Exception {
 			Query query=manager.createNativeQuery(REQUIREMENTS);
@@ -2129,7 +2130,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				
 				return Requirement;
 		}
-		private static final String REQUPDATE="UPDATE pfms_initiation_req SET initiationid=:initiationid, requirementid=:requirementid, reqtypeid=:reqtypeid, requirementbrief=:requirementbrief ,RequirementDesc=:RequirementDesc,modifiedby=:modifiedby,modifieddate=:modifieddate,priority=:priority,linkedrequirements=:linkedrequirements,reqCount=:reqCount,NeedType=:needtype WHERE initiationreqid=:initiationreqid AND isActive=1";
+		private static final String REQUPDATE="UPDATE pfms_initiation_req SET initiationid=:initiationid, requirementid=:requirementid, reqtypeid=:reqtypeid, requirementbrief=:requirementbrief ,RequirementDesc=:RequirementDesc,modifiedby=:modifiedby,modifieddate=:modifieddate,priority=:priority,linkedrequirements=:linkedrequirements,reqCount=:reqCount,NeedType=:needtype,remarks=:remarks,linkeddocuments=:linkeddocuments WHERE initiationreqid=:initiationreqid AND isActive=1";
 		@Override
 		public long RequirementUpdate(PfmsInititationRequirement pir, String initiationReqId) throws Exception {
 			// TODO Auto-generated method stub
@@ -2146,6 +2147,8 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		query.setParameter("linkedrequirements", pir.getLinkedRequirements());
 		query.setParameter("reqCount", pir.getReqCount());
 		query.setParameter("needtype", pir.getNeedType());
+		query.setParameter("remarks", pir.getRemarks());
+		query.setParameter("linkeddocuments",pir.getLinkedDocuments() );
 		query.setParameter("initiationreqid", initiationReqId);
 		
 		
@@ -2226,15 +2229,11 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			Object[]reqType=(Object[])query.getSingleResult();
 			return reqType;
 		}
-
-		@Override
-		public long RequirementAttachmentAdd(PfmsRequirementAttachment pra) throws Exception {
-			// TODO Auto-generated method stub
-			manager.persist(pra);
-			manager.flush();
-			return pra.getAttachmentId();
-		}
-
+		/*
+		 * @Override public long RequirementAttachmentAdd(PfmsRequirementAttachment pra)
+		 * throws Exception { // TODO Auto-generated method stub manager.persist(pra);
+		 * manager.flush(); return pra.getAttachmentId(); }
+		 */
 	
 		private final String REQATTACHLIST="SELECT attachmentid,AttachmentsName FROM pfms_initiation_req_attach WHERE InitiationReqId=:inititationReqId";
 		@Override
@@ -2247,14 +2246,17 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}
 
 	
-		private static final String REQATTACHDOWNLOAD="SELECT a.attachmentid,a.InitiationreqId,a.Filespath, a.AttachmentsName FROM pfms_initiation_req_attach a WHERE a.attachmentid=:attachmentid";
+		private static final String REQATTACHDOWNLOAD="SELECT docId,stepid,FilePath,filename FROM pfms_initiation_file_upload WHERE documentid=:DocumentId AND versiondoc=:VersionDoc AND initiationid=:initiationid AND stepid=:stepid ";
 		@Override
-		public Object[] reqAttachDownload(String attachmentid) throws Exception {
+		public Object[] reqAttachDownload(String DocumentId,String VersionDoc,String initiationid, String stepid) throws Exception {
 			// TODO Auto-generated method stub
 			logger.info(new java.util.Date() +"Inside DAO reqAttachDownload ");
 			Query query =manager.createNativeQuery(REQATTACHDOWNLOAD);
 			
-			query.setParameter("attachmentid", attachmentid);
+			query.setParameter("DocumentId", DocumentId);
+			query.setParameter("VersionDoc", VersionDoc);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid", stepid);
 			Object[]reqAttachDownload=(Object[])query.getSingleResult();
 			return reqAttachDownload;
 		}
@@ -2267,6 +2269,79 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("attachmentid", attachmentid);
 			
 			return query.executeUpdate();
+		}
+		private static final String INITIATIONSTEPS="SELECT stepid,stepname FROM pfms_initiation_steps";
+		@Override
+		public Object initiationSteps() throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(INITIATIONSTEPS);
+			List<Object[]>InitiationSteps=(List<Object[]>)query.getResultList();
+			return InitiationSteps;
+		}
+
+		@Override
+		public long preProjectFileUpload(PreprojectFile pf) throws Exception {
+			// TODO Auto-generated method stub
+			manager.persist(pf);
+			manager.flush();
+			
+			
+			return pf.getDocId();
+		}
+		private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentName ";
+		@Override
+		public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(PROJECTFILES);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid", stepid);
+			List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
+			return projectfiles;
+		}
+		
+		
+		private static final String FILECOUNT="SELECT MAX(DocumentId) FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid ";
+		@Override
+		public long filecount(String stepid, String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query =manager.createNativeQuery(FILECOUNT);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid",stepid);
+			BigInteger x=(BigInteger)query.getSingleResult();
+			if(x==null) {
+				return 0;
+			}
+			return x.longValue();
+		}
+
+		
+		private static final String FILELIST="SELECT filename,filepath,versiondoc,createddate,docid,documentid,initiationid,stepid FROM pfms_initiation_file_upload WHERE initiationid=:inititationid AND stepid=:stepid AND documentid=:documentcount";
+		@Override
+		public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount)
+				throws Exception {
+			// TODO Auto-generated method stub
+			
+			Query query=manager.createNativeQuery(FILELIST);
+			query.setParameter("inititationid", inititationid);
+			query.setParameter("stepid", stepid);
+			query.setParameter("documentcount", documentcount);
+			
+			List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
+			return projectfiles;
+			
+			
+			
+		}
+		private static final String PROJECTREQFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,VersionDoc,Description,DocumentId,createddate FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid  ";
+		@Override
+		public List<Object[]> requirementFiles(String initiationid, int stepid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(PROJECTREQFILES);
+			
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid", stepid);
+			List<Object[]>requirementFiles=(List<Object[]>)query.getResultList();
+			return requirementFiles;
 		}
 	
 		

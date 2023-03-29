@@ -128,36 +128,6 @@ public class DownloadController {
 		}
 	}
 		
-	/*
-	 * @RequestMapping(value="ProjectRequirementAttachmentDownload.htm" , method
-	 * ={RequestMethod.POST,RequestMethod.GET}) public void
-	 * RequirementAttachmentDownload(HttpServletRequest req,HttpSession
-	 * ses,HttpServletResponse res )throws Exception { String UserId = (String)
-	 * ses.getAttribute("Username"); logger.info(new Date()
-	 * +"Inside ProjectRequirementAttachmentDownload.htm "+UserId);
-	 * 
-	 * try { String initiationId=req.getParameter("IntiationId"); String
-	 * attachmentid=req.getParameter("attachmentid");
-	 * System.out.println(attachmentid+initiationId);
-	 * 
-	 * Object[]reqAttachDownload=service.reqAttachDownload(attachmentid);
-	 * 
-	 * File my_file=null; my_file=new
-	 * File(reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
-	 * res.setContentType("Application/octet-stream");
-	 * res.setHeader("Content-disposition","attachment; filename="+reqAttachDownload
-	 * [3].toString()); OutputStream out = res.getOutputStream(); FileInputStream in
-	 * = new FileInputStream(my_file); byte[] buffer = new byte[4096]; int length;
-	 * while ((length = in.read(buffer)) > 0){ out.write(buffer, 0, length); }
-	 * in.close(); out.flush(); out.close();
-	 * 
-	 * 
-	 * 
-	 * 
-	 * } catch (Exception e) { e.printStackTrace(); logger.error(new Date()
-	 * +"Inside ProjectRequirementAttachmentDownload.htm "+UserId,e); } }
-	 */
-		
-		
+	
 		
 }

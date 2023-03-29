@@ -214,6 +214,9 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
  	List<Object[]>RequirementTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
  	String filesize=(String) request.getAttribute("filesize"); 
  	String initiationReqId=(String)request.getAttribute("initiationReqId");
+ 	List<Object[]>RequirementFiles=(List<Object[]>)request.getAttribute("RequirementFiles");
+ 	
+ 	
 %>
 
 <body style="background-color: white;">
@@ -253,6 +256,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 						<%}} %>
 					</select>
 				</div>
+				
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <input id="submit" type="submit"
 					name="submit" value="Submit" hidden="hidden">
@@ -285,7 +289,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 
 		<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){ %>
 		<div class="requirementid"
-			style="display:block;<%if(RequirementList.size()>9){%>height:500px;<%}%>">
+			style="display:block;<%if(RequirementList.size()>9){%>height:400px;<%}%>">
 
 			<%int count=1;
 for(Object []obj:RequirementList) {%>
@@ -365,11 +369,11 @@ for(Object []obj:RequirementList) {%>
 									<div class="row">
 										<div class="col-md-2" style="margin-top: 1%">
 											<h5
-												style="font-size: 20px; color: #005086; width: fit-content">Attachments:
+												style="font-size: 20px; color: #005086; width: fit-content">Remarks:
 											</h5>
 										</div>
 
-										<div class="col-md-8" id="AttachmentDownload"></div>
+										<div class="col-md-10"  style="margin-top:1%;"><p id="remarksshow" style="font-size: 18px;"></p></div>
 										<div class="row">
 											<input type="hidden" name="IntiationId"
 												value="<%=initiationid %>" /> <input type="hidden"
@@ -438,7 +442,7 @@ for(Object []obj:RequirementList) {%>
 		<!--*********************** modal for add **************************-->
 		<form class="form-horizontal" role="form"
 			action="ProjectRequirementAddSubmit.htm" method="POST" id="myform1"
-			enctype="multipart/form-data">
+			>
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
@@ -451,7 +455,7 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						
+							<div style="height:550px;overflow: auto;">
 						<div class="modal-body">
 							<div class="col-md-12">
 								<div class="row">
@@ -579,7 +583,7 @@ for(Object []obj:RequirementList) {%>
 										</div>
 									</div>
 								</div>
-								<!-- 				<div class=col-md-12>
+										<div class=col-md-12>
 									<div class="row">
 										<div class="col-md-4">
 											<label
@@ -592,42 +596,41 @@ for(Object []obj:RequirementList) {%>
 												<input type="text" name="remarks" class="form-control"
 													id="remarks" maxlength="255" required="required"
 													placeholder="Maximum 250 Chararcters"
-													style="line-height: 3rem !important">
+													>
 											</div>
 										</div>
 									</div>
-								</div> -->
-
-								<div class="col-md-12">
+								</div>
+									<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-5">
+										<div class="col-md-4">
 											<label
-												style="margin: 0px; font-size: 17px; color: #07689f; text-align: center;">Attachments</label>
+												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+												Documents</label>
+										</div>
+										<div class="col-md-7" style="margin-top: 1%;">
+											<div class="form-group">
+
+										
+												<select class="form-control selectdee"
+													name="linkedAttachements" id="linkedAttachements"
+													data-width="80%" data-live-search="true"
+													data-placeholder="Choose" multiple>
+
+													<%for(Object[] obj:RequirementFiles){ %>
+													<option value="<%=obj[0]%>"><%=obj[3]%></option>
+													<%}%>
+												</select>
+	
+											</div>
 
 
 										</div>
 									</div>
 								</div>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-4" style="">
-											<input class="form-control" type="file" name="Attachment"
-												id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
-												onchange=" editcheck('Attachment1',1)">
-										</div>
-										<div class="col-md-3">
-											<button type="button" class="btn btn-sm attachbtn "
-												name="add" onclick="attchmentadd()"
-												style="margin-bottom: 2%;">
-												<i class="btn btn-sm fa fa-plus"
-													style="color: green; padding: 0px;"></i>
-											</button>
 
-										</div>
 
-									</div>
-									<div class="row" id="Attachments"></div>
-								</div>
+
 
 
 								<input type="hidden" name="IntiationId"
@@ -643,7 +646,7 @@ for(Object []obj:RequirementList) {%>
 								</div>
 							</div>
 						</div>
-					
+					</div>
 					</div>
 
 				</div>
@@ -654,13 +657,12 @@ for(Object []obj:RequirementList) {%>
 
 		<!-- attachment modal end  -->
 		<!--*************************************************************** modal for edit************************************* -->
-		<form class="form-horizontal" role="form"
-			action="ProjectRequirementEditSubmit.htm" method="POST" id="myform2"
-			enctype="multipart/form-data">
+		<form class="form-horizontal" role="form" action="ProjectRequirementEditSubmit.htm" method="POST" id="myform2">
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLongedit"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
+			
 					<div class="modal-content addreq" style="width: 120%;">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">Requirement</h5>
@@ -678,6 +680,7 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
+						<div style="height:550px;overflow: auto;">
 						<div class="modal-body">
 							<div class="col-md-12">
 								<div class="row">
@@ -787,37 +790,52 @@ for(Object []obj:RequirementList) {%>
 										<div class="col-md-12" id="textarea" style="">
 											<div class="form-group" id="editdescription"></div>
 										</div>
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-5">
-													<label
-														style="margin: 0px; font-size: 17px; color: #07689f; text-align: center;">Attachments</label>
-
-
-												</div>
-											</div>
+											<div class=col-md-12>
+									<div class="row">
+										<div class="col-md-4">
+											<label
+												style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
+												<span class="mandatory" style="color: red;">*</span>
+											</label>
 										</div>
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-4" style="">
-													<input class="form-control" type="file" name="Attachedit"
-														id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
-														onchange=" editcheck('Attachment1',1)">
-												</div>
-												<div class="col-md-2">
-													<button type="button" class="btn btn-sm attachbtn "
-														name="add" onclick="attchmentaddedit()"
-														style="margin-bottom: 2%;">
-														<i class="btn btn-sm fa fa-plus"
-															style="color: green; padding: 0px;"></i>
-													</button>
-												</div>
-
+										<div class="col-md-8" style="margin-top: 10px">
+											<div class="form-group" id="remarksedit" >
+										
 											</div>
-											<div class="row" id="Attachmentsedit"></div>
 										</div>
 									</div>
 								</div>
+									</div>
+								</div>
+								
+																	<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4">
+											<label
+												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+												Documents</label>
+										</div>
+										<div class="col-md-7" style="margin-top: 1%;">
+											<div class="form-group">
+
+										
+												<select class="form-control selectdee"
+													name="linkedAttachements" id="linkedAttachementsedit"
+													data-width="80%" data-live-search="true"
+													data-placeholder="Choose" multiple>
+
+													<%for(Object[] obj:RequirementFiles){ %>
+													<option value="<%=obj[0]%>"><%=obj[3]%></option>
+													<%}%>
+												</select>
+	
+											</div>
+
+
+										</div>
+									</div>
+								</div>
+								
 								<input type="hidden" name="IntiationId"
 									value="<%=initiationid %>" /> <input type="hidden"
 									name="projectshortName" value="<%=projectshortName %>" />
@@ -833,11 +851,51 @@ for(Object []obj:RequirementList) {%>
 							</div>
 						</div>
 					</div>
+					</div>
 
 				</div>
 			</div>
 		</form>
 
+<!--modal for view attachments-->
+
+	<div class="modal fade bd-example-modal-lg" id="exampleModalLongAttachment"
+				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content addreq" style="width: 100%;margin-left:0%;margin-top:16%">
+						<div class="modal-header" id="modalreqheader">
+							<h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" style="color: white">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<div class="modal-body"  style="background: aliceblue;">
+					<div class="row">
+						<div class="col-md-12">
+						<form action="#">
+							<table class="table table-bordered " style="width: 100%;" id="MyTable1">
+											<thead>
+												<tr>
+													<th style="width: 4.8889px; text-align: center;">SN</th>
+													<th style=" text-align: center;">Name</th>
+													<th style=" text-align: center;">UpdateOn</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody id="listtbody">
+											
+											</tbody>
+										</table>
+										</form>
+										</div>
+										</div> 
+						</div>
+						</div>
+						</div>
+						</div>
 
 
 
@@ -859,7 +917,7 @@ $(document).ajaxComplete(function(){
 
 
 	$('.viewbtn').click(function(){
-		/* $('.viewbtn1').css("background","#055C9D"); */
+		
 		$('.viewbtn').css("background","#055C9D");
 		$(this).css("background","green");
 		var initiationId=<%=initiationid%>;
@@ -870,7 +928,7 @@ $(document).ajaxComplete(function(){
 			type:'GET',
 			url:'RequirementJsonValue.htm',
 			datatype:'json',
-			data:{
+	     	data:{
 				inititationReqId:value
 			},
 		success:function(result){
@@ -890,7 +948,20 @@ $(document).ajaxComplete(function(){
 				$('#reqName').html(ajaxresult[4]);	 
 			$('#description').html(ajaxresult[3]);
 			
-			$('#editreq').html('<button type="button" title="EDIT" data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-warning " onclick="edit()" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button>');
+			 if(ajaxresult[10].length>0){
+					if(!ajaxresult[10].includes(",")){
+						var myArray1=ajaxresult[10].split(ajaxresult[10].length+1);
+					}else{
+						console.log();
+						var myArray1=[];
+						for(var i=0;i<ajaxresult[10].split(",").length;i++){
+							myArray1.push(ajaxresult[10].split(",")[i]);
+						}
+					}
+			 }
+			console.log(myArray1);
+		
+			$('#editreq').html('<button type="button" title="EDIT" data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-warning " onclick="edit()" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button class="btn btn-info"  onclick="showAttachment('+'['+myArray1+']'+')" style="margin-left:1%; box-shadow:2px 2px 2px gray">View Attachments</button>');
 			
 	
 			  if(ajaxresult[6].length>0){
@@ -928,35 +999,54 @@ $(document).ajaxComplete(function(){
 						}
 						}) 
 			  }
-			  $.ajax({
-			    	type:'GET',
-			    	url:'RequirementAttachmentJsonValue.htm',
-			    	datatype:'json',
-			    	data:{
-			    		inititationReqId:value
-			    	},
-			    	success:function(result2){
-			    		const map1=new Map(Object.entries(JSON.parse(result2)));
-			    		const mapArray=Array.from(map1.values());
-			    		const mapArray1=Array.from(map1.keys());
-			    		var html='';
-			    	 	for(var i=0;i<mapArray.length;i++){
-			    	 		html+='Attachment'+(i+1)+'<button type="submit" class="btn btn-sm btn-light" id="download"  name="attachmentid"  formaction="ProjectRequirementAttachmentDownload.htm"formtarget="_blank" formmethod="GET" value="'+mapArray1[i]+'"><i class="fa fa-download fa-lg" ></i></button><button type="submit" name="attachmentid" class="btn btn-light btn-sm" formaction="RequirementAttachmentDelete.htm" formmethod="POST" onclick="myFunction()" id="deletedownload" value="'+mapArray1[i]+'"><i class="fa fa-trash" aria-hidden="true"></i></button>';	
-			    		} 
-			    		if(html==''){
-		    	 			$("#AttachmentDownload").html('<p style="margin-top:1%;">_</p>');
-		    	 		}else{
-		    		$("#AttachmentDownload").html(html);
-		    	 		}
-			    	}
-			    }) 
+		$('#remarksshow').html(ajaxresult[9]);
 			
 		}
 		})
 	});
 <%}%>
-function showAttachmentModal(){
-	('#').modal('show');
+
+
+$("#MyTable1").DataTable({		 
+		 "lengthMenu": [5,10,25, 50, 75, 100 ],
+		 "pagingType": "simple",
+		 "pageLength": 5,
+		 "language": {
+		      "emptyTable": "Files not Found"
+		    }
+	});
+function showAttachment(documentid){
+
+ $("#MyTable1").DataTable().destroy(); 
+ var initiationId=<%=initiationid%>;
+var jsArray = [<%int i=0; for (Object[] obj:RequirementFiles) { %>"<%= obj[0] %>"+"//"+"<%=obj[3]%>"+"//"+"<%=obj[9]%>"+"//"+"<%=obj[8]%>"+"//"+"<%=obj[6]%>"+"//"+"<%=obj[1]%>"+"//"+"<%=obj[2]%>" <%= i + 1 < RequirementFiles.size() ? ",":"" %><% } %>];
+var html='';
+var count=1;
+for(var i=0;i<jsArray.length;i++){
+	var val =  jsArray[i].split("//")[0] ;
+	var value1 =  jsArray[i].split("//")[1] ;
+	var value2=jsArray[i].split("//")[2] ;
+	var value3=jsArray[i].split("//")[3] ;
+	var value4=jsArray[i].split("//")[4] ;
+	var value5=jsArray[i].split("//")[5] ;
+	var value6=jsArray[i].split("//")[6] ;
+	if(documentid.includes(parseInt(val))){
+		const dateStr = value2;
+		const formattedDate = moment(dateStr).format('DD-MM-YYYY');
+	    html=html+'<tr><td>'+(count++)+'</td><td>'+value1+'</td><td>'+formattedDate+'</td><td><button class="btn" type="submit" name="DocId"  formaction="ProjectRequirementAttachmentDownload.htm" formtarget="_blank" formmethod="GET" value="'+value3+','+value4+','+value5+','+value6+'"><i class="fa fa-download" ></i></button></td></tr>';
+	}
+}
+$('#listtbody').html(html);
+ $("#MyTable1").DataTable({		 
+		 "lengthMenu": [5,10,25, 50, 75, 100 ],
+		 "pagingType": "simple",
+		 "pageLength": 5,
+		 "language": {
+		      "emptyTable": "No attachments Found"
+		    }
+	}); 
+
+$('#exampleModalLongAttachment').modal('show');
 }
 
 </script>
@@ -996,11 +1086,7 @@ function editCheck(frmid){
 	var editreqtype=$('#editreqtype').val();
 	var linkedRequirementsedit=$('#linkedRequirementsedit').val();
 	
-console.log(description);
-console.log(reqbrief);
-console.log(editselect);
-console.log(editreqtype);
-console.log(linkedRequirementsedit);
+
 
 	if(description===null||description===""||reqbrief===null||reqbrief===""){
 		window.alert('Please fill all the fields');
@@ -1061,11 +1147,22 @@ $('#'+<%=initiationReqId%>).click(function(){
 			
 	$('#description').html(ajaxresult[3]);
 	
-
 	
+	 if(ajaxresult[10].length>0){
+			if(!ajaxresult[10].includes(",")){
+				var myArray1=ajaxresult[10].split(ajaxresult[10].length+1);
+			}else{
+				console.log();
+				var myArray1=[];
+				for(var i=0;i<ajaxresult[10].split(",").length;i++){
+					myArray1.push(ajaxresult[10].split(",")[i]);
+				}
+			}
+	 }
+	console.log(myArray1);
+		
 	
-	
-		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right"  name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button>');
+		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right"  name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
 		
 	
 	    if(ajaxresult[6].length>0){
@@ -1100,31 +1197,7 @@ $('#'+<%=initiationReqId%>).click(function(){
 				}
 				}) 
 	    }
-	    
-   $.ajax({
-	    	type:'GET',
-	    	url:'RequirementAttachmentJsonValue.htm',
-	    	datatype:'json',
-	    	data:{
-	    		inititationReqId:value
-	    	},
-	    	success:function(result2){
-	    		const map1=new Map(Object.entries(JSON.parse(result2)));
-	    		const mapArray=Array.from(map1.values());
-	    		const mapArray1=Array.from(map1.keys());
-	  
-	    		var html='';
-	    	 	for(var i=0;i<mapArray.length;i++){
-	    	 		html+='Attachment'+(i+1)+'<button type="submit" class="btn btn-sm btn-light" id="download"  name="attachmentid"  formaction="ProjectRequirementAttachmentDownload.htm"formtarget="_blank" formmethod="GET" value="'+mapArray1[i]+'"><i class="fa fa-download fa-lg" ></i></button><button type="submit" name="attachmentid" class="btn btn-light btn-sm" formaction="RequirementAttachmentDelete.htm" formmethod="POST" onclick="myFunction()"  id="deletedownload" value="'+mapArray1[i]+'"><i class="fa fa-trash" aria-hidden="true"></i></button>';	
-	    	 		} 
-	    	 		if(html==''){
-	    	 			$("#AttachmentDownload").html('<p style="margin-top:1%;">_</p>');
-	    	 		}else{
-	    		$("#AttachmentDownload").html(html);
-	    	 		}
-	    	}
-	    }) 
-	    
+		$('#remarksshow').html(ajaxresult[9]);
 	}
 	});
 });
@@ -1138,6 +1211,9 @@ function edit(){
 	var value=$('#reqbtns').val();
 	var value2=$('#description').val;
 
+	<%-- var jsArray = [<%int i=0; for (Object[] obj:RequirementList) { %>"<%= obj[0] %>"+"//"+"<%=obj[1]%>" <%= i + 1 < RequirementList.size() ? ",":"" %><% } %>];
+	console.log(jsArray); --%>
+	
 	$.ajax({
 		type:'GET',
 		url:'RequirementJsonValue.htm',
@@ -1147,14 +1223,19 @@ function edit(){
 		},
 	success:function(result){
 		 var ajaxresult=JSON.parse(result); 
+		 
+		 console.log(ajaxresult[9]);
 		$('#reqID').html(ajaxresult[4]);
 		$('#headerdata').html('<h6 style="font-size: 12px;margin-top:2%;" id="codeedit" >CODE - </h6><input type="text"   class="form-control numbersOnly" maxlength="5" onchange="oninputChange()"    value="'+ajaxresult[4].substring(5)+'" id="code">')
 		$('#editdescription').html('<textarea required="required" name="descriptionedit" class="form-control"  id="descriptionedit" maxlength="4000"  rows="5" cols="53" placeholder="Maximum 4000 Chararcters">'+ajaxresult[3]+'</textarea>')
 		$('#editrqbrief').html('<input type="text" name="reqbriefedit"class="form-control" id="reqbriefedit" maxlength="255" value="'+ajaxresult[2]+'" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem!important">')
-		$('#editselect').val(ajaxresult[5]);		
+		$('#editselect').val(ajaxresult[5]);
+		$('#remarksedit').html('<input type="text" name="remarks" class="form-control" id="remarks" maxlength="255" required="required" value="'+ajaxresult[9]+'" placeholder="Maximum 250 Chararcters">')
 		const LinkedReqs = ajaxresult[6].split(",");		
 		$('#linkedRequirementsedit').val(LinkedReqs).trigger('change');
 		
+		const LinkedDocs=ajaxresult[10].split(",");
+		$('#linkedAttachementsedit').val(LinkedDocs).trigger('change');
 		
 		$('#editreqtype').val(ajaxresult[1]);
 		$('#editneedtype').val(ajaxresult[8]);
