@@ -101,7 +101,6 @@
 	   MilestonesInprogress  = Milestonestotal.stream().filter(e-> !e[8].toString().equalsIgnoreCase("C") && !e[8].toString().equalsIgnoreCase("A")).collect(Collectors.toList()).size();
 	   MilestonesClose  = Milestonestotal.stream().filter(e->e[8].toString().equalsIgnoreCase("C")).collect(Collectors.toList()).size(); 
   }
-
  %>
 <div class="container-fluid">
 		<div class="row">
