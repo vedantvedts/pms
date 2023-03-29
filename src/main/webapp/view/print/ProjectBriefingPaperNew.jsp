@@ -1861,15 +1861,13 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 												<td  ><%=obj[11]%> </td>		
 											</tr>		
 											<%
-											estcost += Double.parseDouble(obj[5].toString());
+												estcost += Double.parseDouble(obj[5].toString());
 										    }%>
 										    
 										    <tr>
 										    	<td colspan="5" style="text-align: right;"><b>Total</b></td>
 										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
-										    	
 										    	<td colspan="2" style="text-align: right;"></td>
-
 										    </tr>
 										    
 										    

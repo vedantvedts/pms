@@ -341,8 +341,8 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 
 	@Override
-	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode,String IsAll) throws Exception{
-		
+	public Object[] ProjectHealthTotalData(String ProjectId,String EmpId, String LoginType,String LabCode,String IsAll) throws Exception
+	{
 		return dao.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,IsAll);
 	}
 
@@ -379,16 +379,17 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setEBTotal(Long.parseLong(data[24].toString()));
 				
 				if(data[16]!=null) {
-				health.setExpenditure(Double.parseDouble(data[16].toString()));
-				health.setDipl(Double.parseDouble(data[17].toString()));
-				health.setOutCommitment(Double.parseDouble(data[18].toString()));
-				health.setBalance(Double.parseDouble(data[19].toString()));
+					health.setExpenditure(Double.parseDouble(data[16].toString()));
+					health.setDipl(Double.parseDouble(data[18].toString()));
+					health.setOutCommitment(Double.parseDouble(data[17].toString()));
+					health.setBalance(Double.parseDouble(data[19].toString()));
 				}else {
 					health.setExpenditure(Double.parseDouble("0.00"));
 					health.setDipl(Double.parseDouble("0.00"));
 					health.setOutCommitment(Double.parseDouble("0.00"));
 					health.setBalance(Double.parseDouble("0.00"));
 				}
+				
 				health.setCreatedBy(UserName);
 				health.setCreatedDate(sdf1.format(new Date()));
 				health.setTodayChanges(Long.parseLong(data[25].toString()));
