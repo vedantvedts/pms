@@ -95,7 +95,7 @@ h6{
 					   						<td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Project: </label>
 					   						</td>
-					   						<td style="max-width: 260px; padding-right: 50px">
+					   						<td >
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
                                                            <option value="0"  <%if(Project.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
                                                            <%
@@ -108,7 +108,7 @@ h6{
 					   						<td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Name: </label>
 					   						</td>
-					   						<td style="max-width: 340px; padding-right: 50px">
+					   						<td >
                                                         <select class="form-control selectdee " name="EmpId" id="EmpId" required="required"  data-live-search="true"  >
                                                            <option value="A"  <%if(Employee.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option>	
                                                            
@@ -121,7 +121,7 @@ h6{
 											<td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date Type: </label>
 					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">
+					   						<td >
                                                         <select class="form-control selectdee " name="Position" id="Assignee" required="required"  data-live-search="true"  >
                                                			 <option value="A" <%if("A".equalsIgnoreCase(Position)){ %> selected="selected" <%} %>>ALL</option>	
                                                			 <option value="P" <%if("P".equalsIgnoreCase(Position)){ %> selected="selected" <%} %>>PDC</option>	
@@ -132,13 +132,13 @@ h6{
 					   						<td >
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> From Date:</label>
 					   						</td>
-					   						<td style="max-width: 160px; padding-right: 10px">
+					   						<td >
 					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=fdate%>">
 					   						</td>
 					   						<td>
 					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> To Date:</label>
 					   						</td>
-					   						<td style="width: 160px; padding-right: 30px">
+					   						<td >
 					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=tdate%>">
 					   						</td>
 					   						<td>

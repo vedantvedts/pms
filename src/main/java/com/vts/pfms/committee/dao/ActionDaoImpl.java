@@ -51,7 +51,6 @@ public class ActionDaoImpl implements ActionDao{
     private static final String ACTIONGENCOUNT="SELECT COUNT(*) FROM action_main a , action_assign b WHERE a.actionmainid=b.actionmainid AND (CASE WHEN :projectid=0 THEN a.projectid=:projectid AND DATE_FORMAT(CURDATE(), \"%Y\")=DATE_FORMAT(a.actiondate, \"%Y\") ELSE a.projectid=:projectid END ) AND a.isactive='1'";
 	private static final String ASSIGNEEDETAILS="SELECT assignor,assignee,actionno, assigneelabcode, assignorlabcode FROM action_assign WHERE actionassignid=:assignid";
 	private static final String SCHEDULEITEM="SELECT a.scheduleminutesid,a.details FROM  committee_schedules_minutes_details a WHERE  a.scheduleminutesid=:schid";
-    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type)";
     private static final String ACTIONSEARCHNO="CALL Pfms_ActionNo_Search(:empid,:no,:position)";
 	private static final String PROJECTLIST="SELECT projectid,projectmainid,projectcode,projectname FROM project_master WHERE isactive=1";
     private static final String ACTIONCOUNT="CALL Pfms_Action_PD_Chart(:projectid)";
@@ -360,7 +359,8 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> AssignedList=(List<Object[]>)query.getResultList();	
 		return AssignedList;
 	}
-	
+    private static final String ACTIONREPORT="CALL Pfms_Action_Reports(:empid,:term,:position,:type)";
+
 	@Override
 	public List<Object[]> ActionReports(String EmpId,String Term,String Position,String Type,String LabCode) throws Exception {
 		

@@ -887,7 +887,7 @@ public class PrintDaoImpl implements PrintDao {
 			 }
 			return result;
 		}
-		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
+		private static final String PROJECTDATA="SELECT  a.projectid ,a.projectname ,b.projecttype , a.totalsanctioncost ,a.pdc , a.sanctiondate ,a.enduser ,a.objective , a.deliverable , a.scope , a.application , a.ProjectDescription , a.projectcode FROM project_master a , project_type b  WHERE a.projectid=:projectid AND a.projecttype=b.projecttypeid";
 		@Override
 		public Object[] GetProjectdata(String projectid)throws Exception
 		{
@@ -976,7 +976,7 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
-		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate FROM pfms_project_slides_freeze a ORDER BY a.freezeid DESC";
+		private static final String ALLPROJECTSLIDEDATA="SELECT a.freezeid , a.path  ,a.attachname , a.projectid ,a.reviewby , a.reviewdate , b.projectcode FROM pfms_project_slides_freeze a , project_master b WHERE a.projectid = b.projectid ORDER BY a.freezeid DESC";
 		@Override
 		public List<Object[]> GetAllProjectSildedata()throws Exception
 		{

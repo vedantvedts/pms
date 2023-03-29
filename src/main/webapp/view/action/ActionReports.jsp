@@ -86,42 +86,42 @@ h6{
 						<h4 class="col-md-5">Action Reports</h4>  
 							<div class="col-md-7" style="float: right; margin-top: -8px;" >
 					   			<form method="post" action="ActionReportSubmit.htm" name="dateform" id="dateform">
-					   				<table >
+					   				<table>
 					   					<tr>
-					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Type: </label>
-					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">
-                                                        <select class="form-control selectdee " name="Type" id="Type" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
-                                                           <option value="A"  <%if("A".equalsIgnoreCase(Type)){ %> selected="selected" <%} %>>ALL</option>
-														   <option value="N" <%if("N".equalsIgnoreCase(Type)){ %> selected="selected" <%} %>>Action</option>	
-															<option value="S" <%if("S".equalsIgnoreCase(Type)){ %> selected="selected" <%} %>>Meeting</option>	
-															<option value="M" <%if("M".equalsIgnoreCase(Type)){ %> selected="selected" <%} %> >Milestone</option>		
-															</select>					   						</td>
 					   						<td>
-					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Term: </label>
-					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">
-                                                        <select class="form-control selectdee " name="Term" id="Assignee" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
-                                                           <option value="A" <%if("A".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>All</option>
-														   <option value="T" <%if("T".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>Today</option>	
-															<option value="S" <%if("S".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>Next 7 Days</option>	
-															<option value="E" <%if("E".equalsIgnoreCase(Term)){ %> selected="selected" <%} %> >Missed</option>		
-															</select>					   						</td>
-					   						<td>
-					   						<td >
 					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project: </label>
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">
-                                                        <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
-                                                         	  <option value="A"  <%if(Project.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option>	
-                                                         	  <option value="0"  <%if(Project.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
-                                                           	<% for(Object[] obj:ProjectList){ %>
-															   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
-															<%} %>
-														</select>	        
-											</td>					   									
+                                                <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
+                                                        <option value="A"  <%if(Project.equalsIgnoreCase("A")){%> selected="selected" <%}%>>ALL</option>	
+                                                        <option value="0"  <%if(Project.equalsIgnoreCase("0")){%> selected="selected" <%}%>>General</option>	
+                                                    <%for(Object[] obj:ProjectList){%>
+														<option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[4]%></option>	
+													<%}%>
+												</select>	        
+											</td>
+											<td>
+					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Type: </label>
+					   						</td>
+					   						<td style="max-width: 300px; padding-right: 50px">
+                                                <select class="form-control selectdee " name="Type" id="Type" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
+                                                    <option value="A" <%if("A".equalsIgnoreCase(Type)){%> selected="selected" <%}%>>ALL</option>
+													<option value="N" <%if("N".equalsIgnoreCase(Type)){%> selected="selected" <%}%>>Action</option>	
+													<option value="S" <%if("S".equalsIgnoreCase(Type)){%> selected="selected" <%}%>>Meeting</option>	
+													<option value="M" <%if("M".equalsIgnoreCase(Type)){%> selected="selected" <%}%>>Milestone</option>		
+												</select>
+											</td>
+					   						 <td>
+					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Status: </label>
+					   						</td>
+					   						<td style="max-width: 300px; padding-right: 50px">
+                                                        <select class="form-control selectdee " name="Term" id="Assignee" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
+                                                           <option value="N" <%if("N".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>All</option>
+														   <option value="A" <%if("A".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>Active</option>	
+															<option value="I" <%if("I".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>In-Progress</option>	
+															<option value="C" <%if("C".equalsIgnoreCase(Term)){ %> selected="selected" <%} %> >Closed</option>		
+															</select>					   						
+											</td> 	   									
 					   					</tr>   					   				
 					   				</table>
 					   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 

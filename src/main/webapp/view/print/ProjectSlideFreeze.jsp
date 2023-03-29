@@ -8,6 +8,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
  <script src="${ckeditor}"></script>
@@ -21,7 +22,7 @@
 	      padding: 15px;  
 }
 p{
-	margin-bottom: -10px;
+	margin-top: -10px;
 }
 pre{
 	margin-bottom: -10px;
@@ -60,7 +61,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 <div class="container-fluid" >
 			<%if(projectslidedata[0]!=null && projectslidedata[1].toString().equalsIgnoreCase("2")){%>
 			 <%if(review!=null && reviewdate!=null){%><div align="left" style="margin-top: -5px;"> <b>Review By :- </b><%=review%> &nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=reviewdate %></div><%}%>
-				<div align="center" ><h2 style="margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%> </h2></div>
+				<div align="center" ><h2 style="margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[12]!=null){%><%=projectdata[12]%> <%}%> </h2></div>
 				<table class="table meeting" style="margin-top: -30px;">
 									<tr>
 										<td style="width: 286px;font-size: 1.02rem;font-weight: bold; color: #115bc9;width: 100px;">Project No :</td>
@@ -115,7 +116,7 @@ if(projectdata!=null && projectdata[6]!=null && projectdata[6].toString().equals
 					</table>
 				<%}else{%>
 				<%if(review!=null && reviewdate!=null){%><div align="center" style="margin-top: -5px;"> <b>Review By :- </b><%=review%> &nbsp;&nbsp;&nbsp; <b>Review date :- </b><%=reviewdate %></div><%}%>
-				<div align="center" ><h2 style="margin-bottom:5px; margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[1]!=null){%><%=projectdata[1]%> <%}%> </h2></div>
+				<div align="center" ><h2 style="margin-bottom:5px; margin-top: -5px; color: #c72626;!important;font-family: 'Muli'!important"><%if(projectdata!=null && projectdata[12]!=null){%><%=projectdata[12]%> <%}%> </h2></div>
 						<table class="table meeting" style="margin-top: -10px;">
 									<tr>
 										<td style="width:10% !important;   font-size: 1.02rem;font-weight: bold; color: #115bc9;">Project No :</td>

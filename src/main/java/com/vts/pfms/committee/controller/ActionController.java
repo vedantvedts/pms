@@ -994,11 +994,11 @@ public class ActionController {
 					String Logintype= (String)ses.getAttribute("LoginType");
 					String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 					
-					req.setAttribute("Term", "A");
+					req.setAttribute("Term", "N");
 					req.setAttribute("Project", "A");
 					req.setAttribute("Type", "A");
 					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
-					req.setAttribute("StatusList", service.ActionReports(EmpId,"A","A","A", LabCode));	
+					req.setAttribute("StatusList", service.ActionReports(EmpId,"N","A","A", LabCode));	
 
 				}
 				catch (Exception e) {
@@ -1012,6 +1012,7 @@ public class ActionController {
 			@RequestMapping(value = "ActionReportSubmit.htm", method = RequestMethod.POST)
 			public String ActionReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {
+				String Logintype= (String)ses.getAttribute("LoginType");
 				String UserId =(String)ses.getAttribute("Username");
 				String LabCode = (String)ses.getAttribute("labcode");
 				logger.info(new Date() +"Inside ActionReportSubmit.htm "+UserId);		
@@ -1024,17 +1025,10 @@ public class ActionController {
 					Project = req.getParameter("Project");
 				}
 				String Type = "A";
-				
-				
-				
 				if(req.getParameter("Type")!=null) {
-					Type = req.getParameter("Type");
-//					if(Type.equalsIgnoreCase("A")||Type.equalsIgnoreCase("C")|| Type.equalsIgnoreCase("C")||Type.equalsIgnoreCase("D")|| Type.equalsIgnoreCase("E") ) {
-//						Type="M";
-//					}
-					
+					Type = req.getParameter("Type");					
 				}
-				req.setAttribute("ProjectList", service.projectdetailsList(EmpId));
+				req.setAttribute("ProjectList",service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode));	
 				req.setAttribute("Term", req.getParameter("Term"));
 				req.setAttribute("Project",Project);
@@ -2618,5 +2612,43 @@ public class ActionController {
 			return "redirect:/ToDoReviews.htm";
 		}
 	 	
+	 	
+	 	@RequestMapping(value = "ActionGraph.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	 	public String Actiongraph(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
+	 	{
+	 		String UserId = (String) ses.getAttribute("Username");
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String LabCode = (String) ses.getAttribute("labcode");
+	 		logger.info(new Date() +"Inside ActionGraph.htm "+UserId);
+	 		try {
+	 			String projectid=req.getParameter("projectid");
+				if(projectid==null)
+				{
+					projectid="A";
+					
+				}
+				String Logintype= (String)ses.getAttribute("LoginType");
+				
+				if(Logintype.equals("A") || Logintype.equals("Z") || Logintype.equals("Y") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I"))
+				{	//all projects for admin, associate director and director
+					req.setAttribute("projectslist", service.allprojectdetailsList());
+				}else if(Logintype.equals("P")){
+					List<Object[]> projectlist= service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+					if(projectlist.size()==0) {
+						
+						redir.addAttribute("resultfail", "No Project is Assigned to you.");
+
+						return "redirect:/MainDashBoard.htm";
+					}
+					req.setAttribute("projectslist",projectlist );
+				}
+				req.setAttribute("ActionList", service.ActionReports(EmpId,"N",projectid,"A", LabCode));	
+				req.setAttribute("projectid",projectid);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside ActionGraph.htm "+UserId, e);
+			}
+	 		return "action/ActionGraph";
+	 	}
 	 	
 }

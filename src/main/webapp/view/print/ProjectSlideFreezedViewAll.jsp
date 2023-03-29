@@ -12,7 +12,7 @@
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
 
 </head>
-<body>
+<body class="slides-container" id="slides-container">
 <%
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 String lablogo = (String)request.getAttribute("lablogo");
@@ -34,7 +34,7 @@ String filepath = (String)request.getAttribute("filepath");
 						<div align="center" ><h3 style="color: #145374 !important">of</h3></div>
 							
 						<div align="center" >
-							<h3 style="color: #4C9100 !important" >  Project's of <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %></h3>
+							<h3 style="color: #4C9100 !important" >  Projects of <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=labInfo.getLabCode()%><%} %></h3>
 				   		</div>
 						
 						<div align="center" ><h3 style="color: #4C9100 !important"></h3></div>
@@ -104,7 +104,7 @@ String filepath = (String)request.getAttribute("filepath");
 				</div>
 
 			</div>
-
+</div>
 		<!-- ----------------------------------------   Thank you Div ----------------------------------------------------- -->
 		
 			 <a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
@@ -112,7 +112,18 @@ String filepath = (String)request.getAttribute("filepath");
 		</a> <a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
 			<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 		</a> 
-	</div>
+	
+		<ol class="carousel-indicators">
+			<li data-target="#presentation-slides" data-slide-to="0"  class="carousel-indicator active" data-toggle="tooltip" data-placement="top" title="Start"><b><i class="fa fa-home" aria-hidden="true"></i></b></li>
+			<% int i=0;if(freezedproject!=null && freezedproject.size()>0){
+			for(Object[] obj:freezedproject){%>
+			<li data-target="#presentation-slides" data-slide-to="<%=++i%>"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=i%>. <%=obj[6]%>"><b><%=i%></b></li>
+			<%}}%>
+			<li data-target="#presentation-slides" data-slide-to="<%=i+1%>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+			<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>		
+		</ol>
+	
 </div>	
 <script type="text/javascript">
 $('.carousel').carousel({
@@ -132,6 +143,61 @@ $('.carousel').carousel({
         frameDoc.writeln(content);
         frameDoc.close();
     }
+    
+$('.content_reg_screen').hide();
+$('.content_full_screen, .content_reg_screen').on('click', function(e){
+	  
+	  if (document.fullscreenElement) {
+	    	document.exitFullscreen();
+	  } else {
+		  $('.slides-container').get(0).requestFullscreen();
+	  }
+	});
+
+$('.content_full_screen').on('click', function(e){ contentFullScreen() });
+
+$('.content_reg_screen').on('click', function(e){ contentRegScreen() });
+
+function contentFullScreen()
+{
+	$('.content_full_screen').hide();
+	$('.content_reg_screen').show();
+	openFullscreen();
+}
+
+function contentRegScreen()
+{
+	$('.content_reg_screen').hide();
+	$('.content_full_screen').show();
+	closeFullscreen();
+}
+
+
+/* Get the documentElement (<html>) to display the page in fullscreen */
+var elem = document.documentElement;
+
+/* View in fullscreen */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
+
 </script>
 </body>
 </html>

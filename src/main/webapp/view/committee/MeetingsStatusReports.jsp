@@ -96,7 +96,7 @@ h6{
                          </div>
         
 					   	</div>
-						 <div class="row">
+						 <!-- <div class="row">
 						<div class="col-md-6" style="float: right;">
 					   	<div id="chart_div"></div>
                         </div>
@@ -105,7 +105,7 @@ h6{
                       
                          </div>
         
-					   	</div>
+					   	</div> -->
 						</div>
 					
 						<div class="card-footer" align="right">&nbsp;</div>
