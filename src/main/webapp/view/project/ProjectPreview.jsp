@@ -799,10 +799,14 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 				         
 				                <form action="" method="POST" name="myfrm" id="myfrm">
 			
-				                	<button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
+				                	<button type="submit" class="btn btn-warning btn-sm prints" formmethod="GET" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 							 
-							 		<button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
+							 		<button type="submit" class="btn btn-warning btn-sm prints" formmethod="GET" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
 				                
+				                	<button type="submit" class="btn" formaction="ProjectProposal.htm" formtarget="_blank" formmethod="POST" style="border:none"  data-toggle="tooltip" data-placement="top" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
+				                		
+									 <button type="submit" class="btn" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="right" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>
+					  
 				                	<input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
 				                	
 				                	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -833,7 +837,9 @@ function showdata(reqid,reqid1){
     document.getElementById('reqmodalbody').innerHTML =$('#Req'+reqid).val();
     document.getElementById('reqid').innerHTML =reqid1;
 }
-
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
 
 
 </script>

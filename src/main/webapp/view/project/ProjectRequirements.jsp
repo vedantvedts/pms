@@ -204,6 +204,7 @@ hr {
 	margin-right: 1%;
 }
 </style>
+
 </head>
 <%
 List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("ProjectIntiationList"); 
@@ -237,6 +238,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 		</div>
 	</div>
 	<%} %>
+	
 	<div id="reqmain" class="card-slider">
 		<form class="form-inline" method="POST"
 			action="ProjectRequirement.htm">
@@ -915,14 +917,13 @@ $(document).ajaxComplete(function(){
 });
 
 
-
 	$('.viewbtn').click(function(){
 		
 		$('.viewbtn').css("background","#055C9D");
 		$(this).css("background","green");
 		var initiationId=<%=initiationid%>;
 		var value=$(this).val();
-
+		console.log("hey");
 		
 		$.ajax({
 			type:'GET',
@@ -932,9 +933,10 @@ $(document).ajaxComplete(function(){
 				inititationReqId:value
 			},
 		success:function(result){
-			 var ajaxresult=JSON.parse(result); 
+			 var ajaxresult=JSON.parse(result);
+			 console.log(ajaxresult)
 			 var s="";
-			 console.log(ajaxresult[6]+"---")
+			 console.log(ajaxresult[6].length+"---")
 			$('#brief').html(ajaxresult[2]);
 			 
 			 if(ajaxresult[5]==="L"){
@@ -948,29 +950,28 @@ $(document).ajaxComplete(function(){
 				$('#reqName').html(ajaxresult[4]);	 
 			$('#description').html(ajaxresult[3]);
 			
-			 if(ajaxresult[10].length>0){
+	
+			  if(ajaxresult[10].length>0){
 					if(!ajaxresult[10].includes(",")){
-						var myArray1=ajaxresult[10].split(ajaxresult[10].length+1);
+						var myArray1=ajaxresult[10].split(ajaxresult[10].length);
 					}else{
-						console.log();
-						var myArray1=[];
-						for(var i=0;i<ajaxresult[10].split(",").length;i++){
-							myArray1.push(ajaxresult[10].split(",")[i]);
-						}
+					var myArray1=ajaxresult[10].split(",");
 					}
-			 }
+					}
 			console.log(myArray1);
 		
 			$('#editreq').html('<button type="button" title="EDIT" data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-warning " onclick="edit()" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button class="btn btn-info"  onclick="showAttachment('+'['+myArray1+']'+')" style="margin-left:1%; box-shadow:2px 2px 2px gray">View Attachments</button>');
 			
-	
+			var myArray=[];
 			  if(ajaxresult[6].length>0){
 					if(!ajaxresult[6].includes(",")){
-						var myArray=ajaxresult[6].split(ajaxresult[6].length+1);
+						 myArray=ajaxresult[6].split(ajaxresult[6].length);
 					}else{
-					var myArray=ajaxresult[6].split(",");
+					myArray=ajaxresult[6].split(",");
 					}
 					}
+			  
+			  console.log("myArray"+myArray);
 			  if(ajaxresult[6].length==0){
 				  $('#linked').html("-");  
 			  }else{
@@ -1055,11 +1056,11 @@ function reqCheck(frmid){
 
 	var description=$('#descriptionadd').val();
 	var reqbrief=$('#reqbrief').val();
-	
+	var remarks=$('#remarks').val();
 	
 	console.log(description.length)
 
-	if(description===null||description===""||reqbrief===null||reqbrief===""){
+	if(description===null||description===""||reqbrief===null||reqbrief===""||remarks===null||remarks===""){
 		window.alert('Please fill all the fields');
 	}else if
 		(description.length>4000){
@@ -1115,7 +1116,7 @@ $('#'+<%=initiationReqId%>).click();
 $('#'+<%=initiationReqId%>).click(function(){
 	$('.viewbtn').css("background","#055C9D");
 	$(this).css("background","green");
-	
+	console.log("hii");
 	var value=$(this).val();
 	var initiationId=<%=initiationid%>;
 
@@ -1127,6 +1128,7 @@ $('#'+<%=initiationReqId%>).click(function(){
 		},
 	success:function(result){
 		 var ajaxresult=JSON.parse(result); 
+		 console.log(ajaxresult)
 		 var s="";
 		$('#brief').html(ajaxresult[2]);
 	
@@ -1147,19 +1149,16 @@ $('#'+<%=initiationReqId%>).click(function(){
 			
 	$('#description').html(ajaxresult[3]);
 	
-	
-	 if(ajaxresult[10].length>0){
+	console.log(ajaxresult[10]);
+
+	 
+	  if(ajaxresult[10].length>0){
 			if(!ajaxresult[10].includes(",")){
-				var myArray1=ajaxresult[10].split(ajaxresult[10].length+1);
+				var myArray1=ajaxresult[10].split(ajaxresult[10].length);
 			}else{
-				console.log();
-				var myArray1=[];
-				for(var i=0;i<ajaxresult[10].split(",").length;i++){
-					myArray1.push(ajaxresult[10].split(",")[i]);
-				}
+			var myArray1=ajaxresult[10].split(",");
 			}
-	 }
-	console.log(myArray1);
+			}
 		
 	
 		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right"  name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
@@ -1167,11 +1166,12 @@ $('#'+<%=initiationReqId%>).click(function(){
 	
 	    if(ajaxresult[6].length>0){
 		if(!ajaxresult[6].includes(",")){
-			var myArray=ajaxresult[6].split(ajaxresult[6].length+1);
+			var myArray=ajaxresult[6].split(ajaxresult[6].length);
 		}else{
 		var myArray=ajaxresult[6].split(",");
 		}
 		} 
+
 	    if(ajaxresult[6].length==0){
 			  $('#linked').html("-");  
 	    }else{

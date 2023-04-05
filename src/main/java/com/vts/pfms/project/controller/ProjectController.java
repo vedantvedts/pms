@@ -150,10 +150,10 @@ public class ProjectController
 			else {
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
 				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
-				req.setAttribute("reqTypeList", service.RequirementTypeList());
-				req.setAttribute("filesize",file_size);
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("projectshortName",projectshortName );
+				req.setAttribute("reqTypeList", service.RequirementTypeList());
+				req.setAttribute("filesize",file_size);
 				req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 				if(!service.RequirementList(initiationid).isEmpty()) {
 					req.setAttribute("initiationReqId", service.RequirementList(initiationid).get(0)[0].toString());
@@ -169,6 +169,51 @@ public class ProjectController
 		}
 		return "project/ProjectRequirements";
 	}
+	@RequestMapping(value = "ProjectSanction.htm")
+	public String ProjectSanction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectSanction.htm "+UserId);
+		try {
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			String Option = req.getParameter("sub");
+			//String IntiationId = req.getParameter("btSelectItem");
+			String Logintype= (String)ses.getAttribute("LoginType");
+			String LabCode = (String)ses.getAttribute("labcode");
+			
+			String Project=req.getParameter("project");
+		
+			if(Project!=null) {
+			String[]project=Project.split("/");
+			
+			String initiationid=project[0];
+			String projectshortName=project[1];
+			String projectTitle=project[2];
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("projectshortName",projectshortName );
+			req.setAttribute("projectTitle", projectTitle);
+			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+
+			}else {
+				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
+				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
+				String projectTitle=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[5].toString();
+				req.setAttribute("projectTitle", projectTitle);
+				req.setAttribute("initiationid", initiationid);
+				req.setAttribute("projectshortName",projectshortName );
+				req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+			}
+			
+			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+		}
+		catch(Exception e) {
+			  e.printStackTrace(); logger.error(new Date() +" ProjectSanction.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		return "project/ProjectSanctionStatement";
+	}
+	
+	
 	
 	@RequestMapping(value="PreProjectFileUpload.htm")
 	public String PreProjectFileUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
@@ -725,6 +770,7 @@ public class ProjectController
 				} else {
 					redir.addAttribute("resultfail", "Project Requirement Add Unsuccessful");
 				}
+				redir.addFlashAttribute("RequirementFiles", service.requirementFiles(req.getParameter("IntiationId"),1));
 				redir.addFlashAttribute("initiationReqId", String.valueOf(initiationReqId));
 				redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
 				redir.addFlashAttribute("RequirementList", service.RequirementList(req.getParameter("IntiationId")));
@@ -1442,6 +1488,8 @@ public class ProjectController
 		logger.info(new Date() +"Inside ProjectScheduleEditSubmit.htm "+UserId);
 		try {
 			
+			
+			
 			String IntiationId = req.getParameter("IntiationId");
 			String initiationscheduleid = req.getParameter("initiationscheduleid");  //pk
 			String milestoneno = req.getParameter("milestoneno");
@@ -1450,6 +1498,8 @@ public class ProjectController
 			String MilestoneMonthEdit = req.getParameter("MilestoneMonthEdit");
 			String MilestoneRemarkEdit = req.getParameter("MilestoneRemarkEdit");
 			
+			
+			System.out.println(MilestoneActivityEdit);
 			
 			ProjectScheduleDto scheduledto =  ProjectScheduleDto.builder()
 												.InitiationScheduleId(initiationscheduleid)
@@ -2080,6 +2130,7 @@ public class ProjectController
 		}
 		return "redirect:/ProjectIntiationDetailesLanding.htm";
 	}
+	
 	@RequestMapping(value = "ProjectRequirementEditSubmit.htm", method = RequestMethod.POST)
 	public String ProjectRequirementEditSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2097,7 +2148,6 @@ public class ProjectController
 		
 		String requirementId=req.getParameter("requirementid");
 		
-	System.out.println(requirementId+"++++++++++");
 			String linkedRequirements="";
 						if(req.getParameterValues("linkedRequirementsedit")!=null) {
 						String []linkedreq= req.getParameterValues("linkedRequirementsedit");
@@ -2120,8 +2170,7 @@ public class ProjectController
 								}
 							}
 							}
-						
-					System.out.println(req.getParameterValues("linkedAttachements")+"===============");
+			
 		PfmsInitiationRequirementDto prd= new PfmsInitiationRequirementDto();
 		prd.setInitiationId(Long.parseLong(req.getParameter("IntiationId")));
 		prd.setReqTypeId(Long.parseLong(req.getParameter("editreqtype")));

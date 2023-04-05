@@ -98,6 +98,8 @@ import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectSlideDto;
 import com.vts.pfms.utils.PMSLogoUtil;
 
+import feign.Request;
+
 
 @Controller
 public class PrintController {
@@ -267,7 +269,7 @@ public class PrintController {
 		
 	}
 	
-	@RequestMapping(value="ExecutiveSummaryDownload.htm", method = RequestMethod.POST )
+	@RequestMapping(value="ExecutiveSummaryDownload.htm")
 	public void ExecutiveSummaryDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -342,8 +344,105 @@ public class PrintController {
     	}		
 	}
 	
+	@RequestMapping(value="ProjectProposal.htm", method = RequestMethod.POST )
+	public String ProjectProposal(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
+	{
+	String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() +"Inside ProjectProposal.htm "+UserId);	
+		
+		try {
+		String InitiationId=req.getParameter("IntiationId");
+		Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+    	String LabCode =PfmsInitiationList[17].toString();
+    	String projecttypeid =PfmsInitiationList[19].toString();
+    	List<Object[]> CostBreak = service.GetCostBreakList(InitiationId,projecttypeid); 
+    	req.setAttribute("costbreak", CostBreak);
+    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  
+		req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
+		req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
+		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+		req.setAttribute("LabList", service.LabList(LabCode));
+		req.setAttribute("RequirementList", service.RequirementList(InitiationId));
+		req.setAttribute("InitiationId", InitiationId);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectProposal.htm "+UserId, e);
+		}
 	
-	@RequestMapping(value="ProjectProposalDownload.htm", method = RequestMethod.POST )
+		return "print/ProjectProposal";
+	}
+	@RequestMapping(value="ProposalPresentationDownload.htm")
+	public void PresentaionDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
+	{
+	String UserId = (String) ses.getAttribute("Username");
+		
+		logger.info(new Date() +"Inside PresentaionDownload.htm "+UserId);		
+	    try {
+	    	String InitiationId=req.getParameter("IntiationId");
+			Object[] PfmsInitiationList= service.PfmsInitiationList(InitiationId).get(0);
+	    	String LabCode =PfmsInitiationList[17].toString();
+	    	String projecttypeid =PfmsInitiationList[19].toString();
+	    	List<Object[]> CostBreak = service.GetCostBreakList(InitiationId,projecttypeid); 
+	    	req.setAttribute("costbreak", CostBreak);
+	    	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode));  
+			req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
+			req.setAttribute("CostDetailsList", service.CostDetailsList(InitiationId));
+			req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
+			req.setAttribute("LabList", service.LabList(LabCode));
+			req.setAttribute("RequirementList", service.RequirementList(InitiationId));
+			req.setAttribute("InitiationId", InitiationId);
+			
+			String filename="ProjectProposalPresentation";
+		  	String path=req.getServletContext().getRealPath("/view/temp");
+		  	req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/PresentaionDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
+	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	converterProperties.setFontProvider(dfp);
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+"/"+filename+".pdf");
+	      
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+		  	
+	    }
+	    catch(Exception e) {
+	    	logger.error(new Date() +" Inside PresentaionDownload.htm "+UserId, e);
+    		e.printStackTrace();
+			
+	    }
+	}
+	
+	
+	@RequestMapping(value="ProjectProposalDownload.htm")
 	public void ProjectProposalDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -477,6 +576,8 @@ public class PrintController {
 	
     	}		
 	}
+	
+	
 	
 	
 	@RequestMapping(value="ProjectBriefingDownload.htm")
@@ -2027,8 +2128,8 @@ public class PrintController {
 					}
 					if(prodetails[6]!=null) {
 						try {
-								//pearlimg
 							
+	                    //pearlimg
 							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6]))) {
 								pdfs[2]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[6])));
 							}

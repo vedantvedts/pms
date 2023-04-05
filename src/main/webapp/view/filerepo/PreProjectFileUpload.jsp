@@ -488,7 +488,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		 
 		 function onclickchange(ele,stepid,stepname)
 		 {
-			 
+			
 		 	elements = document.getElementsByClassName('caret');
 		     for (var i1 = 0; i1 < elements.length; i1++) {
 		     	$(elements[i1]).css("color", "black");
@@ -523,13 +523,13 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 			 for(var i=0;i<ajaxresult.length;i++){
 		
 				
-				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4]+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload' style='color: #007bff' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"'><i class='fa fa-download' ></i></button></li>"
+				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4]+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload' style='color: #007bff' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"' ><i class='fa fa-download' ></i></button></li>"
 			 }
 			 /*button for adding files in list  */
 			 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="show()">Add File</button></span></li>');
 		 }
 		 })
-		 
+		 showTable(1,0,0);
 		 
 		 }
 		 
@@ -659,6 +659,10 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 			  
 			  
 		  }
+		  $(document).ready(function(){
+			  var initiationId=<%=initiationid%>;
+			  showTable(1,0,0);
+		 }) ;
 				 
 		  $(function () {
 			  $('[data-toggle="tooltip"]').tooltip()

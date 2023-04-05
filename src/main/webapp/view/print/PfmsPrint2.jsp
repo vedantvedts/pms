@@ -32,6 +32,11 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 %>
 
 
+
+
+
+<meta charset="ISO-8859-1">
+<title> Project Proposal </title>
 <style type="text/css">
  
 
@@ -42,9 +47,9 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 	     
      @page {
-      size: landscape; 
+      size: : 790px 1120px; 
        margin-top: 49px;
-          margin-left: 72px;
+          margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px;
        border: 1px solid black; 
@@ -81,7 +86,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
     }
     
     .article td{
-    	padding:9px 5px 9px !important;
+    	padding:9px 5px 9px !important; 
     }
  
  	.article{
@@ -188,7 +193,6 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	font-weight: 500 !important;
 }
 
-
 .executive, .executive th, .executive td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -202,13 +206,9 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	width: 923px !important;
 }
  
-
+ 
 
 </style>
-
-
-<meta charset="ISO-8859-1">
-<title> Project Proposal </title>
 </head>
 <body >
 
@@ -230,33 +230,47 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 0px;width:717px; font-size: 15px;border-collapse: collapse;font-family:Gadugi ;" >
 
-	<tbody>
+	<tbody >
 		<tr>
-				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:35px" class=" heading-color"><br>Project Proposal</th>
+				<th colspan="4" style="  text-align: center; padding: 0 5px 5px;font-size:30px" class=" heading-color"><br>Project Proposal</th>
 		</tr>
 		<tr>
-			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+			<th colspan="4"  style="text-align:center; width:100%;font-size:30px;border-bottom: 3px solid grey"></th>
 		</tr>
 		
 	
 		<tr>
-				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:35px"><%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %>
+				<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:28px"><%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %>
 			</th>
 		</tr>
 	
 		<tr>
-			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:26px"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %>
+			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:24px"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %>
 			</th>
 		</tr>
-	
+		
+			<tr>
+			<th colspan="8" style="  text-align: center; padding: 0 5px 5px;font-size:24px">
+			</th>
+		</tr>
+			
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 35px">
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 24px">
 				<%if(PfmsInitiationList[10]!=null){%> <%=sdf2.format(PfmsInitiationList[10])%><%}else{ %>-<%} %>
 			</th>
 		</tr>
 		
+		<tr>
+			<th style="height:20px"></th>
+			</tr>
+			<tr>
+		<th style="height:20px"></th>
+			</tr>
+			<tr>
+				<th style="height:50px"></th>
+			</tr>
 		<tr>			
 			<th colspan="8" style="text-align: center; font-weight: 700;">
 				<br><br>
@@ -265,7 +279,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		</tr>
 		
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
+			<th colspan="8" style="text-align: center; height:80px; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
 		</tr>
 		<tr>
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>-<%} %></th>
@@ -292,18 +306,18 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 <!-- 2nd page -->
 
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:650px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Brief of Proposed Project</th>
 		</tr>
 		<tr>
-		<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey;"></th>
+		<th colspan="4"  style="text-align:center; width:70%;font-size:30px;border-bottom: 3px solid grey;"></th>
 		</tr>
 	</tbody>
 </table>
 <br>
-<table  class="brieftable executive" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:820px; font-size: 20px;border-collapse: collapse; ">
+<table  class="brieftable executive" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:650px; font-size: 20px;border-collapse: collapse; ">
 	<tbody>
 		<tr>
 			<th  class="border_black weight_700 left" ><span >Title of the Project</span></th>
@@ -333,18 +347,18 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 <!-- Need For Project -->
 
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Need of the Project</th>
 		</tr>
 		<tr>
-			<th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
+			<th colspan="4"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
 		</tr>
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:5px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -376,7 +390,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 <!-- Requirements -->
 
 <!-- <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" > -->
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border:;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:600px; font-size: 18px;border:;font-family:Gadugi ;" >
 		<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Requirements</th></tr>
@@ -387,15 +401,15 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		</table>
 		
 		<% if(!RequirementList.isEmpty()){ %>
-		<table style="width:90%;margin-left:70px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
+		<table style="width:100%;margin-left:5px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
 
-				<thead  style="margin-top:40px; borde:1px solid black">
+				<thead  style="margin-top:10px; borde:1px solid black">
 	 			 <tr style="margin-top:40px; padding:20px!important">
 <!-- 	 	     <th style="width: 5%;">Select</th> -->
-			    <th style="width: 3%; padding:8px;font-size: 22px; text-decoration: underline">SN</th>
-				<th style="width:8% ; font-size:22px; text-decoration: underline">ID</th>
+			    <th style="width: 3%; padding:8px;font-size: 22px; ">SN</th>
+				<th style="width:8% ; font-size:22px; ">ID</th>
 				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
-				<th style="width:70% ;font-size: 22px;text-decoration: underline" >Brief</th>
+				<th style="width:70% ;font-size: 22px;" >Brief</th>
 				</tr>
 				</thead>
 <tbody>
@@ -423,7 +437,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 <hr style="width:90%">
 <span style="margin-left:60px;margin-top:30px; font-size: 16px;">Note-(Requirement Descriptions are attached with <b> Annexure-C.)</b></span>
 <%}else{%>
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:920px; font-size: 22px; ">
 	<tbody>
 	<tr>
 	<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
@@ -438,7 +452,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 <!-- World Scenario -->
 
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">World Scenario</th>
@@ -449,7 +463,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:5px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -479,7 +493,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 
 <!-- Objective -->
- <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+ <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Objective</th>
@@ -490,7 +504,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -520,7 +534,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
    <h1 class="break"></h1>
   
   <!-- Scope -->
-    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Scope</th>
@@ -531,7 +545,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -562,7 +576,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
   
 <!-- Deliverables-->
 
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Deliverables</th>
@@ -573,7 +587,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 </table>
  <%if(PfmsInitiationList!=null){%>
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 0px;width:715px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 			
 		<tr>
@@ -590,7 +604,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 			</tbody>
 </table>
 	<%} else{%>
-	   <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+	   <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:600px; font-size: 22px; ">
 		 <tbody>
 		<tr>
 		<td colspan="8" style="text-align:justify; padding: 0 5px 5px;font-size:20px"><i class="normal"><br>To be filled</i></td>
@@ -618,7 +632,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	%>
 
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Participating Labs with Work Share </th>
@@ -631,7 +645,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 
 <%for(Object[] obj1 : DetailsList){ %>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 		<tr>
 			<td colspan="8" style="  text-align: left; padding: 0 5px 5px;font-size:20px" class="editor-text"><%if(obj1[3]!=null){%><%=obj1[3]%><%}else{%>To be filled<%} %>
@@ -649,7 +663,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
  
 <!-- Brief of Earlier Work Done -->
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Brief of Earlier Work Done </th>
@@ -660,7 +674,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 <%
 if(!DetailsList.isEmpty()){
 for(Object[] obj : DetailsList){   %>
@@ -687,7 +701,7 @@ for(Object[] obj : DetailsList){   %>
 
 <!-- Competency Established -->
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Competency Established </th>
@@ -698,7 +712,7 @@ for(Object[] obj : DetailsList){   %>
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 <%
 if(!DetailsList.isEmpty()){
 for(Object[] obj : DetailsList){   %>
@@ -726,7 +740,7 @@ for(Object[] obj : DetailsList){   %>
  
 
 <!-- Technology Challenges -->
-  <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+  <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Technology Challenges</th>
@@ -737,7 +751,7 @@ for(Object[] obj : DetailsList){   %>
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -767,7 +781,7 @@ for(Object[] obj : DetailsList){   %>
    <h1 class="break"></h1> 
    
    <!--Risk Mitigation  -->
-    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+    <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Risk Mitigation</th>
@@ -778,7 +792,7 @@ for(Object[] obj : DetailsList){   %>
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 	<tbody>
 <%if(!DetailsList.isEmpty()){
 	
@@ -809,7 +823,7 @@ for(Object[] obj : DetailsList){   %>
    
 
 
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Proposal </th>
@@ -820,7 +834,7 @@ for(Object[] obj : DetailsList){   %>
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 <%
 if(!DetailsList.isEmpty()){
 for(Object[] obj : DetailsList){   %>
@@ -849,10 +863,10 @@ for(Object[] obj : DetailsList){   %>
  
  <!-- Cost Breakup -->
   <div align="center" style="font-size: 25px"><b>Annexure - A </b></div>
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 	   <tr>
-		   <th colspan="4"  style="text-align:center;" class="heading heading-color">Cost Breakup as per proposal</th>
+		   <th colspan="8"  style="text-align:center;" class="heading heading-color">Cost Breakup as per proposal</th>
 	   </tr>
 	   <tr>
 		   <th colspan="8"  style="text-align:center;font-size:30px;border-bottom: 3px solid grey"></th>
@@ -862,13 +876,13 @@ for(Object[] obj : DetailsList){   %>
 
 <%if(!CostDetailsList.isEmpty()){ %>
 
-<table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;border-collapse: collapse; ">
+<table  class="executive editor-text-font" style="margin-right:2px;margin-top:5px; margin-bottom: 10px;margin-left: 2px;width:708px;;border-collapse: collapse; ">
 	<tbody>
 	<tr>
-		<th colspan="1" class="border_black weight_700 center" style=";width:4%"><span >SN</span></th>
-		<th colspan="4" class="border_black weight_700 center" style=";width:30%"><span >Budget Item</span></th>
-		<th colspan="2" class="border_black weight_700 center" style=";width:40%"><span >Item</span></th>
-		<th colspan="2" class="border_black weight_700 center"style=";width:20%"> <span >Cost (Lakhs)</span></th>
+		<th colspan="1" class="" style=";width:4%"><span >SN</span></th>
+		<th colspan="4" class="" style=";width:30%"><span >Budget Item</span></th>
+		<th colspan="2" class="" style=";width:40%"><span >Item</span></th>
+		<th colspan="2" class=""style=";width:20%"> <span >Cost (Lakhs)</span></th>
 	</tr>
 		<%int count=1;
 		for(Object[] obj : CostDetailsList){ %> 
@@ -892,7 +906,7 @@ for(Object[] obj : DetailsList){   %>
 </table>
 
 <%}else{ %>
-<table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:820px;  ">
+<table  class="executive editor-text-font" style="margin-top:5px; margin-bottom: 10px;margin-left: 2px; margin-right: 2px;width:708px;  ">
 
 <tr>
 	<th colspan="1" class="border_black weight_700 left" style=";width:9%"><span >SN</span></th>
@@ -995,7 +1009,7 @@ for(Object[] obj : DetailsList){   %>
 		 
 		 %>
 
- <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  " id="cost">
+ <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 3px;width:707px;  " id="cost">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5" class="border_black weight_700 center">
@@ -1019,79 +1033,79 @@ for(Object[] obj : DetailsList){   %>
 		  <tbody>
 				  	<tr>	
 				  		<td rowspan="10">052 <br>(Code Head-929/25)*</td>	
-				  		<td style="padding:10px;"> Transportation (Movement of Stores)</td>
-				  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
+				  		<td style="padding:2px;"> Transportation (Movement of Stores)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%><br>(<%=nfc.convert(FEtransportation/100000)%>)</td>
 				  		<td align="right">0.00</td>
-				  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000) %>)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%><br>(<%=nfc.convert(FEtransportation/100000) %>)</td>
 				   </tr>
 				   <tr>
-				   		<td  style="padding:10px;"> Equipment/Stores</td>
-				   		<td style="text-align:right;"><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+				   		<td  style="padding:2px;"> Equipment/Stores</td>
+				   		<td style="text-align:right;"><%=nfc.convert(Equipment/100000)%><br>(<%=nfc.convert(FEEquipment/100000)%>)</td>
 				  		<td align="right">0.00</td>
-				  		<td style="text-align:right;"><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(Equipment/100000)%><br>(<%=nfc.convert(FEEquipment/100000)%>)</td>
 				   </tr>	 	
 				  <tr>
-				 		<td  style="padding:10px;"> CARS/CAPSI </td>
-				  		<td style="text-align:right;"><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
+				 		<td  style="padding:2px;"> CARS/CAPSI </td>
+				  		<td style="text-align:right;"><%=nfc.convert(CARSCAPSI/100000)%><br>(<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
 				  		<td align="right">0.00</td>
-				  		<td style="text-align:right;"><%=nfc.convert(CARSCAPSI/100000)%> (<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(CARSCAPSI/100000)%><br>(<%=nfc.convert(FECARSCAPSI/100000)%>)</td>
 				  </tr>
 				  <tr>
-				 		<td  style="padding:10px;"> Consultancy Contracts </td>
-				  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+				 		<td  style="padding:2px;"> Consultancy Contracts </td>
+				  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%><br>(<%=nfc.convert(FEConsultancy/100000)%>)</td>
 				  		<td align="right"> 0.00</td>
-				  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%><br>(<%=nfc.convert(FEConsultancy/100000)%>)</td>
 				  </tr> 
 				  <tr>
-				  		<td  style="padding:10px;"> Job Work/Contracts/Technical Services</td>
-				  		<td style="text-align:right;"><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+				  		<td  style="padding:2px;"> Job Work/Contracts/Technical Services</td>
+				  		<td style="text-align:right;"><%=nfc.convert(TechnicalServices/100000)%><br>(<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 				  		<td align="right"> 0.00</td>
-				  		<td style="text-align:right;"><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+				  		<td style="text-align:right;"><%=nfc.convert(TechnicalServices/100000)%><br>(<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 				  </tr>
 
 				  <tr>
-				 	 <td  style="padding:10px;"> Hiring of Transport </td>
-				 	 <td style="text-align:right;"><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
+				 	 <td  style="padding:2px;"> Hiring of Transport </td>
+				 	 <td style="text-align:right;"><%=nfc.convert(HiringofTransport/100000)%><br>(<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
 				  	 <td align="right"> 0.00</td>
-				  	 <td style="text-align:right;"><%=nfc.convert(HiringofTransport/100000)%> (<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
+				  	 <td style="text-align:right;"><%=nfc.convert(HiringofTransport/100000)%><br>(<%=nfc.convert(FEHiringofTransport/100000)%>)</td>
 				 </tr>
 				 <tr>
-				 	<td  style="padding:10px;"> Fuel/Oil/Lubricants for Project Vehicles</td>
-				 	<td style="text-align:right;"><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
+				 	<td  style="padding:2px;"> Fuel/Oil/Lubricants for Project Vehicles</td>
+				 	<td style="text-align:right;"><%=nfc.convert(ProjectVehicles/100000)%><br>(<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
 				  	<td align="right"> 0.00</td>
-				    <td style="text-align:right;"><%=nfc.convert(ProjectVehicles/100000)%> (<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
+				    <td style="text-align:right;"><%=nfc.convert(ProjectVehicles/100000)%><br>(<%=nfc.convert(FEProjectVehicles/100000)%>)</td>
 				 </tr>	
 				  <tr>
-				 	<td  style="padding:10px;"> Contingency & Miscellaneous</td>
-				 	<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+				 	<td  style="padding:2px;"> Contingency & Miscellaneous</td>
+				 	<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%><br>(<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 				  	<td align="right"> 0.00</td>
-				  	<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+				  	<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%><br>(<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 				 </tr>	 
 				 <tr>
-				  	<td  style="padding:10px;"> Plant & Machinery</td>
-				  	<td style="text-align:right;"><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
+				  	<td  style="padding:2px;"> Plant & Machinery</td>
+				  	<td style="text-align:right;"><%=nfc.convert(PlantMachinery/100000)%><br>(<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
 				  	<td align="right"> 0.00</td>
-				  	<td style="text-align:right;"><%=nfc.convert(PlantMachinery/100000)%> (<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
+				  	<td style="text-align:right;"><%=nfc.convert(PlantMachinery/100000)%><br>(<%=nfc.convert(FEPlantMachinery/100000)%>)</td>
 				</tr>
 			    <tr>
-			  		<td  style="padding:10px;"> Project related Vehicles </td>
-			  		<td style="text-align:right;"><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
+			  		<td  style="padding:0px;"> Project related Vehicles </td>
+			  		<td style="text-align:right;"><%=nfc.convert(ProjectrelatedVehicles/100000)%> <br>(<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
 				  	<td align="right"> 0.00</td>
-				  	<td style="text-align:right;"><%=nfc.convert(ProjectrelatedVehicles/100000)%> (<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
+				  	<td style="text-align:right;"><%=nfc.convert(ProjectrelatedVehicles/100000)%><br>(<%=nfc.convert(FEProjectrelatedVehicles/100000)%>)</td>
 			  	</tr>
 			  	 <tr>
-			  		<td  style="padding:10px;"> 111 </td>
+			  		<td  style="padding:2px;"> 111 </td>
 			  		<td> Works</td>
-			  		<td style="text-align:right;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+			  		<td style="text-align:right;"><%=nfc.convert(Works/100000)%><br>(<%=nfc.convert(FEWorks/100000)%>)</td>
 				  	<td align="right"> 0.00</td>
-				  	<td style="text-align:right;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+				  	<td style="text-align:right;"><%=nfc.convert(Works/100000)%><br>(<%=nfc.convert(FEWorks/100000)%>)</td>
 				  	
 			  	</tr>
 			  	<tr>
 			  		<td colspan="2" class="border_black weight_700 right"> Total </td>
-			  		<td style="text-align:right;"><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
+			  		<td style="text-align:right;"><%=nfc.convert(totalcost/100000)%><br>(<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td>
 			  		<td align="right">0.00</td>
-			  		<td style="text-align:right;"><%=nfc.convert(totalcost/100000)%> (<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td></td>
+			  		<td style="text-align:right;"><%=nfc.convert(totalcost/100000)%><br>(<%=nfc.convert((FEtransportation + FEEquipment + FECARSCAPSI + FEConsultancy + FETechnicalServices + FEHiringofTransport + FEProjectVehicles + FEMiscellaneous + FEPlantMachinery + FEProjectrelatedVehicles + FEWorks)/100000)%>)</td></td>
 			  	</tr>
 		  </tbody>
   
@@ -1199,7 +1213,7 @@ for(Object[] obj : DetailsList){   %>
 		 
 		 
 		 %>  
-  <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  " id="cost">
+  <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 3px;width:707px;  " id="cost">
 		  <thead>
 			  	<tr> 
 				  	 <th colspan="5">
@@ -1223,41 +1237,41 @@ for(Object[] obj : DetailsList){   %>
 		  <tbody>
 			  	<tr>
 			  		<td> 105</td>
-			  		<td style="padding:10px;"> Transportation (Movement of Stores) </td>
-			  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
+			  		<td style="padding:2px;"> Transportation (Movement of Stores) </td>
+			  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%><br>(<%=nfc.convert(FEtransportation/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
 			  	</tr>
 			  	
 			  	<tr>
 			  		<td rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
-			  		<td style="padding:10px;"> Equipment/Stores </td>
+			  		<td style="padding:2px;"> Equipment/Stores </td>
 			     	<td style="text-align:right;"> <%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;"> CARS</td>
+			  		<td style="padding:2px;"> CARS</td>
 			  		<td style="text-align:right;"><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;"> CAPSI</td>
+			  		<td style="padding:2px;"> CAPSI</td>
 			  		<td style="text-align:right;"><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;"> Consultancy Contracts </td>
+			  		<td style="padding:2px;"> Consultancy Contracts </td>
 			  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;"> Job Work/Contracts/Hiring of <br>Technical Services</td>
+			  		<td style="padding:2px;"> Job Work/Contracts/Hiring of <br>Technical Services</td>
 			  		<%--  <td> <%=TechnicalServices %></td> --%> 
 			  		<td style="text-align:right;"><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
@@ -1265,14 +1279,14 @@ for(Object[] obj : DetailsList){   %>
 
 			  	</tr> 
 				<tr>
-			  		<td style="padding:10px;"> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
+			  		<td style="padding:2px;"> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
 			  		<td style="text-align:right;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;">Contingency & Miscellaneous</td>
+			  		<td style="padding:2px;">Contingency & Miscellaneous</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
@@ -1280,7 +1294,7 @@ for(Object[] obj : DetailsList){   %>
 			  	</tr>
 			  	<tr>
 			 	 	<td> 111</td>
-			  		<td style="padding:10px;"> Works</td>
+			  		<td style="padding:2px;"> Works</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
@@ -1295,7 +1309,7 @@ for(Object[] obj : DetailsList){   %>
 			  	</tr>
 			  	<tr>
 			 	 	<td rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
-			  		<td style="padding:10px;"> Plant & Machinery </td>
+			  		<td style="padding:2px;"> Plant & Machinery </td>
 			  		<td rowspan="2" style="text-align:right;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
 			  		<td rowspan="2" style="text-align:right;">0.00</td>
 			  		<td rowspan="2 " style="text-align:right;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
@@ -1305,7 +1319,7 @@ for(Object[] obj : DetailsList){   %>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:10px;"> Works </td>
+			  		<td style="padding:2px;"> Works </td>
 			  		<td style="text-align:right;"> <%=nfc.convert(CapWorks/100000) %> (<%=nfc.convert(FECapWorks/100000)%>)</td>
 			  		<td style="text-align:right;"> 0.00</td>
 			  		<td style="text-align:right;"> <%=nfc.convert(CapWorks/100000) %> (<%=nfc.convert(FECapWorks/100000)%>)</td>
@@ -1334,7 +1348,7 @@ for(Object[] obj : DetailsList){   %>
  
   <!-- Project Schedule -->
   <div align="center" style="font-size: 25px"><b>Annexure - B </b></div>
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 			<th colspan="4"  style="text-align:center;" class="heading heading-color">Project Schedule/Timelines</th>
@@ -1347,7 +1361,7 @@ for(Object[] obj : DetailsList){   %>
 
 <%if(!ScheduleList.isEmpty()){ %>
 
-	<table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px;  ">
+	<table  class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 3px;width:707px;  ">
 		<tr>
 		<th colspan="1" class="border_black weight_700 center grey" style=";width:7%"><span >SN</span></th>
 		<th colspan="3" class="border_black weight_700 center grey" style=";width:50%"><span >Milestone Activity</span></th>
@@ -1378,7 +1392,7 @@ count++;
 <%}else{ %>	
 
 
-<table  class="executive" style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:820px; font-size: 22px; ">
+<table  class="executive" style="margin-top:10px; margin-bottom: 10px;margin-left: 3px;width:707px; font-size: 22px; ">
 
 <tr>
 	<th colspan="1" class="border_black weight_700 left grey" style=";width:9%"><span >SN</span></th>
@@ -1397,7 +1411,7 @@ count++;
  
   <!-- Realization --> 
  
-<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:00px; margin-bottom: 0px;margin-left: 30px;width:615px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		<tr>
 		<th colspan="4"  style="text-align:center;" class="heading heading-color">Realization Plan </th>
@@ -1408,7 +1422,7 @@ count++;
 	</tbody>
 </table>
 
-<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 35px;width:920px; font-size: 22px; ">
+<table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:715px; font-size: 22px; ">
 <%
 if(!DetailsList.isEmpty()){
 for(Object[] obj : DetailsList){   %>
@@ -1436,11 +1450,11 @@ for(Object[] obj : DetailsList){   %>
 
 
 
-<%if(!RequirementList.isEmpty()){ %>
+<%-- <%if(!RequirementList.isEmpty()){ %>
  <h1 class="break"></h1>
  <br>
  <div align="center" style="font-size: 25px"><b>Annexure - C </b></div>
- <table class="editor-text-font" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 30px; width: 950px; border-collapse:collapse;font-size: 17px !important" >
+ <table class="editor-text-font" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 30px; width: 600px; border-collapse:collapse;font-size: 17px !important" >
  <tr style="">
 			<td  class="border_black  center" style=";width:140px;font-weight: 600;padding:5px !important;">Requirement ID</td>
 				<td class="border_black  center" style="font-weight: 600"><span >Description</span></td>
@@ -1454,15 +1468,15 @@ for(Object[] obj : DetailsList){   %>
  </tr>
  <%} %>
  </table>
-<%} %>
+<%} %> --%>
 
   <!-- Thank You Page -->
    <h1 class="break"></h1>
-<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:920px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
+<table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:600px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>
 		
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 55px" class="heading-color"><br><br><br><br>THANK YOU<br><br><br></th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size: 55px" class="heading-color"><br><br><br><br><br><br>THANK YOU<br><br><br></th>
 		</tr>
 		
 	</tbody>
