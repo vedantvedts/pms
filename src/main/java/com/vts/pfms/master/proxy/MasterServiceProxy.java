@@ -11,5 +11,5 @@ import com.vts.pfms.login.Login;
 public interface MasterServiceProxy 
 {
 	@PostMapping("getLoginDetails.htm")
-	public Login LoginDetails (@RequestHeader (name = "request_from", defaultValue = "VEDTS") String request_from,@RequestParam String UserName);
+	public Login LoginDetails (@RequestHeader (name = "request_from", defaultValue = "VEDTS") String request_from,@RequestParam("UserName") String UserName);
 }

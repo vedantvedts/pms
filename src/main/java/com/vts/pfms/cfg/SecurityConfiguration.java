@@ -55,8 +55,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	protected void configure(HttpSecurity http) throws Exception {
 		  http.authorizeRequests()
 		
-	
-	
 		  .antMatchers("/").hasAnyRole("USER","ADMIN")
 		  .antMatchers("/webjars/**").permitAll()
 		  .antMatchers("/resources/**").permitAll()
@@ -99,7 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	public AccessDecisionManager  adm() {
 		List<AccessDecisionVoter<? extends Object>> DecisionVoter= Arrays.asList(new RoleVoter(),new AuthenticatedVoter(),new WebExpressionVoter(),new RealTimeLockVoter());
 		
-	return  new UnanimousBased(DecisionVoter);
+		return  new UnanimousBased(DecisionVoter);
 	}
 	
 	
