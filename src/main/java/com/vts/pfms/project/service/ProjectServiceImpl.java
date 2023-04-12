@@ -629,6 +629,7 @@ public class ProjectServiceImpl implements ProjectService {
 		PfmsInitiation pfmsinitiation = new PfmsInitiation();
 		PfmsInitiationSchedule schedule = dao.getInitiationSchedule(projectscheduledto.getInitiationScheduleId());
 		int tempMonths= schedule.getMilestoneMonth();
+		
 		schedule.setMilestoneActivity(projectscheduledto.getMileStoneActivity());
 		schedule.setMilestonestartedfrom(projectscheduledto.getMilestonestartedfrom());
 		schedule.setMilestoneMonth(Integer.parseInt(projectscheduledto.getMileStoneMonth()));
@@ -643,6 +644,8 @@ public class ProjectServiceImpl implements ProjectService {
 			int count = dao.InitiationClearTotalMonth(projectscheduledto.getInitiationId());
 			List<PfmsInitiationSchedule> ScheduleList = dao.IntiationScheduleList(projectscheduledto.getInitiationId());
 			
+			
+			
 			for(PfmsInitiationSchedule milestone : ScheduleList)
 			{
 				if(milestone.getMilestonestartedfrom()>0)
@@ -652,16 +655,26 @@ public class ProjectServiceImpl implements ProjectService {
 					milestone.setMilestoneTotalMonth(milestone.getMilestoneMonth()+parentmilestone.getMilestoneTotalMonth());
 					pfmsinitiation.setProjectDuration(dao.ProjectDurationMonth(projectscheduledto.getInitiationId()));
 					pfmsinitiation.setInitiationId(Long.parseLong(projectscheduledto.getInitiationId()));
+					
+					System.out.println(schedule.getMilestoneActivity());
+					
 					dao.ProjectScheduleEdit(schedule,pfmsinitiation);
 				}else
 				{
 					milestone.setMilestoneTotalMonth(milestone.getMilestoneMonth());
 					pfmsinitiation.setProjectDuration(dao.ProjectDurationMonth(projectscheduledto.getInitiationId()));
 					pfmsinitiation.setInitiationId(Long.parseLong(projectscheduledto.getInitiationId()));
+					
+					System.out.println(schedule.getMilestoneActivity()+"----------");
 					dao.ProjectScheduleEdit(schedule,pfmsinitiation);
 				}
 			}
 		}
+		else {
+			pfmsinitiation.setInitiationId(Long.parseLong(projectscheduledto.getInitiationId()));
+			pfmsinitiation.setProjectDuration(dao.ProjectDurationMonth(projectscheduledto.getInitiationId()));
+		}
+		
 		
 		return 0L; 
 	}

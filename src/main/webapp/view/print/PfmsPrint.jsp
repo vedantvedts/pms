@@ -38,6 +38,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 <style>
 
 
+
 .break
 	{
 		page-break-after: always;
@@ -208,22 +209,13 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					</th>
 				</tr>
 				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;">(ISO 9001-2015 Certified Establishment)</th>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
 				</tr>
 				<tr>
 					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></th>
 				</tr>
 
-				
-				<%-- <tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
-				</tr>
-				<tr>
-					<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(Labdata[2]!=null){ %><%=Labdata[2] %><%}else{ %>LAB NAME<%} %></th>
-				</tr> --%>
+
 				
 			
 			

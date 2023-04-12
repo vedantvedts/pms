@@ -314,8 +314,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						</form>	
              <%} %> 
             </li>
-             <%--    <li class="nav-item"  >
-          <%if(Integer.parseInt(ProjectProgressCount[5].toString())>0){ %>
+             <%--
+              <li class="nav-item"  >
+             <%if(Integer.parseInt(ProjectProgressCount[5].toString())>0){ %>
                <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
               <a class="nav-link active" id="nav" data-toggle="tab" href="#requirement" role="tab" >
               <%}else{ %>
@@ -337,6 +338,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 						</form>	
                <%} %> 
             </li>  --%>
+            
             
             <li class="nav-item" >
             <%if(Integer.parseInt(ProjectProgressCount[1].toString())>0){ %>
@@ -520,10 +522,13 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 							 <%} %> --%>
 							 <button type="submit" class="btn btn-warning btn-sm edit" formaction="ProjectIntiationEdit.htm"   >EDIT</button>&nbsp;&nbsp;
 							 
-							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
+							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank" formmethod="GET"  >Print Executive Summary</button>&nbsp;&nbsp;
 							 
-							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
+							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank" formmethod="GET" >Print Project Proposal</button>&nbsp;&nbsp;
 							 
+							 	<button type="submit" class="btn" formaction="ProjectProposal.htm" formtarget="_blank" style="border:none"  data-toggle="tooltip" data-placement="top" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
+							 
+							 	 <button type="submit" class="btn" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="right" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>
 							 
 						</div>	 
 					
@@ -2026,6 +2031,10 @@ function showdata(reqid,reqid1){
     document.getElementById('reqmodalbody').innerHTML =$('#Req'+reqid).val();
     document.getElementById('reqid').innerHTML =reqid1;
 }
+
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
 
 
 
