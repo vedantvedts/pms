@@ -809,8 +809,8 @@ for(Object[] temp : invitedlist){
 										 <th class="std"  style="width: 30px !important; ">MS</th>
 										 <th class="std"  style="width: 30px !important; ">L</th>
 										 <th class="std" style="max-width: 150px; ">System/ Subsystem/ Activities</th>
-										 <th class="std" style="max-width: 110px; "> Original PDC</th>
-										 <th class="std" style="max-width: 110px; "> Revised PDC</th>
+										 <th class="std" style="max-width: 150px; ">  PDC</th>
+
 										 <th class="std" style="max-width: 100px; "> Progress</th>
 										 <th class="std" style="max-width: 70px; "> Status</th>
 										 <th class="std" style="max-width: 100px; "> Remarks</th> 
@@ -886,8 +886,8 @@ for(Object[] temp : invitedlist){
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %></td>
-											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
+											<%-- <td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td> --%>
 											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
 											<td class="std"  style="max-width: 70px;text-align: center;">
 												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
@@ -1347,7 +1347,7 @@ for(Object[] temp : invitedlist){
 												<%} %>
 											</td>
 											<td class="std" ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
-											<td class="std" >
+											<td class="std" style="font-size: 12px;" >
 												
 												<%=sdf.format(sdf1.parse(obj[8].toString())) %>
 												<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
