@@ -46,11 +46,13 @@ h6 {
 	align-items: center;
 	justify-content: flex-start;
 }
+
 #div1 {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 }
+
 .caret {
 	cursor: pointer;
 	-webkit-user-select: none; /* Safari 3.1+ */
@@ -87,9 +89,8 @@ h6 {
 	display: inline-block;
 	margin-right: 6px;
 }
- 
- 
- .caret-last {
+
+.caret-last {
 	cursor: pointer;
 	-webkit-user-select: none; /* Safari 3.1+ */
 	-moz-user-select: none; /* Firefox 2+ */
@@ -112,8 +113,8 @@ h6 {
 	display: block;
 }
 
-#download,.verupload{
-background-color: transparent;
+#download, .verupload {
+	background-color: transparent;
 }
 </style>
 
@@ -171,8 +172,7 @@ background-color: transparent;
 	-webkit-transform: rotate(90deg); /* Safari */ '
 	transform: rotate(90deg);
 }
- 
- 
+
 #modalreqheader {
 	background: #145374;
 	height: 44px;
@@ -181,21 +181,22 @@ background-color: transparent;
 	align-items: center;
 	color: white;
 }
-#filedesc,#file,#fileName{
-margin: 0px; 
-font-size: 17px;
- color: #07689f;
-text-align: center;
-}
 
+#filedesc, #file, #fileName {
+	margin: 0px;
+	font-size: 17px;
+	color: #07689f;
+	text-align: center;
+}
 </style>
 </head>
 <body>
-<%List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("ProjectIntiationList"); 
+	<%List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("ProjectIntiationList"); 
 	String projectshortName=(String)request.getAttribute("projectshortName");
     String initiationid=(String)request.getAttribute("initiationid");
     String projectTitle=(String)request.getAttribute("projectTitle");
     String filesize=(String) request.getAttribute("filesize"); 
+  
     
 List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName"); 
 %>
@@ -216,8 +217,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		</div>
 	</div>
 	<%} %>
-
-		<div id="reqmain" class="card-slider">
+	<div id="reqmain" class="card-slider">
 		<form class="form-inline" method="POST"
 			action="PreProjectFileUpload.htm">
 			<div class="row W-100" style="width: 80%; margin-top: -0.5%;">
@@ -241,7 +241,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 					name="submit" value="Submit" hidden="hidden">
 			</div>
 		</form>
-			<div class="container-fluid" style="display: none;" id="main">
+		<div class="container-fluid" style="display: none;" id="main">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card shadow-nohover" style="margin-top: -0px;">
@@ -259,207 +259,317 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 									type="hidden" name="IntiationId" value="<%=initiationid %>" />
 							</div>
 						</div>
-						<div class="card-body" style="background:white;box-shadow: 2px 2px 2px gray;">
-						<div class="row">
-						<div class="col-md-6">
-						<form action="#">
-						<ul style="margin-left:-4%;">
-						<%for(Object[]obj:steps) {%>
-						<li><span class="caret"  onclick="onclickchange(this,'<%=obj[0]%>','<%=obj[1]%>');"><%=obj[1] %></span>
-						<ul class="nested" id="<%=obj[0]%>"></ul>
-						
-						</li>
-						<%} %>
-						</ul>
-						</div>
-						</form>
-						
-								<div class="col-md-6 border" id="filestable" style="display:none">
-								<div
-									style="font-size: 17px; padding-top: 10px !important; padding-bottom: 25px !important;"
-									align="center">
-									<span id="tablehead"
-										style="display: inline; color: black; font-style: italic;"></span>
+						<div class="card-body"
+							style="background: white; box-shadow: 2px 2px 2px gray;">
+							<div class="row">
+								<div class="col-md-6">
+									<form action="#">
+										<ul style="margin-left: -4%;">
+											<%for(Object[]obj:steps) {%>
+											<li><span class="caret"
+												onclick="onclickchange(this,'<%=obj[0]%>','<%=obj[1]%>');"><%=obj[1] %></span>
+												<ul class="nested" id="<%=obj[0]%>"></ul></li>
+											<%} %>
+										</ul>
 								</div>
-								<form action="#">
-								<div style="overflow-y: auto; width: 100%; max-height: 35rem;">
-									<div class="table-responsive ">
-										<table class="table table-bordered " style="width: 100%;"
-											id="MyTable1">
-											<thead>
-												<tr>
-													<th style="width: 0%; text-align: center;">SN</th>
-													<th style="width: 40%; text-align: center;">Name</th>
-													<th style="width: 22%; text-align: center;">UpdateOn</th>
-													<th style="width: 5%; text-align: center;">Ver</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<tbody id="listtbody">
+								</form>
 
-											</tbody>
-										</table>
+								<div class="col-md-6 border" id="filestable"
+									style="display: none">
+									<div
+										style="font-size: 17px; padding-top: 10px !important; padding-bottom: 25px !important;"
+										align="center">
+										<span id="tablehead"
+											style="display: inline; color: black; font-style: italic;"></span>
 									</div>
+									<form action="#">
+										<div style="overflow-y: auto; width: 100%; max-height: 35rem;">
+											<div class="table-responsive ">
+												<table class="table table-bordered " style="width: 100%;"
+													id="MyTable1">
+													<thead>
+														<tr>
+															<th style="width: 0%; text-align: center;">SN</th>
+															<th style="width: 40%; text-align: center;">Name</th>
+															<th style="width: 22%; text-align: center;">UpdateOn</th>
+															<th style="width: 5%; text-align: center;">Ver</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody id="listtbody">
+
+													</tbody>
+												</table>
+											</div>
 									</form>
 								</div>
 							</div>
-						</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
-		
-		<!--modal for file upload  -->
-		<form class="form-horizontal" role="form"
-			action="PreProjectFileSubmit.htm" method="POST" id="myform2"
-			enctype="multipart/form-data">
-			<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="margin-top:16%">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Document Upload</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-						<div class="col-md-12" style="margin-top:2%">
-						<div class="row">
-						<div class="col-md-4">
-						<label id="fileName">Document Name:</label><span class="mandatory" style="color: red;">*</span></div>
-						<div class="col-md-5">
-						<input type="text" class="form-control" name="filename" maxlength="255" placeholder="max 255 characters">
-						</div>
-						<div class="col-md-12" style="margin-top:2%">
+	</div>
+
+
+	<!--modal for file upload  -->
+	<form class="form-horizontal" role="form"
+		action="PreProjectFileSubmit.htm" method="POST" id="myform2"
+		enctype="multipart/form-data">
+		<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="margin-top: 16%">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Document
+							Upload</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12" style="margin-top: 2%">
 							<div class="row">
-						<div class="col-md-4">
-						<label id="file">Choose File:</label><span class="mandatory" style="color: red;">*</span>
+								<div class="col-md-4">
+									<label id="fileName">Document Name:</label><span
+										class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<input type="text" class="form-control" id="filename"
+										name="filename" required maxlength="255"
+										onchange="oninputChange()" placeholder="max 255 characters">
+								</div>
+								<div class="col-md-12" style="margin-top: 2%">
+									<div class="row">
+										<div class="col-md-4">
+											<label id="file">Choose File:</label><span class="mandatory"
+												style="color: red;">*</span>
+										</div>
+										<div class="col-md-5">
+											<input class="form-control" required type="file"
+												name="Attachment" id="Attachment1"
+												accept=".xlsx,.xls,.pdf,.doc,.docx"
+												onchange=" editcheck('Attachment1',1)">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12" style="margin-top: 2%">
+									<div class="row">
+										<div class="col-md-4">
+											<label id="filedesc">Document Dscription:</label><span
+												class="mandatory" style="color: red;">*</span>
+										</div>
+										<div class="values"></div>
+										<div class="col-md-5">
+											<input type="text" class="form-control" maxlength="512"
+												name="description" style="line-height: 3rem">
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-5">
-						<input class="form-control" type="file" name="Attachment"
+
+						<input type="hidden" name="IntiationId" value="<%=initiationid %>" />
+						<input type="hidden" name="projectshortName"
+							value="<%=projectshortName %>" />
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm submit"
+								id="add" name="action" value="SUBMIT"
+								onclick="return reqCheck('myform1');">SUBMIT</button>
+							<input type="hidden" name="versionvalue">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!--  -->
+
+	<!-- modal for soc -->
+
+
+
+	<form class="form-horizontal" role="form"
+		action="PreProjectFileSubmit.htm" method="POST" id="myform2"
+		enctype="multipart/form-data">
+		<div class="modal fade bd-example-modal-lg" id="exampleModalLongSoc"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="margin-top: 16%">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Document
+							Upload</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12" style="margin-top: 2%">
+							<div class="row">
+								<div class="col-md-4">
+									<label id="fileName">Document Name:</label><span
+										class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<select class="form-control selectdee" id="filename"
+										name="filename" data-container="body" data-live-search="true"
+										onchange="oninputChange()" style="font-size: 5px; width: 100%">
+										<option value="" selected="selected" hidden="true">--Select--</option>
+										<option value="System Analysis Report">System
+											Analysis Report</option>
+										<option value="TRL Analysis Report">TRL Analysis
+											Report</option>
+										<option value="Project Execution Plan">Project
+											Execution Plan</option>
+										<option value="Peer Review Committee Recommendation">Peer
+											Review Committee Recommendation</option>
+										<option
+											value=" FYP/LTTPP/DRDO Vision Document / Roadmap of DRDO Plan Project">
+											FYP/LTTPP/DRDO Vision Document / Roadmap of DRDO Plan Project</option>
+
+									</select>
+								</div>
+								<div class="col-md-12" style="margin-top: 2%">
+									<div class="row">
+										<div class="col-md-4">
+											<label id="file">Choose File:</label><span class="mandatory"
+												style="color: red;">*</span>
+										</div>
+										<div class="col-md-5">
+											<input class="form-control" type="file" name="Attachment"
 												id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
 												onchange=" editcheck('Attachment1',1)">
-						</div>
-						</div>
-						</div>
-						<div class="col-md-12" style="margin-top:2%">
-						<div class="row">
-						<div class="col-md-4">
-						<label id="filedesc">Document Dscription:</label><span class="mandatory" style="color: red;">*</span>
-						</div>
-							<div id="values"></div>
-						<div class="col-md-5">
-						<input type="text" class="form-control" maxlength="512" name="description" style="line-height: 3rem">
-						</div>
-						</div>
-						</div>
-						</div>
-						</div>
-						
-							<input type="hidden" name="IntiationId"
-									value="<%=initiationid %>" /> <input type="hidden"
-									name="projectshortName" value="<%=projectshortName %>" />
-								<div class="form-group" align="center" style="margin-top: 3%;">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
-									<button type="submit" class="btn btn-primary btn-sm submit"
-										id="add" name="action" value="SUBMIT"
-										onclick="return reqCheck('myform1');">SUBMIT</button>
-										<input type="hidden" name="versionvalue">
+										</div>
+									</div>
 								</div>
-						</div>
-						</div>
-						</div>
-						</div>
-		</form>
-		<!--  -->
-		
-		<!-- modal for version change  -->
-			<form class="form-horizontal" role="form"
-			action="PreProjectFileSubmit.htm" method="POST" id="myform2"
-			enctype="multipart/form-data">
-			<div class="modal fade bd-example-modal-lg" id="versionUpload"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="margin-top:16%">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Document Version Upload</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
+								<div class="col-md-12" style="margin-top: 2%">
+									<div class="row">
+										<div class="col-md-4">
+											<label id="filedesc">Document Dscription:</label><span
+												class="mandatory" style="color: red;">*</span>
+										</div>
+										<div class="values"></div>
+										<div class="col-md-5">
+											<input type="text" class="form-control" maxlength="512"
+												name="description" style="line-height: 3rem">
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="modal-body">
-							<div class="col-md-12" style="margin-top:2%">
+						</div>
+
+						<input type="hidden" name="IntiationId" value="<%=initiationid %>" />
+						<input type="hidden" name="projectshortName"
+							value="<%=projectshortName %>" />
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm submit"
+								id="add" name="action" value="SUBMIT"
+								onclick="return reqCheck('myform1');">SUBMIT</button>
+							<input type="hidden" name="versionvalue">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+
+
+	<!-- modal for version change  -->
+	<form class="form-horizontal" role="form"
+		action="PreProjectFileSubmit.htm" method="POST" id="myform2"
+		enctype="multipart/form-data">
+		<div class="modal fade bd-example-modal-lg" id="versionUpload"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="margin-top: 16%">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Document
+							Version Upload</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12" style="margin-top: 2%">
 							<div class="row">
-							<div class="col-md-4">
-							<label id="fileName">Document Name:</label>
+								<div class="col-md-4">
+									<label id="fileName">Document Name:</label>
+								</div>
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="filename"
+										id="versionfile" readonly>
+								</div>
 							</div>
-							<div class="col-md-5">
-							<input type="text" class="form-control" name="filename"  id="versionfile" readonly>
-							</div>
-							</div>
-							</div>
-								<div class="col-md-12" style="margin-top:2%">
+						</div>
+						<div class="col-md-12" style="margin-top: 2%">
 							<div class="row">
-						<div class="col-md-4">
-						<label id="file">Choose File:</label><span class="mandatory" style="color: red;">*</span>
+								<div class="col-md-4">
+									<label id="file">Choose File:</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<input class="form-control" type="file" name="Attachment"
+										id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
+										onchange=" editcheck('Attachment1',1)" required>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-5">
-						<input class="form-control" type="file" name="Attachment"
-												id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
-												onchange=" editcheck('Attachment1',1)" required>
-						</div>
-						</div>
-						</div>
-						<div class="col-md-12" style="margin-top:2%">
-						<div class="row">
-						<div class="col-md-4">
-						<label id="file">Is this New Version?</label>
-						</div>
-						<div class="col-md-4">
-						<input type="radio" name="isnewver" id="isnewvery" value="Y">&nbsp;&nbsp;Yes &emsp; 
-						<input type="radio" name="isnewver" id="isnewvery" value="N" checked>&nbsp;&nbsp;No
-						</div>
-						</div>
+						<div class="col-md-12" style="margin-top: 2%">
+							<div class="row">
+								<div class="col-md-4">
+									<label id="file">Is this New Version?</label>
+								</div>
+								<div class="col-md-4">
+									<input type="radio" name="isnewver" id="isnewvery" value="Y">&nbsp;&nbsp;Yes
+									&emsp; <input type="radio" name="isnewver" id="isnewvery"
+										value="N" checked>&nbsp;&nbsp;No
+								</div>
+							</div>
 						</div>
 						<div id="versioneditvalues"></div>
-									<div class="col-md-12" style="margin-top:2%">
-						<div class="row">
-						<div class="col-md-4">
-						<label id="filedesc">Document Dscription:</label><span class="mandatory" style="color: red;">*</span>
-						</div>
-						<div class="col-md-5">
-						<input type="text" class="form-control" maxlength="512" name="description" style="line-height: 3rem">
-						</div>
-						</div>
-						</div>
-						
-						<input type="hidden" name="IntiationId"
-									value="<%=initiationid %>" /> <input type="hidden"
-									name="projectshortName" value="<%=projectshortName %>" />
-								<div class="form-group" align="center" style="margin-top: 3%;">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
-									<button type="submit" class="btn btn-primary btn-sm submit"
-										id="add1" name="action" value="SUBMIT"
-										onclick="return reqCheck('myform1');"></button>
-
+						<div class="col-md-12" style="margin-top: 2%">
+							<div class="row">
+								<div class="col-md-4">
+									<label id="filedesc">Document Dscription:</label><span
+										class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<input type="text" class="form-control" maxlength="512"
+										name="description" style="line-height: 3rem">
 								</div>
 							</div>
-						
 						</div>
+
+						<input type="hidden" name="IntiationId" value="<%=initiationid %>" />
+						<input type="hidden" name="projectshortName"
+							value="<%=projectshortName %>" />
+						<div class="form-group" align="center" style="margin-top: 3%;">
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+							<button type="submit" class="btn btn-primary btn-sm submit"
+								id="add1" name="action" value="SUBMIT"
+								onclick="return reqCheck('myform1');"></button>
+
 						</div>
-						</div>
-						</form>
-		<!--  -->
-		<script>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<!--  -->
+	<script>
 		$(document).ready(function() {
 			   $('#project').on('change', function() {
 				   var temp=$(this).children("option:selected").val();
@@ -505,7 +615,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		 
 			var initiationId=<%=initiationid%>;
 		 console.log(stepid+stepname)
-		 $('#values').html('<input type="hidden" name="stepid" value="'+stepid+'">')
+		 $('.values').html('<input type="hidden" id="stepnames" name="stepid" value="'+stepid+'">')
 		 var html="";
 		 $.ajax({
 			 type:'GET',
@@ -516,7 +626,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 				 initiationid:initiationId,
 			 },
 		 success:function(result){
-			 console.log(result);
+			 
 			 var ajaxresult=JSON.parse(result);
 			 
 			 console.log(ajaxresult);
@@ -526,8 +636,14 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4]+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload' style='color: #007bff' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"' ><i class='fa fa-download' ></i></button></li>"
 			 }
 			 /*button for adding files in list  */
+			 if(stepid!=3){
 			 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="show()">Add File</button></span></li>');
-		 }
+			 }
+			 else if(stepid==3){
+				 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="showSocModal()">Add File</button></span></li>'); 
+			 }
+			 }
+			 
 		 })
 		 showTable(1,0,0);
 		 
@@ -536,6 +652,9 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 	
 		 function show(){
 			 $('#exampleModalLong').modal('show');
+		 }
+		 function showSocModal(){
+			 $('#exampleModalLongSoc').modal('show');
 		 }
 		 
 		 function uploadshow(stepid,version,filename,DocumentCount){
@@ -632,7 +751,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 				  },
 				  success:function(result){
 					  var ajaxresult=JSON.parse(result);
-					 console.log(ajaxresult)
+					
 					  var html="";
 					  for(var i=0;i<ajaxresult.length;i++){
 							   const date = new Date(ajaxresult[i][3]);
@@ -667,6 +786,39 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		  $(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
+			
+		function oninputChange(){
+			  var stepid=document.getElementById("stepnames").value;
+			  var filename=document.getElementById("filename").value;
+			 	$.ajax({
+			 		type:'GET',
+					 url:'PreprojectFiles.htm',
+					 datatype:'json',
+					 data:{
+						 stepid:stepid,
+						 initiationid:<%=initiationid%>,
+					 },
+					 success:function(result){
+						 var ajaxresult=JSON.parse(result);
+						 var myArray=[];
+						 if(ajaxresult.length!=0){
+							 for(var i=0;i<ajaxresult.length;i++){
+								 myArray.push(ajaxresult[i][4]);
+							 }
+						 }
+						if(myArray.includes(filename)){
+							alert("Document Name already Exist")
+							document.getElementById("filename").value="";
+						}
+					 }
+			 	})
+		  }
+		  
+		/*  function oninputchange(){
+			 console.log("hii")
+		 } 
+			 */
+			
 		</script>
 </body>
 </html>

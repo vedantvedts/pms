@@ -34,6 +34,7 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
+import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
@@ -55,7 +56,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final Logger logger=LogManager.getLogger(ProjectDaoImpl.class);
 	java.util.Date loggerdate=new java.util.Date();
 
-	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.classification,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd',a.LabCode FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
+	private static final String PROJECTINTILIST="SELECT a.initiationid,a.projectprogramme,b.projecttypeshort,c.classification,a.projectshortname,a.projecttitle,a.projectcost,a.projectduration,a.ismain,a.empid AS 'pdd',a.LabCode,a.projecttypeid FROM pfms_initiation a,project_type b, pfms_security_classification c WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.classificationid=c.classificationid  AND a.projecttypeid=b.projecttypeid AND a.isactive='1' AND a.projectstatus IN ('PIN','DOI','ADI','TCI','RTI','DRO','DRI')";
 	private static final String PROJECTTYPELIST="select classificationid,classification from pfms_security_classification order by classification";
 	private static final String PROJECTCATEGORYLIST="select projecttypeid,projecttype,projecttypeshort from project_type where isactive='1' ORDER BY projecttype";
 	private static final String PROJECTDELIVERABLELIST="select deliverableid,deliverable from pfms_deliverable order by deliverable ";
@@ -66,7 +67,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
 	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
-	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth,FinancialOutlay from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
 	/*L.A*/private static final String MILESTONENOTOTALMONTHS="SELECT milestoneno,MilestoneTotalMonth,Milestonestartedfrom FROM pfms_initiation_schedule WHERE isactive='1' AND initiationid=:InitiationId AND milestonestartedfrom=:milestonestartedfrom ";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
@@ -2031,6 +2032,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return (List<Object[]>)query.getResultList();
 		}
 		
+		
 		@Override
 		public long InitiationChecklistAdd( PfmsInitiationChecklistData cldata ) throws Exception 
 		{
@@ -2038,7 +2040,19 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			manager.flush();
 			return cldata.getChecklistDataId();
 		}
-		
+		@Override
+		public long sanctionDataAdd(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			
+			manager.persist(psd);
+			manager.flush();
+			Integer x=psd.getIsChecked();
+			if(x==0) {
+			return psd.getStatementId();
+			}
+			return psd.getIsChecked();
+		}
+
 		@Override
 		public PfmsInitiationChecklistData InitiationChecklistCheck( PfmsInitiationChecklistData cldata ) throws Exception
 	 	{
@@ -2054,6 +2068,25 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				return null;
 			}			
 		}
+		@Override
+		public PfmsInitiationSanctionData sanctionDataUpdate(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			try {
+				CriteriaBuilder cb =manager.getCriteriaBuilder();
+				CriteriaQuery <PfmsInitiationSanctionData> cq = cb.createQuery(PfmsInitiationSanctionData.class);
+				Root<PfmsInitiationSanctionData> rootentry = cq.from(PfmsInitiationSanctionData.class);
+				CriteriaQuery<PfmsInitiationSanctionData> all = cq.select(rootentry).where(cb.and(cb.equal(rootentry.get("InitiationId"), psd.getInitiationId() ),cb.equal(rootentry.get("StatementId"), psd.getStatementId() )));
+				TypedQuery<PfmsInitiationSanctionData> query  = manager.createQuery(all);
+				return query.getSingleResult();
+			}
+			catch(NoResultException e) {
+				logger.error(loggerdate +"Inside DAO sanctionDataUpdate "+ e);
+				return null;
+			}
+			
+			
+		}
+	
 		
 		@Override
 		public long InitiationChecklistUpdate( PfmsInitiationChecklistData cldata ) throws Exception
@@ -2061,6 +2094,13 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			manager.merge(cldata);
 			manager.flush();
 			return cldata.getChecklistDataId();
+		}
+		@Override
+		public long sanctionDataUpdated(PfmsInitiationSanctionData pd) throws Exception {
+			// TODO Auto-generated method stub
+			manager.merge(pd);
+			manager.flush();			
+			return pd.getIsChecked();
 		}
 
 		
@@ -2155,6 +2195,39 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		query.executeUpdate();
 		return 1l;
 		}
+		private static final String TDNUPDATE="UPDATE pfms_initiation_statement_data SET TDN=:TDN,ModifiedBy=:ModifiedBy, modifiedDate=:modifiedDate WHERE initiationid=:initiationid and statementid=:statementid";
+		@Override
+		public long projectTDNUpdate(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			
+			Query query=manager.createNativeQuery(TDNUPDATE);
+			query.setParameter("TDN", psd.getTDN());
+			 query.setParameter("ModifiedBy", psd.getModifiedBy()); 
+			query.setParameter("modifiedDate", psd.getModifiedDate());
+			query.setParameter("initiationid", psd.getInitiationId());
+			query.setParameter("statementid", psd.getStatementId());
+			
+			query.executeUpdate();
+			return 1l;
+		}
+		private static final String PGNAJUPDATE="UPDATE pfms_initiation_statement_data SET PGNAJ=:PGNAJ,ModifiedBy=:ModifiedBy, modifiedDate=:modifiedDate WHERE initiationid=:initiationid and statementid=:statementid";
+		@Override
+		public long ProjectPGNAJUpdate(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+	
+			Query query=manager.createNativeQuery(PGNAJUPDATE);
+			query.setParameter("PGNAJ", psd.getPGNAJ());
+			 query.setParameter("ModifiedBy", psd.getModifiedBy()); 
+			query.setParameter("modifiedDate", psd.getModifiedDate());
+			query.setParameter("initiationid", psd.getInitiationId());
+			query.setParameter("statementid", psd.getStatementId());
+			
+			query.executeUpdate();
+			return 1l;
+		}
+
+		
+		
 		private static final String REQTYPECOUNT="SELECT MAX(ReqCount) FROM pfms_initiation_req WHERE initiationid=:intiationId AND isactive='1'";
 		@Override
 		public long numberOfReqTypeId(String intiationId) throws Exception {
@@ -2343,6 +2416,31 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			List<Object[]>requirementFiles=(List<Object[]>)query.getResultList();
 			return requirementFiles;
 		}
+		private static final String SANCDETAILS="SELECT sl.statementId,sl.Statement,(SELECT ischecked FROM pfms_initiation_statement_data sd WHERE sl.statementid=sd.statementid AND sd.initiationid=:initiationid)AS 'ischecked',(SELECT TDN FROM pfms_initiation_statement_data sd WHERE sl.statementid=sd.statementid AND sd.initiationid=:initiationid)AS TDN,(SELECT PGNAJ FROM pfms_initiation_statement_data sd WHERE sl.statementid=sd.statementid AND sd.initiationid=:initiationid ) AS 'PGNAJ'  FROM pfms_initiation_statement_list sl WHERE sl.isactive=1";
+		@Override
+		public List<Object[]> sanctionlistDetails(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query =manager.createNativeQuery(SANCDETAILS);
+			query.setParameter("initiationid",initiationid );
+			List<Object[]>sanctionlistDetails=(List<Object[]>)query.getResultList();
+			return sanctionlistDetails;
+		}
+
+		@Override
+		public long addProjectPGNAJ(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			
+			manager.persist(psd);
+			manager.flush();
+			return psd.getStatementDataId();
+		}
+
+		
+		
+
+	
+	
+
 	
 		
 		

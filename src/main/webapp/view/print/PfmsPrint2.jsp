@@ -1471,6 +1471,7 @@ for(Object[] obj : DetailsList){   %>
 <%} %> --%>
 
   <!-- Thank You Page -->
+  
    <h1 class="break"></h1>
 <table  style="margin-top:10px; margin-bottom: 0px;margin-left: 30px;width:600px; font-size: 18px;border-collapse: collapse;font-family:Gadugi ;" >
 	<tbody>

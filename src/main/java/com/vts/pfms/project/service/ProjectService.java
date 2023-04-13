@@ -24,6 +24,7 @@ import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
+import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -187,4 +188,9 @@ public interface ProjectService {
 	public long filecount(String stepid, String initiationid) throws Exception;
 	public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount) throws Exception;
 	public List<Object[]>requirementFiles(String initiationid, int stepid)throws Exception;
+	public List<Object[]> sanctionlistDetails(String initiationid)throws Exception;
+	public long sanctionDataUpdate(PfmsInitiationSanctionData psd)throws Exception;
+	public long projectTDNUpdate(PfmsInitiationSanctionData psd)throws Exception;
+	public long addProjectPGNAJ(PfmsInitiationSanctionData psd) throws Exception;
+	public long ProjectPGNAJUpdate(PfmsInitiationSanctionData psd)throws Exception;
 }

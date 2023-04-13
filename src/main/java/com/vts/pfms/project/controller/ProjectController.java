@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
@@ -38,9 +39,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
@@ -62,6 +67,7 @@ import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
+import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -193,8 +199,13 @@ public class ProjectController
 			req.setAttribute("projectshortName",projectshortName );
 			req.setAttribute("projectTitle", projectTitle);
 			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
-
-			}else {
+			req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid)) ;
+			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
+			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
+			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
+			}
+			else
+			{
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
 				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
 				String projectTitle=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[5].toString();
@@ -202,8 +213,11 @@ public class ProjectController
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("projectshortName",projectshortName );
 				req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+				req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid));
+				req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
+				req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
+				req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
 			}
-			
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 		}
 		catch(Exception e) {
@@ -223,6 +237,10 @@ public class ProjectController
 		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"PreProjectFileUpload.htm "+UserId);
 		
+		List<Object[]>ProjectIntiationList=service.ProjectIntiationList(EmpId,Logintype,LabCode);
+		
+
+		
 		try {
 			String Project=req.getParameter("project");
 			if(Project!=null) {
@@ -235,16 +253,18 @@ public class ProjectController
 				req.setAttribute("projectshortName",projectshortName );
 				req.setAttribute("projectTitle", projectTitle);
 			}else {
-				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
-				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
+				String projectshortName=ProjectIntiationList.get(0)[4].toString();
+				String initiationid=ProjectIntiationList.get(0)[0].toString();
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("projectshortName",projectshortName );
 		
 			
 			}
+			
+		
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("stepsName",service.inititionSteps());
-			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+			req.setAttribute("ProjectIntiationList", ProjectIntiationList);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -804,10 +824,8 @@ public class ProjectController
 		 Double version=0.0;
 		 if(versionvalue.equals("")) {
 		 version=1.0;
-		  System.out.println(version+"***********");
 		 }else {
 			 version=Double.parseDouble(versionvalue);
-			  System.out.println(version+"***********");
 		 }
 		 
 		 long documentCount=service.filecount(req.getParameter("stepid"),req.getParameter("IntiationId"));
@@ -4493,7 +4511,191 @@ public class ProjectController
 		}		
 		Gson json = new Gson();
 		return json.toJson(checklistitemid);
+	}
+	@RequestMapping(value="ProjectTdnUpdate.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProjectTdnUpdate(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		long StatementDataId = 0;
+		logger.info(new Date() +"Inside ProjectTdnUpdate.htm"+UserId);
+		
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String StatementId=req.getParameter("StatementId");
+			String TDN=req.getParameter("TDN");
+			
+			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
+			psd.setInitiationId(Long.parseLong(initiationid));
+			psd.setStatementId(Long.parseLong(StatementId));
+			psd.setTDN(TDN);
+			psd.setModifiedBy(UserId);
+			
+			StatementDataId=service.projectTDNUpdate(psd);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectTdnUpdate.htm "+UserId, e);	
 
+		}
+		Gson json = new Gson();
+		return json.toJson(StatementDataId);
+	}
+	
+	@RequestMapping(value="ProjectPGNAJUpdate.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProjectPGNAJUpdate(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		long StatementDataId = 0;
+		logger.info(new Date() +"Inside ProjectPGNAJUpdate.htm"+UserId);
+		
+		
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String StatementId=req.getParameter("StatementId");
+			String PGNAJ=req.getParameter("PGNAJ");
+			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
+			psd.setInitiationId(Long.parseLong(initiationid));
+			psd.setStatementId(Long.parseLong(StatementId));
+			psd.setModifiedBy(UserId);
+			psd.setPGNAJ(PGNAJ);
+			psd.setModifiedDate(sdf1.format(new Date()));
+			
+			StatementDataId=service.ProjectPGNAJUpdate(psd);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectPGNAJUpdate.htm"+UserId, e);	
+		}
+		Gson json = new Gson();
+		return json.toJson(StatementDataId);
+	}
+	@RequestMapping(value="SanctionDataUpdate.htm",method = RequestMethod.GET)
+	public @ResponseBody String SanctionDataUpdate(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		long StatementDataId = 0;
+		logger.info(new Date() +"Inside SanctionDataUpdate.htm "+UserId);
+			
+		String TDN=req.getParameter("TDN");
+		if(TDN==null) {
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String StatementId=req.getParameter("StatementId");
+			
+			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
+			psd.setInitiationId(Long.parseLong(initiationid));
+			psd.setStatementId(Long.parseLong(StatementId));
+			psd.setCreatedBy(UserId);
+			StatementDataId=service.sanctionDataUpdate(psd);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside SanctionDataUpdate.htm "+UserId, e);	
+		}
+		}
+		else {
+			try {
+			String initiationid=req.getParameter("initiationid");
+			String StatementId=req.getParameter("StatementId");
+			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
+			psd.setInitiationId(Long.parseLong(initiationid));
+			psd.setStatementId(Long.parseLong(StatementId));
+			psd.setCreatedBy(UserId);
+			psd.setTDN(TDN);
+			StatementDataId=service.sanctionDataUpdate(psd);
+			}catch(Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside SanctionDataUpdate.htm "+UserId, e);	
+			}
+		}
+		
+		Gson json = new Gson();
+		return json.toJson(StatementDataId);
+	}
+	
+	@RequestMapping(value="SanctionUpdatePGNAJ.htm",method = RequestMethod.GET)
+	public @ResponseBody String SanctionUpdatePGNAJ(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		long StatementDataId = 0;
+		logger.info(new Date() +"Inside SanctionUpdatePGNAJ.htm "+UserId);
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String StatementId=req.getParameter("StatementId");
+			String PGNAJ=req.getParameter("PGNAJ");
+			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
+			psd.setInitiationId(Long.parseLong(initiationid));
+			psd.setStatementId(Long.parseLong(StatementId));
+			psd.setCreatedBy(UserId);
+			psd.setCreatedDate(sdf1.format(new Date()));
+			psd.setPGNAJ(PGNAJ);
+			
+			StatementDataId=service.addProjectPGNAJ(psd);
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside SanctionUpdatePGNAJ.htm"+UserId, e);	
+		}
+		
+		Gson json = new Gson();
+		return json.toJson(StatementDataId);
+	}
+	
+	//Sanction statement;
+	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
+	public void ProjectSanctionDetailsDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectSanctionDetailsDownload.htm "+UserId);
+		try {
+			String initiationid=req.getParameter("IntiationId");
+			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+			req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid)) ;
+			req.setAttribute("LabCode", LabCode);
+			req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
+			String filename="ProjectSanctionDetails";
+			String path=req.getServletContext().getRealPath("/view/temp");
+		  	req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/SanctionDetailsDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
+	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	converterProperties.setFontProvider(dfp);
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+"/"+filename+".pdf");
+	      
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+			
+		}catch(Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside ProjectSanctionDetailsDownload.htm "+UserId,e);
+		}
+		
+		
 	}
 	
 	@RequestMapping(value = "IntiationChecklistDownload.htm", method = {RequestMethod.POST} )
@@ -4587,6 +4789,24 @@ public class ProjectController
 		  return json.toJson(service.Requirement(Long.parseLong(req.getParameter("inititationReqId"))));
 	}
 	
+	@RequestMapping(value="ProjectInitiationDetailsJsonValue.htm",method=RequestMethod.GET)
+    public @ResponseBody String ProjectInitiationDetailsJson(HttpSession ses, HttpServletRequest req) throws Exception {
+		 Gson json = new Gson();
+	   	 String UserId=(String)ses.getAttribute("Username");
+	   	logger.info(new Date() +"Inside ProjectInitiationDetailsJsonValue.htm"+UserId);
+		
+	   	List<Object[]>DetailsList=new ArrayList<>();
+	   	try {
+	   		String initiationid=req.getParameter("initiationid");
+	   		DetailsList=service.ProjectIntiationDetailsList(initiationid);
+	   	}
+	   	catch(Exception e){
+	   		e.printStackTrace();
+	   		logger.error(new Date() +"Inside ProjectInitiationDetailsJsonValue.htm"+UserId ,e);
+	   	}
+		return json.toJson(DetailsList);
+	}
+	
 	
 	@RequestMapping(value="RequirementTypeJson.htm",method=RequestMethod.GET)
     public @ResponseBody String RequirementTypeJson(HttpSession ses, HttpServletRequest req) throws Exception {
@@ -4654,13 +4874,9 @@ public class ProjectController
 	
 		try {
 			String initiationid=req.getParameter("initiationid");
-			String stepid=req.getParameter("stepid");
-			
-			
+			String stepid=req.getParameter("stepid");			
 			ProjectFiles=service.getProjectFilese(initiationid,stepid);
-			
-			System.out.println(initiationid+"----"+stepid);
-			
+
 		}
 		catch(Exception e) {
 			logger.error(new Date()+"Inside PreprojectFiles.htm"+UserId);
@@ -4761,6 +4977,7 @@ public class ProjectController
 			logger.error(new Date() +"Inside ProjectRequirementAttachmentDownload.htm "+UserId,e);
 		}
 	}
+	
 	
 	
 	

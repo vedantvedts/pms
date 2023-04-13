@@ -18,6 +18,7 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
+import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
@@ -208,6 +209,14 @@ public interface ProjectDao {
 	public long filecount(String stepid, String initiationid)throws Exception;
 	public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount)throws Exception;
 	public List<Object[]> requirementFiles(String initiationid, int stepid)throws Exception;
+	public List<Object[]> sanctionlistDetails(String initiationid)throws Exception;
+	public PfmsInitiationSanctionData sanctionDataUpdate(PfmsInitiationSanctionData psd) throws Exception;
+	public long sanctionDataUpdated(PfmsInitiationSanctionData pd)throws Exception;
+	public long sanctionDataAdd(PfmsInitiationSanctionData psd)throws Exception;
+	public long projectTDNUpdate(PfmsInitiationSanctionData psd)throws Exception;
+	public long addProjectPGNAJ(PfmsInitiationSanctionData psd) throws Exception;
+	public long ProjectPGNAJUpdate(PfmsInitiationSanctionData psd)throws Exception;
+	
 
 	
 }
