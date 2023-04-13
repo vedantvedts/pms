@@ -108,7 +108,7 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 	margin-left: 2%;
 	margin-top: 1%;
 	box-shadow: 8px 8px 5px lightgrey;
-     max-width: 85%;
+	max-width: 85%;
 }
 
 hr {
@@ -166,12 +166,14 @@ hr {
 	font-size: 15px;
 	font-weight: 500;
 }
-#attachadd,#viewattach{
-	margin-left:1%;
+
+#attachadd, #viewattach {
+	margin-left: 1%;
 	box-shadow: 2px 2px 2px black;
 	font-size: 15px;
 	font-weight: 500;
 }
+
 #reqName {
 	font-size: 20px;
 	background: #f5f5dc;
@@ -238,7 +240,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 		</div>
 	</div>
 	<%} %>
-	
+
 	<div id="reqmain" class="card-slider">
 		<form class="form-inline" method="POST"
 			action="ProjectRequirement.htm">
@@ -258,7 +260,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 						<%}} %>
 					</select>
 				</div>
-				
+
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <input id="submit" type="submit"
 					name="submit" value="Submit" hidden="hidden">
@@ -281,7 +283,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 									name="projectshortName" value="<%=projectshortName %>" /> <input
 									type="hidden" name="IntiationId" value="<%=initiationid %>" />
 								<button class="btn btn-success btn-sm" style="margin-top: -5%;"
-									type="button" onclick='showdata()'>ADD REQUIREMENETS</button>
+									type="button" onclick='showdata()' data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="ADD REQUIREMENTS">ADD REQUIREMENETS</button>
 							</div>
 						</div>
 					</div>
@@ -295,8 +297,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 
 			<%int count=1;
 for(Object []obj:RequirementList) {%>
-			<button type="button"
-				class="btn btn-secondary viewbtn"
+			<button type="button" class="btn btn-secondary viewbtn"
 				id="<%=obj[0] %>" value="<%=obj[0]%>"><%=obj[1] %></button>
 			<%count++;} %>
 		</div>
@@ -375,7 +376,9 @@ for(Object []obj:RequirementList) {%>
 											</h5>
 										</div>
 
-										<div class="col-md-10"  style="margin-top:1%;"><p id="remarksshow" style="font-size: 18px;"></p></div>
+										<div class="col-md-10" style="margin-top: 1%;">
+											<p id="remarksshow" style="font-size: 18px;"></p>
+										</div>
 										<div class="row">
 											<input type="hidden" name="IntiationId"
 												value="<%=initiationid %>" /> <input type="hidden"
@@ -385,7 +388,7 @@ for(Object []obj:RequirementList) {%>
 										</div>
 									</div>
 								</div>
-							</form> 
+							</form>
 						</div>
 
 					</div>
@@ -443,8 +446,7 @@ for(Object []obj:RequirementList) {%>
 		</div>
 		<!--*********************** modal for add **************************-->
 		<form class="form-horizontal" role="form"
-			action="ProjectRequirementAddSubmit.htm" method="POST" id="myform1"
-			>
+			action="ProjectRequirementAddSubmit.htm" method="POST" id="myform1">
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
@@ -457,220 +459,220 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-							<div style="height:550px;overflow: auto;">
-						<div class="modal-body">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-4">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
-											of Requirements<span class="mandatory" style="color: red;">*</span>
-										</label>
-									</div>
-									<div class=col-md-3>
-										<select required="required" id="select" name="reqtype"
-											class="form-control selectpicker" data-width="80%"
-											data-live-search="true" style="margin-top: 5%">
-											<option disabled="disabled" value="" selected="selected">Choose..</option>
-											<%if(!RequirementTypeList.isEmpty()){
-							for(Object[] obj:RequirementTypeList){ %>
-											<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
-											<%}}%>
-										</select>
-									</div>
-									<div class=col-md-2>
-										<label
-											style="font-size: 17px; margin-top: 7%; margin-left: 0.1rem; color: #07689f">Priority<span
-											class="mandatory" style="color: red;">*</span></label>
-									</div>
-									<div class=col-md-3>
-										<select required="required" id="select" name="priority"
-											class="form-control selectpicker" data-width="80%"
-											data-live-search="true" style="margin-top: 5%">
-											<option disabled="disabled" value="" selected="selected">Choose..</option>
-											<option value="L">Low</option>
-											<option value="M">Medium</option>
-											<option value="H">High</option>
-										</select>
-									</div>
-								</div>
-
+						<div style="height: 550px; overflow: auto;">
+							<div class="modal-body">
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-4">
 											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Need
-												Type<span class="mandatory" style="color: red;">*</span>
+												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
+												of Requirements<span class="mandatory" style="color: red;">*</span>
 											</label>
 										</div>
-										<div class="col-md-3">
-											<select required="required" id="needtype" name="needtype"
+										<div class=col-md-3>
+											<select required="required" id="select" name="reqtype"
 												class="form-control selectpicker" data-width="80%"
 												data-live-search="true" style="margin-top: 5%">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="E">Essential</option>
-												<option value="D">Desirable</option>
+												<%if(!RequirementTypeList.isEmpty()){
+							for(Object[] obj:RequirementTypeList){ %>
+												<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
+												<%}}%>
+											</select>
+										</div>
+										<div class=col-md-2>
+											<label
+												style="font-size: 17px; margin-top: 7%; margin-left: 0.1rem; color: #07689f">Priority<span
+												class="mandatory" style="color: red;">*</span></label>
+										</div>
+										<div class=col-md-3>
+											<select required="required" id="select" name="priority"
+												class="form-control selectpicker" data-width="80%"
+												data-live-search="true" style="margin-top: 5%">
+												<option disabled="disabled" value="" selected="selected">Choose..</option>
+												<option value="L">Low</option>
+												<option value="M">Medium</option>
+												<option value="H">High</option>
 											</select>
 										</div>
 									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-												Requirements</label>
-										</div>
-										<div class="col-md-6" style="margin-top: 1%;">
-											<div class="form-group">
 
-												<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){%>
-												<select class="form-control selectdee"
-													name="linkedRequirements" id="linkedRequirements"
-													data-width="80%" data-live-search="true"
-													data-placeholder="Choose" multiple>
-
-													<%for(Object[] obj:RequirementList){ %>
-													<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]%></option>
-													<%}%>
-												</select>
-												<%}else{%>
-												<select name="linkedRequirements" id="linkedRequirements"
-													data-width="80%" class="form-control" dsiabled>
-													<option selected disabled>Choose...</option>
-												</select>
-												<%} %>
-											</div>
-
-
-										</div>
-									</div>
-								</div>
-
-								<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Requirement
-												Brief<span class="mandatory" style="color: red;">*</span>
-											</label>
-										</div>
-										<div class="col-md-8" style="margin-top: 10px">
-											<div class="form-group">
-												<input type="text" name="reqbrief" class="form-control"
-													id="reqbrief" maxlength="255" required="required"
-													placeholder="Maximum 250 Chararcters"
-													style="line-height: 3rem !important">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-6">
-											<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
-												Description:<span class="mandatory" style="color: red;">*</span>
-											</label>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-12" id="textarea" style="">
-											<div class="form-group">
-												<textarea required="required" name="description"
-													class="form-control" id="descriptionadd" maxlength="4000"
-													rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
-											</div>
-										</div>
-									</div>
-								</div>
-										<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-												<span class="mandatory" style="color: red;">*</span>
-											</label>
-										</div>
-										<div class="col-md-8" style="margin-top: 10px">
-											<div class="form-group">
-												<input type="text" name="remarks" class="form-control"
-													id="remarks" maxlength="255" required="required"
-													placeholder="Maximum 250 Chararcters"
-													>
-											</div>
-										</div>
-									</div>
-								</div>
 									<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-												Documents</label>
-										</div>
-										<div class="col-md-7" style="margin-top: 1%;">
-											<div class="form-group">
-
-										
-												<select class="form-control selectdee"
-													name="linkedAttachements" id="linkedAttachements"
-													data-width="80%" data-live-search="true"
-													data-placeholder="Choose" multiple>
-
-													<%for(Object[] obj:RequirementFiles){ %>
-													<option value="<%=obj[0]%>"><%=obj[3]%></option>
-													<%}%>
-												</select>
-	
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
+													Type<span class="mandatory" style="color: red;">*</span>
+												</label>
 											</div>
-
-
+											<div class="col-md-3">
+												<select required="required" id="needtype" name="needtype"
+													class="form-control selectpicker" data-width="80%"
+													data-live-search="true" style="margin-top: 5%">
+													<option disabled="disabled" value="" selected="selected">Choose..</option>
+													<option value="E">Essential</option>
+													<option value="D">Desirable</option>
+												</select>
+											</div>
 										</div>
 									</div>
-								</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Requirements</label>
+											</div>
+											<div class="col-md-6" style="margin-top: 1%;">
+												<div class="form-group">
+
+													<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){%>
+													<select class="form-control selectdee"
+														name="linkedRequirements" id="linkedRequirements"
+														data-width="80%" data-live-search="true"
+														data-placeholder="Choose" multiple>
+
+														<%for(Object[] obj:RequirementList){ %>
+														<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]%></option>
+														<%}%>
+													</select>
+													<%}else{%>
+													<select name="linkedRequirements" id="linkedRequirements"
+														data-width="80%" class="form-control" dsiabled>
+														<option selected disabled>Choose...</option>
+													</select>
+													<%} %>
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Requirement
+													Brief<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group">
+													<input type="text" name="reqbrief" class="form-control"
+														id="reqbrief" maxlength="255" required="required"
+														placeholder="Maximum 250 Chararcters"
+														style="line-height: 3rem !important">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-6">
+												<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
+													Description:<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-12" id="textarea" style="">
+												<div class="form-group">
+													<textarea required="required" name="description"
+														class="form-control" id="descriptionadd" maxlength="4000"
+														rows="5" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
+													<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group">
+													<input type="text" name="remarks" class="form-control"
+														id="remarks" maxlength="255" required="required"
+														placeholder="Maximum 250 Chararcters">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Documents</label>
+											</div>
+											<div class="col-md-7" style="margin-top: 1%;">
+												<div class="form-group">
+
+
+													<select class="form-control selectdee"
+														name="linkedAttachements" id="linkedAttachements"
+														data-width="80%" data-live-search="true"
+														data-placeholder="Choose" multiple>
+
+														<%for(Object[] obj:RequirementFiles){ %>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<%}%>
+													</select>
+
+												</div>
+
+
+											</div>
+										</div>
+									</div>
 
 
 
 
 
-								<input type="hidden" name="IntiationId"
-									value="<%=initiationid %>" /> <input type="hidden"
-									name="projectshortName" value="<%=projectshortName %>" />
-								<div class="form-group" align="center" style="margin-top: 3%;">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
-									<button type="submit" class="btn btn-primary btn-sm submit"
-										id="add" name="action" value="SUBMIT"
-										onclick="return reqCheck('myform1');">SUBMIT</button>
+									<input type="hidden" name="IntiationId"
+										value="<%=initiationid %>" /> <input type="hidden"
+										name="projectshortName" value="<%=projectshortName %>" />
+									<div class="form-group" align="center" style="margin-top: 3%;">
+										<input type="hidden" name="${_csrf.parameterName}"
+											value="${_csrf.token}" />
+										<button type="submit" class="btn btn-primary btn-sm submit"
+											id="add" name="action" value="SUBMIT"
+											onclick="return reqCheck('myform1');">SUBMIT</button>
 
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 					</div>
 
 				</div>
 			</div>
 		</form>
-		
+
 		<!-- modal for attacments  -->
 
 		<!-- attachment modal end  -->
 		<!--*************************************************************** modal for edit************************************* -->
-		<form class="form-horizontal" role="form" action="ProjectRequirementEditSubmit.htm" method="POST" id="myform2">
+		<form class="form-horizontal" role="form"
+			action="ProjectRequirementEditSubmit.htm" method="POST" id="myform2">
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLongedit"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
-			
+
 					<div class="modal-content addreq" style="width: 120%;">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">Requirement</h5>
 							<div class=col-md-3 id="headerid">
 								<div class="row">
-								<h6 style="font-size: 12px;" >ID-</h6>
+									<h6 style="font-size: 12px;">ID-</h6>
 									<h6 style="font-size: 12px;" id="reqID" class="reqID1"></h6>
 								</div>
 							</div>
@@ -682,222 +684,223 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div style="height:550px;overflow: auto;">
-						<div class="modal-body">
-							<div class="col-md-12">
-								<div class="row">
-									<div class="col-md-4">
-										<label
-											style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
-											of Requirements<span class="mandatory" style="color: red;">*</span>
-										</label>
-									</div>
-									<div class=col-md-3>
-										<select required="required" id="editreqtype"
-											name="editreqtype" class="form-control selectpicker"
-											data-width="80%" data-live-search="true"
-											style="margin-top: 5%" onchange="editReqTypeChange()">
-											<option disabled="disabled" value="" selected="selected">Choose..</option>
-											<%if(!RequirementTypeList.isEmpty()){
-							for(Object[] obj:RequirementTypeList){ %>
-											<option value="<%=obj[0]%>"><%=obj[3]+"-"+obj[2]%></option>
-											<%}} %>
-										</select>
-									</div>
-									<div class=col-md-2>
-										<label
-											style="font-size: 17px; margin-top: 7%; margin-left: 0.1rem; color: #07689f">Priority<span
-											class="mandatory" style="color: red;">*</span></label>
-									</div>
-									<div class=col-md-3>
-										<select required="required" id="editselect"
-											name="priorityedit" class="form-control selectpicker"
-											data-width="80%" data-live-search="true"
-											style="margin-top: 5%">
-											<option value="L">Low</option>
-											<option value="M">Medium</option>
-											<option value="H">High</option>
-										</select>
-									</div>
-								</div>
+						<div style="height: 550px; overflow: auto;">
+							<div class="modal-body">
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-4">
 											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Need
-												Type<span class="mandatory" style="color: red;">*</span>
+												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
+												of Requirements<span class="mandatory" style="color: red;">*</span>
 											</label>
 										</div>
-										<div class="col-md-3">
-											<select required="required" id="editneedtype" name="needtype"
-												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
+										<div class=col-md-3>
+											<select required="required" id="editreqtype"
+												name="editreqtype" class="form-control selectpicker"
+												data-width="80%" data-live-search="true"
+												style="margin-top: 5%" onchange="editReqTypeChange()">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
-												<option value="E">Essential</option>
-												<option value="D">Desirable</option>
+												<%if(!RequirementTypeList.isEmpty()){
+							for(Object[] obj:RequirementTypeList){ %>
+												<option value="<%=obj[0]%>"><%=obj[3]+"-"+obj[2]%></option>
+												<%}} %>
+											</select>
+										</div>
+										<div class=col-md-2>
+											<label
+												style="font-size: 17px; margin-top: 7%; margin-left: 0.1rem; color: #07689f">Priority<span
+												class="mandatory" style="color: red;">*</span></label>
+										</div>
+										<div class=col-md-3>
+											<select required="required" id="editselect"
+												name="priorityedit" class="form-control selectpicker"
+												data-width="80%" data-live-search="true"
+												style="margin-top: 5%">
+												<option value="L">Low</option>
+												<option value="M">Medium</option>
+												<option value="H">High</option>
 											</select>
 										</div>
 									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-												Requirements</label>
-										</div>
-										<div class="col-md-6" style="margin-top: 1%;">
-											<div class="form-group">
-												<select class="form-control selectdee"
-													name="linkedRequirementsedit" id="linkedRequirementsedit"
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
+													Type<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-3">
+												<select required="required" id="editneedtype"
+													name="needtype" class="form-control selectpicker"
 													data-width="80%" data-live-search="true"
-													data-placeholder="Choose" multiple>
-
-													<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){%>
-													<%for(Object[] obj:RequirementList){ %>
-													<option value="<%=obj[0]%>"><%=obj[1]%></option>
-													<%}}%>
-
+													style="margin-top: 5%">
+													<option disabled="disabled" value="" selected="selected">Choose..</option>
+													<option value="E">Essential</option>
+													<option value="D">Desirable</option>
 												</select>
 											</div>
+										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Requirements</label>
+											</div>
+											<div class="col-md-6" style="margin-top: 1%;">
+												<div class="form-group">
+													<select class="form-control selectdee"
+														name="linkedRequirementsedit" id="linkedRequirementsedit"
+														data-width="80%" data-live-search="true"
+														data-placeholder="Choose" multiple>
 
-										</div>
-									</div>
-								</div>
+														<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){%>
+														<%for(Object[] obj:RequirementList){ %>
+														<option value="<%=obj[0]%>"><%=obj[1]%></option>
+														<%}}%>
 
-								<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Requirement
-												Brief<span class="mandatory" style="color: red;">*</span>
-											</label>
-										</div>
-										<div class="col-md-8" style="margin-top: 10px">
-											<div class="form-group" id="editrqbrief"></div>
+													</select>
+												</div>
+
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-6">
-											<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
-												Description:<span class="mandatory" style="color: red;">*</span>
-											</label>
+
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Requirement
+													Brief<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group" id="editrqbrief"></div>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-12" id="textarea" style="">
-											<div class="form-group" id="editdescription"></div>
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-6">
+												<label style="margin: 0px; font-size: 17px; color: #07689f">Requirement
+													Description:<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
 										</div>
+									</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-12" id="textarea" style="">
+												<div class="form-group" id="editdescription"></div>
+											</div>
 											<div class=col-md-12>
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
-												<span class="mandatory" style="color: red;">*</span>
-											</label>
-										</div>
-										<div class="col-md-8" style="margin-top: 10px">
-											<div class="form-group" id="remarksedit" >
-										
+												<div class="row">
+													<div class="col-md-4">
+														<label
+															style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
+															<span class="mandatory" style="color: red;">*</span>
+														</label>
+													</div>
+													<div class="col-md-8" style="margin-top: 10px">
+														<div class="form-group" id="remarksedit"></div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-									</div>
-								</div>
-								
-																	<div class="col-md-12">
-									<div class="row">
-										<div class="col-md-4">
-											<label
-												style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
-												Documents</label>
-										</div>
-										<div class="col-md-7" style="margin-top: 1%;">
-											<div class="form-group">
 
-										
-												<select class="form-control selectdee"
-													name="linkedAttachements" id="linkedAttachementsedit"
-													data-width="80%" data-live-search="true"
-													data-placeholder="Choose" multiple>
-
-													<%for(Object[] obj:RequirementFiles){ %>
-													<option value="<%=obj[0]%>"><%=obj[3]%></option>
-													<%}%>
-												</select>
-	
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Documents</label>
 											</div>
+											<div class="col-md-7" style="margin-top: 1%;">
+												<div class="form-group">
 
 
+													<select class="form-control selectdee"
+														name="linkedAttachements" id="linkedAttachementsedit"
+														data-width="80%" data-live-search="true"
+														data-placeholder="Choose" multiple>
+
+														<%for(Object[] obj:RequirementFiles){ %>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<%}%>
+													</select>
+
+												</div>
+
+
+											</div>
 										</div>
 									</div>
-								</div>
-								
-								<input type="hidden" name="IntiationId"
-									value="<%=initiationid %>" /> <input type="hidden"
-									name="projectshortName" value="<%=projectshortName %>" />
-								<div id="editvalues"></div>
-								<div class="form-group" align="center">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
-									<button type="submit" class="btn btn-primary btn-sm submit"
-										id="add" name="action" value="SUBMIT"
-										onclick="return editCheck('myform2');">SUBMIT</button>
 
+									<input type="hidden" name="IntiationId"
+										value="<%=initiationid %>" /> <input type="hidden"
+										name="projectshortName" value="<%=projectshortName %>" />
+									<div id="editvalues"></div>
+									<div class="form-group" align="center">
+										<input type="hidden" name="${_csrf.parameterName}"
+											value="${_csrf.token}" />
+										<button type="submit" class="btn btn-primary btn-sm submit"
+											id="add" name="action" value="SUBMIT"
+											onclick="return editCheck('myform2');">SUBMIT</button>
+
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 					</div>
 
 				</div>
 			</div>
 		</form>
 
-<!--modal for view attachments-->
+		<!--modal for view attachments-->
 
-	<div class="modal fade bd-example-modal-lg" id="exampleModalLongAttachment"
-				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 100%;margin-left:0%;margin-top:16%">
-						<div class="modal-header" id="modalreqheader">
-							<h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close" style="color: white">
-								<span aria-hidden="true">&times;</span>
-							</button>
+		<div class="modal fade bd-example-modal-lg"
+			id="exampleModalLongAttachment" tabindex="-1" role="dialog"
+			aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq"
+					style="width: 100%; margin-left: 0%; margin-top: 16%">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body" style="background: aliceblue;">
+						<div class="row">
+							<div class="col-md-12">
+								<form action="#">
+									<table class="table table-bordered " style="width: 100%;"
+										id="MyTable1">
+										<thead>
+											<tr>
+												<th style="width: 4.8889px; text-align: center;">SN</th>
+												<th style="text-align: center;">Name</th>
+												<th style="text-align: center;">UpdateOn</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody id="listtbody">
+
+										</tbody>
+									</table>
+								</form>
+							</div>
 						</div>
-						
-						<div class="modal-body"  style="background: aliceblue;">
-					<div class="row">
-						<div class="col-md-12">
-						<form action="#">
-							<table class="table table-bordered " style="width: 100%;" id="MyTable1">
-											<thead>
-												<tr>
-													<th style="width: 4.8889px; text-align: center;">SN</th>
-													<th style=" text-align: center;">Name</th>
-													<th style=" text-align: center;">UpdateOn</th>
-													<th>Action</th>
-												</tr>
-											</thead>
-											<tbody id="listtbody">
-											
-											</tbody>
-										</table>
-										</form>
-										</div>
-										</div> 
-						</div>
-						</div>
-						</div>
-						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
 
@@ -1160,10 +1163,7 @@ $('#'+<%=initiationReqId%>).click(function(){
 			}
 			}
 		
-	
-		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right"  name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
-		
-	
+		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
 	    if(ajaxresult[6].length>0){
 		if(!ajaxresult[6].includes(",")){
 			var myArray=ajaxresult[6].split(ajaxresult[6].length);
@@ -1395,7 +1395,9 @@ $(function () {
 		}
 	}
 
-	
+		$(function () {
+			  $('[data-toggle="tooltip"]').tooltip()
+			})
 	
 </script>
 </body>

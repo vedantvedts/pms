@@ -268,7 +268,6 @@ function updateAnswer(ChecklistId)
 				alert('Operation Failed');			
 			}			
 		}
-		
 	})
 }
 

@@ -80,7 +80,7 @@ p{
 @page {             
           size: 790px 1120px;
           margin-top: 49px;
-          margin-left: 72px;
+          margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
           border: 1px solid black;    
@@ -1224,7 +1224,7 @@ for(Object[] temp : invitedlist){
 							<th colspan="8" style="text-align: left; font-weight: 700; text-align: justify;padding-left: 15px;" ><br><%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 						</tr>
 					</table>	
-					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+					<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 5px; width: 700px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 							 <thead>
 									<tr>
 										<td colspan="9" style="border: 0px">
@@ -1243,19 +1243,19 @@ for(Object[] temp : invitedlist){
 										</td>									
 									</tr>
 							
-								<tr>
-									<th class="std"  style="width: 30px !important;">SN</th>
-									<th class="std"  style="width: 30px; ">MS</th>
-									<th class="std"  style="width: 40px; ">L</th>
-									<th class="std"  style="max-width: 220px;">Action Plan </th>	
-									<th class="std"  style="max-width: 80px;">Responsibility </th>
-									<th class="std"  style="max-width: 85px;">PDC</th>	
-									<th class="std"  style="max-width: 60px;">Progress </th>
+								<tr style="font-size:14px; ">
+									<th class="std"  style="width: 20px !important;">SN</th>
+									<th class="std"  style="width: 20px; ">MS</th>
+									<th class="std"  style="width: 20px; ">L</th>
+									<th class="std"  style="width: 250px;">Action Plan </th>	
+									<th class="std"  style="max-width: 90px;">Responsibility </th>
+									<th class="std"  style="max-width: 100px;">PDC</th>	
+									<th class="std"  style="max-width:55px;">Progress </th>
 					                <th class="std"  style="max-width: 50px;">Status</th>
 					                 <th class="std"  style="max-width: 80px;">Remarks</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody style="font-size: 14px;">
 								<%if(ActionPlanSixMonths.size()>0){ 
 									long count1=1;
 									int countA=1;

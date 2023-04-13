@@ -35,8 +35,8 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
 	@Autowired
     private LoginRepository loginRepository;
 
-	@Autowired	
-	private MasterServiceProxy loginclient;
+//	@Autowired	
+//	private MasterServiceProxy loginclient;
 	
     @Override
     @Transactional(readOnly = false)

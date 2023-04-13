@@ -267,7 +267,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 					<th rowspan="3"  class="border_black normal center" style="vertical-align:top;"><span >2.</span></th>
 					<td class="border_black normal left" >
 						<span class="bold" >Name of the Main project</span>
-						<span > <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]%><%} else{ %> <i> - NA </i> <%} %></span>
+						<span > <%if(obj[12].toString().equalsIgnoreCase("N")){ %> - <%=obj[13]%><%} else{ %> <i>- <%=obj[5]  %></i> <%} %></span>
 					</td>
 				</tr> 
 				

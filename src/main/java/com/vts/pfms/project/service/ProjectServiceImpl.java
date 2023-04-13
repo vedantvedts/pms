@@ -53,6 +53,7 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
+import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProjectData;
@@ -2120,6 +2121,35 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 
 	}
+	@Override
+	public long sanctionDataUpdate(PfmsInitiationSanctionData psd) throws Exception {
+		// TODO Auto-generated method stub
+		
+		String TDN=psd.getTDN();
+		if(TDN==null) {
+		PfmsInitiationSanctionData pd=dao.sanctionDataUpdate(psd);
+		
+		if(pd!=null && pd.getStatementDataId()>0) {
+			pd.setIsChecked(pd.getIsChecked()^1);
+			pd.setModifiedBy(psd.getCreatedBy());
+			pd.setModifiedDate(psd.getCreatedDate());
+			return dao.sanctionDataUpdated(pd);
+		}else {
+			psd.setIsChecked(1);
+			psd.setCreatedDate(sdf1.format(new Date()));
+			
+			return dao.sanctionDataAdd(psd);
+		}
+		}
+		else {
+			
+			psd.setCreatedDate(sdf1.format(new Date()));
+			
+			return dao.sanctionDataAdd(psd);
+		}
+		
+	
+	}
 
 		@Override
 		public List<Object[]> RiskTypeList() throws Exception 
@@ -2201,7 +2231,13 @@ public class ProjectServiceImpl implements ProjectService {
 			return dao.RequirementUpdate(pir,initiationReqId);
 		
 		}
-
+		@Override
+		public long projectTDNUpdate(PfmsInitiationSanctionData psd) throws Exception {
+			psd.setModifiedDate(sdf1.format(new Date()));
+			return dao.projectTDNUpdate(psd);
+		}
+		
+		
 		@Override
 		public long numberOfReqTypeId(String intiationId) throws Exception {
 			// TODO Auto-generated method stub
@@ -2293,6 +2329,28 @@ public class ProjectServiceImpl implements ProjectService {
 			// TODO Auto-generated method stub
 			return dao.requirementFiles(initiationid,stepid);
 		}
+
+		@Override
+		public List<Object[]> sanctionlistDetails(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.sanctionlistDetails(initiationid);
+		}
+
+		@Override
+		public long addProjectPGNAJ(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.addProjectPGNAJ(psd);
+		}
+
+		@Override
+		public long ProjectPGNAJUpdate(PfmsInitiationSanctionData psd) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProjectPGNAJUpdate(psd);
+		}
+
+
+
+	
 
 		
 		
