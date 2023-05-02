@@ -593,26 +593,25 @@ if(ses!=null){ %>
 <%} %>
 
 
-
+<!-- @@@@@@@@ CONTAINER FLUID START @@@@@@@ -->
 <div class="container-fluid" >
 
 
-<!-------------------- Main Row------------------------------------ ------------>
-		<div class="row" style="margin-bottom: -20px;">
+<!-- @@@@@@@@ MAIN ROW START @@@@@@@ -->	
+	<div class="row" style="margin-bottom: -20px;">
 	
-<!-------------------- Main row col-md-9------------------------------------ -->			
-			<div class="col-md-9" >
+<!-- @@@@@@@@ MAIN ROW col-md-9 START @@@@@@@ -->			
+		<div class="col-md-9" >
 			
 			
-<!-------------------- Nested row ------------------------------------------ -->				
+<!-- @@@@@@@@ NESTED ROW START @@@@@@@ -->				
 				<div class="row">
 			      
 			     
-<!-------------------- Nested row Schedule Start ------------------------------------------ -->	
+<!-- @@@@@@@@@@ NESTED ROW SCHEDULE START @@@@@@@@@@  -->
+              <div class="col-4 col-md-3" >
 
-			      <div class="col-4 col-md-3" >
-
-
+         <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY START --------------- -->
 			      	 <%if(ProjectList!=null){ %>
 						
 						 <div class="row" style="display: none" id="projectname" >
@@ -652,9 +651,9 @@ if(ses!=null){ %>
 					</div> 
 	
 				 <%} %> 
+			 <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY END --------------- -->      
 			      
-			      
-			      	<!------------------- Action Dashboard Today's Schedule Start -------------------------- -->
+			 <!-- ----------------- ACTION DASHBOARD TODAY'S SCHEDULE START -------------------------- -->
 			      
 			      
 				      <div class="card" style="background: transparent;display: none" id="todayschedules">
@@ -733,10 +732,10 @@ if(ses!=null){ %>
 					
 					</div> 
 					
-					<!------------------- Action Dashboard Today's Schedule End -------------------------- -->
+		<!-- -----------------ACTION DASHBOARD TODAY'S SCHEDULE END -------------------------- -->
 					
 					
-					<!------------------- Project Dashboard Project Details Left Side Start -------------------------- -->
+		<!-- ----------------PROJECT DASHBOARD PROJECT DETAILS LEFT SIDE START --------------- -->
 					
 					<div  style="display: none" id="projectdetails1">
 					 
@@ -795,9 +794,9 @@ if(ses!=null){ %>
 				 <%} %>
 					 </div>
 					 
-				<!------------------- Project Dashboard Project Details Left Side End -------------------------- -->	 
+	    <!--------------- PROJECT DASHBOARD PROJECT DETAILS LEFT SIDE END  ------------- -->		 
 					 	
-				<!-- Below 2 divs are for overall tab -->
+		<!---------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV START --------->
 					 	
 				<div style="display: none" class="overallheader" id="changes-tab">
 					
@@ -818,14 +817,15 @@ if(ses!=null){ %>
 						</div>
 						
 				</div>
+=         <!----------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV END ---------------->
+         </div>
+<!-- @@@@@@@@@@ NESTED ROW SCHEDULE END @@@@@@@@@@  -->		     
 
-			   </div>
+<!-- @@@@@@@@@@ NESTED ROW(2) START @@@@@@@@@@  -->
+              
+               <div class="col-4 col-md-3" >
 			      
-<!-------------------- Nested row Schedule End ------------------------------------------ -->
-			     
-
-			      <div class="col-4 col-md-3" >
-			      
+		 <!-- -----------------PROJECT DASHBOARD PROJECTDROPDOWN START---------------------------- -->
 			      		<%if(ProjectList!=null){ %>
 						
 						 <div class="row">
@@ -844,8 +844,9 @@ if(ses!=null){ %>
 						</div> 
 						
 				 	<%} %> 
+	   <!-- -----------------PROJECT DASHBOARD PROJECTDROPDOWN END---------------------------- -->
 
-		<!------------------------------------------ Approvals Start-----------------------------------------------------  -->				
+	   <!-- -----------------ACTION DASHBOARD APPROVAL'S(TO BE APPROVED BY ME) SCHEDULE START---------------------------- -->
 							
 						<div class="card" style="background: transparent;display: none" id="approvalblock">
 						
@@ -944,7 +945,9 @@ if(ses!=null){ %>
 						</div>
 							
 						
-			<!------------------------------------------ Approvals End-----------------------------------------------------  -->				
+         <!-- -------------------------ACTION DASHBOARD APPROVAL'S SCHEDULE END---------------------------  -->				
+					
+	     <!-- -----------------PROJECT DASHBOARD SELECTED PROJECTED DETAILS DISPLAY START---------------------------- -->				
 						
 					<div  style="display: none" id="projectdetails2">
 					 
@@ -1000,26 +1003,23 @@ if(ses!=null){ %>
 					 
 					 </div>
 					 
-					 
+	 <!-- -----------------PROJECT DASHBOARD SELECTED PROJECTED DETAILS DISPLAY END---------------------------- -->	
 
 			      </div>
-			      
+<!-- @@@@@@@@@@ NESTED ROW SCHEDULE END( 2 ) @@@@@@@@@@  -->    		      
 
-<!---------------------------------- Project Details Start -----------------------------------------------------  -->
-					
-			      		
-		      
-<!-------------------- Nested row Budget Start ------------------------------------------ -->				      
+
+<!-- @@@@@@@@@@ NESTED ROW BUDGET START @@@@@@@@@@  --> 				      
 			      
-			  <div class="col-4 col-md-6">
+		 <div class="col-4 col-md-6">
 			  
-			  <%if(error!=null){ %>
-			  
-			  	<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=error %></h4>
-			  
-			     <%} %> 
+	 <!-- -----------------PROJECT DASHBOARD SELECTED FINANCIAL PERFORMANCE DISPLAY START---------------------------- -->	
+	 	 
+		<%if(error!=null){ %>
+				<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=error %></h4>  
+		 <%} %> 
 			      
-			      <% if(!logintype.equalsIgnoreCase("U")){ %>
+		 <% if(!logintype.equalsIgnoreCase("U")){ %>
 			 			 
 			 <%if(budgetlist!=null && budgetlist.size()>0){ %>	
 				
@@ -1163,15 +1163,16 @@ if(ses!=null){ %>
 			<%} %>	 
 			
 			<%} %>
+			
+		<!-- -----------------PROJECT DASHBOARD SELECTED FINANCIAL PERFORMANCE DISPLAY END---------------------------- -->	
 		       
 		       
-		       <!------------------------------------------------------- My Tasks start-------------------------------------------------------------  -->
-		      
+		<!-- -----------------ACTION DASHBOARD TASKBAR STARTS---------------------------- -->	
 		      
 		       <div class="card" style="background: transparent;display:none" id="mytasks">
 						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >My Tasks</a><a style="color:white" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+								<a class="navbar-brand" style="color:white;" >My Tasks</a><a style="color:white" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
 							</nav>					
 											
 								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
@@ -1262,7 +1263,10 @@ if(ses!=null){ %>
 									</div> 
 							
 							</div> 
-							
+				
+		<!-- -----------------ACTION DASHBOARD TASKBAR ENDS---------------------------- -->	
+			
+		<!-- -----------------OVERALL DASHBOARD HEADING STARTS---------------------------- -->							
 		
 						<div class="row" >
 							<div class="col-md-6">
@@ -1276,19 +1280,15 @@ if(ses!=null){ %>
 							</div>
 						</div>
 
-		       		       <!------------------------------------------------------- My Tasks end-------------------------------------------------------------  -->
+	 <!-- -----------------OVERALL DASHBOARD HEADING ENDS---------------------------- -->	
 
 			</div>
-			
+<!-- @@@@@@@@@@ NESTED ROW BUDGET START @@@@@@@@@@  --> 	
+			      
 
-<!-------------------- Nested row Budget End ------------------------------------------ -->	
-			      
-			      
-			      
-<!-------------------- Nested row Gantt Chart start  removal------------------------------------------ -->		
-	      
-	      
-			    <div class="col-md-12">
+ 
+    <!-- -----------------PROJECT DASHBOARD GANTT CHART STARTS---------------------------- -->	
+	          <div class="col-md-12">
 			    	
 			      	<%if(ProjectList!=null){ %>
 						<div style="background: transparent;display: none" id="ganttchart" >
@@ -1493,12 +1493,11 @@ if(ses!=null){ %>
 					<%} %> 
 		
 				</div>
+     <!-- -----------------PROJECT DASHBOARD GANTT CHART ENDS---------------------------- -->	
 			
-			
-				<!------------------------------------ Upcoming Schedules Start ------------------------------------------------------------------ -->
-			
-	
-		       <div class="col-md-4">
+    <!-- -----------------ACTION DASHBOARD UPCOMING SCHEDULE STARTS---------------------------- -->	
+    
+          <div class="col-md-4">
 		       
 		       <br>	
 		       <div class="card" style="background: transparent;display: none" id="upcomingschedules">
@@ -1557,16 +1556,13 @@ if(ses!=null){ %>
 							</div> 
 							
 					</div>		
+            <!-- -----------------ACTION DASHBOARD UPCOMING SCHEDULE ENDS---------------------------- -->				
 					
+		
 					
-	<!------------------------------------ Upcoming Schedules End ------------------------------------------------------------------ -->
-			
-					
-	<!------------------------------------ My Task Details Start------------------------------------------------------------------ -->				
-					
-					<div class="col-md-8">
-		       
-		       		<br>	
+		<div class="col-md-8">
+		       <br>	
+		       	<!-- -----------------ACTION DASHBOARD MY TASK DETAILS STARTS---------------------------- -->	
 		       	
 		       		 <div class="card" style="background: transparent;display:none" id="mytaskdetails">
 						
@@ -1639,8 +1635,9 @@ if(ses!=null){ %>
 								</div> 
 							
 							</div> 
+							<!-- -----------------ACTION DASHBOARD MY TASK DETAILS ENDS---------------------------- -->	
 							
-							<!-- New Button Group -->
+							<!-- -----------------ACTION DASHBOARD Briefing Paper,Project Meeting,Annual Meeting STARTS---------------------------- -->	
 							
 							<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
 							
@@ -1654,33 +1651,31 @@ if(ses!=null){ %>
 									<%} %>
 							
 							<%} %>
-							
+						  <!-- -----------------ACTION DASHBOARD Briefing Paper,Project Meeting,Annual Meeting ENDS---------------------------- -->	
 		
-					</div>
+			</div>
 		 
 			
-		<!------------------------------------ My Task Details End ------------------------------------------------------------------ -->
+		
 			
-<!-------------------- Nested row Gantt Chart End ------------------------------------------ -->		   
+		   
 			 
 			      
 		</div>
-<!-------------------- Nested row End ------------------------------------------ -->		
+<!-- @@@@@@@@@@ NESTED ROW END @@@@@@@@@@  --> 				
 		    
 		    
 		</div>  
-<!------- Main row col-md-9 end -------------------->
+<!-- @@@@@@@@ MAIN ROW col-md-9 END @@@@@@@ -->		
 		  	
 	
-	
-<!------- Main row col-md-3 Start -------------------->
+<!-- @@@@@@@@ MAIN ROW col-md-3 START @@@@@@@ -->		
+
 		 <div class="col-md-3" >
 		  	
 		  	
-		 <!------- Toggle Button  --------------------> 	
-		  	
-		  	
-		  <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
+		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) STARTS --------------------------- --> 	
+		   <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
 		  	 <div class="btn-group "> 
 		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
 		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
@@ -1690,9 +1685,9 @@ if(ses!=null){ %>
 		        <button class="btn <%if (IsDG.equalsIgnoreCase("Yes") ){%>btn5<%} else {%>btn3<%} %>"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
 		      </div>
 		  </div>	
-		  
+		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) ENDS --------------------------- --> 	
 
-			<!------- Main row Notice Start -------------------->
+		 <!-- ----------- ACTION DASHBOARD NOTICE MAIN ROW STARTS--------------------------- --> 	
 		  		<div class="card notice col-12 "  style="margin-top: 4px;"  >
 					
 					<div class="card-body"  style="background-color : #0000 ;padding-bottom: 5px !important;display: none" id="noticeboard" >
@@ -1750,10 +1745,10 @@ if(ses!=null){ %>
 					</div>
 				</div>
 				
-<!------- Main row Notice End -------------------->
+	 <!-- ----------- ACTION DASHBOARD NOTICE MAIN ROW ENDS--------------------------- --> 	
 							
 							
-<!------- Main row Activity Start -------------------->
+    <!-- @@@@@@@@@@@@@@@@ DIV CARD BOX STARTS @@@@@@@@@@@@@@@@@@@@@@@ -->
 
 				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;display:none" id="mainactivitystatus" >
 							
@@ -1762,8 +1757,10 @@ if(ses!=null){ %>
 						</div>
 						
 						<div class="card-body" style="padding: 0px;">
-							
-							<%if(!logintype.equalsIgnoreCase("U") ) {%>
+						
+					 <!-- ----------- PROJECT DASHBOARD ACTIVITY STATUS STARTS------------- -->
+					 
+							<%if(!logintype.equalsIgnoreCase("U") ) { %>
 							
 							<!-- <div id="carouselExampleControls3" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
 							<!-- Uncomment the above line to add carousel -->	
@@ -1863,18 +1860,17 @@ if(ses!=null){ %>
 								</div> 
 								
 							<%} %>	
-								
-								
-								<!-- end of carousel --> 
+							
+		<!-- ----------- PROJECT DASHBOARD ACTIVITY STATUS ENDS------------- -->
 								
 
-							<!------------------------------------------ Review Block Start ---------------------------------------------------------------  -->
+	     <!-- ----------- ACTION DASHBOARD  REVIEW  BLOCK STARTS------------- -->
 
 		   					<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader">
 								<span style="font-size:12px ">Review - Pending with My Approver</span>
 							</div>	
 		   
-								<div style="margin-top:5px;display:none" id="review">
+							<div style="margin-top:5px;display:none" id="review">
 									
 									 <!-- <div align="center"> Action Items</div> -->		
 													
@@ -1936,7 +1932,6 @@ if(ses!=null){ %>
 													</div>
 										
 				 				</div>   
-				 				
 				 				
 				 				<!--  Second Review Except User---------------- -->
 				 		<%-- 	 <%if(!logintype.equalsIgnoreCase("U")){ %>	 --%>
@@ -2010,18 +2005,18 @@ if(ses!=null){ %>
 										<!-- Actions Flow End -->
 				 				</div> <br>  
 				 			
-				 		<%-- <%} %>	 --%><!-- Closing of condition for second review block -->
+				 		<%-- <%} %>	 --%><!-- Closing of condition for second review block --><!--------- Closing if loop of action items ------------->
 				 				
 				 				
-				<!------------------------------------------ Review Block End ---------------------------------------------------------------  -->
+			<!-- ----------- ACTION DASHBOARD  REVIEW  BLOCK ENDS------------- -->
 				 	
 				 
 				 				
-			<!------------------------------- Closing if loop of action items ------------------------------------------------->
+			
 		
 					 </div>	
 				</div>
-			<!------------------ Activity Card End  ------------------------>
+	<!-- @@@@@@@@@@@@@@@@ DIV CARD BOX ENDS @@@@@@@@@@@@@@@@@@@@@@@ -->
 
 					<!-- Removing Card 5 -->	
 
@@ -2054,12 +2049,12 @@ if(ses!=null){ %>
 
 
 
-						<!-- Meeting box for admin ----------------------------------------------------- -->
-				 				
+				<!-- ----------- PROJECT DASHBOARD  MEETINGS  BLOCK STARTS------------- -->
+				 			
 				 			<div class="card" style="background: transparent;margin-top:1%;display: none"  id="meetingblock">
 						
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >Meetings</a>
+								<a class="navbar-brand" style="color:white;" >Meetings</a>
 							</nav>					
 											
 								<!-- <div id="carouselExampleControls1" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
@@ -2133,34 +2128,25 @@ if(ses!=null){ %>
 									</div> 
 							
 							</div>
-				 				
-				 				
-			 				
-				 	<!------------------------------- Closing Meeting for Admin ------------------------------------------------->	
+					<!-- ----------- PROJECT DASHBOARD  MEETINGS  BLOCK ENDS------------- -->
 		
 
 
 
 			</div>
-			
-<!------- Main row col-md-3 End -------------------->
+<!-- @@@@@@@@ MAIN ROW col-md-3 END @@@@@@@ -->	
 	
 	
 		</div>
-<!------- Main row End -------------------->
-
-
+<!-- @@@@@@@@ MAIN ROW END @@@@@@@ -->
 
 </div>
-<!-- container-fluid end -->
+<!-- @@@@@@@@ CONTAINER FLUID END @@@@@@@ -->
 
 
 
-<!-- ------------------------------------------------------------- NOTICE MODELS  ------------------------------------------------------------------------------------ -->		
-					
-					
-					<!-- Modal for Notice List -->
-					
+<!-- ------------------------------------------------------------- NOTICE MODAL (popup when clicked on + symbol of NOTICE IN ACTION DASHBOARD)   ------------------------------------------------------------------------------------ -->		
+			
 					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					  <div class="modal-dialog">
 					    <div class="modal-content">
@@ -2208,11 +2194,13 @@ if(ses!=null){ %>
 					  </div>
 					</div>
 					
-<!-- ------------------------------------------------------------- NOTICE MODELS  ------------------------------------------------------------------------------------ -->		
+<!-- ------------------------------------------------------------- NOTICE MODAL ENDS  ------------------------------------------------------------------------------------ -->		
 
-<!-- ****************************************************************** OVERALL MODULE ********************************************************************************* -->
+<!-- ****************************************************************** OVERALL DASHBOARD MODULE STARTS********************************************************************************* -->
 
 	<div class="container-fluid" style="display: none" id="overalltable">
+		
+		<!-- ///////////////  CAR DECK (MEETING,MILESTONE,ACTION,RISK,FINANCE) STARTS //////////// -->
 		<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
 		  <div class="card detailscard">
 		    <div class="card-body">
@@ -2550,8 +2538,17 @@ if(ses!=null){ %>
 			   </div>
 		  	</div>	 
 		</div>
+		
+		<!-- ///////////////  CAR DECK (MEETING,MILESTONE,ACTION,RISK,FINANCE) ENDS //////////// -->
+		
+		<!-- ///////////////  CASH OUTGO(Cr) STARTS //////////// -->
 
 		<jsp:include page="Dashboard-COG.jsp" />
+		
+		<!-- ///////////////  CASH OUTGO(Cr) ENDS //////////// -->
+		
+		
+		<!-- /////////////// ALL PROJECT DETAILS IN OVERALL DASHBOARD STARTS //////////// -->
 
 		<div class="card" style="background: transparent;margin-top:5px" >
 		
@@ -2807,13 +2804,12 @@ if(ses!=null){ %>
 								</div> 
 							
 							</div> 
+					<!-- /////////////// ALL PROJECT DETAILS IN OVERALL DASHBOARD ENDS //////////// -->		
 							
 					</div>
+<!-- ****************************************************************** OVERALL DASHBOARD MODULE STARTS********************************************************************************* -->
 
-
-	<!-- ******************************************************** OVERALL MODULE END ************************************************************** -->
-
-	<!-- ******************************************************** INDIVIDUAL PROJECT DETAILS ******************************************* -->
+	 <!-- *************************************** INDIVIDUAL PROJECT DETAILS STARTS ******************************** -->
 	
 	<div class="card" style="background: white;display:none;margin: -2px 10px" id="projectgraph" >
 		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden " align="center">
@@ -2866,10 +2862,10 @@ if(ses!=null){ %>
 				</div>
 			
 		</div>
-
-	<!-- ************************Informative Modal********************* -->
-
-
+     <!-- *************************************** INDIVIDUAL PROJECT DETAILS ENDS ******************************** -->
+     
+	 <!-- *************************************** INFORMATIVE MODAL STARTS **************************************** -->
+	 
 	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -2983,11 +2979,10 @@ if(ses!=null){ %>
 			</div>
 		</div>
 	</div>
+    <!-- *************************************** INFORMATIVE MODAL ENDS **************************************** -->
 
-
-	<!-- *************************************** DG View Start ****************************************************** -->
+	<!-- *************************************** DG VIEW START****************************************************** -->
 	
-
 	<div style="display:none" id="dgdashboard">
 	
 		<div class="container-fluid">
@@ -3520,9 +3515,9 @@ if(ses!=null){ %>
 	
 	</div>
 	
-	
-	<!-- *************************************** DG View End ****************************************************** -->
+	<!-- *************************************** DG VIEW END****************************************************** -->
 
+	
 
 	<form method="post" action="ActionWiseAllReport.htm" name="dateform" id="dateform">                                                    	
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 													
