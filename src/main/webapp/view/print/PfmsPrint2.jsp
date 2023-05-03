@@ -435,7 +435,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
  </tbody>
 </table>
 <hr style="width:90%">
-<span style="margin-left:60px;margin-top:30px; font-size: 16px;">Note-(Requirement Descriptions are attached with <b> Annexure-C.)</b></span>
+
 <%}else{%>
 <table  style="margin-top:10px; margin-bottom: 10px;margin-left: 0px;width:920px; font-size: 22px; ">
 	<tbody>

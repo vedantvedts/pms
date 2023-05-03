@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -298,12 +299,13 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 			<%int count=1;
 for(Object []obj:RequirementList) {%>
 			<button type="button" class="btn btn-secondary viewbtn"
-				id="<%=obj[0] %>" value="<%=obj[0]%>"><%=obj[1] %></button>
+				id="<%=obj[0] %>" value="<%=obj[0]%>"data-toggle="tooltip" data-placement=""
+									title=""><%=obj[1] %></button>
 			<%count++;} %>
 		</div>
 		<div class="container" id="container">
 			<div class="row">
-				<div class="col-md-12" id="reqdiv" style="">
+				<div class="col-md-12" id="reqdiv" style="background-image: repeating-linear-gradient(45deg,#ffffff 58%, #C4DDFF);">
 					<div class="card-body" id="cardbody">
 						<div class="row">
 							<div class="col-md-12">
@@ -520,6 +522,10 @@ for(Object []obj:RequirementList) {%>
 										<div class="row">
 											<div class="col-md-4">
 												<label
+								
+								
+								
+								
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
 													Requirements</label>
 											</div>
@@ -530,8 +536,8 @@ for(Object []obj:RequirementList) {%>
 													<select class="form-control selectdee"
 														name="linkedRequirements" id="linkedRequirements"
 														data-width="80%" data-live-search="true"
-														data-placeholder="Choose" multiple>
-
+														 multiple>
+														<option value="" disabled="disabled"  >---Choose----</option>
 														<%for(Object[] obj:RequirementList){ %>
 														<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]%></option>
 														<%}%>

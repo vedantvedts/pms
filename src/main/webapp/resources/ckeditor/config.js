@@ -16,5 +16,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.font_names ='Times New Roman' ;
 	config.font_names = 'Times New Roman';
 	
+	config.filebrowserUploadMethod = 'form';
+	
 };
 

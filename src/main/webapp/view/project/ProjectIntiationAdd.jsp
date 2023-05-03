@@ -188,7 +188,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                        </div>
 	                    </div>
 	                    
-	                	<div class="col-md-5">
+	                	<div class="col-md-4">
 	                        <div class="form-group">
 	                            <label class="control-label">Project Title</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -208,7 +208,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
        						</div>
        					</div>
        					
-       					<div class="col-md-3 ">
+       			<!-- 		<div class="col-md-3 ">
                         	<div class="form-group" id="Remarks" style="display:none;">
 	                            <label class="control-label">Remarks</label>
 	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -217,7 +217,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 
 	                        </div>
 	                      
-       					</div>
+       					</div> -->
 	                    
 	                    
 	                    <!-- <div class="col-md-2 ">
@@ -231,8 +231,23 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 								    <option value="N">No</option>
 								  </select>
 	                        </div>
-	                    </div>  -->     
-
+	                    </div>  -->   
+	                    <div class="col-md-4">
+						<div class="form-group"> 
+						<label class="control-label">Deliverable</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+							<select class="form-control selectdee"
+														name="Deliverables" id="DeliverablesOutput"
+														data-width="80%" data-live-search="true"
+														 multiple>
+												<option>Prototype</option>
+												<option>Limited Series Production</option>
+												<option>Technology</option>
+												<option>Assembly or sub-assembly</option>
+												<option>Process</option>
+												<option> Others </option>
+												</select>
+						</div>	                    
+	                    </div>
 	                </div>
 	                
 					<hr>

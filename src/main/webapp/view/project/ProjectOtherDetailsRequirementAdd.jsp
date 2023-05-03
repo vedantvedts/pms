@@ -1007,10 +1007,24 @@ toolbar: [{
 			}
 		},
 		{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-		{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
-	]
-} );
+		{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
 
+	]
+} ); 
+/* var editor = CKEDITOR.replace( 'summernote' );
+CKFinder.setupCKEditor( editor, '/ckfinder/' ); */
+
+/* CKEDITOR.replace( 'summernote',
+		{
+	filebrowserBrowseUrl : '/ckfinder/ckfinder.html',
+	filebrowserImageBrowseUrl : '/ckfinder/ckfinder.html?type=Images',
+	filebrowserFlashBrowseUrl : '/ckfinder/ckfinder.html?type=Flash',
+	filebrowserUploadUrl : 
+ 	   '/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Files&currentFolder=/archive/',
+	filebrowserImageUploadUrl : 
+	   '/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Images&currentFolder=/cars/',
+	filebrowserFlashUploadUrl : '/ckfinder/core/connector/java/connector.java?command=QuickUpload&type=Flash'
+		}); */
 
 </script>
 

@@ -34,9 +34,11 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
+import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
@@ -45,6 +47,8 @@ import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorRequirements;
+import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterAttach;
 import com.vts.pfms.project.model.ProjectMasterRev;
@@ -65,9 +69,9 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTIUPDATE="update  pfms_initiation set labcount=:labcount ,modifiedby=:modifiedby,modifieddate=:modifieddate where initiationid=:initiationid";
 	private static final String BUDEGTITEM="select sanctionitemid,headofaccounts,refe,projecttypeid ,CONCAT (majorhead,'-',minorhead,'-',subhead) AS headcode from budget_item_sanc where budgetheadid=:budgetheadid and isactive='1' ORDER BY headofaccounts";
 	private static final String PROJECTITEMLIST="SELECT a.initiationcostid,a.initiationid,c.budgetheaddescription,b.headofaccounts,a.itemdetail,a.itemcost ,b.refe , CONCAT (b.majorhead,'-',b.minorhead,'-',b.subhead) AS headcode FROM pfms_initiation_cost a,budget_item_sanc b,budget_head c WHERE a.initiationid=:initiationid AND a.budgetsancid=b.sanctionitemid AND a.budgetheadid=c.budgetheadid AND a.isactive='1' ORDER BY a.budgetheadid ASC";
-	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
+	private static final String PROJECTLABLIST="select a.initiationid,a.InitiationLabId,b.labname,b.labcode from pfms_initiation_lab a,cluster_lab b where a.initiationid=:initiationid and b.labid=a.labid and isactive='1'";
 	private static final String BUDEGTHEADLIST="select budgetheadid,budgetheaddescription from budget_head where isproject='Y' order by budgetheaddescription asc ";
-	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth,FinancialOutlay from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
+	private static final String PROJECTSCHEDULELIST="select milestoneno,milestoneactivity,milestonemonth,initiationscheduleid,milestoneremark,Milestonestartedfrom,MilestoneTotalMonth from pfms_initiation_schedule where initiationid=:initiationid and isactive='1'";
 	private static final String PROJECTSCHEDULETOTALMONTHLIST="select MilestoneTotalMonth,milestoneno,Milestonestartedfrom from pfms_initiation_schedule where initiationid=:initiationid and isactive='1' " ;
 	/*L.A*/private static final String MILESTONENOTOTALMONTHS="SELECT milestoneno,MilestoneTotalMonth,Milestonestartedfrom FROM pfms_initiation_schedule WHERE isactive='1' AND initiationid=:InitiationId AND milestonestartedfrom=:milestonestartedfrom ";
 	private static final String PROJECTDETAILSLIST= "SELECT a.Requirements,a.Objective,a.Scope,a.MultiLabWorkShare,a.EarlierWork,a.CompentencyEstablished,a.NeedOfProject,a.TechnologyChallanges,a.RiskMitigation,a.Proposal,a.RealizationPlan,a.initiationid,a.worldscenario,a.ReqBrief,a.ObjBrief,a.ScopeBrief,a.MultiLabBrief,a.EarlierWorkBrief,a.CompentencyBrief,a.NeedOfProjectBrief,a.TechnologyBrief,a.RiskMitigationBrief,a.ProposalBrief,a.RealizationBrief,a.WorldScenarioBrief FROM pfms_initiation_detail a WHERE a.initiationid=:initiationid ";
@@ -191,7 +195,6 @@ public class ProjectDaoImpl implements ProjectDao {
 		query.setParameter("logintype", LoginType);
 		query.setParameter("LabCode", LabCode);
 		List<Object[]> ProjectIntiationList=(List<Object[]>)query.getResultList();		
-
 		return ProjectIntiationList;
 	}
 
@@ -2198,7 +2201,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		private static final String TDNUPDATE="UPDATE pfms_initiation_statement_data SET TDN=:TDN,ModifiedBy=:ModifiedBy, modifiedDate=:modifiedDate WHERE initiationid=:initiationid and statementid=:statementid";
 		@Override
 		public long projectTDNUpdate(PfmsInitiationSanctionData psd) throws Exception {
-			// TODO Auto-generated method stub
+
 			
 			Query query=manager.createNativeQuery(TDNUPDATE);
 			query.setParameter("TDN", psd.getTDN());
@@ -2225,9 +2228,18 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.executeUpdate();
 			return 1l;
 		}
+		private static final String USERUPDATE="UPDATE pfms_initiation SET User=:User,ModifiedBy=:ModifiedBy, modifiedDate=:modifiedDate WHERE initiationid=:initiationid";
 
-		
-		
+		@Override
+		public long projectInitiationUserUpdate(PfmsInitiation pf) throws Exception {
+			// TODO Auto-generated method stub
+			Query query =manager.createNativeQuery(USERUPDATE);
+			query.setParameter("User", pf.getUser());
+			query.setParameter("ModifiedBy", pf.getModifiedBy());
+			query.setParameter("modifiedDate", pf.getModifiedDate());
+			query.setParameter("initiationid", pf.getInitiationId());
+			return query.executeUpdate();
+		}
 		private static final String REQTYPECOUNT="SELECT MAX(ReqCount) FROM pfms_initiation_req WHERE initiationid=:intiationId AND isactive='1'";
 		@Override
 		public long numberOfReqTypeId(String intiationId) throws Exception {
@@ -2361,7 +2373,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			
 			return pf.getDocId();
 		}
-		private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentName ";
+		private static final String PROJECTFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid GROUP BY DocumentId ";
 		@Override
 		public List<Object[]> getProjectFilese(String initiationid, String stepid) throws Exception {
 			// TODO Auto-generated method stub
@@ -2435,13 +2447,293 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return psd.getStatementDataId();
 		}
 
-		
-		
+		private  static final String FILEDETAILS=" SELECT FileName,CreatedDate,VersionDoc,docid,initiationid,stepid FROM pfms_initiation_file_upload WHERE initiationid=:inititationid AND stepid=:stepid" ;
+		@Override
+		public List<Object[]> projectfiles(String inititationid, String stepid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(FILEDETAILS);
+			query.setParameter("inititationid",inititationid );
+			query.setParameter("stepid", stepid);
+			
+			List<Object[]>projectfiles=(List<Object[]>)query.getResultList();
+			return projectfiles;
+		}
+		private static final String PROFILES="SELECT DocId,initiationid,stepid,fileName,DocumentName,FilePath,MAX(VersionDoc)AS versiondoc,Description,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:initiationid AND stepid=:stepid AND Documentid=:documentid GROUP BY DocumentId ";
+		@Override
+		public Object[] projectfile(String initiationid, String stepid, String documentid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query =manager.createNativeQuery(PROFILES);
+			query.setParameter("initiationid", initiationid);
+			query.setParameter("stepid", stepid);
+			query.setParameter("documentid", documentid);
+			
+			Object[]projectfile=null;
+			try {
+				projectfile=(Object[])query.getSingleResult();
+			}catch(Exception e) {
+				
+			}
+			return projectfile;
+		}
+			private static final String DEMANDLIST="SELECT DemandModeId,DemandModeName,ModeDescription FROM demand_mode";
+		@Override
+		public List<Object[]> DemandList() throws Exception {
+			// TODO Auto-generated method stub
+			
+			Query query=manager.createNativeQuery(DEMANDLIST);
+			List<Object[]>DemandList=(List<Object[]>)query.getResultList();
+			return DemandList;
+		}
 
-	
-	
+		@Override
+		public long PfmsProcurementPlanSubmit(PfmsProcurementPlan pp) throws Exception {
+			// TODO Auto-generated method stubmanager.
+			
+			manager.persist(pp);
+			
+			return pp.getPlanId();
+		}
+		private static final String PROCUREMENTLIST="SELECT a.PlanId,a.InitiationID,a.Item,a.Purpose,a.Source,(SELECT b.modedescription FROM demand_mode b WHERE b.DemandModeId=a.modename AND initiationid=:initiationid)AS 'ModeName',a.Cost,a.Demand,a.Tender,a.OrderTime,a.Payout,a.Approved,a.total FROM pfms_procurement_plan a WHERE initiationid=:initiationid";
+		@Override
+		public List<Object[]> ProcurementList(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			
+			Query query =manager.createNativeQuery(PROCUREMENTLIST);
+			query.setParameter("initiationid", initiationid);
+			List<Object[]>ProcurementList=(List<Object[]>)query.getResultList();
+			return ProcurementList;
+		}
+		private static final String PROCUREMENTDETAILS="SELECT Item,Purpose,Source,ModeName,Cost,Demand,Tender,OrderTime,Payout,Approved FROM pfms_procurement_plan WHERE planid=:planid";
+		@Override
+		public Object[] PocurementPlanEditDetails(String planid) throws Exception {
+			// TODO Auto-generated method stub
+			Query query =manager.createNativeQuery(PROCUREMENTDETAILS);
+			query.setParameter("planid", planid);
+			Object[]PocurementPlanEditDetails=(Object[])query.getSingleResult();
+			return PocurementPlanEditDetails;
+		}
 
+		
+		private static final String PROCUREMENTEDIT="update pfms_procurement_plan set Item=:Item,Purpose=:Purpose,Source=:Source,ModeName=:ModeName,Cost=:Cost,Demand=:Demand,Tender=:Tender,OrderTime=:OrderTime,Payout=:Payout,Total=:Total,Approved=:Approved where planid=:planid";
+				@Override
+		public long ProjectProcurementEdit(PfmsProcurementPlan pp) throws Exception {
+			// TODO Auto-generated method stub
+			Query query=manager.createNativeQuery(PROCUREMENTEDIT);
+			query.setParameter("Item", pp.getItem());
+			query.setParameter("Purpose", pp.getPurpose());
+			query.setParameter("Source", pp.getSource());
+			query.setParameter("ModeName",pp.getModeName());
+			query.setParameter("Cost", pp.getCost());
+			query.setParameter("Demand", pp.getDemand());
+			query.setParameter("Tender", pp.getTender());
+			query.setParameter("OrderTime", pp.getOrderTime());
+			query.setParameter("Payout", pp.getPayout());
+			query.setParameter("Total", pp.getTotal());
+			query.setParameter("Approved", pp.getApproved());
+			query.setParameter("planid", pp.getPlanId());
+			return query.executeUpdate();
+		}
+	private static final String TOTALCOST="SELECT SUM(cost) FROM pfms_procurement_plan WHERE Payout BETWEEN :start AND :end AND InitiationId=:initiationid";
+    @Override
+    public String TotalPayOutMonth(String start, String end, String initiationid) throws Exception {
+	// TODO Auto-generated method stub
+    	Query query=manager.createNativeQuery(TOTALCOST);
+    	query.setParameter("start", start);
+    	query.setParameter("end", end);
+    	query.setParameter("initiationid", initiationid);
+    	Object temp=query.getResultList().get(0);
+    	String total="0.00";
+    	if(temp!=null) {
+    		total=(temp.toString());
+    	}
+    return total;
+    }
+    private static final String MACRODETAIL="SELECT a.detailid,a.initiationid,a.additionalrequirements,a.methodology,a.otherinformation,a.enclosures,a.PrototypesNo,a.deliverables,a.createdby,a.createddate,a.modifiedby,a.modifieddate FROM pfms_initiation_macro_details a WHERE a.initiationid=:initiationid AND a.isactive=1";
+	@Override
+	public Object[] projectMacroDetails(String initiationid) throws Exception {
+		// TODO Auto-generated method stub
+		Query query =manager.createNativeQuery(MACRODETAIL);
+		query.setParameter("initiationid", initiationid);
+		Object[]MACRODETAIL= {};
+		try {
+		MACRODETAIL=(Object[])query.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return MACRODETAIL;
+	}
+
+	@Override
+	public long InsertMacroDetails(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(pm);
 	
+		return (Long )pm.getDetailId();
+	}
+	private static final String METHODOLOGYUPDATE="UPDATE pfms_initiation_macro_details SET Methodology=:Methodology ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1"; 
+	@Override
+	public long updateMactroDetailsMethodology(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+		long count=0;
+		Query query=manager.createNativeQuery(METHODOLOGYUPDATE);
+		query.setParameter("Methodology", pm.getMethodology());
+		query.setParameter("modifiedby", pm.getModifiedBy());
+		query.setParameter("modifieddate", pm.getModifiedDate());
+		query.setParameter("initiationid", pm.getInitiationId());
+		count= query.executeUpdate();	
+		return count;
+	}	
+	private static final String MACREQUPDATE="UPDATE pfms_initiation_macro_details SET AdditionalRequirements=:AdditionalRequirements ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1"; 
+	@Override
+	public long updateMactroDetailsRequirements(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+
+		long count=0;
+		
+		Query query=manager.createNativeQuery(MACREQUPDATE);
+		query.setParameter("AdditionalRequirements", pm.getAdditionalRequirements());
+		query.setParameter("modifiedby", pm.getModifiedBy());
+		query.setParameter("modifieddate", pm.getModifiedDate());
+		query.setParameter("initiationid", pm.getInitiationId());
+		count= query.executeUpdate();	
+		return count;
+	}
+	private static final String ENCLOSURESUPDATE="UPDATE pfms_initiation_macro_details SET Enclosures=:Enclosures ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public long UpdateProjectEnclosure(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+		long count=0;
+		
+		Query query=manager.createNativeQuery(ENCLOSURESUPDATE);
+		query.setParameter("Enclosures", pm.getEnclosures());
+		query.setParameter("modifiedby", pm.getModifiedBy());
+		query.setParameter("modifieddate", pm.getModifiedDate());
+		query.setParameter("initiationid", pm.getInitiationId());
+		count= query.executeUpdate();	
+		return count;
+	}
+	private static final String OTHINFMUPDATE="UPDATE pfms_initiation_macro_details SET OtherInformation=:OtherInformation ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public long UpdateProjectOtherInformation(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+		long count=0;
+		
+		Query query=manager.createNativeQuery(OTHINFMUPDATE);
+		query.setParameter("OtherInformation", pm.getOtherInformation());
+		query.setParameter("modifiedby", pm.getModifiedBy());
+		query.setParameter("modifieddate", pm.getModifiedDate());
+		query.setParameter("initiationid", pm.getInitiationId());
+		count= query.executeUpdate();	
+		return count;
+	}
+	private static final String DELIVERABLESUPDATE="UPDATE pfms_initiation_macro_details SET PrototypesNo=:PrototypesNo,deliverables=:deliverables ,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public long ProposedprojectdeliverablesUpdate(PfmsInitiationMacroDetails pm) throws Exception {
+		// TODO Auto-generated method stub
+		long count=0;
+		
+		Query query=manager.createNativeQuery(DELIVERABLESUPDATE);
+		query.setParameter("PrototypesNo", pm.getPrototypesNo());
+		query.setParameter("deliverables", pm.getDeliverables());
+		query.setParameter("modifiedby", pm.getModifiedBy());
+		query.setParameter("modifieddate", pm.getModifiedDate());
+		query.setParameter("initiationid", pm.getInitiationId());
+		count= query.executeUpdate();	
+		return count;
+	}
+	@Override
+	public long ProjectMajorTrainingRequirementSubmit(ProjectMajorRequirements PMR) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(PMR);
+		manager.flush();
+		return PMR.getTrainingId();
+	}
+	private static final String TRAINGLIST="SELECT trainingid,initiationid,Discipline,agency,personneltrained,duration,remarks,cost FROM project_major_training_requirements WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public List<Object[]> TrainingRequirementList(String initiationid) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(TRAINGLIST);
+		query.setParameter("initiationid", initiationid);
+		
+		List<Object[]>TrainingRequirementList=(List<Object[]>)query.getResultList();
+		
+		return TrainingRequirementList;
+	}
+	private static final String TRANREQ="SELECT trainingid,initiationid,Discipline,agency,personneltrained,duration,cost,remarks FROM project_major_training_requirements WHERE trainingid=:trainingid AND isactive=1";
+	@Override
+	public Object[] TraingRequirements(String trainingid) throws Exception {
+		// TODO Auto-generated method stub
+		Query query= manager.createNativeQuery(TRANREQ);
+		query.setParameter("trainingid", trainingid);
+		Object[]TraingRequirements=(Object[])query.getSingleResult();
+		return TraingRequirements;
+	}
+	
+	private static final String TRAUPDATE="UPDATE project_major_training_requirements SET Discipline=:Discipline,agency=:agency,personneltrained=:personneltrained,duration=:duration,cost=:cost,remarks=:remarks,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE trainingid=:trainingid AND isactive=1;";
+	
+	@Override
+	public long ProjectMajorTrainingRequirementUpdate(ProjectMajorRequirements pmr) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Query query =manager.createNativeQuery(TRAUPDATE);
+		
+		query.setParameter("Discipline", pmr.getDiscipline());
+		query.setParameter("agency", pmr.getAgency());
+		query.setParameter("personneltrained", pmr.getPersonneltrained());
+		query.setParameter("duration", pmr.getDuration());
+		query.setParameter("cost", pmr.getCost());
+		query.setParameter("remarks", pmr.getRemarks());
+		query.setParameter("modifiedby", pmr.getModifiedBy());
+		query.setParameter("modifieddate", pmr.getModifiedDate());
+		query.setParameter("trainingid", pmr.getTrainingId());
 		
 		
+		return query.executeUpdate();
+	}
+	@Override
+	public long WorkPackageSubmit(ProjectMajorWorkPackages pw) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(pw);
+		manager.flush();
+		return pw.getWorkId();
+	}
+	private static final String WORKLIST="SELECT workid,initiationid,govtagencies,workpackage,objective,scope,pdc,cost FROM project_major_work_packages WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public List<Object[]> WorkPackageList(String initiationid) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(WORKLIST);
+		query.setParameter("initiationid", initiationid);
+		List<Object[]>WorkPackageList=(List<Object[]>)query.getResultList();
+		
+		return WorkPackageList;
+	}
+	private static final String  WORKVALUE="SELECT workid,initiationid,govtagencies,workpackage,objective,scope,pdc,cost FROM project_major_work_packages WHERE workid=:parameter AND isactive=1";
+	@Override
+	public Object[] WorkPackageValue(String parameter) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(WORKVALUE);
+		query.setParameter("parameter", parameter);
+		return (Object[])query.getSingleResult();
+	}
+	private static final String WORKEDIT="UPDATE project_major_work_packages SET govtagencies=:govtagencies,workpackage=:workpackage,objective=:objective,scope=:scope,cost=:cost,pdc=:pdc,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE workid=:workid AND isactive=1";
+	@Override
+	public long WorkPackagesEdit(ProjectMajorWorkPackages pw) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(WORKEDIT);
+		
+		query.setParameter("govtagencies", pw.getGovtAgencies());
+		query.setParameter("workpackage", pw.getWorkPackage());
+		query.setParameter("objective", pw.getObjective());
+		query.setParameter("scope", pw.getScope());
+		query.setParameter("cost", pw.getCost());
+		query.setParameter("pdc", pw.getPDC());
+		query.setParameter("ModifiedBy", pw.getModifiedBy());
+		query.setParameter("ModifiedDate", pw.getModifiedDate());
+		query.setParameter("workid", pw.getWorkId());
+		return query.executeUpdate();
+	}
 }
+
+
+
+
