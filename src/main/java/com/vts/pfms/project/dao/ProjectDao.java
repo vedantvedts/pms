@@ -31,6 +31,7 @@ import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCars;
 import com.vts.pfms.project.model.ProjectMajorRequirements;
 import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -242,6 +243,10 @@ public interface ProjectDao {
 	public List<Object[]> WorkPackageList(String initiationid)throws Exception;
 	public Object[] WorkPackageValue(String parameter)throws Exception;
 	public long WorkPackagesEdit(ProjectMajorWorkPackages pw)throws Exception;
+	public long CarsDetailsAdd(ProjectMajorCars pmc)throws Exception;
+	public List<Object[]> CarsList(String parameter)throws Exception;
+	public Object[] CarsValue(String parameter)throws Exception ;
+	public long CarEdit(ProjectMajorCars pmc)throws Exception;
 	
 
 	

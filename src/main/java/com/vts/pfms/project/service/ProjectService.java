@@ -19,6 +19,7 @@ import com.vts.pfms.project.dto.PfmsProjectTccDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
+import com.vts.pfms.project.dto.ProjectMajorCarsDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
@@ -222,4 +223,8 @@ public interface ProjectService {
 	public List<Object[]> WorkPackageList(String initiationid)throws Exception;
 	public Object[] WorkPackageValue(String parameter)throws Exception ;
 	public long WorkPackagesEdit(ProjectMajorWorkPackagesDto pwd, String userId)throws Exception;
+	public long CarsDetailsAdd(ProjectMajorCarsDto pcd, String userId)throws Exception;
+	public List<Object[]> CarsList(String parameter)throws Exception;
+	public Object[] CarsValue(String parameter)throws Exception;
+	public long carsEdit(ProjectMajorCarsDto pcd, String userId)throws Exception;
 }

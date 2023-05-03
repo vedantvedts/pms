@@ -1124,9 +1124,9 @@ color:#145374;
 					<h5>5. Details of CARS
 					<span class="ml-5" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent"data-toggle="tooltip" data-placement="top"
-					title="List of CARS"><i class="fa  fa-list" aria-hidden="true"></i></button>
+					title="List of CARS" onclick="ListModal3()"><i class="fa  fa-list" aria-hidden="true"></i></button>
 					<button type="button" class="btn btn-sm bg-transparent"  data-toggle="tooltip" data-placement="top"
-					title="Add CARS">
+					title="Add CARS" onclick="showAddModal(3)">
 					<i class="btn  fa  fa-plus" style="color: green; padding: 0px  0px  0px  0px;">
 					</i>
 					</button>					
@@ -1618,7 +1618,7 @@ color:#145374;
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
-						<h5 class="modal-title" style="color:white;font-size: 20px;">Work Packacges</h5>
+						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of Work Packacges</h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross5">
 							<span aria-hidden="true">&times;</span>
@@ -1721,15 +1721,182 @@ color:#145374;
 					</div>
 					<div class="mt-2" align="center">
 					<button type="button" class="btn btn-primary btn-sm submit" onclick="editForm2()">SUBMIT</button>
-					</div>
-					</div>
-					</div>
-					</div>
-					</div>
-					</div>
-					</div>
-			
+					</div></div></div></div></div></div>
 			<!--End  -->
+			<!-- Add Cars Details -->
+			<div class="modal fade bd-example-modal-lg" id="showAddModal3"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">CARS</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross7">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div class="col-md-12">
+					<div class="row">
+					<div class="col-md-4">
+					<label class="sidelabel">Name of Institute/ Agency<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="Institute" maxlength="300 characters" placeholder="maximum 300 characters">
+					</div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Name of the identified professor<span class="mandatory" style="color: red;">*</span></label>					
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="professor" maxlength="300 characters" placeholder="maximum 300 characters" >
+					</div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label>					
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="Area" maxlength="300 characters" placeholder="maximum 300 characters" >
+					</div>
+					</div>	
+					<div class="row mt-2">
+					<div class="col-md-2">
+					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="Cost4" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>
+					<div class="col-md-2" align="right">
+					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="PDC1" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>					
+					</div>		
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Confidence level of the agency (1-10)
+					<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="range" min="1" max="10" id="confidence" step="1" style="color:blue">
+					</div>
+					</div>
+					<div class="mt-2" align="center">
+					<button type="button" class="btn btn-primary btn-sm submit" onclick="submitForm3()">SUBMIT</button>
+					</div></div></div></div></div></div>
+			<!--End  -->
+			<!--List of Cars  -->
+									<div class="modal fade bd-example-modal-lg" id="CARSlist"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of Cars</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross8">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div id="scrollclass" style="height:400px;overflow-y:scroll">
+					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
+					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
+					<tr style="text-align: center;">
+					<th style="width:3%">Selcet</th>
+					<th style="width:3%">SN</th>
+					<th style="width:18%">Name of Institute/ Agency </th>
+					<th style="width:18%">Name of the identified professo</th>
+					<th style="width:18%">Area where R&D is required </th>
+					<th style="width:5%">Cost<br>( in cr)</th>
+					<th style="width:5%">PDC<br>(Months)</th>
+					<th style="width:10%">Confidence level of the agency</th>
+					</tr>
+					</thead>
+					<tbody id="tbody3">
+					
+					</tbody>
+					</table>
+					</div>
+					<span class="radiovalueModal3"><input type="hidden" value="0" id="radio3"></span>
+							<div class="mt-1" align="center">
+					<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal3()">EDIT</button>
+					</div></div></div></div></div>
+			<!-- End -->
+					<div class="modal fade bd-example-modal-lg" id="EditCars"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">CARS</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross9">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div class="col-md-12">
+					<div class="row">
+					<div class="col-md-4">
+					<label class="sidelabel">Name of Institute/ Agency<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="InstituteEdit" maxlength="300 characters" placeholder="maximum 300 characters">
+					</div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Name of the identified professor<span class="mandatory" style="color: red;">*</span></label>					
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="professorEdit" maxlength="300 characters" placeholder="maximum 300 characters" >
+					</div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label>					
+					</div>
+					<div class="col-md-6">
+					<input type="text" class="form-control" id="AreaEdit" maxlength="300 characters" placeholder="maximum 300 characters" >
+					</div>
+					</div>	
+					<div class="row mt-2">
+					<div class="col-md-2">
+					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="Cost4Edit" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>
+					<div class="col-md-2" align="right">
+					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="PDC1Edit" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>					
+					</div>		
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Confidence level of the agency (1-10)
+					<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-2">
+					<input type="range" min="1" max="10" id="confidenceEdit" step="1" style="color:blue">
+					<input type="hidden" id="carsid">
+					</div>
+					</div>
+					<div class="mt-2" align="center">
+					<button type="button" class="btn btn-primary btn-sm submit" onclick="editForm3()">SUBMIT</button>
+					</div></div></div></div></div></div>	
+			
+			
 	<script>
 	function showCostModal(){
 		$('#exampleCostModal').modal('show');
@@ -2706,6 +2873,161 @@ color:#145374;
 		}
 	}
 	
-		</script>
+	function submitForm3(){
+		var Institute=$('#Institute').val().trim();
+		var professor=$('#professor').val().trim();
+		var Area=$('#Area').val().trim();
+		var Cost4=$('#Cost4').val();
+		var PDC1=$('#PDC1').val();
+		var confidence=$('#confidence').val();
+		
+		if(Institute.length<=0||confidence.length<=0||professor.length<=0||Area.length<=0||Cost4.length<=0||PDC1.length<=0){
+			alert("Please fill all the fields")
+		}else{
+			if(confirm("Are you sure,you want to submit?")){
+				$('#successdiv').css("display","none");
+				$.ajax({
+				
+					type:'GET',
+					url:'CarsDetailsAdd.htm',
+					datatype:'json',
+					data:{
+						Institute:Institute,
+						professor:professor,
+						Area:Area,
+						Cost:Cost4,
+						PDC:PDC1,
+						confidence:confidence,
+						initiationid :<%=initiationid%>,
+					},
+					success:function(result){
+						if(result>0){
+							$('#cross7').click();	
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data Added Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							
+							document.getElementById("Institute").value="";
+							document.getElementById("professor").value="";
+							document.getElementById("Area").value="";
+							document.getElementById("Cost4").value="";
+							document.getElementById("PDC1").value="";
+							
+						}else{
+							$('#cross7').click();
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-danger" id="divalert"  role="alert">Data adding unsuccessful</div>');
+							$('#successdiv').delay(3000).hide(0);
+						}
+					}
+				})
+			}else{
+				event.preventDefault();
+				return false;		
+			}
+		}
+	}
+	function ListModal3(){
+		$('#CARSlist').modal('show');
+		
+		$.ajax({
+			type:'GET',
+			url:'CarsList.htm',
+			datatye:'json',
+			data:{
+				initiationid :<%=initiationid%>,
+			},
+			success:function(result){
+				var ajaxresult=JSON.parse(result);
+				console.log(ajaxresult)
+				if(ajaxresult.length==0){
+				$('#tbody3').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
+				}
+				else{
+					var html="";
+
+					for(var i=0;i<ajaxresult.length;i++){
+						html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+3+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+ajaxresult[i][5]+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td></tr>'
+					}
+					$('#tbody3').html(html);
+				}
+			}
+		})
+	}
+	function showEditModal3(){
+		var radio=$('#radio3').val();
+		if(radio==0){
+			alert("Please select one!")
+		}else{
+			$.ajax({
+				type:'GET',
+				url:'CarsValue.htm',
+				datatype:'json',
+				data:{
+					carsid:radio,
+				},
+			success:function(result){
+				var ajaxresult=JSON.parse(result);
+				console.log(ajaxresult);
+				document.getElementById("InstituteEdit").value=ajaxresult[2];
+				document.getElementById("professorEdit").value=ajaxresult[3];
+				document.getElementById("AreaEdit").value=ajaxresult[4];
+				document.getElementById("Cost4Edit").value=ajaxresult[5];
+				document.getElementById("PDC1Edit").value=ajaxresult[6];
+				document.getElementById("confidenceEdit").value=ajaxresult[7];
+				document.getElementById("carsid").value=ajaxresult[0];
+				$('#cross8').click();
+				$('#EditCars').modal('show');
+			}
+			})
+		}
+	}
+	function editForm3(){
+		var Institute=$('#InstituteEdit').val().trim();
+		var professor=$('#professorEdit').val().trim();
+		var Area=$('#AreaEdit').val().trim();
+		var Cost4=$('#Cost4Edit').val();
+		var PDC1=$('#PDC1Edit').val();
+		var confidence=$('#confidenceEdit').val();
+		var carsid=$('#carsid').val();
+		if(Institute.length<=0||confidence.length<=0||professor.length<=0||Area.length<=0||Cost4.length<=0||PDC1.length<=0){
+			alert("Please fill all the fields")
+		}else{
+			if(confirm("Are you sure,you want to submit?")){
+				
+			$.ajax({
+				type:'GET',
+				url:'CarsEdit.htm',
+				datatype:'json',
+				data:{
+					Institute:Institute,
+					professor:professor,
+					Area:Area,
+					Cost:Cost4,
+					PDC:PDC1,
+					confidence:confidence,
+					carsid:carsid,
+				},
+				success:function(result){
+					if(result>0){
+						$('#cross9').click();	
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Cars Data Updated Successfully</div>');
+						$('#successdiv').delay(3000).hide(0);
+					}
+					setTimeout(ListModal3, 3000);
+				}
+			})
+				
+				
+				
+			}else{
+				event.preventDefault();
+				return false;		
+			}
+		}
+		
+	}
+	</script>
 </body>
-</html>
+	</html>

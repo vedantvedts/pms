@@ -41,6 +41,7 @@ import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
+import com.vts.pfms.project.dto.ProjectMajorCarsDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
@@ -68,6 +69,7 @@ import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCars;
 import com.vts.pfms.project.model.ProjectMajorRequirements;
 import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -2517,5 +2519,49 @@ public class ProjectServiceImpl implements ProjectService {
 			pw.setModifiedBy(userId);
 			pw.setModifiedDate(sdf1.format(new Date()));
 			return dao.WorkPackagesEdit(pw);
+		}
+		
+		@Override
+		public long CarsDetailsAdd(ProjectMajorCarsDto pcd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorCars pmc=new ProjectMajorCars();
+			pmc.setInitiationId(pcd.getInitiationId());
+			pmc.setInstitute(pcd.getInstitute());
+			pmc.setProfessor(pcd.getProfessor());
+			pmc.setAreaRD(pcd.getAreaRD());
+			pmc.setCost(pcd.getCost());
+			pmc.setPDC(pcd.getPDC());
+			pmc.setConfidencelevel(pcd.getConfidencelevel());
+			pmc.setCreatedBy(userId);
+			pmc.setCreatedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			return dao.CarsDetailsAdd(pmc);
+		}
+		@Override
+		public List<Object[]> CarsList(String parameter) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.CarsList(parameter);
+		}
+		@Override
+		public Object[] CarsValue(String parameter) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.CarsValue(parameter);
+		}
+		
+		@Override
+		public long carsEdit(ProjectMajorCarsDto pcd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorCars pmc=new ProjectMajorCars();
+			pmc.setCarsId(pcd.getCarsId());
+			pmc.setInstitute(pcd.getInstitute());
+			pmc.setProfessor(pcd.getProfessor());
+			pmc.setAreaRD(pcd.getAreaRD());
+			pmc.setCost(pcd.getCost());
+			pmc.setPDC(pcd.getPDC());
+			pmc.setConfidencelevel(pcd.getConfidencelevel());
+			pmc.setModifiedBy(userId);
+			pmc.setModifiedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			return dao.CarEdit(pmc);
 		}
 }

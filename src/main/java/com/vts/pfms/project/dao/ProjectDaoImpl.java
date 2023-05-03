@@ -47,6 +47,7 @@ import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCars;
 import com.vts.pfms.project.model.ProjectMajorRequirements;
 import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -2730,6 +2731,45 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		query.setParameter("ModifiedBy", pw.getModifiedBy());
 		query.setParameter("ModifiedDate", pw.getModifiedDate());
 		query.setParameter("workid", pw.getWorkId());
+		return query.executeUpdate();
+	}
+	@Override
+	public long CarsDetailsAdd(ProjectMajorCars pmc) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(pmc);
+		manager.flush();
+		return pmc.getCarsId();
+	}
+	private static final String CARSLIST="SELECT carsid,initiationid,institute,professor,AreaRd,cost,pdc,confidencelevel FROM project_majaor_cars_details WHERE initiationid=:parameter AND isactive=1";
+	@Override
+	public List<Object[]> CarsList(String parameter) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(CARSLIST);
+		query.setParameter("parameter", parameter);
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String CARSVALUE="SELECT carsid,initiationid,institute,professor,AreaRd,cost,pdc,confidencelevel FROM project_majaor_cars_details WHERE carsid=:parameter AND isactive=1";
+	@Override
+	public Object[] CarsValue(String parameter) throws Exception {
+		Query query=manager.createNativeQuery(CARSVALUE);
+		query.setParameter("parameter", parameter);
+		return (Object[])query.getSingleResult();
+	}
+	private static final String CARSEDIT="UPDATE project_majaor_cars_details SET institute=:institute,professor=:professor,AreaRd=:AreaRd,cost=:cost,pdc=:pdc,confidencelevel=:confidencelevel,modifiedby=:modifiedby, modifieddate=:modifieddate WHERE carsid=:carsid AND isactive=1";
+	@Override
+	public long CarEdit(ProjectMajorCars pmc) throws Exception {
+		// TODO Auto-generated method stub
+		Query query =manager.createNativeQuery(CARSEDIT);
+		query.setParameter("institute", pmc.getInstitute());
+		query.setParameter("professor", pmc.getProfessor());
+		query.setParameter("AreaRd", pmc.getAreaRD());
+		query.setParameter("cost", pmc.getCost());
+		query.setParameter("pdc", pmc.getPDC());
+		query.setParameter("confidencelevel", pmc.getConfidencelevel());
+		query.setParameter("modifiedby", pmc.getModifiedBy());
+		query.setParameter("modifieddate", pmc.getModifiedDate());
+		query.setParameter("carsid", pmc.getCarsId());
 		return query.executeUpdate();
 	}
 }

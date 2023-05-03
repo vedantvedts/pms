@@ -63,6 +63,7 @@ import com.vts.pfms.project.dto.PfmsRequirementAttachmentDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
+import com.vts.pfms.project.dto.ProjectMajorCarsDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
@@ -4958,7 +4959,86 @@ public class ProjectController
 		return json.toJson(count);
 	}
 	
+	@RequestMapping(value="CarsDetailsAdd.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsDetailsAdd(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsDetailsAdd.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCarsDto pcd=new ProjectMajorCarsDto();
+			pcd.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			pcd.setInstitute(req.getParameter("Institute"));
+			pcd.setProfessor(req.getParameter("professor"));
+			pcd.setAreaRD(req.getParameter("Area"));
+			pcd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pcd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			pcd.setConfidencelevel(Integer.parseInt(req.getParameter("confidence")));
+			
+			count=service.CarsDetailsAdd(pcd,UserId);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsDetailsAdd.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="CarsList.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsList.htm "+UserId);
+		List<Object[]>CarsList=null;
+		try {
+			CarsList=service.CarsList(req.getParameter("initiationid"));
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsList.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(CarsList);
+	}
 	
+	@RequestMapping(value="CarsValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsValue.htm "+UserId);
+		Object[]CarsValue=null;
+		try {
+			CarsValue=service.CarsValue(req.getParameter("carsid"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsValue.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(CarsValue);
+	}
+	@RequestMapping(value="CarsEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsEdit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCarsDto pcd=new ProjectMajorCarsDto();
+			pcd.setInstitute(req.getParameter("Institute"));
+			pcd.setProfessor(req.getParameter("professor"));
+			pcd.setAreaRD(req.getParameter("Area"));
+			pcd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pcd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			pcd.setConfidencelevel(Integer.parseInt(req.getParameter("confidence")));
+			pcd.setCarsId(Long.parseLong(req.getParameter("carsid")));
+			
+			count=service.carsEdit(pcd,UserId);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsEdit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
 	
 	//Sanction statement;
 	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
