@@ -8,7 +8,20 @@
 </head>
 <body>
 
-<% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); %>
+<% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); 
+/* String Username =(String)session.getAttribute("Username");  
+String EmpNo=(String)session.getAttribute("empNo"); 
+Long loginId=(Long)session.getAttribute("LoginId"); 
+Long divisionId=(Long)session.getAttribute("Division"); 
+Long empId =(Long)session.getAttribute("EmpId"); 
+Long formRoleId=(Long)session.getAttribute("FormRole"); 
+String logintype=(String)session.getAttribute("LoginType"); */
+
+String ibasUri=(String)request.getAttribute("ibasUri");
+String ibasCashOutGoUri = ibasUri+"/CCMReport.htm";
+   //String ibasCashOutGoUri = ibasUri+"/loginFromPfms/CCMReport.htm";
+   System.out.println("ibasCashOutGoUri :"+ibasCashOutGoUri);
+%>
 
 	<div  class="card " id="project-attributes" style="margin:0px 0px 5px 0px;background-color: rgba(0,0,0,0.1) !important;display: none;">
 		<div class="card-body" style="padding: 0px !important">
@@ -68,10 +81,21 @@
 				      	BigDecimal AddlOth = new BigDecimal(0.0);
 				      
 				      %>
+
+				<form class="form-inline" target="_blank"  id="ibasform" >  
+				 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>  
+				   <%-- <input type="hidden" name="loginType" value="<%=logintype%>">
+				   <input type="hidden" name="empId" value="<%=empId%>">
+				   <input type="hidden" name="loginId" value="<%=loginId%>">
+				   <input type="hidden" name="divisionId" value="<%=divisionId%>">
+				   <input type="hidden" name="formRoleId" value="<%=formRoleId%>">
+				   <input type="hidden" name="userName" value="<%=Username%>"> 
+				   <input type="hidden" name="empNo" value="<%=EmpNo%>">    --%>
 				<table class="table cashoutgotable" id="cashoutgotable" >
 				  <thead>
 				    <tr>
-				      <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;&nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
+				    <%--  <th style="width:10rem"><button type="submit" class="btn btn-sm" formaction="<%=ibasCashOutGoUri%>"   style="background-color: #f7f7f7;"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</button></th> --%>
+				         <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
 				      <th scope="col" style="width:10rem">Allot</th>
 				      <th scope="col" style="width:10rem">Exp</th>
 				      <th scope="col" style="width:10rem">Bal</th>
@@ -323,6 +347,7 @@
 				  
 				  </tbody>
 				</table>
+				</form>
 			</div>
 			   </div>
 	</div>	 

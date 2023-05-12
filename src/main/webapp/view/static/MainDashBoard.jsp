@@ -516,6 +516,16 @@
 <%
 
 String Username =(String)session.getAttribute("Username");  
+String EmpNo=(String)session.getAttribute("empNo"); 
+String ibasUri=(String)request.getAttribute("ibasUri");
+/* Long loginId=(Long)session.getAttribute("LoginId");  */
+/* Long divisionId=(Long)session.getAttribute("Division");  */
+/* Long empId =(Long)session.getAttribute("EmpId");  */
+/* Long formRoleId=(Long)session.getAttribute("FormRole");  */
+
+
+
+  
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
 /* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
@@ -528,8 +538,6 @@ Integer selfremaindercount=(Integer)request.getAttribute("selfremaindercount");
 /* Object[] allschedulescount=(Object[])request.getAttribute("AllSchedulesCount"); */
 
 List<ProjectSanctionDetailsMaster>  budgetlist=(List<ProjectSanctionDetailsMaster>)request.getAttribute("budgetlist");
-String empNo=(String)session.getAttribute("empNo"); 
-String ibasUri=(String)request.getAttribute("ibasUri");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectMeetingCount=(List<Object[]>)request.getAttribute("ProjectMeetingCount");
 /* Object[] GeneralMeetingCount=(Object[])request.getAttribute("GeneralMeetingCount"); */
@@ -557,6 +565,7 @@ SimpleDateFormat sdf3=new SimpleDateFormat("dd-MM-yy");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf2=new SimpleDateFormat("yy-MM-dd");
 IndianRupeeFormat nfc=new IndianRupeeFormat();
+
 
 
 String logintype="U";
@@ -654,8 +663,7 @@ if(ses!=null){ %>
 			 <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY END --------------- -->      
 			      
 			 <!-- ----------------- ACTION DASHBOARD TODAY'S SCHEDULE START -------------------------- -->
-			      
-			      
+			 	
 				      <div class="card" style="background: transparent;display: none" id="todayschedules">
 							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
 								<span style="color:white">Today's Schedule <span class="badge badge-today badge-success" style="position: absolute;top: 0px;"></span> </span> 
@@ -1042,9 +1050,8 @@ if(ses!=null){ %>
 										<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
 										
 											<a class="navbar-brand" >Financial Performance</a>
-										  <form class="form-inline" target="_blank" method="post" id="ibasform" action="<%=ibasUri%>/loginFromPfms">
-										    <input type="hidden" name="loginType" value="<%=logintype%>">
-											<input type="hidden" name="empNo" value="<%=empNo%>">
+										    <form class="form-inline" target="_blank" method="post" id="ibasform" action="<%=ibasUri%>/loginFromPfms">
+										    <input type="hidden" name="empNo" value="<%=EmpNo%>">
 											<input type="hidden" name="ProjectId" value="<%=obj.getProjectid()%>">
 											<input type="hidden" name="ProjectCode" value="<%=obj.getProjectCode()%>">
 											<input type="hidden" name="Expenditure" value="<%=obj.getExpAmt()%>">
@@ -1052,6 +1059,18 @@ if(ses!=null){ %>
 											<input type="hidden" name="Dipl" value="<%=obj.getDipl()%>">
 											<input type="hidden" name="BalAmt" value="<%=obj.getBalAmt()%>">
 											<input type="hidden" name="asOndate" value="<%=obj.getAsOnDate()%>">
+										   
+										    <!-- ----Ibas Vers 3 required---- -->
+										    <%-- <input type="hidden" name="loginType" value="<%=logintype%>">
+										    <input type="hidden" name="empId" value="<%=empId%>">
+										    <input type="hidden" name="loginId" value="<%=loginId%>">
+										    <input type="hidden" name="divisionId" value="<%=divisionId%>">
+										    <input type="hidden" name="formRoleId" value="<%=formRoleId%>">
+										    <input type="hidden" name="userName" value="<%=Username%>"> --%>
+                                            <!-- -------- -->
+											
+										    
+										 
 										    
 										    <button type="submit" class="btn btn-sm" style="float: right;background-color: #23689b;color: white" ><img src="view/images/projecticon.png"/> &nbsp;Project Details</button>
 										  
