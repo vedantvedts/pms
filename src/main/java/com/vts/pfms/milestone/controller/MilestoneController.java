@@ -2048,7 +2048,7 @@ public class MilestoneController {
 			String UserId = (String)ses.getAttribute("Username");
 			logger.info(new Date() +" Inside ProjectEmpListEdit.htm "+ UserId);	
 			String projectid=req.getParameter("projectid");
-			String labcode = req.getParameter("labcode");
+			String labcode = (String) ses.getAttribute("labcode");
 			String empid=req.getParameter("EmpId");
 			List<Object[]> EmployeeList=null;
 			if(Long.parseLong(projectid)>0)
