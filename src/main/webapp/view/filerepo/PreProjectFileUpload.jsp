@@ -196,9 +196,10 @@ h6 {
     String initiationid=(String)request.getAttribute("initiationid");
     String projectTitle=(String)request.getAttribute("projectTitle");
     String filesize=(String) request.getAttribute("filesize"); 
+  	String stepdidno=(String)request.getAttribute("stepdidno");
+  	String proejecttypeid=(String)request.getAttribute("proejecttypeid");
   
-    
-List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName"); 
+	List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName"); 
 %>
 	<%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
@@ -230,17 +231,18 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 						required="required" name="project">
 						<%if(!ProjectIntiationList.isEmpty()) {
                                         for(Object[]obj:ProjectIntiationList){%>
-						<option value="<%=obj[0]+"/"+obj[4]+"/"+obj[5]%>"
+						<option value="<%=obj[0]+"/"+obj[4]+"/"+obj[5]+"/"+obj[11]%>"
 							<%if(obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
 							selected <%} %>><%=obj[4] %></option>
 						<%}} %>
 					</select>
+			
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}"
 					value="${_csrf.token}" /> <input id="submit" type="submit"
 					name="submit" value="Submit" hidden="hidden">
 			</div>
-		</form>
+		</form>	
 		<div class="container-fluid" style="display: none;" id="main">
 			<div class="row">
 				<div class="col-md-12">
@@ -266,7 +268,7 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 									<form action="#">
 										<ul style="margin-left: -4%;">
 											<%for(Object[]obj:steps) {%>
-											<li><span class="caret"
+											<li><span class="caret" id="span<%=obj[0] %>"
 												onclick="onclickchange(this,'<%=obj[0]%>','<%=obj[1]%>');"><%=obj[1] %></span>
 												<ul class="nested" id="<%=obj[0]%>"></ul></li>
 											<%} %>
@@ -390,96 +392,6 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 	<!--  -->
 
 	<!-- modal for soc -->
-
-
-
-	<form class="form-horizontal" role="form"
-		action="PreProjectFileSubmit.htm" method="POST" id="myform2"
-		enctype="multipart/form-data">
-		<div class="modal fade bd-example-modal-lg" id="exampleModalLongSoc"
-			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content addreq" style="margin-top: 16%">
-					<div class="modal-header" id="modalreqheader">
-						<h5 class="modal-title" id="exampleModalLabel">Document
-							Upload</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close" style="color: white">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="col-md-12" style="margin-top: 2%">
-							<div class="row">
-								<div class="col-md-4">
-									<label id="fileName">Document Name:</label><span
-										class="mandatory" style="color: red;">*</span>
-								</div>
-								<div class="col-md-5">
-									<select class="form-control selectdee" id="filename"
-										name="filename" data-container="body" data-live-search="true"
-										onchange="oninputChange()" style="font-size: 5px; width: 100%">
-										<option value="" selected="selected" hidden="true">--Select--</option>
-										<option value="System Analysis Report">System
-											Analysis Report</option>
-										<option value="TRL Analysis Report">TRL Analysis
-											Report</option>
-										<option value="Project Execution Plan">Project
-											Execution Plan</option>
-										<option value="Peer Review Committee Recommendation">Peer
-											Review Committee Recommendation</option>
-										<option
-											value=" FYP/LTTPP/DRDO Vision Document / Roadmap of DRDO Plan Project">
-											FYP/LTTPP/DRDO Vision Document / Roadmap of DRDO Plan Project</option>
-
-									</select>
-								</div>
-								<div class="col-md-12" style="margin-top: 2%">
-									<div class="row">
-										<div class="col-md-4">
-											<label id="file">Choose File:</label><span class="mandatory"
-												style="color: red;">*</span>
-										</div>
-										<div class="col-md-5">
-											<input class="form-control" type="file" name="Attachment"
-												id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
-												onchange=" editcheck('Attachment1',1)">
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12" style="margin-top: 2%">
-									<div class="row">
-										<div class="col-md-4">
-											<label id="filedesc">Document Dscription:</label><span
-												class="mandatory" style="color: red;">*</span>
-										</div>
-										<div class="values"></div>
-										<div class="col-md-5">
-											<input type="text" class="form-control" maxlength="512"
-												name="description" style="line-height: 3rem">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<input type="hidden" name="IntiationId" value="<%=initiationid %>" />
-						<input type="hidden" name="projectshortName"
-							value="<%=projectshortName %>" />
-						<div class="form-group" align="center" style="margin-top: 3%;">
-							<input type="hidden" name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
-							<button type="submit" class="btn btn-primary btn-sm submit"
-								id="add" name="action" value="SUBMIT"
-								onclick="return reqCheck('myform1');">SUBMIT</button>
-							<input type="hidden" name="versionvalue">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
 
 
 	<!-- modal for version change  -->
@@ -614,9 +526,9 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		  $('#filestable').css("display","none");
 		 
 			var initiationId=<%=initiationid%>;
-		 console.log(stepid+stepname)
 		 $('.values').html('<input type="hidden" id="stepnames" name="stepid" value="'+stepid+'">')
 		 var html="";
+		 if(stepid!=3){
 		 $.ajax({
 			 type:'GET',
 			 url:'PreprojectFiles.htm',
@@ -628,34 +540,81 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 		 success:function(result){
 			 
 			 var ajaxresult=JSON.parse(result);
-			 
-			 console.log(ajaxresult);
 			 for(var i=0;i<ajaxresult.length;i++){
 		
-				
+		
 				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4]+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload' style='color: #007bff' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"' ><i class='fa fa-download' ></i></button></li>"
 			 }
+			 console.log(ajaxresult.length+"----")
 			 /*button for adding files in list  */
-			 if(stepid!=3){
-			 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="show()">Add File</button></span></li>');
-			 }
-			 else if(stepid==3){
-				 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="showSocModal()">Add File</button></span></li>'); 
-			 }
+				 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="show()">Add File</button></span></li>');
 			 }
 			 
 		 })
-		 showTable(1,0,0);
+		 }else if(stepid==3){
+			 html=html+"<li style='margin-top:5px;'><span class='caret soc' id='soc1' onclick='socDoc("+1+","+stepid+")'>FYPL/DRDODivisionDocument/Roadmap of DRDO plan Project </span ><span class='socDocuments' id='socdoc1'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc2' onclick='socDoc("+2+","+stepid+")'>System Analysis Report </span><span class='socDocuments' id='socdoc2'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc3' onclick='socDoc("+3+","+stepid+")'> Cluster Council Recommendation </span><span class='socDocuments' id='socdoc3'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc4' onclick='socDoc("+4+","+stepid+")'>Peer Review Committee Recommendation(MM/TD) </span><span class='socDocuments' id='socdoc4'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc5' onclick='socDoc("+5+","+stepid+")'>PDR committee Recommendation </span><span class='socDocuments' id='socdoc5'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc6' onclick='socDoc("+6+","+stepid+")'>DMC-AON Recommendation </span><span class='socDocuments' id='socdoc6'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc7' onclick='socDoc("+7+","+stepid+")'>TRL Analysis Report </span><span class='socDocuments' id='socdoc7'></span></li>"
+			 +"<li style='margin-top:5px;'><span class='caret soc' id='soc8' onclick='socDoc("+8+","+stepid+")'>Project Execution plan Attachment </span><span class='socDocuments' id='socdoc8'></span></li>"
+			;
+			$('#'+stepid).html(html);
+		 }
+		 showStepTable(stepid,initiationId);
 		 
 		 }
-		 
-	
+		 	 function socDoc(Documentid,stepid,name) {
+		 		  $('.soc').css("color","black");
+				  $('.soc').css("font-weight", "400");
+				  $('#soc'+Documentid).css("color","green");
+				  $('#soc'+Documentid).css("font-weight", "700");
+				  
+				 var fileName= String(document.getElementById('soc'+Documentid).innerHTML);
+				 console.log(typeof fileName);
+				  var initiationId=<%=initiationid%>;
+				  $.ajax({
+					 type:'GET',
+					 url:'ProjectFilesSoc.htm',
+					 datatype:'json',
+					 data:{
+						 Documentid:Documentid,
+						 stepid:stepid,
+						 initiationid:initiationId,
+					 },
+					 success:function(result){
+						 var ajaxresult=JSON.parse(result);
+						 console.log(ajaxresult);
+						 if(stepid==3){
+						 $('#filename').val(fileName);
+						 $('#filename').attr("readonly", true);
+						 $('.values').html('<input type="hidden" id="stepnames" name="stepid" value="'+stepid+'"><input type="hidden" name="doccount" value="'+Documentid+'">')
+						 }
+						 if(ajaxresult==null){
+							 var val = "<button class='btn btn-sm btn-info' type='button' onclick='showforSoc()'>Add File</button>";
+							 $('.socDocuments').html('');
+							 $('#socdoc'+Documentid).html(val);
+							 showTable(Documentid,initiationId,stepid);
+						 }else{
+							 $('.socDocuments').html('');
+							 showTable(Documentid,initiationId,stepid);
+							 $('#socdoc'+Documentid).html("<button class='btn' type='button' style='margin-left:5px;background:transparent;'onclick='uploadshow("+ajaxresult[2]+","+ajaxresult[6]+","+JSON.stringify(ajaxresult[4])+","+ajaxresult[8]+")' ><i class='fa fa-upload' style='color: #007bff' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[8]+","+ajaxresult[6]+","+ajaxresult[1]+","+ajaxresult[2]+"' ><i class='fa fa-download' ></i></button>");
+						 }
+					 }
+				  })
+				  
+		 	 }
 		 function show(){
+			 $('#filename').val("");
+			 $('#filename').attr("readonly", false);
 			 $('#exampleModalLong').modal('show');
 		 }
-		 function showSocModal(){
-			 $('#exampleModalLongSoc').modal('show');
+		 function showforSoc(){
+			 $('#exampleModalLong').modal('show');
 		 }
+		 
 		 
 		 function uploadshow(stepid,version,filename,DocumentCount){
 			 	
@@ -729,14 +688,14 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 				    }
 			});
 		  
-	
+			/*show table for each file  */
 		  function showTable(documentcount,inititationid,stepid){
 			  $('.file').css("color","black");
 			  $('.file').css("font-weight", "400");
 			  $('#file'+documentcount).css("color","green");
 			  $('#file'+documentcount).css("font-weight", "700");
 			  $('#filestable').css("display","block");
-			  console.log(documentcount+" "+inititationid+" "+stepid);
+			  
 			
 			table1.destroy();
 			  
@@ -774,13 +733,55 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 						}); 
 				  }
 			  })
-
-			  
-			  
 		  }
+		  /*show table for each step  */
+				
+		  function showStepTable(stepid,initiationid){
+			
+			  table1.destroy();
+			  $.ajax({
+				  Type:'GET',
+				  url:'ProjectStepFiles.htm',
+				  datatype:'json',
+				  data:{
+					  stepid:stepid,
+					  initiationid:initiationid,
+				  },
+				  success:function(result){
+					  var ajaxresult=JSON.parse(result);
+					  var html="";
+					  for(var i=0;i<ajaxresult.length;i++){
+						  const date = new Date(ajaxresult[i][1]);
+						   const formattedDate = date.toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          }).replace(/\//g, '-');
+						  html=html+"<tr><td>"+(i+1)+"</td><td>"+ajaxresult[i][0]+"</td><td>"+formattedDate+"</td><td>"+ajaxresult[i][2]+"</td><td><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][3]+","+ajaxresult[i][2]+","+ajaxresult[i][4]+","+ajaxresult[i][5]+"'><i class='fa fa-download' ></i></button></td></tr>"
+					  }
+					  
+					  $('#filestable').css("display","block");
+					  $('#listtbody').html(html);
+					  table1=$("#MyTable1").DataTable({		 
+							 "lengthMenu": [5,10,25, 50, 75, 100 ],
+							 "pagingType": "simple",
+							 "pageLength": 5,
+							 "language": {
+							      "emptyTable": "Files not Found"
+							    }
+						}); 
+				  }
+			  })
+		  }
+		  
+		  
+		  
 		  $(document).ready(function(){
 			  var initiationId=<%=initiationid%>;
-			  showTable(1,0,0);
+			  var stepdidno=<%=stepdidno%>;
+			 $('#span'+stepdidno).css("color","green");
+			 $('#span'+stepdidno).css("font-weight", "700");
+			  showStepTable(stepdidno,initiationId);
 		 }) ;
 				 
 		  $(function () {
@@ -814,10 +815,10 @@ List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName");
 			 	})
 		  }
 		  
-		/*  function oninputchange(){
+	/* 	 function oninputchange(){
 			 console.log("hii")
 		 } 
-			 */
+			 */ 
 			
 		</script>
 </body>

@@ -46,6 +46,9 @@ public class PfmsInitiation implements Serializable {
     private Long PCDuration;
     private Double IndicativeCost;
     private String PCRemarks;
+   // newlyadded//
+    private String User;
+    ///--------//
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

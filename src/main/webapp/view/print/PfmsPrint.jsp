@@ -522,8 +522,7 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 			
 			<tr>
 				<td colspan="1" class="border_black  center" style=";width:7%;font-weight: 600"><span >SN</span></td>
-			<!-- 	<td colspan="2" class="border_black  center" style="font-weight: 600;width:20%;"><span >Head Code</span></td> -->
-				<td colspan="5" class="border_black  center" style=";width:50%;font-weight: 600" ><span >Budget Item</span></td>
+				<td colspan="5" class="border_black  center" style=";width:50%;font-weight: 600" ><span >Item Name</span></td>
 				<td colspan="2" class="border_black  center" style=";width:25%;font-weight: 600"><span >Item Cost (Lakhs)</span></td>
 			
 			</tr>

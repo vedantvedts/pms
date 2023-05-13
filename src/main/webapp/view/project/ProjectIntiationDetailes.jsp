@@ -1695,9 +1695,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 <!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
  -->				                                     
 				                                <td><%if(obj[0]!=null){%><%=obj[0] %><%}else{ %>-<%} %></td>
-				                                <td align="center" ><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
-				                                <td><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-				                                 <td><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
+				                                <td align="left" ><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></td>
+				                                <td><%if(obj[2]!=null){%><%="T"%><sub><%=obj[5].toString() %></sub><%="+"+obj[2] %><%}else{ %>-<%} %></td>
+				                                 <td align="left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
 				                    
 				                            </tr>
 				                            

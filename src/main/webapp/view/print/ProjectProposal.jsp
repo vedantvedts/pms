@@ -81,11 +81,11 @@ String InitiationId=(String)request.getAttribute("InitiationId");
 <div id="presentation-slides" class="carousel slide "  data-ride="carousel"  >
 	<div class="carousel-inner" align="center">
 	<div class="carousel-item active" style="/* background: #D6EEEE  */">
-				
+			
 				<div class="content" align="center" style="height:92.4vh !important;padding-top: 15px; ">
 				
 					<div class="firstpage"  > 
-
+	
 						<div align="center" ><h2 style="color: #145374 !important;font-family: 'Muli'!important">Presentation for<%if(PfmsInitiationList[5]!=null){ %><br><%=PfmsInitiationList[5] %><%}else{ %><i>Project Title</i><%} %></h2></div>
 					     <div align="center" ><h3 style="color: #4C9100 !important"><%if(PfmsInitiationList[4]!=null){ %>(<%=PfmsInitiationList[4] %>)<%}else{ %><i> - </i><%} %></h3></div>	
 					     <div align="center" ><h3 style="color: #145374 !important"><%if(PfmsInitiationList[10]!=null){%> <%=sdf2.format(PfmsInitiationList[10])%><%}else{ %>-<%} %></h3></div>
@@ -724,7 +724,7 @@ String InitiationId=(String)request.getAttribute("InitiationId");
 
 					<table class="costtable"
 						style="margin-right: 2px; margin-top: 5px; margin-bottom: 10px; margin-left: 2px; width:98%;; border-collapse: collapse;">
-						<thead style="background:#629ed1; color:white;top:-2px; position: sticky; height:50px;">
+						<thead style="background:#629ed1; color:white;top:-18px; position: sticky; height:50px;">
 						<tr style="font-size: 18px;">
 								<th colspan="1" class="" style="width: 4%"><span>SN</span></th>
 								<th colspan="4" class="" style="width: 30%"><span>Budget

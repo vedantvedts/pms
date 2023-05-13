@@ -41,6 +41,9 @@ import com.vts.pfms.project.dto.PfmsProjectDataDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
+import com.vts.pfms.project.dto.ProjectMajorCarsDto;
+import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
+import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.PfmsApproval;
@@ -53,9 +56,11 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
+import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
@@ -64,6 +69,9 @@ import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCars;
+import com.vts.pfms.project.model.ProjectMajorRequirements;
+import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterAttach;
 import com.vts.pfms.project.model.ProjectMasterRev;
@@ -1546,38 +1554,6 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectDataSubmit(model);
 	}
 
-	/*
-	 * @Override public long RequirementAttachmentAdd(long initiationReqId,
-	 * MultipartFile[] fileAttach, String labCode) throws Exception { // TODO
-	 * Auto-generated method stub logger.info(new Date() +
-	 * "Inside SERVICE RequirementAttachmentAdd ");
-	 * List<PfmsRequirementAttachment>PfmsRequirementAttachmentList=new
-	 * ArrayList<PfmsRequirementAttachment>();
-	 * 
-	 * Timestamp instant = Timestamp.from(Instant.now()); String timestampstr =
-	 * instant.toString().replace(" ", "").replace(":", "").replace("-",
-	 * "").replace(".", "");
-	 * 
-	 * String Path = labCode + "\\ProjectRequirement\\"; long count=0;
-	 * 
-	 * 
-	 * for(int i=0;i<fileAttach.length;i++) { PfmsRequirementAttachment pra=new
-	 * PfmsRequirementAttachment(); pra.setInitiationReqId(initiationReqId);
-	 * if(!fileAttach[i].isEmpty()) { File theDir = new File(uploadpath + Path); if
-	 * (!theDir.exists()) { theDir.mkdirs(); }
-	 * pra.setAttachmentsName(fileAttach[i].getOriginalFilename());
-	 * saveFile(uploadpath+Path,pra.getAttachmentsName(),fileAttach[i]); }else {
-	 * pra.setAttachmentsName(null); } pra.setFilespath(Path);
-	 * pra.setIsActive(Integer.parseInt("1")); count
-	 * =dao.RequirementAttachmentAdd(pra);
-	 * 
-	 * }
-	 * 
-	 * 
-	 * return count; }
-	 */
-	
-	
 	@Override
 	public long preProjectFileupload(PreprojectFileDto pfd, MultipartFile fileAttach, String labCode,String UserId,Double version)
 			throws Exception {
@@ -2240,13 +2216,13 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		@Override
 		public long numberOfReqTypeId(String intiationId) throws Exception {
-			// TODO Auto-generated method stub
+		
 			return dao.numberOfReqTypeId(intiationId);
 		}
 
 		@Override
 		public List<Object[]> BudgetHeadList(BigInteger projecttypeid) throws Exception {
-			// TODO Auto-generated method stub
+			
 			return dao.BudgetHeadList(projecttypeid);
 		}
 
@@ -2320,13 +2296,13 @@ public class ProjectServiceImpl implements ProjectService {
 		@Override
 		public List<Object[]> projectfilesList(String inititationid, String stepid, String documentcount)
 				throws Exception {
-			// TODO Auto-generated method stub
+	
 			return dao.projectfilesList(inititationid,stepid,documentcount);
 		}
 
 		@Override
 		public List<Object[]> requirementFiles(String initiationid, int stepid) throws Exception {
-			// TODO Auto-generated method stub
+
 			return dao.requirementFiles(initiationid,stepid);
 		}
 
@@ -2338,20 +2314,254 @@ public class ProjectServiceImpl implements ProjectService {
 
 		@Override
 		public long addProjectPGNAJ(PfmsInitiationSanctionData psd) throws Exception {
-			// TODO Auto-generated method stub
+
 			return dao.addProjectPGNAJ(psd);
 		}
 
 		@Override
 		public long ProjectPGNAJUpdate(PfmsInitiationSanctionData psd) throws Exception {
-			// TODO Auto-generated method stub
+
 			return dao.ProjectPGNAJUpdate(psd);
 		}
 
+		/*
+		 * @Override public long
+		 * projectInitiationAdditionalRequirementUpdate(PfmsInitiation pf) throws
+		 * Exception {
+		 * 
+		 * return dao.projectInitiationAdditionalRequirementUpdate(pf); }
+		 * 
+		 * @Override public long projectInitiationMethodologyUpdate(PfmsInitiation pf)
+		 * throws Exception {
+		 * 
+		 * return dao.projectInitiationMethodologyUpdate(pf); }
+		 */
 
+		@Override
+		public long projectInitiationUserUpdate(PfmsInitiation pf) throws Exception {
 
-	
+			return dao.projectInitiationUserUpdate(pf);
+		}
 
+		@Override
+		public List<Object[]> projectfiles(String inititationid, String stepid) throws Exception {
+
+			return dao.projectfiles(inititationid,stepid);
+		}
+
+		@Override
+		public Object[] projectfile(String initiationid, String stepid, String documentid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.projectfile(initiationid,stepid,documentid);
+		}
+
+		@Override
+		public List<Object[]> DemandList() throws Exception {
+			// TODO Auto-generated method stub
+			return dao.DemandList();
+		}
+
+		@Override
+		public long PfmsProcurementPlanSubmit(PfmsProcurementPlan pp) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.PfmsProcurementPlanSubmit(pp);
+		}
+
+		@Override
+		public List<Object[]> ProcurementList(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProcurementList(initiationid);
+		}
+
+		@Override
+		public Object[] PocurementPlanEditDetails(String planid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.PocurementPlanEditDetails(planid);
+		}
+
+		@Override
+		public long ProjectProcurementEdit(PfmsProcurementPlan pp) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProjectProcurementEdit(pp);
+		}
+
+		@Override
+		public String TotalPayOutMonth(String start, String end, String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.TotalPayOutMonth(start,end,initiationid);
+		}
+
+		@Override
+		public Object[] projectMacroDetails(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.projectMacroDetails(initiationid);
+		}
+
+		@Override
+		public long InsertMacroDetails(PfmsInitiationMacroDetails pm) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.InsertMacroDetails(pm);
+		}
+
+			@Override
+			public long updateMactroDetailsMethodology(PfmsInitiationMacroDetails pm) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.updateMactroDetailsMethodology(pm);
+			}
+
+			@Override
+			public long updateMactroDetailsRequirements(PfmsInitiationMacroDetails pm) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.updateMactroDetailsRequirements(pm);
+			}
+
+		@Override
+		public long UpdateProjectEnclosure(PfmsInitiationMacroDetails pm) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.UpdateProjectEnclosure(pm);
+		}
+		@Override
+		public long UpdateProjectOtherInformation(PfmsInitiationMacroDetails pm) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.UpdateProjectOtherInformation(pm);
+		}
+		@Override
+		public long ProposedprojectdeliverablesUpdate(PfmsInitiationMacroDetails pm) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProposedprojectdeliverablesUpdate(pm);
+		}
+		@Override
+		public long ProjectMajorTrainingRequirementSubmit(ProjectMajorRequirementsDto pmr,String UserId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorRequirements PMR=new ProjectMajorRequirements();
+			PMR.setInitiationId(pmr.getInitiationId());
+			PMR.setDiscipline(pmr.getDiscipline());
+			PMR.setAgency(pmr.getAgency());
+			PMR.setPersonneltrained(pmr.getPersonneltrained());
+			PMR.setCost(pmr.getCost());
+			PMR.setDuration(pmr.getDuration());
+			PMR.setRemarks(pmr.getRemarks());
+			PMR.setCreatedBy(UserId);
+			PMR.setCreatedDate(sdf1.format(new Date()));
+			PMR.setIsActive(1);
+			
+			long count=dao.ProjectMajorTrainingRequirementSubmit(PMR);
+			
+			
+			return count;
+		}
+		@Override
+		public List<Object[]> TrainingRequirementList(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.TrainingRequirementList(initiationid);
+		}
+		@Override
+		public Object[] TraingRequirements(String trainingid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.TraingRequirements(trainingid);
+		}
+		@Override
+		public long ProjectMajorTrainingRequirementUpdate(ProjectMajorRequirementsDto pmr,String userid) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorRequirements PMR=new ProjectMajorRequirements();
+			PMR.setDiscipline(pmr.getDiscipline());
+			PMR.setAgency(pmr.getAgency());
+			PMR.setPersonneltrained(pmr.getPersonneltrained());
+			PMR.setCost(pmr.getCost());
+			PMR.setDuration(pmr.getDuration());
+			PMR.setRemarks(pmr.getRemarks());
+			PMR.setModifiedBy(userid);
+			PMR.setModifiedDate(sdf1.format(new Date()));
+			PMR.setIsActive(1);
+			PMR.setTrainingId(pmr.getTrainingId());
+			return dao.ProjectMajorTrainingRequirementUpdate(PMR);
+		}
 		
+		@Override
+		public long WorkPackageSubmit(ProjectMajorWorkPackagesDto pwd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			
+			ProjectMajorWorkPackages pw= new ProjectMajorWorkPackages();
+			pw.setInitiationId(pwd.getInitiationId());
+			pw.setGovtAgencies(pwd.getGovtAgencies());
+			pw.setWorkPackage(pwd.getWorkPackage());
+			pw.setObjective(pwd.getObjective());
+			pw.setScope(pwd.getScope());
+			pw.setCost(pwd.getCost());
+			pw.setPDC(pwd.getPDC());
+			pw.setCreatedBy(userId);
+			pw.setCreatedDate(sdf1.format(new Date()));
+			pw.setIsActive(1);
+			
+			return dao.WorkPackageSubmit(pw);
+		}
+		@Override
+		public List<Object[]> WorkPackageList(String initiationid) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.WorkPackageList(initiationid);
+		}
+		@Override
+		public Object[] WorkPackageValue(String parameter) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.WorkPackageValue(parameter);
+		}
+		@Override
+		public long WorkPackagesEdit(ProjectMajorWorkPackagesDto pwd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorWorkPackages pw= new ProjectMajorWorkPackages();
+			pw.setGovtAgencies(pwd.getGovtAgencies());
+			pw.setWorkPackage(pwd.getWorkPackage());
+			pw.setObjective(pwd.getObjective());
+			pw.setScope(pwd.getScope());
+			pw.setCost(pwd.getCost());
+			pw.setPDC(pwd.getPDC());
+			pw.setWorkId(pwd.getWorkId());
+			pw.setModifiedBy(userId);
+			pw.setModifiedDate(sdf1.format(new Date()));
+			return dao.WorkPackagesEdit(pw);
+		}
 		
+		@Override
+		public long CarsDetailsAdd(ProjectMajorCarsDto pcd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorCars pmc=new ProjectMajorCars();
+			pmc.setInitiationId(pcd.getInitiationId());
+			pmc.setInstitute(pcd.getInstitute());
+			pmc.setProfessor(pcd.getProfessor());
+			pmc.setAreaRD(pcd.getAreaRD());
+			pmc.setCost(pcd.getCost());
+			pmc.setPDC(pcd.getPDC());
+			pmc.setConfidencelevel(pcd.getConfidencelevel());
+			pmc.setCreatedBy(userId);
+			pmc.setCreatedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			return dao.CarsDetailsAdd(pmc);
+		}
+		@Override
+		public List<Object[]> CarsList(String parameter) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.CarsList(parameter);
+		}
+		@Override
+		public Object[] CarsValue(String parameter) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.CarsValue(parameter);
+		}
+		
+		@Override
+		public long carsEdit(ProjectMajorCarsDto pcd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorCars pmc=new ProjectMajorCars();
+			pmc.setCarsId(pcd.getCarsId());
+			pmc.setInstitute(pcd.getInstitute());
+			pmc.setProfessor(pcd.getProfessor());
+			pmc.setAreaRD(pcd.getAreaRD());
+			pmc.setCost(pcd.getCost());
+			pmc.setPDC(pcd.getPDC());
+			pmc.setConfidencelevel(pcd.getConfidencelevel());
+			pmc.setModifiedBy(userId);
+			pmc.setModifiedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			return dao.CarEdit(pmc);
+		}
 }

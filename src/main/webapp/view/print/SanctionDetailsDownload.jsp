@@ -1,5 +1,5 @@
 	<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.math.BigDecimal"%>
+<%@page import="java.math.BigDecimal,java.util.stream.Collectors"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -15,6 +15,11 @@ List<Object[]>sanctionlistdetails=(List<Object[]>)request.getAttribute("sanction
 String ProjectTitle=(String)request.getAttribute("ProjectTitle");
 String Labcode=(String)request.getAttribute("LabCode");
 NFormatConvertion nfc=new NFormatConvertion();
+List<Object[]>projectFiles=(List<Object[]>)request.getAttribute("projectFiles");
+List<Object> DocumentId=new ArrayList<>();
+	if(!projectFiles.isEmpty()){
+	 DocumentId=projectFiles.stream().map(e->e[8]).collect(Collectors.toList());
+	 }
 %>
 <style type="text/css">
 
@@ -113,22 +118,45 @@ background:black;
 							<%}}} %>
 	</tr>
 	 <tr>
-	<td style="width:350px;text-align: left"><h4>7. Cost( in Cr):  </h4></td>
-	<td ><%if(ProjectDetailes[8]!=null && Double.parseDouble(ProjectDetailes[8].toString())>0){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[8].toString())/1000000 )%> &nbsp;&nbsp;<%} else if(ProjectDetailes[20]!=null &&  Double.parseDouble( ProjectDetailes[20].toString())>0 ){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[20].toString())/10000000 )%>&nbsp;&nbsp;<%}else{ %>-<%} %><hr style="margin-top:0px;"></td>
+	<td style="width:350px;text-align: left"><h4>7. Cost( &#8377; in Cr):  </h4></td>
+	<td ><%if(ProjectDetailes[8]!=null && Double.parseDouble(ProjectDetailes[8].toString())>0){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[8].toString())/10000000 )%> &nbsp;&nbsp;<%} else if(ProjectDetailes[20]!=null &&  Double.parseDouble( ProjectDetailes[20].toString())>0 ){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[20].toString())/10000000 )%>&nbsp;&nbsp;<%}else{ %>-<%} %><hr style="margin-top:0px;"></td>
 	</tr>
 		<tr>
 	<td style="width:350px;text-align: left"><h4>8. Schedule (Months): </h4></td>
 	<td ><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><%=ProjectDetailes[9]%><%}else if(ProjectDetailes[18]!=null){ %><%=ProjectDetailes[18]%><%}else{ %>-<%} %><hr style="margin-top:0px;"></td>
 	</tr>
-	<%int i=1;
+	<%
+	if(projectFiles.isEmpty()){
+		int i=1;
 	for(Object[]obj:sanctionlistdetails) {%>
 	<tr>
 	<td style="width:350px;text-align: left"><h4><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]  %></h4></td>
-	<td><%if(obj[2]!=null && obj[2].toString().equalsIgnoreCase("1")) {%>Yes<%}else {%>No<%} %><hr></td>
+	<td align="">NO<hr></td>
 	</tr>
 	
 	<%i++;if(i==9)break; %>
-	<%} %> 
+	<%}}else{ 
+	int i=1;
+	for(Object[]obj:sanctionlistdetails){%>
+	<tr>
+	<td style="width:350px;text-align: left"><h4><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]  %></h4></td>
+	<td align="left">
+	<%if(DocumentId.contains(obj[0])) {%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<%for(Object[]obj1:projectFiles) {
+											if(obj1[8].toString().equalsIgnoreCase(obj[0].toString())){
+												String []versiondoc=obj1[6].toString().split("\\.");
+												String id=versiondoc[0];
+												String subId=versiondoc[1]; 
+											%>
+								<a  href="ProjectRequirementAttachmentDownload.htm?DocumentId=<%=obj1[8].toString()%>&initiationid=<%=obj1[1].toString() %>&stepid=<%=3%>&id=<%=id %>&subId=<%=subId%> " target="_blank" style="font-size: 15px;">Download File</a> 
+											
+											<%}}%>
+		
+		<%}
+		else{%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO<%}%><hr></td>
+	</tr>
+	<%i++;if(i==9)break; %>
+	<%}} %> 
 	<tr>
 	<td style="width:350px;text-align: left"><h4>17. Project Deliverables/Output:  </h4></td>
 	<td ><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=ProjectDetailes[12] %><%}else{ %>-<%} %><hr style="margin-top:0px;"></td>

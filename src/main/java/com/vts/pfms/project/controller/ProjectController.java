@@ -45,6 +45,7 @@ import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
@@ -62,12 +63,18 @@ import com.vts.pfms.project.dto.PfmsRequirementAttachmentDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
+import com.vts.pfms.project.dto.ProjectMajorCarsDto;
+import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
+import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
+import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
+import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -115,9 +122,9 @@ public class ProjectController
 			e.printStackTrace();
     		return "static/Error";
 		} 
-		
 	}
 
+	
 	@RequestMapping(value = "ProjectRequirement.htm")
 	public String ProjectRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -149,8 +156,6 @@ public class ProjectController
 			req.setAttribute("reqTypeList", service.RequirementTypeList());
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-			
-			System.out.println(initiationid+"-----");
 			
 			}
 			else {
@@ -188,7 +193,7 @@ public class ProjectController
 			String LabCode = (String)ses.getAttribute("labcode");
 			
 			String Project=req.getParameter("project");
-		
+			
 			if(Project!=null) {
 			String[]project=Project.split("/");
 			
@@ -198,11 +203,16 @@ public class ProjectController
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("projectshortName",projectshortName );
 			req.setAttribute("projectTitle", projectTitle);
-			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+			Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+			req.setAttribute("ProjectDetailes", ProjectDetailes);
+			req.setAttribute("projectTypeId", ProjectDetailes[21].toString());
 			req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid)) ;
+			req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
 			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
 			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
 			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
+			
+			req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
 			}
 			else
 			{
@@ -212,19 +222,63 @@ public class ProjectController
 				req.setAttribute("projectTitle", projectTitle);
 				req.setAttribute("initiationid", initiationid);
 				req.setAttribute("projectshortName",projectshortName );
-				req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+				Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+				req.setAttribute("ProjectDetailes", ProjectDetailes);
+				req.setAttribute("projectTypeId", ProjectDetailes[21].toString());
 				req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid));
 				req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
 				req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
 				req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
+				req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
+				req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
 			}
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 		}
 		catch(Exception e) {
-			  e.printStackTrace(); logger.error(new Date() +" ProjectSanction.htm "+UserId, e);
+			 logger.error(new Date() +" ProjectSanction.htm "+UserId, e);
 			e.printStackTrace();
 		}
 		return "project/ProjectSanctionStatement";
+	}
+	
+	@RequestMapping(value = "ProjectProcurement.htm")
+	public String ProjectProcurement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectProcurement.htm "+UserId);
+		List<Object[]>ProjectIntiationList=service.ProjectIntiationList(EmpId,Logintype,LabCode);
+		try {
+			String Project=req.getParameter("project");
+			if(Project!=null) {
+				String[]project=Project.split("/");
+				
+				String initiationid=project[0];
+				String projectshortName=project[1];
+				String projectTitle=project[2];
+				req.setAttribute("initiationid", req.getParameter("initiationid")==null?initiationid:req.getParameter("initiationid"));
+				req.setAttribute("projectshortName",req.getParameter("projectshortName")==null?projectshortName:req.getParameter("projectshortName") );
+				req.setAttribute("projectTitle", req.getParameter("projectTitle")==null?projectTitle:req.getParameter("projectTitle"));
+				req.setAttribute("ProcurementList", req.getParameter("initiationid")==null?service.ProcurementList(initiationid):service.ProcurementList(req.getParameter("initiationid")));
+			}else {
+				String projectshortName=ProjectIntiationList.get(0)[4].toString();
+				String initiationid=ProjectIntiationList.get(0)[0].toString();
+				String proejecttypeid=ProjectIntiationList.get(0)[11].toString();
+				req.setAttribute("initiationid", req.getParameter("initiationid")==null?initiationid:req.getParameter("initiationid"));
+				req.setAttribute("projectshortName",req.getParameter("projectshortName")==null?projectshortName:req.getParameter("projectshortName") );
+				req.setAttribute("proejecttypeid", req.getParameter("projectTypeId")==null?proejecttypeid:req.getParameter("projectTypeId"));
+				req.setAttribute("ProcurementList", req.getParameter("initiationid")==null?service.ProcurementList(initiationid):service.ProcurementList(req.getParameter("initiationid")));
+			}
+			req.setAttribute("DemandList", service.DemandList());
+			req.setAttribute("ProjectIntiationList", ProjectIntiationList);
+		}catch(Exception e) {
+		  logger.error(new Date() +" ProjectProcurement.htm "+UserId, e);
+			e.printStackTrace();
+		}
+		
+		return "project/ProjectProcurement";
 	}
 	
 	
@@ -238,9 +292,6 @@ public class ProjectController
 		logger.info(new Date() +"PreProjectFileUpload.htm "+UserId);
 		
 		List<Object[]>ProjectIntiationList=service.ProjectIntiationList(EmpId,Logintype,LabCode);
-		
-
-		
 		try {
 			String Project=req.getParameter("project");
 			if(Project!=null) {
@@ -249,19 +300,21 @@ public class ProjectController
 				String initiationid=project[0];
 				String projectshortName=project[1];
 				String projectTitle=project[2];
-				req.setAttribute("initiationid", initiationid);
-				req.setAttribute("projectshortName",projectshortName );
-				req.setAttribute("projectTitle", projectTitle);
+				req.setAttribute("proejecttypeid", project[3].toString());
+				req.setAttribute("initiationid", req.getParameter("initiationid")==null?initiationid:req.getParameter("initiationid"));
+				req.setAttribute("projectshortName",req.getParameter("projectshortName")==null?projectshortName:req.getParameter("projectshortName") );
+				req.setAttribute("projectTitle", req.getParameter("projectTitle")==null?projectTitle:req.getParameter("projectTitle"));
 			}else {
 				String projectshortName=ProjectIntiationList.get(0)[4].toString();
 				String initiationid=ProjectIntiationList.get(0)[0].toString();
-				req.setAttribute("initiationid", initiationid);
-				req.setAttribute("projectshortName",projectshortName );
-		
+				String proejecttypeid=ProjectIntiationList.get(0)[11].toString();
+				req.setAttribute("initiationid", req.getParameter("initiationid")==null?initiationid:req.getParameter("initiationid"));
+				req.setAttribute("projectshortName",req.getParameter("projectshortName")==null?projectshortName:req.getParameter("projectshortName") );
+				req.setAttribute("proejecttypeid", req.getParameter("projectTypeId")==null?proejecttypeid:req.getParameter("projectTypeId"));
 			
 			}
 			
-		
+			req.setAttribute("stepdidno", req.getParameter("stepdidno")==null?"1":"3");
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("stepsName",service.inititionSteps());
 			req.setAttribute("ProjectIntiationList", ProjectIntiationList);
@@ -821,7 +874,7 @@ public class ProjectController
 		 String projectshortName=req.getParameter("projectshortName");
 		 PreprojectFileDto pfd=new PreprojectFileDto();
 		 String versionvalue=req.getParameter("versionvalue");
-		 Double version=0.0;
+		 Double version;
 		 if(versionvalue.equals("")) {
 		 version=1.0;
 		 }else {
@@ -839,7 +892,6 @@ public class ProjectController
 		 		pfd.setDocumentId(Long.parseLong(doccount));
 		 	}
 		 
-		System.out.println(documentCount+"---");
 		 
 		 pfd.setInitiationId(Long.parseLong(req.getParameter("IntiationId")));
 		 pfd.setStepId(Long.parseLong(req.getParameter("stepid")));
@@ -855,7 +907,7 @@ public class ProjectController
 			} else {
 				redir.addAttribute("resultfail", "Document uploading Unsuccessful");
 			}
-		 
+			redir.addFlashAttribute("stepdidno",req.getParameter("stepid"));
 			redir.addFlashAttribute("initiationid",req.getParameter("IntiationId"));
 			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
 			redir.addFlashAttribute("filesize",file_size);
@@ -869,7 +921,7 @@ public class ProjectController
 			 logger.info(new Date() +"Inside PreProjectFileSubmit.htm "+UserId);
 			 return "static/Error";
 		 }
-			/* return "filerepo/PreProjectFileUpload"; */
+			
 	}
 	
 	/*
@@ -2230,6 +2282,94 @@ public class ProjectController
 			}
 		return "redirect:/ProjectRequirement.htm";
 	}
+	@RequestMapping(value = "ProjectProcurementSubmit.htm", method = RequestMethod.POST)
+	public String ProjectProcurementSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectProcurementSubmit.htm "+UserId);
+		try
+		{
+			String initiationid=req.getParameter("IntiationId");
+			String projectshortName=req.getParameter("projectshortName");
+	
+			
+			PfmsProcurementPlan pp= new PfmsProcurementPlan ();
+			pp.setInitiationId(Long.parseLong(initiationid));
+			pp.setItem(req.getParameter("Item"));
+			pp.setPurpose(req.getParameter("Purpose"));
+			pp.setSource(req.getParameter("Source"));
+			pp.setModeName(req.getParameter("Mode"));
+			pp.setCost(Double.parseDouble(req.getParameter("cost")));
+			pp.setApproved(req.getParameter("Approved"));
+			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
+			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
+			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
+			pp.setPayout(Integer.parseInt(req.getParameter("Payout")));
+			pp.setTotal(Integer.parseInt(req.getParameter("Demand"))+Integer.parseInt(req.getParameter("Tender"))+Integer.parseInt(req.getParameter("Order"))+Integer.parseInt(req.getParameter("Payout")));
+			
+			long count=service.PfmsProcurementPlanSubmit(pp);
+			if (count > 0) {
+				redir.addAttribute("result", "Procurement Plan Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Procurement Plan Add Unsuccessful");
+			}
+			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
+			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+			redir.addFlashAttribute("DemandList",service.DemandList());
+			redir.addFlashAttribute("ProcurementList", service.ProcurementList(initiationid));
+		}
+		catch(Exception e) {
+			logger.error(new Date() +"Inside ProjectProcurementSubmit.htm  "+UserId, e);
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:/ProjectProcurement.htm";
+	}
+	@RequestMapping(value = "ProjectProcurementEdit.htm", method = RequestMethod.POST)
+	public String ProjectProcurementEdit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectProcurementEdit.htm "+UserId);
+		try {
+			String initiationid=req.getParameter("IntiationId");
+			String projectshortName=req.getParameter("projectshortName");
+						
+			PfmsProcurementPlan pp= new PfmsProcurementPlan ();
+			pp.setInitiationId(Long.parseLong(initiationid));
+			pp.setItem(req.getParameter("Item"));
+			pp.setPurpose(req.getParameter("Purpose"));
+			pp.setSource(req.getParameter("Source"));
+			pp.setModeName(req.getParameter("Mode"));
+			pp.setCost(Double.parseDouble(req.getParameter("cost")));
+			pp.setApproved(req.getParameter("Approved"));
+			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
+			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
+			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
+			pp.setPayout(Integer.parseInt(req.getParameter("Payout")));
+			pp.setTotal(Integer.parseInt(req.getParameter("Demand"))+Integer.parseInt(req.getParameter("Tender"))+Integer.parseInt(req.getParameter("Order"))+Integer.parseInt(req.getParameter("Payout")));
+			pp.setPlanId(Long.parseLong(req.getParameter("planidedit")));
+			
+			
+			long count=service.ProjectProcurementEdit(pp);
+			if (count > 0) {
+				redir.addAttribute("result", "Procurement Plan edited Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Procurement Plan edit Unsuccessful");
+			}
+			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
+			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
+			redir.addFlashAttribute("DemandList",service.DemandList());
+			redir.addFlashAttribute("ProcurementList", service.ProcurementList(initiationid));
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside ProjectProcurementEdit.htm  "+UserId, e);
+		}
+	
+		return "redirect:/ProjectProcurement.htm";
+	}
+	
+	
 	
 	@RequestMapping(value="RequirementAttachmentDelete.htm", method=RequestMethod.POST)
 	public String RequirementAttachmentDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
@@ -4495,7 +4635,6 @@ public class ProjectController
 		String UserId = (String) ses.getAttribute("Username");
 		long checklistitemid = 0;
 		logger.info(new Date() +"Inside IntiationChecklistUpdate.htm "+UserId);
-		
 		try {
 			String initiationid= req.getParameter("initiationid");
 			String checklistid= req.getParameter("checklistid");
@@ -4512,31 +4651,29 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(checklistitemid);
 	}
+	
+	
+
 	@RequestMapping(value="ProjectTdnUpdate.htm",method = RequestMethod.GET)
 	public @ResponseBody String ProjectTdnUpdate(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		long StatementDataId = 0;
 		logger.info(new Date() +"Inside ProjectTdnUpdate.htm"+UserId);
-		
 		try {
 			String initiationid=req.getParameter("initiationid");
 			String StatementId=req.getParameter("StatementId");
 			String TDN=req.getParameter("TDN");
-			
 			PfmsInitiationSanctionData psd=new PfmsInitiationSanctionData();
 			psd.setInitiationId(Long.parseLong(initiationid));
 			psd.setStatementId(Long.parseLong(StatementId));
 			psd.setTDN(TDN);
-			psd.setModifiedBy(UserId);
-			
+			psd.setModifiedBy(UserId);			
 			StatementDataId=service.projectTDNUpdate(psd);
-			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProjectTdnUpdate.htm "+UserId, e);	
-
-		}
+			}
 		Gson json = new Gson();
 		return json.toJson(StatementDataId);
 	}
@@ -4560,6 +4697,18 @@ public class ProjectController
 			psd.setModifiedDate(sdf1.format(new Date()));
 			
 			StatementDataId=service.ProjectPGNAJUpdate(psd);
+			
+			for(int i=0;i<=4;i++) {
+				System.out.println(i+" "+(i+1)+" ");
+				System.out.println(i+" "+(i+2)+" ");
+				System.out.println(i+3+" "+(i+4)+" " );
+				System.out.println(initiationid);
+				System.out.println(PGNAJ);
+				String  j=sdf1.format(new Date()).toString();
+			
+				return sdf1.format(new Date()).toString()+" "+StatementId;
+			}
+		
 			
 		}
 		catch(Exception e) {
@@ -4639,6 +4788,257 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(StatementDataId);
 	}
+	@RequestMapping(value="ProjectMajorTrainingRequirementSubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProjectMajorTrainingRequirementSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) 
+		ses.getAttribute("Username");
+		long count = 0;
+		logger.info(new Date() +"Inside ProjectMajorTrainingRequirementSubmit.htm "+UserId);
+		try {
+			String initiationid=req.getParameter("initiationid");
+			ProjectMajorRequirementsDto pmr=new ProjectMajorRequirementsDto();
+			pmr.setInitiationId(Long.parseLong(initiationid));
+			pmr.setDiscipline(req.getParameter("Discipline"));
+			pmr.setAgency(req.getParameter("Agency"));
+			pmr.setPersonneltrained(Long.parseLong(req.getParameter("Personneltrained")));
+			pmr.setDuration(Integer.parseInt(req.getParameter("Duration")));
+			pmr.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pmr.setRemarks(req.getParameter("Remarks"));
+			
+			count=service.ProjectMajorTrainingRequirementSubmit(pmr,UserId);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectMajorTrainingRequirementSubmit.htm"+UserId, e);	
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="ListOfTrainingRequirements.htm",method = RequestMethod.GET)
+	public @ResponseBody String ListOfTrainingRequirements(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) 
+		ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ListOfTrainingRequirements.htm "+UserId);
+		List<Object[]>TrainingRequirementList=null;
+		try {
+			String initiationid=req.getParameter("initiationid");
+			TrainingRequirementList=service.TrainingRequirementList(initiationid);
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ListOfTrainingRequirements.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(TrainingRequirementList);
+	}
+	@RequestMapping(value="TraingRequirements.htm",method = RequestMethod.GET)
+	public @ResponseBody String TraingRequirements(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) 
+		ses.getAttribute("Username");
+		logger.info(new Date() +"Inside TraingRequirements.htm "+UserId);
+		Object[]TraingRequirements=null;
+	
+		try {
+			String trainingid=req.getParameter("trainingid");
+			TraingRequirements=service.TraingRequirements(trainingid);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside TraingRequirements.htm"+UserId, e);
+		}
+	
+		Gson json = new Gson();
+		return json.toJson(TraingRequirements);
+	}
+	
+	@RequestMapping(value="ProjectMajorTrainingRequirementUpdate.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProjectMajorTrainingRequirementUpdate(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String) 
+		ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProjectMajorTrainingRequirementUpdate.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorRequirementsDto pmr=new ProjectMajorRequirementsDto();
+			pmr.setDiscipline(req.getParameter("Discipline"));
+			pmr.setAgency(req.getParameter("Agency"));
+			pmr.setPersonneltrained(Long.parseLong(req.getParameter("Personneltrained")));
+			pmr.setDuration(Integer.parseInt(req.getParameter("Duration")));
+			pmr.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pmr.setRemarks(req.getParameter("Remarks"));
+			pmr.setTrainingId(Long.parseLong(req.getParameter("trainingid")));
+			
+			count=service.ProjectMajorTrainingRequirementUpdate(pmr,UserId);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectMajorTrainingRequirementUpdate.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="WorkPackageSubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String WorkPackageSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside WorkPackageSubmit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorWorkPackagesDto pwd=new ProjectMajorWorkPackagesDto();
+			pwd.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			pwd.setGovtAgencies(req.getParameter("GovtAgencies"));
+			pwd.setWorkPackage(req.getParameter("workPackage"));
+			pwd.setObjective(req.getParameter("Objectives"));
+			pwd.setScope(req.getParameter("Scope"));
+			pwd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pwd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			
+			count=service.WorkPackageSubmit(pwd,UserId);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside WorkPackageSubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="WorkPackageList.htm",method = RequestMethod.GET)
+	public @ResponseBody String WorkPackageList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside WorkPackageList.htm "+UserId);
+		List<Object[]>WorkPackageList=null;
+		try {
+			WorkPackageList=service.WorkPackageList(req.getParameter("initiationid"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside WorkPackageList.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(WorkPackageList);
+	}
+	@RequestMapping(value="WorkPackageValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String WorkPackageValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside WorkPackageValue.htm "+UserId);
+		Object[]WorkPackageValue=null;
+		try {
+			WorkPackageValue=service.WorkPackageValue(req.getParameter("Workdid"));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside WorkPackageValue.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(WorkPackageValue);
+	}
+	@RequestMapping(value="WorkPackagesEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String WorkPackagesEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside WorkPackagesEdit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorWorkPackagesDto pwd=new ProjectMajorWorkPackagesDto();
+			pwd.setGovtAgencies(req.getParameter("GovtAgencies"));
+			pwd.setWorkPackage(req.getParameter("workPackage"));
+			pwd.setObjective(req.getParameter("Objectives"));
+			pwd.setScope(req.getParameter("Scope"));
+			pwd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pwd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			pwd.setWorkId(Long.parseLong(req.getParameter("workid")));
+			
+			count=service.WorkPackagesEdit(pwd,UserId);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside WorkPackagesEdit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	@RequestMapping(value="CarsDetailsAdd.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsDetailsAdd(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsDetailsAdd.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCarsDto pcd=new ProjectMajorCarsDto();
+			pcd.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			pcd.setInstitute(req.getParameter("Institute"));
+			pcd.setProfessor(req.getParameter("professor"));
+			pcd.setAreaRD(req.getParameter("Area"));
+			pcd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pcd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			pcd.setConfidencelevel(Integer.parseInt(req.getParameter("confidence")));
+			
+			count=service.CarsDetailsAdd(pcd,UserId);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsDetailsAdd.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="CarsList.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsList.htm "+UserId);
+		List<Object[]>CarsList=null;
+		try {
+			CarsList=service.CarsList(req.getParameter("initiationid"));
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsList.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(CarsList);
+	}
+	
+	@RequestMapping(value="CarsValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsValue.htm "+UserId);
+		Object[]CarsValue=null;
+		try {
+			CarsValue=service.CarsValue(req.getParameter("carsid"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsValue.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(CarsValue);
+	}
+	@RequestMapping(value="CarsEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String CarsEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CarsEdit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCarsDto pcd=new ProjectMajorCarsDto();
+			pcd.setInstitute(req.getParameter("Institute"));
+			pcd.setProfessor(req.getParameter("professor"));
+			pcd.setAreaRD(req.getParameter("Area"));
+			pcd.setCost(Double.parseDouble(req.getParameter("Cost")));
+			pcd.setPDC(Integer.parseInt(req.getParameter("PDC")));
+			pcd.setConfidencelevel(Integer.parseInt(req.getParameter("confidence")));
+			pcd.setCarsId(Long.parseLong(req.getParameter("carsid")));
+			
+			count=service.carsEdit(pcd,UserId);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CarsEdit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
 	
 	//Sanction statement;
 	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
@@ -4653,6 +5053,7 @@ public class ProjectController
 			req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid)) ;
 			req.setAttribute("LabCode", LabCode);
 			req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
+			req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
 			String filename="ProjectSanctionDetails";
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
@@ -4697,6 +5098,96 @@ public class ProjectController
 		
 		
 	}
+	@RequestMapping(value = "ProjectSanctionMacroDetailsDownload.htm" )
+	public void ProjectSanctionMacroDetailsDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectSanctionMacroDetailsDownload.htm "+UserId);
+		
+		try
+		{	
+			String initiationid=req.getParameter("IntiationId");
+			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+			req.setAttribute("LabCode", LabCode);
+			req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
+			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
+			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
+			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
+			req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
+			req.setAttribute("ProcurementList", service.ProcurementList(initiationid));
+			Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+			req.setAttribute("ProjectDetailes", ProjectDetailes);
+			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
+			req.setAttribute("initiationid", initiationid);
+			
+			
+			String filename="ProjectSanctionDetails";
+			String path=req.getServletContext().getRealPath("/view/temp");
+		  	req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/SanctionMacroDetailsDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			
+			   CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+				req.getRequestDispatcher("/view/print/ProcurementPlan.jsp").forward(req, customResponse1);
+				String html1 = customResponse1.getOutput();
+				HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+			
+			
+		        PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+		        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+		        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+		        
+		        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+		        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+		        PdfMerger merger = new PdfMerger(pdfDocument);
+		        
+		        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+	            
+	            pdfDocument2.close();
+		        pdfDocument.close();
+		        merger.close();
+		        pdf2.close();
+		        pdf1.close();	       
+		        pdfw.close();
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			/* File f=new File(path+"/"+filename+".pdf"); */
+	        File f=new File(path +File.separator+ "merged.pdf");
+
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			
+			 Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+		        Files.delete(pathOfFile2);		
+		        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+		        Files.delete(pathOfFile2);	
+		        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+		        Files.delete(pathOfFile2);	
+
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside ProjectSanctionMacroDetailsDownload.htm "+UserId,e);
+		}
+		
+	}
+	
+	
 	
 	@RequestMapping(value = "IntiationChecklistDownload.htm", method = {RequestMethod.POST} )
 	public void IntiationChecklistDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
@@ -4789,6 +5280,7 @@ public class ProjectController
 		  return json.toJson(service.Requirement(Long.parseLong(req.getParameter("inititationReqId"))));
 	}
 	
+	
 	@RequestMapping(value="ProjectInitiationDetailsJsonValue.htm",method=RequestMethod.GET)
     public @ResponseBody String ProjectInitiationDetailsJson(HttpSession ses, HttpServletRequest req) throws Exception {
 		 Gson json = new Gson();
@@ -4807,6 +5299,251 @@ public class ProjectController
 		return json.toJson(DetailsList);
 	}
 	
+
+	@RequestMapping(value="PocurementPlanEditDetails.htm",method=RequestMethod.GET)
+    public @ResponseBody String PocurementPlanEditDetails(HttpSession ses, HttpServletRequest req) throws Exception {
+		 Gson json = new Gson();
+	   	 String UserId=(String)ses.getAttribute("Username");
+	   	logger.info(new Date() +"Inside PocurementPlanEditDetails.htm"+UserId);
+	   	Object[]PocurementPlanEditDetails=null;
+	   	try {
+	   		String planid=req.getParameter("Planid");
+	   		System.out.println(req.getParameter("Planid"));
+	   		PocurementPlanEditDetails=service.PocurementPlanEditDetails(planid);
+	   	}
+	   	catch (Exception e) {
+	   		e.printStackTrace();
+	   		logger.error(new Date() +"Inside PocurementPlanEditDetails.htm"+UserId ,e);
+	   	}
+	   	
+	return json.toJson(PocurementPlanEditDetails);
+	}
+	
+	
+	  @RequestMapping(value="ProjectAdditonalRequirementUpdate.htm",method= RequestMethod.GET)
+	  public @ResponseBody String ProjectAdditonalRequirementUpdate(HttpSession ses, HttpServletRequest req)
+	  throws Exception {
+	  
+	  Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
+	  logger.info(new Date()
+	  +"Inside ProjectAdditonalRequirementUpdate.htm"+UserId); 
+	  long count=0;
+	  String result="";
+	  try {
+		  String initiationid=req.getParameter("initiationid");
+		  String AdditionalRequirement=req.getParameter("AdditionalRequirement");
+		  Object[]MacroDetails=service.projectMacroDetails(initiationid);
+			 if(MacroDetails.length==0) {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setAdditionalRequirements(AdditionalRequirement);
+				 pm.setCreatedBy(UserId);
+				 pm.setCreatedDate(sdf1.format(new Date()));
+				 pm.setIsActive(1);
+				 count=service.InsertMacroDetails(pm);
+				 result="Data updated Successfully";
+			 }
+			 else {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setAdditionalRequirements(AdditionalRequirement); 
+				 pm.setModifiedBy(UserId);
+				 pm.setModifiedDate(sdf1.format(new Date()));
+				 count=service.updateMactroDetailsRequirements(pm); 
+				 result="Data updated Successfully";
+			 }
+	  
+	  	}
+         catch(Exception e) {
+		  logger.error(new Date()+"Inside ProjectAdditonalRequirementUpdate.htm"+UserId ,e);
+		 	e.printStackTrace(); 
+		 	} 
+	  return json.toJson(result); }
+
+	
+
+	  @RequestMapping(value="ProjectMethodologyUpdate.htm",method=RequestMethod. GET)
+	  public @ResponseBody String ProjectMethodologyUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
+	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
+	  logger.info(new Date() +"Inside ProjectMethodologyUpdate.htm"+UserId); 
+	  long count=0; 
+	  String result="";
+	  try { 
+		 String initiationid=req.getParameter("initiationid"); 
+		 String methodology=req.getParameter("methodology"); 
+		 Object[]MacroDetails=service.projectMacroDetails(initiationid);
+		 if(MacroDetails.length==0) {
+			 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+			 pm.setInitiationId(Long.parseLong(initiationid));
+			 pm.setMethodology(methodology);
+			 pm.setCreatedBy(UserId);
+			 pm.setCreatedDate(sdf1.format(new Date()));
+			 pm.setIsActive(1);
+			 count=service.InsertMacroDetails(pm);
+			 result="Data updated Successfully";
+		 }
+		 else {
+			
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setMethodology(methodology);
+				 pm.setModifiedBy(UserId);
+				 pm.setModifiedDate(sdf1.format(new Date()));
+				 count=service.updateMactroDetailsMethodology(pm); 
+				 result="Data updated Successfully";
+				
+		 }
+	  } 
+	  catch(Exception e) {
+	  logger.error(new Date() +"Inside ProjectMethodologyUpdate.htm"+UserId ,e);
+	 e.printStackTrace(); 
+	 } 
+	  return json.toJson(result);
+	 }
+	  @RequestMapping(value="ProjectEnclosuresUpdate.htm",method=RequestMethod. GET)
+	  public @ResponseBody String ProjectEnclosuresUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
+	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
+	  logger.info(new Date() +"Inside ProjectEnclosuresUpdate.htm"+UserId); 
+	  long count=0; 
+	  String result="";
+	  try {
+			 String initiationid=req.getParameter("initiationid"); 
+			 String Enclosures=req.getParameter("Enclosures"); 
+			 Object[]MacroDetails=service.projectMacroDetails(initiationid);
+			 if(MacroDetails.length==0) {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setEnclosures(Enclosures);
+				 pm.setCreatedBy(UserId);
+				 pm.setCreatedDate(sdf1.format(new Date()));
+				 pm.setIsActive(1);
+				 count=service.InsertMacroDetails(pm);
+				 result="Data updated Successfully";
+			 }else {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setEnclosures(Enclosures);
+				 pm.setModifiedBy(UserId);
+				 pm.setModifiedDate(sdf1.format(new Date()));
+				 count=service.UpdateProjectEnclosure(pm);
+				 result="Data updated Successfully";
+			 }
+		  
+		  
+	  }catch(Exception e) {
+		  e.printStackTrace();
+		  logger.error(new Date() +"Inside ProjectEnclosuresUpdate.htm"+UserId ,e);
+	  }
+	  
+	  return json.toJson(result);
+	  }
+	
+	  @RequestMapping(value="ProjectOtherInformationUpdate.htm",method=RequestMethod. GET)
+	  public @ResponseBody String ProjectOtherInformationUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
+	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
+	  logger.info(new Date() +"Inside ProjectOtherInformationUpdate.htm"+UserId); 
+	  long count=0; 
+	  String result="";
+	  
+	  try {
+			 String initiationid=req.getParameter("initiationid"); 
+			 String OtherInformation=req.getParameter("OtherInformation"); 
+			 Object[]MacroDetails=service.projectMacroDetails(initiationid);
+			 if(MacroDetails.length==0) {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setOtherInformation(OtherInformation);
+				 pm.setCreatedBy(UserId);
+				 pm.setCreatedDate(sdf1.format(new Date()));
+				 pm.setIsActive(1);
+				 count=service.InsertMacroDetails(pm);
+				 result="Data updated Successfully";
+			 }else {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setOtherInformation(OtherInformation);
+				 pm.setModifiedBy(UserId);
+				 pm.setModifiedDate(sdf1.format(new Date()));
+				 count=service.UpdateProjectOtherInformation(pm);
+				 result="Data updated Successfully";
+			 }
+		  
+	  }
+	  catch(Exception e) {
+		  e.printStackTrace();
+		  logger.error(new Date() +"Inside ProjectOtherInformationUpdate.htm"+UserId ,e);
+	  }
+	  
+	  return json.toJson(result);
+	  }
+	  @RequestMapping(value="PrototypeDeliverables.htm",method=RequestMethod. GET)
+	  public @ResponseBody String PrototypeDeliverables(HttpSession ses,HttpServletRequest req) throws Exception { 
+		  Gson json = new Gson(); 
+	 String UserId=(String)ses.getAttribute("Username");
+	  logger.info(new Date() +"Inside PrototypeDeliverables.htm"+UserId); 
+	  long count=0; 
+	  String result="";
+	  try {
+			 String initiationid=req.getParameter("initiationid"); 
+			 String PrototypesNo=req.getParameter("PrototypesNo"); 
+			 String deliverables=req.getParameter("deliverables"); 
+			 Object[]MacroDetails=service.projectMacroDetails(initiationid);
+			 if(MacroDetails.length==0) {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setPrototypesNo(Integer.parseInt(PrototypesNo));
+				 pm.setDeliverables(Integer.parseInt(deliverables));
+				 pm.setCreatedBy(UserId);
+				 pm.setCreatedDate(sdf1.format(new Date()));
+				 pm.setIsActive(1);
+				 count=service.InsertMacroDetails(pm);
+				 result="Data updated Successfully";
+			 }else {
+				 PfmsInitiationMacroDetails pm=new PfmsInitiationMacroDetails();
+				 pm.setInitiationId(Long.parseLong(initiationid));
+				 pm.setModifiedBy(UserId);
+				 pm.setModifiedDate(sdf1.format(new Date()));
+				 pm.setPrototypesNo(Integer.parseInt(PrototypesNo));
+				 pm.setDeliverables(Integer.parseInt(deliverables));
+				 count=service.ProposedprojectdeliverablesUpdate(pm);
+				 result="Data updated Successfully";
+			 }
+		  
+	  }
+	  catch(Exception e) {
+		  e.printStackTrace();
+		  logger.error(new Date() +"Inside PrototypeDeliverables.htm"+UserId ,e);
+	  }
+	  
+	  return json.toJson(result);
+	  }
+	  
+	  
+	  
+	  
+	@RequestMapping(value="ProjectUserUpdate.htm",method=RequestMethod.GET)
+    public @ResponseBody String ProjectUserUpdate(HttpSession ses, HttpServletRequest req) throws Exception {
+		
+		 Gson json = new Gson();
+	   	 String UserId=(String)ses.getAttribute("Username");
+	   	logger.info(new Date() +"Inside ProjectUserUpdate.htm"+UserId);
+	   	long count=0;
+	   	try {
+	   		String initiationid=req.getParameter("initiationid");
+	   		String user=req.getParameter("user");
+	   		PfmsInitiation pf=new PfmsInitiation();
+	   		pf.setInitiationId(Long.parseLong(initiationid));
+	   		pf.setUser(user);
+	   		pf.setModifiedBy(UserId);
+	   		pf.setModifiedDate(sdf1.format(new Date()));
+	   		count=service.projectInitiationUserUpdate(pf);
+	   	}
+	   	catch(Exception e) {
+	   		logger.error(new Date() +"Inside ProjectUserUpdate.htm"+UserId ,e);
+	   		e.printStackTrace();
+	   	}
+		return json.toJson(count);
+	}
 	
 	@RequestMapping(value="RequirementTypeJson.htm",method=RequestMethod.GET)
     public @ResponseBody String RequirementTypeJson(HttpSession ses, HttpServletRequest req) throws Exception {
@@ -4885,6 +5622,26 @@ public class ProjectController
 		return json.toJson(ProjectFiles);
 	}
 	
+	@RequestMapping(value="ProjectFilesSoc.htm",method=RequestMethod.GET)
+	public @ResponseBody String ProjectFilesSoc(HttpSession ses,HttpServletRequest req) {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside ProjectFilesSoc.htm"+UserId);
+		Object[]projectfiles=null;
+		try {
+			String initiationid=req.getParameter("initiationid");
+			String stepid=req.getParameter("stepid");	
+			String Documentid=req.getParameter("Documentid");
+			
+			projectfiles=service.projectfile(initiationid,stepid,Documentid);
+			
+			
+		}catch(Exception e) {
+			logger.error(new Date()+"Inside ProjectFilesSoc.htm"+UserId);
+			e.printStackTrace();
+		}
+		return json.toJson(projectfiles);
+	}
 	@RequestMapping(value="projectFilesList.htm",method=RequestMethod.GET)
 	public @ResponseBody String PreprojectFilesList(HttpSession ses,HttpServletRequest req) {
 		
@@ -4908,6 +5665,25 @@ public class ProjectController
 		
 	return json.toJson(ProjectFiles);
 	}
+	@RequestMapping(value="ProjectStepFiles.htm",method=RequestMethod.GET)
+	public @ResponseBody String ProjectStepFiles(HttpSession ses,HttpServletRequest req) {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside ProjectStepFiles.htm"+UserId);
+		List<Object[]>ProjectFiles=new ArrayList<Object[]>();
+		try {
+			String inititationid=req.getParameter("initiationid");
+			String stepid=req.getParameter("stepid");
+			
+			ProjectFiles=service.projectfiles(inititationid, stepid);
+		}
+		catch(Exception e) {
+		e.printStackTrace();	
+		}
+		
+		return json.toJson(ProjectFiles);
+	}
+	
 	
 	@RequestMapping(value="RequirementAttachmentJsonValue.htm",method=RequestMethod.GET)
 	 public @ResponseBody String RRequirementAttachmentJsonValue(HttpSession ses, HttpServletRequest req) throws Exception {
@@ -4931,6 +5707,30 @@ public class ProjectController
 		
 	return json.toJson(AttachmentMapList);
 	}
+	@RequestMapping(value="ProjectScheduleFinancialOutlay.htm",method=RequestMethod.GET)
+	 public @ResponseBody String ProjectScheduleFinancialOutlay(HttpSession ses, HttpServletRequest req) throws Exception {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside ProjectScheduleFinancialOutlay.htm"+UserId);
+		String cost="";
+		try {
+		String initiationid=req.getParameter("initiationid");
+		String Start=req.getParameter("Start");
+		String End=req.getParameter("End");
+		
+		String sum=service.TotalPayOutMonth(Start,End,initiationid);
+		
+		cost=String.valueOf(sum);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside ProjectScheduleFinancialOutlay.htm"+UserId);
+			e.printStackTrace();
+		}
+		
+		return json.toJson(cost);
+	}
+	
+	
 	@RequestMapping(value="ProjectRequirementAttachmentDownload.htm" , method ={RequestMethod.POST,RequestMethod.GET})
 	public void RequirementAttachmentDownload(HttpServletRequest req,HttpSession ses,HttpServletResponse res )throws Exception
 	{
@@ -4941,18 +5741,27 @@ public class ProjectController
 			String initiationId=req.getParameter("IntiationId");
 			String attachmentid=req.getParameter("attachmentid");
 			
+			
+			String stepid="";
+			String initiationid="";
+			String VersionDoc="";
+			String DocumentId="";
 			String docid=req.getParameter("DocId");
-			
-	
-		String []doc=docid.split(",");
-		
-		String DocumentId=doc[0];
-		String VersionDoc=doc[1];
-		String initiationid=doc[2];
-		String stepid=doc[3];
-		
-			
-			Object[]reqAttachDownload=service.reqAttachDownload(DocumentId,VersionDoc,initiationid,stepid);
+			System.out.println(docid);
+			if(docid!=null) {
+				String []doc=docid.split(",");
+			DocumentId=doc[0];
+			VersionDoc=doc[1];
+			initiationid=doc[2];
+				stepid=doc[3];
+			}else {
+					stepid=req.getParameter("stepid");
+					initiationid=req.getParameter("initiationid");
+					VersionDoc=req.getParameter("id")+"."+req.getParameter("subId");
+					DocumentId=req.getParameter("DocumentId");
+				}
+		System.out.println(stepid+initiationid+VersionDoc+DocumentId);
+				Object[]reqAttachDownload=service.reqAttachDownload(DocumentId,VersionDoc,initiationid,stepid);
 	
 			File my_file=null;
 			my_file=new File(uploadpath+reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
