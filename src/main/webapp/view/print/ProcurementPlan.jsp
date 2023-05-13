@@ -18,6 +18,10 @@ List<Object[]> ProjectInitiationLabList = (List<Object[]>) request.getAttribute(
 Object[]MacroDetails=(Object[])request.getAttribute("MacroDetails");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 List<Object[]>ProcurementList=(List<Object[]>)request.getAttribute("ProcurementList");
+SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+SimpleDateFormat sdf2=new SimpleDateFormat("MMMM yyyy");
+NFormatConvertion nfc=new NFormatConvertion();
 %>
 <style type="text/css">
 
@@ -93,23 +97,47 @@ background:black;
 </head>
 <body>
 <div style="text-align:center;">
-		<h3 style="text-align: center;"> Annexure-A<hr style="width:80%"></h3>
+		<h3 style="text-align: right;margin-right: 25px;"> Annexure-A</h3>
 		</div>
 		  <table class="border-black" style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:980px;">
 		 								<thead style="background: #055C9D;color: black; font-size: 18px;">
 								<tr>
 								<th class="border-black" style="width:2%;text-align: center;">SN</th>
-								<th class="border-black" style="width:14%;text-align: center;">Name of the item/ Service</th>
-									<th class="border-black" style="width:25%;text-align: center;">Description/Purpose </th>
+								<th class="border-black" style="width:14%;text-align: center; ">Name of the item/ Service</th>
+									<th class="border-black" style="width:30%;text-align: center;">Description/Purpose </th>
 								<th class="border-black" style="width:15%;text-align: center;">Source</th>
 								<th class="border-black" style="width:10%;text-align: center;">Mode of tendering</th>
 								<th class="border-black" style="width:6%;text-align: center;">Expected cost</th>
-								<th class="border-black" style="width:12%;text-align: center;">Expected Time of Tendering/ Placing of SO</th>
-										<th class="border-black" style="width:10%;text-align: center;">Expected Time of Delivery</th>
+								<th class="border-black" style="width:10%;text-align: center;">ETS<br>( Months )</th>
+										<th class="border-black" style="width:10%;text-align: center;">ED<br>( Months )</th>
 								</tr>
 							</thead>
-							<tbody></tbody>
-		 
+							<tbody>
+							<%int i=0;
+							if(!ProcurementList.isEmpty()) {
+							for(Object[]obj:ProcurementList){
+							%><tr>
+							<td class="border-black" style="width:2%;text-align: center;"><%=(++i) %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[2] %></td>
+							<td class="border-black" style="width:2%;text-align: center; padding:10px;" ><%=obj[3].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[4].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[5].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: right;"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[8].toString() %></td>
+							<td class="border-black" style="width:2%;text-align: center;"><%=obj[9].toString() %></td>
+							</tr>
+							<%}} %>
+							</tbody>
 		  </table>
+		<table class="border-black" style="margin-left:20px; border-top:none solid white;font-size:15px;font-family:FontAwesome; width:980px;">
+		 					
+		 				<thead style="background: #055C9D;color: black; font-size: "> 
+						<tr>
+						<td class="border-black" style="width:650px;text-align: left;">
+						<h5>ETS-Expected Date of Tendering / Placing of SO&nbsp;, &nbsp;ED-Expected date of Delivery</h5>  </td>
+						</tr>
+						</thead>
+						</table>
 </body>
+
 </html>

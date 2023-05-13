@@ -64,6 +64,8 @@ import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
 import com.vts.pfms.project.dto.ProjectMajorCarsDto;
+import com.vts.pfms.project.dto.ProjectMajorConsultancyDto;
+import com.vts.pfms.project.dto.ProjectMajorManPowersDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
@@ -73,9 +75,11 @@ import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
+import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
@@ -130,13 +134,15 @@ public class ProjectController
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectRequirement.htm "+UserId);
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String Option = req.getParameter("sub");
+		//String IntiationId = req.getParameter("btSelectItem");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String LabCode = (String)ses.getAttribute("labcode");
+		List<Object[]>ProjectIntiationList=service.ProjectIntiationList(EmpId,Logintype,LabCode);
+		
 		try {
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-			String Option = req.getParameter("sub");
-			//String IntiationId = req.getParameter("btSelectItem");
-			String Logintype= (String)ses.getAttribute("LoginType");
-			String LabCode = (String)ses.getAttribute("labcode");
-			
+	
 			String Project=req.getParameter("project");
 		
 			if(Project!=null) {
@@ -159,6 +165,7 @@ public class ProjectController
 			
 			}
 			else {
+				if(ProjectIntiationList.size()>0) {
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
 				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
 				req.setAttribute("initiationid", initiationid);
@@ -171,7 +178,7 @@ public class ProjectController
 					}
 				req.setAttribute("RequirementList", service.RequirementList(initiationid) );
 				req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
-			}
+			}}
 		}
 		catch(Exception e) {
            e.printStackTrace(); logger.error(new Date() +" Inside ProjectRequirement.htm "+UserId, e);
@@ -193,7 +200,7 @@ public class ProjectController
 			String LabCode = (String)ses.getAttribute("labcode");
 			
 			String Project=req.getParameter("project");
-			
+			List<Object[]>ProjectIntiationList=service.ProjectIntiationList(EmpId,Logintype,LabCode);
 			if(Project!=null) {
 			String[]project=Project.split("/");
 			
@@ -211,11 +218,18 @@ public class ProjectController
 			req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
 			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
 			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
-			
 			req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
+			req.setAttribute("ConsultancyList", service.ConsultancyList(initiationid));
+			req.setAttribute("CarsList", service.CarsList(initiationid));
+			req.setAttribute("WorkPackageList", service.WorkPackageList(initiationid));
+			req.setAttribute("TrainingRequirementList", service.TrainingRequirementList(initiationid));
+			req.setAttribute("ManpowerList", service.ManpowerList(initiationid));
+			req.setAttribute("macrodetailsTwo", service.macroDetailsPartTwo(initiationid));
+			req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
 			}
 			else
 			{
+				if(ProjectIntiationList.size()>0) {
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
 				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
 				String projectTitle=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[5].toString();
@@ -231,7 +245,14 @@ public class ProjectController
 				req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
 				req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
 				req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
-			}
+				req.setAttribute("ConsultancyList", service.ConsultancyList(initiationid));
+				req.setAttribute("CarsList", service.CarsList(initiationid));
+				req.setAttribute("WorkPackageList", service.WorkPackageList(initiationid));
+				req.setAttribute("TrainingRequirementList", service.TrainingRequirementList(initiationid));	
+				req.setAttribute("ManpowerList", service.ManpowerList(initiationid));
+				req.setAttribute("macrodetailsTwo", service.macroDetailsPartTwo(initiationid));
+				req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
+			}}
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 		}
 		catch(Exception e) {
@@ -263,6 +284,7 @@ public class ProjectController
 				req.setAttribute("projectTitle", req.getParameter("projectTitle")==null?projectTitle:req.getParameter("projectTitle"));
 				req.setAttribute("ProcurementList", req.getParameter("initiationid")==null?service.ProcurementList(initiationid):service.ProcurementList(req.getParameter("initiationid")));
 			}else {
+				if(ProjectIntiationList.size()>0) {
 				String projectshortName=ProjectIntiationList.get(0)[4].toString();
 				String initiationid=ProjectIntiationList.get(0)[0].toString();
 				String proejecttypeid=ProjectIntiationList.get(0)[11].toString();
@@ -270,6 +292,7 @@ public class ProjectController
 				req.setAttribute("projectshortName",req.getParameter("projectshortName")==null?projectshortName:req.getParameter("projectshortName") );
 				req.setAttribute("proejecttypeid", req.getParameter("projectTypeId")==null?proejecttypeid:req.getParameter("projectTypeId"));
 				req.setAttribute("ProcurementList", req.getParameter("initiationid")==null?service.ProcurementList(initiationid):service.ProcurementList(req.getParameter("initiationid")));
+			}
 			}
 			req.setAttribute("DemandList", service.DemandList());
 			req.setAttribute("ProjectIntiationList", ProjectIntiationList);
@@ -5039,6 +5062,160 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(count);
 	}
+	@RequestMapping(value="ConsultancySubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ConsultancySubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ConsultancySubmit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorConsultancyDto pcd= new ProjectMajorConsultancyDto();
+			pcd.setDiscipline(req.getParameter("ConsultancyArea"));
+			pcd.setAgency(req.getParameter("ConsultancyAgency"));
+			pcd.setPerson(req.getParameter("Consultancyperson"));
+			pcd.setProcess(req.getParameter("ConsultancyProcess"));
+			pcd.setCost(Double.parseDouble(req.getParameter("ConsultancyCost")));
+			pcd.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			
+			count=service.ConsultancySubmit(pcd,UserId);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ConsultancySubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="ConsultancyList.htm",method = RequestMethod.GET)
+	public @ResponseBody String ConsultancyList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ConsultancyList.htm "+UserId);
+		List<Object[]>ConsultancyList=null;
+	try {
+		ConsultancyList=service.ConsultancyList(req.getParameter("initiationid"));
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ConsultancyList.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(ConsultancyList);
+	}
+	@RequestMapping(value="ConsultancyValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String ConsultancyValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ConsultancyValue.htm "+UserId);
+		Object[]ConsultancyValue=null;
+	try {
+		ConsultancyValue=service.ConsultancyValue(req.getParameter("consultancyid"));
+	}catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ConsultancyValue.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(ConsultancyValue);
+	}
+	@RequestMapping(value="ConsultancyEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ConsultancyEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ConsultancyEdit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorConsultancyDto pcd= new ProjectMajorConsultancyDto();
+			pcd.setDiscipline(req.getParameter("ConsultancyArea"));
+			pcd.setAgency(req.getParameter("ConsultancyAgency"));
+			pcd.setPerson(req.getParameter("Consultancyperson"));
+			pcd.setProcess(req.getParameter("ConsultancyProcess"));
+			pcd.setCost(Double.parseDouble(req.getParameter("ConsultancyCost")));
+			pcd.setConsultancyId(Long.parseLong(req.getParameter("consultancyid")));
+			
+			count=service.ConsultancyEdit(pcd,UserId);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ConsultancyEdit.htm"+UserId, e);	
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="ManpowerSubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ManpowerSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ManpowerSubmit.htm "+UserId);
+		long count=0;
+		try {
+			System.out.println(req.getParameter("Remarks"));
+			ProjectMajorManPowersDto pmd= new ProjectMajorManPowersDto();
+			pmd.setDesignation(req.getParameter("designation"));
+			pmd.setDiscipline(req.getParameter("Discipline"));
+			pmd.setNumbers(Integer.parseInt(req.getParameter("Numbers")));
+			pmd.setPeriod(Integer.parseInt(req.getParameter("Period")));
+			pmd.setRemarks(req.getParameter("Remarks"));
+			pmd.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			
+			count=service.ManpowerSubmit(pmd,UserId);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ManpowerSubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="ManpowerList.htm",method = RequestMethod.GET)
+	public @ResponseBody String ManpowerList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ManpowerList.htm "+UserId);
+		List<Object[]>ManpowerList=null;
+	try {
+		ManpowerList=service.ManpowerList(req.getParameter("initiationid"));
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ManpowerList.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(ManpowerList);
+	}
+	@RequestMapping(value="ManpowerValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String ManpowerValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ManpowerValue.htm "+UserId);
+		Object[]ManpowerValue=null;
+	try {
+		ManpowerValue=service.ManpowerValue(req.getParameter("requirementid"));
+	}catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ManpowerValue.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(ManpowerValue);
+	}
+	@RequestMapping(value="ManpowerEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ManpowerEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ManpowerEdit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorManPowersDto pmd= new ProjectMajorManPowersDto();
+			pmd.setDesignation(req.getParameter("designation"));
+			pmd.setDiscipline(req.getParameter("Discipline"));
+			pmd.setNumbers(Integer.parseInt(req.getParameter("Numbers")));
+			pmd.setPeriod(Integer.parseInt(req.getParameter("Period")));
+			pmd.setRemarks(req.getParameter("Remarks"));
+			pmd.setRequirementId(Long.parseLong(req.getParameter("requirementid")));
+			
+			count=service.ManpowerEdit(pmd,UserId);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ManpowerEdit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
 	
 	//Sanction statement;
 	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
@@ -5095,9 +5272,97 @@ public class ProjectController
 			e.printStackTrace(); 
 			logger.error(new Date() +"Inside ProjectSanctionDetailsDownload.htm "+UserId,e);
 		}
-		
-		
 	}
+	@RequestMapping(value = "ProjectSanctionMacroDetailsPart2Download.htm" )
+	public void ProjectSanctionMacroDetailsPart2Download(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProjectSanctionMacroDetailsPart2Download.htm "+UserId);
+	try {
+		req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
+		String initiationid=req.getParameter("IntiationId");
+		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(initiationid));
+		req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
+		req.setAttribute("ConsultancyList", service.ConsultancyList(initiationid));
+		req.setAttribute("CarsList", service.CarsList(initiationid));
+		req.setAttribute("LabCode", LabCode);
+		req.setAttribute("WorkPackageList", service.WorkPackageList(initiationid));
+		req.setAttribute("TrainingRequirementList", service.TrainingRequirementList(initiationid));
+		req.setAttribute("ManpowerList", service.ManpowerList(initiationid));
+		req.setAttribute("macrodetailsTwo", service.macroDetailsPartTwo(initiationid));
+		req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
+		req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+		Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+		int monthDivision=Integer.parseInt(ProjectDetailes[9].toString());
+		List<String>CostList= new ArrayList<>();
+		for(int i=0;i<monthDivision;i=i+6) {
+			CostList.add(service.TotalPayOutMonth(String.valueOf(i), String.valueOf(i+5), initiationid));
+		}
+		req.setAttribute("CostList", CostList);
+		String filename="ProjectSanctionDetails(2)";
+		String path=req.getServletContext().getRealPath("/view/temp");
+	  	req.setAttribute("path",path);
+		CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+		req.getRequestDispatcher("/view/print/SanctionDetailsDownloadpart2.jsp").forward(req, customResponse);
+		String html = customResponse.getOutput();
+
+
+		HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+		
+		   CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/SanctionDetailsDownloadpart2Annexure.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();
+			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+		
+		
+	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+	        PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+	        PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+	        
+	        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+	        PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+	        PdfMerger merger = new PdfMerger(pdfDocument);
+	        
+	        merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+            
+            pdfDocument2.close();
+	        pdfDocument.close();
+	        merger.close();
+	        pdf2.close();
+	        pdf1.close();	       
+	        pdfw.close();
+        
+		res.setContentType("application/pdf");
+        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+        File f=new File(path +File.separator+ "merged.pdf");
+
+        OutputStream out = res.getOutputStream();
+		FileInputStream in = new FileInputStream(f);
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = in.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+		in.close();
+		out.flush();
+		out.close();
+		
+		 Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+	        Files.delete(pathOfFile2);		
+	        pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+	        pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+	        Files.delete(pathOfFile2);	
+		
+		
+	}catch(Exception e) {
+		e.printStackTrace(); 
+		logger.error(new Date() +"Inside ProjectSanctionMacroDetailsPart2Download.htm "+UserId,e);
+	}
+	}
+	
+	
 	@RequestMapping(value = "ProjectSanctionMacroDetailsDownload.htm" )
 	public void ProjectSanctionMacroDetailsDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
 	{
@@ -5116,12 +5381,22 @@ public class ProjectController
 			req.setAttribute("ScheduleList", service.ProjectIntiationScheduleList(initiationid));
 			req.setAttribute("MacroDetails", service.projectMacroDetails(initiationid));
 			req.setAttribute("ProcurementList", service.ProcurementList(initiationid));
-			Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-			req.setAttribute("ProjectDetailes", ProjectDetailes);
+			
+			
 			req.setAttribute("ProjectInitiationLabList", service.ProjectIntiationLabList(initiationid));
 			req.setAttribute("initiationid", initiationid);
-			
-			
+			Object[]ProjectDetailes=service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+			int monthDivision=Integer.parseInt(ProjectDetailes[9].toString());
+			List<String>CostList= new ArrayList<>();
+			for(int i=0;i<monthDivision;i=i+6) {
+				CostList.add(service.TotalPayOutMonth(String.valueOf(i), String.valueOf(i+5), initiationid));
+			}
+			String projecttypeid=ProjectDetailes[21].toString();
+
+	    	List<Object[]> CostBreak = service.GetCostBreakList(initiationid,projecttypeid); 
+	    	req.setAttribute("costbreak", CostBreak);
+			req.setAttribute("ProjectDetailes", ProjectDetailes);
+			req.setAttribute("CostList", CostList);
 			String filename="ProjectSanctionDetails";
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
@@ -5157,7 +5432,6 @@ public class ProjectController
 	        
 			res.setContentType("application/pdf");
 	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-			/* File f=new File(path+"/"+filename+".pdf"); */
 	        File f=new File(path +File.separator+ "merged.pdf");
 
 	        OutputStream out = res.getOutputStream();
@@ -5186,8 +5460,6 @@ public class ProjectController
 		}
 		
 	}
-	
-	
 	
 	@RequestMapping(value = "IntiationChecklistDownload.htm", method = {RequestMethod.POST} )
 	public void IntiationChecklistDownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
@@ -5517,8 +5789,99 @@ public class ProjectController
 	  
 	  return json.toJson(result);
 	  }
+		@RequestMapping(value="MacroDetailsPart2.htm",method=RequestMethod.GET)
+	    public @ResponseBody String MacroDetailsPart2(HttpSession ses, HttpServletRequest req) throws Exception {
+			
+			 Gson json = new Gson();
+		   	 String UserId=(String)ses.getAttribute("Username");
+		   	logger.info(new Date() +"Inside MacroDetailsPart2.htm"+UserId);
+		   	long count=0;
+		   	try {
+		   		String initiationid=req.getParameter("initiationid");
+		   		Object[] macroDetails2=service.macroDetailsPartTwo(initiationid);
+		   		if(macroDetails2.length==0) {
+		   			PfmsInitiationMacroDetailsTwo pmd= new PfmsInitiationMacroDetailsTwo();
+		   			pmd.setAdditionalInformation(req.getParameter("information1"));
+		   			pmd.setComments(req.getParameter("information2"));
+		   			pmd.setRecommendations(req.getParameter("information3"));
+		   			pmd.setCreatedBy(UserId);
+		   			pmd.setCreatedDate(sdf1.format(new Date()));
+		   			pmd.setInitiationId(Long.parseLong(initiationid));
+		   			pmd.setIsActive(1);
+		   			count=service.MacroDetailsPartTwoSubmit(pmd);
+		   		}else {
+		   			PfmsInitiationMacroDetailsTwo pmd= new PfmsInitiationMacroDetailsTwo();
+		   			pmd.setAdditionalInformation(req.getParameter("information1"));
+		   			pmd.setComments(req.getParameter("information2"));
+		   			pmd.setRecommendations(req.getParameter("information3"));
+					pmd.setModifiedBy(UserId);
+					pmd.setModifiedDate(sdf1.format(new Date()));
+		   			pmd.setCreatedDate(sdf1.format(new Date()));
+		   			pmd.setInitiationId(Long.parseLong(initiationid));
+		   			pmd.setIsActive(1);
+		   			count=service.MacroDetailsPartTwoEdit(pmd);
+		   		}
+		   		
+		   	}
+		   	catch(Exception e) {
+				  e.printStackTrace();
+				  logger.error(new Date() +"Inside MacroDetailsPart2.htm"+UserId ,e);
+		   	}
+		   	
+		   	return json.toJson(count);
+		}
 	  
-	  
+		@RequestMapping(value="BriefTechnicalAppreciation.htm",method=RequestMethod.GET)
+	    public @ResponseBody String BriefTechnicalAppreciation(HttpSession ses, HttpServletRequest req) throws Exception {
+			
+			 Gson json = new Gson();
+		   	 String UserId=(String)ses.getAttribute("Username");
+		   	logger.info(new Date() +"Inside BriefTechnicalAppreciation.htm"+UserId);
+		   	long count=0;
+		   	try {
+		   		String initiationid=req.getParameter("initiationid");
+		   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+		   		System.out.println(BriefTechnicalAppreciationList.length+"-----");
+		   		if(BriefTechnicalAppreciationList.length==0) {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
+		   			pmb.setPeerReview(req.getParameter("PeerReview"));
+		   			pmb.setActionPlan(req.getParameter("ActionPlan"));
+		   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
+		   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
+		   			pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
+		   			pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
+		   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
+		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
+		   			pmb.setPERT(req.getParameter("PERT"));
+		   			pmb.setCreatedBy(UserId);
+		   			pmb.setCreatedDate(sdf1.format(new Date()));
+		   			pmb.setIsActive(1);
+		   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+		   		}else {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
+		   			pmb.setPeerReview(req.getParameter("PeerReview"));
+		   			pmb.setActionPlan(req.getParameter("ActionPlan"));
+		   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
+		   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
+		   			pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
+		   			pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
+		   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
+		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
+		   			pmb.setPERT(req.getParameter("PERT"));
+		   			pmb.setModifiedBy(UserId);
+		   			pmb.setModifiedDate(sdf1.format(new Date()));
+		   			count=service.BriefTechnicalAppreciationEdit(pmb);
+		   		}
+		   	}catch(Exception e) {
+				  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefTechnicalAppreciation.htm"+UserId ,e);
+		   	}
+		   	return json.toJson(count);
+		}
 	  
 	  
 	@RequestMapping(value="ProjectUserUpdate.htm",method=RequestMethod.GET)
@@ -5740,8 +6103,6 @@ public class ProjectController
 		try {
 			String initiationId=req.getParameter("IntiationId");
 			String attachmentid=req.getParameter("attachmentid");
-			
-			
 			String stepid="";
 			String initiationid="";
 			String VersionDoc="";
@@ -5765,7 +6126,7 @@ public class ProjectController
 	
 			File my_file=null;
 			my_file=new File(uploadpath+reqAttachDownload[2]+File.separator+reqAttachDownload[3]);
-			res.setContentType("Application/octet-stream");	
+			res.setContentType("Application/pdf");	
 			 res.setHeader("Content-disposition","inline; filename="+reqAttachDownload[3].toString()); 
 			  OutputStream out = res.getOutputStream();
 		        FileInputStream in = new FileInputStream(my_file);
@@ -5777,10 +6138,6 @@ public class ProjectController
 		        in.close();
 		        out.flush();
 		        out.close();
-				
-			
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +"Inside ProjectRequirementAttachmentDownload.htm "+UserId,e);

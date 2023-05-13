@@ -37,7 +37,7 @@ td{
     }     
  
 		@page{             
-          size: 790px 1050px;
+          size: 790px 1080px;
           margin-top: 49px;
           margin-left: 49px;
           margin-right: 49px;
@@ -98,7 +98,7 @@ background:black;
 	</tr>
 	<%--  --%>
 		<tr>
-	<td style="width:350px;text-align: left"><h4>5. PSQR/GSQR/NSQR/ASQR/JSQR No(for MM/ TD(S) Projects):	</h4></td>
+	<td style="width:350px;text-align: left"><h4>5. PSQR/GSQR/NSQR/ASQR/JSQR No:<br>&nbsp;&nbsp;&nbsp;&nbsp;(for MM/ TD(S) Projects)	</h4></td>
 
 	<%if(!ProjectDetailes[21].toString().equalsIgnoreCase("1")||ProjectDetailes[21].toString().equalsIgnoreCase("8")) {%>
 							<td>Not Applicable<hr></td>
@@ -125,13 +125,15 @@ background:black;
 	<td style="width:350px;text-align: left"><h4>8. Schedule (Months): </h4></td>
 	<td ><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><%=ProjectDetailes[9]%><%}else if(ProjectDetailes[18]!=null){ %><%=ProjectDetailes[18]%><%}else{ %>-<%} %><hr style="margin-top:0px;"></td>
 	</tr>
+	</table>
+	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<%
 	if(projectFiles.isEmpty()){
 		int i=1;
 	for(Object[]obj:sanctionlistdetails) {%>
 	<tr>
 	<td style="width:350px;text-align: left"><h4><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]  %></h4></td>
-	<td align="">NO<hr></td>
+	<td align="">No<hr></td>
 	</tr>
 	
 	<%i++;if(i==9)break; %>
@@ -139,24 +141,25 @@ background:black;
 	int i=1;
 	for(Object[]obj:sanctionlistdetails){%>
 	<tr>
-	<td style="width:350px;text-align: left"><h4><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]  %></h4></td>
+	<td style="width:500px;text-align: left"><h4><%=Integer.parseInt(obj[0].toString())+8+". "+obj[1]  %></h4></td>
 	<td align="left">
-	<%if(DocumentId.contains(obj[0])) {%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<%if(DocumentId.contains(obj[0])) {%>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;
 			<%for(Object[]obj1:projectFiles) {
 											if(obj1[8].toString().equalsIgnoreCase(obj[0].toString())){
 												String []versiondoc=obj1[6].toString().split("\\.");
 												String id=versiondoc[0];
-												String subId=versiondoc[1]; 
-											%>
-								<a  href="ProjectRequirementAttachmentDownload.htm?DocumentId=<%=obj1[8].toString()%>&initiationid=<%=obj1[1].toString() %>&stepid=<%=3%>&id=<%=id %>&subId=<%=subId%> " target="_blank" style="font-size: 15px;">Download File</a> 
+												String subId=versiondoc[1]; %>
+								<a style="float: right;" href="ProjectRequirementAttachmentDownload.htm?DocumentId=<%=obj1[8].toString()%>&initiationid=<%=obj1[1].toString() %>&stepid=<%=3%>&id=<%=id %>&subId=<%=subId%> " target="_blank" style="font-size: 12px;">Download</a> 
 											
 											<%}}%>
 		
 		<%}
-		else{%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NO<%}%><hr></td>
+		else{%>&nbsp;&nbsp;No<%}%><hr></td>
 	</tr>
 	<%i++;if(i==9)break; %>
 	<%}} %> 
+	</table>
+	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
 	<td style="width:350px;text-align: left"><h4>17. Project Deliverables/Output:  </h4></td>
 	<td ><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=ProjectDetailes[12] %><%}else{ %>-<%} %><hr style="margin-top:0px;"></td>
@@ -166,6 +169,7 @@ background:black;
 	<td ><%=ProjectDetailes[1] %><hr style="margin-top:0px;"></td>
 	</tr>
 	</table>
+	
 	</div>
 </body>
 </html>

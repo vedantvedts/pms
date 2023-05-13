@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<spring:url value="/resources/css/Multiselect1.css" var="Multiselect1Css" />     
+<link href="${Multiselect1Css}" rel="stylesheet" />
 <jsp:include page="../static/header.jsp"></jsp:include>
+
+ <spring:url value="/resources/js/Multiselect1.js" var="Multiselect1js" />  
+<script src="${Multiselect1js}"></script> 
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT INT  ADD</title>
 <style type="text/css">
@@ -36,7 +42,39 @@ hr{
 #initiatedproject .select2-container{
 	width:38rem !important;
 }
-
+/* .spermission {
+  width: 100%;
+  height: 34px;
+  padding: 6px 90px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: black;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+ .spermission option {
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: black;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 5px 0;
+}
+ */
+option:checked {
+  background-color: #337ab7;
+  color: #fff;
+}
+.multiselect{
+padding: 4px 90px;
+background-color:#E0E0E0;
+}
 
 </style>
 </head>
@@ -235,10 +273,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    <div class="col-md-4">
 						<div class="form-group"> 
 						<label class="control-label">Deliverable</label><span class="mandatory" style="color: #cd0a0a;">*</span>
-							<select class="form-control selectdee"
-														name="Deliverables" id="DeliverablesOutput"
-														data-width="80%" data-live-search="true"
-														 multiple>
+							<select class="form-control spermission" name="Deliverables" id="DeliverablesOutput" multiple>
 												<option>Prototype</option>
 												<option>Limited Series Production</option>
 												<option>Technology</option>
@@ -546,9 +581,38 @@ $('#IsPlanned').change(function(){
 	}
 	
 })
+ $(document).ready(function() {
+	  $("#dropdown-submit").click(function() {
+	    var selectedOptions = [];
+	    $("input[type=checkbox]:checked").each(function() {
+	      selectedOptions.push($(this).val());
+	    });
+	    if (selectedOptions.length > 0) {
+	      $("#dropdownMenuButton").text(selectedOptions.join(", "));
+	    } else {
+	      $("#dropdownMenuButton").text("Select options");
+	    }
+	  });
+	});
 
 
-
+$(document).ready(function() {
+$('#DeliverablesOutput').multiselect({
+includeSelectAllOption: true,
+enableFiltering: true,
+maxHeight: 200,
+buttonWidth: '100%',
+onChange: function(option, checked) {
+  if(checked) {
+    // Option selected
+    console.log('Option selected: ' + $(option).val());
+  } else {
+    // Option deselected
+    console.log('Option deselected: ' + $(option).val());
+  }
+}
+});
+});
 
 
 

@@ -42,6 +42,8 @@ import com.vts.pfms.project.dto.PfmsRiskDto;
 import com.vts.pfms.project.dto.PreprojectFileDto;
 import com.vts.pfms.project.dto.ProjectAssignDto;
 import com.vts.pfms.project.dto.ProjectMajorCarsDto;
+import com.vts.pfms.project.dto.ProjectMajorConsultancyDto;
+import com.vts.pfms.project.dto.ProjectMajorManPowersDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
@@ -57,6 +59,7 @@ import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
@@ -68,8 +71,11 @@ import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
+import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMajorCars;
+import com.vts.pfms.project.model.ProjectMajorConsultancy;
+import com.vts.pfms.project.model.ProjectMajorManPowers;
 import com.vts.pfms.project.model.ProjectMajorRequirements;
 import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -2564,4 +2570,120 @@ public class ProjectServiceImpl implements ProjectService {
 			pmc.setIsActive(1);
 			return dao.CarEdit(pmc);
 		}
+		
+		@Override
+		public long ConsultancySubmit(ProjectMajorConsultancyDto pcd, String userId) throws Exception {
+			// TODO Auto-generated method stub
+			ProjectMajorConsultancy pmc=new ProjectMajorConsultancy();
+			pmc.setInitiationId(pcd.getInitiationId());
+			pmc.setDiscipline(pcd.getDiscipline());
+			pmc.setAgency(pcd.getAgency());
+			pmc.setPerson(pcd.getPerson());
+			pmc.setProcess(pcd.getProcess());
+			pmc.setCost(pcd.getCost());
+			pmc.setCreatedBy(userId);
+			pmc.setCreatedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			return dao.ConsultancySubmit(pmc);
+		}
+			@Override
+			public List<Object[]> ConsultancyList(String initiationid) throws Exception {
+				// TODO Auto-generated method stub
+			return dao.ConsultancyList(initiationid);
+			}
+			@Override
+			public Object[] ConsultancyValue(String parameter) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.ConsultancyValue(parameter);
+			}
+			@Override
+			public long ConsultancyEdit(ProjectMajorConsultancyDto pcd, String userId) throws Exception {
+				// TODO Auto-generated method stub
+				ProjectMajorConsultancy pmc=new ProjectMajorConsultancy();
+				pmc.setConsultancyId(pcd.getConsultancyId());
+				pmc.setDiscipline(pcd.getDiscipline());
+				pmc.setAgency(pcd.getAgency());
+				pmc.setPerson(pcd.getPerson());
+				pmc.setProcess(pcd.getProcess());
+				pmc.setCost(pcd.getCost());
+				pmc.setModifiedBy(userId);
+				pmc.setModifiedDate(sdf1.format(new Date()));
+				pmc.setIsActive(1);
+				return dao.ConsultancyEdit(pmc);
+			}	
+			@Override
+			public long ManpowerSubmit(ProjectMajorManPowersDto pmd, String userId) throws Exception {
+				// TODO Auto-generated method stub
+				ProjectMajorManPowers pm= new ProjectMajorManPowers();
+				pm.setInitiationId(pmd.getInitiationId());
+				pm.setDesignation(pmd.getDesignation());
+				pm.setDiscipline(pmd.getDiscipline());
+				pm.setNumbers(pmd.getNumbers());
+				pm.setPeriod(pmd.getPeriod());
+				pm.setRemarks(pmd.getRemarks());
+				pm.setCreatedBy(userId);
+				pm.setCreatedDate(sdf1.format(new Date()));
+				pm.setIsActive(1);
+				return dao.ManpowerSubmit(pm);
+			}
+			@Override
+			public List<Object[]> ManpowerList(String parameter) throws Exception {
+				return dao.ManpowerList(parameter);
+			}
+			@Override
+			public Object[] ManpowerValue(String parameter) throws Exception {
+				return dao.ManpowerValue(parameter);
+			}
+			
+			@Override
+			public long ManpowerEdit(ProjectMajorManPowersDto pmd, String userId) throws Exception {
+				ProjectMajorManPowers pm= new ProjectMajorManPowers();
+				pm.setRequirementId(pmd.getRequirementId());
+				pm.setDesignation(pmd.getDesignation());
+				pm.setDiscipline(pmd.getDiscipline());
+				pm.setNumbers(pmd.getNumbers());
+				pm.setPeriod(pmd.getPeriod());
+				pm.setRemarks(pmd.getRemarks());
+				pm.setModifiedBy(userId);
+				pm.setModifiedDate(sdf1.format(new Date()));
+				pm.setIsActive(1);
+				
+				return dao.ManPowerEdit(pm);
+			}
+			@Override
+			public Object[] macroDetailsPartTwo(String initiationid) throws Exception {
+				return dao.macroDetailsPartTwo(initiationid);
+			}
+			@Override
+			public long MacroDetailsPartTwoSubmit(PfmsInitiationMacroDetailsTwo pmd) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.MacroDetailsPartTwoSubmit(pmd);
+			}
+			@Override
+			public long MacroDetailsPartTwoEdit(PfmsInitiationMacroDetailsTwo pmd) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.MacroDetailsPartTwoEdit(pmd);
+			}
+			@Override
+			public Object[] BriefTechnicalAppreciation(String initiationid) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.BriefTechnicalAppreciation(initiationid);
+			}
+			
+			@Override
+			public long BriefTechnicalAppreciationSubmit(ProjectMactroDetailsBrief pmb) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.BriefTechnicalAppreciationSubmit(pmb);
+			}
+			
+			@Override
+			public long BriefTechnicalAppreciationEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.BriefTechnicalAppreciationEdit(pmb);
+			}
+			@Override
+			public List<Object[]> GetCostBreakList(String initiationid, String projecttypeid) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.GetCostBreakList(initiationid,projecttypeid);
+			}
 }

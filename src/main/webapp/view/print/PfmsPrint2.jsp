@@ -203,10 +203,13 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 }
 
 .editor-text table{
-	width: 923px !important;
+	width: 650px !important;
+	maargin-left:20px !important;
 }
- 
- 
+/*  table>tbody>tr>td>table{
+ width:450px !important;
+ }
+   */
 
 </style>
 </head>
@@ -406,10 +409,10 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 				<thead  style="margin-top:10px; borde:1px solid black">
 	 			 <tr style="margin-top:40px; padding:20px!important">
 <!-- 	 	     <th style="width: 5%;">Select</th> -->
-			    <th style="width: 3%; padding:8px;font-size: 22px; ">SN</th>
-				<th style="width:8% ; font-size:22px; ">ID</th>
+			    <th style="width: 3%; padding:8px;font-size: 22px;  border-collapse:collapse; border:1px solid black;">SN</th>
+				<th style="width:8% ; font-size:22px; border-collapse:collapse; border:1px solid black;">ID</th>
 				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
-				<th style="width:70% ;font-size: 22px;" >Brief</th>
+				<th style="width:70% ;font-size: 22px; border-collapse:collapse; border:1px solid black;" >Brief</th>
 				</tr>
 				</thead>
 <tbody>
@@ -417,9 +420,9 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
   if(!RequirementList.isEmpty()){
   for(Object obj[]:RequirementList){ %>
   <tr>
-		<td style="font-size: 17px;  padding:10px;"><%=i+"." %></td>
- 			 	<td style="font-size: 17px; padding:7px;"><%=obj[1] %></td>
-	 			   	<td style="text-align:left; font-size: 17px; padding-top:7px; padding-left: 40px !important;"><%=obj[3] %></td>
+		<td style="font-size: 17px;  padding:10px; border-collapse:collapse; border:1px solid black;"><%=i+"." %></td>
+ 			 	<td style="font-size: 17px; padding:7px; border-collapse:collapse; border:1px solid black;"><%=obj[1] %></td>
+	 			   	<td style="text-align:justify; font-size: 17px; padding-top:7px;  border-collapse:collapse; border:1px solid black;"><%=obj[3] %></td>
 	 			   	 </tr>
 	 		
  <%
@@ -925,8 +928,8 @@ for(Object[] obj : DetailsList){   %>
 <%}%>
 
  <h1 class="break"></h1>
- <%
- 
+<%
+  
  double totalcost = costbreak.stream().mapToDouble(e-> Double.parseDouble(e[0].toString())).sum();
  if(PfmsInitiationList[19]!=null && PfmsInitiationList[19].toString().equalsIgnoreCase("1") ||
 		 PfmsInitiationList[19].toString().equalsIgnoreCase("2")|| PfmsInitiationList[19].toString().equalsIgnoreCase("4") ||

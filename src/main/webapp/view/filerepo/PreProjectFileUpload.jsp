@@ -352,7 +352,7 @@ h6 {
 										<div class="col-md-5">
 											<input class="form-control" required type="file"
 												name="Attachment" id="Attachment1"
-												accept=".xlsx,.xls,.pdf,.doc,.docx"
+												accept=".pdf"
 												onchange=" editcheck('Attachment1',1)">
 										</div>
 									</div>
@@ -431,7 +431,7 @@ h6 {
 								</div>
 								<div class="col-md-5">
 									<input class="form-control" type="file" name="Attachment"
-										id="Attachment1" accept=".xlsx,.xls,.pdf,.doc,.docx"
+										id="Attachment1" accept=".pdf"
 										onchange=" editcheck('Attachment1',1)" required>
 								</div>
 							</div>

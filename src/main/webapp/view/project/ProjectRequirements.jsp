@@ -78,6 +78,9 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 .requirementid::-webkit-scrollbar {
 	display: none;
 }
+.requirementid:hover{
+padding:13px;
+}
 
 .viewbtn {
 	width: 100%;
@@ -88,7 +91,10 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 }
 
 .viewbtn:hover {
-	cursor: pointer background: green;
+	cursor: pointer !important;
+	background-color:#22c8e5 !important;
+	border:none !important;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)!important;
 }
 
 .viewbtn1 {
@@ -186,7 +192,11 @@ hr {
 	align-items: center;
 	box-shadow: 4px 4px 4px gray;
 }
-
+@keyframes blinker {
+  20% {
+    opacity: 0.65;
+  }
+}
 #attachmentadd, #attachmentaddedit {
 	display: flex;
 	margin-top: 2%;
@@ -206,6 +216,17 @@ hr {
 	justify-content: center;
 	margin-right: 1%;
 }
+/* #reqdiv{
+    background-image: url(view/images/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+} */
+#reqdiv:hover{
+
+box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)!important;
+}
+
 </style>
 
 </head>
@@ -241,7 +262,9 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 		</div>
 	</div>
 	<%} %>
-
+<%if(ProjectIntiationList==null ) {%>
+		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;"><h3>No Data Available!</h3></div>
+	<%}else{ %>
 	<div id="reqmain" class="card-slider">
 		<form class="form-inline" method="POST"
 			action="ProjectRequirement.htm">
@@ -273,10 +296,27 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 					<div class="card shadow-nohover" style="margin-top: -0px;">
 						<div class="row card-header"
 							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-							<div class="col-md-10" id="projecthead">
+							<div class="col-md-8" id="projecthead">
 								<h5 style="margin-left: 1%;">
 									<%="Project" +" "+projectshortName+" "+ "Requirements List" %>
 								</h5>
+							</div>
+							<div class="col-md-2">
+								<form action="#">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden"
+									name="projectshortName" value="<%=projectshortName%>" /> <input
+									type="hidden" name="IntiationId" value="<%=initiationid%>" />
+									<span id="downloadform">
+								<button type="submit" class="btn btn-sm" formmethod="GET"
+									style="margin-top: -3%;
+									<%if(RequirementList.size()>0) {%>display:block;<%}else{%>display:none;<%} %> formtarget="_blank"
+									formaction=""
+									data-toggle="tooltip" data-placement="top"
+									title="Download file">
+									<i class="fa fa-download fa-sm" aria-hidden="true"></i>
+								</button></span>
+							</form>
 							</div>
 							<div class="col-md-2" id="addReqButton">
 								<input type="hidden" name="${_csrf.parameterName}"
@@ -298,14 +338,13 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 
 			<%int count=1;
 for(Object []obj:RequirementList) {%>
-			<button type="button" class="btn btn-secondary viewbtn"
-				id="<%=obj[0] %>" value="<%=obj[0]%>"data-toggle="tooltip" data-placement=""
-									title=""><%=obj[1] %></button>
+			<button type="button" class="btn btn-secondary viewbtn mt-2"
+				id="<%=obj[0] %>" value="<%=obj[0]%>"><%=obj[1] %></button>
 			<%count++;} %>
 		</div>
 		<div class="container" id="container">
 			<div class="row">
-				<div class="col-md-12" id="reqdiv" style="background-image: repeating-linear-gradient(45deg,#ffffff 58%, #C4DDFF);">
+				<div class="col-md-12" id="reqdiv">
 					<div class="card-body" id="cardbody">
 						<div class="row">
 							<div class="col-md-12">
@@ -908,7 +947,7 @@ for(Object []obj:RequirementList) {%>
 			</div>
 		</div>
 
-
+<%} %>
 
 		<script>
 $(document).ready(function() {

@@ -19,6 +19,7 @@ import com.vts.pfms.project.model.PfmsInitiationCost;
 import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
+import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
@@ -30,8 +31,11 @@ import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
 import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
+import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMajorCars;
+import com.vts.pfms.project.model.ProjectMajorConsultancy;
+import com.vts.pfms.project.model.ProjectMajorManPowers;
 import com.vts.pfms.project.model.ProjectMajorRequirements;
 import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
@@ -247,7 +251,19 @@ public interface ProjectDao {
 	public List<Object[]> CarsList(String parameter)throws Exception;
 	public Object[] CarsValue(String parameter)throws Exception ;
 	public long CarEdit(ProjectMajorCars pmc)throws Exception;
-	
-
-	
+	public long ConsultancySubmit(ProjectMajorConsultancy pmc)throws Exception;
+	public List<Object[]> ConsultancyList(String initiationid)throws Exception;
+	public Object[] ConsultancyValue(String parameter)throws Exception;
+	public long ConsultancyEdit(ProjectMajorConsultancy pmc)throws Exception;
+	public long ManpowerSubmit(ProjectMajorManPowers pm)throws Exception;
+	public List<Object[]> ManpowerList(String parameter)throws Exception;
+	public Object[] ManpowerValue(String parameter)throws Exception;
+	public long ManPowerEdit(ProjectMajorManPowers pm)throws Exception;
+	public Object[] macroDetailsPartTwo(String initiationid)throws Exception;
+	public long MacroDetailsPartTwoSubmit(PfmsInitiationMacroDetailsTwo pmd)throws Exception;
+	public long MacroDetailsPartTwoEdit(PfmsInitiationMacroDetailsTwo pmd) throws Exception;
+	public Object[] BriefTechnicalAppreciation(String initiationid)throws Exception;
+	public long BriefTechnicalAppreciationSubmit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefTechnicalAppreciationEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public List<Object[]> GetCostBreakList(String initiationid, String projecttypeid)throws Exception;
 }

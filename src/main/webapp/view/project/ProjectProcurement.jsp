@@ -55,6 +55,9 @@ margin-left: -6%;
     String projectTitle=(String)request.getAttribute("projectTitle");
     List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
     List<Object[]>ProcurementList=(List<Object[]>)request.getAttribute("ProcurementList");
+    
+    DecimalFormat df=new DecimalFormat("0.00");
+    NFormatConvertion nfc=new NFormatConvertion();
     %>
     	<%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
@@ -73,7 +76,9 @@ margin-left: -6%;
 		</div>
 	</div>
 	<%} %>
-	
+	<%if(ProjectIntiationList.size()==0) {%>
+		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;"><h3>No Data Available!</h3></div>
+	<%}else{ %>
 			<div class="container-fluid" id="main">
 			<div class="row">
 				<div class="col-md-12">
@@ -131,9 +136,9 @@ margin-left: -6%;
 	   						<th style="width:15%">Name of the item</th>
 	   						<th style="width:30%">Purpose</th>
 	   						<th style="width:15%">Source of supply</th>
-	   						<th style="width:10%">Mode</th>
-	   						<th style="width:5%">Cost</th>
-	   						<th style="width:5%">Month</th>
+	   						<th style="width:3%">Mode</th>
+	   						<th style="width:8%">Cost<br>(&#8377; in cr)</th>
+	   						<th style="width:3%">Months</th>
 	   						<th style="width:3%">Approval</th>
 	   						</tr>
 	   						</thead>
@@ -148,7 +153,11 @@ margin-left: -6%;
 	   						<td align="left"><%if(obj[3].toString().length()>100){%><%=obj[3].toString().substring(0, 100) %><%} else{%><%=obj[3]%><%} %></td>
 	   						<td align="left"><%=obj[4] %></td>
 	   						<td><%=obj[5] %></td>
-	   						<td align="right"><%=obj[6] %></td>
+	   						<%DecimalFormat df1 = new DecimalFormat( "################.00"); 
+							String v = df1.format((Double.valueOf(obj[6].toString()).doubleValue()/10000000 )); 
+							NFormatConvertion nfc1=new NFormatConvertion();
+							%>
+	   						<td align="right"><%=v%></td>
 	   						<td><%=obj[10] %></td>
 	   						<td><%if(obj[11].toString().equalsIgnoreCase("Y")) {%>YES<%}else{ %>NO<%} %></td>		
 	   						</tr>
@@ -169,7 +178,7 @@ margin-left: -6%;
 							</div>
 							</div>
 
-
+<%} %>
 
 	<form class="form-horizontal" role="form"
 		action="ProjectProcurementSubmit.htm" method="POST" id="myform1">
@@ -232,7 +241,7 @@ margin-left: -6%;
 											<%
 											for (Object[] obj : DemandList) {
 											%>
-											<option value="<%=obj[0]%>"><%=obj[2]%></option>
+											<option value="<%=obj[1]%>"><%=obj[2]%></option>
 											<%
 											}
 											%>
@@ -379,7 +388,7 @@ margin-left: -6%;
 											<%
 											for (Object[] obj : DemandList) {
 											%>
-											<option value="<%=obj[0]%>"><%=obj[2]%></option>
+											<option value="<%=obj[1]%>"><%=obj[2]%></option>
 											<%
 											}
 											%>
