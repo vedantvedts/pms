@@ -688,7 +688,7 @@ public class ActionDaoImpl implements ActionDao{
 			return 0;
 	 }
 	
-	private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
+	 private static final String CLUSTERLABLIST="SELECT labid,clusterid,labname,labcode FROM cluster_lab";
 	
 	@Override
 	public List<Object[]> AllLabList() throws Exception 

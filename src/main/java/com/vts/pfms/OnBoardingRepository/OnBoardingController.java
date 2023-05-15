@@ -77,7 +77,7 @@ public class OnBoardingController {
 	@Autowired
 	ActionService actionservice;
 	
-	private static final Logger logger=LogManager.getLogger(MasterController.class);
+	private static final Logger logger=LogManager.getLogger(OnBoardingController.class);
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	 
 	 @RequestMapping(value="GroupMasterExcelUpload.htm" ,method = RequestMethod.POST)

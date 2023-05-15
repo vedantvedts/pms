@@ -167,7 +167,7 @@ a:hover {
 									<div class="form-group">
 										<label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
 										</label><br>
-										<input class="form-control " type="text"name="Item" id="Item"  style="width:100% " maxlength="1000" required="required">
+										<input class="form-control " type="text"name="Item" id="Item"  style="width:100% " maxlength="1000" required="required" placeholder="Enter Action Item">
 									</div>
 								</div>
 
@@ -452,9 +452,9 @@ a:hover {
 											    for(Object[] lab : AllLabList){
 											    	if(clusterid!=null && clusterid.equalsIgnoreCase(lab[1].toString())){
 											 %>
-												<option value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+												<option  value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
 											<%}}}%> 
-											<option value="@EXP">Expert</option>
+											<option  value="@EXP">Expert</option>
 										</select>
 										</td>
 									</tr>
@@ -499,7 +499,7 @@ a:hover {
 							<form name="specadd" id="specadd" action="ActionSubmit.htm" method="post">
   
 				   			<div class="row">
-									  <div class="col-2"></div>
+									  <div class="col-1"></div>
 				  				      
 			                          <div class="col-3">
 				                             <div class="form-group">
@@ -518,7 +518,7 @@ a:hover {
 				                              </div>
 			                         </div>
 			
-			                         <div class="col-4">
+			                         <div class="col-6">
 			                               <div class="form-group">
 											    <label> Assignee : </label><br>
 												<select class="form-control selectdee" style="width: 100%;" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
@@ -869,13 +869,14 @@ a:hover {
 				 				});
 				 				
 				 				var s = '';
-				 				s += '<option value="">Choose ...</option>';
+				 				
 				 				if($AssigneeLabCode == '@EXP'){
 				 					
 				 				}
 				 				for (i = 0; i < values.length; i++) 
 				 				{
 				 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+				 					
 				 				} 
 				 				
 				 				$('#Assignee').html(s);	
