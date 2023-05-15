@@ -129,15 +129,13 @@ background:black;
 							<%}} %>
 							</tbody>
 		  </table>
-		<table class="border-black" style="margin-left:20px; border-top:none solid white;font-size:15px;font-family:FontAwesome; width:980px;">
-		 					
+		  <table class="border-black" style="margin-left:20px; border-top:none solid white;font-size:15px;font-family:FontAwesome; width:980px;">					
 		 				<thead style="background: #055C9D;color: black; font-size: "> 
 						<tr>
 						<td class="border-black" style="width:650px;text-align: left;">
 						<h5>ETS-Expected Date of Tendering / Placing of SO&nbsp;, &nbsp;ED-Expected date of Delivery</h5>  </td>
 						</tr>
 						</thead>
-						</table>
+		 </table>
 </body>
-
 </html>

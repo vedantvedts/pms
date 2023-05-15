@@ -22,7 +22,7 @@
 	justify-content: center;
 	margin-top: -1%
 }
-#Notification1,#Notification2,#Notification3,#Notification4,#Notification5{ 
+#Notification1,#Notification2,#Notification3,#Notification4,#Notification5,#Notification6{ 
   animation: blinker 2s linear infinite;
   top:-3px!important;
   background-color:#008080 !important;
@@ -124,7 +124,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 
 .list:hover{
  #Notification1,#Notification2,#Notification3,
- #Notification4,#Notification5{ 
+ #Notification4,#Notification5,#Notification6{ 
   animation: blinker 0s linear infinite;
 }
 transition-duration: 0.3s !important;
@@ -1386,8 +1386,12 @@ color:#145374;
 					<div class="col-md-12">
 					<h5>6. Details of CAPSI 
 					<span class="ml-5" style="float: right ;margin-top: -3px;">
+					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
+					title="Details of CAPSI" ><i class="fa  fa-list" aria-hidden="true"></i>
+					<span class="badge badge-counter badge-success" id="Notification6" style="float: right; margin-left: -7px; font-size: 100%!important;"><%="0" %></span>
+					</button>
 					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="">
+					title="" onclick="showAddModal(6)">
 					<i class="btn  fa fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
 					</i>
 					</button>
@@ -1657,7 +1661,7 @@ color:#145374;
 					<div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Discipline/area for training </label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="areafortraining" maxlength="255 characters" style="width:80%">
 					</div>
@@ -1665,7 +1669,7 @@ color:#145374;
 					<div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Agency contacted</label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="agencyContacted" maxlength="255 characters" style="width:80%">
 					</div>
@@ -1693,7 +1697,7 @@ color:#145374;
 				    <div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Remarks </label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="Remarks" maxlength="255 characters" style="width:80%">
 					</div>
@@ -1768,7 +1772,7 @@ color:#145374;
 					<div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Discipline/area for training </label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="areafortrainingEdit" maxlength="255 characters" style="width:80%">
 					</div>
@@ -1776,26 +1780,26 @@ color:#145374;
 					<div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Agency contacted</label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="agencyContactedEdit" maxlength="255 characters" style="width:80%">
 					</div>
 					</div>
 					<div class="row mt-4">
 					<div class="col-md-5" style="max-width: 34%">
-					<label class="sidelabel">No of Personnel proposed to be trained </label><span class="mandatory" style="color: red;">*</span>
+					<label class="sidelabel">No of Personnel to be trained </label><span class="mandatory" style="color: red;">*</span><label class="sidelabel">&nbsp;&nbsp; &nbsp;&nbsp;: </label>
 					</div>
 					<div class="col-md-2" style="max-width: 12%">
 					<input type="text" class="form-control" id="PersonneltrainedEdit" maxlength="255 characters" style="width:100%" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
 					<div class="col-md-1" style="padding: 0px;">
-					<label class="sidelabel">Duration  </label><span class="mandatory" style="color: red;">*</span>
+					<label class="sidelabel">Duration</label><span class="mandatory" style="color: red;">*</span><label class="sidelabel"> &nbsp;: </label>
 					</div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="DurationEdit" maxlength="255 characters" style="width:60%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
 					<div class="col-md-1">
-					<label class="sidelabel">Cost  </label><span class="mandatory" style="color: red;">*</span>
+					<label class="sidelabel">Cost</label><span class="mandatory" style="color: red;">*</span><label class="sidelabel"> &nbsp;&nbsp;: </label>
 					</div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="CostaddEdit" maxlength="255 characters" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
@@ -1804,7 +1808,7 @@ color:#145374;
 				    <div class="row mt-4">
 					<div class="col-md-4">
 					<label class="sidelabel">Remarks </label><span class="mandatory" style="color: red;">*</span>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="RemarksEdit" maxlength="255 characters" style="width:80%">
 					<input type="hidden" id="trainingid">
@@ -1839,47 +1843,47 @@ color:#145374;
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Name of Govt agencies<span class="mandatory" maxlength="255 charactes" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input class="form-control" type="text" id="GovtAgencies" >
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Work Package<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="workPackage" maxlength="255 charactes" placeholder="max 250 characters">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Objectives<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8">
 					<input type="text" id="Objectives"class="form-control" maxlength="400 characters" style="line-height: 3rem">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Scope<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8">
 					<input type="text" id="Scope"class="form-control" maxlength="400 characters" style="line-height: 3rem">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-2">
+					<div class="col-md-3">
 					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="Cost3" maxlength="255 characters" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
-					<div class="col-md-4" align="right">
+					<div class="col-md-3" align="right">
 					<label class="sidelabel"> PDC (in months) <span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="PDC" maxlength="255 characters" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
@@ -1957,48 +1961,51 @@ color:#145374;
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Name of Govt agencies<span class="mandatory" maxlength="255 charactes" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input class="form-control" type="text" id="GovtAgenciesEdit" maxlength="255 charactes" >
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Work Package<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="workPackageEdit" maxlength="255 charactes" placeholder="max 250 characters">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Objectives<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8">
 					<input type="text" id="ObjectivesEdit"class="form-control" maxlength="400 characters" style="line-height: 3rem">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-4">
+					<div class="col-md-3">
 					<label class="sidelabel">Scope<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8">
 					<input type="text" id="ScopeEdit"class="form-control" maxlength="400 characters" style="line-height: 3rem">
 					<input type="hidden" id="workid">
 					</div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-2">
+					<div class="col-md-3">
 					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="Cost3Edit" maxlength="255 characters" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
-					<div class="col-md-4" align="right">
+					<div class="col-md-3" align="right">
 					<label class="sidelabel"> PDC (in months) <span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="PDCEdit" maxlength="255 characters" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
@@ -2021,13 +2028,12 @@ color:#145374;
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row">
 					<div class="col-md-4">
 					<label class="sidelabel">Name of Institute/ Agency<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="Institute" maxlength="300 characters" placeholder="maximum 300 characters">
 					</div>
@@ -2035,7 +2041,7 @@ color:#145374;
 					<div class="row mt-2">
 					<div class="col-md-4">
 					<label class="sidelabel">Name of the identified professor<span class="mandatory" style="color: red;">*</span></label>					
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="professor" maxlength="300 characters" placeholder="maximum 300 characters" >
 					</div>
@@ -2044,6 +2050,7 @@ color:#145374;
 					<div class="col-md-4">
 					<label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label>					
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="Area" maxlength="300 characters" placeholder="maximum 300 characters" >
 					</div>
@@ -2052,12 +2059,14 @@ color:#145374;
 					<div class="col-md-2">
 					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="Cost4" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
 					<div class="col-md-2" align="right">
 					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="PDC1" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>					
@@ -2066,7 +2075,7 @@ color:#145374;
 					<div class="col-md-4">
 					<label class="sidelabel">Confidence level of the agency (1-10)
 					<span class="mandatory" style="color: red;">*</span></label>
-					</div>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="range" min="1" max="10" id="confidence" step="1" style="color:blue">
 					</div>
@@ -2133,6 +2142,7 @@ color:#145374;
 					<div class="col-md-4">
 					<label class="sidelabel">Name of Institute/ Agency<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="InstituteEdit" maxlength="300 characters" placeholder="maximum 300 characters">
 					</div>
@@ -2141,6 +2151,7 @@ color:#145374;
 					<div class="col-md-4">
 					<label class="sidelabel">Name of the identified professor<span class="mandatory" style="color: red;">*</span></label>					
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="professorEdit" maxlength="300 characters" placeholder="maximum 300 characters" >
 					</div>
@@ -2149,6 +2160,7 @@ color:#145374;
 					<div class="col-md-4">
 					<label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label>					
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input type="text" class="form-control" id="AreaEdit" maxlength="300 characters" placeholder="maximum 300 characters" >
 					</div>
@@ -2157,12 +2169,14 @@ color:#145374;
 					<div class="col-md-2">
 					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="Cost4Edit" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>
 					<div class="col-md-2" align="right">
 					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="text" class="form-control" id="PDC1Edit" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>					
@@ -2172,6 +2186,7 @@ color:#145374;
 					<label class="sidelabel">Confidence level of the agency (1-10)
 					<span class="mandatory" style="color: red;">*</span></label>
 					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
 					<input type="range" min="1" max="10" id="confidenceEdit" step="1" style="color:blue">
 					<input type="hidden" id="carsid">
@@ -2198,30 +2213,35 @@ color:#145374;
 					<div class="col-md-12">
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Discipline/Area <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyArea" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Agency <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyAgency" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Name of person/ expert  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="Consultancyperson" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3" style="padding-right: 0px;"><label class="sidelabel">Process that will be followed  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyProcess" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3" style="padding-right: 0px;"><label class="sidelabel">Cost  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-3">
 					<input id="ConsultancyCost" type="text" maxlength="300 characters" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="" >
 					</div>
@@ -2288,12 +2308,14 @@ color:#145374;
 					<div class="col-md-12">
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Discipline/Area <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyAreaEdit" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Agency <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyAgencyEdit" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					<input type="hidden" id="consultancyid">
@@ -2301,18 +2323,21 @@ color:#145374;
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3"><label class="sidelabel">Name of person/ expert  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancypersonEdit" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3" style="padding-right: 0px;"><label class="sidelabel">Process that will be followed  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6">
 					<input id="ConsultancyProcessEdit" type="text" maxlength="300 characters" class="form-control" placeholder="maximum 250 characters" >
 					</div>
 					</div>
 					<div class="row mt-2">
 					<div class="col-md-3" style="padding-right: 0px;"><label class="sidelabel">Cost  <span class="mandatory" style="color: red;">*</span></label> </div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-3">
 					<input id="ConsultancyCostEdit" type="text" maxlength="300 characters" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" placeholder="" >
 					</div>
@@ -2341,21 +2366,26 @@ color:#145374;
 					<div class="modal-body" >
 					<div class="col-md-12">
 					<div class="row mt-1">
-					<div class="col-md-4"><label class="sidelabel">Designation/Rank<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Designation/Rank<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="designation" class="form-control" maxlength="255 characters" placeholder="Enter Designaton"></div>
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Discipline<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Discipline<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="DisciplineAdd" class="form-control" maxlength="255 characters" placeholder="Enter Discipline"></div>
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Number(s)<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Number(s)<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2"><input type="text" id="Numbers" class="form-control" maxlength="10 characters" placeholder="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"></div>
 					<div class="col-md-2" align="right"><label class="sidelabel">Period<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2"><input type="text" id="Period" class="form-control" maxlength="10 characters" placeholder="Months" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"></div>					
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Remarks<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Remarks<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="RemarksAdd" class="form-control" maxlength="255 characters" placeholder="Enter Remarks"></div>
 					</div>
 					<div class="mt-2" align="center">
@@ -2417,21 +2447,26 @@ color:#145374;
 					<div class="modal-body" >
 					<div class="col-md-12">
 					<div class="row mt-1">
-					<div class="col-md-4"><label class="sidelabel">Designation/Rank<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Designation/Rank<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="designationEdit" class="form-control" maxlength="255 characters" placeholder="Enter Designaton"></div>
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Discipline<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Discipline<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="DisciplineAddEdit" class="form-control" maxlength="255 characters" placeholder="Enter Discipline"></div>
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Number(s)<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Number(s)<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2"><input type="text" id="NumbersEdit" class="form-control" maxlength="10 characters" placeholder="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"></div>
 					<div class="col-md-2" align="right"><label class="sidelabel">Period<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2"><input type="text" id="PeriodEdit" class="form-control" maxlength="10 characters" placeholder="Months" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"></div>					
 					</div>
 					<div class="row mt-3">
-					<div class="col-md-4"><label class="sidelabel">Remarks<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Remarks<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-8"><input type="text" id="RemarksAddEdit" class="form-control" maxlength="255 characters" placeholder="Enter Remarks"></div>
 					<input type="hidden" id="requirementid">
 					</div>
@@ -2440,6 +2475,32 @@ color:#145374;
 					<button type="button" class="btn  btn-sm  back" onclick="BackModal(5)">BACK</button>
 					</div>
 					</div>
+					</div></div></div></div>
+					
+								<div class="modal fade bd-example-modal-lg" id="showAddModal6"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">CAPSI</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross16">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div class="row mt-1">
+					<div class="col-md-3"><label class="sidelabel">Station Name<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-6"><input type="text" id="Station" class="form-control" maxlength="255 characters" placeholder="Enter Station"></div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-3"><label class="sidelabel">Consultant<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-6"><input type="text" id="Consultant" class="form-control" maxlength="255 characters" placeholder="Enter Station"></div>
+					</div>					
 					</div></div></div></div>
 			<!--  -->
 	<script>
