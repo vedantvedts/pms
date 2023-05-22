@@ -287,6 +287,7 @@ public class PrintController {
     		req.setAttribute("PfmsInitiationList",PfmsInitiationList);
     		req.setAttribute("DetailsList", service.ProjectIntiationDetailsList(InitiationId));
 			req.setAttribute("CostDetailsList", costDetailsList);
+			req.setAttribute("CostDetailsListSummary", service.CostDetailsListSummary(InitiationId));
     		req.setAttribute("ScheduleList", service.ProjectInitiationScheduleList(InitiationId));
     		req.setAttribute("isprint", "1");
     	

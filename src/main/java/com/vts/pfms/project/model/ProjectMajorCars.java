@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "project_majaor_cars_details")
+@Table(name = "pfms_initiation_soc_cars")
 public class ProjectMajorCars implements Serializable{
 
 	private static final long serialVersionUID = 1L;

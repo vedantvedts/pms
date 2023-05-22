@@ -73,7 +73,9 @@ option:checked {
 }
 .multiselect{
 padding: 4px 90px;
-background-color:#E0E0E0;
+background-color:white;
+border: 1px solid #ced4da;
+height: calc(2.25rem + 2px);
 }
 
 </style>
@@ -272,7 +274,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    </div>  -->   
 	                    <div class="col-md-4">
 						<div class="form-group"> 
-						<label class="control-label">Deliverable</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+						<label class="control-label">Deliverable</label>
 							<select class="form-control spermission" name="Deliverables" id="DeliverablesOutput" multiple>
 												<option>Prototype</option>
 												<option>Limited Series Production</option>

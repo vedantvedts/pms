@@ -76,7 +76,7 @@ margin-left: -6%;
 		</div>
 	</div>
 	<%} %>
-	<%if(ProjectIntiationList.size()==0) {%>
+	<%if(ProjectIntiationList.size()==0 ||ProcurementList==null) {%>
 		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;"><h3>No Data Available!</h3></div>
 	<%}else{ %>
 			<div class="container-fluid" id="main">
@@ -131,7 +131,7 @@ margin-left: -6%;
 	   						<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
 	   						<thead style=" text-align: center;">
 	   						<tr>
-	   						<th style="width:3%">Select</th>
+	   						<!-- <th style="width:3%">Select</th> -->
 	   						<th style="width:3%">SN</th>
 	   						<th style="width:15%">Name of the item</th>
 	   						<th style="width:30%">Purpose</th>
@@ -147,17 +147,19 @@ margin-left: -6%;
 	   						if(!ProcurementList.isEmpty()){
 	   						for(Object[]obj:ProcurementList)	{%>
 	   						<tr align="center">
-	   						<td ><input type="radio" id="Planid" name="Planid" value="<%=obj[0]%>" onchange="radioValue(<%=obj[0]%>)"></td>
-	   						<td><%=count++ %></td>
+<%-- 	   						<td ><input type="radio" id="Planid" name="Planid" value="<%=obj[0]%>" onchange="radioValue(<%=obj[0]%>)"></td>
+ --%>	   						<td><%=count++ %></td>
 	   						<td align="left"><%=obj[2] %></td>
 	   						<td align="left"><%if(obj[3].toString().length()>100){%><%=obj[3].toString().substring(0, 100) %><%} else{%><%=obj[3]%><%} %></td>
 	   						<td align="left"><%=obj[4] %></td>
 	   						<td><%=obj[5] %></td>
-	   						<%DecimalFormat df1 = new DecimalFormat( "################.00"); 
+	   					<%-- 	<%DecimalFormat df1 = new DecimalFormat( "################.00"); 
 							String v = df1.format((Double.valueOf(obj[6].toString()).doubleValue()/10000000 )); 
 							NFormatConvertion nfc1=new NFormatConvertion();
-							%>
-	   						<td align="right"><%=v%></td>
+							
+							%> --%>
+							
+	   						<td align="right"><%=nfc.convert(Double.parseDouble(obj[6].toString())/10000000)%></td>
 	   						<td><%=obj[10] %></td>
 	   						<td><%if(obj[11].toString().equalsIgnoreCase("Y")) {%>YES<%}else{ %>NO<%} %></td>		
 	   						</tr>
@@ -166,8 +168,8 @@ margin-left: -6%;
 	   						</table>
 	   						<span class="radiovalue"><input type="hidden" value="0" id="radio"></span>
 	   						<div class="center">
-	   						<button type="button" class="btn btn-sm btn-info " onclick="show()"  style="font-weight: 500;">ADD</button>
-	   						<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal()" style="font-weight: 500;">EDIT</button>
+	   					<!-- 	<button type="button" class="btn btn-sm btn-info " onclick="show()"  style="font-weight: 500;">ADD</button>
+	   						<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal()" style="font-weight: 500;">EDIT</button> -->
 	   						</div>
 	   						</div>
 	   						</div>

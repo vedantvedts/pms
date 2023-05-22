@@ -404,7 +404,7 @@ List<Object[]> RequirementList=(List<Object[]>)request.getAttribute("Requirement
 		</table>
 		
 		<% if(!RequirementList.isEmpty()){ %>
-		<table style="width:100%;margin-left:5px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
+		<table style="width:100%;margin-left:17px; margin-top:25px; padding:10px; border-collapse:collapse; border:1px solid black;">
 
 				<thead  style="margin-top:10px; borde:1px solid black">
 	 			 <tr style="margin-top:40px; padding:20px!important">
@@ -1375,10 +1375,10 @@ for(Object[] obj : DetailsList){   %>
 		int count=1;
 		for(Object[] obj : ScheduleList){ %> 
 		<tr>
-		<td colspan="1" class="border_black weight_700 center" style=";width:7%"><span ><%=count %>.</span></td>
-		<td colspan="3" class="border_black weight_700 left" style="padding-left:5px" ><span ><%=obj[1] %></span></td>
-		<td colspan="4" class="border_black  center" style="font-weight: 600"><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=obj[5] %></sub><%="+"%><%=obj[2]%><%}else{ %> - <%} %></td>
-		<td colspan="2" class="border_black weight_700 center" ><span ><%=obj[4]%></span></td>
+		<td colspan="1" class="border_black weight_700 center" style=";width:7%;font-weight: 300"><span ><%=count %>.</span></td>
+		<td colspan="3" class="border_black weight_700 left" style="padding:5px;font-weight: 300;text-align:justify;" ><span ><%=obj[1] %></span></td>
+		<td colspan="4" class="border_black  center" style="font-weight: 300"><%if(obj[5]!=null && obj[2]!=null){ %><%= "T"%><sub><%=obj[5] %></sub><%="+"%><%=obj[2]%><%}else{ %> - <%} %></td>
+		<td colspan="2" class="border_black weight_700 center" style="font-weight: 300"><span ><%=obj[4]%></span></td>
 		</tr> 
 <%
 count++;
@@ -1387,7 +1387,7 @@ count++;
 				<%if(PfmsInitiationList!= null) { Object[] obj = PfmsInitiationList; %>
 			
 			<tr>
-				<td colspan="12" class="border_black right" style=""  ><span ><b style="background: white; margin-right:200px;"><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %>Total Duration :<%=obj[7]+"Months" %></b ></span><%}%></td>
+				<td colspan="12" class="border_black right" style=""  ><span ><b style="background: white; margin-right:190px;"><%if(obj[7]!=null && Integer.parseInt(obj[7].toString()) >0 ){ %>Total Duration :&nbsp;<%=obj[7]+" Months" %></b ></span><%}%></td>
 			</tr>
 			<%} %>
 </table>

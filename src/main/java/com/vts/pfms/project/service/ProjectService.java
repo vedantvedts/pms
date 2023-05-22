@@ -37,6 +37,7 @@ import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
 
@@ -246,4 +247,22 @@ public interface ProjectService {
 	public long BriefTechnicalAppreciationSubmit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefTechnicalAppreciationEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public List<Object[]> GetCostBreakList(String initiationid, String projecttypeid)throws Exception;
+	public long ProjectCapsiSubmit(ProjectMajorCapsi pmc)throws Exception;
+	public List<Object[]> CapsiList(String initiationid)throws Exception;
+	public Object[] CapsiValue(String parameter)throws Exception;
+	public long CapsiEdt(ProjectMajorCapsi pmc)throws Exception;
+	public Object[] AllLabList(String labCode) throws Exception;
+	public List<Object[]> ProcurementInitiationCostList(String initiationid, String InitiationCostId)throws Exception;
+	public long BriefAchievementEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefTRLanalysisEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefpeerEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefActionEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefTestEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefMatrixEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefDevEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefProductionAgenciesEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefCriticalTechsEdit(ProjectMactroDetailsBrief pmb) throws Exception;
+	public long BriefCostsBenefitsEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefProjectManagementEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public long BriefPERTEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 }

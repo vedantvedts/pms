@@ -101,4 +101,5 @@ public interface PrintService {
 	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
 	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception;
 	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
+	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
 }

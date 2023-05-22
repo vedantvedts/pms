@@ -310,8 +310,8 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 									<span id="downloadform">
 								<button type="submit" class="btn btn-sm" formmethod="GET"
 									style="margin-top: -3%;
-									<%if(RequirementList.size()>0) {%>display:block;<%}else{%>display:none;<%} %> formtarget="_blank"
-									formaction=""
+									<%if(RequirementList.size()>0) {%>display:block;<%}else{%>display:none;<%} %> " formtarget="_blank"
+									formaction="RequirementDocumentDownlod.htm"
 									data-toggle="tooltip" data-placement="top"
 									title="Download file">
 									<i class="fa fa-download fa-sm" aria-hidden="true"></i>

@@ -167,7 +167,7 @@ td>table{
 <body>
 	<div style="text-align:center;">
 		<h2 style="text-align: center;">Part-I</h2>
-		<h3 style="text-align: center;">Macro Details of Project / Programme</h3><hr style="width:80%">
+		<h3 style="text-align: center;">Micro Details of Project / Programme</h3><hr style="width:80%">
     <table class="border-black" style="margin-left:20px; margin-top:15px;border:1px solid black;border-collapse:collapse;font-family:FontAwesome; width:650px;">
 	<tr >
 	<td style="width:300px;text-align: left;padding: 1px !important; border:1px solid plack;"><h4>&nbsp;1.&nbsp;&nbsp;a.&nbsp;&nbsp; Title of the Project:</h4></td>
@@ -463,12 +463,8 @@ td>table{
 			</tr>
 		</table>	
 		<table style="margin-left:20px; margin-top:25px; border:0px solid black;font-family:FontAwesome; width:650px;">
-			<tr>
-				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
-					16. PD AND Lab Director have to give certificate that this technology is not available in India and also mention that selected Industry/DcPP is not in negative list of vendors.</h4></td>
-				</tr>
 		<tr><td style="width: 650px; text-align: left; margin-top: 20px;">
-			<p>It is certified that this technology is not available in India and the selected industry DCPP is not in negative list of Vendors</p>
+			<p style="font-weight: bold;;">16.It is certified that this technology is not available in India and the selected industry DCPP is not in negative list of Vendors</p>
 			</td></tr>
 		
 			

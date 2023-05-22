@@ -9,8 +9,9 @@
 <head>
 <meta charset="ISO-8859-1">
 
-<title>SanctionDetails</title>
-<%Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes"); 
+<title>Main</title>
+<%Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
+Object[] LabList=(Object[])request.getAttribute("LabList"); 
 List<Object[]>sanctionlistdetails=(List<Object[]>)request.getAttribute("sanctionlistdetails");
 String ProjectTitle=(String)request.getAttribute("ProjectTitle");
 String Labcode=(String)request.getAttribute("LabCode");
@@ -20,6 +21,8 @@ List<Object> DocumentId=new ArrayList<>();
 	if(!projectFiles.isEmpty()){
 	 DocumentId=projectFiles.stream().map(e->e[8]).collect(Collectors.toList());
 	 }
+	String lablogo=(String)request.getAttribute("lablogo");
+	Object[] AllLabList=(Object[])request.getAttribute("AllLabList"); 	
 %>
 <style type="text/css">
 
@@ -77,12 +80,57 @@ background:black;
  </style>
 </head>
 <body>
+	<div align="center" ><h1 style="font-size:30px !important;color: #145374;" class="heading-color"><br>STATEMENT OF CASE</h1></div>
+			<div align="center" >
+		
+			<table style="align: center;margin-left:90px !important;  font-size: 16px" >
+			<%
+			if(LabList!=null){
+			 %>
+
+				<tr>		
+				<th colspan="8" style="text-align: center; font-weight: 700;">
+					<br><br><br><br><br><br><br><br><br><br><br>
+						<img class	="logo" style="width:100px;height: 100px;margin-bottom: 5px"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt=	Configurat	on"<%}else	{ %> alt="File Not Found" <%} %> >
+					</th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size:22px;padding-top: 50px;"></th>
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px"><br><br><br><br><br><br><br><%if(LabList[1]!=null){ %><%=LabList[1] %><%}else{ %>LAB NAME<%} %></th>
+				</tr>
+
+
+				
+			
+			
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><br>Government of India, Ministry of Defence</th>
+			</tr>
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px">Defence Research & Development Organization</th>
+			</tr>
+			<tr>
+				<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px"><%if(LabList[2]!=null){ %><%=LabList[2] %><%}else{ %>LAB NAME<%} %></th>
+			</tr> 
+
+				<% } %>
+
+
+			</table>			 
+		
+		</div>	
+		
+		
+		
+		<div style="page-break-before:always"></div> 
 	<div style="text-align:center;">
 		<h3 style="text-align: center;">STATEMENT OF CASE FOR SANCTION OF PROJECT/PROGRAMME</h3><hr style="width:90%">
 	<table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 	<tr>
 	<td style="width:350px;text-align: left;"><h4>1. Name of laboratory:</h4></td>
-	<td ><%=Labcode%><hr style="margin:0px;"></td>
+	<td ><%=LabList[1] %><hr style="margin:0px;"></td>
 	</tr>
 	<tr>
 	<td style="width:350px;text-align: left"><h4>2. Title of the Project/Programme:</h4></td>

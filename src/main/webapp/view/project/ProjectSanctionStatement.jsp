@@ -56,6 +56,7 @@ font-size: 17px;
 .addreq {
 	margin-left: -10%;
 	margin-top: 5%;
+	border-radius: 9px;
 }
 
 .costreq {
@@ -101,8 +102,7 @@ p {
 }
 
 #part2lefside:hover,#part2rightside:hover{
-	 transition-duration: 1s !important;
-	 padding:12px; 
+	 transition-duration: 1s !important; 
 	 box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 p:hover{
@@ -241,7 +241,9 @@ color:#145374;
 </style>
 </head>
 <body>
+	
 	<%
+	
 	List<Object[]> ProjectIntiationList = (List<Object[]>) request.getAttribute("ProjectIntiationList");
 	Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
 	String projectshortName = (String) request.getAttribute("projectshortName");
@@ -265,16 +267,17 @@ color:#145374;
 	List<Object[]> WorkPackageList = (List<Object[]>) request.getAttribute("WorkPackageList");
 	List<Object[]> TrainingRequirementList=(List<Object[]>)request.getAttribute("TrainingRequirementList");
 	List<Object[]> ManpowerList=(List<Object[]>)request.getAttribute("ManpowerList");
+	List<Object[]> CapsiList=(List<Object[]>)request.getAttribute("CapsiList");
 	Object[] macrodetailsTwo = (Object[]) request.getAttribute("macrodetailsTwo");
+	List<Object[]> CostDetailsListSummary=(List<Object[]>)request.getAttribute("CostDetailsListSummary");
 	Object[]BriefList=(Object[])request.getAttribute("BriefList");
 	%>
-	
 	<div align="center" style="display:None">
 	<div class="alert alert-danger" id="danger"  role="alert">
 	Data Edited Successfully.
 	</div>
 	</div>	
-		<div align="center"  id="successdiv" style="display:None"> 
+	<div align="center"  id="successdiv" style="display:None"> 
 	<div class="alert alert-success" id="divalert"  role="alert">Data Edited Successfully.</div>
 	</div>
 	
@@ -565,7 +568,7 @@ color:#145374;
 													<%
 													if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 													%>
-													<td align="center"><h5>Not Applicable</h5></td>
+													<td align="center"><h5><span class="badge badge-pill badge-primary" style="padding:10px;">Not Applicable</span></h5></td>
 													<td></td>
 													<%
 													}else{
@@ -984,7 +987,7 @@ color:#145374;
 					<div class="card-body" id="cardbody2" style="display: none;">
 					<div class="row">
 					<div class="col-md-6"  id="part2lefside">
-					<div class="row mt-1">
+					<div class="row mt-1" id="point1">
 					<div class="col-md-12">
 					<h5>1. Brief technical appreciation
 					<span class="" id="BriefPoint" style="float: right">
@@ -1007,6 +1010,10 @@ color:#145374;
 					</span>
 					 </h5>
 					</div>
+				<div class="col-md-12 mt-3 subpointdiv1" align="left"
+				style="margin-left: 0px; width: 100%;display: none;" id="">
+				<p>Declared in PDF / If not specified you are suggested to add in Project Initiation Details</p> 
+				</div>
 					<div class="col-md-12 subpoint" id="subpointdiv2">
 					<h5 style="border: 1px solid cadetblue !important;">
 					1.2. What will be achieved by taking this project. 
@@ -1017,6 +1024,22 @@ color:#145374;
 					</span>
 					</h5>
 					</div>
+				<div class="col-md-12 subpointdiv2" align="left"
+				style="margin-left: 0px; width: 100%;display: none;" id=""> 
+				<div id="subpointdiv2Editor" class="center">
+				<%if(BriefList.length!=0 &&BriefList[12]!=null){ %>
+				<%=BriefList[12].toString() %>
+				<%}else{%><%}%>
+				</div>
+				<div class="row"></div>
+				<textarea name="" style="display: none;"></textarea>
+				<%if(BriefList.length!=0 &&BriefList[12]!=null){ %>
+				<div align="center" id="a2"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefNeedSubmit(2)">UPDATE</button></div>
+				<%}else{ %>
+				<div align="center" id="a2"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefNeedSubmit(2)">SUBMIT</button></div>
+				<%} %>
+				</div>	 				
+					
 					<div class="col-md-12 subpoint" id="subpointdiv3">
 					<h5 style="border: 1px solid cadetblue !important;">1.3. Competence level/preliminary work done to acquire the same. 
 					<span  id="subpoint3" style="float: right">
@@ -1025,6 +1048,10 @@ color:#145374;
 					</button>
 					</span>
 					</h5>
+					</div>
+					<div class="col-md-12 mt-3 subpointdiv3" align="left"
+					style="margin-left: 0px; width: 100%;display: none;" id="">
+					<p>Declared in PDF / If not specified you are suggested to add in Project Initiation Details</p> 
 					</div>
 					<div class="col-md-12 subpoint" id="subpointdiv4">
 					<h5 style="border: 1px solid cadetblue !important;"> 1.4. Brief of TRL analysis.
@@ -1039,20 +1066,20 @@ color:#145374;
 				<div class="col-md-12 subpointdiv4" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv4Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[2].toString().trim().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[2]!=null){ %>
 				<%=BriefList[2].toString() %>
 				<%}else{%><%}%>
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[2].toString().trim().length()>0){ %>
-				<div align="center" id="a4"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(4)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[2]!=null){ %>
+				<div align="center" id="a4"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTRLSubmit(4)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a4"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(4)">SUBMIT</button></div>
+				<div align="center" id="a4"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefTRLSubmit(4)">SUBMIT</button></div>
 				<%} %>
 				</div>
 									
-					<div class="col-md-12 subpoint" id="subpointdiv5">
+				<div class="col-md-12 subpoint" id="subpointdiv5">
 					<h5 style="border: 1px solid cadetblue !important;">1.5.
 					Peer Review Committee recommendations
 					<span  id="subpoint5" style="float: right">
@@ -1065,16 +1092,16 @@ color:#145374;
 				<div class="col-md-12 subpointdiv5" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv5Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[3].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[3]!=null){ %>
 				<%=BriefList[3].toString() %>
 				<%}else{%><%}%>
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;">5</textarea>
-				<%if(BriefList.length!=0 &&BriefList[3].toString().trim().length()>0){ %>
-				<div align="center" id="a5"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(5)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[3]!=null){ %>
+				<div align="center" id="a5"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPeerSubmit(5)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a5"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(5)">SUBMIT</button></div>
+				<div align="center" id="a5"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPeerSubmit(5)">SUBMIT</button></div>
 				<%} %>
 				</div>
 					
@@ -1092,16 +1119,16 @@ color:#145374;
 				<div class="col-md-12 subpointdiv6" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv6Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[4].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[4]!=null){ %>
 				<%=BriefList[4].toString() %>
 				<%}else{%><%}%>
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[4].toString().trim().length()>0){ %>
-				<div align="center" id="a6"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(6)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[4]!=null){ %>
+				<div align="center" id="a6"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefActionSubmit(6)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a6"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(6)">SUBMIT</button></div>
+				<div align="center" id="a6"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefActionSubmit(6)">SUBMIT</button></div>
 				<%} %>
 				</div>
 									
@@ -1115,13 +1142,10 @@ color:#145374;
 					</h5>
 					</div>
 					
-				<div class="col-md-12 subpointdiv7" align="left"
-				style="margin-left: 0px; width: 100%;display: none;" id=""> 
-				<div id="subpointdiv7Editor" class="center"></div>
-				<div class="row"></div>
-				<textarea name="" style="display: none;">7</textarea>
-				<div align="center" id=""><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit()">SUBMIT</button></div>
-				</div>					
+					<div class="col-md-12 mt-3 subpointdiv7" align="left"
+					style="margin-left: 0px; width: 100%;display: none;" id="">
+					<p>Declared in PDF / If not specified you are suggested to add in Project Initiation Details</p> 
+					</div>					
 					<div class="col-md-12 subpoint" id="subpointdiv8">
 					<h5 style="border: 1px solid cadetblue !important;">1.8. Testing Plan
 					<span  id="subpoint8" style="float: right">
@@ -1134,7 +1158,7 @@ color:#145374;
 				<div class="col-md-12 subpointdiv8" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv8Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[5].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[5]!=null){ %>
 				<%=BriefList[5].toString() %>
 				<%}else{%><%}%>
 				
@@ -1142,10 +1166,10 @@ color:#145374;
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;">8</textarea>
-				<%if(BriefList.length!=0 &&BriefList[5].toString().trim().length()>0){ %>
-				<div align="center" id="a8"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(8)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[5]!=null){ %>
+				<div align="center" id="a8"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTestSubmit(8)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a8"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(8)">SUBMIT</button></div>
+				<div align="center" id="a8"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefTestSubmit(8)">SUBMIT</button></div>
 				<%} %>
 				</div>
 					<div class="col-md-12 subpoint" id="subpointdiv9">
@@ -1157,13 +1181,10 @@ color:#145374;
 					</span>							
 					</h5>
 					</div>
-				<div class="col-md-12 subpointdiv9" align="left"
-				style="margin-left: 0px; width: 100%;display: none;" id=""> 
-				<div id="subpointdiv9Editor" class="center"></div>
-				<div class="row"></div>
-				<textarea name="" style="display: none;">9</textarea>
-				<div align="center" id=""><button type="button" class="btn btn-sm btn-success mt-1" onclick="">SUBMIT</button></div>
-				</div>					
+					<div class="col-md-12 mt-3 subpointdiv9" align="left"
+					style="margin-left: 0px; width: 100%;display: none;" id="">
+					<p>Declared in PDF / If not specified you are suggested to add in Project Initiation Details</p> 
+					</div>					
 					<div class="col-md-12 subpoint" id="subpointdiv10">
 					<h5 style="border: 1px solid cadetblue !important;">1.10. High development risk areas and remedial actions proposed. 
 					<span  id="subpoint10" style="float: right">
@@ -1173,13 +1194,10 @@ color:#145374;
 					</span>						
 					</h5>
 					</div>
-				<div class="col-md-12 subpointdiv10" align="left"
-				style="margin-left: 0px; width: 100%;display: none;" id=""> 
-				<div id="subpointdiv10Editor" class="center"></div>
-				<div class="row"></div>
-				<textarea name="" style="display: none;">10</textarea>
-				<div align="center" id=""><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit()">SUBMIT</button></div>
-				</div>						
+					<div class="col-md-12 mt-3 subpointdiv10" align="left"
+					style="margin-left: 0px; width: 100%;display: none;" id="">
+					<p>Declared in PDF / If not specified you are suggested to add in Project Initiation Details</p> 
+					</div>					
 					<div class="col-md-12 subpoint" id="subpointdiv11">
 					<h5 style="border: 1px solid cadetblue !important;">1.11. Responsibility Matrix 
 					<span  id="subpoint11" style="float: right">
@@ -1192,17 +1210,17 @@ color:#145374;
 				<div class="col-md-12 subpointdiv11" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv11Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[6].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[6]!=null){ %>
 				<%=BriefList[6].toString() %>
 				<%}else{%><%}%>
 				
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[6].toString().trim().length()>0){ %>
-				<div align="center" id="a11"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(11)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[6]!=null){ %>
+				<div align="center" id="a11"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefResSubmit(11)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a11"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(11)">SUBMIT</button></div>
+				<div align="center" id="a11"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefResrSubmit(11)">SUBMIT</button></div>
 				<%} %>
 				</div>						
 					<div class="col-md-12 subpoint" id="subpointdiv12">
@@ -1217,16 +1235,16 @@ color:#145374;
 				<div class="col-md-12 subpointdiv12" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv12Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[7].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[7]!=null){ %>
 				<%=BriefList[7].toString() %>
 				<%}else{%><%}%>			
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[7].toString().trim().length()>0){ %>
-				<div align="center" id="a12"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(12)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[7]!=null){ %>
+				<div align="center" id="a12"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefDevelopmentSubmit(12)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a12"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(12)">SUBMIT</button></div>
+				<div align="center" id="a12"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefDevelopmentSubmit(12)">SUBMIT</button></div>
 				<%} %>
 				</div>						
 					<div class="col-md-12 subpoint" id="subpointdiv13">
@@ -1241,17 +1259,17 @@ color:#145374;
 				<div class="col-md-12 subpointdiv13" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv13Editor" class="center">
-					<%if(BriefList.length!=0 &&BriefList[8].toString().length()>0){ %>
+					<%if(BriefList.length!=0 &&BriefList[8]!=null){ %>
 				<%=BriefList[8].toString() %>
 				<%}else{%><%}%>
 				
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[8].toString().trim().length()>0){ %>
-				<div align="center" id="a13"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(13)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[8]!=null){ %>
+				<div align="center" id="a13"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefProductionSubmit(13)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a13"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(13)">SUBMIT</button></div>
+				<div align="center" id="a13"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefProductionSubmit(13)">SUBMIT</button></div>
 				<%} %>				</div>					
 					<div class="col-md-12 subpoint" id="subpointdiv14">
 					<h5 style="border: 1px solid cadetblue !important;">1.14. Costs benefit analysis/spin-off benefits. 
@@ -1262,16 +1280,16 @@ color:#145374;
 				<div class="col-md-12 subpointdiv14" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv14Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[9].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[9]!=null){ %>
 				<%=BriefList[9].toString() %>
 				<%}else{%><%}%>
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[9].toString().trim().length()>0){ %>
-				<div align="center" id="a14"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(14)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[9]!=null){ %>
+				<div align="center" id="a14"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefcostSubmit(14)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a14"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(14)">SUBMIT</button></div>
+				<div align="center" id="a14"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefcostSubmit(14)">SUBMIT</button></div>
 				<%} %>	
 				</div>
 					<div class="col-md-12 subpoint" id="subpointdiv15">
@@ -1280,21 +1298,21 @@ color:#145374;
 					<button class="btn btn-sm bg-transparent " type="button" onclick="showsubPoint1(this,15)" >
 					<i class="btn  fa fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i>
 					</button></span></h5></div>
-				<div class="col-md-12 subpointdiv15" align="left"
-				style="margin-left: 0px; width: 100%;display: none;" id=""> 
-				<div id="subpointdiv15Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[10].toString().length()>0){ %>
-				<%=BriefList[10].toString() %>
-				<%}else{%><%}%>			
+				 	<div class="col-md-12 subpointdiv15" align="left"
+					style="margin-left: 0px; width: 100%;display: none;" id=""> 
+					<div id="subpointdiv15Editor" class="center">
+					<%if(BriefList.length!=0 &&BriefList[10]!=null){ %>
+					<%=BriefList[10].toString() %>
+					<%}else{%><%}%>			
 				
-				</div>
-				<div class="row"></div>
-				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[10].toString().trim().length()>0){ %>
-				<div align="center" id="a15"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(15)">UPDATE</button></div>
-				<%}else{ %>
-				<div align="center" id="a15"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(15)">SUBMIT</button></div>
-				<%} %>				</div>	
+					</div>
+					<div class="row"></div>
+					<textarea name="" style="display: none;"></textarea>
+					<%if(BriefList.length!=0 &&BriefList[10]!=null){ %>
+					<div align="center" id="a15"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefStructureSubmit(15)">UPDATE</button></div>
+					<%}else{ %>
+					<div align="center" id="a15"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefStructureSubmit(15)">SUBMIT</button></div>
+					<%} %></div>	 
 					<div class="col-md-12 subpoint" id="subpointdiv16">
 					<h5 style="border: 1px solid cadetblue !important;">1.16. PERT/Gantt Charts
 					<span  id="subpoint16" style="float: right">
@@ -1304,35 +1322,73 @@ color:#145374;
 				<div class="col-md-12 subpointdiv16" align="left"
 				style="margin-left: 0px; width: 100%;display: none;" id=""> 
 				<div id="subpointdiv16Editor" class="center">
-				<%if(BriefList.length!=0 &&BriefList[11].toString().length()>0){ %>
+				<%if(BriefList.length!=0 &&BriefList[11]!=null){ %>
 				<%=BriefList[11].toString() %>
 				<%}else{%><%}%>			
 				
 				</div>
 				<div class="row"></div>
 				<textarea name="" style="display: none;"></textarea>
-				<%if(BriefList.length!=0 &&BriefList[11].toString().trim().length()>0){ %>
-				<div align="center" id="a16"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit(16)">UPDATE</button></div>
+				<%if(BriefList.length!=0 &&BriefList[11]!=null){ %>
+				<div align="center" id="a16"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPertSubmit(16)">UPDATE</button></div>
 				<%}else{ %>
-				<div align="center" id="a16"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPonitSubmit(16)">SUBMIT</button></div>
+				<div align="center" id="a16"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefPertSubmit(16)">SUBMIT</button></div>
 				<%} %>	
-				</div>											
+				</div> 
+				<div class="col-md-12 subpoint" id="subpointdiv17">
+					<h5 style="border: 1px solid cadetblue !important;">1.17.Critical technologies from industry
+					<span  id="subpoint17" style="float: right">
+					<button class="btn btn-sm bg-transparent " type="button" onclick="showsubPoint1(this,17)" >
+					<i class="btn  fa fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i>
+					</button></span></h5></div>	
+				<div class="col-md-12 subpointdiv17" align="left"
+				style="margin-left: 0px; width: 100%;display: none;" id=""> 
+				<div id="subpointdiv17Editor" class="center">
+				<%if(BriefList.length!=0 &&BriefList[13]!=null){ %>
+				<%=BriefList[13].toString() %>
+				<%}else{%><%}%>			
+				
+				</div>
+				<div class="row"></div>
+				<textarea name="" style="display: none;"></textarea>
+				<%if(BriefList.length!=0 &&BriefList[13]!=null){ %>
+				<div align="center" id="a17"><button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefCriticalSubmit(17)">UPDATE</button></div>
+				<%}else{ %>
+				<div align="center" id="a17"><button type="button" class="btn btn-sm btn-success mt-1" onclick="briefCriticalSubmit(17)">SUBMIT</button></div>
+				<%} %>	
+				</div>										
 					</div>
 					<div class="row mt-1"  id="point2">
 					<div class="col-md-12">
 					<h5>2. List of major additional facilities (capital) required for the project 
-					<span class="" id="BriefPoint" style="float: right">
-					<button class="btn btn-sm bg-transparent plus" type="button" onclick="" >
+					<span class="" id="ADF" style="float: right">
+					<button class="btn btn-sm bg-transparent plus" type="button" onclick="showAdditionalFacilities()" >
 					<i class="btn  fa fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i>
 					</button>
 					</span>
 					</h5>
 					</div>
 					</div>
+				<div class="col-md-12 " align="left"
+				style="margin-left: 0px; width: 100%;display: none;" id="majorcapitalEditor"> 
+				<div id="majorcapital" class="center">
+				<%if(macrodetailsTwo.length!=0&&macrodetailsTwo[5]!=null) {%>
+				<%=macrodetailsTwo[5].toString() %>
+				<%} %>
+				</div>
+				<div class="row"></div>
+				<textarea name="" style="display: none;"></textarea>			
+					<%if(macrodetailsTwo.length!=0&&macrodetailsTwo[5]!=null) {%>
+				<div class="submit4" align="center" id=""><button type="button" class="btn btn-sm btn-warning mt-1" onclick="InformationSubmit(4)">UPDATE</button></div>
+				<%}else{ %>
+				<div class="submit4" align="center" id=""><button type="button" class="btn btn-sm btn-success mt-1" onclick="InformationSubmit(4)">SUBMIT</button></div>
+				<%} %>
+				</div>
+					
 					<div class="row mt-2" id="point3" >
 					<div class="col-md-12">
 					<h5 >3. Major training requirements
-					
+					<%if(projectTypeId.equalsIgnoreCase("3")||projectTypeId.equalsIgnoreCase("5")) {%>
 					<span class="" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of training requirements"  onclick="ListModal1()"><i class="fa  fa-list" aria-hidden="true"></i>
@@ -1344,6 +1400,9 @@ color:#145374;
 					</i>
 					</button>					
 					</span>
+					<%}else{ %>
+					<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px">Not Applicable</span>
+					<%} %>
 					</h5></div>
 					</div>
 					
@@ -1387,8 +1446,8 @@ color:#145374;
 					<h5>6. Details of CAPSI 
 					<span class="ml-5" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
-					title="Details of CAPSI" ><i class="fa  fa-list" aria-hidden="true"></i>
-					<span class="badge badge-counter badge-success" id="Notification6" style="float: right; margin-left: -7px; font-size: 100%!important;"><%="0" %></span>
+					title="Details of CAPSI"  onclick="ListModal6()"><i class="fa  fa-list" aria-hidden="true"></i>
+					<span class="badge badge-counter badge-success" id="Notification6" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=CapsiList.size()%></span>
 					</button>
 					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
 					title="" onclick="showAddModal(6)">
@@ -1441,19 +1500,49 @@ color:#145374;
 					<div class="row mt-2 rightsidediv" id="point9">
 					<div class="col-md-12">
 					<h5>9. Details of additional building space requirement 
-					<span class="ml-5" style="float:right;margin-top:-3px;">
-					<!-- <button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
-					title="Details of additional building space requirement  "><i class="fa  fa-list" aria-hidden="true"></i></button> -->
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="Add additional building space requirement ">
-					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
-					</button>	
-					</span>					
+					
+					<%int k=0;
+					for(Object[]obj:CostDetailsListSummary){
+					if(obj[0].toString().contains("Works")){%>
+						<span class="ml-5" id="buildingwork" style="float:right;margin-top:-3px;">
+						<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"  onclick="showWork()">
+					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+					</span>	
+					<%}else if(++k==CostDetailsListSummary.size()){%>
+						<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%}}%>
+					
 					</h5>
 					</div>
 					</div>
-					
+					<div class="row mt-2 rightsidediv" id="buildingworkDiv" style="display:none;">
+					<div class="col-md-12">
+					<div id="" style="">
+					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
+					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
+					<tr style="text-align: center;">
+					<th style="width:3%">SN</th>
+					<th style="width:50%">Head Code</th>
+					<th style="width:15%">Cost ( &#8377; In Cr.)</th>
+					</tr>
+					</thead>
+					<tbody id="">
+					<%int c=0;
+					if(!CostDetailsListSummary.isEmpty()){ 
+					for(Object[]obj:CostDetailsListSummary){
+						if(obj[0].toString().contains("Works")){
+					%>
+					<tr>
+					<td><%=++c %></td>
+					<td><%=obj[0].toString()+"( "%><%=obj[1].toString() +" )"%></td>
+					<td align="right"><%=nfc.convert(Double.parseDouble(obj[2].toString())/100000)%></td>
+					</tr>
+					<%}}} %>
+					</tbody>
+					</table>
+					</div>
+					</div>	
+					</div>
 					<div class="row mt-2 rightsidediv">
 					<div class="col-md-12">
 					<h5>10. Additional information
@@ -1525,7 +1614,7 @@ color:#145374;
 					<%} %>
 					</div>
 					</div>
-
+		<div class="mt-2"align="left"><h5 style="color:red; display: initial;">Note:-</h5><h5 style="display: inline">Not Available ( please specify the cost in project initiation)</h5></div>
 				</div>
 			</div>
 		</div>
@@ -2492,17 +2581,136 @@ color:#145374;
 					
 					<div class="modal-body">
 					<div class="row mt-1">
-					<div class="col-md-3"><label class="sidelabel">Station Name<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">IDST Location<span class="mandatory" style="color: red;">*</span></label></div>
 					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-6"><input type="text" id="Station" class="form-control" maxlength="255 characters" placeholder="Enter Station"></div>
 					</div>
 					<div class="row mt-2">
-					<div class="col-md-3"><label class="sidelabel">Consultant<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-3"><label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label></div>
 					<div class="col-md-1"><label class="sidelabel">:</label></div>
-					<div class="col-md-6"><input type="text" id="Consultant" class="form-control" maxlength="255 characters" placeholder="Enter Station"></div>
+					<div class="col-md-6"><input type="text" id="Capsiarea" class="form-control" maxlength="255 characters" placeholder="Enter R&D"></div>
+					</div>
+										<div class="row mt-2">
+					<div class="col-md-2">
+					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="Capsicost" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>
+					<div class="col-md-2" align="right">
+					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="capsipdc" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 					</div>					
+					</div>							
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Confidence level of the agency (1-10)
+					<span class="mandatory" style="color: red;">*</span></label>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="range" min="1" max="10" id="capsiconfidence" step="1" style="color:blue">
+					</div>
+					</div>	
+					<div class="mt-2" align="center">
+					<button type="button" class="btn btn-primary btn-sm submit" onclick="submitForm6()">SUBMIT</button>
+					</div>								
 					</div></div></div></div>
 			<!--  -->
+			<div class="modal fade bd-example-modal-lg" id="CAPSILIST"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of CAPSI</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross17">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div id="scrollclass" style="height:400px;overflow-y:scroll">
+					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
+					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
+					<tr style="text-align: center;">
+					<th style="width:3%">Selcet</th>
+					<th style="width:3%">SN</th>
+					<th style="width:25%">IDST Location </th>
+					<th style="width:20%">Area where R&D is required </th>
+					<th style="width:10%">Cost<br>( in cr)</th>
+					<th style="width:10%">PDC<br>(Months)</th>
+					<th style="width:10%">Confidence level of the agency</th>
+					</tr>
+					</thead>
+					<tbody id="tbody6">
+					</tbody>
+					</table>
+					</div>
+					<div class="mt-2" align="center"><button type="button" class="btn btn-sm btn-warning" onclick="showEditModal6()">EDIT</button></div>
+					<span class="radiovalueModal6"><input type="hidden" value="0" id="radio6"></span>
+					</div></div></div></div>
+				<!--  -->
+												<div class="modal fade bd-example-modal-lg" id="CapsiEditModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">CAPSI</h5>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross18">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					
+					<div class="modal-body">
+					<div class="row mt-1">
+					<div class="col-md-3"><label class="sidelabel">IDST Location<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-6"><input type="text" id="StationEdit" class="form-control" maxlength="255 characters" placeholder="Enter Station"></div>
+					</div>
+					<div class="row mt-2">
+					<div class="col-md-3"><label class="sidelabel">Area where R&D is required<span class="mandatory" style="color: red;">*</span></label></div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-6"><input type="text" id="CapsiareaEdit" class="form-control" maxlength="255 characters" placeholder="Enter R&D"></div>
+					</div>
+					<input type="hidden" id="capsid" value="0">
+										<div class="row mt-2">
+					<div class="col-md-2">
+					<label class="sidelabel">Cost<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="CapsicostEdit" maxlength="20" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>
+					<div class="col-md-2" align="right">
+					<label class="sidelabel">PDC<span class="mandatory" style="color: red;">*</span></label>
+					</div>
+					<div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="capsipdcEdit" maxlength="9" style="width:100%"oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+					</div>					
+					</div>							
+					<div class="row mt-2">
+					<div class="col-md-4">
+					<label class="sidelabel">Confidence level of the agency (1-10)
+					<span class="mandatory" style="color: red;">*</span></label>
+					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
+					<div class="col-md-2">
+					<input type="range" min="1" max="10" id="capsiconfidenceEdit" step="1" style="color:blue">
+					</div>
+					</div>	
+					<div class="mt-2" align="center">
+					<button type="button" class="btn btn-primary btn-sm submit" onclick="editForm7()">SUBMIT</button>
+					<button type="button" class="btn  btn-sm  back" onclick="BackModal(6)">BACK</button>
+					</div>								
+					</div></div></div></div>	
+					
 	<script>
 	function showCostModal(){
 		$('#exampleCostModal').modal('show');
@@ -2669,7 +2877,7 @@ color:#145374;
 
 	/* Second page clcik function */
 		$('#page2').click(function(){
-		$('#text').html('MACRO DETAILS OF PROJECT/PROGRAMME (PART-I)');
+		$('#text').html('MICRO DETAILS OF PROJECT/PROGRAMME (PART-I)');
 		$('#cardbody').css("display","none");
 		$('#cardbody2').css("display","none");
 		$('#cardbody1').css("display","block");
@@ -2686,7 +2894,7 @@ color:#145374;
 		})
 		/*Third page click function */
 		$('#page3').click(function(){
-		$('#text').html('MACRO DETAILS OF PROJECT/PROGRAMME (PART-II)');
+		$('#text').html('MICRO DETAILS OF PROJECT/PROGRAMME (PART-II)');
 		$('#cardbody').css("display","none");
 		$('#cardbody1').css("display","none");
 		$('#cardbody2').css("display","block");
@@ -2956,6 +3164,7 @@ color:#145374;
 				},
 				success:function(result){
 					var ajaxresult=JSON.parse(result);
+					console.log(ajaxresult)
 					let str = ajaxresult;  
 					let num = parseFloat(ajaxresult)/10000000;  
 
@@ -3070,27 +3279,27 @@ color:#145374;
 							}
 						},
 						{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-						{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
+						{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+
 					]
 				} ;
 		CKEDITOR.replace( 'methodologydiv',editor_config);
 		CKEDITOR.replace( 'Additionaldiv',editor_config); 
 		CKEDITOR.replace('otherinformationDiv',editor_config);
 		CKEDITOR.replace('EnclosuresDiv',editor_config);
+		CKEDITOR.replace('subpointdiv2Editor',editor_config);
 		CKEDITOR.replace('subpointdiv4Editor',editor_config);
 		CKEDITOR.replace('subpointdiv5Editor',editor_config);
 		CKEDITOR.replace('subpointdiv6Editor',editor_config);
-		/* CKEDITOR.replace('subpointdiv7Editor',editor_config); */
 		CKEDITOR.replace('subpointdiv8Editor',editor_config);
-	/* 	CKEDITOR.replace('subpointdiv9Editor',editor_config); */
-		/* CKEDITOR.replace('subpointdiv10Editor',editor_config); */
 		CKEDITOR.replace('subpointdiv11Editor',editor_config);
 		CKEDITOR.replace('subpointdiv12Editor',editor_config);
 		CKEDITOR.replace('subpointdiv13Editor',editor_config);
 		CKEDITOR.replace('subpointdiv14Editor',editor_config);
 		CKEDITOR.replace('subpointdiv15Editor',editor_config);
 		CKEDITOR.replace('subpointdiv16Editor',editor_config);
-		
+		CKEDITOR.replace('subpointdiv17Editor',editor_config);
+		CKEDITOR.replace('majorcapital',editor_config);
 	function showbtn9editor(){
 		$('#divadditonal').css("display","none");
 		$('#spanbtn9').html('<button class="btn btn-sm bg-transparent " type="button" onclick="hidebtn9editor()" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>');
@@ -3175,8 +3384,26 @@ color:#145374;
 		$('#point5').css("display","block");
 		$('#point6').css("display","block");	
 		}
+	function showAdditionalFacilities(){
+		$('#ADF').html('<button class="btn btn-sm bg-transparent " type="button" onclick="hideAdditionalFacilities()" ><i class="btn  fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>')
+		$('#majorcapitalEditor').css("display","block");
+		$('#point3').css("display","none");
+		$('#point4').css("display","none");
+		$('#point5').css("display","none");
+		$('#point6').css("display","none");
+		$('#point1').css("display","none");
+	}
+	function hideAdditionalFacilities(){
+		$('#ADF').html('<button class="btn btn-sm bg-transparent " type="button" onclick="showAdditionalFacilities()" ><i class="btn  fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>')
+		$('#majorcapitalEditor').css("display","none");		
+		$('#point3').css("display","block");
+		$('#point4').css("display","block");
+		$('#point5').css("display","block");
+		$('#point6').css("display","block");
+		$('#point1').css("display","block");
+	}
+	
 	function showsubPoint1(ele,a){
-		
 		/* console.log(x.class) */
 	  $('.subpoint').css("display","none")
 	  $('#subpointdiv'+a).css("display","block");
@@ -3756,7 +3983,7 @@ color:#145374;
 	
 	function ListModal4(){
 		
-		$('#tbody').html('');
+		$('#tbody4').html('');
 		$.ajax({
 			type:'GET',
 			url:'ConsultancyList.htm',
@@ -3783,8 +4010,9 @@ color:#145374;
 				  maximumFractionDigits: 2,
 				});
 				html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+4+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="left">'+ajaxresult[i][6]+'</td></tr>'
-			}}
+			}
 			$('#tbody4').html(html);
+			}
 		}
 		})
 		$('#ConsultancyList').modal('show');
@@ -3923,7 +4151,7 @@ color:#145374;
 	}
 	function ListModal5(){
 		$('#tbody5').html("");
-		$('#ManpowerList').modal('show');
+		
 		$.ajax({
 			type:'GET',
 			url:'ManpowerList.htm',
@@ -3934,12 +4162,17 @@ color:#145374;
 			success:function(result){
 				var ajaxresult=JSON.parse(result);
 				var html="";
+				if(ajaxresult.length==0){
+					$('#tbody5').html('<tr style="text-align:center;"><td colspan="7">NO DATA ADDED</td></tr>')
+					}else{
 				for(var i=0;i<ajaxresult.length;i++){
 					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+5+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td align="center">'+ajaxresult[i][4]+'</td>'+'<td align="center">'+ajaxresult[i][5]+'</td>'+'<td align="left">'+ajaxresult[i][6]+'</td></tr>'
 				}
 				$('#tbody5').html(html);
+					}
 			}
 		})
+		$('#ManpowerList').modal('show');
 	}
 	
 	function BackModal(a){
@@ -3948,6 +4181,7 @@ color:#145374;
 		if(a===3){ListModal3();$('#cross'+(Number(a)*3)).click(); document.getElementById("radio3").value=0;}
 		if(a===4){ListModal4();$('#cross'+(Number(a)*3)).click(); document.getElementById("radio4").value=0;}
 		if(a===5){ListModal5();$('#cross'+(Number(a)*3)).click(); document.getElementById("radio5").value=0;}
+		if(a===6){ListModal6();$('#cross'+(Number(a)*3)).click(); document.getElementById("radio6").value=0;}
 	}
 	
 	function showEditModal5(){
@@ -4014,33 +4248,37 @@ color:#145374;
 				
 			}else{event.preventDefault();return false;}}}
 	
+	/* submit information and major additional facilities  */
 	function InformationSubmit(a){
 		var information1=$('#information1').val().trim();
 		var information2=$('#information2').val().trim();
 		var information3=$('#information3').val().trim();
+		var majorcapital =CKEDITOR.instances['majorcapital'].getData();
+
 		
-		if(information1.length<=0&&information2.length<=0&&information3.length<=0){
+ 		if(information1.length<=0&&information2.length<=0&&information3.length<=0&&majorcapital.length<=0){
 			alert("Please fill the field")
 		}else{
 			if(confirm("Are you sure,you want to submit the data?")){
 				$('#successdiv').css("display","none");
 				$.ajax({
-					type:'GET',
+					type:'POST',
 					url:'MacroDetailsPart2.htm',
 					datatype:'json',
 					data:{
+						majorcapital:majorcapital,
 						information1:information1,
 						information2:information2,
 						information3:information3,
 						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
 					},
 					success:function(result){
 						if(result>0){
 							$('#successdiv').css("display","block");
 							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
 							$('#successdiv').delay(3000).hide(0);
-							
-							$('.submit'+a).html('<button type="submit" class="btn btn-sm btn-warning" onclick="InformationSubmit()">UPDATE</button>')
+							$('.submit'+a).html('<button type="submit" class="btn btn-sm btn-warning mt-1" onclick="InformationSubmit()">UPDATE</button>')
 						}
 					}
 					
@@ -4051,65 +4289,611 @@ color:#145374;
 			}
 		}
 	}
-	
-	function briefPonitSubmit(a){
-		var subpointdiv4Editor =CKEDITOR.instances['subpointdiv4Editor'].getData().trim();
-		var subpointdiv5Editor =CKEDITOR.instances['subpointdiv5Editor'].getData();
-		var subpointdiv6Editor =CKEDITOR.instances['subpointdiv6Editor'].getData();
-		var subpointdiv8Editor =CKEDITOR.instances['subpointdiv8Editor'].getData();
-		var subpointdiv11Editor =CKEDITOR.instances['subpointdiv11Editor'].getData();
-		var subpointdiv12Editor =CKEDITOR.instances['subpointdiv12Editor'].getData();
-		var subpointdiv13Editor =CKEDITOR.instances['subpointdiv13Editor'].getData();
-		var subpointdiv14Editor =CKEDITOR.instances['subpointdiv14Editor'].getData();
-		var subpointdiv15Editor =CKEDITOR.instances['subpointdiv15Editor'].getData();
-		var subpointdiv16Editor =CKEDITOR.instances['subpointdiv16Editor'].getData();
- 		if(subpointdiv4Editor.length==0&&subpointdiv5Editor.length==0&&subpointdiv6Editor.length==0&&subpointdiv8Editor.length==0&&subpointdiv11Editor.length==0&&subpointdiv12Editor.length==0&&subpointdiv13Editor.length==0&&subpointdiv14Editor.length==0&&subpointdiv15Editor.length==0&&subpointdiv16Editor.length==0){
- 			alert("Please fill this Field");
- 		}
- 		else{
- 			if(confirm("Are you sure ,you want to submit the data?")){
- 				$('#successdiv').css("display","none");
- 				$.ajax({
- 					type:'GET',
- 					url:'BriefTechnicalAppreciation.htm',
- 					datatype:'json',
- 					data:{
- 						TRLanalysis:subpointdiv4Editor,
- 						PeerReview:subpointdiv5Editor,
- 						ActionPlan:subpointdiv6Editor,
- 						TestingPlan:subpointdiv8Editor,
- 						ResponsibilityMatrix:subpointdiv11Editor,
- 						DevelopmentPartner:subpointdiv12Editor,
- 						ProductionAgencies:subpointdiv13Editor,
- 						CostsBenefit:subpointdiv14Editor,
- 						ProjectManagement:subpointdiv15Editor,
- 						PERT:subpointdiv16Editor,
- 						initiationid:<%=initiationid%>,
- 					},
- 					
- 					success:function(result){
- 						console.log(result)
+	 function briefPertSubmit(a){
+		 var subpointdiv16Editor =CKEDITOR.instances['subpointdiv16Editor'].getData();
+		 if(subpointdiv16Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'post',
+						url:'BriefPertSubmit.htm',
+						datatype:'json',
+						data:{
+							PERT:subpointdiv16Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPertSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+	 }
+	 
+	 function briefStructureSubmit(a){
+		 var subpointdiv15Editor =CKEDITOR.instances['subpointdiv15Editor'].getData();
+			 if(subpointdiv15Editor.length==0){
+				 alert("please fill this field")
+			 }else{
+					if(confirm("Are you sure ,you want to submit?")){
+						$('#successdiv').css("display","none");
+						$.ajax({
+							type:'post',
+							url:'BriefStructureSubmit.htm',
+							datatype:'json',
+							data:{
+								ProjectManagement:subpointdiv15Editor,
+								initiationid:<%=initiationid%>,
+								${_csrf.parameterName}:	"${_csrf.token}"
+							},
+							success:function(result){
+								if(result>0){
+									$('#successdiv').css("display","block");
+									$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+									$('#successdiv').delay(3000).hide(0);
+									
+									$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefStructureSubmit('+a+')">UPDATE</button>');
+								}
+							}
+						})
+					}else{
+						event.preventDefault();
+						return false;
+					}
+				} 
+	 }
+	 
+	 function briefcostSubmit(a){
+			var subpointdiv14Editor =CKEDITOR.instances['subpointdiv14Editor'].getData();
+			 if(subpointdiv14Editor.length==0){
+				 alert("please fill this field")
+			 }else{
+					if(confirm("Are you sure ,you want to submit?")){
+						$('#successdiv').css("display","none");
+						$.ajax({
+							type:'post',
+							url:'BriefCostDeSubmit.htm',
+							datatype:'json',
+							data:{
+								CostsBenefit:subpointdiv14Editor,
+								initiationid:<%=initiationid%>,
+								${_csrf.parameterName}:	"${_csrf.token}"
+							},
+							success:function(result){
+								if(result>0){
+									$('#successdiv').css("display","block");
+									$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+									$('#successdiv').delay(3000).hide(0);
+									
+									$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefcostSubmit('+a+')">UPDATE</button>');
+								}
+							}
+						})
+					}else{
+						event.preventDefault();
+						return false;
+					}
+				} 
+	 }
+	 function briefCriticalSubmit(a){
+			var subpointdiv17Editor =CKEDITOR.instances['subpointdiv17Editor'].getData();
+		 if(subpointdiv17Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefCriticalubmit.htm',
+						datatype:'json',
+						data:{
+							CriticalTech:subpointdiv17Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefCriticalSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			} 
+	 }
+	 function briefProductionSubmit(a){
+		 var subpointdiv13Editor =CKEDITOR.instances['subpointdiv13Editor'].getData();
+			 if(subpointdiv13Editor.length==0){
+				 alert("please fill this field")
+			 }else{
+					if(confirm("Are you sure ,you want to submit?")){
+						$('#successdiv').css("display","none");
+						$.ajax({
+							type:'POST',
+							url:'BriefProsubmit.htm',
+							datatype:'json',
+							data:{
+								ProductionAgencies:subpointdiv13Editor,
+								initiationid:<%=initiationid%>,
+								${_csrf.parameterName}:	"${_csrf.token}"
+							},
+							success:function(result){
+								if(result>0){
+									$('#successdiv').css("display","block");
+									$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+									$('#successdiv').delay(3000).hide(0);
+									
+									$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefProductionSubmit('+a+')">UPDATE</button>');
+								}
+							}
+						})
+						
+					}else{
+						event.preventDefault();
+						return false;
+					}
+				}
+	 }
+	 
+	 function briefDevelopmentSubmit(a){
+			var subpointdiv12Editor =CKEDITOR.instances['subpointdiv12Editor'].getData();
+		 if(subpointdiv12Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefDevsubmit.htm',
+						datatype:'json',
+						data:{
+							DevelopmentPartner:subpointdiv12Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefDevelopmentSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+	 }
+	 function briefResrSubmit(a){
+		 var subpointdiv11Editor =CKEDITOR.instances['subpointdiv11Editor'].getData();
+		 if(subpointdiv11Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefMatrixsubmit.htm',
+						datatype:'json',
+						data:{
+							ResponsibilityMatrix:subpointdiv11Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefResrSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+	 }
+	 function briefTestSubmit(a){
+		 var subpointdiv8Editor =CKEDITOR.instances['subpointdiv8Editor'].getData();
+		 if(subpointdiv8Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefTestsubmit.htm',
+						datatype:'json',
+						data:{
+							TestingPlan:subpointdiv8Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTestSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+		 
+	 }
+	 function briefActionSubmit(a){
+		 var subpointdiv6Editor =CKEDITOR.instances['subpointdiv6Editor'].getData();
+		 if(subpointdiv6Editor.length==0){
+			 alert("please fill this field")
+		 }else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefActionsubmit.htm',
+						datatype:'json',
+						data:{
+							ActionPlan:subpointdiv6Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefActionSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+		 
+	 }
+	 
+	 function briefPeerSubmit(a){
+			var subpointdiv5Editor =CKEDITOR.instances['subpointdiv5Editor'].getData();
+			if(subpointdiv5Editor.length==0){
+				alert("please fill this field");
+			}else{
+				if(confirm("Are you sure ,you want to submit?")){
+					$('#successdiv').css("display","none");
+					$.ajax({
+						type:'POST',
+						url:'BriefPeersubmit.htm',
+						datatype:'json',
+						data:{
+							PeerReview:subpointdiv5Editor,
+							initiationid:<%=initiationid%>,
+							${_csrf.parameterName}:	"${_csrf.token}"
+						},
+						success:function(result){
+							if(result>0){
+								$('#successdiv').css("display","block");
+								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+								$('#successdiv').delay(3000).hide(0);
+								
+								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPeerSubmit('+a+')">UPDATE</button>');
+							}
+						}
+					})
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}
+	 }
+	 
+	function briefNeedSubmit(a){
+		var subpointdiv2Editor =CKEDITOR.instances['subpointdiv2Editor'].getData();
+		if(subpointdiv2Editor.length==0){
+			alert("please fill the field");
+		}else{
+			if(confirm("Are you sure ,you want to submit?")){
+				$('#successdiv').css("display","none");
+				$.ajax({
+					type:'POST',
+					url:'BriefPoint2submit.htm',
+					datatype:'json',
+					data:{
+						Achievement:subpointdiv2Editor,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
+					},
+					success:function(result){
 						if(result>0){
 							$('#successdiv').css("display","block");
 							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
 							$('#successdiv').delay(3000).hide(0);
 							
-							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPonitSubmit('+a+')">UPDATE</button>');
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefNeedSubmit('+a+')">UPDATE</button>');
 						}
- 					}
- 				})
- 			}else{
+					}
+				})
+				
+			}else{
 				event.preventDefault();
-				return false;	
- 			}
- 			
- 		}
+				return false;
+			}
+		}
 	}
 	
-
-
-
+	function briefTRLSubmit(a){
+		var subpointdiv4Editor =CKEDITOR.instances['subpointdiv4Editor'].getData();
+		if(subpointdiv4Editor.length==0){
+			alert("please fill this field")
+		}else{
+			if(confirm("Are you sure you want to submit?")){
+				$.ajax({
+					type:'POST',
+					url:'BriefTRLsubmit.htm',
+					datatype:'json',
+					data:{
+						TRLanalysis:subpointdiv4Editor,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
+					},
+					success:function(result){
+						if(result>0){
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTRLSubmit('+a+')">UPDATE</button>');
+						}
+					}
+				})
+				
+			}else{
+				event.preventDefault();
+				return false;
+			}
+		}
+	} 
 	
+	
+	
+	function submitForm6(){
+		var Station=$('#Station').val().trim();
+		/* var CapsiConsultant=$('#CapsiConsultant').val().trim(); */
+		var Capsiarea=$('#Capsiarea').val().trim();
+		var Capsicost=$('#Capsicost').val().trim();
+		var capsipdc=$('#capsipdc').val().trim();
+		var capsiconfidence=$('#capsiconfidence').val().trim();
+		
+		if(Station.length==0||Capsiarea.length==0||Capsicost.length==0||capsipdc.length==0||capsiconfidence.length==0){
+			alert("Please fill all the fields")
+		}else{
+			if(confirm("Are you sure , you want to submit the data?")){
+				$('#successdiv').css("display","none");
+				$.ajax({
+					type:'GET',
+					url:'ProjectCapsiSubmit.htm',
+					datatype:'json',
+					data:{
+						Station:Station,
+						Capsiarea:Capsiarea,
+						Capsicost:Capsicost,
+						capsipdc:capsipdc,
+						capsiconfidence:capsiconfidence,
+ 						initiationid:<%=initiationid%>,
+					},
+				success:function(result){
+					if(result>0){
+						$('#cross16').click();	
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert"> Data Added Successfully</div>');
+						$('#successdiv').delay(3000).hide(0);
+						document.getElementById("Station").value="";
+					/* 	document.getElementById("CapsiConsultant").value=""; */
+						document.getElementById("Capsiarea").value="";
+						document.getElementById("Capsicost").value="";
+						document.getElementById("capsipdc").value="";
+						
+					var Notification6=document.getElementById("Notification6").innerHTML;
+						$('#Notification6').html(Number(Notification6)+1);
+						setTimeout(ListModal6, 3000); 
+					}else{
+						$('#cross16').click();
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert"> Data adding Unsuccessful</div>');
+						$('#successdiv').delay(3000).hide(0);
+						document.getElementById("Station").value="";
+				/* 		document.getElementById("CapsiConsultant").value=""; */
+						document.getElementById("Capsiarea").value="";
+						document.getElementById("capsipdc").value="";
+						
+					}
+				}
+					
+				})
+			}else{
+				event.preventDefault();
+				return false;
+			}
+		}
+	}
+function ListModal6(){
+	$('#CAPSILIST').modal('show');
+	$.ajax({
+		type:'GET',
+		url:'CapsiList.htm',
+		datatype:'json',
+		data:{
+			initiationid:<%=initiationid%>,
+		},
+		success:function(result){
+			var ajaxresult=JSON.parse(result);
+			console.log(ajaxresult)
+			if(ajaxresult.length==0){
+			$('#tbody6').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
+			}
+			else{
+				var html="";
+				for(var i=0;i<ajaxresult.length;i++){
+					let str = ajaxresult[i][5];  
+					let num = parseFloat(ajaxresult[i][5])/10000000;  
+
+
+					let formattedNum = num.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});						
+					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+6+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td></tr>'
+				}
+				$('#tbody6').html(html);
+			}	
+		}
+		
+	})
+}
+function showEditModal6(){
+	var radio=$('#radio6').val();
+	if(radio==0){
+		alert("Please select one!")
+	}else{
+		$.ajax({
+			type:'GET',
+			url:'CapsiValue.htm',
+			datatype:'json',
+			data:{
+				capsid:radio,
+			},
+			success:function(result){
+				var ajaxresult=JSON.parse(result);
+				document.getElementById("StationEdit").value=ajaxresult[2];
+				document.getElementById("CapsiConsultantEdit").value=ajaxresult[3];
+				document.getElementById("CapsiareaEdit").value=ajaxresult[4];
+				document.getElementById("CapsicostEdit").value=ajaxresult[5];
+				document.getElementById("capsipdcEdit").value=ajaxresult[6];
+				document.getElementById("capsiconfidenceEdit").value=ajaxresult[7];
+				document.getElementById("capsid").value=ajaxresult[0];
+				$('#CapsiEditModal').modal('show');
+				$('#cross17').click();
+			}
+		})
+		
+	}
+}
+function editForm7(){
+	var Station=$('#StationEdit').val().trim();
+	var CapsiConsultant=$('#CapsiConsultantEdit').val().trim();
+	var Capsiarea=$('#CapsiareaEdit').val().trim();
+	var Capsicost=$('#CapsicostEdit').val().trim();
+	var capsipdc=$('#capsipdcEdit').val().trim();
+	var capsiconfidence=$('#capsiconfidenceEdit').val().trim();
+	var capsid=$('#capsid').val();
+	if(Station.length==0||Capsiarea.length==0||CapsiConsultant.length==0||Capsicost.length==0||capsipdc.length==0||capsiconfidence.length==0){
+		alert("Please fill all the fields")
+	}else{
+		if(confirm("Are you sure,you want to submit?")){
+			$('#successdiv').css("display","none");	
+			$.ajax({
+				type:'GET',
+				url:'CapsiEdt.htm',
+				datatype:'json',
+				data:{
+					Station:Station,
+					CapsiConsultant:CapsiConsultant,
+					Capsiarea:Capsiarea,
+					Capsicost:Capsicost,
+					capsipdc:capsipdc,
+					capsiconfidence:capsiconfidence,
+					capsid:capsid,
+				},
+			success:function(result){
+				if(result>0){
+					$('#cross18').click();	
+					$('#successdiv').css("display","block");
+					$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">CapsiData   updated successfully</div>');
+					$('#successdiv').delay(3000).hide(0);
+					document.getElementById("radio6").value=0;
+				}
+				setTimeout(ListModal6, 3000);
+			}
+			
+			})
+		}else{
+			event.preventDefault();
+			return false;
+		}
+	}
+	
+}
+
+function showWork(){
+	$('#buildingworkDiv').css("display","block");
+	$('#buildingwork').html('<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top" onclick="hideWork()"><i class="btn  fa  fa-minus " style="color: red; padding: 0px  0px  0px  0px;"></i></button>');
+}
+function hideWork(){
+	$('#buildingworkDiv').css("display","none");
+	$('#buildingwork').html('<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top" onclick="showWork()"><i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i></button>');
+}
+
+/* function showCost(){
+	var input="showCarCost";
+	var output="hideCarCost"
+	if(output>input){
+		console.log("The total ammount to be done-"+output-input)
+	}
+	alert("The ammount exceed the total Cost ")
+	var input1="showCapsiCost"
+	var output1="hideCapsiCost"
+	if(output1>input1){
+		console.log("The total ammount to be done-"+output1-input1)
+	}
+	var input2="showConsultancyCost"
+	var output2="hideConsultancyCost"
+	if(output2>input2){
+		console.log("The total ammount to be done-"+output2-input2)
+	}
+	alert("the ammount exceed the total cost");
+	var input3="showWorkCost"
+	var output3="hideWorkCost"
+	if(output3>input3){
+		console.log("The total ammount to be done-"+output3-input3)
+	}
+} */
 </script>
 </body>
 	</html>

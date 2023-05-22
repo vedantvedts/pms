@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Sanction Details-Part2</title>
+<title>Part-II</title>
 <%
 String ProjectTitle=(String)request.getAttribute("ProjectTitle");
 String Labcode=(String)request.getAttribute("LabCode");
@@ -108,7 +108,7 @@ td>table{
 <body>
 	<div style="text-align:center;">
 		<h2 style="text-align: center;">Part-II</h2>
-		<h3 style="text-align: center;" >Macro Details of Project / Programme</h3><hr style="width:80%;margin-top:0px;">
+		<h3 style="text-align: center;" >Micro Details of Project / Programme</h3><hr style="width:80%;margin-top:0px;">
 		
 		    <table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
 		    	<tr style="margin-top: 10px;">
@@ -131,7 +131,13 @@ td>table{
 				<td style="width:650px;text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226; What will be achieved by taking this project.</h4></td>
 				</tr>
 				<tr style="margin-top: 10px;">
-				</tr>
+				<td style="width: 650px; text-align: left;">
+				<%if(BriefList.length>0 && BriefList[12]!=null) {%>
+				<%=BriefList[12].toString() %>
+				<%}else{ %>
+				<p>Not Specified</p>
+				<%} %>
+				</td></tr>
 				<tr style="margin-top: 10px;">
 				<td style="width:650px;text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226; Competence level/preliminary work done to acquire the same. </h4></td>
 				</tr>				
@@ -148,13 +154,21 @@ td>table{
 				<td style="width: 650px; text-align:justify;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226;
 						Critical technologies from industry <h4></td>
 			</tr>	
+							<tr style="margin-top: 10px;">
+				<td style="width: 650px; text-align: left;">
+				<%if(BriefList.length>0 && BriefList[13]!=null) {%>
+				<%=BriefList[13].toString() %>
+				<%}else{ %>
+				<p>Not Specified</p>
+				<%} %>
+				</td></tr>
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226;
 				Brief of TRL analysis.</h4></td>
 			</tr>	
 				<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
-				<%if(BriefList.length>0 && BriefList[2].toString().trim().length()>0) {%>
+				<%if(BriefList.length>0 && BriefList[2]!=null) {%>
 				<%=BriefList[2].toString() %>
 				<%}else{ %>
 				<p>Not Specified</p>
@@ -166,7 +180,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[3].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[3]!=null) {
 					%>
 					<%=BriefList[3].toString()%> <%
  } else {
@@ -196,7 +210,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[4].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[4]!=null) {
 					%>
 					<%=BriefList[4].toString()%> <%
  } else {
@@ -206,7 +220,7 @@ td>table{
  %>
 				</td>
 			</tr>
-			<tr style="margin-top: 10px;">
+<!-- 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226;
 				The proposal should contain the number of design iterations required at 
 				the component / sub-system level in a TD(T) project and number of design 
@@ -214,7 +228,7 @@ td>table{
 				projects. Time penalty for each design iteration should be given. 
 				</h4>
 				</td>
-				</tr>	
+				</tr>	 -->
 				<tr></tr>
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;"><h4>&nbsp;&nbsp;&nbsp;&nbsp;&#8226;
@@ -242,7 +256,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[5].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[5]!=null) {
 					%>
 					<%=BriefList[5].toString()%> <%
  } else {
@@ -326,7 +340,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[6].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[6]!=null) {
 					%>
 					<%=BriefList[6].toString()%> <%
  } else {
@@ -342,7 +356,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[7].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[7]!=null) {
 					%>
 					<%=BriefList[7].toString()%> <%
  } else {
@@ -358,7 +372,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[8].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[8]!=null) {
 					%>
 					<%=BriefList[8].toString()%> <%
  } else {
@@ -374,7 +388,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[9].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[9]!=null) {
 					%> <%=BriefList[9].toString()%> <%
  } else {
  %>
@@ -390,7 +404,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[10].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[10]!=null) {
 					%> <%=BriefList[10].toString()%> <%
  } else {
  %>
@@ -406,7 +420,7 @@ td>table{
 			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;">
 					<%
-					if (BriefList.length > 0 && BriefList[11].toString().trim().length() > 0) {
+					if (BriefList.length > 0 && BriefList[11]!=null) {
 					%> <%=BriefList[11].toString()%> <%
  } else {
  %>
@@ -438,10 +452,23 @@ td>table{
   <table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
   			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;"><h4>
-						3.&nbsp;&nbsp;&nbsp;&nbsp; List of major additional facilities (capital) required for the project</h4></td></tr>	
-  </table>	
-  
-  
+						3.&nbsp;&nbsp;&nbsp;&nbsp; List of major additional facilities (capital) required for the project</h4></td></tr>
+						<tr style="margin-top: 10px;">
+				<td style="width: 650px; text-align: left;">
+					<%
+					if (macrodetailsTwo.length > 0 && macrodetailsTwo[5].toString().trim().length() > 0) {
+					%> <p style="margin-left: 50px;"><%=macrodetailsTwo[5].toString()%></p><%
+ 						} else {
+						 %>
+					<p style="margin-left: 50px;">Not Specified</p> <%
+ 						}
+ 						%>
+				</td>
+			</tr>	
+			
+			
+							
+  </table>	  
     <table style="margin-left:20px; margin-top:15px;border:0px solid black;font-family:FontAwesome; width:650px;">
   			<tr style="margin-top: 10px;">
 				<td style="width: 650px; text-align: left;"><h4>

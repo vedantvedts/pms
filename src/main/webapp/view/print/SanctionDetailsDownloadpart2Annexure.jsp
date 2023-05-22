@@ -26,6 +26,7 @@ Object[]BriefList=(Object[])request.getAttribute("BriefList");
 List<Object[]> DetailsList = (List<Object[]>) request.getAttribute("DetailsList");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
+List<Object[]> CapsiList=(List<Object[]>)request.getAttribute("CapsiList");
 %>
 <style type="text/css">
 
@@ -95,7 +96,8 @@ background:black;
 </head>
 <body>
 	<div style="text-align:center;">
-		<h2 style="text-align: center;color: #145374;text-align:right;margin-right:25px;;">Annexure-A</h2>
+		<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-A</h3>
+			<h3 style="text-align: center;color: #145374;text-align:left;margin-left:25px;margin-top:0px;;">Major training requirements:-</h3>
 		
 			<table  id="mytable" class="border-black"
 							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 25px;">
@@ -130,12 +132,13 @@ background:black;
 							</tbody>
 							</table>
 		</div>
-		<div style="page-break-before:always">&nbsp;</div> 
+		<div style="page-break-before:always"></div> 
 	<div style="text-align:center;">
-		<h2 style="text-align: center;color: #145374;text-align:right;margin-right:25px;;">Annexure-B</h2>
+	<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-B</h3>
+			<h3 style="text-align: center;color: #145374;text-align:left;margin-left:25px;margin-top:0px;;">Details of Work Packages :-</h3>
 		
 			<table  id="mytable" class="border-black"
-							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 25px;">
+							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 10px;">
 							<thead style="background: #055C9D;color: black;">
 								<tr>
 								<th class="border-black" style="width:5%;text-align: center;">SN</th>
@@ -165,11 +168,12 @@ background:black;
 							</tbody>
 							</table>
 		</div>	
-		<div style="page-break-before:always">&nbsp;</div> 
+		<div style="page-break-before:always"></div> 
 		<div style="text-align:center;">
-		<h2 style="text-align: center;color: #145374;text-align:right;margin-right:25px;;">Annexure-C</h2>
+			<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-C</h3>
+			<h3 style="text-align: center;color: #145374;text-align:left;margin-left:25px;margin-top:0px;;">Details of CARS :-</h3>
 					<table  id="mytable" class="border-black"
-							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 25px;">
+							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 15px;">
 							<thead style="background: #055C9D;color: black;">
 								<tr>
 								<th class="border-black" style="width:5%;text-align: center;">SN</th>
@@ -200,12 +204,51 @@ background:black;
 							<%} %>
 							</tbody>
 							</table>
-		</div>	
-		<div style="page-break-before:always">&nbsp;</div> 
-		<div style="text-align:center;">
-		<h2 style="text-align: center;color: #145374;text-align:right;margin-right:25px;">Annexure-E</h2>
+		</div>\
+		<div style="page-break-before:always"></div> 
+				<div style="text-align:center;">
+			<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-D</h3>
+			<h3 style="text-align: center;color: #145374;text-align:left;margin-left:25px;margin-top:0px;;">Details of CAPSI :-</h3>
 					<table  id="mytable" class="border-black"
-							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 25px;">
+							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 10px;">
+							<thead style="background: #055C9D;color: black;">
+								<tr>
+								<th class="border-black" style="width:5%;text-align: center;">SN</th>
+								<th class="border-black" style="width:20%;text-align: center;">Station</th>
+								<th class="border-black" style="width:20%;text-align: center;">Consultant</th>
+								<th class="border-black" style="width:16%;text-align: center;">Area where R&D is required</th>
+								<th class="border-black" style="width:12%;text-align: center;">Cost<br>&nbsp;(&#8377; in Cr.)</th>
+								<th class="border-black" style="width:8%;text-align: center;">Duration</th>
+								<th class="border-black" style="width:12%;text-align: center;">Confidence level of the Agency</th>
+								</tr>
+							</thead>
+																	<tbody>
+							<%if(CapsiList.size()>0){
+							int i=0;
+								for(Object[]obj:CapsiList){	
+								%>
+							<tr style="">
+							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
+							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %></h6></td>
+							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[5].toString())/10000000)%></h6></td>
+							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>
+							<td class="border-black " ><h6 style="padding:18px; padding-bottom: 18px;"><%=obj[7] %></h6></td>
+							</tr>
+							<%}}else{ %>
+							<tr><td class="border-black"  colspan="7" style="padding:15px;"><h4>Not Specified</h4></td></tr>
+							<%} %>
+							</tbody>
+							</table>
+							</div>
+			
+		<div style="page-break-before:always"></div> 
+		<div style="text-align:center;">
+		<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-E</h3>
+			<h3 style="text-align: center;color: #145374;text-align:left;margin-left:25px;margin-top:0px;;">Details of Consultancy requirements :-</h3>
+					<table  id="mytable" class="border-black"
+							style="width: 980px; margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 10px;">
 							<thead style="background: #055C9D;color: black;">
 								<tr>
 								<th class="border-black" style="width:5%;text-align: center;">SN</th>
@@ -235,11 +278,12 @@ background:black;
 							</tbody>
 							</table>
 		</div>		
-			<div style="page-break-before:always">&nbsp;</div> 
+			<div style="page-break-before:always"></div> 
 		<div style="text-align:center; ">
-		<h2 style="text-align: center;color: #145374;text-align:right;margin-right:25px;;">Annexure-F</h2>
+		<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-F</h3>
+		<h3 style="text-align: center;color: #145374;text-align:left;margin-left: 25px;margin-top:0px;;">Details of additional manpower requirements :-</h3>
 							<table  id="mytable" class="border-black"
-							style="width: 980px;  margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 25px;">
+							style="width: 980px;  margin-left:20px;font-family: 'FontAwesome'; font-size:p;margin-top: 15px;">
 							<thead style="background: #055C9D; ;color: black;">
 								<tr>
 								<th class="border-black" style="width:5%; padding:15px;text-align: center;">SN</th>

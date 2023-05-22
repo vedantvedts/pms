@@ -991,4 +991,13 @@ public class PrintDaoImpl implements PrintDao {
 			List<Object[]> RiskTypes=(List<Object[]> )query.getResultList();
 			return RiskTypes;
 		}
+		private static final String COSTLIST="SELECT c.headofaccounts,CONCAT (c.majorhead,'-',c.minorhead,'-',c.subhead) AS headcode,SUM(a.itemcost)FROM pfms_initiation_cost a,budget_item_sanc c WHERE a.budgetsancid=c.sanctionitemid AND a.isactive='1' AND a.initiationid=:initiationId AND a.budgetheadid=c.budgetheadid  GROUP BY headofaccounts";
+	@Override
+		public List<Object[]> CostDetailsListSummary(String initiationId) throws Exception {
+			// TODO Auto-generated method stub
+			Query query = manager.createNativeQuery(COSTLIST);
+			query.setParameter("initiationId", initiationId);
+			return (List<Object[]>)query.getResultList();
+		}	
+		
 }

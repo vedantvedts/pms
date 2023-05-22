@@ -98,4 +98,5 @@ public interface PrintDao {
 	public ProjectSlideFreeze FreezedSlideAttachmentDownload(String achmentid) throws Exception;
 	public List<Object[]> GetAllProjectSildedata()throws Exception;
 	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
+	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
 }

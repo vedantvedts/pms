@@ -1,5 +1,7 @@
 package com.vts.pfms.project.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,12 +14,13 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "pfms_procurement_plan")
-public class PfmsProcurementPlan {
+public class PfmsProcurementPlan implements Serializable {
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Long PlanId;
 		private Long InitiationId;
+		private Long InitiationCostId;
 		private String Item;
 		private String Purpose;
 		private String Source;
@@ -26,7 +29,12 @@ public class PfmsProcurementPlan {
 		private int Demand;
 		private int Tender;
 		private int OrderTime;
-		private int Payout;
+		private int Payment;
 		private int Total;
 		private String Approved;
+		private String CreatedBy;
+	    private String CreatedDate;
+	    private String ModifiedBy;
+	    private String ModifiedDate;
+		private int IsActive;
 }

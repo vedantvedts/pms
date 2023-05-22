@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,6 +52,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
+import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentFileDto;
 import com.vts.pfms.project.dto.PfmsInitiationAuthorityDto;
@@ -81,16 +84,23 @@ import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
 public class ProjectController 
 {
-
+	@Autowired
+	PMSLogoUtil LogoUtil;
+	
 	@Autowired
 	ProjectService service;
+	
+	@Autowired 
+	PrintService serv;
 	
 	@Value("${File_Size}")
 	String file_size;
@@ -118,8 +128,7 @@ public class ProjectController
 	
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
 			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
-			return "project/ProjectIntiationList";
-                                                                   
+			return "project/ProjectIntiationList";                                                
 		}
 		catch (Exception e) {
 			logger.error(new Date() +" Inside ProjectIntiationList.htm "+UserId, e);
@@ -226,6 +235,8 @@ public class ProjectController
 			req.setAttribute("ManpowerList", service.ManpowerList(initiationid));
 			req.setAttribute("macrodetailsTwo", service.macroDetailsPartTwo(initiationid));
 			req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
+			req.setAttribute("CapsiList", service.CapsiList(initiationid));
+			req.setAttribute("CostDetailsListSummary", serv.CostDetailsListSummary(initiationid));
 			}
 			else
 			{
@@ -252,7 +263,10 @@ public class ProjectController
 				req.setAttribute("ManpowerList", service.ManpowerList(initiationid));
 				req.setAttribute("macrodetailsTwo", service.macroDetailsPartTwo(initiationid));
 				req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
+				req.setAttribute("CapsiList", service.CapsiList(initiationid));
+				req.setAttribute("CostDetailsListSummary", serv.CostDetailsListSummary(initiationid));
 			}}
+			
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 		}
 		catch(Exception e) {
@@ -261,6 +275,7 @@ public class ProjectController
 		}
 		return "project/ProjectSanctionStatement";
 	}
+	
 	
 	@RequestMapping(value = "ProjectProcurement.htm")
 	public String ProjectProcurement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -384,7 +399,7 @@ public class ProjectController
 					req.setAttribute("AuthorityAttachment", service.AuthorityAttachment(IntiationId));
 					req.setAttribute("reqTypeList", service.RequirementTypeList());
 					req.setAttribute("RequirementList", service.RequirementList(IntiationId));
-											
+					req.setAttribute("DemandList", service.DemandList());						
 					Map<String, List<Object[]>> BudgetItemMapList = new LinkedHashMap<String, List<Object[]>>();
 		
 					List<Object[]> ItemList = service.ProjectIntiationItemList(IntiationId);
@@ -474,7 +489,9 @@ public class ProjectController
 			String TabId = (String) md.get("TabId");
 			String Details = (String) md.get("details");
 			String DetailsEdit = (String) md.get("detailsedit");
-	
+			if(IntiationId==null) {
+				IntiationId=req.getParameter("Intiationid");
+			}
 			req.setAttribute("DetailsEdit", DetailsEdit);
 			req.setAttribute("Details", Details);
 			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(IntiationId)).get(0));
@@ -487,6 +504,7 @@ public class ProjectController
 			req.setAttribute("AuthorityAttachment", service.AuthorityAttachment(IntiationId));
 			req.setAttribute("reqTypeList", service.RequirementTypeList());
 			req.setAttribute("RequirementList", service.RequirementList(IntiationId));
+			req.setAttribute("DemandList", service.DemandList());
 			
 			Map<String, List<Object[]>> BudgetItemMapList = new LinkedHashMap<String, List<Object[]>>();
 	
@@ -1197,9 +1215,13 @@ public class ProjectController
 			
 				return "redirect:/ProjectCostAddLanding.htm";
 			} else {
+				System.out.println("1111    :"+req.getParameter("IntiationId"));
 				redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
 				redir.addFlashAttribute("TabId", "2");
-				return "redirect:/ProjectIntiationDetailesLanding.htm";
+				redir.addAttribute("Intiationid", req.getParameter("IntiationId"));
+				/* redir.addFlashAttribute("sub","Details"); */
+				/* return "redirect:/ProjectIntiationListSubmit.htm"; */
+				 return "redirect:/ProjectIntiationDetailesLanding.htm";
 			}
 			}catch (Exception e) {
 				e.printStackTrace(); logger.error(new Date() +" Inside ProjectCostAddSubmit.htm "+UserId, e);
@@ -2305,94 +2327,6 @@ public class ProjectController
 			}
 		return "redirect:/ProjectRequirement.htm";
 	}
-	@RequestMapping(value = "ProjectProcurementSubmit.htm", method = RequestMethod.POST)
-	public String ProjectProcurementSubmit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
-		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectProcurementSubmit.htm "+UserId);
-		try
-		{
-			String initiationid=req.getParameter("IntiationId");
-			String projectshortName=req.getParameter("projectshortName");
-	
-			
-			PfmsProcurementPlan pp= new PfmsProcurementPlan ();
-			pp.setInitiationId(Long.parseLong(initiationid));
-			pp.setItem(req.getParameter("Item"));
-			pp.setPurpose(req.getParameter("Purpose"));
-			pp.setSource(req.getParameter("Source"));
-			pp.setModeName(req.getParameter("Mode"));
-			pp.setCost(Double.parseDouble(req.getParameter("cost")));
-			pp.setApproved(req.getParameter("Approved"));
-			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
-			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
-			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
-			pp.setPayout(Integer.parseInt(req.getParameter("Payout")));
-			pp.setTotal(Integer.parseInt(req.getParameter("Demand"))+Integer.parseInt(req.getParameter("Tender"))+Integer.parseInt(req.getParameter("Order"))+Integer.parseInt(req.getParameter("Payout")));
-			
-			long count=service.PfmsProcurementPlanSubmit(pp);
-			if (count > 0) {
-				redir.addAttribute("result", "Procurement Plan Added Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Procurement Plan Add Unsuccessful");
-			}
-			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
-			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
-			redir.addFlashAttribute("DemandList",service.DemandList());
-			redir.addFlashAttribute("ProcurementList", service.ProcurementList(initiationid));
-		}
-		catch(Exception e) {
-			logger.error(new Date() +"Inside ProjectProcurementSubmit.htm  "+UserId, e);
-			e.printStackTrace();
-		}
-		
-		
-		return "redirect:/ProjectProcurement.htm";
-	}
-	@RequestMapping(value = "ProjectProcurementEdit.htm", method = RequestMethod.POST)
-	public String ProjectProcurementEdit(HttpServletRequest req, RedirectAttributes redir, HttpSession ses ) {
-		String UserId = (String) ses.getAttribute("Username");
-		String LabCode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +"Inside ProjectProcurementEdit.htm "+UserId);
-		try {
-			String initiationid=req.getParameter("IntiationId");
-			String projectshortName=req.getParameter("projectshortName");
-						
-			PfmsProcurementPlan pp= new PfmsProcurementPlan ();
-			pp.setInitiationId(Long.parseLong(initiationid));
-			pp.setItem(req.getParameter("Item"));
-			pp.setPurpose(req.getParameter("Purpose"));
-			pp.setSource(req.getParameter("Source"));
-			pp.setModeName(req.getParameter("Mode"));
-			pp.setCost(Double.parseDouble(req.getParameter("cost")));
-			pp.setApproved(req.getParameter("Approved"));
-			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
-			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
-			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
-			pp.setPayout(Integer.parseInt(req.getParameter("Payout")));
-			pp.setTotal(Integer.parseInt(req.getParameter("Demand"))+Integer.parseInt(req.getParameter("Tender"))+Integer.parseInt(req.getParameter("Order"))+Integer.parseInt(req.getParameter("Payout")));
-			pp.setPlanId(Long.parseLong(req.getParameter("planidedit")));
-			
-			
-			long count=service.ProjectProcurementEdit(pp);
-			if (count > 0) {
-				redir.addAttribute("result", "Procurement Plan edited Successfully");
-			} else {
-				redir.addAttribute("resultfail", "Procurement Plan edit Unsuccessful");
-			}
-			redir.addFlashAttribute("initiationid", req.getParameter("IntiationId"));
-			redir.addFlashAttribute("projectshortName",req.getParameter("projectshortName"));
-			redir.addFlashAttribute("DemandList",service.DemandList());
-			redir.addFlashAttribute("ProcurementList", service.ProcurementList(initiationid));
-		}catch(Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +"Inside ProjectProcurementEdit.htm  "+UserId, e);
-		}
-	
-		return "redirect:/ProjectProcurement.htm";
-	}
-	
-	
 	
 	@RequestMapping(value="RequirementAttachmentDelete.htm", method=RequestMethod.POST)
 	public String RequirementAttachmentDelete(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
@@ -5163,6 +5097,92 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(count);
 	}
+	@RequestMapping(value="ProjectCapsiSubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProjectCapsiSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"InsideProjectCapsiSubmit.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCapsi pmc= new ProjectMajorCapsi();
+			pmc.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			pmc.setStation(req.getParameter("Station"));
+			pmc.setConsultant(req.getParameter("CapsiConsultant"));
+			pmc.setAreaRD(req.getParameter("Capsiarea"));
+			pmc.setCost(Double.parseDouble(req.getParameter("Capsicost")));
+			pmc.setPDC(Integer.parseInt(req.getParameter("capsipdc")));
+			pmc.setConfidencelevel(Integer.parseInt(req.getParameter("capsiconfidence")));
+			pmc.setCreatedBy(UserId);
+			pmc.setCreatedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			
+			count =service.ProjectCapsiSubmit(pmc);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectCapsiSubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="CapsiList.htm",method = RequestMethod.GET)
+	public @ResponseBody String CapsiList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CapsiList.htm "+UserId);
+		List<Object[]>CapsiList=null;
+		try {
+			CapsiList=service.CapsiList(req.getParameter("initiationid"));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CapsiList.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(CapsiList);
+	}
+	
+	@RequestMapping(value="CapsiValue.htm",method = RequestMethod.GET)
+	public @ResponseBody String CapsiValue(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CapsiValue.htm "+UserId);
+		Object[]CapsiValue=null;
+	try {
+		CapsiValue=service.CapsiValue(req.getParameter("capsid"));
+	}catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside CapsiValue.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(CapsiValue);
+	}
+	@RequestMapping(value="CapsiEdt.htm",method = RequestMethod.GET)
+	public @ResponseBody String CapsiEdt(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CapsiEdt.htm "+UserId);
+		long count=0;
+		try {
+			ProjectMajorCapsi pmc= new ProjectMajorCapsi();
+			pmc.setStation(req.getParameter("Station"));
+			pmc.setConsultant(req.getParameter("CapsiConsultant"));
+			pmc.setAreaRD(req.getParameter("Capsiarea"));
+			pmc.setCost(Double.parseDouble(req.getParameter("Capsicost")));
+			pmc.setPDC(Integer.parseInt(req.getParameter("capsipdc")));
+			pmc.setConfidencelevel(Integer.parseInt(req.getParameter("capsiconfidence")));
+			pmc.setModifiedBy(UserId);
+			pmc.setModifiedDate(sdf1.format(new Date()));
+			pmc.setIsActive(1);
+			pmc.setCapsId(Long.parseLong(req.getParameter("capsid")));
+			count =service.CapsiEdt(pmc);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CapsiEdt.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
 	@RequestMapping(value="ManpowerList.htm",method = RequestMethod.GET)
 	public @ResponseBody String ManpowerList(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String)ses.getAttribute("Username");
@@ -5215,7 +5235,145 @@ public class ProjectController
 		Gson json = new Gson();
 		return json.toJson(count);
 	}
-	
+	@RequestMapping(value="ProcurementSubmit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProcurementSubmit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProcurementSubmit.htm "+UserId);
+		long count=0;
+		try {
+			PfmsProcurementPlan pp=new PfmsProcurementPlan();
+			pp.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			pp.setInitiationCostId(Long.parseLong(req.getParameter("InitiationCostId")));
+			pp.setItem(req.getParameter("Item"));
+			pp.setPurpose(req.getParameter("Purpose"));
+			pp.setSource(req.getParameter("Source"));
+			pp.setModeName(req.getParameter("Mode"));
+			pp.setCost(Double.parseDouble(req.getParameter("cost")));
+			pp.setApproved(req.getParameter("Approve"));
+			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
+			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
+			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
+			pp.setPayment(Integer.parseInt(req.getParameter("Payout")));
+			pp.setCreatedBy(UserId);
+			pp.setCreatedDate(sdf1.format(new Date()));
+			pp.setIsActive(1);
+			count=service.PfmsProcurementPlanSubmit(pp);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProcurementSubmit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	@RequestMapping(value="ProcurementList.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProcurementList(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProcurementList.htm "+UserId);
+		List<Object[]>ProcurementList=null;
+	try {
+		ProcurementList=service.ProcurementInitiationCostList(req.getParameter("initiationid"),req.getParameter("InitiationCostId"));
+	}
+	catch(Exception e) {
+		e.printStackTrace();
+		logger.error(new Date() +" Inside ProcurementList.htm"+UserId, e);
+	}
+	Gson json = new Gson();
+	return json.toJson(ProcurementList);
+	}
+	@RequestMapping(value="ProcurementEdit.htm",method = RequestMethod.GET)
+	public @ResponseBody String ProcurementEdit(HttpServletRequest req, HttpSession ses) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside ProcurementEdit.htm "+UserId);
+		long count=0;
+		try {
+			PfmsProcurementPlan pp=new PfmsProcurementPlan();
+			pp.setPlanId(Long.parseLong(req.getParameter("planid")));
+			pp.setItem(req.getParameter("Item"));
+			pp.setPurpose(req.getParameter("Purpose"));
+			pp.setSource(req.getParameter("Source"));
+			pp.setModeName(req.getParameter("Mode"));
+			pp.setCost(Double.parseDouble(req.getParameter("cost")));
+			pp.setApproved(req.getParameter("Approve"));
+			pp.setDemand(Integer.parseInt(req.getParameter("Demand")));
+			pp.setTender(Integer.parseInt(req.getParameter("Tender")));
+			pp.setOrderTime(Integer.parseInt(req.getParameter("Order")));
+			pp.setPayment(Integer.parseInt(req.getParameter("Payout")));
+			pp.setModifiedBy(UserId);
+			pp.setModifiedDate(sdf1.format(new Date()));
+			pp.setIsActive(1);
+			
+			count=service.ProjectProcurementEdit(pp);
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProcurementEdit.htm"+UserId, e);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	//Requirement Pdf
+	@RequestMapping(value = "RequirementDocumentDownlod.htm" )
+	public void RequirementDocumentDownlod(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String LabCode =(String ) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId);
+		try {
+			String initiationid=req.getParameter("IntiationId");
+			/*
+			 * req.setAttribute("ProjectDetailes",
+			 * service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
+			 * req.setAttribute("sanctionlistdetails",
+			 * service.sanctionlistDetails(initiationid)) ; req.setAttribute("LabCode",
+			 * LabCode); req.setAttribute("lablogo",
+			 * LogoUtil.getLabLogoAsBase64String(LabCode)); req.setAttribute("LabList",
+			 * service.AllLabList(LabCode)); req.setAttribute("ProjectTitle",
+			 * req.getParameter("projectshortName"));
+			 * req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
+			 */
+			String filename="ProjectRequirement";
+			String path=req.getServletContext().getRealPath("/view/temp");
+		  	req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
+	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+	    	converterProperties.setFontProvider(dfp);
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+	        pdfw.close();
+	        
+			res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path+"/"+filename+".pdf");
+	      
+	        OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+	        Files.delete(pathOfFile2);	
+			
+		}catch(Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside RequirementDocumentDownlod.htm "+UserId,e);
+		}
+
+	}
 	
 	//Sanction statement;
 	@RequestMapping(value = "ProjectSanctionDetailsDownload.htm" )
@@ -5229,6 +5387,8 @@ public class ProjectController
 			req.setAttribute("ProjectDetailes", service.ProjectDetailes(Long.parseLong(initiationid)).get(0));
 			req.setAttribute("sanctionlistdetails", service.sanctionlistDetails(initiationid)) ;
 			req.setAttribute("LabCode", LabCode);
+		 req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
+			req.setAttribute("LabList", service.AllLabList(LabCode));
 			req.setAttribute("ProjectTitle", req.getParameter("projectshortName"));
 			req.setAttribute("projectFiles",service.getProjectFilese(initiationid, "3"));
 			String filename="ProjectSanctionDetails";
@@ -5300,6 +5460,7 @@ public class ProjectController
 			CostList.add(service.TotalPayOutMonth(String.valueOf(i), String.valueOf(i+5), initiationid));
 		}
 		req.setAttribute("CostList", CostList);
+		req.setAttribute("CapsiList", service.CapsiList(initiationid));
 		String filename="ProjectSanctionDetails(2)";
 		String path=req.getServletContext().getRealPath("/view/temp");
 	  	req.setAttribute("path",path);
@@ -5789,7 +5950,7 @@ public class ProjectController
 	  
 	  return json.toJson(result);
 	  }
-		@RequestMapping(value="MacroDetailsPart2.htm",method=RequestMethod.GET)
+		@RequestMapping(value="MacroDetailsPart2.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	    public @ResponseBody String MacroDetailsPart2(HttpSession ses, HttpServletRequest req) throws Exception {
 			
 			 Gson json = new Gson();
@@ -5806,6 +5967,7 @@ public class ProjectController
 		   			pmd.setRecommendations(req.getParameter("information3"));
 		   			pmd.setCreatedBy(UserId);
 		   			pmd.setCreatedDate(sdf1.format(new Date()));
+		   			pmd.setAdditionalCapital(req.getParameter("majorcapital"));
 		   			pmd.setInitiationId(Long.parseLong(initiationid));
 		   			pmd.setIsActive(1);
 		   			count=service.MacroDetailsPartTwoSubmit(pmd);
@@ -5815,6 +5977,7 @@ public class ProjectController
 		   			pmd.setComments(req.getParameter("information2"));
 		   			pmd.setRecommendations(req.getParameter("information3"));
 					pmd.setModifiedBy(UserId);
+					pmd.setAdditionalCapital(req.getParameter("majorcapital"));
 					pmd.setModifiedDate(sdf1.format(new Date()));
 		   			pmd.setCreatedDate(sdf1.format(new Date()));
 		   			pmd.setInitiationId(Long.parseLong(initiationid));
@@ -5830,60 +5993,426 @@ public class ProjectController
 		   	
 		   	return json.toJson(count);
 		}
-	  
-		@RequestMapping(value="BriefTechnicalAppreciation.htm",method=RequestMethod.GET)
-	    public @ResponseBody String BriefTechnicalAppreciation(HttpSession ses, HttpServletRequest req) throws Exception {
+		@RequestMapping(value="BriefPertSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	    public @ResponseBody String BriefPertSubmit(HttpSession ses, HttpServletRequest req) throws Exception {
 			
 			 Gson json = new Gson();
 		   	 String UserId=(String)ses.getAttribute("Username");
-		   	logger.info(new Date() +"Inside BriefTechnicalAppreciation.htm"+UserId);
+		   	logger.info(new Date() +"Inside BriefPertSubmit.htm"+UserId);
 		   	long count=0;
 		   	try {
 		   		String initiationid=req.getParameter("initiationid");
 		   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
-		   		System.out.println(BriefTechnicalAppreciationList.length+"-----");
 		   		if(BriefTechnicalAppreciationList.length==0) {
 		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
 		   			pmb.setInitiationId(Long.parseLong(initiationid));
-		   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
-		   			pmb.setPeerReview(req.getParameter("PeerReview"));
-		   			pmb.setActionPlan(req.getParameter("ActionPlan"));
-		   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
-		   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
-		   			pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
-		   			pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
-		   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
-		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
 		   			pmb.setPERT(req.getParameter("PERT"));
 		   			pmb.setCreatedBy(UserId);
 		   			pmb.setCreatedDate(sdf1.format(new Date()));
 		   			pmb.setIsActive(1);
 		   			count=service.BriefTechnicalAppreciationSubmit(pmb);
-		   		}else {
+		   		}
+		   		else {
 		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
 		   			pmb.setInitiationId(Long.parseLong(initiationid));
-		   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
-		   			pmb.setPeerReview(req.getParameter("PeerReview"));
-		   			pmb.setActionPlan(req.getParameter("ActionPlan"));
-		   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
-		   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
-		   			pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
-		   			pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
-		   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
-		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
 		   			pmb.setPERT(req.getParameter("PERT"));
 		   			pmb.setModifiedBy(UserId);
 		   			pmb.setModifiedDate(sdf1.format(new Date()));
-		   			count=service.BriefTechnicalAppreciationEdit(pmb);
+		   			count=service.BriefPERTEdit(pmb);
 		   		}
-		   	}catch(Exception e) {
-				  e.printStackTrace();
-				  logger.error(new Date() +"Inside BriefTechnicalAppreciation.htm"+UserId ,e);
 		   	}
-		   	return json.toJson(count);
+		   	catch(Exception e) {
+				  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefPertSubmit.htm"+UserId ,e);
+		   	}
+		 	return json.toJson(count);
+		}
+		
+		@RequestMapping(value="BriefStructureSubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	    public @ResponseBody String BriefStructureSubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+			
+			 Gson json = new Gson();
+		   	 String UserId=(String)ses.getAttribute("Username");
+		   	logger.info(new Date() +"Inside BriefStructureSubmit.htm"+UserId);
+		   	long count=0;
+		   	try {
+		   		String initiationid=req.getParameter("initiationid");
+		   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+		   		if(BriefTechnicalAppreciationList.length==0) {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
+		   			pmb.setCreatedBy(UserId);
+		   			pmb.setCreatedDate(sdf1.format(new Date()));
+		   			pmb.setIsActive(1);
+		   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+		   		}
+		   		else {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setProjectManagement(req.getParameter("ProjectManagement"));
+		   			pmb.setModifiedBy(UserId);
+		   			pmb.setModifiedDate(sdf1.format(new Date()));
+		   			count=service.BriefProjectManagementEdit(pmb);
+		   		}
+		   	}
+		   	catch(Exception e) {
+				  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefStructureSubmit.htm"+UserId ,e);
+		   	}
+		 	return json.toJson(count);
 		}
 	  
+		@RequestMapping(value="BriefPoint2submit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	    public @ResponseBody String BriefPoint2submit(HttpSession ses, HttpServletRequest req) throws Exception {
+			
+			 Gson json = new Gson();
+		   	 String UserId=(String)ses.getAttribute("Username");
+		   	logger.info(new Date() +"Inside BriefPoint2submit.htm"+UserId);
+		   	long count=0;
+		   	try {
+		   		String initiationid=req.getParameter("initiationid");
+		   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+		   		if(BriefTechnicalAppreciationList.length==0) {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setAchievement(req.getParameter("Achievement"));
+		   			pmb.setCreatedBy(UserId);
+		   			pmb.setCreatedDate(sdf1.format(new Date()));
+		   			pmb.setIsActive(1);
+		   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+		   		}
+		   		else {
+		   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+		   			pmb.setInitiationId(Long.parseLong(initiationid));
+		   			pmb.setAchievement(req.getParameter("Achievement"));
+		   			pmb.setModifiedBy(UserId);
+		   			pmb.setModifiedDate(sdf1.format(new Date()));
+		   			count=service.BriefAchievementEdit(pmb);
+		   		}
+		   	}
+		   	catch(Exception e) {
+				  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefPoint2submit.htm"+UserId ,e);
+		   	}
+		 	return json.toJson(count);
+		}
 	  
+		  
+			@RequestMapping(value="BriefTRLsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefTRLsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefTRLsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setTRLanalysis(req.getParameter("TRLanalysis"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefTRLanalysisEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefTRLsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+	
+			@RequestMapping(value="BriefPeersubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefPeersubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefPeersubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setPeerReview(req.getParameter("PeerReview"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setPeerReview(req.getParameter("PeerReview"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefpeerEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefPeersubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+			@RequestMapping(value="BriefActionsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefActionsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefActionsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setActionPlan(req.getParameter("ActionPlan"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setActionPlan(req.getParameter("ActionPlan"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefActionEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefActionsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+			
+			@RequestMapping(value="BriefTestsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefTestsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefTestsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setTestingPlan(req.getParameter("TestingPlan"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefTestEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefTestsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+				
+		
+			@RequestMapping(value="BriefMatrixsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefMatrixsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefMatrixsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setResponsibilityMatrix(req.getParameter("ResponsibilityMatrix"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefMatrixEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefMatrixsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+			
+			@RequestMapping(value="BriefDevsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefDevsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefDevsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   		pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setDevelopmentPartner(req.getParameter("DevelopmentPartner"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefDevEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefDevsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}	
+			
+			@RequestMapping(value="BriefProsubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefProsubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefProsubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   		pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setProductionAgencies(req.getParameter("ProductionAgencies"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefProductionAgenciesEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefProsubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}	
+			
+			@RequestMapping(value="BriefCriticalubmit.htm",method= {RequestMethod.GET,RequestMethod.POST})
+		    public @ResponseBody String BriefCriticalubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefCriticalubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setCriticalTech(req.getParameter("CriticalTech"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setCriticalTech(req.getParameter("CriticalTech"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefCriticalTechsEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefCriticalubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
+
+			@PostMapping(value="BriefCostDeSubmit.htm")
+		    public @ResponseBody String BriefCostDeSubmit(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	logger.info(new Date() +"Inside BriefCostDeSubmit.htm"+UserId);
+			   	long count=0;
+			   	try {
+			   		String initiationid=req.getParameter("initiationid");
+			   		Object[]BriefTechnicalAppreciationList=service.BriefTechnicalAppreciation(initiationid);
+			   		if(BriefTechnicalAppreciationList.length==0) {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
+			   			pmb.setCreatedBy(UserId);
+			   			pmb.setCreatedDate(sdf1.format(new Date()));
+			   			pmb.setIsActive(1);
+			   			count=service.BriefTechnicalAppreciationSubmit(pmb);
+			   		}
+			   		else {
+			   			ProjectMactroDetailsBrief pmb= new ProjectMactroDetailsBrief();
+			   			pmb.setInitiationId(Long.parseLong(initiationid));
+			   			pmb.setCostsBenefit(req.getParameter("CostsBenefit"));
+			   			pmb.setModifiedBy(UserId);
+			   			pmb.setModifiedDate(sdf1.format(new Date()));
+			   			count=service.BriefCostsBenefitsEdit(pmb);
+			   		}
+			   	}
+			   	catch (Exception e) {
+			  	  e.printStackTrace();
+				  logger.error(new Date() +"Inside BriefCostDeSubmit.htm"+UserId ,e);
+				}
+			 	return json.toJson(count);
+			}
 	@RequestMapping(value="ProjectUserUpdate.htm",method=RequestMethod.GET)
     public @ResponseBody String ProjectUserUpdate(HttpSession ses, HttpServletRequest req) throws Exception {
 		

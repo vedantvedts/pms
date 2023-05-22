@@ -9,7 +9,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="pfms_notification")
 public class PfmsNotification {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long NotificationId;

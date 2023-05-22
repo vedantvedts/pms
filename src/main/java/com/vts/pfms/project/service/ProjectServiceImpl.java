@@ -73,6 +73,7 @@ import com.vts.pfms.project.model.PreprojectFile;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
 import com.vts.pfms.project.model.ProjectMain;
+import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMajorCars;
 import com.vts.pfms.project.model.ProjectMajorConsultancy;
 import com.vts.pfms.project.model.ProjectMajorManPowers;
@@ -2686,4 +2687,95 @@ public class ProjectServiceImpl implements ProjectService {
 				// TODO Auto-generated method stub
 				return dao.GetCostBreakList(initiationid,projecttypeid);
 			}
+			@Override
+			public long ProjectCapsiSubmit(ProjectMajorCapsi pmc) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.ProjectCapsiSubmit(pmc);
+			}
+			@Override
+			public List<Object[]> CapsiList(String initiationid) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.CapsiList(initiationid);
+			}
+			@Override
+			public Object[] CapsiValue(String parameter) throws Exception {
+		
+				return dao.CapsiValue(parameter);
+			}
+			@Override
+			public long CapsiEdt(ProjectMajorCapsi pmc) throws Exception {
+				// TODO Auto-generated method stub
+				return dao.CapsiEdt(pmc);
+			}
+		@Override
+		public Object[] AllLabList(String labCode) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ALlLabList(labCode);
+		}
+		@Override
+		public List<Object[]> ProcurementInitiationCostList(String initiationid, String InitiationCostId) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.ProcurementInitiationCostList(initiationid,InitiationCostId);
+		}
+		@Override
+		public long BriefAchievementEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefAchievementEdit(pmb);
+		}
+		@Override
+		public long BriefTRLanalysisEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefTRLanalysisEdit(pmb);
+		}
+		@Override
+		public long BriefpeerEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefpeerEdit(pmb);
+		}
+		
+		@Override
+		public long BriefActionEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefActionEdit(pmb);
+		}
+		@Override
+		public long BriefTestEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefTestEdit(pmb);
+		}
+		@Override
+		public long BriefMatrixEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefMatrixEdit(pmb);
+		}
+		@Override
+		public long BriefDevEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefDevEdit(pmb);
+		}
+		@Override
+		public long BriefProductionAgenciesEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefProductionAgenciesEdit(pmb);
+		}
+		@Override
+		public long BriefCriticalTechsEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefCriticalTechsEdit(pmb);
+		}
+		@Override
+		public long BriefCostsBenefitsEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefCostsBenefitsEdit(pmb);
+		}
+		@Override
+		public long BriefProjectManagementEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefProjectManagementEdit(pmb);
+		}
+		@Override
+		public long BriefPERTEdit(ProjectMactroDetailsBrief pmb) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.BriefPERTEdit(pmb);
+		}
 }

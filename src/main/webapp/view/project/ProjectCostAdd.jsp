@@ -96,7 +96,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 		   
 								<%--    || &nbsp;&nbsp;&nbsp;&nbsp;Cost Utilized:&nbsp;<%=nfc.convert(TotalIntiationCost) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remaining Cost :&nbsp;<%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())-TotalIntiationCost) %><%}else{ %><%=TotalIntiationCost %><%} %> --%>  
 								 	
-		  	 	 				<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" style="float: right" >
+		  	 	 				<input type="submit" class="btn btn-primary btn-sm submit back"   value="BACK"   name="sub" style="float: right" >
 		  						</b>
 		  						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								<input type="hidden" name="IntiationId"	value="<%=IntiationId %>" /> 		
@@ -186,11 +186,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 									    for(Object[] 	obj:entry.getValue()){ 
 							%>
 							<!-- (obj[6].toString().equalsIgnoreCase(obj2[2].toString())) -->
-							
-							
-							
 								<tr>
-						
 								<form action="ProjectCostEditSubmit.htm" method="POST" name="myfrm<%=obj[0] %>" id="myfrm<%=obj[0] %>" >	
 									
 		 							<td style="width: 400px;">
@@ -203,7 +199,6 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 												<option value="<%=obj2[0]%>" <%if((obj[3].toString().equalsIgnoreCase(obj2[1].toString()))&&(obj[6].toString().equalsIgnoreCase(obj2[2].toString())) ){ %> selected="selected" <%} %>><%=obj2[1]%> (<%=obj2[2]%>) (<%=obj2[4]%>)</option>
 												<%} }%>
 	 							 		</select>
-	 							 		
 	 							 	</td>
 	 							 	
 									<td style="width: 550px;">

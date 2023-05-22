@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "project_major_work_packages")
+@Table(name = "pfms_initiation_soc_wp")
 public class ProjectMajorWorkPackages implements Serializable {
 	
 	

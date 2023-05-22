@@ -21,10 +21,45 @@ overflow-x: auto;
 #initiation  {
 padding-left:0px;
 }
+.addreq {
+	margin-left: -10%;
+	margin-top: 5%;
+}
 .column p{
 	padding: 0px !important;
 }
-
+#modalreqheader {
+	background: #145374;
+	height: 44px;
+	display: flex;
+	font-family: 'Muli';
+	align-items: center;
+	color: white;
+}
+input[type=radio] {
+ accent-color: green;
+}
+#scrollclass::-webkit-scrollbar {
+    width:7px;
+}
+#scrollclass::-webkit-scrollbar-track {
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius:5px;
+}
+#scrollclass::-webkit-scrollbar-thumb {
+    border-radius:5px;
+  /*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+ 	transition: 0.5s;
+}
+.sidelabel{
+font-weight:600;
+font-size: 15px;
+color:#145374;
+}
 .tab-pane p{
 	text-align: justify;
 	
@@ -181,6 +216,7 @@ String Details=(String)request.getAttribute("Details");
 String DetailsEdit=(String)request.getAttribute("DetailsEdit");
 List<Object[]>ReqTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
 List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 %>
 
 
@@ -208,7 +244,9 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
     
     
  <%} %>
-
+	<div align="center"  id="successdiv" style="display:None"> 
+	<div class="alert alert-success" id="divalert"  role="alert">Data Edited Successfully.</div>
+	</div>
 
 <!--  new tabs-->
 
@@ -1577,6 +1615,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
                                                 <th >Item</th>
                                                 <th >Item Detail</th>
                                                 <th >Cost (In Lakhs)</th>
+                                                <th >Procurement Plan</th>
                                             </tr>
                                         </thead>
                                         
@@ -1600,6 +1639,8 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 		 										<td style="width: 500px; " align="left"> <%=obj[3] %> (<%=obj[6]%>) (<%=obj[7]%>)</td>
 									    		<td style="width: 550px;" align="left"><%=obj[4] %></td>
 									    		<td style="text-align: right">&#8377; <%=nfc.convert(Double.parseDouble(obj[5].toString().split("\\.")[0])/100000) %></td>
+								 				<td align="center"><%-- <button type="button" class="btn btn-sm btn-success ml-2" onclick="showAddModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">ADD</button>  --%>
+								 				<button type="button" class="btn btn-sm btn-info ml-2" onclick="viewModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">VIEW</button></td>
 								 			</tr>
 								
 									    <% cost=cost+Double.parseDouble(obj[5].toString()) ;
@@ -1608,7 +1649,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 	    									<tr>
 	    										<td colspan="2" style="text-align: right"><b style="color: green;"> <%=entry.getKey() %> Cost</b></td>
 	    										<td  style="text-align: right"><b style="color: green; text-align: right;">&#8377; <%=nfc.convert(cost/100000) %></b></td>
-	    										
+	    										<td></td>
 	    									</tr>
 	
 	    						<%} %>
@@ -1616,7 +1657,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 								    		<tr>
 								    			<td colspan="2" align="right"><b style="color: green;"> Total Cost</b></td>
 								    			<td style="text-align: right"><b style="color: green;">&#8377; <%=nfc.convert(totalcost/100000) %>&nbsp;&nbsp;Lakhs</b></td>
-								    			
+								    			<td > </td>
 								    		</tr>
 							
 									    </tbody>
@@ -1874,8 +1915,367 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 
 
 </div>
+<!-- 	<form class="form-horizontal" role="form"
+		action="ProjectProcurementSubmit.htm" method="POST" id="myform1"> -->
+		<div class="modal fade bd-example-modal-lg" id="procurementModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Procurement
+							Plan</h5>
+							<h6 class="mt-3 ml-5" id="addBugetLeft" style="margin-left: 40% !important;"></h6>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white" id="cross2">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Item:</label><span class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Item" name="Item"
+										maxlength="300" >
+								</div>
+							</div>
+							<input type="hidden" id="InitiationCostId" value="0">
+							<input type="hidden" id="initiationid" value="0">
+							<input type="hidden" id="totabudgetcost" value="0">
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Purpose:</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Purpose"
+										name="Purpose" maxlength="450" style="line-height: 3rem"
+										required="required">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Source:</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Source"
+										name="Source" maxlength="300" required="required">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Mode:</label><span class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<div class="form-group">
 
 
+										<select class="form-control" name="Mode" id="Mode"
+											data-width="80%" data-live-search="true">
+											<option value="" disabled="disabled" value="" selected="selected">---Choose----</option>
+											<%
+											for (Object[] obj : DemandList) {
+											%>
+											<option value="<%=obj[1]%>"><%=obj[2]%></option>
+											<%
+											}
+											%>
+										</select> 
+
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Cost (in &#8377;):</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-3">
+									<input type="text" id="cost" class="form-control" name="cost"
+										placeholder="0.0" required="required" onchange="balanceCheck()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+								<div class="col-md-3 label">
+									<label class="sidelabel">EPC Approval required</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-2" >
+									<input type="radio" name="Approved" value="Y" id="Approve"	>
+									&nbsp;YES <input style="margin-left: 15px;" type="radio"
+									id="Approve"	name="Approved" value="N" checked> &nbsp;NO
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-6 label">
+									<label class="sidelabel">Estimated months after Project Sanction Date
+										&nbsp;&nbsp;(T<sub>0</sub>)
+									</label>
+									<hr style="margin-left: 0% !important; width: 80%">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-1 label">
+									<label class="sidelabel">Demand:</label>
+								</div>
+								<div class="col-md-2">
+									<input style="width: 59%;" type="text" id="Demand"
+										class="form-control" name="Demand" placeholder="Months" value="0"
+										required="required"  onchange="showcostvalues()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Tender:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="width: 59%;" id="Tender" value="0" readonly
+										class="form-control" name="Tender" placeholder="Months" onchange="checKDemand()"
+										required="required"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Order:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" id="Order" style="width: 59%;" value="0" readonly
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+										class="form-control" name="Order" placeholder="Months"
+										required="required"onchange="chechKTender()">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Payment:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="width: 59%;" id="Payout" readonly
+										class="form-control" value="0" name="Payout" placeholder="Months"
+										required="required" onchange="chechkOrder()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+							</div>
+
+						<%-- 	<input type="hidden" name="IntiationId"
+								value="<%=initiationid %>" /> <input type="hidden"
+								name="projectshortName" value="<%=projectshortName %>" /> --%>
+							<div class="form-group" align="center" style="margin-top: 3%;">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+								<button type="submit" class="btn btn-primary btn-sm submit"
+									id="add" name="action" value="SUBMIT"
+									onclick="submitProcurementPlan()">SUBMIT</button>
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<!-- 	</form>
+ -->
+ 						<div class="modal fade bd-example-modal-lg" id="ProcurementList"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 150%;margin-left: -25%">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<h5 class="modal-title" style="color:white;font-size: 20px;">Procurement Plan</h5>
+							<h6 class="ml-5 mt-3"  id="totalBudget"></h6>
+							<h6 class="ml-5 mt-3"  id="BudgetAdded">Expenditure Done-&#8377;0.00 Lakhs</h6>
+							<h6 class="ml-5 mt-3"  id="Budgetleft">Expenditure left-&#8377;0.00 Lakhs</h6>
+						<button type="button" class="close" data-dismiss="modal" 
+							aria-label="Close" style="color: white" id="cross1">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<input type="hidden" id="maincost">
+					<input type="hidden" id="planid" value=0>
+					<div class="modal-body">
+					<div id="scrollclass" style="height:400px;overflow-y:scroll">
+					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
+					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
+					<tr style="text-align: center;">
+					<th style="width:3%">Selcet</th>
+					<th style="width:3%">SN</th>
+					<th style="width:35%">Item</th>
+					<th style="width:10%">Mode </th>
+					<th style="width:15%">Source</th>
+					<th style="width:10%">Cost</th>
+					<th style="width:10%">Months</th>
+					<th style="width:10%" align="left">EPC (Y/N)</th>
+					</tr>
+					</thead>
+					<tbody id="tbody2">
+					
+					</tbody>
+					</table>
+					</div>
+					</div>
+					<div align="center" id="buttons">
+					
+					</div>
+					</div>
+					</div>
+					</div>
+					
+			<!--Procurement Edit  -->		
+					
+						<div class="modal fade bd-example-modal-lg" id="procurementModalEdit"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content addreq" style="width: 130%;">
+					<div class="modal-header" id="modalreqheader">
+						<h5 class="modal-title" id="exampleModalLabel">Procurement
+							Plan</h5>
+							<h6 class="mt-3 ml-4" id="EditTotalBudget" style="margin-left: 40% !important;"></h6> 
+							<h6 class="mt-3" id="EditPlannedBudget" ></h6> 
+							<h6 id="values"></h6>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" style="color: white" id="cross3">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Item:</label><span class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Itemedit" name="Item"
+										maxlength="300" >
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Purpose:</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Purposeedit"
+										name="Purpose" maxlength="450" style="line-height: 3rem"
+										required="required">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Source:</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-7">
+									<input type="text" class="form-control" id="Sourceedit"
+										name="Source" maxlength="300" required="required">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Mode:</label><span class="mandatory" style="color: red;">*</span>
+								</div>
+								<div class="col-md-5">
+									<div class="form-group">
+
+
+										<select class="form-control" name="Mode" id="Modeedit"
+											data-width="80%" data-live-search="true">
+											<option value="" disabled="disabled" value="" selected="selected">---Choose----</option>
+											<%
+											for (Object[] obj : DemandList) {
+											%>
+											<option value="<%=obj[1]%>"><%=obj[2]%></option>
+											<%
+											}
+											%>
+										</select> 
+
+									</div>
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-2 label">
+									<label class="sidelabel">Cost (in &#8377;):</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-3">
+									<input type="text" id="costedit" class="form-control" name="cost"
+										placeholder="0.0" required="required" onchange="balanceCheckforEdit()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								<input type="hidden" id="previouscost">
+								</div>
+								<div class="col-md-3 label">
+									<label class="sidelabel">EPC Approval required</label><span class="mandatory"
+										style="color: red;">*</span>
+								</div>
+								<div class="col-md-2"  id="Approvededit">
+<!-- 									<input type="radio" name="Approvededit" value="Y" id="Approve"	>
+									&nbsp;YES <input style="margin-left: 15px;" type="radio"
+									id="Approve"	name="Approvededit" value="N" checked> &nbsp;NO -->
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-6 label">
+									<label class="sidelabel">Estimated months after Project Sanction Date
+										&nbsp;&nbsp;(T<sub>0</sub>)
+									</label>
+									<hr style="margin-left: 0% !important; width: 80%">
+								</div>
+							</div>
+							<div class="row" style="margin-top: 1%">
+								<div class="col-md-1 label">
+									<label class="sidelabel">Demand:</label>
+								</div>
+								<div class="col-md-2">
+									<input style="width: 59%;" type="text" id="Demandedit"
+										class="form-control" name="Demand" placeholder="Months" value="0"
+										required="required"  onchange="showcostvalues()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Tender:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="width: 59%;" id="Tenderedit" value="0" 
+										class="form-control" name="Tender" placeholder="Months" onchange="checKDemand()"
+										required="required"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Order:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" id="Orderedit" style="width: 59%;" value="0" 
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+										class="form-control" name="Order" placeholder="Months"
+										required="required"onchange="chechKTender()">
+								</div>
+								<div class="col-md-1 label">
+									<label class="sidelabel">Payment:</label>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="width: 59%;" id="Payoutedit" 
+										class="form-control" value="0" name="Payout" placeholder="Months"
+										required="required" onchange="chechkOrder()"
+										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+								</div>
+							</div>
+
+						<%-- 	<input type="hidden" name="IntiationId"
+								value="<%=initiationid %>" /> <input type="hidden"
+								name="projectshortName" value="<%=projectshortName %>" /> --%>
+							<div class="form-group" align="center" style="margin-top: 3%;" id="editModal">
+								<button type="submit" class="btn btn-primary btn-sm submit"id="" name="action" value="SUBMIT"onclick="EditProcurement()">SUBMIT</button>
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+					
 <script type="text/javascript">
 
 
@@ -2025,19 +2425,364 @@ window.onclick = function(event) {
 }
 }   -->
 <script type="text/javascript">
-function showdata(reqid,reqid1){
-	console.log($('#Req'+reqid).val());
-    $('#exampleModalLong').modal('show');
-    document.getElementById('reqmodalbody').innerHTML =$('#Req'+reqid).val();
-    document.getElementById('reqid').innerHTML =reqid1;
+function balanceCheck(){
+	var cost=$('#cost').val();
+	var totabudgetcost=$('#totabudgetcost').val();
+	if(Number(cost)>totabudgetcost){
+		alert("You don't have enough budget")
+	}
 }
 
-$(function () {
-	  $('[data-toggle="tooltip"]').tooltip()
+function balanceCheckforEdit(){
+	var cost=Number($('#costedit').val());
+	var previouscost=Number($('#previouscost').val());
+	var BudgetTotalEdit=Number($('#BudgetTotalEdit').val());
+	var BudgetPlannedEdit=Number($('#BudgetPlannedEdit').val());
+	var totalNow=(Number(BudgetPlannedEdit)-Number(previouscost)+Number(cost))
+ 	if(Number(totalNow)>Number(BudgetTotalEdit)){
+		alert("The cost is exceeding the total budget")
+		document.getElementById('costedit').value=previouscost;
+	} 
+
+}
+function AddEditValues(x){
+	document.getElementById('planid').value=x;
+}
+function showAddModal(a,b,c){
+	let str =b;  
+	let num = parseFloat(str)/100000;  
+	let formattedNum = num.toLocaleString('en-IN', {
+	  style: 'currency',
+	  currency: 'INR',
+	  minimumFractionDigits: 2,
+	  maximumFractionDigits: 2,
+	});	
+	document.getElementById('addBugetLeft').innerHTML="Budget left-"+formattedNum+"Lakhs"
+	$('#cross1').click();
+	document.getElementById('InitiationCostId').value =a;
+	document.getElementById('initiationid').value=c;
+	document.getElementById('totabudgetcost').value=b;
+	$('#procurementModal').modal('show');
+}
+function showcostvalues(){
+	$("#Order ").attr("readonly", false); 
+	$("#Tender ").attr("readonly", false); 
+	$("#Payout ").attr("readonly", false); 
+	var demand=$('#Demand').val().trim();
+	document.getElementById("Tender").value=demand;document.getElementById("Order").value=demand;document.getElementById("Payout").value=demand;
+}
+function viewModal(x,y,z){
+	var initiationid=z;
+	var InitiationCostId=x;
+	document.getElementById('maincost').value=y
+	let str =y;  
+	let num = parseFloat(str)/100000;  
+	let formattedNum = num.toLocaleString('en-IN', {
+	  style: 'currency',
+	  currency: 'INR',
+	  minimumFractionDigits: 2,
+	  maximumFractionDigits: 2,
+	});	
+	var bgtleft=0
+	var j=0;
+	document.getElementById('totalBudget').innerHTML="Total Budget -"+formattedNum+ " Lakhs ";
+	document.getElementById('BudgetAdded').innerHTML="Planned-&#8377;0.00 Lakhs"
+	document.getElementById('Budgetleft').innerHTML="Budget left-"+formattedNum+" Lakhs" 
+	$('#buttons').html('<button class="btn btn-primary btn-sm submit mb-1" type="button" onclick="showAddModal('+x+','+y+','+z+')">ADD</button><button class="btn btn-warning btn-sm edit ml-1 mb-1" type="button" onclick="openEditModal()">EDIT</button>')
+	$.ajax({
+		type:'GET',
+		url:'ProcurementList.htm',
+		datatype:'json',
+		data:{
+			initiationid:initiationid,
+			InitiationCostId:InitiationCostId,
+		},
+		success:function(result){
+			var ajaxresult=JSON.parse(result);
+			if(ajaxresult.length==0){
+				$('#tbody2').html('<tr><td align="center" colspan="8"><h6>No procurement plan added for this</h6> </td></tr>')
+			}else{
+				var html="";
+				
+				for(var i=0;i<ajaxresult.length;i++){
+					j=j+ ajaxresult[i][6];
+					let str1 = ajaxresult[i][6];  
+					let num1 = parseFloat(ajaxresult[i][6])/100000;  
+
+
+					let formattedNum1 = num1.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});
+					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange="AddEditValues('+ajaxresult[i][0]+')"></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td align="center">'+ajaxresult[i][4]+'</td>'+'<td >'+ajaxresult[i][5]+'</td>'+'<td align="right">'+formattedNum1+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td>'+'<td align="center">'+ajaxresult[i][8]+'</td>'+'</tr>'	
+				}
+				/* budget done */
+				let numdone= parseFloat(j)/100000;
+				let formattedNumDone = numdone.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});	
+				bgtleft=y-j;
+				document.getElementById('BudgetAdded').innerHTML="Planned -"+formattedNumDone+ " Lakhs ";
+				let formattedleft = (num-numdone).toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});	
+				document.getElementById('Budgetleft').innerHTML="Budget left-"+(formattedleft)+ " Lakhs ";
+				if(bgtleft==0){
+					$('#buttons').html('<button class="btn btn-warning btn-sm edit ml-1 mb-1" type="button" onclick="openEditModal('+y+','+j+','+z+','+x+')">EDIT</button>')	
+				}else{
+				$('#buttons').html('<button class="btn btn-primary btn-sm submit mb-1" type="button" onclick="showAddModal('+x+','+bgtleft+','+z+')">ADD</button><button class="btn btn-warning btn-sm edit ml-1 mb-1" type="button" onclick="openEditModal('+y+','+j+','+z+','+x+')">EDIT</button>')
+				}
+				$('#tbody2').html(html);
+			}
+		}
 	})
+/* 	$('#buttons').html('<button class="btn btn-primary btn-sm submit mb-1" type="button" onclick="showAddModal('+x+','+y+','+z+')">SUBMIT</button><button class="btn btn-warning btn-sm edit ml-1 mb-1" type="button">EDIT</button>') */
+	$('#ProcurementList').modal('show');
+}
 
+function checKDemand(){
+	var Demand=$('#Demand').val().trim();
+	var tender=$('#Tender').val().trim();
+	console.log(Demand+"----")
+	if(Number(Demand)>Number(tender)){
+	alert("Tender Month should be more than demand month!")
+	document.getElementById("Tender").value=Demand;}
+	else{
+		document.getElementById("Tender").value=tender;document.getElementById("Order").value=tender;document.getElementById("Payout").value=tender;
+	}
+	}
+ function chechKTender(){
+	var tender=$('#Tender').val().trim();
+	var Order=$('#Order').val().trim();
+	console.log(Order+"----")
+	if(Number(tender)>Number(Order)){
+	alert("Order Month should be more than tender month!")
+	document.getElementById("Order").value=tender;
+	}else{
+		document.getElementById("Order").value=Order;document.getElementById("Payout").value=Order;
+	}
+	
+}
 
+function chechkOrder(){
+	var Order=$('#Order').val().trim();
+	var Payment=$('#Payout').val();
+	if(Number(Order)>Number(Payment)){
+	alert("Payment Month should be more than Order month!")
+	document.getElementById("Payout").value=Order;
+	}
+	
+}
+function submitProcurementPlan(){
+	var Item=$('#Item').val().trim();
+	var Purpose=$('#Purpose').val().trim();
+	var Source=$('#Source').val().trim();
+	var Mode=$('#Mode').val();
+	var cost=$('#cost').val();
+	var Approve=$('input[name="Approved"]:checked').val();
+	var Demand=$('#Demand').val();
+	var Tender=$('#Tender').val();
+	var Order=$('#Order').val();
+	var Payout=$('#Payout').val();
+	var InitiationCostId=$('#InitiationCostId').val();
+	var initiationid=$('#initiationid').val();
+	var y;
+	 if(Item.lenght==0||Purpose.lenght==0||Source.lenght==0||Mode==null||cost.length==0){
+		 alert("please fill all the fields");
+	 }
+ 		 else{
+		 if(confirm("Are you sure you want to submit")){
+				$('#successdiv').css("display","none");
+			 $.ajax({
+				 type:'GET',
+				 url:'ProcurementSubmit.htm',
+				 datatype:'json',
+				 data:{
+				 Item:Item, 
+				 Purpose:Purpose,
+				 Source:Source,
+				 Mode:Mode,
+				 cost:cost,
+				 Approve:Approve,
+				 Demand:Demand,
+				 Tender:Tender,
+				 Order:Order,
+				 Payout:Payout,
+				 InitiationCostId:InitiationCostId,
+				 initiationid:initiationid,
+				 },
+				 success:function(result){
+						if(result>0){
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  added Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#cross2').click();
+							y=document.getElementById('maincost').value;
+						
+						}else{
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-danger" id="divalert"  role="alert">Data  add unsuccessful</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#cross2').click();	
+						}
+						 setTimeout(viewModal(InitiationCostId,y,initiationid), 8000);
+				 }
+				
+			 })
+	
+		 }else{
+			 event.preventDefault();
+			 return false;
+		 }
+	 } 
+}
+$('#cross2').click(function (){
+	document.getElementById("Item").value="";
+	document.getElementById("Purpose").value="";
+	document.getElementById("Source").value="";
+	document.getElementById("Mode").value="";
+	document.getElementById("cost").value="";
+	/* $('input[name="Approved"]:checked').val("N"); */
+	document.getElementById("Demand").value="";
+	document.getElementById("Tender").value="";
+	document.getElementById("Order").value="";
+	document.getElementById("Payout").value="";
+	$("#Order ").attr("readonly", true); 
+	$("#Tender ").attr("readonly", true); 
+	$("#Payout ").attr("readonly", true); 
+})
+ function openEditModal(a,b,c,d){
+	let str =a;  
+	let num = parseFloat(str)/100000;  
+	let formattedNum = num.toLocaleString('en-IN', {
+	  style: 'currency',
+	  currency: 'INR',
+	  minimumFractionDigits: 2,
+	  maximumFractionDigits: 2,
+	});	
+	
+	/*  formmatting in indian ruppes*/
+		let str1 =b;  
+	let num1 = parseFloat(str1)/100000;  
+	let formattedNum1 = num1.toLocaleString('en-IN', {
+	  style: 'currency',
+	  currency: 'INR',
+	  minimumFractionDigits: 2,
+	  maximumFractionDigits: 2,
+	});	
+	document.getElementById("EditTotalBudget").innerHTML="Total Budget -"+formattedNum+"Lakhs ";
+	$('#values').html('<input type="hidden" id="BudgetTotalEdit" value="'+a+'"> <input type="hidden" id="BudgetPlannedEdit" value="'+b+'"> ')
+	document.getElementById("EditPlannedBudget").innerHTML="&nbsp;,&nbsp; Planned -"+formattedNum1+"Lakhs ";
+	var planid=$('#planid').val();
+	if(planid==0){
+		alert("Please select any one");
+	}else{
+		$.ajax({
+			type:'GET',
+			url:'PocurementPlanEditDetails.htm',
+			datatype:'json',
+			data:{
+			Planid:planid,
+			},
+			success:function(result){
+				 var ajaxresult=JSON.parse(result);
+				 $('#Itemedit').val(ajaxresult[0]);
+				 $('#Purposeedit').val(ajaxresult[1]);
+				 $('#Sourceedit').val(ajaxresult[2]); 
+				 $('#Modeedit').val(ajaxresult[3]);
+				 $('#costedit').val(ajaxresult[4]);
+			/* 	 $('#Approvededit').val(ajaxresult[9]); */
+				 if(ajaxresult[9]=="Y"){
+					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="YES" checked>  YES  <input style="margin-left: 15px;" type="radio" name="Approved1" value="NO">  NO');
+				 }else{
+					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" >  YES  <input style="margin-left: 10px;" type="radio" name="Approved1" value="N" checked>  NO');
 
+				 }
+				 $('#previouscost').val(ajaxresult[4]);
+				 $('#Demandedit').val(ajaxresult[5]);
+				 $('#Tenderedit').val(ajaxresult[6]);
+				 $('#Orderedit').val(ajaxresult[7]);
+				 $('#Payoutedit').val(ajaxresult[8]);
+					$('#editModal').html('<button type="submit" class="btn btn-primary btn-sm submit"id="" name="action" value="SUBMIT"onclick="EditProcurement('+c+','+d+')">SUBMIT</button>')
+			}
+		})	
+		
+		
+		
+		$('#cross1').click();
+		$('#procurementModalEdit').modal('show');
+	}
+}
+$('#cross3').click(function (){
+	document.getElementById("planid").value=0;
+})
+
+function EditProcurement(a,b){
+	var Item=$('#Itemedit').val().trim();
+	var Purpose=$('#Purposeedit').val().trim();
+	var Source=$('#Sourceedit').val().trim();
+	var Mode=$('#Modeedit').val();
+	var cost=$('#costedit').val();
+	var Approve=$('input[name="Approved1"]:checked').val();
+	var Demand=$('#Demandedit').val();
+	var Tender=$('#Tenderedit').val();
+	var Order=$('#Orderedit').val();
+	var Payout=$('#Payoutedit').val();
+	var planid=$('#planid').val();
+	var BudgetTotalEdit=Number($('#BudgetTotalEdit').val());
+	if(Item.length==0||Purpose.length==0||Source.length==0||cost.length==0||Demand.length==0||Tender.length==0||Order.length==0||Payout.length==0){
+		alert("please fill all the fields")
+	}else{
+		if(confirm("Are you sure,you want to submit?")){
+			$('#successdiv').css("display","none");
+			$.ajax({
+				type:'GET',
+				url:'ProcurementEdit.htm',
+				datatype:'json',
+				data:{
+					Item:Item,
+					Purpose:Purpose,
+					Source:Source,
+					Mode:Mode,
+					cost:cost,
+					Approve:Approve,
+					Demand:Demand,
+					Tender:Tender,
+					Order:Order,
+					Payout:Payout,
+					planid:planid,
+				},
+				success:function(result){
+					if(result>0){
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  updated successfully</div>');
+						$('#successdiv').delay(3000).hide(0);
+						$('#cross3').click();
+						 setTimeout(viewModal(b,BudgetTotalEdit,a), 4000);
+					}else{
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-danger" id="divalert"  role="alert">Data  update unsuccessful</div>');
+						$('#successdiv').delay(3000).hide(0);
+					}
+					
+				}
+			})
+		
+		}else{
+			event.preventDefault();
+			return false;
+		}
+	}
+
+}
 </script>
 
 

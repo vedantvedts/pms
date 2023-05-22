@@ -29,7 +29,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 Object[] LabList=(Object[])request.getAttribute("LabList");
 Object[] PfmsInitiation=(Object[])request.getAttribute("PfmsInitiationList");
 List<Object[]> DetailsList=(List<Object[]>)request.getAttribute("DetailsList");
-List<Object[]> CostDetailsList=(List<Object[]>)request.getAttribute("CostDetailsList");
+List<Object[]> CostDetailsListSummary=(List<Object[]>)request.getAttribute("CostDetailsListSummary");
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 String lablogo=(String)request.getAttribute("lablogo");
 List<Object[]>headofaccountsList=(List<Object[]>)request.getAttribute("headofaccountsList");
@@ -528,16 +528,15 @@ String projecttypeid=(String)request.getAttribute("projecttypeid");
 			</tr>
 			
 			<%
-			if(!CostDetailsList.isEmpty()){
+			if(!CostDetailsListSummary.isEmpty()){
 			
 			int count=1;
-			for (Object[] obj: CostDetailsList) {%>
-			 
+			for (Object[] obj: CostDetailsListSummary) {%>
 			<tr>
 			<td colspan="1" class="border_black  center" style=";width:7%"><span ><%=count %>. </span></td>
 		<%-- 	<td colspan="2" class="border_black  left" ><span ><%if(obj[1]!=null){ %><%=obj[1] %><%}else{ %> - <%} %></span></td> --%>
-			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=obj[0]+"("+obj[5]+")"+"("+obj[1]+")" %><%}else{ %> - <%} %></span></td>
-			<td colspan="2" class="border_black right"  ><span ><%if(obj[3]!=null && Double.parseDouble(obj[3].toString()) >0){ %>&#8377; <span><%=nfc.convert(Double.parseDouble(obj[3].toString())/100000)%></span> <%}else{ %> - <%} %></span></td>
+			<td colspan="5" class="border_black  left" ><span ><%if(obj[0]!=null){ %><%=obj[0]+"("+obj[1]+")"%><%}else{ %> - <%} %></span></td>
+			<td colspan="2" class="border_black right"  ><span ><%if(obj[2]!=null && Double.parseDouble(obj[2].toString()) >0){ %>&#8377; <span><%=nfc.convert(Double.parseDouble(obj[2].toString())/100000)%></span> <%}else{ %> - <%} %></span></td>
 			</tr> 
 			
 			<%
