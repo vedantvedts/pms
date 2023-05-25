@@ -271,6 +271,11 @@ color:#145374;
 	Object[] macrodetailsTwo = (Object[]) request.getAttribute("macrodetailsTwo");
 	List<Object[]> CostDetailsListSummary=(List<Object[]>)request.getAttribute("CostDetailsListSummary");
 	Object[]BriefList=(Object[])request.getAttribute("BriefList");
+	String consultancyCost=(String)request.getAttribute("ConsultancyCost");
+	String workCost=(String)request.getAttribute("WorksCost");
+	String trainingCost=(String)request.getAttribute("trainingCost");
+	String capsicost=(String)request.getAttribute("capsicost");
+	String carscost=(String)request.getAttribute("carscost");
 	%>
 	<div align="center" style="display:None">
 	<div class="alert alert-danger" id="danger"  role="alert">
@@ -284,7 +289,6 @@ color:#145374;
 		<%if(ProjectIntiationList.size()==0) {%>
 		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;font-weight: 800;"><h3><b>No Data Available!</b></h3></div>
 	<%}else{%>
-	
 	<div class="container-fluid" style="display: block;">
 		<div class="row">
 			<div class="col-md-12">
@@ -445,7 +449,7 @@ color:#145374;
 											<%
 											if (!ProjectDetailes[21].toString().equalsIgnoreCase("1") || ProjectDetailes[21].toString().equalsIgnoreCase("8")) {
 											%>
-											<td><h5>Not Applicable</h5></td>
+											<td><h5><span class="badge badge-pill badge-danger" style="float:right;padding:10px;margin-top:-6px">Not Applicable</span></h5></td>
 											<%
 											} else {
 											int i = 1;
@@ -497,7 +501,7 @@ color:#145374;
 												<%
 												if (!ProjectDetailes[21].toString().equalsIgnoreCase("6")) {
 												%>
-												<td colspan="2" ><h5 style="margin-left: 50px;">Not Applicable</h5></td>
+												<td colspan="2" ><h5 style="margin-left: 50px;"><span class="badge badge-pill badge-danger" style="float:right;padding:10px;margin-top:-1px">Not Applicable</span></h5></td>
 												<%
 												} else {
 												int i = 1;
@@ -547,7 +551,7 @@ color:#145374;
 												<%
 												if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 												%>
-												<td align="center"><h5>Not Applicable</h5></td><td></td>
+												<td align="center"><h5><span class="badge badge-pill badge-danger" style="float:right;padding:10px;margin-top:-6px">Not Applicable</span></h5><td></td>
 												<%
 												}else{%>
 												<td align="center"><button class="btn btn-sm btn-danger" style="box-shadow: 2px 2px 2px gray;" type="button">NO</button></td>
@@ -568,7 +572,7 @@ color:#145374;
 													<%
 													if (i == 5 && !projectTypeId.equalsIgnoreCase("1")) {
 													%>
-													<td align="center"><h5><span class="badge badge-pill badge-primary" style="padding:10px;">Not Applicable</span></h5></td>
+													<td align="center"><h5><span class="badge badge-pill badge-danger" style="padding:10px;">Not Applicable</span></h5></td>
 													<td></td>
 													<%
 													}else{
@@ -603,8 +607,8 @@ color:#145374;
 								</div>
 							</div>
 						</div>
+					<div class="mt-2"align="left"><h5 style="color:red; display: initial;">Note:-</h5><h5 style="display: inline">Not Available ( please specify the cost in project initiation)</h5> <h5 style="display: inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Not Applicable ( This field is not applicable for this project type)</h5></div>
 					</div>
-
 					<%
 					}
 					%>
@@ -981,8 +985,8 @@ color:#145374;
 					</div></div>
 					</div>
 					</div>
+					<div class="mt-2"align="left"><h5 style="color:red; display: initial;">Note:-</h5><h5 style="display: inline">Not Available ( please specify the cost in project initiation)</h5> <h5 style="display: inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Not Applicable ( This field is not applicable for this project type)</h5></div>
 					</div>
-
 
 					<div class="card-body" id="cardbody2" style="display: none;">
 					<div class="row">
@@ -1388,20 +1392,19 @@ color:#145374;
 					<div class="row mt-2" id="point3" >
 					<div class="col-md-12">
 					<h5 >3. Major training requirements
-					<%if(projectTypeId.equalsIgnoreCase("3")||projectTypeId.equalsIgnoreCase("5")) {%>
+					<%if(projectTypeId.equalsIgnoreCase("3")||projectTypeId.equalsIgnoreCase("5")) {
+					if(!trainingCost.equalsIgnoreCase("0.00")){
+					%>
 					<span class="" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of training requirements"  onclick="ListModal1()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification1" style="float: right; margin-left: -7px;font-size: 100%!important;"><%=TrainingRequirementList.size() %></span>
-					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="Add training requirements" onclick="showAddModal(1)">
-					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
 					</button>					
 					</span>
-					<%}else{ %>
-					<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px">Not Applicable</span>
+					<%}else{%>
+					<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px">Not Available</span>
+					<%}}else{ %>
+					<span class="badge badge-pill badge-danger" style="float:right;padding:10px;margin-top:-6px">Not Applicable</span>
 					<%} %>
 					</h5></div>
 					</div>
@@ -1409,52 +1412,53 @@ color:#145374;
 					<div class="row mt-2" id="point4">
 					<div class="col-md-12">
 					<h5>4. Details of Work Packages 
+					<%if(!workCost.equalsIgnoreCase("0.00")){ %>
 					<span class="" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of Work Packages" onclick="ListModal2()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification2" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=WorkPackageList.size() %></span>
 					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
+<!-- 					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
 					title="Add Work Packages" onclick="showAddModal(2)">
 					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
 					</i>
-					</button>					
+					</button>	 --> 			
 					</span>					
-					
+					<%} else{%>
+						<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%} %>
 					</h5>
 					</div>
 					</div>
 					<div class="row mt-2" id="point5">
 					<div class="col-md-12">
 					<h5>5. Details of CARS
+					<%if(!carscost.equalsIgnoreCase("0.00")){ %>
 					<span class="" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of CARS" onclick="ListModal3()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification3" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=CarsList.size() %></span>
-					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="Add CARS" onclick="showAddModal(3)">
-					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
 					</button>					
-					</span>		
+					</span>	
+					<%}else{ %>
+					<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%} %>	
 					</h5>
 					</div>
 					</div>
 					<div class="row mt-2" id="point6">
 					<div class="col-md-12">
 					<h5>6. Details of CAPSI 
+					<%if(!capsicost.equalsIgnoreCase("0.00")) {%>
 					<span class="ml-5" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of CAPSI"  onclick="ListModal6()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification6" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=CapsiList.size()%></span>
 					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="" onclick="showAddModal(6)">
-					<i class="btn  fa fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
-					</button>
 					</span>	
+					<%}else{%>
+					<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%} %>
 					</h5>
 					</div>
 					</div>
@@ -1464,17 +1468,22 @@ color:#145374;
 					<div class="row mt-1 rightsidediv" id="point7">
 					<div class="col-md-12">
 					<h5>7. Details of Consultancy requirements 
+					<%int x=0;
+					if(!CostDetailsListSummary.isEmpty()) {
+					for(Object[]obj:CostDetailsListSummary){
+						if(obj[0].toString().contains("Consultancy")){	
+					%>
 					<span class="ml-5" style="float: right ;margin-top: -3px;">
 					<button type="button" class="btn btn-sm bg-transparent list"data-toggle="tooltip" data-placement="top"
 					title="Details of Consultancy requirements" onclick="ListModal4()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification4" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=ConsultancyList.size() %></span>
-					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="Add Consultancy requirements" onclick="showAddModal(4)">
-					<i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
-					</button>					
-					</span>		
+					</button>			
+					</span>	
+					<%}else if(++x==CostDetailsListSummary.size()){%>
+							<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%}}}else{ %>
+						<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%} %>
 					</h5>
 					</div>
 					</div>
@@ -1487,11 +1496,6 @@ color:#145374;
 					title="Details of manpower requirements " onclick="ListModal5()"><i class="fa  fa-list" aria-hidden="true"></i>
 					<span class="badge badge-counter badge-success" id="Notification5" style="float: right; margin-left: -7px; font-size: 100%!important;"><%=ManpowerList.size() %></span>
 					</button>
-					<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top"
-					title="Add manpower requirements "  onclick="showAddModal(5)">
-					<i class="btn  fa  fa-plus plus" style="color: green; padding: 0px  0px  0px  0px;">
-					</i>
-					</button>	
 					</span>
 					</h5>
 					</div>
@@ -1502,6 +1506,7 @@ color:#145374;
 					<h5>9. Details of additional building space requirement 
 					
 					<%int k=0;
+					if(!CostDetailsListSummary.isEmpty()){
 					for(Object[]obj:CostDetailsListSummary){
 					if(obj[0].toString().contains("Works")){%>
 						<span class="ml-5" id="buildingwork" style="float:right;margin-top:-3px;">
@@ -1510,8 +1515,9 @@ color:#145374;
 					</span>	
 					<%}else if(++k==CostDetailsListSummary.size()){%>
 						<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
-					<%}}%>
-					
+					<%}}}else{%>
+						<span class="badge badge-pill badge-primary" style="float:right;padding:10px;margin-top:-6px;">Not Available</span>
+					<%} %>
 					</h5>
 					</div>
 					</div>
@@ -1522,8 +1528,9 @@ color:#145374;
 					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
 					<tr style="text-align: center;">
 					<th style="width:3%">SN</th>
-					<th style="width:50%">Head Code</th>
-					<th style="width:15%">Cost ( &#8377; In Cr.)</th>
+					<th style="width:30%">Head Code</th>
+					<th style="width:40%">Item</th>
+					<th style="width:15%">Cost <br>( &#8377; In Cr.)</th>
 					</tr>
 					</thead>
 					<tbody id="">
@@ -1535,6 +1542,7 @@ color:#145374;
 					<tr>
 					<td><%=++c %></td>
 					<td><%=obj[0].toString()+"( "%><%=obj[1].toString() +" )"%></td>
+					<td></td>
 					<td align="right"><%=nfc.convert(Double.parseDouble(obj[2].toString())/100000)%></td>
 					</tr>
 					<%}}} %>
@@ -1614,7 +1622,7 @@ color:#145374;
 					<%} %>
 					</div>
 					</div>
-		<div class="mt-2"align="left"><h5 style="color:red; display: initial;">Note:-</h5><h5 style="display: inline">Not Available ( please specify the cost in project initiation)</h5></div>
+				<div class="mt-2"align="left"><h5 style="color:red; display: initial;">Note:-</h5><h5 style="display: inline">Not Available ( please specify the cost in project initiation)</h5> <h5 style="display: inline">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Not Applicable ( This field is not applicable for this project type)</h5></div>
 				</div>
 			</div>
 		</div>
@@ -1733,13 +1741,16 @@ color:#145374;
 		</div>
 	</div>
 	<!--Add Major Trainig Requirements  Start-->
+				<input type="hidden" id="mainTrainingBudget" value="<%=trainingCost%>">  
+			<input type="hidden" id="TrainingBudget" value="">  
 			<div class="modal fade bd-example-modal-lg" id="showAddModal1"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Training Requirements</h5>
+						<h5 id="TrainingCostLeft" class="mt-2 ml-5"style="color:palegreen;font-size: 16px; margin-left:50% !important;">Budget Left - <%=nfc.convert(Double.parseDouble(trainingCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" id="cross1"
 							aria-label="Close" style="color: white">
 							<span aria-hidden="true">&times;</span>
@@ -1806,8 +1817,11 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; ">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Training Requirements</h5>
+						<h5 id="TableTrainingCost" class="mt-2 ml-5"style="color:orange;font-size: 16px; font-weight:800;margin-left:10% !important;"></h5>
+						<h5 id="TableTrainingCostPlanned" class="mt-2 ml-3"style="color:white;font-size: 16px; font-weight:800;"></h5>
+						<h5 id="TableTrainingCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(workCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross2">
 							<span aria-hidden="true">&times;</span>
@@ -1836,6 +1850,10 @@ color:#145374;
 					<span class="radiovalueModal1"><input type="hidden" value="0" id="radio1"></span>
 					</div>
 					<div class="mt-1" align="center">
+					<button type="button" id="trainBtn"class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="Add training requirements" onclick="showAddModal(1)">ADD
+				
+					</button>
 					<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal1()">EDIT</button>
 					</div>
 					</div>
@@ -1849,13 +1867,17 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; ">
+					<input type="hidden" id="previousTrainingCost">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Training Requirements</h5>
+						<h5 id="EditTrainCostPlanned" class="mt-2 ml-3"style="color:orange;font-size: 16px; font-weight:800;margin-left:30%!important;"></h5>
+						<h5 id="EditTrainCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(workCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" id="cross3"
 							aria-label="Close" style="color: white">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+					<input type="hidden" id="traingingPlannedCost">
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row mt-4">
@@ -1916,13 +1938,16 @@ color:#145374;
 	<!-- End -->
 	
 			<!--Add work packages  -->
+			<input type="hidden" id="mainWorkBudget" value="<%=workCost%>">  
+			<input type="hidden" id="WorkBudget" value="">  
 			<div class="modal fade bd-example-modal-lg" id="showAddModal2"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374;;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Work Packages</h5>
+						<h5 id="workCostLeft" class="mt-2 ml-5"style="color:palegreen;font-size: 16px; margin-left:50% !important;">Budget Left - <%=nfc.convert(Double.parseDouble(workCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross4">
 							<span aria-hidden="true">&times;</span>
@@ -1994,8 +2019,11 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of Work Packacges</h5>
+						<h5 id="TableWorkCost" class="mt-2 ml-5"style="color:orange;font-size: 16px; font-weight:800;margin-left:10% !important;"></h5>
+						<h5 id="TableWorkCostPlanned" class="mt-2 ml-3"style="color:white;font-size: 16px; font-weight:800;"></h5>
+						<h5 id="TableWorkCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(workCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross5">
 							<span aria-hidden="true">&times;</span>
@@ -2014,7 +2042,7 @@ color:#145374;
 					<th style="width:20%">Objectives</th>
 					<th style="width:20%">Scope</th>
 					<th style="width:7%">PDC<br>(Months)</th>
-					<th style="width:7%">Cost<br>( in cr)</th>
+					<th style="width:7%">Cost<br>( in Lakhs)</th>
 					</tr>
 					</thead>
 					<tbody id="tbody2">
@@ -2024,7 +2052,10 @@ color:#145374;
 					<span class="radiovalueModal2"><input type="hidden" value="0" id="radio2"></span>
 					</div>
 					<div class="mt-1" align="center">
-					<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal2()">EDIT</button>
+					<button id="workAdd" type="button" class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="Add Work Packages" onclick="showAddModal(2)">ADD
+					</button>
+					<button id="workedit" type="button" class="btn btn-sm btn-warning" onclick="showEditModal2()">EDIT</button>
 					</div>
 					</div>
 					</div>
@@ -2039,14 +2070,17 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; ">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Work Packages</h5>
+						<h5 id="EditWorkCostPlanned" class="mt-2 ml-3"style="color:orange;font-size: 16px; font-weight:800;margin-left:30%!important;"></h5>
+						<h5 id="EditWorkCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(workCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross6">
 							<span aria-hidden="true">&times;</span>
 						</button>
+						<input type="hidden" id="previousWorkCost">
 					</div>
-					
+					<input type="hidden" id="WorkPlanned">
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row">
@@ -2105,6 +2139,8 @@ color:#145374;
 					</div></div></div></div></div></div>
 			<!--End  -->
 			<!-- Add Cars Details -->
+			<input type="hidden" id="mainCarBudget" value="<%=carscost%>">
+			<input type="hidden" id="CarBudget">
 			<div class="modal fade bd-example-modal-lg" id="showAddModal3"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
@@ -2112,6 +2148,7 @@ color:#145374;
 				<div class="modal-content addreq" style="width: 130%;">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">CARS</h5>
+						<h5 id="CarBudgetLeft" class="mt-2 ml-5"style="color:palegreen;font-size: 16px; margin-left:50% !important;">Budget Left - <%=nfc.convert(Double.parseDouble(carscost)/100000)+" Lakhs"%></h5>	
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross7">
 							<span aria-hidden="true">&times;</span>
@@ -2166,7 +2203,8 @@ color:#145374;
 					<span class="mandatory" style="color: red;">*</span></label>
 					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
-					<input type="range" min="1" max="10" id="confidence" step="1" style="color:blue">
+					  <input type="range" class="form-control-range" step="1" min="1" max="10" id="confidence" onInput="$('#rangeval1').html($(this).val())">
+     				 <span id="rangeval1">5<!-- Default value --></span>
 					</div>
 					</div>
 					<div class="mt-2" align="center">
@@ -2181,6 +2219,9 @@ color:#145374;
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of Cars</h5>
+						<h5 id="TablecarCost" class="mt-2 ml-5"style="color:orange;font-size: 16px; font-weight:800;margin-left:10% !important;"></h5>
+						<h5 id="TablecarCostPlanned" class="mt-2 ml-3"style="color:white;font-size: 16px; font-weight:800;"></h5>
+						<h5 id="TablecarCostCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(carscost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross8">
 							<span aria-hidden="true">&times;</span>
@@ -2208,8 +2249,11 @@ color:#145374;
 					</table>
 					</div>
 					<span class="radiovalueModal3"><input type="hidden" value="0" id="radio3"></span>
-							<div class="mt-1" align="center">
-					<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal3()">EDIT</button>
+					<div class="mt-1" align="center">
+					<button type="button" id="carsAdd"class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="Add CARS" onclick="showAddModal(3)">ADD
+					</button>
+					<button type="button" id="carsEdit"class="btn btn-sm btn-warning" onclick="showEditModal3()">EDIT</button>
 					</div></div></div></div></div>
 			<!-- End -->
 					<div class="modal fade bd-example-modal-lg" id="EditCars"
@@ -2218,13 +2262,16 @@ color:#145374;
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+						<input type="hidden" id="previousCarCost">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">CARS</h5>
+							<h5 id="EditcarCostPlanned" class="mt-2 ml-5"style="color:Orange;font-size: 16px; font-weight:800;margin-left: 20%!important;"></h5>
+						<h5 id="EditcarCostCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; "></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross9">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					
+					<input type="hidden" id="carscostPlanned">
 					<div class="modal-body">
 					<div class="col-md-12">
 					<div class="row">
@@ -2277,7 +2324,9 @@ color:#145374;
 					</div>
 					<div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
-					<input type="range" min="1" max="10" id="confidenceEdit" step="1" style="color:blue">
+<!-- 					<input type="range" min="1" max="10" id="confidenceEdit" step="1" style="color:blue"> -->
+					 <input type="range" class="form-control-range" step="1" min="1" max="10" id="confidenceEdit" onInput="$('#rangeval2').html($(this).val())">
+     				 <span id="rangeval2"><!-- Default value --></span>
 					<input type="hidden" id="carsid">
 					</div>
 					</div>
@@ -2285,14 +2334,17 @@ color:#145374;
 					<button type="button" class="btn btn-primary btn-sm submit" onclick="editForm3()">SUBMIT</button>
 					<button type="button" class="btn  btn-sm  back" onclick="BackModal(3)">BACK</button>
 					</div></div></div></div></div></div>	
-			<!-- Consultancy Add -->  
+			<!-- Consultancy Add -->
+			<input type="hidden" id="mainConsultancyBudget" value="<%=consultancyCost%>">  
+			<input type="hidden" id="ConsultancyBudget" value="">  
 			<div class="modal fade bd-example-modal-lg" id="showAddModal4"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; ">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Consultancy requirements</h5>
+						<h5 id="consultancyCostLeft" class="mt-2 ml-5"style="color:palegreen;font-size: 16px; margin-left:50% !important;">Budget Left - <%=nfc.convert(Double.parseDouble(consultancyCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross10">
 							<span aria-hidden="true">&times;</span>
@@ -2347,15 +2399,18 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of Consultancy requirements</h5>
+						<h5 id="TableconsultancyCost" class="mt-2 ml-5"style="color:orange;font-size: 16px; font-weight:800;margin-left:10% !important;"></h5>
+						<h5 id="TableconsultancyCostPlanned" class="mt-2 ml-3"style="color:white;font-size: 16px; font-weight:800;"></h5>
+						<h5 id="TableconsultancyCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(consultancyCost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross11">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					
-					<div class="modal-body">
+					<div class="modal-body" >
 					<div id="scrollclass" style="height:400px;overflow-y:scroll">
 					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
 					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
@@ -2364,8 +2419,8 @@ color:#145374;
 					<th style="width:3%">SN</th>
 					<th style="width:18%">Discipline/Area</th>
 					<th style="width:18%">Agency</th>
-					<th style="width:12%">Name of person/ expert </th>
-					<th style="width:5%">Cost<br>( in cr)</th>
+					<th style="width:20%">Name of person/ expert </th>
+					<th style="width:8%">Cost<br>( in Lakhs)</th>
 					<th style="width:20%">Process that will be followed</th>
 					</tr>
 					</thead>
@@ -2375,6 +2430,12 @@ color:#145374;
 					<span class="radiovalueModal4"><input type="hidden" value="0" id="radio4"></span>
 					</div>
 					<div class="mt-2" align="center">
+					<button id="consultancyAdd" type="button" class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="Add Consultancy requirements" onclick="showAddModal(4)">
+					<!-- <i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;"> -->
+					ADD
+					</i>
+					</button>	
 					<button type="button" class="btn btn-sm btn-warning" onclick="showEditModal4()">EDIT</button>
 					</div></div>
 					</div>
@@ -2386,8 +2447,12 @@ color:#145374;
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<div class="modal-header" id="modalreqheader" style="background: #145374; ">
+					<input type="hidden" id="ConsultancyPlanned">
+					<input type="hidden" id="CBT"><!--consultancy Budget for this id  -->
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Consultancy requirements</h5>
+						<h5 id="EditconsultancyCostPlanned" class="mt-2 ml-3"style="color:orange;font-size: 16px; font-weight:800; margin-left:30% !important;"></h5>
+						<h5 id="EditconsultancyCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; "></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross12">
 							<span aria-hidden="true">&times;</span>
@@ -2515,7 +2580,10 @@ color:#145374;
 					</tbody>
 					</table>
 					</div>
-					<div class="mt-2" align="center"><button type="button" class="btn btn-sm btn-warning" onclick="showEditModal5()">EDIT</button></div>
+					<div class="mt-2" align="center">
+					<button type="button" class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="Add manpower requirements "  onclick="showAddModal(5)">ADD</button>
+					<button type="button" id="manpowEdit" class="btn btn-sm btn-warning" onclick="showEditModal5()">EDIT</button></div>
 					<span class="radiovalueModal5"><input type="hidden" value="0" id="radio5"></span>
 					</div></div></div></div>
 			<!--  -->
@@ -2565,14 +2633,16 @@ color:#145374;
 					</div>
 					</div>
 					</div></div></div></div>
-					
-								<div class="modal fade bd-example-modal-lg" id="showAddModal6"
+			<input type="hidden" id="mainCapsiBudget" value="<%=capsicost%>">
+			<input type="hidden" id="CapsiBudget">	
+			<div class="modal fade bd-example-modal-lg" id="showAddModal6"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">CAPSI</h5>
+						<h5 id="CapsiBudgetLeft" class="mt-2 ml-5"style="color:palegreen;font-size: 16px; margin-left:50% !important;">Budget Left - <%=nfc.convert(Double.parseDouble(carscost)/100000)+" Lakhs"%></h5>	
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross16">
 							<span aria-hidden="true">&times;</span>
@@ -2612,7 +2682,9 @@ color:#145374;
 					<span class="mandatory" style="color: red;">*</span></label>
 					</div><div class="col-md-1"><label class="sidelabel">:</label></div>
 					<div class="col-md-2">
-					<input type="range" min="1" max="10" id="capsiconfidence" step="1" style="color:blue">
+					<!-- <input type="range" min="1" max="10" id="capsiconfidence" step="1" style="color:blue"> -->
+					<input type="range" class="form-control-range" step="1" min="1" max="10" id="capsiconfidence" onInput="$('#rangeval3').html($(this).val())">
+     				 <span id="rangeval3">5<!-- Default value --></span>
 					</div>
 					</div>	
 					<div class="mt-2" align="center">
@@ -2627,6 +2699,9 @@ color:#145374;
 				<div class="modal-content addreq" style="width: 170%;margin-left: -35%">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">Details of CAPSI</h5>
+						<h5 id="TablecapsiCost" class="mt-2 ml-5"style="color:orange;font-size: 16px; font-weight:800;margin-left:10% !important;"></h5>
+						<h5 id="TablecapsiCostPlanned" class="mt-2 ml-3"style="color:white;font-size: 16px; font-weight:800;"></h5>
+						<h5 id="TablecapsiCostCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; ">Budget Left - <%=nfc.convert(Double.parseDouble(capsicost)/100000)+" Lakhs"%></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross17">
 							<span aria-hidden="true">&times;</span>
@@ -2651,23 +2726,29 @@ color:#145374;
 					</tbody>
 					</table>
 					</div>
-					<div class="mt-2" align="center"><button type="button" class="btn btn-sm btn-warning" onclick="showEditModal6()">EDIT</button></div>
+					<div class="mt-2" align="center">
+					<button type="button" id="capsiAdd"class="btn btn-primary btn-sm submit"  data-toggle="tooltip" data-placement="top"
+					title="" onclick="showAddModal(6)">ADD</button>
+					<button type="button" id="capsiEdit" class="btn btn-sm btn-warning" onclick="showEditModal6()">EDIT</button></div>
 					<span class="radiovalueModal6"><input type="hidden" value="0" id="radio6"></span>
 					</div></div></div></div>
 				<!--  -->
-												<div class="modal fade bd-example-modal-lg" id="CapsiEditModal"
+			<div class="modal fade bd-example-modal-lg" id="CapsiEditModal"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content addreq" style="width: 130%;">
 					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
+					<input type="hidden" id="previousCapsiCost">
 						<h5 class="modal-title" style="color:white;font-size: 20px;">CAPSI</h5>
+								<h5 id="EditcapsiCostPlanned" class="mt-2 ml-5"style="color:Orange;font-size: 16px; font-weight:800;margin-left: 20%!important;"></h5>
+						<h5 id="EditcapsiCostCostLeft" class="mt-2 ml-3"style="color:palegreen; font-weight:800;font-size: 16px; "></h5>
 						<button type="button" class="close" data-dismiss="modal" 
 							aria-label="Close" style="color: white" id="cross18">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					
+					<input type="hidden" id="CapsiPlanned">
 					<div class="modal-body">
 					<div class="row mt-1">
 					<div class="col-md-3"><label class="sidelabel">IDST Location<span class="mandatory" style="color: red;">*</span></label></div>
@@ -2969,12 +3050,13 @@ color:#145374;
 			if(confirm("Are you sure you want to update data?")){
 				$('#successdiv').css("display","none");
 			$.ajax({
-					type:'GET',
+					type:'POST',
 					url:'ProjectAdditonalRequirementUpdate.htm',
 					datatype:'json',
 					data:{
 						AdditionalRequirement:AdditionalRequirement,
 						initiationid :<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}",
 					},
 					success:function(result){
 						var ajaxresult=JSON.parse(result);
@@ -3002,12 +3084,13 @@ color:#145374;
 				if(confirm("Are you sure you want to update data?")){
 					$('#successdiv').css("display","none");
 				$.ajax({
-						type:'GET',
+						type:'POST',
 						url:'ProjectMethodologyUpdate.htm',
 						datatype:'json',
 						data:{
 							initiationid :<%=initiationid%>,
 							methodology:methodology,
+							${_csrf.parameterName}:	"${_csrf.token}",
 						},
 						success:function(result){
 							var ajaxresult=JSON.parse(result);
@@ -3034,12 +3117,13 @@ color:#145374;
 				if(confirm("Are you sure you want to update data?")){
 					$('#successdiv').css("display","none");
 					$.ajax({
-						type:'GET',
+						type:'POST',
 						url:'ProjectEnclosuresUpdate.htm',
 						datatype:'json',
 						data:{
 							initiationid :<%=initiationid%>,
 							Enclosures:Enclosures,
+							${_csrf.parameterName}:	"${_csrf.token}",
 						},
 					success:function(result){
 						var ajaxresult=JSON.parse(result);
@@ -3069,12 +3153,13 @@ color:#145374;
 			if(confirm("Are you sure you want to update data?")){
 			$('#successdiv').css("display","none"); 
 				$.ajax({
-					type:'GET',
+					type:'POST',
 					url:'ProjectOtherInformationUpdate.htm',
 					datatype:'json',
 					data:{
 						initiationid :<%=initiationid%>,
 						OtherInformation:OtherInformation,
+						${_csrf.parameterName}:	"${_csrf.token}",
 					},
 					success:function(result){
 						var ajaxresult=JSON.parse(result);
@@ -3152,7 +3237,6 @@ color:#145374;
 			}
 		}
 			function finance(a,b,c){
-			console.log(a+" "+b+"  "+c);
 			$.ajax({
 				type:'GET',
 				url:'ProjectScheduleFinancialOutlay.htm',
@@ -3164,7 +3248,6 @@ color:#145374;
 				},
 				success:function(result){
 					var ajaxresult=JSON.parse(result);
-					console.log(ajaxresult)
 					let str = ajaxresult;  
 					let num = parseFloat(ajaxresult)/10000000;  
 
@@ -3417,6 +3500,95 @@ color:#145374;
 		}
 	function showAddModal(a){
 		$('#showAddModal'+a).modal('show');
+		if(a===4){
+			$('#cross11').click();
+			var consultancy=$('#ConsultancyBudget').val();
+			if(consultancy===""){
+				consultancy=$('#mainConsultancyBudget').val();
+				document.getElementById("ConsultancyBudget").value=consultancy
+			}
+			let str =consultancy;  
+			let num = parseFloat(str)/100000;  
+			let formattedNum = num.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			document.getElementById('consultancyCostLeft').innerHTML="Budget Left- "+formattedNum+" Lakhs"
+		}
+		if(a===2){
+			$('#cross5').click();
+			var WorkBudget=$('#WorkBudget').val();
+			if(WorkBudget===""){
+				WorkBudget=$('#mainWorkBudget').val();
+				document.getElementById("WorkBudget").value=WorkBudget
+			}
+			let str =WorkBudget;  
+			let num = parseFloat(str)/100000;  
+			let formattedNum = num.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			document.getElementById('workCostLeft').innerHTML="Budget Left- "+formattedNum+" Lakhs"
+		}
+		if(a===1){
+			$('#cross2').click();
+			var TrainingBudget=$('#TrainingBudget').val();
+			if(TrainingBudget===""){
+				TrainingBudget=$('#mainTrainingBudget').val();
+				document.getElementById("TrainingBudget").value=TrainingBudget;
+			}
+			let str =TrainingBudget;  
+			let num = parseFloat(str)/100000;  
+			let formattedNum = num.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			document.getElementById('TrainingCostLeft').innerHTML="Budget Left- "+formattedNum+" Lakhs"
+		}
+		if(a===5){
+			$('#cross14').click();
+		}
+		if(a===3){
+			$('#cross8').click();
+			var CarBudget=$('#CarBudget').val();
+			if(CarBudget===""){
+				CarBudget=$('#mainCarBudget').val();
+				document.getElementById("CarBudget").value=CarBudget;
+			}
+			let str =CarBudget;  
+			let num = parseFloat(str)/100000;  
+			let formattedNum = num.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			document.getElementById('CarBudgetLeft').innerHTML="Budget Left- "+formattedNum+" Lakhs"
+		}
+		if(a===6){
+		$('#cross17').click();
+		var CapsiBudget=$('#CapsiBudget').val();
+		if(CapsiBudget===""){
+			CapsiBudget=$('#mainCapsiBudget').val();
+			document.getElementById("CapsiBudget").value=CapsiBudget;
+		}
+		let str =CapsiBudget;  
+		let num = parseFloat(str)/100000;  
+		let formattedNum = num.toLocaleString('en-IN', {
+		  style: 'currency',
+		  currency: 'INR',
+		  minimumFractionDigits: 2,
+		  maximumFractionDigits: 2,
+		});
+		document.getElementById('CapsiBudgetLeft').innerHTML="Budget Left- "+formattedNum+" Lakhs"
+		}
+		
 	}
 	function submitForm1(){
 
@@ -3426,10 +3598,12 @@ color:#145374;
 		var Duration=$('#Duration').val();
 		var Cost=$('#Costadd').val();
 		var Remarks=$('#Remarks').val();
-		
+		var TrainingBudget=$('#TrainingBudget').val();
 		
 		if(Discipline.length<=0||Agency.length<=0||Personneltrained.length<=0||Duration.length<=0||Cost.length<=0||Remarks.length<=0){
 			alert("Please fill all the Field")
+		}else if(Number(TrainingBudget)<Number(Cost)){
+			alert("The cost is exceeding the budget")
 		}
 		else{
 			if(window.confirm('Are you sure, you want to submit?')){
@@ -3459,6 +3633,7 @@ color:#145374;
 									document.getElementById("Duration").value=""
 										document.getElementById("Costadd").value=""
 											document.getElementById("Remarks").value=""
+												document.getElementById("TrainingBudget").value=Number(TrainingBudget)-Number(Cost);
 												setTimeout(ListModal1, 3000);
 						var Notification1=document.getElementById("Notification1").innerHTML;
 						$('#Notification1').html(Number(Notification1)+1);
@@ -3481,6 +3656,7 @@ color:#145374;
 		
 	}
 	function ListModal1(){
+	var value=$('#mainTrainingBudget').val(); var x=0;
 		$('#tbody1').html('');
 		$.ajax({
 			type:'GET',
@@ -3492,11 +3668,13 @@ color:#145374;
 			success:function(result){
 				var ajaxresult=JSON.parse(result);
 				if(ajaxresult.length==0){
-					$('#tbody1').html('<tr style="text-align:center;"> <td colspan="8">No Data Added </td></tr>')
+					 document.getElementById("TrainingBudget").value=value 
+					$('#tbody1').html('<tr style="text-align:center;"> <td colspan="8">No Data Available </td></tr>')
 				}else{
 					var html="";
 
 				for(var i=0;i<ajaxresult.length;i++){
+					x=x+ajaxresult[i][7];
 					let str = ajaxresult[i][7];  
 					let num = parseFloat(ajaxresult[i][7])/10000000;  
 
@@ -3509,6 +3687,47 @@ color:#145374;
 					});
 					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+1+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td align="center">'+ajaxresult[i][4]+'</td>'+'<td align="center">'+ajaxresult[i][5]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td>'+ajaxresult[i][6]+'</td></tr>'
 				}
+				var traingbudgetleft=Number(value)-Number(x);
+				if(traingbudgetleft==0){
+					$('#trainBtn').hide();
+				}else{
+					$('#trainBtn').show();
+				}
+				document.getElementById("TrainingBudget").value=traingbudgetleft; 
+				document.getElementById("traingingPlannedCost").value=x; 
+				let str1 = value;  
+				let num1 = parseFloat(str1)/100000;  
+
+
+				let formattedNum1= num1.toLocaleString('en-IN', {
+				  style: 'currency',
+				  currency: 'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});
+				
+				let str2 = traingbudgetleft;  
+				let num2 = parseFloat(str2)/100000;  
+				let formattedNum2= num2.toLocaleString('en-IN', {
+				  style: 'currency',
+				  currency: 'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});
+				
+				let str3 = x;  
+				let num3 = parseFloat(str3)/100000;  
+				let formattedNum3= num3.toLocaleString('en-IN', {
+				  style: 'currency',
+				  currency: 'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});
+				document.getElementById("TableTrainingCost").innerHTML="Total Budget- "+formattedNum1+" Lakhs";
+				document.getElementById("TableTrainingCostPlanned").innerHTML="Budget planned- "+formattedNum3+" Lakhs";
+				document.getElementById("TableTrainingCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
+				document.getElementById("EditTrainCostPlanned").innerHTML="Budget planned- "+formattedNum3+" Lakhs";
+				document.getElementById("EditTrainCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
 				$('#tbody1').html(html)
 				}
 			}
@@ -3540,7 +3759,8 @@ color:#145374;
 							document.getElementById("CostaddEdit").value=ajaxresult[6];
 								document.getElementById("RemarksEdit").value=ajaxresult[7];
 								document.getElementById("trainingid").value=ajaxresult[0];
-				
+								document.getElementById("previousTrainingCost").value=ajaxresult[6];
+								
 			}
 			})
 		
@@ -3558,9 +3778,16 @@ color:#145374;
 		var Cost=$('#CostaddEdit').val();
 		var Remarks=$('#RemarksEdit').val();
 		var trainingid=$('#trainingid').val();
+		var traingingPlannedCost=$('#traingingPlannedCost').val();
+		var mainTrainingBudget=$('#mainTrainingBudget').val();
+		var previousTrainingCost=$('#previousTrainingCost').val();
+ 		var x=Number(traingingPlannedCost)+Number(Cost)-Number(previousTrainingCost) 
 		if(Discipline.length<=0||Agency.length<=0||Personneltrained.length<=0||Duration.length<=0||Cost.length<=0||Remarks.length<=0){
 			alert("Please fill all the Field")
-		}else{
+		}else if(x>Number(mainTrainingBudget)){
+			alert("The cost is exceeding the total budget");
+		}
+		else{
 			if(window.confirm('Are you sure, you want to submit?')){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -3602,9 +3829,12 @@ color:#145374;
 		var Scope=$('#Scope').val().trim();
 		var Cost3=$('#Cost3').val().trim();
 		var PDC=$('#PDC').val().trim();
+		var WorkBudget=$('#WorkBudget').val();
 		
 		if(GovtAgencies<=0||workPackage<=0||Objectives<=0||Scope<=0||Cost3<=0||PDC<=0){
 			alert("please fill all the fields")
+		}else if(Number(Cost3)>Number(WorkBudget)){
+			alert("The cost is exceeding the total budget")
 		}
 		else{
 			if(confirm("Are you sure ,you want to submit the data?")){
@@ -3638,6 +3868,7 @@ color:#145374;
 						document.getElementById("PDC").value="";
 						var Notification2=document.getElementById("Notification2").innerHTML;
 						$('#Notification2').html(Number(Notification2)+1);
+						document.getElementById("WorkBudget").value=Number(WorkBudget)-Number(Cost3);
 					}
 					setTimeout(ListModal2, 3000);
 				}
@@ -3649,7 +3880,9 @@ color:#145374;
 		}
 	}
 	function ListModal2(){
+		var value=$('#mainWorkBudget').val();
 		$('#tbody2').html('');
+		var x=0;
 		$.ajax({
 			type:'GET',
 			url:'WorkPackageList.htm',
@@ -3659,17 +3892,16 @@ color:#145374;
 			},
 			success:function (result){
 				var ajaxresult=JSON.parse(result);
-				console.log(ajaxresult)
 				if(ajaxresult.length==0){
-				$('#tbody2').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
-				}else
-					var html="";
-
+				$('#workedit').hide();
+				document.getElementById("WorkBudget").value=value
+				$('#tbody2').html('<tr style="text-align:center;"><td colspan="8">No Data Available</td></tr>')
+				}else{
+				var html="";
 				for(var i=0;i<ajaxresult.length;i++){
+					x=x+Number(ajaxresult[i][7]);
 					let str = ajaxresult[i][7];  
-					let num = parseFloat(ajaxresult[i][7])/10000000;  
-
-
+					let num = parseFloat(ajaxresult[i][7])/100000;  
 					let formattedNum = num.toLocaleString('en-IN', {
 					  style: 'currency',
 					  currency: 'INR',
@@ -3678,8 +3910,46 @@ color:#145374;
 					});		
 					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+2+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td >'+ajaxresult[i][5]+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="right">'+formattedNum+'</td></tr>'
 				}
+				$('#workedit').show();
+				var workBudgetLeft=Number(value)-Number(x);
+				if(workBudgetLeft==0){
+				$('#workAdd').hide();
+				}else{
+				$('#workAdd').show();
+				}
+				document.getElementById("WorkPlanned").value=x;
+				document.getElementById("WorkBudget").value=workBudgetLeft;
+				let str1=value;
+				let num1 = parseFloat(str1)/100000;  
+				let formattedNum1 = num1.toLocaleString('en-IN', {
+				  style: 'currency',
+				  currency: 'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});	
+				let str2=workBudgetLeft;
+				let num2 = parseFloat(str2)/100000;  
+				let formattedNum2 = num2.toLocaleString('en-IN',{
+				  style:'currency',
+				  currency:'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});	
+				let str3=x;
+				let num3 = parseFloat(str3)/100000;  
+				let formattedNum3 = num3.toLocaleString('en-IN', {
+				  style: 'currency',
+				  currency: 'INR',
+				  minimumFractionDigits: 2,
+				  maximumFractionDigits: 2,
+				});	
+				document.getElementById("TableWorkCost").innerHTML="Total Budget- "+formattedNum1+" Lakhs";
+				document.getElementById("TableWorkCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
+				 document.getElementById("TableWorkCostPlanned").innerHTML="Budget Planned- "+(formattedNum3)+" Lakhs"; 
+					document.getElementById("EditWorkCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
+					 document.getElementById("EditWorkCostPlanned").innerHTML="Budget Planned- "+(formattedNum3)+" Lakhs"; 
 				$('#tbody2').html(html)
-			}
+			}}
 		})
 		$('#WorkPackacgesList').modal('show');
 	} 
@@ -3705,6 +3975,7 @@ color:#145374;
 					document.getElementById("Cost3Edit").value=ajaxresult[7];
 					document.getElementById("PDCEdit").value=ajaxresult[6];
 					document.getElementById("workid").value=ajaxresult[0];
+					document.getElementById("previousWorkCost").value=ajaxresult[7];
 					$('#cross5').click();
 					$('#EditWork').modal('show');
 				}
@@ -3720,10 +3991,17 @@ color:#145374;
 		var Cost3=$('#Cost3Edit').val().trim();
 		var PDC=$('#PDCEdit').val().trim();
 		var workid=$('#workid').val();
-		
+		var WorkPlanned=$('#WorkPlanned').val();
+		var previousWorkCost=$('#previousWorkCost').val();
+		var mainWorkBudget=$('#mainWorkBudget').val();
+		var x=Number(WorkPlanned)+Number(Cost3)-Number(previousWorkCost);
+		console.log(x>Number(mainWorkBudget));
 		if(GovtAgencies<=0||workPackage<=0||Objectives<=0||Scope<=0||Cost3<=0||PDC<=0){
 			alert("please fill all the fields")
-		}else{
+		}else if(x>Number(mainWorkBudget)){
+			alert("The cost is exceeding the budget");
+		}
+		else{
 			if(window.confirm('Are you sure, you want to submit?')){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -3761,6 +4039,7 @@ color:#145374;
 	}
 	
 	function submitForm3(){
+		var value=$('#CarBudget').val();
 		var Institute=$('#Institute').val().trim();
 		var professor=$('#professor').val().trim();
 		var Area=$('#Area').val().trim();
@@ -3770,7 +4049,10 @@ color:#145374;
 		
 		if(Institute.length<=0||confidence.length<=0||professor.length<=0||Area.length<=0||Cost4.length<=0||PDC1.length<=0){
 			alert("Please fill all the fields")
-		}else{
+		}else if(Number(Cost4)>Number(value)){
+			alert("The given cost is exceeding the total budget")
+		}
+		else{
 			if(confirm("Are you sure,you want to submit?")){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -3799,9 +4081,12 @@ color:#145374;
 							document.getElementById("Area").value="";
 							document.getElementById("Cost4").value="";
 							document.getElementById("PDC1").value="";
+							var x=(Number(value)-Number(Cost4));
+							document.getElementById("CarBudget").value=x;
 							setTimeout(ListModal3, 3000);
 							var Notification3=document.getElementById("Notification3").innerHTML;
 							$('#Notification3').html(Number(Notification3)+1);
+							
 							
 						}else{
 							$('#cross7').click();
@@ -3818,8 +4103,10 @@ color:#145374;
 		}
 	}
 	function ListModal3(){
+		var value=$('#mainCarBudget').val();
 		$('#CARSlist').modal('show');
 		$('#tbody3').html('');
+		var x=0;
 		$.ajax({
 			type:'GET',
 			url:'CarsList.htm',
@@ -3831,15 +4118,17 @@ color:#145374;
 				var ajaxresult=JSON.parse(result);
 				console.log(ajaxresult)
 				if(ajaxresult.length==0){
-				$('#tbody3').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
+				$('#carsEdit').hide();
+				document.getElementById("CarBudget").value=value;
+				$('#tbody3').html('<tr style="text-align:center;"><td colspan="8">No Data Available</td></tr>')
 				}
 				else{
+					$('#carsEdit').show();
 					var html="";
 					for(var i=0;i<ajaxresult.length;i++){
+						x=x+Number(ajaxresult[i][5]);
 						let str = ajaxresult[i][5];  
 						let num = parseFloat(ajaxresult[i][5])/10000000;  
-
-
 						let formattedNum = num.toLocaleString('en-IN', {
 						  style: 'currency',
 						  currency: 'INR',
@@ -3848,6 +4137,43 @@ color:#145374;
 						});						
 						html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+3+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td></tr>'
 					}
+					var carBudgetLeft=Number(value)-Number(x);
+					if(carBudgetLeft===0){
+						$('#carsAdd').hide();
+					}else{
+						$('#carsAdd').show();
+					}
+					let str1= value;  
+					let num1 = parseFloat(str1)/100000;  
+					let formattedNum1 = num1.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});		
+					let str2= carBudgetLeft;  
+					let num2 = parseFloat(str2)/100000;  
+					let formattedNum2 = num2.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});
+					let str3= x;  
+					let num3 = parseFloat(str3)/100000;  
+					let formattedNum3 = num3.toLocaleString('en-IN', {
+					  style: 'currency',
+					  currency: 'INR',
+					  minimumFractionDigits: 2,
+					  maximumFractionDigits: 2,
+					});
+					document.getElementById('TablecarCost').innerHTML="Total Budget -"+formattedNum1+" Lakhs"
+					document.getElementById('TablecarCostPlanned').innerHTML="Budget planned-"+formattedNum3+" Lakhs"
+					document.getElementById('TablecarCostCostLeft').innerHTML="Budget Left -"+formattedNum2+" Lakhs"
+					document.getElementById('EditcarCostPlanned').innerHTML="Budget planned-"+formattedNum3+" Lakhs"
+					document.getElementById('EditcarCostCostLeft').innerHTML="Budget Left -"+formattedNum2+" Lakhs"
+					document.getElementById("carscostPlanned").value=x;
+					document.getElementById("CarBudget").value=carBudgetLeft;
 					$('#tbody3').html(html);
 				}
 			}
@@ -3874,7 +4200,9 @@ color:#145374;
 				document.getElementById("Cost4Edit").value=ajaxresult[5];
 				document.getElementById("PDC1Edit").value=ajaxresult[6];
 				document.getElementById("confidenceEdit").value=ajaxresult[7];
+				document.getElementById("rangeval2").innerHTML=ajaxresult[7];
 				document.getElementById("carsid").value=ajaxresult[0];
+				document.getElementById("previousCarCost").value=ajaxresult[5];
 				$('#cross8').click();
 				$('#EditCars').modal('show');
 			}
@@ -3882,6 +4210,7 @@ color:#145374;
 		}
 	}
 	function editForm3(){
+		var mainCarBudget=$('#mainCarBudget').val();
 		var Institute=$('#InstituteEdit').val().trim();
 		var professor=$('#professorEdit').val().trim();
 		var Area=$('#AreaEdit').val().trim();
@@ -3889,8 +4218,13 @@ color:#145374;
 		var PDC1=$('#PDC1Edit').val();
 		var confidence=$('#confidenceEdit').val();
 		var carsid=$('#carsid').val();
+		var previousCarCost=$('#previousCarCost').val();
+		var carscostPlanned=$('#carscostPlanned').val();
+		var x=Number(carscostPlanned)+Number(Cost4)-Number(previousCarCost);
 		if(Institute.length<=0||confidence.length<=0||professor.length<=0||Area.length<=0||Cost4.length<=0||PDC1.length<=0){
 			alert("Please fill all the fields")
+		}else if(x>Number(mainCarBudget)){
+			alert("The given cost is exceeding the budget")
 		}else{
 			if(confirm("Are you sure,you want to submit?")){
 				
@@ -3942,9 +4276,12 @@ color:#145374;
 		var Consultancyperson=$('#Consultancyperson').val().trim();
 		var ConsultancyProcess=$('#ConsultancyProcess').val().trim();
 		var ConsultancyCost=$('#ConsultancyCost').val().trim();
+		var ConsultancyBudget=$('#ConsultancyBudget').val().trim();
 		if(ConsultancyArea.length<=0||ConsultancyAgency.length<=0||Consultancyperson.length<=0||ConsultancyProcess.length<=0||ConsultancyCost.length<=0){
 		alert("Please fill all the fields")
-		}else{
+		}else if(Number(ConsultancyCost)>Number(ConsultancyBudget)){
+			alert("The given cost is exceeding the Budget")
+		}else {
 			if(confirm("Are you sure ,you want to submit the data?")){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -3973,6 +4310,7 @@ color:#145374;
 							setTimeout(ListModal4, 3000);
 							var Notification4=document.getElementById("Notification4").innerHTML;
 							$('#Notification4').html(Number(Notification4)+1);
+							document.getElementById("ConsultancyBudget").value=Number(ConsultancyBudget)-Number(ConsultancyCost)
 						}						
 					}
 					
@@ -3982,7 +4320,8 @@ color:#145374;
 			}else{event.preventDefault();return false;}}}
 	
 	function ListModal4(){
-		
+		var value=$('#mainConsultancyBudget').val();
+		var x=0;
 		$('#tbody4').html('');
 		$.ajax({
 			type:'GET',
@@ -3993,14 +4332,15 @@ color:#145374;
 			},
 		success:function(result){
 			var ajaxresult=JSON.parse(result);
-			console.log(result)
 			if(ajaxresult.length==0){
-				$('#tbody4').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
+				document.getElementById("ConsultancyBudget").value=value
+				$('#tbody4').html('<tr style="text-align:center;"><td colspan="8">No Data Available</td></tr>')
 				}else{
 			var html="";
 			for(var i=0;i<ajaxresult.length;i++){
+				x=x+Number(ajaxresult[i][5])
 				let str = ajaxresult[i][5];  
-				let num = parseFloat(ajaxresult[i][5])/10000000;  
+				let num = parseFloat(ajaxresult[i][5])/100000;  
 
 
 				let formattedNum = num.toLocaleString('en-IN', {
@@ -4011,7 +4351,48 @@ color:#145374;
 				});
 				html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+4+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="left">'+ajaxresult[i][6]+'</td></tr>'
 			}
+			var consultancyBudgetleft=Number(value)-Number(x);
+			if(consultancyBudgetleft==0){
+		 	$('#consultancyAdd').hide();
+			}else{
+				$('#consultancyAdd').show();
+			}
+			document.getElementById("ConsultancyBudget").value=consultancyBudgetleft;
+			document.getElementById("ConsultancyPlanned").value=x;
+			let str1 =value;  
+			let num1 = parseFloat(str1)/100000;  
+			let formattedNum1 = num1.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			let str2 =consultancyBudgetleft;  
+			let num2 = parseFloat(str2)/100000;  
+			let formattedNum2 = num2.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			
+			let str3 =x;  
+			let num3 = parseFloat(str3)/100000;  
+			let formattedNum3 = num3.toLocaleString('en-IN', {
+			  style: 'currency',
+			  currency: 'INR',
+			  minimumFractionDigits: 2,
+			  maximumFractionDigits: 2,
+			});
+			
+			document.getElementById("TableconsultancyCost").innerHTML="Total Budget- "+formattedNum1+" Lakhs";
+			document.getElementById("TableconsultancyCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
+			 document.getElementById("TableconsultancyCostPlanned").innerHTML="Budget Planned- "+(formattedNum3)+" Lakhs"; 
+			 document.getElementById("EditconsultancyCostLeft").innerHTML="Budget Left- "+formattedNum2+" Lakhs";
+			 document.getElementById("EditconsultancyCostPlanned").innerHTML="Budget Planned- "+(formattedNum3)+" Lakhs"; 
+			
 			$('#tbody4').html(html);
+			
 			}
 		}
 		})
@@ -4038,6 +4419,7 @@ color:#145374;
 			document.getElementById("ConsultancyProcessEdit").value=ajaxresult[6];
 			document.getElementById("ConsultancyCostEdit").value=ajaxresult[5];
 			document.getElementById("consultancyid").value=ajaxresult[0];
+			document.getElementById("CBT").value=ajaxresult[5];
 			$('#cross11').click();
 			$('#EditConsultancyModal').modal('show');
 		}
@@ -4050,10 +4432,17 @@ color:#145374;
 		var ConsultancyProcess=$('#ConsultancyProcessEdit').val().trim();
 		var ConsultancyCost=$('#ConsultancyCostEdit').val().trim();
 		var consultancyid=$('#consultancyid').val();
+		var ConsultancyPlanned=$('#ConsultancyPlanned').val();
+		var CBT=$('#CBT').val();
+		var mainConsultancyBudget=$('#mainConsultancyBudget').val();
+		var x=Number(ConsultancyPlanned)+(Number(ConsultancyCost)-Number(CBT));
 		
 		if(ConsultancyArea.length<=0||ConsultancyAgency.length<=0||Consultancyperson.length<=0||ConsultancyProcess.length<=0||ConsultancyCost.length<=0){
 			alert("Please fill all the fields")
-		}else{
+		} else if(Number(x)>Number(mainConsultancyBudget)){
+			alert("The cost is exceeding the budget")
+		} 
+		else{
 			if(confirm("Are you sure, you want to submit?")){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -4163,18 +4552,19 @@ color:#145374;
 				var ajaxresult=JSON.parse(result);
 				var html="";
 				if(ajaxresult.length==0){
-					$('#tbody5').html('<tr style="text-align:center;"><td colspan="7">NO DATA ADDED</td></tr>')
+					$('#manpowEdit').hide();
+					$('#tbody5').html('<tr style="text-align:center;"><td colspan="7">No Data Available</td></tr>')
 					}else{
 				for(var i=0;i<ajaxresult.length;i++){
 					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+5+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td>'+ajaxresult[i][3]+'</td>'+'<td align="center">'+ajaxresult[i][4]+'</td>'+'<td align="center">'+ajaxresult[i][5]+'</td>'+'<td align="left">'+ajaxresult[i][6]+'</td></tr>'
 				}
+				$('#manpowEdit').show();
 				$('#tbody5').html(html);
 					}
 			}
 		})
 		$('#ManpowerList').modal('show');
 	}
-	
 	function BackModal(a){
 		if(a===1){ListModal1();$('#cross'+(Number(a)*3)).click();document.getElementById("radio1").value=0;}
 		if(a===2){ListModal2();$('#cross'+(Number(a)*3)).click(); document.getElementById("radio2").value=0;}
@@ -4443,17 +4833,15 @@ color:#145374;
 									$('#successdiv').delay(3000).hide(0);
 									
 									$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefProductionSubmit('+a+')">UPDATE</button>');
-								}
-							}
-						})
-						
-					}else{
-						event.preventDefault();
-						return false;
-					}
-				}
+					  }
+					 }
+					})		
+				}else{
+				event.preventDefault();
+				return false;
+			}
+		}
 	 }
-	 
 	 function briefDevelopmentSubmit(a){
 			var subpointdiv12Editor =CKEDITOR.instances['subpointdiv12Editor'].getData();
 		 if(subpointdiv12Editor.length==0){
@@ -4472,11 +4860,10 @@ color:#145374;
 						},
 						success:function(result){
 							if(result>0){
-								$('#successdiv').css("display","block");
-								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-								$('#successdiv').delay(3000).hide(0);
-								
-								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefDevelopmentSubmit('+a+')">UPDATE</button>');
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefDevelopmentSubmit('+a+')">UPDATE</button>');
 							}
 						}
 					})
@@ -4499,17 +4886,16 @@ color:#145374;
 						url:'BriefMatrixsubmit.htm',
 						datatype:'json',
 						data:{
-							ResponsibilityMatrix:subpointdiv11Editor,
-							initiationid:<%=initiationid%>,
-							${_csrf.parameterName}:	"${_csrf.token}"
+						ResponsibilityMatrix:subpointdiv11Editor,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
 						},
 						success:function(result){
 							if(result>0){
-								$('#successdiv').css("display","block");
-								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-								$('#successdiv').delay(3000).hide(0);
-								
-								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefResrSubmit('+a+')">UPDATE</button>');
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefResrSubmit('+a+')">UPDATE</button>');
 							}
 						}
 					})
@@ -4531,24 +4917,23 @@ color:#145374;
 						url:'BriefTestsubmit.htm',
 						datatype:'json',
 						data:{
-							TestingPlan:subpointdiv8Editor,
-							initiationid:<%=initiationid%>,
-							${_csrf.parameterName}:	"${_csrf.token}"
+						TestingPlan:subpointdiv8Editor,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
 						},
 						success:function(result){
 							if(result>0){
-								$('#successdiv').css("display","block");
-								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-								$('#successdiv').delay(3000).hide(0);
-								
-								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTestSubmit('+a+')">UPDATE</button>');
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTestSubmit('+a+')">UPDATE</button>');
 							}
 						}
 					})
 					
 				}else{
-					event.preventDefault();
-					return false;
+				event.preventDefault();
+				return false;
 				}
 			}
 		 
@@ -4571,23 +4956,20 @@ color:#145374;
 						},
 						success:function(result){
 							if(result>0){
-								$('#successdiv').css("display","block");
-								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-								$('#successdiv').delay(3000).hide(0);
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
 								
-								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefActionSubmit('+a+')">UPDATE</button>');
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefActionSubmit('+a+')">UPDATE</button>');
 							}
 						}
 					})
-					
 				}else{
-					event.preventDefault();
-					return false;
+				event.preventDefault();
+				return false;
 				}
 			}
-		 
 	 }
-	 
 	 function briefPeerSubmit(a){
 			var subpointdiv5Editor =CKEDITOR.instances['subpointdiv5Editor'].getData();
 			if(subpointdiv5Editor.length==0){
@@ -4600,17 +4982,16 @@ color:#145374;
 						url:'BriefPeersubmit.htm',
 						datatype:'json',
 						data:{
-							PeerReview:subpointdiv5Editor,
-							initiationid:<%=initiationid%>,
-							${_csrf.parameterName}:	"${_csrf.token}"
+						PeerReview:subpointdiv5Editor,
+						initiationid:<%=initiationid%>,
+						${_csrf.parameterName}:	"${_csrf.token}"
 						},
 						success:function(result){
 							if(result>0){
-								$('#successdiv').css("display","block");
-								$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-								$('#successdiv').delay(3000).hide(0);
-								
-								$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPeerSubmit('+a+')">UPDATE</button>');
+							$('#successdiv').css("display","block");
+							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+							$('#successdiv').delay(3000).hide(0);
+							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefPeerSubmit('+a+')">UPDATE</button>');
 							}
 						}
 					})
@@ -4621,7 +5002,7 @@ color:#145374;
 				}
 			}
 	 }
-	 
+	 /* update achivement data */
 	function briefNeedSubmit(a){
 		var subpointdiv2Editor =CKEDITOR.instances['subpointdiv2Editor'].getData();
 		if(subpointdiv2Editor.length==0){
@@ -4634,17 +5015,16 @@ color:#145374;
 					url:'BriefPoint2submit.htm',
 					datatype:'json',
 					data:{
-						Achievement:subpointdiv2Editor,
-						initiationid:<%=initiationid%>,
-						${_csrf.parameterName}:	"${_csrf.token}"
+					Achievement:subpointdiv2Editor,
+					initiationid:<%=initiationid%>,
+					${_csrf.parameterName}:	"${_csrf.token}"
 					},
 					success:function(result){
 						if(result>0){
-							$('#successdiv').css("display","block");
-							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
-							$('#successdiv').delay(3000).hide(0);
-							
-							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefNeedSubmit('+a+')">UPDATE</button>');
+						$('#successdiv').css("display","block");
+						$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
+						$('#successdiv').delay(3000).hide(0);
+						$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefNeedSubmit('+a+')">UPDATE</button>');
 						}
 					}
 				})
@@ -4655,7 +5035,7 @@ color:#145374;
 			}
 		}
 	}
-	
+	/*  update trl data*/
 	function briefTRLSubmit(a){
 		var subpointdiv4Editor =CKEDITOR.instances['subpointdiv4Editor'].getData();
 		if(subpointdiv4Editor.length==0){
@@ -4676,7 +5056,6 @@ color:#145374;
 							$('#successdiv').css("display","block");
 							$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">Data  Updated Successfully</div>');
 							$('#successdiv').delay(3000).hide(0);
-							
 							$('#a'+a).html('<button type="button" class="btn btn-sm btn-warning mt-1" onclick="briefTRLSubmit('+a+')">UPDATE</button>');
 						}
 					}
@@ -4688,10 +5067,9 @@ color:#145374;
 			}
 		}
 	} 
-	
-	
-	
+	/*submitting capsi data  */
 	function submitForm6(){
+		var CapsiBudget=$('#CapsiBudget').val();
 		var Station=$('#Station').val().trim();
 		/* var CapsiConsultant=$('#CapsiConsultant').val().trim(); */
 		var Capsiarea=$('#Capsiarea').val().trim();
@@ -4701,7 +5079,10 @@ color:#145374;
 		
 		if(Station.length==0||Capsiarea.length==0||Capsicost.length==0||capsipdc.length==0||capsiconfidence.length==0){
 			alert("Please fill all the fields")
-		}else{
+		}else if(Number(Capsicost)>Number(CapsiBudget)){
+			alert("The given cost is exceeding the budget")
+		}
+		else{
 			if(confirm("Are you sure , you want to submit the data?")){
 				$('#successdiv').css("display","none");
 				$.ajax({
@@ -4740,10 +5121,8 @@ color:#145374;
 				/* 		document.getElementById("CapsiConsultant").value=""; */
 						document.getElementById("Capsiarea").value="";
 						document.getElementById("capsipdc").value="";
-						
 					}
-				}
-					
+				}	
 				})
 			}else{
 				event.preventDefault();
@@ -4751,8 +5130,11 @@ color:#145374;
 			}
 		}
 	}
+	/* Getting Capsi table data */
 function ListModal6(){
-	$('#CAPSILIST').modal('show');
+	var value=$('#mainCapsiBudget').val()
+	$('#tbody6').html('')
+	var x=0;
 	$.ajax({
 		type:'GET',
 		url:'CapsiList.htm',
@@ -4762,31 +5144,71 @@ function ListModal6(){
 		},
 		success:function(result){
 			var ajaxresult=JSON.parse(result);
-			console.log(ajaxresult)
 			if(ajaxresult.length==0){
-			$('#tbody6').html('<tr style="text-align:center;"><td colspan="8">NO DATA ADDED</td></tr>')
+				$('#capsiEdit').hide();
+				document.getElementById("CapsiBudget").value=value
+			$('#tbody6').html('<tr style="text-align:center;"><td colspan="8">No Data Available</td></tr>')
 			}
 			else{
+				$('#capsiEdit').show();
 				var html="";
 				for(var i=0;i<ajaxresult.length;i++){
+					x=x+Number(ajaxresult[i][5]);
 					let str = ajaxresult[i][5];  
 					let num = parseFloat(ajaxresult[i][5])/10000000;  
-
-
 					let formattedNum = num.toLocaleString('en-IN', {
-					  style: 'currency',
-					  currency: 'INR',
-					  minimumFractionDigits: 2,
-					  maximumFractionDigits: 2,
+					 style: 'currency',
+					 currency: 'INR',
+					 minimumFractionDigits: 2,
+					 maximumFractionDigits: 2,
 					});						
-					html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+6+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td></tr>'
+				html=html+'<tr><td align="center"><input type="radio" name="modal1raio" onchange=radiovalueModal1('+ajaxresult[i][0]+','+6+')></td>'+'<td align="center">'+(i+1)+'</td>'+'<td>'+ajaxresult[i][2]+'</td>'+'<td >'+ajaxresult[i][4]+'</td>'+'<td align="right">'+formattedNum+'</td>'+'<td align="center">'+ajaxresult[i][6]+'</td>'+'<td align="center">'+ajaxresult[i][7]+'</td></tr>'
 				}
+				var capsiBudgetLeft=Number(value)-Number(x);
+				if(capsiBudgetLeft==0){
+					$('#capsiAdd').hide();
+				}else{
+					$('#capsiAdd').show();
+				}
+				let str1 = value;  
+				let num1 = parseFloat(str1)/10000000;  
+				let formattedNum1 = num1.toLocaleString('en-IN', {
+				 style: 'currency',
+				 currency: 'INR',
+				 minimumFractionDigits: 2,
+				 maximumFractionDigits: 2,
+				});	
+				let str2 = x;  
+				let num2 = parseFloat(str2)/10000000;  
+				let formattedNum2 = num2.toLocaleString('en-IN', {
+				 style: 'currency',
+				 currency: 'INR',
+				 minimumFractionDigits: 2,
+				 maximumFractionDigits: 2,
+				});	
+				let str3 = capsiBudgetLeft;  
+				let num3 = parseFloat(str3)/10000000;  
+				let formattedNum3 = num3.toLocaleString('en-IN', {
+				 style: 'currency',
+				 currency: 'INR',
+				 minimumFractionDigits: 2,
+				 maximumFractionDigits: 2,
+				});	
+				document.getElementById('TablecapsiCost').innerHTML="Total Budget -"+formattedNum1+" Lakhs"
+				document.getElementById('TablecapsiCostPlanned').innerHTML="Budget planned-"+formattedNum2+" Lakhs"
+				document.getElementById('TablecapsiCostCostLeft').innerHTML="Budget Left -"+formattedNum3+" Lakhs"
+				document.getElementById('EditcapsiCostPlanned').innerHTML="Budget planned-"+formattedNum2+" Lakhs"
+				document.getElementById('EditcapsiCostCostLeft').innerHTML="Budget Left -"+formattedNum3+" Lakhs"
+				document.getElementById("CapsiPlanned").value=x;
+				document.getElementById("CapsiBudget").value=capsiBudgetLeft;
 				$('#tbody6').html(html);
 			}	
 		}
 		
 	})
+	$('#CAPSILIST').modal('show');
 }
+/* open capsi edit modal */
 function showEditModal6(){
 	var radio=$('#radio6').val();
 	if(radio==0){
@@ -4800,32 +5222,41 @@ function showEditModal6(){
 				capsid:radio,
 			},
 			success:function(result){
-				var ajaxresult=JSON.parse(result);
-				document.getElementById("StationEdit").value=ajaxresult[2];
-				document.getElementById("CapsiConsultantEdit").value=ajaxresult[3];
-				document.getElementById("CapsiareaEdit").value=ajaxresult[4];
-				document.getElementById("CapsicostEdit").value=ajaxresult[5];
-				document.getElementById("capsipdcEdit").value=ajaxresult[6];
-				document.getElementById("capsiconfidenceEdit").value=ajaxresult[7];
-				document.getElementById("capsid").value=ajaxresult[0];
-				$('#CapsiEditModal').modal('show');
-				$('#cross17').click();
+			var ajaxresult=JSON.parse(result);
+			document.getElementById("StationEdit").value=ajaxresult[2];
+		/* 	document.getElementById("CapsiConsultantEdit").value=ajaxresult[3]; */
+			document.getElementById("CapsiareaEdit").value=ajaxresult[4];
+			document.getElementById("CapsicostEdit").value=ajaxresult[5];
+			document.getElementById("capsipdcEdit").value=ajaxresult[6];
+			document.getElementById("capsiconfidenceEdit").value=ajaxresult[7];
+			document.getElementById("capsid").value=ajaxresult[0];
+			document.getElementById("previousCapsiCost").value=ajaxresult[5];
+			$('#CapsiEditModal').modal('show');
+			$('#cross17').click();
 			}
 		})
 		
 	}
 }
+/* Edit capsi details */
 function editForm7(){
+	var previousCapsiCost=$('#previousCapsiCost').val();
+	var CapsiPlanned=$('#CapsiPlanned').val();
+	var mainCapsiBudget=$('#mainCapsiBudget').val();
 	var Station=$('#StationEdit').val().trim();
-	var CapsiConsultant=$('#CapsiConsultantEdit').val().trim();
+	/* var CapsiConsultant=$('#CapsiConsultantEdit').val().trim(); */
 	var Capsiarea=$('#CapsiareaEdit').val().trim();
 	var Capsicost=$('#CapsicostEdit').val().trim();
 	var capsipdc=$('#capsipdcEdit').val().trim();
 	var capsiconfidence=$('#capsiconfidenceEdit').val().trim();
 	var capsid=$('#capsid').val();
-	if(Station.length==0||Capsiarea.length==0||CapsiConsultant.length==0||Capsicost.length==0||capsipdc.length==0||capsiconfidence.length==0){
+	var x=Number(CapsiPlanned)+Number(Capsicost)-Number(previousCapsiCost);
+	if(Station.length==0||Capsiarea.length==0||Capsicost.length==0||capsipdc.length==0||capsiconfidence.length==0){
 		alert("Please fill all the fields")
-	}else{
+	}else if(x>Number(mainCapsiBudget)){
+		alert("The given cost is exceeding the total budget")
+	}
+	else{
 		if(confirm("Are you sure,you want to submit?")){
 			$('#successdiv').css("display","none");	
 			$.ajax({
@@ -4833,67 +5264,42 @@ function editForm7(){
 				url:'CapsiEdt.htm',
 				datatype:'json',
 				data:{
-					Station:Station,
-					CapsiConsultant:CapsiConsultant,
-					Capsiarea:Capsiarea,
-					Capsicost:Capsicost,
-					capsipdc:capsipdc,
-					capsiconfidence:capsiconfidence,
-					capsid:capsid,
+				Station:Station,
+				Capsiarea:Capsiarea,
+				Capsicost:Capsicost,
+				capsipdc:capsipdc,
+				capsiconfidence:capsiconfidence,
+				capsid:capsid,
 				},
 			success:function(result){
 				if(result>0){
-					$('#cross18').click();	
-					$('#successdiv').css("display","block");
-					$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">CapsiData   updated successfully</div>');
-					$('#successdiv').delay(3000).hide(0);
-					document.getElementById("radio6").value=0;
+				$('#cross18').click();	
+				$('#successdiv').css("display","block");
+				$('#successdiv').html('<div class="alert alert-success" id="divalert"  role="alert">CapsiData   updated successfully</div>');
+				$('#successdiv').delay(3000).hide(0);
+				document.getElementById("radio6").value=0;
 				}
 				setTimeout(ListModal6, 3000);
 			}
 			
 			})
 		}else{
-			event.preventDefault();
-			return false;
+		event.preventDefault();
+		return false;
 		}
 	}
-	
 }
-
+/*show the work packages  */
 function showWork(){
 	$('#buildingworkDiv').css("display","block");
 	$('#buildingwork').html('<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top" onclick="hideWork()"><i class="btn  fa  fa-minus " style="color: red; padding: 0px  0px  0px  0px;"></i></button>');
 }
+/*Hide the work Packages  */
 function hideWork(){
 	$('#buildingworkDiv').css("display","none");
 	$('#buildingwork').html('<button type="button" class="btn btn-sm bg-transparent plus"  data-toggle="tooltip" data-placement="top" onclick="showWork()"><i class="btn  fa  fa-plus " style="color: green; padding: 0px  0px  0px  0px;"></i></button>');
 }
 
-/* function showCost(){
-	var input="showCarCost";
-	var output="hideCarCost"
-	if(output>input){
-		console.log("The total ammount to be done-"+output-input)
-	}
-	alert("The ammount exceed the total Cost ")
-	var input1="showCapsiCost"
-	var output1="hideCapsiCost"
-	if(output1>input1){
-		console.log("The total ammount to be done-"+output1-input1)
-	}
-	var input2="showConsultancyCost"
-	var output2="hideConsultancyCost"
-	if(output2>input2){
-		console.log("The total ammount to be done-"+output2-input2)
-	}
-	alert("the ammount exceed the total cost");
-	var input3="showWorkCost"
-	var output3="hideWorkCost"
-	if(output3>input3){
-		console.log("The total ammount to be done-"+output3-input3)
-	}
-} */
 </script>
 </body>
 	</html>

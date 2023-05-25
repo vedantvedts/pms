@@ -566,9 +566,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							 
 							 	<button type="submit" class="btn" formaction="ProjectProposal.htm" formtarget="_blank" style="border:none"  data-toggle="tooltip" data-placement="top" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
 							 
-							 	 <button type="submit" class="btn" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="right" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>
+							 	 <button type="submit" class="btn" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="right" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>&nbsp;&nbsp;
 							 
-						</div>	 
+							 	<button type="button" class="btn btn-warning btn-sm prints" formaction="ProjectSanction.htm" formtarget="_blank" style="background:brown;border:none;"  data-toggle="tooltip" data-placement="top" style="background:" title="Project SOC"><img alt="" src="view/images/requirement.png" style="width:19px !important">&nbsp;SOC</button>
+						</div>	 	
 					
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				

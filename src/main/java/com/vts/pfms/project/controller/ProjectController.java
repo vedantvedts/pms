@@ -237,9 +237,63 @@ public class ProjectController
 			req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
 			req.setAttribute("CapsiList", service.CapsiList(initiationid));
 			req.setAttribute("CostDetailsListSummary", serv.CostDetailsListSummary(initiationid));
+			String ConsultancyCost="0.00";
+			String WorksCost="0.00";
+			List<Object[]>CostDetailsListSummary=serv.CostDetailsListSummary(initiationid);
+			if(!CostDetailsListSummary.isEmpty()) {
+				for(Object[]obj:CostDetailsListSummary) {
+					if(obj[0].toString().contains("Consultancy")) {
+						ConsultancyCost=obj[2].toString();
+					}
+				}
+			}else {
+				ConsultancyCost="0.00";
 			}
-			else
-			{
+			if(!CostDetailsListSummary.isEmpty()) {
+				for(Object[]obj:CostDetailsListSummary) {
+					if(obj[0].toString().contains("Jobwork")) {
+						WorksCost=obj[2].toString();
+					}
+				}
+			}else {
+				WorksCost="0.00";
+			}
+			req.setAttribute("WorksCost",WorksCost);
+			req.setAttribute("ConsultancyCost", ConsultancyCost);
+			String trainingCost="0.00";
+			if(!CostDetailsListSummary.isEmpty()) {
+				for(Object[]obj:CostDetailsListSummary) {
+					if(obj[0].toString().contains("Training")) {
+						trainingCost=obj[2].toString();
+					}
+				}
+			}else {
+				trainingCost="0.00";
+			}
+			req.setAttribute("trainingCost", trainingCost);
+			String carscost="0.00";
+			if(!CostDetailsListSummary.isEmpty()) {
+				for(Object[]obj:CostDetailsListSummary) {
+					if(obj[0].toString().contains("CARS")) {
+						carscost=obj[2].toString();
+					}
+				}
+			}else {
+				carscost="0.00";
+			}
+			req.setAttribute("carscost", carscost);
+			String capsicost="0.00";
+			if(!CostDetailsListSummary.isEmpty()) {
+				for(Object[]obj:CostDetailsListSummary) {
+					if(obj[0].toString().contains("CAPSI")) {
+						capsicost=obj[2].toString();
+					}
+				}
+			}else {
+				capsicost="0.00";
+			}
+			req.setAttribute("capsicost", capsicost);
+			}else{
 				if(ProjectIntiationList.size()>0) {
 				String projectshortName=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[4].toString();
 				String initiationid=service.ProjectIntiationList(EmpId,Logintype,LabCode).get(0)[0].toString();
@@ -265,9 +319,65 @@ public class ProjectController
 				req.setAttribute("BriefList", service.BriefTechnicalAppreciation(initiationid));
 				req.setAttribute("CapsiList", service.CapsiList(initiationid));
 				req.setAttribute("CostDetailsListSummary", serv.CostDetailsListSummary(initiationid));
-			}}
-			
-			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
+				String ConsultancyCost="0.00";
+				List<Object[]>CostDetailsListSummary=serv.CostDetailsListSummary(initiationid);
+					if(!CostDetailsListSummary.isEmpty()) {
+						for(Object[]obj:CostDetailsListSummary) {
+							if(obj[0].toString().contains("Consultancy")) {
+								ConsultancyCost = obj[2].toString();
+							}
+						}
+					}else {
+						ConsultancyCost="0.00";
+					}
+					String WorksCost="0.00";
+					if(!CostDetailsListSummary.isEmpty()) {
+						for(Object[]obj:CostDetailsListSummary) {
+							if(obj[0].toString().contains("Jobwork")) {
+								WorksCost=obj[2].toString();
+							}
+						}
+					}else {
+						WorksCost="0.00";
+					}
+					req.setAttribute("WorksCost",WorksCost);
+				req.setAttribute("ConsultancyCost", ConsultancyCost);
+				String trainingCost="0.00";
+				if(!CostDetailsListSummary.isEmpty()) {
+					for(Object[]obj:CostDetailsListSummary) {
+						if(obj[0].toString().contains("Training")) {
+							trainingCost=obj[2].toString();
+						}
+					}
+				}else {
+					trainingCost="0.00";
+				}
+				req.setAttribute("trainingCost", trainingCost);
+				String carscost="0.00";
+				if(!CostDetailsListSummary.isEmpty()) {
+					for(Object[]obj:CostDetailsListSummary) {
+						if(obj[0].toString().contains("CARS")) {
+							carscost=obj[2].toString();
+						}
+					}
+				}else {
+					carscost="0.00";
+				}
+				req.setAttribute("carscost", carscost);
+				String capsicost="0.00";
+				if(!CostDetailsListSummary.isEmpty()) {
+					for(Object[]obj:CostDetailsListSummary) {
+						if(obj[0].toString().contains("CAPSI")) {
+							capsicost=obj[2].toString();
+						}
+					}
+				}else {
+					capsicost="0.00";
+				}
+				req.setAttribute("capsicost", capsicost);
+				}
+				}
+				req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
 		}
 		catch(Exception e) {
 			 logger.error(new Date() +" ProjectSanction.htm "+UserId, e);
@@ -5753,7 +5863,7 @@ public class ProjectController
 	}
 	
 	
-	  @RequestMapping(value="ProjectAdditonalRequirementUpdate.htm",method= RequestMethod.GET)
+	  @RequestMapping(value="ProjectAdditonalRequirementUpdate.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	  public @ResponseBody String ProjectAdditonalRequirementUpdate(HttpSession ses, HttpServletRequest req)
 	  throws Exception {
 	  
@@ -5795,7 +5905,7 @@ public class ProjectController
 
 	
 
-	  @RequestMapping(value="ProjectMethodologyUpdate.htm",method=RequestMethod. GET)
+	  @RequestMapping(value="ProjectMethodologyUpdate.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	  public @ResponseBody String ProjectMethodologyUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
 	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
 	  logger.info(new Date() +"Inside ProjectMethodologyUpdate.htm"+UserId); 
@@ -5833,7 +5943,7 @@ public class ProjectController
 	 } 
 	  return json.toJson(result);
 	 }
-	  @RequestMapping(value="ProjectEnclosuresUpdate.htm",method=RequestMethod. GET)
+	  @RequestMapping(value="ProjectEnclosuresUpdate.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	  public @ResponseBody String ProjectEnclosuresUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
 	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
 	  logger.info(new Date() +"Inside ProjectEnclosuresUpdate.htm"+UserId); 
@@ -5871,7 +5981,7 @@ public class ProjectController
 	  return json.toJson(result);
 	  }
 	
-	  @RequestMapping(value="ProjectOtherInformationUpdate.htm",method=RequestMethod. GET)
+	  @RequestMapping(value="ProjectOtherInformationUpdate.htm",method= {RequestMethod.GET,RequestMethod.POST})
 	  public @ResponseBody String ProjectOtherInformationUpdate(HttpSession ses,HttpServletRequest req) throws Exception { 
 	 Gson json = new Gson(); String UserId=(String)ses.getAttribute("Username");
 	  logger.info(new Date() +"Inside ProjectOtherInformationUpdate.htm"+UserId); 

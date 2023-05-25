@@ -327,7 +327,7 @@ td>table{
 	</tr>
 	</table>	
 			<table  id="mytable" class="border-black"
-							style="width: 650px; margin-left:20px;font-family: 'FontAwesome';">
+							style="width: 650px; margin-left:20px;margin-top:15px;font-family: 'FontAwesome';">
 							<thead style="background: #055C9D;color: black;">
 								<tr>
 								<th class="border-black" style="width:8%;text-align: center;">SN</th>
@@ -373,8 +373,8 @@ td>table{
 	<tr>
 	<td style="width:650px;text-align: left;margin-top: 20px;">
 	<h4>
-	12.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Procurement Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Attached as a Annexure-A)
-	</h4>
+	12.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Procurement Plan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<span style="font-weight:100">(Attached as a Annexure-A)</span></h4>
 	</td>
 	</tr>
 	</table>
@@ -467,8 +467,10 @@ td>table{
 			<p style="font-weight: bold;;">16.It is certified that this technology is not available in India and the selected industry DCPP is not in negative list of Vendors</p>
 			</td></tr>
 		
-			
-			</table>	
+			</table>
+			<br></br>	
+			<h4 style="width:35%;margin-left:10px;"><%=ProjectDetailes[1] %><hr style="padding-bottom: 0px;">
+			</h4><h4 style="text-align:left;margin-left: 80px;margin-top:0px;"> Project Director </h4>
 	<div style="page-break-before:always">&nbsp;</div> 	
  <%
   
@@ -762,143 +764,140 @@ td>table{
 		 
 		 
 		 %>  
-	<table style="margin-left:20px; margin-top:10px; border:0px solid black;font-family:FontAwesome; width:650px;">
+	<table style="margin-left:10px; margin-top:10px; border:0px solid black;font-family:FontAwesome; width:500px;">
 			<tr>
 				<td style="width: 650px; text-align: left; margin-top: 20px;"><h4>
 				9. Breakup of Cost (&#8377; in Cr.):
 				</h4></td></tr></table>		 
-  <table class="executive editor-text-font" style="margin-top:10px; margin-bottom: 10px;margin-left: 3px;width:707px;  " id="cost">
+  <table class="border-black" style="margin-top:10px; margin-bottom: 10px;margin-left: 10px;width:670px;  " id="cost">
 		  <thead>
 			  	<tr> 
-				  	 <th colspan="5">
+				  	 <th colspan="5" class="border_black weight_700 center">
 				  	 		Cost Break-up Table for S&T & PS Projects  <br> (in &#x20B9; Lakhs.) 
 				  	</th> 
 			  	</tr>
 			  	<tr>
-			  		<th rowspan="2"> Minor Head </th>
-			  		<th> Major Head 2080 - Capital <br> Sub Major Head - 05 </th>
-			  		<th> Nodal <br> Lab</th>
-			  		<th> Participating <br> Lab, if any</th>
-			  		<th rowspan="2"> Total <br> (FE) </th>
+			  		<th rowspan="2" class="border_black weight_700 center"> Minor Head </th>
+			  		<th class="border_black weight_700 center" > Major Head 2080 - Capital <br> Sub Major Head - 05 </th>
+			  		<th class="border_black weight_700 center"> Nodal <br> Lab</th>
+			  		<th class="border_black weight_700 center"> Participating <br> Lab, if any</th>
+			  		<th class="border-black" rowspan="2"> Total <br> (FE) </th>
 			  	</tr>
 			  	<tr>
-			  		<th> Heads of Expenditure </th>
-			  		<th> Total (FE) </th>
-			  		<th> Total (FE)</th>
+			  		<th class="border_black weight_700 center"> Heads of Expenditure </th>
+			  		<th class="border_black weight_700 center"> Total (FE) </th>
+			  		<th class="border_black weight_700 center"> Total (FE)</th>
 			  	</tr>
 		  </thead>
 		  
 		  <tbody>
 			  	<tr>
-			  		<td> 105</td>
-			  		<td style="padding:12px;"> Transportation (Movement of Stores) </td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(transportation/100000)%><br>(<%=nfc.convert(FEtransportation/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px; "><%=nfc.convert(transportation/100000)%> (<%=nfc.convert(FEtransportation/100000)%>)</td>
+			  		<td class="border-black"> 105</td>
+			  		<td class="border-black" style="padding:12px;"> Transportation (Movement of Stores) </td>
+			  		<td class="border-black"  style="text-align:right;font-size:13px;"><%=nfc.convert(transportation/100000)%><br>(<%=nfc.convert(FEtransportation/100000)%>)</td>
+			  		<td class="border-black" style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black" style="text-align:right;font-size:13px; "><%=nfc.convert(transportation/100000)%> <br>(<%=nfc.convert(FEtransportation/100000)%>)</td>
 			  	</tr>
 			  	
 			  	<tr>
-			  		<td rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
-			  		<td style="padding:12px;"> Equipment/Stores </td>
-			     	<td style="text-align:right;font-size:13px;"> <%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Equipment/100000)%> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+			  		<td class="border-black" rowspan="7"> 110 <br> (Code Head - <br>856/01)**</td>
+			  		<td class="border-black"style="padding:12px;"> Equipment/Stores </td>
+			     	<td class="border-black"style="text-align:right;font-size:13px;"> <%=nfc.convert(Equipment/100000)%><br> (<%=nfc.convert(FEEquipment/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Equipment/100000)%><br> (<%=nfc.convert(FEEquipment/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;"> CARS</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(CARS/100000)%> (<%=nfc.convert(FECARS/100000)%>)</td>
-			  		
+			  		<td class="border-black" style="padding:12px;"> CARS</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(CARS/100000)%><br> (<%=nfc.convert(FECARS/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(CARS/100000)%><br> (<%=nfc.convert(FECARS/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;"> CAPSI</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(CAPSI/100000)%> (<%=nfc.convert(FECAPSI/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;"> CAPSI</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(CAPSI/100000)%><br> (<%=nfc.convert(FECAPSI/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(CAPSI/100000)%><br> (<%=nfc.convert(FECAPSI/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;"> Consultancy Contracts </td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Consultancy/100000)%> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;"> Consultancy Contracts </td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Consultancy/100000)%><br> (<%=nfc.convert(FEConsultancy/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Consultancy/100000)%> <br>(<%=nfc.convert(FEConsultancy/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;"> Job Work/Contracts/Hiring of <br>Technical Services</td>
-			  		 <td> <%=TechnicalServices %></td> 
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(TechnicalServices/100000)%> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;"> Job Work/Contracts/Hiring of <br>Technical Services</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(TechnicalServices/100000)%><br> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(TechnicalServices/100000)%><br> (<%=nfc.convert(FETechnicalServices/100000)%>)</td>
 
 			  	</tr> 
 				<tr>
-			  		<td style="padding:12px;font-size:13px;"> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;font-size:13px;"> Hiring of Transport,  <br>Fuel/Oil/Lubricants for Project <br> Vehicles</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%><br> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((ProjectVehicles+HiringofTransport)/100000)%><br> (<%=nfc.convert((FEProjectVehicles+FEHiringofTransport)/100000)%>)</td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;">Contingency & Miscellaneous</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Miscellaneous/100000)%> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;">Contingency & Miscellaneous</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Miscellaneous/100000)%><br> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Miscellaneous/100000)%><br> (<%=nfc.convert(FEMiscellaneous/100000)%>)</td>
 
 			  	</tr>
 			  	<tr>
-			 	 	<td> 111</td>
-			  		<td style="padding:12px;"> Works</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert(Works/100000)%> (<%=nfc.convert(FEWorks/100000)%>)</td>
+			 	 	<td class="border-black"> 111</td>
+			  		<td class="border-black"style="padding:12px;"> Works</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Works/100000)%><br> (<%=nfc.convert(FEWorks/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert(Works/100000)%><br> (<%=nfc.convert(FEWorks/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td colspan="2" class="border_black weight_700 right"> Total (Revenue)</td>
-			  	    <td style="text-align:right;font-size:13px;"><%=nfc.convert((transportation + Equipment + CARS +HiringofTransport+ CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
-			  	    (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+FEHiringofTransport)/100000)%>)</td>	
-			  		<td style="text-align:right;font-size:13px;">0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
-			  		(<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+FEHiringofTransport)/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;" colspan="2" class="border_black"> Total (Revenue)</td>
+			  	    <td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((transportation + Equipment + CARS +HiringofTransport+ CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
+			  	 <br> (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+FEHiringofTransport)/100000)%>)</td>	
+			  		<td class="border-black"style="text-align:right;font-size:13px;">0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((transportation + Equipment + CARS + CAPSI + Consultancy + TechnicalServices + ProjectVehicles + Miscellaneous + Works)/100000)%> 
+			  		<br>(<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+FEHiringofTransport)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			 	 	<td rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
-			  		<td style="padding:12px;"> Plant & Machinery </td>
-			  		<td rowspan="2" style="font-size:13px;;text-align:right;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
-			  		<td rowspan="2" style="font-size:13px;text-align:right;">0.00</td>
-			  		<td rowspan="2 " style="text-align:right;font-size:13px;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
+			 	 	<td class="border-black"rowspan="3"> 052 <br>(Code Head - <br>929/24)*** </td>
+			  		<td class="border-black"style="padding:12px;"> Plant & Machinery </td>
+			  		<td class="border-black"rowspan="2" style="font-size:13px;;text-align:right;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %> <br>(<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
+			  		<td class="border-black"rowspan="2" style="font-size:13px;text-align:right;">0.00</td>
+			  		<td class="border-black"rowspan="2" style="text-align:right;font-size:13px;"> <%=nfc.convert((PlantMachinery + ProjectrelatedVehicles)/100000) %><br> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles)/100000) %>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td> Project related Vehicles </td>
+			  		<td class="border-black" style="padding:12px;"> Project related Vehicles </td>
 			  		
 			  	</tr>
 			  	<tr>
-			  		<td style="padding:12px;"> Works </td>
-			  		<td style="text-align:right;font-size:13px;"> <%=nfc.convert(CapWorks/100000) %> (<%=nfc.convert(FECapWorks/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"> <%=nfc.convert(CapWorks/100000) %> (<%=nfc.convert(FECapWorks/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;"> Works </td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> <%=nfc.convert(CapWorks/100000) %><br> (<%=nfc.convert(FECapWorks/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> <%=nfc.convert(CapWorks/100000) %><br> (<%=nfc.convert(FECapWorks/100000)%>)</td>
 			  	</tr>
 			  	
 			  	
 			  	
 			  	<tr>
-			  		<td colspan="2" class="border_black weight_700 right"> Total (Capital)</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+CapWorks)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FECapWorks)/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;">0.00</td>
-			  		<td style="text-align:right;font-size:13px;"><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+CapWorks)/100000)%> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FECapWorks)/100000)%>)</td>
+			  		<td class="border-black"style="padding:12px;"colspan="2" class="border_black"> Total (Capital)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+CapWorks)/100000)%><br> (<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FECapWorks)/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;">0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"><%=nfc.convert((PlantMachinery + ProjectrelatedVehicles+CapWorks)/100000)%> <br>(<%=nfc.convert((FEPlantMachinery + FEProjectrelatedVehicles + FECapWorks)/100000)%>)</td>
 			  	</tr>
 			  	<tr>
-			  		<td colspan="2" class="border_black weight_700 right"> Grand Total (Revenue & Capital)</td>
-			  		<td style="text-align:right;font-size:13px;"> <%=nfc.convert(grandtotal/100000)%>   (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+ FEPlantMachinery + FEProjectrelatedVehicles+FECapWorks+FEHiringofTransport)/100000)%>)</td>
-			  		<td style="text-align:right;font-size:13px;"> 0.00</td>
-			  		<td style="text-align:right;font-size:13px;"> <%=nfc.convert(grandtotal/100000)%></td>
+			  		<td class="border-black"style="padding:12px;"colspan="2" class="border_black "> Grand Total (Revenue & Capital)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> <%=nfc.convert(grandtotal/100000)%> <br>  (<%=nfc.convert((FEtransportation + FEEquipment + FECARS + FECAPSI + FEConsultancy + FETechnicalServices + FEProjectVehicles + FEMiscellaneous + FEWorks+ FEPlantMachinery + FEProjectrelatedVehicles+FECapWorks+FEHiringofTransport)/100000)%>)</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> 0.00</td>
+			  		<td class="border-black"style="text-align:right;font-size:13px;"> <%=nfc.convert(grandtotal/100000)%></td>
 			  	</tr>
 		  </tbody>
   
  </table>
   <h1 class="break"></h1>
-  <%}%>		
-			
+  <%}%>			
 	</div>
 </body>
 </html>
