@@ -9,18 +9,16 @@
 <body>
 
 <% List<Object[]> CashOutGo= (List<Object[]>)request.getAttribute("DashboardFinanceCashOutGo"); 
-/* String Username =(String)session.getAttribute("Username");  
-String EmpNo=(String)session.getAttribute("empNo"); 
-Long loginId=(Long)session.getAttribute("LoginId"); 
-Long divisionId=(Long)session.getAttribute("Division"); 
-Long empId =(Long)session.getAttribute("EmpId"); 
-Long formRoleId=(Long)session.getAttribute("FormRole"); 
-String logintype=(String)session.getAttribute("LoginType"); */
+ String Username =(String)session.getAttribute("Username");  
+String Action = "LoginFromPms";
+String RedirectVal = "ccmReportRedirect";
 
-String ibasUri=(String)request.getAttribute("ibasUri");
-String ibasCashOutGoUri = ibasUri+"/CCMReport.htm";
-   //String ibasCashOutGoUri = ibasUri+"/loginFromPfms/CCMReport.htm";
-   System.out.println("ibasCashOutGoUri :"+ibasCashOutGoUri);
+
+
+String ibasV3Uri=(String)request.getAttribute("ibasV3Uri");
+String pmsToIbasUri = ibasV3Uri+"/login";
+
+
 %>
 
 	<div  class="card " id="project-attributes" style="margin:0px 0px 5px 0px;background-color: rgba(0,0,0,0.1) !important;display: none;">
@@ -82,20 +80,28 @@ String ibasCashOutGoUri = ibasUri+"/CCMReport.htm";
 				      
 				      %>
 
-				<form class="form-inline" target="_blank"  id="ibasform" >  
-				 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>  
-				   <%-- <input type="hidden" name="loginType" value="<%=logintype%>">
-				   <input type="hidden" name="empId" value="<%=empId%>">
-				   <input type="hidden" name="loginId" value="<%=loginId%>">
-				   <input type="hidden" name="divisionId" value="<%=divisionId%>">
-				   <input type="hidden" name="formRoleId" value="<%=formRoleId%>">
-				   <input type="hidden" name="userName" value="<%=Username%>"> 
-				   <input type="hidden" name="empNo" value="<%=EmpNo%>">    --%>
+
+ <form id="pmsToIbasForm" action="CCMReportData.htm"  target="blank" >
+  <%--  <form id="pmsToIbasForm" action="<%=pmsToIbasUri%>"  target="blank" method="get">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <input type="hidden" name="username" value="<%=Username%>">
+     <input type="hidden" name="action" value="<%=Action%>">
+     <input type="hidden" name="redirectVal" value="<%=RedirectVal%>"> --%>
+
+   
+				    
+				   
 				<table class="table cashoutgotable" id="cashoutgotable" >
 				  <thead>
 				    <tr>
-				    <%--  <th style="width:10rem"><button type="submit" class="btn btn-sm" formaction="<%=ibasCashOutGoUri%>"   style="background-color: #f7f7f7;"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</button></th> --%>
-				         <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>
+				 
+                     <th style="width:10rem"><button type="submit" class="btn btn-sm" 
+                    style="background-color: #f7f7f7;"><img src="view/images/rupee.png" /> &nbsp;
+                    Cash Out Go (<span style="color: green">&#8377;</span>Cr)</button> </th>
+
+
+
+				   <!--  <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>  -->
 				      <th scope="col" style="width:10rem">Allot</th>
 				      <th scope="col" style="width:10rem">Exp</th>
 				      <th scope="col" style="width:10rem">Bal</th>
@@ -347,7 +353,7 @@ String ibasCashOutGoUri = ibasUri+"/CCMReport.htm";
 				  
 				  </tbody>
 				</table>
-				</form>
+	</form>
 			</div>
 			   </div>
 	</div>	 
@@ -454,7 +460,11 @@ function CashOutGoProject($ProjectCode)
 	
 }
 
-
+$(document).ready(function() {
+    $('#pmsToIbasForm button').click(function() {
+        $('#pmsToIbasForm').submit();
+    });
+});
 </script>
 
 </body>

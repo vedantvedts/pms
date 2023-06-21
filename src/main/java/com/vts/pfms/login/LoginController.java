@@ -93,6 +93,8 @@ public class LoginController {
     private String ibasUri;
 	@Value("${interval}")
 	private String interval;
+//	@Value("${ibasV3_uri}")
+//    private String ibasV3Uri;
 
 	 @RequestMapping(value = "/login", method = RequestMethod.GET)
 	    public String login(Model model, String error, String logout,HttpServletRequest req,HttpSession ses,HttpServletResponse response) {
@@ -201,6 +203,7 @@ public class LoginController {
 //			     req.setAttribute("budgetlist",rfpmainservice.ProjectBudgets());
 			     req.setAttribute("ibasUri",ibasUri);
 			     req.setAttribute("interval", interval);
+			     req.setAttribute("ibasV3Uri","http:8082/ibas");
 			     req.setAttribute("ProjectInitiationList", headerservice.ProjectIntiationList(EmpId,LoginType).size());
 			     req.setAttribute("mytasklist", headerservice.MyTaskList(EmpId)); 
 			     req.setAttribute("approvallist", headerservice.ApprovalList(EmpId,LoginType));
@@ -215,6 +218,8 @@ public class LoginController {
 			     //req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));
 			     req.setAttribute("DashboardFinanceCashOutGo",rfpmainservice.DashboardFinanceCashOutGo(LoginType,EmpId,LabCode,ClusterId ));
 			     req.setAttribute("DashboardFinance",rfpmainservice.DashboardFinance(LoginType,EmpId,LabCode,ClusterId ));
+			     
+			     
 			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");

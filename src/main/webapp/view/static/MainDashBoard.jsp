@@ -825,7 +825,7 @@ if(ses!=null){ %>
 						</div>
 						
 				</div>
-=         <!----------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV END ---------------->
+     <!----------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV END ---------------->
          </div>
 <!-- @@@@@@@@@@ NESTED ROW SCHEDULE END @@@@@@@@@@  -->		     
 
@@ -4880,10 +4880,31 @@ $projectid=value;
 </script>
 
 
+ <script type="text/javascript">
+$( document ).ready(function() {
 
+	var val=$('#projectid').val();
+
+	$('.carousel').carousel('pause'); 
+	$('.carousel-item').removeClass('active');
+	
+	$('#Mil'+val).addClass('active');
+	$('#Meeting'+val).addClass('active');
+	$('#chart'+val).addClass('active');
+	$('#act'+val).addClass('active');
+	$('#projectname'+val).addClass('active');
+	$('#schedule').addClass('active');
+	$('#notice').addClass('active');
+	$('#actions').addClass('active');
+	$('.vert').carousel('cycle'); 
+	$('#projectinfo'+val).addClass('active');
+	$('#projectdetailsname'+val).addClass('active'); 
+});
+</script> 
 
 
 </body>
+
 
 
 </html> 

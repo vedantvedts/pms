@@ -1,7 +1,8 @@
 /* @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:200,200i,400,400i,600,600i,700,700i'); */
 
 body.document-editor {
-    width: 30.8cm;
+  /*   width: 30.8cm; */
+    width: 20cm;
     min-height: 21cm;
     padding: 0cm 0cm 0cm;
     margin: 0.5cm auto;
@@ -13,7 +14,7 @@ body.document-editor {
     margin-bottom: 10px;
     line-height: 30px;
     font-family: "Times New Roman";
-   
+   overflow-x: hidden;
 }
 
 body.document-editor td, body.document-editor th {
