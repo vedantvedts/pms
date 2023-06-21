@@ -760,7 +760,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 					<tr>
 						<th  style="width: 15px !important;text-align: center;">SN</th>
 						<th  style="width: 335px !important;">Recommendation Point</th>
-						<th  style="width: 80px !important;"> PDC</th>
+						<th  style="width: 150px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
 						<th  style="width: 80px !important;">Status(DD)</th>
 						<th  style="width: 250px !important; ">Remarks</th>
@@ -859,7 +859,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
 								<th  style="width: 300px; ">Action Point</th>
-								<th  style="width: 80px; ">PDC</th>
+								<th  style="width: 100px; ">PDC</th>
 								<th  style="width: 80px; "> ADC</th>
 								<th  style="width: 210px; "> Responsibility</th>
 								<th  style="width: 80px; ">Status(DD)</th>
@@ -1060,7 +1060,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<th  style="width: 30px; ">MS</th>
 										<th  style="width: 60px; ">L</th>
 										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-										<th  style="width: 150px; "> PDC</th>
+										<th  style="width: 100px; "> PDC</th>
 										<th  style="width: 150px; "> ADC</th>
 										<th  style="width: 60px; "> Progress</th>
 										<th  style="width: 50px; "> Status(DD)</th>
@@ -1276,7 +1276,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<th  style="width: 30px; ">MS</th>
 									<th  style="width: 30px; ">L</th>
 									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-									<th  style="width: 110px; "> PDC</th>
+									<th  style="width: 100px; "> PDC</th>
 									<th  style="width: 60px; "> Progress</th>
 									<th  style="width: 50px; "> Status(DD)</th>
 								 	<th  style="width: 320px; "> Remarks</th>
@@ -2084,7 +2084,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<th style="width: 20px; ">MS</th>
 									<th style="width: 20px; ">L</th>
 									<th style="width: 275px;">Action Plan </th>	
-									<th style="width: 90px;" >PDC</th>	
+									<th style="width: 100px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
 					                <th style="width: 50px;padding-right: 5px !important ">Status(DD)</th>
