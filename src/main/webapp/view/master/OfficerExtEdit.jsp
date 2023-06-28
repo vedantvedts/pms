@@ -134,10 +134,11 @@ String seslabid=(String)session.getAttribute("labid");
 
 
 <div class="col-md-3">
-              <div class="form-group">
-					<label >Extension No:</label>
-					<input  class="form-control form-control" id="ExtNo" type="number" name="ExtNo" maxlength="5" style="font-size: 15px;width: 80%;" value="<%=OfficerEditData[4] %>">
+ <div class="form-group">
+					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
+					<input  class="form-control form-control"  type="text" id="ExtNo"  name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width: 80%;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" value="<%=OfficerEditData[4] %>">
 				</div>
+           
 </div>
 
 
@@ -160,16 +161,16 @@ String seslabid=(String)session.getAttribute("labid");
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Drona Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" id="DronaEmail" name="DronaEmail" required="required" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
+					<label >Drona Email:</label>
+					<input  class="form-control form-control" type="email" id="DronaEmail" name="DronaEmail" maxlength="255" style="font-size: 15px;width:100%"  value="<%=OfficerEditData[7] %>" id="">
 			</div>
 </div>
 
 
 <div class="col-md-3">
               <div class="form-group">
-					<label >Internet Email:<span class="mandatory" style="color: red;">*</span></label>
-					<input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail" required="required" maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
+					<label >Internet Email:</label>
+					<input  class="form-control form-control" type="email" id="InternetEmail" name="InternetEmail"  maxlength="255" style="font-size: 15px;width:100%" value="<%=OfficerEditData[8] %>"  id="">
 			</div>
 </div>
 
@@ -301,7 +302,8 @@ function empNoCheck(frmid)
 	var Division=$('#Division').val();
 	
 	console.log(title+salutation+labId+EmpName+Designation+ExtNo+mobilenumber+Email+DronaEmail+InternetEmail+Division);
-	if(labId=== "" ||EmpName==="" ||Designation==="" ||  mobilenumber==="" || Email==="" ||ExtNo===""|| Division==="" ||DronaEmail===""||InternetEmail==="" )
+	if(labId=== "" ||EmpName==="" ||Designation==="" ||  mobilenumber==="" || Email==="" ||ExtNo===""|| Division==="" 
+		 )
 			{
 		alert('Please Fill All Mandatory Fields.');
 		}

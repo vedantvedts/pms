@@ -135,28 +135,33 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 
 
 <div class="col-md-3">
-              <div class="form-group">
-					<label >Extension No:</label>
-					<input  class="form-control form-control" type="number" id="ExtNo" name="ExtNo"  maxlength="4" style="font-size: 15px;width:100%"  >
+     <div class="form-group">
+					<label >Extension No:<span class="mandatory" style="color: red;">*</span></label>
+					<input  class="form-control form-control" type="text" id="ExtNo" name="ExtNo" required="required" maxlength="4" style="font-size: 15px;width:100%" 
+					 placeholder="Extension Number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 			 </div>
+             
 </div>
 
 
 <div class="col-md-3">
               <div class="form-group">
-						<label >Mobile No: <span class="mandatory" style="color: red;">*</span></label>
-						<input  class="form-control form-control" type="text" id="mobilenumber"   name="mobilenumber" required maxlength="10" style="font-size: 15px;width:100%"  >
+					<label >Mobile No:<span class="mandatory" style="color: red;">*</span></label>
+					<input  class="form-control form-control" type="text" id="mobilenumber" value="" name="mobilenumber" maxlength="10" style="font-size: 15px;width:100%"
+					placeholder="Phone No" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 				</div>
+          
 </div>
 
 </div>
 <div class="row">
 
 <div class="col-md-3">
-              <div class="form-group">
-						<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
-						<input  class="form-control form-control" type="email" id="Email" name="Email" required="required" maxlength="255" style="font-size: 15px;width:100%"  >
-			  </div>
+             <div class="form-group">
+					<label >Lab Email:<span class="mandatory" style="color: red;">*</span></label>
+					<input  class="form-control form-control"  type="email" name="Email" id="Email" required="required" maxlength="40" style="font-size: 15px;width:100%" placeholder="Lab Email">
+			 </div>
+            
 </div>
 
 <div class="col-md-3">
