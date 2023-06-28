@@ -1,6 +1,8 @@
 <%@page import="com.vts.pfms.model.FinanceChanges"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@page import="java.math.BigDecimal"%> 
+<%@page import="java.text.Format"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -139,6 +141,7 @@ body {
 <%
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
 List<Object[]> ProjectList = (List<Object[]>)request.getAttribute("ProjectList");
 Object[] ChangesTotalData =(Object[])request.getAttribute("changestotalcount");
@@ -204,7 +207,7 @@ String labcode = (String)request.getAttribute("labcode");
 					</h4>
 				</div>
 				 
-				<div class="col-md-3  " style="float:right; ">
+				<div class="col-md-3  " style="float:right;margin-top: -0.5rem; ">
 					<label>Term : </label>
 					<select class="form-control selectdee" id="interval" required="required" name="interval" onchange="submitform()"  style="width:150px !important">
 						<option value="T"  <%if("T".equalsIgnoreCase(Interval)){ %> selected="selected" <%} %> style="text-align: left !important" >Today</option>
@@ -213,7 +216,7 @@ String labcode = (String)request.getAttribute("labcode");
 					</select>
 				</div>
 				
-				<div class="col-md-3 " style="float:right; ">
+				<div class="col-md-3 " style="float:right;margin-top: -0.5rem; ">
 				
 				<%if(IsDG.equalsIgnoreCase("No")) {%>
 
@@ -610,8 +613,12 @@ String labcode = (String)request.getAttribute("labcode");
 									<td><%=obj.getType() %></td>
 									<td><%=obj.getRefNo() %></td>
 									<td><%=obj.getItemFor() %></td>
-									<td style="text-align: right"><%=obj.getCost() %></td>
-									<td><%=obj.getFirstName() %> <%=obj.getLastName() %></td>
+									<td style="text-align: right;">
+									<%if(obj.getCost()!=null) {%>
+									<%=format.format(new BigDecimal(obj.getCost().toString())).substring(1)%>
+									<%}else{ %>--<%} %>
+									</td>
+                                     <td><%=obj.getFirstName() %> <%=obj.getLastName() %></td>
 									<td style="text-align: center"><%= sdf1.format(sdf2.parse(obj.getCreatedDate().toString()))%></td>
 								</tr>
 								<% m++;} %>				  

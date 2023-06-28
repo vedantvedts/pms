@@ -23,7 +23,7 @@ public interface MasterDao  {
 	public int OfficerMasterUpdate(Employee employee) throws Exception;
 	public List<Object[]> LabList()throws Exception;
 	public Long OfficeMasterExternalInsert(Employee empExternal)throws Exception;
-	public List<Object[]> ExternalOfficerList()throws Exception;
+	public List<Object[]> ExternalOfficerList(String LabCode)throws Exception;
 	public List<Object[]> ExternalOfficerEditData(String officerId) throws Exception;
 	public int OfficerExtUpdate(Employee employee) throws Exception;
 	public Object[] getOfficerDetalis(String officerId)throws Exception;

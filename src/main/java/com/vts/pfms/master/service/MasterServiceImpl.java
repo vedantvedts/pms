@@ -214,8 +214,8 @@ public class MasterServiceImpl implements MasterService {
 	}
 	
 	@Override
-	public List<Object[]>  ExternalOfficerList()throws Exception{
-		return dao.ExternalOfficerList();
+	public List<Object[]>  ExternalOfficerList(String LabCode)throws Exception{
+		return dao.ExternalOfficerList(LabCode);
 	}
 	@Override
 	public List<Object[]> ExternalOfficerEditData(String officerId)throws Exception{

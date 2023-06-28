@@ -37,7 +37,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String EMPEXTNOCHECK="SELECT empno FROM employee_external";
 	private static final String OFFICERMASTERUPDATE="UPDATE employee SET title=:title, salutation=:salutation, empno=:empno, empname=:empname, desigid=:desigid, MobileNo=:mobileno, extno=:extno, email=:email, DronaEmail=:dronaemail, InternetEmail=:internetemail, divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
     private static final String CLUSTERLAB="SELECT LabId, ClusterId, LabCode FROM cluster_lab";
-    private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid ,'active',a.isactive  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  ORDER BY a.empid DESC";
+    private static final String EXTERNALOFFICERLIST="SELECT a.empid, a.empno, CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname', b.designation, a.extno, a.email, c.divisionname, a.desigid, a.divisionid ,'active',a.isactive  FROM employee a,employee_desig b, division_master c WHERE a.desigid= b.desigid AND a.divisionid= c.divisionid  AND a.Labcode<>:labcode ORDER BY a.empid DESC";
 	private static final String EXTERNALOFFICEREDITDATA="select empid,empno,empname,desigid,extno,email,divisionid,DronaEmail,InternetEmail,MobileNo,Labcode,title , salutation from employee  where empid=:empid";
 	private static final String EXTERNALOFFICERMASTERUPDATE="UPDATE employee SET salutation=:salutation ,title=:title, labcode=:labcode,empno=:empno, empname=:empname, desigid=:desigid, extno=:extno, MobileNo=:mobileno, email=:email,DronaEmail=:dronaemail, InternetEmail=:internalemail , divisionid=:divisionid, modifiedby=:modifiedby, modifieddate=:modifieddate WHERE empid=:empid" ;
 	
@@ -200,8 +200,9 @@ public class MasterDaoImpl implements MasterDao {
 		
 	}
 	@Override
-	public List<Object[]> ExternalOfficerList()throws Exception{
+	public List<Object[]> ExternalOfficerList(String LabCode)throws Exception{
 		Query query=manager.createNativeQuery(EXTERNALOFFICERLIST);
+		query.setParameter("labcode", LabCode);
 		List<Object[]> OfficerList=(List<Object[]>)query.getResultList();
 		return OfficerList;
 	}

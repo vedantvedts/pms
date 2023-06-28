@@ -184,11 +184,8 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			                                </div>
 			                            </div> -->
 			                            <div class="sparkline13-graph">
-			                                <div class="datatable-dashv1-list custom-datatable-overright">
-			                                
-			                                 
-			                                    
-			                                   	   <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
+			                               <!--  <div class="datatable-dashv1-list custom-datatable-overright"> -->
+			                                    <table class="table table-bordered table-hover table-striped table-condensed "  id="myTableExpert"> 
 			                                        <thead style=" text-align: center;">
 			                                         
 			                                            <tr>
@@ -258,7 +255,7 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 			                                             <%}%>
 													 <%} %>
 											</tbody>
-				    						<tfoot>
+				    					<!-- 	<tfoot>
 				    						<tr>
 				    					
 				    						<td colspan="8" align="right">
@@ -266,11 +263,11 @@ List<Object[]> expertList=(List<Object[]>)request.getAttribute("ExpertList");
 				    						</td>
 				    						</tr>
 				    						
-				    						</tfoot>
+				    						</tfoot> -->
 				    
 			                                    </table>
 			                      
-			                                </div>
+			                               <!--  </div> -->
 			                            </div>
 			                        </div>
 			                    </div>
@@ -312,12 +309,7 @@ function Prints(myfrm){
 	}
 
 
-$(document).ready(function(){
-	
-	$("#myTable").DataTable({
-		"pageLength": 5
-	})
-})
+
 
 function Delete(myfrm){
 
@@ -334,6 +326,18 @@ function Delete(myfrm){
 	
 	}
 
+</script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	  $("#myTableExpert").DataTable({
+	 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 5
+});
+});
+  
 </script>
 
 </body>

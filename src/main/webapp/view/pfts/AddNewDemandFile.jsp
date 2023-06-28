@@ -5,7 +5,9 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%> 
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@page import="java.text.Format"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
     
@@ -158,6 +160,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 SimpleDateFormat sdf2=new SimpleDateFormat("dd-MM-yyyy");
 List<DemandDetails> demandList=(List<DemandDetails>)request.getAttribute("demandList");
 String projectId=request.getAttribute("projectId").toString();
+Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
 
 %>
 
@@ -196,14 +199,19 @@ String projectId=request.getAttribute("projectId").toString();
 												<td><%=demand.getDemandNo() %></td>
 												<td><%=sdf.format(sdf1.parse(demand.getDemandDate())) %></td>
 												<td><%=demand.getItemFor() %></td>
-												<td><%=demand.getEstimatedCost() %></td>
+												<td style="text-align: right;">
+									               <%if(demand.getEstimatedCost()!=null) {%>
+									                 <%=format.format(new BigDecimal(demand.getEstimatedCost().toString())).substring(1)%>
+									                <%}else{ %>--<%} %>
+									            </td>
+												
 												<td>
 													<form action="AddDemandFileSubmit.htm" method="post">
 														<input type="hidden" name="DemandNo" id="DemandNoId" value="<%=demand.getDemandNo() %>" >
 														<input type="hidden" name="projectId" id="projectIdId" value="<%=demand.getProjectId() %>" >
 														<input type="hidden" name="demandDate" id="demandDateId" value="<%=demand.getDemandDate() %>" >
 														<input type="hidden"  name="ItemNomcl" id="ItemNomclId" value= "<%=demand.getItemFor() %>" >
-														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%=demand.getEstimatedCost() %>" >
+														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%format.format(new BigDecimal(demand.getEstimatedCost().toString())).substring(1);%>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 														<button type="submit" class="btn" onclick="return confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>

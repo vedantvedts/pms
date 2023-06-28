@@ -310,10 +310,11 @@ public class MasterController {
 	public String OfficerExtList(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception{
 
 		String UserId= (String)ses.getAttribute("Username");
+		String LabCode= (String)ses.getAttribute("labcode");
 		logger.info(new Date() +" Inside OfficerExtList.htm "+UserId);
 		try {
 	
-		     req.setAttribute("OfficerList", service.ExternalOfficerList());
+		     req.setAttribute("OfficerList", service.ExternalOfficerList(LabCode));
 			     
 		}catch (Exception e) {
 			e.printStackTrace();

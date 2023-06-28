@@ -23,7 +23,7 @@ public interface MasterService {
 	public Long OfficerMasterInsert(OfficerMasterAdd officermasteradd, String UserId) throws Exception;
 	public int OfficerMasterUpdate(OfficerMasterAdd officermasteradd, String UserId) throws Exception;
 	public List<Object[]> LabList()throws Exception;
-	public Object ExternalOfficerList()throws Exception;
+	public Object ExternalOfficerList(String LabCode)throws Exception;
 	public List<Object[]> ExternalOfficerEditData(String officerId)throws Exception;
 	public Object[] getOfficerDetalis(String officerId)throws Exception;
 	public int updateSeniorityNumber(String empid, String newSeniorityNumber)throws Exception;

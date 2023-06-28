@@ -2311,7 +2311,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<tr>
 								<th  style="width: 20px !important;text-align: center;">SN</th>
 								<th  style="width: 270px;">Issue Point</th>
-								<th  style="width: 80px; "> PDC</th>
+								<th  style="width: 100px; "> PDC</th>
 								<th  style="width: 80px; "> ADC</th>
 								<th  style="width: 210px; ">Responsibility</th>
 								<th  style="width: 50px; ">Status(DD)</th>	

@@ -193,20 +193,52 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 			   			<div class="col-md-6">
 							<h4>Procurement Status</h4>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<%-- <form method="post" action="ProjectBriefing.htm" target="_blank">
 								<input type="hidden" name="projectid" value="<%=projectid%>"/>
 								<button type="submit" ><img src="view/images/preview3.png"></button>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form> --%>
-						</div>						
-						<div class="col-md-3 justify-content-end" style="float: right;">
-							<table style="margin-top: -10px;">
-								<tr>
-									<td  style="border: 0 "><h4>Project :</h4></td>
+						</div>				
+						<!-- <div class="col-md-10" style="float: right; margin-top: -8px;">
+						   <div class="form-inline" style="justify-content: end;margin-bottom:3rem;">
+						   <form action="CCMReport.htm" method="POST" id="ccmReport" autocomplete="off"> 
+						   <input type="hidden" name="_csrf" value="9b5c3d2d-453a-4566-8d9b-9c311c9ea7d9"> 
+						   <table>
+					   					<tbody><tr>
+					   						<td>
+					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date : </label>
+					   						</td>
+					   						<td>
+					   						  <input onchange="this.form.submit()" class="form-control date" type="text" name="DateCCM" id="date" readonly="readonly" style="width: 11rem; background-color:white; text-align: left;" value="26-06-2023"> 
+					   						</td>
+					   						
+					   						<td>
+					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Select: </label>
+					   						</td>
+					   						<td>
+					   						 <select class="form-control selectdee select2-hidden-accessible" id="selDigitType" name="DigitSel" required="required" onchange="this.form.submit()" data-live-search="true" data-select2-id="selDigitType" tabindex="-1" aria-hidden="true">
+                                               <option value="Rupees" selected="selected" data-select2-id="2">Rupees</option>
+						                       <option value="Lakhs">Lakhs</option>
+						                       <option value="Crores">Crores</option>     
+											</select><span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="1" style="width: 96px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-selDigitType-container"><span class="select2-selection__rendered" id="select2-selDigitType-container" role="textbox" aria-readonly="true" title="Rupees">Rupees</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>					   		
+					   				       </td>
+					   					</tr>
+					   		</tbody></table>			
+						   </form>
+						   </div>
+						 </div>	 -->	
+						<div class="col-md-3 justify-content-end" style="float: right;margin-top: -0.75rem;">
+						   <div class="form-inline" style="justify-content: end;margin-bottom:2rem;">
+						  <table >
+					   					<tbody><tr>
+					   						<td style="border: 0 ">
+					   							<label class="control-label" style="font-size: 17px;font-weight:bold; margin-bottom: .0rem;">Project : </label>
+					   						</td>
 									<td  style="border: 0 ">
 										<form method="post" action="ProcurementStatus.htm" id="projectchange" >
-											<select class="form-control selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+											
+											<select class="form-control selectdee select2-hidden-accessible" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<%for(Object[] obj : projectslist){ %>
 												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4] %></option>
 												<%} %>
@@ -217,6 +249,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 								</tr>
 							</table>
 							
+						</div>
 						</div>
 					 </div>
 					 	 <div class="card-body">	
@@ -238,7 +271,11 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                             <td><%=SN++%></td>
                                             <td><%=fileStatus[1]%></td>
                                             <td><%=fileStatus[4]%></td>
-                                            <td style="text-align: right;"><%=format.format(new BigDecimal(fileStatus[3].toString())).substring(1)%></td>
+                                            <td style="text-align: right;">
+                                            <%if(fileStatus[3]!=null) {%>
+                                            <%=format.format(new BigDecimal(fileStatus[3].toString())).substring(1)%>
+                                            <%}else{ %>--<%} %>
+                                            </td>
                                             <td >
                                               <table style="margin-left:4rem;">
                                                <tr>

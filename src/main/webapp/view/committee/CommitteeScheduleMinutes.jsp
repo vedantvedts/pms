@@ -1543,7 +1543,7 @@ if(formname!=null){
    					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;">
 						<label >Action Name</label>
 
-						 <textarea class="form-control" required="required"  name="NoteText" id="editorair" style="width:100%;" maxlength="1000"></textarea>
+						 <textarea class="form-control" required="required"  name="NoteText" id="editorair" style="width:100%;height: 140px;" maxlength="1000"></textarea>
 					</div>
 
   					
