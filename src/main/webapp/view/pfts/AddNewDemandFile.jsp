@@ -211,7 +211,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 														<input type="hidden" name="projectId" id="projectIdId" value="<%=demand.getProjectId() %>" >
 														<input type="hidden" name="demandDate" id="demandDateId" value="<%=demand.getDemandDate() %>" >
 														<input type="hidden"  name="ItemNomcl" id="ItemNomclId" value= "<%=demand.getItemFor() %>" >
-														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%format.format(new BigDecimal(demand.getEstimatedCost().toString())).substring(1);%>" >
+														<input type="hidden"  name="Estimtedcost" id="EstimtedcostId"  value= "<%=demand.getEstimatedCost()%>" >
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 														<button type="submit" class="btn" onclick="return confirm('Are You Sure To Add This Demand?');"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
