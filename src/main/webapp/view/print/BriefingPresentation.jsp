@@ -2062,18 +2062,25 @@
 							<th colspan="2">Remarks</th>
 						</tr>
 						<%
+						
 						if (procurementOnSanction.get(z) != null && procurementOnSanction.get(z).size() > 0) {
 							k = 0;
+							int rowspan = 0; 
+				        
 							Double estcost = 0.0;
 							Double socost = 0.0;
 							String demand = "";
 							for (Object[] obj : procurementOnSanction.get(z)) {
+								
+								
 								if (obj[2] != null) {
 							if (!obj[1].toString().equals(demand)) {
 								k++;
+					
+					             List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 						%>
 						<tr>
-							<td rowspan="2" style="text-align: center;"><%=k%></td>
+							<td rowspan="<%=list.size()+1%>" style="text-align: center;"><%=k%></td>
 							<td><%=obj[1]%></td>
 							<td style="text-align: center"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 							<td colspan="2" style="text-align: justify;"><%=obj[8]%></td>
@@ -2084,7 +2091,7 @@
 								<% } else { %> - <% } %>
 							</td>
 						</tr>
-						<% demand = obj[1].toString(); } %>
+						<% demand = obj[1].toString(); } /*  else { demandCount++; }  */%>
 						<tr>
 							<td>
 								<% if (obj[2] != null) { %> <%=obj[2]%> <% } else { %>-<% } %>
