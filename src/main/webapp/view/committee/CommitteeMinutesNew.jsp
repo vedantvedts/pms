@@ -4,11 +4,15 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.text.Format"%>
-<%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.text.Format"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="com.vts.pfms.master.dto.ProjectFinancialDetails"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
+<%@page import="com.ibm.icu.text.DecimalFormat"%>
+<%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" import="java.util.*"%>
 <!DOCTYPE html>
@@ -996,46 +1000,55 @@ for(Object[] temp : invitedlist){
 												 <th class="std" colspan="2"> Nomenclature</th>
 												 <th class="std" > Est. Cost</th>
 												 <th class="std" style="max-width: 80px; "> Status</th>
-												 <th class="std" style="max-width: 200px;">SO Cost</th>
+												 <th class="std" style="max-width: 310px;">Remarks</th>
 												</tr>
+											
 											<tr>
-												
 												 <th class="std"  style="max-width: 150px;">Supply Order No</th>
 												 <th class="std" style="max-width: 90px;	">DP Date</th>
 												 <th class="std" colspan="2" style="max-width: 90px;">Vendor Name</th>
 												 <th class="std" style="max-width: 80px;">Rev DP</th>											 
-												 <th  class="std" colspan="3" style="max-width: 90px;">Remarks</th>		
-											 		
+												 <th class="std"  colspan="2" >SO Cost-Lakh &#8377;</th>			
 											</tr>
-										    <%if(procurementOnSanction!=null && procurementOnSanction.size()>0){
-										    	k=0;
-										    	 Double estcost=0.0;
-												 Double socost=0.0;
-												 String demand="";
-										  	 	for(Object[] obj:procurementOnSanction)
-										  	 	{ 
-										  	 		if(obj[2]!=null){ 
-										  	 		if(!obj[1].toString().equals(demand)){
+											
+										    <%
+										        if(procurementOnSanction!=null && procurementOnSanction.size()>0){
+										    	  k=0;
+										    	  Double estcost=0.0;
+												  Double socost=0.0;
+												  String demand="";
+										  	 	   for(Object[] obj:procurementOnSanction){ 
+										  	 		 if(obj[2]!=null){ 
+										  	 		    if(!obj[1].toString().equals(demand)){
 										  	 			k++;
+										  	 			
+										  	 		 	//list is to get a size so it can be used as rowspan value
+										  	 		 	  List<Object[]> list = procurementOnSanction.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+										  	 		 	
 										  	 		%>
+												
+											    <!-- 1st Row Label Values -->
 												<tr>
-													<td class="std" rowspan="2" ><%=k%></td>
+													<td class="std" rowspan="<%=list.size()+1%>" ><%=k%></td>
 													<td class="std" ><%=obj[1]%> </td>
 													<td class="std"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													<td class="std"  colspan="2"><%=obj[8]%></td>
 													<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												    <td class="std"> <%=obj[10]%> </td>
-													<td class="std" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %> </td>	
+												    <td class="std" ><%=obj[11]%></td>		
+													
 												</tr>
-												<%demand=obj[1].toString();
-												} %>
+												<%demand=obj[1].toString();} %>
+												
+												<!-- 2nd Row Label Values -->
 												<tr>
 													
 													<td class="std" ><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %> </td>
 													<td class="std" ><%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %></td>
 													<td class="std" colspan="2"> <%=obj[12] %> </td>
 													<td class="std"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></td>
-				                                    <td class="std" colspan="3" ><%=obj[11]%></td>												
+				                                    <td class="std" colspan="2" style=" text-align: right;"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %> </td>	
+				                               										
 				
 												</tr>		
 												<% }

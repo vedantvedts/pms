@@ -2051,7 +2051,7 @@
 							<th colspan="2" style="width: 295px;">Nomenclature</th>
 							<th style="width: 80px;">Est. Cost<!-- -Lakh &#8377; --></th>
 							<th style="width: 50px;">Status</th>
-							<th style="width: 310px;">SO Cost<!-- -Lakh &#8377; --></th>
+							<th style="width: 310px;">Remarks</th>
 
 						</tr>
 						<tr>
@@ -2059,26 +2059,26 @@
 							<th style="">DP Date</th>
 							<th colspan="2" style="">Vendor Name</th>
 							<th >Rev DP</th>
-							<th colspan="2">Remarks</th>
+							<th   colspan="2" >SO Cost-Lakh &#8377;</th>	
+						
 						</tr>
 						<%
-						
-						if (procurementOnSanction.get(z) != null && procurementOnSanction.get(z).size() > 0) {
-							k = 0;
-							int rowspan = 0; 
-				        
-							Double estcost = 0.0;
-							Double socost = 0.0;
-							String demand = "";
-							for (Object[] obj : procurementOnSanction.get(z)) {
-								
-								
-								if (obj[2] != null) {
-							if (!obj[1].toString().equals(demand)) {
-								k++;
-					
-					             List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
+						  if (procurementOnSanction.get(z) != null && procurementOnSanction.get(z).size() > 0) {
+							 k = 0;
+							 int rowspan = 0; 
+				             Double estcost = 0.0;
+							 Double socost = 0.0;
+							 String demand = "";
+							 
+							      for (Object[] obj : procurementOnSanction.get(z)) {
+								     if (obj[2] != null) {
+							           if (!obj[1].toString().equals(demand)) {
+								       k++;
+								   	//list is to get a size so it can be used as rowspan value
+					                 List<Object[]> list = procurementOnSanction.get(z).stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
 						%>
+						
+						 <!-- 1st Row Label Values -->
 						<tr>
 							<td rowspan="<%=list.size()+1%>" style="text-align: center;"><%=k%></td>
 							<td><%=obj[1]%></td>
@@ -2086,22 +2086,24 @@
 							<td colspan="2" style="text-align: justify;"><%=obj[8]%></td>
 							<td style="text-align: right;"><%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 							<td><%=obj[10]%></td>
-							<td style="text-align: right;">
-								<% if (obj[6] != null) { %> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%>
-								<% } else { %> - <% } %>
-							</td>
+							<td><%=obj[11]%></td>
 						</tr>
-						<% demand = obj[1].toString(); } /*  else { demandCount++; }  */%>
+						<% demand = obj[1].toString(); } %>
+						
+						<!-- 2nd Row Label Values -->
 						<tr>
-							<td>
-								<% if (obj[2] != null) { %> <%=obj[2]%> <% } else { %>-<% } %>
-							</td>
+							<td><% if (obj[2] != null) { %> <%=obj[2]%> <% } else { %>-<% } %></td>
 							<td style="text-align: center">
 								<% if (obj[4] != null) { %> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <% } else { %> - <% }%>
 							</td>
 							<td colspan="2"><%=obj[12]%></td>
-							<td style="text-align:center"><%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %></td>
-							<td colspan="2"><%=obj[11]%></td>
+							<td style="text-align:center">
+							   <%if(obj[7]!=null){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}else{ %>-<%} %>
+							</td>
+							<td  colspan="2" style=" text-align: right;">
+				                <%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> 
+				                <%} else{ %> - <%} %>
+				            </td>	
 						</tr>
 						<% }
 
@@ -2222,7 +2224,7 @@
 									 	<tr>
 											<th style="width: 40x">SN</th>
 											<th style="width: 280px;">Item Name</th>
-											<th style="width: 155px;">Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 155px;">Est/SO Cost <br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
 											<th style="width: 35px">1</th>
 											<th style="width: 35px">2</th>
 											<th style="width: 35px">3</th>
@@ -2245,13 +2247,12 @@
 									 	</tr>
 									</thead>
 									<tbody>
-										<%	List<Object[]> procuremntsList = new ArrayList<>();
-											
+								    <%	List<Object[]> procuremntsList = new ArrayList<>();
 											if( procurementOnDemand.get(z)!=null ){  procuremntsList.addAll(procurementOnDemand.get(z)); }
 											if( procurementOnSanction.get(z)!=null ){  procuremntsList.addAll(procurementOnSanction.get(z)); }
-										%>
-										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
-											<tr>
+									%>
+									     <%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
+											  <tr>
 												<td style="text-align:center; "><%=psn %></td>
 												<td>
 													<%if(proc[8].toString().length()>60){ %>
@@ -2261,7 +2262,7 @@
 													<%} %>
 												</td>
 												<td style="text-align: right;">
-													<%if(proc[8].toString().equalsIgnoreCase("S")){ %>
+													<%if(proc[9].toString().equalsIgnoreCase("S")){ %>
 														<%=proc[6] %>
 													<%}else{ %>
 														<%=proc[5] %>
