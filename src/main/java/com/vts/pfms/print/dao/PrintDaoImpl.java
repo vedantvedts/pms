@@ -807,7 +807,7 @@ public class PrintDaoImpl implements PrintDao {
 			return BriefingScheduleList;
 		}
 		
-		private static final String  BRIEFINGMEETINGVENUE ="SELECT cs.scheduleid, cs.meetingid,cs.scheduledate,cs.schedulestarttime,cs.scheduleflag, cs.MeetingVenue  FROM committee_schedule cs, committee_meeting_status  cms WHERE cs.isactive=1 AND cms.meetingstatus=cs.scheduleflag AND cms.meetingstatusid < 7 AND cs.committeeid=:committeeid AND cs.projectid=:projectid  ORDER BY cs.scheduledate ASC LIMIT 1";
+		private static final String  BRIEFINGMEETINGVENUE ="SELECT cs.scheduleid, cs.meetingid,cs.scheduledate,cs.schedulestarttime,cs.scheduleflag, cs.MeetingVenue  FROM committee_schedule cs, committee_meeting_status  cms WHERE cs.isactive=1 AND cms.meetingstatus=cs.scheduleflag AND cs.committeeid=:committeeid AND cs.projectid=:projectid AND ( CASE  WHEN cs.scheduledate<=CURDATE() THEN cs.scheduledate=CURDATE() ELSE cms.meetingstatusid < 7 END) ORDER BY cs.scheduledate ASC LIMIT 1";
 		@Override
 		public Object[] BriefingMeetingVenue( String projectid, String committeeid) throws Exception 
 		{
