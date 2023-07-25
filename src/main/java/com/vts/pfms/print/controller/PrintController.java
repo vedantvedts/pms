@@ -345,7 +345,7 @@ public class PrintController {
     	}		
 	}
 	
-	@RequestMapping(value="ProjectProposal.htm", method = RequestMethod.POST )
+	@RequestMapping(value="ProjectProposal.htm", method = {RequestMethod.POST,RequestMethod.GET} )
 	public String ProjectProposal(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception 
 	{
 	String UserId = (String) ses.getAttribute("Username");
@@ -2979,7 +2979,7 @@ public class PrintController {
 	
 	
 	
-	  @PostMapping("/GanttChartUpload.htm") 
+	  	@PostMapping("/GanttChartUpload.htm") 
 	    public String GanttChartUpload(@RequestParam("FileAttach") MultipartFile file,HttpServletRequest req,RedirectAttributes redir,HttpSession ses) {
 		  String UserId = (String) ses.getAttribute("Username");
 		  String Labcode = (String) ses.getAttribute("labcode");

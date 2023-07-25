@@ -162,7 +162,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 				
  					</form> 
 
-                    <table class="table table-bordered table-hover  table-condensed ">
+                    <table class="table table-bordered table-hover  table-condensed mt-2">
                     	<thead>
                         	<tr>
                             	<th >Item</th>

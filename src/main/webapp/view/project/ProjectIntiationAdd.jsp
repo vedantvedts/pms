@@ -154,9 +154,6 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
         		</div>
         
         		<div class="card-body">
-        
-        			
-                
 		                <div class="row">
 		                    
 		                    <div class="col-md-3 ">
@@ -211,9 +208,6 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 									</select>
 		                        </div>
 	                    	</div> 
-	                    	
-	                    	
-
 		            </div> 
 
 						<hr>
@@ -284,7 +278,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 												<option> Others </option>
 												</select>
 						</div>	                    
-	                    </div>
+	                    </div> 
 	                </div>
 	                
 					<hr>

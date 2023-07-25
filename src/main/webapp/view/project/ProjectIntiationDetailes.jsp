@@ -21,12 +21,39 @@ overflow-x: auto;
 #initiation  {
 padding-left:0px;
 }
+
+#scrollButton {
+	display: none; /* Hide the button by default */
+	position: fixed;
+	/* Fixed position to appear in the same place regardless of scrolling */
+	bottom: 11%;
+	right: 30px;
+	z-index: 99; /* Ensure it appears above other elements */
+	font-size: 15px;
+	border: none;
+	outline: none;
+	background-color: #007bff;
+	color: white;
+	cursor: pointer;
+	padding: 10px;
+	border-radius: 4px;
+}
 .addreq {
 	margin-left: -10%;
 	margin-top: 5%;
 }
 .column p{
 	padding: 0px !important;
+}
+#MyTable1>thead{
+    background: #055C9D;
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+}
+#MyTable1:hover{
+box-shadow: 2px 2px 2px gray;
+margin:8px;
 }
 #modalreqheader {
 	background: #145374;
@@ -105,6 +132,10 @@ font-family: 'Montserrat', sans-serif;
 }
 #addreq{
 width:40%;
+}
+.modalbtn{
+font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif !important;
+font-weight: 800 !important;
 }
 #reqmodal{
  width: 140%;
@@ -195,11 +226,20 @@ align-items: center;
 justify-content: center;
 }
 
+#modalbody{
+border-radius: 10px;
 
+}
+#modalbody:hover{
+box-shadow: 4px 4px 4px gray;
+margin:30px;
+}
+.modals{
+box-shadow: 2px 2px 2px gray;
+}
 </style>
 </head>
 <body>
-
 <%
 Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes"); 
 Object[] ProjectProgressCount=(Object[])request.getAttribute("ProjectProgressCount"); 
@@ -214,9 +254,10 @@ SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 String Details=(String)request.getAttribute("Details");
 String DetailsEdit=(String)request.getAttribute("DetailsEdit");
-List<Object[]>ReqTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
-List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList");
+/* List<Object[]>ReqTypeList=(List<Object[]>)request.getAttribute("reqTypeList");
+List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementList"); */
 List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
+Object[]SQRFile=(Object[])request.getAttribute("SQRFile");
 %>
 
 
@@ -279,14 +320,19 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
              	<span style="color: #335d2d">( Project Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>) )</span> 
              
              <%} %>
-             
-             
-             
-             
+
              <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important; float: right;">BACK</a>
              
-             <span  style="color: #335d2d;float:right;margin-top: 5px;"> <%if(ProjectDetailes[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectDetailes[16] %> &nbsp;&nbsp;&nbsp;&nbsp; <%} %> </span>
-					
+             <span class="mr-2" style="color: #335d2d;float:right;margin-top: 5px;"> <%if(ProjectDetailes[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectDetailes[16] %> &nbsp;&nbsp;&nbsp;&nbsp; <%} %> </span>
+			 <span style="display:inline-block;float: right">
+             <form action="#">
+    			  <button type="submit" class="btn btn-sm" formmethod="GET" formaction="ProjectProposal.htm" formtarget="_blank" style="border:none"  data-toggle="tooltip" data-placement="bottom" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
+				  <button type="submit" class="btn btn-sm" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="bottom" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>&nbsp;&nbsp;
+	 			  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+				  <input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
+							 
+    			</form>
+             </span>
              </h3> 
         <hr style=" margin: 0 !important;">
         
@@ -352,32 +398,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 						</form>	
              <%} %> 
             </li>
-             <%--
-              <li class="nav-item"  >
-             <%if(Integer.parseInt(ProjectProgressCount[5].toString())>0){ %>
-               <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
-              <a class="nav-link active" id="nav" data-toggle="tab" href="#requirement" role="tab" >
-              <%}else{ %>
-              <a class="nav-link" data-toggle="tab" href="#requirement" role="tab" >
-                <%} %>
-             <!--  <i class="fa fa-th-large" aria-hidden="true" style="color:#005086"></i> -->
-              <img src="view/images/requirement.png" style="vertical-align: sub">
-				REQUIREMENTS
-              </a>
-               <%} else{%>
-               <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
-                  <a class="nav-link condn-nav-link" data-toggle="tab" href="#requirement" role="tab" onclick='$("#ReqAdd").submit()'>
-		<!-- 		<i class="fa fa-th-large" aria-hidden="true" style="color:#005086"></i> -->
-		 <img src="view/images/requirement.png" style="vertical-align: sub">
-				REQUIREMENTS
-              </a>
-                   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-						</form>	
-               <%} %> 
-            </li>  --%>
-            
-            
+         
             <li class="nav-item" >
             <%if(Integer.parseInt(ProjectProgressCount[1].toString())>0){ %>
                <%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %>
@@ -422,7 +443,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                 <%} %>
             </li>
             
-                      <li class="nav-item" >
+              <li class="nav-item" >
              <%if(Integer.parseInt(ProjectProgressCount[3].toString())>0){ %>
               <%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %>
               <a class="nav-link active" id="nav" data-toggle="tab" href="#attachment" role="tab" >
@@ -443,6 +464,8 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 						</form>	
                 <%} %>
             </li>
+             <li class="nav-item" >
+            </li>  
             
           </ul>
         </div>
@@ -563,12 +586,9 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank" formmethod="GET"  >Print Executive Summary</button>&nbsp;&nbsp;
 							 
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank" formmethod="GET" >Print Project Proposal</button>&nbsp;&nbsp;
-							 
-							 	<button type="submit" class="btn" formaction="ProjectProposal.htm" formtarget="_blank" style="border:none"  data-toggle="tooltip" data-placement="top" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
-							 
-							 	 <button type="submit" class="btn" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="right" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>&nbsp;&nbsp;
-							 
-							 	<button type="button" class="btn btn-warning btn-sm prints" formaction="ProjectSanction.htm" formtarget="_blank" style="background:brown;border:none;"  data-toggle="tooltip" data-placement="top" style="background:" title="Project SOC"><img alt="" src="view/images/requirement.png" style="width:19px !important">&nbsp;SOC</button>
+							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectSanction.htm"  style="background:brown;border:none;"  data-toggle="tooltip" data-placement="top" style="background:" title="Project SOC"><img alt="" src="view/images/requirement.png" style="width:19px !important">&nbsp;SOC</button>
+							<button type="button"  class="btn btn-sm prints bg-secondary" style="border:white;" onclick="showsqrModal()">SQR</button>
+							<input type="hidden" name="project" value="<%=ProjectDetailes[0]+"/"+ProjectDetailes[6]+"/"+ProjectDetailes[7]%>">
 						</div>	 	
 					
 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -1462,7 +1482,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 										
 										
 						            </div>
-						            
+						         <button onclick="scrollToTop()" id="scrollButton"
+			data-toggle="tooltip" data-placement="top" data-original-data=""
+			title="Go to Top">
+			<i class="fa fa-arrow-up" aria-hidden="true"></i>
+		</button>
 						            <%} %>
 						            
 						        </div> <!-- tab-vertical ends -->
@@ -1486,9 +1510,6 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               	<%}else{ %>
  				<div class="tab-pane" id="requirement" role="tabpanel" style=" margin-top: -12px;">
                 <%} %> 
-                <div class="col-md-12">
-      
-                						</div>
                  <div class="container-fluid" style="margin-top:7px;">
 		        <div class="row">
 		            <div class="col-md-12 details_container">
@@ -1508,46 +1529,6 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				<th style="width:70%" class="text-nowrap" >Brief</th>
 				<th style="width:14%">Action</th>
 			<!-- 	<th style="width:20%">ADD</th> -->
-	 			 <tbody style="background-color:whitesmoke;">
-	 		
-	 			 <%
-	 			 if(RequirementList!=null)
-	 				 for(Object obj[]:RequirementList){
-	 			 %>     
-	 			 	 <tr style="position:inherit;">
-	 				<td><%=i+"." %></td>
-	 			 	<td><%=obj[1] %></td>
-	 			   	<td style="text-align:left; padding-left: 44px !important;"><%=obj[3] %></td>
-	 				<td>
-	 				<div id="reqaction">
-	 			 <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5">
-					<input type="hidden" name="InitiationReqId" value="<%=obj[0]%>">
-					<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-					<input type="hidden" id="Req<%=obj[0]%>" value ="<%=obj[4] %>" />
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
-					<button type="submit" title="EDIT" class="btn btn-warning" name="action" value="EDIT" id="reqbtn1" >
-					<i class="fa fa-pencil" aria-hidden="true" style="color:green; font-size: 10px; float:right;"></i>
-					</button>
-			
-					<button type="button" class=""    id="reqbtn2" title="View" onclick="showdata('<%=obj[0]%>','<%=obj[1]%>')"   >
-					<div class="cc-rockmenu">
-					 <div class="rolling">
-					<figure class="rolling_icon"><img src="view/images/preview3.png" style="width:18px;" ></figure>
-					</div> </div>
-					</button>
-					
-					<button type="submit" title="DELETE" class="btn btn-danger " name="action" value="Delete" id="" style="float:right;margin-top:2%;margin-right: 24% " >
-					<i class="fa fa-trash" aria-hidden="true" style="color:white; font-size: 10px; float:right;"></i>
-					</button>
-				</form>
-					</td>
-					</div>
-	 				 </tr>
-	 			 <%
-	 			 i++;
-	 				 } %>
-	 			
-	 			 </tbody>
 	 			 </table>
 	 			</div>
 	 			<hr>
@@ -1559,22 +1540,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                 	 </button>
 				                  	</form>		
 	 			</div>
-	 			 		<div class="modal fade  bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" style="">
- 						 <div class="modal-dialog modal-lg" role="document">
-    						<div class="modal-content" id="reqmodal">
-      						<div class="modal-header" style="background: antiquewhite;">
-     			  			 <h5 class="modal-title" id="exampleModalLongTitle" style="font-family: 'Lato',sans-serif;color: #005086; font-size:28px; ">
-     					  	<b>Requirement Description</b> </h5><span style="font-family: 'Lato',sans-serif;color: #005086; margin-left:5px;margin-top:20px; font-size:12px; float:right;">(<b id="reqid"></b>)</span>
-       					 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        				  <span aria-hidden="true">&times;</span>
-       						 </button>
-    					  </div>
-     						 <div class="modal-body" style="padding:0px;background: aliceblue;" >
-     						        <div id="reqmodalbody" style="text-align:justify;!important; padding:20px ;font-family: 'Lato'"> </div>
-    								  </div>
-  								  </div>
-  									</div>
-										</div>
+	 
 				 </div> 
 						        </div>
 						        </div>
@@ -1610,7 +1576,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				               
 				                <div class="table-responsive">
 				                  <table class="table table-bordered table-hover table-striped table-condensed ">
-                                        <thead>
+                                        <thead style="background: #055C9D;color:white;">
                                          
                                             <tr>
                                                 <th >Item</th>
@@ -1641,7 +1607,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									    		<td style="width: 550px;" align="left"><%=obj[4] %></td>
 									    		<td style="text-align: right">&#8377; <%=nfc.convert(Double.parseDouble(obj[5].toString().split("\\.")[0])/100000) %></td>
 								 				<td align="center"><%-- <button type="button" class="btn btn-sm btn-success ml-2" onclick="showAddModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">ADD</button>  --%>
-								 				<button type="button" class="btn btn-sm btn-info ml-2" onclick="viewModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">VIEW</button></td>
+								 				<button type="button" class="btn btn-sm btn-info ml-2" onclick="viewModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)" style="font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif">VIEW</button></td>
 								 			</tr>
 								
 									    <% cost=cost+Double.parseDouble(obj[5].toString()) ;
@@ -2276,7 +2242,131 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				</div>
 			</div>
 		</div>
-					
+	<div class="modal fade bd-example-modal-lg" id="sqrModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="margin-left:-10%;width:120%;">
+        <div class="modal-header" style="background: antiquewhite;">
+        <h5 class="modal-title" id="exampleModalLabel" style="color:#07689f !important;">Staff Qualification Requirement</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hidemodalbody()">
+          <span aria-hidden="true" style="color:red;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <table class="table table-bordered" id="MyTable1">
+      <thead>
+      <tr style="text-align: center;">
+      <th>SN</th>
+      <th>User</th>
+      <th>Ref No.</th>
+      <th>Date</th>
+      <th>Version</th>
+      <th>Issuing Authority</th>
+      <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%if(SQRFile==null){ %>
+      <tr>
+      <td colspan="7" style="text-align:center;">No Data Available</td>
+      </tr>
+      <%}else{ %>
+      <tr>
+      <td style="text-align: center">1.</td>
+      <td>
+      <%if(SQRFile[0].toString().equalsIgnoreCase("IA")) {%>Indian Army<%} %>
+      <%if(SQRFile[0].toString().equalsIgnoreCase("IN")) {%>Indian Navy<%} %>
+      <%if(SQRFile[0].toString().equalsIgnoreCase("OH")) {%>Others<%} %>
+      <%if(SQRFile[0].toString().equalsIgnoreCase("DO")) {%>DRDO<%} %>
+      <%if(SQRFile[0].toString().equalsIgnoreCase("IAF")) {%>Indian Air Force<%} %>
+      </td>
+      <td ><%if(SQRFile[1]!=null) {%><%=SQRFile[1].toString()%><%} %></td>
+      <td><%if(SQRFile[5]!=null){%><%=(sdf.format(SQRFile[5])) %><%} %></td>
+      <td style="text-align: right"><%if(SQRFile[4]!=null) {%><%=SQRFile[4].toString()%><%}%></td>
+       <td><%if(SQRFile[3]!=null) {%><%=SQRFile[3].toString()%><%}%></td>
+       <td align="center"><button class="btn btn-sm bg-transparent"><i class="fa fa-download" aria-hidden="true" style="color:green;"></i></button></td>
+      </tr>
+      <%} %>
+      </tbody>
+      </table>
+      <div align="center">
+<!--       <button type="button" class="btn btn-success btn-sm modalbtn" onclick="showmodalbody()">ADD</button>
+      <button type="button" class="btn btn-warning btn-sm ml-2 modalbtn">EDIT</button></div> -->
+     <span id="SQRdata"> <button class="btn btn-lg bg-transparent" id="sqr" onclick="showmodalbody()"><i class="fa fa-lg fa-caret-down" aria-hidden="true" style="color:green"></i></button></span>
+     <form action="ProjectSqrSubmit.htm" method="post" enctype="multipart/form-data">
+      <div id="modalbody" class="mt-2" style="padding:20px;display:none;background: aliceblue">
+      <div class="col-md-12">
+      <div class="row">
+      <div class="col-md-3">
+      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">User:</label>
+     <span class="mandatory" style="color: red;">*</span>
+      </div>
+      <div class="col-md-4">
+      <select class="form-control modals" required name="users">
+      <option value="IA" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IA")) {%>selected<%} %>>Indian Army</option>
+      <option value="IN" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IN")) {%>selected<%} %>>Indian Navy</option>
+      <option value="IAF" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IAF")) {%>selected<%} %>>Indian Air Force</option>
+      <option value="DO" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("DO")) {%>selected<%} %>>DRDO</option>
+      <option value="OH"  <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("OH")) {%>selected<%} %>>Other</option>
+      </select>
+      </div>
+      </div>
+      <div class="row mt-2" >
+      <div class="col-md-3">
+      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">Refernce No:</label>
+      <span class="mandatory" style="color: red;">*</span>
+      </div>
+      <div class="col-md-4">
+      <input class="form-control modals" type="text" required name="refNo" maxlength="255 characters" value="<%if(SQRFile!=null && SQRFile[1]!=null) {%><%=SQRFile[1].toString()%><%} %>">
+      </div>
+      </div>
+       <div class="row mt-2">
+       <div class="col-md-4">
+      <label style="font-size: 17px; margin-top: 5%;  margin-left: -5%; color: #07689f;font-weight:bold">Issuing Authority:</label>
+     	<span class="mandatory" style="color: red;">*</span>
+      </div>
+      <div class="col-md-4" style="margin-left: -6%;">
+      <input type="text" class="form-control modals" name="IssuingAuthority" required maxlength="255 characters" value="<%if(SQRFile!=null && SQRFile[3]!=null) {%><%=SQRFile[3].toString()%><%} %>">
+      </div>
+      </div>
+      <div class="row mt-2">
+      <div class="col-md-3">
+      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">  Version No.&nbsp;:</label>
+     	<span class="mandatory" style="color: red;">*</span>
+      </div>
+      <div class="col-md-4">
+      <input class="form-control modals" id="versionUpdates" type="text" style="width:50%;float:left;" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="version" 
+      value="<%if(SQRFile!=null && SQRFile[4]!=null) {%><%=SQRFile[4].toString()%><%} %>" <%if(SQRFile!=null) {%>readonly<%} %>>
+      <%if(SQRFile!=null){%>
+     <span id="versionUpdatespan"> <button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button><%} %>  </span> </div>
+      </div>
+      <div class="row mt-2">
+      <div class="col-md-3">
+      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">Choose file:</label>
+		<span class="mandatory" style="color: red;">*</span>     
+      </div>
+      <div class="col-md-6">
+      <input type="file" class="form-control modals" required accept=".pdf" name="Attachments">
+      </div>
+      </div>
+      <div align="center" class="mt-3">
+  	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />	
+	<input type="hidden" name="initiationid"	value="<%=ProjectDetailes[0] %>" /> 
+	<input type="hidden" name="projectShortName"	value="<%=ProjectDetailes[6] %>" /> 
+     <span>
+     <%if(SQRFile!=null) {%>
+     <button class="btn btn-sm edit" type="submit" onclick="return confirm('Are you sure you want to update?')" style="box-shadow:2px 2px 2px gray;">UPDATE</button>
+     <%}else{ %>
+     <button class="btn btn-sm submit" type="submit" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
+      <%} %>
+      </span>
+      </div>
+      </div>
+      </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>		
 <script type="text/javascript">
 
 
@@ -2430,7 +2520,7 @@ function balanceCheck(){
 	var cost=$('#cost').val();
 	var totabudgetcost=$('#totabudgetcost').val();
 	if(Number(cost)>totabudgetcost){
-		alert("You don't have enough budget")
+		alert("The given cost is exceeding the total budget left.")
 	}
 }
 
@@ -2563,7 +2653,6 @@ function checKDemand(){
  function chechKTender(){
 	var tender=$('#Tender').val().trim();
 	var Order=$('#Order').val().trim();
-	console.log(Order+"----")
 	if(Number(tender)>Number(Order)){
 	alert("Order Month should be more than tender month!")
 	document.getElementById("Order").value=tender;
@@ -2572,7 +2661,6 @@ function checKDemand(){
 	}
 	
 }
-
 function chechkOrder(){
 	var Order=$('#Order').val().trim();
 	var Payment=$('#Payout').val();
@@ -2580,7 +2668,6 @@ function chechkOrder(){
 	alert("Payment Month should be more than Order month!")
 	document.getElementById("Payout").value=Order;
 	}
-	
 }
 function submitProcurementPlan(){
 	var Item=$('#Item').val().trim();
@@ -2702,7 +2789,7 @@ $('#cross2').click(function (){
 				 $('#costedit').val(ajaxresult[4]);
 			/* 	 $('#Approvededit').val(ajaxresult[9]); */
 				 if(ajaxresult[9]=="Y"){
-					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="YES" checked>  YES  <input style="margin-left: 15px;" type="radio" name="Approved1" value="NO">  NO');
+					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" checked>  YES  <input style="margin-left: 15px;" type="radio" name="Approved1" value="N">  NO');
 				 }else{
 					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" >  YES  <input style="margin-left: 10px;" type="radio" name="Approved1" value="N" checked>  NO');
 
@@ -2725,7 +2812,6 @@ $('#cross2').click(function (){
 $('#cross3').click(function (){
 	document.getElementById("planid").value=0;
 })
-
 function EditProcurement(a,b){
 	var Item=$('#Itemedit').val().trim();
 	var Purpose=$('#Purposeedit').val().trim();
@@ -2773,7 +2859,6 @@ function EditProcurement(a,b){
 						$('#successdiv').html('<div class="alert alert-danger" id="divalert"  role="alert">Data  update unsuccessful</div>');
 						$('#successdiv').delay(3000).hide(0);
 					}
-					
 				}
 			})
 		
@@ -2782,14 +2867,50 @@ function EditProcurement(a,b){
 			return false;
 		}
 	}
-
 }
+function showsqrModal(){
+	$('#sqrModal').modal('show');
+}
+function showmodalbody(){
+	$('#modalbody').show();
+	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="hidemodalbody()"><i class="fa fa-lg fa-caret-up" aria-hidden="true" style="color:green"></i></button>')
+}
+function hidemodalbody(){
+	$('#modalbody').hide();
+	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="showmodalbody()"><i class="fa fa-lg fa-caret-down" aria-hidden="true" style="color:green"></i></button>')
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button>');
+	/* $("#versionUpdates").attr("readonly", true); */
+}
+
+function versionUpdate(){
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdateClose()"><i class="fa fa-lg fa-times" aria-hidden="true" style="color:red"></i></button>');
+	$("#versionUpdates").attr("readonly", false);
+}
+function versionUpdateClose(){
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button>');
+	$("#versionUpdates").attr("readonly", true);
+}
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	})
 </script>
-
-
-
-
-
+	<script>
+  // Show the button when the user scrolls down a certain distance
+  window.onscroll = function() { scrollFunction() };
+  		function scrollFunction() {
+	    var scrollButton = document.getElementById("scrollButton");
+	    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+	      scrollButton.style.display = "block";
+	    } else {
+	      scrollButton.style.display = "none";
+	    }
+	  	}
+  	// Scroll to the top when the button is clicked
+  	function scrollToTop(){
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+ 	}
+  </script>
 </body>
 </html>
        									

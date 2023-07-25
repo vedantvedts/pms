@@ -9,7 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name = "pfms_rtmddo")
+/* @Table(name = "pfms_rtmddo") */
+ @Table(name="pfms_initiation_Approver") 
 public class PfmsRtmddo  implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,13 @@ public class PfmsRtmddo  implements Serializable{
 	private String ModifiedDate;
 	private int IsActive;
 	private String LabCode;
+	private Long InitiationId; 
+	public Long getInitiationId() { 
+		return InitiationId; 
+		} 
+	public void setInitiationId(Long initiationId) { 
+		InitiationId= initiationId; 
+		}
 	
 	public String getLabCode() {
 		return LabCode;

@@ -3,14 +3,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-	
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>PMS</title>
+<%-- <spring:url value="/resources/css/Multiselect1.css" var="Multiselect1Css" />     
+<link href="${Multiselect1Css}" rel="stylesheet" /> --%>
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<%--  <spring:url value="/resources/js/Multiselect1.js" var="Multiselect1js" />  
+<script src="${Multiselect1js}"></script>  --%>
 <style type="text/css">
 label {
 	font-weight: bold;
@@ -24,6 +27,23 @@ label {
 body {
 	background-color: #f2edfa;
 	overflow-x: hidden !important;
+}
+
+#scrollButton {
+	display: none; /* Hide the button by default */
+	position: fixed;
+	/* Fixed position to appear in the same place regardless of scrolling */
+	bottom: 20px;
+	right: 30px;
+	z-index: 99; /* Ensure it appears above other elements */
+	font-size: 18px;
+	border: none;
+	outline: none;
+	background-color: #007bff;
+	color: white;
+	cursor: pointer;
+	padding: 15px;
+	border-radius: 4px;
 }
 
 h6 {
@@ -78,8 +98,9 @@ select:-webkit-scrollbar { /*For WebKit Browsers*/
 .requirementid::-webkit-scrollbar {
 	display: none;
 }
-.requirementid:hover{
-padding:13px;
+
+.requirementid:hover {
+	padding: 13px;
 }
 
 .viewbtn {
@@ -92,9 +113,10 @@ padding:13px;
 
 .viewbtn:hover {
 	cursor: pointer !important;
-	background-color:#22c8e5 !important;
-	border:none !important;
-	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)!important;
+	background-color: #22c8e5 !important;
+	border: none !important;
+	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0
+		rgba(0, 0, 0, 0.19) !important;
 }
 
 .viewbtn1 {
@@ -126,7 +148,7 @@ hr {
 }
 
 .addreq {
-	margin-left: -10%;
+	margin-left: -20%;
 	margin-top: 5%;
 }
 
@@ -192,10 +214,12 @@ hr {
 	align-items: center;
 	box-shadow: 4px 4px 4px gray;
 }
-@keyframes blinker {
-  20% {
-    opacity: 0.65;
-  }
+
+@
+keyframes blinker { 20% {
+	opacity: 0.65;
+}
+
 }
 #attachmentadd, #attachmentaddedit {
 	display: flex;
@@ -222,16 +246,82 @@ hr {
     background-size: cover;
 
 } */
-#reqdiv:hover{
-
-box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)!important;
+#reqdiv:hover {
+	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0
+		rgba(0, 0, 0, 0.19) !important;
 }
 
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+.multiselect {
+	padding: 4px 90px;
+	background-color: white;
+	border: 1px solid #ced4da;
+	height: calc(2.25rem + 2px);
+}
+.modal-dialog-jump-pop {
+	animation: jumpIn .5s ease;
+}
+.modal-dialog-jump {
+	animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>
 
 </head>
 <%
-List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("ProjectIntiationList"); 
+	List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("ProjectIntiationList"); 
  	String projectshortName=(String)request.getAttribute("projectshortName");
 	String initiationid=(String)request.getAttribute("initiationid");
 	String projectTitle=(String)request.getAttribute("projectTitle");
@@ -240,8 +330,14 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
  	String filesize=(String) request.getAttribute("filesize"); 
  	String initiationReqId=(String)request.getAttribute("initiationReqId");
  	List<Object[]>RequirementFiles=(List<Object[]>)request.getAttribute("RequirementFiles");
- 	
- 	
+ 	Object[]RequirementStatus=(Object[])request.getAttribute("RequirementStatus");
+ 	List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
+ 	Boolean b=false;
+ 	if(RequirementStatus!=null){
+ 	if(RequirementStatus[1].toString().equalsIgnoreCase("RIN")||RequirementStatus[1].toString().equalsIgnoreCase("RID")||RequirementStatus[1].toString().equalsIgnoreCase("RIP")||RequirementStatus[1].toString().equalsIgnoreCase("RIA")||RequirementStatus[1 ].toString().equalsIgnoreCase("RIT")){
+ 	b=true;
+ 	}
+ 	}
 %>
 
 <body style="background-color: white;">
@@ -262,11 +358,14 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 		</div>
 	</div>
 	<%} %>
-<%if(ProjectIntiationList==null ) {%>
-		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;"><h3>No Data Available!</h3></div>
+	<%if(ProjectIntiationList==null ) {%>
+	<div
+		style="margin-top: 20%; display: flex; justify-content: center; align-items: center;">
+		<h3>No Data Available!</h3>
+	</div>
 	<%}else{ %>
 	<div id="reqmain" class="card-slider">
-		<form class="form-inline" method="POST"
+		<%-- 		<form class="form-inline" method="POST"
 			action="ProjectRequirement.htm">
 			<div class="row W-100" style="width: 80%; margin-top: -0.5%;">
 				<div class="col-md-2" id="div1">
@@ -280,7 +379,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
                                         for(Object[]obj:ProjectIntiationList){%>
 						<option value="<%=obj[0]+"/"+obj[4]+"/"+obj[5]%>"
 							<%if(obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
-							selected <%} %>><%=obj[4] %></option>
+							selected <%}else {%>disabled<%} %>><%=obj[4] %></option>
 						<%}} %>
 					</select>
 				</div>
@@ -289,42 +388,37 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 					value="${_csrf.token}" /> <input id="submit" type="submit"
 					name="submit" value="Submit" hidden="hidden">
 			</div>
-		</form>
+		</form> --%>
 		<div class="container-fluid" style="display: none;" id="main">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card shadow-nohover" style="margin-top: -0px;">
 						<div class="row card-header"
 							style="background: #C4DDFF; box-shadow: 2px 2px 2px grey;">
-							<div class="col-md-8" id="projecthead">
+							<div class="col-md-9" id="projecthead">
 								<h5 style="margin-left: 1%;">
-									<%="Project" +" "+projectshortName+" "+ "Requirements List" %>
+									<%=" "+projectshortName+" "+ "System Requirements List" %>
 								</h5>
 							</div>
-							<div class="col-md-2">
-								<form action="#">
-								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" /> <input type="hidden"
-									name="projectshortName" value="<%=projectshortName%>" /> <input
-									type="hidden" name="IntiationId" value="<%=initiationid%>" />
-									<span id="downloadform">
-								<button type="submit" class="btn btn-sm" formmethod="GET"
-									style="margin-top: -3%;
-									<%if(RequirementList.size()>0) {%>display:block;<%}else{%>display:none;<%} %> " formtarget="_blank"
-									formaction="RequirementDocumentDownlod.htm"
-									data-toggle="tooltip" data-placement="top"
-									title="Download file">
-									<i class="fa fa-download fa-sm" aria-hidden="true"></i>
-								</button></span>
-							</form>
-							</div>
-							<div class="col-md-2" id="addReqButton">
+
+							<div class="col-md-3" id="addReqButton">
 								<input type="hidden" name="${_csrf.parameterName}"
 									value="${_csrf.token}" /> <input type="hidden"
 									name="projectshortName" value="<%=projectshortName %>" /> <input
 									type="hidden" name="IntiationId" value="<%=initiationid %>" />
-								<button class="btn btn-success btn-sm" style="margin-top: -5%;"
-									type="button" onclick='showdata()' data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="ADD REQUIREMENTS">ADD REQUIREMENETS</button>
+								<form action="#">
+									<input type="hidden" name="project"
+										value="<%=initiationid+"/"+projectshortName+"/"+projectTitle%>">
+									<%if(b||RequirementStatus==null) {%>
+									<button class="btn btn-success btn-sm submit" style="margin-top: -3%;"
+										type="button" onclick='showdata()' data-toggle="tooltip"
+										data-placement="top" data-original-data=""
+										title="ADD REQUIREMENTS">ADD REQUIREMENETS</button>
+									<%} %>
+									<button class="btn btn-info btn-sm  back ml-2"
+										formaction="ProjectOverAllRequirement.htm" formmethod="get"
+										formnovalidate="formnovalidate" style="margin-top: -3%;">BACK</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -337,7 +431,7 @@ List<Object[]> ProjectIntiationList=(List<Object[]>)request.getAttribute("Projec
 			style="display:block;<%if(RequirementList.size()>9){%>height:400px;<%}%>">
 
 			<%int count=1;
-for(Object []obj:RequirementList) {%>
+			for(Object []obj:RequirementList) {%>
 			<button type="button" class="btn btn-secondary viewbtn mt-2"
 				id="<%=obj[0] %>" value="<%=obj[0]%>"><%=obj[1] %></button>
 			<%count++;} %>
@@ -349,7 +443,7 @@ for(Object []obj:RequirementList) {%>
 						<div class="row">
 							<div class="col-md-12">
 								<div class="row">
-									<div class="col-md-2" id="reqName" style="max-width: 12%;"></div>
+									<div class="col-md-2" id="reqName"></div>
 									<div class="col-md-10" style="" id="editreq"></div>
 
 								</div>
@@ -398,6 +492,20 @@ for(Object []obj:RequirementList) {%>
 								</div>
 								<hr>
 							</div>
+							<!-- category -->
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-2" style="margin-top: 1%">
+										<h5
+											style="font-size: 20px; color: #005086; width: fit-content">Category:</h5>
+									</div>
+									<div class="col-md-10" style="margin-top: 1%;">
+										<p id="categoryShow" style="font-size: 18px;">azxzczxc</p>
+									</div>
+								</div>
+								<hr>
+							</div>
+
 							<div class="col-md-12" style="">
 								<h5 style="font-size: 22px; color: #005086; width: fit-content">Description
 								</h5>
@@ -420,6 +528,7 @@ for(Object []obj:RequirementList) {%>
 										<div class="col-md-10" style="margin-top: 1%;">
 											<p id="remarksshow" style="font-size: 18px;"></p>
 										</div>
+
 										<div class="row">
 											<input type="hidden" name="IntiationId"
 												value="<%=initiationid %>" /> <input type="hidden"
@@ -429,15 +538,32 @@ for(Object []obj:RequirementList) {%>
 										</div>
 									</div>
 								</div>
+								<hr>
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-2" style="margin-top: 1%">
+											<h5
+												style="font-size: 20px; color: #005086; width: fit-content">Constraints:</h5>
+										</div>
+										<div class="col-md-10" style="margin-top: 1%;">
+											<p id="constrainshow" style="font-size: 18px;"></p>
+										</div>
+									</div>
+								</div>
 							</form>
 						</div>
 
 					</div>
 				</div>
 			</div>
+
 			<%} %>
 		</div>
-
+		<button onclick="scrollToTop()" id="scrollButton"
+			data-toggle="tooltip" data-placement="top" data-original-data=""
+			title="Go to Top">
+			<i class="fa fa-arrow-up" aria-hidden="true"></i>
+		</button>
 		<!--modal for empty list  -->
 		<div class="modal fade" id="exampleModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -468,7 +594,7 @@ for(Object []obj:RequirementList) {%>
 											value="${_csrf.token}" /> <input type="hidden"
 											name="projectshortName" value="<%=projectshortName %>" /> <input
 											type="hidden" name="IntiationId" value="<%=initiationid %>" />
-										<button class="btn btn-success btn-sm"
+										<button class="btn btn-primary btn-sm submit"
 											style="margin-top: -5%;" type="button" onclick='showdata()'>ADD
 											REQUIREMENETS</button>
 									</div>
@@ -480,6 +606,8 @@ for(Object []obj:RequirementList) {%>
 					</div>
 				</div>
 			</div>
+
+
 		</div>
 		<div style="display: none;">
 			<button type="button" class="btn btn-primary show"
@@ -491,8 +619,8 @@ for(Object []obj:RequirementList) {%>
 			<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 120%;">
+				<div class="modal-dialog modal-lg modal-dialog-jump">
+					<div class="modal-content addreq" style="width: 150%;">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
 							<button type="button" class="close" data-dismiss="modal"
@@ -500,14 +628,14 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div style="height: 550px; overflow: auto;">
+						<div style="height: 550px; overflow: auto;" id="scrollclass">
 							<div class="modal-body">
 								<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label
-												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
-												of Requirements<span class="mandatory" style="color: red;">*</span>
+												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">
+												Requirement Type<span class="mandatory" style="color: red;">*</span>
 											</label>
 										</div>
 										<div class=col-md-3>
@@ -516,7 +644,7 @@ for(Object []obj:RequirementList) {%>
 												data-live-search="true" style="margin-top: 5%">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
 												<%if(!RequirementTypeList.isEmpty()){
-							for(Object[] obj:RequirementTypeList){ %>
+												for(Object[] obj:RequirementTypeList){ %>
 												<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
 												<%}}%>
 											</select>
@@ -527,7 +655,7 @@ for(Object []obj:RequirementList) {%>
 												class="mandatory" style="color: red;">*</span></label>
 										</div>
 										<div class=col-md-3>
-											<select required="required" id="select" name="priority"
+											<select required="required" id="priorityAdd" name="priority"
 												class="form-control selectpicker" data-width="80%"
 												data-live-search="true" style="margin-top: 5%">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
@@ -540,19 +668,35 @@ for(Object []obj:RequirementList) {%>
 
 									<div class="col-md-12">
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
 													Type<span class="mandatory" style="color: red;">*</span>
 												</label>
 											</div>
 											<div class="col-md-3">
-												<select required="required" id="needtype" name="needtype"
+												<select required="required" id="needtypeadd" name="needtype"
 													class="form-control selectpicker" data-width="80%"
 													data-live-search="true" style="margin-top: 5%">
 													<option disabled="disabled" value="" selected="selected">Choose..</option>
 													<option value="E">Essential</option>
 													<option value="D">Desirable</option>
+												</select>
+											</div>
+											<div class="col-md-2">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Category<span
+													class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-3">
+												<select required="required" id="categoryAdd" name="Category"
+													class="form-control selectpicker" data-width="80%"
+													data-live-search="true" style="margin-top: 5%">
+													<option disabled="disabled" value="" selected="selected">Choose..</option>
+													<option value="E">Environmental</option>
+													<option value="P">Performance</option>
+													<option value="M">Maintenance</option>
 												</select>
 											</div>
 										</div>
@@ -561,39 +705,66 @@ for(Object []obj:RequirementList) {%>
 										<div class="row">
 											<div class="col-md-4">
 												<label
-								
-								
-								
-								
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
 													Requirements</label>
 											</div>
-											<div class="col-md-6" style="margin-top: 1%;">
+											<div class="col-md-7" style="margin-top: 1%;">
 												<div class="form-group">
 
 													<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){%>
 													<select class="form-control selectdee"
 														name="linkedRequirements" id="linkedRequirements"
-														data-width="80%" data-live-search="true"
-														 multiple>
-														<option value="" disabled="disabled"  >---Choose----</option>
+														data-width="80%" data-live-search="true" multiple
+														onchange="showSelectValue()">
+														<option value="" disabled="disabled">---Choose----</option>
 														<%for(Object[] obj:RequirementList){ %>
 														<option value="<%=obj[0]%>" title=<%=obj[3] %>><%=obj[1]%></option>
 														<%}%>
 													</select>
 													<%}else{%>
-													<select name="linkedRequirements" id="linkedRequirements"
-														data-width="80%" class="form-control" dsiabled>
-														<option selected disabled>Choose...</option>
-													</select>
+													<input class="form-control" name="linkedRequirements"
+														id="linkedRequirements" value="" readonly
+														placeholder="No requirements to Choose">
 													<%} %>
 												</div>
-
-
 											</div>
 										</div>
 									</div>
-
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Para</label>
+											</div>
+											<div class="col-md-7" style="margin-top: 1%;">
+												<div class="form-group">
+													<%
+													if ((ParaDetails != null) && (!ParaDetails.isEmpty())) {
+													%>
+													<select class="form-control selectdee" name="LinkedPara"
+														id="LinkedPara" data-width="80%" data-live-search="true"
+														multiple onchange="">
+														<option value="" disabled="disabled">---Choose----</option>
+														<%
+														for (Object[] obj : ParaDetails) {
+														%>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<%
+														}
+														%>
+													</select>
+													<%
+													} else {
+													%>
+													<input class="form-control" name="LinkedPara"
+														id="LinkedPara" value="" readonly
+														placeholder="No para specified for Project">
+													<%} %>
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class=col-md-12>
 										<div class="row">
 											<div class="col-md-4">
@@ -649,6 +820,25 @@ for(Object []obj:RequirementList) {%>
 											</div>
 										</div>
 									</div>
+									<!-- Constraints  -->
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Constraints
+													<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group">
+													<input type="text" name="Constraints" class="form-control"
+														id="remarks" maxlength="255" required="required"
+														placeholder="Maximum 250 Chararcters">
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<div class="col-md-12">
 										<div class="row">
 											<div class="col-md-4">
@@ -656,10 +846,10 @@ for(Object []obj:RequirementList) {%>
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
 													Documents</label>
 											</div>
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-8" style="margin-top: 1%;">
 												<div class="form-group">
 
-
+													<%if(!RequirementFiles.isEmpty()){ %>
 													<select class="form-control selectdee"
 														name="linkedAttachements" id="linkedAttachements"
 														data-width="80%" data-live-search="true"
@@ -669,7 +859,11 @@ for(Object []obj:RequirementList) {%>
 														<option value="<%=obj[0]%>"><%=obj[3]%></option>
 														<%}%>
 													</select>
-
+													<%} else{%>
+													<input class="form-control" readonly
+														name="linkedAttachements" id="linkedAttachements"
+														placeholder="No files found">
+													<%} %>
 												</div>
 
 
@@ -712,7 +906,7 @@ for(Object []obj:RequirementList) {%>
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
 
-					<div class="modal-content addreq" style="width: 120%;">
+					<div class="modal-content addreq modal-dialog-jump" style="width: 150%;">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">Requirement</h5>
 							<div class=col-md-3 id="headerid">
@@ -729,14 +923,14 @@ for(Object []obj:RequirementList) {%>
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div style="height: 550px; overflow: auto;">
+						<div style="height: 550px; overflow: auto;" id="scrollclass">
 							<div class="modal-body">
 								<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<label
-												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Type
-												of Requirements<span class="mandatory" style="color: red;">*</span>
+												style="font-size: 17px; margin-top: 5%; margin-left: 5%; color: #07689f">Requirement
+												Type<span class="mandatory" style="color: red;">*</span>
 											</label>
 										</div>
 										<div class=col-md-3>
@@ -746,7 +940,7 @@ for(Object []obj:RequirementList) {%>
 												style="margin-top: 5%" onchange="editReqTypeChange()">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
 												<%if(!RequirementTypeList.isEmpty()){
-							for(Object[] obj:RequirementTypeList){ %>
+													for(Object[] obj:RequirementTypeList){ %>
 												<option value="<%=obj[0]%>"><%=obj[3]+"-"+obj[2]%></option>
 												<%}} %>
 											</select>
@@ -769,7 +963,7 @@ for(Object []obj:RequirementList) {%>
 									</div>
 									<div class="col-md-12">
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Need
 													Type<span class="mandatory" style="color: red;">*</span>
@@ -785,19 +979,39 @@ for(Object []obj:RequirementList) {%>
 													<option value="D">Desirable</option>
 												</select>
 											</div>
+
+											<!--Category  -->
+											<div class="col-md-2">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Category<span
+													class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-3">
+												<select required="required" name="CategoryEdit"
+													id="CategoryEdit" class="form-control selectpicker"
+													data-width="80%" data-live-search="true"
+													style="margin-top: 5%">
+													<option disabled="disabled" value="" selected="selected">Choose..</option>
+													<option value="E">Environmental</option>
+													<option value="P">Performance</option>
+													<option value="M">Maintenance</option>
+												</select>
+											</div>
+
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
 													Requirements</label>
 											</div>
-											<div class="col-md-6" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 													<select class="form-control selectdee"
-														name="linkedRequirementsedit" id="linkedRequirementsedit"
+														name="linkedRequirementsedit" id="linkedRequirementsedit" onchange="showSelectEditValue()"
 														data-width="80%" data-live-search="true"
 														data-placeholder="Choose" multiple>
 
@@ -812,10 +1026,46 @@ for(Object []obj:RequirementList) {%>
 											</div>
 										</div>
 									</div>
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-3">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
+													Para</label>
+											</div>
+											<div class="col-md-9" style="margin-top: 1%;">
+												<div class="form-group">
+													<%
+													if ((ParaDetails != null) && (!ParaDetails.isEmpty())) {
+													%>
+													<select class="form-control selectdee"
+														name="LinkedParaEdit" id="LinkedParaEdit" data-width="80%"
+														data-live-search="true" multiple onchange="">
+														<option value="" disabled="disabled">---Choose----</option>
+														<%
+														for (Object[] obj : ParaDetails) {
+														%>
+														<option value="<%=obj[0]%>"><%=obj[3]%></option>
+														<%
+														}
+														%>
+													</select>
+													<%
+													} else {
+													%>
+													<input class="form-control" name="LinkedParaEdit"
+														id="LinkedParaEdit" value="" readonly
+														placeholder="No para specified for Project">
+													<%} %>
+												</div>
+											</div>
+										</div>
+									</div>
+
 
 									<div class=col-md-12>
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Requirement
 													Brief<span class="mandatory" style="color: red;">*</span>
@@ -842,7 +1092,7 @@ for(Object []obj:RequirementList) {%>
 											</div>
 											<div class=col-md-12>
 												<div class="row">
-													<div class="col-md-4">
+													<div class="col-md-3">
 														<label
 															style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Remarks
 															<span class="mandatory" style="color: red;">*</span>
@@ -856,14 +1106,32 @@ for(Object []obj:RequirementList) {%>
 										</div>
 									</div>
 
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-3">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Constraints
+													<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group">
+													<input type="text" name="Constraints" class="form-control"
+														id="ConstraintsEdit" maxlength="255" required="required"
+														placeholder="Maximum 250 Chararcters">
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<div class="col-md-12">
 										<div class="row">
-											<div class="col-md-4">
+											<div class="col-md-3">
 												<label
 													style="font-size: 17px; margin-top: 5%; color: #07689f">Linked
 													Documents</label>
 											</div>
-											<div class="col-md-7" style="margin-top: 1%;">
+											<div class="col-md-9" style="margin-top: 1%;">
 												<div class="form-group">
 
 
@@ -910,9 +1178,9 @@ for(Object []obj:RequirementList) {%>
 		<div class="modal fade bd-example-modal-lg"
 			id="exampleModalLongAttachment" tabindex="-1" role="dialog"
 			aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
 				<div class="modal-content addreq"
-					style="width: 100%; margin-left: 0%; margin-top: 16%">
+					style="width: 100%; margin-left: 0%; ">
 					<div class="modal-header" id="modalreqheader">
 						<h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
 						<button type="button" class="close" data-dismiss="modal"
@@ -932,7 +1200,7 @@ for(Object []obj:RequirementList) {%>
 												<th style="width: 4.8889px; text-align: center;">SN</th>
 												<th style="text-align: center;">Name</th>
 												<th style="text-align: center;">UpdateOn</th>
-												<th>Action</th>
+												<th style="text-align: center;">Action</th>
 											</tr>
 										</thead>
 										<tbody id="listtbody">
@@ -947,7 +1215,27 @@ for(Object []obj:RequirementList) {%>
 			</div>
 		</div>
 
-<%} %>
+		<%} %>
+		<!-- select dropdown on change modal  -->
+		<div class="modal fade" id="dataModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-jump-pop" role="document">
+				<div class="modal-content" style="border-radius: 30px;">
+
+					<div class="modal-body">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close" id="myButtonModal">
+							<span aria-hidden="true" style="color: red;">&times;</span>
+						</button>
+						<div id="modalhead"
+							style="padding: 10px 10px 10px 0px; font-weight: 700; color: coral"></div>
+						<div id="modalbody"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
 
 		<script>
 $(document).ready(function() {
@@ -966,13 +1254,10 @@ $(document).ajaxComplete(function(){
 
 
 	$('.viewbtn').click(function(){
-		
 		$('.viewbtn').css("background","#055C9D");
 		$(this).css("background","green");
 		var initiationId=<%=initiationid%>;
 		var value=$(this).val();
-		console.log("hey");
-		
 		$.ajax({
 			type:'GET',
 			url:'RequirementJsonValue.htm',
@@ -982,9 +1267,7 @@ $(document).ajaxComplete(function(){
 			},
 		success:function(result){
 			 var ajaxresult=JSON.parse(result);
-			 console.log(ajaxresult)
 			 var s="";
-			 console.log(ajaxresult[6].length+"---")
 			$('#brief').html(ajaxresult[2]);
 			 
 			 if(ajaxresult[5]==="L"){
@@ -1005,10 +1288,8 @@ $(document).ajaxComplete(function(){
 					}else{
 					var myArray1=ajaxresult[10].split(",");
 					}
-					}
-			console.log(myArray1);
-		
-			$('#editreq').html('<button type="button" title="EDIT" data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-warning " onclick="edit()" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button class="btn btn-info"  onclick="showAttachment('+'['+myArray1+']'+')" style="margin-left:1%; box-shadow:2px 2px 2px gray">View Attachments</button>');
+					}		
+			$('#editreq').html('<button type="button" title="EDIT" data-toggle="tooltip" data-placement="top" title="Tooltip on top" class="btn btn-sm  btn-warning edit " onclick="edit()" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button class="btn btn-info back"  onclick="showAttachment('+'['+myArray1+']'+')" style="margin-left:1%; box-shadow:2px 2px 2px gray">View Attachments</button>');
 			
 			var myArray=[];
 			  if(ajaxresult[6].length>0){
@@ -1018,8 +1299,6 @@ $(document).ajaxComplete(function(){
 					myArray=ajaxresult[6].split(",");
 					}
 					}
-			  
-			  console.log("myArray"+myArray);
 			  if(ajaxresult[6].length==0){
 				  $('#linked').html("-");  
 			  }else{
@@ -1040,16 +1319,21 @@ $(document).ajaxComplete(function(){
 											s=s+",";
 										}
 									}
-									
 								}
-								
 							    })
 								$('#linked').html(s);
 						}
 						}) 
 			  }
 		$('#remarksshow').html(ajaxresult[9]);
-			
+		$('#constrainshow').html(ajaxresult[12]);	
+		if(ajaxresult[11]==="E"){
+			$('#categoryShow').html("Environmental");
+		}else if(ajaxresult[11]==="P"){
+			$('#categoryShow').html("Performance");
+		}else{
+			$('#categoryShow').html("Maintenance")
+		}
 		}
 		})
 	});
@@ -1082,7 +1366,7 @@ for(var i=0;i<jsArray.length;i++){
 	if(documentid.includes(parseInt(val))){
 		const dateStr = value2;
 		const formattedDate = moment(dateStr).format('DD-MM-YYYY');
-	    html=html+'<tr><td>'+(count++)+'</td><td>'+value1+'</td><td>'+formattedDate+'</td><td><button class="btn" type="submit" name="DocId"  formaction="ProjectRequirementAttachmentDownload.htm" formtarget="_blank" formmethod="GET" value="'+value3+','+value4+','+value5+','+value6+'"><i class="fa fa-download" ></i></button></td></tr>';
+	    html=html+'<tr><td style="text-align: center;">'+(count++)+'</td><td>'+value1+'</td><td style="text-align: center;">'+formattedDate+'</td><td align="center"><button class="btn" type="submit" name="DocId"  formaction="ProjectRequirementAttachmentDownload.htm" formtarget="_blank" formmethod="GET" value="'+value3+','+value4+','+value5+','+value6+'"><i class="fa fa-download" ></i></button></td></tr>';
 	}
 }
 $('#listtbody').html(html);
@@ -1091,13 +1375,12 @@ $('#listtbody').html(html);
 		 "pagingType": "simple",
 		 "pageLength": 5,
 		 "language": {
-		      "emptyTable": "No attachments Found"
+		      "emptyTable": "No attachments Added"
 		    }
 	}); 
 
 $('#exampleModalLongAttachment').modal('show');
 }
-
 </script>
 		<script type="text/javascript">
 function reqCheck(frmid){
@@ -1105,10 +1388,12 @@ function reqCheck(frmid){
 	var description=$('#descriptionadd').val();
 	var reqbrief=$('#reqbrief').val();
 	var remarks=$('#remarks').val();
-	
-	console.log(description.length)
+	var priorityAdd=$('#priorityAdd').val();
+	var needtypeadd=$('#needtypeadd').val();
+	var categoryAdd=$('#categoryAdd').val();
+	console.log(needtypeadd)
 
-	if(description===null||description===""||reqbrief===null||reqbrief===""||remarks===null||remarks===""){
+	if(description===null||description===""||reqbrief===null||reqbrief===""||remarks===null||remarks===""||priorityAdd==null||needtypeadd==null||categoryAdd==null){
 		window.alert('Please fill all the fields');
 	}else if
 		(description.length>4000){
@@ -1126,16 +1411,12 @@ function reqCheck(frmid){
 	}
 	}
 }
-
 function editCheck(frmid){
-
 	var description=$('#descriptionedit').val();
 	var reqbrief=$('#reqbriefedit').val();
 	var editselect=$('#editselect').val();
 	var editreqtype=$('#editreqtype').val();
 	var linkedRequirementsedit=$('#linkedRequirementsedit').val();
-	
-
 
 	if(description===null||description===""||reqbrief===null||reqbrief===""){
 		window.alert('Please fill all the fields');
@@ -1162,9 +1443,9 @@ $('#'+<%=initiationReqId%>).click();
 });
 
 $('#'+<%=initiationReqId%>).click(function(){
+
 	$('.viewbtn').css("background","#055C9D");
 	$(this).css("background","green");
-	console.log("hii");
 	var value=$(this).val();
 	var initiationId=<%=initiationid%>;
 
@@ -1176,7 +1457,6 @@ $('#'+<%=initiationReqId%>).click(function(){
 		},
 	success:function(result){
 		 var ajaxresult=JSON.parse(result); 
-		 console.log(ajaxresult)
 		 var s="";
 		$('#brief').html(ajaxresult[2]);
 	
@@ -1193,13 +1473,8 @@ $('#'+<%=initiationReqId%>).click(function(){
 			}else{
 				$('#needtypetext').html("Deliverable");
 			}
-	$('#reqName').html(ajaxresult[4]);	 
-			
+	$('#reqName').html(ajaxresult[4]);	 	
 	$('#description').html(ajaxresult[3]);
-	
-	console.log(ajaxresult[10]);
-
-	 
 	  if(ajaxresult[10].length>0){
 			if(!ajaxresult[10].includes(",")){
 				var myArray1=ajaxresult[10].split(ajaxresult[10].length);
@@ -1208,7 +1483,7 @@ $('#'+<%=initiationReqId%>).click(function(){
 			}
 			}
 		
-		$('#editreq').html('<button type="button"  class="btn btn-warning reqbtns " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
+		$('#editreq').html('<button type="button"  class="btn btn-sm  btn-warning edit " onclick="edit()"  data-toggle="tooltip" data-placement="right" data-original-data="Tooltip on right" title="EDIT" name="action" value="'+ajaxresult[7] +'"id="reqbtns" >EDIT</button><button type="button" class="btn btn-info back" style="margin-left:1%; box-shadow:2px 2px 2px gray" onclick="showAttachment('+'['+myArray1+']'+')">View Attachments</button>');
 	    if(ajaxresult[6].length>0){
 		if(!ajaxresult[6].includes(",")){
 			var myArray=ajaxresult[6].split(ajaxresult[6].length);
@@ -1243,6 +1518,14 @@ $('#'+<%=initiationReqId%>).click(function(){
 				}) 
 	    }
 		$('#remarksshow').html(ajaxresult[9]);
+		$('#constrainshow').html(ajaxresult[12]);	
+		if(ajaxresult[11]==="E"){
+			$('#categoryShow').html("Environmental");
+		}else if(ajaxresult[11]==="P"){
+			$('#categoryShow').html("Performance");
+		}else{
+			$('#categoryShow').html("Maintenance")
+		}
 	}
 	});
 });
@@ -1250,15 +1533,14 @@ $('#'+<%=initiationReqId%>).click(function(){
 function showdata(){
     $('#exampleModalLong').modal('show');
 }
-
+//call for the edit function
+var beforeSelectedEditedArray="";// to get the default selected linked requirements 
+var linkedReqDropdown = document.getElementById("linkedRequirementsedit").innerHTML;// to get the default dropdown
 function edit(){
 	
+	$('#linkedRequirementsedit').html(linkedReqDropdown);
 	var value=$('#reqbtns').val();
 	var value2=$('#description').val;
-
-	<%-- var jsArray = [<%int i=0; for (Object[] obj:RequirementList) { %>"<%= obj[0] %>"+"//"+"<%=obj[1]%>" <%= i + 1 < RequirementList.size() ? ",":"" %><% } %>];
-	console.log(jsArray); --%>
-	
 	$.ajax({
 		type:'GET',
 		url:'RequirementJsonValue.htm',
@@ -1268,40 +1550,52 @@ function edit(){
 		},
 	success:function(result){
 		 var ajaxresult=JSON.parse(result); 
-		 
-		 console.log(ajaxresult[9]);
 		$('#reqID').html(ajaxresult[4]);
 		$('#headerdata').html('<h6 style="font-size: 12px;margin-top:2%;" id="codeedit" >CODE - </h6><input type="text"   class="form-control numbersOnly" maxlength="5" onchange="oninputChange()"    value="'+ajaxresult[4].substring(5)+'" id="code">')
 		$('#editdescription').html('<textarea required="required" name="descriptionedit" class="form-control"  id="descriptionedit" maxlength="4000"  rows="5" cols="53" placeholder="Maximum 4000 Chararcters">'+ajaxresult[3]+'</textarea>')
 		$('#editrqbrief').html('<input type="text" name="reqbriefedit"class="form-control" id="reqbriefedit" maxlength="255" value="'+ajaxresult[2]+'" required="required" placeholder="Maximum 250 Chararcters" style="line-height: 3rem!important">')
 		$('#editselect').val(ajaxresult[5]);
 		$('#remarksedit').html('<input type="text" name="remarks" class="form-control" id="remarks" maxlength="255" required="required" value="'+ajaxresult[9]+'" placeholder="Maximum 250 Chararcters">')
-		const LinkedReqs = ajaxresult[6].split(",");		
+	
+			const linkedReqDropdown = document.getElementById("linkedRequirementsedit");
+ 		 	const options = linkedReqDropdown.querySelectorAll("option"); // to remove that requirement from that list
+ 		 	 options.forEach((option) => {
+ 		 	    if (value==(option.value)) {
+ 		 	    	option.remove();
+ 		 	    }
+ 		 	  });
+		
+		const LinkedReqs = ajaxresult[6].split(",");
+		
 		$('#linkedRequirementsedit').val(LinkedReqs).trigger('change');
+		beforeSelectedEditedArray=$('#linkedRequirementsedit').val();
 		
 		const LinkedDocs=ajaxresult[10].split(",");
 		$('#linkedAttachementsedit').val(LinkedDocs).trigger('change');
 		
+		if(ajaxresult[13]!=null && ajaxresult[13].length>0){
+		const LinkedPara=ajaxresult[13].split(",");
+		$('#LinkedParaEdit').val(LinkedPara).trigger('change');
+		}else{
+		$('#LinkedParaEdit').val(" ").trigger('change');
+		}
+		
 		$('#editreqtype').val(ajaxresult[1]);
 		$('#editneedtype').val(ajaxresult[8]);
-	
-	
+		$('#CategoryEdit').val(ajaxresult[11]);
+		$('#ConstraintsEdit').val(ajaxresult[12]);
 		$('#editvalues').html('<input type="hidden" id="requirementIds" name="requirementid"class="form-control"  value="'+ajaxresult[4]+'" required="required">'+
-				'<input type="hidden" name="InitiationReqId" class="form-control"  value="'+ajaxresult[7]+'">');
-	 
+		'<input type="hidden" name="InitiationReqId" class="form-control"  value="'+ajaxresult[7]+'">');
 	}
-	})
-				  
-				  
+	})  
+   
  	$('#exampleModalLongedit').modal('show');
-	
 	
 }
 
 
 function editReqTypeChange(){
 	 var value=document.getElementById('editreqtype').value;
-	 console.log(value);
 	 var code=document.getElementById('code').value;
 	 $.ajax({
 		 type:'GET',
@@ -1323,12 +1617,8 @@ $(document).ready(function(){
 	$('.show').click();
 	});
 <%}%>
-
-
-
-
 </script>
-		<script type="text/javascript">
+<script type="text/javascript">
 var count=0;
 function editcheck(editfileid,alertn)
 {
@@ -1337,9 +1627,6 @@ function editcheck(editfileid,alertn)
     
     
     const filesize1=<%=filesize%>;
-    console.log(fi+"    "+filesize1+"   "+file);
-   
-    
     if (document.getElementById(editfileid).files.length!=0 && file >= <%=filesize%> ) 
     {
     	if(alertn==1){
@@ -1384,30 +1671,10 @@ $(function () {
     });
 });
 
-
-/*  $(document).ready(function(){
-	  $("#code").change(function(){
-	  var value1=$('#reqID').text();
-	    
-	  var value2=value1.substring(0,5);
-
-	  var value3=$('#code').val();
-	  $('#reqID').html(value2+value3);
-	   
-	  });
-	});
-	 */
-	
-	 
 	function oninputChange(){
-		
-		
 		var value=document.getElementById('code').value;
 		var intvalue=parseInt(value);
 		var initiationId=<%=initiationid%>;
-	
-	   
-		
 		if(value.length<5){
 			alert("The code should be of five digit")
 		}else if(/[a-zA-Z]/g.test(value)){
@@ -1438,12 +1705,78 @@ $(function () {
 					}
 				})
 		}
-	}
-
+		}
 		$(function () {
-			  $('[data-toggle="tooltip"]').tooltip()
-			})
-	
+		$('[data-toggle="tooltip"]').tooltip()
+		})
+	//taking an empty array to track the length of array
+	var beforeSelectedArray=[];
+	function showSelectValue(){
+	var afterSelectedArray=$('#linkedRequirements').val();
+	if(afterSelectedArray.length>beforeSelectedArray.length){
+	for(var i=0;i<afterSelectedArray.length;i++){
+		if(!beforeSelectedArray.includes(afterSelectedArray[i])){
+			$.ajax({
+				url:'RequirementJsonValue.htm',
+				datatype:'json',
+				data:{
+					inititationReqId:afterSelectedArray[i]
+				},
+			success:function(result){
+				 var ajaxresult=JSON.parse(result);
+				 $('#modalhead').html(ajaxresult[4]);
+				 $('#modalbody').html(ajaxresult[3]);
+			}
+			});
+		}
+	}	
+	$('#dataModal').modal('show');
+	}
+	beforeSelectedArray=afterSelectedArray;
+	}
+function showSelectEditValue(){
+	/* if(beforeSelectedEditedArray.length==0)return; */
+ 	var afterSelectedEditedArray= $('#linkedRequirementsedit').val();
+	if(afterSelectedEditedArray.length>beforeSelectedEditedArray.length){
+		for(var i=0;i<afterSelectedEditedArray.length;i++){
+			if(!beforeSelectedEditedArray.includes(afterSelectedEditedArray[i])){
+				$.ajax({
+					url:'RequirementJsonValue.htm',
+					datatype:'json',
+					data:{
+						inititationReqId:afterSelectedEditedArray[i]
+					},
+				success:function(result){
+					 var ajaxresult=JSON.parse(result);
+					 $('#modalhead').html(ajaxresult[4]);
+					 $('#modalbody').html(ajaxresult[3]);
+				}
+				});
+			}
+		}	
+		$('#dataModal').modal('show');
+		}
+	beforeSelectedEditedArray=afterSelectedEditedArray; 
+}	
+
 </script>
+	<script>
+  // Show the button when the user scrolls down a certain distance
+  window.onscroll = function() { scrollFunction() };
+  		function scrollFunction() {
+	    var scrollButton = document.getElementById("scrollButton");
+	    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+	      scrollButton.style.display = "block";
+	    } else {
+	      scrollButton.style.display = "none";
+	    }
+	  	}
+  	// Scroll to the top when the button is clicked
+  	function scrollToTop(){
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+ 	}
+  
+  </script>
 </body>
 </html>

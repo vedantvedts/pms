@@ -188,6 +188,24 @@ h6 {
 	color: #07689f;
 	text-align: center;
 }
+
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>
 </head>
 <body>
@@ -321,7 +339,7 @@ h6 {
 		<div class="modal fade bd-example-modal-lg" id="exampleModalLong"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
 				<div class="modal-content addreq" style="margin-top: 16%">
 					<div class="modal-header" id="modalreqheader">
 						<h5 class="modal-title" id="exampleModalLabel">Document
@@ -401,7 +419,7 @@ h6 {
 		<div class="modal fade bd-example-modal-lg" id="versionUpload"
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
-			<div class="modal-dialog modal-lg">
+			<div class="modal-dialog modal-lg modal-dialog-jump">
 				<div class="modal-content addreq" style="margin-top: 16%">
 					<div class="modal-header" id="modalreqheader">
 						<h5 class="modal-title" id="exampleModalLabel">Document
@@ -547,7 +565,7 @@ h6 {
 			 }
 			 console.log(ajaxresult.length+"----")
 			 /*button for adding files in list  */
-				 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-info" type="button" onclick="show()">Add File</button></span></li>');
+				 $('#'+stepid).html(html+'<li style="margin:0.5%"><span class="caret"><button class="btn btn-sm btn-info" type="button" onclick="show()">Add File</button></span></li>');
 			 }
 			 
 		 })
@@ -566,6 +584,7 @@ h6 {
 		 showStepTable(stepid,initiationId);
 		 
 		 }
+		 
 		 	 function socDoc(Documentid,stepid,name) {
 		 		  $('.soc').css("color","black");
 				  $('.soc').css("font-weight", "400");
@@ -611,17 +630,17 @@ h6 {
 			 $('#filename').attr("readonly", false);
 			 $('#exampleModalLong').modal('show');
 		 }
+		 // show Soc Modal
 		 function showforSoc(){
 			 $('#exampleModalLong').modal('show');
 		 }
 		 
-		 
-		 function uploadshow(stepid,version,filename,DocumentCount){
+		 	function uploadshow(stepid,version,filename,DocumentCount){
 			 	
 				document.getElementById('versionfile').value=filename;
 				$('#versioneditvalues').html('<input type="hidden" value='+version+' id="versionid"><input type="hidden" value="'+stepid+'" name="stepid"> <input type="hidden" value="'+DocumentCount+'"name="doccount">');
 				$('#add1').html('UPLOAD VERSION '+(parseFloat(version)+.1).toFixed(1)+'<input type="hidden" name="versionvalue" value='+(parseFloat(version)+.1).toFixed(1)+'>');
-			 $('#versionUpload').modal('show');
+			    $('#versionUpload').modal('show');
 		 }
 		 
 		 function reqCheck(frmid){
@@ -656,7 +675,10 @@ h6 {
 		      	
 		     }
 		 }
-		 $(document).ready(function () {
+		 //  to check whether the version is new version or not
+		 //  if new version , version will be next nearest integer
+		 //  if not new version , version will be (version+".1")
+ 		 $(document).ready(function () {
 		        $('input[type=radio][name=isnewver]').change(function () {
 		            if (this.value == 'Y') {
 		            var version1=$('#versionid').val();
@@ -757,7 +779,7 @@ h6 {
                           month: '2-digit',
                           year: 'numeric',
                           }).replace(/\//g, '-');
-						  html=html+"<tr><td>"+(i+1)+"</td><td>"+ajaxresult[i][0]+"</td><td>"+formattedDate+"</td><td>"+ajaxresult[i][2]+"</td><td><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][3]+","+ajaxresult[i][2]+","+ajaxresult[i][4]+","+ajaxresult[i][5]+"'><i class='fa fa-download' ></i></button></td></tr>"
+						  html=html+"<tr><td align='center'>"+(i+1)+"</td><td>"+ajaxresult[i][0]+"</td><td align='center'>"+formattedDate+"</td><td align='center'>"+ajaxresult[i][2]+"</td><td align='center'><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][6]+","+ajaxresult[i][2]+","+ajaxresult[i][4]+","+ajaxresult[i][5]+"'><i class='fa fa-download' ></i></button></td></tr>"
 					  }
 					  
 					  $('#filestable').css("display","block");
@@ -775,7 +797,7 @@ h6 {
 		  }
 		  
 		  
-		  
+		// calling the show table method when page is loaded according to stepid  
 		  $(document).ready(function(){
 			  var initiationId=<%=initiationid%>;
 			  var stepdidno=<%=stepdidno%>;
@@ -787,7 +809,8 @@ h6 {
 		  $(function () {
 			  $('[data-toggle="tooltip"]').tooltip()
 			})
-			
+	
+	//  checking that for particular stepid the given name already exist or not
 		function oninputChange(){
 			  var stepid=document.getElementById("stepnames").value;
 			  var filename=document.getElementById("filename").value;
@@ -815,11 +838,7 @@ h6 {
 			 	})
 		  }
 		  
-	/* 	 function oninputchange(){
-			 console.log("hii")
-		 } 
-			 */ 
-			
+	
 		</script>
 </body>
 </html>

@@ -20,12 +20,15 @@ import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationReqIntro;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
+import com.vts.pfms.project.model.PfmsReqStatus;
+import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
@@ -42,6 +45,9 @@ import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterAttach;
 import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.project.model.ProjectOtherReqModel;
+import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementparaModel;
 
 public interface ProjectDao {
 
@@ -287,5 +293,34 @@ public interface ProjectDao {
 	public long BriefCostsBenefitsEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefProjectManagementEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefPERTEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public Object[] reqStatus(Long initiationId)throws Exception;
+	public long ProjectRequirementAdd(PfmsInititationRequirement pir, PfmsReqStatus prs)throws Exception;
+	public String getEmpId(String pdd)throws Exception;
+	public int ProjectRequirementStatusUpdate(PfmsReqStatus prs, PfmsRequirementApproval approval,PfmsNotification notification)throws Exception;
+	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid)throws Exception;
+	public String maxRequirementVersion(Long initiationId) throws Exception;
+	public String getInitiationReviewer(String initiationid)throws Exception;
+	public List<Object[]> RequirementApprovalList(String empId)throws Exception;
+	public String getInitiationApprover(String initiationid)throws Exception;
+	public List<Object[]> RequirementTrackingList(String initiationid)throws Exception;
+	public List<Object[]> projecOtherRequirements(String initiationid)throws Exception;
+	public List<Object[]> OtherRequirementList(Long initiationId, Long reqMainId) throws Exception;
+	public long ProjectOtherRequirementAdd(ProjectOtherReqModel pm) throws Exception;
+	public long UpdateOtherRequirementName(ProjectOtherReqModel pm)throws Exception;
+	public long UpdateOtherRequirementDetails(ProjectOtherReqModel pm)throws Exception;
+	public String getRequirementId(Long initiationId, Long reqMainId, int i)throws Exception;
+	public Object[] OtherSubRequirementsDetails(String requirementId)throws Exception;
+	public List<Object[]> otherProjectRequirementList(String initiationid)throws Exception;
+	public List<Object[]> getAllOtherReqByInitiationId(String initiationid) throws Exception;
+	public Object[] LabListDetails(String labCode) throws Exception;
+	public Object[] RequirementIntro(String initiationid) throws Exception;
+	public long ReqIntroSubmit(PfmsInitiationReqIntro pr) throws Exception ;
+	public long ReqIntroUpdate(PfmsInitiationReqIntro pr, String details) throws Exception;
+	public Long ReqForwardProgress(String initiationid)throws Exception;
+	public long ProjectSqrSubmit(ProjectSqrFile psf)throws Exception;
+	public Object[] SqrFiles(String initiationId)throws Exception;
+	public long RequirementParaSubmit(RequirementparaModel rpm)throws Exception;
+	public List<Object[]> ReParaDetails(String initiationid)throws Exception;
+	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception;
 	
 }

@@ -33,6 +33,9 @@ public class PfmsInititationRequirement implements Serializable {
 	private String NeedType;
 	private String Remarks;
 	private String LinkedDocuments;
+	private String Category;
+	private String Constraints;
+	private String LinkedPara;
 	private String CreatedBy;
     private String CreatedDate;
     private String ModifiedBy;

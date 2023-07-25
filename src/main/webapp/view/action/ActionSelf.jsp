@@ -156,7 +156,7 @@ h6{
 
 														<tr>
 															<th>SN</th>
-															<th style="text-align: left;">Action Item</th>
+															<th style="text-align: left; width:100px;">Action Item</th>
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>									
 														 	<th style="">Assignee</th>	
@@ -173,11 +173,18 @@ h6{
 															for(Object[] obj: AssignedList){ %>
 														<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
+															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:10% !important;min-width:10% !important;">
+															<%if(obj[5].toString().length()>75) {%>
+															<%=obj[5].toString().substring(0,75) %>
+															 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[5].toString()%>')">show more..</span>
+															<%}else{ %>
+															<%=obj[5].toString() %>
+															<%} %>
+															</td>
 															
 															<td class="width-30px"><%=sdf.format(obj[4])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td style="width:18% !important; "><%=obj[1]%>, <%=obj[2]%></td>
+															<td style="width:12% !important; "><%=sdf.format(obj[3])%></td>
+															<td style="width:20% !important; "><%=obj[1]%>, <%=obj[2]%></td>
 															<td style="width:8% !important; "><%if(obj[10]!=null){ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[10]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
@@ -220,7 +227,23 @@ h6{
 		</div>
 
 	</div>
-   
+   <!-- Modal for action -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+     
+      </div>
+      <div align="right" id="header" class="p-2"></div>
+    </div>
+  </div>
+</div>
 
   
 <script>
@@ -323,7 +346,11 @@ h6{
 	     document.getElementById('Message').innerHTML = " "; 
 
 	}
+	function showAction(a,b){
+		$('#modalbody').html(a);
 		
+		$('#exampleModalCenter').modal('show');
+	}	
 	
 	
 	</script>  

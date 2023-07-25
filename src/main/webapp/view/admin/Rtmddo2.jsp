@@ -35,37 +35,31 @@ hr{
 </head>
 <body>
       
-   <%
+ <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList");
 List<Object[]> Rtmddo=(List<Object[]>) request.getAttribute("RtmddoList");
 NFormatConvertion nfc=new NFormatConvertion();
-
 List<Object[]> pdomtrt=(List<Object[]>)request.getAttribute("presentEmpList");
-Map<Object, List<Object[]>> map=new HashMap<>();
+Map<Object, List<Object[]>> map=new HashMap<>(); 
 if(pdomtrt!=null&&pdomtrt.size()>0){
 map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4])); 
 }
 %>
-
-
-
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
-	if(ses1!=null){
-	%>
-	<center>
-	<div class="alert alert-danger" role="alert" >
-                     <%=ses1 %>
-                    </div></center>
-	<%}if(ses!=null){ %>
+if(ses1!=null){%>
+<center>
+<div class="alert alert-danger" role="alert" >
+<%=ses1 %>
+</div></center>
+<%}if(ses!=null){ %>
 	<center>
 	<div class="alert alert-success" role="alert"  >
                      <%=ses %>
                    </div></center>
                     <%} %>
-	
-<div class="container">
+	<div class="container">
 	<div class="row">
 
 		<div class="col-md-12">
@@ -117,9 +111,7 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
           
                         </div>
                         </form>
-                       
                       <br>	
-             
                    <div align="center" > <label>AD</label></div>
         		  <form action="RtmddoSubmit.htm" method="POST" name="myfrm1" id="myfrm1"  onsubmit="return confirm('Are you sure to submit');"> 	 						
                	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -156,8 +148,6 @@ map = pdomtrt.stream().collect(Collectors.groupingBy(c -> c[4]));
                         		</div>
                     		</div>        		
                         </div>  
-                        
-                        
                         </form>      
 	 		      <br>
 	  </div>

@@ -18,7 +18,9 @@ public class PfmsInitiationRequirementDto {
 	private String linkedRequirements;
 	private String NeedType;
 	private String Remarks;
+	private String Category;
+	private String Constraints;
 	private String LinkedDocuments;
-	
+	private String LinkedPara;
 
 }

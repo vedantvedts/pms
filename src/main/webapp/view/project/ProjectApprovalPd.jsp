@@ -42,7 +42,7 @@ NFormatConvertion nfc=new NFormatConvertion();
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
-	
+
 	<center>
 	
 	<div class="alert alert-danger" role="alert">
@@ -99,13 +99,11 @@ NFormatConvertion nfc=new NFormatConvertion();
 				<div class="card-body"> 
 					  <table class="table table-bordered table-hover table-striped table-condensed ">
 					      <tbody>
-						  	
-						    
-						    		<tr>
-						    			<td style="width:20%"> <b>Project Category</b> </td>
-						    			<td><%=obj[6] %></td>
-						    			<td rowspan="5" style="width:40%">
-						      				<textarea rows="6" type="text" class="form-control"   name="Remark" required="required"  placeholder="Enter Remarks here"></textarea>
+						    	<tr>
+						    		<td style="width:20%"> <b>Project Category</b> </td>
+						    		<td><%=obj[6] %></td>
+						    		<td rowspan="5" style="width:40%">
+						      			<textarea rows="6" type="text" class="form-control"   name="Remark" required="required"  placeholder="Enter Remarks here"></textarea>
 						    			</td>
 						    		</tr>
 						    		
@@ -201,7 +199,6 @@ NFormatConvertion nfc=new NFormatConvertion();
 					 	<h2>No Pending Approvals ..!!! </h2>
 					 	<br><br>
 					 	<a class="btn btn-primary back" href="MainDashBoard.htm" role="button">Back</a>
-					 
 					 </div>
 					 
 					 <%} %>
@@ -253,11 +250,6 @@ function myconfirm(sel,id){
 	
 	
 }
-
-
-
-
-
 </script>
 </body>
 </html>

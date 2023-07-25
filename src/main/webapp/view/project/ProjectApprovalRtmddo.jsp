@@ -1,3 +1,4 @@
+
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -96,7 +97,6 @@ NFormatConvertion nfc=new NFormatConvertion();
 					</div>
 				</div>
 		<form action="ProjectApprovalRtmddoSubmit.htm" method="POST" name="myfrm1" id="myfrm<%=obj[5] %>" >	
-		
 				<div class="card-body"> 
 					  <table class="table table-bordered table-hover table-striped table-condensed ">
 					      <tbody>

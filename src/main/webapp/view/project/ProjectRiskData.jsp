@@ -244,7 +244,7 @@ if(ses1!=null){
 							    				<label ><b>Mitigation Plans</b>  :<span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="5" style="max-width: 40%">
-									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="200">							    				
+									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="950" style="line-height: 4">							    				
 							    			</td>
 							    		</tr>		
 							    		<tr>
@@ -252,7 +252,7 @@ if(ses1!=null){
 							    				<label ><b>Impact</b> : <span class="mandatory" style="color: red;">*</span></label> 
 							    			</td> 
 							    			<td colspan="5" style="max-width: 40%">
-									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000">							    				
+									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000" style="line-height: 4">							    				
 							    			</td>
 							    		</tr>	
 							    		<tr>
@@ -384,7 +384,7 @@ if(ses1!=null){
 								    				<label ><b>Mitigation Plans :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6] %>" required  maxlength="200">							    				
+										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6] %>" required  maxlength="950" style="line-height: 4">							    				
 								    			</td>
 								    		</tr>		
 								    		<tr>
@@ -392,7 +392,7 @@ if(ses1!=null){
 								    				<label ><b>Impact :</b> <span class="mandatory" style="color: red;">*</span> </label> 
 								    			</td> 
 								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000">							    				
+										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10] %>" required  maxlength="1000" style="line-height: 4">							    				
 								    			</td>
 								    		</tr>	
 								    		<tr>

@@ -27,6 +27,7 @@ List<Object[]> DetailsList = (List<Object[]>) request.getAttribute("DetailsList"
 List<Object[]> ScheduleList=(List<Object[]>)request.getAttribute("ScheduleList");
 Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
 List<Object[]> CapsiList=(List<Object[]>)request.getAttribute("CapsiList");
+Integer pageNumber=(Integer)request.getAttribute("pageNumber");
 %>
 <style type="text/css">
 
@@ -54,12 +55,11 @@ text-align:justify !important;
           margin-buttom: 49px; 	
           border: 2px solid black;    
           @bottom-right {          		
-             content: "Page " counter(page) " of " counter(pages);
+             content: "Page  " counter(page) " of " counter(pages);
              margin-bottom: 30px;
              margin-right: 10px;
           }
-          
-          @top-right {
+           @top-right {
           	 
           	 content : "Project : <%=ProjectTitle %>";
              margin-top: 30px;
@@ -204,7 +204,7 @@ background:black;
 							<%} %>
 							</tbody>
 							</table>
-		</div>\
+		</div>
 		<div style="page-break-before:always"></div> 
 				<div style="text-align:center;">
 			<h3 style="text-align: center;color: #145374;text-align:right;margin-right:25px;margin-top:5px;;">Annexure-D</h3>
@@ -215,7 +215,6 @@ background:black;
 								<tr>
 								<th class="border-black" style="width:5%;text-align: center;">SN</th>
 								<th class="border-black" style="width:20%;text-align: center;">Station</th>
-								<th class="border-black" style="width:20%;text-align: center;">Consultant</th>
 								<th class="border-black" style="width:16%;text-align: center;">Area where R&D is required</th>
 								<th class="border-black" style="width:12%;text-align: center;">Cost<br>&nbsp;(&#8377; in Cr.)</th>
 								<th class="border-black" style="width:8%;text-align: center;">Duration</th>
@@ -230,7 +229,7 @@ background:black;
 							<tr style="">
 							<td class="border-black" style="width:5%;text-align"><h6 style="padding-top:18px;padding-bottom: 18px;"><%=++i %></h6></td>
 							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[2] %></h6></td>
-							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td>
+<%-- 							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"> <%=obj[3] %></h6></td> --%>
 							<td class="border-black" align="left"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[4] %></h6></td>
 							<td class="border-black right"  align="right"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=nfc.convert(Double.parseDouble(obj[5].toString())/10000000)%></h6></td>
 							<td class="border-black" align="center"><h6 style="padding-top:18px; padding-bottom: 18px;"><%=obj[6] %></h6></td>

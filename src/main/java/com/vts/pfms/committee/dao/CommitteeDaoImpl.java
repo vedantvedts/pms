@@ -92,7 +92,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String COMMITTEEAGENDAPRESENTER="SELECT a.presenterid ,b.empname, c.designation FROM committee_schedules_agenda a, employee b, employee_desig c WHERE a.presenterid=b.empid AND b.desigid=c.desigid AND a.scheduleid=:scheduleid GROUP BY 1";
 	private static final String CHAIRPERSONEMAIL="SELECT email, empid FROM employee WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode IN (SELECT LabCode FROM lab_master))  UNION SELECT email, empid FROM employee_external WHERE empid IN (SELECT empid FROM committee_member WHERE membertype IN ('CC','CS','PS','CH') AND committeemainid=:committeemainid AND labcode NOT IN (SELECT labcode FROM lab_master)) UNION SELECT email, empid FROM employee WHERE empid IN (SELECT pm.projectdirector FROM project_master pm, committee_main cm WHERE cm.projectid=pm.projectid AND cm.committeemainid=:committeemainid ) ";
 	private static final String PROJECTDIRECTOREMAIL="SELECT d.email,d.empname FROM employee d,project_master e WHERE projectid=:projectid AND e.projectdirector=d.empid";
-	private static final String RTMDDOEMAIL="SELECT a.email,a.empname FROM employee a,pfms_rtmddo b WHERE a.empid=b.empid AND b.isactive=1 AND b.type='DO-RTMD' ";
+	private static final String RTMDDOEMAIL="SELECT a.email,a.empname FROM employee a,pfms_initiation_Approver b WHERE a.empid=b.empid AND b.isactive=1 AND b.type='DO-RTMD' ";
 	private static final String UPDATEOTP="UPDATE committee_schedule SET kickoffotp=:otp,scheduleflag=:scheduleflag WHERE scheduleid=:committeescheduleid";
 	private static final String KICKOFFOTP="SELECT kickoffotp FROM committee_schedule WHERE scheduleid=:scheduleid";
 	private static final String PROJECTDETAILS="SELECT projectid, projectname, projectdescription,projectmainid,projectcode,projecttype,projectimmscd, unitcode, sanctionno,PDC,projectcategory FROM project_master WHERE projectid=:projectid";
@@ -189,10 +189,10 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String APPROVALSTATUSLIST="SELECT constitutionstatusid,authorityid,STATUS, statusdetail FROM committee_constitution_approval_status WHERE authorityid = (SELECT cas.authorityid FROM committee_constitution_approval_status cas,committee_constitution_approval ca   WHERE ca.committeemainid=:committeemainid AND ca.constitutionstatus=cas.status)+1 ORDER BY  constitutionstatusid";
 	private static final String NEWCOMMITTEEMAINISACTIVEUPDATE ="UPDATE committee_main SET isactive=1,STATUS='A',modifiedby=:modifiedby, modifieddate=:modifieddate WHERE committeemainid=:committeemainid";
 	private static final String LOGINDATA ="SELECT loginid, username,empid, divisionid,logintype FROM login WHERE loginid=:loginid";
-	private static final String DORTMDDATA ="SELECT rt.rtmddoid, rt.empid , rt.type FROM pfms_rtmddo rt WHERE rt.isactive=1 AND rt.type='P&C DO'";
+	private static final String DORTMDDATA ="SELECT rt.rtmddoid, rt.empid , rt.type FROM pfms_initiation_Approver rt WHERE rt.isactive=1 AND rt.type='P&C DO'";
 	private static final String COMCONSTITUTIONAPPROVALHISTORY ="SELECT cch.constitutionapprovalid, cch.committeemainid,cch.constitutionstatus,cch.remarks, cch.actionbylabid, cch.actionbyempid,cch.actiondate,ccs.statusdetail, e.empname,ed.designation,cl.labcode, cl.labname FROM committee_constitution_history cch, committee_constitution_approval_status ccs,  employee e, employee_desig ed, cluster_lab cl WHERE cch.constitutionstatus=ccs.status AND cch.actionbyempid=e.empid AND e.desigid=ed.desigid AND cch.actionbylabid=cl.labid AND cch.committeemainid=:committeemainid";
 	private static final String COMCONSTITUTIONEMPDETAILS ="SELECT cca.empid ,e.empname,ed.designation,'Constituted By' FROM committee_constitution_approval cca, employee e ,employee_desig ed WHERE cca.empid=e.empid AND e.desigid=ed.desigid AND committeemainid=:committeemainid";
-	private static final String DORTMDADEMPDATA=" SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.type='DO-RTMD' ";
+	private static final String DORTMDADEMPDATA=" SELECT pr.empid ,e.empname,ed.designation ,pr.type FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.type='DO-RTMD' ";
 	private static final String DIRECTOREMPDATA="SELECT l.labauthorityId,e.empname,ed.designation ,'Director'  FROM lab_master l, employee e ,employee_desig ed   WHERE l.labauthorityId=e.empid AND e.desigid=ed.desigid AND l.labcode=:LabCode ";
 	private static final String COMMITTEEMAINAPPROVALDODATA ="SELECT e1.empid,e1.empname,ed.designation,'Group Head' FROM employee e,employee e1,employee_desig ed, committee_constitution_approval cca,division_master dm ,division_group dg WHERE cca.empid=e.empid AND e.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.groupheadid=e1.empid AND e1.desigid=ed.desigid AND cca.committeemainid=:committeemainid";
 	private static final String COMMITTEEMINUTESDELETE ="DELETE FROM committee_schedules_minutes_details WHERE scheduleminutesid=:scheduleminutesid";
@@ -224,7 +224,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return committeeModel.getCommitteeId(); 
 	}
 	
-
 	@Override
 	public List<Object[]> CommitteeNamesCheck(String name,String sname,String projectid,String LabCode) throws Exception
 	{
@@ -258,7 +257,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		List<Object[]> CommitteeListActives=(List<Object[]>)query.getResultList();		
 		return CommitteeListActives;
 	}
-	
 	@Override
 	public Object[] CommitteeDetails(String committeeid) throws Exception
 	{
@@ -267,7 +265,6 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		Object[] CommitteeDetails = (Object[])query.getResultList().get(0);		
 		return CommitteeDetails;
 	}
-	
 	@Override
 	public Long CommitteeEditSubmit(Committee committeemodel) throws Exception
 	{

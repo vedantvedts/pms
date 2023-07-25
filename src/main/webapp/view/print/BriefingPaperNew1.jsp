@@ -657,7 +657,17 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			<%} %>
 		</div> 
 	</div>
-	<h1 class="break"></h1>
+				<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
+				
+				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
+				
+					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
+							<h1 class="break"></h1>
+					<% }else{ %>
+					<% }}}%>
+	
+	
+
 		
 	
 		<div align="left" style="margin-left: 15px;margin-top: 5px;"><b class="mainsubtitle">2 (b) System Specification : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -692,7 +702,15 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 		
 		
 	</div>	
-	<h1 class="break"></h1>
+	<!-- <h1 class="break"></h1> -->
+					<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){ %>
+				
+				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
+				
+					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
+							<h1 class="break"></h1>
+					<% }else{ %>
+					<% }}}%>
 <!-- --------------------------------------------- ----------------------------------------------- -->
 		<div align="left" style="margin-left: 10px;margin-top: 5px;"><b class="mainsubtitle">3. Overall Product tree/WBS:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -1447,10 +1465,18 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								
 								
 						</div>
+				<% if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null){ %>
+				
+									<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6]).exists()){ %>
+									
+										<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf") ){ %>
+										<h1 class="break"></h1>
+										<% }else{ %>
 											
+										<% }}}%>			
 						
 						
-						<h1 class="break"></h1>
+					<!-- 	<h1 class="break"></h1> -->
 			<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Risk Matrix/Management Plan/Status. </b></div>
 										
 				<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >

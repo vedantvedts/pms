@@ -36,12 +36,15 @@ import com.vts.pfms.project.model.PfmsInitiationDetail;
 import com.vts.pfms.project.model.PfmsInitiationLab;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
+import com.vts.pfms.project.model.PfmsInitiationReqIntro;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
+import com.vts.pfms.project.model.PfmsReqStatus;
+import com.vts.pfms.project.model.PfmsRequirementApproval;
 import com.vts.pfms.project.model.PfmsRequirementAttachment;
 import com.vts.pfms.project.model.PfmsRisk;
 import com.vts.pfms.project.model.PfmsRiskRev;
@@ -58,6 +61,9 @@ import com.vts.pfms.project.model.ProjectMajorWorkPackages;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterAttach;
 import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.project.model.ProjectOtherReqModel;
+import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementparaModel;
 
 @Transactional
 @Repository
@@ -117,7 +123,6 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTATTACHFILENAMEPATH="select a.filenamepath from pfms_initiation_attachment a where a.isactive='1' and a.initiationattachmentid=:initiationattachmentid ";
 	private static final String PROJECTINTLABUPDATE="update pfms_initiation_lab set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationlabid=:initiationlabid";
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
-	private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
 	private static final String EMPLOYEELIST="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode ORDER BY a.srno=0,a.srno";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item_sanc b  WHERE a.budgetsancid=b.sanctionitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
@@ -132,10 +137,10 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String TCCPROJECTLIST="SELECT projecttitle,projectshortname, initiationid FROM pfms_initiation WHERE projectstatus='PTA' AND isactive='1' ";
 	private static final String EXPERTLIST="SELECT a.expertid,a.expertname,b.designation FROM expert a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
 	private static final String DIVISIONHEADID="SELECT a.divisionheadid FROM division_master a, employee b WHERE a.divisionid=b.divisionid AND b.empid=:empid";
-	private static final String RTMDDOID="SELECT empid FROM pfms_rtmddo WHERE isactive=1 AND Type='DO-RTMD' " ;
+	private static final String RTMDDOID="SELECT empid FROM pfms_initiation_Approver WHERE isactive=1 AND Type='DO-RTMD' " ;
 	private static final String TCCCHAIRPERSONID="SELECT labauthorityid FROM lab_master WHERE labcode=:labcode";
 	private static final String CCMCHAIRPERSONID="SELECT labdgid FROM lab_master WHERE labcode=:labcode";
-	private static final String ADID="SELECT empid FROM pfms_rtmddo WHERE isactive=1 AND TYPE='AD';";  
+	private static final String ADID="SELECT empid FROM pfms_initiation_Approver WHERE isactive=1 AND TYPE='AD';";  
     private static final String APPSTATUSLIST="SELECT a.status, a.statusaction FROM pfms_project_authority_actionlist  a WHERE projectauthorityid=:AuthoId";
     private static final String PROJECTSTAGEDETAILSLIST ="SELECT projectstageid,projectstagecode,projectstage FROM pfms_project_stage";
     private static final String PROJECTDATADETAILS="SELECT ppd.projectdataid,ppd.projectid,ppd.filespath,ppd.systemconfigimgname,ppd.SystemSpecsFileName,ppd.ProductTreeImgName,ppd.PEARLImgName,ppd.CurrentStageId,ppd.RevisionNo,pps.projectstagecode,pps.projectstage,ppd.proclimit,ppd.LastPmrcDate,ppd.LastEBDate FROM pfms_project_data ppd, pfms_project_stage pps WHERE ppd.CurrentStageId=pps.projectstageid AND ppd.projectid=:projectid";
@@ -149,7 +154,7 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String PROJECTDATAREVDATA="SELECT ppdr.projectdatarevid,ppdr.projectid,ppdr.filespath,ppdr.systemconfigimgname,ppdr.SystemSpecsFileName,ppdr.ProductTreeImgName,ppdr.PEARLImgName,ppdr.CurrentStageId,ppdr.RevisionNo,pps.projectstagecode,pps.projectstage,ppdr.revisiondate FROM pfms_project_data_rev ppdr, pfms_project_stage pps WHERE ppdr.CurrentStageId=pps.projectstageid AND  ppdr.projectdatarevid=:projectdatarevid";
     private static final String STATUSDETAILS="SELECT statusdetail FROM pfms_project_authority_actionlist WHERE status=:status ";
     private static final String INTEMPID="select empid from pfms_initiation where initiationid=:id";
-    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode END"; 
+    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid  END"; 
 	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND am.actionmainid=:actionmainid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
@@ -174,12 +179,10 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTRISKMATRIXREVLIST="SELECT rr.riskrevisionid,rr.projectid,rr.actionmainid,rr.description, rr.severity,rr.probability,rr.mitigationplans,rr.revisionno,rr.revisiondate,rr.RPN,rr.Impact,rr.category,rr.RisktypeId, rt.risktype FROM pfms_risk_rev rr, pfms_risk_type rt WHERE rr.risktypeid=rt.risktypeid AND actionmainid=:actionmainid  ORDER BY revisionno DESC";		
 	private static final String RISKDATAPRESENTLIST="SELECT actionmainid , status FROM pfms_risk WHERE projectid=:projectid ";  
 	private final static String PROCATSECDETAILS ="SELECT ProjectTypeId, CategoryId FROM project_main WHERE ProjectMainId=:projectmainid";
-	
 	private static final String DIRECTOREMPDATA  ="SELECT a.labauthorityid, CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname' ,c.designation,'TCM'  FROM lab_master a, employee b,employee_desig c WHERE a.labauthorityid=b.empid AND b.desigid=c.desigid AND a.labcode=:labcode ";
 	private static final String EMPDIVHEADDATA ="SELECT e2.empid, CONCAT(IFNULL(CONCAT(e2.title,' '),''), e2.empname) AS 'empname' , ed.designation,'Division Head'  FROM employee e1, employee e2, employee_desig ed, division_master dm WHERE e1.divisionid=dm.divisionid AND dm.divisionheadid=e2.empid AND e2.desigid=ed.desigid  AND e1.empid=:empid";
 	private static final String INITCOMMDEFAULT="SELECT comminitdefaultid, committeeid FROM committee_initiation_default";
 	private static final String PROJECTTYPEMAINLISTNOTADDED="SELECT b.projectmainid,b.projectcode AS id FROM  project_main b WHERE  b.isactive='1' AND b.projectmainid NOT IN (SELECT a.projectmainid FROM project_master a WHERE a.isactive=1 AND projectmainid>0)";
-	
 	private static final String PROJECTREVLIST = "SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.classification,pr.sanctionno,pr.sanctiondate, CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master p, project_master_rev pr , project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE p.projectid=pr.projectid AND pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.classificationid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND p.projectid=:projectid UNION SELECT pr.projectid, pr.revisionno,pm.projectcode AS 'ProjectMainCode', pr.projectcode, pr.projectname, pr.projectdescription, pr.unitcode, pt.projecttype,ps.classification,pr.sanctionno,pr.sanctiondate,CASE WHEN pr.totalsanctioncost>0 THEN ROUND(pr.totalsanctioncost/100000,2) ELSE pr.totalsanctioncost END AS 'TotalSanctionCost', pr.pdc, e.empname AS 'ProjectDirector' , ed.designation  FROM project_master pr, project_main pm, project_type pt, pfms_security_classification ps, employee e, employee_desig ed WHERE  pr.projectmainid = pm.projectmainid AND pr.projecttype=pt.projecttypeid AND ps.classificationid =pr.projectcategory AND e.empid=pr.projectdirector AND e.desigid=ed.desigid  AND pr.projectid=:projectid ";
 	private static final String PROJECTMASTERATTACHLIST = "SELECT projectattachid,filename  FROM project_master_attach  WHERE projectid=:projectid";
 	private static final String PROJECTMASTERATTACHDATA = "SELECT projectattachid,filename,path,originalfilename,projectid  FROM project_master_attach  WHERE projectattachid= :projectattachid ";
@@ -1072,6 +1075,7 @@ public int ProjectIntiationCostDelete(PfmsInitiationCost pfmsinitiationcost) thr
 	return query.executeUpdate();
 }
 
+private static final String PROJECTSTATUSUPDATE="update pfms_initiation set projectstatus=:projectstatus,approvalid=:approvalid,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationid=:initiationid ";
 
 @Override
 public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApproval pfmsapproval,PfmsNotification notification) throws Exception {
@@ -1091,6 +1095,23 @@ public int ProjectIntiationStatusUpdate(PfmsInitiation pfmsinitiation,PfmsApprov
 	
 	return count;
 }
+private static final String REQSTATUSUPDATE="UPDATE pfms_initiation_req_status a SET a.status=:statuscode,a.approvalId=:approveid,a.modifiedby=:modifiedby,a.modifiedDate=:modifiedDate WHERE initiationId=:initiationId AND isactive=1";
+@Override
+public int ProjectRequirementStatusUpdate(PfmsReqStatus prs, PfmsRequirementApproval approval,PfmsNotification notification) throws Exception {
+	// TODO Auto-generated method stub
+	manager.persist(notification);
+	manager.persist(approval);
+	Query query=manager.createNativeQuery(REQSTATUSUPDATE);
+	query.setParameter("statuscode", prs.getStatus());
+	query.setParameter("approveid", approval.getReqApprovalId());
+	query.setParameter("modifiedby", prs.getModifiedBy());
+	query.setParameter("modifiedDate", prs.getModifiedDate());
+	query.setParameter("initiationId", prs.getInitiationId());
+	int count=query.executeUpdate();
+	manager.flush();
+	return count;
+}
+
 
 @Override
 public Long ProjectForwardStatus(String InitiationId) throws Exception {
@@ -1897,7 +1918,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		}
 		
 
-		private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_rtmddo pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:Labcode ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
+		private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:Labcode ORDER BY FIELD (pr.type,'DO-RTMD','AD')";
 		@Override
 		public List<Object[]>  DoRtmdAdEmpData(String Labcode) throws Exception
 		{
@@ -2153,7 +2174,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return pir.getInitiationReqId();
 		}
 		//Line Added	
-		private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype FROM pfms_initiation_req a WHERE initiationid=:initiationid AND isActive='1' ORDER BY reqCount";
+		private static final String REQLIST="SELECT a.InitiationReqId, a.requirementid,a.reqtypeid,a.requirementbrief,a.requirementdesc,a.priority,a.needtype,a.remarks,a.category,a.constraints,a.linkedrequirements,a.linkedDocuments,a.linkedPara FROM pfms_initiation_req a WHERE initiationid=:initiationid AND isActive='1' ORDER BY reqCount";
 		@Override
 		public List<Object[]> RequirementList(String intiationId) throws Exception {
 			// TODO Auto-generated method stub
@@ -2170,7 +2191,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		public long ProjectRequirementDelete(long initiationReqId) throws Exception {
 			return 0;
 		}
-		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
+		private static final String REQUIREMENTS="SELECT a.InitiationId,a.reqtypeid,a.RequirementBrief,a.RequirementDesc,a.RequirementId,a.priority,a.linkedrequirements,a.InitiationReqId,a.needtype,a.remarks,a.linkeddocuments,a.category,a.constraints,a.LinkedPara  FROM pfms_initiation_req a WHERE InitiationReqId=:InitiationReqId AND isActive='1'";
 		@Override
 		public Object[] Requirement(long InitiationReqId) throws Exception {
 			Query query=manager.createNativeQuery(REQUIREMENTS);
@@ -2179,7 +2200,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				
 				return Requirement;
 		}
-		private static final String REQUPDATE="UPDATE pfms_initiation_req SET initiationid=:initiationid, requirementid=:requirementid, reqtypeid=:reqtypeid, requirementbrief=:requirementbrief ,RequirementDesc=:RequirementDesc,modifiedby=:modifiedby,modifieddate=:modifieddate,priority=:priority,linkedrequirements=:linkedrequirements,reqCount=:reqCount,NeedType=:needtype,remarks=:remarks,linkeddocuments=:linkeddocuments WHERE initiationreqid=:initiationreqid AND isActive=1";
+		private static final String REQUPDATE="UPDATE pfms_initiation_req SET initiationid=:initiationid, requirementid=:requirementid, reqtypeid=:reqtypeid, requirementbrief=:requirementbrief ,RequirementDesc=:RequirementDesc,modifiedby=:modifiedby,modifieddate=:modifieddate,priority=:priority,linkedrequirements=:linkedrequirements,reqCount=:reqCount,NeedType=:needtype,remarks=:remarks,linkeddocuments=:linkeddocuments,constraints=:constraints,category=:category,linkedPara=:linkedPara WHERE initiationreqid=:initiationreqid AND isActive=1";
 		@Override
 		public long RequirementUpdate(PfmsInititationRequirement pir, String initiationReqId) throws Exception {
 			// TODO Auto-generated method stub
@@ -2199,8 +2220,9 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		query.setParameter("remarks", pir.getRemarks());
 		query.setParameter("linkeddocuments",pir.getLinkedDocuments() );
 		query.setParameter("initiationreqid", initiationReqId);
-		
-		
+		query.setParameter("category", pir.getCategory());
+		query.setParameter("constraints", pir.getConstraints());
+		query.setParameter("linkedPara", pir.getLinkedPara());
 		query.executeUpdate();
 		return 1l;
 		}
@@ -2453,7 +2475,7 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			return psd.getStatementDataId();
 		}
 
-		private  static final String FILEDETAILS=" SELECT FileName,CreatedDate,VersionDoc,docid,initiationid,stepid FROM pfms_initiation_file_upload WHERE initiationid=:inititationid AND stepid=:stepid" ;
+		private  static final String FILEDETAILS=" SELECT FileName,CreatedDate,VersionDoc,docid,initiationid,stepid,DocumentId FROM pfms_initiation_file_upload WHERE initiationid=:inititationid AND stepid=:stepid ORDER BY docid DESC" ;
 		@Override
 		public List<Object[]> projectfiles(String inititationid, String stepid) throws Exception {
 			// TODO Auto-generated method stub
@@ -3146,6 +3168,331 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		query.setParameter("ModifiedBy", pmb.getModifiedBy());
 		query.setParameter("InitiationId", pmb.getInitiationId());
 		return query.executeUpdate();
+	}
+	private static final String REQSTATUS="SELECT a.statusid,a.status,a.approvalId,a.RequirementNumber,a.version  FROM pfms_initiation_req_status a WHERE a.initiationid=:initiationId AND isactive=1";
+	@Override
+	public Object[] reqStatus(Long initiationId) throws Exception {
+		// TODO Auto-generated method stub
+		Query query =manager.createNativeQuery(REQSTATUS);
+		query.setParameter("initiationId", initiationId);
+		Object []reqStatus=null;
+		try {
+		reqStatus=(Object[])query.getSingleResult();	
+		}catch (Exception e) {
+		
+		}
+		return reqStatus;
+	}
+	@Override
+	public long ProjectRequirementAdd(PfmsInititationRequirement pir, PfmsReqStatus prs) throws Exception {
+		// TODO Auto-generated method stub
+		manager.persist(pir);
+		manager.persist(prs);
+		return pir.getInitiationReqId();
+	}
+
+	private static final String EMPID="SELECT EmpId FROM pfms_initiation WHERE InitiationId=:InitiationId";
+	@Override
+	public String getEmpId(String pdd) throws Exception {
+		Query query =manager.createNativeQuery(EMPID);
+		query.setParameter("InitiationId", pdd);
+		BigInteger a=(BigInteger) query.getSingleResult();
+		return a+"";
+	}
+	
+	private static final String DOCFLWDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:labcode AND pr.initiationid=:initiationid ORDER BY FIELD (pr.type,'Reviewer','Approver')";
+	@Override
+	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid) throws Exception {
+		Query query=manager.createNativeQuery(DOCFLWDATA);
+		query.setParameter("labcode", labCode);
+		query.setParameter("initiationid", initiationid);
+		List<Object[]>DocumentApprovalFlowData=(List<Object[]>)query.getResultList();
+		return DocumentApprovalFlowData;
+	}
+	
+	private static final String MAXREQ="SELECT MAX(a.version) FROM pfms_initiation_req_status a WHERE initiationid=:initiationId AND isactive=1";
+	@Override
+	public String maxRequirementVersion(Long initiationId) throws Exception {
+		Query query =manager.createNativeQuery(MAXREQ);
+		query.setParameter("initiationId", initiationId);
+		Object version=(Object)query.getSingleResult();
+		try {
+		if(version==null) {
+			version="0";
+		}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return version.toString();
+	}
+	private static final String REVIEWER="SELECT empid FROM pfms_initiation_approver pr WHERE initiationid=:initiationid AND pr.type='Reviewer' AND isactive='1'";
+	@Override
+	public String getInitiationReviewer(String initiationid) throws Exception {
+		Query query = manager.createNativeQuery(REVIEWER);
+		query.setParameter("initiationid", initiationid);
+		Object reviewer=0;
+		try {
+			reviewer=	(Object)query.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return reviewer.toString();
+	}
+	
+	private static final String REQAPPRVLIST=" (SELECT a.initiationid,a.status,b.remarks,d.projectshortname,d.projecttitle,e.empname,b.actiondate,a.requirementNumber FROM pfms_initiation_req_status a , pfms_initiation_req_approval b,pfms_initiation_approver c,pfms_initiation d,employee e WHERE a.initiationid=d.initiationid AND a.approvalId=b.reqapprovalid AND a.status IN('RFU') AND b.empid=e.empid AND a.initiationid=c.initiationid AND c.empid=:empid AND c.type IN ('Reviewer')AND a.isactive='1')UNION (SELECT a.initiationid,a.status,b.remarks,d.projectshortname,d.projecttitle,e.empname,b.actiondate,a.requirementNumber  FROM pfms_initiation_req_status a ,pfms_initiation_req_approval b, pfms_initiation_approver c ,pfms_initiation d,employee e WHERE a.initiationid=d.initiationid AND a.approvalId=b.reqapprovalid AND a.status IN('RFD') AND b.empid=e.empid AND a.initiationid=c.initiationid AND c.empid=:empid AND c.type IN ('Approver')AND a.isactive='1')";
+	@Override
+	public List<Object[]> RequirementApprovalList(String empId) throws Exception {
+		Query query =manager.createNativeQuery(REQAPPRVLIST);
+		query.setParameter("empid", empId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String APPROVER="SELECT empid FROM pfms_initiation_approver pr WHERE initiationid=:initiationid AND pr.type='Approver' AND isactive='1'";
+	@Override
+	public String getInitiationApprover(String initiationid) throws Exception {
+		Query query = manager.createNativeQuery(APPROVER);
+		query.setParameter("initiationid", initiationid);
+		Object reviewer=(Object)query.getSingleResult();
+		try {
+			if(reviewer==null) {
+				reviewer="1";
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}		
+		return reviewer.toString();
+	}
+	
+	private static final String REQTRACK="SELECT b.reqapprovalid,b.empid,c.empname,b.actiondate,b.reqstatus,b.remarks,a.TransactionDetails,a.statuscolor,d.designation FROM pfms_initiation_req_transactionlist a , pfms_initiation_req_approval b , employee c,employee_desig d WHERE a.TransactionCode=b.ReqStatus AND b.initiationid=:initiationid AND b.empid=c.empid AND c.desigid=d.desigid ORDER BY reqapprovalid";
+	@Override
+	public List<Object[]> RequirementTrackingList(String initiationid) throws Exception {
+		Query query =manager.createNativeQuery(REQTRACK);
+		query.setParameter("initiationid", initiationid);
+		List<Object[]>TrackingList=(List<Object[]>)query.getResultList();
+		return TrackingList;
+		
+	}
+	private static final String OTHREQ="SELECT requirementid , ReqName FROM pfms_initiation_otherreq WHERE requirementid NOT IN(SELECT reqmainid FROM pfms_initiation_otherreq_details WHERE initiationid=:initiationid AND isactive=1)";
+	@Override
+	public List<Object[]> projecOtherRequirements(String initiationid) throws Exception {
+		Query query= manager.createNativeQuery(OTHREQ);
+		query.setParameter("initiationid", initiationid);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String OTHREQLIST="SELECT RequirementId,InitiationId,ReqMainId,ReqParentId,RequirementName FROM pfms_initiation_otherreq_details WHERE initiationid=:initiationId AND ReqMainId=:reqMainId ORDER BY RequirementId";
+	@Override
+	public List<Object[]> OtherRequirementList(Long initiationId, Long reqMainId) throws Exception {
+		Query query =manager.createNativeQuery(OTHREQLIST);
+		query.setParameter("initiationId", initiationId);
+		query.setParameter("reqMainId", reqMainId);
+		return (List<Object[]>)query.getResultList();
+	}
+	@Override
+	public long ProjectOtherRequirementAdd(ProjectOtherReqModel pm) throws Exception {
+		manager.persist(pm);
+		return pm.getRequirementId();
+	}
+	private static final String UPDREQNAME="UPDATE pfms_initiation_otherreq_details SET RequirementName=:RequirementName WHERE RequirementId=:RequirementId AND isactive='1'";
+	@Override
+	public long UpdateOtherRequirementName(ProjectOtherReqModel pm) throws Exception {
+		Query query =manager.createNativeQuery(UPDREQNAME);
+		query.setParameter("RequirementName", pm.getRequirementName());
+		query.setParameter("RequirementId", pm.getRequirementId());
+		
+		return query.executeUpdate();
+	}
+	private static final String UPDREQDETAILS="UPDATE pfms_initiation_otherreq_details SET RequirementDetails=:RequirementDetails WHERE RequirementId=:RequirementId AND isactive='1'";
+	@Override
+	public long UpdateOtherRequirementDetails(ProjectOtherReqModel pm) throws Exception {
+		Query query =manager.createNativeQuery(UPDREQDETAILS);
+		query.setParameter("RequirementDetails", pm.getRequirementDetails());
+		query.setParameter("RequirementId", pm.getRequirementId());
+		return query.executeUpdate();
+	}
+	private static final String REQID="SELECT requirementid FROM pfms_initiation_otherreq_details  WHERE initiationid=:initiationid AND reqmainid=:reqmainid AND reqparentid=:reqparentid AND isactive='1'";
+	@Override
+	public String getRequirementId(Long initiationId, Long reqMainId, int i) throws Exception {
+		// TODO Auto-generated method stub
+		Query query=manager.createNativeQuery(REQID);
+		query.setParameter("initiationid", initiationId);
+		query.setParameter("reqmainid", reqMainId);
+		query.setParameter("reqparentid", i);
+		
+		BigInteger getRequirementId=BigInteger.ZERO;
+		try {
+			getRequirementId=(BigInteger)query.getSingleResult();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return getRequirementId.toString();
+	}
+	private static final String OTHREQDATA="SELECT Requirementid,initiationid,reqmainid,reqparentid,requirementname,requirementdetails FROM pfms_initiation_otherreq_details WHERE requirementid=:requirementid AND isactive='1'";
+	@Override
+	public Object[] OtherSubRequirementsDetails(String requirementId) throws Exception {
+		Query query =manager.createNativeQuery(OTHREQDATA);
+		query.setParameter("requirementid", requirementId);
+		return (Object[])query.getSingleResult();
+	}
+	private static final String OTHMAINREQLIST="SELECT ReqMainId,RequirementName,RequirementId FROM pfms_initiation_otherreq_details WHERE initiationid=:initiationid AND reqparentid=0 AND isactive=1 ORDER BY ReqMainId ";
+	@Override
+	public List<Object[]> otherProjectRequirementList(String initiationid) throws Exception {
+		Query query =manager.createNativeQuery(OTHMAINREQLIST);
+		query.setParameter("initiationid", initiationid);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String ALLOTHREQ="SELECT RequirementId,ReqMainId,ReqParentId,RequirementName,RequirementDetails,InitiationId FROM pfms_initiation_otherreq_details WHERE InitiationId=:InitiationId AND isactive='1'";
+	@Override
+	public List<Object[]> getAllOtherReqByInitiationId(String initiationid) throws Exception {
+		Query query =manager.createNativeQuery(ALLOTHREQ);
+		query.setParameter("InitiationId", initiationid);
+		return (List<Object[]>)query.getResultList();
+	}
+	private static final String LABDETAILS="select labcode, labname,labaddress, labcity,lablogo,labpin from lab_master where labcode=:labcode";
+	@Override
+	public Object[] LabListDetails(String labcode) throws Exception {
+		Query query = manager.createNativeQuery(LABDETAILS);
+		query.setParameter("labcode", labcode);
+		return (Object[])query.getSingleResult();
+	}
+	private static final String REQINTRO="SELECT InitiationId,Introduction,SystemBlockDiagram,SystemOverview,DocumentOverview,ApplicableStandards FROM pfms_initiation_req_intro WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public Object[] RequirementIntro(String initiationid) throws Exception {
+		Query query=manager.createNativeQuery(REQINTRO);
+		query.setParameter("initiationid", initiationid);
+		Object[]ReqIntro=null;
+		try {
+			ReqIntro=(Object[])query.getSingleResult();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ReqIntro;
+	}
+	@Override
+	public long ReqIntroSubmit(PfmsInitiationReqIntro pr) throws Exception {
+		manager.persist(pr);
+		manager.flush();
+		return pr.getIntroId();
+	}
+	@Override
+	public long ReqIntroUpdate(PfmsInitiationReqIntro pr, String details) throws Exception {
+		System.out.println(details);
+		if(details.equalsIgnoreCase("Introduction")) {
+			System.out.println("a");
+		 String INTROUPDATE="UPDATE pfms_initiation_req_intro SET Introduction=:Introduction, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid";
+		 Query query=manager.createNativeQuery(INTROUPDATE);
+		 query.setParameter("Introduction", pr.getIntroduction());
+		 query.setParameter("ModifiedBy", pr.getModifiedBy());
+		 query.setParameter("ModifiedDate", pr.getModifiedDate());
+		 query.setParameter("initiationid", pr.getInitiationId());
+		 return query.executeUpdate();
+		 
+		}else if(details.equalsIgnoreCase("Block Diagram")) {
+			System.out.println("a");
+		String BLOCKUPDTE="UPDATE pfms_initiation_req_intro SET SystemBlockDiagram=:SystemBlockDiagram, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid";
+		 Query query=manager.createNativeQuery(BLOCKUPDTE);
+		 query.setParameter("SystemBlockDiagram", pr.getSystemBlockDiagram());
+		 query.setParameter("ModifiedBy", pr.getModifiedBy());
+		 query.setParameter("ModifiedDate", pr.getModifiedDate());
+		 query.setParameter("initiationid", pr.getInitiationId());
+		 return query.executeUpdate();	
+		
+		}else if(details.equalsIgnoreCase("System Overview")) {
+			System.out.println("a");
+		String SYSUPDATE="UPDATE pfms_initiation_req_intro SET SystemOverview=:SystemOverview, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid";
+		 Query query=manager.createNativeQuery(SYSUPDATE);
+		 query.setParameter("SystemOverview", pr.getSystemOverview());
+		 query.setParameter("ModifiedBy", pr.getModifiedBy());
+		 query.setParameter("ModifiedDate", pr.getModifiedDate());
+		 query.setParameter("initiationid", pr.getInitiationId());
+		 return query.executeUpdate();
+		
+		}else if(details.equalsIgnoreCase("Document Overview")) {
+			System.out.println("a");
+		String DOCUPDATE="UPDATE pfms_initiation_req_intro SET DocumentOverview=:DocumentOverview, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid";
+		 Query query=manager.createNativeQuery(DOCUPDATE);
+		 query.setParameter("DocumentOverview", pr.getDocumentOverview());
+		 query.setParameter("ModifiedBy", pr.getModifiedBy());
+		 query.setParameter("ModifiedDate", pr.getModifiedDate());
+		 query.setParameter("initiationid", pr.getInitiationId());
+		 return query.executeUpdate();
+		
+		}else if(details.equalsIgnoreCase("Applicable Standards")) {
+			System.out.println("a");
+		String APSUPDATE="UPDATE pfms_initiation_req_intro SET ApplicableStandards=:ApplicableStandards, ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE initiationid=:initiationid";	
+		 Query query=manager.createNativeQuery(APSUPDATE);
+		 query.setParameter("ApplicableStandards", pr.getApplicableStandards());
+		 query.setParameter("ModifiedBy", pr.getModifiedBy());
+		 query.setParameter("ModifiedDate", pr.getModifiedDate());
+		 query.setParameter("initiationid", pr.getInitiationId());
+		 return query.executeUpdate();
+		}
+		
+		return 0;
+	}
+	private static final String PRGCOUNT="SELECT COUNT(a.initiationid) FROM pfms_initiation_req a,pfms_initiation_otherreq_details b ,pfms_initiation_req_intro c WHERE a.initiationid=b.initiationid AND a.initiationid=c.initiationid AND a.initiationid=:initiationid";
+	@Override
+	public Long ReqForwardProgress(String initiationid) throws Exception {
+	Query query =manager.createNativeQuery(PRGCOUNT);
+	query.setParameter("initiationid", initiationid);
+	
+	BigInteger count=(BigInteger)query.getSingleResult();
+	return count.longValue();
+	}
+	@Override
+	public long ProjectSqrSubmit(ProjectSqrFile psf) throws Exception {
+		String Update="UPDATE pfms_initiation_sqr SET isactive='0' WHERE initiationid=:initiationid";
+		Query query =manager.createNativeQuery(Update);
+		query.setParameter("initiationid", psf.getInitiationId());
+		query.executeUpdate();
+		manager.persist(psf);
+		manager.flush();
+		return psf.getSqrId();
+	}
+	private static final String SQRFILES="SELECT a.User,a.refNo,a.initiationid,a.authority,a.version,a.createdDate,a.sqrNo,a.sqrid FROM pfms_initiation_sqr a WHERE initiationid=:initiationId AND isactive=1";
+	@Override
+	public Object[] SqrFiles(String initiationId) throws Exception {
+		Query query =manager.createNativeQuery(SQRFILES);
+		query.setParameter("initiationId", initiationId);
+		Object[]SQRFILES=null;
+		try {
+		SQRFILES=(Object[])query.getSingleResult();
+		}catch(Exception e) {
+		e.printStackTrace();
+		}
+		return SQRFILES;
+	}
+	@Override
+	public long RequirementParaSubmit(RequirementparaModel rpm) throws Exception {
+		manager.persist(rpm);
+		manager.flush();
+		return rpm.getParaId();
+	}
+	private static final String PARADETAILS="SELECT paraid,sqrid,initiationid,parano,paradetails FROM pfms_initiation_sqr_para WHERE initiationid=:initiationid AND isactive=1";
+	@Override
+	public List<Object[]> ReParaDetails(String initiationid) throws Exception {
+		Query query = manager.createNativeQuery(PARADETAILS);
+		query.setParameter("initiationid", initiationid);
+		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
+	    return paraDetails;
+	}
+	@Override
+	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception {
+		String PARAUPDATE="UPDATE pfms_initiation_sqr_para SET parano=:parano WHERE paraid=:paraid AND isactive='1'";	
+		String PARADETAILSUPDATE="UPDATE pfms_initiation_sqr_para SET paradetails=:paradetails WHERE paraid=:paraid AND isactive='1'";
+		if(rpm.getParaDetails()==null) {
+			Query query = manager.createNativeQuery(PARAUPDATE);
+			query.setParameter("parano", rpm.getParaNo());
+			query.setParameter("paraid", rpm.getParaId());
+			return query.executeUpdate();
+			}
+			 {
+				Query query = manager.createNativeQuery(PARADETAILSUPDATE);
+				query.setParameter("paradetails", rpm.getParaDetails());
+				query.setParameter("paraid", rpm.getParaId());
+				return query.executeUpdate();	
+			}
 	}
 }
 

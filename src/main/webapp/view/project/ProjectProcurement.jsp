@@ -46,6 +46,40 @@ display: block;
 #Approvededit,#Approve{
 margin-left: -6%;
 }
+.text-animation {
+  position: fixed;
+  top: 50%;
+  left: 40%;
+  transform: translateX(-100%);
+  animation: slide-in 2s ease forwards, change-background 4s infinite;
+  background-color: #43ABE2;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes change-background {
+  0% {
+    background-color: #43ABE2;
+  }
+  50% {
+    background-color: green;
+  }
+  100% {
+    background-color: #43ABE2;
+  }
+}
 </style>
 </head>
 <body>
@@ -77,7 +111,7 @@ margin-left: -6%;
 	</div>
 	<%} %>
 	<%if(ProjectIntiationList.size()==0 ||ProcurementList==null) {%>
-		<div style="margin-top:20%;display: flex; justify-content: center; align-items: center;"><h3>No Data Available!</h3></div>
+		<div style="display: flex; justify-content: center; align-items: center;"><h3  class="text-animation">No Data Available!</h3></div>
 	<%}else{ %>
 			<div class="container-fluid" id="main">
 			<div class="row">

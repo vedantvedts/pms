@@ -1015,8 +1015,6 @@ for(Object[] obj : DetailsList){   %>
 		   if("FE".equalsIgnoreCase(obj[2].toString())){FEWorks+=Double.parseDouble(obj[0].toString()); }
 	  }  
 			}
-		 
-		 
 		 %>
  <table class="border-black" style="margin-top:0px; margin-bottom: 10px;margin-left: 10px;width:695px;  " id="cost">
 		  <thead>

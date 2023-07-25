@@ -168,7 +168,14 @@ a:hover {
 														<tr>
 															<td class="center"><%=count %></td>
 															<td><%=obj[9] %></td>
-															<td><%=obj[5] %></td>
+															<td>
+															<%if(obj[5].toString().length()>100){ %>
+															<%=obj[5].toString().substring(0, 100) %>
+														 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[5].toString()%>','<%=obj[9].toString()%>')">show more..</span>
+															<%}else{ %>
+															<%=obj[5].toString() %>
+															<%} %>
+															</td>
 															<td><%=sdf.format(obj[4])%></td>
 															<td><%=sdf.format(obj[3])%></td>
 															<td><%=obj[1]%>, <%=obj[2]%></td>
@@ -259,6 +266,23 @@ a:hover {
 
 
 
+<!-- Modal for action -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+     
+      </div>
+      <div align="right" id="header" class="p-2"></div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -281,6 +305,13 @@ a:hover {
 				format : 'DD-MM-YYYY'
 			}
 		});
+	
+		
+		function showAction(a,b){
+			$('#modalbody').html(a);
+			$('#header').html(b);
+			$('#exampleModalCenter').modal('show');
+		}
 	</script>  
 
 

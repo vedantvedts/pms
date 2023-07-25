@@ -42,6 +42,10 @@ h6{
   String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
   String back = (String) request.getAttribute("back");
+  int length=0;
+  if(Assignee!=null && Assignee[5]!=null){
+	  length=Assignee[5].toString().length();
+  }
  %>
 
 
@@ -67,15 +71,23 @@ h6{
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;">
+	<div class="container" style="margin-bottom:20px;max-width: 100%;">
 
 		
     		<div class="card" style=" ">
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D; height: 110px;">
-      				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=actiono %>)<%}%>
+	    		<div class="card-header" style="background-color: #055C9D; padding: 10px; box-sizing: border-box;display: table;"
+	    		>
+      				  <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> 
+      				  <%if(Assignee[5].toString().length()>100){ %>
+      				  <%=Assignee[5].toString().substring(0,100) %> 
+      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=Assignee[5].toString()%>','<%=actiono%>')">show more..</span>
+      				  (<%=actiono %>)
+      				  <%}else{ %>
+      				  <%=Assignee[5] %> (<%=actiono %>)<%}}%>
+      				  
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
       				
@@ -275,8 +287,23 @@ h6{
 			</div>
 		</div>
 	</div>
- 
-
+ <!-- Modal for action -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+     
+      </div>
+      <div align="right" id="header" class="p-2"></div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
 
@@ -340,6 +367,12 @@ h6{
    			if(confirm('Are You Sure To Forward?')){
    				$('#'+formid).submit();
    			}
+   		}
+   		
+   		function showAction(a,b){
+   			$('#modalbody').html(a);
+   			$('#header').html(b);
+   			$('#exampleModalCenter').modal('show');
    		}
 </script> 
 

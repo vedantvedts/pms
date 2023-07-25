@@ -25,6 +25,7 @@ import com.vts.pfms.project.dto.ProjectMajorManPowersDto;
 import com.vts.pfms.project.dto.ProjectMajorRequirementsDto;
 import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
+import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
 import com.vts.pfms.project.model.PfmsInitiation;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
@@ -40,6 +41,8 @@ import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementparaModel;
 
 public interface ProjectService {
 
@@ -177,7 +180,7 @@ public interface ProjectService {
 	public List<Object[]> InitiationCheckList(String initiationid) throws Exception;
 	public long IntiationChecklistUpdate(PfmsInitiationChecklistData cldata) throws Exception;
 	public List<Object[]> RiskTypeList() throws Exception;
-	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId,String LabCode) throws  Exception;
+	public long ProjectRequirementAdd(PfmsInitiationRequirementDto prd,String UserId,String LabCode, String shortName) throws  Exception;
 	public List<Object[]> RequirementList(String intiationId) throws Exception;
 	public long ProjectRequirementDelete(long initiationReqId) throws Exception;
 	public Object[] Requirement(long InitiationReqId) throws Exception ;
@@ -265,4 +268,28 @@ public interface ProjectService {
 	public long BriefCostsBenefitsEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefProjectManagementEdit(ProjectMactroDetailsBrief pmb)throws Exception;
 	public long BriefPERTEdit(ProjectMactroDetailsBrief pmb)throws Exception;
+	public Object[] reqStatus(Long initiationId)throws Exception;
+	public int ProjectRequirementStatusUpdate(String initiationid, String projectcode, String userId,String Status, String Empid,String Remarks, String action)throws Exception;
+	public List<Object[]> DocumentApprovalFlowData(String labCode, String initiationid)throws Exception;
+	public List<Object[]> RequirementApprovalList(String empId) throws Exception;
+	public List<Object[]> RequirementTrackingList(String initiationid) throws Exception;
+	public List<Object[]> projecOtherRequirements(String initiationid)throws Exception;
+	public long AddOtherRequirement(ProjectOtherReqDto pd, String subreqName)throws Exception;
+	public List<Object[]> OtherRequirementList(String initiationid, String mainid)throws Exception;
+	public long UpdateOtherRequirementName(ProjectOtherReqDto pd)throws Exception;
+	public long UpdateOtherRequirementDetails(ProjectOtherReqDto pd, String requirementId)throws Exception;
+	public Object[] OtherSubRequirementsDetails(ProjectOtherReqDto pd, String requirementId) throws Exception;
+	public long AddOtherRequirementDetails(String[] reqNames, String[] reqValue,String initiationid)throws Exception;
+	public List<Object[]> otherProjectRequirementList(String initiationid) throws Exception;
+	public List<Object[]> getAllOtherrequirementsByInitiationId(String initiationid)throws Exception;
+	public Object[] LabListDetails(String labCode)throws Exception;
+	public Object[] RequirementIntro(String initiationid) throws Exception;
+	public long ReqIntroSubmit(String initiationid, String attributes, String details,String UserId)throws Exception;
+	public long reqIntroUpdate(String initiationid, String attributes, String details, String userId) throws Exception;
+	public Long ReqForwardProgress(String initiationid)throws Exception;
+	public long ProjectSqrSubmit(ProjectSqrFile psf, MultipartFile fileAttach, String userId,String LabCode)throws Exception;
+	public Object[] SqrFiles(String intiationId)throws Exception;
+	public long RequirementParaSubmit(RequirementparaModel rpm)throws Exception;
+	public List<Object[]> ReqParaDetails(String initiationid)throws Exception;
+	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception;
 }

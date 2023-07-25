@@ -4,6 +4,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@page import="java.net.URL"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +24,9 @@ List<Object> DocumentId=new ArrayList<>();
 	 }
 	String lablogo=(String)request.getAttribute("lablogo");
 	Object[] AllLabList=(Object[])request.getAttribute("AllLabList"); 	
+	int port=new URL( request.getRequestURL().toString()).getPort();
+	String path="http://localhost:"+port+request.getContextPath()+"/";
+	String conPath=(String)request.getContextPath();
 %>
 <style type="text/css">
 
@@ -40,7 +44,7 @@ td{
     }     
  
 		@page{             
-          size: 790px 1080px;
+          size: 790px 1100px;
           margin-top: 49px;
           margin-left: 49px;
           margin-right: 49px;
@@ -197,9 +201,8 @@ background:black;
 												String []versiondoc=obj1[6].toString().split("\\.");
 												String id=versiondoc[0];
 												String subId=versiondoc[1]; %>
-								<a style="float: right;" href="ProjectRequirementAttachmentDownload.htm?DocumentId=<%=obj1[8].toString()%>&initiationid=<%=obj1[1].toString() %>&stepid=<%=3%>&id=<%=id %>&subId=<%=subId%> " target="_blank" style="font-size: 12px;">Download</a> 
-											
-											<%}}%>
+												<a style="float: right;" href="<%=path %>ProjectRequirementAttachmentDownload.htm?DocumentId=<%=obj1[8].toString()%>&initiationid=<%=obj1[1].toString() %>&stepid=<%=3%>&id=<%=id %>&subId=<%=subId%> " target="_blank" style="font-size: 12px;">Download</a> 
+												<%}}%>
 		
 		<%}
 		else{%>&nbsp;&nbsp;No<%}%><hr></td>

@@ -221,15 +221,12 @@ NFormatConvertion nfc=new NFormatConvertion();
 				</div>
 				
 			</div>
-				
         		<%-- <form action="" method="POST" name="myfrm" id="myfrm" align="right" style="margin-bottom: 10px;margin-top: -25px">
-
 				    <button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 					<button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint2.htm" formtarget="_blank"  >Print Project Proposal</button>&nbsp;&nbsp;
 				    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				    <input type="hidden" name="IntiationId"	value="<%=InitiationId%>" /> 
-				</form> --%>
-        
+				</form> --%>        
 	      <section id="timeline">
 	      
 	       <% int count=1;
@@ -254,9 +251,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 				  	<%if(object[6]!= null){%>
 				  		<span class="remarks_title">Remarks : </span>
 				  				<%=object[6] %>
-				  						<%}else{ %> 
-				  							<span class="remarks_title">No Remarks </span> 
-				  								<%} %>
+				  						<%}else{ %> <span class="remarks_title">No Remarks </span> <%} %>
 				  </p>
 			    </div>
 			  </article>
