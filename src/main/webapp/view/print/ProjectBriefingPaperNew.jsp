@@ -1247,8 +1247,8 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 										<th  style="width: 30px; ">MS</th>
 										<th  style="width: 60px; ">L</th>
 										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-										<th  style="width: 150px; "> PDC</th>
-										<th  style="width: 150px; "> ADC</th>
+										<th  style="width: 120px; ">ADC<br> PDC</th>
+									<!-- 	<th  style="width: 150px; "> ADC</th> -->
 										<th  style="width: 60px; "> Progress</th>
 										<th  style="width: 50px; "> Status(DD)</th>
 									 	<th  style="width: 260px; "> Remarks</th>
@@ -1328,12 +1328,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													<%} %>
 												</td>
 												<td style="text-align: center">
-													<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
-														<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
-													<%}%>
-													<%=sdf.format(sdf1.parse(obj[9].toString())) %>
-												</td>
-												
+												<!-- ADC  -->
 												<% 
 													LocalDate StartDate = LocalDate.parse(obj[7].toString());
 													LocalDate EndDate = LocalDate.parse(obj[8].toString());
@@ -1344,20 +1339,8 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													LocalDate Today = LocalDate.now();
 													
 												%>
-												<td style="text-align: center">
-														<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
-														<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-																					<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-																					<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-																					<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-																					<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-																					<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-																					<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-						
-															<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
-															<% } else {  %> - <% } %> --%>
-														<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
-															<span 
+												<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
+															<span  style="color:green"
 																<%if(Progess==0){ %>
 																	class="assigned"
 																<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
@@ -1376,7 +1359,29 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 																> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
 															
 														 <% } else {  %> - <% } %>
+												
+												<br>
+													<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+														<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+													<%}%>
+													<%=sdf.format(sdf1.parse(obj[9].toString())) %>
 												</td>
+												
+
+												<!-- <td style="text-align: center"> -->
+														<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
+														<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
+																					<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+																					<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+																					<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
+																					<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+																					<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+																					<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
+						
+															<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
+															<% } else {  %> - <% } %> --%>
+														
+												<!-- </td> -->
 												<td style="text-align: center"><%=obj[17] %>%</td>											
 												<%-- <td style="text-align: center">
 													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned

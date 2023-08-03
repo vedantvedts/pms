@@ -46,6 +46,7 @@ h6{
   if(Assignee!=null && Assignee[5]!=null){
 	  length=Assignee[5].toString().length();
   }
+  String Empid=(String)request.getAttribute("Empid");
  %>
 
 
@@ -127,7 +128,7 @@ h6{
 				            	<%}%>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
 		          				 
-	                           	<% if(SubList.size()>0){ %>  
+	                           	<% if(SubList.size()>0 && !Empid.equalsIgnoreCase(Assignee[22].toString())){ %>  
 	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
 	          				</div>

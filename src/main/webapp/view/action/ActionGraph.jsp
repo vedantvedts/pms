@@ -131,7 +131,7 @@
 	                                            <option value="A" <%if(projectid.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>All</option>	
 	                                             <option value="0" <%if(projectid.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
 	                                               <%for(Object[] obj:projectslist){ %>
-														<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
+														<option value="<%=obj[0] %>" <%if(projectid.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[1] %></option>	
 													<%}%>
 											</select>	
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 

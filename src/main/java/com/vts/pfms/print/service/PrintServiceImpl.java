@@ -727,11 +727,10 @@ public class PrintServiceImpl implements PrintService{
 	{
 		return dao.GetTodayFreezedSlidedata(projectid);
 	}
-@Override
+	@Override
 	public List<Object[]> CostDetailsListSummary(String initiationId) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.CostDetailsListSummary(initiationId);
 	}
-
 	
 }

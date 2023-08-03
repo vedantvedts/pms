@@ -269,10 +269,11 @@ div {
 								   	<td>
 								   		<select class="form-control selectdee" id="projectid" required="required"  name="projectid" onchange="$('#myprojectform').submit();">
 								    		<option    value="">Choose...</option>
-								    		<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option>
+								    	<%-- 	<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
 								    		<% for (Object[] obj : ProjectList) {%>
 												<option value="<%=obj[0]%>"  <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %>selected="selected" <%} %>><%=obj[4]%> </option>
 											<%} %>
+											<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option>
 										</select>
 										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									</td>

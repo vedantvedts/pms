@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -371,18 +372,18 @@ public class ProjectController
 				if (!CostDetailsListSummary.isEmpty()) {
 					for (Object[] obj : CostDetailsListSummary) {
 						if (obj[0].toString().contains("Consultancy")) {
-							ConsultancyCost = obj[2].toString();
+						ConsultancyCost = obj[2].toString();
 						}
 					}
-				} else {
-					ConsultancyCost = "0.00";
+				}else {
+				ConsultancyCost = "0.00";
 				}
 				if (!CostDetailsListSummary.isEmpty()) {
-					for (Object[] obj : CostDetailsListSummary) {
-						if (obj[0].toString().contains("Jobwork")) {
-							WorksCost = obj[2].toString();
-						}
-					}
+				for (Object[] obj : CostDetailsListSummary) {
+				if (obj[0].toString().contains("Jobwork")) {
+				WorksCost = obj[2].toString();
+				}
+				}
 				} else {
 					WorksCost = "0.00";
 				}
@@ -4520,6 +4521,7 @@ public class ProjectController
 		{
 			String ftype=req.getParameter("filename");
 			String projectdataid=req.getParameter("projectdataid");
+			System.out.println(projectdataid);
 			res.setContentType("Application/octet-stream");	
 			Object[] projectdatafiledata=service.ProjectDataSpecsFileData(projectdataid);
 			File my_file=null;
@@ -4555,6 +4557,50 @@ public class ProjectController
 				logger.error(new Date() +"Inside ProjectDataSystemSpecsFileDownload.htm "+UserId,e);
 		}
 	}
+	@RequestMapping(value = "ProjectDataAjax.htm", method = {RequestMethod.GET , RequestMethod.POST})
+	public @ResponseBody String ProjectDataAjax(HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception 
+	{
+		
+		logger.info(new Date() +"Inside ProjectDataAjax.htm "+req.getUserPrincipal().getName());
+		List<String> iframe=new ArrayList<>();
+		try {
+			
+			String ftype=req.getParameter("filename");
+			String projectdataid=req.getParameter("projectdataid");
+			
+			System.out.println(projectdataid+ftype);
+			res.setContentType("Application/octet-stream");	
+			Object[] projectdatafiledata=service.ProjectDataSpecsFileData(projectdataid);
+			File my_file=null;
+			int index=3;
+			if(ftype.equalsIgnoreCase("sysconfig")) 
+			{
+				index=4;
+			}else if(ftype.equalsIgnoreCase("protree"))
+			{
+				index=5;
+			}else if(ftype.equalsIgnoreCase("pearl"))
+			{
+				index=6;
+			}else if(ftype.equalsIgnoreCase("sysspecs"))
+			{
+				index=3;
+			}
+			my_file = new File(uploadpath+projectdatafiledata[2]+File.separator+projectdatafiledata[index]); 
+	        res.setHeader("Content-disposition","attachment; filename="+projectdatafiledata[index].toString()); 
+	        iframe.add(FilenameUtils.getExtension(projectdatafiledata[index]+""));
+	         String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(my_file));
+	         iframe.add(pdf);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProjectDataAjax.htm "+req.getUserPrincipal().getName(), e);
+		}
+		Gson json = new Gson();
+		return json.toJson(iframe);
+	}
+	
+	
+	
 	@RequestMapping(value = "ProjectDataEditSubmit.htm", method = RequestMethod.POST)
 	public String ProjectDataEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestParam(name = "systemconfig" ,required = false) MultipartFile systemconfigimg,

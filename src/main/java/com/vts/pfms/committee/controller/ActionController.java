@@ -264,7 +264,7 @@ public class ActionController {
 
 			ActionMainDto mainDto=new ActionMainDto();
 			
-			
+			System.out.println(req.getParameter("MainActionId")+"req.getParameter(\"MainActionId\")"+req.getParameter("ActionItem"));
 			mainDto.setMainId(req.getParameter("MainActionId"));
 			mainDto.setActionItem(req.getParameter("ActionItem"));
 			mainDto.setActionLinkId(req.getParameter("OldActionNoId"));
@@ -287,6 +287,7 @@ public class ActionController {
 			mainDto.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			String actionlevel = req.getParameter("ActionLevel");
 			
+			System.out.println(actionlevel+"----");
 			if(actionlevel !="" &&actionlevel!=null) {
 				long level = Long.parseLong(actionlevel)+1;
 				mainDto.setActionLevel(level);
@@ -357,6 +358,7 @@ public class ActionController {
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("back", req.getParameter("back"));
+			req.setAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
 		}
 		catch (Exception e) 
 		{
@@ -397,6 +399,7 @@ public class ActionController {
 
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+			redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
 		
 		}
 		catch (Exception e) {
@@ -588,11 +591,12 @@ public class ActionController {
 					if(md.get("Type")!=null) {
 						type = (String) md.get("Type");
 					}
+					System.out.println("Type"+type);
 					if(type!=null && !type.equalsIgnoreCase("F")) {
 						if(type.equalsIgnoreCase("A")) {
 							req.setAttribute("ForwardList", service.ForwardList(EmpId));
 						}else if (type.equalsIgnoreCase("NB")) {
-							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[6].toString().equalsIgnoreCase("A") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
+							req.setAttribute("ForwardList", service.ForwardList(EmpId).stream().filter(flag-> flag[7].toString().equalsIgnoreCase("I") || flag[6].toString().equalsIgnoreCase("A") || flag[7].toString().equalsIgnoreCase("B")).collect(Collectors.toList()));
 						}
 						req.setAttribute("type", type);
 					}else{
@@ -1082,18 +1086,19 @@ public class ActionController {
 			@RequestMapping(value = "ActionPDReports.htm", method = {RequestMethod.GET,RequestMethod.POST})
 			public String ActionPDReports(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {	
-				
+				String Logintype= (String)ses.getAttribute("LoginType");
 				String UserId =(String)ses.getAttribute("Username");
 				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				String LabCode = (String)ses.getAttribute("labcode");
-				logger.info(new Date() +"Inside ActionPDReports.htm "+UserId);		
+				logger.info(new Date() +"Inside ActionPDReports.htm "+UserId);	
+				List<Object[]>proList=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
 				try {
 					String ProjectId=req.getParameter("ProjectId");
 					if(ProjectId==null)
 					{
-						ProjectId="0";
+						ProjectId=proList.get(0)[0].toString();
 					}
-					String Logintype= (String)ses.getAttribute("LoginType");	
+						
 					
 					req.setAttribute("StatusList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));					
 					req.setAttribute("ProjectId",ProjectId);
@@ -2285,7 +2290,7 @@ public class ActionController {
 			redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
 			redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 			
-			
+			System.out.println(req.getParameter("ActionMainId")+"---"+req.getParameter("ActionAssignId"));
 				
 			ActionSubDto subDto=new ActionSubDto();
 				subDto.setLabCode(labCode);
@@ -2627,6 +2632,7 @@ public class ActionController {
 					
 				}
 				String Logintype= (String)ses.getAttribute("LoginType");
+				
 				
 				if(Logintype.equals("A") || Logintype.equals("Z") || Logintype.equals("Y") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I"))
 				{	//all projects for admin, associate director and director

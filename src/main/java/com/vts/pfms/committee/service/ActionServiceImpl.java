@@ -221,6 +221,7 @@ public class ActionServiceImpl implements ActionService {
 			}else{
 				Project="/GEN/";
 			}
+			System.out.println("Project"+Project);
 			ActionMain actionmain=new ActionMain();
 			
 			if(main.getActionLinkId()!="" && main.getActionLinkId()!=null) {

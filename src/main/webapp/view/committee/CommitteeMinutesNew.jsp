@@ -37,6 +37,7 @@
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String levelid= (String) request.getAttribute("levelid");
+	
 	int meetingcount= (int) request.getAttribute("meetingcount");
 	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
@@ -54,8 +55,7 @@
 	
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
-	
-	
+	System.out.println("levelid"+levelid);
 	%>
 <style type="text/css">
 
@@ -228,7 +228,7 @@ p{
 .executive{
 	align-items: center;
 } 
- 
+
 </style>
 <meta charset="ISO-8859-1">
 <title><%=committeescheduleeditdata[8]%> Minutes View</title>
@@ -1257,15 +1257,15 @@ for(Object[] temp : invitedlist){
 									</tr>
 							
 								<tr style="font-size:14px; ">
-									<th class="std"  style="width: 20px !important;">SN</th>
-									<th class="std"  style="width: 20px; ">MS</th>
-									<th class="std"  style="width: 20px; ">L</th>
-									<th class="std"  style="width: 250px;">Action Plan </th>	
-									<th class="std"  style="max-width: 90px;">Responsibility </th>
-									<th class="std"  style="max-width: 100px;">PDC</th>	
+									<th class="std"  style="width:20px !important;">SN</th>
+									<th class="std"  style="width:20px; ">MS</th>
+									<th class="std"  style="width:20px; ">L</th>
+									<th class="std"  style="width:250px;">Action Plan </th>	
+									<th class="std"  style="max-width:90px;">Responsibility </th>
+									<th class="std"  style="max-width:100px;">PDC</th>	
 									<th class="std"  style="max-width:55px;">Progress </th>
-					                <th class="std"  style="max-width: 50px;">Status</th>
-					                 <th class="std"  style="max-width: 80px;">Remarks</th>
+					                <th class="std"  style="max-width:50px;">Status</th>
+					                 <th class="std"  style="max-width:80px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody style="font-size: 14px;">
@@ -1276,6 +1276,12 @@ for(Object[] temp : invitedlist){
 									int countC=1;
 									int countD=1;
 									int countE=1;
+									String mile=null;
+									String mileA=null;
+									if(!ActionPlanSixMonths.isEmpty()){
+										mile=ActionPlanSixMonths.get(0)[0].toString();
+										mileA=ActionPlanSixMonths.get(0)[0].toString();
+									}
 									%>
 									<%for(Object[] obj:ActionPlanSixMonths){
 										
@@ -1313,14 +1319,22 @@ for(Object[] temp : invitedlist){
 													countC=1;
 													countD=1;
 													countE=1;
-												}else if(obj[26].toString().equals("1")) { %>
+												}else if(obj[26].toString().equals("1")) { 
+												if(!obj[0].toString().equalsIgnoreCase(mile)){
+												countA=1;	
+												}
+												%>
 													A-<%=countA %>
 												<% countA++;
 												    countB=1;
 												    countC=1;
 													countD=1;
 													countE=1;
-												}else if(obj[26].toString().equals("2")) { %>
+												}else if(obj[26].toString().equals("2")) { 
+													if(!obj[1].toString().equalsIgnoreCase(mileA)){
+														countB=1;	
+													}
+												%>
 													B-<%=countB %>
 												<%countB+=1;
 												countC=1;
@@ -1389,7 +1403,7 @@ for(Object[] temp : invitedlist){
 												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
 											</td>
 										</tr>
-									<%count1++;}} %>
+									<%count1++;mile=obj[0].toString();mileA=obj[1].toString();}} %>
 								<%} else{ %>
 								<tr><td class="std"  colspan="9" style="text-align:center; "> Nil</td></tr>
 								

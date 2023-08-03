@@ -168,7 +168,7 @@ if(ses1!=null){
 								<h3> Project Data </h3>
 							</div>
 										
-							<div class="col-md-6 justify-content-end" style="float: right;">
+							<div class="col-md-6 justify-content-end" style="float: right;margin-top: -1%;">
 								<table style="float: right;" >
 									<tr>
 										<td ><h4>Project :</h4></td>
@@ -214,7 +214,9 @@ if(ses1!=null){
 									    	<td>
 									    		<label><b>1. System Configuration </b>  </label> 
 									    		<%if(projectdatadetails[3]!=null){ %>
-									    		<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;"  name="filename" value="sysconfig" formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+									    		<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;"  name="filename" value="sysconfig" formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
+									    		<button type="button" class="btn btn-sm ml-2"  onclick="showModal('sysconfig',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
+									    		</label>
 									    		<%} %>
 									    		<input class="form-control" type="file" name="systemconfig"  id="systemconfig" accept="application/pdf , image/* " onchange=" editcheck('systemconfig',1)" >
 									    	</td>
@@ -224,6 +226,7 @@ if(ses1!=null){
 									    		<label ><b>2. Product Tree</b>  </label>
 									    		<%if(projectdatadetails[5]!=null){ %>
 									    		<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="protree"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+									    		<button type="button" class="btn btn-sm ml-2" onclick="showModal('protree',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 									    		<%} %>
 									    		<input class="form-control" type="file" name="producttreeimg" id="producttreeimg" accept="application/pdf , image/* "  onchange=" editcheck('producttreeimg',1)" >
 									    	</td>
@@ -232,6 +235,7 @@ if(ses1!=null){
 												<label><b>3. PEARL/TRL </b>
 												<%if(projectdatadetails[6]!=null){ %>
 												<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="pearl"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+												<button type="button" class="btn btn-sm ml-2" onclick="showModal('pearl',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 												<%} %>  
 												<input class="form-control" type="file" name="pearlimg" id="pearlimg" accept="application/pdf , image/* " onchange=" editcheck('pearlimg',1)" >
 											</td>
@@ -241,6 +245,7 @@ if(ses1!=null){
 										    	<label ><b>4. System Specification </b>
 										    	<%if(projectdatadetails[4]!=null){ %>  
 										    	<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="sysspecs"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+										    	<button class="btn btn-sm ml-2" type="button" onclick="showModal('sysspecs',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 										    	<%} %>
 										    	<input class="form-control" type="file" name="systemspecsfile" id="sysspec" accept="application/pdf , image/* "  onchange=" editcheck('sysspec',1)" >
 										    	
@@ -307,7 +312,13 @@ if(ses1!=null){
 			</div>
 		</div>
 	</div>
-	
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="longdivmodal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content mt-2 mb-2" id="modalcontent" style="width:154%;margin-left:-26%;display: flex;align-items: center;justify-content: center;">
+     
+    </div>
+  </div>
+</div>	
 	
 	
 	
@@ -405,6 +416,32 @@ $('#EB-date').daterangepicker({
     	format: 'DD-MM-YYYY'
 		}
 });	
+
+function showModal(a,b){
+	
+	$('#longdivmodal').modal('show');
+	$.ajax({
+		type:'GET',
+		url:'ProjectDataAjax.htm',
+		datatype:'json',
+		data:{
+			filename:a,
+			projectdataid:b,
+		},
+		success:function(result){
+			var ajaxresult=JSON.parse(result);
+			if(ajaxresult[0]==="pdf"){
+				$('#modalcontent').html('<iframe width="100%" height="600" src="data:application/pdf;base64,'+ajaxresult[1]+'"></iframe>');
+			}
+			else{
+			$('#modalcontent').html('<img style="max-width:25cm;max-height:17cm;margin-bottom:1%;margin-top:1%;" src="data:image/'+ajaxresult[0]+';base64,'+ajaxresult[1]+'">')	
+			}
+			
+		}
+	})
+	
+	
+}
 </script>
 
 

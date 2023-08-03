@@ -235,9 +235,6 @@ if(ses1!=null){
 												id="ProjectId" required="required" name="projectid"
 												onchange="$('#myform').submit();">
 													<option disabled="disabled" value="">Choose...</option>
-													<option value="0"
-														<%if(ProjectId.equalsIgnoreCase("0")){ projectname="General"; %>
-														selected="selected" <%} %>>General</option>
 													<% for (Object[] obj : ProjectList) {%>
 													<option value="<%=obj[0]%>"
 														<%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ projectname=obj[4].toString(); %>
@@ -245,6 +242,9 @@ if(ses1!=null){
 														<%=obj[4]%>
 													</option>
 													<%} %>
+													<option value="0"
+														<%if(ProjectId.equalsIgnoreCase("0")){ projectname="General"; %>
+														selected="selected" <%} %>>General</option>
 											</select> <input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" /></td>
 										</tr>

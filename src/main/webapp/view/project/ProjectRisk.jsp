@@ -141,6 +141,7 @@ if(ses1!=null){
 													<%for(Object[] obj : projectslist){ %>
 													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4] %></option>
 													<%} %>
+													<option <%if(projectid!=null && projectid.equals("0")) { %>selected <%} %>value="0" >General</option>
 												</select>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>

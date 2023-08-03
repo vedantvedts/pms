@@ -155,51 +155,33 @@ h6{
 								    		    <%if(!obj[9].toString().equalsIgnoreCase("0")){%>
 								    		   	baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>", 
+								    		    baseline: {fill: "#f25287 0.5", stroke: "0.0 #dd2c00"},
 								    		    <%}%>
-								    		    baselineStart: "<%=obj[6]%>",
-								    		    baselineEnd: "<%=obj[7]%>", 
-								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
+							    		   		<%-- baselineStart: "<%=obj[6]%>",
+								    		    baselineEnd: "<%=obj[7]%>",  --%>
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
 								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
-								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
-								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>% ",
 								    		    rowHeight: "35",
-								    		    
-								    		    
-								    		   
-								    		    
-								    		    
 								    		  },
-								    		  
 								    		  <%}%>
-								    	
 								    		  ];
-								    		    
-								    		 
 								    		// create a data tree
 								    		var treeData = anychart.data.tree(data, "as-tree");
-								
 								    		// create a chart
 								    		var chart = anychart.ganttProject();
-								
 								    		// set the data
 								    		chart.data(treeData);   
-								  
 								        	// set the container id
-								        	
 								        	chart.container("containers");  
-
 								        	// initiate drawing the chart
 								        	chart.draw();    
-									
 								        	// fit elements to the width of the timeline
 								        	chart.fitAll();
-								        
-								        
 								        /* ToolTip */
-								        
-								        
 								        chart.getTimeline().tooltip().useHtml(true);    
 								        chart.getTimeline().tooltip().format(
 								          "<span style='font-weight:600;font-size:10pt'> Actual : " +
@@ -208,7 +190,7 @@ h6{
 								          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 								          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "Progress: {%progress}<br>" 
+								          "Progress: {%baselineProgressValue}<br>" 
 								          
 								        ); 
 								        
@@ -371,7 +353,7 @@ h6{
 								     	/* Marker */
 								     	var marker_1 = chart.getTimeline().lineMarker(0);
 								     	marker_1.value("current");
-								     	marker_1.stroke("2 #dd2c00");
+								     	marker_1.stroke("0 white");
 								     	
 								     	/* Progress */
 								     	var timeline = chart.getTimeline();
@@ -379,10 +361,9 @@ h6{
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'><Completed</span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'>" +
-								     	           Math.round(this.progress * 100) + "</span>%";
+								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
 								     	});
 								     	

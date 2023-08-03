@@ -171,7 +171,8 @@ a:hover {
 															<td>
 															<%if(obj[5].toString().length()>100){ %>
 															<%=obj[5].toString().substring(0, 100) %>
-														 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[5].toString()%>','<%=obj[9].toString()%>')">show more..</span>
+															<input type="hidden" value='"<%=obj[5].toString()%>"' id="td<%=obj[0].toString()%>">
+														 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
 															<%}else{ %>
 															<%=obj[5].toString() %>
 															<%} %>
@@ -308,7 +309,10 @@ a:hover {
 	
 		
 		function showAction(a,b){
-			$('#modalbody').html(a);
+			/* var y=JSON.stringify(a); */
+			var y=$('#td'+a).val();
+			console.log(a);
+			$('#modalbody').html(y);
 			$('#header').html(b);
 			$('#exampleModalCenter').modal('show');
 		}

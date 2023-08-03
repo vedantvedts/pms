@@ -208,7 +208,7 @@ a:hover {
 															</div> <%} %></td>
 
 															<td class="left width1">		
-																<%if(obj[6]!=null && "A".equalsIgnoreCase(obj[6].toString()) || "B".equalsIgnoreCase(obj[6].toString())){%> 
+																<%if(obj[6]!=null && "A".equalsIgnoreCase(obj[6].toString()) || "B".equalsIgnoreCase(obj[6].toString())||"I".equalsIgnoreCase(obj[6].toString())){%> 
 																
 																<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
 																	style="display: inline">
@@ -267,7 +267,9 @@ a:hover {
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 																</form> 
-																<%}%>		
+																<%}else if(obj[6]!=null && "C".equalsIgnoreCase(obj[6].toString())){%>
+																<span class="badge badge-pill badge-success p-2">Closed</span>
+																<%} %>		
 															</td>
 														</tr>
 												<% count++; } }else{%>

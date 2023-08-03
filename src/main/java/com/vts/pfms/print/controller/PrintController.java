@@ -23,6 +23,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -2116,9 +2117,9 @@ public class PrintController {
 							pdfs[0]=null;
 						}
 					}
-					if(prodetails[5]!=null) {
+					if(prodetails[5]!=null){
 						try {
-								//producttree
+							//producttree
 							if(Files.exists(Paths.get(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5]))) {
 								pdfs[1]=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(env.getProperty("ApplicationFilesDrive")+prodetails[2]+File.separator+prodetails[5])));
 							}
@@ -2247,6 +2248,20 @@ public class PrintController {
 	    	req.setAttribute("procurementOnSanction", procurementOnSanction);
 	    }
 /* -------------------------------------------------------------------------------------------------------------  */
+		Map<Integer,String> mappmrc = new HashMap<>();
+ 		int pmrccount=0;
+ 		System.out.println(ReviewMeetingListPMRC.size()+"------"+ReviewMeetingList.size());
+ 		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+ 			mappmrc.put(++pmrccount,obj[3].toString());
+ 		}
+		int ebcount=0;
+		Map<Integer,String> mapEB = new HashMap<>();
+		for (Object []obj:ReviewMeetingList.get(0)) {
+		mapEB.put(++ebcount,obj[3].toString());
+		}
+	    	
+	    	req.setAttribute("mappmrc", mappmrc);
+	    	req.setAttribute("mapEB", mapEB);
 	    	req.setAttribute("projectslist", projectslist);
 	    	req.setAttribute("committeeData", committee);
 	    	

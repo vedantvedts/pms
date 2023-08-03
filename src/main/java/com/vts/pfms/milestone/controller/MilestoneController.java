@@ -1280,7 +1280,7 @@ public class MilestoneController {
 					ProjectId= (String) md.get("projectid");
 				}
 				if(ProjectId==null){
-					ProjectId="0";
+					ProjectId=service.LoginProjectDetailsList(EmpId, Logintype,LabCode).get(0)[0].toString();
 				}
 				
 				String MainSystemValue= (String) md.get("MainSystemValue");
@@ -1933,7 +1933,12 @@ public class MilestoneController {
 					projectid = (String) md.get("projectid");   
 				}
 				if(projectid==null) {
-					projectid="0";
+					try {
+					projectid=projectslist.get(0)[0].toString();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
 				}
 				
 			  

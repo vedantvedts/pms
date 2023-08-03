@@ -45,7 +45,9 @@
 	FormatConverter fc = new FormatConverter();
 	SimpleDateFormat sdf = fc.getRegularDateFormat();
 	SimpleDateFormat sdf1 = fc.getSqlDateFormat();
-
+    SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+	
 	int addcount = 0;
 	NFormatConvertion nfc = new NFormatConvertion();
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
@@ -96,11 +98,19 @@
 	
 	long ProjectCost = (long) request.getAttribute("ProjectCost");
 	String levelid = (String) request.getAttribute("levelid");
-	
+
 	Committee committeeData = (Committee) request.getAttribute("committeeData");
 	String CommitteeCode = committeeData.getCommitteeShortName().trim();
-
 	
+	//maps for pmrc and EB
+	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
+	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+	for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+	System.out.println(entry.getValue()+"---"+entry.getKey()+"--mappmrc");	
+	}
+	for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+		System.out.println(entry.getValue()+"---"+entry.getKey()+"--"+"mapeb");	
+		}
 	String ProjectCode=projectattributeslist.get(0)[0].toString();
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	LocalDate before6months = LocalDate.now().minusMonths(6);
@@ -781,9 +791,9 @@
 								<td style="text-align: center;"><%=i%></td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
-									<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
-									<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
+									<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>	
+									<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
+									<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br><%} %>
 								</td>
 								<td>
 									<% if (obj[4] != null) { %>
@@ -921,13 +931,14 @@
 
 							<tr>
 								<th style="width: 15px !important; text-align: center;">SN</th>
+								<th style="width:30px;">ID</th>
 								<th style="width: 280px;">Action Point</th>
-								<th style="width: 95px;">PDC</th>
-								<th style="width: 95px;">ADC</th>
+								<th style="width: 95px;">ADC <br>PDC</th>
+								<!-- <th style="width: 95px;">ADC</th> -->
 								<th style="width: 205px;">Responsibility</th>
 								<th style="width: 80px;">Status(DD)</th>
 								<th style="width: 200px;">Remarks</th>
-								<th style="width: 20px;">Info</th>
+								<!-- <th style="width: 20px;">Info</th> -->
 							</tr>
 						</thead>
 
@@ -937,17 +948,39 @@
 								<td colspan="7" style="text-align: center;">Nil</td>
 							</tr>
 							<% } else if (lastpmrcactions.size() > 0) {
-							int i = 1;
+							int i = 1;String key="";
 							for (Object[] obj : lastpmrcactions.get(z)) {
 							%>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
-								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
+								
+								<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+								<button type="button" class="btn btn-sm" style="border-radius: 50px;font-weight: bold" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"/"+obj[1].toString().split("/")[4] %>
+								</button>
+								<%}%> 
+								<!--  -->
 								</td>
+								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
 									<%	String actionstatus = obj[9].toString();
 										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -964,6 +997,10 @@
 										<%}else{ %>
 												-									
 										<%} %>
+								<br>
+									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
+									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 								</td>
 								<td><%=obj[11]%><%-- , <%=obj[12] %> --%></td>
 								<td style="text-align: center;">
@@ -994,13 +1031,13 @@
 									<% if (obj[16] != null) { %><%=obj[16]%> <% } %>
 								</td>
 								
-								<td style="text-align: center;">
+<%-- 								<td style="text-align: center;">
 									<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
 										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
 											<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 										</button>
 									<%}%>
-								</td>
+								</td> --%>
 								
 							</tr>
 							<% i++; }
@@ -1232,11 +1269,11 @@
 								<th style="width: 30px;">MS</th>
 								<th style="width: 60px;">L</th>
 								<th style="width: 350px;">System/ Subsystem/ Activities</th>
-								<th style="width: 150px;">PDC</th>
-								<th style="width: 150px;">ADC</th>
+								<th style="width: 100px;">ADC<br>PDC</th>
+								<!-- <th style="width: 150px;">ADC</th> -->
 								<th style="width: 60px;">Progress</th>
 								<th style="width: 50px;">Status(DD)</th>
-								<th style="width: 260px;">Remarks</th>
+								<th style="width: 350px;">Remarks</th>
 								<th style="width: 30px;">Info</th>
 							</tr>
 						</thead>
@@ -1250,9 +1287,11 @@
 							int milcountE = 1;
 						%>
 						<%
-						int serial = 1;
+						int serial = 1;int milestonecount=0;// to remember milestonecount
 						for (Object[] obj : milestones.get(z)) {
-
+						if(obj[21].toString().equals("1")){
+							
+						}
 							if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
 									 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
 							%>
@@ -1323,12 +1362,9 @@
 																	&nbsp;&nbsp;<%=obj[15]%> <% } %>
 							</td>
 							<td style="text-align: center">
-								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
-									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
-								<%}%> 
-								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
-							</td>
-							<% 
+
+								
+								<% 
 								LocalDate StartDate = LocalDate.parse(obj[7].toString());
 								LocalDate EndDate = LocalDate.parse(obj[8].toString());
 								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
@@ -1338,8 +1374,48 @@
 								LocalDate Today = LocalDate.now();
 								
 							%>
+								
+								
+								
+								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
+									<span style="color:green"
+										<%if(Progess==0){ %>
+											class="assigned"
+										<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
+											class="ongoing"
+										<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
+											class="delay"
+										<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
+											class="completed"
+										<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
+											class="completeddelay"
+										<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
+											class="inactive"
+										<%}else{ %>
+											class="assigned"
+										<%} %>
+										> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
+									
+								 <% } else {  %> <span>- </span><% } %>
+								<br>
+								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
+								<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+								<%}%> 
+								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
+								
+							</td>
+						<%-- 	<% 
+								LocalDate StartDate = LocalDate.parse(obj[7].toString());
+								LocalDate EndDate = LocalDate.parse(obj[8].toString());
+								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
+								int Progess = Integer.parseInt(obj[17].toString());
+								LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
+								
+								LocalDate Today = LocalDate.now();
+								
+							%> --%>
 							
-							<td style="text-align: center">
+							<!-- <td style="text-align: center"> -->
 								<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
 								<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 															<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
@@ -1351,7 +1427,7 @@
 
 									<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
 									<% } else {  %> - <% } %> --%>
-								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
+							<%-- 	<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
 									<span 
 										<%if(Progess==0){ %>
 											class="assigned"
@@ -1371,7 +1447,7 @@
 										> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
 									
 								 <% } else {  %> - <% } %>
-							</td>
+							</td> --%>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<%-- 	<td style="text-align: center"><span
 								class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
@@ -3161,9 +3237,7 @@
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
-
 									<iframe width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>"></iframe>
-									
 								<% } else { %>
 
 									<img data-enlargable style="max-width: 28cm;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
@@ -4389,9 +4463,10 @@ function setattchidvalue(attachid, attchName)
 								    		    actualStart: "<%=obj[4]%>",
 								    		    actualEnd: "<%=obj[5]%>",
 								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
-								    		    progressValue: "<%=obj[8]%>%",
-								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
-								    		    rowHeight: "35",						    		   
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    rowHeight: "35",					    		   
 								    		  },
 								    		  
 								    		  <%}%>
@@ -4426,7 +4501,7 @@ function setattchidvalue(attachid, attchName)
 										          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 										          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 										          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "Progress: {%progress}<br>" 
+										          "Progress: {%baselineProgressValue}<br>" 
 										        ); 
 										        
 								        
@@ -4556,10 +4631,9 @@ function setattchidvalue(attachid, attchName)
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'>" +
-								     	           this.progress * 100 + "</span>%";
+								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
 								     	});
 								     	
