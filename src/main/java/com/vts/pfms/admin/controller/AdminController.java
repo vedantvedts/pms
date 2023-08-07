@@ -479,6 +479,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		return "redirect:/UserManagerList.htm";
+		
   		}
 	    
 	    
