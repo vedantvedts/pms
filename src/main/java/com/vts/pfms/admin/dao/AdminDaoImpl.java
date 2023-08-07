@@ -792,9 +792,10 @@ public class AdminDaoImpl implements AdminDao{
 		}
 		
 		private static final String PASSWORDRESET="update login set password=:password,modifiedby=:modifiedby,modifieddate=:modifieddate where LoginId=:LoginId ";
+		
 		@Override
 		public int resetPassword(String lid, String userId, String password, String modifieddate) throws Exception {
-			// TODO Auto-generated method stub
+		
 			Query query = manager.createNativeQuery(PASSWORDRESET);
 			
 			query.setParameter("password", password);

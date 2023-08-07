@@ -464,6 +464,7 @@ public class AdminController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside Resetpassword.htm "+UserId);
 		try {
+			
 		String Lid=req.getParameter("Lid");
 		int count =(int)service.resetPassword(Lid,UserId);
 		System.out.println(Lid+"----");

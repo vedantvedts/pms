@@ -36,6 +36,7 @@ label {
 
 .table td {
 	padding: 5px !important;
+	
 }
 
 .resubmitted {

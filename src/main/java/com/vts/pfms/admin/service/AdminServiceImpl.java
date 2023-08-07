@@ -633,12 +633,12 @@ public class AdminServiceImpl implements AdminService{
 				return dao.updateformroleaccess(formroleaccessid,isactive,UserId);
 			}
 			
-		}
+		} 
 		@Override
 		public int resetPassword(String lid,String UserId) throws Exception {
 			String password="1234";
 			String newPasword=encoder.encode(password);
-			
+			System.out.println(newPasword);
 			return dao.resetPassword(lid,UserId,newPasword,sdf1.format(new Date()));
 		}
 	
