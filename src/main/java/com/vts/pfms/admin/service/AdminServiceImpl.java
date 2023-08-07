@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.vts.pfms.FormatConverter;
@@ -34,6 +35,8 @@ public class AdminServiceImpl implements AdminService{
 
 	@Autowired
 	AdminDao dao;
+	@Autowired
+	BCryptPasswordEncoder encoder;
 	
 	private static final Logger logger=LogManager.getLogger(AdminServiceImpl.class);
 	
@@ -630,6 +633,13 @@ public class AdminServiceImpl implements AdminService{
 				return dao.updateformroleaccess(formroleaccessid,isactive,UserId);
 			}
 			
+		}
+		@Override
+		public int resetPassword(String lid,String UserId) throws Exception {
+			String password="1234";
+			String newPasword=encoder.encode(password);
+			
+			return dao.resetPassword(lid,UserId,newPasword,sdf1.format(new Date()));
 		}
 	
 }

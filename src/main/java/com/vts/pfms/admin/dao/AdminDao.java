@@ -84,4 +84,5 @@ public interface AdminDao {
 	public int checkavaibility(String logintype,String detailsid)throws Exception;
 	public Long insertformroleaccess(PfmsFormRoleAccess main) throws Exception;
 	public int updateformroleaccess(String formroleid,String active,String auth)throws Exception;
+	public int resetPassword(String lid, String userId, String password, String modifieddate)throws Exception;
   }

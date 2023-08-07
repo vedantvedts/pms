@@ -240,6 +240,8 @@ label {
 								<button type="submit" class="btn btn-warning btn-sm edit"  name="sub" value="edit" onclick="Edit(frm1)">EDIT</button>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<button type="submit" class="btn btn-danger btn-sm delete" name="sub" value="delete" onclick="Delete(frm1)">DELETE</button>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="submit" class="btn btn-danger btn-sm" style="font-weight: 800;font-family: 'Montserrat', sans-serif;" formaction="Resetpassword.htm" Onclick="return ResetPwd(frm1)">RESET PASSWORD </button>
 								<%}%>
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								 <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
@@ -284,6 +286,22 @@ function Delete(myfrm){
 		return false;
 	}
 	  var cnf=confirm("Are U Sure To Delete!");
+	if(cnf){
+		return true;
+	}else{
+		  event.preventDefault();
+			return false;
+	}
+}
+function ResetPwd(myfrm){
+	var fields = $("input[name='Lid']").serializeArray();
+
+	  if (fields.length === 0){
+		 alert("PLESE SELECT ONE RECORD");
+		 event.preventDefault();
+		return false;
+	}
+	  var cnf=confirm("Are U Sure To Reset Password!");
 	if(cnf){
 		return true;
 	}else{

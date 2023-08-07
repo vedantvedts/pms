@@ -790,5 +790,18 @@ public class AdminDaoImpl implements AdminDao{
 			
 			return query.executeUpdate();
 		}
-
+		
+		private static final String PASSWORDRESET="update login set password=:password,modifiedby=:modifiedby,modifieddate=:modifieddate where LoginId=:LoginId ";
+		@Override
+		public int resetPassword(String lid, String userId, String password, String modifieddate) throws Exception {
+			// TODO Auto-generated method stub
+			Query query = manager.createNativeQuery(PASSWORDRESET);
+			
+			query.setParameter("password", password);
+			query.setParameter("LoginId", lid);
+			query.setParameter("modifiedby", userId);
+			query.setParameter("modifieddate", modifieddate);
+			int PasswordChange = (int) query.executeUpdate();
+			return  PasswordChange;
+		}
 }

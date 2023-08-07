@@ -68,5 +68,6 @@ public interface AdminService {
 	public List<Object[]> AllLabList() throws Exception;
 	public Long LabHqChange(String FormRoleAccessId, String Value ) throws Exception;
 	public int updateformroleaccess(String formroleaccessid,String detailsid,String isactive,String logintype, String UserId)throws Exception;
+	public int resetPassword(String lid,String UserId) throws Exception;
 		
 }

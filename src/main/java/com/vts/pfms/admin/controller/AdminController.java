@@ -458,6 +458,30 @@ public class AdminController {
 			}
 			return "admin/UserManagerList";
 		}
+	    @RequestMapping(value="Resetpassword.htm" ,method = RequestMethod.POST)
+  		public  String Resetpassword(HttpSession ses, HttpServletRequest req , RedirectAttributes redir )throws Exception
+  		{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside Resetpassword.htm "+UserId);
+		try {
+		String Lid=req.getParameter("Lid");
+		int count =(int)service.resetPassword(Lid,UserId);
+		System.out.println(Lid+"----");
+		if (count > 0) 
+		{
+			redir.addAttribute("result", "Password reset successfully");
+		} 
+		else 
+		{
+			redir.addAttribute("resultfail", "Password reset unsuccessfull ");
+		}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/UserManagerList.htm";
+  		}
+	    
+	    
 	    
 	    @RequestMapping(value = "UserManager.htm", method = RequestMethod.POST)
 		public String UserManagerAddEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
@@ -1110,7 +1134,8 @@ public class AdminController {
 			}
 			return "redirect:/Role.htm";
 		}
-	    
+	  
+
 	    
 	    
 }
