@@ -1743,7 +1743,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 																	<%} %>
 															</td>
 																		
-															<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+															<td rowspan="1"  ><%=obj[7] %>, <%=obj[8] %></td>	
 															<td style="text-align: center" rowspan="1">
 																	
 																<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
@@ -2408,7 +2408,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 												
 											
 											</td>
-											<td ><%=obj[24] %>(<%=obj[25] %>)</td>
+											<td ><%=obj[24] %>, <%=obj[25] %></td>
 											<td style="text-align: center"><%=obj[16] %>%</td>	
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -2617,7 +2617,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 															-									
 													<%} %>
 												</td>
-												<td > <%=obj[11] %><%=obj[12] %></td>
+												<td > <%=obj[11] %>, <%=obj[12] %></td>
 												<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
 														

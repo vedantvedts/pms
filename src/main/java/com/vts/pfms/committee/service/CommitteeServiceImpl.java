@@ -1599,6 +1599,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside SERVICE KickOffMeeting ");
 		String CommitteeMainId=req.getParameter("committeemainid");
 		String CommitteeScheduleId=req.getParameter("committeescheduleid");
+		System.out.println(CommitteeMainId+"@@@@@@@@@@@@@"+CommitteeScheduleId);
 		String Option=req.getParameter("sub");
 		SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");

@@ -1717,7 +1717,8 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeInvitations.htm "+UserId);
 		try
 		{
-			String committeescheduleid=req.getParameter("committeescheduleid");						
+			String committeescheduleid=req.getParameter("committeescheduleid");	
+			System.out.println("committeescheduleid"+committeescheduleid);
 			if (committeescheduleid == null) 
 			{
 				Map md = model.asMap();

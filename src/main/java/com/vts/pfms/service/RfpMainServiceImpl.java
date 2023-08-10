@@ -352,6 +352,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 		List<Object[]> proList=dao.ProjectList(EmpId).stream().filter(e-> !"0".equalsIgnoreCase(e[0].toString())).collect(Collectors.toList());
 		long result=0;
 		for(Object[] obj:proList) {
+			System.out.println("projectId@@@@@@"+obj[0].toString());
 			try {
 		        dao.ProjectHealthDelete(obj[0].toString());
 				Object[] data=dao.ProjectHealthInsertData(obj[0].toString());
