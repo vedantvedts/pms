@@ -82,7 +82,7 @@ List<Object[]> ProjectCatSecDetalis=(List<Object[]>) request.getAttribute("Proje
 						<label style="margin-bottom: -10px;"> Is Main Project </label>
 					</th>
 					 <td style="width: 30%;">
-							<select style="width: 50%;" required="required" id="ismaincheck" class="form-control"
+							<select style="width: 60%;" required="required" id="ismaincheck" class="form-control"
 							   onchange="validateismaincheck()">
 								<option disabled="disabled" selected="selected" value="">Choose...</option>
 								<option  value="Y">Yes</option>
