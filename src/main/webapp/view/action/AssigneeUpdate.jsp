@@ -84,7 +84,8 @@ h6{
       				  <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> 
       				  <%if(Assignee[5].toString().length()>100){ %>
       				  <%=Assignee[5].toString().substring(0,100) %> 
-      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=Assignee[5].toString()%>','<%=actiono%>')">show more..</span>
+      				  <input type="hidden" id="actionValue" value='"<%=Assignee[5].toString()%>"'>
+      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=actiono.toString()%>')">show more..</span>
       				  (<%=actiono %>)
       				  <%}else{ %>
       				  <%=Assignee[5] %> (<%=actiono %>)<%}}%>
@@ -370,8 +371,9 @@ h6{
    			}
    		}
    		
-   		function showAction(a,b){
-   			$('#modalbody').html(a);
+   		function showAction(b){
+   			var actionValue=$('#actionValue').val();
+   			$('#modalbody').html(actionValue);
    			$('#header').html(b);
    			$('#exampleModalCenter').modal('show');
    		}
