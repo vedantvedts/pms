@@ -1773,7 +1773,7 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 																
 															</td> -->
 																		
-															<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
+															<td rowspan="1"  ><%=obj[7] %>, <%=obj[8] %></td>	
 															<td style="text-align: center" rowspan="1">
 																	
 																<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
@@ -2449,7 +2449,7 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 												
 											
 											</td>
-											<td ><%=obj[24] %>(<%=obj[25] %>)</td>
+											<td ><%=obj[24] %>, <%=obj[25] %></td>
 											<td style="text-align: center"><%=obj[16] %>%</td>	
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -2658,10 +2658,14 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
+<<<<<<< HEAD
 	<!-- 											<td  style="text-align: center;"> 
 
 												</td> -->
 												<td > <%=obj[11] %><%=obj[12] %></td>
+=======
+												<td > <%=obj[11] %>, <%=obj[12] %></td>
+>>>>>>> branch 'master' of https://gadilinga@bitbucket.org/susant-vedts/dgecs.git
 												<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
 														
