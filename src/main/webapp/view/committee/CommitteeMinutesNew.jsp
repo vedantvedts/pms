@@ -38,6 +38,8 @@
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String levelid= (String) request.getAttribute("levelid");
 	
+	
+	System.out.println(lastpmrcactions.size()+"-----------lastpmrcactions");
 	int meetingcount= (int) request.getAttribute("meetingcount");
 	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
@@ -52,21 +54,24 @@
 	String initiationid= committeescheduleeditdata[17].toString();
 	String lablogo=(String)request.getAttribute("lablogo");
 	/* String committeeid1=committeescheduleeditdata[0].toString(); */
-	
+	/* newly Added  */
+	  SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+    /* ------- */
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
-	System.out.println("levelid"+levelid);
+	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
+	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
+ /* 	for (Map.Entry<Integer,String> entry : treeMapLevTwo.entrySet()) {
+		System.out.println(entry.getKey()+"-------"+entry.getValue());
+	}  */
+
 	%>
 <style type="text/css">
-
-
 p{
   text-align: justify;
   text-justify: inter-word;
 }
-
-
-
 .break
 	{
 		page-break-after: always;
@@ -133,8 +138,6 @@ p{
              font-size: 13px;
 	          margin-bottom: 30px;
 	          content: "Generated On : <%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
-	          
-          
           } 
           
          <%--  @bottom-left {          		
@@ -149,7 +152,6 @@ p{
              
 
  }
-
  .sth
  {
  	   font-size: 16px;
@@ -714,11 +716,11 @@ for(Object[] temp : invitedlist){
 										<th class="std"  style="width: 80px; " > PDC</th>
 										<th class="std"  style="width: 80px;" > Item Code</th>
 										<th class="std"  style="width: 130px;" >Responsibility</th>
-										<th class="std"  style="width: 80px;"  >Status(DD)</th>			
+										<th class="std"  style="width: 80px;"  >Status<!-- (DD) --></th>			
 									</tr>
 								</thead>		
 								<tbody>
-								<%if(lastpmrcactions.size()==0){ %>
+								<%if(lastpmrcactions.size()==0){%>
 									<tr><td class="std"  colspan="6" > No Data</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
@@ -759,7 +761,7 @@ for(Object[] temp : invitedlist){
 															<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																<span class="completed">CO</span>
 															<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+																<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
 															<%} %>	
 														<%}else{ %>
 															<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -769,7 +771,7 @@ for(Object[] temp : invitedlist){
 															<%}else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 																<span class="ongoing">OG</span>
 															<%}else if(pdcorg.isBefore(today)){  %>
-																<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+																<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%> </span>
 															<%} %>									
 													<%} %>
 												<%}else { %>
@@ -846,19 +848,32 @@ for(Object[] temp : invitedlist){
 													milcountC=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { %>
-													A-<%=milcountA %>
-												<% milcountA++;
+												}else if(obj[21].toString().equals("1")) { 
+												for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+													if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+														<%=entry.getValue() %>
+												<%}}
+												%>
+												
+													<%-- A-<%=milcountA %> --%>
+												<% /* milcountA++;
 													milcountB=1;
 													milcountC=1;
 													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("2")) { %>
-													B-<%=milcountB %>
-												<%milcountB+=1;
+													milcountE=1; */
+												}else if(obj[21].toString().equals("2")) { 
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}}
+												
+												
+												%>
+													<%-- B-<%=milcountB %> --%>
+												<%/* milcountB+=1;
 												milcountC=1;
 												milcountD=1;
-												milcountE=1;
+												milcountE=1; */
 												}else if(obj[21].toString().equals("3")) { %>
 													C-<%=milcountC %>
 												<%milcountC+=1;
@@ -905,9 +920,9 @@ for(Object[] temp : invitedlist){
 													
 													
 													<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) { %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
+														<%-- (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>) --%>
 													<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
+													<%-- 	(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>) --%>
 													<% } %>
 													
 													
@@ -1255,7 +1270,6 @@ for(Object[] temp : invitedlist){
 											</p>
 										</td>									
 									</tr>
-							
 								<tr style="font-size:14px; ">
 									<th class="std"  style="width:20px !important;">SN</th>
 									<th class="std"  style="width:20px; ">MS</th>
@@ -1276,11 +1290,15 @@ for(Object[] temp : invitedlist){
 									int countC=1;
 									int countD=1;
 									int countE=1;
+									String mainMileStone=null;
 									String mile=null;
 									String mileA=null;
+									String mileBid=null;
 									if(!ActionPlanSixMonths.isEmpty()){
-										mile=ActionPlanSixMonths.get(0)[0].toString();
-										mileA=ActionPlanSixMonths.get(0)[0].toString();
+										mainMileStone=ActionPlanSixMonths.get(0)[0].toString();
+										mile=ActionPlanSixMonths.get(0)[2].toString();
+										mileA=ActionPlanSixMonths.get(0)[3].toString();
+										mileBid=ActionPlanSixMonths.get(0)[1].toString();
 									}
 									%>
 									<%for(Object[] obj:ActionPlanSixMonths){
@@ -1291,7 +1309,7 @@ for(Object[] temp : invitedlist){
 										<tr>
 											<td class="std"  style="text-align: center"><%=count1 %></td>
 											<%-- <td>M <%=obj[22] %> <% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} %></td> --%>
-											<td class="std"  style="text-align: center">M<%=obj[22] %></td>
+											<td class="std"  style="text-align: center;<%if(!obj[0].toString().equalsIgnoreCase(mainMileStone)||count1==1){%>font-weight:bold;<%}%>">M<%=obj[22] %></td>
 											
 											<!-- Old Code -->
 											<%-- <td><% if(!obj[26].toString().equals("0")) {%> L<%=obj[26] %> <%} else {%> L <%} %></td>
@@ -1319,34 +1337,43 @@ for(Object[] temp : invitedlist){
 													countC=1;
 													countD=1;
 													countE=1;
-												}else if(obj[26].toString().equals("1")) { 
-												if(!obj[0].toString().equalsIgnoreCase(mile)){
-												countA=1;	
+												}else if(obj[26].toString().equals("1")) {    
+												for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+												if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+													<%=entry.getValue() %>
+												<%}
 												}
-												%>
-													A-<%=countA %>
-												<% countA++;
+													
+												/* countA++; */
 												    countB=1;
 												    countC=1;
 													countD=1;
 													countE=1;
 												}else if(obj[26].toString().equals("2")) { 
-													if(!obj[1].toString().equalsIgnoreCase(mileA)){
-														countB=1;	
+													/* if(!obj[1].toString().equalsIgnoreCase(mile)){
+														countB =1;
+													} */
+													for(Map.Entry<Integer, String>entry:treeMapLevTwo.entrySet()){
+													if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+													<%=entry.getValue() %>
+													<%	}
 													}
 												%>
-													B-<%=countB %>
-												<%countB+=1;
+												<%--<%if(!obj[3].toString().equalsIgnoreCase(mileA)){
+													countB++;	
+													}
+												%> --%>
+												<%/* countB+=1; */
 												countC=1;
 												countD=1;
 												countE=1;
 												}else if(obj[26].toString().equals("3")) { %>
-													C-<%=countC %>
+												C-<%=countC %>
 												<%countC+=1;
 												countD=1;
 												countE=1;
 												}else if(obj[26].toString().equals("4")) { %>
-													D-<%=countD %>
+												D-<%=countD %>
 												<%
 												countD+=1;
 												countE=1;
@@ -1355,32 +1382,27 @@ for(Object[] temp : invitedlist){
 												<%countE++;
 												} %>
 											</td>
-											
-											
-											
-											<td class="std" style="<%if(obj[26].toString().equals("0")) {%>font-weight: bold;<%}%> text-align:left" >
+											<td class="std" style="<%if(obj[26].toString().equals("0")) {%>font-weight:bold;<%}%> text-align:left" >
 												<%if(obj[26].toString().equals("0")) {%>
-													<%=obj[9] %>
+												<%=obj[9] %>
 												<%}else if(obj[26].toString().equals("1")) { %>
-													&nbsp;&nbsp;<%=obj[10] %>
+												&nbsp;&nbsp;<%=obj[10]%>
 												<%}else if(obj[26].toString().equals("2")) { %>
-													&nbsp;&nbsp;<%=obj[11] %>
+												&nbsp;&nbsp;<%=obj[11]%>
 												<%}else if(obj[26].toString().equals("3")) { %>
-													&nbsp;&nbsp;<%=obj[12] %>
+												&nbsp;&nbsp;<%=obj[12]%>
 												<%}else if(obj[26].toString().equals("4")) { %>
-													&nbsp;&nbsp;<%=obj[13] %>
+												&nbsp;&nbsp;<%=obj[13]%>
 												<%}else if(obj[26].toString().equals("5")) { %>
-													&nbsp;&nbsp;<%=obj[14] %>
-												<%} %>
+												&nbsp;&nbsp;<%=obj[14]%>
+												<%}%>
 											</td>
 											<td class="std" ><%=obj[24] %><%-- (<%=obj[25] %>) --%></td>
 											<td class="std" style="font-size: 12px;" >
-												
-												<%=sdf.format(sdf1.parse(obj[8].toString())) %>
-												<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
-													<br><%=sdf.format(sdf1.parse(obj[29].toString())) %>
-												<%} %>
-												
+											<%=sdf.format(sdf1.parse(obj[8].toString())) %>
+											<%if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ %>
+											<br><%=sdf.format(sdf1.parse(obj[29].toString())) %>
+											<%} %>
 											</td>
 											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
 											<td class="std"  style="text-align: center">
@@ -1393,9 +1415,9 @@ for(Object[] temp : invitedlist){
 															<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 													<%=obj[27] %>	
 													<% if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) { %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
-													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
+<%-- 														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
+ --%>													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
+												<%-- 		(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>) --%>
 													<% } %>
 												</span>
 											</td>
@@ -1403,7 +1425,7 @@ for(Object[] temp : invitedlist){
 												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
 											</td>
 										</tr>
-									<%count1++;mile=obj[0].toString();mileA=obj[1].toString();}} %>
+									<%count1++;mile=obj[2].toString();mileA=obj[3].toString();mainMileStone=obj[0].toString();mileBid=obj[1].toString();}} %>
 								<%} else{ %>
 								<tr><td class="std"  colspan="9" style="text-align:center; "> Nil</td></tr>
 								
@@ -1460,19 +1482,14 @@ for(Object[] temp : invitedlist){
 										</td>	
 									</tr>					
 								<%}
-												
-							
-						}if (count == 0)
+						}if(count == 0)
 						{%>
 						<tr style="page-break-after: ;">
 						<td style="text-align: left;"><div style="padding-left: 50px"><p>NIL</p></div>
 						</td>	
 						</tr>								
 						<%}%>
-							
-				
-				
-				</table>
+					</table>
 		
 			
 			
@@ -1483,19 +1500,14 @@ for(Object[] temp : invitedlist){
 	
 		<div style="width: 650px;margin-left: 15px; ">
 			<div align="center" style="padding-left: 2.5rem;">
-				<p>These Minutes are issued with the approval of the Chair. </p>
+				<p>These Minutes are issued with the approval of the Chairperson. </p>
 			</div>
 			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px">
 				<br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp;
-				<%if(membersec!=null){ %>
-				
-			<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
-			
+				<%if(membersec!=null){%>
+				<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
 				<br><%if(membersec!=null){%><%= membersec[6].toString() %>,&nbsp;<%= membersec[7].toString() %><%} %>
-				
-				
 				 <br>
-				 
 				 (Member Secretary)
 				 <div align="left" ><b>NOTE : </b>Action item details are enclosed as Annexure - AI.</div>
 			</div>

@@ -58,7 +58,6 @@ Object[] initiationdata=(Object[]) request.getAttribute("initiationdata");
 String divisionid = (String)request.getAttribute("divisionid");
 String projectid = (String)request.getAttribute("projectid");
 String initiationid = (String)request.getAttribute("initiationid");
-
 String LabCode = (String)request.getAttribute("LabCode");
 
 %>
@@ -141,7 +140,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 		                             
 									<select class="form-control selectdee" id="initiationid" required="required" name="initiationid"  >							
 											<option value="<%=initiationdata[0]%>" selected><%=initiationdata[2]%> </option>
-									</select>
+									</select> 
 									<input type="hidden" name="projectid" value="<%=projectid %>"/>
 									<input type="hidden" name="divisionid" value="<%=divisionid%>"/>
 								</div>
@@ -164,7 +163,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 					</div>
 					
 					<div class="row">	
-	                    <div class="col-md-8 ">
+	                    <div class="col-md-10 ">
 	                    	<table class="" style="width:100%">
 	                        <tr>
 								<td style="width:35%; border:0:" >
@@ -181,10 +180,11 @@ String LabCode = (String)request.getAttribute("LabCode");
 										</select>			
 										</div>	
 									</div>
-								</td>										
+								</td>
+								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
 								<td style="border:0;">
 								<div class="input select">
-									<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label><br>
 										<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true"   data-placeholder="Select Member" required="required" >
 								             
 										</select>															
@@ -193,7 +193,13 @@ String LabCode = (String)request.getAttribute("LabCode");
 							</tr>
 							</table>
 	                    </div>
-	                    <div class="col-md-4">
+
+            
+				        
+				     </div>
+				     <div class="row">
+				     
+	<%-- 			     	    <div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
 				  				<select class=" form-control selectdee" id="secretary" name="Secretary" required="required" style="margin-top: -5px" >
@@ -203,9 +209,44 @@ String LabCode = (String)request.getAttribute("LabCode");
 									<% } %>
 								</select>			
 				        	</div>
-				     	</div> 
-            
-				        
+				     	</div>  --%>
+				     	
+				     	                  <div class="col-md-10 ">
+	                    	<table class="" style="width:100%">
+	                        <tr>
+								<td style="width:35%; border:0:" >
+									<div id="cplab-col" >
+									<label class="control-label" style="margin-bottom: 4px !important">Lab<span class="mandatory" style="color: red;">*</span></label>
+									<div class="input select" >
+										 	
+										<select class=" form-control selectdee" name="msLabCode" id="msLabCode" required="required" style="margin-top: -5px" onchange="msEmpList()" >
+											<option disabled="disabled"  selected value="" >Choose...</option>
+											<%	for (Object[] obj  : AllLabsList) {%>
+										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3] %> </option>
+											<% } %>
+											<option value="@EXP"> Expert</option>
+										</select>			
+										</div>	
+									</div>
+								</td>
+								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
+								<td style="border:0;">
+								<div class="input select">
+									<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
+										<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true"   data-placeholder="Select Member" required="required" >
+								             
+										</select>															
+									</div>					
+								</td>						
+							</tr>
+							</table>
+	                    </div>
+				     
+				     
+				     
+				     	
+				     	
+				     	
 				     </div>
                        <div class="row"> 
                        
@@ -318,6 +359,7 @@ String LabCode = (String)request.getAttribute("LabCode");
  $(document).ready(function(){	
 	 
 	 ChaippersonEmpList();
+	 msEmpList();
 }); 	
  
  
@@ -372,7 +414,57 @@ String LabCode = (String)request.getAttribute("LabCode");
 		}
 	}
 		
+	
 		
+		function msEmpList(){
+			$('#secretary').val("");
+			
+			var $LabCode = $('#msLabCode').val();
+		
+			console.log( $LabCode );
+					if($LabCode!=""){
+			
+								$.ajax({
+	
+									type : "GET",
+									url : "ChairpersonEmployeeListFormation.htm",
+									data : {
+										CpLabCode : $LabCode,
+										committeemainid : '0'
+										   },
+									datatype : 'json',
+									success : function(result) {
+	
+									var result = JSON.parse(result);
+							
+									var values = Object.keys(result).map(function(e) {
+								 				 return result[e]
+								  
+													});
+							
+										var s = '';
+										s += '<option value="">Choose ...</option>';
+										if($LabCode == '@EXP'){
+											
+										}
+										for (i = 0; i < values.length; i++) 
+										{
+											
+											s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+										} 
+										 
+										$('#secretary').html(s);
+										
+										
+										
+										
+									}
+								});
+	
+	}
+			
+			
+		}
 		
 
 </script>
@@ -381,7 +473,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 <script type='text/javascript'> 
 
 
-$('.items').select2();
+/* $('.items').select2(); */
 function submitForm(frmid)
 { 
   document.getElementById(frmid).submit(); 
@@ -395,24 +487,25 @@ function Add(myfrm){
     var $chairperson = $("#chairperson").val();
     var $cplabCode = $('#CpLabCode').val();
     var $LabCode = '<%=LabCode%>';
-    
+    var msLabCode=$('#msLabCode').val();
     
     var $cochairperson = $("#cochairperson").val();
     var $secretary = $("#secretary").val();
     var $proxysecretary=$("#proxysecretary").val();
     
     
-    
+    console.log(msLabCode+"======"+$cochairperson);
     
     
     if( $LabCode === $cplabCode)
     {
+    	if($cplabCode===msLabCode){
 		if($chairperson==$secretary){
 			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
 			 event.preventDefault();
 				return false;
 		}
-		
+    	}
 		if($cochairperson == $chairperson)
 		{
 			alert("Chairperson and Co-Chairperson Should Not Be The Same Person ");	   
@@ -430,6 +523,7 @@ function Add(myfrm){
 		}
 	}
     
+    if(msLabCode===$LabCode){
     if($secretary==$cochairperson)
 	{
 		alert("Member Secretary and Co-Chairperson Should Not Be The Same Person ");	   
@@ -450,7 +544,7 @@ function Add(myfrm){
 		 event.preventDefault();
 			return false;
 	}
-	
+    }
 	
     for (var i = 0; i < fieldvalues.length; i++) {
     	

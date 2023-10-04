@@ -11,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,8 @@ public class PrintServiceImpl implements PrintService{
 	PrintDao dao;
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	  		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+	  		String todayDate=outputFormat.format(new Date()).toString();
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
 	
@@ -115,7 +118,6 @@ public class PrintServiceImpl implements PrintService{
 	public Object[] ProjectAttributes(String projectid) throws Exception {
 		return dao.ProjectAttributes(projectid);
 	}
-	
 	@Override
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception {
 		return dao.EBAndPMRCCount(projectid);
@@ -128,8 +130,29 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> Milestones(String projectid) throws Exception {
-		return dao.Milestones(projectid);
+	public List<Object[]> Milestones(String projectid,String committeeid) throws Exception {
+		
+		List<Object[]>milestones=dao.Milestones(projectid,committeeid);
+		List<Object[]>newList=new ArrayList<>();
+		if(milestones.size()!=0) {
+		newList=milestones.stream()
+		.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )  // get the object with levelid 0 and have some progress
+				||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())==100 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[28].toString().equalsIgnoreCase("Y")) // get all the level id except 0 and progress = 100
+		.collect(Collectors.toList());
+		}
+		/*
+		 * if(newList.size()!=0) { int prev=0; int next=0;int count=0; for(int
+		 * i=0;i<newList.size();i++) {
+		 * prev=Integer.parseInt(newList.get(i)[0].toString()); if(prev!=next) {
+		 * count=newList.stream().filter(value->value[6].toString().equalsIgnoreCase(
+		 * prev+"")).count(); } }
+		 * 
+		 * }
+		 */
+		
+		
+		return newList;
+		/* return dao.Milestones(projectid,committeeid); */
 	}
 	
 	@Override
@@ -196,18 +219,35 @@ public class PrintServiceImpl implements PrintService{
 	}
 	
 	@Override
-	public List<Object[]> ActionPlanSixMonths(String projectid, String committeeid)throws Exception
+	public List<Object[]> ActionPlanSixMonths(String projectid, String CommitteeCode)throws Exception
 	{
 		logger.info(new Date()  +"Inside SERVICE ActionPlanThreeMonths ");
-		if( committeeid.equalsIgnoreCase("PMRC") ) 
+		if( CommitteeCode.equalsIgnoreCase("PMRC") ) 
 		{
-			return dao.ActionPlanSixMonths(projectid,90);
+			List<Object[]>mainList=dao.ActionPlanSixMonths(projectid,90);
+			List<Object[]>subList=new ArrayList<>();
+		
+			if(mainList.size()!=0) {
+				subList=mainList.stream().filter(i->i[33].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
+			}
+			return subList;
 		}
-		else if(committeeid.equalsIgnoreCase("EB"))
-		{
-			return dao.ActionPlanSixMonths(projectid,180);
+		else if(CommitteeCode.equalsIgnoreCase("EB"))
+		{ 
+			/* return dao.ActionPlanSixMonths(projectid,180); */
+			List<Object[]>mainList=dao.ActionPlanSixMonths(projectid,180);
+			List<Object[]>subList=new ArrayList<>();
+			if(mainList.size()!=0) {
+				subList=mainList.stream().filter(i->i[33].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
+			}
+			return subList;
 		}		
-		return dao.ActionPlanSixMonths(projectid,90);
+		List<Object[]>mainList=dao.ActionPlanSixMonths(projectid,90);
+		List<Object[]>subList=new ArrayList<>();
+		if(mainList.size()!=0) {
+			subList=mainList.stream().filter(i->i[33].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
+		}
+		return subList;
 	}
 	
 	@Override
@@ -261,7 +301,6 @@ public class PrintServiceImpl implements PrintService{
 
 	@Override
 	public long getNextScheduleId(String projectid, String committeeid) throws Exception {
-		
 		return dao.getNextScheduleId(projectid, committeeid);
 	}
 
@@ -419,7 +458,13 @@ public class PrintServiceImpl implements PrintService{
 	@Override
 	public List<Object[]> BreifingMilestoneDetails(String Projectid, String CommitteeCode) throws Exception
 	{
-		return dao.BreifingMilestoneDetails(Projectid,CommitteeCode);
+			List<Object[]>milestones=dao.Milestones(Projectid,CommitteeCode);
+				List<Object[]>newList=new ArrayList<>();
+				newList=milestones.stream()
+							.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )
+							||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[29].toString().equalsIgnoreCase("Y")) // for 6.(a)
+							.collect(Collectors.toList());
+		return newList;
 	}
 
 	@Override
@@ -494,23 +539,58 @@ public class PrintServiceImpl implements PrintService{
 		}
 		MultipartFile file = briefing.getBriefingFileMultipart();
 		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
+		MultipartFile presentationfile=briefing.getPresentationNameMultipart();
+		saveFile(uploadpath+filepath, filename+"-presentation"+".pdf", presentationfile);
+		MultipartFile mom=briefing.getMomMultipart();
+		saveFile(uploadpath+filepath, filename+"-Mom"+".pdf", mom);
 		
 		briefing.setBriefingFileName(filename+".pdf");
+		briefing.setPresentationName(filename+"-presentation"+".pdf");
+		briefing.setMoM(filename+"-Mom"+".pdf");
 		briefing.setFrozenBriefingPath(filepath);
 		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
 		return dao.FreezeBriefingAdd(briefing);
 	}
 	
 	@Override
-	public long FreezeBriefingMultipartUpdate(String scheduleid,MultipartFile file) throws Exception 
+	public long FreezeBriefingMultipartUpdate(String scheduleid,MultipartFile file , MultipartFile pfile , MultipartFile mom) throws Exception 
 	{
 		CommitteeProjectBriefingFrozen Existingbriefing = getFrozenProjectBriefing(scheduleid);
-		
 		String filename = Existingbriefing.getBriefingFileName();
+		String pfilename= Existingbriefing.getPresentationName();
 		String filepath =Existingbriefing.getFrozenBriefingPath();
+		String subFileName=filename.substring(0,filename.length()-4);
+		String momfile=Existingbriefing.getMoM();
+
 		long count=0; 
 		try {
+			if(!file.isEmpty()) {
 			saveFile(uploadpath+filepath ,filename ,file );
+			}
+			if(!pfile.isEmpty()) {
+			if(pfilename!=null) {
+				
+			saveFile(uploadpath+filepath, pfilename, pfile);
+			}else {
+	
+				saveFile(uploadpath+filepath ,subFileName+"-presentation"+".pdf" ,pfile );
+				String PresentationName=subFileName+"-presentation"+".pdf";
+				int update=dao.PresentationNameUpdate(PresentationName,scheduleid);
+			}
+			}
+			if(!mom.isEmpty()) {
+				if(momfile!=null) {
+					
+				saveFile(uploadpath+filepath, momfile, mom);
+				}else {
+			
+					saveFile(uploadpath+filepath ,subFileName+"-Mom"+".pdf" ,mom );
+					String PresentationName=subFileName+"-Mom"+".pdf";
+					int update=dao.MomUpdate(PresentationName,scheduleid);
+				}
+				}
+			
+			
 			count++;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -732,5 +812,24 @@ public class PrintServiceImpl implements PrintService{
 		// TODO Auto-generated method stub
 		return dao.CostDetailsListSummary(initiationId);
 	}
-	
+	@Override
+	public int ProjectImageDelete(String techImagesId) throws Exception {
+		
+		return dao.ProjectImageDelete(techImagesId);
+	}
+	@Override
+	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.totalProjecMilestones(projectid);
+	}
+	@Override
+	public int ProjectDecRecDelete(String recdecId) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.ProjectDecRecDelete(recdecId);
+	}
+	@Override
+	public int BriefingPointsUpdate(String point, String activityid, String status) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.BriefingPointsUpdate(point,activityid,status);
+	}
 }

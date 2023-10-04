@@ -176,8 +176,10 @@ if(ses1!=null){
 											<form method="post" action="ProjectData.htm" id="projectchange">
 												<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 													<option disabled  selected value="">Choose...</option>
-													<%for(Object[] obj : projectslist){ %>
-													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4] %></option>     
+													<%for(Object[] obj : projectslist){ 
+													String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+													%>
+													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4].toString()+projectshortName%></option>     
 													<%} %>
 												</select>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -263,6 +265,7 @@ if(ses1!=null){
 											<td>
 										    	<label ><b>6. Procurement Limit </b></label>
 										    	<input class="form-control" type="number" name="proclimit" placeholder="Add Limit" min="500000" step="0.01"  <%if(projectdatadetails!=null && projectdatadetails[11]!=null){ %>value="<%=projectdatadetails[11] %>" <%} %>  >
+										 		<!--<span >procurement level above which report will display</span> -->
 										    </td>
 										</tr>
 										<tr>
@@ -312,8 +315,9 @@ if(ses1!=null){
 			</div>
 		</div>
 	</div>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="longdivmodal">
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="longdivmodal"  data-backdrop="static">
   <div class="modal-dialog modal-lg">
+    
     <div class="modal-content mt-2 mb-2" id="modalcontent" style="width:154%;margin-left:-26%;display: flex;align-items: center;justify-content: center;">
      
     </div>
@@ -364,10 +368,6 @@ function validate()
 	
 	
 }
-	
-	
-	
-
 function submitForm(frmid)
 { 
   document.getElementById(frmid).submit(); 
@@ -418,7 +418,7 @@ $('#EB-date').daterangepicker({
 });	
 
 function showModal(a,b){
-	
+   
 	$('#longdivmodal').modal('show');
 	$.ajax({
 		type:'GET',
@@ -431,16 +431,13 @@ function showModal(a,b){
 		success:function(result){
 			var ajaxresult=JSON.parse(result);
 			if(ajaxresult[0]==="pdf"){
-				$('#modalcontent').html('<iframe width="100%" height="600" src="data:application/pdf;base64,'+ajaxresult[1]+'"></iframe>');
+				$('#modalcontent').html('<button type="button" style="margin-left: 96%;color:red;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><iframe width="100%" height="600" src="data:application/pdf;base64,'+ajaxresult[1]+'"></iframe>');
 			}
 			else{
-			$('#modalcontent').html('<img style="max-width:25cm;max-height:17cm;margin-bottom:1%;margin-top:1%;" src="data:image/'+ajaxresult[0]+';base64,'+ajaxresult[1]+'">')	
+			$('#modalcontent').html(' <button type="button" style="margin-left: 96%;color:red;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><img style="max-width:25cm;max-height:17cm;margin-bottom:1%;margin-top:1%;" src="data:image/'+ajaxresult[0]+';base64,'+ajaxresult[1]+'">')	
 			}
-			
 		}
 	})
-	
-	
 }
 </script>
 

@@ -28,7 +28,7 @@ public interface PrintService {
 	public List<Object[]> ProjectsList() throws Exception;
 	public Object[] ProjectAttributes(String projectid) throws Exception;
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception;
-	public List<Object[]> Milestones(String projectid) throws Exception;
+	public List<Object[]> Milestones(String projectid, String committeeid) throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid,String committeeid) throws Exception;
 	public List<Object[]> OldPMRCActions(String projectid,String committeeid) throws Exception;
@@ -40,7 +40,7 @@ public interface PrintService {
 	public List<Object[]> RiskMatirxData(String projectid) throws Exception;
 	public List<Object[]> LoginProjectDetailsList(String empid,String Logintype ,String LabCode) throws Exception;
 	public Object[] LastPMRCDecisions(String committeeid, String projectid) throws Exception;
-	public List<Object[]> ActionPlanSixMonths(String projectid, String committeeid ) throws Exception;
+	public List<Object[]> ActionPlanSixMonths(String projectid, String CommitteeCode ) throws Exception;
 	public List<Object[]> LastPMRCActions1(String projectid, String committeeid) throws Exception;
 	public List<String> ProjectsubProjectIdList(String projectid) throws Exception;
 	public List<Object[]> ReviewMeetingList(String projectid, String committeecode) throws Exception;
@@ -82,7 +82,7 @@ public interface PrintService {
 	public List<Object[]> AgendaList(String scheduleId) throws Exception;
 	public List<Object[]> AgendaLinkedDocList(String scheduleid) throws Exception;
 	public long FreezeBriefingMultipart(CommitteeProjectBriefingFrozen briefing) throws Exception;
-	public long FreezeBriefingMultipartUpdate(String scheduleid, MultipartFile file) throws Exception;
+	public long FreezeBriefingMultipartUpdate(String scheduleid, MultipartFile file, MultipartFile pfile,MultipartFile  mom) throws Exception;
 	public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception;
 	public Object[] BriefingMeetingVenue(String projectid, String committeeid) throws Exception;
 	public Object RequirementList(String initiationId) throws Exception;
@@ -102,4 +102,8 @@ public interface PrintService {
 	public List<Object[]> GetAllProjectSildedata(String projectid)throws Exception;
 	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
+	public int ProjectImageDelete(String techImagesId) throws Exception;
+	public List<Object[]> totalProjectMilestones(String projectid)throws Exception;
+	public int ProjectDecRecDelete(String recdecId)throws Exception;
+	public int BriefingPointsUpdate(String point, String activityid, String status)throws Exception;
 }

@@ -239,8 +239,10 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 										<form method="post" action="ProcurementStatus.htm" id="projectchange" >
 											
 											<select class="form-control selectdee select2-hidden-accessible" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-												<%for(Object[] obj : projectslist){ %>
-												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4] %></option>
+												<%for(Object[] obj : projectslist){
+												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+													%>
+												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4]+projectshortName %></option>
 												<%} %>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

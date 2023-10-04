@@ -42,6 +42,8 @@ h6{
   String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
   String back = (String) request.getAttribute("back");
+  
+  String ActionPath=(String)request.getAttribute("ActionPath");
   int length=0;
   if(Assignee!=null && Assignee[5]!=null){
 	  length=Assignee[5].toString().length();
@@ -118,36 +120,34 @@ h6{
 								</thead>
 							</table>
 
-	          				<div align="center">
+	          					<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
 				            	<%if("backToReview".equalsIgnoreCase(back)){%>
-				            		<a type="button" class="btn  btn-sm back"  href="ActionForwardList.htm?Type=NB">BACK</a>
+				            	<a type="button" class="btn  btn-sm back"  <%if(ActionPath==null ) {%>href="ActionForwardList.htm?Type=NB"<%}else{ %>href="ActionIssue.htm" <%} %>>BACK</a>
 				            	<%}else if("backTotodo".equalsIgnoreCase(back)){%>
-				            	<a type="button" class="btn  btn-sm back"    href="ToDoReviews.htm"  >BACK</a>
+				            	<a type="button" class="btn  btn-sm back" <%if(ActionPath==null ) { %>   href="ToDoReviews.htm"  <%}else{ %>href="ActionIssue.htm"<%} %>>BACK</a>
 				            	<%}else{%>
-				            		<a type="button" class="btn  btn-sm back"    href="AssigneeList.htm"  >BACK</a>
+				            	<a type="button" class="btn  btn-sm back"   <%if(ActionPath==null ) { %> href="AssigneeList.htm" <%}else{ %>href="ActionIssue.htm" <%} %>>BACK</a>
 				            	<%}%>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
-		          				 
-	                           	<% if(SubList.size()>0 && !Empid.equalsIgnoreCase(Assignee[22].toString())){ %>  
-	                      			<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
+	                           	<% if(SubList.size()>0 && (!Empid.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
+	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
-	          				</div>
+	          					</div>
 	        			</div>
-	        		
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 			     		<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
 			     		<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
-	      			</form>
+	      				</form>
 	      	
 	      	
-	      			<form action="ActionForward.htm" method="post" id="fwdfrm">
+	      				<form action="ActionForward.htm" method="post" id="fwdfrm">
 	      				<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" /> 
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
-	      			</form>
-				</div>
+	      				</form>
+					</div>
 	    		</div>
     		</div>
    	</div>   
@@ -348,9 +348,6 @@ h6{
    				return confirm('Are You Sure To Submit?');
    			}
    		}
-   
-   
-  
    		$('#DateCompletion').daterangepicker({
 			"singleDatePicker" : true,
 			"linkedCalendars" : false,
@@ -365,12 +362,11 @@ h6{
 			}
 		});
    		function backfrmsubmit (formid)
-   		{  		
+   			{  		
    			if(confirm('Are You Sure To Forward?')){
    				$('#'+formid).submit();
    			}
-   		}
-   		
+   			}
    		function showAction(b){
    			var actionValue=$('#actionValue').val();
    			$('#modalbody').html(actionValue);

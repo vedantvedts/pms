@@ -2,7 +2,9 @@ package com.vts.pfms.project.dao;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -3494,6 +3496,12 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 				return query.executeUpdate();	
 			}
 	}
+	
+	/*
+	 * public static void RequiremntUpdate() {
+	 * 
+	 * }
+	 */
 }
 
 

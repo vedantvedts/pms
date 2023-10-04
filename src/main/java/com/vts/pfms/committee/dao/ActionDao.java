@@ -35,7 +35,7 @@ public interface ActionDao {
 	public List<Object[]> ScheduleActionList(String ScheduleId) throws Exception;
 	public List<Object[]> MeetingContent(String ScheduleId) throws Exception;
 	public Object[] LabDetails() throws Exception;
-	public int ActionGenCount(String ProjectId) throws Exception;
+	public int ActionGenCount(String ProjectId, String type) throws Exception;
 	public long ActionNotificationInsert(PfmsNotification ProjectId) throws Exception;
 	public List<Object[]> ActionNoSearch(String ActionMainId) throws Exception;
 	public List <Object[]> AssigneeDetails(String assignid) throws Exception;

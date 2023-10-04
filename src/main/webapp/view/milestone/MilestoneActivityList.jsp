@@ -84,6 +84,9 @@ h6{
 .bootstrap-select {
   width: 400px !important;
 }
+input[type=checkbox] {
+	accent-color: green;
+}
 </style>
 </head>
  
@@ -105,7 +108,7 @@ h6{
     <form class="form-inline"  method="POST" action="MilestoneActivityList.htm">
   <div class="row W-100" style="width: 100%;">
 
-  <div class="col-md-8">
+  <div class="col-md-7">
   <h6 style="color: #145374;" >&nbsp; &nbsp; Project <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Add Milestone <i class="fa fa-long-arrow-right " aria-hidden="true"></i> 
   							Add SubActivity <i class="fa fa-long-arrow-right " aria-hidden="true"></i> SubActivity <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Weightage <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Assignee</h6>
   </div>
@@ -116,8 +119,10 @@ h6{
                             		<div class="col-md-2" style="margin-top: -7px;">
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ProjectList) {%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]%>  </option>
+    										<% for (Object[] obj : ProjectList) {
+    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+    										%>
+											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
 											<%} %>
   									</select>
   									</div>
@@ -352,7 +357,7 @@ if(ses1!=null){	%>
                                                          <td>Date Of Completion</td>
                                                          <td>Sub Weightage</td>
                                                          <td>Sub Progress</td>
-                                                         <td></td>
+                                                         <td>Shown in display of Briefing Paper and MOM</td>
                                                          </tr>
                                                          <% int countA=1;
                                                             List<Object[]> MilestoneA=(List<Object[]>)request.getAttribute(count+"MilestoneActivityA");
@@ -401,7 +406,15 @@ if(ses1!=null){	%>
 															</div> <%} %>
 															</td>						
 													
-                                                         <td></td>
+                                                         <td>
+                                                         <div style="display: flex; justify-content: center;">
+                                                         <div style="display: flex;width:80%">
+                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0].toString()+"/"+objA[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0].toString()+"/"+objA[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0].toString()+"/"+objA[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+                                                         </div>
+                                                         </div>
+                                                         </td>
                                                          </tr>
                                                          <% int countB=1;
 														 	if(MilestoneB!=null&&MilestoneB.size()>0){
@@ -449,7 +462,17 @@ if(ses1!=null){	%>
 															</td>
 															
 														 													
-                                                         <td></td>
+                                                         <td>
+                                                         
+                                                            <div style="display: flex; justify-content: center;">
+                                                         <div style="display: flex;width:80%">
+                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0].toString()+"/"+objB[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+                                                         </div>
+                                                         </div>
+                                                         
+                                                         </td>
                                                          </tr>
                                                          <% int countC=1;
 														 	if(MilestoneC!=null&&MilestoneC.size()>0){
@@ -496,7 +519,17 @@ if(ses1!=null){	%>
 															</td>
 															
 														
-                                                         <td></td>
+                                                         <td>
+                                                         
+                                                    <div style="display: flex; justify-content: center;">
+                                                         <div style="display: flex;width:80%">
+                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0].toString()+"/"+objC[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+                                                        </div> </div>
+                                                         
+                                                         
+                                                         </td>
                                                          </tr>
                                                          <% int countD=1;
 														 	if(MilestoneD!=null&&MilestoneD.size()>0){
@@ -544,7 +577,16 @@ if(ses1!=null){	%>
 															</td>
 															
 														 													
-                                                         <td></td>
+                                                         <td>
+                                                     <div style="display: flex; justify-content: center;">
+                                                         <div style="display: flex;width:80%">
+                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0].toString()+"/"+objD[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+                                                      </div>   </div>
+                                                         
+                                                         
+                                                         </td>
                                                          </tr>
                                                          <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
@@ -589,7 +631,16 @@ if(ses1!=null){	%>
 															</td>
 															
 														
-                                                         <td></td>
+                                                         <td>
+                                                         <div style="display: flex;justify-content: center;">
+                                                         <div style="display: flex;width:80%;">
+                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[19].toString()+"/point5"%>" onchange="updateBpPoints(this)">
+                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[20].toString()+"/point6"%>" onchange="updateBpPoints(this)">
+                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0].toString()+"/"+objE[21].toString()+"/point9"%>" onchange="updateBpPoints(this)">
+                                                       </div>
+                                                         </div>
+                                                         
+                                                         </td>
                                                          </tr>
 												<% countE++;} }%>
 												<% countD++;} }%>
@@ -736,6 +787,31 @@ function ChangeButton(id) {
 		}
 	});
 	
+	
+	function updateBpPoints(ele){
+		var a=ele.value;
+		var value1=a.split("/")[0];
+		var value2=a.split("/")[1];
+		var value3=a.split("/")[2]
+		console.log(value1+"-"+value2+"-"+value3);
+		$.ajax({
+			type:'GET',
+			url:'BriefingPointsUpdate.htm',
+			datatype:'json',
+			data:{
+				ActivityId:value1,
+				point:value3,
+				status:value2,
+			}
+		});
+		
+		
+		if(value2==="Y"){
+		ele.value=value1+"/N/"+value3
+		}else{
+			ele.value=value1+"/Y/"+value3
+		}
+	}
 </script>  
 
 

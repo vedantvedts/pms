@@ -128,9 +128,18 @@ a:hover {
 				<div class="card shadow-nohover">
 				<div class="card-header">	
 					<div class="row">
-					<div class="col-sm-9" align="left">
+					<div class="col-sm-6" align="left">
 						<h5 >Action Review & Close</h5>
 						</div>
+						<div class="col-sm-3  "></div>
+<!-- 						<div class="col-sm-3" style="margin-top: -8px;">
+						Meeting -
+						<select class="form-control selectdee " id="meetingId" style="width:50%" >
+						<option selected >All</option>
+						<option>PMRC</option>
+						<option>EB</option>
+						</select>
+						</div> -->
 						<div class="col-sm-3" align="left" style="margin-top: -8px;">
 						<form action="ActionForwardList.htm" method="post">
 										<select class="form-control selectdee " name="Type"  required="required"  data-live-search="true" onchange="this.form.submit();">                                                     
@@ -186,21 +195,27 @@ a:hover {
 													<tbody>
 														<%int  count=1;
 														 	if(AssigneeList!=null&&AssigneeList.size()>0){
-															for(Object[] obj: AssigneeList){ %>
-														<tr>
-															
-															<td class="center"><%=count %></td>
+															for(Object[] obj: AssigneeList){%>
+															<tr>
+															<td class="center"><%=count%></td>
 															<td><%=obj[14] %></td>
-															<td><%=obj[5] %></td>
+															<td>
+															<input type="hidden" id="td<%=obj[0].toString()%>" value='"<%=obj[5].toString()%>"'>
+															<%if(obj[5].toString().length()<75) {%>
+															<%=obj[5] %>
+															<%}else{ %>
+															<%=obj[5].toString().substring(0,75) %>&nbsp;&nbsp;<span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[0].toString()%>','<%=obj[14].toString()%>')">show more</span>
+															<%} %>
+															</td>
 															<td><%=sdf.format(obj[4])%></td>
 															<td><%=sdf.format(obj[3])%></td>
 															<td><%=obj[1]%>, <%=obj[2]%></td>
-															<td><%if(obj[11]!=null){ %>
+															<td><%if(obj[11]!=null){%>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[11]%>
 															</div> 
-															</div> <%}else{ %>
+															</div><%}else{ %>
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
 															Not Yet Started .
@@ -265,7 +280,6 @@ a:hover {
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionAssignId" value="<%=obj[15]%>"/>
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
 																</form> 
 																<%}else if(obj[6]!=null && "C".equalsIgnoreCase(obj[6].toString())){%>
 																<span class="badge badge-pill badge-success p-2">Closed</span>
@@ -310,7 +324,23 @@ a:hover {
 				
 				
 				
-				
+	<!-- Modal for action -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="height:50px;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody">
+     
+      </div>
+      <div align="right" id="header" class="p-2"></div>
+    </div>
+  </div>
+</div>			
 				
 				
 				
@@ -329,6 +359,16 @@ a:hover {
 				format : 'DD-MM-YYYY'
 			}
 		});
+	
+	
+	function showAction(a,b){
+		/* var y=JSON.stringify(a); */
+		var y=$('#td'+a).val();
+		console.log(a);
+		$('#modalbody').html(y);
+		$('#header').html(b);
+		$('#exampleModalCenter').modal('show');
+	}
 	</script>  
 
 

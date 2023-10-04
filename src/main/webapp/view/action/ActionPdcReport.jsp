@@ -99,8 +99,10 @@ h6{
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
                                                            <option value="0"  <%if(Project.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
                                                            <%
-                                                           for(Object[] obj:ProjectList){ %>
-														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4] %></option>	
+                                                           for(Object[] obj:ProjectList){ 
+                                                           String projectShortName=(obj[17]!=null)?"("+obj[17].toString()+")":"";
+                                                           %>
+														   <option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){ %> selected="selected" <%} %>><%=obj[4]+projectShortName %></option>	
 														<%} %>
 																</select>	        
 											</td>
@@ -193,11 +195,12 @@ h6{
 																		<td><%=count %></td>
 																		<td> 
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"><%=obj[0] %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[9]%>"/>
 																	             <input type="hidden" name="ActionAssignId" value="<%=obj[12]%>"/>
+																	             <input type="hidden" name="text" value="Q">
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			
 																			</form> 

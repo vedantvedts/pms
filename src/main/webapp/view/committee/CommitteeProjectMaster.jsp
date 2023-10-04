@@ -93,8 +93,10 @@ if(ses1!=null){
 									<h4 class="control-label" > Project : </h4> &nbsp;&nbsp;&nbsp;
 									
 										 <select class="form-control" id="projectid" required="required" name="projectid" onchange='submitForm();' >
-						   						<% for (Object[] obj : ProjectsList) {%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]%></option>
+						   						<% for (Object[] obj : ProjectsList) {
+						   							String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+						   						%>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]+projectshortName%></option>
 													
 												<%} %>
 						  				</select>
@@ -107,6 +109,7 @@ if(ses1!=null){
 									<h4 class="control-label" > Initiated Project : </h4> &nbsp;&nbsp;&nbsp;
 									
 										 <select class="form-control" id="projectid" required="required" name="initiationid" onchange='submitForm();' >
+										 
 						   						<% for (Object[] obj : ProjectsList) {%>
 												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]%></option>
 												<%} %>

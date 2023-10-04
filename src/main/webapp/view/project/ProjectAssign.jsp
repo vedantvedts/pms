@@ -85,8 +85,9 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 			                <option value="" disabled="disabled" selected="selected">Select Project </option>
 			                <%
 			                for(Object[] protype:ProjectList ){
-	                        %>
-								<option value="<%=protype[0] %>" <%if(ProjectCode!=null){ if(protype[0].toString().equalsIgnoreCase(ProjectCode[0].toString())){%>selected="selected" <%}} %>><%=protype[4] %></option>
+			                	String projectshortName=(protype[17]!=null)?" ( "+protype[17].toString()+" ) ":"";
+			                	%>
+								<option value="<%=protype[0] %>" <%if(ProjectCode!=null){ if(protype[0].toString().equalsIgnoreCase(ProjectCode[0].toString())){%>selected="selected" <%}} %>><%=protype[4]+projectshortName %></option>
 							<%} %>
 					</select>
 	

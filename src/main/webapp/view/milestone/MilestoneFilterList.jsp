@@ -378,9 +378,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(obj[14].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(obj[14].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
@@ -435,9 +435,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(objA[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(objA[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(objA[9].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(objA[9].toString().equalsIgnoreCase("5")){ %>
@@ -482,9 +482,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(objB[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(objB[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(objB[9].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(objB[9].toString().equalsIgnoreCase("5")){ %>
@@ -531,9 +531,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(objC[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(objC[9].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
@@ -579,9 +579,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(objD[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(objD[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(objD[9].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(objD[9].toString().equalsIgnoreCase("5")){ %>
@@ -626,9 +626,9 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															<div class="progress-bar progress-bar-striped
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
-															 bg-success
+															 bg-info
 															<%} else if(objE[9].toString().equalsIgnoreCase("3")){ %>
-															  bg-info
+															  bg-success
 															<%} else if(objE[9].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(objE[9].toString().equalsIgnoreCase("5")){ %>

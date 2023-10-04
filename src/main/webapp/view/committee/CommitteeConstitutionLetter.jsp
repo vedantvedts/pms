@@ -57,6 +57,7 @@ Object[] committeemaindata = (Object[]) request.getAttribute("committeemaindata"
 String projectid=committeemaindata[2].toString() ;
 String divisionid=committeemaindata[3].toString() ;
 String initiationid=committeemaindata[4].toString() ;
+
 %>
 
 
@@ -69,7 +70,7 @@ String initiationid=committeemaindata[4].toString() ;
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
 		<tr>
 			<td>
-				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; max-width: 650px;" align="center">DESCRIPTION </h3></div>
+				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; max-width: 650px;" align="center">Committee constitution </h3></div>
 			</td>
 		</tr>
 		<tr>
@@ -90,7 +91,7 @@ String initiationid=committeemaindata[4].toString() ;
 	<!-- -------------------------------------------members-------------------------------- -->
 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
 		<tr >
-			<td colspan="5" style="text-align: center;padding-bottom:15px; ">In view of the above, the following committee is formed : </td>
+			<td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td>
 		</tr>
 		
 		<% int i=0;
@@ -98,11 +99,10 @@ String initiationid=committeemaindata[4].toString() ;
 				i++; %>
 			<tr>				
 				<td  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px "><%=i %> .&nbsp;</td>
-				<td style="max-width: 35px;text-align: center;padding: 5px 0px 5px 0px "> &nbsp;Shri. </td>
+				<td style="max-width: 35px;text-align: center;padding: 5px 0px 5px 0px "> &nbsp; </td>
 				<td style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px">&nbsp;<%=member[2] %> (<%=member[4] %>) <%if(member[8].toString().equals("CW")){ %>(<%=member[9]%>)<%}  %>&nbsp;</td>
 				<td style="max-width: 20px;text-align: center;padding: 5px 0px 5px 0px">&nbsp;: &nbsp;</td>
 				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px">&nbsp; 
-				
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
 				else if(member[8].toString().equals("CH")){ %>Co-Chairperson<%} 
 		 		else if(member[8].toString().equals("CS")){ %>Member Secretary<%} 
@@ -134,8 +134,6 @@ String initiationid=committeemaindata[4].toString() ;
 								<%if(committeeedata[11]!=null){ %><%=committeeedata[11] %> <%}else{ %> No Data <%} %>
 					<%} %>
 					
-					
-				
 					</p>
 				</div>
 			</td>

@@ -62,7 +62,7 @@ h6{
 				<div class="card shadow-nohover">
 					<div class="card-header ">  
 
-					<div class="row">
+					<div class="row" style="margin-top: -5px;">
 						<h3 class="col-md-3">
 							Gantt Chart
 						</h3>  

@@ -183,8 +183,9 @@ $('#ProjectId').on('change',function(){
 								    		    actualStart: "<%=obj[5]%>",
 								    		    actualEnd: "<%=obj[6]%>",
 								    		    actual: {fill: "red", stroke: "0.8 #150e56"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[7])%>%",
 								    		    progressValue: "<%= Math.round((int)obj[7])%>%",
-								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 								    		    rowHeight: "35",	
 								    		
 								    		    
@@ -205,8 +206,9 @@ $('#ProjectId').on('change',function(){
 											    		    actualStart: "<%=objA[5]%>",
 											    		    actualEnd: "<%=objA[6]%>",
 											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+											    		    baselineProgressValue: "<%= Math.round((int)objA[7])%>%",
 											    		    progressValue: "<%= Math.round((int)objA[7])%>%",
-											    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 											    		    rowHeight: "35",
 											    
 											    		    
@@ -228,7 +230,8 @@ $('#ProjectId').on('change',function(){
 															    		    actualEnd: "<%=objB[6]%>",
 															    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 															    		    progressValue: "<%= Math.round((int)objB[7])%>%",
-															    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+															    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
+															    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 															    		    rowHeight: "35",
 															    		    
 															  		/* ----------------------------------------------------- LEVEL C ---------------------------------------------------- */    		    
@@ -249,7 +252,8 @@ $('#ProjectId').on('change',function(){
 																			    		    actualEnd: "<%=objC[6]%>",
 																			    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																			    		    progressValue: "<%= Math.round((int)objC[7])%>%",
-																			    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+																			    		    baselineProgressValue: "<%= Math.round((int)objB[7])%>%",
+																			    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																			    		    rowHeight: "35",
 																			    		    
 																			/* ----------------------------------------------------- LEVEL D ---------------------------------------------------- */  		    
@@ -270,7 +274,8 @@ $('#ProjectId').on('change',function(){
 																							    		    actualEnd: "<%=objD[6]%>",
 																							    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																							    		    progressValue: "<%= Math.round((int)objD[7])%>%",
-																							    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+																							    		    baselineProgressValue: "<%= Math.round((int)objD[7])%>%",
+																							    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																							    		    rowHeight: "35",
 																							    		    
 																					/* ----------------------------------------------------- LEVEL E ---------------------------------------------------- */				    		    
@@ -291,7 +296,8 @@ $('#ProjectId').on('change',function(){
 																											    		    actualEnd: "<%=objE[6]%>",
 																											    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 																											    		    progressValue: "<%= Math.round((int)objE[7])%>%",
-																											    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
+																											    		    baselineProgressValue: "<%= Math.round((int)objE[7])%>%",
+																											    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
 																											    		    rowHeight: "35",
 																											    		    
 																								    		   			},
@@ -390,7 +396,7 @@ $('#ProjectId').on('change',function(){
 								          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 								          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "Progress: {%progress}<br>" 
+								          "Progress: {%baselineProgressValue}<br>" 
 								          
 								        ); 
 								        
@@ -555,10 +561,9 @@ $('#ProjectId').on('change',function(){
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'>" +
-								     	           Math.round(this.progress * 100) + "</span>%";
+								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
 								     	});
 								     	

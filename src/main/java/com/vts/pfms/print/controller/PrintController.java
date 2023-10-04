@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +102,6 @@ import com.vts.pfms.project.dto.ProjectSlideDto;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import feign.Request;
-
 
 @Controller
 public class PrintController {
@@ -593,7 +594,10 @@ public class PrintController {
 	    	String committeeid= req.getParameter("committeeid");
 	    	String tempid=committeeid;
 	  
-
+	    	String text=req.getParameter("text");
+	    	
+	    	req.setAttribute("text", text);
+	    	
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String Logintype= (String)ses.getAttribute("LoginType");
 	    	Committee committee = service.getCommitteeData(committeeid);
@@ -635,7 +639,7 @@ public class PrintController {
 	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid));
+	    		milestones.add(service.Milestones(proid,committeeid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
@@ -648,9 +652,8 @@ public class PrintController {
 	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
+		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committeeid));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
-	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
@@ -794,10 +797,69 @@ public class PrintController {
 			if(service.MileStoneLevelId(projectid,committeeid) != null) {
 				LevelId= service.MileStoneLevelId(projectid,committeeid)[0].toString();
 			}
-			  		
+			//newly Added on 13th sept  		
 			req.setAttribute("levelid", LevelId);
-			
-    		
+			Map<Integer,String> mappmrc = new HashMap<>();
+	 		int pmrccount=0;
+	 		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+	 			mappmrc.put(++pmrccount,obj[3].toString());
+	 		}
+			int ebcount=0;
+			Map<Integer,String> mapEB = new HashMap<>();
+			for (Object []obj:ReviewMeetingListEB.get(0)) {
+			mapEB.put(++ebcount,obj[3].toString());
+			}
+		 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
+		 	List<Object[]>first=null;   //store the milestones with levelid 1
+		 	List<Object[]>second=null;	// store the milestones with levelid 2
+		 	List<Object[]>three= null; // store the milestones with levelid 3
+		 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
+		 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
+		 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
+		 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
+		 	 if(!totalMileStones.isEmpty()) {
+		 	 for(Object[]obj:totalMileStones){
+		 	 AllMilestones.add(Integer.parseInt(obj[0].toString())); // getting the milestones from list
+		 	 }
+		 	
+		 	 for(Integer mile:AllMilestones) {
+		 	 int count=1;
+		 	 first=totalMileStones.stream().
+	 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
+	 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
+	 				.collect(Collectors.toList());
+		 		for(Object[]obj:first) {
+		 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level their id 
+		 		}
+		 	}
+		 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+		 		int count=1;
+		 		second=totalMileStones.stream().
+		 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
+		 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
+		 			   .collect(Collectors.toList());
+		 			for(Object[]obj:second) {
+		 				treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++)); // to get the second level and their id
+		 			}
+		 		}
+		 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
+		 		int count=1;
+		 		three=totalMileStones.stream().
+		 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
+		 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
+		 				.collect(Collectors.toList());
+		 			for(Object[]obj:three) {
+					treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
+		 			}
+		 		}
+		 	 }
+					 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+					 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+
+
+				req.setAttribute("mappmrc", mappmrc);
+		    	req.setAttribute("mapEB", mapEB);
+    		//end on 13th sept
     		
 	    	String filename="BriefingPaper";		
 	    	
@@ -1189,7 +1251,7 @@ public class PrintController {
 	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid));
+	    		milestones.add(service.Milestones(proid,committeeid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
@@ -1202,7 +1264,7 @@ public class PrintController {
 	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
+		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committeeid));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
@@ -1778,6 +1840,64 @@ public class PrintController {
     	}		
 	}
 	
+	@RequestMapping(value = "MeetingBriefingPresenttaion.htm")
+	public void MeetingBriefingPresenttaion(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MeetingBriefingPresenttaion.htm "+UserId);		
+	    try { 
+			String ScheduleId = req.getParameter("scheduleid");
+			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+				res.setContentType("application/pdf");
+			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
+			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getPresentationName());
+			    FileInputStream fis = new FileInputStream(file);
+			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			    res.setHeader("Content-Length",String.valueOf(file.length()));
+			    byte[] buffer = new byte[1024];
+			    int len = 0;
+			    while ((len = fis.read(buffer)) >= 0) {
+			        os.write(buffer, 0, len);
+			    } 
+			    os.close();
+			    fis.close();
+	    }
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside MeetingBriefingPresenttaion.htm "+UserId, e);
+    		e.printStackTrace();
+	
+    	}		
+	}
+	
+	@RequestMapping(value = "MeetingMom.htm")
+	public void MeetingMom(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir)throws Exception
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside MeetingMom.htm "+UserId);		
+	    try { 
+			String ScheduleId = req.getParameter("scheduleid");
+			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+				res.setContentType("application/pdf");
+			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
+			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getMoM());
+			    FileInputStream fis = new FileInputStream(file);
+			    DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			    res.setHeader("Content-Length",String.valueOf(file.length()));
+			    byte[] buffer = new byte[1024];
+			    int len = 0;
+			    while ((len = fis.read(buffer)) >= 0) {
+			        os.write(buffer, 0, len);
+			    } 
+			    os.close();
+			    fis.close();
+	    }
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside MeetingMom.htm "+UserId, e);
+    		e.printStackTrace();
+	
+    	}		
+	}
+	
 	
 	@RequestMapping(value="ProjectBriefing.htm", method = RequestMethod.POST)
 	public String ProjectBriefing(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res)	throws Exception 
@@ -1843,7 +1963,7 @@ public class PrintController {
 	    		projectattributes.add(projectattribute);
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    		milestones.add(service.Milestones(proid));
+	    		milestones.add(service.Milestones(proid,committeeid));
 	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
@@ -1855,21 +1975,23 @@ public class PrintController {
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, committeeid));
 	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
+	    		milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committeeid));
 	    		
 	    		ProjectRevList.add(service.ProjectRevList(proid));
-	    	
+	    		
+				/* List<Object[]>totalMilestones=service.totalProjectMilestones(projectid); */
+	    		//get all the milestones details based on projectid;
+	    		
 		/* ----------------------------------------------------------------------------------------------------------	   */  		
-	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
+	    		 	final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;
 			 		HttpHeaders headers = new HttpHeaders();
 			 		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 			    	headers.set("labcode", LabCode);
-			 		
 			 		String jsonResult=null;
-					try {
-						HttpEntity<String> entity = new HttpEntity<String>(headers);
-						ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
-						jsonResult=response.getBody();						
+					try{
+					HttpEntity<String> entity = new HttpEntity<String>(headers);
+					ResponseEntity<String> response=restTemplate.exchange(localUri, HttpMethod.POST, entity, String.class);
+					jsonResult=response.getBody();						
 					}catch(Exception e) {
 						req.setAttribute("errorMsg", "errorMsg");
 					}
@@ -1882,12 +2004,10 @@ public class PrintController {
 							projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
 							financialDetails.add(projectDetails);
 							req.setAttribute("financialDetails",projectDetails);
-						} catch (JsonProcessingException e) {
-							e.printStackTrace();
-						}
+				}catch (JsonProcessingException e) {
+					e.printStackTrace();
 					}
-	    	
-	 
+					}
 	    	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(proid);
 	    	List<Object[]> procurementOnDemand=null;
 	    	List<Object[]> procurementOnSanction=null;
@@ -2081,7 +2201,7 @@ public class PrintController {
 	    		TechImages.add(service.getTechList(proid));
 	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-				milestones.add(service.Milestones(proid)); /* CALL Pfms_Milestone_Level_Prior(:projectid) */
+				milestones.add(service.Milestones(proid,committeeid)); /* CALL Pfms_Milestone_Level_Prior(:projectid,committeeid) */
 				lastpmrcactions.add(service.LastPMRCActions(proid, committeeid)); /* CALL Last_PMRC_Actions_List(:projectid,:committeeid); */
 				lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid)); /* CALL last_pmrc_actions_list_bpaper(:projectid,:committeeid); */
 	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
@@ -2094,7 +2214,7 @@ public class PrintController {
 	    		ReviewMeetingList.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    		ProjectRevList.add(service.ProjectRevList(proid));
-				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, CommitteeCode)); /* CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode ) */	    	 	
+				milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid, committeeid)); /* */	    	 	
 	    		Object[] prodetails=service.ProjectDataDetails(proid);
 	    		LastMeetingDates.add(null);
 	    		projectdatadetails.add(prodetails);
@@ -2259,7 +2379,57 @@ public class PrintController {
 		for (Object []obj:ReviewMeetingList.get(0)) {
 		mapEB.put(++ebcount,obj[3].toString());
 		}
-	    	
+	    
+		
+		// new code
+	 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
+	 	List<Object[]>first=null;   //store the milestones with levelid 1
+	 	List<Object[]>second=null;	// store the milestones with levelid 2
+	 	List<Object[]>three= null; // store the milestones with levelid 3
+	 	Map<Integer,String> treeMapLevOne = new TreeMap<>();  // store the milestoneid with level id 1 and counts 
+	 	Map<Integer,String>treeMapLevTwo= new TreeMap<>(); // store the milestonidid with level id 2 and counts
+	 	Map<Integer,String>treeMapLevThree= new TreeMap<>();  // store the milestoneid with level id 3 and counts 
+	 	 TreeSet<Integer> AllMilestones = new TreeSet<>();   // store the number of milestone in sorted order
+	 	 if(!totalMileStones.isEmpty()) {
+	 	 for(Object[]obj:totalMileStones){
+	 	 AllMilestones.add(Integer.parseInt(obj[0].toString())); // getting the milestones from list
+	 	 }
+	 	
+	 	 for(Integer mile:AllMilestones) {
+	 	 int count=1;
+	 	 first=totalMileStones.stream().
+ 			   filter(i->i[26].toString().equalsIgnoreCase("1") && i[22].toString().equalsIgnoreCase(mile+""))
+ 				.map(objectArray -> new Object[]{objectArray[0], objectArray[2]})
+ 				.collect(Collectors.toList());
+	 		for(Object[]obj:first) {
+	 		treeMapLevOne.put(Integer.parseInt(obj[1].toString()),"A"+(count++));// to get the first level
+	 		}
+	 	}
+	 	for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
+	 		int count=1;
+	 		second=totalMileStones.stream().
+	 			   filter(i->i[26].toString().equalsIgnoreCase("2") && i[2].toString().equalsIgnoreCase(entry.getKey()+""))
+	 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
+	 			   .collect(Collectors.toList());
+	 	for(Object[]obj:second) {
+	 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
+	 	}
+	 	}
+	 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
+	 		int count=1;
+	 		three=totalMileStones.stream().
+	 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
+	 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
+	 				.collect(Collectors.toList());
+	 		for(Object[]obj:three) {
+				treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
+	 			
+	 		}
+	 	}
+	 	 }
+				 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+				 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+				 	 // new code end
 	    	req.setAttribute("mappmrc", mappmrc);
 	    	req.setAttribute("mapEB", mapEB);
 	    	req.setAttribute("projectslist", projectslist);
@@ -2748,7 +2918,7 @@ public class PrintController {
 	    	    		projectattributes.add(projectattribute);
 	    	    		ebandpmrccount.add(service.EBAndPMRCCount(proid));
 	    	    		milestonesubsystems.add(service.MilestoneSubsystems(proid));
-	    	    		milestones.add(service.Milestones(proid));
+	    	    		milestones.add(service.Milestones(proid,committeeid));
 	    	    		lastpmrcactions.add(service.LastPMRCActions(proid,committeeid));
 	    	    		lastpmrcminsactlist.add(service.LastPMRCActions1(proid,committeeid));
 	    	    		ProjectDetails.add(service.ProjectDetails(proid).get(0));
@@ -2761,7 +2931,7 @@ public class PrintController {
 	    	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
 	    	    		TechWorkDataList.add(service.TechWorkData(proid));
-	    		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
+	    		    	milestonesubsystemsnew.add(service.BreifingMilestoneDetails(proid,committeeid));
 	    	    		ProjectRevList.add(service.ProjectRevList(proid));
 	    	    	
 	    		/* ----------------------------------------------------------------------------------------------------------	   */  		
@@ -3038,6 +3208,55 @@ public class PrintController {
 	        return "redirect:/ProjectBriefingPaper.htm";
 	    }
 	    
+	    @RequestMapping(value="ProjectImageDelete.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	    public String ProjectImageDelete(HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir,HttpSession ses)throws Exception
+	    {
+	   	 String UserId = (String) ses.getAttribute("Username");
+    	 String LabCode= (String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside ProjectImageDelete.htm "+UserId);
+    	try {
+    		String TechImagesId=req.getParameter("TechImagesId");
+    		int count=service.ProjectImageDelete(TechImagesId);
+    	    if(count>0) {  
+                redir.addAttribute("result", "Tech Image removed successfully");
+      		}else {
+      			redir.addAttribute("resultfail", "Tech Image Not Deleted");
+      		}
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+	    	
+    	redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+		redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+        return "redirect:/ProjectBriefingPaper.htm";
+	    }
+	    
+	    @RequestMapping(value="DecesionRemove.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	    public String DecesionRemove(HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir,HttpSession ses)throws Exception
+	    {
+	   	 String UserId = (String) ses.getAttribute("Username");
+    	 String LabCode= (String) ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside DecesionRemove.htm "+UserId);
+    	try {
+    		String recdecId=req.getParameter("recdecId");
+    		int count=service.ProjectDecRecDelete(recdecId);
+    	    if(count>0) {  
+                redir.addAttribute("result", "Data removed successfully");
+      		}else {
+      			redir.addAttribute("resultfail", "Data Not Deleted");
+      		}
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
+	    	
+    	redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+		redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+        return "redirect:/ProjectBriefingPaper.htm";
+	    }
+	    
+	    
+	    
 	    
 	    @RequestMapping(value ="FilterMilestone.htm" ,method = RequestMethod.POST)
 	    public String FilterMilestone(HttpServletRequest req, HttpServletResponse res, RedirectAttributes redir,HttpSession ses)throws Exception
@@ -3046,7 +3265,6 @@ public class PrintController {
 	    	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside FilterMilestone.htm "+UserId);
 		    try {
-				
 		    	String projectid = req.getParameter("projectidvalue");
 		    	String committeeid = req.getParameter("committeidvalue");
 		    	Committee committee = service.getCommitteeData(committeeid);
@@ -3055,71 +3273,57 @@ public class PrintController {
 		    	String LevelId= "2";
 		    	Object[] getlevelid = service.MileStoneLevelId(projectid,committeeid);
 				if(getlevelid != null && getlevelid[0]!=null) {
-					LevelId= getlevelid[0].toString();
+				LevelId= getlevelid[0].toString();
 				}
 				List<String> Pmainlist = service.ProjectsubProjectIdList(projectid);
 				List<List<Object[]>> MilestoneFilterlist = new ArrayList<List<Object[]>>();
 		    	for(String  proid : Pmainlist) 
 		    	{
-		    		 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,CommitteeCode));
+		    	 MilestoneFilterlist.add(service.BreifingMilestoneDetails(proid,committeeid));
 		    	}
-		    	
 		    	List<Object[]> main = new ArrayList<>();
      	        if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity)) {
      	        	 main=milservice.MilestoneActivityList(projectid);
      	        }else {
      	        	main=milservice.MilestoneActivityList(projectid).stream().filter(statusactivityid-> statusactivityid[14].toString().equalsIgnoreCase(MilestoneActivity)  ).collect(Collectors.toList());
      	        }
-					
 		    	if(projectid!=null) {
-    				req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
-    				int MainCount=1;
-    				for(Object[] objmain:main ) {
-    				 int countA=1;
-    				    List<Object[]>  MilestoneActivityA = new ArrayList<>();
-    					
-    						 MilestoneActivityA=milservice.MilestoneActivityLevel(objmain[0].toString(),"1");
-    					
-    					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
-    					
-    					for(Object[] obj:MilestoneActivityA) {
-    						List<Object[]>  MilestoneActivityB = new ArrayList<>();
-        					
-        						MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
-        					
-    						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
-    						int countB=1;
-    						for(Object[] obj1:MilestoneActivityB) {
-    							List<Object[]>  MilestoneActivityC = new ArrayList<>();
-            					
-            						MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
-            					
-    							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
-    							int countC=1;
-    							for(Object[] obj2:MilestoneActivityC) {
-    								
-    								List<Object[]>  MilestoneActivityD = new ArrayList<>();
-                					
-                						MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
-                					
-    								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
-    								int countD=1;
-    								for(Object[] obj3:MilestoneActivityD) {
-    									List<Object[]>  MilestoneActivityE = new ArrayList<>();
-                    					
-                    						MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
-                    					
-    									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
-    									countD++;
-    								}
-    								countC++;
-    							}
-    							countB++;
-    						}
-    						countA++;
-    					}
-    					MainCount++;
-    				}
+    			req.setAttribute("ProjectDetailsMil", milservice.ProjectDetails(projectid).get(0));
+    			int MainCount=1;
+    			for(Object[] objmain:main ) {
+    			int countA=1;
+    		    List<Object[]>  MilestoneActivityA = new ArrayList<>();
+    			MilestoneActivityA=milservice.MilestoneActivityLevel(objmain[0].toString(),"1");
+    			req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
+    			for(Object[] obj:MilestoneActivityA) {
+    			List<Object[]>  MilestoneActivityB = new ArrayList<>();
+        		MilestoneActivityB=milservice.MilestoneActivityLevel(obj[0].toString(),"2");
+    			req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
+    			int countB=1;
+    			for(Object[] obj1:MilestoneActivityB) {
+    			List<Object[]>  MilestoneActivityC = new ArrayList<>();
+            	MilestoneActivityC=milservice.MilestoneActivityLevel(obj1[0].toString(),"3");
+    			req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
+    			int countC=1;
+    			for(Object[] obj2:MilestoneActivityC){
+    			List<Object[]>  MilestoneActivityD = new ArrayList<>();
+                MilestoneActivityD=milservice.MilestoneActivityLevel(obj2[0].toString(),"4");
+    			req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
+    			int countD=1;
+    			for(Object[] obj3:MilestoneActivityD) {
+    			List<Object[]>  MilestoneActivityE = new ArrayList<>();
+                MilestoneActivityE=milservice.MilestoneActivityLevel(obj3[0].toString(),"5");
+    			req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
+    			countD++;
+    			}
+    			countC++;
+    			}
+    			countB++;
+    			}
+    			countA++;
+    			}
+    			MainCount++;
+    			}
     			}
 		    	req.setAttribute("MilestoneActivityList",main );
     			req.setAttribute("ProjectId",projectid );
@@ -3129,8 +3333,8 @@ public class PrintController {
 		    	req.setAttribute("CommitteeId", committeeid);
 		    	req.setAttribute("MilestoneActivity", MilestoneActivity);
 			} catch (Exception e) {
-				logger.error(new Date() +" Inside FilterMilestone.htm "+UserId, e);
-	    		e.printStackTrace();
+			logger.error(new Date() +" Inside FilterMilestone.htm "+UserId, e);
+	    	e.printStackTrace();
 			}	
 		    return "milestone/MilestoneFilterList";
 	    }
@@ -3594,7 +3798,7 @@ public class PrintController {
 	    
 	    
 	    @RequestMapping(value="FrozenBriefingAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
-		public String FrozenBriefingAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper)	throws Exception 
+		public String FrozenBriefingAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper ,@RequestParam(name="briefingpresent")MultipartFile pname,@RequestParam(name="Momfile")MultipartFile mom)	throws Exception 
 		{
 	    	String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 	    	String UserId = (String) ses.getAttribute("Username");
@@ -3610,6 +3814,8 @@ public class PrintController {
 						.FreezeByEmpId(Long.parseLong(EmpId))
 						.BriefingFileMultipart(BPaper)
 						.LabCode(projectLabCode)
+						.PresentationNameMultipart(pname)
+						.MomMultipart(mom)
 						.IsActive(1)
 						.build();
 
@@ -3636,7 +3842,7 @@ public class PrintController {
 	    
 	    
 	    @RequestMapping(value="FrozenBriefingUpdate.htm", method = {RequestMethod.GET,RequestMethod.POST})
-		public String FrozenBriefingUpdate(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper)	throws Exception 
+		public String FrozenBriefingUpdate(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper ,@RequestParam(name="briefingpresent")MultipartFile pname,@RequestParam(name="Momfile")MultipartFile mom)	throws Exception 
 		{
 	    	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside FrozenBriefingUpdate.htm "+UserId);		
@@ -3645,9 +3851,10 @@ public class PrintController {
 		    	String projectid=req.getParameter("projectid");
 		    	String committeecode=req.getParameter("committeecode");
 		    	
-		    	long count = service.FreezeBriefingMultipartUpdate(scheduleid, BPaper);
+		    	long count = service.FreezeBriefingMultipartUpdate(scheduleid, BPaper,pname,mom);
 		    	if(count>0)
     			{
+		    		int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid));
     				redir.addAttribute("result", "Briefing Paper Added Successfully");
     			}
     			else 
@@ -4203,4 +4410,22 @@ public class PrintController {
 				e.printStackTrace();
 			}
 		 } 
+		 
+		 @RequestMapping(value = "BriefingPointsUpdate.htm" ,method = RequestMethod.GET)
+			public @ResponseBody String BriefingPointsUpdate(HttpServletRequest req)throws Exception
+			{
+				
+				try {
+					String point = req.getParameter("point");
+					String activityid=req.getParameter("ActivityId");
+					String status=req.getParameter("status");
+					System.out.println(point+"-"+activityid+"-"+status);
+					int count =service.BriefingPointsUpdate(point,activityid,status);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Gson json = new Gson();
+				return null;
+			}
+		 
 }

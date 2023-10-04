@@ -95,7 +95,23 @@ a:hover {
 {
 	padding:5px;
 }
+.modal-dialog-jump {
+  animation: jumpIn 0.8s ease;
+}
 
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 </style>
 </head>
 
@@ -137,7 +153,7 @@ a:hover {
 				<div class="card shadow-nohover">
 					<div class="card-header row">
 						<div class="col-md-6">
-							<h4 class="">Schedule Briefing Papers List</h4>
+							<h4 class="">Schedule Briefing History List</h4>
 						</div>
 						<div class="col-md-6" align="right" style="margin-top: -8px;">
 							<form method="post" action="FroozenBriefingList.htm" >
@@ -220,6 +236,16 @@ a:hover {
 																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
 																			<i class="fa fa-eye" aria-hidden="true"></i>
 																		</button>
+																		<%if(schedule[12]!=null) {%>
+																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingBriefingPresenttaion.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Presentation">
+																			<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
+																			</button>
+																			<%} %>
+																			<%if(schedule[8]!=null && schedule[8].toString().equalsIgnoreCase("Y")) {%>
+																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingMom.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="MOM">
+																			<img alt="" src="view/images/requirement.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
+																			</button>
+																			<%} %>
 																	<%}else{ %>
 																		<button type="button" class="btn btn-sm " style="background-color:#0e49b5 ;color:white;margin:5px; " 
 																		onclick="showmodal('A', <%=schedule[0]%>,
@@ -241,8 +267,6 @@ a:hover {
 									</div>
 								</div>
 							</div>
-							
-								
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 							</form>
 						</div>
@@ -262,7 +286,7 @@ a:hover {
 <!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
 
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="briefing_modal">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-jump modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header" style="background-color: #FFE0AD; ">
 					<div class="row w-100"  >
@@ -293,13 +317,24 @@ a:hover {
 							<tr>
 								<th >Briefing Paper :</th>
 								<td colspan="3" >
-									<input type="file" accept=".pdf" name="briefingpaper" class="form-control" required="required">
+									<input type="file" accept=".pdf" id="briefingpaper" name="briefingpaper" class="form-control" required="required">
 								</td>
+							</tr>
+							<tr><th> Briefing <br> Presentation : </th>
+							<td colspan="3">
+							<input type="file" accept=".pdf" id="briefingpresent" name="briefingpresent" class="form-control" required="required">
+							</td>
+							</tr>
+							<tr>
+							<th> MOM  :</th>
+							<td colspan="3">
+							<input type="file" accept=".pdf" id="Momfile" name="Momfile" class="form-control" required="required" >
+							</td>
 							</tr>
 							<tr>
 								<td style="text-align: center;" colspan="4">
 									<button class="btn btn-sm submit" formaction="FrozenBriefingAdd.htm" formmethod="post"  onclick="return confirm('Are You Sure to Submit?');" id="modal_add_btn">Submit</button>
-									<button class="btn btn-sm edit" formaction="FrozenBriefingUpdate.htm" formmethod="post" onclick="return confirm('Are You Sure to Update?');" id="modal_update_btn">Update</button>
+									<button class="btn btn-sm edit" formaction="FrozenBriefingUpdate.htm" formmethod="post" onclick="Update()" id="modal_update_btn">Update</button>
 								</td>
 							</tr>
 						</table>
@@ -334,18 +369,46 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 	$('#modal_projectcode').html(projectcode);
 	
 	if(addupdate === 'A'){
-		$('#briefing_modal_header').html('Add Briefing Paper');
+		$('#briefing_modal_header').html('Add Briefing Details');
 		$('#modal_add_btn').show();
 		$('#modal_update_btn').hide();
+		var briefingpaper=document.getElementById('briefingpaper');
+		briefingpaper.setAttribute("required","required");
+		var briefingpresent=document.getElementById('briefingpresent');
+		briefingpresent.setAttribute("required","required");
+		
 	}else
 	{
-		$('#briefing_modal_header').html('Update Existing Briefing Paper');
+		$('#briefing_modal_header').html('Update Existing Briefing Details');
 		$('#modal_add_btn').hide();
 		$('#modal_update_btn').show();	
+		var briefingpaper=document.getElementById('briefingpaper');
+		briefingpaper.removeAttribute("required");
+		var briefingpresent=document.getElementById('briefingpresent');
+		briefingpresent.removeAttribute("required");
+		var Momfile=document.getElementById('Momfile');
+		Momfile.removeAttribute("required");
 	}
 	
 	$('#briefing_modal').modal('toggle');
 }
 
+function Update(){
+	var briefingpaper=$('#briefingpaper').val();
+	var briefingpresent=$('#briefingpresent').val();
+	var Momfile=$('#Momfile').val();
+	if(briefingpresent.length==0 && briefingpaper.length==0 && Momfile.length==0){
+		alert("please upload anyone file!");
+		event.preventDefault();
+		return false;
+	}
+	if(confirm("Are you sure , you want to update?")){
+		return true;
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	
+}
 </script>
 </html>

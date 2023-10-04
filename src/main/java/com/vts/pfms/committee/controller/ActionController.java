@@ -99,7 +99,6 @@ public class ActionController {
 		try {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String Logintype= (String)ses.getAttribute("LoginType");
-
 			String action=req.getParameter("Action");
 			if(action!=null && "ReAssign".equalsIgnoreCase(action)) {
 				String ActionAssignid = req.getParameter("ActionAssignid");
@@ -109,11 +108,10 @@ public class ActionController {
 				req.setAttribute("actiondata", actiondata);
 				req.setAttribute("ProjectData", projectdata);
 			}
-			
 			String onboard=req.getParameter("Onboarding");
 			if(onboard==null) {
-				Map md=model.asMap();
-				onboard=(String)md.get("Onboard");
+			Map md=model.asMap();
+			onboard=(String)md.get("Onboard");
 			}
 			req.setAttribute("Onboarding", onboard);
 			req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode));  
@@ -121,8 +119,9 @@ public class ActionController {
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("LabCode", LabCode);
-			
 			return "action/ActionLaunch";
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -143,6 +142,7 @@ public class ActionController {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ActionStatus.htm "+UserId, e);
 		}
+		
 		return "action/ActionStatus";
 	}
 	
@@ -355,6 +355,7 @@ public class ActionController {
 			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
 			req.setAttribute("AssignerName", AssignerName);
 			
+			req.setAttribute("ActionPath", req.getParameter("ActionPath"));
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("back", req.getParameter("back"));
@@ -1002,7 +1003,7 @@ public class ActionController {
 					req.setAttribute("Type", "A");
 					req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 					req.setAttribute("StatusList", service.ActionReports(EmpId,"N","A","A", LabCode));	
-
+					
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -1036,7 +1037,6 @@ public class ActionController {
 				req.setAttribute("Term", req.getParameter("Term"));
 				req.setAttribute("Project",Project);
 				req.setAttribute("Type",Type);
-
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -1282,7 +1282,7 @@ public class ActionController {
 							req.setAttribute("AssigneeName", AssigneeName);
 							req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 							req.setAttribute("ActionNo", req.getParameter("ActionNo"));
-							
+							req.setAttribute("text", req.getParameter("text"));
 							}
 							catch (Exception e) {
 									e.printStackTrace();
@@ -2521,7 +2521,6 @@ public class ActionController {
 	 			String Logintype=(String)ses.getAttribute("LoginType");
 	 			String LabCode=(String)ses.getAttribute("labcode");
 				List<Object[]> actionlist = service.GetActionList(EmpId);
-				
 				req.setAttribute("actionassigneelist", actionlist.stream().filter(e->  e[11].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
 				req.setAttribute("actionassignorlist", actionlist.stream().filter(e->  e[12].toString().equalsIgnoreCase(EmpId)).collect(Collectors.toList()));
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,Logintype,LabCode)); 

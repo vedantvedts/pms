@@ -99,7 +99,7 @@ h6{
   <form class="form-inline"  method="POST" action="M-A-AssigneeList.htm">
   <div class="row W-100" style="width: 100%;">
 
-  <div class="col-md-8">
+  <div class="col-md-7">
    
 	  <p><b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b><i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 	<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b><i class="fa fa-long-arrow-right " aria-hidden="true"></i><b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
@@ -112,8 +112,10 @@ h6{
   <div class="col-md-2" style="margin-top: -5px;">
      <select   class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
      <option disabled="disabled"  selected value="">Choose...</option>
-     <% for (Object[] obj : ProjectList) {%>
-	 <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]%>  </option>
+     <% for (Object[] obj : ProjectList) {
+    String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+     %>
+	 <option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%>  </option>
 	 <%} %>
      </select>
   </div>

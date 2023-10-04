@@ -217,6 +217,7 @@
 					   							<%}else{ %>				   									
 					   								<input  class="form-control"  data-date-format="dd/mm/yyyy" id="startdate" name="committeedate"  required="required" readonly="readonly"  value=" <%= sdf.format(sdf1.parse( committeescheduleeditdata[2].toString()))%>">
 					   							<%} %>
+					   						
 					   					</td>
 		                            	<td style="padding-left: 20px"><label class="control-label">Meeting Time : &nbsp;</label></td>
 		       							<td><input  class="form-control" type="text" id="starttime" name="committeetime"  readonly="readonly" required="required"  value="<%=committeescheduleeditdata[3] %>"></td>
@@ -584,6 +585,7 @@
 								
 								
 								<hr style="margin: 0.5rem 0rem !important;">
+								<%if(!todaydate.isAfter(scheduledate)) {%>
 								<form  action="#" method="post" id="myfrm" target="_blank">
 									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=6) { %>
 										
@@ -601,6 +603,7 @@
 											BRIEFING
 										</button>
 									<%}%>
+									<%} %>
 								</form>	
 						</div>
 

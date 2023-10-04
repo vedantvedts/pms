@@ -84,8 +84,10 @@ if(ses1!=null){
 						    <label class="control-label">Project : </label>   
 						    <div class="col-sm-2">
 						    	 <select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange='submitForm1();' >
-										 <% for (Object[] obj : ProjectsList) {%>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]%></option>
+										 <% for (Object[] obj : ProjectsList) {
+											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
+										 %>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
 										<%} %>
 								</select>
 						    </div>    
@@ -122,11 +124,11 @@ if(ses1!=null){
 								<label class="control-label"> Date &nbsp;&nbsp; : </label>
 							</div>
 								
-							<div class="col">
-		                          <input  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"  style="width:115%" readonly>	
+							<div class="col" style="margin-left:-8%;">
+		                          <input style="width:135%"  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
 		                    </div>
 		                    
-		                    <div class="col ">
+		                    <div class="col " style="text-align: right;">
 		                    	<label class="control-label"> Time &nbsp;&nbsp; : </label>
 		                    </div>
 		                 

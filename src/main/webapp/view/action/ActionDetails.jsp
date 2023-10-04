@@ -37,7 +37,7 @@ h6{
   String AssigneeName=(String) request.getAttribute("AssigneeName");
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String ActionNo=(String) request.getAttribute("ActionNo");
- 
+  String text=(String)request.getAttribute("text");
   
  %>
 
@@ -214,7 +214,11 @@ h6{
 					</table>
 				</div> 
 				<div align="center" >
-					<a type="button" class="btn  btn-sm back" href="ActionStatusList.htm"  >BACK</a>
+				<%if(text!=null && text.equalsIgnoreCase("P")){ %>
+					<a type="button" class="btn  btn-sm back" href="ActionReports.htm"  >BACK</a>
+				<%}else if(text!=null && text.equalsIgnoreCase("Q")){ %>
+				<a type="button" class="btn  btn-sm back" href="ActionPdcReport.htm"  >BACK</a>
+				<%} %>
 				</div>
 				</div>
   			</div>

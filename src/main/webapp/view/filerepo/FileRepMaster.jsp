@@ -257,7 +257,7 @@ div {
 <div class="col-md-12" >
 	<div class="card" >
 		<div class="card-header">
-				<div class="row">
+				<div class="row" style="margin-top:-10px;">
 					<div class="col-md-6">
 						<h4>Project System</h4>
 					</div>
@@ -270,8 +270,10 @@ div {
 								   		<select class="form-control selectdee" id="projectid" required="required"  name="projectid" onchange="$('#myprojectform').submit();">
 								    		<option    value="">Choose...</option>
 								    	<%-- 	<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
-								    		<% for (Object[] obj : ProjectList) {%>
-												<option value="<%=obj[0]%>"  <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %>selected="selected" <%} %>><%=obj[4]%> </option>
+								    		<% for (Object[] obj : ProjectList) {
+								    			String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+								    		%>
+												<option value="<%=obj[0]%>"  <%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ %>selected="selected" <%} %>><%=obj[4]+projectshortName%> </option>
 											<%} %>
 											<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option>
 										</select>

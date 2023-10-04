@@ -219,7 +219,7 @@ h6 {
   
 	List<Object[]>steps=(List<Object[]>)request.getAttribute("stepsName"); 
 %>
-	<%String ses=(String)request.getParameter("result"); 
+<%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>

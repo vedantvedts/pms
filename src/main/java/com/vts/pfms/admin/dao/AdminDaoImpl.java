@@ -305,7 +305,21 @@ public class AdminDaoImpl implements AdminDao{
 	    public Long addExpert( Expert newExpert) throws Exception {
 	    	manager.persist(newExpert);
 	        this.manager.flush();
+			/*
+			 * String updatequery1="UPDATE expert set title=NULL where expert=:empid";
+			 * String updatequery2="UPDATE expert set salutation=NULL where  expert=:empid";
+			 * 
+			 * if(newExpert.getSalutation().length()<1) { Query
+			 * query1=manager.createNativeQuery(updatequery2); query1.setParameter("empid",
+			 * newExpert.getExpertId()); query1.executeUpdate(); }
+			 * 
+			 * if(newExpert.getTitle().length()<1) { Query
+			 * query1=manager.createNativeQuery(updatequery1); query1.setParameter("empid",
+			 * newExpert.getExpertId()); query1.executeUpdate(); }
+			 */
+	  
 	        return newExpert.getExpertId();
+	        
 	    }
 	    
 	    

@@ -98,7 +98,7 @@ public class LoginController {
 
 	 @RequestMapping(value = "/login", method = RequestMethod.GET)
 	    public String login(Model model, String error, String logout,HttpServletRequest req,HttpSession ses,HttpServletResponse response) {
-	 
+	
 		 logger.info(new Date() +"Inside login ");
 	    	if (error != null) 
 	            model.addAttribute("error", "Your username and password is invalid.");
@@ -125,7 +125,7 @@ public class LoginController {
       logger.info(new Date() +" Login By "+req.getUserPrincipal().getName());
    
       try {
-
+    	
 		    long LoginId=Repository.findByUsername(req.getUserPrincipal().getName()).getLoginId();
 		    Object[] empdetails = headerservice.EmployeeDetailes(String.valueOf(LoginId)).get(0);
 		
@@ -223,8 +223,11 @@ public class LoginController {
 			     
 			     
 			     String DGName = Optional.ofNullable(headerservice.LabMasterList(ClusterId).stream().filter(e-> "Y".equalsIgnoreCase(e[2].toString())).collect(Collectors.toList()).get(0)[1].toString()).orElse("");
+			  
+			     
 			     
 			     String IsDG = "No";
+			     System.out.println("DGName"+DGName+"LoginType"+LoginType);
 			     if(DGName.equalsIgnoreCase(LabCode) || LoginType.equalsIgnoreCase("K"))
 			    	 IsDG = "Yes";
 			     else
@@ -245,7 +248,6 @@ public class LoginController {
 			     }
 			     
 			     for(Object[] obj : LabMasterList) {
-			    	 
 			    	 labdatalist.add(rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType, obj[1].toString().trim() ,InAll));
 			     }
 			     

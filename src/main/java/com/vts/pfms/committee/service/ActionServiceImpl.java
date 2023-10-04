@@ -83,7 +83,7 @@ public class ActionServiceImpl implements ActionService {
 		try
 		{
 			lab=dao.LabDetails();
-			count=dao.ActionGenCount(main.getProjectId());
+			count=dao.ActionGenCount(main.getProjectId(),main.getType());
 			if(!main.getProjectId().equalsIgnoreCase("0"))
 			{
 				ProjectCode=dao.ProjectCode(main.getProjectId());
@@ -194,14 +194,14 @@ public class ActionServiceImpl implements ActionService {
 			try
 			{
 				lab=dao.LabDetails();
-				count=dao.ActionGenCount(main.getProjectId());
+				count=dao.ActionGenCount(main.getProjectId(),main.getType());
 				if(!main.getProjectId().equalsIgnoreCase("0"))
 				{
 					ProjectCode=dao.ProjectCode(main.getProjectId());
 				}
 			}
 			catch (Exception e) 
-			{
+			{	
 				logger.info(new Date() +"Inside SERVICE ActionMainInsert ",e);	
 				return unsuccess;
 			}
@@ -301,16 +301,14 @@ public class ActionServiceImpl implements ActionService {
 				if("I".equalsIgnoreCase(actionmain.getType())) {
 					notification.setNotificationUrl("ActionIssue.htm");
 					 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
-					    
 				} else {
 					notification.setNotificationUrl("AssigneeList.htm");
 					notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
-					    
 				}
 				notification.setStatus("MAR");
 	            dao.ActionNotificationInsert(notification);
 			}else {
-				return unsuccess;
+			return unsuccess;
 			}
 			}
 			return success;
@@ -1073,7 +1071,7 @@ public class ActionServiceImpl implements ActionService {
 			try
 			{
 				lab=dao.LabDetails();
-				count=dao.ActionGenCount(main.getProjectId());
+				count=dao.ActionGenCount(main.getProjectId(),main.getType());
 				if(!main.getProjectId().equalsIgnoreCase("0"))
 				{
 					ProjectCode=dao.ProjectCode(main.getProjectId());

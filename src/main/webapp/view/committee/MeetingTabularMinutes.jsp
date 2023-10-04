@@ -480,7 +480,15 @@ for(Object[] temp : invitedlist){
 			<div align="center" > 
 				
 					<%if(committeeminutes.size()>0){ %>
-					<div class="break"></div>	<br><br>
+					<br><br>
+					<table style="margin-top: 0px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse: collapse;">
+						<tr>
+							<th colspan="8" style="text-align: left; font-weight: 700;">3. &nbsp;&nbsp;Record of Discussions and Action Points of Current Meeting.</th>
+						</tr>
+						<tr>
+							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation</td>
+						</tr>
+					</table>
 					<table style="margin-top: 0px; margin-left: 5px;width: 650px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
 					<tbody>
 						<tr>
@@ -521,7 +529,12 @@ for(Object[] temp : invitedlist){
 			
 			 <%for (Object[] committeemin : committeeminutes) { 
 				 if ( committeemin[0].toString().equals("6")) { %>
-			 
+				 <br><br>
+			 <table style="margin-top: 0px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse: collapse;">
+						<tr>
+							<th colspan="8" style="text-align: left; font-weight: 700;">6. &nbsp;&nbsp;Final Recommendation & Conclusion</th>
+						</tr>
+			 </table>
 			
 			<div align="center">
 				<table style="margin-top: -10px; width: 650px; font-size: 16px; border-collapse: collapse;">
@@ -551,7 +564,7 @@ for(Object[] temp : invitedlist){
 	<div >
 		<div style="width: 650px;margin-left: 15px; ">
 			<div align="left" >
-				These Minutes are issued with the approval of The Chairperson.
+				These minutes are issued with the approval of the Chairperson.
 			</div>
 			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px">
 				<br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -602,9 +615,7 @@ for(Object[] temp : invitedlist){
 										<%if(obj[3]!=null){ %> <br> - <br> <%= obj[3]%> <%}else{ %> - <%} %>
 									<%} %>
 							<%} %>
-							
 						</td>
-						
 						<td  class="std" style="padding-left: 5px;padding-right: 5px;text-align: justify;"><%= values.get(0)[1]  %></td>
 						<td  class="std" style="text-align: left;" >
 							<%	int count2=0;
@@ -614,7 +625,7 @@ for(Object[] temp : invitedlist){
 								,&nbsp;
 								<%} %>
 							<%}else{ %> - <%} %>
-						<%count2++;} %>
+							<%count2++;}%>
 						</td>                       						
 						<td  class="std" style="text-align: justify;"><%if( values.get(0)[5]!=null){ %> <%=sdf.format(sdf1.parse(values.get(0)[5].toString()))%> <%}else{ %> - <%} %></td>
 					</tr>				
@@ -624,10 +635,6 @@ for(Object[] temp : invitedlist){
 	</div>
 	<br>
 	<%} %>
-	
-	
-
 </div> 
 </body>
 </html>
-

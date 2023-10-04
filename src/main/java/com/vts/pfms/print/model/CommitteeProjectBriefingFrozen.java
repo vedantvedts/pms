@@ -36,6 +36,8 @@ public class CommitteeProjectBriefingFrozen implements Serializable
 	private String FrozenBriefingPath;
 	private String BriefingFileName;
 	private int IsActive;
+	private String PresentationName;
+	private String MoM;
 	
 	@Transient
 	private File BriefingFile;
@@ -45,5 +47,12 @@ public class CommitteeProjectBriefingFrozen implements Serializable
 	private String LabCode;
 	@Transient
 	private MultipartFile BriefingFileMultipart;
+	
+	@Transient
+	private MultipartFile PresentationNameMultipart;
+	
+	@Transient
+	private MultipartFile MomMultipart;
+	
 	
 }

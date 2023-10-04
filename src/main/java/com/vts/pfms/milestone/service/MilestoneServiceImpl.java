@@ -125,6 +125,9 @@ public class MilestoneServiceImpl implements MilestoneService {
 		Milestone.setProgressStatus(0);
 		Milestone.setWeightage(0);
 		Milestone.setIsActive(1);
+		Milestone.setPoint5("Y");
+		Milestone.setPoint6("Y");
+		Milestone.setPoint9("Y");
 		return dao.MilestoneActivityLevelInsert(Milestone);
 	}
 	
@@ -406,9 +409,8 @@ public class MilestoneServiceImpl implements MilestoneService {
 											List<Object[]> BaselineE=dao.BaseLineLevel(objD[0].toString(),"5");
 											if(BaselineE.size()>0) {
 												double ProgressD=0.00;
-												for(Object[] objE:BaselineE) {
+												for(Object[] objE:BaselineE){
 												ProgressD+=(Double.parseDouble(objE[3].toString())/100)*Double.parseDouble(objE[2].toString());
-												
 												}
 												// status for D
 												String StatusD="1";
@@ -627,7 +629,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 					if(mainProgress == 100) {
 						 DateOfCompletion = LocalDate.now().toString();
 					}
-					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion);
+					dao.ProgressMain(dto.getMilestoneActivityId(), StatusMain,(int)Math.round(TotalA), DateOfCompletion,dto);
 					// dao upadate main
 				}
 			}else {

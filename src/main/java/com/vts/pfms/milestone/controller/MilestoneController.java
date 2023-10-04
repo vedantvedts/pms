@@ -133,7 +133,6 @@ public class MilestoneController {
 	        	}catch (Exception e) {
 					
 				}
-	           
 	        }
 	        List<Object[]> main=service.MilestoneActivityList(ProjectId);
 			req.setAttribute("MilestoneActivityList",main );
@@ -652,7 +651,7 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside MilestoneActivityEditSubmit.htm "+UserId);		
 		try {
 			
-		
+		System.out.println(req.getParameter("Weightage")+"------------");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 		MileEditDto mainDto=new MileEditDto();

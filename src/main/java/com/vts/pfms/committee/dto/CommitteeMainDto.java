@@ -28,5 +28,7 @@ public class CommitteeMainDto {
 	private String CreatedByEmpidLabid;
 	private String PreApproved;
 	
+	private String msLabCode;
+	
 	
 }

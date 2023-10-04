@@ -28,7 +28,23 @@
 	top: 0;
 	background-color: #346691;
 }
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
 
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .table button {
 	font-size: 12px;
 }
@@ -235,11 +251,13 @@ if(ses1!=null){
 												id="ProjectId" required="required" name="projectid"
 												onchange="$('#myform').submit();">
 													<option disabled="disabled" value="">Choose...</option>
-													<% for (Object[] obj : ProjectList) {%>
+													<% for (Object[] obj : ProjectList) {
+														String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+													%>
 													<option value="<%=obj[0]%>"
 														<%if(ProjectId.equalsIgnoreCase(obj[0].toString())){ projectname=obj[4].toString(); %>
 														selected="selected" <%} %>>
-														<%=obj[4]%>
+														<%=obj[4]+projectshortName%>
 													</option>
 													<%} %>
 													<option value="0"
@@ -516,7 +534,7 @@ if(ses1!=null){
 	<div class="modal fade" id="exampleModalCenter1" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document"
+		<div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document"
 			style="max-width: 93% !important;">
 
 			<div class="modal-content">

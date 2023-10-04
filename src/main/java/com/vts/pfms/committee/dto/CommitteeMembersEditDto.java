@@ -19,5 +19,8 @@ public class CommitteeMembersEditDto {
 	private String ModifiedBy;
 	
 	
+	private String msLabCode;
+	
+	
 
 }

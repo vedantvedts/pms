@@ -36,10 +36,16 @@ import javax.persistence.Entity;
 		private int Confidential;
 		private long DivisionId; 
 		private long InitiationId; 
-		
+		private String PresentationFrozen;
 		
 
 		
+		public String getPresentationFrozen() {
+			return PresentationFrozen;
+		}
+		public void setPresentationFrozen(String presentationFrozen) {
+			PresentationFrozen = presentationFrozen;
+		}
 		public String getMeetingId() {
 			return MeetingId;
 		}

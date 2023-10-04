@@ -153,12 +153,28 @@ public class MasterDaoImpl implements MasterDao {
 
 		manager.persist(employee);
 		manager.flush();
+		String updatequery1="UPDATE employee set title=NULL where empid=:empid";
+		String updatequery2="UPDATE employee set salutation=NULL where  empid=:empid";
 		
+		 if(employee.getSalutation().length()<1) { Query
+		  query1=manager.createNativeQuery(updatequery2); query1.setParameter("empid",
+		  employee.getEmpId());
+		  query1.executeUpdate();
+		  }
+	 
+	 if(employee.getTitle().length()<1) { Query
+	 query1=manager.createNativeQuery(updatequery1); query1.setParameter("empid",
+		 employee.getEmpId());
+	 query1.executeUpdate();
+		 }
 		return employee.getEmpId();
 	}
 	
 	@Override
 	public int OfficerMasterUpdate(Employee employee) throws Exception {
+
+	
+		
 		
 		Query query=manager.createNativeQuery(OFFICERMASTERUPDATE);
 		query.setParameter("title", employee.getTitle());
@@ -177,6 +193,29 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("modifieddate", employee.getModifiedDate());
 		
 		int count =(int)query.executeUpdate();
+		
+		//
+		
+		String updatequery1="UPDATE employee set title=NULL where empid=:empid";
+		String updatequery2="UPDATE employee set salutation=NULL where  empid=:empid";
+		
+		System.out.println(employee.getSalutation().length()+"Salutation"+employee.getTitle().length()+"Title");
+		
+		 if(employee.getSalutation().length()<1) { 
+			 Query query1=manager.createNativeQuery(updatequery2); 
+		 query1.setParameter("empid",
+		  employee.getEmpId());
+		  query1.executeUpdate();
+		  }
+	 
+	 if(employee.getTitle().length()<1) { 
+		  Query query1=manager.createNativeQuery(updatequery1);
+	 		query1.setParameter("empid",
+	 				employee.getEmpId());
+	 				query1.executeUpdate();
+		 }
+		 
+		
 		
 		return count;
 	}

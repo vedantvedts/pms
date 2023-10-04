@@ -22,7 +22,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
-<%@page import="java.util.List , java.util.stream.Collectors"%> 
+<%@page import="java.util.* , java.util.stream.Collectors"%> 
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="com.vts.pfms.model.TotalDemand" %>
@@ -49,7 +49,8 @@ String lablogo=(String)request.getAttribute("lablogo");
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 String filePath=(String)request.getAttribute("filePath");
 String projectLabCode=(String)request.getAttribute("projectLabCode");
-
+SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
 Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");
 String CommitteeCode = committee.getCommitteeShortName().trim();
 String No2=null;
@@ -395,8 +396,13 @@ List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttrib
 String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 
+String text=(String)request.getAttribute("text");
 List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
-
+//newly added on 13th sept
+	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
+	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
+	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 
 Committee committeeData = (Committee) request.getAttribute("committeeData");
 if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ 
@@ -407,17 +413,20 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 %>
 
 
-<body>
+<body <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="background-color: rgba(245, 222, 179, 0.2);"<%} %>>
 
-	<div class="firstpage" id="firstpage" align="center" > 
-
+	<div class="firstpage" id="firstpage" align="center" "> 
+	
+		<%if(text!=null && text.equalsIgnoreCase("p")) {%>
+		<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Presentation <br> for </h1></div>
+		<%}else{ %>
 		<div align="center" ><h1 style="color: #145374 !important;font-family: 'Muli'!important">Briefing Paper </h1></div>
-		
+		<%} %>
 		<!-- <div align="center" ><h2 style="color: #145374 !important">for</h2></div> -->
 		
-			<div align="center" ><h2 style="color: #145374 !important" ><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2></div>
+			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%=CommitteeCode %> #<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %> Meeting </h2></div>
 		
-			<div align="center" ><h2 style="color: #145374 !important"><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
+			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%= projectattributes.get(0)[1] %> (<%= projectattributes.get(0)[0] %>)</h2></div>
 		
 		
 			<table class="executive" style="align: center;margin-left: auto;margin-right:auto;  font-size: 16px;"  >
@@ -459,8 +468,8 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<br><br><br><br><br><br><br><br><br>
 						<%} %>
 						
-						<br><br><br>
-		<table class="executive" style="align: center;margin-bottom:0px; margin-left: auto;margin-right:auto;  font-size: 16px;"  >
+						<br><br>
+		<table class="executive" style="align: center;margin-bottom:0px; margin-left: auto;margin-right:auto;  font-size: 16px;margin-top:0px;"  >
 		<% if(labInfo!=null){ %>
 			<tr>
 				<th colspan="8" style="text-align: center; font-weight: 700;font-size: 22px;padding-bottom: 0px;"><%if(labInfo.getLabName()!=null){ %><%=labInfo.getLabName()  %><%}else{ %>LAB NAME<%} %></th>
@@ -473,7 +482,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;">Defence Research & Development Organization</th>
 		</tr>
 		<tr>
-			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %> <br><br><br></th>
+			<th colspan="8" style="text-align: center; font-weight: 700;font-size:15px;padding-bottom: 0px;"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=labInfo.getLabCity() %><%}else{ %>LAB ADDRESS<%} %></th>
 		</tr>
 		</table>			
 		
@@ -538,7 +547,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											 <td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
 											 <th rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px"><b>PDC</b></th>
 											 
-											<th colspan="2" style="text-align: center !important">Original</th>					
+											<th colspan="2" style="text-align: center !important"><!-- Original -->&nbsp;</th>					
 											<%if( ProjectRevList.get(z).size()>0){ %>	
 												<th colspan="2" style="text-align: center !important">Revised</th>																			
 											<%}else{ %>													 
@@ -617,7 +626,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
 											<th  style="width: 210px;padding: 5px; padding-left: 10px"><b>Current Stage of Project</b></th>
-											<td colspan="4" style=" width: 200px;color:white; padding: 5px; padding-left: 10px ; <%if(projectdatadetails.get(z)!=null){ %> background-color: <%=projectdatadetails.get(z)[11] %> ;   <%} %>" >
+											<td colspan="4" style=" width: 200px;color:blue; padding: 5px; padding-left: 10px ; <%if(projectdatadetails.get(z)!=null){ %> background-color: <%=projectdatadetails.get(z)[11] %> ;   <%} %>" >
 													 <span> <%if(projectdatadetails.get(z)!=null){ %><b><%=projectdatadetails.get(z)[10] %> </b>  <%}else{ %>Data Not Found<%} %></span>
 											</td> 
 										</tr>	
@@ -632,16 +641,14 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 <!-- ------------------------------------system configuration and Specification------------------------------------------------- -->	
 		<div style="margin-left: 10px;" align="left" class="sub-title"><b>2. Schematic Configuration</b></div><br>
 		<div align="left" style="margin-top: 5px;margin-left: 10px;"><b class="mainsubtitle">2 (a) System Configuration : </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<div align="center">
-			<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
+		<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
 				<%if(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3]).exists()){ %>
 				
 					<%if(!FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf") ){ %>
-						
-						<br>
-						<img class="logo" style="max-width:25.5cm;max-height:20cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
-						
+						<div align="center">
+						<img class="logo" style="max-width:25cm;max-height:17cm;"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[3])))%>" alt="confi" >
+						</div>
 					<% }else{ %>
 						<b>  System Configuration Annexure </b>
 					<% }%>
@@ -653,9 +660,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 			
 			
 			<%}else{ %>
+			<div align="center">
+			<br>
 				<b> File Not Found</b>
+				</div>
 			<%} %>
-		</div> 
+	
 	</div>
 				<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 				
@@ -780,7 +790,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						<th  style="width: 335px !important;">Recommendation Point</th>
 						<th  style="width: 150px !important;"> PDC</th>
 						<th  style="width: 210px !important;"> Responsibility</th>
-						<th  style="width: 80px !important;">Status(DD)</th>
+						<th  style="width: 80px !important;">Status</th>
 						<th  style="width: 250px !important; ">Remarks</th>
 					</tr>
 				</thead>
@@ -796,9 +806,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							<td  style="text-align: center;"><%=i %></td>
 							<td  style="text-align: justify; "><%=obj[2] %></td>
 							<td   style=" text-align: center;">
-								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
-								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
-								<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>		
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span <%if(obj[8]==null){ %>style="color:black;font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
+								<%if(obj[6]!= null){ %><span <%if(obj[8]==null && obj[7]==null){ %>style="color:black;font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><%} %>
 							</td>
 							<td>
 								<%if(obj[4]!= null){ %>  
@@ -817,7 +827,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 												<span class="completed">CO</span>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+												<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) --%> </span>
 											<%} %>	
 										<%}else{ %>
 											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -826,12 +836,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<span class="delay">FD</span>
 											<%}else if(actionstatus.equals("A") && progress==0){  %>
 												<span class="assigned">
-													AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
+													AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
 												</span>
 											<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 												<span class="ongoing">OG</span>
 											<%}else if(pdcorg.isBefore(today)){  %>
-												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
 											<%} %>								
 									<%} %>
 								<%}else { %>
@@ -876,11 +886,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
-								<th  style="width: 300px; ">Action Point</th>
-								<th  style="width: 100px; ">PDC</th>
-								<th  style="width: 80px; "> ADC</th>
+								<th style="width: 60px;">ID</th>
+								<th  style="width: 320px; ">Action Point</th>
+								<th  style="width: 120px; ">ADC<br>PDC</th>
+						<!-- 		<th  style="width: 80px; "> ADC</th> -->
 								<th  style="width: 210px; "> Responsibility</th>
-								<th  style="width: 80px; ">Status(DD)</th>
+								<th  style="width: 80px; ">Status</th>
 								<th  style="width: 205px; ">Remarks</th>			
 							</tr>
 						</thead>
@@ -890,22 +901,41 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
-								{int i=1;
+								{int i=1;String key="";
 								for(Object[] obj:lastpmrcactions.get(z) ){ %>
 								<tr>
 									<td  style="text-align: center;"><%=i %></td>
+									<td <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="font-weight: bold;"<%} %>>	
+								<!--newly added on 13th sept  -->	
+								<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+key+"/"+obj[1].toString().split("/")[4] %>
+								<%}%> 
+								</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<td  style="text-align: center;" >
-										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-										<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-									</td>
-									<td   style="text-align: center;"> 
-										<%	String actionstatus = obj[9].toString();
-											int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
-											LocalDate pdcorg = LocalDate.parse(obj[3].toString());
-											LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
-											LocalDate today = LocalDate.now();
+									<%int adc_count=0;	
+									String actionstatus = obj[9].toString();
+									int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
+									LocalDate pdcorg = LocalDate.parse(obj[3].toString());
+									LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
+									LocalDate today = LocalDate.now();
 										%> 
 											<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
@@ -916,16 +946,23 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											<%}else{ %>
 													-									
 											<%} %>
+											<br>
+										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><span style="color: black; font-weight: bold"><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br> <% } %>
+										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><span <%if(obj[6]==null){ %>style="color: black; font-weight: bold"<%} %>><%=sdf.format(sdf1.parse(obj[5].toString()))%></span><br> <% } %>
+										<span <%if(obj[6]==null && obj[5]==null){ %>style="color: black; font-weight: bold"<%} %>><%=sdf.format(sdf1.parse(obj[3].toString()))%></span>
 									</td>
+								<!-- 	<td   style="text-align: center;"> 
+		
+									</td> -->
 												
 												
-									<td  > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
-									<td  style="text-align: center;"> 
+									<td > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
+									<td style="text-align: center;"> 
 										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 												<span class="completed">CO</span>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+												<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
 											<%} %>	
 										<%}else{ %>
 											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -934,12 +971,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<span class="delay">FD</span>
 											<%}else if(actionstatus.equals("A") && progress==0){  %>
 												<span class="assigned">
-													AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
+													AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
 												</span>
 											<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 												<span class="ongoing">OG</span>
 											<%}else if(pdcorg.isBefore(today)){  %>
-												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
 											<%} %>					
 																				
 										<%} %>
@@ -1078,10 +1115,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<th  style="width: 30px; ">MS</th>
 										<th  style="width: 60px; ">L</th>
 										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-										<th  style="width: 100px; "> PDC</th>
-										<th  style="width: 150px; "> ADC</th>
+										<th  style="width: 100px; "> ADC <br> PDC</th>
+									<!-- 	<th  style="width: 150px; "> ADC</th> -->
 										<th  style="width: 60px; "> Progress</th>
-										<th  style="width: 50px; "> Status(DD)</th>
+										<th  style="width: 50px; "> Status</th>
 									 	<th  style="width: 260px; "> Remarks</th>
 									</tr>
 								</thead>
@@ -1113,19 +1150,31 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													milcountC=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { %>
-													A-<%=milcountA %>
-												<% milcountA++;
+												}else if(obj[21].toString().equals("1")) {
+													// changed on 13th sept
+													for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+															<%=entry.getValue() %>
+													<%}} 
+													
+													%>
+													<%-- A-<%=milcountA %> --%>
+												<% /* milcountA++;
 													milcountB=1;
 													milcountC=1;
 													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("2")) { %>
-													B-<%=milcountB %>
-												<%milcountB+=1;
+													milcountE=1; */
+												}else if(obj[21].toString().equals("2")) {
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}}	
+													%>
+													<%-- B-<%=milcountB %> --%>
+												<%/* milcountB+=1;
 												milcountC=1;
 												milcountD=1;
-												milcountE=1;
+												milcountE=1; */
 												}else if(obj[21].toString().equals("3")) { %>
 													C-<%=milcountC %>
 												<%milcountC+=1;
@@ -1158,34 +1207,15 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<%} %>
 											</td>
 											<td style="text-align: center">
-												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
-													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
-												<%}%>
-												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
-											</td>
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
 												LocalDate EndDate = LocalDate.parse(obj[8].toString());
 												LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
 												int Progess = Integer.parseInt(obj[17].toString());
 												LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
-												
 												LocalDate Today = LocalDate.now();
-												
 											%>
-											<td style="text-align: center">
-												<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
-												<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-																			<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-																			<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-																			<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-																			<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-																			<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-																			<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-				
-													<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
-													<% } else {  %> - <% } %> --%>
-												<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
+											<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
 													<span 
 														<%if(Progess==0){ %>
 															class="assigned"
@@ -1205,24 +1235,30 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 														> <%=sdf.format(sdf1.parse(obj[24].toString()))%> </span>
 													
 												 <% } else {  %> - <% } %>
-											</td>
-											<td style="text-align: center"><%=obj[17]%>%</td>
-											<%-- 	<td style="text-align: center"><span
-												class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-																		<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-																		<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-																		<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-																		<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-																		<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-																		<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-													<%=obj[22]%> 
-													<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) { %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
-													<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
-													<% } %>
-											</span></td> --%>
 											
+											
+											<br>
+												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
+												<span style="color:black;font-weight: bold;">	<%= sdf.format(sdf1.parse(obj[8].toString()))%></span><br> 
+												<%}%>
+												<span <%if( LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) {%>style="color:black;font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[9].toString())) %></span>
+											</td>
+
+<%-- 											<td style="text-align: center">
+												<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
+												<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
+																			<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
+																			<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
+																			<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
+																			<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
+																			<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
+																			<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
+				
+													<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
+													<% } else {  %> - <% } %>
+												
+											</td> --%>
+											<td style="text-align: center"><%=obj[17]%>%</td>
 											<td style="text-align: center">	
 												
 													<%if(Progess==0){ %>
@@ -1230,11 +1266,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 														<span class="ongoing"> OG </span>
 													<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-														<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+														<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
 													<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 														<span class="completed"> CO</span>
 													<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-														<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
+														<span class="completeddelay">CD <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>) --%></span>
 													<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
 														<span class="inactive">IA</span>
 													<%}else{ %>
@@ -1296,7 +1332,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
 									<th  style="width: 100px; "> PDC</th>
 									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status(DD)</th>
+									<th  style="width: 50px; "> Status</th>
 								 	<th  style="width: 320px; "> Remarks</th>
 
 								<% if( MilestoneDetails6.get(z).size()>0){ 
@@ -1326,19 +1362,31 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													milcountC=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { %>
-													A-<%=milcountA %>
-												<% milcountA++;
+												}else if(obj[21].toString().equals("1")) { 
+												//changed on 13th sept
+													for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+															<%=entry.getValue() %>
+													<%}} 
+												 
+												%>
+													<%-- A-<%=milcountA %> --%>
+												<% /* milcountA++;
 													milcountB=1;
 													milcountC=1;
 													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("2")) { %>
-													B-<%=milcountB %>
-												<%milcountB+=1;
+													milcountE=1; */
+												}else if(obj[21].toString().equals("2")) { 
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}}	
+												%>
+													<%-- B-<%=milcountB %> --%>
+												<%/* milcountB+=1;
 												milcountC=1;
 												milcountD=1;
-												milcountE=1;
+												milcountE=1; */
 												}else if(obj[21].toString().equals("3")) { %>
 													C-<%=milcountC %>
 												<%milcountC+=1;
@@ -1372,9 +1420,9 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											</td>
 											<td style="text-align: center;">
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
-													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+												<span style="color:black;font-weight: bold;"><%= sdf.format(sdf1.parse(obj[8].toString()))%></span>	<br> 
 												<%}%>
-												<%=sdf.format(sdf1.parse(obj[9].toString())) %>
+												<span <%if( LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %>style="color:black;font-weight: bold;" <%} %>><%=sdf.format(sdf1.parse(obj[9].toString())) %></span>
 											</td>
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -1408,11 +1456,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 													<span class="ongoing"> OG </span>
 												<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-													<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+													<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
 												<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 													<span class="completed"> CO</span>
 												<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-													<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
+													<span class="completeddelay">CD <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>) --%></span>
 												<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
 													<span class="inactive">IA</span>
 												<%}else{ %>
@@ -1448,7 +1496,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<img class="logo" style="max-width:25cm;max-height:17cm;margin-bottom: 5px"  src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(AppFilesPath+projectdatadetails.get(z)[2]+"\\"+projectdatadetails.get(z)[6])))%>" alt="Speci" >
 											</div> 
 										<% }else{ %>
-											 <b> TRL table with TRL at sanction stage Annexure </b>
+												<div align="center"><br>
+											 	<b> TRL table with TRL at sanction stage Annexure </b>
+												</div>
+										
 										<% }%>
 									
 									<%}else{ %>
@@ -1460,7 +1511,10 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								
 								
 								<%}else{ %>
-									<b> File Not Found</b>
+								<div align="center"><br>
+								<b> File Not Found</b>
+								</div>
+									
 								<%} %>
 								
 								
@@ -1502,19 +1556,19 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							</tr>
 							<tr>
 								<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-								<th style="width: 330px; " colspan="3">Risk</th>
-								<th style="width: 100px; " rowspan="1" > PDC</th>
-								<th style="width: 100px; " rowspan="1"> ADC</th>
+								<th style="width: 430px; " colspan="3">Risk</th>
+								<th style="width: 150px; " rowspan="1" > ADC<br>PDC</th>
+							<!-- 	<th style="width: 100px; " rowspan="1"> ADC</th> -->
 								<th style="width: 160px; " rowspan="1"> Responsibility</th>
-								<th style="width: 50px; "  rowspan="1">Status(DD)</th>
+								<th style="width: 50px; "  rowspan="1">Status</th>
 								<th style="width: 215px; " rowspan="1">Remarks</th>	
 							</tr>
 							<tr>
 								<th  style="text-align: center;width: 110px; " > Severity<br>(1-10)</th>
 								<th  style="text-align: center;width: 110px;"> Probability<br>(1-10)</th>
 								<th  style="text-align: center;width: 110px;"> RPN<br>(1-100)</th>
-								<th  style="width:210px" colspan="3" > Mitigation Plans</th>
-								<th  style="width:315px" colspan="2"> Impact</th>		
+								<th  style="width:360px" colspan="3" > Mitigation Plans</th>
+								<th  style="width:315px" colspan="1"> Impact</th>		
 							</tr>
 										
 					</thead>
@@ -1529,12 +1583,6 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<td style="text-align: justify;color: red; " colspan="3" >
 											<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
 										</td>
-										<td style="text-align: center" rowspan="1">
-											<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-											<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
-											<%=sdf.format(sdf1.parse(obj[9].toString()))%>
-										</td>
-										
 										<td style="text-align: center" rowspan="1">
 										<%	String actionstatus = obj[15].toString();
 																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
@@ -1551,7 +1599,15 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 																	<%}else{ %>
 																		-									
 																	<%} %>
+																	<br>
+											<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><span style="font-size:0.9rem;"><%=sdf.format(sdf1.parse(obj[11].toString()))%></span><br> <% } %>
+											<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><span style="font-size:0.9rem;"><%=sdf.format(sdf1.parse(obj[10].toString()))%></span><br><% } %>
+											<span style="font-size:0.9rem"><b><%=sdf.format(sdf1.parse(obj[9].toString()))%></b></span>
 										</td>
+										
+									<!-- 	<td style="text-align: center" rowspan="1">
+										
+										</td> -->
 													
 										<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
 										<td style="text-align: center" rowspan="1">
@@ -1560,7 +1616,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 													<span class="completed">CO</span>
 												<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-													<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+													<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) --%> </span>
 												<%} %>	
 											<%}else{ %>
 												<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -1569,12 +1625,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<span class="delay">FD</span>
 												<%}else if(actionstatus.equals("A") && progress==0){  %>
 													<span class="assigned">
-														AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
+														AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
 													</span>
 												<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 													<span class="ongoing">OG</span>
 												<%}else if(pdcorg.isBefore(today)){  %>
-													<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+													<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
 												<%} %>					
 																							
 											<%} %>
@@ -1599,7 +1655,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 											
 										</td>
 										<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
-										<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
+										<td style="text-align: justify;" colspan="1" ><%=obj[21] %></td>
 									</tr>
 												
 									<%if(riskmatirxdata.get(z).size() > i){ %>
@@ -1626,6 +1682,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 						</thead>
 						<tbody>
 							<% int riskcount=0;
+							if(RiskTypes!=null && !RiskTypes.isEmpty()){
 							for(Object[] risktype : RiskTypes ){ %>
 							<tr>
 								<td style="text-align: center;"><b>I<%=risktype[2] %></b></td>
@@ -1634,7 +1691,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 								<td>External <%=risktype[1] %></td>
 								</tr>
 							</tr>
-							<%} %>
+							<%} }%>
 						</tbody>
 					</table>
 				
@@ -1923,7 +1980,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<td style="width: 3%;">6</td>
 										<td style="width: 22%;">Tender Opening</td>
 										<td style="width: 3%;">11</td>
-										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 22%;">Realization in Progress</td>
 										<td style="width: 3%;">16</td>
 										<td style="width: 22%;">Payment Process</td>
 									</tr>
@@ -2117,7 +2174,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									<th style="width: 100px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
-					                <th style="width: 50px;padding-right: 5px !important ">Status(DD)</th>
+					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
 					                <th style="width: 230px;">Remarks</th>
 								</tr>
 							</thead>
@@ -2150,19 +2207,32 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													countC=1;
 													countD=1;
 													countE=1;
-												}else if(obj[26].toString().equals("1")) { %>
-													A-<%=countA %>
-												<% countA++;
+												}else if(obj[26].toString().equals("1")) { 
+													for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+															<%=entry.getValue() %>
+													<%}} 
+												
+												%>
+													<%-- A-<%=countA %> --%>
+												<% /* countA++;
 												    countB=1;
 												    countC=1;
 													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("2")) { %>
-													B-<%=countB %>
-												<%countB+=1;
+													countE=1; */
+												}else if(obj[26].toString().equals("2")) {  
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}} 
+												
+												
+												%>
+												<%-- 	B-<%=countB %> --%>
+												<%/* countB+=1;
 												countC=1;
 												countD=1;
-												countE=1;
+												countE=1; */
 												}else if(obj[26].toString().equals("3")) { %>
 													C-<%=countC %>
 												<%countC+=1;
@@ -2237,7 +2307,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 													<span class="ongoing"> OG </span>
 												<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-													<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
+													<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
 												<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 													<span class="completed"> CO</span>
 												<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
@@ -2340,11 +2410,11 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 							</tr>
 							<tr>
 								<th  style="width: 20px !important;text-align: center;">SN</th>
-								<th  style="width: 270px;">Issue Point</th>
-								<th  style="width: 100px; "> PDC</th>
-								<th  style="width: 80px; "> ADC</th>
+								<th  style="width: 370px;">Issue Point</th>
+								<th  style="width: 100px; "> ADC<br>PDC</th>
+<!-- 								<th  style="width: 80px; "> ADC</th> -->
 								<th  style="width: 210px; ">Responsibility</th>
-								<th  style="width: 50px; ">Status(DD)</th>	
+								<th  style="width: 50px; ">Status</th>	
 								<th  style="width: 270px; ">Remarks</th>		
 							</tr>
 						</thead>
@@ -2361,12 +2431,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
-													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-												</td>
-												<td  style="text-align: center;"> 
-													<%	String actionstatus = obj[9].toString();
+												<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 															LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
@@ -2381,7 +2446,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<%}else{ %>
 															-									
 													<%} %>
+													<br>
+													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
+											
 												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
 												<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
@@ -2390,7 +2460,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 																<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																	<span class="completed">CO</span>
 																<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																	<span class="delay">CD (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+																	<span class="delay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
 																<%} %>	
 															<%}else{ %>
 																<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -2399,12 +2469,12 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 																	<span class="delay">FD</span>
 																<%}else if(actionstatus.equals("A") && progress==0){  %>
 																	<span class="assigned">
-																		AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
+																		AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
 																	</span>
 																<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 																	<span class="ongoing">OG</span>
 																<%}else if(pdcorg.isBefore(today)){  %>
-																	<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+																	<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
 																<%} %>										
 														<%} %>
 													<%}else { %>

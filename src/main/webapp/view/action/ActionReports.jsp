@@ -83,8 +83,8 @@ h6{
 					<div class="card-header ">  
 
 					<div class="row">
-						<h4 class="col-md-5">Action Reports</h4>  
-							<div class="col-md-7" style="float: right; margin-top: -8px;" >
+						<h4 class="col-md-4">Action Reports</h4>  
+							<div class="col-md-8" style="float: right; margin-top: -8px;" >
 					   			<form method="post" action="ActionReportSubmit.htm" name="dateform" id="dateform">
 					   				<table>
 					   					<tr>
@@ -95,8 +95,10 @@ h6{
                                                 <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true" onchange="submitForm('dateform');" >
                                                         <option value="A"  <%if(Project.equalsIgnoreCase("A")){%> selected="selected" <%}%>>ALL</option>	
                                                         <option value="0"  <%if(Project.equalsIgnoreCase("0")){%> selected="selected" <%}%>>General</option>	
-                                                    <%for(Object[] obj:ProjectList){%>
-														<option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[4]%></option>	
+                                                    <%for(Object[] obj:ProjectList){
+                                                    String projectShortName=(obj[17]!=null)?"("+obj[17].toString()+")":"";
+                                                    %>
+													<option value="<%=obj[0] %>" <%if(Project.equalsIgnoreCase(obj[0].toString())){%> selected="selected" <%}%>><%=obj[4]+projectShortName%></option>	
 													<%}%>
 												</select>	        
 											</td>
@@ -172,12 +174,13 @@ h6{
 																		<td><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
-																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[0] %></button>
+																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0] %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[11]%>"/>
 																	           <input type="hidden" name="Assignee" value="<%=obj[1]%>,<%=obj[2]%>"/>
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="ActionAssignId" value="<%=obj[14]%>"/>
 																	           <input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
+																	           <input type="hidden" name="text" value="P">
  																			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 																			
 																			</form> 

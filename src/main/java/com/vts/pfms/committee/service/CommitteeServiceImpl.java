@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -278,7 +279,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 				committeemember.setMemberType("CC");
 			}
 			else if(i==2)
-			{
+				{
 				if( Long.parseLong(committeemaindto.getCo_Chairperson())>0) 
 				{
 					committeemember.setEmpId(Long.parseLong(committeemaindto.getCo_Chairperson()));
@@ -293,7 +294,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			else if(i==3)
 			{
 				committeemember.setEmpId(Long.parseLong(committeemaindto.getSecretary()));
-				committeemember.setLabCode(committeemaindto.getLabCode());
+				committeemember.setLabCode(committeemaindto.getMsLabCode());
 				committeemember.setMemberType("CS");
 			}
 			else if(i==4)
@@ -1608,17 +1609,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 		LocalDate scheduledate=LocalDate.parse(scheduledata[2].toString(),dtf);
 	
 		if(LocalDate.now().isAfter(scheduledate))
-		{			
-			
+			{	
 			CommitteeSchedule committeeschedule=new CommitteeSchedule(); 
 			committeeschedule.setKickOffOtp(null);
 			committeeschedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
 			committeeschedule.setScheduleFlag("MKV");
 			String  ret=dao.UpdateOtp(committeeschedule);
 			if (Integer.parseInt(ret)>0) {
-				redir.addAttribute("result", "Meeting Kick Off Successful");
+			redir.addAttribute("result", "Meeting Kick Off Successful");
 			} else {
-				redir.addAttribute("result", "Meeting Kick Off UnSuccessful");
+			redir.addAttribute("result", "Meeting Kick Off UnSuccessful");
 			}	
 			Object[] returnobj=new Object[2];
 			returnobj[0]=req;
@@ -2302,7 +2302,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		model.setModifiedBy(dto.getModifiedBy());
 		model.setModifiedDate(sdf1.format(new Date()));
 		model.setCommitteeMemberId(Long.parseLong(dto.getSecretarymemid()));
-		model.setLabCode(dto.getSesLabCode());
+		model.setLabCode(dto.getMsLabCode());
 		model.setEmpId(Long.parseLong(dto.getSecretary()));
 		ret=dao.CommitteeMemberUpdate(model); 
 		
@@ -2888,8 +2888,18 @@ public class CommitteeServiceImpl implements CommitteeService{
 //				MilestoneActivityAll.addAll(MilestoneActivityC);
 //				MilestoneActivityAll.addAll(MilestoneActivityC);
 //				MilestoneActivityAll.addAll(MilestoneActivityE);
-//				
-		return dao.ActionPlanSixMonths(projectid);
+		
+		List<Object[]>mainList=dao.ActionPlanSixMonths(projectid);
+		List<Object[]>subList=new ArrayList<>();
+	
+		if(mainList.size()!=0) {
+			subList=mainList.stream().filter(i->i[33].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
+		}
+		return subList;
+		
+		
+		
+	//	return dao.ActionPlanSixMonths(projectid);
 	}
 	
 	@Override
@@ -3167,6 +3177,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	{
 		return dao.getFrozenDPFMMinutes(scheduleId);
 	}
-	
+	@Override
+	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
+		return dao.totalProjectMilestones(projectid);
+	}
 	
 }

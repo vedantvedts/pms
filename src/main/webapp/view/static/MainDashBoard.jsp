@@ -708,8 +708,6 @@ if(ses!=null){ %>
 														</ul>
 								
 												</div>
-								
-																			
 												<%count++; }} }}%>
 								
 												<%if(count==0) { %>

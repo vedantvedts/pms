@@ -176,7 +176,7 @@ String ses=(String)request.getParameter("result");
 					<div class="card-body">	
 						  <form action="CommitteeMainEditSubmit.htm" method="post" id="committeeeditfrm">				
 							 <div class="row">							
-								<div class="col-md-6" style="margin-top:5px; ">									 
+								<div class="col-md-8" style="margin-top:5px; ">									 
 					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
 					                    	<table style="width:100%">
 					                        <tr >
@@ -205,7 +205,7 @@ String ses=(String)request.getParameter("result");
 								</div>
 							
 							
-								<div class="col-md-3">
+<%-- 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
 										<select class="form-control selectdee" id="secretary" required="required" name="Secretary"style="margin-top: -5px">
@@ -218,7 +218,7 @@ String ses=(String)request.getParameter("result");
 				  						<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
 				  						<%} %>	
 									</div>
-								</div>
+								</div> --%>
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Co-Chairperson</label>
@@ -235,7 +235,46 @@ String ses=(String)request.getParameter("result");
 								</div>
 							 
 							
-								<div class="col-md-3">
+				
+							</div> 
+			<div class="row">
+			
+											<div class="col-md-8" style="margin-top:5px; ">									 
+					                    	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
+					                    	<table style="width:100%">
+					                        <tr >
+												<td style="width:25%; border:0:">
+													 <div class="input select" id="cplab-col">
+														<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
+															<option disabled="disabled"  selected value="">Lab Name</option>
+														    <% for (Object[] obj : AllLabList) {%>
+															    <option <%if(secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
+														    <%} %>
+														    <option <%if(secretary[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
+														</select>
+																
+													</div>
+												</td>										
+												<td style="border:0;">
+												<div class="input select">
+														<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" >
+												             
+														</select>	
+														<%if(secretary!=null){ %>
+				  						<input type="hidden" name="msmemberid" value="<%=secretary[0]%>">
+				  						<%} %>										
+												</div>														
+											</td>						
+										</tr>
+										</table>
+								</div>
+			
+			
+			
+			
+			
+			
+									<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary (Proxy)</label>
 										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
@@ -248,8 +287,8 @@ String ses=(String)request.getParameter("result");
 				  						<input type="hidden" name="psmemberid" value="<%=proxysecretary[0]%>">
 				  						<%}%> 
 									</div>
-								</div>					
-							</div> 
+								</div>	
+			</div>								
 							<div class="row">			
 								<div class="col-md-12" align="center">
 					              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
@@ -852,6 +891,7 @@ function replacerepdd(){
  $(document).ready(function(){	
 	 
 	chairpersonfetch('0');
+	msfetch('0');
 		
 }); 
 
@@ -897,6 +937,47 @@ function replacerepdd(){
 		}
 	}
 		
+		function msfetch(hint){
+			$('#secretary').val("");
+			var $CpLabCode = $('#mSLabCode').val();
+					if($CpLabCode !=""){
+			
+					$.ajax({		
+						type : "GET",
+						url : "ChairpersonEmployeeListFormation.htm",
+						data : {
+							CpLabCode : $CpLabCode,
+							committeemainid : '<%= committeemainid %>',
+							   },
+						datatype : 'json',
+						success : function(result) {
+	
+						var result = JSON.parse(result);
+							
+						var values = Object.keys(result).map(function(e) {
+									 return result[e]
+								  
+						});
+							
+				var s = '';
+					s += '<option value="">'+"--Select--"+ '</option>';
+							 for (i = 0; i < values.length; i++) {									
+								s += '<option value="'+values[i][0]+'">'
+										+values[i][1] + " (" +values[i][3]+")" 
+										+ '</option>';
+							} 
+							 
+							$('#secretary').html(s);
+							if(hint=='0' && $CpLabCode =='<%=secretary[9]%>'){
+								$('#secretary').val('<%=secretary[5]%>');
+							}
+														
+						}
+					});
+	
+	}
+		}
+		
 </script>
 
 <script>
@@ -909,12 +990,19 @@ function Add(myfrm){
     var $chairperson = $("#chairperson").val();
     var $cplabCode = $('#CpLabCode').val();
     var $LabCode = '<%=LabCode%>';
-    
+    var $mSLabCode=$('#mSLabCode').val();
     
     var $cochairperson = $("#co_chairperson").val();
     var $secretary = $("#secretary").val();
     var $proxysecretary=$("#proxysecretary").val();
     
+    if($mSLabCode===$cplabCode){
+		if($chairperson==$secretary){
+			 alert("Chairperson and Member Secretary Should Not Be The Same Person ");	   
+			 event.preventDefault();
+				return false;
+		}
+    }
     
     if( $LabCode === $cplabCode){
 		if($chairperson==$secretary){

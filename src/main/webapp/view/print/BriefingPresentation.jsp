@@ -36,7 +36,29 @@
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
 
 <title>Briefing Presentation</title>
+<style>
+.prjattr{
+color:#00416A !important;
+font-weight: 700;
+}
+.modal-dialog-jump {
+  animation: jumpIn 1s ease;
+}
 
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+</style>
 </head>
 
 <body style="background-color: #F9F2DF66;" class="slides-container" id="slides-container">
@@ -47,7 +69,9 @@
 	SimpleDateFormat sdf1 = fc.getSqlDateFormat();
     SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
     SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+	String todayDate=outputFormat.format(new Date()).toString();
 	
+System.out.println(todayDate+"---");
 	int addcount = 0;
 	NFormatConvertion nfc = new NFormatConvertion();
 	Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en", "in"));
@@ -96,6 +120,7 @@
 	String lablogo = (String)request.getAttribute("lablogo");
 	String Drdologo = (String)request.getAttribute("Drdologo");
 	
+	String pdc="";
 	long ProjectCost = (long) request.getAttribute("ProjectCost");
 	String levelid = (String) request.getAttribute("levelid");
 
@@ -105,12 +130,7 @@
 	//maps for pmrc and EB
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
-	for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
-	System.out.println(entry.getValue()+"---"+entry.getKey()+"--mappmrc");	
-	}
-	for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-		System.out.println(entry.getValue()+"---"+entry.getKey()+"--"+"mapeb");	
-		}
+
 	String ProjectCode=projectattributeslist.get(0)[0].toString();
 	String MeetingNo = CommitteeCode+" #"+(Long.parseLong(committeeMetingsCount[1].toString())+1);
 	LocalDate before6months = LocalDate.now().minusMonths(6);
@@ -120,6 +140,12 @@
 		before6months = LocalDate.now().minusMonths(6);
 	} 
 	List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
+	Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
+	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
+	for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+		System.out.println(entry.getValue()+"--"+entry.getKey());
+	}
+
 	%>
 
 	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
@@ -216,8 +242,16 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+						<%
+					for (int z = 0; z < projectidlist.size(); z++) {
+						List<Object[]> revlist = ProjectRevList.get(z);
+						Object[] projectattributes = projectattributeslist.get(z);
+						pdc=pdc+"( PDC:"+sdf.format(sdf1.parse(projectattributes[6].toString()))+")";
+					}
+					%>
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>1. Project Attributes</h3>
@@ -236,6 +270,8 @@
 					for (int z = 0; z < projectidlist.size(); z++) {
 						List<Object[]> revlist = ProjectRevList.get(z);
 						Object[] projectattributes = projectattributeslist.get(z);
+						
+					
 					%>
 					<%
 					if (projectattributes != null) {
@@ -243,40 +279,40 @@
 
 					<b style="font-size: 25px;">Project : <%=ProjectDetail.get(z)[1]%><% if (z != 0) { %>(SUB<% } %></b>
 					<hr style="margin: 0.25rem 0rem;">
-					<table class="subtables " style="align: left; margin-top: 10px; width:1100px !important; border-collapse: collapse;">
+					<table class="subtables " style="font-size:1.1rem;align: left; margin-top: 10px; width:96% !important; border-collapse: collapse;">
 						<tr>
 							<td
 								style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
-							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Project
+							<td style="width: 280px; padding: 5px; padding-left: 10px"><b>Project
 									Title</b></td>
-							<td colspan="4"
+							<td colspan="4" 
 								style="width: 370px; padding: 5px; padding-left: 10px; font-weight: bold; color: #309322">
-								<%=projectattributes[1]%></td>
+								<%=projectattributes[1]%><span style="float:right;background-color:#F86F03;color:white; padding:3px;">PDC -(<%=sdf.format(sdf1.parse(projectattributes[6].toString()))%>)</span></td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(b)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Project
 									Code</b></td>
-							<td colspan="4"
+							<td colspan="4" class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px"><%=projectattributes[0]%>
 							</td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(c)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Category</b></td>
-							<td colspan="4"
+							<td colspan="4" class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px"><%=projectattributes[14]%></td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(d)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Date of Sanction</b></td>
-							<td colspan="4" style="width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
+							<td colspan="4" class="prjattr" style="width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 5px; padding-left: 10px">(e)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Nodal
 									and Participating Labs</b></td>
-							<td colspan="4"
+							<td colspan="4" class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px">
 								<%
 								if (projectattributes[15] != null) {
@@ -289,22 +325,22 @@
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(f)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Objective</b></td>
-							<td colspan="4"
+							<td colspan="4"  class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px; text-align: justify">
 								<%=projectattributes[4]%></td>
 						</tr>
 						<tr>
 							<td style="padding: 5px; padding-left: 10px">(g)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>Deliverables</b></td>
-							<td colspan="4"
+							<td colspan="4" class="prjattr"
 								style="width: 370px; padding: 5px; padding-left: 10px"><%=projectattributes[5]%></td>
 						</tr>
 						<tr>
 							<td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
-							<td rowspan="2"
+							<td rowspan="2" 
 								style="width: 150px; padding: 5px; padding-left: 10px"><b>PDC</b></td>
 
-							<td colspan="2" style="text-align: center !important">Original</td>
+							<td colspan="2" style="text-align: center !important"><!-- Original -->&nbsp;</td>
 							<%
 							if (ProjectRevList.get(z).size() > 0) {
 							%>
@@ -321,9 +357,9 @@
 							<%
 							if (ProjectRevList.get(z).size() > 0) {
 							%>
-							<td colspan="2" style="text-align: center;"><%=sdf.format(sdf1.parse(ProjectRevList.get(z).get(0)[12].toString()))%>
+							<td colspan="2" style="text-align: center;" class="prjattr"><%=sdf.format(sdf1.parse(ProjectRevList.get(z).get(0)[12].toString()))%>
 							</td>
-							<td colspan="2" style="text-align: center;">
+							<td colspan="2" style="text-align: center;" class="prjattr">
 								<% if (LocalDate.parse(projectattributes[6].toString()) .isEqual(LocalDate.parse(ProjectRevList.get(z).get(0)[12].toString()))) { %>
 									- 
 								<% } else { %> 
@@ -333,7 +369,7 @@
 							<%
 							} else {
 							%>
-							<td colspan="2" style="text-align: center;"><%=sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
+							<td colspan="2" style="text-align: center;" class="prjattr"><%=sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
 							<td colspan="2"></td>
 							<%
 							}
@@ -351,41 +387,41 @@
 							<%
 							if (ProjectRevList.get(z).size() > 0) {
 							%>
-							<td style="width: 10% !important">RE Cost</td>
-							<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[17]%></td>
-							<td colspan="2" style="text-align: center;"><%=projectattributes[8]%></td>
+							<td style="width: 10% !important;font-weight: bold">RE Cost</td>
+							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[17]%></td>
+							<td colspan="2" style="text-align: center;"class="prjattr" ><%=projectattributes[8]%></td>
 						</tr>
 
 						<tr>
-							<td style="width: 10% !important">FE Cost</td>
-							<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[16]%></td>
-							<td colspan="2" style="text-align: center;"><%=projectattributes[9]%></td>
+							<td style="width: 10% !important;font-weight: bold">FE Cost</td>
+							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[16]%></td>
+							<td colspan="2" style="text-align: center;" class="prjattr"><%=projectattributes[9]%></td>
 						</tr>
 
 						<tr>
-							<td style="width: 10% !important">Total Cost</td>
-							<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[11]%></td>
-							<td colspan="2" style="text-align: center;"><%=projectattributes[7]%></td>
+							<td style="width: 10% !important;font-weight: bold" >Total Cost</td>
+							<td style="text-align: center;" class="prjattr"><%=ProjectRevList.get(z).get(0)[11]%></td>
+							<td colspan="2" style="text-align: center;" class="prjattr"><%=projectattributes[7]%></td>
 						</tr>
 
 						<%
 						} else {
 						%>
 
-						<td style="width: 10% !important">RE Cost</td>
-						<td><%=projectattributes[8]%></td>
-						<td colspan="2"></td>
+						<td style="width: 10% !important;font-weight: bold" >RE Cost</td>
+						<td class="prjattr"><%=projectattributes[8]%></td>
+						<td colspan="2" class="prjattr"></td>
 						</tr>
 
 						<tr>
-							<td style="width: 10% !important">FE Cost</td>
-							<td><%=projectattributes[9]%></td>
+							<td style="width: 10% !important;font-weight: bold">FE Cost</td>
+							<td class="prjattr"><%=projectattributes[9]%></td>
 							<td colspan="2"></td>
 						</tr>
 
 						<tr>
-							<td style="width: 10% !important">Total Cost</td>
-							<td><%=projectattributes[7]%></td>
+							<td style="width: 10% !important;font-weight: bold">Total Cost</td>
+							<td class="prjattr"><%=projectattributes[7]%></td>
 							<td colspan="2"></td>
 						</tr>
 						<%
@@ -396,9 +432,8 @@
 							<td style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
 							<td style="width: 150px; padding: 5px; padding-left: 10px"><b>No.
 									of EBs and PMRCs held</b></td>
-							<td colspan="2"><b>EB :</b> <%=ebandpmrccount.get(z).get(1)[1]%></td>
-							<td colspan="2"><b>PMRC :</b> <%=ebandpmrccount.get(z).get(0)[1]%></td>
-
+							<td colspan="2"><b>EB :</b><span class="prjattr"><%=ebandpmrccount.get(z).get(1)[1]%></span> </td>
+							<td colspan="2"><b>PMRC :</b><span class="prjattr"> <%=ebandpmrccount.get(z).get(0)[1]%></span> </td>
 						</tr>
 						<tr>
 							<td style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
@@ -443,8 +478,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
-						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
+						<b style="margin-left: -35px;"><%=ProjectCode%></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>2. Schematic Configuration - (a) System Configuration</h3>
@@ -488,14 +524,14 @@
 										<%
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {
 										%>
-										<iframe width="1200" height="600"
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>"
+										<iframe
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
 											id="config<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 											 } else {
 											 %>
-
+								<!-- iframe with fit to page code== #view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11" -->
 										<img data-enlargable
-										style="max-width: 28cm; "
+										style="width: 98%!important; height:78vh;"
 										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString())%>;base64,<%=pdffiles.get(z)[0]%>"
 										id="config<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
@@ -532,8 +568,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>2. Schematic Configuration - (b) System Specifications</h3>
@@ -585,13 +622,13 @@
 										<%
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {
 										%>
-										<iframe width="1200" height="600"
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>"
-											id="sysspecs<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
+										<iframe 
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
+											id="sysspecs<%=ProjectDetail.get(z)[0]%>" > </iframe> <%
 										 } else {
 										 %>
 										<img data-enlargable
-										style="max-width: 28cm; "
+										style="width: 98%; height:78vh"
 										src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString())%>;base64,<%=pdffiles.get(z)[3]%>"
 										id="sysspecs<%=ProjectDetail.get(z)[0]%>"> <%
 										 }
@@ -630,8 +667,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>3. Overall Product Tree/WBS</h3>
@@ -681,12 +719,12 @@
 								<%
 								if (FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")) {
 								%>
-								<iframe width="1200" height="600"
-									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>"
+								<iframe
+									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
 									id="protree<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 								 } else {
 								 %>
-								<img data-enlargable style="max-width: 28cm;"
+								<img data-enlargable style="width: 98%; height:78vh;"
 								src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString())%>;base64,<%=pdffiles.get(z)[1]%>"
 								id="protree<%=ProjectDetail.get(z)[0]%>"> <% } %>
 							</td>
@@ -720,8 +758,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -750,7 +789,7 @@
 					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
 						<thead>
 							<tr>
-								<td colspan="6" style="border: 0">
+								<td colspan="7" style="border: 0">
 									<p style="font-size: 12px; text-align: center">
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
@@ -768,32 +807,66 @@
 
 							<tr>
 								<th style="width: 15px !important; text-align: center;">SN</th>
+								<th style="width: 20px !important;">ID</th>
 								<th style="width: 315px !important;">Recommendation Point</th>
 								<th style="width: 100px !important;">PDC</th>
 								<th style="width: 200px !important;">Responsibility</th>
 								<th style="width: 70px !important;">Status(DD)</th>
 								<th style="width: 250px !important;">Remarks</th>
-								<th style="width: 20px !important;">Info</th>
+								
 							</tr>
 						</thead>
 						<tbody>
 							<% if (lastpmrcminsactlist.get(z).size() == 0) { %>
 							<tr>
-								<td colspan="6" style="text-align: center;">Nil</td>
+								<td colspan="7" style="text-align: center;">Nil</td>
 							</tr>
 							<%
 							} else if (lastpmrcminsactlist.get(z).size() > 0) {
-							int i = 1;
+							int i = 1;String key2="";
 							for (Object[] obj : lastpmrcminsactlist.get(z)) {
 								if (obj[3].toString().equalsIgnoreCase("R")&& (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null &&  before6months.isBefore(LocalDate.parse(obj[14].toString()) ) ))      )
 								{ %>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
+															<td style="text-align: center;">
+								<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
+								
+									<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[21] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" style="font-weight:bold;" >
+										<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key2=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key2=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %>
+								
+								
+									</button>
+									
+									
+								<%}%>
+							</td>
+								
+								
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>	
-									<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
-									<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br><%} %>
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
+								<%if(obj[6]!= null){ %><span><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br><%} %>
 								</td>
 								<td>
 									<% if (obj[4] != null) { %>
@@ -838,13 +911,7 @@
 							<td>
 								<% if (obj[19] != null) { %><%=obj[19]%> <% } %>
 							</td>
-							<td style="text-align: center;">
-								<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
-									<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[21] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
-										<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
-									</button>
-								<%}%>
-							</td>
+
 						</tr>
 						<% i++; }
 						} %>
@@ -998,9 +1065,18 @@
 												-									
 										<%} %>
 								<br>
-									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %>
+									<span <%if( LocalDate.parse(todayDate).isAfter(LocalDate.parse(obj[6].toString()))) {%>style="color:maroon;font-weight: bold" <%}else{ %>style="color:black;font-weight: bold"<%} %>>
+									<%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br> 
+									<% } %>
+									<%if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {%>
+									<span <%if(obj[6]==null  && LocalDate.parse(todayDate).isAfter(LocalDate.parse(obj[5].toString()))) {%>style="color:maroon;font-weight: bold" <%}
+									else if(obj[6]!=null && LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) && LocalDate.parse(todayDate).isAfter(LocalDate.parse(obj[5].toString()))){%>style="color:maroon; font-weight: bold"
+								<% }else{ %>style="color:black; font-weight: bold"<%} %>>
+									<%=sdf.format(sdf1.parse(obj[5].toString()))%></span><br><%}%>
+									<span <%if(obj[6]==null && obj[5]==null && LocalDate.parse(todayDate).isAfter(LocalDate.parse(obj[3].toString()))) {%>style="color:maroon;font-weight: bold" <%}else{ %>style="color:black;font-weight: bold"<%}%>>
 									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
+									</span>
 								</td>
 								<td><%=obj[11]%><%-- , <%=obj[12] %> --%></td>
 								<td style="text-align: center;">
@@ -1063,8 +1139,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>4 (c) Details of Technical/ User Reviews</h3>
@@ -1174,10 +1251,10 @@
 												  {
 												for(Object[] obj:ReviewMeetingListPMRC.get(z).stream().skip(20).collect(Collectors.toList())){ %>
 													<tr>
-														<td >
-															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
-																<%=obj[1]%> #<%=t %>
-															</button>
+														<td>
+														<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>">
+														<%=obj[1]%> #<%=t %>
+														</button>
 														</td>												
 														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[3].toString()))%></td>
 													</tr>			
@@ -1211,8 +1288,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3> 5. Milestones Achieved Prior to this <%=CommitteeCode%> Period</h3>
@@ -1290,10 +1368,8 @@
 						int serial = 1;int milestonecount=0;// to remember milestonecount
 						for (Object[] obj : milestones.get(z)) {
 						if(obj[21].toString().equals("1")){
-							
 						}
-							if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-									 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
+					if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  ){
 							%>
 						<tr>
 							<td style="text-align: center"><%=serial%></td>
@@ -1309,20 +1385,30 @@
 								 milcountD = 1;
 								 milcountE = 1;
 								 } else if (obj[21].toString().equals("1")) {
-								 %> A-<%=milcountA%>
+										for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+											if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+												<%=entry.getValue() %>
+										<%}} 
+									 
+								 %><%--  A-<%=milcountA%> --%>
 								<%
-								milcountA++;
+							/* 	milcountA++;
 								milcountB = 1;
 								milcountC = 1;
 								milcountD = 1;
-								milcountE = 1;
+								milcountE = 1; */
 								} else if (obj[21].toString().equals("2")) {
-								%> B-<%=milcountB%>
+									for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+										if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+											<%=entry.getValue() %>
+									<%}}	
+									
+								%> <%-- B-<%=milcountB%> --%>
 								<%
-								milcountB += 1;
+								/* milcountB += 1;
 								milcountC = 1;
 								milcountD = 1;
-								milcountE = 1;
+								milcountE = 1; */
 								} else if (obj[21].toString().equals("3")) {
 								%> C-<%=milcountC%>
 								<%
@@ -1370,15 +1456,10 @@
 								LocalDate OrgEndDate = LocalDate.parse(obj[9].toString());
 								int Progess = Integer.parseInt(obj[17].toString());
 								LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
-								
 								LocalDate Today = LocalDate.now();
-								
-							%>
-								
-								
-								
+								%>
 								<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
-									<span style="color:green"
+									<span 
 										<%if(Progess==0){ %>
 											class="assigned"
 										<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
@@ -1398,10 +1479,12 @@
 									
 								 <% } else {  %> <span>- </span><% } %>
 								<br>
-								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
-								<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) {
+									boolean incident=true;
+									%>
+								<span style="color: black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br> 
 								<%}%> 
-								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
+								<span style="color: black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[9].toString()))%></span>
 								
 							</td>
 						<%-- 	<% 
@@ -1489,9 +1572,11 @@
 								<% if (obj[23] != null) { %><%=obj[23]%> <% } %>
 							</td>
 							<td style="text-align: center">
+							<%if (obj[21].toString().equals("0")) {%>
 								<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
 									<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 								</a>
+								<%} %>
 							</td>
 						</tr>
 						<%
@@ -1528,8 +1613,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>6 (a) Work Carried Out, Achievements, Test Result etc.</h3>
@@ -1561,9 +1647,6 @@
 						</form>
 						<% } %>
 					</div>
-		
-
-					<!-- CALL Pfms_Milestone_Level_Details (:projectid, :CommitteeCode ) -->
 					<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
 						<thead>
 							<tr>
@@ -1582,7 +1665,6 @@
 									</p>
 								</td>
 							</tr>
-
 							<tr>
 								<th style="width: 20px;">SN</th>
 								<th style="width: 30px;">MS</th>
@@ -1607,13 +1689,11 @@
 						<%
 						int serial = 1;
 						for (Object[] obj : MilestoneDetails6.get(z)) {
-
-							if (Integer.parseInt(obj[21].toString()) <= Integer.parseInt(levelid)) {
+						if (Integer.parseInt(obj[21].toString()) <= Integer.parseInt(levelid)) {
 						%>
 						<tr>
 							<td style="text-align: center"><%=serial%></td>
 							<td>M<%=obj[0]%></td>
-
 							<td style="text-align: center">
 								<%
 								if (obj[21].toString().equals("0")) {
@@ -1624,20 +1704,28 @@
 								 milcountD = 1;
 								 milcountE = 1;
 								 } else if (obj[21].toString().equals("1")) {
-								 %> A-<%=milcountA%>
+								 for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+								if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+								<%=entry.getValue() %>
+										<%}}
+								 %> <%-- A-<%=milcountA%> --%>
 								<%
-								milcountA++;
+								/* milcountA++;
 								milcountB = 1;
 								milcountC = 1;
 								milcountD = 1;
-								milcountE = 1;
+								milcountE = 1; */
 								} else if (obj[21].toString().equals("2")) {
-								%> B-<%=milcountB%>
+									for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+										if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+											<%=entry.getValue() %>
+									<%}}
+								%><%--  B-<%=milcountB%> --%>
 								<%
-								milcountB += 1;
+								/* milcountB += 1;
 								milcountC = 1;
 								milcountD = 1;
-								milcountE = 1;
+								milcountE = 1; */
 								} else if (obj[21].toString().equals("3")) {
 								%> C-<%=milcountC%>
 								<%
@@ -1682,9 +1770,10 @@
 							%>
 							<td style="text-align: center">
 								<% if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString()))) { %>
-									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> 
+									<span <%if(LocalDate.parse(obj[8].toString()).isBefore(LocalDate.parse(todayDate))) {%>style="color:brown;font-weight: bold"<%}else{%>style="color:black;font-weight: bold" <%} %>>
+									<%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br> 
 								<% } %> 
-								<%=sdf.format(sdf1.parse(obj[9].toString()))%>
+							<span <%if( LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) && LocalDate.parse(obj[9].toString()).isBefore(LocalDate.parse(todayDate))) {%> style="color:brown;font-weight: bold"<%}else{ %>style="color:black;font-weight: bold"<%} %>><%=sdf.format(sdf1.parse(obj[9].toString()))%></span>
 							</td>
 							<td style="text-align: center"><%=obj[17]%>%</td>
 							<td style="text-align: center">
@@ -1728,9 +1817,12 @@
 								<%}%>
 							</td>
 							<td style="text-align: center">
+							<%
+								if (obj[21].toString().equals("0")) {%>
 								<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
 									<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 								</a>
+								<%} %>
 							</td>
 						</tr>
 						<% count1++;
@@ -1762,8 +1854,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h4>6 (b) TRL Table with TRL at Sanction stage and Current stage Indicating Overall PRI</h4>
@@ -1807,9 +1900,11 @@
 							<tr>
 									<td style="border: 0;text-align: center;" >
 									<%  if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
-										<iframe width="1200" height="600" src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+										<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5/ 11 * 100%);">
+										<iframe  src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>#view=FitV" width="100%" height="auto" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+									</div>
 									<% } else { %>
-										<img data-enlargable style="max-width: 28cm;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
+										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
 									<% } %>
 								</td>
 							</tr>
@@ -1839,8 +1934,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>6 (c) Risk Matrix/Management Plan/Status</h3>
@@ -1872,16 +1968,16 @@
 							<tr>
 								<td colspan="10" style="border: 0">
 									<p style="font-size: 12px; text-align: center">
-										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
-										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
-										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
-										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
-										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
+									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
+									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
+									<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+									<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+									<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+									<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+									<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
+									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
 								</td>
 							</tr>
@@ -1890,15 +1986,16 @@
 							</tr>
 							<tr>
 								<th style="width: 15px; text-align: center" rowspan="2">SN</th>
-								<th style="width: 325px;" colspan="3">Risk
+								<th style="width: 20px;" rowspan="2">ID</th>
+								<th style="width: 425px;" colspan="3">Risk
 									<a data-toggle="modal" class="fa faa-pulse animated " data-target="#RiskTypesModal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer"><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 								</th>
-								<th style="width: 100px;" rowspan="1">PDC</th>
-								<th style="width: 100px;" rowspan="1">ADC</th>
+								<th style="width: 100px;" rowspan="1">ADC<br>PDC</th>
+								<!-- <th style="width: 100px;" rowspan="1">ADC</th> -->
 								<th style="width: 160px;" rowspan="1">Responsibility</th>
 								<th style="width: 50px;" rowspan="1">Status(DD)</th>
 								<th style="width: 200px;" rowspan="1">Remarks</th>
-								<th style="width: 20px;" rowspan="2">Info</th>
+								
 							</tr>
 							<tr>
 								<th style="text-align: center; width: 110px;">Severity<br>(1-10)</th>
@@ -1917,17 +2014,20 @@
 								i++; %>
 							<tr>
 								<td style="text-align: center" rowspan="2"><%=i%></td>
+								
+																<td style="text-align: center;" rowspan="2">
+									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){ %>
+										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[25] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" style="font-weight: bold" >
+											<!-- <i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i> -->
+										<%=obj[13].toString().split("/")[3] %>
+										</button>
+									<%}%>
+								</td>
 								<td style="text-align: justify; " colspan="3">
 									<%=obj[0]%>  <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
 								</td>
 								<td style="text-align: center" rowspan="1">
-									<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-									<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
-									<%=sdf.format(sdf1.parse(obj[9].toString()))%>
-								</td>
-
-								<td style="text-align: center" rowspan="1">
-									<%	String actionstatus = obj[15].toString();
+										<%	String actionstatus = obj[15].toString();
 										LocalDate pdcorg = LocalDate.parse(obj[9].toString());
 										LocalDate lastdate = obj[20]!=null ? LocalDate.parse(obj[20].toString()): null;
 										LocalDate today = LocalDate.now();
@@ -1942,7 +2042,15 @@
 									<%}else{ %>
 										-									
 									<%} %>
+								<br>
+									<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
+									<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
+									<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 								</td>
+
+							<!-- 	<td style="text-align: center" rowspan="1">
+			
+								</td> -->
 
 								<td rowspan="1"><%=obj[7]%><%-- ,&nbsp;<%=obj[8] %> --%></td>
 								<td style="text-align: center" rowspan="1">
@@ -1974,13 +2082,7 @@
 									<% if (obj[19] != null) { %> <%=obj[19]%> <% } %>
 								</td>
 								
-								<td style="text-align: center;" rowspan="2">
-									<%if(obj[25]!=null && Long.parseLong(obj[25].toString())>0){ %>
-										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[25] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
-											<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
-										</button>
-									<%}%>
-								</td>
+
 
 							</tr>
 							
@@ -2036,8 +2138,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>7 (a) Details of Procurement Plan (Major Items)</h3>
@@ -2261,8 +2364,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>7 (b) Procurement Status</h3>
@@ -2386,7 +2490,7 @@
 										<td style="width: 3%;">6</td>
 										<td style="width: 22%;">Tender Opening</td>
 										<td style="width: 3%;">11</td>
-										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 22%;"><!-- Issue of CDEC / EDEC -->Realization in Progress</td>
 										<td style="width: 3%;">16</td>
 										<td style="width: 22%;">Payment Process</td>
 									</tr>
@@ -2447,8 +2551,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>8. Overall Financial Status</h3>
@@ -2593,8 +2698,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -2634,8 +2740,8 @@
 										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
 										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
 										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
-										<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
-										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+										<!-- <span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp;  -->
 										<span class="inactive">IA</span> : InActive &nbsp;&nbsp; 
 										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 									</p>
@@ -2685,18 +2791,30 @@
 									 countD = 1;
 									 countE = 1;
 									 } else if (obj[26].toString().equals("1")) {
-									 %> A-<%=countA%> <%
-									 countA++;
+											for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+												if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+													<%=entry.getValue() %>
+											<%}}  
+									 %> 
+									 
+									 
+									 <%-- A-<%=countA%>  --%><%
+									/*  countA++;
 									 countB = 1;
 									 countC = 1;
 									 countD = 1;
-									 countE = 1;
+									 countE = 1; */
 									 } else if (obj[26].toString().equals("2")) {
-									 %> B-<%=countB%> <%
-									 countB += 1;
+										 
+										 for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+												if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+													<%=entry.getValue() %>
+											<%}}  
+									 %> <%-- B-<%=countB%> --%> <%
+								/* 	 countB += 1;
 									 countC = 1;
 									 countD = 1;
-									 countE = 1;
+									 countE = 1; */
 									 } else if (obj[26].toString().equals("3")) {
 									 %> C-<%=countC%> <%
 									 countC += 1;
@@ -2713,25 +2831,21 @@
 									 %>
 								</td>
 
-								<td
-									style="<%if (obj[26].toString().equals("0")) { %>font-weight: bold;<%}%>;text-align:justify ">
+								<td style="<%if (obj[26].toString().equals("0")) { %>font-weight: bold;<%}%>;text-align:justify ">
 									<% if (obj[26].toString().equals("0")) { %> <%=obj[9]%> 
-									<% } else if (obj[26].toString().equals("1")) { %>&nbsp;&nbsp;<%=obj[10]%> 
-									<% } else if (obj[26].toString().equals("2")) { %>&nbsp;&nbsp;<%=obj[11]%> 
-									<% } else if (obj[26].toString().equals("3")) { %>&nbsp;&nbsp;<%=obj[12]%> 
-									<% } else if (obj[26].toString().equals("4")) { %>&nbsp;&nbsp;<%=obj[13]%> 
-									<% } else if (obj[26].toString().equals("5")) { %>&nbsp;&nbsp;<%=obj[14]%> 
-									<% } %>
+									<%}else if (obj[26].toString().equals("1")) { %>&nbsp;&nbsp;<%=obj[10]%> 
+									<%}else if (obj[26].toString().equals("2")) { %>&nbsp;&nbsp;<%=obj[11]%> 
+									<%}else if (obj[26].toString().equals("3")) { %>&nbsp;&nbsp;<%=obj[12]%> 
+									<%}else if (obj[26].toString().equals("4")) { %>&nbsp;&nbsp;<%=obj[13]%> 
+									<%}else if (obj[26].toString().equals("5")) { %>&nbsp;&nbsp;<%=obj[14]%> 
+									<%}%>
 								</td>
 								<td style="text-align: center">
 									<%
-									if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString()))) {
-									%>
-									<%=sdf.format(sdf1.parse(obj[8].toString()))%><br> <%
-									 }
-									 %> <%=sdf.format(sdf1.parse(obj[29].toString()))%>
-
-
+									if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ) {%>
+									<span <%if(LocalDate.parse(obj[8].toString()).isBefore(LocalDate.parse(todayDate))) {%> style="color:maroon;font-weight: bold;"<%}else{ %>style="color:black; font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br> 
+									<%}%> 
+								<span <% if (LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString()))&& LocalDate.parse(obj[29].toString()).isBefore(LocalDate.parse(todayDate))){%>style="color:maroon;font-weight: bold;"<%}else if(LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString()))) {%>style="font-weight: bold;"<%} %>><%=sdf.format(sdf1.parse(obj[29].toString()))%></span>
 								</td>
 								<td><%=obj[24]%><%-- (<%=obj[25] %>) --%></td>
 								<td style="text-align: center"><%=obj[16]%>%</td>
@@ -2783,9 +2897,11 @@
 									<% if (obj[28] != null) { %> <%=obj[28]%> <% } %>
 								</td>
 								<td style="text-align: center">
+						
 									<a data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0]%>" class="milestonemodal" data-whatever="@mdo" style=" cursor: pointer"> 
 										<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
 									</a>
+		
 								</td>
 							</tr>
 
@@ -2820,8 +2936,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>10. GANTT Chart of Overall Project Schedule</h3>
@@ -2889,13 +3006,9 @@
 					</div>
 					<% } %>
 				</div>
-
 			</div>
-
 			<!-- ---------------------------------------- GANTT chart of overall project Div ----------------------------------------------------- -->
-
 			<!-- ---------------------------------------- P-11 Issues Div ----------------------------------------------------- -->
-
 			<div class="carousel-item ">
 
 				<div class="content-header row ">
@@ -2903,8 +3016,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>11. Issues</h3>
@@ -2947,13 +3061,13 @@
 							</tr>
 							<tr>
 								<th style="width: 20px !important; text-align: center;">SN</th>
-								<th style="width: 270px;">Issue Point</th>
-								<th style="width: 100px;">PDC</th>
-								<th style="width: 100px;">ADC</th>
+								<th style="width: 20px;">ID</th>
+								<th style="width: 350px;">Issue Point</th>
+								<th style="width: 100px;">ADC <br> PDC</th>
+								<!-- <th style="width: 100px;">ADC</th> -->
 								<th style="width: 200px;">Responsibility</th>
 								<th style="width: 50px;">Status(DD)</th>
 								<th style="width: 220px;">Remarks</th>
-								<th style="width: 20px;">Info</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -2967,14 +3081,21 @@
 								if(!obj[9].toString().equals("C")  || (obj[9].toString().equals("C") && obj[13]!=null && before6months.isBefore(LocalDate.parse(obj[13].toString())) )){ %>
 							<tr>
 								<td style="text-align: center;"><%=i%></td>
+									<td style="text-align: center;" >
+									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){ %>
+										<button type="button" class="btn btn-sm font-weight-bold"  onclick="ActionDetails( <%=obj[18] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
+										<%if(obj[1].toString().contains("PMRC")||obj[1].toString().contains("EB")) {%>
+											<%=obj[1].toString().split("/")[4] %>
+										<%}else{ %>
+										<%=obj[1].toString().split("/")[3] %>
+										
+										<%} %>
+										</button>
+									<%}%>
+								</td>
 								<td style="text-align: justify;"> <%=obj[2]%> </td>
 								<td style="text-align: center;">
-									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-								</td>
-								<td style="text-align: center;">
-									<%	String actionstatus = obj[9].toString();
+																	<%	String actionstatus = obj[9].toString();
 										int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 										LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
@@ -2989,7 +3110,15 @@
 									<%}else{ %>
 										-									
 									<%} %>
+									<br>
+								
+									<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+									<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+									<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 								</td>
+						<!-- 		<td style="text-align: center;">
+
+								</td> -->
 								<td><%=obj[11]%><%-- <%=obj[12] %> --%></td>
 								<td style="text-align: center;">
 									<%if(obj[4]!= null){ %> 
@@ -3022,13 +3151,7 @@
 								<td>
 									<% if (obj[17] != null) { %> <%=obj[17]%> <% } %>
 								</td>
-								<td style="text-align: center;" >
-									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){ %>
-										<button type="button" class="btn btn-sm "  onclick="ActionDetails( <%=obj[18] %>);" data-toggle="tooltip" data-placement="bottom" title="Action Details" >
-											<i class="fa fa-info-circle fa-lg " style="color: #145374" aria-hidden="true"></i>
-										</button>
-									<%}%>
-								</td>
+							
 							</tr>
 							<% i++; }}
 							} %>
@@ -3050,8 +3173,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3> 12. Decision/Recommendations Sought from <%=CommitteeCode%> </h3>
@@ -3085,7 +3209,7 @@
 						<% } %>
 
 					<% } %> --%>
-					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse;">
+					<table class="subtables" style="align: left; margin-top: 10px; border-collapse: collapse; width:100%;">
 											<thead>
 												<tr><th style="width: 5%;">SN</th><th style="width: 5%;">Type</th><th style="width: 85%;">Details</th></tr>
 											</thead>
@@ -3114,8 +3238,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>13 (a) Other Relevant Points</h3>
@@ -3169,8 +3294,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>
@@ -3222,7 +3348,7 @@
 						</div>
 						<br>
 						<div class="row">
-							<div class="col-md-12">
+							<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5 / 11 * 100%);">
 
 								<% if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) {%>
 
@@ -3237,11 +3363,9 @@
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
-									<iframe width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>"></iframe>
+								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" width="100%" height="auto" style="position: absolute; top: 0; left: 0;width: 100%; height: 100%;" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
 								<% } else { %>
-
-									<img data-enlargable style="max-width: 28cm;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
-
+								<img data-enlargable style="width: 98%;height:70vh;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
 								<% } %>
 
 								<% techattachfile.delete(); 
@@ -3269,8 +3393,9 @@
 					<div class="col-md-1" >
 						<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 					</div>
-					<div class="col-md-1" align="left" style="padding-top:19px;" >
+					<div class="col-md-1" align="left" style="padding-top:5px;" >
 						<b style="margin-left: -35px;"><%=ProjectCode %></b>
+						<h6 style="font-size: 0.8rem;margin-left: -43px;"><%=pdc %></h6>
 					</div>
 					<div class="col-md-8">
 						<h3>13 (c) Technical Images</h3>
@@ -3297,10 +3422,9 @@
 								for (TechImages imges : TechImagesList) { %>
 
 								<% if (new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName()).exists()) { %>
-								<img data-enlargable style="max-width: 28cm; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
+								<img data-enlargable style="width:98%;height:70vh; margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath + projectLabCode + "\\TechImages\\" + imges.getTechImagesId() + "_" + imges.getImageName())))%>">
 								<hr>
 								<% } %>
-
 						<%
 								}
 							}
@@ -3380,7 +3504,7 @@
 
 
 	<div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-		<div class="modal-dialog modal-xl">
+		<div class="modal-dialog modal-xl modal-dialog-jump">
 			<div class="modal-content">
 
 				<div class="modal-body">
@@ -4035,7 +4159,7 @@
 <!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
 
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content">
 				<div class="modal-header" style="background-color: #FFE0AD; ">
 					<div class="row w-100"  >
@@ -4105,7 +4229,7 @@
 <!-- -------------------------------------------- Risk Types Modal  -------------------------------------------------------- -->
 
 		<div class="modal fade" id="RiskTypesModal" tabindex="-1" role="dialog" aria-labelledby="RiskTypesModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-jump"  style="max-width: 60% !important;">
 		
 				<div class="modal-content" >
 					   
@@ -4448,7 +4572,6 @@ function setattchidvalue(attachid, attchName)
 	for (int z = 0; z < projectidlist.size(); z++) {
 	%>
 	<script>
-								    	  
 									function chartprint_<%=projectidlist.get(z)%>(type,interval){ 
 								    	  var data = [
 								    		  
@@ -4494,15 +4617,16 @@ function setattchidvalue(attachid, attchName)
 								        	chart.fitAll();
 								        
 								        	 chart.getTimeline().tooltip().useHtml(true);    
-										        chart.getTimeline().tooltip().format(
-										          "<span style='font-weight:600;font-size:10pt'> Actual : " +
-										          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
-										          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "<span style='font-weight:600;font-size:10pt'> Revised : " +
-										          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
-										          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "Progress: {%baselineProgressValue}<br>" 
-										        ); 
+								        	 chart.getTimeline().tooltip().format(
+											          "<span style='font-weight:600;font-size:10pt'> Actual : " +
+											          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
+											          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
+											          "<span style='font-weight:600;font-size:10pt'> Revised : " +
+											          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
+											          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
+											          "Progress: {%baselineProgressValue}<br>" 
+											          
+											        ); 
 										        
 								        
 								        
@@ -4688,7 +4812,6 @@ function setattchidvalue(attachid, attchName)
 
 		
 		</script>
-
 	<% } %>
 
 <script type="text/javascript">
@@ -4714,7 +4837,7 @@ function ActionDetails(InAssignId)
 				$('#modal_action_assignor').html(result[8]);
 				$('#modal_action_assignee').html(result[9]);
 				
-				var InActionType = result[9];
+				var InActionType = result[10];
 				var ActionType = 'Action';
 				
 				if(InActionType==='A')
@@ -4769,11 +4892,6 @@ function ActionDetails(InAssignId)
 				$('#modal_action_progress').html(progressBar);
 			}
 		});
-		
-		
-		
-		
-		
 		$.ajax({		
 			type : "GET",
 			url : "ActionSubListAjax.htm",
@@ -4788,21 +4906,19 @@ function ActionDetails(InAssignId)
 				var htmlStr='';
 				if(result.length> 0){
 					for(var v=0;v<result.length;v++)
-					{	
+						{
 						htmlStr += '<tr>';
-						
 						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
 						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
 						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
 						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
-						
 						if(result[v][5]=== null)
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
 						}
 						else
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+						htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
 						}
 						htmlStr += '</tr>';
 					}
@@ -4810,9 +4926,7 @@ function ActionDetails(InAssignId)
 				else
 				{
 					htmlStr += '<tr>';
-					
 					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
-					
 					htmlStr += '</tr>';
 				}
 				setModalDataTable();
@@ -4822,8 +4936,6 @@ function ActionDetails(InAssignId)
 				$('#action_modal').modal('toggle');
 			}
 		});
-		
-		
 	}
 	setModalDataTable();
 	function setModalDataTable()
@@ -4834,8 +4946,16 @@ function ActionDetails(InAssignId)
 			"pageLength": 5
 		});
 	}
+	
+	
+	function ListOfMilestones(){
+		var totalMilestones=[];
+		var totalCompletedMilestones=[];
+		var totalProgressedMilestones=[];
+		
+	
+		}
+	
 </script>
-
-
 </body>
 </html>

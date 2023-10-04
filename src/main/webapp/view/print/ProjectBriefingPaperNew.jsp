@@ -462,6 +462,8 @@ Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
 List<Object[]> RecDecDetails = (List<Object[]>)request.getAttribute("recdecDetails");
 
 List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
+Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("treeMapLevOne");
+Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 %>
 
 
@@ -498,10 +500,10 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="row card-header" style="">
-			   			<div class="col-md-5"  style="margin-top: -8px;">
+			   			<div class="col-md-4"  style="margin-top: -8px;">
 							<h3>Project Briefing Paper</h3>
 						</div>							
-						<div class="col-md-7 justify-content-end" style="float: right;margin-top: -17px;">
+						<div class="col-md-8 justify-content-end" style="float: right;margin-top: -17px;">
 						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
@@ -509,8 +511,10 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 									<td  style="border: 0 ;">
 										
 										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
-											<%for(Object[] obj : projectslist){ %>
-												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] %></option>
+											<%for(Object[] obj : projectslist){ 
+												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+											%>
+												<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] +projectshortName%></option>
 											<%} %>
 										</select>
 									</td>
@@ -551,7 +555,11 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 											<img alt="" src="view/images/presentation.png" style="width:19px !important">
 										</button>
 									</td>
-									
+										<td style="border: 0 "> 
+										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" name="text" value="p" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank">
+											<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-download" aria-hidden="true" style="margin-left:6px;"></i>
+										</button>
+									</td>
 									<td style="border: 0 "><button  type="button" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
 							</table>
@@ -627,7 +635,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 											 <td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
 											 <td rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px"><b>PDC</b></td>
 											 
-											<td colspan="2" style="text-align: center !important">Original</td>					
+											<td colspan="2" style="text-align: center !important">&nbsp;</td>					
 											<%if( ProjectRevList.get(z).size()>0){ %>	
 												<td colspan="2" style="text-align: center !important">Revised</td>																			
 											<%}else{ %>													 
@@ -994,9 +1002,9 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 										
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
-								<th  style="width: 280px; ">Action Point</th>
-								<th  style="width: 100px; ">PDC</th>
-								<th  style="width: 100px; "> ADC</th>
+								<th  style="width: 320px; ">Action Point</th>
+								<th  style="width: 150px; ">ADC<br>PDC</th>
+								<!-- <th  style="width: 100px; "> ADC</th> -->
 								<th  style="width: 210px; "> Responsibility</th>
 								<th  style="width: 80px; ">Status(DD)</th>
 								<th  style="width: 205px; ">Remarks</th>			
@@ -1014,60 +1022,59 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 									<td  style="text-align: center;"><%=i %></td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<td  style="text-align: center;" >
-										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-										<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-									</td>
-									<td   style="text-align: center;">
-										<%	String actionstatus = obj[9].toString();
+									<span style="color:green"><%	String actionstatus = obj[9].toString();
 											int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
 											LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 											LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
 											LocalDate today = LocalDate.now();
 										%> 
 											<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
-												<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
-												<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+											<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+											<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
 												<%} %>	
 											<%}else{ %>
 													-									
 											<%} %>
-											
+										</span>	<br>
+										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
+										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %>
+										
+										<%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+										<span><%=sdf.format(sdf1.parse(obj[3].toString()))%></span>
 									</td>
-									<td> <%=obj[11] %>, <%=obj[12] %> </td>
-									<td  style="text-align: center;" > 
-											
+									<!-- <td   style="text-align: center;">
+									
+									</td> -->
+									<td> 
+										<%=obj[11] %>, <%=obj[12] %> </td>
+										<td  style="text-align: center;" > 
 										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
-											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
-												<span class="completed">CO</span>
-											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
-											<%} %>	
+										<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+										<span class="completed">CO</span>
+										<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+										<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+										<%} %>	
 										<%}else{ %>
-											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
-												<span class="ongoing">RC</span>												
-											<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
-												<span class="delay">FD</span>
-											<%}else if(actionstatus.equals("A") && progress==0){  %>
-												<span class="assigned">
-													AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
-												</span>
-											<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
-												<span class="ongoing">OG</span>
-											<%}else if(pdcorg.isBefore(today)){  %>
-												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
-											<%} %>					
-																			
+										<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+										<span class="ongoing">RC</span>												
+										<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+										<span class="delay">FD</span>
+										<%}else if(actionstatus.equals("A") && progress==0){  %>
+										<span class="assigned">AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %></span>
+									    <%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
+										<span class="ongoing">OG</span>
+										<%}else if(pdcorg.isBefore(today)){  %>
+										<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+										<%} %>					
 										<%} %>
 										
 										<%-- <%if(obj[15]!=null){ %>
-													
 											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
-												<span class="ongoing">RC</span>
+											<span class="ongoing">RC</span>
 											<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)){  %>
-												<span class="delay">FD</span>
+											<span class="delay">FD</span>
 											<%}else if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate)||obj[3].equals(obj[13]))){  %>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){  %>
 											<%}else if( !actionstatus.equals("C") && !obj[14].toString().equals("F") &&(pdcorg.isAfter(today)|| pdcorg.isEqual(today) )){  %> 
@@ -1075,12 +1082,11 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 											<%}else if(!actionstatus.equals("C") && !obj[14].toString().equals("F") &&  pdcorg.isBefore(today)){  %> 
 												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 											<%}%>
-													
-										<% }else if(actionstatus.equals("C")){ %>
+											<% }else if(actionstatus.equals("C")){ %>
 									        <span class="completed">CO</span>
-									    <% }else{ %>
+									    	<% }else{ %>
 									      	<span class="assigned">AA</span> 
-										<%} %>  --%>
+											<%} %>  --%>
 									</td>	
 									<td style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 								</tr>			
@@ -1266,8 +1272,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 										%>
 										<%int serial=1;for(Object[] obj:milestones.get(z)){
 											
-											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-													 && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) ){
+											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)){
 											%>
 											<tr>
 												<td style="text-align: center"><%=serial%></td>
@@ -1283,19 +1288,29 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 														milcountC=1;
 														milcountD=1;
 														milcountE=1;
-													}else if(obj[21].toString().equals("1")) { %>
-														A-<%=milcountA %>
-													<% milcountA++;
+													}else if(obj[21].toString().equals("1")) {
+														for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+															if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+																<%=entry.getValue() %>
+														<%}} 
+														%>
+														<%-- A-<%=milcountA %> --%>
+													<%/*  milcountA++;
 														milcountB=1;
 														milcountC=1;
 														milcountD=1;
-														milcountE=1;
-													}else if(obj[21].toString().equals("2")) { %>
-														B-<%=milcountB %>
-													<%milcountB+=1;
+														milcountE=1; */
+													}else if(obj[21].toString().equals("2")) {
+														for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+															if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+																<%=entry.getValue() %>
+														<%}}	
+														%>
+														<%-- B-<%=milcountB %> --%>
+													<%/* milcountB+=1;
 													milcountC=1;
 													milcountD=1;
-													milcountE=1;
+													milcountE=1; */
 													}else if(obj[21].toString().equals("3")) { %>
 														C-<%=milcountC %>
 													<%milcountC+=1;
@@ -1340,7 +1355,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													
 												%>
 												<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
-															<span  style="color:green"
+															<span 
 																<%if(Progess==0){ %>
 																	class="assigned"
 																<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
@@ -1531,19 +1546,30 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													milcountC=1;
 													milcountD=1;
 													milcountE=1;
-												}else if(obj[21].toString().equals("1")) { %>
-													A-<%=milcountA %>
-												<% milcountA++;
+												}else if(obj[21].toString().equals("1")) {
+													for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+															<%=entry.getValue() %>
+													<%}}	
+													
+													%>
+													<%-- A-<%=milcountA %> --%>
+												<% /* milcountA++;
 													milcountB=1;
 													milcountC=1;
 													milcountD=1;
-													milcountE=1;
-												}else if(obj[21].toString().equals("2")) { %>
-													B-<%=milcountB %>
-												<%milcountB+=1;
+													milcountE=1; */
+												}else if(obj[21].toString().equals("2")) { 
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}}	
+												%>
+													<%-- B-<%=milcountB %> --%>
+												<%/* milcountB+=1;
 												milcountC=1;
 												milcountD=1;
-												milcountE=1;
+												milcountE=1; */
 												}else if(obj[21].toString().equals("3")) { %>
 													C-<%=milcountC %>
 												<%milcountC+=1;
@@ -1685,7 +1711,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 									   				</td>									
 												</tr>
 												<tr>
-													<td colspan="9" style="border:0;text-align: right; "><b>RPN :</b> Risk Priority Number</td>
+													<td colspan="9" style="border:0;text-align: right;"><b>RPN :</b>Risk Priority Number</td>
 												</tr>
 												<tr>
 													<th style="width: 15px;text-align: center " rowspan="2">SN</th>
@@ -1693,8 +1719,8 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 														Risk
 														<a data-toggle="modal" class="fa faa-pulse animated " data-target="#RiskTypesModal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer"><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
 													</th>
-													<th style="width: 100px; " rowspan="1" > PDC</th>
-													<th style="width: 100px; " rowspan="1"> ADC</th>
+													<th style="width: 100px; " rowspan="1" > ADC <br>PDC</th>
+												<!-- 	<th style="width: 100px; " rowspan="1"> ADC</th> -->
 													<th style="width: 160px; " rowspan="1"> Responsibility</th>
 													<th style="width: 50px; "  rowspan="1">Status(DD)</th>
 													<th style="width: 215px; " rowspan="1">Remarks</th>	
@@ -1720,13 +1746,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 																<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
 															</td>
 															<td style="text-align: center" rowspan="1">
-																<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
-																<%=sdf.format(sdf1.parse(obj[9].toString()))%>
-															</td>
-															
-															<td style="text-align: center" rowspan="1">
-																<%	String actionstatus = obj[15].toString();
+															<%	String actionstatus = obj[15].toString();
 																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
 																	LocalDate lastdate = obj[20]!=null ? LocalDate.parse(obj[20].toString()): null;
 																	LocalDate today = LocalDate.now();
@@ -1741,7 +1761,17 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 																	<%}else{ %>
 																		-									
 																	<%} %>
+																	<br>
+															
+															
+																<% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
+																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %>
+																<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 															</td>
+															
+														<!-- 	<td style="text-align: center" rowspan="1">
+																
+															</td> -->
 																		
 															<td rowspan="1"  ><%=obj[7] %><%-- ,&nbsp;<%=obj[8] %> --%></td>	
 															<td style="text-align: center" rowspan="1">
@@ -2273,7 +2303,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 							</div> 		
 						
 						</details>
-				
+	
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->
 						
 					<details>
@@ -2355,19 +2385,30 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													countC=1;
 													countD=1;
 													countE=1;
-												}else if(obj[26].toString().equals("1")) { %>
-													A-<%=countA %>
-												<% countA++;
+												}else if(obj[26].toString().equals("1")) { 
+												
+										for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
+											if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){%>
+												<%=entry.getValue() %>
+										<%}} 
+									 %>
+											<%-- 		A-<%=countA %> --%>
+												<% /* countA++;
 												    countB=1;
 												    countC=1;
 													countD=1;
-													countE=1;
-												}else if(obj[26].toString().equals("2")) { %>
-													B-<%=countB %>
-												<%countB+=1;
+													countE=1; */
+													}else if(obj[26].toString().equals("2")) {
+													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
+														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
+															<%=entry.getValue() %>
+													<%}} 
+													%>
+													<%-- B-<%=countB %> --%>
+												<%/* countB+=1;
 												countC=1;
 												countD=1;
-												countE=1;
+												countE=1; */
 												}else if(obj[26].toString().equals("3")) { %>
 													C-<%=countC %>
 												<%countC+=1;
@@ -2574,9 +2615,9 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 							</tr>
 							<tr>
 								<th  style="width: 20px !important;text-align: center;">SN</th>
-								<th  style="width: 270px;">Issue Point</th>
-								<th  style="width: 100px; "> PDC</th>
-								<th  style="width: 100px; "> ADC</th>
+								<th  style="width: 300px;">Issue Point</th>
+								<th  style="width: 120px; "> ADC <br> PDC</th>
+								<!-- <th  style="width: 100px; "> ADC</th> -->
 								<th  style="width: 210px; ">Responsibility</th>
 								<th  style="width: 50px; " >Status(DD)</th>	
 								<th  style="width: 230px; ">Remarks</th>		
@@ -2596,12 +2637,7 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 												<td  style="text-align: center;"><%=i %></td>
 												<td  style="text-align: justify;"><%=obj[2] %></td>
 												<td   style="text-align: center;" >
-													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
-												</td>
-												<td  style="text-align: center;"> 
-													<%	String actionstatus = obj[9].toString();
+													<span style="color:green;">		<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 															LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
@@ -2616,7 +2652,15 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													<%}else{ %>
 															-									
 													<%} %>
+												
+												<br></span>
+													<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
+													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
+													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
+	<!-- 											<td  style="text-align: center;"> 
+
+												</td> -->
 												<td > <%=obj[11] %><%=obj[12] %></td>
 												<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
@@ -2707,7 +2751,11 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=pointdata%><%}%>
 													  </td>
 													<td style="text-align: center;width: 5%;"> 
-													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o" style="color:#100f0e;" aria-hidden="true"></i></button></td>
+													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o" style="color:#100f0e;" aria-hidden="true"></i></button>
+												
+													<button class="btn btn-sm btn-danger" type="button" onclick="RecDecremove('<%=obj[0].toString() %>')" ><i class="fa fa-trash" aria-hidden="true" style="color:white"></i></button>
+																									
+													</td>
 												</tr>
 												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
 											</tbody>
@@ -2752,7 +2800,12 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 						  </div>	
 						   
 					</details>						
-			 		
+			 					<form action="DecesionRemove.htm" id="remvfrm" style="display: none;">
+				<input type="hidden" name="recdecId" id="recdecId">
+				<input type="hidden" name="committeeid" value="<%=committeeid%>">
+						<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(0)%>"> 
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				</form>
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 					<details>
    						<summary role="button" tabindex="0"><b> 13. Other Relevant Points (if any) 
@@ -2835,19 +2888,21 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 							if(TechImagesList.size()>0){
 							for(TechImages imges:TechImagesList){ %>
 							<div class="row">
-	
-								<table>
-									<tr>
-										<td style="border:0; padding-left: 1.5rem;"> 
-										<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
-											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
-											<%} %>
-
-										</td>
-
-										<td style="border:0;">  
-											
-										</td>
+							<table>
+							<tr>
+							<td style="border:0; padding-left: 1.5rem;"> 
+							<%if(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName()).exists()){ %>
+								<img style="max-width:20cm;max-height:14cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(filePath+projectLabCode+"\\TechImages\\"+imges.getTechImagesId()+"_"+imges.getImageName())))%>" > 											
+									<%} %>
+									<form action="#" style="display: inline">
+									<button class="btn btn-danger" name="TechImagesId" value="<%=imges.getTechImagesId()%>" formaction="ProjectImageDelete.htm" formmethod="POST" onclick="return confirm('Are you sure, you want to remove this?')"><i class="fa fa-trash" aria-hidden="true" style="color:white" ></i></button>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+									<input type="hidden" name="committeeid" value="<%=committeeid%>">
+									<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
+									</form>									
+									</td>
+									<td style="border:0;">  
+									</td>
 									</tr>
 								</table>
 							</div>
@@ -2856,10 +2911,6 @@ List<Object[]> RiskTypes = (List<Object[]>)request.getAttribute("RiskTypes");
 						
 								
 								</div>
-								
-								
-								
-							
 								
 						  <%} %>
 						  </div>
@@ -4089,7 +4140,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
  											<%for(Object[] obj : ganttchartlist.get(z)){%>
 								    		  
 								    		  {
-								    		    id: "<%=obj[3]%>",
+				<%-- 				    		    id: "<%=obj[3]%>",
 								    		    name: "<%=obj[2]%>",
 								    		    baselineStart: "<%=obj[6]%>",
 								    		    baselineEnd: "<%=obj[7]%>",
@@ -4099,7 +4150,19 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
 								    		    progressValue: "<%=obj[8]%>%",
 								    		    progress: {fill: "#81b214 0.5", stroke: "0.5 #150e56"},
-								    		    rowHeight: "35",						    		   
+								    		    rowHeight: "35", --%>	
+								    		    id: "<%=obj[3]%>",
+								    		    name: "<%=obj[2]%>",
+								    		    baselineStart: "<%=obj[6]%>",
+								    		    baselineEnd: "<%=obj[7]%>",
+								    		    baseline: {fill: "#f25287 0.5", stroke: "0.5 #dd2c00"},
+								    		    actualStart: "<%=obj[4]%>",
+								    		    actualEnd: "<%=obj[5]%>",
+								    		    actual: {fill: "#046582", stroke: "0.8 #150e56"},
+								    		    baselineProgressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    progress: {fill: "#81b214 0.0", stroke: "0.0 #150e56"},
+								    		    progressValue: "<%= Math.round((int)obj[8])%>%",
+								    		    rowHeight: "35",
 								    		  },
 								    		  
 								    		  <%}%>
@@ -4134,7 +4197,7 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 										          "<span style='font-weight:600;font-size:10pt'> Revised : " +
 										          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 										          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-										          "Progress: {%progress}<br>" 
+										          "Progress: {%progressValue}<br>" 
 										        ); 
 										        
 								        
@@ -4241,9 +4304,6 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     		});
 								     		
 								     	}
-								     	
-								     	
-								     	
 								     	/* chart.getTimeline().scale().fiscalYearStartMonth(4); */
 								     	
 								     	/* Header */
@@ -4264,10 +4324,9 @@ function modalbox(mid,mname,l1,lname1,l2,lname2,l3,lname3,l4,lname4,lev)
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'>Completed</span>";
+								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'>" +
-								     	           this.progress * 100 + "</span>%";
+								     	    return "<span style='color:black;font-weight:bold'></span>";
 								     	  }
 								     	});
 								     	
@@ -4610,6 +4669,16 @@ function checkData(formid)
 		return false;
 	}
 	
+}
+
+function RecDecremove(a){
+	$('#recdecId').val(a);
+	if(confirm("Are you sure,you want to remove?")){
+	$('#remvfrm').submit();
+	}else{
+		event.preventDefault();
+		return false;
+	}
 }
 </script>
 

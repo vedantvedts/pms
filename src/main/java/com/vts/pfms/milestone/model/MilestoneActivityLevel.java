@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name="milestone_activity_level")
 public class MilestoneActivityLevel {
@@ -34,6 +37,9 @@ public class MilestoneActivityLevel {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
+	private String point5;
+	private String point6;
+	private String point9;
 	
 	public Long getActivityId() {
 		return ActivityId;

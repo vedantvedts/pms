@@ -71,13 +71,13 @@ h6{
 
 		
     		<div class="card" style=" ">
-      				<div class="card-header" style="background-color: #055C9D;">
+      				<div class="card-header" style="background-color: #055C9D;display: table;">
       				  <h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue : <%if(Assignee!=null && Assignee[5]!=null){%> <%=Assignee[5] %> (<%=Assignee[10] %>)<%}%>
                      	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
       		</div>
       		<div class="card-body">
-	      			<form method="post" action="IssueSubSubmit.htm" enctype="multipart/form-data" id="subsubmitform">
+	      			<form method="post" action="SubSubmit.htm" enctype="multipart/form-data" id="subsubmitform">
 	        
 	        			<div>
 	          			 	

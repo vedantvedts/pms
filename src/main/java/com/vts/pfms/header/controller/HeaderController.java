@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jdt.internal.compiler.parser.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -335,6 +336,8 @@ public class HeaderController {
 		return "redirect:/PasswordChange.htm";
 		
 	}
+   
+	
 	
 	@RequestMapping (value="GanttChart.htm")
 	public String GanttChart(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
@@ -427,9 +430,9 @@ public class HeaderController {
 					req.setAttribute("MilestoneActivityC", MilestoneActivityC);
 					req.setAttribute("MilestoneActivityB", MilestoneActivityB);
 					req.setAttribute("MilestoneActivityA", MilestoneActivityA);
-								
+						
 				}
-			
+				
 				return "admin/GanttChartSub";
 			}
 			catch (Exception e) {

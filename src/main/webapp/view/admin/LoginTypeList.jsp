@@ -154,7 +154,7 @@ th td {
 				<div class="card-header">
 					<h4> Login Type List </h4>
 				</div>
-				<div class="card-body" align="center" style="height: 33rem;"> 
+				<div class="card-body" align="center" > 
 					<div class="col-md-8">
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
 				              <thead>
@@ -177,7 +177,6 @@ th td {
 			          </div>
 				</div>
              </div>
-	
 	</div></div>
 	
 </div>	

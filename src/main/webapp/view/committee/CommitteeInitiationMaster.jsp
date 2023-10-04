@@ -85,8 +85,24 @@ if(ses1!=null){
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-6">	
-							<h4>Initiation Committees</h4>
+						<div class="col-md-6" style="margin-top:-0.5rem;">	
+						<!-- 	<h4>Initiation Committees</h4> -->
+						
+						<%if(initiationid!=null && Long.parseLong(initiationid)>0){ %>
+								<form class="form-inline" method="post" action="InitiationCommitteeMaster.htm" id="myform">
+									
+									<h4 class="control-label" > Project : </h4> &nbsp;&nbsp;&nbsp;
+									
+										 <select class="form-control" id="initiationid" required="required" name="initiationid" onchange='submitForm();' >
+						   						<% for (Object[] obj : ProjectsList) {
+						   						%>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(initiationid)){ %>selected<%  } %> ><%=obj[4]%></option>
+												<%} %>
+						  				</select>
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
+	
+								</form>
+							<%}%>
 						</div>
 							
 						<%-- <div class="col-md-6">	
@@ -419,7 +435,7 @@ function submitChecked() {
 
 
 <script type="text/javascript">
-$('#projectid').select2();
+$('#initiationid').select2();
 function Add(myfrm1){
 	
 	event.preventDefault();
@@ -453,7 +469,10 @@ function Add(myfrm1){
 	    } 
 	}) 
 }	
-   
+/* function submitForm()
+{ 
+  document.getElementById('myform').submit(); 
+} */
 </script>
 
 

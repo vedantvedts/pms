@@ -183,17 +183,17 @@ a:hover {
 									<label > Type : 
 									</label><br>
 									<select class="form-control selectdee "  name="Project"  id="Project" required="required"   data-live-search="true" id="projectid" <%if(ActionData!=null && ActionData[5]!=null){%>disabled <%}%>>                                                     
-										<option value="0" <%if(ActionData!=null && ActionData[5]!=null && "0".equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>>General</option>	
+										
 										<%if(projectdata!=null){%>
 										    <option value="<%=projectdata[0] %>" <%if(projectdata!=null && projectdata[0]!=null && projectdata[0].toString().equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>><%=projectdata[1]%></option>
 										<%}else{%>
 										<%for(Object[] obj:ProjectList){%>
 											<option value="<%=obj[0] %>" ><%=obj[4]%></option>	
 										<%}}%>
+										<option value="0" <%if(ActionData!=null && ActionData[5]!=null && "0".equalsIgnoreCase(ActionData[5].toString())){%> selected="selected" <%}%>>General</option>	
 									</select>	
 								</div>
 							</div>
-							
 							<div class="row" align="center">
 								<div class="col-sm-3" align="left">
 									<label> Action Type : </label><br>

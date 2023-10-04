@@ -28,7 +28,7 @@ public interface PrintDao {
 	public List<Object[]> ProjectsList() throws Exception;
 	public Object[] ProjectAttributes(String projectid) throws Exception;
 	public List<Object[]> EBAndPMRCCount(String projectid) throws Exception;
-	public List<Object[]> Milestones(String projectid) throws Exception;
+	public List<Object[]> Milestones(String projectid,String committeeid) throws Exception;
 	public List<Object[]> MilestoneSubsystems(String projectid) throws Exception;
 	public List<Object[]> LastPMRCActions(String projectid,String committeeid) throws Exception;
 	public List<Object[]> OldPMRCActions(String projectid, String committeeid) throws Exception;
@@ -99,4 +99,10 @@ public interface PrintDao {
 	public List<Object[]> GetAllProjectSildedata()throws Exception;
 	public List<Object[]> GetTodayFreezedSlidedata(String projectid)throws Exception;
 	public List<Object[]> CostDetailsListSummary(String initiationId)throws Exception;
+	public int ProjectImageDelete(String techImagesId)throws Exception;
+	public List<Object[]> totalProjecMilestones(String projectid)throws Exception;
+	public int ProjectDecRecDelete(String recdecId) throws Exception;
+	public int BriefingPointsUpdate(String point, String activityid, String status)throws Exception;
+	public int PresentationNameUpdate(String presentationName, String scheduleid) throws Exception;
+	public int MomUpdate(String presentationName, String scheduleid) throws Exception;
 }

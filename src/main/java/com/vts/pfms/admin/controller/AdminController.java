@@ -464,13 +464,11 @@ public class AdminController {
 		String UserId=(String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside Resetpassword.htm "+UserId);
 		try {
-			
 		String Lid=req.getParameter("Lid");
 		int count =(int)service.resetPassword(Lid,UserId);
-		System.out.println(Lid+"----");
 		if (count > 0) 
 		{
-			redir.addAttribute("result", "Password reset successfully");
+			redir.addAttribute("result", "Password is reset to 1234 .");
 		} 
 		else 
 		{
@@ -587,9 +585,7 @@ public class AdminController {
 			} else {
 				redir.addAttribute("resultfail", "USER EDIT UNSUCCESSFUL");
 			}
-
 			return "redirect:/UserManagerList.htm";
-
 		}
 	    
 	    @Secured("ROLE_ADMIN")
