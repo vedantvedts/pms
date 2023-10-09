@@ -251,21 +251,29 @@ String labcode= (String)session.getAttribute("labcode");
 										 	 		<button class="dropdown-item" > Status</button>
 										  	 	</form>
 									  		</li>
+									  		<li>
+												<form action="ProjectOverAllRequirement.htm" method="POST" name="myfrm2"  style="display: inline">
+										  		<input type="hidden" name="sub" value="requirements"/>
+										  		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+										 	 	<button class="dropdown-item" >Requirements</button>
+										  	 	</form>
+									  		</li>		  		
 									  		
-									  			<li>
+									  		
+<%-- 									  			<li>
 										  		<form action="ProjectRequirement.htm" method="POST" name="myfrm2"  style="display: inline">
 										  			<input type="hidden" name="sub" value="requirements"/>
 										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 										 	 		<button class="dropdown-item" >Requirements</button>
 										  	 	</form>
-									  		</li>
-												<li>
+									  		</li> --%>
+<%-- 												<li>
 										  		<form action="ProjectSanction.htm" method="POST" name="myfrm3"  style="display: inline">
 										  			<input type="hidden" name="sub" value="sanction"/>
 										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 										 	 		<button class="dropdown-item" >SOC of Project</button>
 										  	 	</form>
-									  		</li>
+									  		</li> --%>
 									  		
 									  			<li>
 										  		<form action="ProjectProcurement.htm" method="POST" name="myfrm3"  style="display: inline">
@@ -544,7 +552,7 @@ function english_ordinal_suffix(dt)
 dt= new Date();
 document.getElementById("p1").innerHTML = english_ordinal_suffix(dt);
 
-$(document).ready(function(){
+/* $(document).ready(function(){
 	
 	$.ajax({
 		type : "GET",
@@ -592,9 +600,72 @@ $(document).ready(function(){
 		}
 	});
 	
+}); */
+//new anil code
+$(document).ready(function(){
+	
+	
+	$.ajax({
+		type : "GET",
+		url : "NotificationList.htm",
+		
+		datatype : 'json',
+		success : function(result) {
+			
+			var result = JSON.parse(result);
+			var values = Object.keys(result).map(function(e) {
+				  return result[e]
+				});
+			
+			var module = "";
+			for (i = 0; i < values.length; i++) {
+			
+				module+="<a class='dropdown-item d-flex align-items-center' id='"+values[i][5]+"'   onclick='deleteNoti()' href='"+values[i][4]+"'  style=' font-family:'Quicksand', sans-serif; '> <div> <i class='fa fa-arrow-right' aria-hidden='true' style='color:green'></i></div> <div style='margin-left:20px'> " +values[i][3]+" </div> </a>";
+				if(i>4){
+					break;
+				}
+		   
+			}
+		
+			if(values.length==0){
+				
+				var info="No Notifications to display !";
+				var empty="";
+				 empty+="<a class='dropdown-item d-flex align-items-center' href=# style=' font-family:'Quicksand', sans-serif; '> <div> <i class='fa fa-comment-o' aria-hidden='true' style='color:green;font-weight:800'></i></div> <div style='margin-left:20px'>" +info+" </div> </a>";
+
+				$('#Notification').html(empty); 
+				$('.showall').hide();
+				$('#NotificationCount').addClass('badge-success');
+			}
+			
+			if(values.length>0){
+ 			
+				$('#Notification').html(module);
+				$('.showall').show();
+				
+			
+			}
+			
+			
+			
+			$('#NotificationCount').html(values.length); 
+		}
+	});
+	
 });
 
-
+// new code by anil
+function deleteNoti() {
+	$.ajax({
+		type : "GET",
+		url : "getAllNoticationId.htm",
+	
+		datatype : 'json',
+		success : function(result) {
+			
+		}
+	});
+}
 
 function test(img){
 	

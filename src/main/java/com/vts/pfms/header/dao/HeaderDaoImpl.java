@@ -1,5 +1,6 @@
 package com.vts.pfms.header.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,9 @@ public class HeaderDaoImpl implements HeaderDao {
 	private static final String EMPDETAILES="SELECT CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname', c.formrolename, b.empno,b.labcode FROM login a,employee b,form_role c WHERE a.empid=b.empid AND a.formroleid=c.formroleid AND a.loginid=:loginid";
 	private static final String DIVISIONNAME="select divisioncode from division_master where divisionid=:divisionid";
 	
-	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";
+	//private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";
+	// new query
+	private static final String NOTIFICATIONLIST="select empid,notificationby,notificationdate,notificationmessage,notificationurl,notificationid from pfms_notification where isactive='1' and empid=:empid ORDER BY CreatedDate DESC";
 	private static final String NOTIFICATIONUPDATE="update pfms_notification set isactive='0' where isactive='1' and notificationid=:notificationid ";
 	private static final String OLDPASSWORD="select password from login where username=:username";
 	private static final String PASSWORDUPDATECHANGE="update login set password=:newpassword,modifiedby=:modifiedby,modifieddate=:modifieddate where username=:username ";
@@ -352,6 +355,17 @@ public class HeaderDaoImpl implements HeaderDao {
 		List<Object[]> LabMasterList= (List<Object[]>)query.getResultList();
 		return LabMasterList;
 	}
-
+	private static final String GETNOTIFICATIONID="select notificationid,EmpId from pfms_notification where isactive='1' and empid=:empid ORDER BY notificationdate DESC";
+	@Override
+	public List<Object[]> getNotificationId(String Empid) throws Exception {
+		
+		List<Object[]> NotificationList= new ArrayList<Object[]>();
+		Query query = manager.createNativeQuery(GETNOTIFICATIONID);
+		
+		query.setParameter("empid", Empid);
+		
+		NotificationList=(List<Object[]>)query.getResultList();
+		return NotificationList;
+	}
 
 }

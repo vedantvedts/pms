@@ -494,6 +494,40 @@ public class HeaderController {
 		}
 	}
 	
+	
+	// new anilscode
+	
+	@RequestMapping(value = "getAllNoticationId.htm" , method = RequestMethod.GET)
+	public @ResponseBody String getAllNoticationId(HttpServletRequest request ,HttpSession ses) throws Exception {
+			
+		 List<Object[]> notifationIdList =null;
+		 Gson json = new Gson();
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside NotificationList.htm "+UserId);		
+		try {
+		
+			String EmpId= ((Long) ses.getAttribute("EmpId")).toString();
+			
+			notifationIdList = service.getNotificationId(EmpId);
+			System.out.println("notifationIdList---------- "+notifationIdList.size());
+			if(notifationIdList!=null && notifationIdList.size()>0) {
+			for(Object[] obj: notifationIdList) {
+				service.NotificationUpdate(obj[0].toString());
+			}
+			}
+		   
+		    
+		}
+		catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside NotificationList.htm "+UserId, e);
+		}
+		    
+		    
+			return json.toJson(notifationIdList);
+		
+		
+	}
 }
 
 

@@ -44,7 +44,9 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String PFMSLOGINTYPEREVOKE="UPDATE login set modifiedby=:modifiedby, modifieddate=:modifieddate WHERE loginid=:loginid";
 	private static final String EMPLOYEELISTALL="select a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,a.labcode FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId";
     private static final String RTMDDO="SELECT 'empid1',a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',b.designation,c.validfrom,c.validto  FROM employee a,employee_desig b,pfms_initiation_Approver c WHERE a.empid=c.empid AND c.isactive='1' AND a.isactive='1' AND a.DesigId=b.DesigId AND c.type='DO-RTMD'";
-	private static final String NOTIFICATIONLIST="SELECT notificationdate,notificationmessage,notificationurl,notificationid FROM pfms_notification WHERE empid=:empid and isactive=1";
+	//private static final String NOTIFICATIONLIST="SELECT notificationdate,notificationmessage,notificationurl,notificationid FROM pfms_notification WHERE empid=:empid and isactive=1";
+	// new code
+    private static final String NOTIFICATIONLIST="SELECT notificationdate, notificationmessage, notificationurl, notificationid FROM pfms_notification WHERE empid =:empid AND isactive = 1 ORDER BY CreatedDate DESC LIMIT 0, 1000";
 	private static final String RTMDDOUPDATE="update pfms_initiation_Approver set isactive='0' WHERE Type=:type";
 	private static final String DIVISIONLIST ="select divisionid,divisioncode from division_master where isactive='1'";
 	private static final String LOGINDELETE="update login set isactive=:isactive,modifiedby=:modifiedby,modifieddate=:modifieddate where loginid=:loginid";

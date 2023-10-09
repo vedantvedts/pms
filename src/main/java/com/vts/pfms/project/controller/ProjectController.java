@@ -4799,6 +4799,8 @@ public class ProjectController
 			List<Object[]> projectlist=service.getProjectList();
 				
 			Object[] riskdata=service.ProjectRiskData(actionmainid);
+			System.out.println("@@@@@@@@@"+actionmainid);
+			System.out.println("@@@@@@@@@"+actionmainid);
 			String projectid=riskdata[2].toString();
 			
 			req.setAttribute("projectriskmatrixrevlist",service.ProjectRiskMatrixRevList(actionmainid));

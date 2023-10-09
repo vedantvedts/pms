@@ -313,5 +313,9 @@ public class HeaderServiceImpl implements HeaderService {
 		
 		return dao.LabMasterList(Clusterid);
 	}
+	@Override
+	public List<Object[]> getNotificationId(String Empid) throws Exception {
 	
+		return dao.getNotificationId(Empid);
+	}
 }

@@ -251,7 +251,7 @@ a:hover {
 													<%}else{%>
 													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MainDashBoard.htm">Back</a>
 										 <%}%>&nbsp;&nbsp;
-									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>         				
 									
 								</div>			  
 							</div>			    
@@ -875,7 +875,7 @@ a:hover {
 				 				}
 				 				for (i = 0; i < values.length; i++) 
 				 				{
-				 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+				 					s += '<option value="'+values[i][0]+'">'+values[i][1] +','+ ' '+values[i][3]+'</option>';
 				 					
 				 				} 
 				 				

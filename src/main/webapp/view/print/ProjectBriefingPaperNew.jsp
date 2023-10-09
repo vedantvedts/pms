@@ -1,3 +1,4 @@
+<%@page import="java.time.DayOfWeek"%>
 <%@page import="java.util.stream.Collector"%>
 <%@page import="java.math.MathContext"%>
 <%@page import="com.vts.pfms.model.TotalDemand"%>
@@ -2458,6 +2459,7 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 												int Progess = Integer.parseInt(obj[16].toString());
 												LocalDate CompletionDate =obj[18]!=null ? LocalDate.parse(obj[18].toString()) : null;
 												LocalDate Today = LocalDate.now();
+												
 											%>										
 											<td  style="text-align: center">
 											<%-- <span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
@@ -2658,14 +2660,14 @@ Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("tr
 													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
-<<<<<<< HEAD
+
 	<!-- 											<td  style="text-align: center;"> 
 
 												</td> -->
-												<td > <%=obj[11] %><%=obj[12] %></td>
-=======
+											
+
 												<td > <%=obj[11] %>, <%=obj[12] %></td>
->>>>>>> branch 'master' of https://gadilinga@bitbucket.org/susant-vedts/dgecs.git
+
 												<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
 														

@@ -33,5 +33,6 @@ public interface HeaderService {
 	public List<Object[]> QuickLinksList( String LoginType) throws Exception;
 	public String getLabCode(String Empid) throws Exception;
 	public List<Object[]> LabMasterList(String Clusterid) throws Exception;
-
+	// new method by anil
+	public List<Object[]> getNotificationId(String Empid)throws Exception;
 }

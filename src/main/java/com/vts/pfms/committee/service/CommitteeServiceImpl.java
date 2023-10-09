@@ -1600,6 +1600,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside SERVICE KickOffMeeting ");
 		String CommitteeMainId=req.getParameter("committeemainid");
 		String CommitteeScheduleId=req.getParameter("committeescheduleid");
+		System.out.println(CommitteeMainId+"@@@@@@@@@@@@@"+CommitteeScheduleId);
 		String Option=req.getParameter("sub");
 		SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -2842,7 +2843,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public List<Object[]> ProcurementStatusList(String projectid)throws Exception{
 		return dao.ProcurementStatusList(projectid);
 	}
-	
+	private SimpleDateFormat sdf4=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+		String todayDate=outputFormat.format(new Date()).toString();
 	@Override
 	public List<Object[]> ActionPlanSixMonths(String projectid)throws Exception
 	{
@@ -2888,18 +2891,21 @@ public class CommitteeServiceImpl implements CommitteeService{
 //				MilestoneActivityAll.addAll(MilestoneActivityC);
 //				MilestoneActivityAll.addAll(MilestoneActivityC);
 //				MilestoneActivityAll.addAll(MilestoneActivityE);
-		
 		List<Object[]>mainList=dao.ActionPlanSixMonths(projectid);
 		List<Object[]>subList=new ArrayList<>();
-	
+		List<Object[]>actionList= new ArrayList<>();
 		if(mainList.size()!=0) {
 			subList=mainList.stream().filter(i->i[33].toString().equalsIgnoreCase("Y")).collect(Collectors.toList());
 		}
-		return subList;
+		LocalDate futureDay=LocalDate.parse(todayDate).plusDays(180);
+		if(subList.size()!=0) {
+		actionList=subList.stream().filter(i ->i[26].toString().equalsIgnoreCase("0")|| LocalDate.parse(i[8].toString()).isBefore(futureDay)).collect(Collectors.toList());
+		}
+		return actionList;
 		
+		//	return dao.ActionPlanSixMonths(projectid);
 		
-		
-	//	return dao.ActionPlanSixMonths(projectid);
+	
 	}
 	
 	@Override
@@ -2912,6 +2918,8 @@ public class CommitteeServiceImpl implements CommitteeService{
 	@Override 
 	public List<Object[]> LastPMRCActions(long scheduleid,String committeeid,String proid,String isFrozen) throws Exception 
 	{
+		List<Object[]>lastPmrcActionList= new ArrayList<>();
+		lastPmrcActionList=dao.LastPMRCActions(scheduleid, committeeid, proid, isFrozen);
 		return dao.LastPMRCActions(scheduleid,committeeid,proid,isFrozen);
 	}
 	

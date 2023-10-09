@@ -84,7 +84,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
     private static final String BASELINEMAIN="SELECT a.milestoneactivityid AS obid,e.enddate,a.progressstatus,e.Weightage,b.activitystatus,a.activitystatusid FROM milestone_activity_rev a,milestone_activity_status b,milestone_activity e  WHERE a.activitystatusid=b.activitystatusid  AND a.milestoneactivityid=e.milestoneactivityid AND a.revisionno=e.revisionno AND  a.milestoneactivityid=:inActivityId";
     private static final String BASELINELEVEL="SELECT a.activityid AS obid,c.enddate,a.progressstatus,c.Weightage,b.activitystatus,a.activitystatusid FROM milestone_activity_level a,milestone_activity_sub_rev c,milestone_activity_status b WHERE a.activitystatusid=b.activitystatusid AND a.revision=c.revision  AND   a.parentactivityid=:inActivityId  AND a.activityid=c.activityid and a.activitylevelid=:levelid";
     private static final String PROGRESSMAIN="UPDATE milestone_activity SET activitystatusid=:status,progressstatus=:progress, DateOfCompletion=:DateOfCompletion,ModifiedDate=:ModifiedDate WHERE milestoneactivityid=:id";
-    private static final String PROGRESSLEVEL="UPDATE milestone_activity_level SET activitystatusid=:status,progressstatus=:progress WHERE activityid=:id";
+    private static final String PROGRESSLEVEL="UPDATE milestone_activity_level SET activitystatusid=:status,progressstatus=:progress,ModifiedDate=:ModifiedDate WHERE activityid=:id";
     private static final String REVMAINUPDATE="UPDATE milestone_activity SET revisionno=:rev WHERE milestoneactivityid=:id";
     private static final String REVLEVELUPDATE="UPDATE milestone_activity_level SET revision=:rev WHERE activityid=:id";
     private static final String FILEPASS="select password from login where username=:userid";
@@ -639,11 +639,12 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	}
 
 	@Override
-	public int ProgressLevel(String ActivityId, String Status, int Progress) throws Exception {
+	public int ProgressLevel(String ActivityId, String Status, int Progress,MileEditDto dto) throws Exception {
 		Query query=manager.createNativeQuery(PROGRESSLEVEL);
 		query.setParameter("id",ActivityId);
 		query.setParameter("status",Status);
 		query.setParameter("progress",Progress);
+		query.setParameter("ModifiedDate", dto.getCreatedDate());
 		int result=query.executeUpdate();
 		return result;
 	}

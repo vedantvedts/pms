@@ -2797,18 +2797,17 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	@Override
 	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
 		List<Object[]> TotalMilestones=new ArrayList<Object[]>();
-		Query query = manager.createNativeQuery("CALL pfms_total_project_milestones(:projectid);");
-		query.setParameter("projectid", projectid);
+		Query query = manager.createNativeQuery("CALL pfms_total_project_milestones(:projectid);"); // to call all the milestones using projectid
+		query.setParameter("projectid", projectid); 
 		try {
-			TotalMilestones= query.getResultList();
+			TotalMilestones= query.getResultList(); 
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new java.util.Date() +" Inside DAO totalProjectMilestones " + e);
 		}
 		return TotalMilestones;
+	}
 	
-}
-
 	
 }
 

@@ -136,7 +136,7 @@ public class PrintServiceImpl implements PrintService{
 		List<Object[]>newList=new ArrayList<>();
 		if(milestones.size()!=0) {
 		newList=milestones.stream()
-		.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )  // get the object with levelid 0 and have some progress
+		.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )  // get the object with levelid 0 and have some progress // for first meeting checking the last meeting date is null or not
 				||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())==100 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[28].toString().equalsIgnoreCase("Y")) // get all the level id except 0 and progress = 100
 		.collect(Collectors.toList());
 		}

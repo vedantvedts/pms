@@ -37,9 +37,6 @@
 	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
 	LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 	String levelid= (String) request.getAttribute("levelid");
-	
-	
-	System.out.println(lastpmrcactions.size()+"-----------lastpmrcactions");
 	int meetingcount= (int) request.getAttribute("meetingcount");
 	Object[] projectdatadetails = (Object[]) request.getAttribute("projectdatadetails");
 	
@@ -56,7 +53,8 @@
 	/* String committeeid1=committeescheduleeditdata[0].toString(); */
 	/* newly Added  */
 	  SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
-      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");	
+      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+      String todayDate=outputFormat.format(new Date()).toString();
     /* ------- */
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	Object[] membersec=null; 
@@ -65,7 +63,11 @@
  /* 	for (Map.Entry<Integer,String> entry : treeMapLevTwo.entrySet()) {
 		System.out.println(entry.getKey()+"-------"+entry.getValue());
 	}  */
-
+	//maps for pmrc and EB
+	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
+	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+	
+	
 	%>
 <style type="text/css">
 p{
@@ -690,7 +692,7 @@ for(Object[] temp : invitedlist){
 								</tr>
 							</table>	
    				
-							<table style=" margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								<thead >
 									<tr>
 										<td colspan="6" style="border: 0px !important;">
@@ -712,11 +714,12 @@ for(Object[] temp : invitedlist){
 								
 									<tr>
 										<th class="std"  style="width: 30px;"  >SN</th>
-										<th class="std"  style="width: 250px;" >Action Point</th>
-										<th class="std"  style="width: 80px; " > PDC</th>
-										<th class="std"  style="width: 80px;" > Item Code</th>
+										<th class="std"  style="width: 80px;" > ID</th>
+										<th class="std"  style="width: 300px;" >Action Point</th>
+										<th class="std"  style="width: 60px; " > PDC</th>
+										
 										<th class="std"  style="width: 130px;" >Responsibility</th>
-										<th class="std"  style="width: 80px;"  >Status<!-- (DD) --></th>			
+										<th class="std"  style="width: 40px;"  >Status<!-- (DD) --></th>			
 									</tr>
 								</thead>		
 								<tbody>
@@ -725,25 +728,51 @@ for(Object[] temp : invitedlist){
 								<%}
 								else if(lastpmrcactions.size()>0)
 								{
-									int i=1;
+									int i=1;String key2="";
 									for(Object[] obj:lastpmrcactions){ %>
 										<tr>
 											<td class="std"  align="center"><%=i %></td>
+												<td class="std"><%if(obj[5]==null) {%>
+											-
+											<%}else{ %>
+										<%if(committeescheduleeditdata[8].toString().equalsIgnoreCase("PMRC")) {%>
+										<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key2=entry.getKey().toString();
+									 		} 
+											 }
+										}
+										else{ %>
+										<% for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key2=entry.getKey().toString();
+											 }
+									 }
+										}
+									
+										 %>
+											<b><%=committeescheduleeditdata[8].toString().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4] %></b>
+											<%} %>
+											</td>
 											<td class="std" style="text-align: justify;"><%=obj[2] %></td>
 											<td class="std" align="center">
 												<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><%=sdf.format(sdf1.parse(obj[8].toString()))%><br><%} %>
 												<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
 												<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
 											</td>
-											<td class="std" align="center" > 
-												<%if(obj[3].toString().equals("A") ){ %>		 A
-												<%}else if(obj[3].toString().equals("I") ){  %>  I
-												<%}else if(obj[3].toString().equals("R") ){  %>  R
-												<%}else if(obj[3].toString().equals("D") ){  %>  D
-												<%}else if(obj[3].toString().equals("C") ){  %>  C
-												<%}else if(obj[3].toString().equals("K") ){  %>  K
-												<%} %>  
-											</td> 
+												 <%-- <td class="std" align="center" > 
+												 <%if(obj[3].toString().equals("A") ){ %> A
+												 <%}else if(obj[3].toString().equals("I") ){  %> I
+												 <%}else if(obj[3].toString().equals("R") ){  %> R
+												 <%}else if(obj[3].toString().equals("D") ){  %> D
+												 <%}else if(obj[3].toString().equals("C") ){  %> C
+												 <%}else if(obj[3].toString().equals("K") ){  %> K
+												 <%} %>  
+												  </td>  --%>
 											<td class="std" >
 												<%if(obj[4]!= null){ %>  
 													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>
@@ -810,13 +839,11 @@ for(Object[] temp : invitedlist){
 										</td>									
 									</tr>
 						     
-						           <tr>
-																 
+						         		 <tr>
 										 <th class="std"  style="width: 30px !important; ">MS</th>
 										 <th class="std"  style="width: 30px !important; ">L</th>
 										 <th class="std" style="max-width: 150px; ">System/ Subsystem/ Activities</th>
 										 <th class="std" style="max-width: 150px; ">  PDC</th>
-
 										 <th class="std" style="max-width: 100px; "> Progress</th>
 										 <th class="std" style="max-width: 70px; "> Status</th>
 										 <th class="std" style="max-width: 100px; "> Remarks</th> 
@@ -854,8 +881,7 @@ for(Object[] temp : invitedlist){
 														<%=entry.getValue() %>
 												<%}}
 												%>
-												
-													<%-- A-<%=milcountA %> --%>
+												<%-- A-<%=milcountA %> --%>
 												<% /* milcountA++;
 													milcountB=1;
 													milcountC=1;
@@ -1515,12 +1541,7 @@ for(Object[] temp : invitedlist){
 			</div>
 		</div> 
 	
-	
 	</div>
-	
-	
-	
-	
 	</body>
 </html>
 

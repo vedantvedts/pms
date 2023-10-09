@@ -871,7 +871,7 @@ function AssigneeEmpList(){
 				for (i = 0; i < values.length; i++) 
 				{
 					
-					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+					s += '<option value="'+values[i][0]+'">'+values[i][1] + ',' +' '+values[i][3] + '</option>';
 				} 
 				
 				$('#Assignee').html(s);

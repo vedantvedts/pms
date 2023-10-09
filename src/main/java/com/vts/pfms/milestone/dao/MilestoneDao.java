@@ -69,7 +69,7 @@ public interface MilestoneDao {
 	public List<Object[]> WeightageLevel(String ActivityId,String LevelId) throws Exception;
 	//changed
 	public int ProgressMain(String ActivityId,String Status,int Progress,String DateOfCompletion,MileEditDto MileEditDto) throws Exception;
-	public int ProgressLevel(String ActivityId,String Status,int Progress) throws Exception;
+	public int ProgressLevel(String ActivityId,String Status,int Progress,MileEditDto dto) throws Exception;
 	public int RevMainUpdate(String ActivityId,String Rev) throws Exception;
 	public int RevLevelUpdate(String ActivityId,String Rev) throws Exception;
 	public int FileRepRevUpdate(String ActivityId, Long Rev,Long ver) throws Exception;

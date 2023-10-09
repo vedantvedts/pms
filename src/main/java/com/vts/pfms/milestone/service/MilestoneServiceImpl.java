@@ -433,7 +433,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 															}
 														}
 				                                 // dao D update
-												dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD));
+												dao.ProgressLevel(objD[0].toString(), StatusD,(int)Math.round(ProgressD),dto);
 												
 											}
 											
@@ -492,7 +492,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 										 StatusC="4";
 									}
 								}
-						      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC));
+						      dao.ProgressLevel(objC[0].toString(), StatusC,(int)Math.round(ProgressC),dto);
 						      
                              // dao C update
 						}
@@ -541,7 +541,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 										 StatusB="4";
 									}
 								}
-						      dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB));
+						      dao.ProgressLevel(objB[0].toString(), StatusB,(int)Math.round(ProgressB),dto);
 						      
                              // dao B update
 						}
@@ -588,7 +588,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 										 StatusA="4";
 									}
 								}
-						      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA));
+						      dao.ProgressLevel(objA[0].toString(), StatusA,(int)Math.round(ProgressA),dto);
 						      
                              // dao A update
 						}

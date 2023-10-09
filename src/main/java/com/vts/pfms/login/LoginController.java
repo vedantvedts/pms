@@ -128,7 +128,7 @@ public class LoginController {
     	
 		    long LoginId=Repository.findByUsername(req.getUserPrincipal().getName()).getLoginId();
 		    Object[] empdetails = headerservice.EmployeeDetailes(String.valueOf(LoginId)).get(0);
-		
+
 		    ses.setAttribute("Username",req.getUserPrincipal().getName());
 		    ses.setAttribute("LoginId",LoginId ); 
 		    ses.setAttribute("Division", Repository.findByUsername(req.getUserPrincipal().getName()).getDivisionId()); 	
