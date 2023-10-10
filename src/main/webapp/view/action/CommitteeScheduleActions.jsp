@@ -305,17 +305,34 @@ if(MinutesBack==null){
 
 			<div class="col-md-5">
 				<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-					<div class="card-body" style="margin-top: -8px">
-
-						<%for(Object[] obj:committeescheduledata ){ %>
+					<div class="card-body" <%if(committeescheduledata.size()>5) {%>style="height: 70vh;overflow: auto;background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} else{%>style=" background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} %>>
+				<div>
+						<%
+						String prev="";
+						String next="";
+						int count=1;
+						for(Object[] obj:committeescheduledata ){
+							prev=obj[7].toString();
+							if(!prev.equalsIgnoreCase(next)){
+								count=1;
+							}
+							
+							%>
 
 						<div class="panel panel-info" style="margin-top: 10px;">
 
 							<div class="panel-heading ">
 								<h4 class="panel-title">
-									<span style="font-size: 14px"><%=obj[7] %>. <%=obj[4] %>
-										<%if("3".equalsIgnoreCase(obj[7].toString())){%>/ <%=obj[5] %> /
-										<%=obj[6] %> <%} %> 
+									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
+									
+									<%if(obj[1].toString().length()>50) {%>
+									<%=obj[1].toString().substring(0,50)+" ....." %>
+									<%}else {%>
+									<%=obj[1].toString() %>
+									<%} %>	
+										<br>
+										<%if("3".equalsIgnoreCase(obj[7].toString())){%><%-- / <%=obj[5] %> / --%>
+									<%-- 	<%=obj[6] %> --%> <%} %> 
 										 ( <%if("K".equalsIgnoreCase(obj[2].toString())){%>Risk Task<%} %> 
 										 <%if("I".equalsIgnoreCase(obj[2].toString())){%>Issue Task<%} %> 
 										 <%if("A".equalsIgnoreCase(obj[2].toString())){%>Action Task<%} %>
@@ -350,11 +367,11 @@ if(MinutesBack==null){
 
 
 						</div>
-						<%} %>
+						<%next=prev;} %>
 
 
 
-
+</div>
 					</div>
 					<!-- Big card-body end -->
 
