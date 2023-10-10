@@ -232,7 +232,6 @@ div {
 	<%
 
 
-
 String specname=(String)request.getAttribute("specname");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
