@@ -214,7 +214,7 @@ String ses=(String)request.getParameter("result");
 			                                         
 			                           	<tr >
 				                            <th style=" text-align: center;" >Select</th>
-				                            <th style=" text-align: center;" >LabCode  </th>
+				                            <th style=" text-align: center;" >Lab Code  </th>
 		                                    <th style=" text-align: center;" >Group Code</th>
 		                                    <th style=" text-align: center;" >Group Name</th>
 		                                    <th style=" text-align: center;" >Group Head Name</th>
@@ -228,7 +228,7 @@ String ses=(String)request.getParameter("result");
 	                                        <td><%=obj[6] %></td>
 	                                         <td><%=obj[1] %></td>
 	                                         <td ><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-	                                         <td > <%if(obj[3]!=null){%><%=obj[4]%>,<%=obj[5]%><%}else{ %>-<%} %></td>
+	                                         <td > <%if(obj[3]!=null){%><%=obj[4]%>, <%=obj[5]%><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>
 	                             </tbody>

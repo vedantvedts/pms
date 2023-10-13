@@ -782,7 +782,6 @@ public class AdminController {
 			}
 		 	req.setAttribute("Onboarding", onboard);
 			req.setAttribute("DivisionMasterList", (Object)this.service.DivisionMasterList(LabCode));
-
 			return "admin/DivisionList";
 		}
 	    
