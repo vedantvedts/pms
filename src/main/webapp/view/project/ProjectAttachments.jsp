@@ -50,52 +50,58 @@ String filesize=  (String)request.getAttribute("filesize");
 			</div>	
 			<div class="card-body" style="min-height: 35rem;">
 				<div class="row" style="padding:0px 15px" >
-					<div class="col-6" style="border: 1px solid #B1D0E0;border-radius: 10px;padding:15px 10px;min-height:33rem;">
+					<div class="col-5" style="border: 1px solid #B1D0E0;border-radius: 10px; margin-left:140px; padding:15px 10px;min-height:33rem;">
 						<div class="table-responsive">
 	   						<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-							<thead>
+							<thead style = "background-color: #055C9D; color: white;text-align: center;">
 								<tr>
-									<th style="width:70% ;" ><h5 >File Name</h5></th>
-									<th style="width:10% ;" ><h5>Download</h5></th>
-									<th style="width:10% ;" ><h5>Delete</h5></th>
+									<th style="width:5% ;" ><h5 >SN</h5></th>
+									<th style="width:50% ;" ><h5 >Filename</h5></th>
+									<th style="width:30% ;" ><h5>Action</h5></th>
+									
 								</tr>
 							</thead>
 						 	<tbody>
-							 		<%for(Object[] attach : AttachList){ %>
+							 		<%
+							 		int count =1;
+							 		for(Object[] attach : AttachList){ %>
 									<tr class="tr_clone">
-										<td style="width:70% ;  " >
+									<td align="center"><%=count%></td>
+										<td style="width:70% ;" >
 											<%=attach[1] %>
 										</td>	
-										<td style="width:10% ; ">
+										<td style="width:20% ; ">
+										<div class="row" style="margin-right: 0px !important;">
 											<form action="ProjectMasterAttachDownload.htm" method="post" target="_blank"> 
 												<button type="submit" class="btn"><i class="btn btn-sm fa fa-download" style="color: green; "></i></button>
 												<input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 												<input type="hidden" name="attachid" value="<%=attach[0]%>">
 											</form>
-										</td>	
-										<td style="width:10% ; ">
-											<form action="ProjectMasterAttachDelete.htm" method="post" >
+												<form action="ProjectMasterAttachDelete.htm" method="post" >
 												<button type="submit" class="btn" onclick="return confirm('Are You sure To Delete?');"><i class="btn btn-sm fa fa-trash-o" style="color: red; "></i></button>
 												<input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 												<input type="hidden" name="attachid" value="<%=attach[0]%>">
 												<input type="hidden" name="projectid" value="<%=projectid%>">
 											</form>
-										</td>									
+											</div>
+										</td>	
+																			
 									</tr>
-									<%} %>
+									
+									<%count++;} %>
 									<%if(AttachList.size()==0){ %>
 									<tr><td colspan="3" style="text-align: center;">Files Not Found</td></tr>
 									<%} %>
 							</tbody> 
 						</table>
 						</div>
-					</div>
-					<div class="col-6" style="border: 1px solid #B1D0E0;border-radius: 10px;padding:15px 10px;min-height:33rem;" >
+					</div>&nbsp;
+					<div class="col-5" style="border: 1px solid #B1D0E0; border-radius: 10px;padding:15px 10px;min-height:33rem;" >
 						<form action="ProjectMasterAttachAdd.htm" method="post" enctype="multipart/form-data">
 							<table style="width:100% ; " >
-								<thead>
+								<thead style = "background-color: #055C9D; color: white;text-align: center;">
 									<tr>
-										<td style="width:45%; padding: 0px 5px 0px 5px;" ><h5>File Name</h5></td>
+										<td style="width:45%; padding: 0px 5px 0px 5px;" ><h5>Filename</h5></td>
 										<td style="width:45%; padding: 0px 5px 0px 5px;"><h5>Attachment</h5></td>
 										<td style="width:10%;">
 											<button type="button" class=" btn btn_add "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>

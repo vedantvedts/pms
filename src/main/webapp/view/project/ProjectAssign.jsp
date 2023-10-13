@@ -85,7 +85,7 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 			                <option value="" disabled="disabled" selected="selected">Select Project </option>
 			                <%
 			                for(Object[] protype:ProjectList ){
-			                	String projectshortName=(protype[17]!=null)?" ( "+protype[17].toString()+" ) ":"";
+			                	String projectshortName=(protype[17]!=null)?" ("+protype[17].toString()+") ":"";
 			                	%>
 								<option value="<%=protype[0] %>" <%if(ProjectCode!=null){ if(protype[0].toString().equalsIgnoreCase(ProjectCode[0].toString())){%>selected="selected" <%}} %>><%=protype[4]+projectshortName %></option>
 							<%} %>
@@ -120,7 +120,7 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 	   <th style="width:5%; ">Select</th>
 	   <th >Employee Name</th>
 	  <th>Designation</th>
-	  <th>Division</th>
+	  <th>Division Code</th>
 	  
 	  </tr>
 	   </thead>
@@ -128,7 +128,7 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
 	 <%if(ProjectAssignList!=null){
 	 for(Object[] obj:ProjectAssignList){ %>
 	    <tr>
-	  <td><input type="radio" name="ProjectEmployeeId" value=<%=obj[0]%>></td>
+	  <td align="center"><input " type="radio" name="ProjectEmployeeId" value=<%=obj[0]%>></td>
 	    <td style="text-align: left;"><%=obj[3].toString() %></td>
         <td style="text-align: left;"><%=obj[4].toString() %></td>
         <td style="text-align: left;"><%=obj[5].toString() %></td>
@@ -169,9 +169,9 @@ Object[] ProjectCode=(Object[])request.getAttribute("ProjectCode");
       <div class="col-md-12">
       <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed"  > 
-	   <thead>
+	   <thead style = "background-color: #055C9D; color: white;">
 	   <tr>
-	   <th colspan="4">Select User  for <%if(ProjectCode!=null){ %><%=ProjectCode[1]%><%} %></th>
+	   <th colspan="4">Select Users  for <%if(ProjectCode!=null){ %><%=ProjectCode[1]%><%} %></th>
 	  </tr>
 	 
 	   </thead>

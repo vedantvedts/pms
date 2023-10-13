@@ -76,7 +76,7 @@
 							<td style="padding: 6px;"><%=obj[10] %></td>
 							<td><%=obj[12] %></td>
 							<td><%=obj[11] %></td>
-							<td><%=obj[13] %> ( <%=obj[14] %>)</td>
+							<td><%=obj[13] %>, <%=obj[14] %></td>
 							<td><%=obj[9] %></td>
 						</tr>
 					</table>
