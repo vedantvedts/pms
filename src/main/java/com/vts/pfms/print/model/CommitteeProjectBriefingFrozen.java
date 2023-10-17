@@ -41,10 +41,16 @@ public class CommitteeProjectBriefingFrozen implements Serializable
 	
 	@Transient
 	private File BriefingFile;
+	
+	
 	@Transient
 	private String MeetingId;
 	@Transient
 	private String LabCode;
+	
+	@Transient
+	private File momFile;
+	
 	@Transient
 	private MultipartFile BriefingFileMultipart;
 	

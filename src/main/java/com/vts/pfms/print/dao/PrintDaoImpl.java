@@ -520,6 +520,35 @@ public class PrintDaoImpl implements PrintDao {
 		return ret;
 	}
 	
+	@Override
+	public int updateBriefingPaperFrozen(long schduleid,String BriefingPaperFrozen, String PresentationFrozen, String MinutesFrozen) throws Exception {
+		String BriefingPaperFrozenUPDATE="update committee_schedule set BriefingPaperFrozen='Y' where scheduleid=:schduleid";
+		String PresentationFrozenUPDATE="update committee_schedule set PresentationFrozen='Y' where scheduleid=:schduleid";
+		String MinutesFrozenUPDATE="update committee_schedule set MinutesFrozen='Y' where scheduleid=:schduleid";
+		int count=0;
+		if(BriefingPaperFrozen.equalsIgnoreCase("Y")) {
+		
+			Query query = manager.createNativeQuery(BriefingPaperFrozenUPDATE);
+			query.setParameter("schduleid", schduleid);
+			count=count+query.executeUpdate();
+		}
+		 if(PresentationFrozen.equalsIgnoreCase("Y")) {
+		
+			Query query = manager.createNativeQuery(PresentationFrozenUPDATE);
+			query.setParameter("schduleid", schduleid);
+			count=count+query.executeUpdate();
+		}
+		 if(MinutesFrozen.equalsIgnoreCase("Y")) {
+			
+			Query query = manager.createNativeQuery(MinutesFrozenUPDATE);
+			query.setParameter("schduleid", schduleid);
+			count=count+query.executeUpdate();
+		}
+		return count;
+	}
+	
+	
+	
 	private static final String MILESTONEACTIVITYSTATUS="SELECT activitystatusid,activitystatus,activityshort from milestone_activity_status ";
 	
 	@Override

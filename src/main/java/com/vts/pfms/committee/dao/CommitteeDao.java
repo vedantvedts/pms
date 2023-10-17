@@ -27,6 +27,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
 
 public interface CommitteeDao {
@@ -276,6 +277,10 @@ public interface CommitteeDao {
 	public CommitteeMeetingDPFMFrozen getFrozenDPFMMinutes(String scheduleId) throws Exception;
 	public Object[] ProjectDataDetails(String projectid) throws Exception;
 	public List<Object[]> totalProjectMilestones(String projectid)throws Exception;
+	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid) throws Exception;// created by sankha on 12-10-2023
+	public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing)throws Exception;
+	
+	
 	
 
 

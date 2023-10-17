@@ -594,8 +594,15 @@ if(formname!=null){
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. <%=hlod[9] %></span>  </h4>
-	          				
+	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
+	          						<!-- newly added by sankha 12-10-2023 -->
+	          						<%if(hlod[5].toString().length()>30){ %>
+									<%=hlod[5].toString().substring(0,20)+"...." %>	          						
+	          						<%}else{ %>
+	          						<%=hlod[5].toString() %>
+	          						<%} %>
+	          						<!-- end -->
+	          						(<%=hlod[9] %>)</span>  </h4>
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
 							     			<thead>
@@ -719,7 +726,18 @@ if(formname!=null){
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. <%=hlod[9] %></span>  </h4>
+	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. 
+	          						<!-- newly added by sankha 12-10-2023 -->
+	          						<%if(hlod[5].toString().length()>30){ %>
+									<%=hlod[5].toString().substring(0,20)+"...." %>	          						
+	          						<%}else{ %>
+	          						<%=hlod[5].toString() %>
+	          						<%} %>
+	          						<!-- end -->
+	          						
+	          						
+	          						
+	          						(<%=hlod[9] %>)</span>  </h4>
 	          				
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
@@ -846,8 +864,15 @@ if(formname!=null){
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>. <%=hlod[8] %></span>  </h4>
-	          				
+	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.
+	          						<!-- newly added by sankha  on 12/10 -->
+	          						<%if(hlod[5].toString().length()>30) {%>    
+										<%=hlod[5].toString().substring(0,20) +"..."%>
+									<%}else{ %>
+										    <%=hlod[5].toString() %>
+									<%} %>
+									<!-- end -->      						
+	          						 (<%=hlod[8] %>)</span>  </h4>
 	       						<div   style="float: right !important; margin-top:-23px; ">
 								 	<table style="text-align: center;" >
 						     			<thead>
@@ -1124,7 +1149,15 @@ if(formname!=null){
       					<div class="panel-heading">
        						
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">5.<%=unitcount1 %> <%=hlo[8] %> </span>  </h4>
+	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
+	          						<!-- Newly added by sankha 12-10-2023 -->
+	          						<%if(hlo[5].toString().length()>30) {%>
+	          						<%=hlo[5].toString().substring(0, 25)+"...." %>
+	          						<%}else{ %>
+	          						<%=hlo[5].toString()%>
+	          						<%} %>
+	          						<!-- end  -->
+	          						(<%=hlo[8] %> )</span>  </h4>
 	          				
        						<div   style="float: right !important; margin-top:-23px; ">
 							 	<table style="text-align: center;" >

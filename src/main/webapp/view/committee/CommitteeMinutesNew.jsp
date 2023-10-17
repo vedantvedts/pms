@@ -710,8 +710,6 @@ for(Object[] temp : invitedlist){
 											</p>
 										</td>									
 									</tr>
-								
-								
 									<tr>
 										<th class="std"  style="width: 30px;"  >SN</th>
 										<th class="std"  style="width: 80px;" > ID</th>

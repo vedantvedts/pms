@@ -75,6 +75,7 @@ import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
 
 @Service
@@ -431,7 +432,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeschedule.setConfidential(Integer.parseInt(committeescheduledto.getConfidential()));
 		committeeschedule.setDivisionId(Long.parseLong(committeescheduledto.getDivisionId()));
 		committeeschedule.setInitiationId(Long.parseLong(committeescheduledto.getInitiationId()));
-		
+		committeeschedule.setPresentationFrozen("N");
 		String CommitteeName=dao.CommitteeName(committeescheduledto.getCommitteeId().toString())[2].toString();
 		String LabName=dao.LabDetails(committeeschedule.getLabCode())[1].toString();
 		BigInteger SerialNo=dao.MeetingCount(new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()),committeescheduledto.getProjectId());
@@ -3185,9 +3186,50 @@ public class CommitteeServiceImpl implements CommitteeService{
 	{
 		return dao.getFrozenDPFMMinutes(scheduleId);
 	}
+	
+	
+	
+@Override
+	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid) throws Exception {
+		
+		return dao.getFrozenCommitteeMOM(committeescheduleid);
+	}
 	@Override
 	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
 		return dao.totalProjectMilestones(projectid);
+	}
+	
+	@Override
+	public long doMomFreezing(CommitteeProjectBriefingFrozen briefing) throws Exception {
+	
+		Object[] scheduledata = dao.CommitteeScheduleEditData(String.valueOf(briefing.getScheduleId()));
+		String meedtingId = scheduledata[11].toString().replaceAll("[&.:?|<>/]", "").replace("\\", "") ;
+		String LabCode = briefing.getLabCode();
+		String filepath = "\\"+LabCode.toUpperCase().trim()+"\\Briefing\\";
+		int count=0;
+		String filename = "Briefing-"+meedtingId;
+		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		{
+			filename = "Briefing-"+meedtingId;
+			filename = filename+" ("+ ++count+")";
+		}
+	
+		
+		while(new File(uploadpath+filepath+"\\"+filename+".pdf").exists())
+		{
+			filename = "Briefing-"+meedtingId;
+			filename = filename+" ("+ ++count+")";
+		}
+		File file = briefing.getMomFile();
+		saveFile(uploadpath+filepath ,filename+".pdf" ,file );
+		
+		briefing.setMoM(filename+"-Mom"+".pdf");
+		
+		briefing.setFrozenBriefingPath(filepath);
+		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
+		return dao.FreezeBriefingAdd(briefing);
+		
+		
 	}
 	
 }

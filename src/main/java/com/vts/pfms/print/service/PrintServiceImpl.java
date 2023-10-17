@@ -133,6 +133,11 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> Milestones(String projectid,String committeeid) throws Exception {
 		
 		List<Object[]>milestones=dao.Milestones(projectid,committeeid);
+
+		System.out.println("dataaaa projectidd:"+projectid);
+		System.out.println("dataaaa comiteeeid:"+committeeid);
+
+		System.out.println("milestonesizeee:"+milestones.size());
 		List<Object[]>newList=new ArrayList<>();
 		if(milestones.size()!=0) {
 		newList=milestones.stream()
@@ -150,8 +155,7 @@ public class PrintServiceImpl implements PrintService{
 		 * }
 		 */
 		
-		
-		return newList;
+			return newList;
 		/* return dao.Milestones(projectid,committeeid); */
 	}
 	
@@ -309,7 +313,14 @@ public class PrintServiceImpl implements PrintService{
 		
 		return dao.updateBriefingPaperFrozen(schduleid);
 	}
-
+	
+	@Override
+	public int updateBriefingPaperFrozen(long schduleid,String BriefingPaperFrozen, String PresentationFrozen, String MinutesFrozen) throws Exception {
+		
+		return dao.updateBriefingPaperFrozen(schduleid,BriefingPaperFrozen,PresentationFrozen,MinutesFrozen);
+	}
+	
+	
 	@Override
 	public String getNextScheduleFrozen(long schduleid) throws Exception {
 		
@@ -543,10 +554,15 @@ public class PrintServiceImpl implements PrintService{
 		saveFile(uploadpath+filepath, filename+"-presentation"+".pdf", presentationfile);
 		MultipartFile mom=briefing.getMomMultipart();
 		saveFile(uploadpath+filepath, filename+"-Mom"+".pdf", mom);
-		
+		if(!briefing.getBriefingFileMultipart().isEmpty()) {
 		briefing.setBriefingFileName(filename+".pdf");
+		}
+		if(!briefing.getPresentationNameMultipart().isEmpty()) {
 		briefing.setPresentationName(filename+"-presentation"+".pdf");
+		}
+		if(!briefing.getMomMultipart().isEmpty()){
 		briefing.setMoM(filename+"-Mom"+".pdf");
+		}
 		briefing.setFrozenBriefingPath(filepath);
 		briefing.setFreezeTime(fc.getSqlDateAndTimeFormat().format(new Date()));
 		return dao.FreezeBriefingAdd(briefing);

@@ -44,6 +44,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
 
 @Transactional
@@ -2794,6 +2795,8 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return dpfm;
 	}
 	
+	
+	
 	@Override
 	public List<Object[]> totalProjectMilestones(String projectid) throws Exception {
 		List<Object[]> TotalMilestones=new ArrayList<Object[]>();
@@ -2808,7 +2811,21 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		return TotalMilestones;
 	}
 	
+	private static final String GETFROZENCOMMOM="from CommitteeProjectBriefingFrozen where ScheduleId=:scheduleId and IsActive=1";
+	@Override
+	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid) throws Exception {
+		Query query=manager.createQuery(GETFROZENCOMMOM);
+		query.setParameter("scheduleId", Long.parseLong(committeescheduleid));
+		CommitteeProjectBriefingFrozen cpf=(CommitteeProjectBriefingFrozen)query.getResultList().get(0);
+		return cpf;
+	}
 	
+	@Override
+	public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing) throws Exception {
+		manager.persist(briefing);
+		manager.flush();
+		return briefing.getFrozenBriefingId();
+	}
 }
 
 

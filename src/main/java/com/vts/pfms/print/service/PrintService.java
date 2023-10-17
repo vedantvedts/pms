@@ -51,6 +51,7 @@ public interface PrintService {
 	public long getLastPmrcId(String projectid,String committeeid,String scheduleId) throws Exception;
 	public long getNextScheduleId(String projectid,String committeeid) throws Exception;
 	public int updateBriefingPaperFrozen(long schduleid) throws Exception;
+	public int updateBriefingPaperFrozen(long schduleid, String BriefingPaperFrozen, String PresentationFrozen, String MinutesFrozen) throws Exception;
 	public String getNextScheduleFrozen(long schduleid) throws Exception;
 	public List<Object[]> MilestoneActivityStatus() throws Exception;
 	public List<Object[]> MilestonesChange(String projectid, String milestoneactivitystatusid) throws Exception;

@@ -1877,6 +1877,7 @@ public class PrintController {
 	    try { 
 			String ScheduleId = req.getParameter("scheduleid");
 			CommitteeProjectBriefingFrozen briefing = service.getFrozenProjectBriefing(ScheduleId);
+			System.out.println(briefing.getFrozenBriefingPath()+"99999");
 				res.setContentType("application/pdf");
 			    res.setHeader("Content-disposition","inline;filename="+"Briefing Paper"+".pdf"); 
 			    File file=new File(env.getProperty("ApplicationFilesDrive") +briefing.getFrozenBriefingPath()+briefing.getMoM());
@@ -2381,6 +2382,8 @@ public class PrintController {
 		}
 	    
 		
+		
+		
 		// new code
 	 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
 	 	List<Object[]>first=null;   //store the milestones with levelid 1
@@ -2426,7 +2429,7 @@ public class PrintController {
 	 			
 	 		}
 	 	}
-	 	 }
+	 }
 				 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
 				 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
 				 	 // new code end
@@ -2593,7 +2596,7 @@ public class PrintController {
 			int flag = setBriefingDataToResponse(model, req, ses, redir, res);
 			if(flag==0) 
 	        {				
-				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				redir.addAttribute("cc", "No Project is Assigned to you.");
 				return "redirect:/MainDashBoard.htm";
 			}  
 			return "print/BriefingPresentation";
@@ -3818,16 +3821,31 @@ public class PrintController {
 						.MomMultipart(mom)
 						.IsActive(1)
 						.build();
-
+		    		
 		    	long count = service.FreezeBriefingMultipart(briefing);
+		    	String BriefingPaperFrozen="N";
+		    	String PresentationFrozen= "N";
+		    	String MinutesFrozen ="N";	
+		    	if(!BPaper.isEmpty()) {
+		    		BriefingPaperFrozen="Y";
+		    	}
+		    	if(!pname.isEmpty()) {
+		    		PresentationFrozen="Y";
+		    	}
+		    	if(!mom.isEmpty()) {
+		    		MinutesFrozen="Y";
+		    	}
+		    	
+		    	System.out.println(BriefingPaperFrozen+"-----"+PresentationFrozen+"--------"+MinutesFrozen);
+		    	
 		    	if(count>0)
     			{
-    				int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid));
-    				redir.addAttribute("result", "Briefing Paper Added Successfully");
+    				int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid),BriefingPaperFrozen,PresentationFrozen,MinutesFrozen);
+    				redir.addAttribute("result", "Documents Added Successfully");
     			}
     			else 
     			{
-    				redir.addAttribute("resultfail", "Briefing Paper Adding Failed");	
+    				redir.addAttribute("resultfail", "Documents Adding Failed");	
     			}
 		    	redir.addFlashAttribute("projectid",projectid);
 		    	redir.addFlashAttribute("committeecode",committeecode);
@@ -3850,16 +3868,28 @@ public class PrintController {
 		    	String scheduleid = req.getParameter("scheduleid");
 		    	String projectid=req.getParameter("projectid");
 		    	String committeecode=req.getParameter("committeecode");
-		    	
+		    	String BriefingPaperFrozen=req.getParameter("BriefingPaperFrozen");
+		    	String PresentationFrozen= req.getParameter("PresentationFrozen");
+		    	String MinutesFrozen =req.getParameter("MinutesFrozen");
+		    	if(!BPaper.isEmpty() && BriefingPaperFrozen.equalsIgnoreCase("N")) {
+		    		BriefingPaperFrozen="Y";
+		    	}
+		    	if(!pname.isEmpty() && PresentationFrozen.equalsIgnoreCase("N")) {
+		    		PresentationFrozen="Y";
+		    	}
+		    	if(!mom.isEmpty() && MinutesFrozen.equalsIgnoreCase("N")) {
+		    		MinutesFrozen="Y";
+		    	}
+		    
 		    	long count = service.FreezeBriefingMultipartUpdate(scheduleid, BPaper,pname,mom);
 		    	if(count>0)
     			{
-		    		int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid));
-    				redir.addAttribute("result", "Briefing Paper Added Successfully");
+		    		int update=service.updateBriefingPaperFrozen(Long.parseLong(scheduleid),BriefingPaperFrozen,PresentationFrozen,MinutesFrozen);
+    				redir.addAttribute("result", "Documents updated Successfully");
     			}
     			else 
     			{
-    				redir.addAttribute("resultfail", "Briefing Paper Adding Failed");	
+    				redir.addAttribute("resultfail", "Documents updating Failed");	
     			}
 
 		    	redir.addFlashAttribute("projectid",projectid);

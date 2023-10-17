@@ -202,14 +202,15 @@ a:hover {
 													</select>
 												</div>
 												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar"
+													>
 													<thead>
 														<tr>
-															<th >Committee</th>
-															<th >Meeting Id</th>
-															<th >Schedule Date & Time</th>
-															<th >Status</th>
-															<th >Action</th>
+															<th style="width:30px;">Committee</th>
+															<th style="width:130px;">Meeting Id</th>
+															<th style="width:130px;">Schedule Date & Time</th>
+															<th style="width:130px;">Status</th>
+															<th style="width:130px;">Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -223,29 +224,33 @@ a:hover {
 																</td>
 																<td><%=schedule[6] %></td>
 																<td>
-																	<%if(schedule[7].toString().equalsIgnoreCase("Y") ){ %>
+																	<%if(schedule[7].toString().equalsIgnoreCase("Y")  ){ %>
 																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
 																		onclick="showmodal('U', <%=schedule[0]%>,
 																		'<%=schedule[9] %>', 
 																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
 																		'<%=schedule[11] %>',
-																		'<%=schedule[3] %>'
+																		'<%=schedule[3] %>','<%=schedule[7] %>','<%=schedule[8] %>','<%=schedule[12] %>'
 																		)" data-toggle="tooltip" data-placement="top" title="Update">
 																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
 																		</button>
+																		<%if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
 																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
 																			<i class="fa fa-eye" aria-hidden="true"></i>
 																		</button>
-																		<%if(schedule[12]!=null) {%>
+																		<% }%>
+																		<%if(schedule[12]!=null && schedule[12].toString().equalsIgnoreCase("Y")) {%>
 																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingBriefingPresenttaion.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Presentation">
 																			<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
 																			</button>
 																			<%} %>
-																			<%if(schedule[8]!=null && schedule[8].toString().equalsIgnoreCase("Y")) {%>
+																			
+																			<%-- <%if(schedule[8]!=null && schedule[8].toString().equalsIgnoreCase("Y")) {%>
+																	
 																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingMom.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="MOM">
 																			<img alt="" src="view/images/requirement.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
 																			</button>
-																			<%} %>
+																			<%} %> --%>
 																	<%}else{ %>
 																		<button type="button" class="btn btn-sm " style="background-color:#0e49b5 ;color:white;margin:5px; " 
 																		onclick="showmodal('A', <%=schedule[0]%>,
@@ -325,10 +330,10 @@ a:hover {
 							<input type="file" accept=".pdf" id="briefingpresent" name="briefingpresent" class="form-control" required="required">
 							</td>
 							</tr>
-							<tr>
+							<tr style="display: none;">
 							<th> MOM  :</th>
 							<td colspan="3">
-							<input type="file" accept=".pdf" id="Momfile" name="Momfile" class="form-control" required="required" >
+							<input type="file"  accept=".pdf" id="Momfile" name="Momfile" class="form-control"  >
 							</td>
 							</tr>
 							<tr>
@@ -341,6 +346,9 @@ a:hover {
 						<input type="hidden" name="projectid" id="modal_projectid" value="">
 						<input type="hidden" name="committeecode" value=<%=committeecode %>>
 						<input type="hidden" name="scheduleid" id="modal_scheduleid" value="">
+						<input type="hidden" name="BriefingPaperFrozen" id="BriefingPaperFrozen">
+						<input type="hidden" name="PresentationFrozen" id="PresentationFrozen">
+						<input type="hidden" name="MinutesFrozen" id="MinutesFrozen">
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 					</form>
 					
@@ -359,7 +367,7 @@ $(function () {
 });
 
 
-function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projectid )
+function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projectid, a,b,c )
 {
 	$('#modal_scheduleid').val(scheduleid);
 	$('#modal_projectid').val(projectid);
@@ -376,7 +384,12 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 		briefingpaper.setAttribute("required","required");
 		var briefingpresent=document.getElementById('briefingpresent');
 		briefingpresent.setAttribute("required","required");
-		
+		var BriefingPaperFrozen=document.getElementById('BriefingPaperFrozen');
+		BriefingPaperFrozen.value="";
+		var PresentationFrozen=document.getElementById('PresentationFrozen');
+		PresentationFrozen.value="";
+		var MinutesFrozen=document.getElementById('MinutesFrozen');
+		MinutesFrozen.value="";
 	}else
 	{
 		$('#briefing_modal_header').html('Update Existing Briefing Details');
@@ -388,6 +401,13 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 		briefingpresent.removeAttribute("required");
 		var Momfile=document.getElementById('Momfile');
 		Momfile.removeAttribute("required");
+		var BriefingPaperFrozen=document.getElementById('BriefingPaperFrozen');
+		BriefingPaperFrozen.value=a;
+		var MinutesFrozen=document.getElementById('MinutesFrozen');
+		MinutesFrozen.value=b;
+		var PresentationFrozen=document.getElementById('PresentationFrozen');
+		PresentationFrozen.value=c;
+		
 	}
 	
 	$('#briefing_modal').modal('toggle');

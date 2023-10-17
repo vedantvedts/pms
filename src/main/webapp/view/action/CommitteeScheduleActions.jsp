@@ -307,12 +307,12 @@ if(MinutesBack==null){
 					<div class="card-body" <%if(committeescheduledata.size()>5) {%>style="height: 70vh;overflow: auto;background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} else{%>style=" background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} %>>
 				<div>
 						<%
-						String prev="";
-						String next="";
+						String prev=""; // for holding the point number
+						String next=""; // to store the prev point number
 						int count=1;
-						for(Object[] obj:committeescheduledata ){
+						for(Object[] obj:committeescheduledata ){  
 							prev=obj[7].toString();
-							if(!prev.equalsIgnoreCase(next)){
+							if(!prev.equalsIgnoreCase(next)){ // if prev and next is not equal make count 1
 								count=1;
 							}
 							
@@ -339,7 +339,6 @@ if(MinutesBack==null){
 									</span>
 								</h4>
 								<div style="float: right !important; margin-top: -25px;">
-
 									<form name="myForm<%=obj[0] %>" id="myFormgen<%=obj[0] %>" action="ItemSpecAdd.htm" method="post">
 										<input type="hidden" name="specname" value="myFormgen<%=obj[0] %>"> 
 										<input type="hidden" name="ScheduleId" value="<%=obj[3] %>"> 
@@ -363,13 +362,8 @@ if(MinutesBack==null){
 									</form>
 								</div>
 							</div>
-
-
 						</div>
-						<%next=prev;} %>
-
-
-
+						<%next=prev;}  // assign the previous value to next one%> 
 </div>
 					</div>
 					<!-- Big card-body end -->
@@ -379,11 +373,6 @@ if(MinutesBack==null){
 
 			</div>
 			<!-- col-md-5 end -->
-
-
-
-
-
 			<div class="col-md-7" style="">
 
 				<div class="card" style="margin-top: 2%;">
@@ -444,7 +433,6 @@ if(MinutesBack==null){
 											<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2]%>">
 									</div>
 								</div>
-
 								<div class="col-sm-4" align="left">
 									<label> Priority : </label> <br> 
 									<select class="form-control selectdee " name="Priority" id="Priority" required="required" data-live-search="true">
