@@ -202,7 +202,7 @@ text-align:center;
       <div class="col-md-12">
     <div class="table-responsive" >
 	   <table class="table table-bordered table-hover table-striped table-condensed"  > 
-	   <thead>
+	   <thead style = "background-color: #055C9D; color: white;">
 	   <tr>
 	   <th colspan="4">Add Activity  Type</th>
 	  </tr>

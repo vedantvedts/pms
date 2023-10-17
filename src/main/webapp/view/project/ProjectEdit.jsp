@@ -225,7 +225,7 @@ Project Edit</h4>
  <td >
 			<select required="required" name="projectdirector" class="form-control form-control selectdee" id="officerPunchNo" data-width="100%" data-live-search="true">
 				<%for(Object[] officer:OfficerList ){  %>
-					<option value="<%=officer[0] %>"  <%if(officer[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %> selected="selected"  <%} %> ><%=officer[2] %></option> 
+					<option value="<%=officer[0] %>"  <%if(officer[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %> selected="selected"  <%} %> ><%=officer[2] %>, <%=officer[3].toString() %></option> 
 				<%} %>
 			</select>
 </td>

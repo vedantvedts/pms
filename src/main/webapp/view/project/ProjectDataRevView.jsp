@@ -99,7 +99,7 @@ border: 1px solid black;
     overflow: hidden
 }
 .fill img {
-    flex-shrink: 0;
+    flex-shrink: 0;x`
     min-width: 100%;
     min-height: 100%
 }
@@ -165,7 +165,7 @@ if(ses1!=null){
 						<div class="col-md-6 justify-content-end" style="float: right;">
 							<table style="float: right;"  >
 								<tr>
-									<td ><h4>Project :</h4></td>
+									<td ><h4>Project:</h4></td>
 									<td >
 										<form method="post" action="ProjectDataRevList.htm" id="projectchange">
 											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
@@ -194,7 +194,7 @@ if(ses1!=null){
 							    	<div class="col-md-12">
 									    	<table style="float: right;"  >
 											<tr>
-												<td ><h4>Revision :</h4></td>
+												<td ><h4>Revision:</h4></td>
 												<td >
 									    		<form method="post" action="ProjectDataRevList.htm" id="revchange" style="float: right;">
 													<select class="form-control items" name="projectdatarevid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('revchange');">
@@ -214,7 +214,7 @@ if(ses1!=null){
 							   
 							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
 							    		<tr>
-							    			<td colspan="4" align="center"><label>Revision Date : &nbsp;<%=projectdatarevdata[4] %></label></td>
+							    			<td colspan="4" align="center"><label>Revision Date: &nbsp;<%=projectdatarevdata[4] %></label></td>
 							    		</tr>
 							    		<tr>
 							    			<td>

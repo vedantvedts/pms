@@ -232,8 +232,8 @@ String Onboarding = (String)request.getAttribute("Onboarding");
 	                                             <td><%=obj[5] %></td>
 	                                             <td><%=obj[1] %></td>
 												 <td style="text-align: left"><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
-	                                             <td style="text-align: left"><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></td>
-	                                             <td style="text-align: left"><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></td>
+	                                             <td style="text-align: left"><%if(obj[3]!=null && obj[6]!= null){%><%=obj[3]%>, <%=obj[6]%><%}else{ %>-<%} %></td>
+	                                             <td style="text-align: left"><%if(obj[4]!=null ){%><%=obj[4]  %><%}else{ %>-<%} %></td>
 	                                      </tr>
 	                                   <%}%>
 	                             </tbody>

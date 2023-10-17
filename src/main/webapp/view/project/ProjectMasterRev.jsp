@@ -227,7 +227,7 @@ Project Revision</h4>
 								<option value="<%=protype[0] %>"
 								 <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[13].toString())){ %>
 								 selected="selected"  <%} %>
-								><%=protype[2].toString() %></option>
+								><%=protype[2].toString() %>, <%=protype[3].toString() %></option>
 								<%} %>
 							</select>
 </td>

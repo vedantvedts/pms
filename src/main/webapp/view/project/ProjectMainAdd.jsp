@@ -152,7 +152,7 @@ String ses1=(String)request.getParameter("resultfail");
 															<%
 															if(OfficerList!=null && OfficerList.size()>0){for (Object[] protype : OfficerList) {
 															%>
-															<option value="<%=protype[0]%>"><%=protype[2]%></option>
+															<option value="<%=protype[0]%>"><%=protype[2]%>, <%=protype[3] %></option>
 															<%
 															}}
 															%>

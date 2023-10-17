@@ -214,7 +214,7 @@ function validateismaincheck()
 							<%for(Object[] protype:OfficerList ){
 	
 	                           %>
-								<option value="<%=protype[0] %>"><%=protype[2]%> , <%=protype[3].toString() %></option>
+								<option value="<%=protype[0] %>"><%=protype[2]%>, <%=protype[3].toString() %></option>
 								<%} %>
 							</select>
 </td>
