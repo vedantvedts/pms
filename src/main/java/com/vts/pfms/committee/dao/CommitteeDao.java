@@ -279,7 +279,7 @@ public interface CommitteeDao {
 	public List<Object[]> totalProjectMilestones(String projectid)throws Exception;
 	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid) throws Exception;// created by sankha on 12-10-2023
 	public long FreezeBriefingAdd(CommitteeProjectBriefingFrozen briefing)throws Exception;
-	
+	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
 	
 	
 

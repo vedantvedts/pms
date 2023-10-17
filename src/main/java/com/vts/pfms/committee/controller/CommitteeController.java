@@ -5412,6 +5412,11 @@ public class CommitteeController {
 						HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 						long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
 						
+						//****************************envi download start**********************************
+			    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+			    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+			    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+						
 						req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
 						req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
 						req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());

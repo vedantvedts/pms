@@ -254,6 +254,7 @@ public interface CommitteeService {
 	public List<Object[]> totalProjectMilestones(String projectid) throws Exception;
 	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid)throws Exception;
 	public long doMomFreezing(CommitteeProjectBriefingFrozen briefing)throws Exception;
+	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
 	
 	
     

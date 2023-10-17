@@ -55,5 +55,13 @@ public class PFTSFile implements Serializable {
 	private String Remarks;
 	private String PDC;
 	private String IntegrationDate;
+	private String EnvisagedStatus;
+	private Date ProbableDate;
+	private String CreatedBy;
+	private String CreatedDate;
+	private String ModifiedBy;
+	private Date PrbDateOfInti;
+	private String EnvisagedFlag;
+	private String ModifiedDate;
 		
 }

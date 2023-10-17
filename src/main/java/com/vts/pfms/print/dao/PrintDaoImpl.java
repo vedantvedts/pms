@@ -1097,4 +1097,19 @@ public class PrintDaoImpl implements PrintDao {
 				query.setParameter("scheduleid", scheduleid);
 				return (int)query.executeUpdate();
 			}
+			
+			
+			private static final String GETENVILIST = "SELECT PftsFileId,ProjectId,ROUND(EstimatedCost/100000,2) AS 'EstimatedCost',ItemNomenclature,Remarks,PrbDateOfInti,EnvisagedStatus FROM pfts_file WHERE ProjectId=:projectid AND EnvisagedFlag='Y' AND IsActive='1'";
+			@Override
+			public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
+				Query query = manager.createNativeQuery(GETENVILIST);
+				query.setParameter("projectid", projectid);
+				try {
+					return query.getResultList();
+				}catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new java.util.Date() +" Inside DAO totalProjectMilestones " + e);
+				}
+				return null;
+			}
 	}

@@ -107,4 +107,6 @@ public interface PrintService {
 	public List<Object[]> totalProjectMilestones(String projectid)throws Exception;
 	public int ProjectDecRecDelete(String recdecId)throws Exception;
 	public int BriefingPointsUpdate(String point, String activityid, String status)throws Exception;
+	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
+
 }

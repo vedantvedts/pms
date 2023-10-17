@@ -848,4 +848,9 @@ public class PrintServiceImpl implements PrintService{
 		// TODO Auto-generated method stub
 		return dao.BriefingPointsUpdate(point,activityid,status);
 	}
+	
+	@Override
+	public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
+		return dao.getEnvisagedDemandList(projectid);
+	}
 }

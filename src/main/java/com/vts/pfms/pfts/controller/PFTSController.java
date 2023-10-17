@@ -50,6 +50,8 @@ public class PFTSController {
     private String uri;
 	
 	private static final Logger logger=LogManager.getLogger(PFTSController.class);
+	SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+
 	
 	@RequestMapping(value = "ProcurementStatus.htm" ,method= {RequestMethod.GET,RequestMethod.POST})
 	public String procurement(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception 
@@ -57,7 +59,7 @@ public class PFTSController {
 		
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
-		String projectId =req.getParameter("projectid");		
+		String projectId =req.getParameter("projectid");
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProcurementStatus.htm "+UserId);		
@@ -90,7 +92,7 @@ public class PFTSController {
 		return "pfts/FileStatus";
 	}
 	
-	@RequestMapping(value="AddNewDemandFile.hmt", method=RequestMethod.POST)
+	@RequestMapping(value="AddNewDemandFile.htm", method=RequestMethod.POST)
 	public String addNewDemandFile(HttpServletRequest req, HttpSession ses) throws Exception
 	{
 		
@@ -269,7 +271,7 @@ public class PFTSController {
 		}
 	}
 
-	@RequestMapping(value="FileInActive.htm", method=RequestMethod.POST)
+	@RequestMapping(value="FileInActive.htm")
 	public String FileInActive(HttpServletRequest req, RedirectAttributes redir, HttpSession ses) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -446,6 +448,140 @@ public class PFTSController {
 		}
 
 	}
+	
+	// ********************************************************** Eniv Strat ***********************************************
+			@RequestMapping(value = "envisagedAction.htm")
+			public String envisagedAction(HttpServletRequest request, HttpSession ses) throws Exception
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside envisagedAction.htm "+UserId);		
+				try {
+					String projectId=request.getParameter("projectId");
+					request.setAttribute("projectId", projectId);
+					request.setAttribute("value", "Add");
+				
+					return "pfts/envisagedAction";
+					
+				}
+				catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside envisagedAction.htm "+UserId, e); 
+					return "static/Error";
+				}
+
+			}
+		
+			@RequestMapping(value = "enviActionSubmit.htm", method=RequestMethod.POST)
+			public String enviActionSubmit(HttpServletRequest request, HttpSession ses,RedirectAttributes redir) throws Exception
+			{
+				long result=0;
+				long result1=0;
+				String UserId = (String) ses.getAttribute("Username");
+				int count=0;
+				logger.info(new Date() +"Inside enviActionSubmit.htm "+UserId);		
+				try {
+					String projectId=request.getParameter("projectId");
+					String itemNomenclature=request.getParameter("itemNomenclature");
+					String estimatedCost=request.getParameter("estimatedCost");
+					//String status=request.getParameter("status");
+					String remarks=request.getParameter("remarks");
+					String intiDate=request.getParameter("intiDate");
+					String fileId=request.getParameter("fileId");
+					
+				
+					 PFTSFile pf = new PFTSFile();
+					 pf.setProjectId(Long.parseLong(projectId));
+					 pf.setItemNomenclature(itemNomenclature);
+					 pf.setEstimatedCost(Double.parseDouble(estimatedCost));
+					 pf.setEnvisagedStatus("Demand to be Initiated");
+					 pf.setRemarks(remarks);
+					 pf.setPrbDateOfInti(new java.sql.Date(inputFormat.parse(intiDate).getTime()));
+					
+					 pf.setCreatedBy(UserId);
+					 pf.setCreatedDate(sdf.format(new Date()));
+					 pf.setEnvisagedFlag("Y");
+					 if(!fileId.equalsIgnoreCase("null")) {
+						 pf.setPftsFileId(Long.parseLong(fileId));
+						 count=service.getpftsFieldId(fileId);
+						 }
+				
+					if(count>0) {
+						result1=service.updateEnvi(pf,UserId);
+						if(result1>0) {
+			 				redir.addAttribute("result","Demand Edited successfully");
+			 			}else {
+			 				redir.addAttribute("resultfail","Demand Edited unsuccessful");
+			 			}
+					}else {
+					 result = service.addDemandfile(pf);
+					
+					if(result>0) {
+		 				redir.addAttribute("result","Demand Added successfully");
+		 			}else {
+		 				redir.addAttribute("resultfail","Demand Added unsuccessful");
+		 			}
+					}
+					redir.addAttribute("projectid",projectId);
+				
+					return "redirect:/ProcurementStatus.htm";
+					
+				}
+				catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside enviActionSubmit.htm "+UserId, e); 
+					return "static/Error";
+				}
+
+			}
+			
+			@RequestMapping(value = "getEnviEditData.htm", method = RequestMethod.GET)
+			public @ResponseBody String getEnviEditData(HttpServletRequest request, HttpSession ses) throws Exception
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside getEnviEditData.htm "+UserId);		
+				try {
+					String PftsFileId=request.getParameter("PftsFileId");
+					Object[] EnviData=service.getEnviData(PftsFileId);
+					Gson json = new Gson();
+					return json.toJson(EnviData);
+				}
+				catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside getEnviEditData.htm "+UserId, e); 
+					return "";
+				}
+
+			}
+			
+			@RequestMapping(value="enviEdit.htm")
+			public String enviEdit(HttpServletRequest req, HttpSession ses) throws Exception 
+			{
+				String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside enviEdit.htm "+UserId);		
+				try {
+					req.setAttribute("itemN", req.getParameter("itemN"));
+					req.setAttribute("estimatedCost", req.getParameter("estimatedCost"));
+					req.setAttribute("PDOfInitiation", req.getParameter("PDOfInitiation"));
+					req.setAttribute("status", req.getParameter("status"));
+					req.setAttribute("remarks", req.getParameter("remarks"));
+					req.setAttribute("fileId", req.getParameter("fileId"));
+					req.setAttribute("projectId", req.getParameter("projectId"));
+					req.setAttribute("value", "Edit");
+					
+					
+			
+					
+					return  "pfts/envisagedAction";
+				}catch (Exception e) 
+				{			
+					e.printStackTrace(); 
+					logger.error(new Date() +" Inside enviEdit.htm "+UserId, e); 
+					return "static/Error";	
+				}
+			}
 	
 }
 

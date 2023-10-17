@@ -20,4 +20,8 @@ public interface PFTSService {
 	public Object[] ProjectData(String projectid) throws Exception;
 	public Object[] getFilePDCInfo(String ileid) throws Exception;
 	public long UpdateFilePDCInfo(String fileid, String PDCDate, String IntegrationDate, String UserId) throws Exception;
+	public int getpftsFieldId(String fileId)throws Exception;
+	long updateEnvi(PFTSFile pf, String userId) throws Exception;
+	public Object[] getEnviData(String pftsFileId)throws Exception;
+
 }

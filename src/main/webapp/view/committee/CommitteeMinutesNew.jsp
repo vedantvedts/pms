@@ -66,6 +66,7 @@
 	//maps for pmrc and EB
 	Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 	Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
+	List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
 	
 	
 	%>
@@ -1026,7 +1027,53 @@ for(Object[] temp : invitedlist){
 										    <% }else{%>											
 												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
 											<%} %>
+											<!-- ********************************Future Demand Start *********************************** -->
+											<tr>
+											<th class="std" colspan="8"><span class="mainsubtitle">Future Demand</span></th>
+											</tr>
+											<tr>
+												 <th class="std" style="width: 15px !important;text-align: center;">SN</th>
+											 <!--  	 	 <th style="width: 150px;">Demand No </th>
+											  	 	 <th style="width: 80px;">Demand  Date</th> -->
+													 <th class="std"  colspan="3" style="width: 295px;"> Nomenclature</th>
+													 <th class="std" style="width: 80px;"> Est. Cost-Lakh &#8377;</th>
+													 <th class="std" style="max-width: 50px; "> Status</th>
+													 <th class="std" colspan="2" style="max-width: 310px;">Remarks</th>
+											</tr>
+										
+										    			    <% int a=0;
+										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
+										    Double estcost=0.0;
+										    Double socost=0.0;
+										    for(Object[] obj : envisagedDemandlist){ 
+										    	a++; %>
+											<tr>
+												<td class="std" ><%=a%></td>
+											<!-- 	<td >--</td>
+												<td  class="std">--</td> -->
+												<td class="std" colspan="3" ><%=obj[3]%></td>
+												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
+												<td class="std" > <%=obj[6]%> </td>
+												<td class="std" colspan="2" ><%=obj[4]%> </td>		
+											</tr>		
+											<%
+												estcost += Double.parseDouble(obj[2].toString());
+										    }%>
+										    
+										    <tr>
+										    	<td  class="std"colspan="6" style="text-align: right;"><b>Total</b></td>
+										    	<td class="std" style="text-align: right;" colspan="4"><b><%=df.format(estcost)%></b></td>
+										    </tr>
+										    
+										    
+										    <% }else{%>											
+												<tr><td colspan="8" class="std" style="text-align: center;">Nil </td></tr>
+											<%} %>
+											
+									<!-- ********************************Future Demand End *********************************** -->
+											
 											 <tr >
+											 
 												<th  class="std"  colspan="8">Orders Placed ( > &#8377; <% if (projectdatadetails != null && projectdatadetails[13] != null) { %>
 													<%=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")%> ) <% } else { %> - )<% } %>
 												</th>

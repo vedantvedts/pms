@@ -410,6 +410,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 }else if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("EB")){
 	before6months = LocalDate.now().minusMonths(6);
 } 
+List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
 %>
 
 
@@ -1753,7 +1754,61 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										    <% }else{%>											
 												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
 											<%} %>
+											
 										</table>
+										<!-- ********************************Future Demand Start *********************************** -->
+										<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse; width: 970px !important;"  >
+											<thead>
+											<tr>
+											 	<th colspan="8">
+											 		<b class="mainsubtitle">Future Demand</b>
+											 	</th>
+											 </tr>
+										
+										
+										<tr>
+											<th  style="width: 15px !important;text-align: center;">SN</th>
+									<!-- 		<th  style="width: 175px;">Demand No</th>
+											<th  style="width: 100px; ">Demand Date</th> -->
+											<th  colspan="2" style="width: 430px;"> Nomenclature</th>
+											<th  style="width: 80px;"> Est. Cost</th>
+											<th  style="width: 150px; "> Status</th>
+											<th  style="width: 295px;">Remarks</th>
+										</tr>
+									</thead>
+									    			    <% int a=0;
+										    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
+										    Double estcost=0.0;
+										    Double socost=0.0;
+										    for(Object[] obj : envisagedDemandlist){ 
+										    	a++; %>
+											<tr>
+												<td ><%=a%></td>
+											<!-- 	<td >--</td>
+												<td  >--</td> -->
+												<td  colspan="2" ><%=obj[3]%></td>
+												<td  style=" text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
+												<td  > <%=obj[6]%> </td>
+												<td  ><%=obj[4]%> </td>		
+											</tr>		
+											<%
+												estcost += Double.parseDouble(obj[2].toString());
+										    }%>
+										    
+										    <tr>
+										    	<td colspan="3" style="text-align: right;"><b>Total</b></td>
+										    	<td style="text-align: right;"><b><%=df.format(estcost)%></b></td>
+										    	<td colspan="4" style="text-align: right;"></td>
+										    </tr>
+										    
+										    
+										    <% }else{%>											
+												<tr><td colspan="8"  style="text-align: center;">Nil </td></tr>
+											<%} %>
+											
+										</table>
+									<!-- ********************************Future Demand End *********************************** -->
+					
 								
 								
 									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
@@ -1888,12 +1943,13 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 									 	</tr>
 									</thead>
 								</table>	 
-							 	<table class="subtables" style="align: left; margin-top: 00px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
+							 <table class="subtables" style="align: left; margin-top: 00px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
 									<thead>
 									 	<tr>
 											<th style="width: 30px;">SN</th>
 											<th style="width: 280px;">Item Name</th>
 											<th style="width: 130px;">Est/SO Cost<br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
+											<th style="width: 20px;">0</th>
 											<th style="width: 20px;">1</th>
 											<th style="width: 20px;">2</th>
 											<th style="width: 20px;">3</th>
@@ -1938,6 +1994,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 														<%=proc[5] %>
 													<%} %>
 												</td>
+												<td style="background-color: green;"></td>
 												<% int filestatus = Integer.parseInt(proc[13].toString());
 													int tempstatus = filestatus;
 												%>
@@ -1963,9 +2020,36 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 													<%if(proc[15]!=null){ %> <%=sdf.format(sdf1.parse(proc[15].toString()))%> <%}else{ %> - <%} %>
 												</td>
 											</tr>
-										<%} %>
+											<%}if(envisagedDemandlist!=null && envisagedDemandlist.size()>0){
+										for(Object[] envi : envisagedDemandlist){psn++; %>
+										<tr>
+												<td style="text-align:center; "><%=psn %></td>
+												<td><%=envi[3] %></td>
+												<td style="text-align: right;"><%=envi[2] %></td>
+												<td style="background-color: #F96E16;text-align: center; ">*</td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td></td>
+												<td style="text-align: center;">-</td>
+												<td style="text-align: center;">-</td>
+												</tr>
+										<%}} %>
 										
-										<%if(psn ==0 ){ %>
+										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
 											<tr>
 										      <td colspan="22" style="text-align: center;">Nil</td>
 										   </tr>
@@ -1973,7 +2057,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										
 								 	</tbody>
 								</table>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;font-size: 12px;" >
+								<!-- <table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;font-size: 12px;" >
 									<tr>
 										<td style="width: 3%;">1</td>
 										<td style="width: 22%;">Demand Released from Division</td>
@@ -2024,7 +2108,65 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 										<td></td>
 										<td></td>
 									</tr>
-								</table> 
+								</table>  -->
+						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
+									<tr>
+										<td style="width: 3%;">0</td>
+										<td style="width: 22%;">Demand to be Initiated</td>
+											<td>5</td>
+										<td>Receipt of Quotations</td>
+										<td>10</td>
+										<td>Order Placement</td>
+											<td>15</td>
+										<td>Inward Inspection Clerance</td>
+									
+									</tr>
+									<tr>
+									<td style="width: 3%;">1</td>
+										<td style="width: 22%;">Demand Released from Division</td>
+										<td style="width: 3%;">6</td>
+										<td style="width: 22%;">Tender Opening</td>
+										<td style="width: 3%;">11</td>
+										<td style="width: 22%;">Issue of CDEC / EDEC</td>
+										<td style="width: 3%;">16</td>
+										<td style="width: 22%;">Payment Process</td>
+									
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>SPC Cleared</td>
+									<td>7</td>
+										<td>TCEC Approved</td>
+										<td>12</td>
+										<td>Realization Completed</td>
+										<td>17</td>
+										<td>Payment Released</td>
+									
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>EPC Approved</td>
+									<td>8</td>
+										<td>TPC Approved</td>
+										<td>13</td>
+										<td>ATP/QTP Completed</td>
+									
+										<td></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>Tender Enquiry Floated</td>
+										<td>9</td>
+										<td>Financial Sanction</td>
+										<td>14</td>
+										<td>Delivery at Stores</td>
+									
+										<td></td>
+										<td></td>
+									</tr>
+								</table>						  
+               
 									  
                
 							

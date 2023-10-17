@@ -622,7 +622,12 @@ public class PrintController {
 	    	List<Object[]> projectdatadetails  = new ArrayList<Object[]>();
 	    	List<Object[]> TechWorkDataList =new ArrayList<Object[]>();
     		List<List<Object[]>> milestonesubsystemsnew = new ArrayList<List<Object[]>>();
-	    	
+    		//****************************envi download start**********************************
+    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+
+    		
 	    	List<List<Object[]>> ProjectRevList =new ArrayList<List<Object[]>>();
 	    	
 	    	
@@ -2280,6 +2285,10 @@ public class PrintController {
 				}
 				pdffiles.add(pdfs);
 	    		
+				List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+				envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+				req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+	    	
 	    		
 		/* -------------------------------------------------------------------------------------------------------------- */  		
 	    		 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectattribute[0]+"&rupess="+10000000;

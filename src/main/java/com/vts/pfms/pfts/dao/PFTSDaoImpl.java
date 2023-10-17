@@ -23,7 +23,7 @@ public  class PFTSDaoImpl implements PFTSDao{
 	
 	
 	private static final String PROJECTSLIST="SELECT projectid, projectcode, projectname FROM project_master";
-	private static final String FILESTATUS="SELECT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName,  s.PftsStatusId  FROM pfts_file f, pfts_status s WHERE f.ProjectId=:projectid AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<19 and f.isactive='1'";
+	private static final String FILESTATUS="SELECT DISTINCT f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, s.PftsStatus, s.PftsStageName, s.PftsStatusId,f.EnvisagedFlag FROM pfts_file f, pfts_status s WHERE f.ProjectId =:projectid AND f.PftsStatusId = s.PftsStatusId AND s.PftsStatusId < 19 AND f.isactive = '1' UNION SELECT  f.PftsFileId, f.DemandNo, f.DemandDate, f.EstimatedCost, f.ItemNomenclature, NULL , NULL , NULL ,f.EnvisagedFlag FROM pfts_file f WHERE f.ProjectId =:projectid AND f.EnvisagedFlag='Y' AND f.isactive = '1'";
 	private static final String PrevDemandFile ="SELECT ProjectId, DemandNo, DemandDate, ItemNomenclature, EstimatedCost FROM pfts_file WHERE ProjectId=:projectid";
 	private static final String StatusList="SELECT s.PftsStatusId, s.PftsStatus, s.PftsStageName FROM pfts_status s WHERE s.PftsStatusId > (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) AND CASE WHEN (SELECT PftsStatusId FROM pfts_file WHERE PftsFileId=:fileid) < 10 THEN s.PftsStatusId <= 10 ELSE TRUE END ORDER BY pftsstatusid ";
 	private static final String updateCostDetails="UPDATE pfts_file SET OrderNo=:orderno, OrderCost=:ordercost, DpDate=:dpdate WHERE PftsFileId=:fileid";
@@ -166,5 +166,40 @@ public  class PFTSDaoImpl implements PFTSDao{
 		manager.merge(file);
 		manager.flush();
 		return file.getPftsFileId();
+	}
+	
+	
+	private static final String GETPFTSCOUNT = "SELECT COUNT(PftsFileId) FROM pfts_file WHERE PftsFileId=:pftsFileId AND IsActive='1'";
+	@Override
+	public int getpftsFieldId(String pftsFileId) throws Exception {
+		Query query=manager.createNativeQuery(GETPFTSCOUNT);
+		query.setParameter("pftsFileId", pftsFileId);
+		int result =Integer.parseInt(query.getSingleResult().toString());
+		return result;
+	}
+	private static final String UPDATEENVI = "UPDATE pfts_file SET ItemNomenclature=:ItemNomenclature,EstimatedCost=:EstimatedCost,PrbDateOfInti=:PrbDateOfInti,Remarks=:Remarks,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate WHERE PftsFileId=:PftsFileId";
+	@Override
+	public Long updatepftsEnvi(PFTSFile pf) throws Exception {
+		Query query=manager.createNativeQuery(UPDATEENVI);
+		query.setParameter("PftsFileId", pf.getPftsFileId());
+		query.setParameter("EstimatedCost", pf.getEstimatedCost());
+		query.setParameter("ItemNomenclature", pf.getItemNomenclature());
+		query.setParameter("Remarks", pf.getRemarks());
+		query.setParameter("PrbDateOfInti", pf.getPrbDateOfInti());
+		query.setParameter("ModifiedBy", pf.getModifiedBy());
+		query.setParameter("ModifiedDate", pf.getModifiedDate());
+		//query.setParameter("EnvisagedStatus", pf.getEnvisagedStatus());
+		
+		return Long.valueOf(query.executeUpdate()) ;
+	}
+	private static final String GETENVIDATA ="SELECT PftsFileId,ItemNomenclature,EstimatedCost,PrbDateOfInti,EnvisagedStatus,Remarks FROM pfts_file WHERE PftsFileId=:PftsFileId";
+
+
+	@Override
+	public Object[] getEnviData(String PftsFileId)throws Exception
+	{
+		Query query=manager.createNativeQuery(GETENVIDATA);
+		query.setParameter("PftsFileId", PftsFileId);
+		return ( Object[])query.getSingleResult();
 	}
 }

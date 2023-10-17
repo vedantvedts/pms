@@ -106,4 +106,6 @@ public interface PrintDao {
 	public int BriefingPointsUpdate(String point, String activityid, String status)throws Exception;
 	public int PresentationNameUpdate(String presentationName, String scheduleid) throws Exception;
 	public int MomUpdate(String presentationName, String scheduleid) throws Exception;
+	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
+
 }

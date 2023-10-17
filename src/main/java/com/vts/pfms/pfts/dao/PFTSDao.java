@@ -22,4 +22,7 @@ public interface PFTSDao {
 	public Object[] getFilePDCInfo(String fileid) throws Exception;
 	public PFTSFile getPftsFile(String pftsFileId) throws Exception;
 	public long editPftsFile(PFTSFile file) throws Exception;
+	public int getpftsFieldId(String enviId)throws Exception;
+	Long updatepftsEnvi(PFTSFile pf) throws Exception;
+	public Object[] getEnviData(String pftsFileId)throws Exception;
 }

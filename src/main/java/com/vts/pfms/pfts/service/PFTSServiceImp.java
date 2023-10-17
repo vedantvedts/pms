@@ -62,8 +62,10 @@ public class PFTSServiceImp implements PFTSService{
 			for(Object[] obj:data) {
 				DemandDetails DD =new DemandDetails();
 				DD.setProjectId(Long.parseLong(obj[0].toString()));
-				DD.setDemandNo(obj[1].toString());
-				DD.setDemandDate(obj[2].toString());
+				if(obj[1]!=null && obj[2]!=null) {
+					DD.setDemandNo(obj[1].toString());
+					DD.setDemandDate(obj[2].toString());
+				}
 				DD.setItemFor(obj[3].toString());
 				DD.setEstimatedCost(Double.parseDouble(obj[4].toString()));
 				pervDD.add(DD);
@@ -252,5 +254,22 @@ public class PFTSServiceImp implements PFTSService{
 		fileFetch.setPDC(sdf.format(rdf.parse(PDCDate)));
 		fileFetch.setIntegrationDate(sdf.format(rdf.parse(IntegrationDate)));
 		return dao.addDemandfile(fileFetch);
+	}
+	
+	@Override
+	public int getpftsFieldId(String enviId) throws Exception {
+		return dao.getpftsFieldId(enviId);
+	}
+
+	@Override
+	public long updateEnvi(PFTSFile pf, String userId) throws Exception {
+		pf.setModifiedBy(userId);
+		pf.setModifiedDate(sdf.format(new Date()));
+		return dao.updatepftsEnvi(pf);
+	}
+	@Override
+	public Object[] getEnviData(String PftsFileId)throws Exception
+	{
+		return dao.getEnviData(PftsFileId);
 	}
 }

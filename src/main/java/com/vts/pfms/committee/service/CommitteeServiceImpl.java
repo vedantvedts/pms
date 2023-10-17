@@ -3232,4 +3232,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 		
 	}
 	
+	@Override
+	public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
+		return dao.getEnvisagedDemandList(projectid);
+	}
+	
 }

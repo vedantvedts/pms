@@ -236,13 +236,22 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 					   							<label class="control-label" style="font-size: 17px;font-weight:bold; margin-bottom: .0rem;">Project : </label>
 					   						</td>
 									<td  style="border: 0 ">
-										<form method="post" action="ProcurementStatus.htm" id="projectchange" >
+								<%-- 		<form method="post" action="ProcurementStatus.htm" id="projectchange" >
 											
 											<select class="form-control selectdee select2-hidden-accessible" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<%for(Object[] obj : projectslist){
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 													%>
 												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4]+projectshortName %></option>
+												<%} %>
+											</select>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+										</form> --%>
+										
+											<form method="post" action="ProcurementStatus.htm" id="projectchange" >
+											<select class="form-control selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+												<%for(Object[] obj : projectslist){ %>
+												<option value=<%=obj[0]%><%if(projectId.equals(obj[0].toString())){ %> selected="selected" <%} %> ><%=obj[4] %></option>
 												<%} %>
 											</select>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -271,7 +280,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                      <%for(Object[] fileStatus:fileStatusList){ %>
 	                                      <tr>
                                             <td><%=SN++%></td>
-                                            <td><%=fileStatus[1]%></td>
+                                         <td><% if(fileStatus[1]!=null){ %> <%=fileStatus[1]%><%}else %>--</td>
                                             <td><%=fileStatus[4]%></td>
                                             <td style="text-align: right;">
                                             <%if(fileStatus[3]!=null) {%>
@@ -280,7 +289,29 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
                                             </td>
                                             <td >
                                               <table style="margin-left:4rem;">
+                                              
+                                                <%if(fileStatus[8]!=null ){
+                                            	  if(fileStatus[8].toString().equalsIgnoreCase("Y")){
+                                            	  %>
+                                            	
+                                              <tr> 
+                                              <td>
+                                              <form id="enviEditForm" action="#"  >
+                                              <button class="btn btn-sm"  formaction="enviEdit.htm" id="enviEditBtn" type="button"  onclick="openEnviform('<%=fileStatus[0]%>')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                            <button class="btn btn-sm" id="fileCloseBtn"  onclick="return fileClose()" formaction="FileInActive.htm"><i class="fa fa-times" aria-hidden="true" ></i></button>
+                                             <input type="hidden" name="itemN" id="itemN" >
+                                             <input type="hidden" name="estimatedCost" id="estimatedCost">
+                                             <input type="hidden" name="PDOfInitiation" id="PDOfInitiation">
+                                             <input type="hidden" name="status" id="status">
+                                             <input type="hidden" name="remarks" id="remarks">
+                                             <input type="hidden" name="fileId" id="fileId" value="<%=fileStatus[0]%>">
+                                             <input type="hidden" name="projectId" value="<%=projectId%>">
+                                             </form> </td>
+                                              </tr>
+                                              <%} }%>
+                                              
                                                <tr>
+                                               <% if(fileStatus[7] !=null){ %>
                                                 <td><%=fileStatus[6]%></td>
                                                 <%if(!fileStatus[7].toString().equals("19")){ %>
                                                    <td>
@@ -301,7 +332,7 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                                                   <%} %>
                                                    </form>
                                                    </td>
-                                                  <%} %>
+                                                  <%} }%>
                                                </tr>
                                               </table>
                                             </td>
@@ -311,11 +342,21 @@ Format format = com.ibm.icu.text.NumberFormat.getCurrencyInstance(new Locale("en
 	                              </table>
 	                        </div>
 	                        <div align="center">
-	                           <form action="AddNewDemandFile.hmt" method="post">
+	                          <form action="#" id="enviForm" method="post">
+	                                <input type="hidden" name="projectId" value=<%=projectId%> />
+	                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                        		
+	                        		<button  class="btn add" type="button" formaction="AddNewDemandFile.htm" id="ibasAddBtn" onclick="addIbis()">Add Demand From IBAS</button>
+	                        		<button  class="btn btn-success" type="button" id="enviBtn" onclick="addEnvi()" formaction="envisagedAction.htm">ENVISAGED DEMAND</button>
+	                        		
+	                           </form>
+	                        
+	                        
+	                           <%-- <form action="AddNewDemandFile.hmt" method="post">
 	                                <input type="hidden" name="projectId" value=<%=projectId%> />
 	                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                        		<button  class="btn add" type="submit">Add Demand</button>
-	                           </form>
+	                           </form> --%>
 	                        </div>
 					 	</div>
 					</div>
@@ -441,6 +482,102 @@ $(document).ready(function(){
   });
   
 </script>
+
+<script type="text/javascript">
+function addEnvi() {
+	   var form = document.getElementById("enviForm");
+	   
+       if (form) {
+        var enviBtn = document.getElementById("enviBtn");
+           if (enviBtn) {
+               var formactionValue = enviBtn.getAttribute("formaction");
+               
+                form.setAttribute("action", formactionValue);
+                 form.submit();
+             }
+        }
+}
+function fileClose() {
+	var confirmation=confirm('Are You Sure To InActive ?');
+	if(confirmation){
+   var form = document.getElementById("enviEditForm");
+	   
+       if (form) {
+        var fileCloseBtn = document.getElementById("fileCloseBtn");
+           if (fileCloseBtn) {
+               var formactionValue = fileCloseBtn.getAttribute("formaction");
+               
+                form.setAttribute("action", formactionValue);
+                 form.submit();
+             }
+        }
+	}else{
+		return false;
+	}
+}
+
+function addIbis() {
+	   var form = document.getElementById("enviForm");
+	   
+       if (form) {
+        var ibasAddBtn = document.getElementById("ibasAddBtn");
+           if (ibasAddBtn) {
+               var formactionValue = ibasAddBtn.getAttribute("formaction");
+               
+                form.setAttribute("action", formactionValue);
+                 form.submit();
+             }
+        }
+}
+
+
+
+function openEnviform(PftsFileId) {
+	
+	$('#fileId').val(PftsFileId);
+	$.ajax({
+		type : "GET",
+		url : "getEnviEditData.htm",
+		data : {
+			PftsFileId : PftsFileId
+		},
+		datatype : 'json',
+		success : function(result) {
+			var values = JSON.parse(result);
+			var date = new Date(values[3]);
+
+			// Get the date components
+			var day = date.getDate().toString().padStart(2, '0'); // Get day and pad with leading zero if necessary
+			var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (zero-based) and pad with leading zero if necessary
+			var year = date.getFullYear();
+			
+			var formattedDate = day+'-'+month+'-'+year;
+			$('#itemN').val(values[1]);
+			$('#estimatedCost').val(values[2]);
+			$('#PDOfInitiation').val(formattedDate);
+			$('#status').val(values[4]);
+			$('#remarks').val(values[5]);
+			var form = document.getElementById("enviEditForm");
+			   
+		      if (form) {
+		       var enviEditBtn = document.getElementById("enviEditBtn");
+		          if (enviEditBtn) {
+		              var formactionValue = enviEditBtn.getAttribute("formaction");
+		              
+		               form.setAttribute("action", formactionValue);
+		                form.submit();
+		            }
+		       }
+			
+
+		}
+	});	
+	
+	  
+}
+</script>
+
+
 <script type="text/javascript">
 
 function openEditform(fileId , demandid){
