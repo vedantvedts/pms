@@ -218,6 +218,8 @@ String ses=(String)request.getParameter("result");
 		                                    <th style=" text-align: center;" >Group Code</th>
 		                                    <th style=" text-align: center;" >Group Name</th>
 		                                    <th style=" text-align: center;" >Group Head Name</th>
+		                                    <th style=" text-align: center;" >TD Name</th>
+		                                    
 	                                    </tr>      
 			        
 			                          </thead>
@@ -225,10 +227,11 @@ String ses=(String)request.getParameter("result");
 	                                 <%for(Object[] obj:groupslist){ %>
 	                                     <tr>
 	                                         <td><input type="radio" name="groupid" value=<%=obj[0]%>  ></td> 
-	                                        <td><%=obj[6] %></td>
+	                                         <td><%=obj[6] %></td>
 	                                         <td><%=obj[1] %></td>
 	                                         <td ><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></td>
 	                                         <td > <%if(obj[3]!=null){%><%=obj[4]%>, <%=obj[5]%><%}else{ %>-<%} %></td>
+	                                         <td ><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>
 	                             </tbody>

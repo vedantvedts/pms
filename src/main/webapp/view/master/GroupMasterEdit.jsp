@@ -42,8 +42,7 @@ label{
 
 
 List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist");
-
-
+List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
 Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 
 
@@ -102,7 +101,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                            		<input  class="form-control form-control" value="<%=groupsdata[2] %>"  type="text" name="groupname" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 90%;" > 
                         		</div>
                     		</div>
                     		<div class="col-md-4">
@@ -114,6 +113,20 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 													<% for (  Object[] obj : groupheadlist){ %>
 											
 													<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[3].toString())) {%> selected="selected" <%} %>><%=obj[1]%>, <%=obj[2] %> </option>
+												
+													<%} %>
+									</select>
+                        		</div>
+                    		</div>
+                    		<div class="col-md-4">
+                        		<div class="form-group">
+                            		<label class="control-label">TD Name</label><span class="mandatory">*</span>
+                              		<select class="custom-select" name="tdId"  required="required" id ="tdId" style="font-size: 18px;">
+													<option disabled="true"  selected value="">---Select---</option>
+													
+													<% for (  Object[] obj : tdaddlist){ %>
+											
+											        	<option value=<%=obj[0]%> <%if(obj[0].toString().equalsIgnoreCase(groupsdata[7].toString())) {%> selected="selected" <%} %>><%=obj[2] %> </option>
 												
 													<%} %>
 									</select>
@@ -163,6 +176,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
 <script>
   $(document).ready(function(){
 	  $('#ghempid').select2();
+	  $('#tdId').select2();
   });
 </script>
 </html>

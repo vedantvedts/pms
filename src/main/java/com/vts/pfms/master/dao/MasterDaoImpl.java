@@ -55,11 +55,11 @@ public class MasterDaoImpl implements MasterDao {
 	
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(activitytypeid) AS 'count','activity' FROM milestone_activity_type WHERE isactive=1 AND activitytype LIKE :activityname";
-	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
+	private static final String GROUPLIST = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,dg.labcode,dt.tdcode FROM division_group dg,employee e, employee_desig ed, division_td dt WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND dg.tdid=dt.tdid  AND dg.isactive=1 AND dg.labcode=:labcode ORDER BY dg.groupid DESC";
 	private static final String GROUPHEADLIST ="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
 	private static final String GROUPADDCHECK ="SELECT SUM(IF(GroupCode =:gcode,1,0))   AS 'dCode','0' AS 'codecount'FROM division_group WHERE isactive=1 ";
-	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dg.isactive FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
-	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
+	private static final String GROUPDATA = "SELECT dg.GroupId,dg.GroupCode,dg.GroupName,dg.GroupHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dg.isactive,dg.tdid FROM division_group dg,employee e, employee_desig ed WHERE dg.GroupHeadId=e.empid AND e.desigid=ed.desigid AND  dg.groupid=:groupid";
+	private static final String GROUPUPDATE="UPDATE division_group SET GroupCode=:groupcode, GroupName=:groupname, GroupHeadId=:groupheadid , TDId=:tdId, ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE GroupId=:groupid";
 	private static final String LABLIST="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin FROM lab_master";
 	private static final String EMPLOYEELIST="SELECT empid, CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee WHERE isactive=1 ORDER BY srno ";
 	private static final String LABMASTEREDITDATA="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin,labtelno,labfaxno,labemail,labauthority,labauthorityid,labrfpemail,lablogo,labid from lab_master where labmasterid= :labmasterid";
@@ -444,6 +444,7 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("groupname", model.getGroupName());
 		query.setParameter("groupheadid", model.getGroupHeadId());
 		query.setParameter("groupid", model.getGroupId());
+		query.setParameter("tdId", model.getTDId());
 		query.setParameter("modifiedby", model.getModifiedBy());
 		query.setParameter("modifieddate", model.getModifiedDate());
 		query.setParameter("isactive", model.getIsActive());
@@ -678,5 +679,14 @@ public class MasterDaoImpl implements MasterDao {
 		query.setParameter("isactive", model.getIsActive());
         int count = (int)query.executeUpdate();
 		return count;
+	}
+
+	public static final String TDADDLIST="SELECT a.tdid,a.tdname,a.tdcode,a.labcode FROM division_td a WHERE a.isactive=1";
+	@Override
+	public List<Object[]> TDListAdd() throws Exception {
+		
+		Query query = manager.createNativeQuery(TDADDLIST);
+		List<Object[]> TDListAdd = (List<Object[]>)query.getResultList();
+		return TDListAdd;
 	}
 }

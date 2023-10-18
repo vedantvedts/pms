@@ -69,4 +69,5 @@ public interface MasterDao  {
 	public long TDAddSubmit(DivisionTd dtd)throws Exception;
 	public Object[] TDAddCheck(String tCode)throws Exception;
 	public int TDMasterUpdate(DivisionTd model)throws Exception;
+	public List<Object[]> TDListAdd()throws Exception;
 }

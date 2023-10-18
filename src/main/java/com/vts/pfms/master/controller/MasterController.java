@@ -694,7 +694,7 @@ public class MasterController {
 			if(Option.equalsIgnoreCase("add")) {
 				
 				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
-				
+				req.setAttribute("tdaddlist", service.TDListAdd().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
 				return "master/GroupMasterAdd";
 			}
 			
@@ -704,7 +704,7 @@ public class MasterController {
 				String groupid=req.getParameter("groupid");
 				req.setAttribute("groupsdata", service.GroupsData(groupid));
 				req.setAttribute("groupheadlist",service.GroupHeadList(LabCode));
-				
+				req.setAttribute("tdaddlist", service.TDListAdd().stream().filter(e-> LabCode.equalsIgnoreCase(e[3].toString())).collect(Collectors.toList()));
 				return "master/GroupMasterEdit";
 			}
 			
@@ -728,13 +728,15 @@ public class MasterController {
 					String groupCode=req.getParameter("gCode");
 					String groupName=req.getParameter("gName");
 					String GroupHeadName=req.getParameter("ghempid");
-			
+			        String tdid=req.getParameter("tdId");
+					
 					DivisionGroup dgm=new DivisionGroup();
 					dgm.setGroupCode(groupCode);
 					dgm.setGroupName(groupName);
 					dgm.setGroupHeadId(Long.parseLong(GroupHeadName));
 					dgm.setCreatedBy(UserId);
 					dgm.setLabCode(LabCode);
+					dgm.setTDId(tdid);
 					
 					long count=service.GroupAddSubmit(dgm);
 					if (count > 0) {
@@ -768,6 +770,7 @@ public class MasterController {
 			DivisionGroup model= new DivisionGroup();
 			model.setGroupCode(req.getParameter("groupcode"));
 			model.setGroupName(req.getParameter("groupname"));
+			model.setTDId(req.getParameter("tdId"));
 			model.setGroupHeadId(Long.parseLong(req.getParameter("ghempid")));
 			model.setGroupId(Long.parseLong(req.getParameter("groupid")));                 
 			model.setIsActive(Integer.valueOf(req.getParameter("isActive")));

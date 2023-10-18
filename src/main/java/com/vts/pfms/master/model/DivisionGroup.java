@@ -26,8 +26,15 @@ public class DivisionGroup {
 	private String ModifiedDate;
 	private int IsActive;
 	private String LabCode;
+	private String TDId;
 	
 	
+	public String getTDId() {
+		return TDId;
+	}
+	public void setTDId(String tDId) {
+		TDId = tDId;
+	}
 	public String getLabCode() {
 		return LabCode;
 	}

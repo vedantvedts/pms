@@ -55,7 +55,7 @@ table{
 <%
 
 List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist");
-
+List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
 
 %>
 
@@ -102,8 +102,8 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
         		 <form name="myfrm" action="GroupMasterAddSubmit.htm" id="groupAdd" method="POST"  >						
                	 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                    <div class="row"> 
-                		<div class="col-md-1"></div>
-                    		<div class="col-md-3">
+                		<!-- <div class="col-md-1"></div> -->
+                    		<div class="col-md-2">
                         		<div class="form-group">
                             		<label class="control-label">Group Code</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control"  type="text" name="gCode" id="groupCode" required="required" maxlength="3" style="font-size: 15px;"> 
@@ -112,10 +112,10 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
          					<div class="col-md-3">
                         		<div class="form-group">
                             		<label class="control-label">Group Name</label><span class="mandatory">*</span>
-                            		<input  class="form-control form-control"  type="text" name="gName" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 80%;" > 
+                            		<input  class="form-control form-control"  type="text" name="gName" id="groupName" required="required" maxlength="100" style=" font-size: 15px;text-transform: capitalize; width: 95%;" > 
                         		</div>
                     		</div>
-                    		<div class="col-md-5">
+                    		<div class="col-md-4">
                         		<div class="form-group">
                             		<label class="control-label">Group Head Name</label><span class="mandatory">*</span>
                               		<select class="custom-select" id="ghempid" required="required" name="ghempid">
@@ -129,7 +129,20 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
 									</select>
                         		</div>
                     		</div>
-                    		
+                    	<div class="col-md-3">
+                        	<div class="form-group">
+                            	<label class="control-label">TD Name</label><span class="mandatory">*</span>
+                            	<select class="custom-select" id="tdId" required="required" name="tdId">
+								     <option selected value="">Choose...</option>
+								
+								      <% for (  Object[] obj : tdaddlist){ %>
+						
+								     <option value=<%=obj[0]%>><%=obj[2]%> </option>
+							
+								     <%} %>
+				              </select> 
+                        	</div>
+                    	</div>
                     		        		
                         </div>   
                         
@@ -159,6 +172,7 @@ List<Object[]> groupheadlist=(List<Object[]>)request.getAttribute("groupheadlist
 <script type='text/javascript'> 
 $(document).ready(function() {
    $('#ghempid').select2();
+   $('#tdId').select2();
 });
 </script>
 </body>

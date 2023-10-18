@@ -527,6 +527,12 @@ public class MasterServiceImpl implements MasterService {
 		model.setModifiedDate(sdf1.format(new Date()));		
 		return dao.TDMasterUpdate(model);
 	}
+
+	@Override
+	public List<Object[]> TDListAdd() throws Exception {
+		
+		return dao.TDListAdd();
+	}
 	
 	
 }

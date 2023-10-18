@@ -1,5 +1,6 @@
 package com.vts.pfms.master.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -68,4 +69,5 @@ public interface MasterService {
 	public long TDAddSubmit(DivisionTd dtd)throws Exception;
 	public Object[] TDAddCheck(String tCode)throws Exception;
 	public int TDMasterUpdate(DivisionTd model)throws Exception;
+	public List<Object[]> TDListAdd()throws Exception;
 }
