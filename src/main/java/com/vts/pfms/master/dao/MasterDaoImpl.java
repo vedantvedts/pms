@@ -15,6 +15,7 @@ import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
@@ -614,5 +615,68 @@ public class MasterDaoImpl implements MasterDao {
 	{
 		PfmsFeedbackAttach Attachment= manager.find(PfmsFeedbackAttach.class,Long.parseLong(achmentid));
 		return Attachment;
+	}
+
+	private static final String TDLIST="SELECT a.tdid ,a.tdcode, a.tdname , a.tdheadid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation ,a.labcode FROM  division_td  a,employee e, employee_desig ed WHERE a.tdheadid=e.empid AND e.desigid=ed.desigid AND a.isactive=1 AND a.labcode=:labcode ORDER BY a.tdid  DESC";
+	@Override
+	public List<Object[]> TDList(String LabCode) throws Exception {
+		
+		Query query = manager.createNativeQuery(TDLIST);
+		query.setParameter("labcode", LabCode);
+		List<Object[]> TDList = (List<Object[]>) query.getResultList();
+		return TDList;
+	}
+	
+	private static final String TDHEADLIST="SELECT e.empid,CONCAT(IFNULL(e.title,''), e.empname)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desigid=ed.desigid AND e.isactive=1 AND e.labcode=:labcode ORDER BY e.srno";
+	@Override
+	public List<Object[]> TDHeadList(String LabCode) throws Exception 
+	{		
+		Query query=manager.createNativeQuery(TDHEADLIST);
+		query.setParameter("labcode", LabCode);
+		List<Object[]> TDHeadList=(List<Object[]>)query.getResultList();
+
+		return TDHeadList;
+	}
+	
+	public static final String TDDATA="SELECT dt.TDId,dt.TDCode,dt.TDName,dt.TDHeadId,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',ed.designation,dt.isactive FROM division_td dt,employee e, employee_desig ed WHERE dt.TDHeadId=e.empid AND e.desigid=ed.desigid AND  dt.tdid=:tdid";
+	@Override
+	public Object[] TDsData(String tdid)throws Exception
+	{	
+		Query query=manager.createNativeQuery(TDDATA);
+		query.setParameter("tdid", tdid);				
+		return( Object[] )query.getSingleResult();
+	}
+
+	@Override
+	public long TDAddSubmit(DivisionTd dtd) throws Exception {
+		
+		manager.persist(dtd);
+		manager.flush();
+		return dtd.getTdId();
+	}
+
+	public static final String TDCHECK="SELECT SUM(IF(TDCode =:tcode,1,0))   AS 'tCode','0' AS 'codecount'FROM division_td WHERE isactive=1 ";
+	@Override
+	public Object[] TDAddCheck(String tCode) throws Exception {
+		
+		Query query = manager.createNativeQuery(TDCHECK);
+		query.setParameter("tcode", tCode);
+		return(Object[])query.getSingleResult();
+	}
+
+	public static final String TDUPDATE="UPDATE division_td SET TDCode=:tdcode, TDName=:tdname, TDHeadId=:tdheadid ,  ModifiedBy=:modifiedby, ModifiedDate=:modifieddate, IsActive=:isactive WHERE TDId=:tdid";
+	@Override
+	public int TDMasterUpdate(DivisionTd model) throws Exception {
+		
+		Query query = manager.createNativeQuery(TDUPDATE);
+		query.setParameter("tdid", model.getTdId());
+		query.setParameter("tdcode", model.getTdCode());
+		query.setParameter("tdname", model.getTdName());
+		query.setParameter("tdheadid", model.getTdHeadId());
+		query.setParameter("modifiedby", model.getModifiedBy());
+		query.setParameter("modifieddate", model.getModifiedDate());
+		query.setParameter("isactive", model.getIsActive());
+        int count = (int)query.executeUpdate();
+		return count;
 	}
 }

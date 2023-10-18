@@ -34,6 +34,7 @@ import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -1117,6 +1118,164 @@ public class MasterController {
 	 }
 	 
 
+	 
+	 @RequestMapping(value="TDMaster.htm",method= {RequestMethod.GET})
+		public String TDMaster(Model model, HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir)throws Exception {
+			
+			String UserId= (String)ses.getAttribute("Username");
+			String LabCode =(String)ses.getAttribute("labcode");
+			
+			logger.info(new Date() +" Inside TDMaster.htm "+UserId);
+			try 
+			{
+				req.setAttribute("TDList",service.TDList(LabCode));
+				return "master/TDList";
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside TDMaster.htm "+UserId , e);
+				return "static/Error";
+			}
+			
+	 }
+			 @RequestMapping (value="TDMaster.htm", method= RequestMethod.POST)
+			public String TDMaster(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
+					
+					String Userid = (String) ses.getAttribute("Username");
+					String Option= req.getParameter("sub");
+					String LabCode = (String)ses.getAttribute("labcode");
+					
+					
+					logger.info(new Date() +"Inside TDMaster.htm "+ Userid);	
+
+					try {
+						
+					if(Option.equalsIgnoreCase("add")) {
+						
+						req.setAttribute("tdheadlist",service.TDHeadList(LabCode));
+						
+						return "master/TDMasterAdd";
+					}
+					
+					
+					else if(Option.equalsIgnoreCase("edit")) {
+						
+						String tdid=req.getParameter("tdid");
+						req.setAttribute("tdsdata", service.TDsData(tdid));
+						req.setAttribute("tdheadlist",service.TDHeadList(LabCode));
+						
+						return "master/TDMasterEdit";
+					}
+					
+					}
+					catch(Exception e){
+						
+						redir.addAttribute("resultfail", "Technical Issue");
+						logger.error(new Date() +" Inside TDMaster.htm "+ Userid, e);
+
+					}
+					
+					return "redirect:/TDMaster.htm";	
+				}
+			 
+			 @RequestMapping(value = "TDMasterAddSubmit.htm",method=RequestMethod.POST )
+				public String TDMasterAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+			    	
+				 String UserId = (String) ses.getAttribute("Username");
+				 String LabCode= (String)ses.getAttribute("labcode");
+				 
+			   logger.info(new Date() +"Inside TDMasterAddSubmit.htm "+UserId);	
+				
+					
+					try {				
+						String tdCode=req.getParameter("tCode");
+						String tdName=req.getParameter("tName");
+						String tdHeadName=req.getParameter("tdempid");
+				
+						DivisionTd dtd=new DivisionTd();
+					    dtd.setTdCode(tdCode);
+					    dtd.setTdName(tdName);
+					    dtd.setTdHeadId(Long.parseLong(tdHeadName));
+						dtd.setCreatedBy(UserId);
+						dtd.setLabCode(LabCode);
+						
+						long count=service.TDAddSubmit(dtd);
+						if (count > 0) {
+							redir.addAttribute("result", "TD Added Successfully");
+						} else {
+							redir.addAttribute("resultfail", "TD Adding Unsuccessfully");
+						}
+
+						return "redirect:/TDMaster.htm";
+					}
+					catch (Exception e) {
+							e.printStackTrace();
+							logger.error(new Date() +" Inside TDMasterAddSubmit.htm "+UserId, e);
+							return "static/Error";
+					}
+			    }
+
+			 
+			  @RequestMapping(value = "tdAddCheck.htm", method = RequestMethod.GET)
+			  public @ResponseBody String TDAddCheck(HttpSession ses, HttpServletRequest req) throws Exception 
+			  {
+				String UserId=(String)ses.getAttribute("Username");
+				Object[] TDCheck = null;
+				logger.info(new Date() +"Inside tdAddCheck.htm "+UserId);
+				try
+				{	  
+					String tCode=req.getParameter("tcode");
+					TDCheck =service.TDAddCheck(tCode);
+				}
+				catch (Exception e) {
+						e.printStackTrace(); logger.error(new Date() +"Inside tdAddCheck.htm "+UserId,e);
+				}
+				  Gson json = new Gson();
+				  return json.toJson(TDCheck); 
+			}
+			  
+		
+			  @RequestMapping (value="TDMasterEditSubmit.htm" , method=RequestMethod.POST)
+
+				public String TDMasterEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
+				{
+					
+					String Userid = (String) ses.getAttribute("Username");
+					
+					logger.info(new Date() +" Inside TDMasterEditSubmit.htm "+Userid );
+					
+					try {
+						
+					DivisionTd model= new DivisionTd();
+					model.setTdCode(req.getParameter("tdcode"));
+					model.setTdName(req.getParameter("tdname"));
+					model.setTdHeadId(Long.parseLong(req.getParameter("tdempid")));
+					model.setTdId(Long.parseLong(req.getParameter("tdid")));                 
+					model.setIsActive(Integer.valueOf(req.getParameter("isActive")));
+					model.setModifiedBy(Userid);    
+				
+					int count = service.TDMasterUpdate(model);
+					
+					if(count > 0 ) {
+						redir.addAttribute("result", "TD Edited Successfully");
+					}
+					
+					else {
+						redir.addAttribute("result ", "TD Edit Unsuccessful");
+					}
+					
+					}
+					catch(Exception e){
+						
+						e.printStackTrace();
+						redir.addAttribute("resultfail", "Technical Issue");
+						logger.error(new Date() +" Inside TDMasterEditSubmit.htm "+Userid , e);
+					}
+					
+					return "redirect:/TDMaster.htm";
+				}
+			  
+			  
 	 	
 
 }

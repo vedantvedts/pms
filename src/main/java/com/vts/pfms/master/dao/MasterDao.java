@@ -5,6 +5,7 @@ import java.util.List;
 import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
@@ -62,4 +63,10 @@ public interface MasterDao  {
 	public List<Object[]> GetfeedbackAttch()throws Exception;
 	public List<Object[]> GetfeedbackAttchForUser(String empid)throws Exception;
 	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception;
+	public List<Object[]> TDList(String LabCode)throws Exception;
+	public List<Object[]> TDHeadList(String LabCode) throws Exception;
+	public Object[] TDsData(String tdid) throws Exception;
+	public long TDAddSubmit(DivisionTd dtd)throws Exception;
+	public Object[] TDAddCheck(String tCode)throws Exception;
+	public int TDMasterUpdate(DivisionTd model)throws Exception;
 }

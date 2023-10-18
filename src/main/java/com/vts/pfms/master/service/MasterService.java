@@ -8,6 +8,7 @@ import com.vts.pfms.master.dto.DivisionEmployeeDto;
 import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
 import com.vts.pfms.master.model.PfmsFeedbackAttach;
@@ -61,4 +62,10 @@ public interface MasterService {
 	public Object[] FeedbackContent(String feedbackid) throws Exception;
 	public int CloseFeedback(String feedbackId , String remarks, String username)throws Exception;
 	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception;
+	public List<Object[]> TDList(String LabCode) throws Exception;
+	public List<Object[]> TDHeadList(String LabCode) throws Exception;
+	public Object[] TDsData(String tdid) throws Exception;
+	public long TDAddSubmit(DivisionTd dtd)throws Exception;
+	public Object[] TDAddCheck(String tCode)throws Exception;
+	public int TDMasterUpdate(DivisionTd model)throws Exception;
 }

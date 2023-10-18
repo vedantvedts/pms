@@ -29,6 +29,7 @@ import com.vts.pfms.master.dto.LabMasterAdd;
 import com.vts.pfms.master.dto.OfficerMasterAdd;
 import com.vts.pfms.master.model.DivisionEmployee;
 import com.vts.pfms.master.model.DivisionGroup;
+import com.vts.pfms.master.model.DivisionTd;
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.master.model.MilestoneActivityType;
 import com.vts.pfms.master.model.PfmsFeedback;
@@ -488,4 +489,44 @@ public class MasterServiceImpl implements MasterService {
 	public PfmsFeedbackAttach FeedbackAttachmentDownload(String achmentid) throws Exception {
 		return dao.FeedbackAttachmentDownload(achmentid);
 	}
+
+	@Override
+	public List<Object[]> TDList(String LabCode) throws Exception {
+		
+		return dao.TDList(LabCode);
+	}
+	
+	@Override
+	public List<Object[]> TDHeadList(String LabCode) throws Exception 
+	{
+		return dao.TDHeadList(LabCode);
+	}
+	
+	@Override
+	public Object[]  TDsData(String tdid)throws Exception
+	{	
+		return dao.TDsData(tdid); 
+	}
+
+	@Override
+	public long TDAddSubmit(DivisionTd dtd) throws Exception {
+		
+		dtd.setCreatedDate(sdf1.format(new Date()));
+		dtd.setIsActive(1);
+		return dao.TDAddSubmit(dtd);
+	}
+
+	@Override
+	public Object[] TDAddCheck(String tCode) throws Exception {
+		
+		return dao.TDAddCheck(tCode);
+	}
+
+	@Override
+	public int TDMasterUpdate(DivisionTd model) throws Exception {
+		model.setModifiedDate(sdf1.format(new Date()));		
+		return dao.TDMasterUpdate(model);
+	}
+	
+	
 }
