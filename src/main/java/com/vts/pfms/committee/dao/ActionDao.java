@@ -1,5 +1,6 @@
 package com.vts.pfms.committee.dao;
 
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.List;
 
@@ -10,6 +11,9 @@ import com.vts.pfms.committee.model.ActionSelf;
 import com.vts.pfms.committee.model.ActionSub;
 import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
+import com.vts.pfms.committee.model.RfaAction;
+import com.vts.pfms.committee.model.RfaAssign;
+import com.vts.pfms.committee.model.RfaTransaction;
 
 public interface ActionDao {
 
@@ -97,5 +101,40 @@ public interface ActionDao {
 	public Long AddFavouriteList(FavouriteList fav) throws Exception;	
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
 	public ActionAssign getActionAssign(String actionassignId) throws Exception;
+	public List<Object[]> GetRfaActionList(String fdate, String tdate, String ProjectId,String EmpId) throws Exception;
+	public List<Object[]> ProjectTypeList() throws Exception;
+	public List<Object[]> PriorityList() throws Exception;
+	public Long RfaActionSubmit(RfaAction rfa) throws Exception;
+	public Object[] GetDivisionCode(String Division) throws Exception;
+	public Long GetRfaCount() throws Exception;
+	public Object[] RfaActionEdit(String rfaid) throws Exception;
+	//public int RfaInspectionEdit(String rfaid) throws Exception;
+	public Long RfaEditSubmit(RfaAction rfa)throws Exception;
+    public Object[] RfaLabDetails(String LabCode) throws Exception;
+	public Object[] RfaPrintData(String rfaid)throws Exception;
+	public List<Object[]> RfaForwardList(String EmpId)throws Exception;
+	public List<Object[]> RfaInspectionApprovalList(String EmpId)throws Exception;
+	public List<Object[]> RfaInspectionList(String EmpId)throws Exception;
+	public List<Object[]> RfaForwardApprovedList(String EmpId)throws Exception;
+	public List<Object[]> RfaInspectionApprovedList(String EmpId)throws Exception;
+	public List<String> ListEmps(String user,String projectid) throws Exception;
+	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, RfaTransaction tr, String rfa) throws Exception;
+	public Object[] RfaList(String rfa,String EmpId) throws Exception;
+	public BigInteger GetDhTdList(String EmpId) throws Exception;
+	public BigInteger GetGhTdList(String EmpId) throws Exception;
+	public String getUserId(String rfa) throws Exception;
+	public String getAssineeId(String rfa) throws Exception;
+	public BigInteger GetPdTdList(String EmpId) throws Exception;
+	public Object[] getRfaAssign(String rfa) throws Exception;
+	public Long RfaModalSubmit(RfaAssign assign)throws Exception;
+	public Object[] RfaAssignAjax(String rfaId) throws Exception;
+	public Long RfaModalUpdate(RfaAssign assign) throws Exception;
+	public Long RfaReturnList(List<PfmsNotification> x, RfaAction rf, RfaTransaction tr, String rfa)throws Exception;
+	public String getAssignDetails(String empId, Long rfaId)throws Exception;
+	public Object[] getRfaAddData(String rfaId)throws Exception;
+	public Object[] getRfaInspectionData(String rfaId)throws Exception;
+	public List<Object[]> getrfaRemarks(String rfaId,String Status)throws Exception;
+	public String getAssineId(String rfa)throws Exception;
+	
 	
  }
