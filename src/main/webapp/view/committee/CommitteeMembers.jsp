@@ -162,7 +162,7 @@ String ses=(String)request.getParameter("result");
 							
 								<p style="float: right;">
 									
-									<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project : <%=initiationdata[1]%> <%}else{ %>Non-Project<%} %>
+									<%if(Long.parseLong(projectid)>0){ %> Project: <%=projectdata[4] %><%}else if (Long.parseLong(divisionid)>0){ %>  Division: <%=divisiondata[1] %> <%}else if(Long.parseLong(initiationid)>0){ %>Pre-Project: <%=initiationdata[1]%> <%}else{ %>Non-Project<%} %>
 									
 								</p>
 							</h3>
@@ -225,7 +225,7 @@ String ses=(String)request.getParameter("result");
 										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
 				    						<option selected value="0" >None</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
+												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
 											<%} %>
 				  						</select>
 				  						<%if(co_chairperson!=null){ %>
@@ -280,7 +280,7 @@ String ses=(String)request.getParameter("result");
 										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%> (<%=obj[3] %>)</option>
+												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
 											<%} %>
 				  						</select>
 				  						<%if(proxysecretary!=null){ %>
@@ -319,7 +319,7 @@ String ses=(String)request.getParameter("result");
 											%>
 											
 											<tr>
-												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
+												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
 												<td>
 													<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -357,7 +357,7 @@ String ses=(String)request.getParameter("result");
 									%>
 									
 									<tr>
-										<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>) (<%=obj[9] %>)</td>
+										<td class="tdclass"><%=count%> )</td><td><%=obj[2]%>, <%=obj[4]%> (<%=obj[9] %>)</td>
 										<td>
 										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -395,7 +395,7 @@ String ses=(String)request.getParameter("result");
 											if(Long.parseLong(obj[7].toString())==0){
 									%>
 								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%> (<%=obj[4]%>)</td>
+									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
 									<td>
 										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -922,7 +922,7 @@ function replacerepdd(){
 						s += '<option value="">'+"--Select--"+ '</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
+											+values[i][1] + ", " +values[i][3]
 											+ '</option>';
 								} 
 								 
@@ -963,7 +963,7 @@ function replacerepdd(){
 					s += '<option value="">'+"--Select--"+ '</option>';
 							 for (i = 0; i < values.length; i++) {									
 								s += '<option value="'+values[i][0]+'">'
-										+values[i][1] + " (" +values[i][3]+")" 
+										+values[i][1]+", " +  values[i][3]
 										+ '</option>';
 							} 
 							 

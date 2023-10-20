@@ -160,8 +160,8 @@ h6{
 
                     		<div class="col-md-4">
                         		<div class="form-group">
-                            		<label class="control-label">First Oic  </label>
-                            		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                            		<label class="control-label">First OIC  </label>
+                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1" onchange="changeempoic1()" >
 									</div>
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
@@ -174,12 +174,12 @@ h6{
                     		</div>
                     		<div class="col-md-4 ">
                         		<div class="form-group">
-                            		<label class="control-label">Second Oic </label>
-                            		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
+                            		<label class="control-label">Second OIC </label>
+                            		<div style="float: right;"  > <label>All : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2" onchange="changeempoic2()" >
 									</div>
                               		<select class="form-control selectdee" id="EmpId1" required="required" name="EmpId1">
-    									<option disabled="true"  selected value="">Choose...</option>
+    									<option disabled="true" selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
 											<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%> </option>
 											<%} %>
@@ -285,7 +285,7 @@ function changeempoic2()
 						s += '<option value="">'+"--Select--"+ '</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][2]+")" 
+											+values[i][1] + ", " +values[i][2] 
 											+ '</option>';
 								} 
 								 

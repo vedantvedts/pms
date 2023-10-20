@@ -201,7 +201,7 @@ String divisionid=divisiondata[0].toString();
 			             for(Object[] obj:empoyeelist){ %> 
 			           
 			            <option value="<%=obj[0] %>">
-				        	<%=obj[1].toString()%>&nbsp;&nbsp;-&nbsp;&nbsp;<%=obj[2].toString()%></option>
+				        	<%=obj[1].toString()%>, <%=obj[2].toString()%></option>
 			        <% }} %>	  	
 				 	</select>
 	    </td>

@@ -140,7 +140,7 @@ h6{
                                 
                     		<div class="col-md-4">
                         		<div class="form-group">
-                            		<label class="control-label">First Oic  </label>
+                            		<label class="control-label">First OIC  </label>
                               		<select class="form-control selectdee" id="EmpId" required="required" name="EmpId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>
@@ -153,7 +153,7 @@ h6{
                     		</div>
                     		<div class="col-md-4 ">
                         		<div class="form-group">
-                            		<label class="control-label">Second Oic </label>
+                            		<label class="control-label">Second OIC </label>
                               		<select class="form-control selectdee" id="EmpId1" required="required" name="EmpId1">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : EmployeeList) {%>

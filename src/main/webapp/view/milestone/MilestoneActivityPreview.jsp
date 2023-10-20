@@ -74,7 +74,7 @@ var s = '';
 	s += '<option value="">'+"--Select--"+ '</option>';
 			 for (i = 0; i < values.length; i++) {									
 				s += '<option value="'+values[i][0]+'">'
-						+values[i][1] + " (" +values[i][2]+")" 
+						+values[i][1] + ", " +values[i][2]
 						+ '</option>';
 			} 
 			 
@@ -180,7 +180,7 @@ var s = '';
                     	      	</div>
                         	
                         	<div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
+                        	<label class="control-label">First OIC  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1M" onchange="changeempoic1('<%=getMA[8]%>','M')" >
 									</div>
@@ -190,7 +190,7 @@ var s = '';
   									</select>
                         	</div>
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
+                        		<label class="control-label">Second OIC </label>
                         		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2M" onchange="changeempoic2('<%=getMA[9]%>','M')" >
 									</div>
@@ -298,7 +298,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                     	      	</div>
                         	
                         	<div class="col-md-3 " align="center"><br>
-                        	<label class="control-label">First Oic  </label>
+                        	<label class="control-label">First OIC  </label>
                         	<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox1<%=ActivityA[0] %>" onchange="changeempoic1('<%=ActivityA[13]%>','<%=ActivityA[0] %>')" >
 									</div>
@@ -308,7 +308,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
   									</select>
                         	</div>
                         	<div class="col-md-3 " align="center"><br>
-                        		<label class="control-label">Second Oic </label>
+                        		<label class="control-label">Second OIC </label>
                         		<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
 										<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox2<%=ActivityA[0] %>" onchange="changeempoic2('<%=ActivityA[15]%>','<%=ActivityA[0] %>')" >
 									</div>

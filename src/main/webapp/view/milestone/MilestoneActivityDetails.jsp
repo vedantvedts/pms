@@ -244,13 +244,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 10px;text-align: justify;">Activity: <%=getMA[4] %> </label>
                         	</div>
                         	<div class="col-md-2 ">
-                        	<label class="control-label">Type :  <%=getMA[17] %></label>
+                        	<label class="control-label">Type:  <%=getMA[17] %></label>
                         	</div>
                         	<div class="col-md-2 ">
-                        	<label class="control-label">First Oic :  <%=getMA[6] %></label>
+                        	<label class="control-label">First OIC:  <%=getMA[6] %></label>
                         	</div>
                         	<div class="col-md-2 ">
-                        	<label class="control-label">Second Oic :  <%=getMA[7] %></label>
+                        	<label class="control-label">Second OIC:  <%=getMA[7] %></label>
                         	
                         	</div>
              </div>    
@@ -280,13 +280,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 25px;text-align: justify;">Activity: <%=obj[4] %> </label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Type :  <%=obj[12] %></label>
+                        	<label class="control-label">Type:  <%=obj[12] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Weightage :  <%=obj[6] %></label>
+                        	<label class="control-label">Weightage:  <%=obj[6] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">First Oic:  <%=obj[14] %></label>
+                        	<label class="control-label">First OIC:  <%=obj[14] %></label>
                         	</div>
                                  </div>  
 					  			<%int Sub1Count=1; 
@@ -315,13 +315,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 25px;text-align: justify;">Activity: <%=obj1[4] %> </label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Type :  <%=obj1[12] %></label>
+                        	<label class="control-label">Type:  <%=obj1[12] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Weightage :  <%=obj1[6] %></label>
+                        	<label class="control-label">Weightage:  <%=obj1[6] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">First Oic:  <%=obj1[14] %></label>
+                        	<label class="control-label">First OIC:  <%=obj1[14] %></label>
                         	</div>
                                  </div>
 					  			<%int Sub2Count=1; 
@@ -349,13 +349,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 25px;text-align: justify;">Activity: <%=obj2[4] %> </label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Type :  <%=obj2[12] %></label>
+                        	<label class="control-label">Type:  <%=obj2[12] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Weightage :  <%=obj2[6] %></label>
+                        	<label class="control-label">Weightage:  <%=obj2[6] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">First Oic:  <%=obj2[14] %></label>
+                        	<label class="control-label">First OIC:  <%=obj2[14] %></label>
                         	</div>
                                  </div>
 					  			<%int Sub3Count=1; 
@@ -384,13 +384,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 25px;text-align: justify;">Activity: <%=obj3[4] %> </label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Type :  <%=obj3[12] %></label>
+                        	<label class="control-label">Type:  <%=obj3[12] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Weightage :  <%=obj3[6] %></label>
+                        	<label class="control-label">Weightage:  <%=obj3[6] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">First Oic:  <%=obj3[14] %></label>
+                        	<label class="control-label">First OIC:  <%=obj3[14] %></label>
                         	</div>
                                  </div>
 					  			<%int Sub4Count=1; 
@@ -418,13 +418,13 @@ String ses=(String)request.getParameter("result");
                     		<label class="control-label"  style="margin-left: 25px;text-align: justify;">Activity: <%=obj4[4] %> </label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Type :  <%=obj4[12] %></label>
+                        	<label class="control-label">Type:  <%=obj4[12] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">Weightage :  <%=obj4[6] %></label>
+                        	<label class="control-label">Weightage:  <%=obj4[6] %></label>
                         	</div>
                         	<div class="col-md-2">
-                        	<label class="control-label">First Oic:  <%=obj4[14] %></label>
+                        	<label class="control-label">First OIC:  <%=obj4[14] %></label>
                         	</div>
 					  			
 					  				
