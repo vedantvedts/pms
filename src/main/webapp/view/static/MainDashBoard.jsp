@@ -573,12 +573,12 @@ String logintype="U";
 String View="";
 if(logintype!=null ){
 	logintype=(String)request.getAttribute("logintype"); 
-	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") || logintype.equalsIgnoreCase("C") || logintype.equalsIgnoreCase("I") ){
+	if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("P")|| logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("Y")|| logintype.equalsIgnoreCase("Q") || logintype.equalsIgnoreCase("C") || logintype.equalsIgnoreCase("I") || logintype.equalsIgnoreCase("G") || logintype.equalsIgnoreCase("F")){
 		logintype="A";
 	}
 }
 
-String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K","C","I"}  ;
+String LoginTypes[] = {"A","P","E","Z","Y","Q","X","K","C","I","G","F"}  ;
 
 int ProjectCount = 0;
 
@@ -3745,7 +3745,7 @@ function overalldoc(){
 	 		}
 	 		
 	 	}
-	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E' || logintype=='C' || logintype=='I'){	
+	 	else if(logintype == 'A' || logintype == 'Z' || logintype == 'E' || logintype=='C' || logintype=='I'|| logintype=='G' || logintype=='F'){	
 				$('.btn3').click();
 		} else{
 			$('.btn1').click();
