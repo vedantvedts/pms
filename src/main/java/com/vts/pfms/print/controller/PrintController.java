@@ -90,6 +90,7 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.service.MilestoneService;
 import com.vts.pfms.model.TotalDemand;
+import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
@@ -3959,7 +3960,7 @@ public class PrintController {
 					BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, projectid);
 				}
 				
-				BriefingScheduleFwdList=service.BriefingScheduleFwdList(LabCode, committeecode, projectid,EmpId);
+				BriefingScheduleFwdList=service.BriefingScheduleFwdList(LabCode,EmpId);
 				BriefingScheduleFwdApprovedList=service.BriefingScheduleFwdApprovedList(LabCode, committeecode, projectid,EmpId);
 				//String pDId=BriefingScheduleList.get(0)[13].toString();
 				
@@ -4512,15 +4513,25 @@ public class PrintController {
 			 long result1=0;
 				logger.info(new Date() +"Inside BriefingForward.htm "+UserId);	
 				 try {
-			String sheduleId = req.getParameter("sheduleIdFwd");
+			String scheduleId = req.getParameter("sheduleIdFwd");
 			String briefingStatus = req.getParameter("briefingStatus");
 			
 				PfmsBriefingTransaction briefingTransaction = new PfmsBriefingTransaction();
-				briefingTransaction.setScheduleId(Long.parseLong(sheduleId));
+				briefingTransaction.setScheduleId(Long.parseLong(scheduleId));
 				briefingTransaction.setEmpId(Long.parseLong(EmpId));
 				briefingTransaction.setActionBy(UserId);
+				PfmsBriefingFwdDto briefingDto = new PfmsBriefingFwdDto();
+				briefingDto.setBriefingTranc(briefingTransaction);
+				briefingDto.setBriefingStatus(briefingStatus);
+				briefingDto.setEmpId(EmpId);
+				briefingDto.setProjectId(projectid);
+				briefingDto.setScheduleId(scheduleId);
+				briefingDto.setDhId(DHId);
+				briefingDto.setGhId(GHId);
+				briefingDto.setDoId(DOId);
+				briefingDto.setDirectorId(DirectorId);
 				
-				 result1=service.insertBriefingTrans(briefingTransaction,briefingStatus,EmpId,projectid,sheduleId,DHId,GHId,DOId,DirectorId);
+				 result1=service.insertBriefingTrans(briefingDto);
 			
 				 if(frwStatus.contains(briefingStatus)) {
 			if(result1>0)
@@ -4533,7 +4544,7 @@ public class PrintController {
 		 }else if(briefingStatus.equalsIgnoreCase("REP")) {
 		 if(result1>0)
 			{
-							
+			 	redir.addFlashAttribute("pendingClick","N");			
 				redir.addAttribute("result", "Briefing Approved Successfully");
 			}else{
 				redir.addAttribute("resultfail", "Briefing Approved unSuccessful");	
@@ -4542,7 +4553,7 @@ public class PrintController {
 		 else {
 			 if(result1>0)
 				{
-								
+				 	redir.addFlashAttribute("pendingClick","N");			
 					redir.addAttribute("result", "Briefing Recommended Successfully");
 				}else{
 					redir.addAttribute("resultfail", "Briefing Recommended unSuccessful");	
@@ -4553,8 +4564,9 @@ public class PrintController {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside BriefingForward.htm "+UserId, e);
 				}
-				 redir.addFlashAttribute("projectid",projectid);
+				 	redir.addFlashAttribute("projectid",projectid);
 			    	redir.addFlashAttribute("committeecode",committeecode);
+			    	
 			    	return "redirect:/FroozenBriefingList.htm";
 		 }
 		 
@@ -4565,27 +4577,30 @@ public class PrintController {
 			 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				String projectid=req.getParameter("projectidRtn");
 		    	String committeecode=req.getParameter("committeecode");
-		    	String DHId=req.getParameter("DHId");
-		    	String GHId=req.getParameter("GHId");
-		    	String DOId=req.getParameter("DOId");
-		    	String DirectorId=req.getParameter("DirectorId");
 		    	String userId=req.getParameter("userId");
 		    	String replyMsg=req.getParameter("replyMsg");
 			 long result1=0;
 				logger.info(new Date() +"Inside BriefingForward.htm "+UserId);	
 				 try {
-			String sheduleId = req.getParameter("sheduleRtn");
+			String scheduleId = req.getParameter("sheduleRtn");
 			String briefingStatus = req.getParameter("briefingStatus");
 				PfmsBriefingTransaction briefingTransaction = new PfmsBriefingTransaction();
-				briefingTransaction.setScheduleId(Long.parseLong(sheduleId));
+				briefingTransaction.setScheduleId(Long.parseLong(scheduleId));
 				briefingTransaction.setEmpId(Long.parseLong(EmpId));
 				briefingTransaction.setActionBy(UserId);
 				if(replyMsg!=null) {
 					briefingTransaction.setRemarks(replyMsg);
 				}
+				PfmsBriefingFwdDto briefingDto = new PfmsBriefingFwdDto();
 				
-				
-				 result1=service.briefingReturnAction(briefingTransaction,briefingStatus,EmpId,projectid,sheduleId,userId);
+				briefingDto.setBriefingTranc(briefingTransaction);
+				briefingDto.setBriefingStatus(briefingStatus);
+				briefingDto.setEmpId(EmpId);
+				briefingDto.setProjectId(projectid);
+				briefingDto.setUserId(userId);
+				briefingDto.setScheduleId(scheduleId);
+
+				 result1=service.briefingReturnAction(briefingDto);
 			
 				 if( !UserId.equalsIgnoreCase(EmpId)) {
 			if(result1>0)
@@ -4602,8 +4617,9 @@ public class PrintController {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside BriefingForward.htm "+UserId, e);
 				}
-				 redir.addFlashAttribute("projectid",projectid);
+				 	redir.addFlashAttribute("projectid",projectid);
 			    	redir.addFlashAttribute("committeecode",committeecode);
+			    	redir.addFlashAttribute("pendingClick","N");
 			    	return "redirect:/FroozenBriefingList.htm";
 		 }
 		 

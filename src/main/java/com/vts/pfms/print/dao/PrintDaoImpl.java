@@ -1217,13 +1217,11 @@ public class PrintDaoImpl implements PrintDao {
 		        return notification.getNotificationId();
 			
 			}
-			private static final String BRIEFINGSCHEDULEFWDLIST="CALL Briefing_Schedule_Forward_List(:empId,:labCode,:projectid,:committeecode)";
+			private static final String BRIEFINGSCHEDULEFWDLIST="CALL Briefing_Schedule_Forward_List(:empId,:labCode)";
 			@Override
-			public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid,String empId) throws Exception {
+			public List<Object[]> BriefingScheduleFwdList(String labCode,String empId) throws Exception {
 				Query query=manager.createNativeQuery(BRIEFINGSCHEDULEFWDLIST);
 				query.setParameter("labCode", labCode );
-				query.setParameter("committeecode", committeecode );
-				query.setParameter("projectid", Long.parseLong(projectid) );
 				query.setParameter("empId", Long.parseLong(empId) );
 
 				

@@ -117,7 +117,7 @@ public interface PrintDao {
 	public Object[] getDHId(String projectid)throws Exception;
 	public Object getGHId(String projectid)throws Exception;
 	public long PfmsNotificationAdd(PfmsNotification notification) throws Exception;
-	public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid, String empId)throws Exception;
+	public List<Object[]> BriefingScheduleFwdList(String labCode, String empId)throws Exception;
 	public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid, String empId)throws Exception;
 	public Object[] getBriefingData(String sheduleId)throws Exception;
 	public Object[] getUserId(String sheduleId)throws Exception;

@@ -145,7 +145,10 @@ position: relative;
 top: 7px;
 }
 
-
+.meetingIdRmks{
+position: relative;
+top: 6px;
+}
 </style>
 </head>
 
@@ -399,7 +402,7 @@ top: 7px;
 												
 												 <%}}if(Integer.valueOf(schedule[17].toString()) >0) {%>
 												 
-												 		<button title="REMARKS" class="editable-click" name="sub" type="button"style="background-color: transparent;"formaction="RemarksList.htm" formmethod="POST"formnovalidate="formnovalidate" name="briefingRmk" id="briefingRmk"onclick="return briefingRmks(<%=schedule[0]%>)">
+												 		<button title="REMARKS" class="editable-click" name="sub" type="button"style="background-color: transparent;"formaction="RemarksList.htm" formmethod="POST"formnovalidate="formnovalidate" name="briefingRmk" id="briefingRmk"onclick="return briefingRmks('<%=schedule[0]%>','<%=schedule[9] %>')">
 														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i></button>
 													<%} %>
 												
@@ -512,14 +515,14 @@ top: 7px;
 																		<%}if(schedule[7].toString().equalsIgnoreCase("Y")  ){
 																	if(EmpId.equalsIgnoreCase(DHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("FWU")) {%>
 																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
-																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DH Rec">Recomond</button>
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DH Rec">Recommend</button>
 																		<%}else if(EmpId.equalsIgnoreCase(GHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("RED")) {%>
 																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
-																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="GH Rec">Recomond</button>
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="GH Rec">Recommend</button>
 																		
 																		<%}else if(EmpId.equalsIgnoreCase(DoRtmdAdEmpData[0].toString())&& schedule[15].toString().equalsIgnoreCase("REG")) {%>
 																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
-																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recomond</button>
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recommend</button>
 																		
 																		<%}else if(EmpId.equalsIgnoreCase(directorDetails[0].toString())&& schedule[15].toString().equalsIgnoreCase("REP")) {%>
 																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
@@ -855,6 +858,10 @@ top: 7px;
 					<div class="modal-content addreq" style="width: 100%; position: relative; " >
 						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
 							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">BRIEFING Remarks</h5>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<h6 class="modal-title meetingIdRmks" id="exampleModalLabel" style="color: #fff">Meeting Id :-</h6>
+						&nbsp;&nbsp;&nbsp;
+						<h6 class="modal-title meetingIdRmks meetingIdRmk" id="exampleModalLabel" style="color: #fff"></h6>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close" style="color: white">
 								<span aria-hidden="true">&times;</span>
@@ -969,7 +976,13 @@ function BriefingFwdd(sheduleId,projectId,BriefingStatus) {
 	$('#sheduleIdFwd').val(sheduleId);
 	$('#fwd_projectid').val(projectId);
 	$('#briefingStatus').val(BriefingStatus);
-	  var confirmation = confirm('Are you sure to Forward the  Briefing');
+	if(BriefingStatus == "INI"){
+		var confirmation = confirm('Are you sure to Forward the  Briefing');
+	}else if(BriefingStatus == "REP"){
+	  var confirmation = confirm('Are you sure to Approve the  Briefing');
+	}else{
+		 var confirmation = confirm('Are you sure to Recommend the  Briefing');
+	}
 if(confirmation){
 
 var form = document.getElementById("briefingForm");
@@ -1141,8 +1154,11 @@ $('#pills-second-property-tab,#pills-mov-property-tab').click(function () {
 	}
 });
 
-function briefingRmks(sheduleId) {
+function briefingRmks(sheduleId,meetingId) {
 	$('#briefingRemarksmodal').modal('show');
+	$('.meetingIdRmk').empty();
+	
+	$('.meetingIdRmk').append(meetingId);
  	$.ajax({
         type: "GET",
         url: "getBriefingRemarks.htm",

@@ -33,6 +33,7 @@ import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.dao.PrintDao;
+import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
@@ -866,12 +867,21 @@ public class PrintServiceImpl implements PrintService{
 
 
 	@Override
-	public long insertBriefingTrans(PfmsBriefingTransaction briefingTransaction,String briefingStatus,String EmpId,String projectid,String sheduleId,String DHId,String GHId,String DOId,String DirectorId) throws Exception {
+	public long insertBriefingTrans(PfmsBriefingFwdDto briefingDto) throws Exception {
 		PfmsNotification OIC1notification =new PfmsNotification();
+		
+		String EmpId=briefingDto.getEmpId();
+		String briefingStatus=briefingDto.getBriefingStatus();
+		String scheduleId=briefingDto.getScheduleId();
+		String DHId=briefingDto.getDhId();
+		String GHId=briefingDto.getGhId();
+		String DOId=briefingDto.getDoId();
+		String DirectorId=briefingDto.getDirectorId();
+		PfmsBriefingTransaction briefingTransaction=briefingDto.getBriefingTranc();
 		String empName=dao.getEmpName(EmpId);
 		 List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
 		if(frwStatus.contains(briefingStatus)) {
-			 dao.updateBreifingStatus("FWU",sheduleId);
+			 dao.updateBreifingStatus("FWU",scheduleId);
 			 briefingTransaction.setBriefingStatus("FWU");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
@@ -881,7 +891,7 @@ public class PrintServiceImpl implements PrintService{
 			
 
 		}else if(briefingStatus.equalsIgnoreCase("FWU")) {
-			 dao.updateBreifingStatus("RED",sheduleId);
+			 dao.updateBreifingStatus("RED",scheduleId);
 				briefingTransaction.setBriefingStatus("RED");
 				briefingTransaction.setActionDate(sdf1.format(new Date()));
 				 dao.insertBriefingTrans(briefingTransaction);
@@ -889,7 +899,7 @@ public class PrintServiceImpl implements PrintService{
 				OIC1notification.setEmpId(Long.parseLong(GHId));
 
 		}else if(briefingStatus.equalsIgnoreCase("RED")) {
-			 dao.updateBreifingStatus("REG",sheduleId);
+			 dao.updateBreifingStatus("REG",scheduleId);
 				briefingTransaction.setBriefingStatus("REG");
 				briefingTransaction.setActionDate(sdf1.format(new Date()));
 				 dao.insertBriefingTrans(briefingTransaction);
@@ -897,7 +907,7 @@ public class PrintServiceImpl implements PrintService{
 				OIC1notification.setEmpId(Long.parseLong(DOId));
 				
 		}else if(briefingStatus.equalsIgnoreCase("REG")) {
-			 dao.updateBreifingStatus("REP",sheduleId);
+			 dao.updateBreifingStatus("REP",scheduleId);
 				briefingTransaction.setBriefingStatus("REP");
 				briefingTransaction.setActionDate(sdf1.format(new Date()));
 				 dao.insertBriefingTrans(briefingTransaction);
@@ -906,7 +916,7 @@ public class PrintServiceImpl implements PrintService{
 				OIC1notification.setEmpId(Long.parseLong(DirectorId));
 
 		}else if(briefingStatus.equalsIgnoreCase("REP")) {
-			 dao.updateBreifingStatus("APD",sheduleId);
+			 dao.updateBreifingStatus("APD",scheduleId);
 				briefingTransaction.setBriefingStatus("APD");
 				briefingTransaction.setActionDate(sdf1.format(new Date()));
 				return dao.insertBriefingTrans(briefingTransaction);
@@ -945,8 +955,8 @@ public class PrintServiceImpl implements PrintService{
 	}
 
 	@Override
-	public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid, String empId)throws Exception {
-		return dao.BriefingScheduleFwdList(labCode,committeecode,projectid,empId);
+	public List<Object[]> BriefingScheduleFwdList(String labCode, String empId)throws Exception {
+		return dao.BriefingScheduleFwdList(labCode,empId);
 	}
 	@Override
 	public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid, String empId)throws Exception {
@@ -954,48 +964,56 @@ public class PrintServiceImpl implements PrintService{
 	}
 
 	@Override
-	public long briefingReturnAction(PfmsBriefingTransaction briefingTransaction, String briefingStatus, String empId,String projectid, String sheduleId, String userId) throws Exception {
+	public long briefingReturnAction(PfmsBriefingFwdDto briefingDto) throws Exception {
+		String empId=briefingDto.getEmpId();
+		String briefingStatus=briefingDto.getBriefingStatus();
+		String scheduleId=briefingDto.getScheduleId();
+		String userId=briefingDto.getUserId();
+		String projectid=briefingDto.getProjectId();
+	
+		PfmsBriefingTransaction briefingTransaction=briefingDto.getBriefingTranc();
+		
 		String empName=dao.getEmpName(empId);
 		PfmsNotification OIC1notification =new PfmsNotification();
 		if(briefingStatus.equalsIgnoreCase("FWU") && empId.equalsIgnoreCase(userId)) {
-			 dao.updateBreifingStatus("REV",sheduleId);
+			 dao.updateBreifingStatus("REV",scheduleId);
 			 briefingTransaction.setBriefingStatus("REV");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
 			 return 1;
 		}else if(briefingStatus.equalsIgnoreCase("FWU") ) {
-			 dao.updateBreifingStatus("RDH",sheduleId);
+			 dao.updateBreifingStatus("RDH",scheduleId);
 			 briefingTransaction.setBriefingStatus("RDH");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
-			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			Object[] fwdUserdata= dao.getUserId(scheduleId);
 			
 				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
 			 
 		}else if(briefingStatus.equalsIgnoreCase("RED") ) {
-			 dao.updateBreifingStatus("RGH",sheduleId);
+			 dao.updateBreifingStatus("RGH",scheduleId);
 			 briefingTransaction.setBriefingStatus("RGH");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
-			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			Object[] fwdUserdata= dao.getUserId(scheduleId);
 			
 				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
 			 
 		}else if(briefingStatus.equalsIgnoreCase("REG") ) {
-			 dao.updateBreifingStatus("RPD",sheduleId);
+			 dao.updateBreifingStatus("RPD",scheduleId);
 			 briefingTransaction.setBriefingStatus("RPD");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
-			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			Object[] fwdUserdata= dao.getUserId(scheduleId);
 			
 				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
 			 
 		}else if(briefingStatus.equalsIgnoreCase("REP") ) {
-			 dao.updateBreifingStatus("RBD",sheduleId);
+			 dao.updateBreifingStatus("RBD",scheduleId);
 			 briefingTransaction.setBriefingStatus("RBD");
 			 briefingTransaction.setActionDate(sdf1.format(new Date()));
 			 dao.insertBriefingTrans(briefingTransaction);
-			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			Object[] fwdUserdata= dao.getUserId(scheduleId);
 			
 				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
 			 
