@@ -28,11 +28,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sun.xml.bind.annotation.OverrideAnnotationOf;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.PfmsBriefingTransaction;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -824,7 +826,7 @@ public class PrintDaoImpl implements PrintDao {
 			return AgendaLinkedDocList;
 		}
 		
-		private static final String BRIEFINGSCHEDULELIST ="SELECT cs.scheduleid,c.committeeid,c.committeeshortname,cs.projectid,cs.scheduledate, cs.schedulestarttime,cms.statusdetail ,cs.BriefingPaperFrozen,cs.MinutesFrozen, cs.meetingid, pm.projectname, pm.projectcode,cs.PresentationFrozen FROM committee c,committee_schedule cs, project_master pm,committee_meeting_status cms WHERE c.committeeid=cs.committeeid  AND cms.meetingstatus=cs.scheduleflag AND cs.projectid=pm.projectid AND cms.meetingstatusid>=7 AND cs.isactive=1 AND  c.committeeshortname =:committeeshortname AND cs.labcode=:labcode AND cs.projectid=:projectid  ORDER BY scheduledate DESC";
+		private static final String BRIEFINGSCHEDULELIST ="SELECT  DISTINCT cs.scheduleid, c.committeeid, c.committeeshortname, cs.projectid, cs.scheduledate, cs.schedulestarttime, cms.statusdetail,cs.BriefingPaperFrozen, cs.MinutesFrozen, cs.meetingid, pm.projectname, pm.projectcode, cs.PresentationFrozen, pm.ProjectDirector, pbs.BriefingStatusDesc, pbs.BriefingStatus, pbt.EmpId,(SELECT COUNT(Remarks) FROM pfms_briefing_transaction trans WHERE trans.ScheduleId=cs.ScheduleId) AS rmkCount FROM committee c INNER JOIN committee_schedule cs ON c.committeeid = cs.committeeid INNER JOIN project_master pm ON cs.projectid = pm.projectid INNER JOIN committee_meeting_status cms ON cms.meetingstatus = cs.scheduleflag INNER JOIN pfms_briefing_status pbs ON pbs.BriefingStatus = cs.BriefingStatus LEFT JOIN pfms_briefing_transaction pbt ON cs.ScheduleId = pbt.ScheduleId AND pbt.BriefingStatus='FWU'  WHERE cms.meetingstatusid >= 7 AND cs.isactive = 1 AND c.committeeshortname =:committeeshortname AND cs.labcode =:labcode AND cs.projectid =:projectid ORDER BY scheduledate DESC ";
 		
 		@Override
 		public List<Object[]> BriefingScheduleList(String labcode,String committeeshortname, String projectid) throws Exception 
@@ -1100,6 +1102,7 @@ public class PrintDaoImpl implements PrintDao {
 			
 			
 			private static final String GETENVILIST = "SELECT PftsFileId,ProjectId,ROUND(EstimatedCost/100000,2) AS 'EstimatedCost',ItemNomenclature,Remarks,PrbDateOfInti,EnvisagedStatus FROM pfts_file WHERE ProjectId=:projectid AND EnvisagedFlag='Y' AND IsActive='1'";
+			
 			@Override
 			public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
 				Query query = manager.createNativeQuery(GETENVILIST);
@@ -1112,4 +1115,187 @@ public class PrintDaoImpl implements PrintDao {
 				}
 				return null;
 			}
+			private static final String GETDIRECTORNAME = "SELECT a.EmpId,a.empname FROM employee a,employee_desig b WHERE a.desigid= b.desigid AND b.designation='director' AND LabCode=:labCode";
+			@Override
+			public Object[] getDirectorName(String labCode) throws Exception {
+				Query query=manager.createNativeQuery(GETDIRECTORNAME);
+				 query.setParameter("labCode", labCode);
+				
+				
+				return (Object[])query.getSingleResult();
+			}
+
+			
+			private static final String DORTMDADEMPDATA="SELECT pr.empid ,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' ,ed.designation ,pr.type  FROM pfms_initiation_Approver pr, employee e ,employee_desig ed WHERE pr.empid=e.empid AND e.desigid=ed.desigid AND pr.isactive='1' AND pr.LabCode=:Labcode and pr.type='DO-RTMD'";
+			
+			@Override
+			public Object[]  DoRtmdAdEmpData(String Labcode) throws Exception
+			{
+				Query query=manager.createNativeQuery(DORTMDADEMPDATA);
+				query.setParameter("Labcode", Labcode)	;	
+				return (Object[])query.getSingleResult();
+			}
+			private static final String UPDATEBRIEFINGSTATUS = "UPDATE committee_schedule SET BriefingStatus=:briefingStatus WHERE ScheduleId=:sheduleId AND IsActive='1';";
+			
+			@Override
+			public long updateBreifingStatus(String briefingStatus, String sheduleId)throws Exception {
+				logger.info(new Date() + "Inside DAO updateBreifingStatus");
+				try {
+				Query query=manager.createNativeQuery(UPDATEBRIEFINGSTATUS);
+				query.setParameter("briefingStatus", briefingStatus);
+				query.setParameter("sheduleId", sheduleId);
+				long res=0;
+				res=query.executeUpdate();
+				return res;	
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside DaoImpl updateBreifingStatus", e);
+					return  0;
+				}
+			}
+
+			@Override
+			public long insertBriefingTrans(PfmsBriefingTransaction briefingTransaction) throws Exception {
+				logger.info(new Date() + "Inside DAO insertBriefingTrans");
+				try {
+					manager.persist(briefingTransaction);
+					manager.flush();
+					return briefingTransaction.getBriefingTransactionId();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside DaoImpl insertBriefingTrans", e);
+					return  0;
+				}
+			}
+			private static final String GETDIVISIONHEADLIST = "SELECT DivisionHeadId,DivisionId FROM division_master WHERE IsActive='1'";
+			
+			@Override
+			public List<Object[]> getDivisionHeadList() throws Exception {
+				Query query = manager.createNativeQuery(GETDIVISIONHEADLIST);
+				try {
+					return query.getResultList();
+				}catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new java.util.Date() +" Inside DAO totalProjectMilestones " + e);
+				}
+				return null;
+			}
+			private static final String GETDHID = "SELECT DivisionHeadId,DivisionId FROM division_master WHERE DivisionId IN (SELECT DivisionId FROM employee WHERE EmpId IN(SELECT ProjectDirector FROM  project_master WHERE ProjectId=:projectid))";
+			
+			@Override
+			public Object[] getDHId(String projectid) throws Exception {
+				try {
+				Query query=manager.createNativeQuery(GETDHID);
+				query.setParameter("projectid", projectid)	;	
+				return (Object[])query.getSingleResult();	
+				}catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new java.util.Date() +" Inside DAO getDHId " + e);
+					return null;
+				}
+			}
+			private static final String GETGHID = "SELECT GroupHeadId,GroupId FROM division_group WHERE GroupId IN(SELECT GroupId FROM division_master WHERE DivisionId IN (SELECT DivisionId FROM employee WHERE EmpId IN(SELECT ProjectDirector FROM  project_master WHERE ProjectId=:projectid)))";
+			@Override
+			public Object getGHId(String projectid) throws Exception {
+				try {
+					Query query=manager.createNativeQuery(GETGHID);
+					query.setParameter("projectid", projectid)	;	
+					return (Object[])query.getSingleResult();	
+					}catch (Exception e) {
+						e.printStackTrace();
+						logger.error(new java.util.Date() +" Inside DAO getGHId " + e);
+						return null;
+					}
+				
+				
+			}
+			@Override
+			public long PfmsNotificationAdd(PfmsNotification notification) throws Exception {
+				manager.persist(notification);
+				manager.flush();
+		        return notification.getNotificationId();
+			
+			}
+			private static final String BRIEFINGSCHEDULEFWDLIST="CALL Briefing_Schedule_Forward_List(:empId,:labCode,:projectid,:committeecode)";
+			@Override
+			public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid,String empId) throws Exception {
+				Query query=manager.createNativeQuery(BRIEFINGSCHEDULEFWDLIST);
+				query.setParameter("labCode", labCode );
+				query.setParameter("committeecode", committeecode );
+				query.setParameter("projectid", Long.parseLong(projectid) );
+				query.setParameter("empId", Long.parseLong(empId) );
+
+				
+				
+				List<Object[]> BriefingScheduleList=(List<Object[]>)query.getResultList();
+				return BriefingScheduleList;
+			}
+			
+			private static final String BRIEFINGSCHEDULEFWDAPPROVEDLIST="CALL Briefing_Schedule_Fwd_Approved_List(:empId,:labCode,:projectid,:committeecode)";
+			
+			@Override
+			public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid,String empId) throws Exception {
+				Query query=manager.createNativeQuery(BRIEFINGSCHEDULEFWDAPPROVEDLIST);
+				query.setParameter("labCode", labCode );
+				query.setParameter("committeecode", committeecode );
+				query.setParameter("projectid", projectid );
+				query.setParameter("empId", empId );
+				List<Object[]> BriefingScheduleList=(List<Object[]>)query.getResultList();
+				return BriefingScheduleList;
+			}
+			private static final String GETBRIEFINGDATA = "SELECT MeetingId,ScheduleDate,ScheduleStartTime FROM committee_schedule WHERE ScheduleId=:sheduleId";
+			@Override
+			public Object[] getBriefingData(String sheduleId) throws Exception {
+				try {
+					Query query=manager.createNativeQuery(GETBRIEFINGDATA);
+					query.setParameter("sheduleId", sheduleId)	;	
+					return (Object[])query.getSingleResult();	
+					}catch (Exception e) {
+						e.printStackTrace();
+						logger.error(new java.util.Date() +" Inside DAO getBriefingData " + e);
+						return null;
+					}
+			}
+			private static final String GETFWDUSERID = "SELECT EmpId,MAX(ActionDate) FROM pfms_briefing_transaction WHERE ScheduleId=:sheduleId AND BriefingStatus='FWU' ;";
+			
+			@Override
+			public Object[] getUserId(String sheduleId) throws Exception {
+				logger.info(new Date() + "Inside DAO updateBreifingStatus");
+				try {
+				Query query=manager.createNativeQuery(GETFWDUSERID);
+				query.setParameter("sheduleId", sheduleId);
+				
+				return (Object[]) query.getSingleResult();
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside DaoImpl getUserId", e);
+					return  null;
+				}
+			}
+			private static final String GETEMPNAME = "SELECT EmpName FROM employee WHERE EmpId=:empId";
+			@Override
+			public String getEmpName(String empId) throws Exception {
+				logger.info(new Date() + "Inside DAO getEmpName");
+				try {
+					Query query=manager.createNativeQuery(GETEMPNAME);
+					query.setParameter("empId", empId);
+					return query.getSingleResult().toString();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() + "Inside DaoImpl getEmpName", e);
+					return  null;
+				}
+			}
+			private static final String GETBRIEFINGREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_briefing_transaction t,employee e,employee_desig c WHERE t.ScheduleId=:sheduleId AND t.BriefingStatus IN('RDH','RGH','RPD','RBD') AND t.EmpId=e.EmpId AND e.desigid=c.desigid";
+
+			@Override
+			public List<Object[]> getBriefingRemarks(String sheduleId) throws Exception {
+				Query query=manager.createNativeQuery(GETBRIEFINGREMARKS);
+				query.setParameter("sheduleId", sheduleId);
+				List<Object[]> remarksList=(List<Object[]>)query.getResultList();	
+				return remarksList;
+			}
+			
 	}

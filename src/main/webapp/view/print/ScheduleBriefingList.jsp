@@ -112,6 +112,40 @@ a:hover {
     opacity: 1;
   }
 }
+
+.trdown {
+	padding: 0px 10px 5px 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.trup {
+	padding: 5px 10px 0px 10px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.rightArrow{
+font-size: 2.20rem !important;
+padding: 0px 5px;
+}
+#remarksTd1{
+font-weight: bold;
+
+color: #007bff;
+}
+#remarksDate{
+color: black;
+font-size: 13px;
+}
+.rtnHeader{
+position: relative;
+top: 7px;
+}
+
+
 </style>
 </head>
 
@@ -119,12 +153,32 @@ a:hover {
 	<%
 
   List<Object[]> BriefingScheduleList=(List<Object[]>)request.getAttribute("BriefingScheduleList");
+  List<Object[]> BriefingScheduleFwdList=(List<Object[]>)request.getAttribute("BriefingScheduleFwdList");
+  List<Object[]> BriefingScheduleFwdApprovedList=(List<Object[]>)request.getAttribute("BriefingScheduleFwdApprovedList");
   SimpleDateFormat rdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
   SimpleDateFormat sdf1=new SimpleDateFormat("HH:mm:ss");
   String projectid=(String)request.getAttribute("projectid");
+  String revProjectId=(String)request.getAttribute("revProjectId");
   String committeecode=(String)request.getAttribute("committeecode");
+  String pendingClick=(String)request.getAttribute("pendingClick");
+  String initiatedClick=(String)request.getAttribute("initiatedClick");
+  Object[] directorDetails=(Object[])request.getAttribute("directorName");
+  String EmpId=(String)request.getAttribute("EmpId");
+  Object[] DHId=(Object[])request.getAttribute("DHId");
+  Object[] GHId=(Object[])request.getAttribute("GHId");
+  Object[] DoRtmdAdEmpData=(Object[])request.getAttribute("DoRtmdAdEmpData");
   List<Object[]> projectslist=(List<Object[]>)request.getAttribute("projectslist");
+  List<Object[]> divisionHeadList=(List<Object[]>)request.getAttribute("divisionHeadList");
+  
+  List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
+	int count=0;
+  for(Object[] obj : divisionHeadList){
+		if(EmpId.equalsIgnoreCase(obj[0].toString())) {
+			count++;
+		}
+	}
+
   
  %>
 
@@ -163,9 +217,9 @@ a:hover {
 											<b>Project : </b>
 										</td>
 										<td>
-											<select class="form-control items selectdee" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+											<select class="form-control items selectdee" name="projectid" id="projectid" required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
 												<%for(Object[] obj : projectslist){ %>
-													<option <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value=<%=obj[0]%> ><%=obj[4] %></option>
+													<option <%if(revProjectId!=null && revProjectId!="null" && revProjectId.equals(obj[0].toString())) { %>selected <%} else if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %>value="<%=obj[0]%>" ><%=obj[4] %></option>
 												<%} %>
 											</select>
 										</td>
@@ -173,7 +227,7 @@ a:hover {
 											<b>Committee : </b>
 										</td>
 										<td>
-											<select class="form-control items" name="committeecode"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();" >
+											<select class="form-control items" name="committeecode" id="committeecode"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();" >
 												<option <%if(committeecode!=null && committeecode.equalsIgnoreCase("PMRC")) { %>selected <%} %>value="PMRC" >PMRC</option>
 												<option <%if(committeecode!=null && committeecode.equalsIgnoreCase("EB")) { %>selected <%} %>value="EB" >EB</option>
 											</select>
@@ -186,15 +240,66 @@ a:hover {
 					</div>
 					<div class="card-body">
 					
+					   <div align="center">	
+  
+	<div class="row w-100" style="margin-bottom: 10px;">
+		<div class="col-12">
+         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
+		  <li class="nav-item" style="width: 33.3%;"  >
+		    <div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
+			   <span>Initiated</span> 
+				<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+				   		 <%if(BriefingScheduleList.size()>99){ %>
+				   			99+
+				   		<%}else{ %>
+				   			<%=BriefingScheduleList.size() %>
+						<%} %>	 		   			
+				  </span>  
+		    </div>
+		  </li>
+		  <li class="nav-item"  style="width: 33.3%;">
+		    <div class="nav-link " style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
+		    	 <span>Pending</span> 
+		    	  <span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+				   	 <%if(BriefingScheduleFwdList.size()>99){ %>
+				   			99+
+				   		<%}else{ %>
+				   			<%=BriefingScheduleFwdList.size() %>
+						<%} %> 			   			
+				  </span>  
+		    </div>
+		  </li>
+		    <li class="nav-item"  style="width: 33.3%;">
+		    <div class="nav-link " style="text-align: center;" id="pills-second-property-tab" data-toggle="pill" data-target="#pills-second-property" role="tab" aria-controls="pills-second-property" aria-selected="false">
+		    	 <span>Approved</span> 
+		    	  <span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+				   	 <%if(BriefingScheduleFwdApprovedList.size()>99){ %>
+				   			99+
+				   		<%}else{ %>
+				   			<%=BriefingScheduleFwdApprovedList.size() %>
+						<%} %>		   			
+				  </span>  
+		    </div>
+		  </li>
+		</ul>
+	   </div>
+	</div>
+	</div>
+					
+					
 						<div class="data-table-area mg-b-15">
-							<form method="get">
-							<div class="container-fluid">
+						<div class="container-fluid">
+						           <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-mov-property" role="tabpanel" aria-labelledby="pills-mov-property-tab">
+							<form method="get" id="briefingForm">
+							
+							
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="sparkline13-list">
 
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
-												<div id="toolbar">
+											 	<div id="toolbar1">
 													<select class="form-control dt-tb">
 														<option value="">Export Basic</option>
 														<option value="all">Export All</option>
@@ -202,14 +307,15 @@ a:hover {
 													</select>
 												</div>
 												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar"
+													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar1"
 													>
 													<thead>
 														<tr>
 															<th style="width:30px;">Committee</th>
 															<th style="width:130px;">Meeting Id</th>
 															<th style="width:130px;">Schedule Date & Time</th>
-															<th style="width:130px;">Status</th>
+															<th style="width:130px;">Meeting Status</th>
+															<th style="width:130px;">Briefing Status</th>
 															<th style="width:130px;">Action</th>
 														</tr>
 													</thead>
@@ -223,6 +329,8 @@ a:hover {
 																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 																</td>
 																<td><%=schedule[6] %></td>
+																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
+									    							&nbsp;<%=schedule[14] %></button></td>
 																<td>
 																	<%if(schedule[7].toString().equalsIgnoreCase("Y")  ){ %>
 																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
@@ -234,12 +342,13 @@ a:hover {
 																		)" data-toggle="tooltip" data-placement="top" title="Update">
 																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
 																		</button>
-																		<%if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
+																		
+																		<% if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
 																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
 																			<i class="fa fa-eye" aria-hidden="true"></i>
 																		</button>
-																		<% }%>
-																		<%if(schedule[12]!=null && schedule[12].toString().equalsIgnoreCase("Y")) {%>
+																		<% }
+																		if(schedule[12]!=null && schedule[12].toString().equalsIgnoreCase("Y")) {%>
 																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingBriefingPresenttaion.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Presentation">
 																			<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
 																			</button>
@@ -261,7 +370,39 @@ a:hover {
 																		)" data-toggle="tooltip" data-placement="top" title="Add">
 																			<i class="fa fa-plus-square" aria-hidden="true"></i>
 																		</button>
-																	<%} %>
+																	<%} if(schedule[7].toString().equalsIgnoreCase("Y")  ){
+																	if(count==0 
+																			&& frwStatus.contains(schedule[15])
+																			&& !EmpId.equalsIgnoreCase(DHId[0].toString())
+																			&& !EmpId.equalsIgnoreCase(GHId[0].toString()) 
+																			&& !EmpId.equalsIgnoreCase(DoRtmdAdEmpData[0].toString())
+																			&& !EmpId.equalsIgnoreCase(directorDetails[0].toString())) { %>
+																					<button class="editable-click" type="button"  style="background-color: transparent;" 
+																				formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="UserFwd" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="FORWARD">
+																	<div class="cc-rockmenu" >
+																			<figure class="rolling_icon" >
+																				<img src="view/images/forward1.png">
+																			</figure>
+																	</div>
+																		</button>
+												
+																		
+																		<%}}%>
+																		
+																							<% if(schedule[16] !=null){
+																							if(schedule[15].toString().equalsIgnoreCase("FWU") && EmpId.equalsIgnoreCase(schedule[16].toString()) ){%>
+
+												
+													<button type="button" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="POST" name="scheduleid" value="<%=schedule[0]%>" formaction="BriefingActionReturn.htm"   data-toggle="tooltip" data-placement="top" title="REVOKE" onclick="return BriefingRevoke('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[16] %>');" id="BriefingRevokeBtn">
+													<img alt="" src="view/images/revoke.png" style="width:19px !important"></button>
+												
+												 <%}}if(Integer.valueOf(schedule[17].toString()) >0) {%>
+												 
+												 		<button title="REMARKS" class="editable-click" name="sub" type="button"style="background-color: transparent;"formaction="RemarksList.htm" formmethod="POST"formnovalidate="formnovalidate" name="briefingRmk" id="briefingRmk"onclick="return briefingRmks(<%=schedule[0]%>)">
+														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i></button>
+													<%} %>
+												
 																</td>
 															</tr>
 														<%} %>
@@ -271,13 +412,292 @@ a:hover {
 										</div>
 									</div>
 								</div>
+							
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+								<input type="hidden" name="projectidRtn" id="rvk_projectid" value="">
+								<input type="hidden" name="projectid" id="fwd_projectid" value="">
+							<input type="hidden" name="committeecode" value=<%=committeecode %>>
+								<input type="hidden" name="sheduleRtn" id="sheduleIdRvk" value="">
+								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
+								<input type="hidden" name="briefingStatus" id="briefingStatus" value="">
+								<input type="hidden" name="userId" id="userId" value="">
+								
+								<input type="hidden" name="DHId" id="DHId" value="<%= DHId[0]%>">
+								<input type="hidden" name="GHId" id="GHId" value="<%= GHId[0]%>">
+								<input type="hidden" name="DOId" id="DOId" value="<%= DoRtmdAdEmpData[0]%>">
+								<input type="hidden" name="DirectorId" id="DirectorId" value="<%= directorDetails[0]%>">
+								
+							</form>
+							</div>
+							
+							<!---------------------------------------------- Pending List ----------------------------------------------------->
+							  <div class="tab-pane fade show " id="pills-imm-property" role="tabpanel" aria-labelledby="pills-imm-property-tab">
+							
+							<form method="get" id="briefingForm">
+							
+							
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<div class="sparkline13-list">
+
+										<div class="sparkline13-graph">
+											<div class="datatable-dashv1-list custom-datatable-overright">
+												<div id="toolbar2">
+													<select class="form-control dt-tb">
+														<option value="">Export Basic</option>
+														<option value="all">Export All</option>
+														<option value="selected">Export Selected</option>
+													</select>
+												</div> 
+												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true"
+													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar2"
+													>
+													<thead>
+														<tr>
+															<th style="width:30px;">Committee</th>
+															<th style="width:130px;">Meeting Id</th>
+															<th style="width:130px;">Schedule Date & Time</th>
+															<th style="width:130px;">Meeting Status</th>
+															<th style="width:130px;">Briefing Status</th>
+															<th style="width:130px;">Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<%if(BriefingScheduleFwdList!=null && BriefingScheduleFwdList.size()>0){
+														for(Object[] schedule : BriefingScheduleFwdList){%>
+															<tr>
+																<td><%=schedule[2] %></td>
+																<td><b><%=schedule[9] %></b></td>
+																<td>
+																	<%LocalTime starttime = LocalTime.parse(LocalTime.parse(schedule[5].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %>
+																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
+																</td>
+																<td><%=schedule[6] %></td>
+																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
+									    							&nbsp;<%=schedule[14] %></button></td>
+																<td>
+																	<%if(schedule[7].toString().equalsIgnoreCase("Y")  ){ %>
+																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
+																		onclick="showmodal('U', <%=schedule[0]%>,
+																		'<%=schedule[9] %>', 
+																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
+																		'<%=schedule[11] %>',
+																		'<%=schedule[3] %>','<%=schedule[7] %>','<%=schedule[8] %>','<%=schedule[12] %>'
+																		)" data-toggle="tooltip" data-placement="top" title="Update">
+																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
+																		</button>
+				
+																		
+																		<%if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
+																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
+																			<i class="fa fa-eye" aria-hidden="true"></i>
+																		</button>
+																		<% }
+																		if(schedule[12]!=null && schedule[12].toString().equalsIgnoreCase("Y")) {%>
+																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingBriefingPresenttaion.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Presentation">
+																			<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
+																			</button>
+																			<%} %>
+																			
+																		
+																	<%}else{ %>
+																		<button type="button" class="btn btn-sm " style="background-color:#0e49b5 ;color:white;margin:5px; " 
+																		onclick="showmodal('A', <%=schedule[0]%>,
+																		'<%=schedule[9] %>', 
+																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
+																		'<%=schedule[11] %>',
+																		'<%=schedule[3] %>'
+																		)" data-toggle="tooltip" data-placement="top" title="Add">
+																			<i class="fa fa-plus-square" aria-hidden="true"></i>
+																		</button>
+																		<%}if(schedule[7].toString().equalsIgnoreCase("Y")  ){
+																	if(EmpId.equalsIgnoreCase(DHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("FWU")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DH Rec">Recomond</button>
+																		<%}else if(EmpId.equalsIgnoreCase(GHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("RED")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="GH Rec">Recomond</button>
+																		
+																		<%}else if(EmpId.equalsIgnoreCase(DoRtmdAdEmpData[0].toString())&& schedule[15].toString().equalsIgnoreCase("REG")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recomond</button>
+																		
+																		<%}else if(EmpId.equalsIgnoreCase(directorDetails[0].toString())&& schedule[15].toString().equalsIgnoreCase("REP")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="Director Approval">Approve</button>
+																		
+																		<%}}%>
+											
+												
+												
+											<button class="btn btn-danger" type="button" formaction="BriefingActionReturn.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingRtn" value="return" onclick="return BriefingReturn('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');" id="BriefingReturnBtn" >Return</button>
+																</td>
+															</tr>
+														<%} }%>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+								<input type="hidden" name="projectid" id="fwd_projectid" value="">
+							<input type="hidden" name="committeecode" value=<%=committeecode %>>
+								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
+								<input type="hidden" name="briefingStatus" id="briefingStatus" value="">
+								<input type="hidden" name="DHId" id="DHId" value="<%= DHId[0]%>">
+								<input type="hidden" name="GHId" id="GHId" value="<%= GHId[0]%>">
+								<input type="hidden" name="DOId" id="DOId" value="<%= DoRtmdAdEmpData[0]%>">
+								<input type="hidden" name="DirectorId" id="DirectorId" value="<%= directorDetails[0]%>">
+						<!-- 		<input type="hidden" name="sheduleRtn" id="sheduleIdRtn">
+						 		<input type="hidden" name="projectidRtn" id="rtn_projectid">
+						 		<input type="hidden" name="briefingStatus" id="briefingStatus"> -->
+								
+							</form>
+							</div>
+			
+							<!---------------------------------------------- Approved List ----------------------------------------------------->
+
+		<div class="tab-pane fade show " id="pills-second-property" role="tabpanel" aria-labelledby="pills-second-property-tab">
+							
+							<form method="get" id="briefingForm">
+							<div class="container-fluid">
+							
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<div class="sparkline13-list">
+
+										<div class="sparkline13-graph">
+											<div class="datatable-dashv1-list custom-datatable-overright">
+												<div id="toolbar3">
+													<select class="form-control dt-tb">
+														<option value="">Export Basic</option>
+														<option value="all">Export All</option>
+														<option value="selected">Export Selected</option>
+													</select>
+												</div>
+												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true"
+													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar3"
+													>
+													<thead>
+														<tr>
+															<th style="width:30px;">Committee</th>
+															<th style="width:130px;">Meeting Id</th>
+															<th style="width:130px;">Schedule Date & Time</th>
+															<th style="width:130px;">Meeting Status</th>
+															<th style="width:130px;">Briefing Status</th>
+															<th style="width:130px;">Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<%if(BriefingScheduleFwdApprovedList!=null && BriefingScheduleFwdApprovedList.size()>0){
+														for(Object[] schedule : BriefingScheduleFwdApprovedList){%>
+															<tr>
+																<td><%=schedule[2] %></td>
+																<td><b><%=schedule[9] %></b></td>
+																<td>
+																	<%LocalTime starttime = LocalTime.parse(LocalTime.parse(schedule[5].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %>
+																	<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
+																</td>
+																<td><%=schedule[6] %></td>
+																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
+									    							&nbsp;<%=schedule[14] %></button></td>
+																<td>
+
+																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
+																			<i class="fa fa-eye" aria-hidden="true"></i>
+																		</button>
+																		<% 
+																		if(schedule[12]!=null && schedule[12].toString().equalsIgnoreCase("Y")) {%>
+																			<button type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;"  formmethod="GET" name="scheduleid" value="<%=schedule[0]%>" formaction="MeetingBriefingPresenttaion.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Presentation">
+																			<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-eye" aria-hidden="true" style="margin-left:6px;"></i>
+																			</button>
+																			<%} %>
+																		
+																
+																</td>
+															</tr>
+														<%}} %>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+								<input type="hidden" name="projectid" id="fwd_projectid" value="">
+							<input type="hidden" name="committeecode" value=<%=committeecode %>>
+								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
+								<input type="hidden" name="briefingStatus" id="briefingStatus" value="">
+								<input type="hidden" name="DHId" id="DHId" value="<%= DHId[0]%>">
+								<input type="hidden" name="GHId" id="GHId" value="<%= GHId[0]%>">
+								<input type="hidden" name="DOId" id="DOId" value="<%= DoRtmdAdEmpData[0]%>">
+								<input type="hidden" name="DirectorId" id="DirectorId" value="<%= directorDetails[0]%>">
+								
 							</form>
+							</div>
+			
+							
+							
+							</div>
+							</div>
 						</div>
 
 					</div>
 
+					<div class="row">
+						<div class="col-md-12" style="text-align: center;">
+							<b>Approval Flow</b>
+						</div>
+					</div>
+					
+							<div class="row"
+						style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+						<table align="center">
+							<tr>
+								<td class="trup" style="background: #B5EAEA;">Division Head
+								</td>
+								<td rowspan="2"><i class="fa fa-long-arrow-right rightArrow"
+									aria-hidden="true"></i></td>
+									
+									<td class="trup" style="background: #FBC7F7;">Group Head
+								</td>
+								<td rowspan="2"><i class="fa fa-long-arrow-right rightArrow"
+									aria-hidden="true"></i></td>
+
+								<td class="trup" style="background: #C6B4CE;">DO-P&C 
+
+								</td>
+								<td rowspan="2"><i class="fa fa-long-arrow-right rightArrow"
+									aria-hidden="true"></i></td>
+
+								<td class="trup" style="background: #E8E46E;">DIRECTOR</td>
+								
+
+							</tr>
+
+							<tr>
+								<td class="trdown" style="background: #B5EAEA;">
+									 Division Head of PDD
+
+								</td>
+									<td class="trdown" style="background: #FBC7F7;">
+									 Group Head of PDD
+
+								</td>
+								<td class="trdown" style="background: #C6B4CE;">
+							<%if(DoRtmdAdEmpData!=null){ %><%=DoRtmdAdEmpData[1] %>,<%=DoRtmdAdEmpData[2] %><%} %>
+									
+								</td>
+								<td class="trdown" style="background: #E8E46E;">
+								<%=directorDetails[1] %>
+					
+								
+								</td>
+						
+							</tr>
+						</table>
+					</div>
 
 				</div>
 
@@ -359,11 +779,123 @@ a:hover {
 	</div>
 
 <!-- -------------------------------------------------------------- action modal ----------------------------------------------------- -->
+
+
+		<!-- -- ******************************************************************return  Model End ***********************************************************************************-->
+<form class="form-horizontal" role="form"
+			action="#" method="POST" id="returnFrm" autocomplete="off">
+			<div class="modal fade bd-example-modal-lg" id="briefingReturnmodal"
+				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content addreq" style="width: 130%; position: relative; right: 150px;" >
+						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
+							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff;float:left;">BRIEFING Return</h5>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<h6 class="modal-title rtnHeader" id="exampleModalLabel" style="color: #fff;">Meeting Id :- </h6>
+							&nbsp;&nbsp;&nbsp;
+							<h6 class="modal-title rtnHeader MeetingDetails " id="exampleModalLabel" style="color: #fff;"></h6>
+							
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<h6 class="modal-title rtnHeader"  id="exampleModalLabel" style="color: #fff;">Schedule Date & Time :- </h6>
+							&nbsp;&nbsp;&nbsp;
+							<h6 class="modal-title rtnHeader scheduleDate" id="exampleModalLabel" style="color: #fff;"></h6>
+							
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" style="color: white">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div style="height: 340px; overflow: auto;">
+							<div class="modal-body">
+							<div class="row" style="" id="mainrow">
+							<div class="col-md-12">
+		                <div class="row">
+		                  <div class="col-md-3" style="max-width: 10%">
+		                      <label class="control-label returnLabel">Remarks</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                    
+		                  </div>
+		                  <div class="col-md-10" style="max-width: 90%">
+		                      <textarea class="form-control" rows="9" cols="30" placeholder="Max 500 Characters" name="replyMsg" id="replyMsg" maxlength="500"></textarea>
+		                  </div>
+		            </div>
+		           
+		             <br>
+		            
+		        <div class="form-group" align="center" >
+					<span id="btnsub"><button type="button" id="returnSubBtn" class="btn btn-primary btn-sm submit" id="submit" formaction="BriefingActionReturn.htm"  value="SUBMIT" onclick="return returnSub()">SUBMIT</button></span>
+				</div>
+
+				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+ 		<input type="hidden" name="sheduleRtn" id="sheduleIdRtn">
+ 		<input type="hidden" name="projectidRtn" id="rtn_projectid">
+ 		<input type="hidden" name="briefingStatus" id="briefingStatusRtn">
+ 		<!--  <input type="hidden" name="userId" id="userIdRtn">-->
+ 		<input type="hidden" name="committeecode" value=<%=committeecode %>>
+        
+	</div>
+</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</div>
+		
+		</form>
+		
+				<!-- -- ******************************************************************Remarks  Model Start ***********************************************************************************-->
+<form class="form-horizontal" role="form"
+			action="#" method="POST" id="returnFrm" autocomplete="off">
+			<div class="modal fade bd-example-modal-lg" id="briefingRemarksmodal"
+				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content addreq" style="width: 100%; position: relative; " >
+						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
+							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">BRIEFING Remarks</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close" style="color: white">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div style="height: 300px; overflow: auto;">
+							<div class="modal-body">
+							
+		<div class="form-inline" >
+		<table class=" table-hover table-striped remarksDetails " style="width: 100%;"  >
+		<tbody id="remarksTb"></tbody>
+							</table>
+
+				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+ 		<input type="hidden" name="rfa" id="rfaHidden">
+ 		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
+        
+	</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				</div>
+		
+		</form>
+		<!-- -- ******************************************************************Remarks  Model End ***********************************************************************************-->
 </body>
 <script type="text/javascript">
 
 $(function () {
-	  $('[data-toggle="tooltip"]').tooltip()
+	  $('[data-toggle="tooltip"]').tooltip();
+	  var pendingClick='<%=pendingClick %>';
+	  var initiatedClick='<%=initiatedClick %>';
+	  if(pendingClick == "N"){
+		  $('#pills-imm-property-tab').trigger('click');
+	  }else if(initiatedClick == "N"){
+		  $('#pills-mov-property-tab').trigger('click');
+	  }
+	  
+	  
 });
 
 
@@ -430,5 +962,232 @@ function Update(){
 	}
 	
 }
+
+function BriefingFwdd(sheduleId,projectId,BriefingStatus) {
+	
+	
+	$('#sheduleIdFwd').val(sheduleId);
+	$('#fwd_projectid').val(projectId);
+	$('#briefingStatus').val(BriefingStatus);
+	  var confirmation = confirm('Are you sure to Forward the  Briefing');
+if(confirmation){
+
+var form = document.getElementById("briefingForm");
+
+if (form) {
+var BriefingFwdBtn = document.getElementById("BriefingFwdBtn");
+if (BriefingFwdBtn) {
+var formactionValue = BriefingFwdBtn.getAttribute("formaction");
+
+form.setAttribute("action", formactionValue);
+form.submit();
+}
+}
+else{
+return false;
+}
+}
+}
+
+function BriefingRevoke(sheduleId,projectId,BriefingStatus,userId) {
+	
+	
+	$('#sheduleIdRvk').val(sheduleId);
+	$('#rvk_projectid').val(projectId);
+	$('#briefingStatus').val(BriefingStatus);
+	$('#userId').val(userId);
+	  var confirmation = confirm('Are you sure to Revoke the  Briefing');
+if(confirmation){
+
+var form = document.getElementById("briefingForm");
+
+if (form) {
+var BriefingRevokeBtn = document.getElementById("BriefingRevokeBtn");
+if (BriefingRevokeBtn) {
+var formactionValue = BriefingRevokeBtn.getAttribute("formaction");
+
+form.setAttribute("action", formactionValue);
+form.submit();
+}
+}
+else{
+return false;
+}
+}
+}
+
+function BriefingReturn(sheduleId,projectId,BriefingStatus) {
+	$('#briefingReturnmodal').modal('show');
+	
+	$('#sheduleIdRtn').val(sheduleId);
+	$('#rtn_projectid').val(projectId);
+	$('#briefingStatusRtn').val(BriefingStatus);
+	
+	$.ajax({
+		
+		type:'GET',
+		url:'getBriefingData.htm',
+		datatype:'json',
+		data:{
+			sheduleId : sheduleId,
+		},
+		success:function(result){
+			var ajaxresult = JSON.parse(result);
+			  const date = new Date(ajaxresult[1]);
+						   var formattedDate = date.toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        }).replace(/\//g, '-');
+						   
+						   var timeString = ajaxresult[2]; // Assuming it's in "HH:mm:ss" format
+
+						   var timeParts = timeString.split(':');
+						   var hours = parseInt(timeParts[0], 10);
+						   var minutes = parseInt(timeParts[1], 10);
+
+						   // Create a new Date object to work with the time
+						   var startTime = new Date();
+						   startTime.setHours(hours);
+						   startTime.setMinutes(minutes);
+						   
+						   var formattedTime = startTime.toLocaleTimeString('en-US', {
+							    hour: '2-digit',
+							    minute: '2-digit',
+							    hour12: true,
+						   });
+						   
+						   formattedDate+=" - "+ formattedTime;
+						   
+						   $('.scheduleDate').append(formattedDate);
+						   $('.MeetingDetails').append(ajaxresult[0]);
+					
+		}
+		
+	});
+
+}
+
+function returnSub() {
+	var reply=$('#replyMsg').val();
+	if(reply==null || reply=="" || reply=="null"){
+		alert("Please enter Reply");
+		document.getElementById("replyMsg").style.boxShadow = "rgb(239, 7, 7) 0px 0px 1px 1px";
+		return false;
+	}else{
+	
+	 var confirmation = confirm('Are You Sure To Return this Briefing ?');
+	  if(confirmation){
+		  var form = document.getElementById("returnFrm");
+		   
+	       if (form) {
+	        var returnSubBtn = document.getElementById("returnSubBtn");
+	           if (returnSubBtn) {
+	               var formactionValue = returnSubBtn.getAttribute("formaction");
+	               
+	                form.setAttribute("action", formactionValue);
+	                 form.submit();
+	             }
+	        }
+	
+	  } else{
+	  return false;
+	  }
+	}
+}
+
+$('#replyMsg').keyup(function (){
+	  $('#replyMsg').css({'-webkit-box-shadow' : 'none', '-moz-box-shadow' : 'none','background-color' : 'none', 'box-shadow' : 'none'});
+		  });
+		  
+		  
+$('#pills-imm-property-tab').click(function () {
+	$('#projectid').find('option').remove();
+	$('#committeecode').find('option').remove();
+	$("#projectid").append('<option>All</option>');
+	$("#committeecode").append('<option>All</option>');
+});
+
+$('#pills-second-property-tab,#pills-mov-property-tab').click(function () {
+	var projects = <%= new com.google.gson.Gson().toJson(projectslist) %>;
+	var committeecode='<%=committeecode %>';
+	var projectid='<%=projectid %>';
+	var revProjectId='<%=revProjectId %>';
+	console.log(projectid);
+	$('#projectid').find('option').remove();
+	$('#committeecode').find('option').remove();
+
+	$("#committeecode").append('<option value="PMRC" ' + (committeecode != null && committeecode.toUpperCase() === "PMRC" ? 'selected' : '') + '>PMRC</option>');
+
+	
+	$("#committeecode").append('<option value="EB" ' + (committeecode != null && committeecode.toUpperCase() === "EB" ? 'selected' : '') + '>EB</option>');
+	$('#projectid').empty();
+	if(projects!=null  && projects.length>0){
+		var projectOptions = '';
+		
+		  
+        for (var z = 0; z < projects.length; z++) {
+          var row = projects[z];
+  if(revProjectId!=null &&revProjectId!="null" ){
+	  projectOptions+='<option ' + ((revProjectId != null && revProjectId == row[0]) ? 'selected' : '') + ' value="'+row[0]+'" >'+row[4]+'</option>';
+  }else{
+	  projectOptions+='<option ' + ((projectid != null && projectid == row[0]) ? 'selected' : '') + ' value="'+row[0]+'" >'+row[4]+'</option>';
+  }
+         
+          
+        }
+        $('#projectid').append(projectOptions);
+        
+	}
+});
+
+function briefingRmks(sheduleId) {
+	$('#briefingRemarksmodal').modal('show');
+ 	$.ajax({
+        type: "GET",
+        url: "getBriefingRemarks.htm",
+        data: {
+         sheduleId : sheduleId
+        },
+        dataType: 'json', 
+        success: function(result) {
+        	$("#remarksTb").empty();
+        	if(result!=null && Array.isArray(result) && result.length>0){
+        		
+        		
+        		  var ReplyAttachTbody = '';
+		          for (var z = 0; z < result.length; z++) {
+		            var row = result[z];
+		            ReplyAttachTbody += '<tr>';
+		            ReplyAttachTbody += '<td id="remarksTd1">'+row[0]+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
+		            ReplyAttachTbody += '</td>';
+		            ReplyAttachTbody += '</tr>';
+		            ReplyAttachTbody += '<tr>';
+		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
+		            ReplyAttachTbody += '</td>';
+		            ReplyAttachTbody += '</tr>';
+
+		          }
+		          $('#remarksTb').append(ReplyAttachTbody);
+        }
+        }
+	}) 
+}
+function fDate(fdate) {
+    var dateString = fdate;
+	var date = new Date(dateString);
+	var day = date.getDate().toString().padStart(2, '0'); 
+	var month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+	var year = date.getFullYear();
+	var hours = date.getHours().toString().padStart(2, '0');
+	var minutes = date.getMinutes().toString().padStart(2, '0'); 
+
+	var formattedDate = day+'-'+month+'-'+year+' '+hours+':'+minutes;
+	return formattedDate;
+}
+$("textarea").on("keypress", function(e) {
+    if (e.which === 32 && !this.value.length)
+        e.preventDefault();
+});
 </script>
 </html>

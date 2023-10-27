@@ -10,6 +10,7 @@ import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.PfmsBriefingTransaction;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -108,5 +109,16 @@ public interface PrintService {
 	public int ProjectDecRecDelete(String recdecId)throws Exception;
 	public int BriefingPointsUpdate(String point, String activityid, String status)throws Exception;
 	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
+	public Object getDirectorName(String labCode)throws Exception;
+	public Object[] DoRtmdAdEmpData(String labCode)throws Exception;
+	public long insertBriefingTrans(PfmsBriefingTransaction briefingTransaction,String briefingStatus,String EmpId,String projectid,String sheduleId,String DHId,String GHId,String DOId,String DirectorId)throws Exception;
+	public List<Object[]> getDivisionHeadList()throws Exception;
+	public Object[] getDHId(String projectid)throws Exception;
+	public Object getGHId(String projectid)throws Exception;
+	public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid, String empId)throws Exception;
+	public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid,String empId)throws Exception;
+	public long briefingReturnAction(PfmsBriefingTransaction briefingTransaction, String briefingStatus, String empId,String projectid, String sheduleId, String userId)throws Exception;
+	public Object[] getBriefingData(String sheduleId)throws Exception;
+	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
 
 }

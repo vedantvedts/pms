@@ -93,6 +93,7 @@ import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.PfmsBriefingTransaction;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -3925,8 +3926,14 @@ public class PrintController {
 				
 				String projectid= req.getParameter("projectid");
 				String committeecode= req.getParameter("committeecode");
+				String pendingClick= req.getParameter("pendingClick");
+				String initiatedClick= req.getParameter("initiatedClick");
+				String revProjectId= req.getParameter("revProjectId");
+			
 				
 				List<Object[]> projectslist  =service.LoginProjectDetailsList(EmpId, Logintype, LabCode);
+				List<Object[]> divisionHeadList  =service.getDivisionHeadList();
+				
 				
 				if(projectslist.size()==0) 
 				{
@@ -3943,11 +3950,34 @@ public class PrintController {
 					projectid  = projectslist.get(0)[0].toString();
 					committeecode = "PMRC";
 				}
+				List<Object[]> BriefingScheduleList =new ArrayList<Object[]>();
+				List<Object[]> BriefingScheduleFwdList =new ArrayList<Object[]>();
+				List<Object[]> BriefingScheduleFwdApprovedList =new ArrayList<Object[]>();
+				if(revProjectId!=null) {
+					BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, revProjectId);
+				}else {
+					BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, projectid);
+				}
 				
+				BriefingScheduleFwdList=service.BriefingScheduleFwdList(LabCode, committeecode, projectid,EmpId);
+				BriefingScheduleFwdApprovedList=service.BriefingScheduleFwdApprovedList(LabCode, committeecode, projectid,EmpId);
+				//String pDId=BriefingScheduleList.get(0)[13].toString();
+				
+				req.setAttribute("DoRtmdAdEmpData",service.DoRtmdAdEmpData(LabCode));
+				req.setAttribute("directorName",service.getDirectorName(LabCode));
 				req.setAttribute("projectid",projectid);
 				req.setAttribute("committeecode",committeecode);
 				req.setAttribute("projectslist", projectslist);
-				req.setAttribute("BriefingScheduleList", service.BriefingScheduleList(LabCode, committeecode, projectid));
+				req.setAttribute("BriefingScheduleList",BriefingScheduleList );
+				req.setAttribute("BriefingScheduleFwdList",BriefingScheduleFwdList );
+				req.setAttribute("BriefingScheduleFwdApprovedList",BriefingScheduleFwdApprovedList );
+				req.setAttribute("divisionHeadList",divisionHeadList);
+				req.setAttribute("DHId",service.getDHId(projectid));
+				req.setAttribute("GHId",service.getGHId(projectid));
+				req.setAttribute("pendingClick",pendingClick);
+				req.setAttribute("initiatedClick",initiatedClick);
+				req.setAttribute("revProjectId",revProjectId);
+				req.setAttribute("EmpId",EmpId);
 				return "print/ScheduleBriefingList";
 			}
 			catch (Exception e) {
@@ -4458,7 +4488,6 @@ public class PrintController {
 					String point = req.getParameter("point");
 					String activityid=req.getParameter("ActivityId");
 					String status=req.getParameter("status");
-					System.out.println(point+"-"+activityid+"-"+status);
 					int count =service.BriefingPointsUpdate(point,activityid,status);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -4467,4 +4496,153 @@ public class PrintController {
 				return null;
 			}
 		 
+		 @RequestMapping(value = "BriefingForward.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		 public String BriefingForward(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String projectid=req.getParameter("projectid");
+		    	String committeecode=req.getParameter("committeecode");
+		    	String DHId=req.getParameter("DHId");
+		    	String GHId=req.getParameter("GHId");
+		    	String DOId=req.getParameter("DOId");
+		    	String DirectorId=req.getParameter("DirectorId");
+		    	List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
+		    	//String option=req.getParameter("BriefingFwd");
+			 long result1=0;
+				logger.info(new Date() +"Inside BriefingForward.htm "+UserId);	
+				 try {
+			String sheduleId = req.getParameter("sheduleIdFwd");
+			String briefingStatus = req.getParameter("briefingStatus");
+			
+				PfmsBriefingTransaction briefingTransaction = new PfmsBriefingTransaction();
+				briefingTransaction.setScheduleId(Long.parseLong(sheduleId));
+				briefingTransaction.setEmpId(Long.parseLong(EmpId));
+				briefingTransaction.setActionBy(UserId);
+				
+				 result1=service.insertBriefingTrans(briefingTransaction,briefingStatus,EmpId,projectid,sheduleId,DHId,GHId,DOId,DirectorId);
+			
+				 if(frwStatus.contains(briefingStatus)) {
+			if(result1>0)
+			{
+				
+				redir.addAttribute("result", "Briefing Forwarded Successfully");
+			}else{
+				redir.addAttribute("resultfail", "Briefing Forward unSuccessful");	
+			}
+		 }else if(briefingStatus.equalsIgnoreCase("REP")) {
+		 if(result1>0)
+			{
+							
+				redir.addAttribute("result", "Briefing Approved Successfully");
+			}else{
+				redir.addAttribute("resultfail", "Briefing Approved unSuccessful");	
+			}
+			 }
+		 else {
+			 if(result1>0)
+				{
+								
+					redir.addAttribute("result", "Briefing Recommended Successfully");
+				}else{
+					redir.addAttribute("resultfail", "Briefing Recommended unSuccessful");	
+				}
+		 }
+						       
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside BriefingForward.htm "+UserId, e);
+				}
+				 redir.addFlashAttribute("projectid",projectid);
+			    	redir.addFlashAttribute("committeecode",committeecode);
+			    	return "redirect:/FroozenBriefingList.htm";
+		 }
+		 
+		 @RequestMapping(value = "BriefingActionReturn.htm", method = {RequestMethod.GET,RequestMethod.POST})
+		 public String BriefingActionReturn(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+		 {
+			 String UserId = (String) ses.getAttribute("Username");
+			 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+				String projectid=req.getParameter("projectidRtn");
+		    	String committeecode=req.getParameter("committeecode");
+		    	String DHId=req.getParameter("DHId");
+		    	String GHId=req.getParameter("GHId");
+		    	String DOId=req.getParameter("DOId");
+		    	String DirectorId=req.getParameter("DirectorId");
+		    	String userId=req.getParameter("userId");
+		    	String replyMsg=req.getParameter("replyMsg");
+			 long result1=0;
+				logger.info(new Date() +"Inside BriefingForward.htm "+UserId);	
+				 try {
+			String sheduleId = req.getParameter("sheduleRtn");
+			String briefingStatus = req.getParameter("briefingStatus");
+				PfmsBriefingTransaction briefingTransaction = new PfmsBriefingTransaction();
+				briefingTransaction.setScheduleId(Long.parseLong(sheduleId));
+				briefingTransaction.setEmpId(Long.parseLong(EmpId));
+				briefingTransaction.setActionBy(UserId);
+				if(replyMsg!=null) {
+					briefingTransaction.setRemarks(replyMsg);
+				}
+				
+				
+				 result1=service.briefingReturnAction(briefingTransaction,briefingStatus,EmpId,projectid,sheduleId,userId);
+			
+				 if( !UserId.equalsIgnoreCase(EmpId)) {
+			if(result1>0)
+			{
+				
+				redir.addAttribute("result", "Briefing Returned Successfully");
+			}else{
+				redir.addAttribute("resultfail", "Briefing Returned unSuccessful");	
+			}
+		 }
+	
+						       
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error(new Date() +" Inside BriefingForward.htm "+UserId, e);
+				}
+				 redir.addFlashAttribute("projectid",projectid);
+			    	redir.addFlashAttribute("committeecode",committeecode);
+			    	return "redirect:/FroozenBriefingList.htm";
+		 }
+		 
+		 
+		 
+			@RequestMapping(value = "getBriefingData.htm", method = RequestMethod.GET)
+			public @ResponseBody String getBriefingData(HttpServletRequest req, HttpServletResponse response, HttpSession ses) throws Exception 
+			{
+				String sheduleId = req.getParameter("sheduleId");
+				Object[] getBriefingData =null;
+				try {
+					getBriefingData = service.getBriefingData(sheduleId);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Gson json = new Gson();
+				return json.toJson(getBriefingData);
+			}
+			
+			@RequestMapping(value="getBriefingRemarks.htm",method=RequestMethod.GET)
+			public @ResponseBody String getBriefingRemarks(HttpSession ses, HttpServletRequest req) throws Exception {
+				
+				 Gson json = new Gson();
+			   	 String UserId=(String)ses.getAttribute("Username");
+			   	 
+			   	logger.info(new Date() +"Inside getBriefingRemarks.htm"+UserId);
+			   	
+			  List<Object[]> rfaRemarkData=null;
+			   	try {
+			   		String sheduleId=req.getParameter("sheduleId");
+			   		
+			   		rfaRemarkData = service.getBriefingRemarks(sheduleId);
+			   	}
+			   	catch (Exception e) {
+			   		e.printStackTrace();
+			   		logger.error(new Date() +"Inside getBriefingRemarks.htm"+UserId ,e);
+			   	}
+			   	
+			return json.toJson(rfaRemarkData);
+			}
+		
 }

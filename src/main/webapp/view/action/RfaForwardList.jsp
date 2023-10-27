@@ -722,44 +722,7 @@ $('#replyMsg').keyup(function (){
 	  $('#replyMsg').css({'-webkit-box-shadow' : 'none', '-moz-box-shadow' : 'none','background-color' : 'none', 'box-shadow' : 'none'});
 		  });
 
-<%-- 	<%if(tab!=null && tab.equals("closed")){%>
-	
-		$('#pills-imm-property-tab').click();
-	
-	<%}%>
-	
-	$('#fromdate').daterangepicker({
-		"singleDatePicker" : true,
-		"linkedCalendars" : false,
-		"showCustomRangeLabel" : true,
-		/* "minDate" :datearray,   */
-		 "startDate" : new Date('<%=fromdate%>'), 
-		"cancelClass" : "btn-default",
-		showDropdowns : true,
-		locale : {
-			format : 'DD-MM-YYYY'
-		}
-	});
-		
-		
-		$('#todate').daterangepicker({
-			"singleDatePicker" : true,
-			"linkedCalendars" : false,
-			"showCustomRangeLabel" : true,
-			"startDate" : new Date('<%=todate%>'), 
-			"minDate" :$("#fromdate").val(),  
-			"cancelClass" : "btn-default",
-			showDropdowns : true,
-			locale : {
-				format : 'DD-MM-YYYY'
-			}
-		});
 
-		 $(document).ready(function(){
-			   $('#fromdate, #todate').change(function(){
-			       $('#myform').submit();
-			    });
-			});  --%>
 	
 	
 	

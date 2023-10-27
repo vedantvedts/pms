@@ -6,11 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.committee.model.Committee;
 import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
+import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.PfmsBriefingTransaction;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -107,5 +109,19 @@ public interface PrintDao {
 	public int PresentationNameUpdate(String presentationName, String scheduleid) throws Exception;
 	public int MomUpdate(String presentationName, String scheduleid) throws Exception;
 	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
+	public Object getDirectorName(String labCode)throws Exception;
+	public Object[] DoRtmdAdEmpData(String labCode)throws Exception;
+	public long updateBreifingStatus(String briefingStatus,String sheduleId)throws Exception;
+	public long insertBriefingTrans(PfmsBriefingTransaction briefingTransaction)throws Exception;
+	public List<Object[]> getDivisionHeadList()throws Exception;
+	public Object[] getDHId(String projectid)throws Exception;
+	public Object getGHId(String projectid)throws Exception;
+	public long PfmsNotificationAdd(PfmsNotification notification) throws Exception;
+	public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid, String empId)throws Exception;
+	public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid, String empId)throws Exception;
+	public Object[] getBriefingData(String sheduleId)throws Exception;
+	public Object[] getUserId(String sheduleId)throws Exception;
+	public String getEmpName(String empId)throws Exception;
+	public List<Object[]> getBriefingRemarks(String sheduleId)throws Exception;
 
 }

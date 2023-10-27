@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.milestone.dto.MilestoneActivityLevelConfigurationDto;
 import com.vts.pfms.milestone.model.MilestoneActivityLevelConfiguration;
 import com.vts.pfms.model.LabMaster;
@@ -34,6 +36,7 @@ import com.vts.pfms.print.dao.PrintDao;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.InitiationSanction;
 import com.vts.pfms.print.model.InitiationsanctionCopyAddr;
+import com.vts.pfms.print.model.PfmsBriefingTransaction;
 import com.vts.pfms.print.model.ProjectSlideFreeze;
 import com.vts.pfms.print.model.ProjectSlides;
 import com.vts.pfms.print.model.RecDecDetails;
@@ -134,10 +137,6 @@ public class PrintServiceImpl implements PrintService{
 		
 		List<Object[]>milestones=dao.Milestones(projectid,committeeid);
 
-		System.out.println("dataaaa projectidd:"+projectid);
-		System.out.println("dataaaa comiteeeid:"+committeeid);
-
-		System.out.println("milestonesizeee:"+milestones.size());
 		List<Object[]>newList=new ArrayList<>();
 		if(milestones.size()!=0) {
 		newList=milestones.stream()
@@ -853,4 +852,176 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
 		return dao.getEnvisagedDemandList(projectid);
 	}
+
+	@Override
+	public Object getDirectorName(String labCode) throws Exception {
+		return dao.getDirectorName(labCode);
+	}
+
+	@Override
+	public Object[] DoRtmdAdEmpData(String labCode) throws Exception {
+		return dao.DoRtmdAdEmpData(labCode);
+	}
+
+
+
+	@Override
+	public long insertBriefingTrans(PfmsBriefingTransaction briefingTransaction,String briefingStatus,String EmpId,String projectid,String sheduleId,String DHId,String GHId,String DOId,String DirectorId) throws Exception {
+		PfmsNotification OIC1notification =new PfmsNotification();
+		String empName=dao.getEmpName(EmpId);
+		 List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
+		if(frwStatus.contains(briefingStatus)) {
+			 dao.updateBreifingStatus("FWU",sheduleId);
+			 briefingTransaction.setBriefingStatus("FWU");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			 
+			 OIC1notification.setEmpId(Long.parseLong(DHId));
+			 
+			
+
+		}else if(briefingStatus.equalsIgnoreCase("FWU")) {
+			 dao.updateBreifingStatus("RED",sheduleId);
+				briefingTransaction.setBriefingStatus("RED");
+				briefingTransaction.setActionDate(sdf1.format(new Date()));
+				 dao.insertBriefingTrans(briefingTransaction);
+				 
+				OIC1notification.setEmpId(Long.parseLong(GHId));
+
+		}else if(briefingStatus.equalsIgnoreCase("RED")) {
+			 dao.updateBreifingStatus("REG",sheduleId);
+				briefingTransaction.setBriefingStatus("REG");
+				briefingTransaction.setActionDate(sdf1.format(new Date()));
+				 dao.insertBriefingTrans(briefingTransaction);
+				 
+				OIC1notification.setEmpId(Long.parseLong(DOId));
+				
+		}else if(briefingStatus.equalsIgnoreCase("REG")) {
+			 dao.updateBreifingStatus("REP",sheduleId);
+				briefingTransaction.setBriefingStatus("REP");
+				briefingTransaction.setActionDate(sdf1.format(new Date()));
+				 dao.insertBriefingTrans(briefingTransaction);
+				 
+				
+				OIC1notification.setEmpId(Long.parseLong(DirectorId));
+
+		}else if(briefingStatus.equalsIgnoreCase("REP")) {
+			 dao.updateBreifingStatus("APD",sheduleId);
+				briefingTransaction.setBriefingStatus("APD");
+				briefingTransaction.setActionDate(sdf1.format(new Date()));
+				return dao.insertBriefingTrans(briefingTransaction);
+				 
+
+		}
+		
+		
+		
+		OIC1notification.setNotificationUrl("FroozenBriefingList.htm?pendingClick="+"N");
+		OIC1notification.setNotificationMessage("Briefing Action Forwarded by  "+empName);
+		OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		OIC1notification.setNotificationby(Long.parseLong(EmpId));
+		OIC1notification.setIsActive(1);
+		OIC1notification.setScheduleId(0L);
+		OIC1notification.setStatus("MAR");
+		OIC1notification.setCreatedBy(EmpId);
+		OIC1notification.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		
+		return dao.PfmsNotificationAdd(OIC1notification);
+	}
+
+	@Override
+	public List<Object[]> getDivisionHeadList() throws Exception {
+		return dao.getDivisionHeadList();
+	}
+
+	@Override
+	public Object[] getDHId(String projectid) throws Exception {
+		return dao.getDHId(projectid);
+	}
+
+	@Override
+	public Object getGHId(String projectid) throws Exception {
+		return dao.getGHId(projectid);
+	}
+
+	@Override
+	public List<Object[]> BriefingScheduleFwdList(String labCode, String committeecode, String projectid, String empId)throws Exception {
+		return dao.BriefingScheduleFwdList(labCode,committeecode,projectid,empId);
+	}
+	@Override
+	public List<Object[]> BriefingScheduleFwdApprovedList(String labCode, String committeecode, String projectid, String empId)throws Exception {
+		return dao.BriefingScheduleFwdApprovedList(labCode,committeecode,projectid,empId);
+	}
+
+	@Override
+	public long briefingReturnAction(PfmsBriefingTransaction briefingTransaction, String briefingStatus, String empId,String projectid, String sheduleId, String userId) throws Exception {
+		String empName=dao.getEmpName(empId);
+		PfmsNotification OIC1notification =new PfmsNotification();
+		if(briefingStatus.equalsIgnoreCase("FWU") && empId.equalsIgnoreCase(userId)) {
+			 dao.updateBreifingStatus("REV",sheduleId);
+			 briefingTransaction.setBriefingStatus("REV");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			 return 1;
+		}else if(briefingStatus.equalsIgnoreCase("FWU") ) {
+			 dao.updateBreifingStatus("RDH",sheduleId);
+			 briefingTransaction.setBriefingStatus("RDH");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			
+				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
+			 
+		}else if(briefingStatus.equalsIgnoreCase("RED") ) {
+			 dao.updateBreifingStatus("RGH",sheduleId);
+			 briefingTransaction.setBriefingStatus("RGH");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			
+				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
+			 
+		}else if(briefingStatus.equalsIgnoreCase("REG") ) {
+			 dao.updateBreifingStatus("RPD",sheduleId);
+			 briefingTransaction.setBriefingStatus("RPD");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			
+				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
+			 
+		}else if(briefingStatus.equalsIgnoreCase("REP") ) {
+			 dao.updateBreifingStatus("RBD",sheduleId);
+			 briefingTransaction.setBriefingStatus("RBD");
+			 briefingTransaction.setActionDate(sdf1.format(new Date()));
+			 dao.insertBriefingTrans(briefingTransaction);
+			Object[] fwdUserdata= dao.getUserId(sheduleId);
+			
+				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
+			 
+		}
+				OIC1notification.setNotificationUrl("FroozenBriefingList.htm?initiatedClick="+"N"+"&revProjectId="+projectid);
+				OIC1notification.setNotificationMessage("Briefing Action Returned by  "+empName);
+				OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				OIC1notification.setNotificationby(Long.parseLong(empId));
+				OIC1notification.setIsActive(1);
+				OIC1notification.setScheduleId(0L);
+				OIC1notification.setStatus("MAR");
+				OIC1notification.setCreatedBy(empId);
+				OIC1notification.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+				
+				return dao.PfmsNotificationAdd(OIC1notification);
+	}
+
+	@Override
+	public Object[] getBriefingData(String sheduleId) throws Exception {
+		return dao.getBriefingData(sheduleId);
+	}
+
+	@Override
+	public List<Object[]> getBriefingRemarks(String sheduleId) throws Exception {
+		return dao.getBriefingRemarks(sheduleId);
+	}
+	
+	
 }
