@@ -142,7 +142,7 @@ font-size: 13px;
 }
 .rtnHeader{
 position: relative;
-top: 7px;
+top: 6px;
 }
 
 .meetingIdRmks{
@@ -164,6 +164,7 @@ top: 6px;
   String projectid=(String)request.getAttribute("projectid");
   String revProjectId=(String)request.getAttribute("revProjectId");
   String committeecode=(String)request.getAttribute("committeecode");
+  String commiteeName=(String)request.getAttribute("commiteeName");
   String pendingClick=(String)request.getAttribute("pendingClick");
   String initiatedClick=(String)request.getAttribute("initiatedClick");
   Object[] directorDetails=(Object[])request.getAttribute("directorName");
@@ -210,7 +211,7 @@ top: 6px;
 				<div class="card shadow-nohover">
 					<div class="card-header row">
 						<div class="col-md-6">
-							<h4 class="">Schedule Briefing History List</h4>
+							<h4 class="">Schedule Briefing Paper History List</h4>
 						</div>
 						<div class="col-md-6" align="right" style="margin-top: -8px;">
 							<form method="post" action="FroozenBriefingList.htm" >
@@ -231,8 +232,16 @@ top: 6px;
 										</td>
 										<td>
 											<select class="form-control items" name="committeecode" id="committeecode"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();" >
+												<%if(commiteeName!=null ){
+												if(commiteeName.equalsIgnoreCase("EB")){
+													System.out.println("commiteeName--------- "+commiteeName);
+													%>
+													<option value="PMRC" >PMRC</option>
+												<option selected value="EB" >EB</option>
+												<%}}else{ %>
 												<option <%if(committeecode!=null && committeecode.equalsIgnoreCase("PMRC")) { %>selected <%} %>value="PMRC" >PMRC</option>
 												<option <%if(committeecode!=null && committeecode.equalsIgnoreCase("EB")) { %>selected <%} %>value="EB" >EB</option>
+												<%} %>
 											</select>
 										</td>
 									</tr>
@@ -381,7 +390,7 @@ top: 6px;
 																			&& !EmpId.equalsIgnoreCase(DoRtmdAdEmpData[0].toString())
 																			&& !EmpId.equalsIgnoreCase(directorDetails[0].toString())) { %>
 																					<button class="editable-click" type="button"  style="background-color: transparent;" 
-																				formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="UserFwd" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																				formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="UserFwd" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="FORWARD">
 																	<div class="cc-rockmenu" >
 																			<figure class="rolling_icon" >
@@ -419,6 +428,7 @@ top: 6px;
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 								<input type="hidden" name="projectidRtn" id="rvk_projectid" value="">
 								<input type="hidden" name="projectid" id="fwd_projectid" value="">
+								<input type="hidden" name="meetingIdNoFWd" id="meetingIdNoFWd" value="">
 							<input type="hidden" name="committeecode" value=<%=committeecode %>>
 								<input type="hidden" name="sheduleRtn" id="sheduleIdRvk" value="">
 								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
@@ -513,26 +523,26 @@ top: 6px;
 																			<i class="fa fa-plus-square" aria-hidden="true"></i>
 																		</button>
 																		<%}if(schedule[7].toString().equalsIgnoreCase("Y")  ){
-																	if(EmpId.equalsIgnoreCase(DHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("FWU")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																	if( schedule[15].toString().equalsIgnoreCase("FWU")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DH Rec">Recommend</button>
-																		<%}else if(EmpId.equalsIgnoreCase(GHId[0].toString())&& schedule[15].toString().equalsIgnoreCase("RED")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
+																		<%}else if( schedule[15].toString().equalsIgnoreCase("RED")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="GH Rec">Recommend</button>
 																		
-																		<%}else if(EmpId.equalsIgnoreCase(DoRtmdAdEmpData[0].toString())&& schedule[15].toString().equalsIgnoreCase("REG")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
-																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recommend</button>
+																		<%}else if( schedule[15].toString().equalsIgnoreCase("REG")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		 id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recommend</button>
 																		
-																		<%}else if(EmpId.equalsIgnoreCase(directorDetails[0].toString())&& schedule[15].toString().equalsIgnoreCase("REP")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');"
-																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="Director Approval">Approve</button>
+																		<%}else if( schedule[15].toString().equalsIgnoreCase("REP")) {%>
+																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		 id="BriefingFwdBtn" title="" data-original-title="Director Approval">Approve</button>
 																		
 																		<%}}%>
 											
 												
 												
-											<button class="btn btn-danger" type="button" formaction="BriefingActionReturn.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingRtn" value="return" onclick="return BriefingReturn('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>');" id="BriefingReturnBtn" >Return</button>
+											<button class="btn btn-danger" type="button" formaction="BriefingActionReturn.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingRtn" value="return" onclick="return BriefingReturn('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');" id="BriefingReturnBtn" >Return</button>
 																</td>
 															</tr>
 														<%} }%>
@@ -545,6 +555,7 @@ top: 6px;
 							
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 								<input type="hidden" name="projectid" id="fwd_projectid" value="">
+								<input type="hidden" name="meetingIdNoFWd" id="meetingIdNoFWd" value="">
 							<input type="hidden" name="committeecode" value=<%=committeecode %>>
 								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
 								<input type="hidden" name="briefingStatus" id="briefingStatus" value="">
@@ -628,14 +639,7 @@ top: 6px;
 								</div>
 							</div>
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-								<input type="hidden" name="projectid" id="fwd_projectid" value="">
-							<input type="hidden" name="committeecode" value=<%=committeecode %>>
-								<input type="hidden" name="sheduleIdFwd" id="sheduleIdFwd" value="">
-								<input type="hidden" name="briefingStatus" id="briefingStatus" value="">
-								<input type="hidden" name="DHId" id="DHId" value="<%= DHId[0]%>">
-								<input type="hidden" name="GHId" id="GHId" value="<%= GHId[0]%>">
-								<input type="hidden" name="DOId" id="DOId" value="<%= DoRtmdAdEmpData[0]%>">
-								<input type="hidden" name="DirectorId" id="DirectorId" value="<%= directorDetails[0]%>">
+				
 								
 							</form>
 							</div>
@@ -689,11 +693,11 @@ top: 6px;
 
 								</td>
 								<td class="trdown" style="background: #C6B4CE;">
-							<%if(DoRtmdAdEmpData!=null){ %><%=DoRtmdAdEmpData[1] %>,<%=DoRtmdAdEmpData[2] %><%} %>
+							<%if(DoRtmdAdEmpData!=null && DoRtmdAdEmpData.length>0 ){ %><%=DoRtmdAdEmpData[1] %>,<%=DoRtmdAdEmpData[2] %><%} %>
 									
 								</td>
 								<td class="trdown" style="background: #E8E46E;">
-								<%=directorDetails[1] %>
+								<%if(directorDetails!=null && directorDetails.length>0 ){ %><%=directorDetails[1] %><%} %>
 					
 								
 								</td>
@@ -793,14 +797,14 @@ top: 6px;
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content addreq" style="width: 130%; position: relative; right: 150px;" >
 						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
-							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff;float:left;">BRIEFING Return</h5>
+							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff;float:left;">Briefing Paper Return</h5>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<h6 class="modal-title rtnHeader" id="exampleModalLabel" style="color: #fff;">Meeting Id :- </h6>
 							&nbsp;&nbsp;&nbsp;
 							<h6 class="modal-title rtnHeader MeetingDetails " id="exampleModalLabel" style="color: #fff;"></h6>
 							
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<h6 class="modal-title rtnHeader"  id="exampleModalLabel" style="color: #fff;">Schedule Date & Time :- </h6>
+							<h6 class="modal-title rtnHeader"  id="exampleModalLabel" style="color: #fff;">Schedule Date :- </h6>
 							&nbsp;&nbsp;&nbsp;
 							<h6 class="modal-title rtnHeader scheduleDate" id="exampleModalLabel" style="color: #fff;"></h6>
 							
@@ -834,6 +838,8 @@ top: 6px;
  		<input type="hidden" name="sheduleRtn" id="sheduleIdRtn">
  		<input type="hidden" name="projectidRtn" id="rtn_projectid">
  		<input type="hidden" name="briefingStatus" id="briefingStatusRtn">
+ 		<input type="hidden" name="meetingIdRtn" id="meetingIdRtn">
+ 		<input type="hidden" name="commiteeName" id="commiteeName">
  		<!--  <input type="hidden" name="userId" id="userIdRtn">-->
  		<input type="hidden" name="committeecode" value=<%=committeecode %>>
         
@@ -857,7 +863,7 @@ top: 6px;
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content addreq" style="width: 100%; position: relative; " >
 						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
-							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">BRIEFING Remarks</h5>
+							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">Briefing Paper Remarks</h5>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<h6 class="modal-title meetingIdRmks" id="exampleModalLabel" style="color: #fff">Meeting Id :-</h6>
 						&nbsp;&nbsp;&nbsp;
@@ -901,6 +907,12 @@ $(function () {
 	  }else if(initiatedClick == "N"){
 		  $('#pills-mov-property-tab').trigger('click');
 	  }
+	
+	  var committeName='<%= commiteeName%>';
+	  if(committeName == "EB"){
+		  $('#committeecode').val(committeName);
+	  }
+	  
 	  
 	  
 });
@@ -970,18 +982,19 @@ function Update(){
 	
 }
 
-function BriefingFwdd(sheduleId,projectId,BriefingStatus) {
+function BriefingFwdd(sheduleId,projectId,BriefingStatus,meetingId) {
 	
 	
 	$('#sheduleIdFwd').val(sheduleId);
 	$('#fwd_projectid').val(projectId);
 	$('#briefingStatus').val(BriefingStatus);
+	$('#meetingIdNoFWd').val(meetingId);
 	if(BriefingStatus == "INI"){
-		var confirmation = confirm('Are you sure to Forward the  Briefing');
+		var confirmation = confirm('Are you sure to Forward the  Briefing Paper');
 	}else if(BriefingStatus == "REP"){
-	  var confirmation = confirm('Are you sure to Approve the  Briefing');
+	  var confirmation = confirm('Are you sure to Approve the  Briefing Paper');
 	}else{
-		 var confirmation = confirm('Are you sure to Recommend the  Briefing');
+		 var confirmation = confirm('Are you sure to Recommend the  Briefing Paper');
 	}
 if(confirmation){
 
@@ -1009,7 +1022,7 @@ function BriefingRevoke(sheduleId,projectId,BriefingStatus,userId) {
 	$('#rvk_projectid').val(projectId);
 	$('#briefingStatus').val(BriefingStatus);
 	$('#userId').val(userId);
-	  var confirmation = confirm('Are you sure to Revoke the  Briefing');
+	  var confirmation = confirm('Are you sure to Revoke the  Briefing Paper');
 if(confirmation){
 
 var form = document.getElementById("briefingForm");
@@ -1029,13 +1042,19 @@ return false;
 }
 }
 
-function BriefingReturn(sheduleId,projectId,BriefingStatus) {
+function BriefingReturn(sheduleId,projectId,BriefingStatus,meetingId) {
 	$('#briefingReturnmodal').modal('show');
 	
 	$('#sheduleIdRtn').val(sheduleId);
 	$('#rtn_projectid').val(projectId);
 	$('#briefingStatusRtn').val(BriefingStatus);
+	$('#meetingIdRtn').val(meetingId);
 	
+	
+	var meetingData = meetingId.split('/');
+	
+	console.log(meetingData[2]);
+	$('#commiteeName').val(meetingData[2]);
 	$.ajax({
 		
 		type:'GET',
@@ -1052,26 +1071,9 @@ function BriefingReturn(sheduleId,projectId,BriefingStatus) {
                         month: '2-digit',
                         year: 'numeric',
                         }).replace(/\//g, '-');
-						   
-						   var timeString = ajaxresult[2]; // Assuming it's in "HH:mm:ss" format
-
-						   var timeParts = timeString.split(':');
-						   var hours = parseInt(timeParts[0], 10);
-						   var minutes = parseInt(timeParts[1], 10);
-
-						   // Create a new Date object to work with the time
-						   var startTime = new Date();
-						   startTime.setHours(hours);
-						   startTime.setMinutes(minutes);
-						   
-						   var formattedTime = startTime.toLocaleTimeString('en-US', {
-							    hour: '2-digit',
-							    minute: '2-digit',
-							    hour12: true,
-						   });
-						   
-						   formattedDate+=" - "+ formattedTime;
-						   
+		
+						   $('.scheduleDate').empty();
+						   $('.MeetingDetails').empty();
 						   $('.scheduleDate').append(formattedDate);
 						   $('.MeetingDetails').append(ajaxresult[0]);
 					
@@ -1089,7 +1091,7 @@ function returnSub() {
 		return false;
 	}else{
 	
-	 var confirmation = confirm('Are You Sure To Return this Briefing ?');
+	 var confirmation = confirm('Are You Sure To Return this Briefing Paper ?');
 	  if(confirmation){
 		  var form = document.getElementById("returnFrm");
 		   
@@ -1124,16 +1126,21 @@ $('#pills-imm-property-tab').click(function () {
 $('#pills-second-property-tab,#pills-mov-property-tab').click(function () {
 	var projects = <%= new com.google.gson.Gson().toJson(projectslist) %>;
 	var committeecode='<%=committeecode %>';
+	var commiteeName='<%=commiteeName %>';
 	var projectid='<%=projectid %>';
 	var revProjectId='<%=revProjectId %>';
-	console.log(projectid);
 	$('#projectid').find('option').remove();
 	$('#committeecode').find('option').remove();
-
+if(commiteeName == "EB"){
+	$("#committeecode").append('<option value="PMRC" ' + (commiteeName != null && commiteeName.toUpperCase() === "PMRC" ? 'selected' : '') + '>PMRC</option>');
+	
+	$("#committeecode").append('<option value="EB" ' + (commiteeName != null && commiteeName.toUpperCase() === "EB" ? 'selected' : '') + '>EB</option>');
+}else{
 	$("#committeecode").append('<option value="PMRC" ' + (committeecode != null && committeecode.toUpperCase() === "PMRC" ? 'selected' : '') + '>PMRC</option>');
-
 	
 	$("#committeecode").append('<option value="EB" ' + (committeecode != null && committeecode.toUpperCase() === "EB" ? 'selected' : '') + '>EB</option>');
+}
+
 	$('#projectid').empty();
 	if(projects!=null  && projects.length>0){
 		var projectOptions = '';

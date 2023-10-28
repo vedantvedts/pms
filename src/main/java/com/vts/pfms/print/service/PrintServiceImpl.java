@@ -877,6 +877,7 @@ public class PrintServiceImpl implements PrintService{
 		String GHId=briefingDto.getGhId();
 		String DOId=briefingDto.getDoId();
 		String DirectorId=briefingDto.getDirectorId();
+		String meetingId=briefingDto.getMeetingID();
 		PfmsBriefingTransaction briefingTransaction=briefingDto.getBriefingTranc();
 		String empName=dao.getEmpName(EmpId);
 		 List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
@@ -927,7 +928,7 @@ public class PrintServiceImpl implements PrintService{
 		
 		
 		OIC1notification.setNotificationUrl("FroozenBriefingList.htm?pendingClick="+"N");
-		OIC1notification.setNotificationMessage("Briefing Action Forwarded by  "+empName);
+		OIC1notification.setNotificationMessage("Briefing Paper of Meeting Id "+meetingId+" Forwarded by  "+empName);
 		OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		OIC1notification.setNotificationby(Long.parseLong(EmpId));
 		OIC1notification.setIsActive(1);
@@ -970,7 +971,8 @@ public class PrintServiceImpl implements PrintService{
 		String scheduleId=briefingDto.getScheduleId();
 		String userId=briefingDto.getUserId();
 		String projectid=briefingDto.getProjectId();
-	
+		String meetingId=briefingDto.getMeetingID();
+		String committeecode=briefingDto.getCommitteecode();
 		PfmsBriefingTransaction briefingTransaction=briefingDto.getBriefingTranc();
 		
 		String empName=dao.getEmpName(empId);
@@ -1018,8 +1020,13 @@ public class PrintServiceImpl implements PrintService{
 				OIC1notification.setEmpId(Long.valueOf(fwdUserdata[0].toString()));
 			 
 		}
-				OIC1notification.setNotificationUrl("FroozenBriefingList.htm?initiatedClick="+"N"+"&revProjectId="+projectid);
-				OIC1notification.setNotificationMessage("Briefing Action Returned by  "+empName);
+		if(committeecode.equalsIgnoreCase("EB")) {
+			OIC1notification.setNotificationUrl("FroozenBriefingList.htm?initiatedClick="+"N"+"&revProjectId="+projectid+"&commiteeName="+committeecode);
+		}else {
+			OIC1notification.setNotificationUrl("FroozenBriefingList.htm?initiatedClick="+"N"+"&revProjectId="+projectid);
+		}
+				
+				OIC1notification.setNotificationMessage("Briefing Paper of meeting Id "+meetingId+" Returned by  "+empName);
 				OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				OIC1notification.setNotificationby(Long.parseLong(empId));
 				OIC1notification.setIsActive(1);

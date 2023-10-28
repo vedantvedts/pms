@@ -1382,7 +1382,7 @@ if(formname!=null){
 	<div class="col-md-12" >
 		<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; ">Additional File</b> 
+				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; ">Signed MOM</b> 
 				<hr><br>				
 					<%if(minutesattachmentlist.size()>0){ %>
 						<div class="card-body" style="margin-top: -8px" >       	

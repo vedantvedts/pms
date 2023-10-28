@@ -3927,6 +3927,7 @@ public class PrintController {
 				
 				String projectid= req.getParameter("projectid");
 				String committeecode= req.getParameter("committeecode");
+				String commiteeName= req.getParameter("commiteeName");
 				String pendingClick= req.getParameter("pendingClick");
 				String initiatedClick= req.getParameter("initiatedClick");
 				String revProjectId= req.getParameter("revProjectId");
@@ -3955,19 +3956,39 @@ public class PrintController {
 				List<Object[]> BriefingScheduleFwdList =new ArrayList<Object[]>();
 				List<Object[]> BriefingScheduleFwdApprovedList =new ArrayList<Object[]>();
 				if(revProjectId!=null) {
-					BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, revProjectId);
+					if(commiteeName!=null) {
+					if(commiteeName.equalsIgnoreCase("EB")) {
+						BriefingScheduleList=service.BriefingScheduleList(LabCode, commiteeName, revProjectId);
+					}}else {
+						BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, revProjectId);
+					}
+					
 				}else {
-					BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, projectid);
+					if(commiteeName!=null) {
+					if(commiteeName.equalsIgnoreCase("EB")) {
+						BriefingScheduleList=service.BriefingScheduleList(LabCode, commiteeName, projectid);
+					}}else {
+						BriefingScheduleList=service.BriefingScheduleList(LabCode, committeecode, projectid);
+					}
+					
+				
 				}
 				
 				BriefingScheduleFwdList=service.BriefingScheduleFwdList(LabCode,EmpId);
-				BriefingScheduleFwdApprovedList=service.BriefingScheduleFwdApprovedList(LabCode, committeecode, projectid,EmpId);
+				if(commiteeName!=null) {
+				if(commiteeName.equalsIgnoreCase("EB")) {
+					BriefingScheduleFwdApprovedList=service.BriefingScheduleFwdApprovedList(LabCode, commiteeName, projectid,EmpId);
+				}}else {
+					BriefingScheduleFwdApprovedList=service.BriefingScheduleFwdApprovedList(LabCode, committeecode, projectid,EmpId);
+				}
+				
 				//String pDId=BriefingScheduleList.get(0)[13].toString();
 				
 				req.setAttribute("DoRtmdAdEmpData",service.DoRtmdAdEmpData(LabCode));
 				req.setAttribute("directorName",service.getDirectorName(LabCode));
 				req.setAttribute("projectid",projectid);
 				req.setAttribute("committeecode",committeecode);
+				req.setAttribute("commiteeName",commiteeName);
 				req.setAttribute("projectslist", projectslist);
 				req.setAttribute("BriefingScheduleList",BriefingScheduleList );
 				req.setAttribute("BriefingScheduleFwdList",BriefingScheduleFwdList );
@@ -4508,6 +4529,7 @@ public class PrintController {
 		    	String GHId=req.getParameter("GHId");
 		    	String DOId=req.getParameter("DOId");
 		    	String DirectorId=req.getParameter("DirectorId");
+		    	String meetingIdNoFWd=req.getParameter("meetingIdNoFWd");
 		    	List<String> frwStatus  = Arrays.asList("INI","REV","RDH","RGH","RPD","RBD");
 		    	//String option=req.getParameter("BriefingFwd");
 			 long result1=0;
@@ -4530,6 +4552,7 @@ public class PrintController {
 				briefingDto.setGhId(GHId);
 				briefingDto.setDoId(DOId);
 				briefingDto.setDirectorId(DirectorId);
+				briefingDto.setMeetingID(meetingIdNoFWd);
 				
 				 result1=service.insertBriefingTrans(briefingDto);
 			
@@ -4537,26 +4560,26 @@ public class PrintController {
 			if(result1>0)
 			{
 				
-				redir.addAttribute("result", "Briefing Forwarded Successfully");
+				redir.addAttribute("result", "Briefing Paper Forwarded Successfully");
 			}else{
-				redir.addAttribute("resultfail", "Briefing Forward unSuccessful");	
+				redir.addAttribute("resultfail", "Briefing Paper Forward unSuccessful");	
 			}
 		 }else if(briefingStatus.equalsIgnoreCase("REP")) {
 		 if(result1>0)
 			{
 			 	redir.addFlashAttribute("pendingClick","N");			
-				redir.addAttribute("result", "Briefing Approved Successfully");
+				redir.addAttribute("result", "Briefing Paper Approved Successfully");
 			}else{
-				redir.addAttribute("resultfail", "Briefing Approved unSuccessful");	
+				redir.addAttribute("resultfail", "Briefing Paper Approved unSuccessful");	
 			}
 			 }
 		 else {
 			 if(result1>0)
 				{
 				 	redir.addFlashAttribute("pendingClick","N");			
-					redir.addAttribute("result", "Briefing Recommended Successfully");
+					redir.addAttribute("result", "Briefing Paper Recommended Successfully");
 				}else{
-					redir.addAttribute("resultfail", "Briefing Recommended unSuccessful");	
+					redir.addAttribute("resultfail", "Briefing Paper Recommended unSuccessful");	
 				}
 		 }
 						       
@@ -4577,8 +4600,10 @@ public class PrintController {
 			 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 				String projectid=req.getParameter("projectidRtn");
 		    	String committeecode=req.getParameter("committeecode");
+		    	String commiteeName=req.getParameter("commiteeName");
 		    	String userId=req.getParameter("userId");
 		    	String replyMsg=req.getParameter("replyMsg");
+		    	String meetingIdRtn=req.getParameter("meetingIdRtn");
 			 long result1=0;
 				logger.info(new Date() +"Inside BriefingForward.htm "+UserId);	
 				 try {
@@ -4589,7 +4614,8 @@ public class PrintController {
 				briefingTransaction.setEmpId(Long.parseLong(EmpId));
 				briefingTransaction.setActionBy(UserId);
 				if(replyMsg!=null) {
-					briefingTransaction.setRemarks(replyMsg);
+				 	redir.addFlashAttribute("pendingClick","N");
+					briefingTransaction.setRemarks(replyMsg.trim());
 				}
 				PfmsBriefingFwdDto briefingDto = new PfmsBriefingFwdDto();
 				
@@ -4599,6 +4625,8 @@ public class PrintController {
 				briefingDto.setProjectId(projectid);
 				briefingDto.setUserId(userId);
 				briefingDto.setScheduleId(scheduleId);
+				briefingDto.setMeetingID(meetingIdRtn);
+				briefingDto.setCommitteecode(commiteeName);
 
 				 result1=service.briefingReturnAction(briefingDto);
 			
@@ -4606,9 +4634,9 @@ public class PrintController {
 			if(result1>0)
 			{
 				
-				redir.addAttribute("result", "Briefing Returned Successfully");
+				redir.addAttribute("result", "Briefing Paper Returned Successfully");
 			}else{
-				redir.addAttribute("resultfail", "Briefing Returned unSuccessful");	
+				redir.addAttribute("resultfail", "Briefing Paper Returned unSuccessful");	
 			}
 		 }
 	
@@ -4619,7 +4647,8 @@ public class PrintController {
 				}
 				 	redir.addFlashAttribute("projectid",projectid);
 			    	redir.addFlashAttribute("committeecode",committeecode);
-			    	redir.addFlashAttribute("pendingClick","N");
+			    	redir.addFlashAttribute("commiteeName",commiteeName);
+			   
 			    	return "redirect:/FroozenBriefingList.htm";
 		 }
 		 

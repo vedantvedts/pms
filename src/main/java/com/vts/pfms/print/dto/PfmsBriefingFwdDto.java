@@ -20,5 +20,7 @@ public class PfmsBriefingFwdDto {
 	 private String ghId;
 	 private String doId;
 	 private String directorId;
+	 private String meetingID;
+	 private String committeecode;
 
 }
