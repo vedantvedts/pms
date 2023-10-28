@@ -344,7 +344,8 @@ top: 6px;
 																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
 									    							&nbsp;<%=schedule[14] %></button></td>
 																<td>
-																	<%if(schedule[7].toString().equalsIgnoreCase("Y")  ){ %>
+																	<%if(schedule[7].toString().equalsIgnoreCase("Y")   ){
+																		if(!schedule[15].toString().equalsIgnoreCase("APD")){%>
 																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
 																		onclick="showmodal('U', <%=schedule[0]%>,
 																		'<%=schedule[9] %>', 
@@ -355,7 +356,7 @@ top: 6px;
 																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
 																		</button>
 																		
-																		<% if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
+																		<% }if(schedule[7]!=null && schedule[7].toString().equalsIgnoreCase("Y")) {%>
 																		<button class="btn btn-sm" style="margin:5px;" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=schedule[0]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="View">
 																			<i class="fa fa-eye" aria-hidden="true"></i>
 																		</button>
@@ -400,7 +401,8 @@ top: 6px;
 																		</button>
 												
 																		
-																		<%}}%>
+																		<%}} %>
+																		
 																		
 																							<% if(schedule[16] !=null){
 																							if(schedule[15].toString().equalsIgnoreCase("FWU") && EmpId.equalsIgnoreCase(schedule[16].toString()) ){%>
@@ -413,6 +415,16 @@ top: 6px;
 												 
 												 		<button title="REMARKS" class="editable-click" name="sub" type="button"style="background-color: transparent;"formaction="RemarksList.htm" formmethod="POST"formnovalidate="formnovalidate" name="briefingRmk" id="briefingRmk"onclick="return briefingRmks('<%=schedule[0]%>','<%=schedule[9] %>')">
 														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i></button>
+													<%} if(schedule[15].toString().equalsIgnoreCase("APD")){%>
+														<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
+																		onclick="showmodal('M', <%=schedule[0]%>,
+																		'<%=schedule[9] %>', 
+																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
+																		'<%=schedule[11] %>',
+																		'<%=schedule[3] %>','<%=schedule[7] %>','<%=schedule[8] %>','<%=schedule[12] %>'
+																		)" data-toggle="tooltip" data-placement="top" title="Update">
+																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
+																		</button>
 													<%} %>
 												
 																</td>
@@ -757,7 +769,7 @@ top: 6px;
 							<input type="file" accept=".pdf" id="briefingpresent" name="briefingpresent" class="form-control" required="required">
 							</td>
 							</tr>
-							<tr style="display: none;">
+							<tr style="display: none;" id="momTr">
 							<th> MOM  :</th>
 							<td colspan="3">
 							<input type="file"  accept=".pdf" id="Momfile" name="Momfile" class="form-control"  >
@@ -941,7 +953,9 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 		PresentationFrozen.value="";
 		var MinutesFrozen=document.getElementById('MinutesFrozen');
 		MinutesFrozen.value="";
-	}else
+		var momTr=document.getElementById('momTr');
+		momTr.style.display = 'none';
+	}else if(addupdate === 'U')
 	{
 		$('#briefing_modal_header').html('Update Existing Briefing Details');
 		$('#modal_add_btn').hide();
@@ -958,7 +972,27 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 		MinutesFrozen.value=b;
 		var PresentationFrozen=document.getElementById('PresentationFrozen');
 		PresentationFrozen.value=c;
+		var momTr=document.getElementById('momTr');
+		momTr.style.display = 'none';
 		
+	}else{
+		$('#briefing_modal_header').html('Update Existing Briefing Details');
+		$('#modal_add_btn').hide();
+		$('#modal_update_btn').show();	
+		var briefingpaper=document.getElementById('briefingpaper');
+		briefingpaper.removeAttribute("required");
+		var briefingpresent=document.getElementById('briefingpresent');
+		briefingpresent.removeAttribute("required");
+		var Momfile=document.getElementById('Momfile');
+		Momfile.removeAttribute("required");
+		var BriefingPaperFrozen=document.getElementById('BriefingPaperFrozen');
+		BriefingPaperFrozen.value=a;
+		var MinutesFrozen=document.getElementById('MinutesFrozen');
+		MinutesFrozen.value=b;
+		var PresentationFrozen=document.getElementById('PresentationFrozen');
+		PresentationFrozen.value=c;
+		var momTr=document.getElementById('momTr');
+		momTr.style.display = '';
 	}
 	
 	$('#briefing_modal').modal('toggle');

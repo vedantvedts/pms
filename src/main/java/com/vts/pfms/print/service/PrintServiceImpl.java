@@ -925,8 +925,6 @@ public class PrintServiceImpl implements PrintService{
 
 		}
 		
-		
-		
 		OIC1notification.setNotificationUrl("FroozenBriefingList.htm?pendingClick="+"N");
 		OIC1notification.setNotificationMessage("Briefing Paper of Meeting Id "+meetingId+" Forwarded by  "+empName);
 		OIC1notification.setNotificationDate(fc.getSqlDateAndTimeFormat().format(new Date()));
