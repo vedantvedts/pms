@@ -120,5 +120,9 @@ public interface ActionService {
 	public Object[] getRfaAddData(String rfaId)throws Exception;
 	public Object[] getRfaInspectionData(String rfaId)throws Exception;
 	public List<Object[]> getrfaRemarks(String rfaId,String Status)throws Exception;
-	public String getAssineeId(String rfa)throws Exception; 
+	public String getAssineeId(String rfa)throws Exception;
+	public List<Object[]> ProjectApplicableCommitteeList(String projectid) throws Exception;
+	public List<Object[]> MeettingCount(String committeeid, String projectid)throws Exception;
+	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
+	
 }

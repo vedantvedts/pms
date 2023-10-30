@@ -1349,4 +1349,37 @@ public class ActionDaoImpl implements ActionDao{
 			return "0";
 		}
 	}
+
+	public static final String PROJECTAPPLICABLECOMMITTEELIST="SELECT  b.committeeid,a.projectid, a.autoschedule,b.committeeshortname,b.committeename,b.projectapplicable FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND b.projectapplicable='P' AND a.projectid=:projectid";
+	@Override
+	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
+	{
+		Query query=manager.createNativeQuery(PROJECTAPPLICABLECOMMITTEELIST);
+		query.setParameter("projectid", projectid);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	public static final String MEETTINGCOUNT="SELECT a.scheduleid,a.meetingid,a.scheduledate,b.committeeshortname,b.committeeid FROM committee_schedule a, committee b WHERE a.committeeid=:committeeid AND a.committeeid=b.committeeid AND a.scheduleflag IN('MKV','MMR','MMF','MMS','MMA') AND a.projectid=:projectid AND a.isactive=1";
+	@Override
+	public List<Object[]> MeettingCount(String committeeid, String projectid) throws Exception {
+		
+		Query query = manager.createNativeQuery(MEETTINGCOUNT);
+		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", projectid);
+		return (List<Object[]>)query.getResultList();
+	}
+
+	public static final String MEETINGLIST="CALL Pfms_Meeting_Action_Reports(:projectid,:committeeid,:scheduleid)";
+	@Override
+	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid) throws Exception {
+		Query query = manager.createNativeQuery(MEETINGLIST);
+		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", projectid);
+		query.setParameter("scheduleid", scheduleid);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	
+	
 }

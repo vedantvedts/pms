@@ -1904,5 +1904,23 @@ public List<Object[]> getrfaRemarks(String rfaId,String Status) throws Exception
 public String getAssineeId(String rfa) throws Exception {
 	return dao.getAssineId(rfa);
 }
+
+@Override
+public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
+{
+	return dao.ProjectApplicableCommitteeList(projectid);
+}
+
+@Override
+public List<Object[]> MeettingCount(String committeeid, String projectid) throws Exception {
+	
+	return dao.MeettingCount(committeeid,projectid);
+}
+
+@Override
+public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid) throws Exception {
+	
+	return dao.MeettingList(committeeid,projectid,scheduleid);
+}
 	
 }

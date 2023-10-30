@@ -38,7 +38,9 @@ h6{
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String ActionNo=(String) request.getAttribute("ActionNo");
   String text=(String)request.getAttribute("text");
-  
+  String projectid=(String)request.getAttribute("projectid");
+  String committeeid=(String)request.getAttribute("committeeid");
+  String meettingid=(String)request.getAttribute("meettingid");
  %>
 
 
@@ -218,6 +220,8 @@ h6{
 					<a type="button" class="btn  btn-sm back" href="ActionReports.htm"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("Q")){ %>
 				<a type="button" class="btn  btn-sm back" href="ActionPdcReport.htm"  >BACK</a>
+				<%}else if(text!=null && text.equalsIgnoreCase("M")){ %>
+				<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>"  >BACK</a>
 				<%} %>
 				</div>
 				</div>

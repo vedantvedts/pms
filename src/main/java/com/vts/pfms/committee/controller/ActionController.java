@@ -1303,6 +1303,9 @@ public class ActionController {
 							req.setAttribute("LinkList", service.SubList(req.getParameter("ActionLinkId")));
 							req.setAttribute("ActionNo", req.getParameter("ActionNo"));
 							req.setAttribute("text", req.getParameter("text"));
+							req.setAttribute("projectid", req.getParameter("projectid"));
+							req.setAttribute("committeeid", req.getParameter("committeeid"));
+							req.setAttribute("meettingid", req.getParameter("meettingid"));
 							}
 							catch (Exception e) {
 									e.printStackTrace();
@@ -3353,5 +3356,72 @@ public @ResponseBody String getrfaRemarks(HttpSession ses, HttpServletRequest re
    	
 return json.toJson(rfaRemarkData);
 }
+
+
+              @RequestMapping(value = "MeettingAction.htm", method = {RequestMethod.GET, RequestMethod.POST})
+              public String MeettingAction(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
+              {
+            	  String UserId=(String)ses.getAttribute("Username");
+          		String LabCode = (String)ses.getAttribute("labcode");
+          		logger.info(new Date() +"Inside MeettingAction.htm "+UserId);
+          		try {
+          			String Logintype= (String)ses.getAttribute("LoginType");
+          			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+          			String projectid=req.getParameter("projectid");
+          			String committeeid=req.getParameter("committeeid");
+          			String meettingid=req.getParameter("meettingid");
+          	
+          			
+          			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+          			
+          			if(projectdetailslist.size()==0) 
+          			{				
+          				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+          				return "redirect:/MainDashBoard.htm";
+          			}
+          			
+          			if(committeeid==null)
+          			{
+          				committeeid="1";
+          			}
+          			
+          		
+          			if(projectid==null || projectid.equals("null"))
+          			{
+          				projectid=projectdetailslist.get(0)[0].toString();
+          			}
+					
+          			String scheduleid=null;
+          			
+          			if(meettingid==null) {
+          				scheduleid="1";
+          			}else {
+          				scheduleid=meettingid;
+          			}
+          			
+          			
+          			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
+          			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
+          			List<Object[]> meetinglist=service.MeettingList(committeeid,projectid,scheduleid);
+          			
+          			req.setAttribute("scheduleid", scheduleid);
+          			req.setAttribute("projectid",projectid);
+          			req.setAttribute("committeeid",committeeid);
+          			req.setAttribute("Projectdetails",projectdetailslist.get(0));
+          			req.setAttribute("ProjectsList",projectdetailslist);
+          			req.setAttribute("meetingcount", meetingcount);
+          			req.setAttribute("meetinglist", meetinglist);
+          			req.setAttribute("projapplicommitteelist",projapplicommitteelist);
+          		}			
+          		catch (Exception e) 
+          		{
+          			e.printStackTrace(); 
+          			logger.error(new Date() +"Inside MeettingAction.htm "+UserId,e);
+          		}
+ 
+                  return "action/MeetingActionReports"; 
+               }
+
+      
 	 	
 }
