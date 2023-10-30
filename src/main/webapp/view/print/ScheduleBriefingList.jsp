@@ -344,7 +344,17 @@ top: 6px;
 																<td><button type="button" class="btn btn-sm" formaction="IntimationTransactionStatus.htm" value="" name="briefingStatus" id="briefingStatusBtn"  data-toggle="tooltip" data-placement="top" title="briefing Status" style=" color:<%if(schedule[15].toString().equalsIgnoreCase("APD")){ %>green<%}else{ %> purple<%} %>; font-weight: 600;" formtarget="_blank">
 									    							&nbsp;<%=schedule[14] %></button></td>
 																<td>
-																	<%if(schedule[7].toString().equalsIgnoreCase("Y")   ){
+																<% if(schedule[15].toString().equalsIgnoreCase("APD")){%>
+														<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
+																		onclick="showmodal('M', <%=schedule[0]%>,
+																		'<%=schedule[9] %>', 
+																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
+																		'<%=schedule[11] %>',
+																		'<%=schedule[3] %>','<%=schedule[7] %>','<%=schedule[8] %>','<%=schedule[12] %>'
+																		)" data-toggle="tooltip" data-placement="top" title="Update">
+																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
+																		</button>
+																	 <%}if(schedule[7].toString().equalsIgnoreCase("Y")   ){
 																		if(!schedule[15].toString().equalsIgnoreCase("APD")){%>
 																		<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
 																		onclick="showmodal('U', <%=schedule[0]%>,
@@ -415,17 +425,7 @@ top: 6px;
 												 
 												 		<button title="REMARKS" class="editable-click" name="sub" type="button"style="background-color: transparent;"formaction="RemarksList.htm" formmethod="POST"formnovalidate="formnovalidate" name="briefingRmk" id="briefingRmk"onclick="return briefingRmks('<%=schedule[0]%>','<%=schedule[9] %>')">
 														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i></button>
-													<%} if(schedule[15].toString().equalsIgnoreCase("APD")){%>
-														<button type="button" class="btn btn-sm " style="color:white;margin:5px; " 
-																		onclick="showmodal('M', <%=schedule[0]%>,
-																		'<%=schedule[9] %>', 
-																		'<%=rdf.format(sdf.parse(schedule[4].toString()))  %> - <%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>',
-																		'<%=schedule[11] %>',
-																		'<%=schedule[3] %>','<%=schedule[7] %>','<%=schedule[8] %>','<%=schedule[12] %>'
-																		)" data-toggle="tooltip" data-placement="top" title="Update">
-																			<i class="fa fa-pencil-square-o fa-lg	" aria-hidden="true"></i>
-																		</button>
-													<%} %>
+													<%}%>
 												
 																</td>
 															</tr>
@@ -788,6 +788,7 @@ top: 6px;
 						<input type="hidden" name="BriefingPaperFrozen" id="BriefingPaperFrozen">
 						<input type="hidden" name="PresentationFrozen" id="PresentationFrozen">
 						<input type="hidden" name="MinutesFrozen" id="MinutesFrozen">
+						<input type="hidden" name="pendingEdit" id="pendingEdit">
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 					</form>
 					
@@ -974,6 +975,7 @@ function showmodal(addupdate,scheduleid,meetingid,datetime,projectcode, projecti
 		PresentationFrozen.value=c;
 		var momTr=document.getElementById('momTr');
 		momTr.style.display = 'none';
+		$('#pendingEdit').val("P");
 		
 	}else{
 		$('#briefing_modal_header').html('Update Existing Briefing Details');

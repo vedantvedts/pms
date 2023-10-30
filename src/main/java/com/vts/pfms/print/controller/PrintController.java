@@ -3882,6 +3882,7 @@ public class PrintController {
 		    	String BriefingPaperFrozen=req.getParameter("BriefingPaperFrozen");
 		    	String PresentationFrozen= req.getParameter("PresentationFrozen");
 		    	String MinutesFrozen =req.getParameter("MinutesFrozen");
+		    	String pendingEdit =req.getParameter("pendingEdit");
 		    	if(!BPaper.isEmpty() && BriefingPaperFrozen.equalsIgnoreCase("N")) {
 		    		BriefingPaperFrozen="Y";
 		    	}
@@ -3902,7 +3903,9 @@ public class PrintController {
     			{
     				redir.addAttribute("resultfail", "Documents updating Failed");	
     			}
-
+		    	if(pendingEdit.equalsIgnoreCase("P")) {
+		    		redir.addAttribute("pendingClick", "N");
+		    	}
 		    	redir.addFlashAttribute("projectid",projectid);
 		    	redir.addFlashAttribute("committeecode",committeecode);
 		    	return "redirect:/FroozenBriefingList.htm";
