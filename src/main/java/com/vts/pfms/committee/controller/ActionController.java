@@ -3374,7 +3374,6 @@ return json.toJson(rfaRemarkData);
           			String committeeid=req.getParameter("committeeid");
           			String meettingid=req.getParameter("meettingid");
           	
-          			
           			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
           			
           			if(projectdetailslist.size()==0) 
@@ -3396,12 +3395,20 @@ return json.toJson(rfaRemarkData);
 					
           			String scheduleid=null;
           			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
+          			if(meetingcount.size()<1) {
+          				
+          			}
+          			
           			if(meettingid==null) {
+          				if(meetingcount.size()<1) {
+          					scheduleid="0";
+              			}else {
           				scheduleid=meetingcount.get(0)[0].toString();
+              			}
           			}else {
           				scheduleid=meettingid;
           			}
-          			
+      
           			
           			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
           		

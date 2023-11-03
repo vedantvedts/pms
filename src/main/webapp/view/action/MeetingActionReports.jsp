@@ -124,11 +124,12 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">
                                                <select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange='submitForm1();' >
-										 <% for (Object[] obj : ProjectsList) {
+										<% if(ProjectsList!=null && ProjectsList.size()>0){
+										 for (Object[] obj : ProjectsList) {
 											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 										 %>
 												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]+projectshortName%></option>
-										<%} %>
+										<%}} %>
 								             </select>       
 											</td>
 											<td>
@@ -136,9 +137,10 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">
                                               <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
-							   			        	<% for (Object[] obj : projapplicommitteelist) {%>
+							   			        	<%if(projapplicommitteelist!=null && projapplicommitteelist.size()>0){
+							   			        	  for (Object[] obj : projapplicommitteelist) {%>
 											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]%></option>
-											        <%} %>   
+											        <%}} %>   
 							  	             </select>
 											</td>
 					   						 <td>
@@ -146,9 +148,10 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 					   						</td>
 					   						<td style="max-width: 300px; padding-right: 50px">
                                                    <select class="form-control selectdee" id="meettingid" required="required" name="meettingid" onchange='submitForm();'>
-							   			        	<% for (Object[] obj : meetingcount) {%>
+							   			        	<% if(meetingcount!=null && meetingcount.size()>0){
+							   			        	 for (Object[] obj : meetingcount) {%>
 											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%=obj[3]+"-"+meettingcount%></option>
-											        <%meettingcount++;} %>   
+											        <%meettingcount++;} }%>   
 							  	                  </select>				   						
 											</td> 	   									
 					   					</tr>   					   				
