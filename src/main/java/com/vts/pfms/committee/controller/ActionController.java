@@ -1052,6 +1052,9 @@ public class ActionController {
 				if(req.getParameter("Type")!=null) {
 					Type = req.getParameter("Type");					
 				}
+				System.out.print("EmpId"+EmpId+"Term"+req.getParameter("Term")+"Project"+Project+"Type"+Type+"LabCode"+LabCode);
+				
+				
 				req.setAttribute("ProjectList",service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
 				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode));	
 				req.setAttribute("Term", req.getParameter("Term"));
@@ -3392,16 +3395,16 @@ return json.toJson(rfaRemarkData);
           			}
 					
           			String scheduleid=null;
-          			
+          			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
           			if(meettingid==null) {
-          				scheduleid="1";
+          				scheduleid=meetingcount.get(0)[0].toString();
           			}else {
           				scheduleid=meettingid;
           			}
           			
           			
           			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
-          			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
+          		
           			List<Object[]> meetinglist=service.MeettingList(committeeid,projectid,scheduleid);
           			
           			req.setAttribute("scheduleid", scheduleid);

@@ -1226,7 +1226,7 @@ if(ses!=null){ %>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
 														
-														<td><button type="button" onclick="actionformtask('E','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
 														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" onclick="actionformtask('T','S')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
