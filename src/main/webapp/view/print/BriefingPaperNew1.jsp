@@ -2007,7 +2007,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												<%if(tdc < (tempstatus)){ %>
 													<td style="background-color: green;"></td>
 												<%}else if(tdc == (tempstatus)){ %>
-													<td style="background-color: #F96E16;text-align: center; ">*</td>
+													<td style="background-color: green;text-align: center;color: white ">*</td>
 												<%}else if(tdc >(tempstatus)){ %>
 													<td style=""></td>
 												<%} %>
@@ -2049,7 +2049,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												</tr>
 										<%}} %>
 										
-										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
+										<%if(psn ==0 && envisagedDemandlist!=null && envisagedDemandlist.size()==0  ){ %>
 											<tr>
 										      <td colspan="22" style="text-align: center;">Nil</td>
 										   </tr>

@@ -2509,7 +2509,7 @@ System.out.println(todayDate+"---");
 													<%if(tdc < (tempstatus)){ %>
 														<td style="background-color: green;"></td>
 													<%}else if(tdc == (tempstatus)){ %>
-														<td style="background-color: #F96E16;text-align: center; ">*</td>
+														<td style="background-color: green;text-align: center;color: white ">*</td>
 													<%}else if(tdc >(tempstatus)){ %>
 														<td style=""></td>
 													<%} %>

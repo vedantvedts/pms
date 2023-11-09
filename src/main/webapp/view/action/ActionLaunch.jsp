@@ -105,6 +105,11 @@ a:hover {
 		String LabCode =(String)request.getAttribute("LabCode"); 
 		String clusterid = (String)session.getAttribute("clusterid");
 		String Onboarding = (String)request.getAttribute("Onboarding");
+		String empId = ((Long)session.getAttribute("EmpId")).toString();
+		String projectid=(String)request.getAttribute("projectid");
+		String committeeid=(String)request.getAttribute("committeeid");
+		String meettingid=(String)request.getAttribute("meettingid");
+		String flag=(String)request.getAttribute("flag");
 	%>
 
 
@@ -246,11 +251,16 @@ a:hover {
 									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit" style="margin-top: 10px;" value="SUBMIT"/>
 									        <input type="hidden" id="Actionscheduleid" <%if(ActionData!=null && ActionData[9]!=null){ %> value="<%=ActionData[9]%>" <%}else{%> value="0" <%}%>>									
 										    <button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
+										    <%if(flag==null){ %>
 										    <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
 													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="OnBoarding.htm">Back</a>
 													<%}else{%>
 													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MainDashBoard.htm">Back</a>
-										 <%}%>&nbsp;&nbsp;
+										    <%}%>
+										    <%}else{ %>
+										         <a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MeettingAction.htm?projectid=<%=projectid%>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>">Back</a>
+										    <%} %>
+										    &nbsp;&nbsp;
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>         				
 									
 								</div>			  

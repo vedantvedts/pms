@@ -12,6 +12,7 @@
  
 
 <title>Action List</title>
+
 <!-- <style type="text/css">
 label{
 font-weight: bold;
@@ -24,6 +25,7 @@ overflow-x:hidden !important;
 h6{
 	text-decoration: none !important;
 }
+
 .table button{
 	
 	background-color: white !important;
@@ -40,9 +42,7 @@ h6{
 	    padding: 4px 3px !important;
 
 }
-
 </style> -->
-
 <style type="text/css">
 label{
 font-weight: bold;
@@ -55,23 +55,66 @@ overflow-x:hidden !important;
 h6{
 	text-decoration: none !important;
 }
-
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
 }
 
-.table button:hover {
-	color: black !important;
-	
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 24px;
+	height: 22px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
 }
-#table tbody tr td {
 
-	    padding: 4px 3px !important;
-
+.cc-rockmenu .rolling:hover {
+	width: 108px;
 }
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.width {
+	width: 270px !important;
+}
+
+a:hover {
+	color: white;
+}
+
 </style>
 
 </head>
@@ -86,6 +129,7 @@ List<Object[]> meetingcount=(List<Object[]>) request.getAttribute("meetingcount"
 List<Object[]> meetinglist=(List<Object[]>) request.getAttribute("meetinglist");
 int meettingcount=1;
 
+String empId = ((Long)session.getAttribute("EmpId")).toString();
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 String scheduleid =(String)request.getAttribute("scheduleid");
@@ -114,9 +158,9 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 				<div class="card shadow-nohover">
            <div class="card-header ">  
 					<div class="row">
-						<h4 class="col-md-4">Meeting Action Reports</h4>  
+						<h4 class="col-md-4">Meeting Action List</h4>  
 							<div class="col-md-8" style="float: right; margin-top: -8px;" >
-					   			<form method="post" action="MeettingActionReports.htm" name="dateform" id="myform">
+					   			<form method="post" action="MeettingAction.htm" name="dateform" id="myform">
 					   				<table>
 					   					<tr>
 					   						<td>
@@ -184,10 +228,10 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 															<th>SN</th>
 															<th>Action Id</th>	
 															<th class="width-110px" style="width: 7.1%;">PDC</th>
-															<th >Action Item</th>																								
-														 	<th >Assignee</th>					 	
+															<th >Action Item</th>																											 	
 														 	<th >Assigner</th>
-														 	<th class="width-115px">Progress</th>
+														 	<th >Progress</th>
+														 	<th class="width-140px">Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -206,7 +250,8 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 																	           <input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
 																	           <input type="hidden" name="ActionAssignId" value="<%=obj[12]%>"/>
 																	           <input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
-																	           <input type="hidden" name="text" value="M">
+																	           <input type="hidden" name="text" value="A">
+																	           <input type="hidden" name="empId" value="<%=empId%>">
 																	           <input type="hidden" name="projectid" value="<%=projectid%>">
 																	           <input type="hidden" name="committeeid" value="<%=committeeid%>">
 																	           <input type="hidden" name="meettingid" value="<%=scheduleid%>">
@@ -223,11 +268,10 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 															               <%}else{ %>
 															               <%=obj[7].toString() %>
 															               <%} %>
-															            </td>																				
-																		<td><%=obj[1]%>, <%=obj[2]%></td>
+															            </td>																		
 																	  	<td><%=obj[3]%>, <%=obj[4]%></td>
 																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;">
+															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important; width: 140px;">
 															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[11]%>
 															</div> 
@@ -236,10 +280,65 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
 															Not Yet Started .
 															</div>
-															</div> <%} %></td>			
-																	</tr>
-																<% 
-																	}									   					
+															</div> <%} %>
+															</td>	
+															<td class="left width">		
+															<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
+																	style="display: inline">
+                                                                  <%if(obj[8].toString().equalsIgnoreCase("A") || obj[8].toString().equalsIgnoreCase("B")){ %>
+																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
+																		<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+																	 <button type="submit"  class="btn btn-sm editable-click" name="Action" value="ReAssign"  formaction="ActionLaunch.htm" formmethod="POST"  >
+																				<div class="cc-rockmenu">
+																				 <div class="rolling">	
+																				 <figure class="rolling_icon">
+																				 	<img src="view/images/repeat.png"  >
+															                       </figure>
+															                        <span> Re-Assign</span>
+															                      </div>
+															                     </div>
+															          </button> 
+															          <button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[12]%>" formtarget="blank" title="Action Tree"    formaction="ActionTree.htm" formmethod="POST"  >
+																				<div class="cc-rockmenu">
+																				 <div class="rolling">	
+																				 <figure class="rolling_icon">
+																				 	<img src="view/images/tree.png"  >
+															                       </figure>
+															                        <span> Action Tree</span>
+															                      </div>
+															                     </div>
+															           </button> 
+																	<%}if(obj[8].toString().equalsIgnoreCase("C")){ %>
+																		<h5 style="font-weight: 600;color: #2E7D32;text-shadow: 5px 5px 10px #81C784;">Closed</h5>
+																	<%}if(obj[8].toString().equalsIgnoreCase("F")){ %>
+																		<h5 style="font-weight: 600;color: #E53935;text-shadow: 5px 5px 10px #F44336;">Forwarded</h5>
+																	<%} %>
+												                    <input type="hidden" name="Assigner" value="<%=obj[3]%>,<%=obj[4]%>"/>													
+                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
+																	<input type="hidden" name="ActionMainId" value="<%=obj[10]%>"/>
+																	<input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
+																	<input type="hidden" name="ActionAssignid" value="<%=obj[12]%>"/>
+																	<input type="hidden" name="ProjectId" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="flag" value="T"/>
+																	<input type="hidden" name="empId" value="<%=empId%>">
+																	<input type="hidden" name="projectid" value="<%=projectid%>">
+																	<input type="hidden" name="committeeid" value="<%=committeeid%>">
+																	<input type="hidden" name="meettingid" value="<%=scheduleid%>">
+ 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+																	
+																</form> 
+															
+															</td>		
+															</tr>
+																<% }									   					
 															}%>
 													</tbody>
 												</table>												
@@ -258,7 +357,10 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 			</div>
 		</div>
 		
-		<!-- Modal for action -->
+		
+		
+		
+<!-- Modal for action -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -293,8 +395,5 @@ function showAction(a,b){
 	$('#header').html(b);
 	$('#exampleModalCenter').modal('show');
 }
-
 </script>
-
-
 </html>

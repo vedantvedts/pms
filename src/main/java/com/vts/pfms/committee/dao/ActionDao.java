@@ -138,4 +138,5 @@ public interface ActionDao {
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid) throws Exception;
 	public List<Object[]> MeettingCount(String committeeid, String projectid)throws Exception;
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
+	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)throws Exception;
  }

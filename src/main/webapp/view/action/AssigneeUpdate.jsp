@@ -42,7 +42,11 @@ h6{
   String actiono=(String) request.getAttribute("actiono");
   String filesize=(String) request.getAttribute("filesize");
   String back = (String) request.getAttribute("back");
-  
+  String empId = ((Long)session.getAttribute("EmpId")).toString();
+  String projectid=(String)request.getAttribute("projectid");
+  String committeeid=(String)request.getAttribute("committeeid");
+  String meettingid=(String)request.getAttribute("meettingid");
+  String flag=(String)request.getAttribute("flag");
   String ActionPath=(String)request.getAttribute("ActionPath");
   int length=0;
   if(Assignee!=null && Assignee[5]!=null){
@@ -122,6 +126,7 @@ h6{
 
 	          					<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" id="myBtn" onclick="return formsubmit('subsubmitform');" value="SUBMIT"/>
+				            	<%if(flag==null) {%>
 				            	<%if("backToReview".equalsIgnoreCase(back)){%>
 				            	<a type="button" class="btn  btn-sm back"  <%if(ActionPath==null ) {%>href="ActionForwardList.htm?Type=NB"<%}else{ %>href="ActionIssue.htm" <%} %>>BACK</a>
 				            	<%}else if("backTotodo".equalsIgnoreCase(back)){%>
@@ -129,10 +134,14 @@ h6{
 				            	<%}else{%>
 				            	<a type="button" class="btn  btn-sm back"   <%if(ActionPath==null ) { %> href="AssigneeList.htm" <%}else{ %>href="ActionIssue.htm" <%} %>>BACK</a>
 				            	<%}%>
+				            	<%}else{ %>
+	                           	<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>" >BACK</a>
+	          					<%} %>
 				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
 	                           	<% if(SubList.size()>0 && (!Empid.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
 	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
+	                           	
 	          					</div>
 	        			</div>
 			        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -146,6 +155,9 @@ h6{
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
+	      				<input type="hidden" name="projectid" value="<%=projectid %>" /> 
+	      				<input type="hidden" name="committeeid" value="<%=committeeid %>" /> 
+	      				<input type="hidden" name="meettingid" value="<%=meettingid %>" />  
 	      				</form>
 					</div>
 	    		</div>

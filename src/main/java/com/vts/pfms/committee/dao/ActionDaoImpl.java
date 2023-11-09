@@ -1379,6 +1379,18 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 	
+	public static final String MEETINGACTIONLIST="CALL Pfms_Meeting_Action_List(:projectid,:committeeid,:scheduleid,:empId)";
+	@Override
+	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)
+			throws Exception {
+		Query query = manager.createNativeQuery(MEETINGACTIONLIST);
+		query.setParameter("committeeid", committeeid);
+		query.setParameter("projectid", projectid);
+		query.setParameter("scheduleid", scheduleid);
+		query.setParameter("empId", empId);
+		return (List<Object[]>)query.getResultList();
+	}
+	
 	
 	
 	

@@ -38,6 +38,7 @@ h6{
   List<Object[]> LinkList=(List<Object[]> ) request.getAttribute("LinkList");
   String ActionNo=(String) request.getAttribute("ActionNo");
   String text=(String)request.getAttribute("text");
+  String empId = ((Long)session.getAttribute("EmpId")).toString();
   String projectid=(String)request.getAttribute("projectid");
   String committeeid=(String)request.getAttribute("committeeid");
   String meettingid=(String)request.getAttribute("meettingid");
@@ -221,7 +222,9 @@ h6{
 				<%}else if(text!=null && text.equalsIgnoreCase("Q")){ %>
 				<a type="button" class="btn  btn-sm back" href="ActionPdcReport.htm"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("M")){ %>
-				<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>"  >BACK</a>
+				<a type="button" class="btn  btn-sm back" href="MeettingActionReports.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>"  >BACK</a>
+				<%}else if(text!=null && text.equalsIgnoreCase("A")){ %>
+				<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&empId=<%=empId %>"  >BACK</a>
 				<%} %>
 				</div>
 				</div>

@@ -1922,5 +1922,12 @@ public List<Object[]> MeettingList(String committeeid, String projectid, String 
 	
 	return dao.MeettingList(committeeid,projectid,scheduleid);
 }
+
+@Override
+public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)
+		throws Exception {
+	
+	return dao.MeettingActionList(committeeid,projectid,scheduleid,empId);
+}
 	
 }

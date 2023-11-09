@@ -142,6 +142,11 @@ public class ActionController {
 			req.setAttribute("EmployeeListModal", service.EmployeeList(LabCode));
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("LabCode", LabCode);
+			req.setAttribute("flag", req.getParameter("flag"));
+			req.setAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+			req.setAttribute("projectid", req.getParameter("projectid"));
+			req.setAttribute("committeeid", req.getParameter("committeeid"));
+			req.setAttribute("meettingid", req.getParameter("meettingid"));
 			return "action/ActionLaunch";
 			
 			
@@ -375,12 +380,15 @@ public class ActionController {
 			req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignid")));
 			//req.setAttribute("LinkList", service.SubList(req.getParameter("ActionAssignid")));
 			req.setAttribute("AssignerName", AssignerName);
-			
+			req.setAttribute("flag", req.getParameter("flag"));
 			req.setAttribute("ActionPath", req.getParameter("ActionPath"));
 			req.setAttribute("actiono", req.getParameter("ActionNo"));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("back", req.getParameter("back"));
 			req.setAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+			req.setAttribute("projectid", req.getParameter("projectid"));
+			req.setAttribute("committeeid", req.getParameter("committeeid"));
+			req.setAttribute("meettingid", req.getParameter("meettingid"));
 		}
 		catch (Exception e) 
 		{
@@ -575,9 +583,11 @@ public class ActionController {
 		}
 		}
 	 
-	 	@RequestMapping(value = "ActionForward.htm", method = RequestMethod.POST)
+	 	@RequestMapping(value = "ActionForward.htm",method = {RequestMethod.GET, RequestMethod.POST})
 		public String ActionForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		 String UserId = (String) ses.getAttribute("Username");
+		 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		 String flag=req.getParameter("flag");
 			logger.info(new Date() +"Inside ActionForward.htm "+UserId);		
 			try {
 				int count = service.ActionForward(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId"), UserId);
@@ -589,13 +599,22 @@ public class ActionController {
 				}
 				redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
 				redir.addFlashAttribute("Type", req.getParameter("Type"));
+				req.setAttribute("flag", req.getParameter("flag"));
 			}
 			catch (Exception e) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
-			return "redirect:/ActionForwardList.htm";
-
+			if(flag==null) {
+				redir.addAttribute("projectid", req.getParameter("projectid"));
+				redir.addAttribute("committeeid", req.getParameter("committeeid"));
+				redir.addAttribute("meettingid", req.getParameter("meettingid"));
+				redir.addAttribute("EmpId", EmpId);
+				return "redirect:/MeetingActionList.htm";
+			}else {
+			     return "redirect:/ActionForwardList.htm";
+			}
+		
 		}
 	 
 	 @RequestMapping(value = "ActionForwardList.htm", method = {RequestMethod.GET,RequestMethod.POST})
@@ -636,7 +655,7 @@ public class ActionController {
 	 @RequestMapping(value = "ForwardSub.htm", method = RequestMethod.POST)
 		public String ForwardSub(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
-		 String UserId = (String) ses.getAttribute("Username");
+		    String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside ForwardSub.htm "+UserId);		
 			try { 
 			String AssigneeName=req.getParameter("Assignee");
@@ -1295,11 +1314,12 @@ public class ActionController {
 						public String ActionDetails(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 								throws Exception {
 						 String UserId = (String) ses.getAttribute("Username");
+						 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 							logger.info(new Date() +"Inside ActionDetails.htm "+UserId);		
 							try { 
 							String AssigneeName=req.getParameter("Assignee");
 							
-							
+                            
 							req.setAttribute("Assignee", service.SearchDetails(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId")).get(0));
 							req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 							req.setAttribute("AssigneeName", AssigneeName);
@@ -3361,12 +3381,12 @@ return json.toJson(rfaRemarkData);
 }
 
 
-              @RequestMapping(value = "MeettingAction.htm", method = {RequestMethod.GET, RequestMethod.POST})
-              public String MeettingAction(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
+              @RequestMapping(value = "MeettingActionReports.htm", method = {RequestMethod.GET, RequestMethod.POST})
+              public String MeettingActionReports(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
               {
             	  String UserId=(String)ses.getAttribute("Username");
           		String LabCode = (String)ses.getAttribute("labcode");
-          		logger.info(new Date() +"Inside MeettingAction.htm "+UserId);
+          		logger.info(new Date() +"Inside MeettingActionReports.htm "+UserId);
           		try {
           			String Logintype= (String)ses.getAttribute("LoginType");
           			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -3426,12 +3446,84 @@ return json.toJson(rfaRemarkData);
           		catch (Exception e) 
           		{
           			e.printStackTrace(); 
-          			logger.error(new Date() +"Inside MeettingAction.htm "+UserId,e);
+          			logger.error(new Date() +"Inside MeettingActionReports.htm "+UserId,e);
           		}
  
                   return "action/MeetingActionReports"; 
                }
 
       
+              @RequestMapping(value = "MeettingAction.htm", method = {RequestMethod.GET, RequestMethod.POST})
+              public String MeettingAction(HttpServletRequest req,HttpSession ses, RedirectAttributes redir) throws Exception 
+              {
+            	  String UserId=(String)ses.getAttribute("Username");
+          		String LabCode = (String)ses.getAttribute("labcode");
+          		logger.info(new Date() +"Inside MeettingAction.htm "+UserId);
+          		try {
+          			String Logintype= (String)ses.getAttribute("LoginType");
+          			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+          			String projectid=req.getParameter("projectid");
+          			String committeeid=req.getParameter("committeeid");
+          			String meettingid=req.getParameter("meettingid");
+          	
+          			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+          			
+          			if(projectdetailslist.size()==0) 
+          			{				
+          				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+          				return "redirect:/MainDashBoard.htm";
+          			}
+          			
+          			if(committeeid==null)
+          			{
+          				committeeid="1";
+          			}
+          			
+          		
+          			if(projectid==null || projectid.equals("null"))
+          			{
+          				projectid=projectdetailslist.get(0)[0].toString();
+          			}
+					
+          			String scheduleid=null;
+          			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
+          			if(meetingcount.size()<1) {
+          				
+          			}
+          			
+          			if(meettingid==null) {
+          				if(meetingcount.size()<1) {
+          					scheduleid="0";
+              			}else {
+          				scheduleid=meetingcount.get(0)[0].toString();
+              			}
+          			}else {
+          				scheduleid=meettingid;
+          			}
+      
+          			
+          			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
+          		
+          			List<Object[]> meetinglist=service.MeettingActionList(committeeid,projectid,scheduleid,EmpId);
+          			
+          			req.setAttribute("scheduleid", scheduleid);
+          			req.setAttribute("projectid",projectid);
+          			req.setAttribute("committeeid",committeeid);
+          			req.setAttribute("Projectdetails",projectdetailslist.get(0));
+          			req.setAttribute("ProjectsList",projectdetailslist);
+          			req.setAttribute("meetingcount", meetingcount);
+          			req.setAttribute("meetinglist", meetinglist);
+          			req.setAttribute("projapplicommitteelist",projapplicommitteelist);
+          		}			
+          		catch (Exception e) 
+          		{
+          			e.printStackTrace(); 
+          			logger.error(new Date() +"Inside MeettingAction.htm "+UserId,e);
+          		}
+ 
+                  return "action/MeetingAction"; 
+               }
+
+              
 	 	
 }
