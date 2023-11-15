@@ -321,8 +321,8 @@ top: 6px;
 												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true"
 													data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar1"
 													>
-													<thead>
-														<tr>
+													<thead >
+														<tr class="new" style="background-color: #FFC436 !important;">
 															<th style="width:30px;">Committee</th>
 															<th style="width:130px;">Meeting Id</th>
 															<th style="width:130px;">Schedule Date & Time</th>
@@ -536,25 +536,25 @@ top: 6px;
 																		</button>
 																		<%}if(schedule[7].toString().equalsIgnoreCase("Y")  ){
 																	if( schedule[15].toString().equalsIgnoreCase("FWU")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		<button class="btn btn-primary btn-sm add" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="DH Rec">Recommend</button>
 																		<%}else if( schedule[15].toString().equalsIgnoreCase("RED")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		<button class="btn btn-primary btn-sm add" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		data-toggle="tooltip" data-placement="top" id="BriefingFwdBtn" title="" data-original-title="GH Rec">Recommend</button>
 																		
 																		<%}else if( schedule[15].toString().equalsIgnoreCase("REG")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		<button class="btn btn-primary btn-sm add" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		 id="BriefingFwdBtn" title="" data-original-title="DO-P&C Rec">Recommend</button>
 																		
 																		<%}else if( schedule[15].toString().equalsIgnoreCase("REP")) {%>
-																		<button class="btn btn-primary" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
+																		<button class="btn btn-primary btn-sm add" type="button" formaction="BriefingForward.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingFwd" value="DHRec" onclick="return BriefingFwdd('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');"
 																		 id="BriefingFwdBtn" title="" data-original-title="Director Approval">Approve</button>
 																		
 																		<%}}%>
 											
 												
 												
-											<button class="btn btn-danger" type="button" formaction="BriefingActionReturn.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingRtn" value="return" onclick="return BriefingReturn('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');" id="BriefingReturnBtn" >Return</button>
+											<button class="btn btn-danger btn-sm delete" type="button" formaction="BriefingActionReturn.htm" formmethod="POST" formnovalidate="formnovalidate"	name="BriefingRtn" value="return" onclick="return BriefingReturn('<%=schedule[0] %>','<%=schedule[3] %>','<%=schedule[15] %>','<%=schedule[9] %>');" id="BriefingReturnBtn" >Return</button>
 																</td>
 															</tr>
 														<%} }%>
@@ -926,8 +926,7 @@ $(function () {
 		  $('#committeecode').val(committeName);
 	  }
 	  
-	  
-	  
+	 
 });
 
 
@@ -1225,7 +1224,6 @@ function briefingRmks(sheduleId,meetingId) {
 		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
 		            ReplyAttachTbody += '</td>';
 		            ReplyAttachTbody += '</tr>';
-
 		          }
 		          $('#remarksTb').append(ReplyAttachTbody);
         }
@@ -1248,5 +1246,6 @@ $("textarea").on("keypress", function(e) {
     if (e.which === 32 && !this.value.length)
         e.preventDefault();
 });
+
 </script>
 </html>
