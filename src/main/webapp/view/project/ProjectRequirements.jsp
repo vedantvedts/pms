@@ -428,7 +428,7 @@ keyframes blinker { 20% {
 
 		<%if((RequirementList!=null) &&(!RequirementList.isEmpty())){ %>
 		<div class="requirementid"
-			style="display:block;<%if(RequirementList.size()>9){%>height:400px;<%}%>">
+			style="display:block;<%if(RequirementList.size()>9){%><%}%>">
 
 			<%int count=1;
 			for(Object []obj:RequirementList) {%>

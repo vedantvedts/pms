@@ -1060,10 +1060,12 @@ public class ProjectController
 				Long reqTypeId=Long.parseLong(reqtype[0]);
 				Long a=	(Long)service.numberOfReqTypeId(req.getParameter("IntiationId"));
 				String requirementId="";
-				if(a<100L) {
+				if(a<90L) {
 				 requirementId=reqtype[2]+reqtype[1]+("000"+(a+10));
+				 System.out.println("requirementId"+requirementId);
 				}else if(a<1000L) {
 					requirementId=reqtype[2]+reqtype[1]+("00"+(a+10));
+					System.out.println("requirementId"+requirementId);
 				}else {
 					requirementId=reqtype[2]+reqtype[1]+("0"+(a+10));
 				}

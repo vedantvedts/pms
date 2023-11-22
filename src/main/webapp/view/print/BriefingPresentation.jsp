@@ -526,7 +526,7 @@ System.out.println(todayDate+"---");
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[0]%>#view=FitV" style="width:100%;height:70vh"
 											id="config<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 											 } else {
 											 %>
@@ -624,7 +624,7 @@ System.out.println(todayDate+"---");
 										if (FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")) {
 										%>
 										<iframe 
-											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
+											src="data:application/pdf;base64,<%=pdffiles.get(z)[3]%>#view=FitV" style="width:100%;height:70vh"
 											id="sysspecs<%=ProjectDetail.get(z)[0]%>" > </iframe> <%
 										 } else {
 										 %>
@@ -721,7 +721,7 @@ System.out.println(todayDate+"---");
 								if (FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")) {
 								%>
 								<iframe
-									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>#view=FitV" width="100%" height="auto" style="width:calc(100% - 18px)!important;height:auto!important;aspect-ratio:8.5/11"
+									src="data:application/pdf;base64,<%=pdffiles.get(z)[1]%>#view=FitV" style="width:100%;height:70vh"
 									id="protree<%=ProjectDetail.get(z)[0]%>"> </iframe> <%
 								 } else {
 								 %>
@@ -1902,7 +1902,7 @@ System.out.println(todayDate+"---");
 									<td style="border: 0;text-align: center;" >
 									<%  if (FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")) {  %>
 										<div class="col-md-12" style="position: relative;width: 100%;padding-bottom: calc(8.5/ 11 * 100%);">
-										<iframe  src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>#view=FitV" width="100%" height="auto" style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
+										<iframe  src="data:application/pdf;base64,<%=pdffiles.get(z)[2]%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"> </iframe> 
 									</div>
 									<% } else { %>
 										<img data-enlargable style="width:75%;height:75vh;" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString())%>;base64,<%=pdffiles.get(z)[2]%>"id="pearl<%=ProjectDetail.get(z)[0]%>"> 
@@ -3445,7 +3445,7 @@ System.out.println(todayDate+"---");
 								File techattachfile = new File(path + "/" + TechWork[8]); %>
 
 								<% if (fileExt.equalsIgnoreCase("pdf")) { %>
-								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" width="100%" height="auto" style="position: absolute; top: 0; left: 0;width: 100%; height: 100%;" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
+								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" style="width:100%;height:70vh" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
 								<% } else { %>
 								<img data-enlargable style="width: 98%;height:70vh;" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
 								<% } %>
