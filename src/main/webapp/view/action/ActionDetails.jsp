@@ -87,7 +87,7 @@ h6{
 
    
    <div class="col-md-12" style="padding-left: 0px">
-    <% if(LinkList.size()>0){ %>  
+<%--     <% if(LinkList.size()>0){ %>  
    				<div class="table-responsive">
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 						<thead>
@@ -155,7 +155,7 @@ h6{
 									</tbody>
 					</table>
 				</div> 
-				<%} %>
+				<%} %> --%>
    						<div class="table-responsive">
     				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 						<thead>

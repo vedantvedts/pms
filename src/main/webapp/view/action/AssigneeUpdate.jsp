@@ -155,9 +155,9 @@ h6{
 	      				<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
 	      				<input type="hidden" name="Type" value="NB" /> 
-	      				<input type="hidden" name="projectid" value="<%=projectid %>" /> 
-	      				<input type="hidden" name="committeeid" value="<%=committeeid %>" /> 
-	      				<input type="hidden" name="meettingid" value="<%=meettingid %>" />  
+	      				<input type="hidden" name="projectid" value="<%=projectid!=null?projectid:"0" %>" /> 
+	      				<input type="hidden" name="committeeid" value="<%= (committeeid!=null?committeeid:"0")%>" /> 
+	      				<input type="hidden" name="meettingid" value="<%=(meettingid!=null?meettingid:"0") %>" />  
 	      				</form>
 					</div>
 	    		</div>
