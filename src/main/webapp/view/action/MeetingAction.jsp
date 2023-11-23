@@ -285,7 +285,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 															<td class="left width">		
 															<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
 																	style="display: inline">
-                                                                  <%if(obj[8].toString().equalsIgnoreCase("A") || obj[8].toString().equalsIgnoreCase("B")){ %>
+                                                                  <%if(obj[8].toString().equalsIgnoreCase("A") || obj[8].toString().equalsIgnoreCase("B")|| obj[8].toString().equalsIgnoreCase("I")|| obj[8].toString().equalsIgnoreCase("K")){ %>
 																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
