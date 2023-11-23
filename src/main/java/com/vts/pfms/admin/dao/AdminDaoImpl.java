@@ -3,6 +3,7 @@ package com.vts.pfms.admin.dao;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
+import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.login.PfmsLoginRole;
 import com.vts.pfms.master.model.DivisionEmployee;
@@ -820,5 +822,96 @@ public class AdminDaoImpl implements AdminDao{
 			query.setParameter("modifieddate", modifieddate);
 			int PasswordChange = (int) query.executeUpdate();
 			return  PasswordChange;
+		}
+		
+		private static final String FIRSTDAY="SELECT MIN(logindate) AS 'MINDATE'  FROM auditstamping";
+		@Override
+		public String firstDateOfAudit() throws Exception {
+			Query query = manager.createNativeQuery(FIRSTDAY);
+			 Object result = query.getSingleResult();
+			    if(result != null) {
+			        // Assuming logindate is of type java.sql.Date
+			        java.sql.Date minDate = (java.sql.Date) result;
+			        // You can convert the date to a String using a SimpleDateFormat or another method
+			        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			        return result.toString();
+			    } else {
+			        return "No records found";
+			    }
+		}
+		// newlyCreated
+		
+		private static final String EMPLIST="SELECT a.empid,a.username,COUNT(b.loginid)AS 'TotalLogInCounts' FROM login a, auditstamping b WHERE a.loginid=b.loginid AND b.logindate=:logindate GROUP BY b.loginid";
+		@Override
+		public List<Object[]> getAllEmployeesOfDate(String date) throws Exception {
+				Query query = manager.createNativeQuery(EMPLIST);
+				query.setParameter("logindate", date);
+				List<Object[]>emplist= new ArrayList<>();
+				emplist=(List<Object[]>)query.getResultList();
+			return emplist;
+		}
+		private static final String WORKCOUNTS="CALL pfms_statistics_data(:username,:date)";
+		@Override
+		public Object[] ListOfWorkCounts(String username, String date) throws Exception {
+			Query query=manager.createNativeQuery(WORKCOUNTS);
+			query.setParameter("username", username);
+			query.setParameter("date", date);
+			Object[] workCounts=(Object[])query.getSingleResult();
+			return workCounts;
+		}
+		
+		@Override
+		public int  DataInsetrtIntoPfmsStatistics(List<PfmsStatistics> pfmsStatistics) throws Exception {
+			// TODO Auto-generated method stub
+			for(PfmsStatistics p:pfmsStatistics) {
+				manager.persist(p);
+			}
+			return 1;
+		}
+		
+		private static final String PMSSTATTABLEDATA="select * from pfms_statistics";
+		@Override
+		public List<Object[]> getpfmsStatiscticsTableData() throws Exception {
+			Query query = manager.createNativeQuery(PMSSTATTABLEDATA);
+			List<Object[]>totalData=(List<Object[]>)query.getResultList();
+			return totalData;
+		}
+		
+		private static final String EMPLOYEELISTDH="SELECT a.EmpId,a.EmpName,b.Designation FROM employee a,employee_desig b WHERE a.labcode=:labCode AND a.IsActive=1 AND a.DesigId=b.DesigId AND a.DivisionId=:division";
+		private static final String EMPLOYEELISTGH="SELECT a.EmpId,a.EmpName,b.Designation FROM employee a,employee_desig b WHERE a.labcode=:labCode AND a.IsActive=1 AND a.DesigId=b.DesigId AND a.DivisionId=:division";
+		private static final String ALLEMPLOYEELIST="SELECT a.EmpId,a.EmpName,b.Designation FROM employee a,employee_desig b WHERE a.labcode=:labCode AND a.IsActive=1 AND a.DesigId=b.DesigId";
+		
+		@Override
+		public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode) throws Exception {
+			// TODO Auto-generated method stub
+			if(logintype.equalsIgnoreCase("D")) {
+				Query query=manager.createNativeQuery(EMPLOYEELISTDH);
+				query.setParameter("division", division);
+				query.setParameter("labCode", labCode);
+		
+				return (List<Object[]>)query.getResultList();
+			}else if(logintype.equalsIgnoreCase("G")) {
+				Query query=manager.createNativeQuery(EMPLOYEELISTGH);
+				query.setParameter("division", division);
+				query.setParameter("labCode", labCode);
+			
+				return (List<Object[]>)query.getResultList();
+			}else if(logintype.equalsIgnoreCase("A")|| logintype.equalsIgnoreCase("X")|| logintype.equalsIgnoreCase("Z")||logintype.equalsIgnoreCase("E") || logintype.equalsIgnoreCase("L")){
+				Query query=manager.createNativeQuery(ALLEMPLOYEELIST);
+				query.setParameter("labCode", labCode);
+	
+				return (List<Object[]>)query.getResultList();
+			}else {
+			 return null;
+			}
+		}
+		private static final String COUNT="SELECT a.EmpName,c.Designation, b.* FROM employee a JOIN pfms_statistics b ON a.EmpId = b.EmpId JOIN employee_desig c ON a.DesigId = c.DesigId WHERE b.EmpId =:employeeId AND b.LogDate  BETWEEN :fromDate AND :toDate ORDER BY b.Logdate DESC";
+		@Override
+		public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate) throws Exception {
+			Query query = manager.createNativeQuery(COUNT);
+			query.setParameter("employeeId", employeeId);
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+			return (List<Object[]>)query.getResultList();
 		}
 }

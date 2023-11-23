@@ -2,6 +2,7 @@ package com.vts.pfms.admin.controller;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -48,7 +49,9 @@ public class AdminController {
 	
 	@Value("${batchfilePath}")
 	String batchfilepath;
-	
+	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	private  SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	@RequestMapping(value = "LoginTypeList.htm" )
 	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 			throws Exception {
@@ -436,7 +439,7 @@ public class AdminController {
 	    		return "static/Error";
 	    	}
 		}
-	    
+	  
 	    @RequestMapping(value = "UserManagerList.htm", method = RequestMethod.GET)
 		public String UserManagerList(Model model, HttpServletRequest req, HttpSession ses) throws Exception {
 	    	final String UserId = (String)ses.getAttribute("Username");
@@ -452,7 +455,7 @@ public class AdminController {
 				req.setAttribute("Onboarding", onboard);
 				req.setAttribute("UserManagerList", service.UserManagerList().stream().filter(e-> LabCode.equalsIgnoreCase(e[9].toString())).collect(Collectors.toList()));
 				req.setAttribute("OfficerList", masterservice.OfficerList());
-				req.setAttribute("UserManager", service.UserManagerList());
+				req.setAttribute("UserManager", service.UserManagerList()); 
 			}catch( Exception e) {
 				e.printStackTrace();
 			}
@@ -856,6 +859,7 @@ public class AdminController {
 		public String DivisionAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 	    	String UserId = (String) ses.getAttribute("Username");
 	    	String LabCode =(String) ses.getAttribute("labcode");
+			 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			logger.info(new Date() +"Inside DivisionMasterAddSubmit.htm "+UserId);		
 			try {				
 				String divisionCode=req.getParameter("dCode");
@@ -1132,7 +1136,82 @@ public class AdminController {
 			return "redirect:/Role.htm";
 		}
 	  
+	    @RequestMapping(value="StatisticsList.htm" ,method = {RequestMethod.GET,RequestMethod.POST})
+	    public String StatisticsList(HttpServletRequest req,HttpSession ses ,RedirectAttributes redir) {
+	      
+	    	 String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+	    	String UserId = (String) ses.getAttribute("Username");
+	    	String labCode = (String)ses.getAttribute("labcode");
+	    	String Logintype= (String)ses.getAttribute("LoginType");
+	    	String Division=String.valueOf(ses.getAttribute("Division"));
+	    	//System.out.println(Division+"Division");
+	    	try {
+	    		String SelectedEmpId=req.getParameter("SelectedEmpId");
+	   		 
+	    		List<Object[]> StatsEmployeeList=service.StatsEmployeeList(Logintype,Division,labCode); 
+	    		Object[] emplist=StatsEmployeeList.get(0);
+	    		
+	    		long EmployeeId=0;
+	    		
+	    		if(SelectedEmpId==null) {
+	    			EmployeeId=Long.parseLong(emplist[0].toString());
+	    		}else {
+	    			EmployeeId=Long.parseLong(SelectedEmpId);
+	    		}
+	    		String fromDate=(String)req.getParameter("FromDate");
+	    		String toDate=(String)req.getParameter("ToDate");
+	    		if(toDate==null) {
+	    			toDate=LocalDate.now().toString();
+	    		}else {
+	    			toDate=sdf2.format(sdf.parse(toDate));
+	    		}
+	    		if(fromDate==null) {
+	    			fromDate=LocalDate.now().minusDays(30).toString();
+	    		}else {
+	    			fromDate=sdf2.format(sdf.parse(fromDate));
+	    		}
+	    		List<Object[]> ds=service.getEmployeeWiseCount(EmployeeId,fromDate,toDate); 
+	    		req.setAttribute("ds", ds);
+	    		req.setAttribute("EmployeeId", EmployeeId);
+	    		req.setAttribute("frmDt", fromDate);
+	    		req.setAttribute("toDt",   toDate);
+	    		req.setAttribute("StatsEmployeeList", StatsEmployeeList);
+	    		
+	    	}
+	    	catch(Exception e) {
+	    		
+	    	}
+	    	return "admin/StatisticsList";
+	    }
 
-	    
+	
+		@RequestMapping(value = "UpdatetheEmployeedata.htm",method = {RequestMethod.GET,RequestMethod.POST})
+		public String UpdatetheEmployeedata(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+			logger.info(new Date() + "UpdatetheEmployeedata.htm" + req.getUserPrincipal().getName());
+			try {
+			long EmpId=(Long)ses.getAttribute("EmpId");
+			String SelectedEmpId=req.getParameter("SelectedEmpId");
+			String fromDate=(String)req.getParameter("FromDate");
+    		String toDate=(String)req.getParameter("ToDate");
+    		if(toDate==null) {
+    			toDate=LocalDate.now().toString();
+    		}
+    		if(fromDate==null) {
+    			fromDate=LocalDate.now().minusDays(7).toString();
+    		}
+			int count=service.insertEmployeeData();
+			if(count>0) {
+				redir.addAttribute("result", " Data synced successfully");	
+			}
+			
+			 redir.addAttribute("FromDate", fromDate);
+			 redir.addAttribute("ToDate",   toDate);
+			 redir.addAttribute("SelectedEmpId",   SelectedEmpId);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return "redirect:/StatisticsList.htm";
+
+		}
 	    
 }

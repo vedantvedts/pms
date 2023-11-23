@@ -11,6 +11,7 @@ import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
+import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.login.PfmsLoginRole;
 import com.vts.pfms.master.model.DivisionEmployee;
@@ -85,5 +86,12 @@ public interface AdminDao {
 	public Long insertformroleaccess(PfmsFormRoleAccess main) throws Exception;
 	public int updateformroleaccess(String formroleid,String active,String auth)throws Exception;
 	public int resetPassword(String lid, String userId, String password, String modifieddate)throws Exception;
+	public String firstDateOfAudit() throws Exception;
+	public List<Object[]> getAllEmployeesOfDate(String date)throws Exception;
+	public Object[] ListOfWorkCounts(String userName, String date) throws Exception;
+	public int DataInsetrtIntoPfmsStatistics(List<PfmsStatistics> pfmsStatistics)throws Exception;
+	public List<Object[]> getpfmsStatiscticsTableData()throws Exception;
+	public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode)throws Exception;
+	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate)throws Exception;
 	
   }

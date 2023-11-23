@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import com.vts.pfms.admin.model.Expert;
 import com.vts.pfms.admin.model.PfmsFormRoleAccess;
 import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
+import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.master.model.DivisionEmployee;
 
@@ -328,14 +330,13 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public List<Object[]> UsernameList() throws Exception {
-		
 		return dao.UsernameList();
 	}
 	
 	@Override
 	public List<Object[]> UserManagerList( ) throws Exception {
-	
-		return dao.UserManagerList();
+		
+			  return dao.UserManagerList();
 	}
 
 	
@@ -344,8 +345,6 @@ public class AdminServiceImpl implements AdminService{
 	
 		return dao.UserNamePresentCount(UserName);
 	}
-
-	
 	@Override
 	public List<Object[]> DivisionList() throws Exception {
 	
@@ -642,4 +641,69 @@ public class AdminServiceImpl implements AdminService{
 			return dao.resetPassword(lid,UserId,newPasword,sdf1.format(new Date()));
 		}
 	
+		@Override
+		public int insertEmployeeData() throws Exception {
+			long startTime = System.nanoTime();
+			List<Object[]>EmployeeList=new ArrayList<>();
+			List<PfmsStatistics>pfmsStatistics= new ArrayList<>();
+			List<Object[]>pfmsStatisticsTableData=new ArrayList<>();
+			pfmsStatisticsTableData= dao.getpfmsStatiscticsTableData();
+			LocalDate startDate=LocalDate.now().minusDays(1);
+			String date = "";
+				if(pfmsStatisticsTableData.size()>0) {
+				date=pfmsStatisticsTableData.stream().max((arr1,arr2) ->
+				{
+					Date date1=(Date)arr1[4];
+					Date date2=(Date)arr2[4];
+					return date1.compareTo(date2);
+				}). orElse(null)[4].toString();
+				// here startdate shouldbe the next day after max date
+				 startDate=LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).plusDays(1);
+				
+				}
+				else {
+				date = dao.firstDateOfAudit();
+					// here the startdate is the date from the date we have information
+				 startDate=LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+				
+				}
+				//currdate shoulde be the yesterday
+				LocalDate curDate=LocalDate.now();
+				
+				if(!startDate.equals(curDate)) {
+				for(LocalDate d = startDate;!d.isEqual(curDate);d = d.plusDays(1)) {
+				EmployeeList=dao.getAllEmployeesOfDate(d.toString()); //checking if that day has anylogin or not
+				if(EmployeeList.size()>0){ 
+				for(Object[]obj:EmployeeList){ 
+				  Object[]ListOfWorkCounts=dao.ListOfWorkCounts(obj[1].toString(),d.toString());//calling procedure for counts and storing in object array
+				  PfmsStatistics ps= new PfmsStatistics();
+				  ps.setEmpId(Long.parseLong(obj[0].toString()));
+				  ps.setUserName(obj[1].toString());
+				  ps.setActionCount(Long.parseLong(ListOfWorkCounts[0].toString()));
+				  ps.setActionAssignedCount(Long.parseLong(ListOfWorkCounts[1].toString()));
+				  ps.setMilestoneCount(Long.parseLong(ListOfWorkCounts[2].toString()));
+				  ps.setMeetingScheduled(Long.parseLong(ListOfWorkCounts[3].toString()));
+				  ps.setLogDate(java.sql.Date.valueOf(d));
+				  ps.setLogInCount(Long.parseLong(obj[2].toString())); pfmsStatistics.add(ps);
+				  } 
+				}
+				  } 
+				}	
+				  int i=dao.DataInsetrtIntoPfmsStatistics(pfmsStatistics);
+				   // Record the end time after calling method1
+			        long endTime = System.nanoTime();
+			        // Calculate the time difference
+			        long elapsedTime = endTime - startTime;
+			        System.out.println("Time taken: " + elapsedTime + " nanoseconds");
+			        return i;
+		}
+		
+		@Override
+		public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode) throws Exception {
+			return dao.StatsEmployeeList(logintype,division,labCode);
+		}
+		@Override
+		public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate) throws Exception {
+			return dao.getEmployeeWiseCount(employeeId,fromDate,toDate);
+		}
 }
