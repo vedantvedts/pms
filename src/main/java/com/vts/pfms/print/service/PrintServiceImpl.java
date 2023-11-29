@@ -226,8 +226,9 @@ public class PrintServiceImpl implements PrintService{
 	public List<Object[]> ActionPlanSixMonths(String projectid, String CommitteeCode)throws Exception
 	{
 		logger.info(new Date()  +"Inside SERVICE ActionPlanThreeMonths ");
-		if( CommitteeCode.equalsIgnoreCase("PMRC") ) 
-		{
+		if( CommitteeCode.equalsIgnoreCase("1") ) 
+			
+		{	
 			List<Object[]>mainList=dao.ActionPlanSixMonths(projectid,90);
 			List<Object[]>subList=new ArrayList<>();
 		
@@ -236,8 +237,9 @@ public class PrintServiceImpl implements PrintService{
 			}
 			return subList;
 		}
-		else if(CommitteeCode.equalsIgnoreCase("EB"))
+		 if(CommitteeCode.equalsIgnoreCase("2"))
 		{ 
+			
 			/* return dao.ActionPlanSixMonths(projectid,180); */
 			List<Object[]>mainList=dao.ActionPlanSixMonths(projectid,180);
 			List<Object[]>subList=new ArrayList<>();

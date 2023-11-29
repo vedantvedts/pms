@@ -74,6 +74,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.CompressionConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -654,7 +655,7 @@ public class PrintController {
 	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,CommitteeCode));
+	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));//changed
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
@@ -878,7 +879,6 @@ public class PrintController {
 	    	byte[] data = html.getBytes();
 	    	InputStream fis1=new ByteArrayInputStream(data);
 	    	PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
-	    	
 	    	Document document = new Document(pdfDoc, PageSize.A4);
 	    	//document.setMargins(50, 100, 150, 50);
 	    	document.setMargins(50, 50, 50, 50);
@@ -889,7 +889,9 @@ public class PrintController {
             ImageData leftLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\drdo.png");
             ImageData rightLogo = ImageDataFactory.create(env.getProperty("ApplicationFilesDrive")+"\\images\\lablogos\\"+projectLabCode.toLowerCase()+".png");
 	        PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
-	        
+	        //PdfWriter pdfWriter = new PdfWriter(path + File.separator + "mergedb.pdf");
+	        PdfDocument pdfDocs = new PdfDocument(pdfw);
+	        pdfw.setCompressionLevel(CompressionConstants.BEST_COMPRESSION);
 	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
 	        Document docMain = new Document(pdfDocMain,PageSize.A4);
 	        docMain.setMargins(50, 50, 50, 50);
@@ -1266,7 +1268,7 @@ public class PrintController {
 	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,CommitteeCode));
+	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
 	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
@@ -3004,7 +3006,7 @@ public class PrintController {
 	    	    		oldpmrcissueslist.add(service.OldPMRCIssuesList(proid));
 	    	    		riskmatirxdata.add(service.RiskMatirxData(proid));
 	    	    		lastpmrcdecisions.add(service.LastPMRCDecisions(committeeid,proid));
-	    	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,CommitteeCode));
+	    	    		actionplanthreemonths.add(service.ActionPlanSixMonths(proid,committeeid));
 	    	    		projectdatadetails.add(service.ProjectDataDetails(proid));
 	    	    		ReviewMeetingListEB.add(service.ReviewMeetingList(projectid, "EB"));
 	    	    		ReviewMeetingListPMRC.add(service.ReviewMeetingList(projectid, "PMRC"));
@@ -3995,7 +3997,6 @@ public class PrintController {
 						Timestamp instant = Timestamp.from(Instant.now());
 						String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
 				       String filesname="SlideFreeze"+timestampstr+".pdf";
-						
 						String Path= ApplicationFilesDrive+LabCode+"\\FreezedProjectSlide\\";
 						
 				        Path uploadPath = Paths.get(Path);
