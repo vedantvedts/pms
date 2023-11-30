@@ -208,6 +208,21 @@ display: inline-block;
     border-color: #7B1FA2;
     background-color: red;
 }
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink {
+    animation: blink 1.5s infinite;
+}
 
 	</style>
 </head>
@@ -292,20 +307,29 @@ if(formname!=null){
 	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-			<input type="submit" class="btn  btn-sm view" value="DPFM 2021" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" <%if(committeescheduleeditdata[22].toString().equals("Y")){%> disabled="disabled" >FROZEN <%}else{ %> >FREEZE <%} %></button>
+		<%if(committeescheduleeditdata[22].toString().equals("N")){%>	<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /><%} %>
+			<%if(committeescheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
+			<%}else{ %>
+			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')" style="font-size:12px;" >UNFREEZE</button>
+			<%} %>
 		<%} %>
-		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >MINUTES</button>
+		<input type="hidden" name="IsFrozen" value="<%=committeescheduleeditdata[22].toString()%>">
+		<%if(!SplCommitteeCodes.contains(committeecode.trim())) {%>
+		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
+		<%} %>
 		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
 		<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
+		
 		<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
 	</form>
 	
 	
-</nav>    
+</nav> 
+
+<%if(committeescheduleeditdata[22].toString().equalsIgnoreCase("N")) {%>   
 <div class="container-fluid">          
 <div class="row"> 
 <div class="col-md-5" >
@@ -597,12 +621,12 @@ if(formname!=null){
 	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5].toString().substring(0,20)+"...." %>	          						
+									<%=hlod[5].toString().substring(0,20)+"...." %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9] %>)</span>         						
 	          						<%}else{ %>
-	          						<%=hlod[5].toString() %>
-	          						<%} %>
+	          						<%=hlod[5].toString() %><span style="font-size: 11px;color:crimson" >(<%=hlod[9] %>)</span>
+	          						<%} %></span>
 	          						<!-- end -->
-	          						(<%=hlod[9] %>)</span>  </h4>
+	          						  </h4>
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
 							     			<thead>
@@ -734,10 +758,8 @@ if(formname!=null){
 	          						<%=hlod[5].toString() %>
 	          						<%} %>
 	          						<!-- end -->
-	          						
-	          						
-	          						
-	          						(<%=hlod[9] %>)</span>  </h4>
+	          						</span>
+	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9] %>)</span>  </h4>
 	          				
 		       						<div   style="float: right !important; margin-top:-23px; ">
 									 	<table style="text-align: center;" >
@@ -870,9 +892,9 @@ if(formname!=null){
 										<%=hlod[5].toString().substring(0,20) +"..."%>
 									<%}else{ %>
 										    <%=hlod[5].toString() %>
-									<%} %>
+									<%} %></span>
 									<!-- end -->      						
-	          						 (<%=hlod[8] %>)</span>  </h4>
+	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8] %>)</span>  </h4>
 	       						<div   style="float: right !important; margin-top:-23px; ">
 								 	<table style="text-align: center;" >
 						     			<thead>
@@ -1151,13 +1173,13 @@ if(formname!=null){
 	        					<h4 class="panel-title">
 	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
-	          						<%if(hlo[5].toString().length()>30) {%>
-	          						<%=hlo[5].toString().substring(0, 25)+"...." %>
+	          						<%if(hlo[5].toString().length()>40) {%>
+	          						<%=hlo[5].toString().substring(0, 35)+"...." %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8] %> )</span>
 	          						<%}else{ %>
-	          						<%=hlo[5].toString()%>
-	          						<%} %>
+	          						<%=hlo[5].toString()%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8] %> )</span>
+	          						<%} %></span>
 	          						<!-- end  -->
-	          						(<%=hlo[8] %> )</span>  </h4>
+	          						  </h4>
 	          				
        						<div   style="float: right !important; margin-top:-23px; ">
 							 	<table style="text-align: center;" >
@@ -1241,6 +1263,20 @@ if(formname!=null){
 
 
 <!-- 6th row Conclusion -->
+				
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" id="myModal">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+       <div class="p-3" id="filltext"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="panel panel-info">
@@ -1375,14 +1411,12 @@ if(formname!=null){
 		
 		</div>
 	</div>
-	
 	<%} %>
-	
 <div class="row">
 	<div class="col-md-12" >
 		<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
     		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; ">Signed MOM</b> 
+				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; "></b> 
 				<hr><br>				
 					<%if(minutesattachmentlist.size()>0){ %>
 						<div class="card-body" style="margin-top: -8px" >       	
@@ -1642,7 +1676,89 @@ if(formname!=null){
 </div> <!-- main row end -->
 
 </div>
+<%} else{%>
+	<div class="centered-card" style="  display: flex;justify-content: center;align-items: center;height: 70vh;">
+	<div class="card" >
+  	<div class="card-body" style="height:20vh;display: flex;align-items: center;justify-content: center;">
+  	<div style="font-size: 1.25rem;font-weight: 600; color: crimson; text-shadow: 2px 2px 2px skyblue">MOM already freezed. If you want to edit please unfreeze it. </div>
+  	</div>
+  	<div class="mb-2" align="center">
+  	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
+	<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
+	<!--<input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
+	<button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
+	<i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
+	</button>&nbsp;&nbsp;
+	
+	<%}%>
+	<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
+	<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
+	<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+	<input type="hidden" name="membertype" value="<%=membertype%>">
+	</form>
+	</div> 
+	<div class="row">
+	<div class="col-md-12" >
+		<div class="card" style="margin-top: 2%;border:0px!important;" >
+    		<div class="card-body" style="margin-top: -8px" >       	
+				<b style="color: #346691; font-size: 14px;font-family: 'Lato',sans-serif; ">Upload Signed MOM :</b> 
+				<br>				
+				<%if(minutesattachmentlist.size()>0){ %>
+						<div class="card-body" style="margin-top: -8px" >       	
+							<table class="table table-bordered table-hover table-striped table-condensed" >					
+									<tr>
+										<td><%=minutesattachmentlist.get(0)[2] %></td>
+										<td>
+											<div  align="center">
+												<a  href="MinutesAttachDownload.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>" 
+												  target="_blank"><i class="fa fa-download"></i></a>
+											</div>						
+										</td>
+										<td>
+											<form method="post" action="MinutesAttachmentDelete.htm">
+												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
+												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
+											</form>									
+										</td>
+									</tr>
+								
+							</table>
+						</div>
+					<%} %>
+				<form method="post" action="MinutesAttachment.htm" enctype="multipart/form-data" id="attachmentfrm" name="attachmentfrm" >					
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
+					<table>
+						<tr>
+							<td>
+								<input type="file" name="FileAttach" id="FileAttach" required  class="form-control" aria-describedby="inputGroup-sizing-sm" maxlength="255" form="attachmentfrm"  onchange="Filevalidation('FileAttach');" />
+							</td>
+							<td>&nbsp;</td>
+							<td>		
+								<%if( minutesattachmentlist.size()==0){ %>						
+									<input type="submit" name="sub" class="btn  btn-sm submit"  value="SUBMIT" onclick="return editcheck('FileAttach');" />
+								<%}else if(minutesattachmentlist.size()>0){ %>
+									<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0]%>"/>
+									<input type="submit" name="sub" class="btn  btn-sm edit"  value="EDIT" onclick="return editcheck1('FileAttach');" />
+								<%} %>
+							</td>
+						</tr>
+					</table>
+				</form>		
+	
+			</div>			
+		</div>
+	</div>
+</div>
+</div>
+</div>
 
+
+
+
+<%} %>
 <script type="text/javascript">
 
 function editcheck(editfileid)
@@ -2483,7 +2599,10 @@ function submitForm(formname)
 
 
 
-
+function showModal(a){
+	document.getElementById('filltext').innerHTML=a;
+	$('#myModal').modal('show');
+}
 </script>
 
 </body>

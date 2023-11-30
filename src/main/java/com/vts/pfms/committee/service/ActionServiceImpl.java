@@ -264,58 +264,111 @@ public class ActionServiceImpl implements ActionService {
 			}
 			actionmain.setActionLevel(main.getActionLevel());
 			long result=dao.ActionMainInsert(actionmain);
-			for(int i=0;i<assign.getAssigneeList().length;i++) {
-			ActionAssign actionassign = new ActionAssign();
-				
-			count=count+1;
+			//changed on 06-11
+			if(assign.getMultipleAssigneeList().size()>0) {
+				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
+					ActionAssign actionassign = new ActionAssign();
+						
+					count=count+1;
 
-			if(lab!=null && main.getLabName()!=null) {
-		    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+					if(lab!=null && main.getLabName()!=null) {
+				    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
 
-			     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
-			}else {
-				return unsuccess;
+					     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+					}else {
+						return unsuccess;
+					}
+					
+					
+					actionassign.setActionMainId(result);
+					actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+					actionassign.setAssignee(Long.parseLong(assign.getMultipleAssigneeList().get(i)));
+					actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+					actionassign.setAssignor(assign.getAssignor());
+					actionassign.setRevision(0);
+//					actionassign.setActionFlag("N");		
+					actionassign.setActionStatus("A");
+					actionassign.setCreatedBy(main.getCreatedBy());
+					actionassign.setCreatedDate(sdf1.format(new Date()));
+					actionassign.setIsActive(1);
+					actionassign.setProgress(0);
+					long assignid=  dao.ActionAssignInsert(actionassign);
+					System.out.println("assignid---"+assignid);
+					if(result>0) {
+						Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
+						PfmsNotification notification=new PfmsNotification();
+						notification.setEmpId(Long.parseLong(data[2].toString()));
+						notification.setNotificationby(Long.parseLong(data[5].toString()));
+						notification.setNotificationDate(sdf1.format(new Date()));
+						notification.setScheduleId(unsuccess);
+						notification.setCreatedBy(main.getCreatedBy());
+						notification.setCreatedDate(sdf1.format(new Date()));
+						notification.setIsActive(1);
+						if("I".equalsIgnoreCase(actionmain.getType())) {
+							notification.setNotificationUrl("ActionIssue.htm");
+							 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+						} else {
+							notification.setNotificationUrl("AssigneeList.htm");
+							notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+						}
+						notification.setStatus("MAR");
+			            dao.ActionNotificationInsert(notification);
+					}else {
+					return unsuccess;
+					}
+					}	
+		
 			}
-			
-			
-			actionassign.setActionMainId(result);
-			actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
-			actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
-			actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
-			actionassign.setAssignee(Long.parseLong(assign.getAssigneeList()[i]));
-			actionassign.setAssignorLabCode(assign.getAssignorLabCode());
-			actionassign.setAssignor(assign.getAssignor());
-			actionassign.setRevision(0);
-//			actionassign.setActionFlag("N");		
-			actionassign.setActionStatus("A");
-			actionassign.setCreatedBy(main.getCreatedBy());
-			actionassign.setCreatedDate(sdf1.format(new Date()));
-			actionassign.setIsActive(1);
-			actionassign.setProgress(0);
-			long assignid=  dao.ActionAssignInsert(actionassign);
-			if(result>0) {
-				Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
-				PfmsNotification notification=new PfmsNotification();
-				notification.setEmpId(Long.parseLong(data[2].toString()));
-				notification.setNotificationby(Long.parseLong(data[5].toString()));
-				notification.setNotificationDate(sdf1.format(new Date()));
-				notification.setScheduleId(unsuccess);
-				notification.setCreatedBy(main.getCreatedBy());
-				notification.setCreatedDate(sdf1.format(new Date()));
-				notification.setIsActive(1);
-				if("I".equalsIgnoreCase(actionmain.getType())) {
-					notification.setNotificationUrl("ActionIssue.htm");
-					 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
-				} else {
-					notification.setNotificationUrl("AssigneeList.htm");
-					notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
-				}
-				notification.setStatus("MAR");
-	            dao.ActionNotificationInsert(notification);
-			}else {
-			return unsuccess;
-			}
-			}
+			//end
+			/*
+			 * if(assign.getAssigneeList()!=null) { for(int
+			 * i=0;i<assign.getAssigneeList().length;i++) { ActionAssign actionassign = new
+			 * ActionAssign();
+			 * 
+			 * count=count+1;
+			 * 
+			 * if(lab!=null && main.getLabName()!=null) { Date meetingdate= new
+			 * SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+			 * 
+			 * actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).
+			 * toString().toUpperCase().replace("-", "")+"/"+count); }else { return
+			 * unsuccess; }
+			 * 
+			 * 
+			 * actionassign.setActionMainId(result);
+			 * actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
+			 * getPDCOrg()))));
+			 * actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.
+			 * getPDCOrg()))));
+			 * actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+			 * actionassign.setAssignee(Long.parseLong(assign.getAssigneeList()[i]));
+			 * actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+			 * actionassign.setAssignor(assign.getAssignor()); actionassign.setRevision(0);
+			 * // actionassign.setActionFlag("N"); actionassign.setActionStatus("A");
+			 * actionassign.setCreatedBy(main.getCreatedBy());
+			 * actionassign.setCreatedDate(sdf1.format(new Date()));
+			 * actionassign.setIsActive(1); actionassign.setProgress(0); long assignid=
+			 * dao.ActionAssignInsert(actionassign); if(result>0) { Object[]
+			 * data=dao.ActionNotification(String.valueOf(result)
+			 * ,String.valueOf(assignid)).get(0); PfmsNotification notification=new
+			 * PfmsNotification();
+			 * notification.setEmpId(Long.parseLong(data[2].toString()));
+			 * notification.setNotificationby(Long.parseLong(data[5].toString()));
+			 * notification.setNotificationDate(sdf1.format(new Date()));
+			 * notification.setScheduleId(unsuccess);
+			 * notification.setCreatedBy(main.getCreatedBy());
+			 * notification.setCreatedDate(sdf1.format(new Date()));
+			 * notification.setIsActive(1); if("I".equalsIgnoreCase(actionmain.getType())) {
+			 * notification.setNotificationUrl("ActionIssue.htm");
+			 * notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "
+			 * +data[3]+", "+data[4]+"."); } else {
+			 * notification.setNotificationUrl("AssigneeList.htm");
+			 * notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "
+			 * +data[3]+", "+data[4]+"."); } notification.setStatus("MAR");
+			 * dao.ActionNotificationInsert(notification); }else { return unsuccess; } } }
+			 */
 			return success;
 		} catch (Exception e) {
 			logger.info(new Date() +"Inside SERVICE ActionMainInsert "+ e);	
@@ -1929,5 +1982,9 @@ public List<Object[]> MeettingActionList(String committeeid, String projectid, S
 	
 	return dao.MeettingActionList(committeeid,projectid,scheduleid,empId);
 }
-	
+@Override
+public List<Object[]> getAllEmployees(String flag) throws Exception {
+	//new added
+	return dao.getAllEmployees(flag);
+}
 }

@@ -248,7 +248,7 @@ MinutesBack=(String)request.getAttribute("minutesback");
 if(MinutesBack==null){
 	MinutesBack="NO";
 }
-
+List<String>committees=Arrays.asList("PMRC","EB");
 %>
 
 
@@ -325,14 +325,14 @@ if(MinutesBack==null){
 									<span style="font-size: 14px"><%=obj[7]+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									
 									<%if(obj[1].toString().length()>50) {%>
-									<%=obj[1].toString().substring(0,50)+" ....." %>
+									<%=obj[1].toString().substring(0,50) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[1].toString()%>")'>&nbsp;( view more)</span>
 									<%}else {%>
 									<%=obj[1].toString() %>
 									<%} %>	
 										<br>
 										<%if("3".equalsIgnoreCase(obj[7].toString())){%><%-- / <%=obj[5] %> / --%>
 									<%-- 	<%=obj[6] %> --%> <%} %> 
-										 ( <%if("K".equalsIgnoreCase(obj[2].toString())){%>Risk Task<%} %> 
+										 (<%if("K".equalsIgnoreCase(obj[2].toString())){%>Risk Task<%} %> 
 										 <%if("I".equalsIgnoreCase(obj[2].toString())){%>Issue Task<%} %> 
 										 <%if("A".equalsIgnoreCase(obj[2].toString())){%>Action Task<%} %>
 										 <%if("R".equalsIgnoreCase(obj[2].toString())){%>Recommendation Task<%} %> )
@@ -472,7 +472,7 @@ if(MinutesBack==null){
 									</div>
 								</div>
 
-								<div class="col-sm-5" align="left">
+								<div class="col-sm-4" align="left">
 									<div class="form-group">
 										<label> Assignee : </label>
 										<%-- <%if(Long.parseLong(projectid)>0){ %>
@@ -481,8 +481,8 @@ if(MinutesBack==null){
 												</div>
 											<%} %> --%>
 										<br> <select class="form-control selectdee"
-											name="Assignee" id="Assignee" required="required"
-											data-live-search="true" data-placeholder="Select Assignee"
+											name="Assignee" id="Assignee"<%if(committees.contains(committeescheduleeditdata[8].toString())) {%> required="required" <%} %>
+									onchange="removeAttri()"		data-live-search="true" data-placeholder="Select Assignee"
 											multiple>
 
 
@@ -495,14 +495,28 @@ if(MinutesBack==null){
 									</div>
 								</div>
 
-								<div class="col-sm-4" align="left">
+						<!-- 		<div class="col-sm-4" align="left">
 									<div class="form-group" id="OldList">
 										<label> Old Action No : </label><br> <select
 											class="form-control selectdee " name="OldActionNo"
 											id="OldActionNoId" hidden="hidden" data-live-search="true"
 											style="width: 100%"></select>
 									</div>
+								</div> -->
+								<%if(!committees.contains(committeescheduleeditdata[8].toString())) {%>
+								<div class="col-sm-4" align="left" id="main">
+									<div class="form-group" >
+										<label>Multiple Assignee : </label><br> 
+										<select class="form-control"    onchange="showEmployee()" id="multipleAssignee" name="multipleAssignee" required="required">
+										<option value="" selected="selected"> Select </option> 
+										<option value="T">ALL TD</option>
+										<option value="G">ALL GH</option>
+										<option value="D">ALL DH</option>
+										<option value="P">ALL PD</option>
+										</select>
+									</div>
 								</div>
+								<%} %>
 
 							</div>
 							<div class="row" align="center">
@@ -549,7 +563,56 @@ if(MinutesBack==null){
 		<!-- main row end -->
 
 	</div>
+	
+	<!--Modal for employees  -->
+<div class="modal fade bd-example-modal-lg" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" >
+      <div class="modal-header" style="background-color:#C4DDFF;">
+        <h5 class="modal-title" id="modalHeader" >Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+      <div style="display:flex;justify-content: center;height: 58vh; overflow-y: auto;">
+        <table class="table table-bordered" style="width: 80%;" >
+  		<thead class="bg-light">
+    	<tr>
+   		<th style="width:12%;">SL No.</th>
+   		<th style="text-align: center;">Employee</th>
+    	</tr>
+  		</thead>
+  		<tbody id="modalTable">
+   
+    	</tbody>
+        </table>
+     </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
 
+
+<!-- modal for action item -->
+
+<div class="modal fade" id="actionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action Item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalbody" style="font-size: 1.15rem;">
+      
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
 
@@ -791,7 +854,7 @@ function changeempdd()
 	    		    			var tempday1 = moment(JSON.stringify(values[i][4]), "MMM-DD-YYYY");
 	    		    			var formatday1= moment(tempday1).format("DD-MM-YYYY");
 	    		    			   
-	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td></tr>"; 
+	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td></tr>"; 
 	    		    			
 	    		    		}
 	    		    		
@@ -846,7 +909,21 @@ function AssigneeEmpList(){
 	$('#Assignee').val("");
 	
 	var $AssigneeLabCode = $('#AssigneeLabCode').val();
+	var mainlabcode = "<%=labcode.toString()%>" ;
+	
 	let projectid = <%=committeescheduleeditdata[9]%> ;
+	
+	var div = document.getElementById("main");
+	
+	if(mainlabcode===$AssigneeLabCode){
+		if(div!=null){
+		div.style.display = "block";
+		}
+		}else{
+		if(div!=null){
+		div.style.display = "none";
+		}
+	}
 
 	if($AssigneeLabCode!=""){
 		
@@ -861,10 +938,8 @@ function AssigneeEmpList(){
 			datatype : 'json',
 			success : function(result) {
 				var result = JSON.parse(result);
-				
 				var values = Object.keys(result).map(function(e) {
 					return result[e]
-					
 				});
 				
 				var s = '';
@@ -883,10 +958,75 @@ function AssigneeEmpList(){
 			}
 		});
 	}
+	
+	
+	
 }  
+   function showEmployee(){
+	   var value=$('#multipleAssignee').val();
+	  $.ajax({
+		  type:'GET',
+		  url:'getEmployees.htm',
+		  datatype:'json',
+		  data:{
+			  flag:value,
+		  },
+		  success:function(result){
+			  var ajaxresult=JSON.parse(result);
+			  console.log(ajaxresult);
+			  if(value==="P"){
+				  $('#modalHeader').text(" PROJECT DIRECTORS");
+				  $('#employeeModal').modal('show');
+				  var html="";
+				  for(var i=0;i<ajaxresult.length;i++){
+					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+				  }
+				  $('#modalTable').html(html);
+			  }
+ 			if(value==="D"){
+ 				$('#modalHeader').text(" DIVISION HEADS"); 
+ 				$('#employeeModal').modal('show');
+ 				  var html="";
+				  for(var i=0;i<ajaxresult.length;i++){
+					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+				  }
+				  $('#modalTable').html(html);
+			  }
+ 			 if(value==="T"){
+ 				$('#modalHeader').text(" TECHNICAL DIRECTORS");
+ 				$('#employeeModal').modal('show');
+ 				  var html="";
+				  for(var i=0;i<ajaxresult.length;i++){
+					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+				  }
+				  $('#modalTable').html(html);
+			  }
+ 			 if(value==="G"){
+ 				$('#modalHeader').text(" GROUP HEADS");
+ 				$('#employeeModal').modal('show');
+ 				  var html="";
+				  for(var i=0;i<ajaxresult.length;i++){
+					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+				  }
+				  $('#modalTable').html(html);
+			  }
+		  }
+	  })
+   }
    
-   
-
+   function removeAttri(){
+	    var selectElement = document.getElementById("multipleAssignee");
+	    selectElement.removeAttribute("required");
+	    var selectElements = document.getElementById("Assignee");
+	    /* console.log(selectElements.value); */
+	    if(selectElements.value.length==0){
+	    	selectElement.setAttribute('required', 'required');
+	    }
+   }
+ function showModal(a){
+	 $('#actionModal').modal('show');
+	 document.getElementById('modalbody').innerHTML=a;
+ }
 </script>
 </body>
 </html>

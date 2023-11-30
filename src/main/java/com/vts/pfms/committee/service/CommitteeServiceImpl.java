@@ -1,6 +1,7 @@
 package com.vts.pfms.committee.service;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -77,6 +79,11 @@ import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.MinutesFinanceList;
+
+
+import org.springframework.stereotype.Service;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Service
 public class CommitteeServiceImpl implements CommitteeService{
@@ -3236,5 +3243,24 @@ public class CommitteeServiceImpl implements CommitteeService{
 	public List<Object[]> getEnvisagedDemandList(String projectid) throws Exception {
 		return dao.getEnvisagedDemandList(projectid);
 	}
+	@Override
+	public int MomFreezingUpdate(String committeescheduleid) throws Exception {
+		
+		return dao.MomFreezingUpdate(committeescheduleid);
+	}
+	
+	@Override
+	public List<Object[]> getTodaysMeetings(String date) throws Exception {
+		
+		return dao.getTodaysMeetings(date);
+	}
+	
+@Override
+public List<Object[]> actionDetailsForNonProject(String committeeId, String scheduledate) throws Exception {
+	// TODO Auto-generated method stub
+	
+	List<Object[]>actionDetails=dao.actionDetailsForNonProject(committeeId);
+	return actionDetails;
+}
 	
 }

@@ -206,7 +206,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 	private static final String EMPSCHEDULEDATA="SELECT cs1.scheduleid,cs1.meetingid,cs1.scheduledate,csi.membertype,cs1.committeemainid,cs1.schedulestarttime FROM committee_schedule cs1, committee_schedules_invitation csi WHERE csi.labcode IN (SELECT labcode FROM lab_master) AND cs1.scheduleid=csi.committeescheduleid AND csi.empid=:empid AND cs1.scheduledate=(SELECT cs2.scheduledate FROM committee_schedule cs2 WHERE cs2.scheduleid=:scheduleid) AND cs1.scheduleid  <> :scheduleid";
 	private static final String ALLACTIONASSIGNEDCHECK="SELECT csm.scheduleminutesid AS 'csmid',csm.scheduleid ,csm.idarck,ass.assignee, am.scheduleminutesid AS 'ammid' FROM action_assign ass, committee_schedules_minutes_details csm LEFT JOIN action_main am ON csm.scheduleminutesid=am.scheduleminutesid  WHERE ass.actionmainid=am.actionmainid AND csm.idarck IN ('A','I','K') AND csm.scheduleid=:scheduleid";
 	private static final String DEFAULTAGENDALIST="SELECT csa.DefaultAgendaid,csa.agendapriority,csa.agendaitem,csa.remarks,csa.duration,csa.committeeid FROM committee_default_agenda csa  WHERE isactive=1 AND csa.committeeid=:committeeid AND csa.LabCode = :LabCode";
-	private static final String PROCUREMETSSTATUSLIST="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(f.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,'' AS vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s  WHERE f.ProjectId=:projectid AND f.EstimatedCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid )  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND f.PftsFileId NOT IN(SELECT PftsFileId FROM pfts_file_order) UNION SELECT f.PftsFileId, f.DemandNo, o.OrderNo, f.DemandDate, o.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(o.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,o.vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s,pfts_file_order o  WHERE f.ProjectId=:projectid AND f.PftsFileId=o.PftsFileId  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND o.OrderCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid ) ORDER BY  DemandNo , id ASC";
+	private static final String PROCUREMETSSTATUSLIST="SELECT f.PftsFileId, f.DemandNo, f.OrderNo, f.DemandDate, f.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(f.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,'' AS vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s  WHERE f.ProjectId=:projectid AND f.isactive='1' AND f.EstimatedCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid )  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND f.PftsFileId NOT IN(SELECT PftsFileId FROM pfts_file_order) UNION SELECT f.PftsFileId, f.DemandNo, o.OrderNo, f.DemandDate, o.DpDate, ROUND(f.EstimatedCost/100000,2) AS 'EstimatedCost',ROUND(o.OrderCost/100000, 2) AS 'OrderCost', f.RevisedDp ,f.ItemNomenclature, s.PftsStatus, s.PftsStageName, f.Remarks,o.vendorname,f.PftsStatusId  AS id  FROM pfts_file f, pfts_status s,pfts_file_order o  WHERE f.ProjectId=:projectid AND f.isactive='1' AND f.PftsFileId=o.PftsFileId  AND f.PftsStatusId=s.PftsStatusId AND s.PftsStatusId<16 AND o.OrderCost>(SELECT proclimit FROM pfms_project_data WHERE ProjectId=:projectid ) ORDER BY  DemandNo , id ASC";
 	private static final String COMMITTEEMINUTESSPECNEW="SELECT minutesid,description FROM committee_schedules_minutes_new";
 	private static final String MILESTONESUBSYSTEMS="SELECT maa.activityId, maa.Parentactivityid, maa.activityname, maa.orgenddate, maa.enddate,maa.activitystatusid,mas.activityshort, maa.ProgressStatus,ma.milestoneno, maa.StatusRemarks,maa.activitylevelid FROM milestone_activity ma,milestone_activity_level maa,milestone_activity_status mas WHERE ma.milestoneactivityid = maa.parentactivityid AND maa.activitylevelid='1' AND maa.activitystatusid=mas.activitystatusid  AND ma.projectid=:projectid ORDER BY ma.milestoneno ASC";
 	private static final String FILEREPMASTERLISTALL ="SELECT filerepmasterid,parentlevelid, levelid,levelname FROM file_rep_master where filerepmasterid>0 AND projectid=:projectid and LabCode=:LabCode ORDER BY parentlevelid ";
@@ -2840,6 +2840,40 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public int MomFreezingUpdate(String committeescheduleid) throws Exception {
+		String COMTSCHEDULEUPDATE="UPDATE committee_schedule SET MinutesFrozen='N' WHERE scheduleid=:scheduleid";
+		String FROZENFILEUPDATE="UPDATE committee_meeting_dpfm_frozen SET isactive=0 WHERE scheduleid=:scheduleid";
+		Query query1=manager.createNativeQuery(COMTSCHEDULEUPDATE);
+		query1.setParameter("scheduleid", committeescheduleid);
+		Query query2=manager.createNativeQuery(FROZENFILEUPDATE);
+		query2.setParameter("scheduleid", committeescheduleid);
+		
+		int count=query1.executeUpdate()+query2.executeUpdate();
+		return count;
+	}
+	private static final String MEETINGS="SELECT cs.scheduleid,cs.projectid,cs.InitiationId,c.CommitteeShortName,c.CommitteeName,cs.MeetingVenue,cs.ScheduleStartTime,pm.projectcode,pm.projectshortname FROM committee_schedule cs,committee c ,project_master pm WHERE  c.CommitteeId=cs.CommitteeId AND pm.projectid=cs.projectid AND  cs.ScheduleDate=:date AND cs.isactive='1'";
+	@Override
+	public List<Object[]> getTodaysMeetings(String date) throws Exception {
+		Query query = manager.createNativeQuery(MEETINGS);
+		query.setParameter("date", date);
+		
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	private static final String NONPROJECTACTIONS="SELECT d.ActionAssignId,d.ActionNo,CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname',\r\n"
+			+ "d.ActionStatus,c.ActionMainId,c.ActionItem,b.ScheduleMinutesId,a.ScheduleId,a.MeetingId,a.ScheduleDate,d.PDCOrg,d.PDC1,d.PDC2,d.Progress,d.ProgressDate\r\n"
+			+ "FROM committee_schedule a, committee_schedules_minutes_details b , action_main c,action_assign d, employee e\r\n"
+			+ "WHERE a.CommitteeId = :committeeId AND a.isactive = 1 AND a.ScheduleId=b.ScheduleId\r\n"
+			+ "AND c.ScheduleMinutesId=b.ScheduleMinutesId AND c.ActionMainId=d.ActionMainId AND d.Assignee=e.empid ORDER BY ActionAssignId";
+	
+	@Override
+	public List<Object[]> actionDetailsForNonProject(String committeeId) throws Exception {
+		Query query =manager.createNativeQuery(NONPROJECTACTIONS);
+		query.setParameter("committeeId", committeeId);
+		return (List<Object[]>)query.getResultList();
+	}
 }
-
 

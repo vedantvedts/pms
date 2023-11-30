@@ -763,15 +763,6 @@ for(Object[] temp : invitedlist){
 												<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><%=sdf.format(sdf1.parse(obj[7].toString()))%><br><%} %>
 												<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>											
 											</td>
-												 <%-- <td class="std" align="center" > 
-												 <%if(obj[3].toString().equals("A") ){ %> A
-												 <%}else if(obj[3].toString().equals("I") ){  %> I
-												 <%}else if(obj[3].toString().equals("R") ){  %> R
-												 <%}else if(obj[3].toString().equals("D") ){  %> D
-												 <%}else if(obj[3].toString().equals("C") ){  %> C
-												 <%}else if(obj[3].toString().equals("K") ){  %> K
-												 <%} %>  
-												  </td>  --%>
 											<td class="std" >
 												<%if(obj[4]!= null){ %>  
 													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>

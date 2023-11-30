@@ -28,7 +28,8 @@
 	}
 	
 	.card {
-		border: 1px solid black;
+		/* border: 1px solid black; */
+		box-shadow: 2px 2px 2px gray;
 	}
 	
 	.input-group-text {

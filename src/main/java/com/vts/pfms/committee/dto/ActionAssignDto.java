@@ -1,5 +1,7 @@
 package com.vts.pfms.committee.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -33,5 +35,7 @@ public class ActionAssignDto {
 	private String [] AssigneeList;
 	private String MeetingDate;
 	
+	//06-11-2-223
+	private List<String> multipleAssigneeList;
 	
 }

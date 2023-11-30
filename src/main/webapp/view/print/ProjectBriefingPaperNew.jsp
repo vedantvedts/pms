@@ -467,6 +467,10 @@ Map<Integer,String> treeMapLevOne =(Map<Integer,String>)request.getAttribute("tr
 Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 
 List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
+SimpleDateFormat inputFormat = new SimpleDateFormat("ddMMMyyyy");
+SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
+Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 %>
 
 <%String ses=(String)request.getParameter("result"); 
@@ -488,14 +492,9 @@ List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envis
             
     </div>
 <%} %>
- 
- 
  <div id="spinner" class="spinner" style="display:none;">
                 <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
                 </div>
- 
- 
-
 <div class="container-fluid">
 		<div class="row" id="main">
 			<div class="col-md-12">
@@ -1003,6 +1002,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envis
 										
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
+								<th  style="width: 110px !important;text-align: center;  ">ID</th>
 								<th  style="width: 320px; ">Action Point</th>
 								<th  style="width: 150px; ">ADC<br>PDC</th>
 								<!-- <th  style="width: 100px; "> ADC</th> -->
@@ -1017,10 +1017,35 @@ List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envis
 								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
-								{int i=1;
+								{int i=1;String key="";
 								for(Object[] obj:lastpmrcactions.get(z)){ %>
 								<tr>
 									<td  style="text-align: center;"><%=i %></td>
+									<td>
+										<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
+								<button type="button" class="btn btn-sm" style="border-radius: 50px;font-weight: bold" onclick="ActionDetails( <%=obj[17] %>);" data-toggle="tooltip" data-placement="top" title="Action Details" >
+								<%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("pmrc")){ %>
+								<%for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
+									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+									 String formattedDate = outputFormat.format(date);
+									 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+										 key=entry.getKey().toString();
+									 } }}else{%>
+									 <%
+									 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
+											Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
+											 String formattedDate = outputFormat.format(date);
+											 if(entry.getValue().equalsIgnoreCase(formattedDate)){
+												 key=entry.getKey().toString();
+											 }
+									 }
+									 %>
+									 <%} %>
+								
+								<%=committee.getCommitteeShortName().trim().toUpperCase()+"-"+key+"/"+obj[1].toString().split("/")[4] %>
+								</button>
+								<%}%>
+									</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
 									<td  style="text-align: center;" >
 									<span style="color:green"><%	String actionstatus = obj[9].toString();
@@ -1045,9 +1070,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envis
 										<%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
 										<span><%=sdf.format(sdf1.parse(obj[3].toString()))%></span>
 									</td>
-									<!-- <td   style="text-align: center;">
-									
-									</td> -->
+								
 									<td> 
 										<%=obj[11] %>, <%=obj[12] %> </td>
 										<td  style="text-align: center;" > 
@@ -1071,23 +1094,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envis
 										<%} %>					
 										<%} %>
 										
-										<%-- <%if(obj[15]!=null){ %>
-											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
-											<span class="ongoing">RC</span>
-											<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)){  %>
-											<span class="delay">FD</span>
-											<%}else if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate)||obj[3].equals(obj[13]))){  %>
-											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){  %>
-											<%}else if( !actionstatus.equals("C") && !obj[14].toString().equals("F") &&(pdcorg.isAfter(today)|| pdcorg.isEqual(today) )){  %> 
-												<span class="ongoing">OG</span>
-											<%}else if(!actionstatus.equals("C") && !obj[14].toString().equals("F") &&  pdcorg.isBefore(today)){  %> 
-												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
-											<%}%>
-											<% }else if(actionstatus.equals("C")){ %>
-									        <span class="completed">CO</span>
-									    	<% }else{ %>
-									      	<span class="assigned">AA</span> 
-											<%} %>  --%>
+						
 									</td>	
 									<td style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 								</tr>			

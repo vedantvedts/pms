@@ -168,6 +168,9 @@ public class CommitteeController {
 		return "committee/CommitteeAdd";
 	}
 	
+	
+
+	
 	@RequestMapping(value = "CommitteeAddSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String CommitteeAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
 	{
@@ -1135,7 +1138,7 @@ public class CommitteeController {
 	
 	@RequestMapping(value="CommitteeAgendaSubmit.htm",method=RequestMethod.POST)
 	public String CommitteeAgendaSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception  //,@RequestPart("FileAttach") MultipartFile[] FileAttach
-	{ 		
+		{ 		
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CommitteeAgendaSubmit.htm "+UserId);
 		try
@@ -1150,9 +1153,7 @@ public class CommitteeController {
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
 			}
-			
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
-			
 			for(int i=0;i<AgendaItem.length;i++) 
 			{
 				CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
@@ -1170,7 +1171,6 @@ public class CommitteeController {
 //				scheduleagendadto.setAttachmentName(FileAttach[i].getOriginalFilename());
 				scheduleagendadto.setDocLinkIds(docids.get(i));
 				scheduleagendadtos.add(scheduleagendadto);
-				
 			}
 			
 			long count=service.CommitteeAgendaSubmit(scheduleagendadtos);
@@ -2495,7 +2495,29 @@ public class CommitteeController {
 			req.setAttribute("isprint", "Y");	
 			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(scheduleeditdata[24].toString()));
 			req.setAttribute("labInfo", service.LabDetailes(LabCode));
-
+			String committeeId=scheduleeditdata[0].toString();
+			String scheduledate=scheduleeditdata[2].toString();
+					
+			List<Object[]>ActionDetails=service.actionDetailsForNonProject(committeeId,scheduledate);
+			List<Object[]>actionSubDetails=new ArrayList();
+			if(ActionDetails.size()>0) {
+				actionSubDetails=ActionDetails.stream().filter(i -> LocalDate.parse(i[9].toString()).isBefore(LocalDate.parse(scheduledate))).collect(Collectors.toList());
+			}
+			Set<Integer>committeeCount=new TreeSet<>();
+			for(Object[]obj:ActionDetails) {
+				committeeCount.add(Integer.parseInt(obj[7].toString()));
+			}
+			int count=0;
+			Map<Integer,Integer>committeeCountMap= new HashMap<>();
+			for(Integer i:committeeCount) {
+				committeeCountMap.put(++count, i);
+			}
+			
+			
+			
+			req.setAttribute("committeeCountMap", committeeCountMap);
+			req.setAttribute("ActionDetails", actionSubDetails);
+			
 			req.setAttribute("meetingcount",service.MeetingNo(scheduleeditdata));
 			
 			String filename=scheduleeditdata[11].toString().replace("/", "-");
@@ -3897,11 +3919,11 @@ public class CommitteeController {
 //		}
 //		return "committee/MeetingReports";
 //	}
-	
 	@RequestMapping(value="SendFormationLetter.htm",method=RequestMethod.POST)
 	public String SendFormationLetter1(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,HttpServletResponse res) throws Exception
 	{
 		String UserId=(String)ses.getAttribute("Username");
+		System.out.println("Hiiiii");
 		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
 		try
 		{
@@ -3955,6 +3977,9 @@ public class CommitteeController {
 				}
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
+			for(String s:Email) {
+				System.out.println();
+			}
 			helper.setTo(Email);	
 			helper.setSubject( committeemaindata[7] + " " +" Committee Formation Letter");
 			helper.setText( Message , true);
@@ -5578,12 +5603,14 @@ public class CommitteeController {
 								    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
 							    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
 							    		Map<Integer,String> mappmrc = new HashMap<>();
-							     		int pmrccount=0;
+							    		Map<Integer,String> mapEB = new HashMap<>();
+							    		int pmrccount=0;
 							     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
 							     			mappmrc.put(++pmrccount,obj[3].toString());
 							     		}
+							     	
 							    		int ebcount=0;
-							    		Map<Integer,String> mapEB = new HashMap<>();
+							    	
 							    		for (Object []obj:ReviewMeetingList.get(0)) {
 							    		mapEB.put(++ebcount,obj[3].toString());
 							    		}
@@ -5991,7 +6018,20 @@ public class CommitteeController {
 				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
 				String projectid= committeescheduleeditdata[9].toString();
 				String committeeid=committeescheduleeditdata[0].toString();
-
+				
+				String IsFrozen=req.getParameter("IsFrozen");
+				if(IsFrozen.equalsIgnoreCase("Y")) {
+					
+				int count=	service.MomFreezingUpdate(committeescheduleid);
+				if(count > 0) 
+				{				
+					
+					redir.addAttribute("result", "DPFM unfreezed Successfully");	
+					redir.addFlashAttribute("committeescheduleid", committeescheduleid);
+					return "redirect:/CommitteeScheduleMinutes.htm";
+				} 
+				}
+				
 				Object[] projectdetails = null;
 				
 				if(projectid!=null && Integer.parseInt(projectid)>0)
@@ -6203,9 +6243,29 @@ public class CommitteeController {
 //					req.setAttribute("actionlist",actionsdata);
 //				}
 			/*---------------------------------------------------------------------------------------------------------------*/			
+							List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
+					    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
+					    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
+				    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
+				    		Map<Integer,String> mappmrc = new HashMap<>();
+				     		int pmrccount=0;
+				     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
+				     			mappmrc.put(++pmrccount,obj[3].toString());
+				     		}
+				     		for(Map.Entry<Integer, String>entry:mappmrc.entrySet()) {
+				     			System.out.println("hiii");
+				     			System.out.println(entry.getKey()+"-------"+entry.getValue());
+				     		}
+				    		int ebcount=0;
+				    		Map<Integer,String> mapEB = new HashMap<>();
+				    		for (Object []obj:ReviewMeetingList.get(0)) {
+				    		mapEB.put(++ebcount,obj[3].toString());
+				    		}
+				    		req.setAttribute("mappmrc", mappmrc);
+					    	req.setAttribute("mapEB", mapEB);
+					 	 
+					 	 
 				String filename=committeescheduleeditdata[11].toString().replace("/", "-");
-					
-					
 				String path=req.getServletContext().getRealPath("/view/temp");
 				req.setAttribute("path",path);
 				
@@ -6853,6 +6913,9 @@ public class CommitteeController {
 			}
 		
 
+		
+		
+		
 		
 	
 		

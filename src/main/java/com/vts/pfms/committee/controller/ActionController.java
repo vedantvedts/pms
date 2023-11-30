@@ -321,6 +321,12 @@ public class ActionController {
 			}else {
 				mainDto.setActionLevel(1L);
 			}
+			//changed on 06-11
+			List<String> emp = new ArrayList<>();
+			String [] assignee = req.getParameterValues("Assignee");
+			for(String s : assignee) {
+				emp.add(s);
+			}
 			mainDto.setActionParentId(req.getParameter("ActionParentid"));
 			ActionAssignDto assign = new ActionAssignDto();
 			
@@ -336,6 +342,7 @@ public class ActionController {
 			assign.setIsActive(1);
 			assign.setMeetingDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 			assign.setPDCOrg(req.getParameter("MainPDC"));
+			assign.setMultipleAssigneeList(emp);
 			long count =service.ActionMainInsert(mainDto , assign);
 			if (count > 0) {
 				redir.addAttribute("result", "Action Added Successfully");
@@ -605,18 +612,19 @@ public class ActionController {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside ActionForward.htm "+UserId, e);
 			}
-			if(flag==null) {
+			
+			System.out.println();
+			if(!req.getParameter("projectid").equalsIgnoreCase("0")) {
 				redir.addAttribute("projectid", req.getParameter("projectid"));
 				redir.addAttribute("committeeid", req.getParameter("committeeid"));
 				redir.addAttribute("meettingid", req.getParameter("meettingid"));
 				redir.addAttribute("EmpId", EmpId);
-				return "redirect:/MeetingActionList.htm";
+				return "redirect:/MeettingAction.htm";
 			}else {
-			     return "redirect:/ActionForwardList.htm";
+			     return "redirect:/AssigneeList.htm";
 			}
 		
 		}
-	 
 	 @RequestMapping(value = "ActionForwardList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String ForwardList(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 				throws Exception {
@@ -680,6 +688,7 @@ public class ActionController {
 		 	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside SendBackSubmit.htm "+UserId);	
 			String back = req.getParameter("BACK");
+			System.out.println("back"+back);
 			long count=0;
 			try { 
 				
@@ -687,9 +696,9 @@ public class ActionController {
 	
 				if(back!=null && "Issue".equalsIgnoreCase(back)) {
 					if (count > 0) {
-						redir.addAttribute("result", "Issue Sent Back Successfully");
+						redir.addAttribute("result", "Action Sent Back Successfully");
 					} else {
-						redir.addAttribute("resultfail", "Issue SendBack Unsuccessful");
+						redir.addAttribute("resultfail", "Action SendBack Unsuccessful");
 					}
 					return "redirect:/ActionForwardList.htm";
 				}else {
@@ -886,7 +895,29 @@ public class ActionController {
 			String LabCode = (String)ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside CommitteeActionSubmit.htm "+UserId);		
 			try {
-			
+				String multipleAssignee=req.getParameter("multipleAssignee");
+				System.out.println("multipleAssignee"+multipleAssignee);
+				//06-11
+				List<Object[]> allEmployees = new ArrayList<>();
+				if(multipleAssignee!=null) {
+				allEmployees=service.getAllEmployees(multipleAssignee);
+				}
+				List<String>emp=new ArrayList<>();
+				
+				if(allEmployees.size()>0)
+				{
+					emp=allEmployees.stream().map(i -> i[0].toString()).collect(Collectors.toList());
+				}
+				System.out.println(emp);
+				String[]a=req.getParameterValues("Assignee");
+				if(a!=null) {
+					for(String s:a) {
+						if(!emp.contains(s)) {
+							emp.add(s);
+						}
+					}
+					
+				}
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			
 			ActionMainDto mainDto=new ActionMainDto();
@@ -930,6 +961,7 @@ public class ActionController {
 			assign.setIsActive(1);
 			assign.setPDCOrg(req.getParameter("DateCompletion"));
 			assign.setMeetingDate(req.getParameter("meetingdate"));
+			assign.setMultipleAssigneeList(emp);
 			long count =service.ActionMainInsert(mainDto,assign);
 				
 			if (count > 0) {
@@ -1512,7 +1544,12 @@ public class ActionController {
 			}else{
 				mainDto.setActionLevel(1L);
 			}
-			
+			//changed on 06-11
+			List<String>emp=new ArrayList<>();
+			String[] Assignee=req.getParameterValues("Assignee");
+			for(String s:Assignee) {
+				emp.add(s);
+			}
 			ActionAssignDto assign = new ActionAssignDto();
 			
 			assign.setActionDate(req.getParameter("DateCompletion"));
@@ -1525,6 +1562,7 @@ public class ActionController {
 			assign.setActionStatus("A");
 			assign.setCreatedBy(UserId);
 			assign.setPDCOrg(req.getParameter("DateCompletion"));
+			assign.setMultipleAssigneeList(emp);
 			long count =service.ActionMainInsert(mainDto , assign);
 	
 			if (count > 0) {
@@ -3465,21 +3503,16 @@ return json.toJson(rfaRemarkData);
           			String projectid=req.getParameter("projectid");
           			String committeeid=req.getParameter("committeeid");
           			String meettingid=req.getParameter("meettingid");
-          	
           			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
-          			
           			if(projectdetailslist.size()==0) 
           			{				
           				redir.addAttribute("resultfail", "No Project is Assigned to you.");
           				return "redirect:/MainDashBoard.htm";
           			}
-          			
           			if(committeeid==null)
           			{
           				committeeid="1";
           			}
-          			
-          		
           			if(projectid==null || projectid.equals("null"))
           			{
           				projectid=projectdetailslist.get(0)[0].toString();
@@ -3524,6 +3557,25 @@ return json.toJson(rfaRemarkData);
                   return "action/MeetingAction"; 
                }
 
-              
+              @RequestMapping(value="getEmployees.htm",method=RequestMethod.GET)
+      		public @ResponseBody String getEmployeesList(HttpServletRequest req,HttpSession ses) throws Exception {
+      			String UserId=(String)ses.getAttribute("Username");
+      			Gson json = new Gson();
+      			List<Object[]>allEmployees=new ArrayList<>();
+      			logger.info(new Date()+"Inside getEmployees.htm "+UserId);
+      			try {
+      				String flag=req.getParameter("flag");
+      				System.out.println(flag);
+      				
+      				allEmployees=service.getAllEmployees(flag); // to get All the employees either Gh,DH or PD
+      				
+      				
+      			}
+      			catch(Exception e) {
+      				e.printStackTrace();
+      			}
+      			
+      			return json.toJson(allEmployees);
+      		} 	     
 	 	
 }

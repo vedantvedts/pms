@@ -2,7 +2,9 @@ package com.vts.pfms.committee.service;
 
 import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -255,7 +257,10 @@ public interface CommitteeService {
 	public CommitteeProjectBriefingFrozen getFrozenCommitteeMOM(String committeescheduleid)throws Exception;
 	public long doMomFreezing(CommitteeProjectBriefingFrozen briefing)throws Exception;
 	public List<Object[]> getEnvisagedDemandList(String projectid)throws Exception;
-	
+	public int MomFreezingUpdate(String committeescheduleid)throws Exception;
+	public List<Object[]> getTodaysMeetings(String date)throws Exception;// to get all the scheduleid and projectid of the meeting scheduled on that day
+	public List<Object[]> actionDetailsForNonProject(String committeeId, String scheduledate) throws Exception;// 27-11 to get al action points for non project
+
 	
     
 }

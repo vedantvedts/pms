@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.math.BigDecimal"%>
+<%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" import="java.util.*"%>
 <%@page import="com.vts.pfms.model.LabMaster"%>
@@ -40,6 +41,9 @@ String seslabid=(String)session.getAttribute("labid");
 	String isprint=(String)request.getAttribute("isprint");
 	String[] no=committeescheduleeditdata[11].toString().split("/");
 	
+	List<Object[]>ActionDetails=(List<Object[]>)request.getAttribute("ActionDetails");
+	Map<Integer,Integer>committeeCountMap=(Map<Integer,Integer>)request.getAttribute("committeeCountMap");
+	
 	%>
 <style type="text/css">
 
@@ -71,7 +75,7 @@ th,td
 @page {             
           size: 790px 1120px;
           margin-top: 49px;
-          margin-left: 72px;
+          margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
           border: 1px solid black;  
@@ -152,7 +156,60 @@ th,td
  	text-align: center;
  	border: 1px solid black;
  }
- 
+ .completed{
+	color: green;
+	font-weight: 700;
+}
+
+.briefactive{
+	color: blue;
+	font-weight: 700;
+}
+
+.inprogress{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.assigned{
+	color: brown;
+	font-weight: 700;
+}
+
+.notyet{
+	color: purple;
+	font-weight: 700;
+}
+
+.notassign{
+	color:#AB0072;
+	font-weight: 700;
+}
+
+.ongoing{
+	color: #F66B0E;
+	font-weight: 700;
+}
+
+.completed{
+	color: green;
+	font-weight: 700;
+}
+
+.delay{
+	color: maroon;
+	font-weight: 700;
+}
+
+.completeddelay{
+	color:#BABD42;
+	font-weight: 700;
+}
+
+.inactive{
+	color: red;
+	font-weight: 700;
+}
 </style>
 <meta charset="ISO-8859-1">
 <title><%=committeescheduleeditdata[8]%> Minutes View</title>
@@ -694,8 +751,8 @@ th,td
 		
 	</div>
 	
- 
-		<%if( isprint.equals("N")){ %>	
+<%--  
+		<%if( isprint.equals("Y")){ %>	
 			 <div class="break"></div>	
 			<br>
 						
@@ -755,8 +812,99 @@ th,td
 	</div>
 	<br>	
 	
-	<%}%>
+	<%}%> --%>
 	
+							<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
+								<tr>
+									<th colspan="8" style="text-align: left; font-weight: 700;"><br>7.&nbsp;&nbsp;Action Points of Previous Review:&nbsp; &nbsp;</th>
+								</tr>
+							</table>	
+   				
+							<table style=" margin-left: 12px; width: 680px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<thead >
+									<tr>
+										<td colspan="6" style="border: 0px !important;">
+											<p style="font-size: 10px; text-align: center">
+											<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp;
+												<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
+												<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
+												<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
+												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
+												<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+											</p>
+										</td>									
+									</tr>
+									<tr>
+										<th class="std"  style="width: 20px;"  >SN</th>
+										<th class="std"  style="width: 300px;" >Action Point</th>
+										<th class="std"  style="width: 100px; " > PDC</th>
+										
+										<th class="std"  style="width: 180px;" >Responsibility</th>
+										<th class="std"  style="width: 70px;"  >Status<!-- (DD) --></th>			
+									</tr>
+								</thead>
+								<tbody>
+								<%if(ActionDetails.size()>0) {%>
+								<%int count=0;String key="";;
+								for(Object[]obj:ActionDetails){ %>
+								<tr>
+								<td class="std" align="center" style="padding:5px;"><%=++count %></td>
+								<td class="std" style="text-align: justify;padding:2px">
+								<%=obj[5].toString() %>
+								<br><%-- <b style="font-size: 14px;">(Action No.- <%=obj[1].toString() %>)</b> --%>
+								<%for(Map.Entry<Integer, Integer>entry:committeeCountMap.entrySet()){ 
+								if(entry.getValue()==Integer.parseInt(obj[7].toString())){
+								key=entry.getKey().toString();
+								}} %>
+								<b style="font-size: 14px;">(Action ID. - <%=committeescheduleeditdata[8].toString()+"/"+key+"/"+obj[1].toString().split("/")[3] %>)</b>
+								</td>
+								<td class="std"><%=obj[10].toString() %></td>
+								<td class="std"><%=obj[2].toString() %></td>
+								<td class="std">
+								<%if(obj[4]!= null){ %> 
+													<%	String actionstatus = obj[3].toString();
+														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+														LocalDate pdcorg = LocalDate.parse(obj[10].toString());
+														LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
+														LocalDate today = LocalDate.now();
+													%> 
+													<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+															<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+																<span class="completed">CO</span>
+															<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+																<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+															<%} %>	
+														<%}else{ %>
+															<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+																<span class="ongoing">RC</span>												
+															<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+																<span class="delay">FD</span>
+															<%}else if((pdcorg.isAfter(today) || pdcorg.isEqual(today)) && progress>0){  %>
+																<span class="ongoing">OG</span>
+															<%}else if(pdcorg.isBefore(today) && progress>0){  %>
+																<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%> </span>
+															<%}else if( progress==0) {%>
+															<span class="assigned">AA</span>
+															<%} %>									
+													<%} %>
+												<%}else { %>
+													<span class="notassign">NA</span>
+												<%} %> 
+								
+								
+								
+								</td>
+								</tr>										
+								<% }%>	
+									<%}else{ %>
+									<tr>
+									<td colspan="5" style="text-align: center;">No Data Available </td>
+									</tr>
+									<%} %>	
+								</tbody>		
+							</table>
+						
 </div>
 </body>
 </html>
