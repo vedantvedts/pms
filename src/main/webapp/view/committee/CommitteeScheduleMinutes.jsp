@@ -307,7 +307,9 @@ if(formname!=null){
 	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
 		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-		<%if(committeescheduleeditdata[22].toString().equals("N")){%>	<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /><%} %>
+		<%if(committeescheduleeditdata[22].toString().equals("N")){%>	<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
+						    <button type="submit" class="btn btn-primary btn-sm"  name="sub" value="word"  id="wordDownloadBtn" formmethod="get" formtarget="_blank" formaction="CommitteeMinutesNewWordDownload.htm"  ><i class="fa fa-file-word-o" style="font-size:17px" title="Committee Minutes New Word Download"></i></button> 
+		<%} %>
 			<%if(committeescheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
 			<%}else{ %>
 			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')" style="font-size:12px;" >UNFREEZE</button>
@@ -322,7 +324,6 @@ if(formname!=null){
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
 		<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
-		
 		<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>			
 	</form>
 	
