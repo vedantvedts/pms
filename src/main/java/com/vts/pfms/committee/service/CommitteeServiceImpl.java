@@ -75,6 +75,7 @@ import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
 import com.vts.pfms.committee.model.PfmsNotification;
+//import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
@@ -90,10 +91,11 @@ public class CommitteeServiceImpl implements CommitteeService{
 
 	@Autowired CommitteeDao dao;
 	
-	@Autowired 	private JavaMailSender javaMailSender;
+	@Autowired 	private JavaMailSender javaMailSender; 
 	
 	@Autowired	BCryptPasswordEncoder encoder;
 
+	//@Autowired CustomJavaMailSender cm;
 	FormatConverter fc=new FormatConverter();
 	private SimpleDateFormat sdf1= fc.getSqlDateAndTimeFormat();  //new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private  SimpleDateFormat sdf= fc.getRegularDateFormat();     //new SimpleDateFormat("dd-MM-yyyy");
@@ -1653,9 +1655,9 @@ public class CommitteeServiceImpl implements CommitteeService{
 			ArrayList<String> emails= new ArrayList<String>();
 			for(Object[] obj : Email)
 			{
-				if(obj[0]!=null) {
+			if(obj[0]!=null) {
 					
-					emails.add(obj[0].toString());
+				emails.add(obj[0].toString());
 				}
 			}
 			     
@@ -1664,32 +1666,37 @@ public class CommitteeServiceImpl implements CommitteeService{
 				Object[] RtmddoEmail=dao.RtmddoEmail();
 					if(RtmddoEmail!=null) {
 						emails.add(RtmddoEmail[0].toString());
-					}
+				}
 			}
-				
+			
 				
 			String [] ToEmail = emails.toArray(new String[emails.size()]);
 			
 			if (ToEmail.length>0) 
 			{
-				MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+				String subject=req.getParameter("committeeshortname") + " Meeting OTP ";
+				String message=String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone.";
+//				for(String email:ToEmail) {
+//					cm.sendScheduledEmailAsync(email, subject, message, true);
+//				}
+			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 				helper.setTo(ToEmail);
-				helper.setSubject(req.getParameter("committeeshortname") + " Meeting OTP ");
-				helper.setText(String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone." , true);				
-				try
-				{
-					javaMailSender.send(msg);
-				}catch (Exception e) {
-					logger.error(new Date() +" Inside SERVICE KickOffMeeting ", e);
+			helper.setSubject(req.getParameter("committeeshortname") + " Meeting OTP ");
+			helper.setText(String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone." , true);				
+			try
+			{
+				javaMailSender.send(msg);
+			}catch (Exception e) {
+				logger.error(new Date() +" Inside SERVICE KickOffMeeting ", e);
 				}
-				dao.UpdateOtp(committeeschedule);
+			dao.UpdateOtp(committeeschedule);
 				redir.addAttribute("result", " OTP Sent to Successfully !! ");
 				redir.addFlashAttribute("otp", String.valueOf(otp));
-			}else
+		}else
 			{
 				redir.addAttribute("resultfail", "Email-ids' Not Found");
-			}
- 
+		}
+
 		 }
 
 		 else {
