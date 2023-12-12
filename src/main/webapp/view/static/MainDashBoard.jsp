@@ -5,6 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.vts.pfms.master.dto.ProjectSanctionDetailsMaster"%>
 <%@page import="com.vts.pfms.IndianRupeeFormat" %>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
 
 <!DOCTYPE html>
 <html>
@@ -25,6 +26,78 @@
 
 
 <style type="text/css">
+   .modalcontainer {
+      position: fixed;
+      bottom: 45%;
+      right: 20px;
+      width: 300px;
+      max-width: 80%;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+     display: none;
+    }
+
+
+    .modal-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      max-width: 80%;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      display: none;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+     
+    }
+
+    .modalheader {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding:8px;
+      background-color: #FFC436;
+      color: #fff;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .modalcontent {
+    
+      padding: 10px 10px 10px 10px;
+    }
+
+    .modalfooter {
+      padding: 10px;
+      text-align: right;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .modal-close {
+      cursor: pointer;
+      color: red;
+    }
+
+    /* Style for the button */
+    .open-modal-button {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px;
+      border: none;
+      border-radius: 5px;
+      font-weight:bold;
+      cursor: pointer;
+      z-index: 1001; /* Make sure the button is above the modal */
+    }
 
  	#wrapper{
 		background-image: url("view/images/pfmsbg.png") !important;
@@ -506,7 +579,12 @@
 			/* background-color:#591A69 !important; */
 			background-color: #7F109B !important;			 
 	}
-	
+  #popupModal {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      transform: translate(-50%, -50%);
+    }	
 
 </style>
 
@@ -527,6 +605,12 @@ String ibasUri=(String)request.getAttribute("ibasUri");
 
   
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
+long todayMeetingCount=0;
+if(todayschedulelist.size()>0){
+	todayMeetingCount=todayschedulelist.stream().filter(i -> i[3].toString().equalsIgnoreCase(LocalDate.now().toString())).count();
+}
+ObjectMapper objectMapper = new ObjectMapper();
+String jsonArray = objectMapper.writeValueAsString(todayschedulelist);
 /* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
@@ -688,7 +772,6 @@ if(ses!=null){ %>
 										  for(Object[] obj : todayschedulelist){
 											  	if(!obj[6].toString().equalsIgnoreCase("E")){
 											  		if(obj[3].toString().equalsIgnoreCase(TodayDate)){
-											  		
 											  		%>
 																        
 												<div class="carousel-item action" id="schedule" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;overflow: hidden">
@@ -708,7 +791,7 @@ if(ses!=null){ %>
 														</ul>
 								
 												</div>
-												<%count++; }} }}%>
+												<%count++;}} }}%>
 								
 												<%if(count==0) { %>
 													<ul>
@@ -1208,7 +1291,8 @@ if(ses!=null){ %>
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Action</td>
 														
-														<%for(Object[] obj : MyTaskList){
+														<%int actionCounts=0;
+														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
 														
 														<td><button type="button" onclick="actionformtask('E','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
@@ -1217,7 +1301,7 @@ if(ses!=null){ %>
 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
-														<%}} %>
+														<% actionCounts+=Integer.parseInt(obj[3].toString());}   } %>
 														
 													</tr>
 													<tr>
@@ -1232,7 +1316,7 @@ if(ses!=null){ %>
 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
-														<%}} %>
+														<% actionCounts+=Integer.parseInt(obj[3].toString());}  } %>
 														
 													<tr>
 													
@@ -1250,7 +1334,7 @@ if(ses!=null){ %>
 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
-														<%}} %>
+														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 														
 													</tr>
 													<tr>
@@ -1265,7 +1349,7 @@ if(ses!=null){ %>
 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 													
-														<%}} %>
+														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													
 													</tr>
 													
@@ -3593,11 +3677,38 @@ if(ses!=null){ %>
 		<input type="hidden" name="labcode" id="labcode">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 	</form>
+ <button class="open-modal-button" id="modalbtn" onclick="openModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
 
+  <!-- Modal Container -->
+  <div id="myModal" class="modal-container" >
+    <div class="modalheader" style="justify-content: start;color:red;">
+    	<p style="margin-top:0.3rem; margin-bottom:0.4rem;"><b> Today's Date : &nbsp;</b><%=sdf.format(sdf1.parse( LocalDate.now().toString()))%></p>
+     <!--  <span class="modal-close"  onclick="closeModal()">&times;</span> -->
+    </div>
+    <div class="modalcontent" >
+      <p style="font-weight: 600;text-align: justify; cursor: pointer;"onclick="openModalDetails('M',<%=todayMeetingCount%>)"> <span style="text-decoration: underline">Meetings Scheduled Today</span>:&nbsp;&nbsp;<span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=todayMeetingCount %></span> </p>
+      <a <%if(actionCounts>0){ %> href="AssigneeList.htm"<%} %> style="font-weight: 600;float:left; color:black; "><span style="text-decoration: underline">Actions PDC Today</span>:
+      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=actionCounts %></span>
+      </a>
+    </div>
+    <div class="modalfooter">
+      <button class="btn" style="padding: 0px !important;font-weight: 500" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <div id="ModalDetails" class="modalcontainer">
+    <div class="modalheader">
+      <span class="modal-close"  onclick="closeModals()">&times;</span>
+    </div>
+    <div class="modalcontent"  id="modalcontents">
+    </div>
+  </div>
 
 
 
 <script type="text/javascript">
+
+
 
 function scrollProjectAttributesTop(e) 
 { 
@@ -3829,7 +3940,7 @@ $('.btn4').hide();
 	$("#mainactivitystatus").css("display","block");
 	
 	$('#dgdashboard').css("display","none");
-	
+
 }) 
 
 $('.btn2').click(function(){
@@ -3877,7 +3988,6 @@ $('.btn2').click(function(){
 	$('#projectgraph').css("display","none");
 	
 	$('#dgdashboard').css("display","none");
-	
 })
 
 $('.btn3').click(function(){
@@ -4898,6 +5008,67 @@ $( document ).ready(function() {
 	$('#projectinfo'+val).addClass('active');
 	$('#projectdetailsname'+val).addClass('active'); 
 });
+function openModalDetails(a,b){
+	var jsObjectList
+	console.log(b + "--"+ typeof b)
+	if(a==="M" && b>0){
+		jsObjectList = JSON.parse('<%= jsonArray %>');
+	}
+	console.log(jsObjectList)
+	var html="";
+	for(var i=0;i<jsObjectList.length;i++){
+		html=html+'<p style="font-weight: 600;">'+"Project:"+jsObjectList[i][8]+"; Meeting:"+jsObjectList[i][7]+"; Time:"+jsObjectList[i][4]+';</p>'
+	}
+	document.getElementById('modalcontents').innerHTML=html;
+	if(jsObjectList.length>0){
+		$('#ModalDetails').show();
+		   $( document ).ready(function() {
+	    	   setTimeout(() => { 
+	    		   closeModals()
+			}, 3000);
+	    	});
+	}
+}
+function closeModals(){
+	$('#ModalDetails').hide();
+}
+
+// Functions to open and close the modal
+function openModal() {
+/*   document.getElementById('myModal').style.display = 'block';
+  document.getElementById('modalbtn').style.display = 'none'; */
+	$('#myModal').show();
+ 	$('#modalbtn').hide();
+    setTimeout(() => { 
+		   closeModal()
+	}, 5000);
+}
+
+function closeModal() {
+/*   document.getElementById('myModal').style.display = 'none';
+ */  $('#myModal').hide();
+ 	$('#modalbtn').show();
+ /*  document.getElementById('modalbtn').style.display = 'block'; */
+}
+
+// Close the modal if the user clicks outside of it
+window.onclick = function(event) {
+  var modal = document.getElementById('myModal');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+}
+
+//clicked the modal 
+    document.addEventListener('DOMContentLoaded', function() {
+    	openModal();
+      });
+      
+    $( document ).ready(function() {
+    	   setTimeout(() => { 
+    		   closeModal()
+		}, 4500);
+    	});
 </script> 
 
 

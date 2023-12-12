@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="java.time.LocalDate"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,9 @@
 label{
 font-weight: bold;
   font-size: 13px;
+}
+.spans{
+font-weight: 600;
 }
 body{
 background-color: #f2edfa;
@@ -90,6 +94,7 @@ a:hover {
   <%
 
   List<Object[]> AssigneeList=(List<Object[]>)request.getAttribute("AssigneeList");
+  List<Object[]> AssigneemainList=(List<Object[]>)request.getAttribute("AssigneemainList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
  
@@ -162,8 +167,8 @@ a:hover {
 													</thead>
 													<tbody>
 														<%int count=1;
-														if(AssigneeList!=null&&AssigneeList.size()>0){	
-										   	for (Object[] obj :AssigneeList) {
+														if(AssigneemainList!=null&&AssigneemainList.size()>0){	
+										   	for (Object[] obj :AssigneemainList) {
 										   			   %>
 														<tr>
 															<td class="center"><%=count %></td>
@@ -177,7 +182,12 @@ a:hover {
 															<%=obj[5].toString() %>
 															<%} %>
 															</td>
-															<td><%=sdf.format(obj[4])%></td>
+															<td><span <%if(LocalDate.now().toString().equalsIgnoreCase(obj[4].toString())) {%>class="text-primary spans"<%} %>
+															<%if(LocalDate.now().isAfter(LocalDate.parse(obj[4].toString()))){ %>class="text-danger spans"<%} %>
+															<%if(LocalDate.now().isBefore(LocalDate.parse(obj[4].toString()))){ %>class="text-success spans"<%} %>
+															>
+															<%=sdf.format(obj[4])%></span>
+															</td>
 															<td><%=sdf.format(obj[3])%></td>
 															<td><%=obj[1]%>, <%=obj[2]%></td>
 															<td><%if(obj[7]!=null){%><%=obj[7] %><%}else{ %>-<%} %></td>

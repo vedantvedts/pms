@@ -41,7 +41,7 @@ p{
 @page {             
           size: portrait;
           margin-top: 49px;
-          margin-left: 72px;
+          margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
           border: 1px solid black;    
@@ -125,7 +125,7 @@ p{
 						<div style="text-align: center ; padding-right: 15px; " ><h3 style="text-decoration: underline;">Annexure - AI</h3></div>
 						<div style="text-align: center;  " class="lastpage" id="lastpage"><h2>ACTION ITEM DETAILS</h2></div>
 					
-						<table style="  margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ">
+						<table style="  margin-left:10px; font-size: 16px; border-collapse: collapse ;border: 1px solid black ;margin-right: 10px;">
 						<tbody>
 							<tr>
 								<th  class="sth" style=" max-width: 40px"> SN </th>

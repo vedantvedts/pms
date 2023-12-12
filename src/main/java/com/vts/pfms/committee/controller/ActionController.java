@@ -364,9 +364,18 @@ public class ActionController {
 		try {
 			
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();	
-		
-		req.setAttribute("AssigneeList", service.AssigneeList(EmpId));
-		
+		List<Object[]>mainAssigneeList=service.AssigneeList(EmpId);
+		List<Object[]>AssigneeListToday=new ArrayList<>();
+		List<Object[]>remainingList=new ArrayList<>();
+		List<Object[]>AssigneemainList=new ArrayList<>();
+		if(mainAssigneeList.size()>0) {
+			AssigneeListToday=mainAssigneeList.stream().filter(i -> i[4].toString().equalsIgnoreCase(LocalDate.now().toString())).collect(Collectors.toList());
+			remainingList=mainAssigneeList.stream().filter(i -> !i[4].toString().equalsIgnoreCase(LocalDate.now().toString())).collect(Collectors.toList());
+		}
+		AssigneemainList.addAll(AssigneeListToday);
+		AssigneemainList.addAll(remainingList);
+		req.setAttribute("AssigneeList", mainAssigneeList);
+		req.setAttribute("AssigneemainList", AssigneemainList);
 		}catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside AssigneeList.htm "+UserId, e);
@@ -374,7 +383,6 @@ public class ActionController {
 		return "action/AssigneeList";
 	}
 
-	
 	@RequestMapping(value = "ActionSubLaunch.htm", method = RequestMethod.POST)
 	public String ActionSubLaunch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{
@@ -3565,17 +3573,13 @@ return json.toJson(rfaRemarkData);
       			logger.info(new Date()+"Inside getEmployees.htm "+UserId);
       			try {
       				String flag=req.getParameter("flag");
-      				System.out.println(flag);
-      				
       				allEmployees=service.getAllEmployees(flag); // to get All the employees either Gh,DH or PD
-      				
-      				
       			}
       			catch(Exception e) {
       				e.printStackTrace();
       			}
-      			
       			return json.toJson(allEmployees);
       		} 	     
-	 	
+
+        
 }
