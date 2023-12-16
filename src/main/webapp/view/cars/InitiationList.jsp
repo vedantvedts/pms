@@ -75,16 +75,26 @@ th
  	text-align: left;
  	padding: 5px;
  }
+ 
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
 </style>
 </head>
 <body>
 <%
 FormatConverter fc = new FormatConverter();
 List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationList");
-
 %>
 
-<% String ses=(String)request.getParameter("result"); 
+<% String ses=(String)request.getParameter("result");
  	String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
 	%>
@@ -103,70 +113,80 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 	
 <br>
 <div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card shadow-nohover">
-					<div class="row card-header">
-			   			<div class="col-md-6">
-							<h4>Initiation List</h4>
-						</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card shadow-nohover">
+				<div class="row card-header">
+			   		<div class="col-md-6">
+						<h4>Initiation List</h4>
 					</div>
-					<div class="card-body">	
-					 	 <div class="table-responsive">
-	                         <table class="table table-bordered table-hover table-striped table-condensed "  id="myTable"> 
-	                            <thead>
-	                                 <tr>
-	                                    <th width="5%">SN</th>
-	                                    <th width="10%">Date</th>
-	                                    <th width="20%">CARSNo</th>
-	                                    <th width="10%">Funds From</th>
-	                                    <th width="35%">Title</th>
-	                                    <th width="30%">Action</th>
-	                                 </tr>
-	                            </thead>
-	                            <tbody>
-	                                 <%if(intiationList!=null && intiationList.size()>0) {
-	                                   for(Object[] obj : intiationList) {
-	                                   int slno=0;                                        %>   
-	                                   <tr>
-	                                      <td style="text-align: center;"><%=++slno %> </td>
-	                                      <td style="text-align: center;"><%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>- <%} %></td>
-	                                      <td style="text-align: center;"><%=obj[2] %> </td>
-	                                      <td style="text-align: center;">
-	                                        <%if(obj[7]!=null) {%> <%if(obj[7].toString().equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
-	                                      </td>
-	                                      <td style="text-align: center;"><%=obj[4] %> </td>
-	                                      <td style="text-align: center;">
-	                                       <form action="#">
-	                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                        <input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	  <button class="editable-click" name="sub" value="Details" formaction="CARSInitiationDetails.htm">
-												<div class="cc-rockmenu">
-													<div class="rolling">
-														<figure class="rolling_icon">
-															<img src="view/images/clipboard.png">
-														</figure>
-														<span>Details</span>
+				</div>
+				<div class="card-body">	
+					<div class="table-responsive">
+	                	<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
+	                    	<thead>
+	                        	<tr>
+	                            	<th width="5%">SN</th>
+	                                <th width="10%">Date</th>
+	                                <th width="15%">CARSNo</th>
+	                                <th width="10%">Funds From</th>
+	                                <th width="20%">Title</th>
+	                                <th width="20%">Status</th>
+	                                <th width="20%">Action</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                        	<% if(intiationList!=null && intiationList.size()>0) {
+	                               int slno=0; 
+	                               for(Object[] obj : intiationList) {%>   
+	                            	<tr>
+	                                	<td style="text-align: center;"><%=++slno %> </td>
+	                                    <td style="text-align: center;"><%if(obj[3]!=null) {%><%=fc.SqlToRegularDate(obj[3].toString()) %><%} else {%>- <%} %></td>
+	                                    <td style="text-align: center;"><%=obj[2] %> </td>
+	                                    <td style="text-align: left;">
+	                                    	<%if(obj[7]!=null) {%> <%if(obj[7].toString().equalsIgnoreCase("0")) {%>Buildup<%} else{%>Project<%} }%>
+	                                    </td>
+	                                    <td style="text-align: left;"><%=obj[4] %> </td>
+	                                    <td style="text-align: center;">
+	                                    	<form action="#">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
+	                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+								    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    			</button>
+	                                        </form>
+	                                    </td>
+	                                    <td style="text-align: center;">
+	                                        <form action="#">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
+	                                       	 	<button class="editable-click" name="sub" value="Details" formaction="CARSInitiationDetails.htm">
+													<div class="cc-rockmenu">
+														<div class="rolling">
+															<figure class="rolling_icon">
+																<img src="view/images/clipboard.png">
+															</figure>
+															<span>Details</span>
+														</div>
 													</div>
-												</div>
-											   </button>
-	                                       </form>
-	                                      </td>
-	                                   </tr>
-	                                 <%} }%>
-	                             </tbody>
-	                         </table>
-	                      </div>
-	                      <div align="center">
-	                          <form action="#" id="" method="post">
-	                        		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                        		<button  class="btn add" type="submit" name="Action" value="Add" formaction="CARSInitiationDetails.htm" formnovalidate="formnovalidate">Add CARS</button>
-	                           </form>
-	                      </div>
-				    </div>
+											    </button>
+	                                        </form>
+	                                    </td>
+	                                </tr>
+	                            <%} }%>
+	                        </tbody>
+	                    </table>
+	                </div>
+	                <div align="center">
+	                	<form action="#" id="myform" method="post">
+	                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                        <button  class="btn add" type="submit" name="Action" value="Add" formaction="CARSInitiationDetails.htm" formnovalidate="formnovalidate">Add CARS</button>
+	                 	</form>
+	              	</div>
 				</div>
 			</div>
 		</div>
+	</div>
 </div>	
 
 <script type="text/javascript">
@@ -176,8 +196,8 @@ $(document).ready(function(){
 	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
 	 "pagingType": "simple"
 	
+	});
 });
-  });
   
 </script>
 </body>
