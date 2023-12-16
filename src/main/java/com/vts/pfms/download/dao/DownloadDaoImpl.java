@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import com.vts.pfms.download.controller.TemplateAttributes;
+
 @Transactional
 @Repository
 public class DownloadDaoImpl implements DownloadDao{
@@ -64,5 +66,25 @@ public class DownloadDaoImpl implements DownloadDao{
 		query.setParameter("attachmentid", attachmentid);
 		Object[]reqAttachDownload=(Object[])query.getSingleResult();
 		return reqAttachDownload;
+	}
+	
+	@Override
+	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
+		manager.persist(ta);
+		manager.flush();
+		return ta.getAttributId();
+	}
+	
+	private static final String LABDETAILS=" SELECT LabMasterId,LabName,LabUnitCode,LabAddress,LabCity,LabPin,LabTelNo,LabFaxNo FROM lab_master WHERE labcode=:labCode";
+	
+	@Override
+	public Object[] getLabDetails(String labCode) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Query query = manager.createNativeQuery(LABDETAILS);
+		query.setParameter("labCode", labCode);
+		Object[]labDetails=null;
+		labDetails=(Object[])query.getSingleResult();
+		return labDetails;
 	}
 }

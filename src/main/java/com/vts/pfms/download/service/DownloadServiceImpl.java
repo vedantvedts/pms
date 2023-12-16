@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vts.pfms.download.controller.TemplateAttributes;
 import com.vts.pfms.download.dao.DownloadDao;
 
 @Service
@@ -32,6 +33,16 @@ public class DownloadServiceImpl implements DownloadService
 	public Object[] reqAttachDownload(String attachmentid) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.reqAttachDownload( attachmentid);
+	}
+	@Override
+	public Long TemplateAttributesAdd(TemplateAttributes ta) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.TemplateAttributesAdd(ta);
+	}
+	@Override
+	public Object[] getLabDetails(String labCode) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.getLabDetails(labCode);
 	}
 	
 }
