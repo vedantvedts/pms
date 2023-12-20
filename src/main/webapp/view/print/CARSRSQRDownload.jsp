@@ -134,7 +134,6 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 
 #tabledata{
  margin-left : 10px;
- margin-right : 10px;
  border-collapse : collapse;
  border : 1px solid black;
  width : 98.5%;

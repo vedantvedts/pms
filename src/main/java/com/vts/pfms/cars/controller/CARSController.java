@@ -2,36 +2,48 @@ package com.vts.pfms.cars.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
+import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
@@ -57,6 +69,12 @@ public class CARSController {
 	
 	@Autowired
 	ProjectService projectservice;
+	
+	@Value("${ApplicationFilesDrive}")
+	private String LabLogoPath;
+	
+	@Autowired
+	Environment env;
 	
 	@RequestMapping(value="CARSInitiationList.htm")
 	public String carsInitiationList(HttpServletRequest req, HttpSession ses) throws Exception{
@@ -85,16 +103,36 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			if(carsInitiationId!=null && carsInitiationId!="0") {
 				long carsiniid = Long.parseLong(carsInitiationId);
-				req.setAttribute("CARSInitiationData", service.getCARSInitiationById(carsiniid));
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("RSQRMajorReqr", service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
+				req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(carsInitiation.getEmpId()+"",Logintype,LabCode));
+				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
+				req.setAttribute("ApprovalEmpData", service.carsTransApprovalData(carsInitiationId));
+				req.setAttribute("CARSRSQRRemarksHistory", service.carsRSQRRemarksHistory(carsInitiationId));
+				req.setAttribute("GDEmpIds", service.getEmpGDEmpId(carsInitiation.getEmpId()+""));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+			}else {
+				req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,LabCode));
+				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
 			}
+			
 			req.setAttribute("carsInitiationId", carsInitiationId);
+			
+			String carsSoCId = req.getParameter("carsSoCId");
+			if(carsSoCId!=null && carsSoCId!="0") {
+				long carssocid = Long.parseLong(carsSoCId);
+				req.setAttribute("CARSSoCData", service.getCARSSoCById(carssocid));
+			}
+			
 			String TabId = req.getParameter("TabId");
 			req.setAttribute("TabId", TabId!=null?TabId:"1");
-			req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,LabCode));
+			
 			String attributes = req.getParameter("attributes");
-			req.setAttribute("attributes", attributes!=null?attributes:"Introduction");
+			req.setAttribute("attributes", req.getParameter("attributes")!=null?attributes:"Introduction");
+			
+			req.setAttribute("isApproval", req.getParameter("isApproval"));
 			return "cars/InitiationDetails";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -407,18 +445,237 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String action = req.getParameter("Action");
-			long count = service.rsqrApprovalForward(Long.parseLong(carsInitiationId),action,EmpId,UserId);
+			String remarks = req.getParameter("remarks");
+			long carsini = Long.parseLong(carsInitiationId);
 			
-			if(count!=0) {
-				redir.addAttribute("result","RSQR Approval form forwarded Successfully");
-			}else {
-				redir.addAttribute("resultfail","RSQR Approval form forward Unsuccessful");
+			CARSInitiation cars = service.getCARSInitiationById(carsini);
+			String carsStatusCode = cars.getCARSStatusCode();
+			
+			long count = service.rsqrApprovalForward(carsini,action,EmpId,UserId,remarks);
+			
+			if(action.equalsIgnoreCase("A")) {
+				if(carsStatusCode.equalsIgnoreCase("INI") || carsStatusCode.equalsIgnoreCase("RGD") || carsStatusCode.equalsIgnoreCase("RPD")) {
+					if(count!=0) {
+						redir.addAttribute("result","RSQR Approval form forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","RSQR Approval form forward Unsuccessful");
+					}
+					return "redirect:/CARSInitiationList.htm";
+				}else if(carsStatusCode.equalsIgnoreCase("FWD")) {
+					if(count!=0) {
+						redir.addAttribute("result","RSQR Approval form Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","RSQR Approval form Approve Unsuccessful");
+					}
+					return "redirect:/CARSRSQRApprovals.htm";
+				}
 			}
-			return "redirect:/CARSInitiationList.htm";
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(count!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"RSQR Approval form Returned Successfully":"RSQR Approval form Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"RSQR Approval form Return Unsuccessful":"RSQR Approval form Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/CARSRSQRApprovals.htm";
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside RSQRApprovalSubmit.htm "+UserId,e);
 			return "static/Error";
 		}
+	}
+
+	@RequestMapping(value = "CARSTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
+	public String MobileNumberTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	{
+		String Username = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSTransStatus.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId").trim();
+			req.setAttribute("TransactionList", service.carsTransList(carsInitiationId)) ;				
+			return "cars/CARSTransactionStatus";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSTransStatus.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSRSQRApprovals.htm")
+	public String attndApprovals(HttpServletRequest req,HttpSession ses) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSRSQRApprovals.htm "+Username);
+		try {
+
+			String fromdate = req.getParameter("fromdate");
+			String todate = req.getParameter("todate");
+
+			LocalDate today=LocalDate.now();
+
+			if(fromdate==null) 
+			{
+				fromdate=today.withDayOfMonth(1).toString();
+				todate = today.toString();
+
+			}else
+			{
+				fromdate=fc.RegularToSqlDate(fromdate);
+				todate=fc.RegularToSqlDate(todate);
+			}
+
+			req.setAttribute("fromdate", fromdate);
+			req.setAttribute("todate", todate);
+			req.setAttribute("tab", req.getParameter("tab"));
+
+			req.setAttribute("PendingList", service.carsRSQRPendingList(EmpId));
+			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate));
+			
+			return "cars/RSQRApprovals";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSRSQRApprovals.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSRSQRApprovalDownload.htm")
+	public void carsRSQRApprovalDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSRSQRApprovalDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
+				req.setAttribute("ApprovalEmpData", service.carsTransApprovalData(carsInitiationId));
+				req.setAttribute("CARSRSQRRemarksHistory", service.carsRSQRRemarksHistory(carsInitiationId));
+			}
+			String filename="CARS-RSQR_Approval";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSRSQRApprovalDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSRSQRApprovalDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	@RequestMapping(value="CARSInvForSoODownload.htm")
+	public void carsInvForSoODownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSInvForSoODownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
+				req.setAttribute("DPandC", service.getEmpDataByLoginType("E"));
+			}
+			req.setAttribute("lablogo", getLabLogoAsBase64());
+			String filename="CARS-RSQR_Approval";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			
+			//Path for Hindi font
+			String fontPath = req.getServletContext().getRealPath("/view/pfp/NotoSansDevanagari-Regular.ttf");
+			req.setAttribute("fontPath", fontPath);
+			PdfFont hindiFont = PdfFontFactory.createFont(fontPath, PdfEncodings.IDENTITY_H, true);
+			
+			req.getRequestDispatcher("/view/print/CARSInvForSoODownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			// Hindi font converter
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider fontProvider = new DefaultFontProvider();
+			fontProvider.addFont(fontPath, PdfEncodings.IDENTITY_H);
+			converterProperties.setFontProvider(fontProvider);
+			
+//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+//			
+//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+//			
+//			pdfDocument.close();
+//			pdf1.close();	       
+//			pdfw.close();
+
+			try (PdfWriter writer = new PdfWriter(path + File.separator + filename + ".pdf");
+					PdfDocument pdfDoc = new PdfDocument(writer);
+					Document document = HtmlConverter.convertToDocument(html, pdfDoc, converterProperties)) {
+	                document.setFont(hindiFont);
+	            }
+			
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSInvForSoODownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	public String getLabLogoAsBase64() throws IOException {
+
+		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+		} catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path " + path);
+		}
+		return "/print/.jsp";
 	}
 }

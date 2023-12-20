@@ -1,3 +1,7 @@
+<%@page import="com.vts.pfms.cars.model.CARSSoC"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.cars.model.CARSRSQRDeliverables"%>
 <%@page import="com.vts.pfms.cars.model.CARSRSQRMajorRequirements"%>
 <%@page import="java.util.Arrays"%>
@@ -19,6 +23,7 @@
 <link href="${projetdetailscss}" rel="stylesheet" />
 
 <style type="text/css">
+
 .tab-pane p{
 	text-align: justify;
 	
@@ -38,10 +43,6 @@
 	background-color: #d6e0f0;
 }
 
-.modalbtn{
-font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif !important;
-font-weight: 800 !important;
-}
 .nav-link{
 	text-align: left;
 }
@@ -49,9 +50,13 @@ font-weight: 800 !important;
 	padding: 11px 15px !important;
 }
 body { 
+   font-family : "Lato", Arial, sans-serif !important;
    overflow-x: hidden;
 }
 
+input,select,table,div,label,span {
+font-family : "Lato", Arial, sans-serif !important;
+}
 .text-center{
 	text-align: left !imporatant;
 }
@@ -185,17 +190,37 @@ div {
 	text-align: left;
 	padding : 5px;
 }
+
+.trup{
+	padding:6px 10px 6px 10px ;			
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.trdown{
+	padding:0px 10px 5px 10px ;			
+	border-bottom-left-radius : 5px; 
+	border-bottom-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
 </style>
 
 </head>
 <body>
 
 <%
+
 String TabId=(String)request.getAttribute("TabId"); 
 CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData"); 
+CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData"); 
 String carsInitiationId =(String)request.getAttribute("carsInitiationId");
 carsInitiationId = carsInitiationId!=null?carsInitiationId:"0";
 List<Object[]> projectList =(List<Object[]>)request.getAttribute("ProjectList");
+
+List<Object[]> ApprovalEmpData = (List<Object[]>)request.getAttribute("ApprovalEmpData");
+List<Object[]> rsqrRemarksHistory = (List<Object[]>)request.getAttribute("CARSRSQRRemarksHistory");
 
 String attributes=(String)request.getAttribute("attributes");
 List<CARSRSQRMajorRequirements> majorReqr = (List<CARSRSQRMajorRequirements>)request.getAttribute("RSQRMajorReqr");
@@ -209,6 +234,18 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
 		                                 "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
 		                                 "Mizoram", "Nagaland", "Ladakh", "Lakshadweep", "Odisha", "Punjab", "Puducherry",
 		                                 "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal");
+
+FormatConverter fc = new FormatConverter();
+SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+SimpleDateFormat sdf = fc.getSqlDateFormat();
+SimpleDateFormat rdf = fc.getRegularDateFormat();
+
+String isApproval = (String)request.getAttribute("isApproval");
+
+Object[] emp = (Object[])request.getAttribute("EmpData");
+Object[] GDs = (Object[])request.getAttribute("GDEmpIds");
+Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
+
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -235,35 +272,44 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
        <!-- This is for Slider Headers -->
          <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
              <h3 class="category">Initiation Details <%if(carsIni!=null && carsIni.getCARSNo()!=null) {%>- <%=carsIni.getCARSNo() %> <%} %>
-               <a class="btn btn-info btn-sm  shadow-nohover back" href="CARSInitiationList.htm" style="color: white!important; float: right;">BACK</a>
+               <a class="btn btn-info btn-sm  shadow-nohover back" <%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("N"))) {%>href="CARSRSQRApprovals.htm"<%} else{%> href="CARSInitiationList.htm"<%} %> style="color: white!important; float: right;">BACK</a>
              </h3>
              <hr style=" margin: 0 !important;">
              <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
-            	<li class="nav-item" id="nav">
+            	<li class="nav-item" id="nav-ini">
              		<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
              		    <a class="nav-link active " data-toggle="tab" href="#home" id="nav" role="tab">
              		<%}else{ %>
               			 <a class="nav-link  " data-toggle="tab" href="#home" role="tab">
-               		 <%} %>  
+               		<%} %>  
                 	         INITIATION
               			 </a>
             	</li>
-            	<li class="nav-item">
+            	<li class="nav-item" id="nav-rsqr">
             	     <%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %>
               			<a class="nav-link active" data-toggle="tab" href="#rsqr" id="nav"role="tab" >
               		<%}else{ %>
               			<a class="nav-link" data-toggle="tab" href="#rsqr" role="tab" >
-               		 <%} %>
+               		<%} %>
                   		RSQR
               			</a>
             	</li>
-            	<li class="nav-item">
+            	<li class="nav-item" id="nav-rsqrapproval">
             	     <%if(TabId!=null&&TabId.equalsIgnoreCase("3")){ %>
               			<a class="nav-link active" data-toggle="tab" href="#rsqrapproval" id="nav"role="tab" >
               		<%}else{ %>
               			<a class="nav-link" data-toggle="tab" href="#rsqrapproval" role="tab" >
-               		 <%} %>
+               		<%} %>
                   		RSQR Approval
+              			</a>
+            	</li>
+            	<li class="nav-item" id="nav-soc">
+            	     <%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %>
+              			<a class="nav-link active" data-toggle="tab" href="#soc" id="nav"role="tab" >
+              		<%}else{ %>
+              			<a class="nav-link" data-toggle="tab" href="#soc" role="tab" >
+               		<%} %>
+                  		SoC
               			</a>
             	</li>
               </ul>
@@ -303,7 +349,7 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
                     		 <div class="row details" >
                     		 	<div class="column b" style="width: 50%;border-top-left-radius: 5px;">
                             		<label class="control-label">Justification</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="justification" id="justification" maxlength="100" style="font-size: 15px;"
+                              		<input  class="form-control form-control" type="text" name="justification" id="justification" maxlength="1000" style="font-size: 15px;"
                               		 value="<%if(carsIni!=null && carsIni.getJustification()!=null){ %><%=carsIni.getJustification()%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 30.5%;border-top-left-radius: 5px;">
@@ -406,9 +452,9 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
                			<div align="center">
 							<%if(carsIni!=null){ %>
 							    <input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
-								<button type="submit" class="btn btn-sm btn-warning edit" onclick="return confirm('Are you sure to submit?')" >UPDATE</button>
+								<button type="submit" class="btn btn-sm btn-warning edit btn-cars" onclick="return confirm('Are you sure to submit?')" >UPDATE</button>
 							<%}else{ %>
-								<button type="submit" class="btn btn-sm btn-success submit" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
+								<button type="submit" class="btn btn-sm btn-success submit btn-cars" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
 							<%} %>
 						</div>
                		 <%if(carsIni!=null) {%>
@@ -416,10 +462,16 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
                		 <%}else {%>
                		  </form>
                		 <%} %>
-               		<div class="navigation_btn"  style="text-align: right;">
-            			<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSInitiationList.htm" style="color: white!important">Back</a>
+               		<div style="display: flex;justify-content: space-between;">
+               			<div></div>
+               			<div style="text-align: center;">
+						</div>
+               			<div class="navigation_btn"  style="text-align: right;">
+            				<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSInitiationList.htm" style="color: white!important">Back</a>
 						<button class="btn btn-info btn-sm next">Next</button>
 					</div>
+               		</div> 
+               		
                	<%if(TabId==null){ %> 
          			</div>
          		<%}else{ %>
@@ -591,8 +643,8 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<span id="Editorspan">
 														    <%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%> 
-															<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button></span>
-															<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2" onclick="return confirm('Are you sure you want to submit?')">UPDATE</button></span>
+															<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-cars" onclick="return confirm('Are you sure to submit?')">SUBMIT</button></span>
+															<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-cars" onclick="return confirm('Are you sure submit?')">UPDATE</button></span>
 															<%} %>
 														</span>
 													</div>
@@ -671,9 +723,9 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
 										<div align="center" style="margin-top: 15px;">
 											<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 												<%if(majorReqr!=null && majorReqr.size()>0) {%>
-													<button type="submit" class="btn btn-sm btn-warning edit mt-2" name="submit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
+													<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-cars" name="submit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
 												<%} else{%> 
-													<button type="submit" class="btn btn-sm submit" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+													<button type="submit" class="btn btn-sm submit" name="submit btn-cars" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 												<%} %>
 												<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
 												<input type="hidden" id="attributes" name="attributes" value="Major Requirements">
@@ -738,9 +790,9 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
 										<div align="center" style="margin-top: 15px;">
 											<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 												<%if(deliverables!=null && deliverables.size()>0) {%>
-													<button type="submit" class="btn btn-sm btn-warning edit mt-2" name="submit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
+													<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-cars" name="submit" onclick="return confirm('Are you sure to submit?')">UPDATE</button>
 												<%} else{%> 
-													<button type="submit" class="btn btn-sm submit" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+													<button type="submit" class="btn btn-sm submit btn-cars" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
 												<%} %>
 												<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
 												<input type="hidden" id="attributes" name="attributes" value="Deliverables">
@@ -788,7 +840,11 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
                					<div class="card-body mt-2 ml-4">
                						<form action="">
                							<div class="mt-2" align="center">
-               								<h5 style="font-weight: bold;margin-top: 1.5rem;">RSQR Approval</h5>
+               								<h5 style="font-weight: bold;margin-top: 1.5rem;">RSQR Approval
+               									&emsp;<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 				<i class="fa fa-download" aria-hidden="true"></i>
+												</button>
+											</h5>
                							</div>
                							<table id="rsqrapprovaltable">
                								<tr>
@@ -803,7 +859,7 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
                									<td style="width: 40%;">Name of the address of the Academic Institution</td>
                									<td style="width: 53%;color: blue;">
                										<div style="width : 80% !important">
-               										<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
+               											<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
                										</div>
                									</td>
                								</tr>
@@ -824,33 +880,163 @@ List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra 
 						    				</tr>
 						    				<tr>
 						    					<td colspan="3" style="width: 100%;font-size: 14px;">
-						    						&emsp;<input type="checkbox"  class="TCBox" >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
+						    						&emsp;<input type="checkbox"  class="TCBox" <%if(carsIni!=null && !rsqrforward.contains(carsIni.getCARSStatusCode())) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 						    					</td>
 						    				</tr>
                							</table>
-               							<div class="row mt-4 mb-4">
+               							
+               							<br>
+               							
+               							<div style="display: flex;justify-content: space-between;width: 98%;">
+               							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
+               							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
+												<label style="text-transform: capitalize;margin-top: 15px !important;">
+													<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+												</label><br>
+												<label style="text-transform: capitalize;">
+													<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+												</label><br>
+												<label style="font-size: 12px;">
+													Date&nbsp;:&nbsp;<%if(carsIni.getInitiationDate()!=null) {%> <%=fc.SqlToRegularDate(carsIni.getInitiationDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
+												</label>
+               							    </div>
+               								
+               								 <div style="width: 49%;text-align: right;margin-right: 10px;line-height: 10px;">
+               								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
+				               					<%for(Object[] apprInfo : ApprovalEmpData){ %>
+				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<br>
+				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+				   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				   			    				<%break;}} %>  
+				            			 	</div>	
+										
+										</div>
+               							
+               							<div class="row mt-2">
+											<%if(rsqrRemarksHistory.size()>0){ %>
+												<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+													<%if(rsqrRemarksHistory.size()>0){ %>
+														<table style="margin: 3px;padding: 0px">
+															<tr>
+																<td style="border:none;padding: 0px">
+																<h6 style="text-decoration: underline;">Remarks :</h6> 
+																</td>											
+															</tr>
+															<%for(Object[] obj : rsqrRemarksHistory){%>
+															<tr>
+																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																	<%=obj[3]%>&nbsp; :
+																	<span style="border:none; color: blue;">	<%=obj[1] %></span>
+																</td>
+															</tr>
+															<%} %>
+														</table>
+													<%} %>
+												</div>
+											<%} %>
+					   					</div>
+               							
+               							<div class="row mt-2 mb-4">
 											<div class="col-md-12" align="center">
 												<%if(carsIni!=null && rsqrforward.contains(carsIni.getCARSStatusCode())) {%>
+													<div class="ml-2" align="left">
+						   								<b >Remarks :</b><br>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+					         						</div>
 													<button type="submit" class="btn btn-sm submit" id="fwd-btn" name="Action" formaction="RSQRApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" disabled="disabled">Forward</button>
-													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												<%} %>
+												<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
+													<div class="ml-2" align="left">
+						   								<b >Remarks :</b><br>
+						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
+					         						</div>
+													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+							    						Approve	
+						      						</button>
+						      						
+						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
+							   	 						Not Approve	
+						      						</button>
+						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+							 							Return
+													</button>
 												<%} %>
 											</div>
                    						</div>
+                   						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                   						<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
                						</form>
                					</div>
                				</div>
                			</div>
                			<%} else{%>
-               			<div style="display: flex;justify-content: center; align-items: center;">
+               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
                				<h4 style="font-weight: bold;color: red;">Please fill the Initiation and RSQR Details..!</h4>
                			</div>
                			<%} %>
-               		<div class="navigation_btn"  style="text-align: right;">
-            			<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
-						<button class="btn btn-info btn-sm next">Next</button>
-					</div>
+               			
+               			<div style="display: flex;justify-content: space-between;">
+               				<div></div>
+               				<div>
+               					<%if(carsIni!=null && isApproval==null) {%>
+               					<div class="row"  >
+		 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For RSQR Approval</b></div>
+		 	    				</div>
+		 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+	              					<table align="center"  >
+	               						<tr>
+	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+	                							Initiater -  <%=emp[1] %>
+	                						</td>
+	                		
+                        					<td rowspan="2">
+	                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+	                						</td>
+	                						
+	                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+	                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
+	                								GD - <%if(GDs!=null) {%><%=GDs[2] %><%} else{%>GD<%} %>
+	                							<%} else{%>
+	                								PD - <%if(PDs!=null) {%><%=PDs[2] %><%} else{%>PD<%} %>
+	                							<%} %>
+	                	    				</td>
+	               						</tr> 	
+	               	    			</table>			             
+			 					</div>
+			 					<%} %>
+               				</div>
+               				<div class="navigation_btn"  style="text-align: right;">
+            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+								<button class="btn btn-info btn-sm next">Next</button>
+							</div>
+               			</div>
+               			
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("3")){ %> 
+         			</div>
+         		<%}else{ %>
+              		</div>
+               	<%} %>
+               	
+               	<!-- *********** Statement of Case (SoC) ***********      --> 
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %> 
+         			<div class="tab-pane active" id="soc" role="tabpanel">
+         		<%}else{ %>
+              		<div class="tab-pane" id="soc" role="tabpanel">
+              			<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
+              				
+              			<%} else{%>
+              			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
+               				<h4 style="font-weight: bold;color: red;">This window will open after RSQR Approval..!</h4>
+               			</div>
+              			<%} %>
+              			
+              			<div class="navigation_btn"  style="text-align: right;">
+            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+							<button class="btn btn-info btn-sm next">Next</button>
+						</div>
+               	<%} %>
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("4")){ %> 
          			</div>
          		<%}else{ %>
               		</div>
@@ -1216,9 +1402,43 @@ $(document).ready(function(){
         	  $('#fwd-btn').prop('disabled',true);
         }
     });
+    
+    <%if((carsIni!=null && rsqrforward.contains(carsIni.getCARSStatusCode())) || carsIni==null) {%>
+    $('.btn-cars').prop('disabled',false);
+    <%} else{%>
+    $('.btn-cars').prop('disabled',true);
+    <%} %>
+    
+    <%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("N"))) {%>
+       $('.navigation_btn').hide();
+       $('#nav-ini').hide();
+       $('#nav-rsqr').hide();
+       $('#nav-soc').hide();
+    <%} %>
 })
 
 
+</script>
+
+<script type="text/javascript">
+function validateTextBox() {
+    if (document.getElementById("remarksarea").value.trim() != "") {
+    	return confirm('Are You Sure To Return?');
+    	
+    } else {
+        alert("Please enter Remarks to Return");
+        return false;
+    }
+}
+function disapprove() {
+    if (document.getElementById("remarksarea").value.trim() != "") {
+    	return confirm('Are You Sure To Disappove?');
+    	
+    } else {
+        alert("Please enter Remarks to Disapprove");
+        return false;
+    }
+}
 </script>
 </body>
 </html>
