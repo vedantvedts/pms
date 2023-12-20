@@ -1291,10 +1291,9 @@ if(ses!=null){ %>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
 													</tr>
 				
+				
 													<tr>
 														<td  style="padding : 5px 0px 5px 0px;text-align: left">Action</td>
-											
-														
 														<%int actionCounts=0;
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
