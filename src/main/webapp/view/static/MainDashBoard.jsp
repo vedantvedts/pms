@@ -1,3 +1,4 @@
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page import="java.time.LocalDate"%>
@@ -605,12 +606,14 @@ String ibasUri=(String)request.getAttribute("ibasUri");
 
   
 List<Object[]> todayschedulelist=(List<Object[]>)request.getAttribute("todayschedulelist");
+List<Object[]> todaysMeetings= new ArrayList<>();
 long todayMeetingCount=0;
 if(todayschedulelist.size()>0){
 	todayMeetingCount=todayschedulelist.stream().filter(i -> i[3].toString().equalsIgnoreCase(LocalDate.now().toString())).count();
+	todaysMeetings=todayschedulelist.stream().filter(i -> i[3].toString().equalsIgnoreCase(LocalDate.now().toString())).collect(Collectors.toList());
 }
 ObjectMapper objectMapper = new ObjectMapper();
-String jsonArray = objectMapper.writeValueAsString(todayschedulelist);
+String jsonArray = objectMapper.writeValueAsString(todaysMeetings);
 /* List<Object[]> todayactionlist=(List<Object[]>)request.getAttribute("todayactionlist"); */
 List<Object[]>  notice=(List<Object[]>)request.getAttribute("dashbordNotice");
 List<Object[]> actionscount=(List<Object[]>)request.getAttribute("actionscount");
@@ -1281,7 +1284,7 @@ if(ses!=null){ %>
 										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
 													<tr>
 														<td style="padding : 5px 15px 5px 15px;"></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">Missed PDC</span></td>
+													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">All PDC</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">In Progress</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Today PDC</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
@@ -1295,7 +1298,7 @@ if(ses!=null){ %>
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
 														
-														<td><button type="button" onclick="actionformtask('E','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" onclick="actionformtask('T','N')"  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
@@ -1328,7 +1331,7 @@ if(ses!=null){ %>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
 														
-														<td><button type="button" onclick="actionformtask('E','A')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" onclick="actionformtask('T','A')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
@@ -5015,6 +5018,10 @@ function openModalDetails(a,b){
 		jsObjectList = JSON.parse('<%= jsonArray %>');
 	}
 	console.log(jsObjectList)
+	const dateFromTimestamp = new Date(1703097000000);
+	console.log(dateFromTimestamp.getTime()+"-----")
+		console.log(new Date().getTime()+"--ghj---")
+
 	var html="";
 	for(var i=0;i<jsObjectList.length;i++){
 		html=html+'<p style="font-weight: 600;">'+"Project:"+jsObjectList[i][8]+"; Meeting:"+jsObjectList[i][7]+"; Time:"+jsObjectList[i][4]+';</p>'
