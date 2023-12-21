@@ -12,6 +12,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+    function exportHTML(){
+       var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+            "xmlns='http://www.w3.org/TR/REC-html40'>"+
+            "<head><meta charset='utf-8'><title>Export HTML to Word Document with JavaScript</title></head><body>";
+       var footer = "</body></html>";
+       var sourceHTML = header+document.getElementById("source-html").innerHTML+footer;
+       
+       var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+       var fileDownload = document.createElement("a");
+       document.body.appendChild(fileDownload);
+       fileDownload.href = source;
+       fileDownload.download = 'System Requirement.doc';
+       fileDownload.click();
+       document.body.removeChild(fileDownload);
+    }
+</script>
 <meta charset="ISO-8859-1">
 <title>Requirement Document</title>
 <%
@@ -112,15 +130,16 @@ td{
  }
 
  .border-black{
- border:1px solid black;
- border-collapse: collapse;
+ border:1px solid black;border-collapse: collapse;
  }
 </style>
 </head>
 <body>
+<div class="source-html-outer">
+    <div id="source-html">
 	<div align="center"></div>
 	<div style="text-align: center; margin-top: 75px;">
-		<h1 style="font-size: 30px !important;" class="heading-color">SYSTEM REQUIREMENTS</h1>
+		<h1 style="font-size: 30px !important;" class="heading-color" >SYSTEM REQUIREMENTS</h1>
 		<h2 style="font-size: 20px;">For</h2>
 		<h2 style="">
 			Project:
@@ -135,33 +154,40 @@ td{
 		<div align="center" style="margin-top: 150px;">
 		<h3 style="color: #145374 !important;">
 		<img class="logo"style="width: 130px; height: 130px; margin-bottom: 5px"
-		<%if (lablogo != null) {%> src="data:image/*;base64,<%=lablogo%>"alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
+		<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>"alt="Configuration" <%} else {%> alt="File Not Found" <%}%>>
+		
 		</h3>
 		</div>
 		<br>
 		<br>
+		<br><br><br>
 		<div align="center">
 			<h3 style="font-size:20px;">
 				<%
 				if (LabList[1] != null) {
 				%><%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+		
 				<%
 				} else {
 				%>-<%
 				}
 				%>
 			</h3>
+		<h4>Government of India, Ministry of Defence<br>Defence Research & Development Organization	</h4>
+			
 		</div>
-		<div align="center">
-			<h3 style="font-size:20px;">
+		
+			<h4>
 				<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
 				<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
 				<%}else{ %>
 				-
 				<%} %>
-			</h3>
-		</div>
+			</h4>
+		
 	</div>
+	<br>
+	<br><br><br>
 	<%if(ReqIntro!=null) {%>
 		<div style="page-break-before:always"></div> 
 		<div style="text-align: center;">
@@ -189,34 +215,35 @@ td{
 		<%}} %>
 		
 	<%if(!RequirementList.isEmpty()){ %>	
-	<div style="page-break-before:always"></div> 
+	<div style="page-break-before:always;"></div> 
+	<div>
 	<div align="center" ><h1 style="font-size:20px !important;color: ;" class="heading-color"><br><%=++maincount %>.&nbsp;&nbsp;System Requirements</h1><hr style="width:80%;"></div>
 	<%
 	if(!RequirementList.isEmpty()){
 		int reqcount=0;
 	for(Object[]obj:RequirementList){ %>
 	<div style="margin-left:20px;margin-top:15px;font-weight: 600"><span><%="2."+(++reqcount)%>&nbsp;&nbsp;Req ID &nbsp;::&nbsp;<%=obj[1].toString() %></span></div>
-	<table class="border-black" style="width:650px;margin-left:20px;margin-top:10px;margin-bottom:5px;">
+	<table class="border-black" style="width:650px;margin-top:10px;margin-bottom:5px;">
 	<thead>
 	<tr>
-	<th  class="border-black" style="width:20px;padding:5px;">SN</th><th class="border-black" style="width:130px;padding:5px;text-align: center">Attribute</th><th class="border-black"style="padding:5px;">Content</th>
+	<th  class="border-black" style="width:20px;padding:5px; border:1px solid black;border-collapse: collapse;">SN</th><th class="border-black" style="width:130px;padding:5px;text-align: center; border:1px solid black;border-collapse: collapse;">Attribute</th><th class="border-black"style="padding:5px; border:1px solid black;border-collapse: collapse;">Content</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">1</td>
-	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;">ID</td>
-	<td class="border-black" style="padding:5px;text-align:left;"><%=obj[1].toString() %></td>
+	<td class="border-black" style="padding:5px;text-align:center; border:1px solid black;border-collapse: collapse;">1</td>
+	<td class="border-black" style="padding:5px;text-align:left; border:1px solid black;border-collapse: collapse;font-weight:600;">ID</td>
+	<td class="border-black" style="padding:5px;text-align:left; border:1px solid black;border-collapse: collapse;"><%=obj[1].toString() %></td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">2</td>
-	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;">Name</td>
-	<td class="border-black" style="padding:5px;text-align:left;"><%=obj[3].toString() %></td>
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">2</td>
+	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;border:1px solid black;border-collapse: collapse;">Name</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;"><%=obj[3].toString() %></td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">3</td>
-	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;">Type</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">3</td>
+	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;border:1px solid black;border-collapse: collapse;">Type</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[6]!=null) {%>
 		<%if(obj[6].toString().equalsIgnoreCase("D")) {%>Desirable<%} %>
 		<%if(obj[6].toString().equalsIgnoreCase("E")) {%>Essential<%} %>
@@ -224,9 +251,9 @@ td{
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">4</td>
-	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;">Category</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">4</td>
+	<td class="border-black" style="padding:5px;text-align:left;font-weight:600;border:1px solid black;border-collapse: collapse;">Category</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[8]!=null) {%>
 	<%if(obj[8].toString().equalsIgnoreCase("P")) {%>Performance<%} %>
 	<%if(obj[8].toString().equalsIgnoreCase("E")) {%>Environmental<%} %>
@@ -235,9 +262,9 @@ td{
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">5</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Linked Requirements</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">5</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Linked Requirements</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[10]!=null && !obj[10].toString().equalsIgnoreCase("")) {
 	int j=0;	
 	String linkedReq=obj[10].toString();
@@ -253,9 +280,9 @@ td{
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">6</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Priority</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">6</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Priority</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[8]!=null) {%>
 	<%if(obj[5].toString().equalsIgnoreCase("L")){%>Low<%} %>
 	<%if(obj[5].toString().equalsIgnoreCase("H")){%>High<%} %>
@@ -264,41 +291,41 @@ td{
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">7</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Description</td>
-	<td class="border-black" style="padding:5px;text-align:justify;">
+	<td class="border-black" style="border:1px solid black;border-collapse: collapse;padding:5px;text-align:center;">7</td>
+	<td class="border-black" style="border:1px solid black;border-collapse: collapse;padding:5px;text-align:left;">Description</td>
+	<td class="border-black" style="padding:5px;text-align:justify;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[4]!=null){ %>
 	<%=obj[4].toString() %>
 	<%}else{ %>-<%} %>
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">8</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Constraints</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">8</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Constraints</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[9]!=null){ %>
 	<%=obj[9].toString() %>
 	<%}else{ %>-<%} %>
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">9</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Method of Testing</td>
-	<td class="border-black" style="padding:5px;text-align:left;">&nbsp;&nbsp;-&nbsp;&nbsp;</td>
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">9</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Method of Testing</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">&nbsp;&nbsp;-&nbsp;&nbsp;</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">10</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Remarks</td>
-	<td class="border-black" style="padding:5px;text-align:left;">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">10</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Remarks</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">
 	<%if(obj[7]!=null){ %>
 	<%=obj[7].toString() %>
 	<%}else{ %>-<%} %>
 	</td>
 	</tr>
 	<tr>
-	<td class="border-black" style="padding:5px;text-align:center;">11</td>
-	<td class="border-black" style="padding:5px;text-align:left;">Linked Documents</td>
-	<td class="border-black" style="padding:5px;text-align:left; ">
+	<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">11</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse;">Linked Documents</td>
+	<td class="border-black" style="padding:5px;text-align:left;border:1px solid black;border-collapse: collapse; ">
 	<%if(obj[11]!=null && !obj[11].toString().equalsIgnoreCase("")){
 	 int number=0;
 	 String linkedDoc=obj[11].toString();
@@ -353,10 +380,10 @@ td{
     <table class="border-black" style="width:550px;margin-left:50px;margin-top:10px;margin-bottom:5px;">
 	<thead>
 	<tr>
-	<th class="border-black" style="width:20px;padding:5px;">SN</th>
-	<th class="border-black" style="width:130px;padding:5px;text-align: center">ReqID</th>
-	<th class="border-black" style="width:180px;padding:5px;text-align: center">QR Para No</th>
-	<th class="border-black" style="width:150px;">Remarks</th> 
+	<th class="border-black" style="width:20px;padding:5px;border:1px solid black;border-collapse: collapse;">SN</th>
+	<th class="border-black" style="width:130px;padding:5px;text-align: center;border:1px solid black;border-collapse: collapse;">ReqID</th>
+	<th class="border-black" style="width:180px;padding:5px;text-align: center;border:1px solid black;border-collapse: collapse;">QR Para No</th>
+	<th class="border-black" style="width:150px;border:1px solid black;border-collapse: collapse;">Remarks</th> 
 	<!-- <th class="border-black"style="padding:5px;">Remarks</th> -->
 	</tr>
 	</thead>
@@ -364,9 +391,9 @@ td{
 		<%int count=0;
 		for(Object[]obj:RequirementList){%>
 		<tr>
-		<td class="border-black" style="padding:5px;text-align:center;"><%=++count %></td>
-		<td class="border-black" style="padding:5px;text-align:center;"><%=obj[1].toString() %></td>
-		<td class="border-black" style="padding:5px;text-align:center: ;">
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;"><%=++count %></td>
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;"><%=obj[1].toString() %></td>
+		<td class="" style="padding:5px;text-align:center; border:1px solid black; border-collapse: collapse;">
 		<%if(obj[12]!=null && !ParaDetails.isEmpty()&&obj[12].toString().length()>0) {
 		int coutPara=0;
 		String linkedPara[]=obj[12].toString().split(",");
@@ -379,7 +406,7 @@ td{
 		<div align="center">-</div>
 		<%} %>
 		</td>
-		<td class="border-black" style="padding:5px;text-align:center: ;"><div align="center">-</div ></td>
+		<td class="border-black" style="padding:5px;text-align:center ;border:1px solid black;border-collapse: collapse;"><div align="center">-</div ></td>
 		</tr>
 		<%} %>
 	</tbody>
@@ -388,10 +415,10 @@ td{
     <table class="border-black" style="width:550px;margin-left:50px;margin-top:10px;margin-bottom:5px;">
 	<thead>
 	<tr>
-	<th  class="border-black" style="width:20px;padding:5px;">SN</th>
-	<th class="border-black" style="width:130px;padding:5px;text-align: center">QR Para No</th>
-	<th class="border-black" style="width:180px;padding:5px;text-align: center">ReqID</th>
-	 <th class="border-black"style="width:150px;">Remarks</th> 
+	<th  class="border-black" style="width:20px;padding:5px;border:1px solid black;border-collapse: collapse;">SN</th>
+	<th class="border-black" style="width:130px;padding:5px;text-align: center;border:1px solid black;border-collapse: collapse;">QR Para No</th>
+	<th class="border-black" style="width:180px;padding:5px;text-align: center;border:1px solid black;border-collapse: collapse;">ReqID</th>
+	 <th class="border-black"style="width:150px; border:1px solid black; border-collapse: collapse;">Remarks</th> 
 	</tr>
 	</thead>
 	<tbody>
@@ -400,9 +427,9 @@ td{
 	for(Object[]obj:ParaDetails){
 		int reqCount=0;%>
 		<tr>
-		<td class="border-black" style="padding:5px;text-align:center;"><%=++count1 %></td>
-		<td class="border-black" style="padding:5px;text-align:center;"><%=obj[3].toString() %></td>
-		<td class="border-black" style="padding:5px;text-align:center;">
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;"><%=++count1 %></td>
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;"><%=obj[3].toString() %></td>
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">
 		<%
 		for(Object[]obj1:RequirementList) {
 		if(obj1[12]!=null){
@@ -414,11 +441,17 @@ td{
 		<%}}}%> 
 		<%if(reqCount==0) {%>-<%} %>
 		</td>
-		<td class="border-black" style="padding:5px;text-align:center;">-</td>
+		<td class="border-black" style="padding:5px;text-align:center;border:1px solid black;border-collapse: collapse;">-</td>
 		</tr>
 	<%}%>
 	</tbody>
 	</table>
 	<%}%>
+	</div>
+	</div>
 </body>
+ <div class="content-footer" align="center">
+        <button id="btn-export" onclick="exportHTML();" style="padding:10px;"> Export to word
+            doc</button>
+    </div>
 </html>

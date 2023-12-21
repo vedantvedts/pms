@@ -590,8 +590,7 @@ keyframes blinker { 20% {
 								<div class="row">
 									<div class="col-md-5"></div>
 									<div class="col-md-2" id="addReqButton">
-										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" /> <input type="hidden"
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> <input type="hidden"
 											name="projectshortName" value="<%=projectshortName %>" /> <input
 											type="hidden" name="IntiationId" value="<%=initiationid %>" />
 										<button class="btn btn-primary btn-sm submit"

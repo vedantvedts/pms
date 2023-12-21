@@ -123,11 +123,17 @@
 					<div class="container" id="container">
 					<div class="row" style="display: inline">
 					<div class="requirementid mt-2 ml-2">
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" id="img5">&nbsp;&nbsp;Introduction</span>
+			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
+			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" id="img5">&nbsp;&nbsp;Scope</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" id="img2">&nbsp;System Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Other System Requirements</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img id="img3"alt="" src="view/images/status.png" >&nbsp;Status</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" style="margin-left:-38%;">&nbsp;&nbsp;Abbreviations</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png"  style="margin-left:-38%;">&nbsp;&nbsp; Appendices</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" id="img1">&nbsp;QR para</span> 
+				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img id="img3"alt="" src="view/images/status.png" >&nbsp;Status</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/pdf.png" id="img4">&nbsp;Requirement Document</span> 
 				<!-- 	<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirement.png">&nbsp;System Requirements</span>  -->
 					 
