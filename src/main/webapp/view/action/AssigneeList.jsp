@@ -145,6 +145,12 @@ a:hover {
 														<option value="selected">Export Selected</option>
 													</select>
 												</div>
+												<div align="right" style="height:30px;width:100%;">
+												<span class="badge">PDC COLOR CODES:</span>
+												<span class="badge badge-primary">PDC ON TODAY</span>
+												<span class="badge badge-success">UPCOMING PDC</span>
+												<span class="badge badge-danger">MISSED PDC</span>
+												 </div>
 												<table id="table" data-toggle="table" data-pagination="true"
 													data-search="true" data-show-columns="true"
 													data-show-pagination-switch="true" data-show-refresh="true"
