@@ -813,7 +813,6 @@ th,td
 	<br>	
 	
 	<%}%>
-	
 							<table style="margin-left:10px;margin-top: 0px;  width: 700px; font-size: 16px; border-collapse: collapse;">
 								<tr>
 									<th colspan="8" style="text-align: left; font-weight: 700;"><br>7.&nbsp;&nbsp;Action Points of Previous Review:&nbsp; &nbsp;</th>
