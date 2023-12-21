@@ -1299,8 +1299,8 @@ if(ses!=null){ %>
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
 														
 														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
-														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" onclick="actionformtask('T','N')"  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
@@ -1314,8 +1314,8 @@ if(ses!=null){ %>
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
 														
 														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
-														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" onclick="actionformtask('T','S')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
@@ -1332,8 +1332,8 @@ if(ses!=null){ %>
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
 														
 														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
-														<td><button type="button" onclick="document.location='ActionReports.htm'"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
-														<td><button type="button" onclick="actionformtask('T','A')"  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
+														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
 														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
