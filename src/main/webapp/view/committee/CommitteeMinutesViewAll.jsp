@@ -751,8 +751,8 @@ th,td
 		
 	</div>
 	
-<%--  
-		<%if( isprint.equals("Y")){ %>	
+  
+		<%if( isprint.equals("N")){ %>	
 			 <div class="break"></div>	
 			<br>
 						
@@ -812,15 +812,15 @@ th,td
 	</div>
 	<br>	
 	
-	<%}%> --%>
+	<%}%>
 	
-							<table style="margin-top: 0px; margin-left: 10px; width: 650px; font-size: 16px; border-collapse: collapse;">
+							<table style="margin-left:10px;margin-top: 0px;  width: 700px; font-size: 16px; border-collapse: collapse;">
 								<tr>
 									<th colspan="8" style="text-align: left; font-weight: 700;"><br>7.&nbsp;&nbsp;Action Points of Previous Review:&nbsp; &nbsp;</th>
 								</tr>
 							</table>	
    				
-							<table style=" margin-left: 12px; width: 680px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style="margin-left:10px; width: 690px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								<thead >
 									<tr>
 										<td colspan="6" style="border: 0px !important;">
@@ -831,16 +831,15 @@ th,td
 												<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp; 
 												<span class="completed">CO</span> :Completed &nbsp;&nbsp; 
 												<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-												<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
 											</p>
 										</td>									
 									</tr>
 									<tr>
 										<th class="std"  style="width: 20px;"  >SN</th>
+										<th class="std"  style="width: 100px; " > ID</th>
 										<th class="std"  style="width: 300px;" >Action Point</th>
 										<th class="std"  style="width: 100px; " > PDC</th>
-										
-										<th class="std"  style="width: 180px;" >Responsibility</th>
+										<th class="std"  style="width: 100px;" >Responsibility</th>
 										<th class="std"  style="width: 70px;"  >Status<!-- (DD) --></th>			
 									</tr>
 								</thead>
@@ -850,17 +849,18 @@ th,td
 								for(Object[]obj:ActionDetails){ %>
 								<tr>
 								<td class="std" align="center" style="padding:5px;"><%=++count %></td>
-								<td class="std" style="text-align: justify;padding:2px">
-								<%=obj[5].toString() %>
-								<br><%-- <b style="font-size: 14px;">(Action No.- <%=obj[1].toString() %>)</b> --%>
+								<td class="std" >
 								<%for(Map.Entry<Integer, Integer>entry:committeeCountMap.entrySet()){ 
 								if(entry.getValue()==Integer.parseInt(obj[7].toString())){
 								key=entry.getKey().toString();
 								}} %>
-								<b style="font-size: 14px;">(Action ID. - <%=committeescheduleeditdata[8].toString()+"/"+key+"/"+obj[1].toString().split("/")[3] %>)</b>
+								<b style="font-size: 12px;"><%=committeescheduleeditdata[8].toString()+"/"+key+"/"+obj[1].toString().split("/")[3] %></b>
 								</td>
-								<td class="std"><%=obj[10].toString() %></td>
-								<td class="std"><%=obj[2].toString() %></td>
+								<td class="std" style="text-align: justify;padding:2px">
+								<%=obj[5].toString() %>
+								</td>
+								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
+								<td class="std" style="font-size: 14px;"><%=obj[2].toString() %></td>
 								<td class="std">
 								<%if(obj[4]!= null){ %> 
 													<%	String actionstatus = obj[3].toString();
