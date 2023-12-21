@@ -188,7 +188,7 @@ h6{
 																		<td><%=sdf.format(obj[6])%></td>																		
 																		<td><%=obj[1]%>, <%=obj[2]%></td>
 																	  	<td>Ext: <%=obj[3]%>, Mob: <%=obj[4]%></td>
-																		<td style="width:8% !important; "><%if(obj[12]!=null){ %>
+																		<td style="width:8% !important; "><%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")){ %>
 															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
 															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															            <%=obj[12]%>
