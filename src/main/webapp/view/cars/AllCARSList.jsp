@@ -350,7 +350,7 @@ String TabId   = (String)request.getAttribute("TabId");
 					            		<div class="row w-98" style="margin: 10px;">
 											<div class="col-md-12" >
 											<div class="table-responsive" style="text-align: left;">
-						                		<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="" >
+						                		<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="rsqrTable" >
 													<thead style="background: #055C9D;color: white!important">
 														<tr>
 										   					<th>SN</th>
@@ -723,6 +723,15 @@ function openCalendar(carsIniId){
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip()
 });	
+
+$(document).ready(function() {
+    $('#rsqrTable').DataTable( {
+    	 "paging":   false,
+         "ordering": false,
+         "info":     false
+    } );
+} );
+
 </script>
 
 <!-- Script tag for Initiation -->

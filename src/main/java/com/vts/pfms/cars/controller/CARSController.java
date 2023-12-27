@@ -758,7 +758,7 @@ public class CARSController {
 			String TabId = req.getParameter("TabId");
 			req.setAttribute("TabId", TabId!=null?TabId:"1");
 			
-			return "cars/RSQRApprovedList";
+			return "cars/AllCARSList";
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CARSRSQRApprovedList.htm "+Username, e);

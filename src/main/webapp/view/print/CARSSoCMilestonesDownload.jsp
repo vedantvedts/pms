@@ -159,6 +159,12 @@ p,td,th
   word-wrap: break-word;
   word-break: normal ;
 }
+#timestamptable{
+ margin-left : 10px;
+ border-collapse : collapse;
+ width : 98.5%;
+}
+
 </style>
 
 </head>
@@ -171,6 +177,12 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
 <div align="center">
 	<h5 style="font-weight: bold;margin-top: 1.5rem;text-decoration: underline;">Milestone and Deliverables</h5>
 </div>
+<div style="width : 680px !important; margin-left: 10px">
+	<p style="text-indent: 21px;">The following milestones will be part of the project execution.
+	 For each milestone, a review will be held and deliverables accepted.
+	 The payment will be released as per the milestone.</p>
+</div>
+
 <div>
    	<div>
    		<%if(milestones!=null && milestones.size()>0) {%>
@@ -200,5 +212,22 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
    		<%}else {%><div style="text-align: center;">No Details Added!</div><%} %>
    	</div>
 </div>
+<br>
+      
+<table id="timestamptable">
+	<tr>
+		<td style="text-align: right;">
+			<div style="line-height: 17px;">
+    			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
+				<label style="text-transform: capitalize;">
+					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
+				</label><br>
+				<label style="text-transform: capitalize;">
+					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
+				</label><br>
+			</div>
+		</td>
+	</tr>
+</table>
 </body>
 </html>
