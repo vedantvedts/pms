@@ -154,11 +154,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
     </tr>
     <tr>
         <td style="width: 3%;text-align: center;">2.</td>
-        <td style="width: 40%;">Name of the address of the Academic Institution</td>
+        <td style="width: 40%;">Name and address of the Academic Institution</td>
         <td style="width: 53%;color: blue;">
-        	<div style="width : 80% !important">
-            	<%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
-        	</div>
+        	<%=carsIni.getRSPInstitute() %> <br>
+            <%=carsIni.getRSPAddress()+", "+carsIni.getRSPCity()+", "+carsIni.getRSPState()+" - "+carsIni.getRSPPinCode() %>.
         </td>
     </tr>
     <tr>
@@ -166,9 +165,13 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		<td style="width: 40%;" >Name of the Principal Investigator</td>
 		<td style="width: 53%;color: blue;" >
 			<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
+			<%=carsIni.getPIDesig() %> <br>
 			<%=carsIni.getPIDept() %> <br>
 			<%=carsIni.getPIMobileNo() %> <br>
 			<%=carsIni.getPIEmail() %>
+			<%if(carsIni.getPIFaxNo()!=null && !carsIni.getPIFaxNo().isEmpty()){ %>
+				<br> <%=carsIni.getPIFaxNo() %>
+			<%} %>
 		</td>
 	</tr>
 	<tr>

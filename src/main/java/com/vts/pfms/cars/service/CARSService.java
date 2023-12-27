@@ -2,11 +2,19 @@ package com.vts.pfms.cars.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
+import com.vts.pfms.cars.dto.RSQRForwardDTO;
 import com.vts.pfms.cars.model.CARSInitiation;
+import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
+import com.vts.pfms.cars.model.CARSSoCMilestones;
 
 public interface CARSService {
 
@@ -23,18 +31,30 @@ public interface CARSService {
 	public int removeCARSRSQRMajorReqrDetails(long carsInitiationId) throws Exception;
 	public long carsRSQRDeliverableDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
 	public int removeCARSRSQRDeliverableDetails(long carsInitiationId) throws Exception;
-	public long rsqrApprovalForward(long carsinitiationid,String action,String EmpId,String UserId,String remarks) throws Exception;
+	public long rsqrApprovalForward(RSQRForwardDTO dto,HttpServletRequest req, HttpServletResponse res) throws Exception;
 	public Object[] getEmpGDEmpId(String empId) throws Exception;
 	public Object[] getEmpPDEmpId(String projectId) throws Exception;
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception;
-	public List<Object[]> carsTransList(String carsInitiationId) throws Exception;
+	public List<Object[]> carsRSQRTransList(String carsInitiationId) throws Exception;
 	public List<Object[]> carsTransApprovalData(String carsInitiationId) throws Exception;
 	public List<Object[]> carsRSQRRemarksHistory(String carsInitiationId) throws Exception;
 	public List<Object[]> carsRSQRPendingList(String empId) throws Exception;
-	public List<Object[]> carsRSQRApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> carsRSQRApprovedList(String empId, String FromDate, String ToDate, String type) throws Exception;
 	public Object[] getEmpDataByLoginType(String loginType) throws Exception;
 	public CARSSoC getCARSSoCById(long carsSoCId) throws Exception;
-	public long addCARSSoC(CARSSoC soc) throws Exception;
-	public long editCARSSoC(CARSSoC soc) throws Exception;
+	public long addCARSSoC(CARSSoC soc, MultipartFile sooFile, MultipartFile frFile, MultipartFile executionPlan) throws Exception;
+	public long editCARSSoC(CARSSoC soc, MultipartFile sooFile, MultipartFile frFile, MultipartFile executionPlan) throws Exception;
+	public int invForSoODateSubmit(String carsInitiationId, String sooDate) throws Exception;
+	public CARSSoC getCARSSoCByCARSInitiationId(long carsInitiationId) throws Exception;
+	public void carsRSQRFormFreeze(HttpServletRequest req, HttpServletResponse res, long carsInitiationId) throws Exception;
+	public List<Object[]> carsSoCRemarksHistory(String carsInitiationId) throws Exception;
+	public long socApprovalForward(RSQRForwardDTO dto) throws Exception;
+	public List<Object[]> carsSoCTransList(String carsInitiationId) throws Exception;
+	public List<Object[]> carsTransAllList(String carsInitiationId) throws Exception;
+	public long addCARSInitiationTransaction(CARSInitiationTrans transaction) throws Exception;
+	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode) throws Exception;
+	public List<CARSSoCMilestones> getCARSSoCMilestonesByCARSInitiationId(long carsInitiationId) throws Exception;
+	public long carsSoCMilestonesDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
+	public int removeCARSSoCMilestonesDetails(long carsInitiationId) throws Exception;
 	
 }

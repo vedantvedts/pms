@@ -151,16 +151,16 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 	                                    	<form action="#">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
+	                                       	  	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
 								    			<%=obj[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    			</button>
 	                                        </form>
 	                                    </td>
 	                                    <td style="text-align: center;">
-	                                        <form action="#">
+	                                        <form action="#" method="post">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	 	<button class="editable-click" name="sub" value="Details" formaction="CARSInitiationDetails.htm">
+	                                        	
+	                                       	 	<button class="editable-click" name="carsInitiationId" value="<%=obj[0] %>" formaction="CARSInitiationDetails.htm">
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -170,6 +170,18 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 														</div>
 													</div>
 											    </button>
+											    <%if(obj[12]!=null && (obj[12].toString().equalsIgnoreCase("FWD") || obj[12].toString().equalsIgnoreCase("SFU"))) {%>
+	                                       	 	<button class="editable-click" name="carsUserRevoke" value="<%=obj[0] %>/<%=obj[12] %>" formaction="CARSUserRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
+													<div class="cc-rockmenu">
+														<div class="rolling">
+															<figure class="rolling_icon">
+																<img src="view/images/userrevoke.png" style="width: 22px !important;">
+															</figure>
+															<span>Revoke</span>
+														</div>
+													</div>
+											    </button>
+											    <%} %>
 	                                        </form>
 	                                    </td>
 	                                </tr>
@@ -198,7 +210,10 @@ $(document).ready(function(){
 	
 	});
 });
-  
+
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+});	
 </script>
 </body>
 </html>

@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +32,8 @@ private static final long serialVersionUID = 1L;
 	private String Alignment;
 	private String TimeReasonability;
 	private String CostReasonability;
-	private String ExecusionPlan;
+	private String RSPSelection;
+	private String ExecutionPlan;
 	private String SoCCriterion;
 	private String CreatedBy;
 	private String CreatedDate;

@@ -129,7 +129,7 @@ th{
 				<div class="card shadow-nohover">
 					<div class="row card-header">
 			   			<div class="col-md-6">
-							<h4>RSQR Approval List</h4>
+							<h4>CARS Approvals</h4>
 						</div>
 					</div>
 					<div class="card-body">
@@ -152,6 +152,13 @@ th{
 		  							<li class="nav-item"  style="width: 50%;">
 		    							<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 							<span>Approved</span> 
+		    	 							<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+				   		 						<%if(ApprovedList.size()>99){ %>
+				   									99+
+				   								<%}else{ %>
+				   								<%=ApprovedList.size()%>
+												<%} %>			   			
+				  							</span> 
 		    							</div>
 		  							</li>
 								</ul>
@@ -175,6 +182,7 @@ th{
 					   											<th>EmpNo</th>
 					   											<th>CARSNo</th>
 					   											<th style="">Date</th>
+					   											<th style="">Approval for</th>
                        											<th style="">Action</th>
                   											</tr>
 														</thead>
@@ -184,12 +192,14 @@ th{
                       							 			%>
                         									<tr>
                             									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 35%;"><%=form[2]+", "+form[3]%></td>
+                            									<td style="width: 30%;"><%=form[2]+", "+form[3]%></td>
                             									<td style="text-align: center;width: 10%;"><%=form[1]%></td>
-                            									<td style="text-align: center;width: 20%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
                             									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
                             									<td style="text-align: center;width: 20%;">
-                            										<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
+                            										<%if(form[7]!=null && form[7].toString().equalsIgnoreCase("RSQR")) {%>
+                            										<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationIdApprovals" value="<%=form[4]%>/Y/3" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
 								   										<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -199,7 +209,7 @@ th{
 																			</div>
 																		</div>
 																	</button>
-																	<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																	<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="RSQR Download">
 								  	 									<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -218,15 +228,48 @@ th{
 																				<span>RSQR Approval</span>
 																			</div>
 																		</div>
+																	</button>
+																	
+          															
+																	<%} else if(form[7]!=null && form[7].toString().equalsIgnoreCase("SoC")) {%>
+																	<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationIdApprovals" value="<%=form[4]%>/S/7" data-toggle="tooltip" data-placement="top" title="CARS SoC" style="font-weight: 600;" >
+								   										<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Preview</span>
+																			</div>
+																		</div>
+																	</button>
+																	<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Final RSQR Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/clipboard.png">
+																				</figure>
+																				<span>Final RSQR</span>
+																			</div>
+																		</div>
 																	</button>				
+																	<button type="submit" class="btn btn-sm" formaction="CARSSoCDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/document.png">
+																				</figure>
+																				<span>SoC</span>
+																			</div>
+																		</div>
+																	</button>
+																	
+                            										<%} %>
 						 										</td>
                         									</tr>
                        										<%} %>
                  										</tbody>  
             										</table>
           										</div>
-          										<input type="hidden" name="isApproval" value="Y">
-          										<input type="hidden" name="TabId" value="3">
          									</form>
 			  							</div>
  
@@ -258,7 +301,7 @@ th{
 												</form>
 												<div class="row" >
 		 											<div class="col-md-12">
-														<form action="" method="POST" id="circularForm">
+														<form action="#" method="POST" id="">
             												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
              													<div class="table-responsive">
               														<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable1">
@@ -268,6 +311,7 @@ th{
 					  															<th>Initiated By</th>
 					  															<th>EmpNo</th>
 					   															<th>CARSNo</th>
+					   															<th style="">Approval for</th>
                        															<th style="width: ">Status</th>
                        															<th style="width: ">Action</th>
                   															</tr>
@@ -278,16 +322,24 @@ th{
                        													  %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            													<td style="text-align: left;width: 25%;"><%=form[2]+", "+form[3]%></td>
-                            													<td style="text-align: center;width: 10%;"><%=form[1] %> </td>
+                            													<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[1] %> </td>
                             													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-                            													<td style="text-align: center;width: 20%;">
-																					<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: center;width: 25%;">
+                            														<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("RSQR")) {%>
+																					<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSRSQRTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 								    												</button>
+								    												<%} else if(form[12]!=null && form[12].toString().equalsIgnoreCase("SoC")) {%>
+								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSSoCTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												</button>
+								    												<%} %>
 						 														</td>
-						 														<td style="text-align: center;width: 25%;">
-                            														<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
+						 														<td style="text-align: center;width: 20%;">
+						 															<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("RSQR")) {%>
+						 															<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationIdApprovals" value="<%=form[4]%>/N/3" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
 								   														<div class="cc-rockmenu">
 																							<div class="rolling">
 																								<figure class="rolling_icon">
@@ -297,7 +349,7 @@ th{
 																							</div>
 																						</div>
 																					</button>
-																					<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+																					<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="RSQR Download">
 								  	 													<div class="cc-rockmenu">
 																							<div class="rolling">
 																								<figure class="rolling_icon">
@@ -317,26 +369,47 @@ th{
 																							</div>
 																						</div>
 																					</button>
-																					<%if(loginType.equalsIgnoreCase("E") || loginType.equalsIgnoreCase("Z")) {%>
-																					<button type="submit" class="btn btn-sm" formaction="CARSInvForSoODownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
-								  	 													<div class="cc-rockmenu">
+																					
+						 															<%} else if(form[12]!=null && form[12].toString().equalsIgnoreCase("SoC")) {%>
+						 															<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationIdApprovals" value="<%=form[4]%>/T/7" data-toggle="tooltip" data-placement="top" title="CARS SoC" style="font-weight: 600;" >
+								   														<div class="cc-rockmenu">
 																							<div class="rolling">
 																								<figure class="rolling_icon">
-																									<img src="view/images/letter.png">
+																									<img src="view/images/preview3.png">
 																								</figure>
-																								<span>Inv for SoO</span>
+																								<span>Preview</span>
 																							</div>
 																						</div>
 																					</button>
-																					<%} %>
+																					<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Final RSQR Download">
+								  	 													<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/clipboard.png">
+																								</figure>
+																								<span>Final RSQR</span>
+																							</div>
+																						</div>
+																					</button>
+																					<button type="submit" class="btn btn-sm" formaction="CARSSoCDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 													<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/document.png">
+																								</figure>
+																								<span>SoC</span>
+																							</div>
+																						</div>
+																					</button>
+									
+                            														<%} %>
+            
 						 														</td>
                         													</tr>
                        													 <%} %>
                    														</tbody>
                  													</table>
                 												</div> 
-                												<input type="hidden" name="isApproval" value="N">
-          														<input type="hidden" name="TabId" value="3">      
                												</form>
                											</div>
                										</div>
@@ -401,6 +474,12 @@ $('#fromdate').daterangepicker({
 	if(val!=null && val.equalsIgnoreCase("app")){%>
 		$('#pills-imm-property-tab').click();
 	<%}%>
+	
+	
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+		});	
+	
 </script>
 
 </body>
