@@ -780,11 +780,11 @@ public class ActionDaoImpl implements ActionDao{
 	 public int ActionAssignRevisionEdit(ActionAssign assign) throws Exception
 	 {
 		 ActionAssign detach = manager.find(ActionAssign.class, assign.getActionAssignId());
-		
 			detach.setRevision(assign.getRevision());
 			detach.setModifiedBy(assign.getModifiedBy());
 			detach.setModifiedDate(assign.getModifiedDate());
-			
+			// newly added
+			detach.setEndDate(assign.getEndDate());
 			if(assign.getRevision()==1) {
 				detach.setPDC1(assign.getEndDate());
 			}else if(assign.getRevision()==2) {

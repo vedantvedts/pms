@@ -366,8 +366,8 @@ td
 		      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
 		      								<%}%>
 	      								</td>
-	      								<td >&nbsp;&nbsp;&nbsp;&nbsp;
-	      									 <%=Assignee[5] %>
+	      								<td ><span>
+	      									 <%=Assignee[5] %></span>
 	      								</td>							
 	      							</tr>
 	      						</table>
@@ -376,8 +376,8 @@ td
 	      								<td>
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
-	      									<%=Assignee[11] %>&nbsp;(<%=Assignee[17] %>)
+	      								<td><span>
+	      									<%=Assignee[11] %>&nbsp;(<%=Assignee[17] %>)</span>
 	      								</td>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
@@ -401,8 +401,7 @@ td
 	      								</td>	
 	      								     
 	      							<% int revision=Integer.parseInt(Assignee[10].toString());
-	      							for(int i=1;i<=revision;i++){ %>
-	      							
+	      							for(int i=1;i<=2;i++){ %>
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revised - <%=i%> PDC:</label>
 	      								</td>	      	
@@ -461,7 +460,7 @@ td
 						
 						
 						
-				<%if(Integer.parseInt(Assignee[10].toString())<2){ %> 
+		
 		    		<br>
 		    		<hr><br>
 		    		<form method="post"  action="ExtendPdc.htm" >
@@ -489,7 +488,7 @@ td
 		      			</form>
 		      			<br>
 		      			<hr>
-	      		<%} %>
+	  
 						
 	          		</div>		
 			    

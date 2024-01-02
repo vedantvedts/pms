@@ -916,7 +916,7 @@ td
 	      								</td>	
 	      								     
 	      							<% int revision=Integer.parseInt(Assignee[10].toString());
-	      							for(int i=1;i<=revision;i++){%>
+	      							for(int i=1;i<=2;i++){%>
 	      							
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
@@ -953,7 +953,7 @@ td
 						</div>						
 	      			</form>	      			      			      			
 	    		
-	    		<%if(Integer.parseInt(Assignee[10].toString())<2){ %> 
+	    		<%-- <%if(Integer.parseInt(Assignee[10].toString())<2){ %>  --%>
 	    		<br>
 	    		<hr><br>
 	    		<form method="post"  action="ExtendPdc.htm" >
@@ -966,7 +966,7 @@ td
                             	<input class="form-control " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>" style=" margin-top: -4px;">
                             </div>
 							<div class="col-md-4">
-								<button type="submit" class="btn btn-danger btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
+								<button type="submit" class="btn btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
 								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
 								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -975,7 +975,7 @@ td
 	      			</form>
 	      			<br>
 	      			<hr>
-	      			<%} %>
+	      			<%-- <%} %> --%>
 	    		
 	    		</div>
 	    		<%if(back!=null && back.equalsIgnoreCase("backTotodo")){%>
