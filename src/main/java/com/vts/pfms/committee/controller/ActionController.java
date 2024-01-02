@@ -2236,8 +2236,11 @@ public class ActionController {
 			main.setActionItem(req.getParameter("actionitem"));
 			main.setModifiedBy(UserId);
 			ActionAssign assign=new ActionAssign();
+			
+			if(req.getParameter("newPDC").length()>0) {
 			assign.setPDCOrg(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
 			assign.setEndDate(new java.sql.Date(sdf.parse(req.getParameter("newPDC")).getTime()));
+			}	
 			assign.setAssigneeLabCode(req.getParameter("modelAssigneeLabCode"));
 			assign.setAssignee(Long.parseLong(req.getParameter("Assignee")));
 			assign.setActionAssignId(Long.parseLong(req.getParameter("actionassigneid")));
