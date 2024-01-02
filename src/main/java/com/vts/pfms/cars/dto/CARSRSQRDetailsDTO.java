@@ -16,4 +16,10 @@ public class CARSRSQRDetailsDTO {
 	private String[] Description;
 	private String[] DeliverableType;
 	private String UserId;
+	
+	private String[] MilestoneNo;
+	private String[] TaskDesc;
+	private String[] Months;
+	private String[] Deliverables;
+	private String[] PaymentTerms;
 }

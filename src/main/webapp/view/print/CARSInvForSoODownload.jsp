@@ -118,16 +118,16 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			<span style="font-size: 13px;">CV Raman Nagar</span> <br>
 			<span style="font-size: 13px;">Bengaluru - 560 093. India</span> <br>
 			<span style="font-size: 13px;">Fax <span style="margin-left: 25px;">:</span> 080-2524 2916</span> <br>
-			<span style="font-size: 13px;">Phone <span style="margin-left: 10px;">:</span> 080-2524 3873</span> <br>
-			<span style="font-size: 13px;">E-Mail <span style="margin-left: 5px;">:</span> director.lrde@gov.in</span>
+			<span style="font-size: 13px;">Phone <span style="margin-left: 12px;">:</span> 080-2524 3873</span> <br>
+			<span style="font-size: 13px;">E-Mail <span style="margin-left: 8px;">:</span> director.lrde@gov.in</span>
 		</td>
 	</tr>
 </table>
 <br>
 <table style="width: 100%;font-size: 14px !important;">
 	<tr>
-		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<%if(carsIni!=null) {%><%=carsIni.getCARSNo() %> <%} %></td>
-		<td style="text-align: right;width: 50%;">Date&nbsp;:&nbsp;<%if(carsIni!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %> <%} %></td>
+		<td style="text-align: left;width: 50%;">No&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null) {%><%=carsIni.getCARSNo() %> <%} %></span></td>
+		<td style="text-align: right;width: 50%;">Date&nbsp;:&nbsp;<span style="font-size: 13px"><%if(carsIni!=null && carsIni.getInvForSoODate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInvForSoODate()) %> <%} %></span></td>
 	</tr>
 </table>
 
@@ -139,6 +139,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr><td></td></tr>
 	<tr>
 		<td>
+			<%=carsIni.getRSPInstitute() %> <br>
 			<%=carsIni.getRSPAddress()+", " %> <br>
 			<%=carsIni.getRSPCity()+", " %> <br>
 			<%=carsIni.getRSPState() %> <br>
@@ -148,7 +149,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td>Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPIName()+", "+carsIni.getPIDept() %><%} %></td>
+		<td>Kind Attn : <%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %><%} %></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>

@@ -94,7 +94,7 @@ if(ses1!=null){
 									
 										 <select class="form-control" id="projectid" required="required" name="projectid" onchange='submitForm();' >
 						   						<% for (Object[] obj : ProjectsList) {
-						   							String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
+						   							String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":"";
 						   						%>
 												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<% Project=obj[4].toString(); } %> ><%=obj[4]+projectshortName%></option>
 													
