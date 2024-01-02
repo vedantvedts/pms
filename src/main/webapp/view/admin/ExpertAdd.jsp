@@ -116,7 +116,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Expert Name</label>
+										<label class="control-label">Expert Name</label><span class="mandatory" style="color: red;">*</span>
 										<input class="form-control" type="text" id="expertname" name="expertname" required>
 									</div>
 								</div>
@@ -134,7 +134,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 						
 						<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label">Designation</label>
+									<label class="control-label">Designation</label><span class="mandatory" style="color: red;">*</span>
 									<select class="custom-select" id="selectDesig" required="required" name="designationId">
 										<option disabled="true"  selected value="">Choose...</option>
 										<%for(Object[] desig:desigList){ %>
@@ -147,15 +147,15 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 						
 							<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Mobile No.</label>
-										<input class="form-control" type="text" id="mobile"  maxlength="10"  name="mobilenumber" required max="9999999999" min="1000000000">
+										<label class="control-label">Mobile No.</label><span class="mandatory" style="color: red;">*</span>
+										<input class="form-control" type="text" id="mobile"  maxlength="10"  name="mobilenumber" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 									</div>
 								</div>
 								
 							
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Email</label>
+										<label class="control-label">Email</label><span class="mandatory" style="color: red;">*</span>
 										<input class="form-control" type="email" id="email"name="email" required>
 									</div>
 								</div>
@@ -163,7 +163,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 							
 					     	<div class="col-md-3">
 									<div class="form-group">
-										<label class="control-label">Organization</label>
+										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
 										<input class="form-control" type="text" name="organization" id="organization" required>
 									</div>
 								</div>
@@ -221,9 +221,9 @@ function formCheck(frmid)
 	var mobile=$('#mobile').val();
 	var email=$('#email').val();
 	var organization=$('#organization').val();
-	
+	console.log(selectDesig+"----")
 	//console.log(title+salutation+expertname+selectDesig+mobile+email+organization);
-	if(expertname===""||selectDesig===""||mobile===""||email===""||organization===""){
+	if(expertname===""||selectDesig===""||mobile===""||email===""||organization===""||selectDesig===null){
 		alert('Please Fill All the Fields ');
 	}
 	

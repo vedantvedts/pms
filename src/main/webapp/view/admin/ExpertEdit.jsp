@@ -161,7 +161,7 @@ if(details!=null){
 							<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label" id="mobile">Mobile No.</label>
-										<input class="form-control" type="number" id="mobileno" value="<%=detail[5]%>" name="mobilenumber" required  max="9999999999" min="1000000000">
+										<input class="form-control" type="number" id="mobileno" value="<%=detail[5]%>" name="mobilenumber" required  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 									</div>
 								</div>
 								
@@ -248,7 +248,7 @@ function formEdit(frmid)
 	var email=$('#email').val();
 	var organization=$('#organization').val();
 	
-	if(expertname===""||selectDesig===""||mobileno===""||email===""||organization===""){
+	if(expertname===""||selectDesig===""||mobileno===""||email===""||organization===""||selectDesig===null){
 		alert('Please Fill All the Fields ');
 	}
 	
