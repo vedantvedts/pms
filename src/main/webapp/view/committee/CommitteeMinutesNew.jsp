@@ -715,10 +715,10 @@ for(Object[] temp : invitedlist){
 										<th class="std"  style="width: 30px;"  >SN</th>
 										<th class="std"  style="width: 80px;" > ID</th>
 										<th class="std"  style="width: 300px;" >Action Point</th>
-										<th class="std"  style="width: 60px; " > PDC</th>
+										<th class="std"  style="width: 80px; " > PDC</th>
 										
-										<th class="std"  style="width: 130px;" >Responsibility</th>
-										<th class="std"  style="width: 40px;"  >Status<!-- (DD) --></th>			
+										<th class="std"  style="width: 155px;" >Responsibility</th>
+										<!-- <th class="std"  style="width: 40px;"  >Status(DD)</th>			 -->
 									</tr>
 								</thead>		
 								<tbody>
@@ -768,7 +768,7 @@ for(Object[] temp : invitedlist){
 													<%=obj[12] %>  <%-- (<%=obj[13] %>) --%>
 												<%}else { %><span class="notassign">NA</span><%} %> 
 											</td>
-											<td class="std"  align="center"> 
+							<%-- 				<td class="std"  align="center"> 
 												<%if(obj[4]!= null){ %> 
 													<%	String actionstatus = obj[10].toString();
 														int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
@@ -780,7 +780,7 @@ for(Object[] temp : invitedlist){
 															<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																<span class="completed">CO</span>
 															<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+																<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
 															<%} %>	
 														<%}else{ %>
 															<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -790,13 +790,13 @@ for(Object[] temp : invitedlist){
 															<%}else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 																<span class="ongoing">OG</span>
 															<%}else if(pdcorg.isBefore(today)){  %>
-																<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  --%> </span>
+																<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 															<%} %>									
 													<%} %>
 												<%}else { %>
 													<span class="notassign">NA</span>
 												<%} %> 
-											</td>				
+											</td>	 --%>			
 										</tr>			
 									<%i++;
 									}} %>
@@ -810,7 +810,7 @@ for(Object[] temp : invitedlist){
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 						</tr>
 					</table>	
-					<table style="margin-top: 00px; margin-bottom: 0px; margin-left: 25px; width: 650px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 						     <thead>
 									<tr>
 										<td colspan="8" style="border: 0px">
@@ -832,11 +832,11 @@ for(Object[] temp : invitedlist){
 						         		 <tr>
 										 <th class="std"  style="width: 30px !important; ">MS</th>
 										 <th class="std"  style="width: 30px !important; ">L</th>
-										 <th class="std" style="max-width: 150px; ">System/ Subsystem/ Activities</th>
-										 <th class="std" style="max-width: 150px; ">  PDC</th>
+										 <th class="std" style="max-width: 250px; ">System/ Subsystem/ Activities</th>
+										 <th class="std" style="max-width: 100px; ">  PDC</th>
 										 <th class="std" style="max-width: 100px; "> Progress</th>
-										 <th class="std" style="max-width: 70px; "> Status</th>
-										 <th class="std" style="max-width: 100px; "> Remarks</th> 
+<!-- 										 <th class="std" style="max-width: 70px; "> Status</th>
+ -->										 <th class="std" style="max-width: 170px; "> Remarks</th> 
 										 
 									</tr>
 								</thead>
@@ -924,7 +924,7 @@ for(Object[] temp : invitedlist){
 											<td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[9].toString())) %><br><%=sdf.format(sdf1.parse(obj[8].toString())) %></td>
 											<%-- <td class="std"  style="max-width: 110px;text-align: center;"><%=sdf.format(sdf1.parse(obj[8].toString())) %></td> --%>
 											<td class="std"  style="max-width: 100px;text-align: center;"><%=obj[17] %>%</td>											
-											<td class="std"  style="max-width: 70px;text-align: center;">
+<%-- 											<td class="std"  style="max-width: 70px;text-align: center;">
 												<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
 															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> notyet
 															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -936,15 +936,15 @@ for(Object[] temp : invitedlist){
 													
 													
 													<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) { %>
-														<%-- (<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>) --%>
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
 													<% } else if (obj[19].toString().equalsIgnoreCase("4")) {%> 
-													<%-- 	(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>) --%>
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
 													<% } %>
 													
 													
 												</span>
 											
-											</td>
+											</td> --%>
 											<td class="std"  style="max-width: 100px;text-align: left;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 										</tr>
 									<%milcount1++;}} %>
@@ -965,7 +965,7 @@ for(Object[] temp : invitedlist){
 							<th colspan="8" style="text-align: left; font-weight: 700;"><br>&nbsp;&nbsp;&nbsp;<%=committeemin[0]%>.&nbsp;&nbsp;&nbsp;<%=committeemin[1]%></th>
 						</tr>
 					</table>	
-					<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
+							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
 										<tr>
 											<th colspan="8" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
@@ -1154,7 +1154,7 @@ for(Object[] temp : invitedlist){
 									
 									
 									
-									<table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 10px; width: 650px;  border-collapse:collapse;" >
+							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 										<thead>
 											 <tr >
 												 <th class="std" colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
@@ -1199,7 +1199,7 @@ for(Object[] temp : invitedlist){
 					</table>	
 					<%if(Long.parseLong(projectid) >0 && projectFinancialDetails!=null) { %>
 							
-								<table style="margin-top: 5px; margin-bottom: 0px; margin-left: 10px; width: 660px; font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+							<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								    <thead>
 								        <tr>
 								           	<td class="std" colspan="2" align="center"><b>Head</b></td>
@@ -1338,9 +1338,9 @@ for(Object[] temp : invitedlist){
 									<th class="std"  style="width:20px; ">L</th>
 									<th class="std"  style="width:250px;">Action Plan </th>	
 									<th class="std"  style="max-width:90px;">Responsibility </th>
-									<th class="std"  style="max-width:100px;">PDC</th>	
+									<th class="std"  style="max-width:150px;">PDC</th>	
 									<th class="std"  style="max-width:55px;">Progress </th>
-					                <th class="std"  style="max-width:50px;">Status</th>
+					<!--                 <th class="std"  style="max-width:50px;">Status</th> -->
 					                 <th class="std"  style="max-width:80px;">Remarks</th>
 								</tr>
 							</thead>
@@ -1467,7 +1467,7 @@ for(Object[] temp : invitedlist){
 											<%} %>
 											</td>
 											<td class="std"  style="text-align: center"><%=obj[16] %>%</td>											
-											<td class="std"  style="text-align: center">
+								<%-- 			<td class="std"  style="text-align: center">
 												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
 															<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> notyet
 															<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
@@ -1477,12 +1477,12 @@ for(Object[] temp : invitedlist){
 															<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
 													<%=obj[27] %>	
 													<% if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) { %>
-<%-- 														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
- --%>													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
-												<%-- 		(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>) --%>
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))%>)
+													<%} else if (obj[20].toString().equalsIgnoreCase("4")) { %> 
+														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())%>)
 													<% } %>
 												</span>
-											</td>
+											</td> --%>
 											<td  class="std"  style="max-width: 80px;">
 												<%if(obj[28]!=null){ %> <%=obj[28] %> <%} %>
 											</td>

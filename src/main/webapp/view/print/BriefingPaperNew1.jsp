@@ -781,17 +781,16 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 								<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-								<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
 							</p>
 						</td>									
 					</tr>
 										
 					<tr>
 						<th  style="width: 15px !important;text-align: center;">SN</th>
-						<th  style="width: 335px !important;">Recommendation Point</th>
-						<th  style="width: 150px !important;"> PDC</th>
-						<th  style="width: 210px !important;"> Responsibility</th>
-						<th  style="width: 80px !important;">Status</th>
+						<th  style="width: 4155px !important;">Recommendation Point</th>
+						<th  style="width: 100px !important;"> PDC</th>
+						<th  style="width: 250px !important;"> Responsibility</th>
+				<!-- 		<th  style="width: 80px !important;">Status</th> -->
 						<th  style="width: 250px !important; ">Remarks</th>
 					</tr>
 				</thead>
@@ -816,7 +815,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<%=obj[12] %><%-- , <%=obj[13] %> --%>
 								<%}else { %> <!-- <span class="notassign">NA</span>  --> <span class="">Not Assigned</span> <%} %> 
 							</td>
-							<td  style="text-align: center; ">
+<%-- 							<td  style="text-align: center; ">
 								<%if(obj[4]!= null){ %> 
 									<%	String actionstatus = obj[10].toString();
 										int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
@@ -828,7 +827,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 												<span class="completed">CO</span>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) --%> </span>
+												<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
 											<%} %>	
 										<%}else{ %>
 											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -837,18 +836,18 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												<span class="delay">FD</span>
 											<%}else if(actionstatus.equals("A") && progress==0){  %>
 												<span class="assigned">
-													AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
+													AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
 												</span>
 											<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 												<span class="ongoing">OG</span>
 											<%}else if(pdcorg.isBefore(today)){  %>
-												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
+												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 											<%} %>								
 									<%} %>
 								<%}else { %>
 									<span class="notassign">NA</span>
 								<%} %>
-						</td>
+						</td> --%>
 						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
 					</tr>		
 					<%i++;}
@@ -888,11 +887,11 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 							<tr>
 								<th  style="width: 15px !important;text-align: center;  ">SN</th>
 								<th style="width: 60px;">ID</th>
-								<th  style="width: 320px; ">Action Point</th>
+								<th  style="width: 400px; ">Action Point</th>
 								<th  style="width: 120px; ">ADC<br>PDC</th>
 						<!-- 		<th  style="width: 80px; "> ADC</th> -->
 								<th  style="width: 210px; "> Responsibility</th>
-								<th  style="width: 80px; ">Status</th>
+								<!-- <th  style="width: 80px; ">Status</th> -->
 								<th  style="width: 205px; ">Remarks</th>			
 							</tr>
 						</thead>
@@ -958,12 +957,12 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												
 												
 									<td > <%=obj[11] %><%-- , <%=obj[12] %> --%> </td>
-									<td style="text-align: center;"> 
+<%-- 									<td style="text-align: center;"> 
 										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 												<span class="completed">CO</span>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-												<span class="completeddelay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>)  --%></span>
+												<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
 											<%} %>	
 										<%}else{ %>
 											<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -972,16 +971,16 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												<span class="delay">FD</span>
 											<%}else if(actionstatus.equals("A") && progress==0){  %>
 												<span class="assigned">
-													AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
+													AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
 												</span>
 											<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 												<span class="ongoing">OG</span>
 											<%}else if(pdcorg.isBefore(today)){  %>
-												<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
+												<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 											<%} %>					
 																				
 										<%} %>
-									</td>	
+									</td> --%>	
 									<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 								</tr>			
 							<%i++;
@@ -1106,8 +1105,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-												 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
-											 </p>
+<!-- 												 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+ -->											 </p>
 										</td>									
 									</tr>
 								
@@ -1115,11 +1114,11 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<th  style="width: 20px; ">SN</th>
 										<th  style="width: 30px; ">MS</th>
 										<th  style="width: 60px; ">L</th>
-										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+										<th  style="width: 400px; ">System/ Subsystem/ Activities</th>
 										<th  style="width: 100px; "> ADC <br> PDC</th>
 									<!-- 	<th  style="width: 150px; "> ADC</th> -->
 										<th  style="width: 60px; "> Progress</th>
-										<th  style="width: 50px; "> Status</th>
+									<!-- 	<th  style="width: 50px; "> Status</th> -->
 									 	<th  style="width: 260px; "> Remarks</th>
 									</tr>
 								</thead>
@@ -1260,25 +1259,25 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												
 											</td> --%>
 											<td style="text-align: center"><%=obj[17]%>%</td>
-											<td style="text-align: center">	
+								<%-- 			<td style="text-align: center">	
 												
 													<%if(Progess==0){ %>
 														<span class="assigned"> AA </span>
 													<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 														<span class="ongoing"> OG </span>
 													<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-														<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
+														<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
 													<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 														<span class="completed"> CO</span>
 													<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-														<span class="completeddelay">CD <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>) --%></span>
+														<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
 													<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
 														<span class="inactive">IA</span>
 													<%}else{ %>
 														<span class="assigned">AA</span>
 													<%} %>
 												
-											</td>
+											</td> --%>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 										</tr>
 									<%count1++;serial++;}} %>
@@ -1320,8 +1319,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 											<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 											<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 											<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-											<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
-										 </p>
+<!-- 											<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+ -->										 </p>
 									</td>									
 								</tr>
 							</thead>
@@ -1330,11 +1329,11 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<th  style="width: 20px; ">SN</th>
 									<th  style="width: 30px; ">MS</th>
 									<th  style="width: 30px; ">L</th>
-									<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
+									<th  style="width: 400px; ">System/ Subsystem/ Activities</th>
 									<th  style="width: 100px; "> PDC</th>
 									<th  style="width: 60px; "> Progress</th>
-									<th  style="width: 50px; "> Status</th>
-								 	<th  style="width: 320px; "> Remarks</th>
+<!-- 									<th  style="width: 50px; "> Status</th>
+ -->								 	<th  style="width: 320px; "> Remarks</th>
 
 								<% if( MilestoneDetails6.get(z).size()>0){ 
 									long count1=1;
@@ -1434,8 +1433,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												LocalDate Today = LocalDate.now();
 											%>
 											<td style="text-align: center"><%=obj[17] %>%</td>											
-											<td style="text-align: center">
-												<%-- <span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
+							<%-- 				<td style="text-align: center">
+												<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
 																		<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
 																		<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
 																		<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
@@ -1449,7 +1448,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
 													<% } %>
 				
-												</span> --%>
+												</span>
 												
 												
 												<%if(Progess==0){ %>
@@ -1457,18 +1456,18 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 													<span class="ongoing"> OG </span>
 												<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-													<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
+													<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
 												<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 													<span class="completed"> CO</span>
 												<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
-													<span class="completeddelay">CD <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>) --%></span>
+													<span class="completeddelay">CD (<%=ChronoUnit.DAYS.between(OrgEndDate, CompletionDate)%>)</span>
 												<%}else if(CompletionDate!=null && Progess==0 &&  ( EndDate.isAfter(Today) ||  EndDate.isEqual(Today)) ){ %>
 													<span class="inactive">IA</span>
 												<%}else{ %>
 													<span class="assigned">AA</span>
 												<%} %>
 												
-											</td>
+											</td> --%>
 											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;text-align: justify;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 									</tr>
 									<%count1++; serial++;}} %>
@@ -2303,8 +2302,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
-									 </p>
+<!-- 									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+ -->									 </p>
 								</td>									
 							</tr>
 							
@@ -2312,12 +2311,12 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<th style="width: 15px !important;text-align: center;">SN</th>
 									<th style="width: 20px; ">MS</th>
 									<th style="width: 20px; ">L</th>
-									<th style="width: 275px;">Action Plan </th>	
+									<th style="width: 325px;">Action Plan </th>	
 									<th style="width: 100px;" >PDC</th>	
 									<th style="width: 210px;">Responsibility </th>
 									<th style="width: 50px;">Progress </th>
-					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
-					                <th style="width: 230px;">Remarks</th>
+<!-- 					                <th style="width: 50px;padding-right: 5px !important ">Status</th>
+ -->					                <th style="width: 230px;">Remarks</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -2424,9 +2423,9 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												LocalDate CompletionDate =obj[18]!=null ? LocalDate.parse(obj[18].toString()) : null;
 												LocalDate Today = LocalDate.now();
 											%>									
-											<td  style="text-align: center">
+									<%-- 		<td  style="text-align: center">
 											
-												<%-- <span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
+												<span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
 													<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> assigned
 													<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
 													<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
@@ -2442,14 +2441,14 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 														(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now()) %>)
 													<%} %>
 													
-												</span> --%>
+												</span>
 												
 												<%if(Progess==0){ %>
 													<span class="assigned"> AA </span>
 												<%} else if(Progess>0 && Progess<100 && (OrgEndDate.isAfter(Today) || OrgEndDate.isEqual(Today) )){ %>
 													<span class="ongoing"> OG </span>
 												<%} else if( Progess>0 && Progess<100 && (OrgEndDate.isBefore(Today) )){ %>
-													<span class="delay"> DO <%-- (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>) --%></span>
+													<span class="delay"> DO (<%=ChronoUnit.DAYS.between(OrgEndDate, LocalDate.now())%>)</span>
 												<%} else if((CompletionDate!=null && ( CompletionDate.isBefore(OrgEndDate) ||  CompletionDate.isEqual(OrgEndDate)))){ %>
 													<span class="completed"> CO</span>
 												<%} else if((CompletionDate!=null && CompletionDate.isAfter(OrgEndDate) )){ %>
@@ -2460,7 +2459,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 													<span class="assigned">AA</span>
 												<%} %>
 											
-											</td>
+											</td> --%>
 											<td >
 												<%if(obj[28]!=null){ %>
 												<%=obj[28] %>
@@ -2546,8 +2545,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 										<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-									</p>
+<!-- 										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
+ -->									</p>
 								</td>									
 							</tr>
 							<tr>
@@ -2556,8 +2555,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<th  style="width: 100px; "> ADC<br>PDC</th>
 <!-- 								<th  style="width: 80px; "> ADC</th> -->
 								<th  style="width: 210px; ">Responsibility</th>
-								<th  style="width: 50px; ">Status</th>	
-								<th  style="width: 270px; ">Remarks</th>		
+<!-- 								<th  style="width: 50px; ">Status</th>	
+ -->								<th  style="width: 270px; ">Remarks</th>		
 							</tr>
 						</thead>
 						<tbody>				
@@ -2595,14 +2594,14 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												</td>
 											
 												<td > <%=obj[11] %><%-- <%=obj[12] %> --%></td>
-												<td  style=";text-align: center;"> 
+				<%-- 								<td  style=";text-align: center;"> 
 													<%if(obj[4]!= null){ %> 
 														
 														<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 																<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 																	<span class="completed">CO</span>
 																<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
-																	<span class="delay">CD <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
+																	<span class="delay">CD (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 																<%} %>	
 															<%}else{ %>
 																<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
@@ -2611,18 +2610,18 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 																	<span class="delay">FD</span>
 																<%}else if(actionstatus.equals("A") && progress==0){  %>
 																	<span class="assigned">
-																		AA <%if(pdcorg.isBefore(today)){ %> <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%> <%} %>
+																		AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %>
 																	</span>
 																<%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
 																	<span class="ongoing">OG</span>
 																<%}else if(pdcorg.isBefore(today)){  %>
-																	<span class="delay">DO <%-- (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) --%>  </span>
+																	<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
 																<%} %>										
 														<%} %>
 													<%}else { %>
 														-
 													<%} %>
-												</td>	
+												</td> --%>	
 												<td > <%if(obj[17]!=null){ %> <%=obj[17] %> <%} %> </td>			
 											</tr>			
 										<%i++;
@@ -2662,7 +2661,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 							<%} %>
    						</b></div>
    						
-						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;width:" >
 							<tr>
 								 <th  style="width: 80%; ">Other Relevant Points</th>
 								 <!-- <th  style="width: 10%; ">Technical Work Carried</th> -->		
@@ -2670,7 +2669,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										
 									<% if(TechWorkDataList.get(z)!=null){ %>
 										<tr>
-											<td><%=TechWorkDataList.get(z)[2] %></td>
+											<td style="text-align: justify;"><%=TechWorkDataList.get(z)[2] %></td>
 										</tr>
 								<%}else{ %>
 									<tr><td colspan="2" style="text-align: left ;">Nil </td></tr>
