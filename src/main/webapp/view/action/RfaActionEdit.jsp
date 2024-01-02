@@ -8,7 +8,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
 <title>Rfa Action Edit</title>
 
 <style type="text/css">
@@ -42,16 +41,18 @@ hr{
 <%
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] RfaAction=(Object[]) request.getAttribute("RfaAction");
+Object[] rfaAttachDownload=(Object[]) request.getAttribute("rfaAttachDownload");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> ProjectTypeList=(List<Object[]>)request.getAttribute("ProjectTypeList");
 List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList");
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+
 String Project="";
 %>
 
 
 <div class="container">
-	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off">
+	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
 	
 	<div class="row" style="" id="mainrow">
 		<div class="col-md-12">
@@ -68,7 +69,7 @@ String Project="";
         
         		<div class="card-body">
             <div class="row">
-		                    <div class="col-md-2">
+		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -101,15 +102,15 @@ String Project="";
 		                        </div>
 		                    </div>
 		                    
-		                    <div class="col-md-3">
+		                   <%--  <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Date</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                              <input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required"  style="width: 100%;" value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>" >						 
 		                        </div>
-		                    </div>
+		                    </div> --%>
 		                    
-		                  <div class="col-md-4">
+		                  <div class="col-md-6">
 		                     <div class="form-group">
 		                            <label class="control-label">Assigned To</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -127,6 +128,28 @@ String Project="";
 		            </div> 
 		            
 		          </div>
+		          
+		          <div class="row">
+		                  <div class="col-md-3" style="max-width: 18%">
+		                      <label class="control-label"> RFA No.</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-5" style="max-width: 40%">
+		                     <input  class="form-control"  name="rfano" id="rfano" disabled="disabled" style="width: 121%;" value="<%=RfaAction[3]%>" >	
+		                  </div>
+		                  
+		                   
+		                  <div class="col-md-4" style="margin-left: 8%">
+		                        <div class="row">
+		                            <label class="control-label">RFA Date</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+						  			<input  class="form-control form-control date" style="margin-left: 25px; width: 67%;" data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  value="<%=new FormatConverter().SqlToRegularDate(  RfaAction[4].toString() )%>">						
+		                        </div>
+		                  </div>      
+		                    
+		            </div>
+		            
+		            <br>
 		      
 		            <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
@@ -159,10 +182,28 @@ String Project="";
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
 		                      <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" value="<%=RfaAction[8].toString() %>">
-		                  </div>
+		                  </div> 
 		            </div>
 		            
+		            <br>
 		           
+		            <div class="row">
+		                <div class="col-md-4" style="max-width: 18%">
+		                      <label class="control-label">Attachment</label>
+		                  </div>
+		                  <div class="col-md-4" style="max-width: 40%">    
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* " >
+		                  </div>
+		                  <%if(rfaAttachDownload!=null){ %> 
+		                  <div class="col-md-4" style="max-width: 40%">    
+		                      <button  type="submit" class="btn btn-sm "  style="margin-left: 0rem;" name="filename" value=""  formaction="RfaAttachmentDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
+		                  </div>
+		                    <input type="hidden" name="type" value="ARD">
+		                    <input type="hidden" name="rfaId" value="<%=rfaAttachDownload[1]%>">
+		              <%} %>
+		                
+		            </div>
+		          
 		             <br>
 		            
 		        <div class="form-group" align="center" >

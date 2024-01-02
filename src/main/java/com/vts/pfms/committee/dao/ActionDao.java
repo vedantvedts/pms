@@ -13,6 +13,7 @@ import com.vts.pfms.committee.model.FavouriteList;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
+import com.vts.pfms.committee.model.RfaAttachment;
 import com.vts.pfms.committee.model.RfaTransaction;
 
 public interface ActionDao {
@@ -107,6 +108,7 @@ public interface ActionDao {
 	public Long RfaActionSubmit(RfaAction rfa) throws Exception;
 	public Object[] GetDivisionCode(String Division) throws Exception;
 	public Long GetRfaCount() throws Exception;
+	
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	//public int RfaInspectionEdit(String rfaid) throws Exception;
 	public Long RfaEditSubmit(RfaAction rfa)throws Exception;
@@ -140,4 +142,11 @@ public interface ActionDao {
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
 	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)throws Exception;
 	public List<Object[]> getAllEmployees(String flag)throws Exception;// new added
+	public List<Object[]> getRfaModalEmpList()throws Exception;
+	public List<Object[]> getRfaTDList()throws Exception;
+	public List<Object[]> getRfaTransList(String rfaTransId)throws Exception;
+	public Long RfaAttachment(RfaAttachment rfaAttach)throws Exception;
+	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
+	public int deleterfaAttachment(Long rfaId) throws Exception;
+	public long updateRfaAttachment(RfaAttachment rfaAttach)throws Exception;
 }

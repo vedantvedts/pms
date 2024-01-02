@@ -7,7 +7,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
 <title>Rfa Action Add</title>
 
 <style type="text/css">
@@ -49,7 +48,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 
 
 <div class="container">
-	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off">
+	<form action="RfaActionSubmit.htm" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
 	
 	<div class="row" style="" id="mainrow">
 		<div class="col-md-12">
@@ -66,7 +65,7 @@ String EmpId=(String)request.getAttribute("EmpId");
         
         		<div class="card-body">
             <div class="row">
-		                    <div class="col-md-2">
+		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -93,15 +92,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                        </div>
 		                    </div>
 		                    
-		                    <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label">Date</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required"  style="width: 100%;" >						
-		                        </div>
-		                    </div>
-		                    
-		                  <div class="col-md-4">
+		                  <div class="col-md-6">
 		                     <div class="form-group">
 		                            <label class="control-label">Assigned To</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -115,6 +106,28 @@ String EmpId=(String)request.getAttribute("EmpId");
 		            </div> 
 		            
 		          </div>
+		          
+		          <div class="row">
+		                  <div class="col-md-3" style="max-width: 18%">
+		                      <label class="control-label"> RFA No.</label>
+		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                  </div>
+		                  <div class="col-md-5" style="max-width: 40%">
+		                     <input  class="form-control"  name="rfano" id="rfano"  required="required"  style="width: 121%;"  placeholder="Enter RFA Number" >	
+		                  </div>
+		                  
+		                   
+		                  <div class="col-md-4" style="margin-left: 8%">
+		                        <div class="row">
+		                            <label class="control-label">RFA Date</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+						  			<input  class="form-control form-control date" style="margin-left: 25px; width: 67%;" data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required">						
+		                        </div>
+		                  </div>      
+		                    
+		            </div>
+		            
+		            <br>
 		      
 		            <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
@@ -122,7 +135,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="1" cols="30" placeholder="Max 200 Characters" name="statement" id="statement" maxlength="200"></textarea>
+		                      <textarea class="form-control" rows="1" cols="30" placeholder="Max 200 Characters" name="statement" id="statement" maxlength="200" required="required"></textarea>
 		                  </div>
 		            </div>
 		            
@@ -134,7 +147,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="description" id="description" maxlength="500"></textarea>
+		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="description" id="description" maxlength="500" required="required"></textarea>
 		                  </div>
 		            </div>
 		            
@@ -146,19 +159,30 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
-		                      <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100">
+		                      <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100" required="required">
+		                  </div>
+		            </div>
+		            
+		            <br>
+		            
+		            <div class="row">
+		                  <div class="col-md-3" style="max-width: 18%">
+		                      <label class="control-label">Attachment</label>
+		                  </div>
+		                  <div class="col-md-10" style="max-width: 40%">
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* "  onchange=" editcheck('systemconfig',1)" >
 		                  </div>
 		            </div>
 		            
 		           
 		             <br>
-		            
+		           <!--  onclick="return add()" -->
 		        <div class="form-group" align="center" >
-					 <input type="button" class="btn btn-primary btn-sm submit " onclick="return add()" value="SUBMIT" id="rfaAddSubBtn" formaction="RfaActionSubmit.htm" > 
+					 <input type="submit" class="btn btn-primary btn-sm submit "  value="SUBMIT" id="rfaAddSubBtn"> 
 					 <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm" >Back</a>
 				</div>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
  		
    </div>    
         
@@ -173,7 +197,7 @@ String EmpId=(String)request.getAttribute("EmpId");
   
   
   <script type="text/javascript">
-  
+/*   
   function add() {
 	  
 	  var ProjectProgramme=$('#ProjectProgramme').val();
@@ -221,7 +245,8 @@ String EmpId=(String)request.getAttribute("EmpId");
     	  return false;
 	  }
 	
-}
+} */
+
   $('#reference,#description,#statement').keyup(function (){
 	  $('#reference,#description,#statement').css({'-webkit-box-shadow' : 'none', '-moz-box-shadow' : 'none','background-color' : 'none', 'box-shadow' : 'none'});
 		  });
@@ -240,6 +265,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 			format : 'DD-MM-YYYY'
 		}
 	});
+	
 	 $("input").on("keypress", function(e) {
 		    if (e.which === 32 && !this.value.length)
 		        e.preventDefault();

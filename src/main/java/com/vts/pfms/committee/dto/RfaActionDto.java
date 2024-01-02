@@ -2,6 +2,8 @@ package com.vts.pfms.committee.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -10,7 +12,7 @@ public class RfaActionDto
 	private Long RfaId;
 	private String LabCode;
 	private Long ProjectId;
-	private Long RfaNo;
+	private String RfaNo;
 	private Date RfaDate;
 	private Long PriorityId;
 	private Long CategoryId;
@@ -23,5 +25,8 @@ public class RfaActionDto
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	private String AssignorAttachment;
+	private String AssigneAttachment;
+	private MultipartFile multipartfile;
 	
 }

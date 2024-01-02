@@ -97,7 +97,6 @@ public interface ActionService {
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
-	
 	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String Division) throws Exception;
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	public Object[] RfaLabDetails(String LabCode) throws Exception;
@@ -110,12 +109,13 @@ public interface ActionService {
 	
 	public List<Object[]> RfaForwardApprovedList(String EmpId) throws Exception;
 	public List<Object[]> RfaInspectionApprovedList(String EmpId) throws Exception;
-	public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId,String Logintype,String assineeId)throws Exception;
+//	public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId,String Logintype,String assineeId)throws Exception;
+	public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId, String rfaEmpId)throws Exception;
 	public Object[] getRfaAssign(String rfa) throws Exception;
-	public Long RfaModalSubmit(RfaAssign assign) throws Exception;
+	public Long RfaModalSubmit(RfaAssign assign,RfaActionDto rfa) throws Exception;
 	public Object[] RfaAssignAjax(String rfaId)throws Exception;
-	public Long RfaModalUpdate(RfaAssign assign) throws Exception;
-	public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String EmpId,String createdBy,String replyMsg,String assignorId) throws Exception;
+	public Long RfaModalUpdate(RfaAssign assign,RfaActionDto rfa) throws Exception;
+	public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String EmpId,String assignee,String assignor,String replyMsg) throws Exception;
 	public String getAssignDetails(String empId, Long rfaId)throws Exception;
 	public Object[] getRfaAddData(String rfaId)throws Exception;
 	public Object[] getRfaInspectionData(String rfaId)throws Exception;
@@ -126,4 +126,8 @@ public interface ActionService {
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
 	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)throws Exception;
 	public List<Object[]> getAllEmployees(String flag)throws Exception;
+	public List<Object[]> getRfaModalEmpList()throws Exception;
+	public List<Object[]> getRfaTDList()throws Exception;
+	public List<Object[]> getRfaTransList(String rfaTransId)throws Exception;
+	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
 }

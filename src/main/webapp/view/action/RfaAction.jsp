@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
@@ -65,6 +66,19 @@ height: 25px;
 width: 25px;
 background-color: transparent;
 }
+
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+
 </style>
 </head>
 <body>
@@ -80,7 +94,8 @@ background-color: transparent;
 List<Object[]> RfaActionList=(List<Object[]>) request.getAttribute("RfaActionList");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 String Project=(String)request.getAttribute("Project");
-List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+String ModalEmpList=(String)request.getAttribute("ModalEmpList");
+String ModalTDList=(String)request.getAttribute("ModalTDList");
 String Employee=(String)request.getAttribute("Employee");
 String EmpId=(String)request.getAttribute("EmpId");
 String fdate=(String)request.getAttribute("fdate");
@@ -187,7 +202,8 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 											<th>Project</th>
 											<th>Priority</th>
 											<th>Assigned To</th>
-											<th>Action</th>
+											<th>Status</th>
+											<th style="width: 14%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -202,11 +218,17 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 											<td style="text-align: center;"><%=obj[2] %></td>
 											<td style="text-align: center;"><%=obj[5] %></td>
 											<td><%=obj[10] %></td>
+											<td style="text-align: center;">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[17] %> 
+								    			</button>
+	                                        </td>
 											<td class="left width">
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid" value="<%=obj[0]%>/<%=obj[3] %>" 
-													style="margin-left: 31%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
+													style="margin-left:10%;" formtarget="_blank"   data-toggle="tooltip" data-placement="top"  data-original-title="VIEW DOCUMENT">
 													<div class="cc-rockmenu">
 														<div class="rolling">
 															<figure class="rolling_icon">
@@ -228,20 +250,17 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 												value="${_csrf.token}" />
 					                       <%
 					                       if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())){%>
-					                     
-											<button class="editable-click"  style="background-color: transparent;" 
-											formaction="RfaActionForward.htm" formmethod="POST" formnovalidate="formnovalidate"
-												name="rfaa" value="<%=obj[0]%>" 
-												onclick="return frdRfa(<%=obj[0]%>,'<%=obj[14]%>');"
-													data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" title="" data-original-title="FORWARD RFA"
-												
-												>
+				                         <button class="editable-click"  style="background-color: transparent; name="rfaa" value="<%=obj[0]%>" 
+												<%-- onclick="return frdRfa(<%=obj[0]%>,'<%=obj[14]%>');" --%>
+											type="button"	data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" 
+											onclick="forwardmodal('<%=obj[3]%>',<%=obj[0]%>)" title="" data-original-title="FORWARD RFA">
 												<div class="cc-rockmenu" >
 														<figure class="rolling_icon" >
 															<img src="view/images/forward1.png">
 														</figure>
 												</div>
 											</button>
+											
 											<input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" /> 
 												
@@ -250,14 +269,15 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 												<button data-original-title="REVOKE" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													formaction="RfaActionReturnList.htm" formmethod="POST"
-													formnovalidate="formnovalidate" name="rfa" id="rfaRevokeBtn"
-													value="<%=obj[0]%>"
-													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>')">
+													formnovalidate="formnovalidate"  id="rfaRevokeBtn"
 													
-														
-														<i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
+													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>')">
+												  <i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
 													
 												</button> 
+													<input type="hidden" name="rfa" id="rfaHidden">
+ 													<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
+      												 <input type="hidden" name="assignor" id="assignorId">
 	                                    <% } if(obj[11].toString().equalsIgnoreCase(UserId) && Integer.valueOf(obj[16].toString()) >0){ %>  
 													<button title="REMARKS" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
@@ -271,25 +291,24 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 													
 												</button> 
 											 <%} if(obj[14].toString().equalsIgnoreCase("AP")){%>  
-											 	<button class="editable-click"  style="background-color: transparent;" 
+											 	<button type="submit" class="editable-click"  style="background-color: transparent;" 
 											formaction="RfaActionForward.htm" formmethod="POST" formnovalidate="formnovalidate"
-												name="rfaa" value="<%=obj[0]%>" 
-												onclick="return rfaClose(<%=obj[0]%>,'<%=obj[14]%>');"
+												name="RFAID" value="<%=obj[0]%>" 
+												onclick="return confirm('Are you sure to close?')"
 													data-toggle="tooltip" data-placement="top" id="rfaFwdBtn" title="" data-original-title="CLOSE RFA"
-												
+
 												>
 												<div class="cc-rockmenu" >
 														<figure class="rolling_icon" >
 															<img src="view/images/close.png" id="closeImg">
 														</figure>
 												</div>
+												
 											</button>
+											<input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
-											<input type="hidden" name="projectid" value="<%=obj[13].toString() %>" > 
-											<input type="hidden" name="UserId" value="<%=UserId%>">
-											<input type="hidden" name="RfaStatus" value="" id="RfaStatus">
-											<input type="hidden" name="rfa" value="" id="rfa">
-											<input type="hidden" name="assigneed" value="" id="createdBy">
+											
+											
 											</td>
 											
 										</tr>
@@ -344,14 +363,10 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 		<tbody id="remarksTb"></tbody>
 							</table>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
  		<input type="hidden" name="rfa" id="rfaHidden">
  		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
-    
-        
-
-        
-        
+       <input type="hidden" name="assignor" id="assignorId">
 	</div>
 
 	
@@ -363,9 +378,61 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 				</div>
 		
 		</form>
+		
+			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">RFA No : <b id="rfamodalval" ></b></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+								<form name="specadd" id="specadd" action="RfaActionForward.htm" method="POST">
+						<div class="modal-body" >
+					
+				   			<div class="row">
+									 
+			                          <div class="col-3">
+				                             <div class="form-group">
+				                                     <b><label> RFA By : <span class="mandatory" style="color: red;">* </span></label></b> 
+				                                       <br>
+				                                       <select class=" form-control selectdee" onchange="return rfaOptionFunc()" style="width: 100%;" name="rfaoptionby" id="rfaoptionby" required="required" style="margin-top:-5px" >
+															<option disabled="disabled"  selected value="" >Choose...</option>
+															  <option value="AF" >Checked By</option>	
+											                  <option value="AX" >Approved By</option>
+														</select>	
+				                              </div>
+			                         </div>
+
+									  <div class="col-6" id="selectClassModal2">
+			                               <div class="form-group">
+											    <b><label>RFA Forward To : </label><br></b>
+												<select class="form-control selectdee " style="width: 100%;" name="rfaEmpModal" id="modalEmpList2" required="required"  data-live-search="true"  data-placeholder="Select Assignee" >
+												</select>
+											</div>
+									</div>
+									</div>
+											<div  align="center">
+			 				          		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+											<input type="hidden" name="rfano1" id="rfanomodal" value="">
+			 								<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="rfaforwarding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
+											<input type="hidden" name="RFAID" id="RFAID"> 
+							</div>
+								
+			 				</div>  
+			 			
+ 	<!-- Form End -->			
+							</form>
+						</div>
+					</div>
+				</div>
+		
+		
 </body>
 
 <script type="text/javascript">
+
 
 function Edit(myfrm){
 
@@ -474,9 +541,9 @@ $(function () {
 		}
 						
 function returnRfa(rfaId,RfaStatus,createdBy) {
-	$('#rfa').val(rfaId);
-	$('#RfaStatus').val(RfaStatus);
-	$('#createdBy').val(createdBy);
+	$('#rfaHidden').val(rfaId);
+	$('#RfaStatusHidden').val(RfaStatus);
+	$('#assignorId').val(createdBy);
 	  var confirmation = confirm('Are You Sure To Return this RFA ?');
 	  if(confirmation){
 		  var form = document.getElementById("myFrom");
@@ -567,5 +634,38 @@ function addRfa() {
 	
 }
 
+function forwardmodal(rfanomodal,RFAID){
+         $('#rfamodalval').html(rfanomodal);
+         $('#RFAID').val(RFAID);
+
+	     $('#ActionAssignfilemodal').modal('show');
+	     		
+}
+
+function rfaOptionFunc(){
+	
+	 var selectValue = $("#rfaoptionby").val();
+	 console.log()
+	 var ModalEmpList =<%=ModalEmpList%>;
+	 var ModalTDList =<%=ModalTDList%>;
+	 if (selectValue === "AF") {
+			var html="";
+			
+			for(var i=0;i<ModalEmpList.length;i++){
+				html=html+'<option value="'+ModalEmpList[i][0]+'">'+ModalEmpList[i][1]+","+ModalEmpList[i][2]+'</option>'
+			}
+			$('#modalEmpList2').html("");
+			$('#modalEmpList2').html(html);
+			
+		  } else {
+         
+				for(var i=0;i<ModalTDList.length;i++){
+					html=html+'<option value="'+ModalTDList[i][0]+'">'+ModalTDList[i][1]+","+ModalTDList[i][2]+'</option>'
+				}
+				$('#modalEmpList2').html("");
+				$('#modalEmpList2').html(html);
+		  }
+}
 </script>
+
 </html>

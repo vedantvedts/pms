@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -50,10 +51,12 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,9 +66,19 @@ import com.google.gson.Gson;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.io.font.FontConstants;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.CompressionConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfPage;
+import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
@@ -94,7 +107,8 @@ public class ActionController {
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
-	
+	@Autowired
+	Environment env;
 	@Autowired
 	ActionService service;
 	
@@ -1092,6 +1106,45 @@ public class ActionController {
 				return "action/ActionReports";
 			}
 			
+//			@RequestMapping(value = "ActionReportSubmit.htm", method = RequestMethod.POST)
+//			public String ActionReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
+//					throws Exception {
+//				String Logintype= (String)ses.getAttribute("LoginType");
+//				String UserId =(String)ses.getAttribute("Username");
+//				String LabCode = (String)ses.getAttribute("labcode");
+//				logger.info(new Date() +"Inside ActionReportSubmit.htm "+UserId);		
+//				try {
+//				
+//				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//				
+//				String Project = "A";
+//				if(req.getParameter("Project")!=null) {
+//					Project = req.getParameter("Project");
+//				}
+//				String Type = "A";
+//				if(req.getParameter("Type")!=null) {
+//					Type = req.getParameter("Type");					
+//				}
+//				System.out.print("EmpId"+EmpId+"Term"+req.getParameter("Term")+"Project"+Project+"Type"+Type+"LabCode"+LabCode);
+//				
+//				
+//				req.setAttribute("ProjectList",service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
+//				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode));	
+//				req.setAttribute("Term", req.getParameter("Term"));
+//				req.setAttribute("Project",Project);
+//				req.setAttribute("Type",Type);
+//				}
+//				catch (Exception e) {
+//					e.printStackTrace();
+//					logger.error(new Date() +" Inside ActionReportSubmit.htm "+UserId, e);
+//				}			
+//			
+//				return "action/ActionReports";
+//			}
+//			
+//			
+			
+			
 			@RequestMapping(value = "ActionReportSubmit.htm", method = RequestMethod.POST)
 			public String ActionReportSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {
@@ -1111,11 +1164,18 @@ public class ActionController {
 				if(req.getParameter("Type")!=null) {
 					Type = req.getParameter("Type");					
 				}
-				System.out.print("EmpId"+EmpId+"Term"+req.getParameter("Term")+"Project"+Project+"Type"+Type+"LabCode"+LabCode);
+				System.out.print("EmpId-"+EmpId+" Term- "+req.getParameter("Term")+" Project-"+Project+" Type-"+Type+" LabCode"+LabCode);
+				String term=req.getParameter("Term");
+				
+				List<Object[]>StatusList=service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode);
+				if(term.equalsIgnoreCase("I") && StatusList.size()>0) {
+					StatusList=StatusList.stream().filter(i -> Integer.parseInt(i[12].toString())>0).collect(Collectors.toList());
+				}
+				
 				
 				
 				req.setAttribute("ProjectList",service.LoginProjectDetailsList(EmpId, Logintype,LabCode));
-				req.setAttribute("StatusList", service.ActionReports(EmpId,req.getParameter("Term"),Project,Type,LabCode));	
+				req.setAttribute("StatusList", StatusList);	
 				req.setAttribute("Term", req.getParameter("Term"));
 				req.setAttribute("Project",Project);
 				req.setAttribute("Type",Type);
@@ -1127,8 +1187,6 @@ public class ActionController {
 			
 				return "action/ActionReports";
 			}
-			
-			
 			@RequestMapping(value = "ActionSearch.htm", method = RequestMethod.GET)
 			public String ActionSearch(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)
 					throws Exception {
@@ -2768,6 +2826,8 @@ public class ActionController {
 				String Project=req.getParameter("Project");
 				String Status=req.getParameter("Status");
 				
+				 Gson json = new Gson();
+				
 			
 				if(fdate==null)
 				{
@@ -2786,9 +2846,11 @@ public class ActionController {
 				{	
 					tdate=sdf1.format(sdf.parse(tdate));				
 				}
+				
 				req.setAttribute("tdate",tdate);
 				req.setAttribute("fdate",fdate);
-				
+				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList()));
+				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList()));
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId,LoginType,LabCode));
 				req.setAttribute("Project",Project);
 				req.setAttribute("Employee", Emp);
@@ -2836,8 +2898,13 @@ public class ActionController {
 					//rfaList.add(assignDetails);
 					
 				}
+				
+				 Gson json = new Gson();
+				
 				req.setAttribute("RfaInspectionList", RfaInspectionList);
 				req.setAttribute("RfaForwardApprovedList", RfaForwardApprovedList);
+				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList()));
+				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList()));
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
 				
@@ -2903,6 +2970,8 @@ public class ActionController {
 				
 				String rfaid=req.getParameter("Did");
 				Object[] RfaActionEdit = service.RfaActionEdit(rfaid);
+				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
+				req.setAttribute("rfaAttachDownload", rfaAttachDownload);
 				req.setAttribute("RfaAction", RfaActionEdit);
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, LoginType, LabCode));		
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
@@ -2915,12 +2984,59 @@ public class ActionController {
 				logger.error(new Date() +" Inside RfaActionEdit.htm "+UserId, e);
 			}
 			return"action/RfaActionEdit";
-		
+			
 	 	}
+		
+		@RequestMapping(value = "RfaAttachmentDownload.htm", method = {RequestMethod.GET, RequestMethod.POST})
+	 	public void RfaAttachmentDownload(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
+	 	{
+			String UserId = (String) ses.getAttribute("Username");
+
+			logger.info(new Date() +"Inside RfaAttachmentDownload.htm "+UserId);
+			try {
+				
+				String rfaid=req.getParameter("rfaId");
+				String type=req.getParameter("type");
+				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
+				
+				File my_file=null;
+				if(type.equalsIgnoreCase("ARD")) {
+					
+					my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[3]);
+					res.setContentType("Application/octet-stream");	
+			        res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[3].toString()); 
+					
+				}else {
+					
+				   my_file = new File(uploadpath+ rfaAttachDownload[2]+File.separator+rfaAttachDownload[4]);
+				   res.setContentType("Application/octet-stream");	
+		           res.setHeader("Content-disposition","attachment; filename="+rfaAttachDownload[4].toString()); 
+				}
+		        OutputStream out = res.getOutputStream();
+		        FileInputStream in = new FileInputStream(my_file);
+		        byte[] buffer = new byte[4096];
+		        int length;
+		        while ((length = in.read(buffer)) > 0){
+		           out.write(buffer, 0, length);
+		        }
+		        in.close();
+		        out.flush();
+		        out.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside RfaAttachmentDownload.htm "+UserId, e);
+			}
+			
+			
+	 	}
+			
+		
 		@RequestMapping(value = "RfaAEditSubmit.htm", method = {RequestMethod.GET, RequestMethod.POST})
-	 	public String RfaAEditSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
+	 	public String RfaAEditSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir,
+	 			@RequestPart("attachment") MultipartFile attachment)throws Exception
 	 	{
 	 		String UserId = (String) ses.getAttribute("Username");
+	 		String LabCode = (String) ses.getAttribute("labcode");
 	 		
 	 		logger.info(new Date() +"Inside RfaAEditSubmit.htm "+UserId);
 			try {
@@ -2932,9 +3048,9 @@ public class ActionController {
 				String reference=req.getParameter("reference");
 				String rfaid=req.getParameter("rfaid");
 
-				
 				RfaActionDto rfa = new RfaActionDto();
 				
+				rfa.setLabCode(LabCode);
 				rfa.setRfaId(Long.parseLong(rfaid));
 				rfa.setRfaDate(sdf.parse(rfadate));
 				rfa.setPriorityId(Long.parseLong(priority));
@@ -2942,6 +3058,8 @@ public class ActionController {
 				rfa.setDescription(description);
 				rfa.setReference(reference);
 				rfa.setModifiedBy(UserId);
+				rfa.setMultipartfile(attachment);
+				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				
 				Long count=service.RfaEditSubmit(rfa);
 				if (count > 0) {
@@ -2958,7 +3076,8 @@ public class ActionController {
 	 	}
 		
 		@RequestMapping(value = "RfaActionSubmit.htm", method = {RequestMethod.GET, RequestMethod.POST})
-	 	public String RfaActionSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir)throws Exception
+	 	public String RfaActionSubmit(HttpServletResponse res , HttpServletRequest req ,HttpSession ses , RedirectAttributes redir,
+	 			@RequestPart("attachment") MultipartFile attachment)throws Exception
 	 	{
 	 		String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String) ses.getAttribute("labcode");
@@ -2974,6 +3093,7 @@ public class ActionController {
 				String description=req.getParameter("description");
 				String reference=req.getParameter("reference");
 				String assignee=req.getParameter("assignee");
+				String rfano=req.getParameter("rfano");
 				
 				RfaActionDto rfa = new RfaActionDto();
 				
@@ -2985,7 +3105,13 @@ public class ActionController {
 				rfa.setReference(reference);
 				rfa.setAssignorId(EmpId);
 				rfa.setAssigneeId(Long.parseLong(assignee));
+				rfa.setRfaNo(rfano);
+				rfa.setMultipartfile(attachment);
+				rfa.setAssignorAttachment(attachment.getOriginalFilename());
+			
+				
 				Long count=service.RfaActionSubmit(rfa,LabCode,UserId,assignee);
+				
 				if (count > 0) {
 					redir.addAttribute("result", "RFA Added Successfully");
 				} else {
@@ -3016,8 +3142,9 @@ public class ActionController {
 		        String rfaData=req.getParameter("rfaid");
 		        String[] rfadetails = rfaData.split("/");
 		        String rfaid=rfadetails[0];
-		        String printname=rfadetails[1]+"/"+rfadetails[2]+"/"+rfadetails[3]+"/"+rfadetails[4];
-			  Object[] RfaPrintData = service.RfaPrintData(rfaid);
+//		        String printname=rfadetails[1]+"/"+rfadetails[2]+"/"+rfadetails[3]+"/"+rfadetails[4];
+		        String printname=rfadetails[1];
+			    Object[] RfaPrintData = service.RfaPrintData(rfaid);
 			  
 				req.setAttribute("RfaPrint", RfaPrintData);
 				req.setAttribute("ProjectList", service.ProjectList());		
@@ -3027,7 +3154,10 @@ public class ActionController {
 			    req.setAttribute("LabDetails", service.RfaLabDetails(LabCode)); 
 			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
 			
-			String filename="null";
+			   
+			 Object[]attachmentData=service.RfaAttachmentDownload(rfaid);
+			    
+			String filename="RFA Attachment "+ printname;
 			
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
@@ -3045,9 +3175,117 @@ public class ActionController {
 			FontProvider dfp = new DefaultFontProvider(true, true, true);
 			converterProperties.setFontProvider(dfp);
 			HtmlConverter.convertToPdf(fis1, pdfDoc, converterProperties);
-			res.setContentType("application/pdf");
-			res.setHeader("Content-disposition", "inline;filename=" + printname + ".pdf");
-			File f = new File(path + "/" + filename +  ".pdf");
+			//new
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "mergedb.pdf");
+	        PdfDocument pdfDocs = new PdfDocument(pdfw);
+	        pdfw.setCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+	        PdfDocument pdfDocMain = new PdfDocument(new PdfReader(path+File.separator+filename+".pdf"),new PdfWriter(path+File.separator+filename+"Maintemp.pdf"));
+	        Document docMain = new Document(pdfDocMain,PageSize.A4);
+	        docMain.setMargins(50, 50, 50, 50);
+	  
+	        docMain.close();
+	        pdfDocMain.close();
+	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
+	        Files.delete(pathOfFileMain);	
+	        
+	        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
+	        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
+	        PdfMerger merger = new PdfMerger(pdfDocument);
+	        
+	        
+	        
+	        if(attachmentData!=null) {
+	        	try {
+	        		
+	        		if(attachmentData[3]!=null) {
+		        		
+	        			if(FilenameUtils.getExtension(attachmentData[3].toString()).equalsIgnoreCase("pdf")) {
+	        		        PdfDocument pdfDocument1 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[3]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		        Document document4 = new Document(pdfDocument1,PageSize.A4);
+	        		        document4.setMargins(50, 50, 50, 50);
+	        		        Rectangle pageSize;
+	        		        PdfCanvas canvas;
+	        		        int n = pdfDocument1.getNumberOfPages();
+	        		
+	        		            PdfPage page = pdfDocument1.getPage(1);
+	        		            pageSize = page.getPageSize();
+	        		            canvas = new PdfCanvas(page);
+	        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+	        		           // canvas.addImage(leftLogo, recta, false);
+	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+	        		            //canvas.addImage(rightLogo, recta2, false);
+	        		            canvas.beginText().setFontAndSize(
+	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+	        		                .moveText(pageSize.getWidth() / 3  , pageSize.getHeight() - 25)
+	        		                 .showText("RFA Attachment")
+	        		                  .endText();
+
+	        		   
+	        		        document4.close();
+	        		        pdfDocument1.close();
+	        	        	PdfReader pdf4=new PdfReader(path+"/"+filename+"temp.pdf");
+	        	        	PdfDocument pdfDocument4 = new PdfDocument(pdf4);
+	        		        merger.merge(pdfDocument4, 1, pdfDocument4.getNumberOfPages());
+	        		        
+	        		        pdfDocument4.close();
+	        		        pdf4.close();
+	        		        Path pathOfFile= Paths.get( path+File.separator+filename+"temp.pdf");
+	        		        Files.delete(pathOfFile);	
+	        			}
+					} 
+	        		
+	        		
+	        	if(attachmentData[4]!=null) {
+	        		
+	        			if(FilenameUtils.getExtension(attachmentData[4].toString()).equalsIgnoreCase("pdf")) {
+	        		        PdfDocument pdfDocument2 = new PdfDocument(new PdfReader(env.getProperty("ApplicationFilesDrive")+attachmentData[2]+"\\"+attachmentData[4]),new PdfWriter(path+File.separator+filename+"temp.pdf"));
+	        		        Document document5 = new Document(pdfDocument2,PageSize.A4);
+	        		        document5.setMargins(50, 50, 50, 50);
+	        		        Rectangle pageSize;
+	        		        PdfCanvas canvas;
+	        		        int n = pdfDocument2.getNumberOfPages();
+	        		
+	        		            PdfPage page = pdfDocument2.getPage(1);
+	        		            pageSize = page.getPageSize();
+	        		            canvas = new PdfCanvas(page);
+	        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
+	        		           // canvas.addImage(leftLogo, recta, false);
+	        		            Rectangle recta2=new Rectangle(pageSize.getWidth()-50,pageSize.getHeight()-50,40,40);
+	        		            //canvas.addImage(rightLogo, recta2, false);
+	        		            canvas.beginText().setFontAndSize(
+	        		                PdfFontFactory.createFont(FontConstants.HELVETICA), 20)
+	        		                .moveText(pageSize.getWidth() / 3, pageSize.getHeight() - 25)
+	        		                 .showText("Inspection Attachment")
+	        		                  .endText();
+
+	        		   
+	        		        document5.close();
+	        		        pdfDocument2.close();
+	        	        	PdfReader pdf2=new PdfReader(path+"/"+filename+"temp.pdf");
+	        	        	 PdfDocument pdfDocument3 = new PdfDocument(pdf2);
+	        		        merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+	        		        
+	        		        pdfDocument3.close();
+	        		        pdf2.close();
+	        		        Path pathOfFile1= Paths.get( path+File.separator+filename+"temp.pdf");
+	        		        Files.delete(pathOfFile1);	
+	        			}
+					} 
+	        	}
+	        	
+	        	catch (Exception e) {
+					
+				}
+	        }
+	        
+	        pdfDocument.close();
+	        merger.close();
+
+	        pdf1.close();	       
+	        pdfw.close();
+	        res.setContentType("application/pdf");
+	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+	        File f=new File(path +File.separator+ "mergedb.pdf");
 			FileInputStream fis = new FileInputStream(f);
 			DataOutputStream os = new DataOutputStream(res.getOutputStream());
 			res.setHeader("Content-Length", String.valueOf(f.length()));
@@ -3059,7 +3297,7 @@ public class ActionController {
 			os.close();
 			fis.close();
 			Path pathOfFile2 = Paths.get(path + "/" + filename  + ".pdf");
-			Files.delete(pathOfFile2);
+			//Files.delete(pathOfFile2);
 
  		
 	 	}catch (Exception e) {
@@ -3083,56 +3321,83 @@ public class ActionController {
 		       List<String> rfaInspectionApproval  = Arrays.asList("AR","RFA");
 			logger.info(new Date() +"Inside RfaActionForward.htm "+UserId);		
 			try {
-				
-				String RfaStatus = req.getParameter("RfaStatus");
+				//String RfaStatus = req.getParameter("RfaStatus");
 				String projectid=req.getParameter("projectid");
-			    String rfa=req.getParameter("rfa");
-			    
-			    long assignid=0;
-			    Object[]assign = service.getRfaAssign(rfa);
-			    String assineeId=service.getAssineeId(rfa);
-			    if(RfaStatus.equalsIgnoreCase("AV")) {
-			    	if( assign!=null) {
-			    		assignid=Long.parseLong(assign[0].toString());
-			    	
-			    	}
-			    	if(assignid<=0) {
-			    		
-			    		redir.addAttribute("resultfail", "RFA Forward Unsuccessful,Please add the Details");
-			    		return "redirect:/RfaActionForwardList.htm";
-			    	}
-			    	
-			    }
-			  long count=service.RfaActionForward(RfaStatus,projectid,UserId,rfa,EmpId,Logintype,assineeId);
+			    String rfa=req.getParameter("RFAID");
+			    String status=req.getParameter("rfaoptionby");
+			    String rfaEmpId=req.getParameter("rfaEmpModal");
+
+//			    long assignid=0;
+//			    Object[]assign = service.getRfaAssign(rfa);
+//			    String assineeId=service. (rfa);
+//			    if(RfaStatus.equalsIgnoreCase("AV")) {
+//			    	if( assign!=null) {
+//			    		assignid=Long.parseLong(assign[0].toString());
+//			    	
+//			    	}
+//			    	if(assignid<=0) {
+//			    		
+//			    		redir.addAttribute("resultfail", "RFA Forward Unsuccessful,Please add the Details");
+//			    		return "redirect:/RfaActionForwardList.htm";
+//			    	}
+//			    	
+//			    }
+//	            long count=service.RfaActionForward(RfaStatus,projectid,UserId,rfa,EmpId,Logintype,assineeId);
+			  long count=service.RfaActionForward(status,projectid,UserId,rfa,EmpId,rfaEmpId);
+
+			  
+			  if (count > 0) {
+				  
+				  if(status.equalsIgnoreCase("AF") || status.equalsIgnoreCase("AX")) {
+					  redir.addAttribute("result", "RFA Forwarded Successfully");
+				  }else if( status.equalsIgnoreCase("AC")||status.equalsIgnoreCase("AV")){
+					  redir.addAttribute("result", "RFA Forwarded Successfully");
+					  return "redirect:/RfaActionForwardList.htm";
+		          }else if(status.equalsIgnoreCase("ARC")){
+		        	  redir.addAttribute("result", "RFA Close Successfully");
+		          }else if(status.equalsIgnoreCase("AY") || status.equalsIgnoreCase("RFA")){
+		        	  redir.addAttribute("result", "RFA Forwarded Successfully");
+		        	  return "redirect:/RfaInspection.htm";
+		          }else if(status.equalsIgnoreCase("AR") || status.equalsIgnoreCase("AP")){
+		        	  redir.addAttribute("result", "RFA Forwarded Successfully");
+		        	  return "redirect:/RfaInspectionApproval.htm";
+		          }
+				  else {
+		        	  redir.addAttribute("result", "RFA Forward Unsuccessful");
+		          }
+				  
+			  }
+			  	  
+			  
+//			
+//				if (count > 0) {
+//					redir.addAttribute("result", "RFA Close Successfully");
+//					if(status.equalsIgnoreCase("AF")) {
+//						
+//					}else
+//					redir.addAttribute("result", "RFA Forwarded Successfully");
+//				} else {
+//					if(status.equalsIgnoreCase("AF")) {
+//						redir.addAttribute("resultfail", "RFA Close Unsuccessful");
+//					}else
+//					redir.addAttribute("resultfail", "RFA Forward Unsuccessful");
+//				}
 				
-			
-				if (count > 0) {
-					if(RfaStatus.equalsIgnoreCase("AP")) {
-						redir.addAttribute("result", "RFA Close Successfully");
-					}else
-					redir.addAttribute("result", "RFA Forwarded Successfully");
-				} else {
-					if(RfaStatus.equalsIgnoreCase("AP")) {
-						redir.addAttribute("resultfail", "RFA Close Unsuccessful");
-					}else
-					redir.addAttribute("resultfail", "RFA Forward Unsuccessful");
-				}
-				
-				if(rfaStatus1.contains(RfaStatus)) {
-					
-					return "redirect:/RfaAction.htm";
-				}else if(rfaInspectionStatus.contains(RfaStatus)){
-					
-					return "redirect:/RfaInspection.htm";
-				}else if(rfaForward.contains(RfaStatus)){
-					
-					return "redirect:/RfaActionForwardList.htm";
-				}else if(rfaInspectionApproval.contains(RfaStatus)){
-					
-					return "redirect:/RfaInspectionApproval.htm";
-				}else {
-					return "redirect:/RfaAction.htm";
-				}
+//				if(rfaStatus1.contains(status)) {
+//					
+//					return "redirect:/RfaAction.htm";
+//				}else if(rfaInspectionStatus.contains(status)){
+//					
+//					return "redirect:/RfaInspection.htm";
+//				}else if(rfaForward.contains(status)){
+//					
+//					return "redirect:/RfaActionForwardList.htm";
+//				}else if(rfaInspectionApproval.contains(status)){
+//					
+//					return "redirect:/RfaInspectionApproval.htm";
+//				}else {
+//					return "redirect:/RfaAction.htm";
+//				}
 
 			}
 			catch (Exception e) {
@@ -3166,6 +3431,7 @@ public class ActionController {
 					
 				}
 				req.setAttribute("RfaForwardList", RfaForwardList);
+				req.setAttribute("ModalTDList", service.getRfaTDList());
 				req.setAttribute("RfaForwardApprovedList", RfaForwardApprovedList);
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
@@ -3195,11 +3461,12 @@ public class ActionController {
 					Long rfaId = Long.parseLong(RfaInspectionApprovalList.get(i)[0].toString());
 					
 					 assignDetails = service.getAssignDetails(EmpId,rfaId);
-					//rfaList.add(assignDetails);
+					//rfaList.add(assignDetails);  
 					
 				}
 				req.setAttribute("RfaInspectionApprovalList", RfaInspectionApprovalList);
 				req.setAttribute("RfaInspectionApprovedList", RfaInspectionApprovedList);
+				req.setAttribute("ModalTDList", service.getRfaTDList());
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
 				
@@ -3211,9 +3478,9 @@ public class ActionController {
 			return "action/RfaInspectionApproval";
 
 		}
-		
 		@RequestMapping(value = "RfaAssignFormSubmit.htm", method = RequestMethod.POST)
-		public String RfaModalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		public String RfaModalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
+				@RequestPart("attachment") MultipartFile attachment) throws Exception {
 		       String UserId = (String) ses.getAttribute("Username");
 		       String LabCode =(String ) ses.getAttribute("labcode");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -3222,7 +3489,7 @@ public class ActionController {
 			try {
 				
 				Long count=0l;
-				String rfaid = req.getParameter("rfaid");
+				String rfaid = req.getParameter("rfaId");
 				String RfaNo = req.getParameter("RfaNo");
 				String fdate = req.getParameter("fdate");
 				String observation = req.getParameter("observation");
@@ -3243,7 +3510,15 @@ public class ActionController {
 				assign.setCreatedBy(UserId);
 				assign.setIsActive(1);
 				
-				 count=service.RfaModalSubmit(assign);
+				RfaActionDto rfa = new RfaActionDto();
+				rfa.setRfaId(Long.parseLong(rfaid));
+				rfa.setLabCode(LabCode);
+				rfa.setModifiedBy(UserId);
+				rfa.setCreatedBy(UserId);
+				rfa.setMultipartfile(attachment);
+				rfa.setAssigneAttachment(attachment.getOriginalFilename());
+				
+				 count=service.RfaModalSubmit(assign,rfa);
 				// service.RfaInspectionEdit(rfaid);
 					if (count > 0) {
 						redir.addAttribute("result", "RFA Inspection Added Successfully");
@@ -3265,7 +3540,17 @@ public class ActionController {
 					assign.setRfaStatus("AE");
 					assign.setModifiedBy(UserId);
 					assign.setIsActive(1);
-					count=service.RfaModalUpdate(assign);
+					
+					RfaActionDto rfa = new RfaActionDto();
+					rfa.setRfaId(Long.parseLong(rfaid));
+					rfa.setLabCode(LabCode);
+					rfa.setModifiedBy(UserId);
+					rfa.setCreatedBy(UserId);
+					rfa.setMultipartfile(attachment);
+					rfa.setAssigneAttachment(attachment.getOriginalFilename());
+
+					count=service.RfaModalUpdate(assign,rfa);
+
 					
 					if (count > 0) {
 						redir.addAttribute("result", "RFA Inspection Updated Successfully");
@@ -3307,55 +3592,112 @@ public class ActionController {
 		return json.toJson(RfaAssignAjax);
 		}
 		
+//		@RequestMapping(value = "RfaActionReturnList.htm", method = RequestMethod.POST)
+//		public String RfaActionReturnList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+//			
+//		       String UserId = (String) ses.getAttribute("Username");
+//		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		     
+//		       String rfa=null;
+//		       String rfaAdding  = "AF";
+//		       List<String> rfaReturning = Arrays.asList("AC","AF","AY");
+//		       String createdBy=null;
+//		       String RfaStatus =null;
+//		       String assignorId =null;
+//			   // String inspectionAdding  = "RFA";
+//		     
+//			logger.info(new Date() +"Inside RfaActionReturnList.htm "+UserId);		
+//			try {
+//				
+//				 RfaStatus = req.getParameter("RfaStatus");
+//			     rfa=req.getParameter("rfa");
+//			     createdBy=req.getParameter("assigneed");
+//			     assignorId=req.getParameter("userId");
+//			    String replyMsg=req.getParameter("replyMsg");
+//			    
+//			  
+//				Long RfaReturnList = service.RfaReturnList(RfaStatus,UserId,rfa,EmpId,createdBy,replyMsg,assignorId);
+//				if (RfaReturnList > 0) {
+//					redir.addAttribute("result", "RFA Revoked Successfully");
+//				} else {
+//					redir.addAttribute("resultfail", "RFA Revoked Unsuccessful");
+//				}
+//				req.setAttribute("RfaReturnList", RfaReturnList);
+//
+//			}
+//			catch (Exception e) {
+//					e.printStackTrace();
+//					logger.error(new Date() +" Inside RfaActionReturnList.htm "+UserId, e);
+//			}
+//			if(RfaStatus.equalsIgnoreCase(rfaAdding) && EmpId.equalsIgnoreCase(createdBy)) {
+//			return "redirect:/RfaAction.htm";
+//			}else if(RfaStatus.equalsIgnoreCase("RFA") || RfaStatus.equalsIgnoreCase("AY") && EmpId.equalsIgnoreCase(createdBy)) {
+//				return "redirect:/RfaInspection.htm";
+//			}else if(rfaReturning.contains(RfaStatus) ) {
+//				
+//				return "redirect:/RfaActionForwardList.htm";
+//			}else {
+//				return "redirect:/RfaInspectionApproval.htm";
+//			}
+//		}
+//		
+		
 		@RequestMapping(value = "RfaActionReturnList.htm", method = RequestMethod.POST)
-		public String RfaActionReturnList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		public String RfaActionReturnList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {	
+		
+			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+			 String UserId = (String) ses.getAttribute("Username");
+			 logger.info(new Date() +"Inside RfaActionReturnList.htm "+UserId);	
+			 
+			 try {
+				 
+			 String status=req.getParameter("RfaStatus");
+			 String assignee=req.getParameter("assignee");
+			 String assignor=req.getParameter("assignor");
+			 String rfa=req.getParameter("rfa");
+			 String replyMsg=req.getParameter("replyMsg");
+			 // for revoke
+			 
+			 
+			 
+			 if(assignor.equalsIgnoreCase(EmpId)&& status.equalsIgnoreCase("AF")) {
+				 status="REV";
+			 }
 			
-		       String UserId = (String) ses.getAttribute("Username");
-		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		     
-		       String rfa=null;
-		       String rfaAdding  = "AF";
-		       List<String> rfaReturning = Arrays.asList("AC","AF");
-		       String createdBy=null;
-		       String RfaStatus =null;
-		       String assignorId =null;
-			   // String inspectionAdding  = "RFA";
-		     
-			logger.info(new Date() +"Inside RfaActionReturnList.htm "+UserId);		
-			try {
-				
-				 RfaStatus = req.getParameter("RfaStatus");
-			     rfa=req.getParameter("rfa");
-			     createdBy=req.getParameter("assigneed");
-			     assignorId=req.getParameter("userId");
-			    String replyMsg=req.getParameter("replyMsg");
-			    
-			  
-				Long RfaReturnList = service.RfaReturnList(RfaStatus,UserId,rfa,EmpId,createdBy,replyMsg,assignorId);
-				if (RfaReturnList > 0) {
-					redir.addAttribute("result", "RFA Revoked Successfully");
-				} else {
-					redir.addAttribute("resultfail", "RFA Revoked Unsuccessful");
-				}
-				req.setAttribute("RfaReturnList", RfaReturnList);
-
-			}
-			catch (Exception e) {
-					e.printStackTrace();
-					logger.error(new Date() +" Inside RfaActionReturnList.htm "+UserId, e);
-			}
-			if(RfaStatus.equalsIgnoreCase(rfaAdding) && EmpId.equalsIgnoreCase(createdBy)) {
-			return "redirect:/RfaAction.htm";
-			}else if(RfaStatus.equalsIgnoreCase("RFA") && EmpId.equalsIgnoreCase(createdBy)) {
-				
-				return "redirect:/RfaInspection.htm";
-			}else if(rfaReturning.contains(RfaStatus) ) {
-				
-				return "redirect:/RfaActionForwardList.htm";
-			}else {
-				return "redirect:/RfaInspectionApproval.htm";
-			}
-		}
+			 List<String> ReturnStatus1  = Arrays.asList("AF","AX","AC","AV");
+			 List<String> ReturnStatus2  = Arrays.asList("RFA","AY","AR");
+			 
+			 long count=service.RfaReturnList(status,UserId,rfa,EmpId,assignee,assignor,replyMsg);
+			 
+			 if(status.equalsIgnoreCase("REV")) {
+				 if(count>0) {
+				 redir.addAttribute("result", "RFA Revoked Successfully");
+				 }else {
+					 redir.addAttribute("result", "RFA Revoked Unsuccessful");
+				 }
+				 return "redirect:/RfaAction.htm";
+			 }
+			 
+			
+			 if(count>0) {
+				 redir.addAttribute("result", "RFA Returned Successfully");
+			 
+			 }else {
+				 redir.addAttribute("result", "RFA Returned Unsuccessful");
+			 }
+			 
+			 if(ReturnStatus1.contains(status)) {
+					return "redirect:/RfaActionForwardList.htm";
+			 }if(ReturnStatus2.contains(status)) {
+					return "redirect:/RfaInspectionApproval.htm";
+			 }
+			 
+			 }catch (Exception e) {
+				e.printStackTrace();
+			} 
+			 
+			 return "redirect:/RfaActionForwardList.htm";
+          }
 		
 		@RequestMapping(value="getRfaAddData.htm",method=RequestMethod.GET)
 	    public @ResponseBody String getRfaAddData(HttpSession ses, HttpServletRequest req) throws Exception {
@@ -3461,8 +3803,10 @@ return json.toJson(rfaRemarkData);
 					
           			String scheduleid=null;
           			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
-          			if(meetingcount.size()<1) {
-          				
+          			
+          			List<String>list=new ArrayList<String>();
+          			if(meetingcount.size()>0) {
+          				list=meetingcount.stream().map(i -> i[0].toString()).collect(Collectors.toList());
           			}
           			
           			if(meettingid==null) {
@@ -3472,10 +3816,13 @@ return json.toJson(rfaRemarkData);
           				scheduleid=meetingcount.get(0)[0].toString();
               			}
           			}else {
+          				if(list.contains(meettingid)) {
           				scheduleid=meettingid;
+          				}else {
+          					scheduleid=list.get(0);
+          				}
           			}
       
-          			
           			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
           		
           			List<Object[]> meetinglist=service.MeettingList(committeeid,projectid,scheduleid);
@@ -3526,10 +3873,22 @@ return json.toJson(rfaRemarkData);
           				projectid=projectdetailslist.get(0)[0].toString();
           			}
 					
+					/*
+					 * String scheduleid=null; List<Object[]>
+					 * meetingcount=service.MeettingCount(committeeid,projectid);
+					 * 
+					 * if(meettingid==null) { if(meetingcount.size()<1) { scheduleid="0"; }else {
+					 * scheduleid=meetingcount.get(0)[0].toString(); } }else {
+					 * scheduleid=meettingid; }
+					 * 
+					 */
+          			
           			String scheduleid=null;
           			List<Object[]> meetingcount=service.MeettingCount(committeeid,projectid);
-          			if(meetingcount.size()<1) {
-          				
+          			
+          			List<String>list=new ArrayList<String>();
+          			if(meetingcount.size()>0) {
+          				list=meetingcount.stream().map(i -> i[0].toString()).collect(Collectors.toList());
           			}
           			
           			if(meettingid==null) {
@@ -3539,9 +3898,12 @@ return json.toJson(rfaRemarkData);
           				scheduleid=meetingcount.get(0)[0].toString();
               			}
           			}else {
+          				if(list.contains(meettingid)) {
           				scheduleid=meettingid;
+          				}else {
+          					scheduleid=list.get(0);
+          				}
           			}
-      
           			
           			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
           		
@@ -3581,5 +3943,20 @@ return json.toJson(rfaRemarkData);
       			return json.toJson(allEmployees);
       		} 	     
 
-        
+          	@RequestMapping(value = "RfaTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
+        	public String MobileNumberTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+        	{
+        		String Username = (String) ses.getAttribute("Username");
+        		logger.info(new Date() +"Inside RFATransStatus.htm "+Username);
+        		try {
+        			String rfaTransId = req.getParameter("rfaTransId").trim();
+        			System.out.println(rfaTransId+"[[[[[");
+        			req.setAttribute("RfaTransactionList", service.getRfaTransList(rfaTransId)) ;				
+        			return "action/RfaTransactionStatus";
+        		}catch (Exception e) {
+        			e.printStackTrace();
+        			logger.error(new Date() +" Inside RFATransStatus.htm "+Username, e);
+        			return "static/Error";
+        		}
+        	}
 }
