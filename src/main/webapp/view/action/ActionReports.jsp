@@ -9,8 +9,6 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
-
 <title>Assignee List</title>
 <style type="text/css">
 label{
