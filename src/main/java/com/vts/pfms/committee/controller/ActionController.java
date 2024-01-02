@@ -124,6 +124,7 @@ public class ActionController {
 	FormatConverter fc=new FormatConverter();
 	private SimpleDateFormat sdf2=fc.getRegularDateFormat();
 	
+	
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
