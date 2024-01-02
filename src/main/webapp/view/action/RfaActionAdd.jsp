@@ -7,7 +7,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
 <title>Rfa Action Add</title>
 
 <style type="text/css">

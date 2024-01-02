@@ -966,6 +966,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 
+	
 	private static final String PRIORITYLIST="SELECT priorityid,priority FROM pfms_rfa_priority";
 	@Override
 	public List<Object[]> PriorityList() throws Exception 

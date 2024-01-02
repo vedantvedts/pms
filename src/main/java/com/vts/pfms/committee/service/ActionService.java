@@ -97,7 +97,6 @@ public interface ActionService {
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
-	
 	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String Division) throws Exception;
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	public Object[] RfaLabDetails(String LabCode) throws Exception;

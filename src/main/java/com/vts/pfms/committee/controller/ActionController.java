@@ -2846,6 +2846,7 @@ public class ActionController {
 				{	
 					tdate=sdf1.format(sdf.parse(tdate));				
 				}
+				
 				req.setAttribute("tdate",tdate);
 				req.setAttribute("fdate",fdate);
 				req.setAttribute("ModalEmpList",json.toJson(service.getRfaModalEmpList()));

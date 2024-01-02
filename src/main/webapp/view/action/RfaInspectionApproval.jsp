@@ -22,7 +22,6 @@
    cursor: pointer;
 }
 
-
 body{
 
    overflow-x: hidden; 

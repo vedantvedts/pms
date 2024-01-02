@@ -7,7 +7,6 @@
 <meta charset="ISO-8859-1">
 <title>RFA Transaction Status</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-
 <style type="text/css">
 
 
