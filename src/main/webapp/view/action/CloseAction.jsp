@@ -916,7 +916,10 @@ td
 	      								</td>	
 	      								     
 	      							<% int revision=Integer.parseInt(Assignee[10].toString());
-	      							for(int i=1;i<=2;i++){%>
+	      							if(revision>2){
+	      								revision=2;
+	      							}
+	      							for(int i=1;i<=revision;i++){%>
 	      							
 	      								<td style="padding-left: 50px;" >
 	      									<label style="font-size: medium; padding-top: 10px;  "> Revision - <%=i%> :</label>
