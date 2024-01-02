@@ -54,6 +54,7 @@ import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.PfmsInitiationAttachmentDto;
@@ -114,7 +115,7 @@ public class ProjectController
 	
 	@Value("${ApplicationFilesDrive}")
 	String uploadpath;
-	                                                                                        
+	
 	private static final Logger logger=LogManager.getLogger(ProjectController.class);
 	
 	FormatConverter fc=new FormatConverter();
@@ -260,6 +261,7 @@ public class ProjectController
 				}
 			}
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
+			req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		}catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
@@ -1063,7 +1065,7 @@ public class ProjectController
 				if(a<90L) {
 				 requirementId=reqtype[2]+reqtype[1]+("000"+(a+10));
 				 System.out.println("requirementId"+requirementId);
-				}else if(a<1000L) {
+				}else if(a<990L) {
 					requirementId=reqtype[2]+reqtype[1]+("00"+(a+10));
 					System.out.println("requirementId"+requirementId);
 				}else {
