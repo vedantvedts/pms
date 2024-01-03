@@ -197,20 +197,6 @@ $(document).ready(function() {
 });
 </script>	
 <script>
-$("#mobile").blur(function(){
-	
-	 var phoneno = /^\d{10}$/;
-	 var inputtxt=document.getElementById("mobile").value;
-	
-	 if (/^\d{10}$/.test(inputtxt)) {
-		   
-		} else {
-		    alert("Invalid number; must be ten digits");
-		    /* mobile.focus(); */
-		    return false;
-		}	  
-	});
-
 
 function formCheck(frmid)
 {
