@@ -771,17 +771,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 				<thead>
 					<tr>
 						<td colspan="6" style="border: 0">
-							<p style="font-size: 10px;text-align: center"> 
-								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-								<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-								<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-								<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-								<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-								<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-								<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-							</p>
+							
 						</td>									
 					</tr>
 										
@@ -869,18 +859,6 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<thead>
 							<tr>
 								<td colspan="7" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
-										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
-										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
-										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
-										<span class="delay">DO</span> : Delay - On Going &nbsp;&nbsp; 
-										<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp;
-										<span class="delay">FD</span> : Forwarded With Delay &nbsp;&nbsp;
-										<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
-										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
-										<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-									</p>
 								</td>									
 							</tr>
 										
@@ -1095,7 +1073,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<thead>
 									<tr>
 										<td colspan="10" style="border: 0">
-											<p style="font-size: 10px;text-align: center"> 
+											<!-- <p style="font-size: 10px;text-align: center"> 
 												 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 												 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 												 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1105,8 +1083,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 												 <span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 												 <span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 												 <span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-<!-- 												 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
- -->											 </p>
+												 <span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+											 </p> -->
 										</td>									
 									</tr>
 								
@@ -1309,7 +1287,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 							<thead>
 								<tr>
 									<td colspan="9" style="border: 0">
-										<p style="font-size: 10px;text-align: center"> 
+										<!-- <p style="font-size: 10px;text-align: center"> 
 											<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 											<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 											<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1319,8 +1297,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 											<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 											<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 											<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-<!-- 											<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
- -->										 </p>
+											<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+										 </p> -->
 									</td>									
 								</tr>
 							</thead>
@@ -1537,7 +1515,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 					<thead>	
 							<tr>
 								<td colspan="9" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+									<!-- <p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1548,7 +1526,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 										<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
 										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
-									</p>
+									</p> -->
 				   				</td>									
 							</tr>
 							<tr>
@@ -2292,7 +2270,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<thead>
 							<tr>
 								<td colspan="9" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+									<!-- <p style="font-size: 10px;text-align: center"> 
 									<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 									<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 									<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -2302,8 +2280,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 									<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 									<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-<!-- 									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
- -->									 </p>
+									<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp;
+									 </p> -->
 								</td>									
 							</tr>
 							
@@ -2535,7 +2513,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 						<thead>
 							<tr>
 								<td colspan="7" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+									<!-- <p style="font-size: 10px;text-align: center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -2545,8 +2523,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<span class="completed">CO</span> : Completed &nbsp;&nbsp; 
 										<span class="completeddelay">CD</span> : Completed with Delay &nbsp;&nbsp; 
 										<span class="inactive">IA</span> : InActive &nbsp;&nbsp;
-<!-- 										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
- -->									</p>
+										<span class="delaydays">DD</span> : Delayed days &nbsp;&nbsp; 
+									</p> -->
 								</td>									
 							</tr>
 							<tr>
