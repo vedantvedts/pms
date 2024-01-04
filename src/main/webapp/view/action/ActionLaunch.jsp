@@ -358,10 +358,10 @@ a:hover {
 														</tr>
 													</thead>
 													<tbody>
-														<%int  count=1;
+														<%	int  count=1;
 														 	if(AssignedList!=null && AssignedList.size()>0){
 															for(Object[] obj: AssignedList){ %>
-														<tr>
+															<tr>
 															<td style="width:1% !important; " class="center"><%=count %></td>
 															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5] %></td>
 															<td class="width-30px" ><%=sdf.format(obj[4])%></td>
@@ -401,6 +401,7 @@ a:hover {
 															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 														    <input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 														    <input type="hidden" name="ActionAssignId" value="<%=obj[9]%>"/>
+														    <input type="hidden" name="ActionPath" value="A">
 														
 															<%if(obj[7]!=null && "0".equals(obj[7].toString()) && "0".equals(obj[10].toString())){%>
 																<button class="btn btn-sm editable-click" type="button" onclick="Actioneditmodal('<%=obj[0]%>' , '<%=obj[9]%>'); ">
@@ -582,11 +583,9 @@ a:hover {
 							AssigneeEmpListForEdit(result[2]);
 							$('#modalassignee').val(''+result[2]).trigger('change');
 							
-							if(result[4]<2){
-								
+							if(result[4]<1){
 								$('#modalipdc1').show();
 								$('#modalipdc2').hide();
-								
 								$('#modalipdc1').daterangepicker({
 									
 									"singleDatePicker" : true,

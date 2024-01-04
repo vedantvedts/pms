@@ -294,12 +294,33 @@ td
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String back = (String)request.getAttribute("back");
   int countflag=0;
+  // for re-assign
+  String clusterid = (String)session.getAttribute("clusterid");
+	String LabCode =(String)request.getAttribute("LabCode"); 
+	List<Object[]> AllLabList = (List<Object[]>)request.getAttribute("AllLabList");
+	List<Object[]> SubList=(List<Object[]> ) request.getAttribute("SubList");
+	String ActionPath= (String)request.getAttribute("ActionPath");
 %>
 	
 
 	<% 
 		List<Object[]> actionslist = (List<Object[]>)request.getAttribute("actionslist");
 	%>
+	
+		<%String ses=(String)request.getParameter("result"); 
+	String ses1=(String)request.getParameter("resultfail");
+	if(ses1!=null){
+	%>
+	<div align="center">
+		<div class="alert alert-danger" role="alert" >
+			<%=ses1 %>
+		</div></div>
+		<%}if(ses!=null){%>
+		<div align="center">
+			<div class="alert alert-success" role="alert"  >
+				<%=ses %>
+			</div></div>
+			<%} %>
  <div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
 				<div class="modal-dialog "  role="document" style="min-width:60rem; max-width:80rem;overflow-x:auto;" >
 					<div class="modal-content">
@@ -872,16 +893,16 @@ td
 						</div>
 					</div>
       			</div>
-      		
+      		<div style="height:58vh;overflow: auto">
 	      		<div class="card-body">
 	      				<div class="row">
 	      					<div class="col-md-12">
 	      						<table style="width: 100%;">
 	      							<tr>
-	      								<td style="width: 15%;">
+	      								<td style="width: 12%;">
 	      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
 	      								</td>	      	
-	      								<td>&nbsp;&nbsp;
+	      								<td>
 	      									 <%=Assignee[5]%>
 	      								</td>							
 	      							</tr>
@@ -930,6 +951,25 @@ td
 	      							
 	      							<%}%>
 	      							</tr>	
+	      							
+	      							<tr>
+	      								<td>
+	      									<label style="font-size: medium; padding-top: 10px;  "> Action Type :</label>
+	      								</td>
+	      								
+	      								<td>
+	      								<%if(Assignee[21].toString().equalsIgnoreCase("A")) {%>
+											<span>Action</span>
+	      								<%} %>
+	      									<%if(Assignee[21].toString().equalsIgnoreCase("I")) {%>
+											<span>Issue</span>
+	      								<%} %>
+	      									<%if(Assignee[21].toString().equalsIgnoreCase("K")) {%>
+											<span>Risk</span>
+	      								<%} %>
+	      								</td>
+	      							</tr>
+	      							
 	      						</table>      						      					
 	      					</div>      				
 	      				</div>      		
@@ -959,6 +999,30 @@ td
 	    		<%-- <%if(Integer.parseInt(Assignee[10].toString())<2){ %>  --%>
 	    		<br>
 	    		<hr><br>
+	    		<form action="ActionReassign.htm" method="POST">
+	    		<div class="row">
+	    		<div class="col-md-2"><label>Re Assign</label>&nbsp;&nbsp;&nbsp;</div>
+	    			<div class="col-md-2">			<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" style=" width: 100% !important ;" onchange="AssigneeEmpListForEdit(0);" >
+									<%if(AllLabList!=null && AllLabList.size()>0){
+										 for(Object[] lab : AllLabList){
+											if(clusterid!=null && clusterid.equalsIgnoreCase(lab[1].toString())){
+											 %>
+											<option  value="<%=lab[3] %>" <%if(LabCode.equals(lab[3].toString())){ %>selected <%} %>><%=lab[3] %></option>
+											<%}}}%> 
+											<option  value="@EXP">Expert</option>
+										</select>
+										</div>
+											<div class="col-md-5"><select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
+											</select>	</div>
+											<button type="submit" class="btn btn-sm btn-warning text-dark" onclick="reassign()">REASSIGN</button>		
+	    						<input type="hidden" name="ActionPath" value="<%=ActionPath%>">
+	    						<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
+								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
+								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+	    		</div>
+	    		</form>
+	    		<br>
+	    		<hr><br>
 	    		<form method="post"  action="ExtendPdc.htm" >
 	          			<div class="row"> 
 							
@@ -968,24 +1032,59 @@ td
                             <div class="col-sm-2"  >
                             	<input class="form-control " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>" style=" margin-top: -4px;">
                             </div>
-							<div class="col-md-4">
+							<div class="col-md-4 mb-3">
 								<button type="submit" class="btn btn-sm submit"   onclick="return confirm('Are You Sure To Submit ?')" > Extend PDC</button>
 								<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
 								<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
 								<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+								<input type="hidden" name="flag" value="A">
+								<input type="hidden" name="ActionPath" value="<%=ActionPath%>">
 							</div>
 						</div>
 	      			</form>
-	      			<br>
+	      		
 	      			<hr>
 	      			<%-- <%} %> --%>
-	    		
+	      		<div style="padding: 5px;">	
+	      		<form enctype="multipart/form-data">
+	      		<div align="center"></div>
+	    		<div class="row">
+	    		<div class="col-md-2 mt-2"><label>Progress Date :</label></div>
+	    		<div class="col-md-2 mt-2" >
+                            	<input class="form-control " name="progressDate" id="progressDate" readonly="readonly">
+                 </div>
+	    		<div class="col-md-1 mt-2"><label>Progress:</label></div>
+	    		<div class="col-md-2 mt-2" >
+                   <input class="form-control " name="Progress" id="Progress"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+                 </div>
+	    		<div class="col-md-1 mt-2">
+	    		<label>Attachment:</label>
 	    		</div>
-	    		<%if(back!=null && back.equalsIgnoreCase("backTotodo")){%>
-	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ToDoReviews.htm">BACK</a></div>
-	    		<%}else{%>
-	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionLaunch.htm">BACK</a></div>
-	    		<%}%>
+	    			<div class="col-md-4 mt-2" >
+                  <input type="file" class="form-control" id="Attachment" accept=".pdf, .jpg, .jpeg" onchange="validateFile()">
+
+                 </div>
+	    		</div>
+	    		<div class="row mt-2">
+	    		<div class="col-md-2 "><label>Remarks:</label></div>
+	    		<div class="col-md-8">
+	    		                   <input class="form-control " name="remarks" id="remarks"  maxlength="250" placeholder="Maximum 250 chcarcters">
+	    		</div>
+	    		<div class="col-md-2">
+	    		<button type="button" onclick="submitProgress()" class="btn btn-sm submit" >SUBMIT</button>
+	    		</div>
+	    		</div>
+	    		</form>
+	    		</div>
+	    		</div>
+	    		</div>
+	    		<%if(ActionPath!=null && ActionPath.equalsIgnoreCase("I")){%>
+	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionIssue.htm">BACK</a></div>
+	    		<%}else if(ActionPath!=null && ActionPath.equalsIgnoreCase("F")){%>
+	    			<div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionForwardList.htm?Type=A">BACK</a></div>
+	    		<%}else if(ActionPath!=null && ActionPath.equalsIgnoreCase("A")){%>
+	    		  <div align="center" style="padding-bottom: 15px;" ><a  class="btn btn-primary btn-sm back"  href="ActionLaunch.htm">BACK</a></div>
+	    		<%} %>
     		</div>
     		<div class="card-header" style="background-color: #055C9D; height: 50px;">
 		    	<div class="row"> 
@@ -994,7 +1093,73 @@ td
       		</div>
   	 	</div>   
 	</div>
-	
+	<% if(SubList.size()>0){ %>  
+	 <div class="row" style="margin:10px;">
+	<div class="col-md-12">
+    	<div class="card" style="">
+      		<div class="card-body" >
+      		 <div class="row">
+				<div class="col-md-1"></div>
+				   <div class="col-md-10" style="padding-left: 0px">
+					
+									<div class="table-responsive" >
+				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+										<thead>
+											<tr>
+												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
+											</tr>	
+											<tr>					
+												<th style="text-align: left;">As On Date</th>
+												<th style="">Progress %</th>
+												<th style="">Remarks</th>								
+											 	<th style="">Attachment</th>
+												<!-- <th style="">Action</th> -->
+											</tr>
+										</thead>
+										<tbody>					
+									 	<%int  count=1;
+										for(Object[] obj: SubList){ %>
+																		
+										<tr>
+											<td width="12%"><%=sdf.format(obj[3])%></td>
+											<td width="6%">
+													<div class="progress" style="background-color:#cdd0cb !important">
+				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
+													</div>
+											</td>
+											<td style="text-align: left; width: 10%;"><%=obj[4]%></td>
+											<td style="text-align: left; width: 3%;">
+												<%if( obj[5]!=null){%>
+											        <div  align="center">
+															<a  href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>"  target="_blank"><i class="fa fa-download"></i></a>
+													</div>
+												<%}else{%>
+												<div  align="center">-</div>
+												 <%}%>
+												</td>
+											<%-- <td style="text-align: left; width: 6%;">
+												<form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
+					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
+				 									<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
+									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
+									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
+									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
+											        </form>
+												</td> --%>
+											</tr>				
+											<% count++; } %>
+										</tbody>
+									</table>
+								</div> 
+						
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>
+		<%}%>
 	
 <!-- ------------------------------- tree script ------------------------------- -->
 <script type="text/javascript">
@@ -1170,8 +1335,133 @@ var dt = new Date(from[2], from[1] - 1, from[0]);
 				format : 'DD-MM-YYYY'
 			}
 		});
+	
+	$('#progressDate').daterangepicker({
+		"singleDatePicker" : true,
+		"linkedCalendars" : false,
+		"showCustomRangeLabel" : true,
+		"maxDate" : new Date(),
+		"cancelClass" : "btn-default",
+		showDropdowns : true,
+		locale : {
+			format : 'DD-MM-YYYY'
+		}
+	});
+	$( document ).ready(function() {
+		 AssigneeEmpListForEdit(0);
+	});
+	
+	
+		function AssigneeEmpListForEdit(empid){
+	 	var $AssigneeLabCode =  $('#modelAssigneelabcode').val(); 
+		console.log($AssigneeLabCode)
+	 	if($AssigneeLabCode!=""){
+	 		
+	 		$.ajax({
+	 			
+	 			type : "GET",
+	 			url : "ActionAssigneeEmployeeList.htm",
+	 			data : {
+	 				LabCode : $AssigneeLabCode,	
+	 			},
+	 			datatype : 'json',
+	 			success : function(result) {
+	 				var result = JSON.parse(result);
+	 				var values = Object.keys(result).map(function(e) {
+	 					return result[e]
+	 				});
+	 				
+	 				var s = '';
+	 				s += '<option value="">Choose ...</option>';
+	 				if($AssigneeLabCode == '@EXP'){
+	 					
+	 				}
+	 				for (i = 0; i < values.length; i++) 
+	 				{
 
+	 					s += '<option value="'+values[i][0]+'">'+values[i][1] + '(' +values[i][3]+')' + '</option>';
+	 				} 
+	 				
+	 				$('#modalassignee').html(s);
+	 				$('#modalassignee').val(''+empid).trigger('change');
+	 			}
+	 		});
+	 		
+	 	}
+	 }	
+		
+		function reassign(){
+			
+			var modalassignee=$('#modalassignee').val();
+			if(modalassignee!==null ){
+				if(confirm('Are you sure to reassign this action?')){
+					
+				}else{
+					event.preventDefault();
+					return false;
+				}
+			}else{
+				alert("Please select an employee")
+				return false;
+			}
+			
+		}
 </script>  
+<script>
+    function validateFile() {
+        var fileInput = document.getElementById('Attachment');
+        var fileSize = fileInput.files[0].size; // in bytes
+
+        // Check if the file size is greater than 5MB (in bytes)
+        if (fileSize > 5 * 1024 * 1024) {
+            alert('File size exceeds 5MB. Please choose a smaller file.');
+            fileInput.value = ''; // Clear the file input
+        }
+    }
+    
+    
+    function submitProgress(){
+    	
+    	 var Progress=Number($('#Progress').val());
+    	 var ActionAssignId = <%=ActionAssignId%>;
+    	 var file= $("#Attachment")[0].files[0];
+    	 console.log(ActionAssignId)
+    	 var formData = new FormData();
+            formData.append("file", $("#Attachment")[0].files[0]);
+            formData.append("progressDate", $("#progressDate").val());
+            formData.append("Progress",Progress);
+            formData.append("remarks",$('#remarks').val());
+            formData.append("ActionAssignId",ActionAssignId);
+            formData.append("${_csrf.parameterName}", "${_csrf.token}");
+    	if(Progress==0){
+    		alert("Please give some progress");
+    	}
+    	else{
+    		if(confirm('Are you sure to submit progress?')){
+    			$.ajax({
+    				type:'POST',
+    				url:'ActionProgressAjaxSubmit.htm',
+    				 data: formData,
+    	                contentType: false,
+    	                processData: false,
+    	                success:function(result){
+    	                console.log("Hii")
+    	                alert("Progress updated Succesfully")
+    	                location.reload();
+    	                }
+    			
+    			})
+    			
+    		}else{
+    			event.preventDefault();
+    			return false;
+    		}
+    		
+    		
+    		
+    	}
+    }
+</script>
 
 </body>
 </html>

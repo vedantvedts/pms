@@ -225,7 +225,7 @@ a:hover {
 															<td class="left width1">		
 																<%if(obj[6]!=null && "A".equalsIgnoreCase(obj[6].toString()) || "B".equalsIgnoreCase(obj[6].toString())||"I".equalsIgnoreCase(obj[6].toString())){%> 
 																
-																<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
+																<form name="myForm1" id="myForm1" action="CloseAction.htm" method="POST" 
 																	style="display: inline">
 
 																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
@@ -243,6 +243,8 @@ a:hover {
 																	<input type="hidden" name="ActionMainId" value="<%=obj[0]%>"/>
 																	<input type="hidden" name="ActionNo" value="<%=obj[14]%>"/>
 																	<input type="hidden" name="ActionAssignid" value="<%=obj[15]%>"/>
+																	<input type="hidden" name="ActionAssignId" value="<%=obj[15]%>"/><!-- added  -->
+																	<input type="hidden" name="ActionPath" value="F"><!-- added -->
 																	<input type="hidden" name="ProjectId" value="<%=obj[16]%>"/>
 																	<input type="hidden" name="back" value="backToReview">
  																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

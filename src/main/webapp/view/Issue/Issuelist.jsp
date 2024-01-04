@@ -245,7 +245,7 @@ if(ses1!=null){
 															</div> <%} %></td>
 								<td class="center">
 								<%if(action!=null && !"F".equalsIgnoreCase(action)){%>
-									<form action="ActionSubLaunch.htm" method="post">
+									<form action="CloseAction.htm" method="post">
 										<button class="editable-click" name="sub" value="Details" 	>
 													<div class="cc-rockmenu">
 																<div class="rolling">
@@ -260,6 +260,7 @@ if(ses1!=null){
 										<input type="hidden" name="ActionAssignid" value="<%=issuedatalist.get(i)[6]%>">
 										<input type="hidden" name="ActionNo" value="<%=issuedatalist.get(i)[7]%>">
 										<input type="hidden" name="ActionPath" value="I">
+										<input type="hidden" name="ActionAssignId" value="<%=issuedatalist.get(i)[6]%>"/>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
 									
