@@ -1055,7 +1055,6 @@ public class ProjectController
 		String LabCode = (String)ses.getAttribute("labcode");
 		
 		String option=req.getParameter("action");
-		
 		try {
 				String  r=req.getParameter("reqtype");
 				String[]reqtype=r.split(" ");
