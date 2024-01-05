@@ -893,7 +893,7 @@ td
 						</div>
 					</div>
       			</div>
-      		<div style="height:58vh;overflow: auto">
+      		<div style="">
 	      		<div class="card-body">
 	      				<div class="row">
 	      					<div class="col-md-12">
@@ -1109,10 +1109,11 @@ td
 												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
 											</tr>	
 											<tr>					
-												<th style="text-align: left;">As On Date</th>
-												<th style="">Progress %</th>
-												<th style="">Remarks</th>								
-											 	<th style="">Attachment</th>
+												<th style="text-align: left;width:10%">As On Date</th>
+												<th style="width:20%">Progress %</th>
+												<th style="width:30%">Remarks</th>								
+											 	<th style="width:10%">Attachment</th>
+											 	<th style="width:20%">Progress By</th>
 												<!-- <th style="">Action</th> -->
 											</tr>
 										</thead>
@@ -1147,6 +1148,7 @@ td
 									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
 											        </form>
 												</td> --%>
+												<td><%=obj[7].toString() %></td>
 											</tr>				
 											<% count++; } %>
 										</tbody>

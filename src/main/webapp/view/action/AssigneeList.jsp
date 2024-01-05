@@ -228,7 +228,7 @@ a:hover {
 																				 <figure class="rolling_icon">
 																				 	<img src="view/images/repeat.png"  >
 															                       </figure>
-															                        <span> Re-Assign</span>
+															                        <span> Distribute</span>
 															                      </div>
 															                     </div>
 															                  </button> 
