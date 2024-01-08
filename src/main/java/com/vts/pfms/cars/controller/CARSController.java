@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -146,13 +147,14 @@ public class CARSController {
 				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
 				req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(carsInitiation.getEmpId()+"",Logintype,LabCode));
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
-				req.setAttribute("ApprovalEmpData", service.carsTransApprovalData(carsInitiationId));
-				req.setAttribute("CARSRSQRRemarksHistory", service.carsRSQRRemarksHistory(carsInitiationId));
+				req.setAttribute("RSQRApprovalEmpData", service.carsTransApprovalData(carsInitiationId,"RF"));
+				req.setAttribute("SoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId,"SF"));
+				req.setAttribute("CARSRSQRRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"RF"));
 				req.setAttribute("GDEmpIds", service.getEmpGDEmpId(carsInitiation.getEmpId()+""));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
 				
 				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
-				req.setAttribute("CARSSoCRemarksHistory", service.carsSoCRemarksHistory(carsInitiationId));
+				req.setAttribute("CARSSoCRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"SF"));
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 			}else {
 				req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,LabCode));
@@ -212,7 +214,7 @@ public class CARSController {
 			if(result!=0) {
 				redir.addAttribute("result", "CARS Initiation Added Successfully");
 			}else {
-				redir.addAttribute("resultfail", "CARS Initiation Add UnSuccessfull");
+				redir.addAttribute("resultfail", "CARS Initiation Add UnSuccessful");
 			}
 			redir.addAttribute("carsInitiationId", result);
 			redir.addAttribute("TabId","1");
@@ -258,7 +260,7 @@ public class CARSController {
 			if(result!=0) {
 				redir.addAttribute("result", "CARS Initiation Edited Successfully");
 			}else {
-				redir.addAttribute("resultfail", "CARS Initiation Edit UnSuccessfull");
+				redir.addAttribute("resultfail", "CARS Initiation Edit UnSuccessful");
 			}
 			redir.addAttribute("carsInitiationId", result);
 			redir.addAttribute("TabId","1");
@@ -550,7 +552,9 @@ public class CARSController {
 		logger.info(new Date() +"Inside CARSTransStatus.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
-			req.setAttribute("TransactionList", service.carsTransAllList(carsInitiationId)) ;				
+			req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId,"A")) ;
+			req.setAttribute("TransFlag", "A");
+			req.setAttribute("carsInitiationId", carsInitiationId);
 			return "cars/CARSTransactionStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -562,6 +566,7 @@ public class CARSController {
 	@RequestMapping(value="CARSRSQRApprovals.htm")
 	public String carsRSQRApprovals(HttpServletRequest req,HttpSession ses) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSRSQRApprovals.htm "+Username);
 		try {
@@ -588,6 +593,8 @@ public class CARSController {
 
 			req.setAttribute("PendingList", service.carsRSQRPendingList(EmpId));
 			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"B"));
+			req.setAttribute("DPandCSoCPendingList", service.carsDPandCSoCPendingList(EmpId, labcode));
+			req.setAttribute("DPandCSoCApprovedList", service.carsDPCSoCApprovedList(EmpId, fromdate, todate));
 			
 			return "cars/RSQRApprovals";
 		}catch (Exception e) {
@@ -608,8 +615,8 @@ public class CARSController {
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
 				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
-				req.setAttribute("ApprovalEmpData", service.carsTransApprovalData(carsInitiationId));
-				req.setAttribute("CARSRSQRRemarksHistory", service.carsRSQRRemarksHistory(carsInitiationId));
+				req.setAttribute("RSQRApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "RF"));
+				req.setAttribute("CARSRSQRRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"RF"));
 			}
 			String filename="CARS-RSQR_Approval";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -725,68 +732,6 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="CARSRSQRApprovedList.htm")
-	public String carsRSQRApprovedList(HttpServletRequest req,HttpSession ses) throws Exception{
-		String Username = (String)ses.getAttribute("Username");
-		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date() +"Inside CARSRSQRApprovedList.htm "+Username);
-		try {
-
-			String fromdate = req.getParameter("fromdate");
-			String todate = req.getParameter("todate");
-
-			LocalDate today=LocalDate.now();
-
-			if(fromdate==null) 
-			{
-				fromdate=today.withDayOfMonth(1).toString();
-				todate = today.toString();
-
-			}else
-			{
-				fromdate=fc.RegularToSqlDate(fromdate);
-				todate=fc.RegularToSqlDate(todate);
-			}
-
-			req.setAttribute("fromdate", fromdate);
-			req.setAttribute("todate", todate);
-			req.setAttribute("tab", req.getParameter("tab"));
-
-			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"A"));
-			
-			
-			String TabId = req.getParameter("TabId");
-			req.setAttribute("TabId", TabId!=null?TabId:"1");
-			
-			return "cars/AllCARSList";
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside CARSRSQRApprovedList.htm "+Username, e);
-			return "static/Error";
-		}
-	}
-	
-	@RequestMapping(value="InvForSoODateSubmit.htm")
-	public String invForSoODateSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
-		String Username = (String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside InvForSoODateSubmit.htm "+Username);
-		try {
-			String carsInitiationId = req.getParameter("carsInitiationId");
-			String calendardate = req.getParameter("calendardate");
-			int result = service.invForSoODateSubmit(carsInitiationId, fc.RegularToSqlDate(calendardate));
-			if(result!=0) {
-				redir.addAttribute("result","Inv for SoO Date Submitted Successfully");
-			}else {
-				redir.addAttribute("resultfail","Inv for SoO Date Submit Unsuccessful");
-			}
-			return "redirect:/CARSRSQRApprovedList.htm";
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date() +" Inside InvForSoODateSubmit.htm "+Username, e);
-			return "static/Error";
-		}
-	}
-	
 	@RequestMapping(value="CARSSoCAdd.htm")
 	public String carsSocAddSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
 			@RequestPart(name="SoOUpload", required = false) MultipartFile SoOFile,
@@ -823,7 +768,7 @@ public class CARSController {
 												  .build();
 				service.addCARSInitiationTransaction(transaction);
 			}else {
-				redir.addAttribute("resultfail", "CARS SoC Add UnSuccessfull");
+				redir.addAttribute("resultfail", "CARS SoC Add UnSuccessful");
 			}
 			
 			redir.addAttribute("carsInitiationId", carsInitiationId);
@@ -863,7 +808,7 @@ public class CARSController {
 			if(result!=0) {
 				redir.addAttribute("result", "CARS SoC Edit Successfully");
 			}else {
-				redir.addAttribute("resultfail", "CARS SoC Edit UnSuccessfull");
+				redir.addAttribute("resultfail", "CARS SoC Edit UnSuccessful");
 			}
 			
 			redir.addAttribute("carsInitiationId", carsInitiationId);
@@ -890,7 +835,8 @@ public class CARSController {
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
 			File my_file=null;
 			String file = ftype.equalsIgnoreCase("soofile")?soc.getSoOUpload():
-				          (ftype.equalsIgnoreCase("frfile")?soc.getFRUpload():soc.getExecutionPlan());
+				         (ftype.equalsIgnoreCase("frfile")?soc.getFRUpload(): 
+				         (ftype.equalsIgnoreCase("momfile")?soc.getMoMUpload():soc.getExecutionPlan() ) );
 			my_file = new File(LabLogoPath+"CARS\\SoC\\"+File.separator+file); 
 	        res.setHeader("Content-disposition","attachment; filename="+file); 
 	        OutputStream out = res.getOutputStream();
@@ -1018,7 +964,7 @@ public class CARSController {
 			long result = service.socApprovalForward(dto);
 			
 			if(action.equalsIgnoreCase("A")) {
-				if(statusCode.equalsIgnoreCase("AGD") || statusCode.equalsIgnoreCase("APD") || statusCode.equalsIgnoreCase("REV") || 
+				if(statusCode.equalsIgnoreCase("AGD") || statusCode.equalsIgnoreCase("APD") || statusCode.equalsIgnoreCase("SRV") || 
 						   statusCode.equalsIgnoreCase("SRG") || statusCode.equalsIgnoreCase("SRP")) {
 					if(result!=0) {
 						redir.addAttribute("result","SoC form forwarded Successfully");
@@ -1058,7 +1004,9 @@ public class CARSController {
 		logger.info(new Date() +"Inside carsRSQRTransStatus.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
-			req.setAttribute("TransactionList", service.carsRSQRTransList(carsInitiationId)) ;				
+			req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId,"R")) ;
+			req.setAttribute("TransFlag", "R");
+			req.setAttribute("carsInitiationId", carsInitiationId);
 			return "cars/CARSTransactionStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1074,7 +1022,9 @@ public class CARSController {
 		logger.info(new Date() +"Inside CARSSoCTransStatus.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
-			req.setAttribute("TransactionList", service.carsSoCTransList(carsInitiationId)) ;				
+			req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId,"S")) ;
+			req.setAttribute("TransFlag", "S");
+			req.setAttribute("carsInitiationId", carsInitiationId);
 			return "cars/CARSTransactionStatus";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1095,9 +1045,9 @@ public class CARSController {
 				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
-				req.setAttribute("ApprovalEmpData", service.carsTransApprovalData(carsInitiationId));
+				req.setAttribute("SoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "SF"));
 				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
-				req.setAttribute("CARSSoCRemarksHistory", service.carsSoCRemarksHistory(carsInitiationId));
+				req.setAttribute("CARSSoCRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"SF"));
 				
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
 			}
@@ -1271,5 +1221,443 @@ public class CARSController {
     		logger.error(new Date() +" Inside CARSSoCMilestonesDownload.htm "+UserId, e);
     		e.printStackTrace();
     	}		
+	}
+
+	@RequestMapping(value="CARSRSQRApprovedList.htm")
+	public String carsRSQRApprovedList(HttpServletRequest req,HttpSession ses) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSRSQRApprovedList.htm "+Username);
+		try {
+			String TabId = req.getParameter("TabId");
+			String PageLoad = req.getParameter("PageLoad");
+
+			if(PageLoad!=null && PageLoad.equalsIgnoreCase("S")) {
+				String socfromdate = req.getParameter("socfromdate");
+				String soctodate = req.getParameter("soctodate");
+
+				LocalDate today=LocalDate.now();
+
+				if(socfromdate == null) 
+				{
+					socfromdate =today.withDayOfMonth(1).toString();
+					soctodate = today.toString();
+
+				}else
+				{
+					socfromdate = fc.RegularToSqlDate(socfromdate);
+					soctodate = fc.RegularToSqlDate(soctodate);
+				}
+
+				req.setAttribute("socfromdate", socfromdate);
+				req.setAttribute("soctodate", soctodate);
+				req.setAttribute("MoMUploadedList", service.carsSoCMoMUploadedList(socfromdate,soctodate));
+
+				req.setAttribute("TabId", TabId!=null?TabId:"2");
+
+			}
+
+			String fromdate = req.getParameter("fromdate");
+			String todate = req.getParameter("todate");
+
+			LocalDate today = LocalDate.now();
+
+			if(fromdate == null) 
+			{
+				fromdate = today.withDayOfMonth(1).toString();
+				todate = today.toString();
+
+			}else
+			{
+				fromdate = fc.RegularToSqlDate(fromdate);
+				todate = fc.RegularToSqlDate(todate);
+			}
+
+			req.setAttribute("fromdate", fromdate);
+			req.setAttribute("todate", todate);
+
+			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"A"));
+
+			if(PageLoad==null) {
+				req.setAttribute("socfromdate", fromdate);
+				req.setAttribute("soctodate", todate);
+				req.setAttribute("MoMUploadedList", service.carsSoCMoMUploadedList(fromdate,todate));
+				req.setAttribute("TabId", TabId!=null?TabId:"1");
+			}
+
+			return "cars/AllCARSList";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSRSQRApprovedList.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="InvForSoODateSubmit.htm")
+	public String invForSoODateSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside InvForSoODateSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String calendardate = req.getParameter("calendardate");
+			int result = service.invForSoODateSubmit(carsInitiationId, fc.RegularToSqlDate(calendardate));
+			if(result!=0) {
+				redir.addAttribute("result","Inv for SoO Date Submitted Successfully");
+			}else {
+				redir.addAttribute("resultfail","Inv for SoO Date Submit Unsuccessful");
+			}
+			return "redirect:/CARSRSQRApprovedList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside InvForSoODateSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSDPCSoCDetails.htm")
+	public String carsDPCSoCDetails(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSDPCSoCDetails.htm "+Username);
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		try {
+			
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String dpcTabId = req.getParameter("dpcTabId");
+			String isApproval = req.getParameter("isApproval");
+			if(carsInitiationId==null) {
+				String fromapprovals = req.getParameter("carsInitiationIdSoCApprovals");
+				if(fromapprovals!=null) {
+					String[] split = fromapprovals.split("/");
+					carsInitiationId = split[0];
+					if(isApproval==null) {
+						isApproval = split[1];
+					}
+					if(dpcTabId==null) {
+						dpcTabId = split[2];
+					}
+				}
+				
+			}
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSDPCSoCRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"DF"));
+				req.setAttribute("DPCSoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "DF"));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+			}
+			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
+			req.setAttribute("dpcTabId", dpcTabId!=null?dpcTabId:"1");
+			
+			req.setAttribute("GHDPandC", service.getApprAuthorityDataByType(labcode, "GH-DP&C"));
+			req.setAttribute("GDDPandC", service.getApprAuthorityDataByType(labcode, "DO-RTMD"));
+			req.setAttribute("ChairmanRPB", service.getApprAuthorityDataByType(labcode, "Chairman RPB"));
+			req.setAttribute("MMFDAG", service.getApprAuthorityDataByType(labcode, "MMFD AG"));
+			req.setAttribute("GDDFandMM", service.getApprAuthorityDataByType(labcode, "GD DF&MM"));
+			req.setAttribute("Director", service.getLabDirectorData(labcode));
+			
+			req.setAttribute("isApproval", isApproval);
+			return "cars/DPCSoCDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSDPCSoCDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSDPCSoCEdit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String carsDPCSoCEditSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSDPCSoCEdit.htm "+Username);
+		try{
+			
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String carsSocId = req.getParameter("carsSocId");
+			String Action = req.getParameter("Action");
+			
+			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
+			soc.setDPCIntroduction(req.getParameter("dpcIntroduction"));
+			soc.setDPCExpenditure(req.getParameter("dpcExpenditure"));
+			soc.setDPCAdditional(req.getParameter("dpcAdditional"));
+			soc.setModifiedBy(Username);
+			soc.setModifiedDate(sdtf.format(new Date()));
+			
+			long result = service.editCARSSoC(soc);
+			if(result!=0) {
+				redir.addAttribute("result", "CARS D-P&C SoC Details "+Action+" Successfully");
+			}else {
+				redir.addAttribute("resultfail", "CARS D-P&C SoC Details "+Action+" UnSuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("carsSoCId",result);
+			redir.addAttribute("dpcTabId","1");
+			
+			return "redirect:/CARSDPCSoCDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSDPCSoCEdit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="DPCSoCApprovalSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String dpcSoCApprovalSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside DPCSoCApprovalSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String remarks = req.getParameter("remarks");
+			String action = req.getParameter("Action");
+			
+			long carsini = Long.parseLong(carsInitiationId);
+			
+			CARSInitiation cars = service.getCARSInitiationById(carsini);
+			String statusCode = cars.getCARSStatusCode();
+			
+			RSQRForwardDTO dto = new RSQRForwardDTO();
+			dto.setCarsinitiationid(carsini);
+			dto.setAction(action);
+			dto.setEmpId(EmpId);
+			dto.setRemarks(remarks);
+			dto.setLabcode(labcode);
+			long result = service.dpcSoCApprovalForward(dto);
+			
+			List<String> forwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRD");
+			List<String> approvestatus = Arrays.asList("SDF","SAD","SAI","ADG");
+
+			if(action.equalsIgnoreCase("A")) {
+				if(forwardstatus.contains(statusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","SoC form forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","SoC form forward Unsuccessful");
+					}
+				}else if(approvestatus.contains(statusCode)) {
+					if(result!=0) {
+						redir.addAttribute("result","SoC form Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","SoC form Approve Unsuccessful");
+					}
+					return "redirect:/CARSRSQRApprovals.htm";
+				}else {
+					if(result!=0) {
+						redir.addAttribute("result","SoC form Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","SoC form Recommend Unsuccessful");
+					}
+					return "redirect:/CARSRSQRApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"SoC form Returned Successfully":"SoC form Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"SoC form Return Unsuccessful":"SoC form Disapprove Unsuccessful");
+				}
+			}
+			
+			redir.addAttribute("PageLoad", "S");
+			return "redirect:/CARSRSQRApprovedList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside DPCSoCApprovalSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSTransactionDownload.htm")
+	public void carsTransactionDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSTransactionDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String TransFlag = req.getParameter("TransFlag");
+			
+			if(TransFlag!=null && TransFlag.equalsIgnoreCase("R")) {
+				req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId, TransFlag)) ;
+			}else if(TransFlag!=null && TransFlag.equalsIgnoreCase("S")) {
+				req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId, TransFlag)) ;
+			}else if(TransFlag!=null && TransFlag.equalsIgnoreCase("D")){
+				req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId, TransFlag)) ;
+			}else {
+				req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId, TransFlag)) ;
+			}
+			req.setAttribute("CARSInitiationData", service.getCARSInitiationById(Long.parseLong(carsInitiationId)));
+			
+			String filename="CARS-Transaction";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSTransactionDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSTransactionDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	@RequestMapping(value="CARSDPCSoCDownload.htm")
+	public void carsDPCSoCDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSTransactionDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("DPCSoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "DF"));
+			}
+			
+			String filename="CARS-DPCSoC";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSDPCSoCDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSTransactionDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+
+	@RequestMapping(value="CARSSoCDPCRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String carsSoCDPCRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSSoCDPCRevoke.htm "+UserId);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+		
+            
+			long count = service.carsSoCDPCRevoke(carsInitiationId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "CARS SoC Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "CARS SoC Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("PageLoad", "S");
+			return "redirect:/CARSRSQRApprovedList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSSoCDPCRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
+	@RequestMapping(value = "CARSDPCSoCTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
+	public String carsDPCSoCTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	{
+		String Username = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSDPCSoCTransStatus.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId, "D")) ;
+			req.setAttribute("TransFlag", "D");
+			req.setAttribute("carsInitiationId", carsInitiationId);
+			return "cars/CARSTransactionStatus";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSDPCSoCTransStatus.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSSoCMoMUpload.htm")
+	public String carsSocMoMUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
+			@RequestPart(name="MoMUpload", required = false) MultipartFile MoMFile) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSSoCMoMUpload.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String carsSocId = req.getParameter("carsSocId");
+		
+			long result = service.carsSoCUploadMoM(MoMFile, carsSocId);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "MoM Uploaded Successfully");
+			}else {
+				redir.addAttribute("resultfail", "MoM Upload UnSuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("carsSoCId",carsSocId);
+			redir.addAttribute("TabId","8");
+			return "redirect:/CARSInitiationDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSSoCMoMUpload.htm "+Username, e);
+			return "static/Error";
+		}
 	}
 }

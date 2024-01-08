@@ -137,7 +137,7 @@ p,td,th
 <body>
 <%
 Object[] emp = (Object[])request.getAttribute("EmpData");
-List<Object[]> ApprovalEmpData = (List<Object[]>)request.getAttribute("ApprovalEmpData");
+List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApprovalEmpData");
 List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("CARSSoCRemarksHistory");
 
 Object[] rsqrDetails = (Object[])request.getAttribute("RSQRDetails");
@@ -206,7 +206,7 @@ int socforwardslno=0;
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">RSQR</td>
 		<td style="width: 73%;text-align: center;">
-			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">view Document</a>
+			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank" onclick="window.open(this.href); return false;">view Document</a>
 		</td>
 	</tr>
 	<tr>
@@ -303,7 +303,7 @@ int socforwardslno=0;
 		<td style="text-align: right;">
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
-				<%for(Object[] apprInfo : ApprovalEmpData){ %>
+				<%for(Object[] apprInfo : socApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
 						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<br>
 						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>

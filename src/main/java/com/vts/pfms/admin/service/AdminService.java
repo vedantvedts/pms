@@ -8,6 +8,7 @@ import com.vts.pfms.admin.dto.PfmsRtmddoDto;
 import com.vts.pfms.admin.dto.UserManageAdd;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
 
 
@@ -72,6 +73,8 @@ public interface AdminService {
 	public int insertEmployeeData() throws Exception;
 	public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode)throws Exception;
 	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> initiationApprovalAuthority(String labcode) throws Exception;
+	public PfmsRtmddo getApprovalAuthById(String RtmddoId) throws Exception;
+	public int approvalAuthRevoke(String RtmddoId) throws Exception;
 	
-		
 }

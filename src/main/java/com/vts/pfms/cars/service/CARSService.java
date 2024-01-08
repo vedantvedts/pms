@@ -35,9 +35,7 @@ public interface CARSService {
 	public Object[] getEmpGDEmpId(String empId) throws Exception;
 	public Object[] getEmpPDEmpId(String projectId) throws Exception;
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception;
-	public List<Object[]> carsRSQRTransList(String carsInitiationId) throws Exception;
-	public List<Object[]> carsTransApprovalData(String carsInitiationId) throws Exception;
-	public List<Object[]> carsRSQRRemarksHistory(String carsInitiationId) throws Exception;
+	public List<Object[]> carsTransApprovalData(String carsInitiationId, String apprFor) throws Exception;
 	public List<Object[]> carsRSQRPendingList(String empId) throws Exception;
 	public List<Object[]> carsRSQRApprovedList(String empId, String FromDate, String ToDate, String type) throws Exception;
 	public Object[] getEmpDataByLoginType(String loginType) throws Exception;
@@ -47,14 +45,22 @@ public interface CARSService {
 	public int invForSoODateSubmit(String carsInitiationId, String sooDate) throws Exception;
 	public CARSSoC getCARSSoCByCARSInitiationId(long carsInitiationId) throws Exception;
 	public void carsRSQRFormFreeze(HttpServletRequest req, HttpServletResponse res, long carsInitiationId) throws Exception;
-	public List<Object[]> carsSoCRemarksHistory(String carsInitiationId) throws Exception;
 	public long socApprovalForward(RSQRForwardDTO dto) throws Exception;
-	public List<Object[]> carsSoCTransList(String carsInitiationId) throws Exception;
-	public List<Object[]> carsTransAllList(String carsInitiationId) throws Exception;
 	public long addCARSInitiationTransaction(CARSInitiationTrans transaction) throws Exception;
 	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode) throws Exception;
 	public List<CARSSoCMilestones> getCARSSoCMilestonesByCARSInitiationId(long carsInitiationId) throws Exception;
 	public long carsSoCMilestonesDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
 	public int removeCARSSoCMilestonesDetails(long carsInitiationId) throws Exception;
+	public List<Object[]> carsSoCMoMUploadedList(String fromdate, String todate) throws Exception;
+	public long editCARSSoC(CARSSoC soc) throws Exception;
+	public long dpcSoCApprovalForward(RSQRForwardDTO dto) throws Exception;
+	public Object[] getApprAuthorityDataByType(String labcode, String type) throws Exception;
+	public Object[] getLabDirectorData(String labcode) throws Exception;
+	public List<Object[]> carsDPandCSoCPendingList(String empId, String labcode) throws Exception;
+	public long carsSoCDPCRevoke(String carsInitiationId, String userId, String empId) throws Exception;
+	public List<Object[]> carsDPCSoCApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception;
+	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception;
+	public long carsSoCUploadMoM(MultipartFile momFile, String carsSocId) throws Exception;
 	
 }

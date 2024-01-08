@@ -146,9 +146,20 @@
 <body>
 <%
 List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TransactionList");
+String TransFlag = (String)request.getAttribute("TransFlag");
+String carsInitiationId = (String)request.getAttribute("carsInitiationId");
 %>
 
 <div class="page card dashboard-card">
+	<div class="mt-2 mr-5" align="right">
+		<form action="#">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="TransFlag" value="<%=TransFlag %>" />
+			<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>" />
+			<button type="submit" class="btn btn-sm btn-primary" formaction="CARSTransactionDownload.htm" formmethod="POST" formtarget="_blank" formnovalidate="formnovalidate"
+			 style="font-weight: 600;text-transform: uppercase;background: darkblue;">Print &emsp; <img alt="" src="view/images/trackingPrint.png"> </button>
+		</form>
+	</div>
 	<section id="timeline">
 		<% int count=1;
 	       	 SimpleDateFormat month=new SimpleDateFormat("MMM");
@@ -180,6 +191,7 @@ List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TransactionLis
 		 </article>
 		<%count++;}%> 		
 	</section>	
+	
 </div>
 </body>
 </html>

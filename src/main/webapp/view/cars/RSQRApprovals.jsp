@@ -104,6 +104,10 @@ th{
 	SimpleDateFormat rdf = fc.getRegularDateFormat();
 	
 	String loginType = (String)session.getAttribute("LoginType");
+	
+	List<Object[]> DPandCSoCPendingList =(List<Object[]>)request.getAttribute("DPandCSoCPendingList");
+	List<Object[]> DPandCSoCApprovedList =(List<Object[]>)request.getAttribute("DPandCSoCApprovedList");
+
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -141,10 +145,10 @@ th{
 		    							<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   								<span>Pending</span> 
 											<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 						<%if(PendingList.size()>99){ %>
+				   		 						<%if(PendingList.size() + DPandCSoCPendingList.size()>99){ %>
 				   									99+
 				   								<%}else{ %>
-				   								<%=PendingList.size()%>
+				   								<%=PendingList.size() + DPandCSoCPendingList.size()%>
 												<%} %>			   			
 				  							</span> 
 		    							</div>
@@ -153,10 +157,10 @@ th{
 		    							<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 							<span>Approved</span> 
 		    	 							<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 						<%if(ApprovedList.size()>99){ %>
+				   		 						<%if(ApprovedList.size() + DPandCSoCApprovedList.size()>99){ %>
 				   									99+
 				   								<%}else{ %>
-				   								<%=ApprovedList.size()%>
+				   								<%=ApprovedList.size() + DPandCSoCApprovedList.size()%>
 												<%} %>			   			
 				  							</span> 
 		    							</div>
@@ -188,6 +192,7 @@ th{
 														</thead>
                  										<tbody>
                        										<% int SN=0;
+					   										    if(PendingList!=null && PendingList.size()>0){
                          							 			for(Object[] form:PendingList ){
                       							 			%>
                         									<tr>
@@ -266,7 +271,44 @@ th{
                             										<%} %>
 						 										</td>
                         									</tr>
-                       										<%} %>
+                       										<%} }%>
+                       										
+                       										<!-- D-P&C SoC Pending List -->
+                       										<%
+                       											if(PendingList!=null && DPandCSoCPendingList.size()>0){
+                         							 			for(Object[] form:DPandCSoCPendingList ){
+                       										%>
+                       										<tr>
+                       											<td style="text-align: center;width: 5%;"><%=++SN%></td>
+                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="text-align: center;width: 20%;">
+                            										<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationIdSoCApprovals" value="<%=form[4]%>/P/2" data-toggle="tooltip" data-placement="top" title="CARS DPC SoC" style="font-weight: 600;" >
+								   										<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Preview</span>
+																			</div>
+																		</div>
+																	</button>
+																	<button type="submit" class="btn btn-sm" formaction="CARSDPCSoCDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/document.png">
+																				</figure>
+																				<span>SoC</span>
+																			</div>
+																		</div>
+																	</button>
+                            									</td>
+                       										</tr>
+                       										<%} }%>
                  										</tbody>  
             										</table>
           										</div>
@@ -317,9 +359,10 @@ th{
                   															</tr>
 																		</thead>
                  														<tbody>
-                      													 <% int SNA=0;
-                          													for(Object[] form:ApprovedList ){
-                       													  %>
+                      													    <%	int SNA=0;
+                      													    	if(ApprovedList!=null && ApprovedList.size()>0) {
+                          															for(Object[] form:ApprovedList ) {
+                       													    %>
                         													<tr>
                             													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
                             													<td style="text-align: left;width: 22%;"><%=form[2]+", "+form[3]%></td>
@@ -406,7 +449,47 @@ th{
             
 						 														</td>
                         													</tr>
-                       													 <%} %>
+                       													 	<%} }%>
+                       													 	<!-- D-P&C SoC Approved List -->
+                       													 	<%
+                      													    	if(DPandCSoCApprovedList!= null && DPandCSoCApprovedList.size()>0) {
+                          															for(Object[] form:DPandCSoCApprovedList ) {
+                       													    %>
+                        													<tr>
+                            													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: center;width: 30%;">
+								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSDPCSoCTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												</button>
+						 														</td>
+						 														<td style="text-align: center;width: 15%;">
+						 															<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationIdSoCApprovals" value="<%=form[4]%>/Q/2" data-toggle="tooltip" data-placement="top" title="CARS SoC" style="font-weight: 600;" >
+								   														<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/preview3.png">
+																								</figure>
+																								<span>Preview</span>
+																							</div>
+																						</div>
+																					</button>
+																					<button type="submit" class="btn btn-sm" formaction="CARSDPCSoCDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 													<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/document.png">
+																								</figure>
+																								<span>SoC</span>
+																							</div>
+																						</div>
+																					</button>
+						 														</td>
+                        													</tr>
+                       													 	<%} }%>
                    														</tbody>
                  													</table>
                 												</div> 

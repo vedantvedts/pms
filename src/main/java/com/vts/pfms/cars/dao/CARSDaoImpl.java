@@ -332,7 +332,7 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 	
-	private static final String GETEMPDETAILS  ="SELECT a.EmpId,a.EmpName,b.Designation,c.DivisionName,a.Title FROM employee a,employee_desig b,division_master c WHERE a.EmpId=:EmpId AND a.DesigId=b.DesigId AND a.DivisionId=c.DivisionId";
+	private static final String GETEMPDETAILS  ="SELECT a.EmpId,a.EmpName,b.Designation,c.DivisionName,a.Title,a.Salutation FROM employee a,employee_desig b,division_master c WHERE a.EmpId=:EmpId AND a.DesigId=b.DesigId AND a.DivisionId=c.DivisionId";
 	@Override
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception
 	{
@@ -352,35 +352,20 @@ public class CARSDaoImpl implements CARSDao{
 		}		
 	}
 	
-	private static final String CARSRSQRTRANSLIST = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND tra.CARSStatusCode IN('INI','FWD','AGD','RGD','DGD','APD','RPD','DPD') AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.ActionDate";
-	@Override
-	public List<Object[]> carsRSQRTransList(String carsInitiationId) throws Exception {
-		
-		try {
-			Query query = manager.createNativeQuery(CARSRSQRTRANSLIST);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			return (List<Object[]>)query.getResultList();
-		}catch (Exception e) {
-			logger.info(new Date()+"Inside DAO carsRSQRTransList"+e);
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	
 	private static final String CARSTRANSAPPROVALDATA = "SELECT tra.CARSInitiationTransId,\r\n"
 			+ "	(SELECT empno FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empno',\r\n"
 			+ "	(SELECT empname FROM pfms_cars_initiation_trans t , employee e  WHERE e.EmpId = t.ActionBy AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'empname',\r\n"
 			+ "	(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
 			+ "	MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode \r\n"
 			+ "	FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,pfms_cars_initiation par\r\n"
-			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND sta.CARSStatusCode IN ('FWD','AGD','APD','SFG','SFP') AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY ActionDate ASC";
+			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND CASE WHEN 'AF'=:ApprFor THEN sta.CARSForward IN ('RF','SF','DF') ELSE sta.CARSForward=:ApprFor END AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY ActionDate ASC";
 	@Override
-	public List<Object[]> carsTransApprovalData(String carsInitiationId) {
+	public List<Object[]> carsTransApprovalData(String carsInitiationId, String apprFor) {
 		
 		try {
 			Query query = manager.createNativeQuery(CARSTRANSAPPROVALDATA);
 			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("ApprFor", apprFor);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			logger.info(new Date()+"Inside DAO carsTransApprovalData "+e);
@@ -390,23 +375,6 @@ public class CARSDaoImpl implements CARSDao{
 		
 	}
 
-	private static final String CARSRSQRREMARKSHISTORY  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND cs.CARSStatusCode IN('FWD','AGD','APD') AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.ActionDate ASC";
-	@Override
-	public List<Object[]> carsRSQRRemarksHistory(String carsInitiationId) throws Exception
-	{
-		List<Object[]> list =new ArrayList<Object[]>();
-		try {
-			Query query= manager.createNativeQuery(CARSRSQRREMARKSHISTORY);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			list= (List<Object[]>)query.getResultList();
-			
-		}catch (Exception e) {
-			logger.error(new Date()  + "Inside DAO carsRSQRRemarksHistory " + e);
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
 	private static final String CARSRSQRPENDINGLIST  ="CALL pfms_cars_rsqr_pending(:EmpId);";
 	@Override
 	public List<Object[]> carsRSQRPendingList(String empId) throws Exception {
@@ -549,55 +517,6 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 	
-	private static final String CARSSOCREMARKSHISTORY  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND cs.CARSStatusCode NOT IN('FWD','AGD','APD') AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.ActionDate ASC";
-	@Override
-	public List<Object[]> carsSoCRemarksHistory(String carsInitiationId) throws Exception
-	{
-		List<Object[]> list =new ArrayList<Object[]>();
-		try {
-			Query query= manager.createNativeQuery(CARSSOCREMARKSHISTORY);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			list= (List<Object[]>)query.getResultList();
-			
-		}catch (Exception e) {
-			logger.error(new Date()  + "Inside DAO carsSoCRemarksHistory " + e);
-			e.printStackTrace();
-		}
-		return list;
-	}
-	
-	private static final String CARSSOCTRANSLIST = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND tra.CARSStatusCode NOT IN('INI','FWD','AGD','RGD','DGD','APD','RPD','DPD') AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.ActionDate";
-	@Override
-	public List<Object[]> carsSoCTransList(String carsInitiationId) throws Exception {
-		
-		try {
-			Query query = manager.createNativeQuery(CARSSOCTRANSLIST);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			return (List<Object[]>)query.getResultList();
-		}catch (Exception e) {
-			logger.info(new Date()+"Inside DAO carsSoCTransList "+e);
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	
-	private static final String CARSTRANSALLLIST = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.ActionDate";
-	@Override
-	public List<Object[]> carsTransAllList(String carsInitiationId) throws Exception {
-		
-		try {
-			Query query = manager.createNativeQuery(CARSTRANSALLLIST);
-			query.setParameter("CARSInitiationId", carsInitiationId);
-			return (List<Object[]>)query.getResultList();
-		}catch (Exception e) {
-			logger.info(new Date()+"Inside DAO carsSoCTransAllList "+e);
-			e.printStackTrace();
-			return null;
-		}
-		
-	}
-	
 	private static final String CARSSOCMILESTONESLIST = "FROM CARSSoCMilestones WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
 	@Override
 	public List<CARSSoCMilestones> getCARSSoCMilestonesByCARSInitiationId(long carsInitiationId) throws Exception{
@@ -637,6 +556,151 @@ public class CARSDaoImpl implements CARSDao{
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date()+" Inside DAO removeCARSSoCMilestonesDetails "+e);
+			return 0;
+		}
+		
+	}
+	
+	private static final String CARSSOCMOMUPLOADEDLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,b.EmpNo,e.Designation,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c,pfms_cars_soc d,employee_desig e  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND d.IsActive=1 AND a.CARSInitiationId=d.CARSInitiationId AND d.MoMUpload IS NOT NULL AND b.DesigId=e.DesigId AND a.InitiationDate BETWEEN :FromDate AND :ToDate ORDER BY a.CARSInitiationId DESC";
+	@Override
+	public List<Object[]> carsSoCMoMUploadedList(String fromdate, String todate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(CARSSOCMOMUPLOADEDLIST);
+			query.setParameter("FromDate", fromdate);
+			query.setParameter("ToDate", todate);
+			return (List<Object[]>) query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO carsSoCMoMUploadedList "+e);
+			return new ArrayList<>();
+		}
+		
+	}
+	
+	private static final String APPRAUTHDATABYTYPE = "SELECT b.EmpId,b.EmpName FROM pfms_initiation_approver a,employee b WHERE a.IsActive=1 AND a.InitiationId=0 AND a.EmpId=b.EmpId AND a.Type=:Type AND DATE(NOW()) >=a.ValidFrom AND DATE(NOW()) <= a.ValidTo AND a.LabCode=:LabCode LIMIT 1";
+	@Override
+	public Object[] getApprAuthorityDataByType(String labcode, String type) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(APPRAUTHDATABYTYPE);
+			query.setParameter("LabCode", labcode);
+			query.setParameter("Type", type);
+			List<Object[]> list = (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getApprAuthorityDataByType "+e);
+			return null;
+		}
+
+	}
+	
+	private static final String LABDIRECTORDATA = "SELECT a.EmpId,a.EmpName FROM employee a,employee_desig b WHERE a.DesigId=b.DesigId AND b.Designation='Director' AND a.LabCode=:LabCode AND a.IsActive=1 LIMIT 1";
+	@Override
+	public Object[] getLabDirectorData(String labcode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(LABDIRECTORDATA);
+			query.setParameter("LabCode", labcode);
+			List<Object[]> list = (List<Object[]>)query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getLabDirectorData "+e);
+			return null;
+		}
+		
+	}
+
+	private static final String CARSDPCSOCPENDINGLIST  ="CALL pfms_cars_dpcsoc_pending(:EmpId,:LabCode);";
+	@Override
+	public List<Object[]> carsDPandCSoCPendingList(String empId,String labcode) throws Exception {
+		try {			
+			Query query= manager.createNativeQuery(CARSDPCSOCPENDINGLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("LabCode", labcode);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+				return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO carsDPandCSoCPendingList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+		
+	}
+
+	private static final String CARSDPCSOCAPPROVEDLIST  ="CALL pfms_cars_dpcsoc_approved(:EmpId,:FromDate,:ToDate);";
+	@Override
+	public List<Object[]> carsDPCSoCApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		try {			
+			Query query= manager.createNativeQuery(CARSDPCSOCAPPROVEDLIST);
+			query.setParameter("EmpId", Long.parseLong(empId));
+			query.setParameter("FromDate", FromDate);
+			query.setParameter("ToDate", ToDate);
+			List<Object[]> list =  (List<Object[]>)query.getResultList();
+				return list;
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO carsDPCSoCApprovedList " + e);
+			e.printStackTrace();
+			return new ArrayList<Object[]>();
+		}
+	}
+	
+	private static final String CARSTRANSLISTBYTYPE = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND CASE WHEN 'A'=:CARSStatusFor THEN 1=1 ELSE sta.CARSStatusFor =:CARSStatusFor END AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.ActionDate";
+	@Override
+	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(CARSTRANSLISTBYTYPE);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("CARSStatusFor", statusFor);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			logger.info(new Date()+"Inside DAO carsTransListByType "+e);
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	
+	private static final String CARSREMARKSHISTORYBYTYPE  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND CASE WHEN 'AF'=:RemarksFor THEN cs.CARSForward IN('RF','SF','DF') ELSE cs.CARSForward=:RemarksFor END AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.ActionDate ASC";
+	@Override
+	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception
+	{
+		List<Object[]> list =new ArrayList<Object[]>();
+		try {
+			Query query= manager.createNativeQuery(CARSREMARKSHISTORYBYTYPE);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			query.setParameter("RemarksFor", remarksFor);
+			list= (List<Object[]>)query.getResultList();
+			
+		}catch (Exception e) {
+			logger.error(new Date()  + "Inside DAO carsRSQRRemarksHistory " + e);
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	private static final String SOCMOMUPLOAD = "UPDATE pfms_cars_soc SET MoMUpload=:MoMUpload WHERE CARSSoCId=:CARSSoCId AND IsActive=1";
+	@Override
+	public long carsSoCUploadMoM(String momFile, String carsSocId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(SOCMOMUPLOAD);
+			query.setParameter("MoMUpload", momFile);
+			query.setParameter("CARSSoCId", carsSocId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO carsSoCUploadMoM "+e);
 			return 0;
 		}
 		

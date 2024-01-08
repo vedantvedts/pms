@@ -132,7 +132,7 @@ p,td,th
 <body>
 <%
 Object[] emp = (Object[])request.getAttribute("EmpData");
-List<Object[]> ApprovalEmpData = (List<Object[]>)request.getAttribute("ApprovalEmpData");
+List<Object[]> rsqrApprovalEmpData = (List<Object[]>)request.getAttribute("RSQRApprovalEmpData");
 List<Object[]> rsqrRemarksHistory = (List<Object[]>)request.getAttribute("CARSRSQRRemarksHistory");
 
 List<String> rsqrforward = Arrays.asList("INI","RGD","RPD");
@@ -207,7 +207,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		<td style="text-align: right;">
 			<div style="line-height: 17px;">
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
-				<%for(Object[] apprInfo : ApprovalEmpData){ %>
+				<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
 						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<br>
 						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>

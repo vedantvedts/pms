@@ -235,38 +235,40 @@ public class AdminController {
 	
 	@RequestMapping(value="RtmddoSubmit.htm",method=RequestMethod.POST)
 	public String RtmddoSubmit(HttpServletRequest req,HttpSession ses, RedirectAttributes redir)throws Exception {
-		 
+
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside RtmddoSubmit.htm "+UserId);		
 		try {
-		
-		
-		
-		
-		PfmsRtmddoDto rtmddo= new PfmsRtmddoDto();
-		
-		rtmddo.setEmpId(req.getParameter("EmpId"));
-		rtmddo.setValidFrom(req.getParameter("ValidFrom"));
-		rtmddo.setValidTo(req.getParameter("ValidTo"));
-		rtmddo.setType(req.getParameter("type"));
-		rtmddo.setCreatedBy(UserId);
-		rtmddo.setLabCode(LabCode);
-		Long count=service.RtmddoInsert(rtmddo);
-		
-		if(count>0) {
-			redir.addAttribute("result","Rtmddo Updated Successfully");
-		}else {
-			redir.addAttribute("resultfail","Rtmddo Edit Unsuccessful");
+
+			String status = req.getParameter("action");
 			
-		}
+			status = (status!=null && status.equalsIgnoreCase("Edit"))?"Update":"Add";
+
+			PfmsRtmddoDto rtmddo= new PfmsRtmddoDto();
+
+			rtmddo.setEmpId(req.getParameter("empId"));
+			rtmddo.setType(req.getParameter("adminRole"));
+			rtmddo.setValidFrom(req.getParameter("validFrom"));
+			rtmddo.setValidTo(req.getParameter("validTo"));
+			rtmddo.setCreatedBy(UserId);
+			rtmddo.setLabCode(LabCode);
+			Long count=service.RtmddoInsert(rtmddo);
+
+			if(count>0) {
+				redir.addAttribute("result","Approval Authority "+status+" Successful");
+			}else {
+				redir.addAttribute("resultfail","Approval Authority "+status +" Unsuccessful");
+
+			}
 		}
 		catch (Exception e) {
-				e.printStackTrace(); logger.error(new Date() +" Inside RtmddoSubmit.htm "+UserId, e);
+			e.printStackTrace(); logger.error(new Date() +" Inside RtmddoSubmit.htm "+UserId, e);
 		}
-		
-		return "redirect:/Rtmddo2.htm";
-		
+
+		//		return "redirect:/Rtmddo2.htm";
+		return "redirect:/InitiationApprAuth.htm";
+
 	}
 
 	@RequestMapping(value = "DelegationFlow.htm",method=RequestMethod.GET )
@@ -1214,4 +1216,66 @@ public class AdminController {
 
 		}
 	    
+		@RequestMapping(value = "InitiationApprAuth.htm",method = {RequestMethod.GET,RequestMethod.POST})
+		public String initiationApprAuth(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+			String Username = (String)ses.getAttribute("Username");
+			String labcode = (String)ses.getAttribute("labcode");
+			logger.info(new Date() +"Inside CARSRSQRApprovedList.htm "+Username);
+			try {
+				LocalDate today = LocalDate.now();
+
+				String fromdate = today.toString();
+				String todate = today.plusYears(1).toString();
+
+				req.setAttribute("fromdate", fromdate);
+				req.setAttribute("todate", todate);
+				
+				String action = req.getParameter("action");
+				
+				req.setAttribute("action", action);
+				if(action!=null && action.equalsIgnoreCase("Edit")) {
+					
+					req.setAttribute("ApprAuthData", service.getApprovalAuthById(req.getParameter("RtmddoId")));
+					req.setAttribute("EmployeeList",service.EmployeeListAll());
+					return "admin/InitiationApprAuthAdd";
+				}else if(action!=null && action.equalsIgnoreCase("Add")) {
+					
+					req.setAttribute("EmployeeList",service.EmployeeListAll());
+					return "admin/InitiationApprAuthAdd";
+				}
+				else if(action!=null && action.equalsIgnoreCase("Revoke")) {
+					int result = service.approvalAuthRevoke(req.getParameter("RtmddoId"));
+					if(result!=0) {
+						redir.addAttribute("result", "Approval Authority Revoked Successfully");
+					}else {
+						redir.addAttribute("resultfail", "Approval Authority Revoked Unsuccessful");
+					}
+					return "redirect:/InitiationApprAuth.htm";
+				}
+				else {
+					
+					req.setAttribute("InitiationApprAuthList", service.initiationApprovalAuthority(labcode));
+					return "admin/InitiationApprAuthList";
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside InitiationApprAuth.htm "+Username, e);
+				return "static/Error";
+			}
+		}
+		
+		@RequestMapping(value ="InitiationApprAuthSubmit.htm",method = {RequestMethod.GET,RequestMethod.POST})
+		public String initiationApprAuthSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception{
+			String Username = (String)ses.getAttribute("Username");
+			String labcode = (String)ses.getAttribute("labcode");
+			try {
+				
+				return "";
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() +" Inside InitiationApprAuthSubmit.htm "+Username, e);
+				return "static/Error";
+			}
+		}
 }
