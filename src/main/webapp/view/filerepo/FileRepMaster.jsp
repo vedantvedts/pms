@@ -268,7 +268,7 @@ div {
 									<td><label >Project Name :&nbsp;&nbsp; </label></td>
 								   	<td>
 								   		<select class="form-control selectdee" id="projectid" required="required"  name="projectid" onchange="$('#myprojectform').submit();">
-								    		<option    value="">Choose...</option>
+								    		<option    value="" disabled="disabled">Choose...</option>
 								    	<%-- 	<option value="0"  <%if(ProjectId.split("_")[0].equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
 								    		<% for (Object[] obj : ProjectList) {
 								    			String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
@@ -779,7 +779,7 @@ div {
 						          			<input class="form-control" type="text" name="MasterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
 						          		</div>
 						          		<div style="margin-top:-22px; margin-left: 180px;">
-						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myForm" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+						          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myForm" value="ADD1"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
 						          		</div>
 						          		
 						          	</form>

@@ -28,4 +28,5 @@ public class MailConfiguration {
 	private int IsActive;
 	private String ModifiedBy;
 	private String ModifiedDate;
+	
 }

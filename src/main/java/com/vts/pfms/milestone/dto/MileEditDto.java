@@ -23,6 +23,18 @@ public class MileEditDto {
 	private byte[] FilePath;
 	private String CreatedBy;
 	private String CreatedDate;
+	
+	/*
+	 * @Author Sankha
+	 */
+	private String progressDate;
+	
+	public String getProgressDate() {
+		return progressDate;
+	}
+	public void setProgressDate(String progressDate) {
+		this.progressDate = progressDate;
+	}
 	public String getProgressStatus() {
 		return ProgressStatus;
 	}

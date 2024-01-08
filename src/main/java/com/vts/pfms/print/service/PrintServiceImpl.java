@@ -135,27 +135,15 @@ public class PrintServiceImpl implements PrintService{
 	
 	@Override
 	public List<Object[]> Milestones(String projectid,String committeeid) throws Exception {
-		
 		List<Object[]>milestones=dao.Milestones(projectid,committeeid);
-
 		List<Object[]>newList=new ArrayList<>();
 		if(milestones.size()!=0) {
 		newList=milestones.stream()
-		.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )  // get the object with levelid 0 and have some progress // for first meeting checking the last meeting date is null or not
-				||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())==100 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[28].toString().equalsIgnoreCase("Y")) // get all the level id except 0 and progress = 100
+		.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && i[26]!=null && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )  // get the object with levelid 0 and have some progress // for first meeting checking the last meeting date is null or not
+				||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())==100 && i[26]!=null && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[28].toString().equalsIgnoreCase("Y")) // get all the level id except 0 and progress = 100
 		.collect(Collectors.toList());
 		}
-		/*
-		 * if(newList.size()!=0) { int prev=0; int next=0;int count=0; for(int
-		 * i=0;i<newList.size();i++) {
-		 * prev=Integer.parseInt(newList.get(i)[0].toString()); if(prev!=next) {
-		 * count=newList.stream().filter(value->value[6].toString().equalsIgnoreCase(
-		 * prev+"")).count(); } }
-		 * 
-		 * }
-		 */
-		
-			return newList;
+		return newList;
 		/* return dao.Milestones(projectid,committeeid); */
 	}
 	
@@ -473,10 +461,14 @@ public class PrintServiceImpl implements PrintService{
 	{
 			List<Object[]>milestones=dao.Milestones(Projectid,CommitteeCode);
 				List<Object[]>newList=new ArrayList<>();
+			
+				
 				newList=milestones.stream()
-							.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )
-							||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[29].toString().equalsIgnoreCase("Y")) // for 6.(a)
+							.filter(i ->( i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && i[26]!=null  && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString())) )
+							||(!i[21].toString().equalsIgnoreCase("0") && Integer.parseInt(i[17].toString())>0 && i[26] !=null && (LocalDate.parse(todayDate).isEqual(LocalDate.parse(i[26].toString()))||LocalDate.parse(i[26].toString()).isBefore(LocalDate.parse(todayDate))) && LocalDate.parse(i[26].toString()).isAfter(LocalDate.parse(i[27]!=null?i[27].toString():i[7].toString()))) && i[29].toString().equalsIgnoreCase("Y")) // for 6.(a)
 							.collect(Collectors.toList());
+				
+			
 		return newList;
 	}
 

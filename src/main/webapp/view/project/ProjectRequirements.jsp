@@ -802,6 +802,23 @@ keyframes blinker { 20% {
 											</div>
 										</div>
 									</div>
+																		<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-4">
+												<label
+													style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem">Method
+													of testing<span class="mandatory" style="color: red;">*</span>
+												</label>
+											</div>
+											<div class="col-md-8" style="margin-top: 10px">
+												<div class="form-group">
+													<input type="text" name="testing" class="form-control"
+														id="testing" maxlength="255" required="required"
+														placeholder="Maximum 250 Chararcters">
+												</div>
+											</div>
+										</div>
+									</div>
 									<div class=col-md-12>
 										<div class="row">
 											<div class="col-md-4">

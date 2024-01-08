@@ -14,6 +14,7 @@ import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.login.PfmsLoginRole;
+import com.vts.pfms.mail.MailConfiguration;
 import com.vts.pfms.master.model.DivisionEmployee;
 
 public interface AdminDao {
@@ -93,5 +94,10 @@ public interface AdminDao {
 	public List<Object[]> getpfmsStatiscticsTableData()throws Exception;
 	public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode)throws Exception;
 	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate)throws Exception;
-	
+	public List<Object[]> MailConfigurationList()throws Exception;
+	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
+
+	public long AddMailConfiguration( MailConfiguration mailConfigAdd)throws Exception;
+	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
+	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception;
   }

@@ -391,7 +391,7 @@ List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute
 
 List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
 String levelid= (String) request.getAttribute("levelid");
-List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
+List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");//c
 
 String AppFilesPath= (String) request.getAttribute("AppFilesPath");
 Object[] nextMeetVenue =  (Object[]) request.getAttribute("nextMeetVenue");
@@ -411,6 +411,7 @@ if(committeeData.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){
 	before6months = LocalDate.now().minusMonths(6);
 } 
 List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envisagedDemandlist");
+
 %>
 
 

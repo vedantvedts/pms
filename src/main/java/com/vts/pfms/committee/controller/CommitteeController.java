@@ -43,6 +43,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFFooter;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -123,25 +125,27 @@ import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.service.CommitteeService;
-//import com.vts.pfms.mail.CustomJavaMailSender;
+import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.master.dto.ProjectFinancialDetails;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.print.controller.PrintController;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.utils.PMSLogoUtil;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 
 import org.apache.poi.util.Units;
+import org.apache.poi.wp.usermodel.HeaderFooterType;
 
 @Controller
 public class CommitteeController {
 
 	@Autowired CommitteeService service;
 	
-	@Autowired 
-	private JavaMailSender javaMailSender;
+//	@Autowired 
+//	private JavaMailSender javaMailSender;
 	
-//	@Autowired
-//	CustomJavaMailSender cm;
+	@Autowired
+	CustomJavaMailSender cm;
 	
 	@Autowired 
 	BCryptPasswordEncoder encoder;
@@ -3958,99 +3962,14 @@ public class CommitteeController {
 	
 	
 	
-	@RequestMapping(value="SendFormationLetter.htm",method=RequestMethod.POST)
-	public String SendFormationLetter1(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,HttpServletResponse res) throws Exception
-	{
-		String UserId=(String)ses.getAttribute("Username");
-		System.out.println("Hiiiii");
-		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
-		try
-		{
-			String committeemainid=req.getParameter("committeemainid");	
-			Object[] committeemaindata= service.CommitteMainData(committeemainid);
-			String committeeid=committeemaindata[1].toString();
-			String projectid=committeemaindata[2].toString() ;
-			String divisionid=committeemaindata[3].toString() ;
-			String initiationid=committeemaindata[4].toString() ;
-			if(Long.parseLong(projectid)>0)
-			{	
-				req.setAttribute("projectdata", service.projectdetails(projectid));
-				req.setAttribute("committeedescription", service.ProjectCommitteeDescriptionTOR(projectid,committeeid));
-			}
-			if(Long.parseLong(divisionid)>0)
-			{	
-				req.setAttribute("divisiondata", service.DivisionData(divisionid));
-				req.setAttribute("committeedescription", service.DivisionCommitteeDescriptionTOR(divisionid,committeeid));
-			}	
-			if(Long.parseLong(initiationid)>0)
-			{	
-				req.setAttribute("initiationdata", service.Initiationdetails(initiationid));
-				req.setAttribute("committeedescription", service.InitiationCommitteeDescriptionTOR(initiationid,committeeid));
-			}	
-			
-			Object[] committeeedata=service.CommitteeDetails(committeeid);		
-			List<Object[]> committeeallmemberslist=service.CommitteeAllMembers(committeemainid);
-			
-			req.setAttribute("committeeallmemberslist",committeeallmemberslist );
-			req.setAttribute("committeemaindata", committeemaindata);
-			req.setAttribute("committeeedata",committeeedata);
-			req.setAttribute("projectid",projectid);
-			req.setAttribute("labdetails", service.LabDetails(committeeedata[13].toString()));
-			req.setAttribute("email","Y");
-			
-			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			req.getRequestDispatcher("/view/committee/CommitteeConstitutionLetter.jsp").forward(req, customResponse);
-			String Message= customResponse.getOutput();
-			
-			
-			MimeMessage msg = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-			
-			ArrayList<String> emails= new ArrayList<String>();			
-			
-			for(Object[] obj : committeeallmemberslist ) 
-			{				
-				if(obj[6]!=null && obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW")) 
-				{				 
-					emails.add(obj[6].toString());				 
-				}
-			}
-			String [] Email = emails.toArray(new String[emails.size()]);
-			for(String s:Email) {
-				System.out.println();
-			}
-			helper.setTo(Email);	
-			helper.setSubject( committeemaindata[7] + " " +" Committee Formation Letter");
-			helper.setText( Message , true);
-			 
-			if(Email!=null && Email.length>0) {
-				javaMailSender.send(msg); 
-			}
-			if (Email.length>0) 
-			{
-				redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
-			}
-		
-		redir.addFlashAttribute("committeemainid",committeemaindata[0].toString());
-		
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace(); 
-			logger.error(new Date() +"Inside SendFormationLetter.htm "+UserId,e);
-		}
-		return "redirect:/CommitteeMainMembers.htm";
-	}
-	
-// new method for committee formation
 //	@RequestMapping(value="SendFormationLetter.htm",method=RequestMethod.POST)
 //	public String SendFormationLetter1(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,HttpServletResponse res) throws Exception
 //	{
 //		String UserId=(String)ses.getAttribute("Username");
+//		System.out.println("Hiiiii");
 //		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
 //		try
 //		{
-//			System.out.println("Method2");
 //			String committeemainid=req.getParameter("committeemainid");	
 //			Object[] committeemaindata= service.CommitteMainData(committeemainid);
 //			String committeeid=committeemaindata[1].toString();
@@ -4088,7 +4007,8 @@ public class CommitteeController {
 //			String Message= customResponse.getOutput();
 //			
 //			
-//
+//			MimeMessage msg = javaMailSender.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 //			
 //			ArrayList<String> emails= new ArrayList<String>();			
 //			
@@ -4100,13 +4020,15 @@ public class CommitteeController {
 //				}
 //			}
 //			String [] Email = emails.toArray(new String[emails.size()]);
-//			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
-//			
+//			for(String s:Email) {
+//				System.out.println();
+//			}
+//			helper.setTo(Email);	
+//			helper.setSubject( committeemaindata[7] + " " +" Committee Formation Letter");
+//			helper.setText( Message , true);
+//			 
 //			if(Email!=null && Email.length>0) {
-//				
-//				for(String email:Email) {
-//					cm.sendScheduledEmailAsync(email, subject, Message, true);
-//				}
+//				javaMailSender.send(msg); 
 //			}
 //			if (Email.length>0) 
 //			{
@@ -4123,94 +4045,91 @@ public class CommitteeController {
 //		}
 //		return "redirect:/CommitteeMainMembers.htm";
 //	}
-//	
-//	
-//	
-
-	@RequestMapping(value="SendInvitationLetter.htm",method=RequestMethod.POST)
-	public String SendInvitationLetter(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception
-	{		
-		String UserId=(String)ses.getAttribute("Username");
-		logger.info(new Date() +"Inside SendInvitationLetter.htm "+UserId);
-		
-		try {
-			String committeescheduleid=req.getParameter("committeescheduleid");
-			 
-			List<Object[]> committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
-			
-			
-			
-			Object[] scheduledata=service.CommitteeScheduleEditData(committeescheduleid);
-			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-			ArrayList<String> emails= new ArrayList<String>();
-			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
-
-			for(Object[] obj : committeeinvitedlist) 
-			{	 
-				if(membertypes.contains(obj[3].toString()) && obj[9].toString().equals("N")) 
-				{
-					if(obj[8]!=null) {
-						emails.add(obj[8].toString());
-					}
-				}
-			}
-			
-			String LabCode =(String) ses.getAttribute("labcode");
-			String ProjectName="General Type";
-			if(!scheduledata[9].toString().equalsIgnoreCase("0")) 
-			{
-				ProjectName= service.projectdetails(scheduledata[9].toString())[1].toString();
-			}
-			 
-			String [] Email = emails.toArray(new String[emails.size()]);
-			 
-			MimeMessage msg = javaMailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-			helper.setTo(Email);
-			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + "(" + scheduledata[8] + ")" +"</b> committee of <b>"+ ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
-			 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
-			 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
-			 		 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + sdf.format(scheduledata[2])+","+LocalDate.parse(scheduledata[2].toString()).getDayOfWeek()+"</td></tr>"
-			 		 
-			 		 +"<tr>"
-					 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Time : </td>"
-					 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + scheduledata[3]  + "</td></tr>"
-					 +"<tr>"
-					 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Venue</td>"
-					 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\">"+ scheduledata[12] +"</td>"
-					 +"</tr>"
-					 +"<p style=\"font-weight:bold;font-size:13px;\">[Note:This is an autogenerated e-mail.Reply to this will not be attended please.]</p>"
-					 +"<p>Regards</p>"
-					 +"<p>"+LabCode+ "- PMS Team"+"</p>"
-					 ;
-					 
-			if (Email.length>0) {
-				
-				try{
-					helper.setSubject( scheduledata[8] + " " +" Committee Invitation Letter");
-					helper.setText( Message , true);
-					javaMailSender.send(msg); 
-					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
-					redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
-				}catch (MailAuthenticationException e) {
-					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
-				}
-				
-			} 
-			 
-			 redir.addFlashAttribute("committeescheduleid",committeescheduleid);
-			 
-			
-		 }
-		 catch (Exception e) {
-				
-			 	e.printStackTrace(); 
-			 	logger.error(new Date() +"Inside SendInvitationLetter.htm "+UserId,e);
-			}			 
-		 return "redirect:/CommitteeInvitations.htm";
-		 }
 	
-	// new method sending email 
+// new method for committee formation
+	@RequestMapping(value="SendFormationLetter.htm",method=RequestMethod.POST)
+	public String SendFormationLetter1(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,HttpServletResponse res) throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
+		try
+		{
+			System.out.println("Method2");
+			String committeemainid=req.getParameter("committeemainid");	
+			Object[] committeemaindata= service.CommitteMainData(committeemainid);
+			String committeeid=committeemaindata[1].toString();
+			String projectid=committeemaindata[2].toString() ;
+			String divisionid=committeemaindata[3].toString() ;
+			String initiationid=committeemaindata[4].toString() ;
+			if(Long.parseLong(projectid)>0)
+			{	
+				req.setAttribute("projectdata", service.projectdetails(projectid));
+				req.setAttribute("committeedescription", service.ProjectCommitteeDescriptionTOR(projectid,committeeid));
+			}
+			if(Long.parseLong(divisionid)>0)
+			{	
+				req.setAttribute("divisiondata", service.DivisionData(divisionid));
+				req.setAttribute("committeedescription", service.DivisionCommitteeDescriptionTOR(divisionid,committeeid));
+			}	
+			if(Long.parseLong(initiationid)>0)
+			{	
+				req.setAttribute("initiationdata", service.Initiationdetails(initiationid));
+				req.setAttribute("committeedescription", service.InitiationCommitteeDescriptionTOR(initiationid,committeeid));
+			}	
+			
+			Object[] committeeedata=service.CommitteeDetails(committeeid);		
+			List<Object[]> committeeallmemberslist=service.CommitteeAllMembers(committeemainid);
+			
+			req.setAttribute("committeeallmemberslist",committeeallmemberslist );
+			req.setAttribute("committeemaindata", committeemaindata);
+			req.setAttribute("committeeedata",committeeedata);
+			req.setAttribute("projectid",projectid);
+			req.setAttribute("labdetails", service.LabDetails(committeeedata[13].toString()));
+			req.setAttribute("email","Y");
+			
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/CommitteeConstitutionLetter.jsp").forward(req, customResponse);
+			String Message= customResponse.getOutput();
+			
+			
+
+			
+			ArrayList<String> emails= new ArrayList<String>();			
+			
+			for(Object[] obj : committeeallmemberslist ) 
+			{				
+				if(obj[6]!=null && obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW")) 
+				{				 
+					emails.add(obj[6].toString());				 
+				}
+			}
+			String [] Email = emails.toArray(new String[emails.size()]);
+			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
+			
+			if(Email!=null && Email.length>0) {
+				
+				for(String email:Email) {
+					cm.sendScheduledEmailAsync(email, subject, Message, true);
+				}
+			}
+			if (Email.length>0) 
+			{
+				redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
+			}
+		
+		redir.addFlashAttribute("committeemainid",committeemaindata[0].toString());
+		
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside SendFormationLetter.htm "+UserId,e);
+		}
+		return "redirect:/CommitteeMainMembers.htm";
+	}
+	
+	
+	
 
 //	@RequestMapping(value="SendInvitationLetter.htm",method=RequestMethod.POST)
 //	public String SendInvitationLetter(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception
@@ -4248,6 +4167,10 @@ public class CommitteeController {
 //			}
 //			 
 //			String [] Email = emails.toArray(new String[emails.size()]);
+//			 
+//			MimeMessage msg = javaMailSender.createMimeMessage();
+//			MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+//			helper.setTo(Email);
 //			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + "(" + scheduledata[8] + ")" +"</b> committee of <b>"+ ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
 //			 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
 //			 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
@@ -4268,12 +4191,9 @@ public class CommitteeController {
 //			if (Email.length>0) {
 //				
 //				try{
-//					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
-//					for(String email:Email) {
-//						cm.sendScheduledEmailAsync(email, subject, Message, true);
-//					}
-//					
-//					
+//					helper.setSubject( scheduledata[8] + " " +" Committee Invitation Letter");
+//					helper.setText( Message , true);
+//					javaMailSender.send(msg); 
 //					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
 //					redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
 //				}catch (MailAuthenticationException e) {
@@ -4294,9 +4214,93 @@ public class CommitteeController {
 //		 return "redirect:/CommitteeInvitations.htm";
 //		 }
 //	
-//	
-//	
-//	
+	// new method sending email 
+
+	@RequestMapping(value="SendInvitationLetter.htm",method=RequestMethod.POST)
+	public String SendInvitationLetter(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception
+	{		
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside SendInvitationLetter.htm "+UserId);
+		
+		try {
+			String committeescheduleid=req.getParameter("committeescheduleid");
+			 
+			List<Object[]> committeeinvitedlist=service.CommitteeAtendance(committeescheduleid);
+			
+			
+			
+			Object[] scheduledata=service.CommitteeScheduleEditData(committeescheduleid);
+			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+			ArrayList<String> emails= new ArrayList<String>();
+			ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","I","P"));
+
+			for(Object[] obj : committeeinvitedlist) 
+			{	 
+				if(membertypes.contains(obj[3].toString()) && obj[9].toString().equals("N")) 
+				{
+					if(obj[8]!=null) {
+						emails.add(obj[8].toString());
+					}
+				}
+			}
+			
+			String LabCode =(String) ses.getAttribute("labcode");
+			String ProjectName="General Type";
+			if(!scheduledata[9].toString().equalsIgnoreCase("0")) 
+			{
+				ProjectName= service.projectdetails(scheduledata[9].toString())[1].toString();
+			}
+			 
+			String [] Email = emails.toArray(new String[emails.size()]);
+			String Message="Sir/Madam<br><p>&emsp;&emsp;&emsp;&emsp;&emsp;This is to inform you that Meeting is Scheduled for the  <b>"+ scheduledata[7]  + "(" + scheduledata[8] + ")" +"</b> committee of <b>"+ ProjectName +"</b> and further details about the meeting is mentioned below. </p> <table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >"
+			 		+ "<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
+			 		 + "<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
+			 		 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + sdf.format(scheduledata[2])+","+LocalDate.parse(scheduledata[2].toString()).getDayOfWeek()+"</td></tr>"
+			 		 
+			 		 +"<tr>"
+					 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Time : </td>"
+					 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + scheduledata[3]  + "</td></tr>"
+					 +"<tr>"
+					 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Venue</td>"
+					 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\">"+ scheduledata[12] +"</td>"
+					 +"</tr>"
+					 +"<p style=\"font-weight:bold;font-size:13px;\">[Note:This is an autogenerated e-mail.Reply to this will not be attended please.]</p>"
+					 +"<p>Regards</p>"
+					 +"<p>"+LabCode+ "- PMS Team"+"</p>"
+					 ;
+					 
+			if (Email.length>0) {
+				
+				try{
+					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
+					for(String email:Email) {
+						cm.sendScheduledEmailAsync(email, subject, Message, true);
+					}
+					
+					
+					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
+					redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
+				}catch (MailAuthenticationException e) {
+					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
+				}
+				
+			} 
+			 
+			 redir.addFlashAttribute("committeescheduleid",committeescheduleid);
+			 
+			
+		 }
+		 catch (Exception e) {
+				
+			 	e.printStackTrace(); 
+			 	logger.error(new Date() +"Inside SendInvitationLetter.htm "+UserId,e);
+			}			 
+		 return "redirect:/CommitteeInvitations.htm";
+		 }
+	
+	
+	
+	
 	@RequestMapping(value = "TotalMeetingReport.htm", method = {RequestMethod.GET })
 	public String TotalMeetingReport(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception 
 	{
@@ -7348,18 +7352,11 @@ public class CommitteeController {
 		}
 		
 		
+	
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-				@RequestMapping(value="CommitteeMinutesNewWordDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
+
+	@RequestMapping(value="CommitteeMinutesNewWordDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
 	public void CommitteeMinutesNewWordDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
 	{	
 			long startTime = System.currentTimeMillis();
@@ -7614,7 +7611,7 @@ public class CommitteeController {
 								 		createParagraph(doc, texts, "CENTER", bolds, fontSizes,10);
 								 		createParagraph(doc, texts2, "LEFT", bolds, fontSizes,500);
 								 		
-								 		createParagraph(doc, "Meeting Venue" , "CENTER", true, 16,5);
+								 		createParagraph(doc, "Meeting Venue" , "CENTER", true, 16,5);// image logo
 								 		createParagraph(doc, committeescheduleeditdata[12].toString() , "CENTER", false, 16,1250);
 								 		
 								 		XWPFParagraph paragraphP = doc.createParagraph();
@@ -8906,7 +8903,6 @@ public class CommitteeController {
 											 }
 											});
 							            }
-							            
 								 	    String minutesFilePath = env.getProperty("ApplicationFilesDrive");
 								 	    String outputPath = minutesFilePath + "/" + filename + ".docx";
 								 	    FileOutputStream out = new FileOutputStream(outputPath);

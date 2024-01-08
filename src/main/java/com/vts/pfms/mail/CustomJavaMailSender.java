@@ -1,0 +1,200 @@
+package com.vts.pfms.mail;
+
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import javax.mail.AuthenticationFailedException;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.text.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+
+
+import com.vts.pfms.committee.service.CommitteeService;
+import com.vts.pfms.mail.MailConfigurationDto;
+import com.vts.pfms.mail.MailService;
+import com.vts.pfms.mail.MeetingMailDto;
+
+@Controller
+@EnableScheduling
+public class CustomJavaMailSender {
+	@Autowired
+	CommitteeService committeeService;
+	@Autowired
+	MailService mailService;
+	
+	private static final Logger logger=LogManager.getLogger(CustomJavaMailSender.class);
+//    public HttpSession MyScheduledTasks(HttpSession httpSession) {
+//        this.httpSession = httpSession;
+//    }
+	private final SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+	@Scheduled(cron = "0 45 10 * * *")
+	public void reportCurrentTime() throws Exception {
+		asyncMethodforSendingMail();
+		}
+	@Async
+	public void asyncMethodforSendingMail() {
+		logger.info(LocalDate.now().toString()+" insdide asyncMethodforSendingMail ");
+		List<MeetingMailDto>meetingMailDtoData=new ArrayList<>();
+		List<String>membertypes=Arrays.asList("CC","CS","PS","CI","P","I");
+		String date=LocalDate.now().plusDays(1).toString();
+		System.out.println(date+"tommorrows Date");
+		try {
+			List<Object[]>todayMeetings=mailService.getTodaysMeetings(date);
+			List<Object[]>empAtendance= new ArrayList<>();
+			if(todayMeetings.size()>0) {
+			for(Object[]obj:todayMeetings) {
+				empAtendance=committeeService.CommitteeAtendance(obj[0].toString()).stream()
+						.filter(e ->membertypes.contains(e[3].toString())).collect(Collectors.toList());
+				for(Object[]obj1:empAtendance) {//Merge the data in MeetingMailDto
+					MeetingMailDto m= new MeetingMailDto();
+					m.setEmpid(obj1[0].toString());
+					m.setEmpname(obj1[6].toString());
+					m.setEmail(obj1[8].toString());
+					m.setScheduleid(obj[0].toString());
+					m.setProjectid(obj[1].toString());
+					m.setInitiationId(obj[2].toString());
+					m.setCommitteeShortName(obj[3].toString());
+					m.setCommitteeName(obj[4].toString());
+					m.setMeetingTime(obj[6].toString());
+					m.setMeetingVenue(obj[5].toString());
+					m.setProjectCode(obj[7].toString());
+					m.setProjectname(obj[8].toString());
+					meetingMailDtoData.add(m);
+				}
+			}
+			List<MeetingMailDto>meetingMailDtoSubData= new ArrayList<>();
+			meetingMailDtoData.stream().forEach(System.out::println);
+			
+			int mailCount=0;
+			while(meetingMailDtoData.size()!=0) {
+			String empid=meetingMailDtoData.get(0).getEmpid();
+			meetingMailDtoSubData=meetingMailDtoData.stream().filter( e -> e.getEmpid().equalsIgnoreCase(empid))
+							  .collect(Collectors.toList());
+			String message="Sir/Madam<br><p>&emsp;&emsp;This is to inform you that you have "+meetingMailDtoSubData.size()+" meetings scheduled tomorrow. </p><table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >";
+			for(MeetingMailDto m:meetingMailDtoSubData) {
+				  message=message
+						 +"<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
+						 +"<tr>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Project : </td>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"><b style=\"color:#0D47A1\">" + m.getProjectCode()+ "( "+m.getProjectname()+" )"  + "</b></td></tr>"
+						 +"<tr>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Meeting : </td>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + m.getCommitteeShortName()  + "</td></tr>"
+						 +"<tr><td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Date :  </td>"
+						 +"<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + LocalDate.now().plusDays(1).toString()+","+LocalDate.parse(LocalDate.now().plusDays(1).toString()).getDayOfWeek()+"</td></tr>"
+						 +"<tr>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Time : </td>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + m.getMeetingTime()  + "</td></tr>"
+						 +"<tr>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\"> Venue : </td>"
+						 + "<td style=\"border: 1px solid black; padding: 5px;text-align: left\">" + m.getMeetingVenue()+ "</td></tr>";
+					}
+				  message=message
+						 +"</table><p style=\"font-weight:bold;font-size:13px;\">[Note:This is an autogenerated e-mail.Reply to this will not be attended please.]</p>"
+					     +"<p>Regards</p>"
+					     +"<p>PMS Team"+"</p>";
+//					MimeMessage msg = javaMailSender.createMimeMessage();
+//					MimeMessageHelper helper = new MimeMessageHelper(msg, true);
+//					//System.out.println("Total emp size "+meetingMailDtoData.size());
+//					helper.setTo(meetingMailDtoSubData.get(0).getEmail());
+//					helper.setSubject("Tommorrow's Meeting Schedule");
+//					helper.setText( message , true);
+//					javaMailSender.send(msg); 
+				  String email=meetingMailDtoSubData.get(0).getEmail();
+				  String subject="Tommorrow's Meeting Schedule";
+				  CompletableFuture<Integer> sendResult = sendScheduledEmailAsync(email, subject, message, true);
+				  
+				  
+					meetingMailDtoData=meetingMailDtoData.stream().filter( e -> !e.getEmpid().equalsIgnoreCase(empid)).collect(Collectors.toList());
+					++mailCount;
+					}
+					System.out.println("No of mails Send"+mailCount);
+					}else {
+					System.out.println("No meeting is scheduled for tomorrow!");
+					}
+					} catch (Exception e) {
+					e.printStackTrace();
+					}	
+				}
+	
+	 	@Async
+	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email, String subject, String message, boolean isHtml) {
+		 
+	 		System.out.println("email "+email);
+	        String typeOfHost = "M";
+			MailConfigurationDto mailAuthentication;
+			
+			try {
+				mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				return null;
+			}
+
+			
+			  if (mailAuthentication == null) {
+			      // Handle the case where mail configuration for the specified typeOfHost is not found
+				  System.out.println("ERRROR -3 ");
+			      return CompletableFuture.completedFuture(-3); // You can choose an appropriate error code
+			  }else {
+
+	      
+			  JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+			    // Set mail configuration from the database
+			    mailSender.setHost(mailAuthentication.getHost());
+			    mailSender.setPort(Integer.parseInt(mailAuthentication.getPort()));
+			    mailSender.setUsername(mailAuthentication.getUsername());
+			    mailSender.setPassword(mailAuthentication.getPassword());
+
+			    Properties properties = new Properties();
+			    // Enable TLS
+				 properties.put("mail.smtp.starttls.enable", "true");
+				 mailSender.setJavaMailProperties(properties);
+			    MimeMessage mimeMessage = mailSender.createMimeMessage();
+			    try {
+			        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+			        helper.setTo(email);
+			        helper.setSubject(subject);
+			        helper.setText(message, isHtml);
+			        mailSender.send(mimeMessage);
+			        // If the email is sent successfully, complete the CompletableFuture with 1
+			        System.out.println("SUCCESS ");
+			        return CompletableFuture.completedFuture(1);
+			    } catch (AuthenticationFailedException e) {
+			        // Handle authentication failure (wrong password) and complete the CompletableFuture with -2
+			        e.printStackTrace();
+			        System.out.println("ERORRRR -2");
+			        return CompletableFuture.completedFuture(-2);
+			    } catch (MessagingException e) {
+			        // Handle other email sending exceptions and complete the CompletableFuture with -1
+			        e.printStackTrace();
+			        System.out.println("ERORRRR -1");
+			        return CompletableFuture.completedFuture(-1);
+			    }
+			  }
+	    }
+}

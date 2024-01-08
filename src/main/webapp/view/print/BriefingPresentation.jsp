@@ -58,6 +58,9 @@ font-weight: 700;
     opacity: 1;
   }
 }
+.modal-content{
+    box-shadow: 0px 0px 2px 2px lightslategray;
+}
 </style>
 </head>
 
@@ -109,7 +112,7 @@ System.out.println(todayDate+"---");
 	List<List<Object[]>> ReviewMeetingListPMRC = (List<List<Object[]>>) request.getAttribute("ReviewMeetingListPMRC");
 
 	List<List<Object[]>> ProjectRevList = (List<List<Object[]>>) request.getAttribute("ProjectRevList");
-	List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>) request.getAttribute("milestonedatalevel6");
+	List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>) request.getAttribute("milestonedatalevel6");//a
 	List<List<TechImages>> TechImages = (List<List<TechImages>>) request.getAttribute("TechImages");
 
 	Object[] committeeMetingsCount =  (Object[]) request.getAttribute("committeeMetingsCount");

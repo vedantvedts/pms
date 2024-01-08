@@ -171,41 +171,41 @@ public class ProjectController
 			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
 			
 			//Converting the pdf into Base64
-			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-			String filename="ProjectRequirement";
-			String path=req.getServletContext().getRealPath("/view/temp");
-		  	req.setAttribute("path",path);
-		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
-		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-		  	req.setAttribute("uploadpath", uploadpath);
-		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
-		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-			String html = customResponse.getOutput();
-
-			ConverterProperties converterProperties = new ConverterProperties();
-	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-	    	converterProperties.setFontProvider(dfp);
-
-			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-			pdfDocument.close();
-			pdf1.close();	       
-	        pdfw.close();
-			res.setContentType("application/pdf");
-	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-	        File f=new File(path+"/"+filename+".pdf");
-	        
-	        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
-	        req.setAttribute("pdf", pdf);
+//			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+//			String filename="ProjectRequirement";
+//			String path=req.getServletContext().getRealPath("/view/temp");
+//		  	req.setAttribute("path",path);
+//		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+//		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+//		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
+//		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
+//		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
+//		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+//		  	req.setAttribute("uploadpath", uploadpath);
+//		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
+//		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
+//		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
+//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
+//			String html = customResponse.getOutput();
+//
+//			ConverterProperties converterProperties = new ConverterProperties();
+//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+//	    	converterProperties.setFontProvider(dfp);
+//
+//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+//			pdfDocument.close();
+//			pdf1.close();	       
+//	        pdfw.close();
+//			res.setContentType("application/pdf");
+//	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+//	        File f=new File(path+"/"+filename+".pdf");
+//	        
+//	        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
+//	        req.setAttribute("pdf", pdf);
 			//
 			
 			
@@ -222,41 +222,41 @@ public class ProjectController
 					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
 					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
 					//convert pdf to base64
-					Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-					String filename="ProjectRequirement";
-					String path=req.getServletContext().getRealPath("/view/temp");
-				  	req.setAttribute("path",path);
-				  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-				  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
-				  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-				  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-				  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-				  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-				  	req.setAttribute("uploadpath", uploadpath);
-				  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-				  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
-				  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-					req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-					String html = customResponse.getOutput();
-
-					ConverterProperties converterProperties = new ConverterProperties();
-			    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-			    	converterProperties.setFontProvider(dfp);
-
-					HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-					PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-					PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-					PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-					pdfDocument.close();
-					pdf1.close();	       
-			        pdfw.close();
-					res.setContentType("application/pdf");
-			        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-			        File f=new File(path+"/"+filename+".pdf");
-			        
-			        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
-			        req.setAttribute("pdf", pdf);
+//					Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
+//					String filename="ProjectRequirement";
+//					String path=req.getServletContext().getRealPath("/view/temp");
+//				  	req.setAttribute("path",path);
+//				  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+//				  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
+//				  	req.setAttribute("LabList", service.LabListDetails(LabCode));
+//				  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
+//				  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
+//				  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
+//				  	req.setAttribute("uploadpath", uploadpath);
+//				  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
+//				  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
+//				  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
+//					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+//					req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
+//					String html = customResponse.getOutput();
+//
+//					ConverterProperties converterProperties = new ConverterProperties();
+//			    	FontProvider dfp = new DefaultFontProvider(true, true, true);
+//			    	converterProperties.setFontProvider(dfp);
+//
+//					HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+//					PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+//					PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+//					PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+//					pdfDocument.close();
+//					pdf1.close();	       
+//			        pdfw.close();
+//					res.setContentType("application/pdf");
+//			        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+//			        File f=new File(path+"/"+filename+".pdf");
+//			        
+//			        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
+//			        req.setAttribute("pdf", pdf);
 					//					
 				}
 			}

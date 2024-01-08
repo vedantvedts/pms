@@ -270,16 +270,16 @@ public class ActionServiceImpl implements ActionService {
 				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
 					ActionAssign actionassign = new ActionAssign();
 						
-					count=count+1;
+					//count=count+1;
+					String actionCount=(count+1)+"-"+(i+1);
 
 					if(lab!=null && main.getLabName()!=null) {
 				    	 Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
 
-					     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+count);
+					     actionassign.setActionNo(main.getLabName()+Project+sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/"+actionCount);
 					}else {
 						return unsuccess;
 					}
-					
 					
 					actionassign.setActionMainId(result);
 					actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
@@ -432,7 +432,7 @@ public class ActionServiceImpl implements ActionService {
 			updateassign.setProgressRemark(main.getRemarks());
 			dao.AssignUpdate(updateassign);
 			
-			
+			if(main.getMultipartfile()!=null) {
 			if(!main.getMultipartfile().isEmpty()) 
 			{
 				ActionAttachment attach=new ActionAttachment();
@@ -445,7 +445,7 @@ public class ActionServiceImpl implements ActionService {
 				saveFile(uploadpath+Path, attach.getAttachName(), main.getMultipartfile());
 				dao.ActionAttachInsert(attach);
 			}
-			
+			}
 			
 		}else {
 			subresult=0;
@@ -2149,4 +2149,7 @@ public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 	
 	return dao.RfaAttachmentDownload(rfaid);
 }
+
+
+
 }

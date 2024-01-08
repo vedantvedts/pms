@@ -465,7 +465,7 @@ String labcode= (String)session.getAttribute("labcode");
 			
 					var name=values[i][1].replace(/ /g,'');
 
-					module+="<li class='nav-item dropdown uppernav ' style='padding: 0rem 1rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+					module+="<li class='nav-item dropdown uppernav ' style='padding: 0rem 1rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
 					
 					}
 					
@@ -473,7 +473,7 @@ String labcode= (String)session.getAttribute("labcode");
 						
 						var name=values[i][1].replace(/ /g,'');
 
-						uppermodule+="<li class='nav-item dropdown '><button class='btn dropdown-toggle custom-button' type='button'  style='background-color:transparent' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' > </div></li>";
+						uppermodule+="<li class='nav-item dropdown '><button class='btn dropdown-toggle custom-button' type='button'  style='background-color:transparent' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' > </div></li>";
 						
 					}
 					

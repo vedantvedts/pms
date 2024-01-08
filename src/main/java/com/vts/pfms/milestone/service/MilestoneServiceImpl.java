@@ -54,7 +54,8 @@ public class MilestoneServiceImpl implements MilestoneService {
 	private  SimpleDateFormat rdf=fc.getRegularDateFormat();
 	private  SimpleDateFormat sdf=fc.getSqlDateFormat();
 	private  SimpleDateFormat sdtf=fc.getSqlDateAndTimeFormat();
-	
+	private  SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
 	
 	@Override
 	public List<Object[]> MilestoneActivityList(String ProjectId) throws Exception {
@@ -348,17 +349,28 @@ public class MilestoneServiceImpl implements MilestoneService {
 	
 		return dao.StatusList();
 	}
-	
+	private  SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
 	@Override
 	public int ActivityProgressUpdate(MileEditDto dto) throws Exception {
 		logger.info(new Date() +"Inside  ActivityProgressUpdate ");
 		int result=0;
+		
+		System.out.println("ProgressDate"+dto.getProgressDate());
+		System.out.println("ProgessData"+dateFormat.parse(dto.getProgressDate()));
+		System.out.println("ProgressDate "+new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
+		
+		String progressdate= new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime())+"";
+		
+		System.out.println("ProgressDate formattted "+progressdate);
 		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
+		
+		Date progressDate=fc.getSqlDateFormat().parse(progressdate);
+		
+		System.out.println(enddate+"----"+progressDate+"-----"+enddate.after(progressDate));
 		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
 		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
-		//Date fdate = fc.getRegularDateFormat().parse(dto.getDateOfCompletion());
-		dto.setDateOfCompletion(fc.getSqlDateFormat().format(new Date()));
-		if(enddate.after(new Date())) {
+		dto.setDateOfCompletion(progressdate);
+		if(enddate.after(progressDate)) {
 		dto.setActivityStatusId("3");
 		}else {
 			dto.setActivityStatusId("5");
@@ -367,7 +379,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
 			dto.setActivityStatusId("1");
 		}else {
-			if(enddate.after(new Date())) {
+			if(enddate.after(progressDate)) {
 				dto.setActivityStatusId("2");
 				}else {
 					dto.setActivityStatusId("4");
@@ -386,7 +398,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 	        	MilestoneActivitySub attach=new MilestoneActivitySub();
 	        	attach.setActivityId(Long.parseLong(dto.getActivityId()));
 	        	attach.setProgress(Integer.parseInt(dto.getProgressStatus()));
-	        	attach.setProgressDate(new java.sql.Date(fc.getRegularDateFormat().parse(dt).getTime()));
+	        	attach.setProgressDate(new java.sql.Date(dateFormat.parse(dto.getProgressDate()).getTime()));
 				attach.setAttachName(dto.getFileNamePath());
 				attach.setAttachFile(dto.getFilePath());
 				attach.setCreatedBy(dto.getCreatedBy());
@@ -417,7 +429,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 												Date enddateD = fc.getSqlDateFormat().parse(dto.getEndDate());
 												if(Math.round(ProgressD)>=100) {
 													ProgressD=100.00;
-													if(enddateD.after(new Date())) {
+													if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
 														StatusD="3";
 													}else {
 														StatusD="5";
@@ -426,7 +438,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 													else if(Math.round(ProgressD)==0) {
 														StatusD="1";
 													}else {
-														if(enddateD.after(new Date())) {
+														if(enddateD.after(progressDate)) { // taking progressdate in place of new Date()
 															StatusD="2";
 															}else {
 																StatusD="4";
@@ -477,7 +489,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 						Date enddateC= fc.getSqlDateFormat().parse(dto.getEndDate());
 						if(Math.round(ProgressC)>=100) {
 							ProgressC=100.00;
-							if(enddateC.after(new Date())) {
+							if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
 								 StatusC="3";
 							}else {
 								 StatusC="5";
@@ -486,7 +498,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 							else if(Math.round(ProgressC)==0) {
 								 StatusC="1";
 							}else {
-								if(enddateC.after(new Date())) {
+								if(enddateC.after(progressDate)) { // taking progressdate in place of new Date()
 									 StatusC="2";
 									}else {
 										 StatusC="4";
@@ -526,7 +538,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 						Date enddateB = fc.getSqlDateFormat().parse(dto.getEndDate());
 						if(Math.round(ProgressB)>=100) {
 							ProgressB=100.00;
-							if(enddateB.after(new Date())) {
+							if(enddateB.after(progressDate)) {// taking progressdate in place of new Date()
 								 StatusB="3";
 							}else {
 								 StatusB="5";
@@ -535,7 +547,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 							else if(Math.round(ProgressB)==0) {
 								 StatusB="1";
 							}else {
-								if(enddateB.after(new Date())) {
+								if(enddateB.after(progressDate)) { // taking progressdate in place of new Date()
 									 StatusB="2";
 									}else {
 										 StatusB="4";
@@ -571,9 +583,9 @@ public class MilestoneServiceImpl implements MilestoneService {
 						// status for A
 						String StatusA="1";
 						Date enddateA = fc.getSqlDateFormat().parse(dto.getEndDate());
-						if(Math.round(ProgressA)>=100) {
+						if(Math.round(ProgressA)>=100) { 
 							ProgressA=100.00;
-							if(enddateA.after(new Date())) {
+							if(enddateA.after(progressDate)) {// taking progressdate in place of new Date()
 								 StatusA="3";
 							}else {
 								 StatusA="5";
@@ -582,7 +594,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 							else if(Math.round(ProgressA)==0) {
 								 StatusA="1";
 							}else {
-								if(enddateA.after(new Date())) {
+								if(enddateA.after(progressDate)) {  // taking progressdate in place of new Date()
 									 StatusA="2";
 									}else {
 										 StatusA="4";
@@ -605,11 +617,12 @@ public class MilestoneServiceImpl implements MilestoneService {
 						}
 					
 					// status for Main
+					
 					String StatusMain="1";
-					Date enddateMain = fc.getSqlDateFormat().parse(dto.getEndDate());
+					Date enddateMain = fc.getSqlDateFormat().parse(objMain[1].toString());
 					if(Math.round(TotalA)>=100) {
 						TotalA=100.00;
-						if(enddateMain.after(new Date())) {
+						if(enddateMain.after(progressDate)) { // taking progressdate in place of new Date()
 							StatusMain="3";
 						}else {
 							StatusMain="5";
@@ -618,7 +631,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 						else if(Math.round(TotalA)==0) {
 							StatusMain="1";
 						}else {
-							if(enddateMain.after(new Date())) {
+							if(enddateMain.after(progressDate)) {
 								StatusMain="2";
 								}else {
 									StatusMain="4";

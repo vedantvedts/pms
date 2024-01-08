@@ -72,6 +72,9 @@ public interface AdminService {
 	public int insertEmployeeData() throws Exception;
 	public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode)throws Exception;
 	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate)throws Exception;
-	
-		
+	public List<Object[]> MailConfigurationList()throws Exception;
+	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
+	public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception;
+	public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception;
+	public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception; 
 }

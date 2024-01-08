@@ -30,6 +30,8 @@ import com.vts.pfms.admin.model.PfmsLoginRoleSecurity;
 import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
+import com.vts.pfms.mail.MailConfiguration;
+import com.vts.pfms.mail.ReversibleEncryptionAlg;
 import com.vts.pfms.master.model.DivisionEmployee;
 
 @Service
@@ -39,6 +41,9 @@ public class AdminServiceImpl implements AdminService{
 	AdminDao dao;
 	@Autowired
 	BCryptPasswordEncoder encoder;
+	
+	@Autowired
+	ReversibleEncryptionAlg rea;
 	
 	private static final Logger logger=LogManager.getLogger(AdminServiceImpl.class);
 	
@@ -705,5 +710,68 @@ public class AdminServiceImpl implements AdminService{
 		@Override
 		public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate) throws Exception {
 			return dao.getEmployeeWiseCount(employeeId,fromDate,toDate);
+		}
+		@Override
+		public List<Object[]> MailConfigurationList()throws Exception{
+			return  dao.MailConfigurationList();
+		}
+		@Override
+		public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy) throws Exception {
+			// TODO Auto-generated method stub
+			return dao.DeleteMailConfiguration(MailConfigurationId,ModifiedBy);
+		}
+		
+		@Override
+		public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception{
+			
+			long finalResult = 0;
+			try {
+	          System.out.println("Encrypted Password By AesAlgorithm: " + rea.encryptByAesAlg(password));
+		    } catch (Exception e) {
+			    e.printStackTrace();
+			    System.out.println("Password:errror encrpting ");
+			}
+			
+			MailConfiguration mailConfigAdd =  new MailConfiguration();
+			mailConfigAdd.setTypeOfHost(hostType);
+	        mailConfigAdd.setUsername(userName);
+	        mailConfigAdd.setCreatedBy(createdBy);
+		    mailConfigAdd.setCreatedDate(sdf1.format(new Date()));
+		    mailConfigAdd.setIsActive(1);
+			/////////////////////////////////////////////////////////Just defaut value
+	System.out.println("The Host Type is :"+hostType);
+	        mailConfigAdd.setHost("smtp.gmail.com");
+		    mailConfigAdd.setPort("25");
+			
+			
+			////////////////////////////////////////////////////////
+	//Modern authentication systems typically use one-way hash functions like bcrypt which cannot be decryptes
+	// (unlike bcrypt, which is designed to be irreversible)that means You can't really "decrypt" a bcrypt-hashed password.
+	//If you need to support both encryption and decryption of passwords for mail,you  want to use a reversible encryption algorithm
+		    mailConfigAdd.setPassword(rea.encryptByAesAlg(password));
+		    
+			
+		    finalResult = dao.AddMailConfiguration(mailConfigAdd);
+		    
+			return finalResult;
+			
+		}
+		
+
+		@Override
+		public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception{
+			return dao.MailConfigurationEditList(MailConfigurationId);
+		}
+		@Override
+		public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception{
+		    logger.info(new Date() + " ServiceImpl  UpdateMailConfiguration");
+		    long finalResult = 0;
+			try {
+				finalResult = dao.UpdateMailConfiguration(MailConfigurationId,userName,hostType,modifiedBy);
+			  }catch (Exception e) {
+			    	 logger.error(new Date() +" Login Problem Occures When MailConfiguration.htm was clicked ", e);
+			    	 finalResult = 0;
+			     }
+			return finalResult;
 		}
 }

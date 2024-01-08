@@ -26,6 +26,7 @@ import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.admin.model.PfmsStatistics;
 import com.vts.pfms.login.Login;
 import com.vts.pfms.login.PfmsLoginRole;
+import com.vts.pfms.mail.MailConfiguration;
 import com.vts.pfms.master.model.DivisionEmployee;
 
 @Transactional
@@ -914,4 +915,80 @@ public class AdminDaoImpl implements AdminDao{
 			query.setParameter("toDate", toDate);
 			return (List<Object[]>)query.getResultList();
 		}
+		private static final String MAILCONFIGURATIONLIST = "SELECT a.MailConfigurationId,a.Username,a.Host,a.TypeOfHost,a.Port,a.Password,a.CreatedBy,a.CreatedDate FROM mail_configuration a  WHERE a.IsActive='1' ORDER BY MailConfigurationId DESC";
+		@Override
+		public List<Object[]> MailConfigurationList()throws Exception{
+			Query query = manager.createNativeQuery(MAILCONFIGURATIONLIST);
+			List<Object[]> MailConfigurationList = query.getResultList();
+			return MailConfigurationList;
+		}
+		private static final String DELETEMAILCONFIGURATION = "UPDATE mail_configuration SET IsActive=0 AND ModifiedBy=:modifiedBy AND ModifiedDate=:modifiedDate WHERE MailConfigurationId=:mailConfigurationId";
+		public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception{
+			logger.info(new Date() + "Inside DaoImpl DeleteMailConfiguration");
+			try {
+				Query query = manager.createNativeQuery(DELETEMAILCONFIGURATION);
+				query.setParameter("mailConfigurationId", MailConfigurationId);
+				query.setParameter("modifiedBy", ModifiedBy);
+				query.setParameter("modifiedDate", sdf1.format(new Date()));		
+				int DeleteMailConfiguration = (int) query.executeUpdate();
+				return  DeleteMailConfiguration;
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl DeleteMailConfiguration", e);
+				return 0;
+			}
+		}
+		@Override
+		public long AddMailConfiguration( MailConfiguration mailConfigAdd)throws Exception{
+			logger.info(new Date() + "Inside DaoImpl AddMailConfiguration");
+			try {
+				manager.persist(mailConfigAdd);
+				manager.flush();
+				return mailConfigAdd.getMailConfigurationId();
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl AddMailConfiguration", e);
+				return 0;
+			}
+		}
+        private static final String MAILCONFIGURATIONEDITLIST ="SELECT a.MailConfigurationId,a.Username,a.Host,a.TypeOfHost,a.Port,a.Password,a.CreatedBy,a.CreatedDate FROM mail_configuration a  WHERE a.MailConfigurationId=:mailConfigurationId";
+		@Override
+		public List<Object[]> MailConfigurationEditList(long MailConfigurationId)throws Exception{
+			logger.info(new Date() + "Inside DaoImpl MailConfigurationEditList");
+			try {
+				Query query = manager.createNativeQuery(MAILCONFIGURATIONEDITLIST);
+				query.setParameter("mailConfigurationId", MailConfigurationId);
+				List<Object[]> MailConfigurationEditList = query.getResultList();
+				return MailConfigurationEditList;
+
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl MailConfigurationEditList", e);
+				return null;
+			}
+		}
+        private static final String UPDATEMAILCONFIGURATION = "UPDATE mail_configuration SET a.Username=:userName ,a.TypeOfHost=:hostType, a.ModifiedBy=:modifiedBy ,a.ModifiedDate=:modifiedDate WHERE MailConfigurationId=:mailConfigurationId";
+
+		@Override
+		public long UpdateMailConfiguration(long MailConfigurationId,String userName,String hostType, String modifiedBy)throws Exception{
+			logger.info(new Date() + "Inside DaoImpl MailConfigurationEditList");
+			try {
+				Query query = manager.createNativeQuery(UPDATEMAILCONFIGURATION);
+				query.setParameter("mailConfigurationId", MailConfigurationId);
+				query.setParameter("userName", userName);
+				query.setParameter("hostType", hostType);
+				query.setParameter("modifiedBy", modifiedBy);
+				query.setParameter("modifiedDate", sdf1.format(new Date()));		
+				int DeleteMailConfiguration = (int) query.executeUpdate();
+				return  DeleteMailConfiguration;
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl MailConfigurationEditList", e);
+				return 0;
+			}
+			
+			
+		}
+		
 }

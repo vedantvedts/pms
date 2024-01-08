@@ -213,6 +213,7 @@ public class LoginController {
 			     req.setAttribute("QuickLinkList", headerservice.QuickLinksList(LoginType));
 			     req.setAttribute("projecthealthdata",  rfpmainservice.ProjectHealthData(LabCode));
 			     req.setAttribute("projecthealthtotal",rfpmainservice.ProjectHealthTotalData(ProjectId,EmpId,LoginType,LabCode,"Y"));
+			    System.out.println(ProjectId+"--"+EmpId+"---"+LoginType+"---"+LabCode);
 			     //req.setAttribute("clusterlablist", headerservice.LabList());
 			     //req.setAttribute("clusterlist", comservice.ClusterList());
 			     //req.setAttribute("CCMFinanceData",rfpmainservice.getCCMData(EmpId,LoginType,LabCode));

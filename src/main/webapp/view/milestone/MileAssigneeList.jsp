@@ -364,6 +364,7 @@ h6{
 	                                                         	  			<form class="form-inline"  method="POST" action="M-A-Update.htm">
 		                        	                                  			<button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
 		                                                                 		<input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
+		                                                                 		<input type="hidden" name="startdate" value="<%=objA[2].toString() %>" >
 		                                                                  		<input type="hidden" name="ActivityId"	value="<%=objA[0] %>" /> 
 		                                                                  		<input type="hidden" name="ActivityType"	value="A" /> 
 		                                                                   		<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
@@ -444,6 +445,7 @@ h6{
                         	                                  > <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
                                                                  <input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
                                                                   <input type="hidden" name="ActivityId"	value="<%=objB[0] %>" /> 
+                                                                  <input type="hidden" name="startdate" value="<%=objB[2].toString() %>" >
                                                                   <input type="hidden" name="ActivityType"	value="B" /> 
                                                                   <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -522,6 +524,7 @@ h6{
                         	                                  <button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
                                                                  <input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
                                                                   <input type="hidden" name="ActivityId"	value="<%=objC[0] %>" /> 
+                                                                  <input type="hidden" name="startdate" value="<%=objC[2].toString() %>" >
                                                                   <input type="hidden" name="ActivityType"	value="C" /> 
                                                                   <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -600,6 +603,7 @@ h6{
                         	                                  > <i class="fa fa-wrench"  aria-hidden="true"></i> </button>
                                                                  <input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
                                                                   <input type="hidden" name="ActivityId"	value="<%=objD[0] %>" /> 
+                                                                  <input type="hidden" name="startdate" value="<%=objD[2].toString() %>" >
                                                                   <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                                                                   <input type="hidden" name="ActivityType"	value="D" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -674,6 +678,7 @@ h6{
                                                          	  <form class="form-inline"  method="POST" action="M-A-Update.htm">
                         	                                  <button class="btn btn-sm edit"> <i class="fa fa-wrench" aria-hidden="true"></i> </button>
                                                                  <input type="hidden" name="MilestoneActivityId"	value="<%=obj[0] %>" /> 
+                                                                 <input type="hidden" name="startdate" value="<%=objE[2].toString() %>" >
                                                                   <input type="hidden" name="ActivityId"	value="<%=objE[0] %>" /> 
                                                                   <input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                                                                   <input type="hidden" name="ActivityType"	value="E" /> 

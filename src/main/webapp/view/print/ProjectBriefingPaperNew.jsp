@@ -438,7 +438,7 @@ List<List<Object[]>> ReviewMeetingList=(List<List<Object[]>>)request.getAttribut
 List<List<Object[]>> ReviewMeetingListPMRC=(List<List<Object[]>>)request.getAttribute("ReviewMeetingListPMRC");
 
 List<List<Object[]>> ProjectRevList = (List<List<Object[]>>)request.getAttribute("ProjectRevList");
-List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");
+List<List<Object[]>> MilestoneDetails6 = (List<List<Object[]>>)request.getAttribute("milestonedatalevel6");//b
 List<List<TechImages>> TechImages = (List<List<TechImages>>)request.getAttribute("TechImages");
 
 List<Object[]> SpecialCommitteesList = (List<Object[]>)request.getAttribute("SpecialCommitteesList");
@@ -472,7 +472,6 @@ SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
 Map<Integer,String> mappmrc=(Map<Integer,String>)request.getAttribute("mappmrc");
 Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 %>
-
 <%String ses=(String)request.getParameter("result"); 
  String ses1=(String)request.getParameter("resultfail");
 	if(ses1!=null){
@@ -1538,7 +1537,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									%>
 									<%int serial=1;for(Object[] obj:MilestoneDetails6.get(z)){
 										
-										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid) && (obj[24]==null || before6months.isBefore(LocalDate.parse(obj[24].toString()) ) )){
+										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)){
 										%>
 										<tr>
 											<td style="text-align: center"><%=serial%></td>
@@ -2982,6 +2981,7 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 							<% if(TechImages.size()>0){
 							List<TechImages>  TechImagesList= TechImages.get(z); 
 							if(TechImagesList.size()>0){
+							int i=0;
 							for(TechImages imges:TechImagesList){ %>
 							<div class="row">
 							<table>
@@ -2997,13 +2997,29 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 									<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
 									</form>									
 									</td>
-									<td style="border:0;">  
+									<td style="border:0;"> 
+									<%if(i==0){  %>
+									<button class="btn btn-sm">
+									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
+									</button> 
+									<%}else if(i==TechImagesList.size()-1){ %>
+									<button class="btn btn-sm">
+									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
+									</button> 
+									<%}else{%>
+									<button class="btn btn-sm">
+									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
+									</button> 
+									<button class="btn btn-sm">
+									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
+									</button> 
+									<%} %>
 									</td>
 									</tr>
 								</table>
 							</div>
 							<br>
-							<%}}} %>
+							<%i++;}}} %>
 						
 								
 								</div>

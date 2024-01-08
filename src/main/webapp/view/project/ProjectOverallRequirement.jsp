@@ -27,6 +27,7 @@
 	List<Object[]>DocumentApprovalFlowData=(List<Object[]>)request.getAttribute("DocumentApprovalFlowData");
 	List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TrackingList");
 	String pdf=(String)request.getAttribute("pdf");
+	List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	%>
 <style type="text/css">
   <%if(statuslist!=null&&!statuslist.isEmpty()){%>
@@ -123,8 +124,8 @@
 					<div class="container" id="container">
 					<div class="row" style="display: inline">
 					<div class="requirementid mt-2 ml-2">
-			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
-			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
+			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
+			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" id="img5">&nbsp;&nbsp;Scope</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" id="img2">&nbsp;System Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Other System Requirements</span> 
@@ -161,7 +162,6 @@
 				<div class="" id="reqdiv">
 				<div class="card-body" id="cardbody2" style="display: block;">
 					<%-- <%if(!RequirementList.isEmpty()) {%> --%>
-		<iframe  src="data:application/pdf;base64,<%=pdf %>" width="100%" height="415" id="iframes" style="display: block;" name="showiframes"></iframe>
 						<%if(RequirementStatus!=null && RequirementStatus[1].toString().equalsIgnoreCase("RFP")){ %>
 						<span  class="badge badge-warning" id="DocDownload">Requirements approved</span>
 						<form action="#" style="display: inline;">
@@ -326,7 +326,49 @@
 		</div>
 		</div>
 	<%} %>
-	<!--  -->
+	<!-- Modal for Document summary  -->
+	
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="SummaryModal">
+  <div class="modal-dialog modal-dialog-jump modal-lg ">
+    <div class="modal-content" style="width:137%;margin-left:-21%;">
+         <div class="modal-header" id="ModalHeader">
+        <h5 class="modal-title" id="exampleModalLabel">Document Summary</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+   
+    </div>
+  </div>
+</div>
+	<!-- modal for Document Distribution -->
+	<div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="ModalHeader">
+        <h5 class="modal-title" >Document Sent to</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="row">
+	<div class="col-md-10">
+	<select class="form-control selectdee"name="Assignee" id="Assignee"data-width="100%" data-live-search="true" multiple>
+        <%for(Object[]obj:EmployeeList){ %>
+        <option value="<%=obj[0].toString()%>"> <%=obj[1].toString() %>,<%=(obj[2].toString()) %></option>
+        <%} %>
+        </select>
+        </div>
+      <div class="col-md-2" align="center">
+      	<button class="btn btn-sm submit">SUBMIT</button>
+      </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+	
 	<!--  -->
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -373,6 +415,14 @@
 				$('#parareq').click();
 			}
 			
+			
+			function showSummaryModal(){
+				$('#SummaryModal').modal('show');
+			}
+			
+			function showSentModal(){
+				$('#DistributionModal').modal('show');
+			}
 			
 	</script>
 </body>

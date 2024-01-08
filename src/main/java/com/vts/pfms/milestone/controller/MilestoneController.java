@@ -418,7 +418,6 @@ public class MilestoneController {
 				    for (Object modelKey : md.keySet()) {
 				    	MainId = (String) md.get("MilestoneActivityId");
 				    	FromName = (String) md.get("formname");   
-				       
 				    }
 				    if(MainId==null) {
 				    	 redir.addAttribute("resultfail", "Refresh Not Allowed");
@@ -454,7 +453,6 @@ public class MilestoneController {
 					req.setAttribute("ActivityTypeList", service.ActivityTypeList());
 					req.setAttribute("FromName",FromName);
 
-			 
 		}
 		catch (Exception e) {
 				e.printStackTrace();  
@@ -946,6 +944,7 @@ public class MilestoneController {
 			req.setAttribute("projectdetails",service.ProjectDetails(req.getParameter("ProjectId")).get(0));
 			req.setAttribute("AllLabsList", committeservice.AllLabList());
 			
+			req.setAttribute("startdate", req.getParameter("startdate"));
 			
 		}catch (Exception e) {
 			e.printStackTrace();  
@@ -964,7 +963,6 @@ public class MilestoneController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside M-A-UpdateSubmit.htm "+UserId);		
 		try {
-			
 		
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
@@ -983,6 +981,7 @@ public class MilestoneController {
 		mainDto.setFilePath(FileAttach.getBytes());
 		mainDto.setStatusRemarks(req.getParameter("Remarks"));
 		mainDto.setCreatedBy(UserId);
+		mainDto.setProgressDate(req.getParameter("progressDate"));
 		int count =service.ActivityProgressUpdate(mainDto);
 
 		if (count > 0) {

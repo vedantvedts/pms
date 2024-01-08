@@ -99,6 +99,21 @@
       cursor: pointer;
       z-index: 1001; /* Make sure the button is above the modal */
     }
+    
+    #brifingBtn{
+    display:none;
+      position: fixed;
+      bottom: 70px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px;
+      border: none;
+      border-radius: 20px;
+      font-weight:bold;
+      cursor: pointer;
+      z-index: 1001; /* Make sure the button is above the modal */
+    }
 
  	#wrapper{
 		background-image: url("view/images/pfmsbg.png") !important;
@@ -1287,8 +1302,8 @@ if(ses!=null){ %>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">All PDC</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">In Progress</span></td>
 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Today PDC</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
+<!-- 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
+ -->													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
 													</tr>
 				
 				
@@ -1298,11 +1313,11 @@ if(ses!=null){ %>
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
 														
-														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
-														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
-														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+<%-- 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}   } %>
 														
@@ -1313,11 +1328,11 @@ if(ses!=null){ %>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
 														
-														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
+														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>   <!--changed 'E' to 'N'  -->   
 														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
-														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
-														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+<%-- 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}  } %>
 														
@@ -1331,11 +1346,11 @@ if(ses!=null){ %>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
 														
-														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
-														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
-														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+<%-- 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 														
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 														
@@ -1346,11 +1361,11 @@ if(ses!=null){ %>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Fracas")){ %>
 														
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: #dc3545;color:white; "><%=obj[1] %></button></td>
 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2] %></button></td>
 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3] %></button></td>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
-														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
+<%-- 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
+ --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5] %></button></td>
 													
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													
@@ -3681,7 +3696,9 @@ if(ses!=null){ %>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 	</form>
  <button class="open-modal-button" id="modalbtn" onclick="openModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
-
+<form action="#" >
+ <%if(ProjectList.size()>0){%><button type="submit" class="open-modal-button " id="brifingBtn" onclick="" data-toggle="tooltip" title="Briefing"  formaction="ProjectBriefingPaper.htm" formmethod="get"><img class="fa faa-pulse animated faa-fast" alt="" src="view/images/requirements.png" style="width:21px" ></button><%} %>
+</form>
   <!-- Modal Container -->
   <div id="myModal" class="modal-container" >
     <div class="modalheader" style="justify-content: start;color:red;">
@@ -5049,6 +5066,7 @@ function openModal() {
     setTimeout(() => { 
 		   closeModal()
 	}, 5000);
+    $('#brifingBtn').hide();
 }
 
 function closeModal() {
@@ -5056,6 +5074,7 @@ function closeModal() {
  */  $('#myModal').hide();
  	$('#modalbtn').show();
  /*  document.getElementById('modalbtn').style.display = 'block'; */
+ 	 $('#brifingBtn').show();
 }
 
 // Close the modal if the user clicks outside of it

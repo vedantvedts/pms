@@ -121,7 +121,7 @@ h6 {
 							<div class="col-md-6  ">
 							
 							<form>
-								<span class="caret">System Requirements Document &nbsp; <button class="btn bg-transparent" type="submit" formaction="RequirementWordDownload.htm" formmethod="get" formtarget="_blank" >
+								<span class="caret">System Requirements Document &nbsp; <button class="btn bg-transparent" name="ProjectId" value="<%=ProjectId %>"   type="submit" formaction="RequirementWordDownload.htm" formmethod="get" formtarget="_blank" >
 								<i class="fa fa-download" style="color:green;" aria-hidden="true"></i>
 								</button></span>							
 							
