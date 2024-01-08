@@ -51,6 +51,9 @@ public class CARSInitiation implements Serializable{
 	private String InvForSoODate;
 	private String CARSStatusCode;
 	private String CARSStatusCodeNext;
+	private long DPCSoCForwardedBy;
+	private String DPCForwardDate;
+	private String DPCSoCStatus;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

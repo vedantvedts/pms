@@ -220,7 +220,8 @@ String carsInitiationId =(String)request.getAttribute("carsInitiationId");
 carsInitiationId = carsInitiationId!=null?carsInitiationId:"0";
 List<Object[]> projectList =(List<Object[]>)request.getAttribute("ProjectList");
 
-List<Object[]> ApprovalEmpData = (List<Object[]>)request.getAttribute("ApprovalEmpData");
+List<Object[]> rsqrApprovalEmpData = (List<Object[]>)request.getAttribute("RSQRApprovalEmpData");
+List<Object[]> socApprovalEmpData = (List<Object[]>)request.getAttribute("SoCApprovalEmpData");
 List<Object[]> rsqrRemarksHistory = (List<Object[]>)request.getAttribute("CARSRSQRRemarksHistory");
 List<Object[]> socRemarksHistory = (List<Object[]>)request.getAttribute("CARSSoCRemarksHistory");
 
@@ -232,7 +233,7 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
 
 
 List<String> rsqrforward = Arrays.asList("INI","RGD","RPD","REV");
-List<String> socforward = Arrays.asList("AGD","APD","SRG","SRP","REV");
+List<String> socforward = Arrays.asList("AGD","APD","SRG","SRP","SRV");
 
 List<String> statesList  = Arrays.asList("Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam","Bihar", "Chandigarh", "Chhattisgarh",
 		                                 "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
@@ -251,6 +252,7 @@ Object[] emp = (Object[])request.getAttribute("EmpData");
 Object[] GDs = (Object[])request.getAttribute("GDEmpIds");
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 
+String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -369,6 +371,15 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
               			<a class="nav-link" data-toggle="tab" href="#socforward" role="tab" >
                		<%} %>
                   		SoC Forward
+              			</a>
+            	</li>
+            	<li class="nav-item" id="nav-momupload">
+            	     <%if(TabId!=null&&TabId.equalsIgnoreCase("8")){ %>
+              			<a class="nav-link active" data-toggle="tab" href="#momupload" id="nav"role="tab" >
+              		<%}else{ %>
+              			<a class="nav-link" data-toggle="tab" href="#momupload" role="tab" >
+               		<%} %>
+                  		MOM Upload
               			</a>
             	</li>
               </ul>
@@ -499,7 +510,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 										<option value="Mr" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Mr")) {%>selected<%} %> >Mr</option>
 										<option value="Ms" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Ms")) {%>selected<%} %> >Ms</option>
 										<option value="Dr" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Dr")) {%>selected<%} %> >Dr</option>
-										<option value="Proff" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Proff")) {%>selected<%} %> >Proff</option>
+										<option value="Prof" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Prof")) {%>selected<%} %> >Prof</option>
 									</select>
                               		<%-- <input  class="form-control form-control" type="text" name="piTitle" id="piTitle" maxlength="100" style="font-size: 15px;"
                               		 value="<%if(carsIni!=null && carsIni.getPITitle()!=null){ %><%=carsIni.getPITitle()%><%} %>" required>   --%>
@@ -981,7 +992,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 						    				</tr>
 						    				<tr>
 						    					<td colspan="3" style="width: 100%;font-size: 14px;">
-						    						&emsp;<input type="checkbox"  class="TCBox" <%if(carsIni!=null && !rsqrforward.contains(carsIni.getCARSStatusCode())) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
+						    						&emsp;<input type="checkbox"  class="TCBox" <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 						    					</td>
 						    				</tr>
                							</table>
@@ -1004,7 +1015,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                								
                								 <div style="width: 49%;text-align: right;margin-right: 10px;line-height: 10px;">
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
-				               					<%for(Object[] apprInfo : ApprovalEmpData){ %>
+				               					<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
 				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<br>
 				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
@@ -1040,7 +1051,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                							
                							<div class="row mt-2 mb-4">
 											<div class="col-md-12" align="center">
-												<%if(carsIni!=null && rsqrforward.contains(carsIni.getCARSStatusCode())) {%>
+												<%if(statuscode!=null && rsqrforward.contains(statuscode)) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
@@ -1056,9 +1067,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    						Approve	
 						      						</button>
 						      						
-						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
+						      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
 							   	 						Not Approve	
-						      						</button>
+						      						</button> -->
 						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
 							 							Return
 													</button>
@@ -1748,7 +1759,11 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                		   					<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
                		   					<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
                							<div class="mt-2" align="center">
-               								<h5 style="font-weight: bold;margin-top: 1.5rem;">Statement of Case for availing CARS</h5>
+               								<h5 style="font-weight: bold;margin-top: 1.5rem;">Statement of Case for availing CARS
+               								&emsp;<button type="submit" class="btn btn-sm" formaction="CARSSoCDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 				<i class="fa fa-download" aria-hidden="true"></i>
+												</button>
+               								</h5>
                							</div>
                							<table id="socforwardtable">
 	               							<tr>
@@ -1931,7 +1946,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                								
                								 <div style="width: 49%;text-align: right;margin-right: 10px;line-height: 10px;">
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
-				               					<%for(Object[] apprInfo : ApprovalEmpData){ %>
+				               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
 				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<br>
 				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
@@ -1967,7 +1982,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                							
                							<div class="row mt-2 mb-4">
 											<div class="col-md-12" align="center">
-												<%if(carsIni!=null && socforward.contains(carsIni.getCARSStatusCode())) {%>
+												<%if(statuscode!=null && socforward.contains(statuscode)) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
@@ -1983,9 +1998,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    						Forward	
 						      						</button>
 						      						
-						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
+						      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
 							   	 						Not Forward	
-						      						</button>
+						      						</button> -->
 						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
 							 							Return
 													</button>
@@ -2041,6 +2056,56 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
                			</div>
                	
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("7")){ %> 
+         			</div>
+         		<%}else{ %>
+              		</div>
+               	<%} %>
+               	
+               	<!-- *********** RSQR  Approval***********      --> 
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("8")){ %> 
+         			<div class="tab-pane active" id="momupload" role="tabpanel">
+         		<%}else{ %>
+              		<div class="tab-pane " id="momupload" role="tabpanel">
+               	<%} %>
+               			<%if( (statuscode!=null && (statuscode.equalsIgnoreCase("SFG") || statuscode.equalsIgnoreCase("SFP") )) || (carsSoC!=null && carsSoC.getMoMUpload()!=null)) {%>
+               				<form action="CARSSoCMoMUpload.htm" method="post" enctype="multipart/form-data">
+               					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+               		   			<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
+               		   			<br>
+               					<div class="row">
+               						<div class="col-md-3"></div>
+               			    		<div class="col-md-4" style="margin-left: 60px;">
+               			     			<div class="row details">
+                        					<div class="" style="width: 90%;border-top-left-radius: 5px;">
+                            					 <label class="control-label">Upload MOM</label><span class="mandatory">*</span> 
+                            					 <%if(carsSoC!=null && carsSoC.getMoMUpload()!=null) {%>
+                            					 	<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -20rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 	value="momfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="MoM Download">
+                            					 		<i class="fa fa-download fa-lg"></i>
+                            					 	</button>
+                            					 <%} %>
+                              		      		<input type="file" class="form-control modals" name="MoMUpload" required accept=".pdf" >
+                        					</div>
+                        				</div>
+                        			</div>
+                        			<div class="col-md-4">
+                        				<div align="left" style="margin-top: 2.2rem;">
+											<%if(carsSoC!=null){ %>
+							    				<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
+												<button type="submit" class="btn btn-sm btn-success submit btn-momupload" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure to Upload?')" >UPLOAD</button>
+											<%} %>
+									</div>
+                        			</div>
+                        		</div>
+                        		<br>
+               				</form>
+
+						<%} else{%>
+               				<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
+               					<h4 style="font-weight: bold;color: red;">Please get approval for SoC..!</h4>
+               				</div>
+               			<%} %>
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("8")){ %> 
          			</div>
          		<%}else{ %>
               		</div>
@@ -2421,7 +2486,7 @@ $(document).ready(function(){
     });
     
     /* button disabling for RSQR Approval */
-    <%if((carsIni!=null && rsqrforward.contains(carsIni.getCARSStatusCode())) || carsIni==null) {%>
+    <%if((carsIni!=null && rsqrforward.contains(statuscode)) || carsIni==null) {%>
     $('.btn-cars').prop('disabled',false);
     <%} else{%>
     $('.btn-cars').prop('disabled',true);
@@ -2444,6 +2509,7 @@ $(document).ready(function(){
        $('#nav-socforward').hide();
        $('#nav-rsqrdownload').hide();
        $('#nav-socmilestones').hide();
+       $('#nav-momupload').hide();
     <%} %>
     
     /* tabs hiding for SoC approval */
@@ -2456,6 +2522,7 @@ $(document).ready(function(){
        $('#nav-finalrsqr').hide();
        $('#nav-rsqrdownload').hide();
        $('#nav-socmilestones').hide();
+       $('#nav-momupload').hide();
     <%} %>
 })
 

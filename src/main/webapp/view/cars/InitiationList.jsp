@@ -131,8 +131,8 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 	                                <th width="15%">CARSNo</th>
 	                                <th width="10%">Funds From</th>
 	                                <th width="20%">Title</th>
-	                                <th width="20%">Status</th>
-	                                <th width="20%">Action</th>
+	                                <th width="30%">Status</th>
+	                                <th width="10%">Action</th>
 	                            </tr>
 	                        </thead>
 	                        <tbody>

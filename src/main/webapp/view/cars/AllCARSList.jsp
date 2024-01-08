@@ -255,14 +255,16 @@ th{
 <body>
 <%
 List<Object[]> ApprovedList =(List<Object[]>)request.getAttribute("ApprovedList");
+List<Object[]> MoMUploadedList =(List<Object[]>)request.getAttribute("MoMUploadedList");
 String fromdate = (String)request.getAttribute("fromdate");
 String todate   = (String)request.getAttribute("todate");
-
-String tab   = (String)request.getAttribute("tab");
 
 FormatConverter fc = new FormatConverter();
 
 String TabId   = (String)request.getAttribute("TabId");
+
+String socfromdate = (String)request.getAttribute("socfromdate");
+String soctodate   = (String)request.getAttribute("soctodate");
 %>
 
 <% String ses=(String)request.getParameter("result");
@@ -310,6 +312,7 @@ String TabId   = (String)request.getAttribute("TabId");
                   				SoC
               					</a>
             			</li>
+            			
               		</ul>
          		</div>
          		<!-- This is for Tab Panes -->
@@ -372,12 +375,12 @@ String TabId   = (String)request.getAttribute("TabId");
 					                            			<td style="text-align: left;width: 20%;"><%=form[2]+" ("+form[1]+"), "+form[3]%></td>
 					                            			<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
 					                            			<td style="text-align: center;width: 10%;"><%=form[11] %> </td>
-					                            			<td style="text-align: center;width: 23%;">
+					                            			<td style="text-align: center;width: 28%;">
 																<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSRSQRTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 													    			<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
 													    		</button>
 											 				</td>
-											 				<td style="text-align: center;width: 25%;">
+											 				<td style="text-align: center;width: 20%;">
 					                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSInitiationDetails.htm" name="carsInitiationId" value="<%=form[4]%>" data-toggle="tooltip" data-placement="top" title="CARS RSQR Approval" style="font-weight: 600;" >
 													   				<div class="cc-rockmenu">
 																		<div class="rolling">
@@ -486,12 +489,109 @@ String TabId   = (String)request.getAttribute("TabId");
          				<%}else{ %>
               				<div class="tab-pane " id="soc" role="tabpanel">
                			<%} %>
-               			
+               					<div class="card-body">
+									<form method="post" action="CARSRSQRApprovedList.htm" >
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<div class="row w-100" style="margin-top: 10px;margin-bottom: 10px;">
+											<div class="col-md-12" style="float: right;">
+												<table style="float: right;">
+													<tr>
+														<td> From Date :&nbsp; </td>
+												        <td> 
+															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(socfromdate!=null){%>
+													        	value="<%=fc.SqlToRegularDate(socfromdate)%>" <%}%> value=""  id="socfromdate" name="socfromdate"  required="required"   > 
+														</td>
+														<td></td>
+														<td >To Date :&nbsp;</td>
+														<td>					
+															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(soctodate!=null){%>
+													        	 value="<%=fc.SqlToRegularDate(soctodate)%>" <%}%>  value=""  id="soctodate" name="soctodate"  required="required"  > 							
+														</td>
+													</tr>
+												</table>
+										 	</div>
+										</div>
+										<input type="hidden" name="PageLoad" value="S">
+									</form>	
+									<form action="" method="POST" id="circularForm">
+					            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					            		<div class="row w-98" style="margin: 10px;">
+											<div class="col-md-12" >
+												<div class="table-responsive" style="text-align: left;">
+							                		<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="rsqrTable" >
+														<thead style="background: #055C9D;color: white!important">
+															<tr>
+											   					<th>SN</th>
+											  					<th>Initiated By</th>
+											   					<th>CARSNo</th>
+											   					<th>Amount</th>
+						                       					<th style="width: ">Status</th>
+						                       					<th style="width: ">Action</th>
+						                  					</tr>
+														</thead>
+						                 				<tbody>
+						                      				<% 
+						                      				   if(MoMUploadedList!=null && MoMUploadedList.size()>0){
+						                      				   int SNA=0;
+						                          			   for(Object[] form: MoMUploadedList ){
+						                       				%>
+						                        			<tr>
+						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
+						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
+						                            			<td style="text-align: center;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: center;width: 33%;">
+																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
+														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+														    		</button>
+												 				</td>
+												 				<td style="text-align: center;width: 15%;">
+						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="SoC Details" style="font-weight: 600;" >
+														   				<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/clipboard.png">
+																				</figure>
+																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+																	<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("SFD") ) {%>
+							                                       	 	<button class="editable-click" name="carsInitiationId" value="<%=form[0] %>" formaction="CARSSoCDPCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
+																			<div class="cc-rockmenu">
+																				<div class="rolling">
+																					<figure class="rolling_icon">
+																						<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																					</figure>
+																					<span>Revoke</span>
+																				</div>
+																			</div>
+																	    </button>
+											   				 		<%} %>
+																</td>
+						                        			</tr>
+						                       			<%} }else{%>
+						                       				<tr>
+						                       					<td colspan="6" style="text-align: center;">No data available in table</td>
+						                       				</tr>
+						                       			<%} %>
+						                   			    </tbody>
+						                 		    </table>
+							                	</div>
+						                	</div>
+						                </div>
+						            </form>
+								</div>
+               					<div class="navigation_btn"  style="text-align: right;">
+            						<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+									<button class="btn btn-info btn-sm next">Next</button>
+								</div>
                			<%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
                			<%} %>
+               			
          			</div>
          		</div>
 	   		</div>
@@ -699,7 +799,6 @@ $('#fromdate').daterangepicker({
 		    });
 		}); 
 
-	 
 	 $('#calendardate').daterangepicker({
 			"singleDatePicker" : true,
 			"linkedCalendars" : false,
@@ -712,6 +811,36 @@ $('#fromdate').daterangepicker({
 				format : 'DD-MM-YYYY'
 			}
 		});	 
+	 
+	 
+	 $('#socfromdate').daterangepicker({
+			"singleDatePicker" : true,
+			"linkedCalendars" : false,
+			"showCustomRangeLabel" : true,
+			/* "minDate" :datearray,   */
+			 "startDate" : new Date('<%=socfromdate%>'), 
+			"cancelClass" : "btn-default",
+			showDropdowns : true,
+			locale : {
+				format : 'DD-MM-YYYY'
+			}
+		});
+			
+			
+			$('#soctodate').daterangepicker({
+				"singleDatePicker" : true,
+				"linkedCalendars" : false,
+				"showCustomRangeLabel" : true,
+				"startDate" : new Date('<%=soctodate%>'), 
+				"minDate" :$("#socfromdate").val(),  
+				"cancelClass" : "btn-default",
+				showDropdowns : true,
+				locale : {
+					format : 'DD-MM-YYYY'
+				}
+			}); 
+	 
+	 
 </script>
 
 <script type="text/javascript">

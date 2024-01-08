@@ -383,14 +383,3 @@ iframe{
     max-width: 800px; /* Adjust this value as per your requirement */
   }
 }
-
-
-#ModalHeader{
-	background: #145374;
-    height: 44px;
-    display: flex;
-    font-family: 'Muli';
-    align-items: center;
-    color: white;
-	
-}

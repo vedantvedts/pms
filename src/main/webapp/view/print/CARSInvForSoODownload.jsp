@@ -223,7 +223,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-		<td><%if(emp!=null) {%><%=emp[4]+" "+emp[1] %> <%} %> - for kind information and follow up</td>
+		<td><%if(emp!=null) {%><%if(emp[4]!=null) {%><%=emp[4] %><%} else{%><%=emp[5] %><%} %> <%=emp[1] %> <%} %> - for kind information and follow up</td>
 	</tr>
 </table>
 </body>

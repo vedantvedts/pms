@@ -45,6 +45,7 @@ public class AdminServiceImpl implements AdminService{
 	@Autowired
 	ReversibleEncryptionAlg rea;
 	
+	
 	private static final Logger logger=LogManager.getLogger(AdminServiceImpl.class);
 	
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -231,9 +232,8 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public long RtmddoInsert(PfmsRtmddoDto dto) throws Exception {
-		logger.info(new Date() +"Inside SERVICE RtmddoInsert ");
 		try {
-		dao.RtmddoUpdate(dto.getType());
+			dao.RtmddoUpdate(dto.getType());
 		}catch (Exception e) {
 			logger.error(new Date() +"Inside SERVICE RtmddoInsert "+e);
 		}
@@ -711,6 +711,24 @@ public class AdminServiceImpl implements AdminService{
 		public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate) throws Exception {
 			return dao.getEmployeeWiseCount(employeeId,fromDate,toDate);
 		}
+
+		@Override
+		public List<Object[]> initiationApprovalAuthority(String labcode) throws Exception {
+			
+			return dao.initiationApprovalAuthority(labcode);
+		}
+
+		@Override
+		public PfmsRtmddo getApprovalAuthById(String RtmddoId) throws Exception {
+			
+			return dao.getApprovalAuthById(RtmddoId);
+		}
+
+		@Override
+		public int approvalAuthRevoke(String RtmddoId) throws Exception {
+			
+			return dao.approvalAuthRevoke(RtmddoId);
+		}
 		@Override
 		public List<Object[]> MailConfigurationList()throws Exception{
 			return  dao.MailConfigurationList();
@@ -774,4 +792,6 @@ public class AdminServiceImpl implements AdminService{
 			     }
 			return finalResult;
 		}
+		
+		
 }

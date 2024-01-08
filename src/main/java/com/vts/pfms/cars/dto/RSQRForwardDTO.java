@@ -10,4 +10,5 @@ public class RSQRForwardDTO {
 	public String EmpId;
 	public String UserId;
 	public String remarks;
+	public String labcode;
 }

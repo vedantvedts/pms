@@ -8,6 +8,7 @@ import com.vts.pfms.admin.dto.PfmsRtmddoDto;
 import com.vts.pfms.admin.dto.UserManageAdd;
 import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.admin.model.Expert;
+import com.vts.pfms.admin.model.PfmsRtmddo;
 import com.vts.pfms.login.Login;
 
 
@@ -35,7 +36,8 @@ public interface AdminService {
 	public int UserManagerUpdate(UserManageAdd UserManageAdd,String Userid)throws Exception;
 	public List<Object[]> GetExpertList() throws Exception;
 	public List<Object[]> GetDesignation() throws Exception;
-	public int[] checkAbility( String p0, String p1) throws Exception;	public int checkAbility2( String p0,  String p1) throws Exception;
+	public int[] checkAbility( String p0, String p1) throws Exception;
+	public int checkAbility2( String p0,  String p1) throws Exception;
 	public Long addExpert( Expert p0) throws Exception;
 	public Long ExpertRevoke( String p0,  String p1) throws Exception;
 	public List<Object[]> getEditDetails( String p0) throws Exception;
@@ -72,6 +74,9 @@ public interface AdminService {
 	public int insertEmployeeData() throws Exception;
 	public List<Object[]> StatsEmployeeList(String logintype, String division, String labCode)throws Exception;
 	public List<Object[]> getEmployeeWiseCount(long employeeId, String fromDate, String toDate)throws Exception;
+	public List<Object[]> initiationApprovalAuthority(String labcode) throws Exception;
+	public PfmsRtmddo getApprovalAuthById(String RtmddoId) throws Exception;
+	public int approvalAuthRevoke(String RtmddoId) throws Exception;
 	public List<Object[]> MailConfigurationList()throws Exception;
 	public long DeleteMailConfiguration(long MailConfigurationId, String ModifiedBy)throws Exception;
 	public long AddMailConfiguration(String userName, String password, String hostType, String createdBy)throws Exception;
