@@ -1197,7 +1197,6 @@ public class AdminController {
 			if (count > 0) {
 				redir.addAttribute("result", " Data synced successfully");
 			}
-
 			redir.addAttribute("FromDate", fromDate);
 			redir.addAttribute("ToDate", toDate);
 			redir.addAttribute("SelectedEmpId", SelectedEmpId);
