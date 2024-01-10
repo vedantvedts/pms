@@ -42,6 +42,7 @@ import com.vts.pfms.project.model.PfmsInitiationReqIntro;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
 import com.vts.pfms.project.model.PfmsInitiationSchedule;
 import com.vts.pfms.project.model.PfmsInititationRequirement;
+import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.PfmsProjectData;
 import com.vts.pfms.project.model.PfmsProjectDataRev;
@@ -64,6 +65,7 @@ import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterAttach;
 import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
+import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -3497,11 +3499,17 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			}
 	}
 	
-	/*
-	 * public static void RequiremntUpdate() {
-	 * 
-	 * }
-	 */
+	
+	@Override
+	public Long insertRequirement(PfmsOtherReq pr) throws Exception {
+		manager.persist(pr);
+		return pr.getRequirementId();
+	}
+	@Override
+	public Long insertReqType(ProjectRequirementType pt) throws Exception {
+		manager.persist(pt);
+		return pt.getReqTypeId();
+	}
 }
 
 

@@ -85,6 +85,7 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
+import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -93,6 +94,7 @@ import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
+import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
@@ -169,7 +171,6 @@ public class ProjectController
 			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
 			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
 			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-			
 			//Converting the pdf into Base64
 //			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
 //			String filename="ProjectRequirement";
@@ -260,6 +261,7 @@ public class ProjectController
 					//					
 				}
 			}
+			req.setAttribute("LabList", service.LabListDetails(LabCode));
 			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
 			req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 		}catch (Exception e) {
@@ -7461,8 +7463,66 @@ public class ProjectController
 				}
 	}
 	
+	//adding requirement to choose in additional requirements
+	@RequestMapping(value="insertRequirement.htm",method=RequestMethod.GET)
+	 public @ResponseBody String insertRequirement(HttpSession ses, HttpServletRequest req) throws Exception {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside insertRequirement.htm"+UserId);
+		Long count=0l;
+		try {
+			String reqtitle= req.getParameter("reqtitle");
+			System.out.println("reqtitle"+reqtitle);
+			
+			PfmsOtherReq pr = new PfmsOtherReq();
+			pr.setReqName(reqtitle);
+			
+			 count = service.insertRequirement(pr);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside insertRequirement.htm"+UserId);
+			e.printStackTrace();
+		}
+		
+		return json.toJson(count);
+	}
 	
-	
+	// adding requirement type
+	@RequestMapping(value="insertReqType.htm",method=RequestMethod.GET)
+	 public @ResponseBody String insertReqType(HttpSession ses, HttpServletRequest req) throws Exception {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside insertReqType.htm"+UserId);
+		Long count=0l;
+		try {
+			String ReqTypeCode= req.getParameter("ReqTypeCode").toUpperCase();
+			String ReqTypes= req.getParameter("ReqTypes");
+			String typeoption= req.getParameter("typeoption");
+			
+			List<Object[]>RequirementTypeList=service.RequirementTypeList();
+		long result=RequirementTypeList.stream().filter(i -> i[1].toString().equalsIgnoreCase(ReqTypeCode)&& i[2].toString().equalsIgnoreCase(ReqTypes)&&i[3].toString().equalsIgnoreCase(typeoption)).count();
+			
+			if(result>0) {
+				System.out.println("result"+result);
+				return json.toJson(count);
+			}
+			
+			ProjectRequirementType pt= new ProjectRequirementType();
+			pt.setFrNr(typeoption);
+			pt.setReqType(ReqTypes);
+			pt.setReqTypeCode(ReqTypeCode);
+			
+			
+			
+			 count = service.insertReqType(pt);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside insertReqType.htm"+UserId);
+			e.printStackTrace();
+		}
+		
+		return json.toJson(count);
+	}
 	
 
 //package com.vts.pfms.project.controller;

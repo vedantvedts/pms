@@ -28,6 +28,9 @@
 	List<Object[]> statuslist = (List<Object[]>)request.getAttribute("TrackingList");
 	String pdf=(String)request.getAttribute("pdf");
 	List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
+	String projectName="";
+	String classification="";
+	Object[]LabList=(Object[])request.getAttribute("LabList");
 	%>
 <style type="text/css">
   <%if(statuslist!=null&&!statuslist.isEmpty()){%>
@@ -104,7 +107,10 @@
 								for (Object[] obj : ProjectIntiationList) {
 								%>
 								<option value="<%=obj[0] + "/" + obj[4] + "/" + obj[5]%>"
-								<%if (obj[4].toString().equalsIgnoreCase(projectshortName)) {%>
+								<%if (obj[4].toString().equalsIgnoreCase(projectshortName)) {
+									projectName=obj[5].toString();
+									classification=obj[3].toString();
+								%>
 								selected <%} else {%> <%}%>><%=obj[4]%></option>
 								<%
 								}}%>
@@ -126,21 +132,22 @@
 					<div class="requirementid mt-2 ml-2">
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSummaryModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Summary</span>
 			        <span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showSentModal()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Document Distribution</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" id="img5">&nbsp;&nbsp;Scope</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" id="img2">&nbsp;System Requirements</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Other System Requirements</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" style="margin-left:-38%;">&nbsp;&nbsp;Abbreviations</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png"  style="margin-left:-38%;">&nbsp;&nbsp; Appendices</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" id="img1">&nbsp;QR para</span> 
-				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img id="img3"alt="" src="view/images/status.png" >&nbsp;Status</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/pdf.png" id="img4">&nbsp;Requirement Document</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
+				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
 				<!-- 	<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirement.png">&nbsp;System Requirements</span>  -->
 					 
 					</div>
 					</div>
 			<div class="row" style="display: inline">
+		
 			<!--Downlaod Document  -->
 			<form action="#">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -160,7 +167,90 @@
 				</form>
 		<!-- Introduction form end  -->
 				<div class="" id="reqdiv">
-				<div class="card-body" id="cardbody2" style="display: block;">
+					<div style="height:420px;margin-left: 1%;overflow:auto"id="scrollclass">
+					<table class="table table-bordered">
+					<tr class="table-warning"><td align="center" colspan="2" class="text-primary">DOCUMENT SUMMARY</td></tr>
+					<tr>
+					<td  class="text-primary" colspan="2">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
+					</tr>
+					<tr >
+					<td class="text-primary">2.&nbsp; Type of Document:<span class="text-dark">System Requirements Document</span></td>
+					<td class="text-primary">3.&nbsp; Classification: <span class="text-dark"><%=classification %></span></td>
+					</tr>
+				    <tr >
+					<td class="text-primary">4.&nbsp; Document Number:</td>
+					<td class="text-primary">5.&nbsp; Month Year:</td>
+					</tr>
+					<tr>
+					<td class="text-primary">6.&nbsp; Number of Pages:</td>
+					<td class="text-primary">7.&nbsp; Related Document:</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">8.&nbsp; Additional Information:
+									<textarea required="required" name="" class="form-control"
+									id="additionalReq" maxlength="4000" rows="2" cols="53"
+									placeholder="Maximum 4000 Chararcters" style="width:90%"></textarea>
+					<button class="btn btn-sm btn-success" style="float:right;margin-right: 2%;margin-top:-4%;">SUBMIT</button>
+					</td>
+					</tr>
+				     <tr>
+					<td  class="text-primary" colspan="2">9.&nbsp; Project Number and Project Name: <span class="text-dark"><%=projectName %> ( &nbsp;<%= projectshortName %> &nbsp;) </span></td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">10.&nbsp; Abstract:
+						<textarea required="required" name="" class="form-control"
+									id="Abstract" maxlength="4000" rows="2" cols="53"
+									placeholder="Maximum 4000 Chararcters" style="width:90%"></textarea>
+					<button class="btn btn-sm btn-success" style="float:right;margin-right: 2%;margin-top:-4%;">SUBMIT</button>
+					</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">11.&nbsp; Keywords:</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">12.&nbsp; Organization and address:
+								<span class="text-dark">		<%
+										if (LabList[1] != null) {
+										%><%=LabList[1].toString() + "(" + LabList[0].toString() + ")"%>
+
+										<%
+										} else {
+										%>-<%
+										}
+										%>
+								
+									
+										Government of India, Ministry of Defence,Defence
+										Research & Development Organization
+										<%
+									if (LabList[2] != null && LabList[3] != null && LabList[5] != null) {
+									%>
+									<%=LabList[2] + " , " + LabList[3].toString() + ", PIN-" + LabList[5].toString()+"."%>
+									<%}else{ %>
+									-
+									<%} %>
+								</span>
+							</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">13.&nbsp; Distribution:</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">14.&nbsp; Revision:</td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">15.&nbsp; Prepared by: <span class="text-dark">-</span> </td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">16.&nbsp; Reviewed by: <span class="text-dark">-</span> </td>
+					</tr>
+					<tr>
+					<td  class="text-primary" colspan="2">17.&nbsp; Approved by: <span class="text-dark">-</span> </td>
+					</tr>
+					</table>
+					</div>
+					
+					<div class="card-body" id="cardbody2" style="display: block;">
 					<%-- <%if(!RequirementList.isEmpty()) {%> --%>
 						<%if(RequirementStatus!=null && RequirementStatus[1].toString().equalsIgnoreCase("RFP")){ %>
 						<span  class="badge badge-warning" id="DocDownload">Requirements approved</span>
@@ -328,7 +418,7 @@
 	<%} %>
 	<!-- Modal for Document summary  -->
 	
-  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="SummaryModal">
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="">
   <div class="modal-dialog modal-dialog-jump modal-lg ">
     <div class="modal-content" style="width:137%;margin-left:-21%;">
          <div class="modal-header" id="ModalHeader">
@@ -337,7 +427,28 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-   
+   		<div class="modal-body">
+   			<div class="row">
+   			<div class="col-md-4">
+   			<label class="text-primary" style="font-size: 1rem;font-weight: bold;">Additional Information:</label>
+   			</div>
+   			<div class="col-md-8">
+   				<textarea required="required" name=""
+				class="form-control" id="additionalReq" maxlength="4000"
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+   			</div>
+   			</div>
+   			<div class="row mt-2">
+   			<div class="col-md-4">
+   			<label class="text-primary" style="font-size: 1rem;font-weight: bold;">Abstract:</label>
+   			</div>
+   			<div class="col-md-8">
+   				<textarea required="required" name=""
+				class="form-control" id="Abstract" maxlength="4000"
+				rows="3" cols="53" placeholder="Maximum 4000 Chararcters"></textarea>
+   			</div>
+   			</div>
+  	 	</div>
     </div>
   </div>
 </div>

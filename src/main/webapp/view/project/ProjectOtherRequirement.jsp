@@ -324,7 +324,7 @@ String MainId=(String)request.getAttribute("MainId");
 <body>
 <nav class="navbar navbar-light bg-light justify-content-between"  style="margin-top: -1%">
 		<a class="navbar-brand">
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">Additional System Requirements for Project </span> <span style="color:#31708f;font-size: 19px"> <%=projectDetails[1].toString() %></span></b>
+		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">Additional Requirements for Project </span> <span style="color:#31708f;font-size: 19px"> <%=projectDetails[1].toString() %></span></b>
 		</a>
 		<form action="#">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -419,7 +419,7 @@ String MainId=(String)request.getAttribute("MainId");
 	    			<%}} %>
 	    			<br>
 	    			<!-- <button class="btn bg-transparent"></button>  --> 
-	    			<button type="button" class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
+	    			<button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
 	         		</div>
 	         		</div>
 	         		</div>
@@ -456,7 +456,7 @@ String MainId=(String)request.getAttribute("MainId");
   <div class="modal-dialog modal-dialog-jump" role="document">
     <div class="modal-content mt-5" style="width:120%; margin-left:-10%;">
       <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
-        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Extra System Requirements</h5>
+        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Additional Requirements</h5>
         <button type="button" class="close text-danger mr-1" data-dismiss="modal" aria-label="Close">
           <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;">&times;</span>
         </button>
@@ -467,8 +467,12 @@ String MainId=(String)request.getAttribute("MainId");
     <%for(Object[]obj:Otherrequirements){ %>
        <input name="ReqValue" type="checkbox" value="<%=obj[0].toString()+"/"+obj[1].toString()%>">
        <input name="ReqNames" type="hidden" value="<%=obj[1].toString()%>">
-       <span class="ml-1 mt-2 text-primary"><%=obj[1].toString() %></span><br>
+       <span class="ml-1 mt-2 text-primary" style="font-weight: 600"><%=obj[1].toString() %></span><br>
        <%}%>
+       
+       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  		ADD NEW
+		</button>
        </div>
     	</div>
    		<%}else{ %>
@@ -486,7 +490,32 @@ String MainId=(String)request.getAttribute("MainId");
     </div>
   </div>
 </div>   	
-  </form> 	
+  </form> 
+  
+<!--Modal for requirement add  -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary"  id="exampleModalLongTitle">Requirement Title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+      	<div>
+      	
+      	<input class="form-control" type="text" name="requirements" id="reqtitle" style="width: 80%;display: inline-block;" placeholder="maximum 500 character" maxlength="500" required>
+      	<button type="button" class="btn btn-sm btn-success" style="float: right"onclick="addNew()">SUBMIT</button>
+      	
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  	
 <!--  -->	         	
 </body>
 <script>
@@ -757,5 +786,41 @@ $.ajax({
 	}
 	}
 	
+	
+	function addNew() {
+		var reqtitle=$('#reqtitle').val();
+		if(reqtitle.length==0){
+			alert("Please fill the Requirement Title")
+			event.preventDefault();
+		}else{
+		if(confirm("Are you sure to submit?")){	
+		 $.ajax({
+			 type:'GET',
+			 url:'insertRequirement.htm',
+			 	datatype:'json',
+			 data:{
+				 reqtitle:reqtitle,
+			 },
+		
+			 success:function (result){
+				 var ajaxresult = Number(result);
+				 console.log(ajaxresult)
+				 if(ajaxresult!=="0"){
+					 alert("Requirement Added Successfully");
+					 location.reload();
+				 }
+			 }
+		 })	//
+		}else{
+			event.prevenDefault();
+		} 
+		 
+		}
+	}
+	
+	
+	$( document ).ready(function() {
+	   $('#ModalReq').click();
+	});
 </script>
 </html>

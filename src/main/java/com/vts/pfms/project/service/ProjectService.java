@@ -34,6 +34,7 @@ import com.vts.pfms.project.model.PfmsInitiationChecklistData;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetails;
 import com.vts.pfms.project.model.PfmsInitiationMacroDetailsTwo;
 import com.vts.pfms.project.model.PfmsInitiationSanctionData;
+import com.vts.pfms.project.model.PfmsOtherReq;
 import com.vts.pfms.project.model.PfmsProcurementPlan;
 import com.vts.pfms.project.model.ProjectAssign;
 import com.vts.pfms.project.model.ProjectMactroDetailsBrief;
@@ -41,6 +42,7 @@ import com.vts.pfms.project.model.ProjectMain;
 import com.vts.pfms.project.model.ProjectMajorCapsi;
 import com.vts.pfms.project.model.ProjectMaster;
 import com.vts.pfms.project.model.ProjectMasterRev;
+import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -292,4 +294,6 @@ public interface ProjectService {
 	public long RequirementParaSubmit(RequirementparaModel rpm)throws Exception;
 	public List<Object[]> ReqParaDetails(String initiationid)throws Exception;
 	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception;
+	public Long insertRequirement(PfmsOtherReq pr)throws Exception;
+	public Long insertReqType(ProjectRequirementType pt) throws Exception;
 }

@@ -640,12 +640,13 @@ keyframes blinker { 20% {
 										<div class=col-md-3>
 											<select required="required" id="select" name="reqtype"
 												class="form-control selectpicker" data-width="80%"
-												data-live-search="true" style="margin-top: 5%">
+												data-live-search="true" style="margin-top: 5%" onchange="AddReqType()">
 												<option disabled="disabled" value="" selected="selected">Choose..</option>
 												<%if(!RequirementTypeList.isEmpty()){
 												for(Object[] obj:RequirementTypeList){ %>
 												<option value="<%=obj[0]+" "+obj[1]+" "+obj[3]%>"><%=obj[3]+"-"+obj[2]%></option>
 												<%}}%>
+												<option class="bg-success text-light" value="1">ADD NEW</option>
 											</select>
 										</div>
 										<div class=col-md-2>
@@ -1251,6 +1252,36 @@ keyframes blinker { 20% {
 			</div>
 		</div>
 
+<!-- Req type -->
+
+<div class="modal fade mt-4" id="ReqTypeCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary" id="exampleModalLongTitle">Requirement type</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-danger">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <label>Requirement Code  :</label>&nbsp;<span class="mandatory" style="color: red;">*</span>
+        <input class="form-control" id="ReqTypeCode" style="display: inline-block;width:70%" maxlength="3" >
+     
+       <label>Requirement Title  :</label>&nbsp;<span class="mandatory" style="color: red;">*</span>
+        <input class="form-control" id="ReqTypes" style="display: inline-block;width:70%">
+         
+        <label>Requirement Type :</label>&nbsp;<span class="mandatory" style="color: red;">*</span>
+        <select class="form-control" id="typeoption" style="width:70%">
+        	<option value="FR">Functional</option>
+        	<option value="NR">Non-Functional</option>
+        </select>
+        <div align="center" class="mt-2">
+        <button type="button" class="btn btn-sm btn-success" onclick="submitReqType()">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 		<script>
@@ -1792,7 +1823,71 @@ function showSelectEditValue(){
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
  	}
+  function AddReqType(){
+	  var value= $('#select').val();
+	  if(value==="1"){
+		  $('#ReqTypeCode').val("");
+		  $('#ReqTypes').val("");
+		 $('#ReqTypeCenter').modal('show');
+		 
+	  }
+  }
   
+  function submitReqType(){
+	  var ReqTypeCode=$('#ReqTypeCode').val();
+	  var ReqTypes=$('#ReqTypes').val();
+	  var typeoption=$('#typeoption').val();
+	  
+	  var selectValue=document.getElementById('select');
+	  var options = selectValue.options;
+	  var html="";
+	  for(let i=0;i<options.length-1;i++){
+		var value=options[i].value;
+		var text=options[i].text;
+		html=html+'<option value="'+value+'">'+text+'</option>'
+	  }
+
+	  
+	  if(ReqTypeCode.length==0||ReqTypes.length==0||typeoption.length==0){
+		  alert("Please fill all the fields")
+	  }else{
+		  if(ReqTypeCode.length<3){
+			  alert("Code must be three digit")
+		  }else{
+			  if(confirm("Are you sure to submit?")){
+			  $.ajax({
+					  type:'GET',
+					  url:'insertReqType.htm',
+					  datatype:'json',
+					  data:{
+						  ReqTypeCode:ReqTypeCode,
+						  ReqTypes:ReqTypes,
+						  typeoption:typeoption,
+					  },
+					  success : function(result){
+						  var ajaxresult=JSON.parse(result);
+						  if(result!=="0"){
+							  var x=result+" "+ReqTypeCode+" "+typeoption;
+							  var y=typeoption+"-"+ReqTypes;
+							  html=html+"<option value='"+x+"' selected>"+y+"</option>"
+						  html=html+'<option class="bg-success text-light" value="1">ADD NEW</option>'
+						  document.getElementById('select').innerHTML=html; 
+							  $('#ReqTypeCenter').modal('hide');
+						  }else{
+							  alert("Please check the list carefully its already there!")
+							  html=html+'<option class="bg-success text-light" value="1">ADD NEW</option>'
+							  document.getElementById('select').innerHTML=html;  
+							  $('#ReqTypeCenter').modal('hide');
+						  }
+					  }
+				  })
+			  }else{
+				  event.preventDefault();
+			  }
+		  }
+	  }
+	 
+  }
   </script>
 </body>
 </html>

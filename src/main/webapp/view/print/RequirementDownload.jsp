@@ -9,11 +9,13 @@
 	<%@page import="java.text.SimpleDateFormat"%>
 	<%@page import="java.text.Format"%>
 	<%@page import="com.vts.pfms.FormatConverter"%>
+	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
 <script>
-    function exportHTML(){
+/*     function exportHTML(){
        var header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
             "xmlns:w='urn:schemas-microsoft-com:office:word' "+
             "xmlns='http://www.w3.org/TR/REC-html40'>"+
@@ -28,8 +30,19 @@
        fileDownload.download = 'System Requirement.doc';
        fileDownload.click();
        document.body.removeChild(fileDownload);
-    }
+    } */
+    jQuery(document).ready(function($) {
+    	  $("#btn-export").click(function(event) {
+    	    $("#source-html").wordExport();
+    	  });
+    	});
 </script>
+<spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
+<script src="${FileSaver}"></script>
+
+<spring:url value="/resources/js/jquery.wordexport.js" var="wordexport" />
+<script src="${wordexport}"></script>
+
 <meta charset="ISO-8859-1">
 <title>Requirement Document</title>
 <%
@@ -461,7 +474,7 @@ td{
 	</div>
 
  <div class="content-footer" align="center">
-        <button id="btn-export" onclick="exportHTML();" style="padding:10px;"> Export to word
+        <button id="btn-export"  style="padding:10px;"> Export to word
             doc</button>
     </div>
     </body>

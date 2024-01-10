@@ -27,7 +27,7 @@
 	max-width: 98%;
 }
  #reqdiv{
-margin-top:-2%;
+margin-top:-10px;
 width:81%;
 display: inline-block;
 }
@@ -43,6 +43,7 @@ cursor: pointer;
   background-size: 200% 100%;
   background-position: 100% 0;
   transition: background-position 0.5s ease;
+  text-align: justify;
 }
 img{
 	width:25px !important;

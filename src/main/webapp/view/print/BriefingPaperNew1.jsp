@@ -1113,7 +1113,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<%int serial=1;for(Object[] obj:milestones.get(z)){
 										
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)  
-												 && (obj[24]==null ||(obj[24]!=null &&  before6months.isBefore(LocalDate.parse(obj[24].toString()) ) ) )){
+												){
 										%>
 										<tr>
 											<td style="text-align: center"><%=serial%></td>
