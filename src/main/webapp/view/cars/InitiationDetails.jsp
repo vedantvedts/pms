@@ -1186,7 +1186,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
                             					 	<select class="form-control" name="alignment" required>
-                            					 		<option value="L" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>selected<%} %>>Lab</option>
+                            					 		<option value="L" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>selected<%} %>>Lab charter</option>
                             					 		<option value="P" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("P")) {%>selected<%} %>>Project charter</option>
                             					 	</select>
                         						</div>
@@ -1641,8 +1641,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
 												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
-												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Task Description</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Months</th>
+												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Payment Terms</th>
 														<td style="width: 5%;">
@@ -1660,8 +1660,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<input type="text" class="form-control item" name="months" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required" >
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="text" class="form-control item" name="months" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
@@ -1678,11 +1678,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
 															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+														<td style="width: 30%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<input type="text" class="form-control item" name="months" required="required" >
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="text" class="form-control item" name="months" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
