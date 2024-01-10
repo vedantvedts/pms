@@ -21,5 +21,6 @@ public class CARSRSQRDetailsDTO {
 	private String[] TaskDesc;
 	private String[] Months;
 	private String[] Deliverables;
+	private String[] PaymentPercentage;
 	private String[] PaymentTerms;
 }

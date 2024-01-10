@@ -186,7 +186,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	</tr>
 </table>
                							
-<br>
+<br><br><br><br>
       
 <table id="timestamptable">
 	<tr>
@@ -195,7 +195,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
-				</label><br>
+				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
 				</label><br>
@@ -209,7 +209,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
-						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<br>
+						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<!-- <br> -->
 						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
 						<label style="font-size: 12px;">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%break;}} %>  

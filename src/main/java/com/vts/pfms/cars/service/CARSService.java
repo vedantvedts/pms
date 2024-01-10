@@ -31,7 +31,7 @@ public interface CARSService {
 	public int removeCARSRSQRMajorReqrDetails(long carsInitiationId) throws Exception;
 	public long carsRSQRDeliverableDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
 	public int removeCARSRSQRDeliverableDetails(long carsInitiationId) throws Exception;
-	public long rsqrApprovalForward(RSQRForwardDTO dto,HttpServletRequest req, HttpServletResponse res) throws Exception;
+	public long rsqrApprovalForward(RSQRForwardDTO dto,HttpServletRequest req, HttpServletResponse res, String labcode) throws Exception;
 	public Object[] getEmpGDEmpId(String empId) throws Exception;
 	public Object[] getEmpPDEmpId(String projectId) throws Exception;
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception;
