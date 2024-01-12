@@ -125,20 +125,96 @@ public class ProjectController
 	private SimpleDateFormat sdf1=fc.getSqlDateAndTimeFormat(); /* new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); */
 	private SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	
-	@RequestMapping(value = "ProjectIntiationList.htm")
+//	@RequestMapping(value = "ProjectIntiationList.htm")
+//	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		String LabCode =(String ) ses.getAttribute("labcode");
+//		logger.info(new Date() +"Inside ProjectIntiationList.htm "+UserId);
+//		
+//		try {
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//			String LoginType=(String)ses.getAttribute("LoginType");
+//			
+//			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
+//			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
+//			return "project/ProjectIntiationList";                                                
+//		}
+//		catch (Exception e) {
+//			logger.error(new Date() +" Inside ProjectIntiationList.htm "+UserId, e);
+//			e.printStackTrace();
+//    		return "static/Error";
+//		} 
+//	}
+
+	@RequestMapping(value = "ProjectIntiationList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String ) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectIntiationList.htm "+UserId);
-		
 		try {
+			/* getting data for processing projects list */
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String LoginType=(String)ses.getAttribute("LoginType");
+			String pagination = req.getParameter("pagination");
+			int pagin = Integer.parseInt(pagination!=null?pagination:"0");
 			
-			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
+			/* fetching actual data */
+			List<Object[]> ob = service.ProjectIntiationList(EmpId,LoginType,LabCode);
+			
+			// adding values to this List<Object[]>
+			List<Object[]> o = new ArrayList<>();
+			
+			System.out.println(req.getParameter("clicked"));
+			
+				/* search action starts */
+				if(req.getParameter("search")!="" && req.getParameter("search")!=null) {
+					String search = req.getParameter("search").toString();
+					req.setAttribute("searchFactor", search);
+					System.out.println("not null");
+					for(Object[] obj:ob) {
+						for(Object value:obj) {
+							if(value instanceof String)
+							if (((String)(value)).contains(search) ) {
+							o.add(obj);
+							continue;
+							}
+						}
+					}
+					if (o.size()==0)req.setAttribute("resultfail", "search result is empty!");
+				}
+				else if(req.getParameter("clicked")!=null) {
+					System.out.println("empty");
+					req.setAttribute("resultfail", "search is empty!");
+				}
+			
+			/* search action ends */
+			int p = ob.size()/6;
+			int extra = ob.size()%6;
+			if(o.size()==0) o=ob;
+			
+			/* pagination process starts */
+			
+			if(pagin>0 && pagin<(p+(extra>0?1:0)))
+			{
+				req.setAttribute("pagination", pagin);
+				o = o.subList(pagin*6, ((pagin*6)+6)<o.size()?((pagin*6)+6):o.size());
+			}
+			else
+			{
+				o = o.subList(0, o.size()>=6?6:o.size());
+				req.setAttribute("pagination", 0);
+				pagin=0;
+			}
+			
+			req.setAttribute("ProjectIntiationList", o);
+			req.setAttribute("maxpagin", p+(extra>0?1:0) );
 			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
-			return "project/ProjectIntiationList";                                                
+			/* pagination process ends */
+			
+			
+			return "project/ProjectIntiationList";
 		}
 		catch (Exception e) {
 			logger.error(new Date() +" Inside ProjectIntiationList.htm "+UserId, e);
@@ -146,7 +222,7 @@ public class ProjectController
     		return "static/Error";
 		} 
 	}
-
+	
 	@RequestMapping(value="ProjectOverAllRequirement.htm")
 	public String ProjectOverallRequirement(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
 	{	
