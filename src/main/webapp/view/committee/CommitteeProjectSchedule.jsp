@@ -1,7 +1,10 @@
+<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.stream.Collector"%>
 <%@page import="java.time.LocalTime"%>
+<%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
-	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
 	
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
@@ -20,7 +23,64 @@
 .control-label{
 	font-weight: bold !important;
 }
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
 
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+} 
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+ .meetingsp:hover{
+padding:10px;
+padding-bottom:13px;
+background: #f7be16;
+color:black;
+border-radius: 5px;
+box-shadow: 0px 0px 1px 1px gray;
+}
+.meetingsp a:hover{
+color:black;
+}
+
+.meetingsp{
+position: relative;
+font-size: 18px;
+font-weight: 500;
+color:#fff;
+text-align: center;
+}
 	
 </style>
 
@@ -31,13 +91,25 @@
 <%
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-	
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf2=fc.getRegularDateFormat();
+SimpleDateFormat sdf3=fc.getSqlDateFormat();
 List<Object[]> ProjectsList=(List<Object[]>) request.getAttribute("ProjectsList");
 List<Object[]>  Projectschedulelist=(List<Object[]>)request.getAttribute("Projectschedulelist");
 List<Object[]>  projapplicommitteelist=(List<Object[]>)request.getAttribute("projapplicommitteelist");
 Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
+
+List<Object[]>meetingList= new ArrayList<>();
+
+if(!Projectschedulelist.isEmpty()){
+	if(committeeid.equalsIgnoreCase("all")){
+		meetingList=Projectschedulelist;
+	}else{
+		meetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid)).collect(Collectors.toList());
+	}
+}
 %>
 
 
@@ -152,8 +224,22 @@ if(ses1!=null){
 					
 					
 					</div>
-					<div class="card-body">
-						<div id="calendar"></div>
+					<div class="card-body" style="display: flex;justify-content: space-around;">
+						<div id="calendar" style="width:80%;float:left"></div>
+						<div id="meetings" style="background-color: #216583;;width:20%">
+						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">Earlier Meetings</div>
+						<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
+						<%if(!meetingList.isEmpty()){
+							for(Object[]obj:meetingList){
+							%>
+						 <p class="meetingsp ml-3 mr-3"><a id="tag" style="color:white;text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+						&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+							</a></p> 
+						<%}}else{ %>
+						<p class="meetingsp ml-3 mr-3"> No Meetings Listed !</p>
+						<%} %>
+						</div>
+						</div>
 					</div>
 					
 				</div>

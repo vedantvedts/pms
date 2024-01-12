@@ -7356,70 +7356,68 @@ public class CommitteeController {
 		
 		
 
-	@RequestMapping(value="CommitteeMinutesNewWordDownload.htm", method = {RequestMethod.POST,RequestMethod.GET})
-	public void CommitteeMinutesNewWordDownload(HttpServletRequest req,HttpServletResponse res, HttpSession ses, RedirectAttributes redir) throws Exception
-	{	
+		@RequestMapping(value = "CommitteeMinutesNewWordDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+		public String CommitteeMinutesNewWordDownload(HttpServletRequest req, HttpServletResponse res, HttpSession ses,
+				RedirectAttributes redir) throws Exception {
 			long startTime = System.currentTimeMillis();
-			String UserId=(String)ses.getAttribute("Username");
-			String LabCode =(String) ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside CommitteeMinutesNewDownload.htm "+UserId);
+			String UserId = (String) ses.getAttribute("Username");
+			String LabCode = (String) ses.getAttribute("labcode");
+			logger.info(new Date() + "Inside CommitteeMinutesNewDownload.htm " + UserId);
+
 			
-			Object [] divisiondetails=null;
-			Object [] initiationdetails=null;
-			Object[] membersec=null; 
-			int meetingcount=0;
-			int count1=0;
-			try
-			{		
-				String committeescheduleid = req.getParameter("committeescheduleid");	
+			try {
+				String committeescheduleid = req.getParameter("committeescheduleid");			
 				Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
 				String projectid= committeescheduleeditdata[9].toString();
 				String committeeid=committeescheduleeditdata[0].toString();
-
-	
-					Object[] projectdetails = null;
-					
-					if(projectid!=null && Integer.parseInt(projectid)>0)
-					{
+				Object[] projectdetails = null;
+				if(projectid!=null && Integer.parseInt(projectid)>0)
+				{
 					projectdetails = service.projectdetails(projectid);
+						req.setAttribute("projectdetails", projectdetails);
 					}
 					String divisionid= committeescheduleeditdata[16].toString();
 					if(divisionid!=null && Integer.parseInt(divisionid)>0)
 					{
-						divisiondetails=service.DivisionData(divisionid);
+						req.setAttribute("divisiondetails", service.DivisionData(divisionid));
 					}
 					String initiationid= committeescheduleeditdata[17].toString();
 					if(initiationid!=null && Integer.parseInt(initiationid)>0)
 					{
-						initiationdetails=service.Initiationdetails(initiationid);
+						req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
 					}
-					List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
-		    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+					
+					Committee committee = printservice.getCommitteeData(committeeid);
 					
 					HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
 					long lastid=service.getLastPmrcId(projectid, committeeid, committeescheduleid);
-					List<Object[]> speclists =service.CommitteeScheduleMinutes(committeescheduleid);
+					
+					//****************************envi download start**********************************
+		    		List<Object[]> envisagedDemandlist  = new ArrayList<Object[]>();
+		    		envisagedDemandlist=service.getEnvisagedDemandList(projectid);
+		    		req.setAttribute("envisagedDemandlist", envisagedDemandlist);
+					
+					req.setAttribute("committeeminutesspeclist",service.CommitteeScheduleMinutes(committeescheduleid) );
+					req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+					req.setAttribute("committeeminutes",service.CommitteeMinutesSpecNew());
+					req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));			
+					req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+					req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+					req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+				//	req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committee.getCommitteeShortName().trim()));
+					req.setAttribute("milestonedatalevel6", printservice.BreifingMilestoneDetails(projectid,committeeid));
 
-					List<Object[]> committeeminutes =service.CommitteeMinutesSpecNew();
-					List<Object[]> invitedlist = service.CommitteeAtendance(committeescheduleid);
-					Object[] labdetails = service.LabDetails(committeescheduleeditdata[24].toString());
-					String labLogo=LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString());
-					
-					byte[] imageBytes = DatatypeConverter.parseBase64Binary(labLogo);
-					
-					
-
-					// Save the image to a file or use an InputStream, as needed
-					ByteArrayInputStream imageStream = new ByteArrayInputStream(imageBytes);
-					meetingcount=service.MeetingNo(committeescheduleeditdata);
-					List<Object[]> MilestoneDetails6 = printservice.BreifingMilestoneDetails(projectid,committeeid);
+//					req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+//					req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 					String LevelId= "2";
 		    		Object[] MileStoneLevelId = printservice.MileStoneLevelId(projectid,committeeid);
 					if( MileStoneLevelId!= null) {
 						LevelId= MileStoneLevelId[0].toString();
 					}
-					
-					LinkedHashMap< String, ArrayList<Object[]>> actionlist2 = (LinkedHashMap< String, ArrayList<Object[]>>) actionsdata;
+					req.setAttribute("levelid", LevelId);
+					req.setAttribute("labInfo", service.LabDetailes(LabCode));
+				/*---------------------------------------------------------------------------------------------------------------*/
+//					if(Long.parseLong(projectid) >0 && committeescheduleeditdata[22].toString().equals("N") ) {
 						
 						 final String localUri=uri+"/pfms_serv/financialStatusBriefing?ProjectCode="+projectdetails[4].toString()+"&rupess="+10000000;
 					 		HttpHeaders headers = new HttpHeaders();
@@ -7440,13 +7438,14 @@ public class CommitteeController {
 							if(jsonResult!=null) {
 								try {
 									projectDetails = mapper.readValue(jsonResult, new TypeReference<List<ProjectFinancialDetails>>(){});
+									req.setAttribute("financialDetails",projectDetails);
 								} catch (JsonProcessingException e) {
 									e.printStackTrace();
 								}
 							}
 			 	
 							final String localUri2=uri+"/pfms_serv/getTotalDemand";
-	
+
 					 		String jsonResult2=null;
 							try {
 								HttpEntity<String> entity = new HttpEntity<String>(headers);
@@ -7462,11 +7461,12 @@ public class CommitteeController {
 							if(jsonResult2!=null) {
 								try {
 									totaldemand = mapper2.readValue(jsonResult2, new TypeReference<List<TotalDemand>>(){});
+									req.setAttribute("TotalProcurementDetails",totaldemand);
 								} catch (JsonProcessingException e) {
 								e.printStackTrace();
 							}
 						}
-	
+
 					 	List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
 					 	List<Object[]> procurementOnDemand=null;
 					 	List<Object[]> procurementOnSanction=null;
@@ -7497,11 +7497,14 @@ public class CommitteeController {
 								actionsdata.put(obj[0].toString(), values);
 							}
 					} 
-					 	List<Object[]> lastpmrcactions = service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+"");
-	
-					 	List<Object[]> ActionPlanSixMonths =service.ActionPlanSixMonths(projectid);
-					 	Object[] projectdatadetails =service.ProjectDataDetails(projectid);
-					 	DecimalFormat df=new DecimalFormat("####################.##");
+					
+					 	req.setAttribute("lastpmrcactions", service.LastPMRCActions(lastid,committeeid,projectid,committeescheduleeditdata[22]+""));
+//						req.setAttribute("actionlist",actionsdata);
+					 	req.setAttribute("procurementOnDemand", procurementOnDemand);
+					 	req.setAttribute("procurementOnSanction", procurementOnSanction);
+					 	req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+					 	req.setAttribute("projectdatadetails", service.ProjectDataDetails(projectid));
+					 	// new code
 					 	List<Object[]>totalMileStones=service.totalProjectMilestones(projectid);//get all the milestones details based on projectid
 					 	List<Object[]>first=null;   //store the milestones with levelid 1
 					 	List<Object[]>second=null;	// store the milestones with levelid 2
@@ -7531,7 +7534,7 @@ public class CommitteeController {
 					 			    .map(objectArray -> new Object[] {entry.getKey(),objectArray[3]})
 					 			   .collect(Collectors.toList());
 					 	for(Object[]obj:second) {
-					 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),"B"+(count++));
+					 		treeMapLevTwo.put(Integer.parseInt(obj[1].toString()),entry.getValue()+"-B"+(count++));
 					 	}
 					 	}
 					 	for(Map.Entry<Integer,String>entry: treeMapLevTwo.entrySet()) {
@@ -7540,1406 +7543,39 @@ public class CommitteeController {
 					 				filter(i->i[26].toString().equalsIgnoreCase("3") && i[3].toString().equalsIgnoreCase(entry.getKey()+""))
 					 				.map(objectArray -> new Object[] {entry.getKey(),objectArray[4]})
 					 				.collect(Collectors.toList());
-					 		for(Object[]obj:three) {
+					 			for(Object[]obj:three) {
 								treeMapLevThree.put(Integer.parseInt(obj[1].toString()), "C"+(count++)); 
-					 			
-					 		}
-					 	}
-					 	 }
-								 	if(invitedlist.size()>0){
-								 	 ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
-
-								 	int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
-								 	int j=0;
-								 	for(Object[] temp : invitedlist){
-
-								 		if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
-								 		{ 
-								 			memPresent++;
-								 		}
-								 		else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
-								 		{
-								 			memAbscent++;
-								 		}
-								 		else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
-								 		{ 
-								 			ParPresent++;
-								 		}
-								 		else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
-								 		{ 
-								 			parAbscent++;
-								 		}
-								 	}
+					 			}
+					 			}
+					 	 		}
+								 	 req.setAttribute("treeMapLevOne", treeMapLevOne);
+								 	 req.setAttribute("treeMapLevTwo", treeMapLevTwo);
+								 	 // new code end
+								 	 //code on 06-10-2023				 	 
 								 	List<List<Object[]>> ReviewMeetingList = new ArrayList<List<Object[]>>();
 							    	List<List<Object[]>> ReviewMeetingListPMRC = new ArrayList<List<Object[]>>();
 							    	ReviewMeetingList.add(printservice.ReviewMeetingList(projectid, "EB"));
 						    		ReviewMeetingListPMRC.add(printservice.ReviewMeetingList(projectid, "PMRC")); 
 						    		Map<Integer,String> mappmrc = new HashMap<>();
-						     		int pmrccount=0;
+						    		Map<Integer,String> mapEB = new HashMap<>();
+						    		int pmrccount=0;
 						     		for (Object []obj:ReviewMeetingListPMRC.get(0)) {
 						     			mappmrc.put(++pmrccount,obj[3].toString());
 						     		}
+						     	
 						    		int ebcount=0;
-						    		Map<Integer,String> mapEB = new HashMap<>();
+						    	
 						    		for (Object []obj:ReviewMeetingList.get(0)) {
 						    		mapEB.put(++ebcount,obj[3].toString());
 						    		}
-
-								 	 
-								 	String filename = committeescheduleeditdata[11].toString().replace("/", "-");
-
-								 	XWPFDocument doc = new XWPFDocument();
-							
-
-								 	try {
-						
-								 		
-
-								 		createParagraph(doc, "MINUTES OF MEETING", "CENTER", true, 24,1000);
-								 		createParagraph(doc, committeescheduleeditdata[7].toString().toUpperCase() + "  (" + committeescheduleeditdata[8].toString().toUpperCase() + (meetingcount > 0 ? "  #" + meetingcount : "") + ")","CENTER", false, 18,10);
-								 		createParagraph(doc, "For", "CENTER", false, 14,10);
-								 		createParagraph(doc, "Project : "+projectdetails[1]+" ("+projectdetails[4]+")", "CENTER", false, 17,600);
-								 		createParagraph(doc, "Meeting Id", "CENTER", true, 14,4);
-								 		createParagraph(doc, committeescheduleeditdata[11].toString() , "CENTER", false, 16,500);
-
-								 		
-								 		String[] texts = {"Meeting Date", "Meeting Time"};
-								 		String[] texts2 = {"                                               "+sdf3.format(sdf1.parse(committeescheduleeditdata[2].toString()))+"    ", committeescheduleeditdata[3].toString()};
-								 		boolean[] bolds = {false, false};
-								 		int[] fontSizes = {14, 14};
-
-								 		createParagraph(doc, texts, "CENTER", bolds, fontSizes,10);
-								 		createParagraph(doc, texts2, "LEFT", bolds, fontSizes,500);
-								 		
-								 		createParagraph(doc, "Meeting Venue" , "CENTER", true, 16,5);// image logo
-								 		createParagraph(doc, committeescheduleeditdata[12].toString() , "CENTER", false, 16,1250);
-								 		
-								 		XWPFParagraph paragraphP = doc.createParagraph();
-								 		XWPFRun runP = paragraphP.createRun();
-
-								 		 int formatP = XWPFDocument.PICTURE_TYPE_PNG;   // Use the appropriate picture type for XWPFDocument
-								            runP.addPicture(imageStream, formatP, "Lab Logo", Units.toEMU(100), Units.toEMU(100));
-								            paragraphP.setAlignment(ParagraphAlignment.CENTER);
-								            
-								            createParagraph(doc, "" , "CENTER", false, 16,1250);
-								            
-								 		createParagraph(doc, labdetails[2].toString()+" ("+labdetails[1]+")" , "CENTER", false, 16,10);
-								 		createParagraph(doc, labdetails[4].toString()+" "+labdetails[5].toString()+" "+labdetails[6] , "CENTER", false, 16,10);
-
-
-						            XWPFParagraph pageBreak = doc.createParagraph();
-							            pageBreak.setPageBreak(true);
-							        
-							            
-							            createParagraph(doc, "ATTENDANCE", "CENTER", true, 18,10);
-							            XWPFTable table = doc.createTable(2, 4);
-							            int[] percentageColumnWidths = {8, 40, 25, 27};
-
-							            int totalTableWidth = 5000; 
-
-							            String[] cellTexts = {"SN", "Name, Designation", "Estt. / Agency", "Role"};
-
-							            setTableRowData(table,0,cellTexts.length,cellTexts);
-							            
-							            setTableWidth(table,totalTableWidth,percentageColumnWidths);
-
-							            String[] cellTextsRow2 = {"Members Present",null,null, null};
-							            setTableRowData(table,1,cellTextsRow2.length,cellTextsRow2);
-							            
-							            int numCellsToMerge = 4;
-							            mergrColums(table,numCellsToMerge,1);
-							    
-							          int memPresentCount=1;
-							          int memAbsentCount=0;
-							          int parPresentCount=0;
-							          int parAbsentCount=0;
-
-							            if(memPresent > 0){
-							            	for(int i=0;i<invitedlist.size();i++) {
-							            		if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
-							            	 	{ j++;
-							            	 	XWPFTableRow thirdRow = table.createRow();
-							            	 	createCell(thirdRow,String.valueOf(j),0);
-							            	 	createCell(thirdRow,invitedlist.get(i)[6]+" "+invitedlist.get(i)[7],1);
-							            	 	createCell(thirdRow, invitedlist.get(i)[11].toString(),2);
-
-							            	 	XWPFTableCell thirdRowCell4 = thirdRow.getCell(3);
-							            	 	if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {
-							            	 		thirdRowCell4.setText( "Chairperson" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) {
-							            	 		membersec=invitedlist.get(i);
-							            	 		thirdRowCell4.setText( "Member Secretary" );
-							            	 	}
-							            	 	else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) {
-							            	 		thirdRowCell4.setText( "Co-Chairperson" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) {
-							            	 		thirdRowCell4.setText( "Member Secretary (Proxy)" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI") || invitedlist.get(i)[3].toString().equalsIgnoreCase("I") ) {
-							            	 		thirdRowCell4.setText( "Internal" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("W")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("E")) {
-							            	 		thirdRowCell4.setText( "External" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ) {
-							            	 		thirdRowCell4.setText( "Presenter" );
-							            	 	}else {
-							            	 		thirdRowCell4.setText( "REP_"+invitedlist.get(i)[3].toString() );
-							            	 	}
-							            	 	
-							            	 	thirdRowCell4.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.TOP);
-							            	 	
-							            	 	}
-							            		memPresentCount++;
-							            	}
-							            	memAbsentCount=memPresentCount+1;
-							            }
-							            if(memAbscent > 0){
-							            	
-							            	  String[] memAbsentData = {"Following Members Could not Attend due to Prior Commitments",null,null, null};
-									            int memAbsentRow = setTableRowData(table,memPresentCount+1,memAbsentData.length,memAbsentData);
-									            mergrColums(table,numCellsToMerge,memAbsentRow);
-
-									         memAbsentCount=memAbsentRow+1;
-								        	int count=0;
-								        	for(int i=0;i<invitedlist.size();i++)
-								        	 {
-								        		if(invitedlist.get(i)[4].toString().equals("N")&& membertypes.contains( invitedlist.get(i)[3].toString()) )
-								        	 	{count++; j++;
-								        	 	XWPFTableRow thirdRow = table.createRow();
-								        	 	
-								        	 	createCell(thirdRow,String.valueOf(j),0);
-							            	 	createCell(thirdRow,invitedlist.get(i)[6]+" "+invitedlist.get(i)[7],1);
-							            	 	createCell(thirdRow, invitedlist.get(i)[11].toString(),2);
-							            	 	
-
-							            	 	XWPFTableCell thirdRowCell4 = thirdRow.getCell(3);
-							            	 	if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {
-							            	 		thirdRowCell4.setText( "Chairperson" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) {
-							            	 		membersec=invitedlist.get(i);
-							            	 		thirdRowCell4.setText( "Member Secretary" );
-							            	 	}
-							            	 	else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) {
-							            	 		thirdRowCell4.setText( "Co-Chairperson" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) {
-							            	 		thirdRowCell4.setText( "Member Secretary (Proxy)" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI") || invitedlist.get(i)[3].toString().equalsIgnoreCase("I") ) {
-							            	 		thirdRowCell4.setText( "Internal" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("W")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("E")) {
-							            	 		thirdRowCell4.setText( "External" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ) {
-							            	 		thirdRowCell4.setText( "Presenter" );
-							            	 	}else {
-							            	 		thirdRowCell4.setText( "REP_"+invitedlist.get(i)[3].toString() );
-							            	 	}
-							            	 	
-							            	 	thirdRowCell4.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.TOP);
-							            	 	
-							            	 	}
-								        		memAbsentCount++;
-								        	 	}
-								        	if(count==0){
-								        	       String[] memAbsentNil = {"Nil",null,null, null};
-										            setTableRowData(table,1,memAbsentNil.length,memAbsentNil);
-										            mergrColums(table,numCellsToMerge,memAbsentCount);
-										            memAbsentCount++;
-								        		
-								        	}
-								        	 }
-							            
-							            if(ParPresent > 0){
-					
-								            String[] cellTextsRow3 = {"Other Invitees / Participants",null,null, null};
-								            int rowIndex = setTableRowData(table,memAbsentCount,cellTextsRow3.length,cellTextsRow3);
-								            mergrColums(table,numCellsToMerge,rowIndex);
-								            parPresentCount=rowIndex+1;
-
-								        	for(int i=0;i<invitedlist.size();i++)
-								        	 {
-								        		if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
-								        	 	{
-								        			addcount++; j++;
-								        	 	XWPFTableRow thirdRow = table.createRow();
-								        	 	
-								        	 	createCell(thirdRow,String.valueOf(j),0);
-							            	 	createCell(thirdRow,invitedlist.get(i)[6]+" "+invitedlist.get(i)[7],1);
-							            	 	createCell(thirdRow, invitedlist.get(i)[11].toString(),2);
-							          
-							            	 	XWPFTableCell thirdRowCell4 = thirdRow.getCell(3);
-							            	 	if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {
-							            	 		thirdRowCell4.setText( "Chairperson" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) {
-							            	 		membersec=invitedlist.get(i);
-							            	 		thirdRowCell4.setText( "Member Secretary" );
-							            	 	}
-							            	 	else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) {
-							            	 		thirdRowCell4.setText( "Co-Chairperson" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) {
-							            	 		thirdRowCell4.setText( "Member Secretary (Proxy)" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI") || invitedlist.get(i)[3].toString().equalsIgnoreCase("I") ) {
-							            	 		thirdRowCell4.setText( "Internal" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("W")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("E")) {
-							            	 		thirdRowCell4.setText( "External" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ) {
-							            	 		thirdRowCell4.setText( "Presenter" );
-							            	 	}else {
-							            	 		thirdRowCell4.setText( "REP_"+invitedlist.get(i)[3].toString() );
-							            	 	}
-							            	 	
-							            	 	thirdRowCell4.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.TOP);
-							            	 	
-							            	 	}
-								        		parPresentCount++;
-								        	 	}
-								        	if(addcount==0){
-								        		  String[] ParPresentNil = {"Nil",null,null, null};
-										            setTableRowData(table,1,ParPresentNil.length,ParPresentNil);
-										            mergrColums(table,numCellsToMerge,parPresentCount);
-										            parPresentCount++;
-								        		
-								        	}
-								        	 }
-							            if(parAbscent > 0){
-
-								            String[] cellTextsRow3 = {"Other Invitees / Participants Absent",null,null, null};
-								            int rowIndex = setTableRowData(table,parPresentCount,cellTextsRow3.length,cellTextsRow3);
-								            mergrColums(table,numCellsToMerge,rowIndex);
-								            parAbsentCount=rowIndex+1;
-					
-								        	//int count=0;
-								        	for(int i=0;i<invitedlist.size();i++)
-								        	 {
-								        		if(invitedlist.get(i)[4].toString().equals("N")&& !membertypes.contains( invitedlist.get(i)[3].toString()) )
-								        	 	{
-								        			count1++; j++;
-								        	 	XWPFTableRow thirdRow = table.createRow();
-								        	 	createCell(thirdRow,String.valueOf(j),0);
-							            	 	createCell(thirdRow,invitedlist.get(i)[6]+" "+invitedlist.get(i)[7],1);
-							            	 	createCell(thirdRow, invitedlist.get(i)[11].toString(),2);
-								        	 	
-							            	 	XWPFTableCell thirdRowCell4 = thirdRow.getCell(3);
-							            	 	if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")) {
-							            	 		thirdRowCell4.setText( "Chairperson" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) {
-							            	 		membersec=invitedlist.get(i);
-							            	 		thirdRowCell4.setText( "Member Secretary" );
-							            	 	}
-							            	 	else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CH") ) {
-							            	 		thirdRowCell4.setText( "Co-Chairperson" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("PS") ) {
-							            	 		thirdRowCell4.setText( "Member Secretary (Proxy)" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CI") || invitedlist.get(i)[3].toString().equalsIgnoreCase("I") ) {
-							            	 		thirdRowCell4.setText( "Internal" );
-							            	 	}
-							            		else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CW")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("CO")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("W")|| invitedlist.get(i)[3].toString().equalsIgnoreCase("E")) {
-							            	 		thirdRowCell4.setText( "External" );
-							            	 	}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("P") ) {
-							            	 		thirdRowCell4.setText( "Presenter" );
-							            	 	}else {
-							            	 		thirdRowCell4.setText( "REP_"+invitedlist.get(i)[3].toString() );
-							            	 	}
-							            	 	
-							            	 	thirdRowCell4.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.TOP);
-							            	 	
-							            	 	}
-								        		parAbsentCount++;
-								        	 	}
-								        	if(count1==0){
-								        		  String[] ParPresentNil = {"Nil",null,null, null};
-										            setTableRowData(table,1,ParPresentNil.length,ParPresentNil);
-										            mergrColums(table,numCellsToMerge,parAbsentCount);
-										            parAbsentCount++;
-								        		
-								        	}
-								        	 }
-							            XWPFParagraph pageBreak2 = doc.createParagraph();
-							            pageBreak2.setPageBreak(true);
-							            
-							            for (Object[] committeemin : committeeminutes) { 
-							            	if (committeemin[0].toString().equals("1") ) {
-							            		
-							            		createParagraph(doc,committeemin[0]+".    "+committeemin[1], "LEFT", true, 11,10);
-							            		
-							            		int count = 0;
-
-												for (Object[] speclist : speclists)
-												{
-													if (speclist[3].toString().equals(committeemin[0].toString())) 
-													{
-														count++;
-														createParagraph(doc,speclist[1].toString().replace("<p>", "").replace("</p>", "").replace("&nbsp;", " "), "LEFT", false, 10,100);
-													break;
-													}
-												}if (count == 0) 
-												{
-													createParagraph(doc,"NIL", "CENTER", false, 10,10);
-												}
-							            	}else if (committeemin[0].toString().equals("2")) {
-							            		createParagraph(doc,committeemin[0]+".    "+committeemin[1], "LEFT", true, 11,10);
-							            		
-							            		int count = 0;
-
-												for (Object[] speclist : speclists)
-												{
-													if (speclist[3].toString().equals(committeemin[0].toString())) 
-													{
-														count++;
-														createParagraph(doc,speclist[1].toString().replace("<p>", "").replace("</p>", "").replace("&nbsp;", " "), "LEFT", false, 10,100);
-													break;
-													}
-												}if (count == 0) 
-												{
-													createParagraph(doc,"NIL", "CENTER", false, 10,10);
-												}
-					
-							            	}else if (committeemin[0].toString().equals("3")) {
-							            		createParagraph(doc,"3 (a) Record of Discussions and Action Points of Current Meeting.", "LEFT", true, 11,20);
-							            		createParagraph(doc,"             Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation", "LEFT", false, 10,30);
-							             		
-
-						            		XWPFTable table32 = doc.createTable(1, 3);
-						            		
-						            		int[] table32ColumnWidths = {7, 10, 83};
-
-
-						            		String[] table32cellTexts = {"SN", "Type", "Item"};
-						            		
-						            		setTableRowData(table32,0,table32cellTexts.length,table32cellTexts);
-						            		setTableWidth(table32,totalTableWidth,table32ColumnWidths);
-
-						            		 int countcm=0;
-												long tempagenda=0;
-												for(int k=0;k<speclists.size();k++)
-												{ 	if(Integer.parseInt(speclists.get(k)[3].toString())==3||Integer.parseInt(speclists.get(k)[3].toString())==5){
-													countcm++;
-													if(tempagenda!=Long.parseLong(speclists.get(k)[6].toString())){
-
-								         // Create a new row for the second row
-								            XWPFTableRow tableSecondRow = table32.createRow();
-
-								            // Get the cell within the second row and the first column
-								            XWPFTableCell tableSecondRowCell = tableSecondRow.getCell(0);
-
-								            tableSecondRowCell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-								            // Set cell color (if needed)
-								            tableSecondRowCell.setColor("auto");
-
-								            // Get the paragraph within the cell
-								            XWPFParagraph paragraphTable32 = tableSecondRowCell.getParagraphs().get(0);
-
-								         // Create a new run within the paragraph
-								            XWPFRun run32 = paragraphTable32.createRun();
-
-								            // Set the text for the run
-								            run32.setText(speclists.get(k)[10].toString());
-
-								            // Apply bold formatting to the run
-								            run32.setBold(true);
-
-								            // Set the alignment of the paragraph to center
-								            paragraphTable32.setAlignment(ParagraphAlignment.CENTER);
-
-
-								            // Merge the second cell with the next cells in the same row
-								            int numCellsToMergeInTable = 3; // Specify the number of cells to merge (including the initial cell)
-								            for (int i = 1; i < numCellsToMergeInTable; i++) {
-								            	tableSecondRowCell.getCTTc().addNewTcPr().addNewGridSpan().setVal(BigInteger.valueOf(numCellsToMergeInTable));
-								            }
-
-								            // Get the row and cells in the same row for the next columns
-								            XWPFTableRow sameRowTable32 = table32.getRow(table32.getNumberOfRows() - 1);
-								            for (int i = 1; i < numCellsToMergeInTable; i++) {
-								                XWPFTableCell nextCel32 = sameRowTable32.getCell(1);
-								                sameRowTable32.getCtRow().removeTc(sameRowTable32.getTableCells().indexOf(nextCel32));
-								            }
-								            tempagenda=Long.parseLong(speclists.get(k)[6].toString());
-													}
-													XWPFTableRow thirdRow = table32.createRow();
-													
-													createCell(thirdRow,Integer.toString(countcm),0);
-													createCell(thirdRow,speclists.get(k)[7].toString(),1);
-													createCell(thirdRow,speclists.get(k)[1].toString(),2);
-												}
-												}
-												if(countcm==0){
-													 String[] minutessDetails = {"No Minutes details Added",null,null};
-											            setTableRowData(table32,1,minutessDetails.length,minutessDetails);
-											            numCellsToMerge=3;
-											            mergrColums(table32,numCellsToMerge,1);
-												}
-												
-												XWPFParagraph pageBreak3 = doc.createParagraph();
-									            pageBreak3.setPageBreak(true);
-									            
-	// <!-- -------------------------------------------------------members----------------------------- ---------------------------------------------------------->								            
-									            createParagraph(doc,committeemin[0] + "(b) " + committeemin[1], "LEFT", true, 11,30);
-									            XWPFTable table33 = doc.createTable(1, 6); 
-									         
-									         XWPFTableRow thirdRow = table33.getRow(0);
-
-									         setTableHeader(thirdRow);
-
-									         mergrColums(table33,6,0);
-									    
-									         String[] table33cellTexts = {"SN","ID", "Action Point", "PDC", "Responsibility", "Status"};
-									         int[] table33ColumnWidths = {8, 16, 33, 20, 15, 8};
-									         setTableRowData( table33,1,table33cellTexts.length, table33cellTexts);
-									         setTableWidth(table33,totalTableWidth,table33ColumnWidths);
-									         if(lastpmrcactions.size()==0){
-									             // Get the cell within the second row and the first column
-										            String[] pmrcActionNil = {"No Data",null,null,null,null,null};
-										            setTableRowData(table33,2,pmrcActionNil.length,pmrcActionNil);
-										            numCellsToMerge=6;
-										            mergrColums(table33,numCellsToMerge,2);
-
-
-									         }		else if(lastpmrcactions.size()>0)
-												{
-													int i=1;String key2="";
-													//int maxRowsPerPage = 6; // Adjust this based on your document's layout
-											
-										
-											
-													for(Object[] obj:lastpmrcactions){
-
-														XWPFTableRow fifthRow = table33.createRow();
-														// Create cells in the fourth row
-											        	for (int k = 0; k < 5; k++) {
-											        		fifthRow.createCell();
-											        	}
-
-														// Create cells for each column
-														XWPFTableCell cell1 = fifthRow.getCell(0); // First column
-														cell1.setText(String.valueOf(i));
-														cell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-												
-
-														// Create seventhRowCell1 and set its text
-														XWPFTableCell seventhRowCell1 = fifthRow.getCell(1);
-														StringBuilder cellTextBuilder = new StringBuilder();
-														if(obj[5]==null) {
-															seventhRowCell1.setText("-");
-														}else {
-
-															if(committeescheduleeditdata[8].toString().equalsIgnoreCase("PMRC")) {
-																for (Map.Entry<Integer, String> entry : mappmrc.entrySet()) {
-																	Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
-																	 String formattedDate = outputFormat.format(date);
-																	 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-																		 key2=entry.getKey().toString();
-															 		} 
-																	 }
-																}else{ 
-																 for (Map.Entry<Integer, String> entry : mapEB.entrySet()) {
-																	Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
-																	 String formattedDate = outputFormat.format(date);
-																	 if(entry.getValue().equalsIgnoreCase(formattedDate)){
-																		 key2=entry.getKey().toString();
-																	 }
-															 }
-																}
-														    cellTextBuilder.append(committeescheduleeditdata[8].toString().toUpperCase()+"-"+key2+"/"+obj[5].toString().split("/")[4]);
-				
-														}
-
-														seventhRowCell1.setText(cellTextBuilder.toString());
-														seventhRowCell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-														XWPFTableCell cell3 = fifthRow.getCell(2);
-														//cell3.setText(obj[2].toString());
-
-														// Create a paragraph for cell6
-														XWPFParagraph paragraph6 = cell3.addParagraph();
-														paragraph6.setAlignment(ParagraphAlignment.BOTH);
-
-														 //Now set alignment on the paragraph
-														XWPFRun run6 = paragraph6.createRun();
-														run6.setText(obj[2].toString());
-														String PDC="";
-														// Create eigthRowCell1 and set its text
-														XWPFTableCell eigthRowCell1 = fifthRow.getCell(3);
-														if (obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString()))) {
-															PDC+= sdf.format(sdf1.parse(obj[8].toString()));
-														} 
-														if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ) {
-															PDC+= sdf.format(sdf1.parse(obj[7].toString()));
-														}
-														if(obj[6]!= null) {
-															PDC+= sdf.format(sdf1.parse(obj[6].toString()));
-														}
-														
-														 eigthRowCell1.setText(PDC);
-//														} else if (obj[3].toString().equals("I")) {
-//														    eigthRowCell1.setText("I");
-//														} else if (obj[3].toString().equals("R")) {
-//														    eigthRowCell1.setText("R");
-//														} else if (obj[3].toString().equals("D")) {
-//														    eigthRowCell1.setText("D");
-//														} else if (obj[3].toString().equals("C")) {
-//														    eigthRowCell1.setText("C");
-//														} else if (obj[3].toString().equals("K")) {
-//														    eigthRowCell1.setText("K");
-//														}
-														eigthRowCell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-									            	 	
-									            		//XWPFTableRow ninthRow = table33.createRow();
-									            	 	XWPFTableCell ninthRowCell1 = fifthRow.getCell(4);
-									            	 	if(obj[4]!= null){
-									            	 	ninthRowCell1.setText( obj[12].toString());
-									            	 	}else {
-									            	 		ninthRowCell1.setText("NA");
-									            	 	}
-									            	 	ninthRowCell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									            	 	
-									            	 	XWPFTableCell tenthRowCell1 = fifthRow.getCell(5);
-									            	 	if (obj[4] != null) {
-									            	 	    String actionstatus = obj[10].toString();
-									            	 	  
-									            	 	    LocalDate pdcorg = LocalDate.parse(obj[6].toString());
-									            	 	    LocalDate lastdate = obj[14] != null ? LocalDate.parse(obj[14].toString()) : null;
-									            	 	    LocalDate today = LocalDate.now();
-									            	 	    String cellText = "";
-
-									            	 	    if (lastdate != null && actionstatus.equalsIgnoreCase("C")) {
-									            	 	        if (actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))) {
-									            	 	            cellText = "CO";
-									            	 	        } else if (actionstatus.equals("C") && pdcorg.isBefore(lastdate)) {
-									            	 	            cellText = "CD (" + ChronoUnit.DAYS.between(pdcorg, lastdate) + ")";
-									            	 	        }
-									            	 	    } else {
-									            	 	        if (actionstatus.equals("F") && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate))) {
-									            	 	            cellText = "RC";
-									            	 	        } else if (actionstatus.equals("F") && pdcorg.isBefore(lastdate)) {
-									            	 	            cellText = "FD";
-									            	 	        } else if (pdcorg.isAfter(today) || pdcorg.isEqual(today)) {
-									            	 	            cellText = "OG";
-									            	 	        } else if (pdcorg.isBefore(today)) {
-									            	 	            cellText = "DO (" + ChronoUnit.DAYS.between(pdcorg, today) + ")";
-									            	 	        }
-									            	 	    }
-
-									            	 	   // tenthRowCell1.setText(cellText);
-
-									            	 	    // Create paragraph and run
-									            	 	    XWPFParagraph paragraph10 = tenthRowCell1.getParagraphs().get(0);
-									            	 	    paragraph10.setAlignment(ParagraphAlignment.BOTH);
-									            	 	    XWPFRun run10 = paragraph10.createRun();
-									            	 	    run10.setColor("FF0000");
-									            	 	   run10.setText(cellText);
-									            	 	} else {
-									            	 	    tenthRowCell1.setText("NA");
-									            	 	}
-									            	 	tenthRowCell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-
-									            	 	i++;
-									            	 	
-													}
-												}
-									           
-						            	}else if(committeemin[0].toString().equals("4") ) {
-						            		createParagraph(doc,"", "LEFT", true, 11,30);
-						            		 createParagraph(doc,committeemin[0] + ". " + committeemin[1], "LEFT", true, 11,30);
-						            		 
-						            		XWPFTable table4 = doc.createTable(1, 7);
-									         
-									      // Create a new row with the desired number of cells
-									         XWPFTableRow thirdRow = table4.getRow(0);
-									         setTableHeader(thirdRow);
-
-									         mergrColums(table4,7,0);
-
-									     
-									         String[] table43cellTexts = {"MS", "L", "System/Subsystem/Activities ", "PDC", "Progress", "Status","Remarks"};
-									         int[] table43ColumnWidths = {8, 8, 35, 12, 15, 10,12};
-									         setTableRowData( table4,1,table43cellTexts.length, table43cellTexts);
-									         setTableWidth(table4,totalTableWidth,table43ColumnWidths);
-		
-									         if(MilestoneDetails6 !=null && MilestoneDetails6.size()>0){ 
-
-													int milcountC=1;
-													int milcountD=1;
-													int milcountE=1;
-													for(Object[] obj : MilestoneDetails6){
-														if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(LevelId) ){
-															XWPFTableRow fourthRow = table4.createRow();
-															   for (int i = 1; i < 7; i++) {
-																   fourthRow.createCell();
-															   }
-																	XWPFTableCell cell1 = fourthRow.getCell(0); // First column
-																	cell1.setText("M"+obj[0]);
-																	cell1.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-																	
-																	XWPFTableCell cell2 = fourthRow.getCell(1);
-																	if(obj[21].toString().equals("0")) {
-					
-																		milcountC=1;
-																		milcountD=1;
-																		milcountE=1;
-																	}else if(obj[21].toString().equals("1")) { 
-																		for(Map.Entry<Integer,String>entry:treeMapLevOne.entrySet()){
-																			if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){
-																				cell2.setText(entry.getValue());
-																			}
-																			
-																			}}else if(obj[21].toString().equals("2")) { 
-																				for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
-																					if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){
-																						cell2.setText(entry.getValue());
-																					}
-																					}}else if(obj[21].toString().equals("3")) {
-																						cell2.setText("C-"+milcountC);
-																						milcountC+=1;
-																						milcountD=1;
-																						milcountE=1;
-																						}else if(obj[21].toString().equals("4")) {
-																							cell2.setText("D-"+milcountD);
-																							milcountD+=1;
-																							milcountE=1;
-																							}else if(obj[21].toString().equals("5")) {
-																								cell2.setText("E-"+milcountE);
-																								milcountE++;
-																	}
-																	cell2.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-																	
-																	XWPFTableCell cell3 = fourthRow.getCell(2);
-																	if(obj[21].toString().equals("0")) {
-																		cell3.setText(obj[10].toString());
-																	}else if(obj[21].toString().equals("1")) {
-																		cell3.setText(obj[11].toString());
-																	}else if(obj[21].toString().equals("2")) {
-																		cell3.setText(obj[12].toString());
-																	}else if(obj[21].toString().equals("3")) {
-																		cell3.setText(obj[13].toString());
-																	}else if(obj[21].toString().equals("4")) {
-																		cell3.setText(obj[14].toString());
-																	}else if(obj[21].toString().equals("5")) {
-																		cell3.setText(obj[15].toString());
-																	}
-																	cell3.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-																	
-																	createCell(fourthRow,sdf.format(sdf1.parse(obj[9].toString()))+"\n"+sdf.format(sdf1.parse(obj[8].toString())),3);
-																	createCell(fourthRow,obj[17].toString(),4);
-																	
-
-																	
-																	XWPFTableCell cell6 = fourthRow.getCell(5);
-																	String cellText = "";
-																	cellText+=obj[22].toString();
-																	if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) {
-																		cellText+="("+ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))+")";
-																	} else if (obj[19].toString().equalsIgnoreCase("4")) {
-																		cellText+="("+ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())+")";
-																	}
-																	cell6.setText(cellText);
-																	cell6.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-
-								
-																	
-																	XWPFTableCell cell7 = fourthRow.getCell(6);
-																	if(obj[23]!=null){
-																		cell7.setText(obj[23].toString());
-																		cell7.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-																		XWPFParagraph paragraph47 = cell7.getParagraphs().get(0);
-																		paragraph47.setAlignment(ParagraphAlignment.LEFT);
-																		
-																	
-														}
-																	}}
-														   } else{
-													           String[] pmrcActionNil = {"No SubSystems",null,null,null,null,null,null};
-													            setTableRowData(table4,2,pmrcActionNil.length,pmrcActionNil);
-													            numCellsToMerge=7;
-													            mergrColums(table4,numCellsToMerge,2);															
-													}
-													}else if (committeemin[0].toString().equals("5") ){
-									        
-								    				XWPFParagraph pageBreak3 = doc.createParagraph();
-										            pageBreak3.setPageBreak(true);
-										       	 createParagraph(doc,committeemin[0] + ". " + committeemin[1], "LEFT", true, 11,30);
-									        	 createParagraph(doc,"(In \u20B9 Lakhs)", "RIGHT", false, 10,30);
-										            
-										      		XWPFTable table5 = doc.createTable(1, 7);
-							
-
-											         String thirdRowDetails="Demand Details ( > \u20B9 ";
-												        
-											         if (projectdatadetails != null && projectdatadetails[13] != null) {
-											        	 thirdRowDetails+=	 projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")+")";
-											         }else {
-											        	 thirdRowDetails+=	 "- )";
-											         }
-											         
-											         String[] pmrcActionNil = {thirdRowDetails,null,null,null,null,null,null};
-											            setTableRowData(table5,0,pmrcActionNil.length,pmrcActionNil);
-											            numCellsToMerge=7;
-											            mergrColums(table5,numCellsToMerge,0);
-	
-	
-											            
-												         String[] table43cellTexts = {"SN", "Demand No", "Demand Date", "Nomenclature", "Est. Cost", "Status","Remarks"};
-												         int[] table51ColumnWidths = {6, 10, 10, 37, 15, 10,12};
-												         setTableRowData( table5, 1, table43cellTexts.length, table43cellTexts);
-												         setTableWidth(table5,totalTableWidth,table51ColumnWidths);
-												         int demandetails=2;
-												         int futureCount=0;
-												            
-												            int k=0;
-														    if(procurementOnDemand!=null &&  procurementOnDemand.size()>0){
-														    Double estcost=0.0;
-														    for(Object[] obj : procurementOnDemand){ 
-														    	k++;
-																XWPFTableRow fourthRow = table5.createRow();
-																// Create cells in the fourth row
-													        	for (int i = 0; i < 6; i++) {
-													        		fourthRow.createCell();
-													        	}
-													        	
-													           	createCell(fourthRow,String.valueOf(k),0);
-													        	createCell(fourthRow,obj[1].toString(),1);
-													        	createCell(fourthRow,sdf.format(sdf1.parse(obj[3].toString())),2);
-													        	createCell(fourthRow,obj[8].toString(),3);
-													        	createCell(fourthRow,format.format(new BigDecimal(obj[5].toString())).substring(1),4);
-													        	createCell(fourthRow,obj[10].toString(),5);
-													        	createCell(fourthRow,obj[11].toString(),6);
-
-														    	estcost += Double.parseDouble(obj[5].toString());
-														    	demandetails++;
-														    }
-														    
-														    String[] DemandDetailsTotal = {"            Total                    "+df.format(estcost),null,null,null,null,null,null};
-													          demandetails = setTableRowData(table5,demandetails,DemandDetailsTotal.length,DemandDetailsTotal);
-													       //  numCellsToMerge=6;
-													         mergrColums(table5,numCellsToMerge+1,demandetails);
-														    }else {
-														         String[] DemandDetailsNil = {"Nil",null,null,null,null,null,null};
-														          demandetails = setTableRowData(table5,demandetails,DemandDetailsNil.length,DemandDetailsNil);
-														        // numCellsToMerge=6;
-														         mergrColums(table5,numCellsToMerge,demandetails);
-														    }
-														    
-														    
-														    String[] futureDemand = {"Future Demand",null,null,null,null,null,null};
-												             futureCount = setTableRowData(table5,demandetails+1,futureDemand.length,futureDemand);
-												            mergrColums(table5,7,futureCount);
-												            futureCount+=1;
-												            
-												            String[] futureDemand2 = {"SN", "Nomenclature",null, "Est. Cost-Lakh ₹", "Status", "Remarks", null};
-													         int[] futureDemandWidths = {6, 10, 15, 20, 15, 10,14};
-													          futureCount = setTableRowData( table5, futureCount, futureDemand2.length, futureDemand2);
-													         setTableWidth(table5,totalTableWidth,futureDemandWidths);
-													         
-													         mergeColums(table5,futureCount,5,6);
-													         mergeColums(table5,futureCount,1,2);
-													         
-													         int a=0;
-															    if(envisagedDemandlist!=null &&  envisagedDemandlist.size()>0){
-															    Double estcost=0.0;
-															    for(Object[] obj : envisagedDemandlist){ 
-															    	a++;
-															    	futureCount++;
-															    	XWPFTableRow fourthRow = table5.createRow();
-																	// Create cells in the fourth row
-														        	for (int i = 0; i < 6; i++) {
-														        		fourthRow.createCell();
-														        	}
-														        	createCell(fourthRow,String.valueOf(a),0);
-														        	createCell(fourthRow,obj[3].toString(),1);
-														        	createCell(fourthRow,null,2);
-														        	createCell(fourthRow,format.format(new BigDecimal(obj[2].toString())).substring(1),3);
-														        	createCell(fourthRow,obj[6].toString(),4);
-														        	createCell(fourthRow,obj[4].toString(),5);
-														        	createCell(fourthRow,"",6);
-															    	
-															    	estcost += Double.parseDouble(obj[2].toString());
-															    	
-															    	  mergeColums(table5,futureCount,5,6);
-																      mergeColums(table5,futureCount,1,2);
-															    	
-															    }
-															    String[] futureDemandTotal = {"            Total         "+df.format(estcost),null,null,null,null,null,null};
-															    futureCount =    setTableRowData(table5,futureCount+1,futureDemandTotal.length,futureDemandTotal);
-														        
-														         mergrColums(table5,7,futureCount);
-															    }else {
-															        String[] DemandDetailsNil = {"Nil",null,null,null,null,null,null};
-															        futureCount = setTableRowData(table5,futureCount+1,DemandDetailsNil.length,DemandDetailsNil);
-															         numCellsToMerge=7;
-															         mergrColums(table5,numCellsToMerge,futureCount);
-															    }
-
-												            String text55="Orders Placed ( > \u20B9 ";
-												            if (projectdatadetails != null && projectdatadetails[13] != null) {
-												            	text55+=projectdatadetails[13].toString().replaceAll("\\.\\d+$", "")+")";
-												            }else {
-												            	text55+="- )";
-												            }
-												            
-												            String[] orderPlced = {text55,null,null,null,null,null,null};
-												            int setTableRowData = setTableRowData(table5,futureCount+1,orderPlced.length,orderPlced);
-												            mergrColums(table5,numCellsToMerge,setTableRowData);
-												            
-												            XWPFTableRow sisthRow = table5.createRow();
-													         String[] table53cellTexts1 = {"SN", "Demand No", "Demand Date", "Nomenclature", "Est. Cost", "Status","Remarks"};
-													         
-													          setTableRowData = setTableRowData(table5,setTableRowData+1,table53cellTexts1.length,table53cellTexts1);
-
-													     
-						
-													         XWPFTableRow seventhRow = table5.createRow();
-
-													         String[] table53cellTexts2 = {"", "Supply Order No", "DP Date", "Vendor Name", "Rev DP", "SO Cost-Lakh", ""};
-
-													         setTableRowData = setTableRowData(table5,setTableRowData+1,table53cellTexts2.length,table53cellTexts2);
-													         
-
-													         
-													         int Row7 = table5.getRows().indexOf(seventhRow);
-													         int Row6 = table5.getRows().indexOf(sisthRow);
-													         mergeRows(table5,Row6,Row7,0,0);
-													         mergeColums( table5,Row7,5,6);
-
-											
-													         
-													         if(procurementOnSanction!=null && procurementOnSanction.size()>0){
-														    	  k=0;
-														    	  Double estcost=0.0;
-																  Double socost=0.0;
-																  String demand="";
-														  	 	   for(Object[] obj:procurementOnSanction){ 
-														  	 		 if(obj[2]!=null){ 
-														  	 			XWPFTableRow fourthRow = table5.createRow();
-														  	 		    if(!obj[1].toString().equals(demand)){
-														  	 			k++;
-														  	 			List<Object[]> list = procurementOnSanction.stream().filter(e-> e[0].toString().equalsIgnoreCase(obj[0].toString())).collect(Collectors.toList());
-														  	 		
-																		// Create cells in the fourth row
-															        	for (int i = 0; i < 6; i++) {
-															        		fourthRow.createCell();
-															        	}
-															        	
-															           	createCell(fourthRow,String.valueOf(k),0);
-															        	createCell(fourthRow,obj[1].toString(),1);
-															        	createCell(fourthRow,sdf.format(sdf1.parse(obj[3].toString())),2);
-															        	createCell(fourthRow,obj[8].toString(),3);
-															        	createCell(fourthRow,format.format(new BigDecimal(obj[5].toString())).substring(1),4);
-															        	createCell(fourthRow,obj[10].toString(),5);
-															        	createCell(fourthRow,obj[11].toString(),6);
-																		
-																		demand=obj[1].toString();
-																		setTableRowData++;
-														  	 		    }
-														  	 			XWPFTableRow fifthRow1 = table5.createRow();
-																		// Create cells in the fourth row
-															        	for (int i = 0; i < 6; i++) {
-															        		fifthRow1.createCell();
-															        	}
-															        	
-															         	createCell(fifthRow1,"",0);
-															        	createCell(fifthRow1,obj[2].toString(),1);
-															        	if(obj[4]!=null) {
-																        	createCell(fifthRow1,sdf.format(sdf1.parse(obj[4].toString())),2);
-																        	}else {
-																        		createCell(fifthRow1,"-",2);
-																        	}
-															        	createCell(fifthRow1,obj[12].toString(),3);
-															        	if(obj[7]!=null) {
-															        	createCell(fifthRow1,sdf.format(sdf1.parse(obj[7].toString())),4);
-															        	}else {
-															        		createCell(fifthRow1,"-",4);
-															        	}
-															        	createCell(fifthRow1,format.format(new BigDecimal(obj[6].toString())).substring(1),5);
-															        	createCell(fifthRow1,"",6);
-															        	
-															        	setTableRowData++;
-
-																         int Row41 = table5.getRows().indexOf(fourthRow);
-																         int Row42 = table5.getRows().indexOf(fifthRow1);
-																         
-																         
-																         mergeRows(table5,Row41,Row42,0,0);
-																         
-																         mergeColums( table5,Row42,5,6 );
-								
-														  	 		    }
-														  	 		Double value = 0.00;
-														  	 		if(obj[6]!=null){
-														  	 			value=Double.parseDouble(obj[6].toString());
-														  	 		}
-														  	 		
-														  	 		estcost += Double.parseDouble(obj[5].toString());
-														  	 		socost +=  value;
-														  	 		
-														  	 		 }
-														  	 	   String[] orderTotal= {"                                                                                                                     Total                                                  "+df.format(estcost),null,null,null,null,null,null};
-														  	 	
-														  	 	setTableRowData=setTableRowData(table5,setTableRowData+1,orderTotal.length,orderTotal);
-														  	 	mergrColums( table5, 7, setTableRowData);
-													         }else {
-														         String[] OrderDetailsNil = {"Nil",null,null,null,null,null,null};
-														         setTableRowData= setTableRowData(table5,setTableRowData+1,OrderDetailsNil.length,OrderDetailsNil);
-														         numCellsToMerge=7;
-														         mergrColums(table5,numCellsToMerge,setTableRowData);
-													         }
-//													         
-													         createParagraph(doc, "", "CENTER", false, 10, 30);
-													         
-													         XWPFTable table52 = doc.createTable(1,5);
-													         
-													         String[] heading = {"Total Summary of Procurement",null,null,null,null};
-													         setTableRowData(table52,0,heading.length,heading);
-													         numCellsToMerge=5;
-													         mergrColums(table52,numCellsToMerge,0);
-													         
-													         
-													         String[] table43cellTexts52 = {"No. of Demand", "Est. Cost", "No. of Orders", "SO Cost", "Expenditure"};
-													         int[] table53ColumnWidths52 = {20, 20, 20, 20, 20};
-													         setTableRowData(table52,1,table43cellTexts52.length,table43cellTexts52);
-											
-													         setTableWidth( table52,totalTableWidth,table53ColumnWidths52);
-
-
-														         if(totaldemand!=null && totaldemand.size()>0){ 
-																	 for(TotalDemand obj:totaldemand){
-																		 if(obj.getProjectId().equalsIgnoreCase(projectid)){
-																			 XWPFTableRow summaryData2 = table52.createRow();
-																			 for (int i = 0; i < 4; i++) {
-																				 summaryData2.createCell();
-																	        	}
-																				createCell(summaryData2,obj.getDemandCount(),0);
-																	        	createCell(summaryData2,obj.getEstimatedCost(),1);
-																	        	createCell(summaryData2,obj.getSupplyOrderCount(),2);
-																	        	createCell(summaryData2,obj.getTotalOrderCost(),3);
-																	        	createCell(summaryData2,obj.getTotalExpenditure(),4);
-																		 }}}else{
-																			 String[] summaryNil = {"Nil",null,null,null,null};
-																	         setTableRowData(table52,2,summaryNil.length,summaryNil);
-																	      
-																	         mergrColums(table52,numCellsToMerge,2);
-																		 }
-														    	
-									         }else if (committeemin[0].toString().equals("6") ) {
-									        	 
-							            	XWPFParagraph pageBreak3 = doc.createParagraph();
-								            pageBreak3.setPageBreak(true);
-								            
-								            createParagraph(doc,committeemin[0] + ". " + committeemin[1], "LEFT", true, 11,100);
-								            createParagraph(doc,"(Amount in Crores)", "RIGHT", false, 10,50);
-								            
-								            if(Long.parseLong(projectid) >0 && projectDetails!=null) {
-								            	XWPFTable table6 = doc.createTable(2,14);
-								            	
-								            	  String[] table6cellTexts = {"Head", "", "Sanction", "", "Expenditure", "", "Out Commitment", "", "Balance", "","DIPL", "","Notional Balance", ""};
-											         int[] table6ColumnWidths = {3,10,7,7,7,8,7,7,7,7,7,8,7,7};
-											         
-								            	
-								            	setTableRowData(table6, 0,  table6cellTexts.length,table6cellTexts);
-								            	setTableWidth(table6,totalTableWidth, table6ColumnWidths);
-								            	for(int i=12,k=13;k>=1;i-=2,k-=2) {
-								            	mergeColums(table6,0, i, k );
-								            	}
-//					
-		         
-		         String[]   table62cellTexts = {"SN", "Head", "RE", "FE", "RE", "FE", "RE", "FE", "RE", "FE","RE", "FE","RE", "FE"};
-		         setTableRowData(table6, 1,  table62cellTexts.length,table62cellTexts);
-		         double totReSanctionCost=0,totFESanctionCost=0;
-					double totREExpenditure=0,totFEExpenditure=0;
-					double totRECommitment=0,totFECommitment=0,totalREDIPL=0,totalFEDIPL=0;
-					double totReBalance=0,totFeBalance=0,btotalRe=0,btotalFe=0;
-					int count=1;
-					int rowCount=1;
-					if(projectDetails!=null){
-						for(ProjectFinancialDetails projectFinancialDetail:projectDetails){
-							XWPFTableRow thirdRow6 = table6.createRow();
-							 for (int i = 0; i < 7; i++) {
-								 thirdRow6.createCell();
-					         }
-							 
-							 createCell(thirdRow6,String.valueOf(count++),0);
-				        	 createCell(thirdRow6,projectFinancialDetail.getBudgetHeadDescription(),1);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReSanction()),2);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeSanction()),3);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReExpenditure()),4);
-					       	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeExpenditure()),5);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReOutCommitment()),6);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeOutCommitment()),7);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl()),8);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl()),9);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReDipl()),10);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeDipl()),11);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getReBalance()),12);
-				        	 createCell(thirdRow6,df.format(projectFinancialDetail.getFeBalance()),13);
-				        	 
-				        	 totReSanctionCost+=(projectFinancialDetail.getReSanction());
-				        	 totFESanctionCost+=(projectFinancialDetail.getFeSanction());
-				        	 totREExpenditure+=(projectFinancialDetail.getReExpenditure());
-				        	 totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());
-				        	 totRECommitment+=(projectFinancialDetail.getReOutCommitment());
-				        	 totFECommitment+=(projectFinancialDetail.getFeOutCommitment());
-				        	 btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());
-				        	 btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());
-				        	 totalREDIPL+=(projectFinancialDetail.getReDipl());
-				        	 totalFEDIPL+=(projectFinancialDetail.getFeDipl());
-				        	 totReBalance+=(projectFinancialDetail.getReBalance());
-				        	 totFeBalance+=(projectFinancialDetail.getFeBalance());
-	
-							
-							rowCount++;
-								
-						}
-					}
-					XWPFTableRow totalRow = table6.createRow();
-					 for (int i = 0; i < 7; i++) {
-						 totalRow.createCell();
-			         }
-					 
-					 createCell(totalRow,"Total",0);
-		        	 createCell(totalRow,"",1);
-		        	 createCell(totalRow,df.format(totReSanctionCost),2);
-		        	 createCell(totalRow,df.format(totFESanctionCost),3);
-		        	 createCell(totalRow,df.format(totREExpenditure),4);
-			       	 createCell(totalRow,df.format(totFEExpenditure),5);
-		        	 createCell(totalRow,df.format(totRECommitment),6);
-		        	 createCell(totalRow,df.format(totFECommitment),7);
-		        	 createCell(totalRow,df.format(btotalRe),8);
-		        	 createCell(totalRow,df.format(btotalFe),9);
-		        	 createCell(totalRow,df.format(totalREDIPL),10);
-		        	 createCell(totalRow,df.format(totalFEDIPL),11);
-		        	 createCell(totalRow,df.format(totReBalance),12);
-		        	 createCell(totalRow,df.format(totFeBalance),13);
-		        	 
-					mergeColums(table6,rowCount+1, 0, 1 );
-					
-					XWPFTableRow fifthRow6 = table6.createRow();
-					 for (int i = 0; i < 7; i++) {
-						 fifthRow6.createCell();
-			         }
-					 createCell(fifthRow6,"GrandTotal",0);
-		        	 createCell(fifthRow6,"",1);
-		        	 createCell(fifthRow6,df.format(totReSanctionCost+totFESanctionCost),2);
-		        	 createCell(fifthRow6,"",3);
-		        	 createCell(fifthRow6,df.format(totREExpenditure+totFEExpenditure),4);
-			       	 createCell(fifthRow6,"",5);
-		        	 createCell(fifthRow6,df.format(totRECommitment+totFECommitment),6);
-		        	 createCell(fifthRow6,"",7);
-		        	 createCell(fifthRow6,df.format(btotalRe+btotalFe),8);
-		        	 createCell(fifthRow6,"",9);
-		        	 createCell(fifthRow6,df.format(totalREDIPL+totalFEDIPL),10);
-		        	 createCell(fifthRow6,"",11);
-		        	 createCell(fifthRow6,df.format(totReBalance+totFeBalance),12);
-		        	 createCell(fifthRow6,"",13);
-					 
-					for(int i=12,k=13;k>=1;i-=2,k-=2) {
-		            	mergeColums(table6,rowCount+2, i, k );
-		            	}
-            }else {
-            	createParagraph(doc,"Data Unavailable", "CENTER", true, 11,100);
-            }
-	         
-	         }else if (committeemin[0].toString().equals("7") ) {
-	        	 createParagraph(doc,committeemin[0] + ". " + committeemin[1], "LEFT", true, 11,100);
-	        	 
-	        	 XWPFTable table7 = doc.createTable(1,9);
-	        	 
-	        	 
-	        	 // Create a new row with the desired number of cells
-		         XWPFTableRow thirdRow = table7.getRow(0);
-
-		         setTableHeader(thirdRow);
-		         mergrColums(table7,9,0);
-		         
-		         String[] table7cellTexts = {"SN", "MS", "L ", "Action Plan", "Responsibility","PDC","Progress", "Status","Remarks"};
-		       //  int[] table7ColumnWidths = {8, 8, 25, 12, 15, 15,7,5,5};
-		         totalTableWidth=5000;
-		         setTableRowData( table7,1,table7cellTexts.length, table7cellTexts);
-		     //    setTableWidth(table7,totalTableWidth,table7ColumnWidths);
-				
-										         
-	         if(ActionPlanSixMonths.size()>0){ 
-					long count=1;
-
-					int countC=1;
-					int countD=1;
-					int countE=1;
-					String mainMileStone=null;
-	
-					if(!ActionPlanSixMonths.isEmpty()){
-						mainMileStone=ActionPlanSixMonths.get(0)[0].toString();
-	
-						
-						for(Object[] obj:ActionPlanSixMonths){
-							
-							if(Integer.parseInt(obj[26].toString())<= Integer.parseInt(LevelId) ){
-								 XWPFTableRow fourthRow = table7.createRow();
-								 for (int i = 0; i < 8; i++) {
-						        		fourthRow.createCell();
-						        	}
-								 createCell(fourthRow,String.valueOf(count),0);
-	
-									
-									XWPFTableCell cell2 = fourthRow.getCell(1); 
-									if(!obj[0].toString().equalsIgnoreCase(mainMileStone)||count1==1){
-										
-									}
-									cell2.setText("M"+obj[22].toString());
-									cell2.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									XWPFTableCell cell3 = fourthRow.getCell(2); // First column
-									if(obj[26].toString().equals("0")) {
-							
-										countC=1;
-										countD=1;
-										countE=1;
-									}else if(obj[26].toString().equals("1")) {    
-									for (Map.Entry<Integer,String> entry : treeMapLevOne.entrySet()) {
-									if(entry.getKey().toString().equalsIgnoreCase(obj[2].toString())){
-										cell3.setText(entry.getValue());
-									}
-									}
-			
-								    countC=1;
-									countD=1;
-									countE=1;
-								}else if(obj[26].toString().equals("2")) { 
-									for(Map.Entry<Integer, String>entry:treeMapLevTwo.entrySet()){
-									if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){
-										cell3.setText(entry.getValue());
-									}
-										}
-									countC=1;
-									countD=1;
-									countE=1;
-									}else if(obj[26].toString().equals("3")) { 
-										cell3.setText("C-"+countC);
-										countC+=1;
-										countD=1;
-										countE=1;
-										}else if(obj[26].toString().equals("4")) {
-											cell3.setText("D-"+countD);
-										countD+=1;
-										countE=1;
-										}else if(obj[26].toString().equals("5")) {
-											cell3.setText("E-"+countE);
-											countE++;
-									}
-									
-									cell3.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									XWPFTableCell cell4 = fourthRow.getCell(3); // First column
-									if(obj[26].toString().equals("0")) {
-									cell4.setText(obj[9].toString());
-									}else if(obj[26].toString().equals("1")) { 
-										cell4.setText(obj[10].toString());
-									}else if(obj[26].toString().equals("2")) { 
-										cell4.setText(obj[11].toString());
-									}else if(obj[26].toString().equals("3")) { 
-										cell4.setText(obj[12].toString());
-									}else if(obj[26].toString().equals("4")) { 
-										cell4.setText(obj[13].toString());
-									}else if(obj[26].toString().equals("5")) { 
-										cell4.setText(obj[14].toString());
-									}
-									cell4.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									 createCell(fourthRow,obj[24].toString(),4);
-									
-									XWPFTableCell cell6 = fourthRow.getCell(5); 
-									String cell76=sdf.format(sdf1.parse(obj[8].toString()));
-									if(!LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[29].toString()))){ 
-										cell76+="\n"+sdf.format(sdf1.parse(obj[29].toString()));
-									}
-									cell6.setText(cell76);
-									cell6.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									createCell(fourthRow,obj[16].toString(),6);
-									
-									XWPFTableCell cell7 = fourthRow.getCell(7); // First column
-									String cell77=obj[27].toString();
-									if (obj[20].toString().equalsIgnoreCase("5") && obj[18] != null) {
-										cell77+="("+ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString()))+")";
-									}else if (obj[20].toString().equalsIgnoreCase("4")) {
-										cell77+="("+ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now())+")";
-									}
-									cell7.setText(cell77);
-									cell7.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									XWPFTableCell cell8 = fourthRow.getCell(8); // First column
-									if(obj[28]!=null){
-									cell8.setText(obj[28].toString());
-									count1++;mainMileStone=obj[0].toString();
-									}else {
-										cell8.setText("-");
-									}
-									cell8.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
-									
-									
-																		
-																	
-																}
-							count++;	}
-														}
-										         }else {
-										             String[] pmrcActionNil = {"Nil",null,null,null,null,null,null,null,null};
-											            setTableRowData(table7,2,pmrcActionNil.length,pmrcActionNil);
-											            numCellsToMerge=9;
-											            mergrColums(table7,numCellsToMerge,2);
-										         }
-	         						XWPFParagraph pageBreak8 = doc.createParagraph();
-	         								pageBreak8.setPageBreak(true); 
-									         }else if (committeemin[0].toString().equals("8") || committeemin[0].toString().equals("9") || committeemin[0].toString().equals("10")) {
-									        	
-										            createParagraph(doc,committeemin[0] + ". " + committeemin[1], "LEFT", true, 11,100);
-										            int count = 0;
-													
-													for (Object[] speclist : speclists)
-													{
-														if(speclist[3].toString().equals("4") && committeemin[0].toString().equals("8") ) {
-															count++;
-															createParagraph(doc,speclist[1].toString().replace("<p>", "").replace("</p>", "").replace("&nbsp;", " "), "LEFT", false, 10,150);
-														}else if(speclist[3].toString().equals("5") && committeemin[0].toString().equals("9"))
-														{
-															if(speclist[7].toString().equalsIgnoreCase("R")){ count++;
-															createParagraph(doc,"               "+committeemin[0] + ". " +count+"   "+speclist[9], "LEFT", false, 10,50);
-															createParagraph(doc,speclist[1].toString().replace("<p>", "").replace("</p>", "").replace("&nbsp;", " "), "LEFT", false, 10,150);
-															}
-														}
-														else if(speclist[3].toString().equals("6") && committeemin[0].toString().equals("10")) 
-														{
-															count++;
-															createParagraph(doc,speclist[1].toString().replace("<p>", "").replace("</p>", "").replace("&nbsp;", " "), "LEFT", false, 10,100);
-														}
-													}if(count == 0)
-													{
-														createParagraph(doc,"NIL", "CENTER", false, 10,100);
-													}
-										            
-									         }
-							            	
-							            	
-							            }
-							            
-							            createParagraph(doc,"           These Minutes are issued with the approval of the Chairperson.", "LEFT", false, 10,150);
-							            createParagraph(doc,"Date :", "LEFT", false, 10,100);
-							            createParagraph(doc,"Time :", "LEFT", false, 10,100);
-							            if(membersec!=null){
-							            	createParagraph(doc, membersec[6].toString()+", "+membersec[7].toString(), "RIGHT", false, 10,100);
-							            	createParagraph(doc,"(Member Secretary)", "RIGHT", false, 10,150);
-							            	createParagraph(doc,"NOTE :  Action item details are enclosed as Annexure - AI.", "LEFT", false, 10,100);
-							            }
-							            
-							            if(actionsdata.size()>=0){
-							            	   XWPFParagraph pageBreak8 = doc.createParagraph();
-									            pageBreak8.setPageBreak(true); 
-							            	createParagraph(doc,"Annexure - AI", "CENTER", true, 12,150);
-							            	createParagraph(doc,"ACTION ITEM DETAILS", "CENTER", true, 18,150);
-							            	
-							            XWPFTable tableA=	doc.createTable(1,5);
-							            
-							            String[] tableAcellTexts = {"SN", "Action Id ", "Item", "Responsibility","PDC"};
-								         int[] tableAColumnWidths = {10, 15, 40, 15, 20};
-								         
-								         setTableRowData( tableA,0,tableAcellTexts.length, tableAcellTexts);
-								         setTableWidth(tableA,totalTableWidth,tableAColumnWidths);
-								         AtomicInteger count = new AtomicInteger(1);
-
-								    	actionlist2.forEach((key, values) -> {
-								     	    	
-								     	    	XWPFTableRow firstRow = tableA.createRow();
-								     	    	
-								     	    	int currentCount = count.getAndIncrement();
-												 
-								     	  	 createCell(firstRow,String.valueOf(currentCount),0);
-								     	  	int count2=0;
-								     	  	for(Object obj[]:values){
-								     	  		count2++;
-								     	  		if(count2==1) {
-								     	  		if(obj[3]!=null) {
-													 createCell(firstRow,obj[3].toString(),1);
-								     	  		}else {
-								     	  			createCell(firstRow,"-",1);
-								     	  		}
-								     	  		}else if(count2==values.size() ){
-								     	  			if(obj[3]!=null) {
-														 createCell2(firstRow,obj[3].toString(),1);
-									     	  		}else {
-									     	  			createCell(firstRow,"-",1);
-									     	  		}
-								     	  		}
-													
-								     	  	}
-								     	   createCell(firstRow,values.get(0)[1].toString(),2);
-											 int count3=0;
-											 for(Object obj[]:values){
-												 if(obj[13]!=null){
-													 String data=obj[13]+" "+obj[14] ;
-													 if(count3>=0 && count3<values.size()-1){
-														data+=", ";
-													 }
-													 createCell(firstRow,data,3);
-												 }
-												 count3++;
-												 }
-											 if( values.get(0)[5]!=null){ 
-												 try {
-													createCell(firstRow,sdf.format(sdf1.parse(values.get(0)[5].toString())),4);
-												} catch (ParseException e) {
-													// TODO Auto-generated catch block
-													e.printStackTrace();
-												}
-											 } else {
-												 createCell(firstRow,"-",4);
-											 }
-											});
-							            }
-								 	    String minutesFilePath = env.getProperty("ApplicationFilesDrive");
-								 	    String outputPath = minutesFilePath + "/" + filename + ".docx";
-								 	    FileOutputStream out = new FileOutputStream(outputPath);
-								 	    doc.write(out);
-								 	    out.close();
-
-								 	    // Set response headers
-								 	    res.setContentType("application/msword");
-								 	    res.setHeader("Content-Disposition", "inline; filename=" + filename + ".docx");
-
-								 	    // Stream the Word document to the response
-								 	    FileInputStream in = new FileInputStream(outputPath);
-								 	    byte[] buffer = new byte[4096];
-								 	    int length;
-								 	    while ((length = in.read(buffer)) > 0) {
-								 	        res.getOutputStream().write(buffer, 0, length);
-								 	    }
-								 	    in.close();
-
-								 	} catch (Exception e) {
-								 	    e.printStackTrace();
-								 	}
-
-
-								 	long endTime = System.currentTimeMillis();
-								 	long executionTime = endTime - startTime;
-								 	System.out.println("executionTime---------- "+executionTime);
-				
+						    		req.setAttribute("mappmrc", mappmrc);
+							    	req.setAttribute("mapEB", mapEB);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error(new Date() + "Inside CommitteeMinutesNewWordDownload.htm " + UserId, e);
 			}
-								 	
-				}
-			catch (Exception e) 
-			{
-				e.printStackTrace(); 
-				logger.error(new Date() +"Inside CommitteeMinutesNewWordDownload.htm "+UserId,e);
-			}
-		}			
+			return "committee/CommitteeMinutesNewDoc";
+		}
 	
 		
 }

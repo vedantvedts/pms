@@ -416,7 +416,7 @@ ul, #myUL {
 												    <% for (Object[] lab : AllLabList) {%>
 													    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3]%></option>
 												    <%} %>
-												    <option value="@EXP">Expert</option>
+												    <option value="@EXP" <%if(obj[14].toString().equalsIgnoreCase("@EXP")) {%>selected<%} %>>Expert</option>
 												</select>
 							         		</td>
 											<td style="width:1%">

@@ -819,8 +819,5 @@ $.ajax({
 	}
 	
 	
-	$( document ).ready(function() {
-	   $('#ModalReq').click();
-	});
 </script>
 </html>

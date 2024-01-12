@@ -644,7 +644,7 @@
         if (event_data.color) {
             markup += 'style="background-color:'+event_data.color+'"'
         }
-        markup += '></div></div><div class="event-info"><p class="event-title">'+event_data.ComCode+' : '+event_data.time+' &nbsp;&nbsp;&nbsp;<a href="'+event_data.url+'?scheduleid='+event_data. scheduleid+'&membertype='+event_data. membertype+'" class="btn" style="background-color:#f7be16;color:black;font-weight:bold;"> Details </a> '  ;
+        markup += '></div></div><div class="event-info"><p class="event-title">'+event_data.ComCode+' : '+event_data.time+' &nbsp;&nbsp;&nbsp;<a href="'+event_data.url+'?scheduleid='+event_data. scheduleid+'&membertype='+event_data. membertype+'" class="btn btn-sm" style="background-color:#f7be16;color:black;font-weight:bold;"> Details </a> '  ;
         if (event_data.badge) markup += '<span>'+event_data.badge+'</span>';
         markup += '</p>'
         if (event_data.description) markup += '<p class="event-desc">'+event_data.description+'</p>';

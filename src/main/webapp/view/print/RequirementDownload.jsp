@@ -33,7 +33,7 @@
     } */
     jQuery(document).ready(function($) {
     	  $("#btn-export").click(function(event) {
-    	    $("#source-html").wordExport();
+    	    $("#source-html").wordExport("System-Requirement");
     	  });
     	});
 </script>
