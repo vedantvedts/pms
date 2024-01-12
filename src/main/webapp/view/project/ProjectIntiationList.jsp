@@ -416,7 +416,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 						<div class="card-deck" style="position: relative;">
 							<%for(Object[] 	obj:ProjectIntiationList){ %>
 							
-							<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;max-width:450px;">
+							<div class="card" style="margin:10px;min-width:400px; margin-left: 20px;margin-right: 20px;max-width:450px;">
 								<div class="card-body">
 									<div class="container">
 				  						<div class="row">
