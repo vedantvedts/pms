@@ -997,14 +997,14 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    				</tr>
                							</table>
                							
-               							<br>
+               							<br><br>
                							
                							<div style="display: flex;justify-content: space-between;width: 98%;">
                							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
                							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
 												<label style="text-transform: capitalize;margin-top: 15px !important;">
 													<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
-												</label><br>
+												</label><!-- <br> -->
 												<label style="text-transform: capitalize;">
 													<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
 												</label><br>
@@ -1017,7 +1017,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<br>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
 				   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				   			    				<%break;}} %>  
@@ -1644,7 +1644,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Payment Terms</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
+												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
 														<td style="width: 5%;">
 															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 														</td>
@@ -1661,12 +1662,15 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="text" class="form-control item" name="months" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+															<input type="number" class="form-control " name="months" min="0" max="<%=carsSoC.getSoCDuration() %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
 														</td>
 														<td style="width: 5% ; ">
@@ -1682,12 +1686,15 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="text" class="form-control item" name="months" required="required" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
+															<input type="number" class="form-control" name="months" min="0" max="<%=carsSoC.getSoCDuration() %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
 														</td>
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" required="required">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
 														</td>
 														<td style="width: 5% ; ">
@@ -1818,7 +1825,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">RSQR</td>
 						    					<td style="width: 73%;color: blue;">
-						    						<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank" 
+						    						Annexure - I &emsp;<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank" 
 						    						 style="padding: 5px 8px;" data-toggle="tooltip" data-placement="top" title="Final RSQR Download">
 						    							<i class="fa fa-download fa-lg"></i>
 						    						</button>
@@ -1828,7 +1835,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Milestones & Deliverables</td>
 						    					<td style="width: 73%;color: blue;">
-						    						<button type="submit" class="btn btn-sm" formaction="CARSSoCMilestonesDownload.htm" formtarget="_blank" 
+						    						Annexure - II &emsp;<button type="submit" class="btn btn-sm" formaction="CARSSoCMilestonesDownload.htm" formtarget="_blank" 
 						    						 style="padding: 5px 8px;" data-toggle="tooltip" data-placement="top" title="Milestones Download">
 						    							<i class="fa fa-download fa-lg"></i>
 						    						</button>
@@ -1856,7 +1863,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Proposed Service Provider</td>
+						    					<td style="width: 20%;">Research Service Provider</td>
 						    					<td style="width: 73%;color: blue;">
 						    						<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
 						    						<%=carsIni.getPIDesig() %> <br>
@@ -1876,7 +1883,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 						    					<td style="width: 20%;">Execution Plan</td>
 						    					<td style="width: 73%;">
-						    						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+						    						Annexure - IV &emsp;<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 value="exeplanfile" formaction="CARSSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Exection Plan Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
@@ -1928,14 +1935,14 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                								</div>
                							</div> -->
                							
-               							<br>
+               							<br><br>
                							
                							<div style="display: flex;justify-content: space-between;width: 98%;">
                							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
                							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
 												<label style="text-transform: capitalize;margin-top: 15px !important;">
 													<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
-												</label><br>
+												</label><!-- <br> -->
 												<label style="text-transform: capitalize;">
 													<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
 												</label><br>
@@ -1948,7 +1955,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<br>
+				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 				   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
 				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				   			    				<%break;}} %>  

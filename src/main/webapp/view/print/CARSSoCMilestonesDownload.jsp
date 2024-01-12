@@ -189,22 +189,23 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
    			<table id="tabledata">
    				<thead>
    					<tr>
-   						<th>Milestone No.</th>
-   						<th>Task Description</th>
-   						<th>Months</th>
-   						<th>Deliverables</th>
-   						<th>Payment Terms</th>
+   						<th style="width: 5%;">Milestone No.</th>
+   						<th style="width: 20%;">Task Description</th>
+   						<th style="width: 10%;">Months</th>
+   						<th >Deliverables</th>
+   						<th style="width: 5%;">Payment ( In %)</th>
+   						<th style="width: 20%;">Payment Terms</th>
    					</tr>
    				</thead>
    				<tbody>
    					<%int i=0; for(CARSSoCMilestones mil : milestones) { %>
    						<tr>
-   							<%-- <td><%=++i %> </td> --%>
-   							<td style="text-align: center;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
-   							<td><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
-   							<td><%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} else{%>-<%} %></td>
-   							<td><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
-   							<td><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
+   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+mil.getMonths() %><%} else{%>-<%} %></td>
+   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
+   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
+   							<td style="width: 20%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
    						</tr>
    					<%} %>
    				</tbody>

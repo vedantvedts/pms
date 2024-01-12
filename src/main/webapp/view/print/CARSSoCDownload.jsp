@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>RSQR Approval</title>
+<title>SoC</title>
 <%
 CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData");
 %>
@@ -206,14 +206,14 @@ int socforwardslno=0;
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">RSQR</td>
 		<td style="width: 73%;text-align: center;">
-			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank" onclick="window.open(this.href); return false;">view Document</a>
+			<a href="CARSFinalRSQRDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank" onclick="window.open(this.href); return false;">Annexure - I</a>
 		</td>
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Milestones and Deliverables</td>
 		<td style="width: 73%;text-align: center;">
-			<a href="CARSSoCMilestonesDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">view Document</a>
+			<a href="CARSSoCMilestonesDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">Annexure - II</a>
 		</td>
 	</tr>
 	<tr>
@@ -238,7 +238,7 @@ int socforwardslno=0;
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-		<td style="width: 20.5%;">Proposed Service Provider</td>
+		<td style="width: 20.5%;">Research Service Provider</td>
 		<td style="width: 73%;">
 			<%=carsIni.getPITitle()+". "+carsIni.getPIName() %>,
 			<%=carsIni.getPIDesig() %> <br>
@@ -258,7 +258,7 @@ int socforwardslno=0;
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
 		<td style="width: 20.5%;">Execution Plan</td>
 		<td style="width: 73%;text-align: center;">
-			<a href="CARSSoCFileDownload.htm?carsSocId=<%=carsSoC.getCARSSoCId()%>&filename=exeplanfile" target="_blank">Download Document</a>
+			<a href="CARSSoCFileDownload.htm?carsSocId=<%=carsSoC.getCARSSoCId()%>&filename=exeplanfile" target="_blank">Annexure - IV</a>
 		</td>
 	</tr>
 	<tr>
@@ -282,7 +282,7 @@ int socforwardslno=0;
 	</tr>
 </table>
                							
-<br>
+<br><br><br><br>
       
 <table id="timestamptable">
 	<tr>
@@ -291,7 +291,7 @@ int socforwardslno=0;
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
-				</label><br>
+				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
 				</label><br>
@@ -305,7 +305,7 @@ int socforwardslno=0;
     			<div style="font-size: 15px;margin-bottom: 10px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				<%for(Object[] apprInfo : socApprovalEmpData){ %>
 					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
-						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<br>
+						<label style="text-transform: capitalize;"><%=apprInfo[2]%></label>,<!-- <br> -->
 						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
 						<label style="font-size: 12px;">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%break;}} %>  

@@ -492,7 +492,8 @@ public class CARSController {
 	
 	@RequestMapping(value="RSQRApprovalSubmit.htm")
 	public String rsqrApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
-		String UserId=(String)ses.getAttribute("Username");
+		String UserId =(String)ses.getAttribute("Username");
+		String labcode =(String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside RSQRApprovalSubmit.htm "+UserId);
 		try {
@@ -509,7 +510,7 @@ public class CARSController {
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
 			dto.setRemarks(remarks);
-			long result = service.rsqrApprovalForward(dto,req,res);
+			long result = service.rsqrApprovalForward(dto,req,res,labcode);
 			
 			if(action.equalsIgnoreCase("A")) {
 				if(carsStatusCode.equalsIgnoreCase("INI") || carsStatusCode.equalsIgnoreCase("REV") || 
@@ -1136,6 +1137,7 @@ public class CARSController {
 			dto.setTaskDesc(req.getParameterValues("taskDesc"));
 			dto.setMonths(req.getParameterValues("months"));
 			dto.setDeliverables(req.getParameterValues("deliverables"));
+			dto.setPaymentPercentage(req.getParameterValues("paymentPercentage"));
 			dto.setPaymentTerms(req.getParameterValues("paymentTerms"));
 			dto.setUserId(UserId);
 			

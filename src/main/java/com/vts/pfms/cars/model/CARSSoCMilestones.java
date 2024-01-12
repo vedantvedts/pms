@@ -25,6 +25,7 @@ public class CARSSoCMilestones implements Serializable{
 	private String TaskDesc;
 	private String Months;
 	private String Deliverables;
+	private String PaymentPercentage;
 	private String PaymentTerms;
 	private String CreatedBy;
 	private String CreatedDate;

@@ -237,7 +237,7 @@ public class CARSServiceImpl implements CARSService{
 
 	// This method is to handle the approval flow for rsqr approval.
 	@Override
-	public long rsqrApprovalForward(RSQRForwardDTO dto, HttpServletRequest req,HttpServletResponse res) throws Exception {
+	public long rsqrApprovalForward(RSQRForwardDTO dto, HttpServletRequest req,HttpServletResponse res, String labcode) throws Exception {
 		try {
 			long carsinitiationid = dto.getCarsinitiationid();
 			String action = dto.getAction();
@@ -335,18 +335,22 @@ public class CARSServiceImpl implements CARSService{
 				dao.addNotifications(notification);
 				
 				Object[] dpandc = dao.getEmpDataByLoginType("E");
+				Object[] GHDPandC = dao.getApprAuthorityDataByType(labcode, "GH-DP&C");
 				
-				PfmsNotification notification2 = new PfmsNotification();
-				notification2.setEmpId(Long.parseLong(dpandc[0].toString()));
-				notification2.setNotificationUrl("CARSRSQRApprovedList.htm");
-				notification2.setNotificationMessage("RSQR request approved for<br>"+emp.getEmpName());
-				notification2.setNotificationby(Long.parseLong(EmpId));
-				notification2.setNotificationDate(LocalDate.now().toString());
-				notification2.setIsActive(1);
-				notification2.setCreatedBy(UserId);
-				notification2.setCreatedDate(sdtf.format(new Date()));
+				for(int i=0;i<2;i++) {
+					PfmsNotification notification2 = new PfmsNotification();
+					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
+					notification2.setNotificationUrl("CARSRSQRApprovedList.htm");
+					notification2.setNotificationMessage("RSQR request approved for<br>"+emp.getEmpName());
+					notification2.setNotificationby(Long.parseLong(EmpId));
+					notification2.setNotificationDate(LocalDate.now().toString());
+					notification2.setIsActive(1);
+					notification2.setCreatedBy(UserId);
+					notification2.setCreatedDate(sdtf.format(new Date()));
 
-				dao.addNotifications(notification2);
+					dao.addNotifications(notification2);
+				}
+				
 			}
 			else if(action.equalsIgnoreCase("A")) {
 				
@@ -794,6 +798,7 @@ public class CARSServiceImpl implements CARSService{
 				mil.setTaskDesc(dto.getTaskDesc()[i]);
 				mil.setMonths(dto.getMonths()[i]);
 				mil.setDeliverables(dto.getDeliverables()[i]);
+				mil.setPaymentPercentage(dto.getPaymentPercentage()[i]);
 				mil.setPaymentTerms(dto.getPaymentTerms()[i]);
 				mil.setCreatedBy(dto.getUserId());
 				mil.setCreatedDate(sdtf.format(new Date()));
@@ -843,8 +848,6 @@ public class CARSServiceImpl implements CARSService{
 			String statusCode = cars.getCARSStatusCode();
 			String statusCodeNext = cars.getCARSStatusCodeNext();
 			Double amount = cars.getAmount()!=null?Double.parseDouble(cars.getAmount()):0.00;
-
-			CARSSoC soc = dao.getCARSSoCByCARSInitiationId(carsinitiationid);
 
 			List<String> forwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRD");
 
