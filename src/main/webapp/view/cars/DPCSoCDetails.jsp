@@ -255,6 +255,14 @@ p,td,th
 .textunderline{
 	text-decoration: underline;
 }
+
+.externalapproval{
+border : 1px solid #ced4da;
+padding: 20px;
+border-radius : 0.25rem;
+width: 70%;
+margin-left: -30%;
+}
 </style>
 </head>
 <body>
@@ -274,10 +282,11 @@ SimpleDateFormat sdf = fc.getSqlDateFormat();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
 
 String expenditure = carsSoC.getDPCExpenditure();
-expenditure = expenditure!=null?expenditure.replace("\n", "<br>"):expenditure;
+expenditure = expenditure!=null?expenditure.replaceAll("\n", "<br>"):expenditure;
 
-List<String> dpcsocforward = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRD");
-List<String> approvebutton = Arrays.asList("SDF","SAD","SAI","ADG");
+List<String> dpcsocforwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRJ","SRS","SRD");
+List<String> dpcsocapprovestatus = Arrays.asList("SDF","SAD","SAI","ADG","SAJ","SAS");
+List<String> dpcsocexternalapprovestatus = Arrays.asList("SAI","ADG","SAJ","SAS");
 
 Object[] emp = (Object[])request.getAttribute("EmpData");
 Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
@@ -290,6 +299,10 @@ Object[] GDDFandMM = (Object[])request.getAttribute("GDDFandMM");
 Object[] Director = (Object[])request.getAttribute("Director");
 
 String EmpId = ((Long) session.getAttribute("EmpId")).toString();
+
+String statuscode = carsIni.getCARSStatusCode();
+
+List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 %>
 
 <% String ses=(String)request.getParameter("result"); 
@@ -569,11 +582,15 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 			               		   						<div style="width: 97%;">
 			               		   							<h5 class="socheading"><span>4.</span> <span style="text-decoration: underline;font">Approval Sought</span></h5>
 				               		   						<div class="soccontent">
-				               		   							<p style="text-indent: 21px;font-size: 15px;">
-				               		   								The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum 
-				               		   								Financial sanction and approval from Competent Financial Authority (CFA) for placement of 
-				               		   								Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></span> please.
-				               		   							</p>
+				               		   							<%if(carsSoC!=null && carsSoC.getDPCApprovalSought()!=null && !carsSoC.getDPCApprovalSought().isEmpty() && ( GHDPandC!=null && EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ) {%>
+				               		   								<textarea class="form-control" name="approvalSought" rows="4" required><%=carsSoC.getDPCApprovalSought() %></textarea>
+				               		   							<%} else if(carsSoC!=null && carsSoC.getDPCApprovalSought()!=null && !carsSoC.getDPCApprovalSought().isEmpty() && ( GHDPandC!=null && !EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ){%>
+					               		   							<p style="text-indent: 21px;font-size: 15px;">
+																		<%=carsSoC.getDPCApprovalSought().replaceAll("\n", "<br>") %>
+																	</p>
+				               		   							<%} else{%>
+				               		   								<textarea class="form-control" name="approvalSought" rows="4" required>The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum Financial sanction and approval from Competent Financial Authority (CFA) for placement of Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %> please.</textarea>
+				               		   							<%} %>
 				               		   						</div>
 			               		   						</div>
 			               		   						
@@ -719,7 +736,7 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 			               		   					
 			               		   					<div class="row mt-2 mb-4">
 														<div class="col-md-12" align="center">
-															<%if(carsIni!=null && dpcsocforward.contains(carsIni.getCARSStatusCode()) && ( GHDPandC!=null && EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ) {%>
+															<%if(statuscode!=null && dpcsocforwardstatus.contains(statuscode) && ( GHDPandC!=null && EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ) {%>
 																<div class="ml-2" align="left">
 									   								<b >Remarks :</b><br>
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
@@ -727,11 +744,37 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 																<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="DPCSoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("P")) {%>
+																<%if(dpcsocexternalapprovestatus.contains(statuscode) || (statuscode.contains("SAD") && carsIni.getCARSStatusCodeNext().equalsIgnoreCase("SAI"))) {%>
+																	<div class="row externalapproval" style="">
+																		<div class="col-md-3">
+																			<label class="control-label">Lab</label><span class="mandatory">*</span>
+																			<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-live-search="true"  required="required">
+		        																<option disabled="disabled" value="" selected="selected"> Select</option>
+																					<%if (labList != null && labList.size() > 0) {
+																						for (Object[] obj : labList) {
+																					%>
+																						<option value=<%=obj[2].toString()%>><%=obj[2].toString()%></option>
+																					<%}}%>
+																			</select>
+																		</div>
+																		<div class="col-md-5">
+																			<label class="control-label">Approval Officer</label><span class="mandatory">*</span>
+				  															<select class="form-control selectdee" id="approverEmpId" name="approverEmpId" data-live-search="true" required>
+				  																<option disabled="disabled" value="" selected="selected"> Select</option>
+				  															</select>
+																		</div>
+																		<div class="col-md-4">
+																			<label class="control-label" >Approval Date</label><span class="mandatory">*</span>
+			          														<input type="text" class="form-control" id="approvalDate" name="approvalDate">
+																		</div>
+																		
+																	</div>
+																<%} %>
 																<div class="ml-2" align="left">
 									   								<b >Remarks :</b><br>
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
-								         						<%if(carsIni!=null && approvebutton.contains(carsIni.getCARSStatusCode())) {%>
+								         						<%if(carsIni!=null && dpcsocapprovestatus.contains(statuscode)) {%>
 								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
 										    						Approve	
 									      						</button>
@@ -842,7 +885,7 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 				                	    				</td>
 			                	    				<%} %>
 			                	    				
-			                	    				<%if(carsIni.getAmount()!=null && (Double.parseDouble(carsIni.getAmount())>5000000 && Double.parseDouble(carsIni.getAmount())<=7500000)) {%>
+			                	    				<%if(carsIni.getAmount()!=null && (Double.parseDouble(carsIni.getAmount())>5000000 && Double.parseDouble(carsIni.getAmount())<=30000000)) {%>
 				                	    				
 				                	    				<td rowspan="2">
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
@@ -866,6 +909,33 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 			                						
 				                						<td class="trup" style="background: linear-gradient(to top, #ef5efa 10%, transparent 115%);">
 				                							DG (ECS) - DG (ECS)
+				                	    				</td>
+			                	    				<%} %>
+			                	    				
+			                	    				<%if(carsIni.getAmount()!=null && (Double.parseDouble(carsIni.getAmount())>30000000)) {%>
+				                	    				
+				                	    				<td rowspan="2">
+			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                							</td>
+			                						
+				                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+				                							DIRECTOR - <%if(Director!=null) {%><%=Director[1] %> <%} else{%>DIRECTOR<%} %>
+				                	    				</td>
+				                	    				
+				                	    				<td rowspan="2">
+			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                							</td>
+			                						
+				                						<td class="trup" style="background: linear-gradient(to top, #f28309 10%, transparent 115%);">
+				                							JSA - JSA
+				                	    				</td>
+				                	    				
+				                	    				<td rowspan="2">
+			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
+			                							</td>
+			                						
+				                						<td class="trup" style="background: linear-gradient(to top, #ef5efa 10%, transparent 115%);">
+				                							SECY - SECY
 				                	    				</td>
 			                	    				<%} %>
 			               						</tr> 	
@@ -947,7 +1017,7 @@ function disapprove() {
 
 <script type="text/javascript">
 /* button disabling for SoC Approval */
-<%if((dpcsocforward.contains(carsIni.getCARSStatusCode()))) {%>
+<%if((dpcsocforwardstatus.contains(carsIni.getCARSStatusCode()))) {%>
 $('.btn-soc').prop('disabled',false);
 <%} else{%>
 $('.btn-soc').prop('disabled',true);
@@ -958,6 +1028,46 @@ $('.btn-soc').prop('disabled',true);
    $('.navigation_btn').hide();
    $('#nav-socdetails').hide();
 <%} %>
+</script>
+
+<script type="text/javascript">
+function LabcodeSubmit() {
+	   var LabCode = document.getElementById("LabCode").value;
+	   $('#approverEmpId').empty();
+	   $.ajax({
+	       type: "GET",
+	       url: "GetLabcodeEmpList.htm",
+	       data: {
+	       	LabCode: LabCode
+	       },
+	       dataType: 'json',
+	       success: function(result) {
+	               	for (var i = 0; i < result.length; i++) {
+	                       var data = result[i];
+	                       var optionValue = data[0];
+	                       var optionText = data[1].trim() + ", " + data[3]; 
+	                       var option = $("<option></option>").attr("value", optionValue).text(optionText);
+	                       $('#approverEmpId').append(option); 
+	                   }
+	                   $('#approverEmpId').selectpicker('refresh');
+	               
+	           }
+	   });
+	}
+
+$('#approvalDate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,
+	//"minDate" :new Date(), 
+	//"startDate" : new Date(),
+	"cancelClass" : "btn-default",
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});
+
 </script>
 </body>
 </html>

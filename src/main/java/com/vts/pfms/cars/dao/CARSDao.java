@@ -57,4 +57,8 @@ public interface CARSDao {
 	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception;
 	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception;
 	public long carsSoCUploadMoM(String momFile, String carsSocId) throws Exception;
+	public int updateDPCApprovalSought(long carsInitiationId, String approvalSought) throws Exception;
+	public List<Object[]> getLabList(String lab) throws Exception;
+	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
+	
 }

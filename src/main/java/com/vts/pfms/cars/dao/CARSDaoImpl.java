@@ -34,7 +34,7 @@ public class CARSDaoImpl implements CARSDao{
 	@PersistenceContext
 	EntityManager manager;
 
-	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND a.EmpId=:EmpId ORDER BY a.CARSInitiationId DESC";
+	private static final String CARSINITIATIONLIST = "SELECT a.CARSInitiationId,a.EmpId,a.CARSNo,a.InitiationDate,a.InitiationTitle,a.InitiationAim,a.Justification,a.FundsFrom,a.Duration,b.EmpName,c.CARSStatus,c.CARSStatusColor,c.CARSStatusCode,a.Amount FROM pfms_cars_initiation a,employee b,pfms_cars_approval_status c  WHERE a.EmpId=b.EmpId AND a.CARSStatusCode=c.CARSStatusCode AND a.IsActive=1 AND a.EmpId=:EmpId ORDER BY a.CARSInitiationId DESC";
 	@Override
 	public List<Object[]> carsInitiationList(String EmpId) throws Exception {
 		try {
@@ -358,7 +358,7 @@ public class CARSDaoImpl implements CARSDao{
 			+ "	(SELECT designation FROM pfms_cars_initiation_trans t , employee e,employee_desig des WHERE e.EmpId = t.ActionBy AND e.desigid=des.desigid AND t.CARSStatusCode =  sta.CARSStatusCode AND t.CARSInitiationId=par.CARSInitiationId ORDER BY t.CARSInitiationTransId DESC LIMIT 1) AS 'Designation',\r\n"
 			+ "	MAX(tra.ActionDate) AS ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor,sta.CARSStatusCode \r\n"
 			+ "	FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,pfms_cars_initiation par\r\n"
-			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND CASE WHEN 'AF'=:ApprFor THEN sta.CARSForward IN ('RF','SF','DF') ELSE sta.CARSForward=:ApprFor END AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY ActionDate ASC";
+			+ "	WHERE par.CARSInitiationId=tra.CARSInitiationId AND tra.CARSStatusCode =sta.CARSStatusCode AND tra.Actionby=emp.EmpId AND CASE WHEN 'AF'=:ApprFor THEN sta.CARSForward IN ('RF','SF','DF') ELSE sta.CARSForward=:ApprFor END AND par.CARSInitiationId=:CARSInitiationId GROUP BY sta.CARSStatusCode ORDER BY tra.CARSInitiationTransId ASC";
 	@Override
 	public List<Object[]> carsTransApprovalData(String carsInitiationId, String apprFor) {
 		
@@ -655,7 +655,7 @@ public class CARSDaoImpl implements CARSDao{
 		}
 	}
 	
-	private static final String CARSTRANSLISTBYTYPE = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND CASE WHEN 'A'=:CARSStatusFor THEN 1=1 ELSE sta.CARSStatusFor =:CARSStatusFor END AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.ActionDate";
+	private static final String CARSTRANSLISTBYTYPE = "SELECT tra.CARSInitiationTransId,emp.EmpId,emp.EmpName,des.Designation,tra.ActionDate,tra.Remarks,sta.CARSStatus,sta.CARSStatusColor FROM pfms_cars_initiation_trans tra,pfms_cars_approval_status sta,employee emp,employee_desig des,pfms_cars_initiation par WHERE par.CARSInitiationId = tra.CARSInitiationId AND tra.CARSStatusCode = sta.CARSStatusCode AND CASE WHEN 'A'=:CARSStatusFor THEN 1=1 ELSE sta.CARSStatusFor =:CARSStatusFor END AND tra.ActionBy=emp.EmpId AND emp.DesigId = des.DesigId AND par.CARSInitiationId=:CARSInitiationId ORDER BY tra.CARSInitiationTransId";
 	@Override
 	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception {
 		
@@ -672,7 +672,7 @@ public class CARSDaoImpl implements CARSDao{
 		
 	}
 	
-	private static final String CARSREMARKSHISTORYBYTYPE  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND CASE WHEN 'AF'=:RemarksFor THEN cs.CARSForward IN('RF','SF','DF') ELSE cs.CARSForward=:RemarksFor END AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.ActionDate ASC";
+	private static final String CARSREMARKSHISTORYBYTYPE  ="SELECT cat.CARSInitiationId,cat.Remarks,cs.CARSStatusCode,e.EmpName,ed.Designation FROM pfms_cars_approval_status cs,pfms_cars_initiation_trans cat,pfms_cars_initiation ca,employee e,employee_desig ed WHERE cat.ActionBy = e.EmpId AND e.DesigId = ed.DesigId AND cs.CARSStatusCode = cat.CARSStatusCode AND CASE WHEN 'AF'=:RemarksFor THEN cs.CARSForward IN('RF','SF','DF') ELSE cs.CARSForward=:RemarksFor END AND ca.CARSInitiationId = cat.CARSInitiationId AND TRIM(cat.Remarks)<>'' AND ca.CARSInitiationId=:CARSInitiationId ORDER BY cat.CARSInitiationTransId ASC";
 	@Override
 	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception
 	{
@@ -690,13 +690,13 @@ public class CARSDaoImpl implements CARSDao{
 		return list;
 	}
 
-	private static final String SOCMOMUPLOAD = "UPDATE pfms_cars_soc SET MoMUpload=:MoMUpload WHERE CARSSoCId=:CARSSoCId AND IsActive=1";
+	private static final String SOCMOMUPLOAD = "UPDATE pfms_cars_soc SET MoMUpload=:MoMUpload WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
 	@Override
-	public long carsSoCUploadMoM(String momFile, String carsSocId) throws Exception {
+	public long carsSoCUploadMoM(String momFile, String carsInitiationId) throws Exception {
 		try {
 			Query query = manager.createNativeQuery(SOCMOMUPLOAD);
 			query.setParameter("MoMUpload", momFile);
-			query.setParameter("CARSSoCId", carsSocId);
+			query.setParameter("CARSInitiationId", carsInitiationId);
 			return query.executeUpdate();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -705,4 +705,51 @@ public class CARSDaoImpl implements CARSDao{
 		}
 		
 	}
+	
+	private static final String UPDATEDPCAPPROVALSOUGHT = "UPDATE pfms_cars_soc SET DPCApprovalSought=:DPCApprovalSought WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public int updateDPCApprovalSought(long carsInitiationId,String approvalSought) throws Exception{
+		try {
+			Query query = manager.createNativeQuery(UPDATEDPCAPPROVALSOUGHT);
+			query.setParameter("DPCApprovalSought", approvalSought);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO updateDPCApprovalSought "+e);
+			return 0;
+		}
+		
+	}
+	
+	private static final String LABLIST="SELECT LabId, ClusterId, LabCode FROM cluster_lab WHERE LabCode NOT IN (:lab)";
+	@Override
+	public List<Object[]> getLabList(String lab) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(LABLIST);
+			query.setParameter("lab", lab);
+			List<Object[]> lablist=(List<Object[]>)query.getResultList();
+			return lablist;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO LabList "+e);
+			return null;
+		}
+	}
+
+	private static final String EMPLOYEELISTBYLABCODE="SELECT e.EmpId,e.EmpName,e.EmpNo,d.Designation FROM employee e,employee_desig d WHERE e.DesigId=d.DesigId AND e.IsActive='1' AND e.LabCode=:LabCode ORDER BY SrNo";
+	@Override
+	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(EMPLOYEELISTBYLABCODE);
+			query.setParameter("LabCode", labCode);
+			 List<Object[]> EmployeeListForEnoteRoSo = (List<Object[]>) query.getResultList();
+				return EmployeeListForEnoteRoSo;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DAO getEmployeeListByLabCode", e);
+			return null;
+		}
+}
 }

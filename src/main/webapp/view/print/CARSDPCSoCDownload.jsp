@@ -166,7 +166,9 @@ span,p,h1,h2,h3,h4,h5,h6{
  padding : 1px;
  font-size: 14px;
 }
-
+#tabledata td:first-child { 
+	text-align: center; 
+}
 
 </style>
 </head>
@@ -219,12 +221,12 @@ String labcode = (String) session.getAttribute("labcode");
 	<div>
 		<h5 class="socheading"><span>2.</span> <span style="text-decoration: underline;">The Summary of the CARS is as under</span></h5>
 		<div class="soccontent">
-			<table id="tabledata">
+			<table class="soctable" id="tabledata">
 				<thead>
 					<tr>
 						<th style="width: 5%;">SN</th>
-						<th style="width: 23%;">Subject</th>
-						<th style="width: 70%;">Details</th>
+						<th style="width: 28%;">Subject</th>
+						<th style="">Details</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -238,38 +240,38 @@ String labcode = (String) session.getAttribute("labcode");
 						<td>File No</td>
 						<td><%=carsIni.getCARSNo() %></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>3.</td>
 						<td>Deliverables</td>
 						<td>-do-</td>
-					</tr>
+					</tr> -->
 					<tr>
-						<td>4.</td>
+						<td>3.</td>
 						<td>Service Type</td>
 						<td>General Revenue</td>
 					</tr>
 					<tr>
-						<td>5.</td>
+						<td>4.</td>
 						<td>Estimated cost of service</td>
 						<td><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></td>
 					</tr>
 					<tr>
-						<td>6.</td>
+						<td>5.</td>
 						<td>CARS PDC</td>
 						<td><%=carsIni.getDuration() %></td>
 					</tr>
 					<tr>
-						<td>7.</td>
+						<td>6.</td>
 						<td>Expenditure Head</td>
 						<td><%=expenditure %></td>
 					</tr>
 					<tr>
-						<td>8.</td>
+						<td>7.</td>
 						<td>CFA approval as per DFP</td>
 						<td>Under Sl. No: 2.4 of DFP dated 18 Dec 2019</td>
 					</tr>
 					<tr>
-						<td>9.</td>
+						<td>8.</td>
 						<td>Additional Points</td>
 						<td><%if(carsSoC.getDPCAdditional()!=null && !carsSoC.getDPCAdditional().isEmpty()) {%><%=carsSoC.getDPCAdditional() %><%} else{%>-<%} %></td>
 					</tr>
@@ -361,11 +363,17 @@ String labcode = (String) session.getAttribute("labcode");
 	<div style="">
 		<h5 class="socheading"><span>4.</span> <span style="text-decoration: underline;">Approval Sought</span></h5>
 		<div class="soccontent">
-			<p style="text-indent: 21px;font-size: 15px;">
-				The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum 
-				Financial sanction and approval from Competent Financial Authority (CFA) for placement of 
-				Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></span> please.
-			</p>
+			<%if(carsSoC!=null && carsSoC.getDPCApprovalSought()!=null && !carsSoC.getDPCApprovalSought().isEmpty()) { %>
+				<p style="text-indent: 21px;font-size: 15px;">
+					<%=carsSoC.getDPCApprovalSought().replaceAll("\n", "<br>") %>
+				</p>
+			<%} else{%>
+				<p style="text-indent: 21px;font-size: 15px;">
+					The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum 
+					Financial sanction and approval from Competent Financial Authority (CFA) for placement of 
+					Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></span> please.
+				</p>
+			<%} %>
 		</div>
 	</div>
 	

@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -51,7 +52,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
-import com.vts.pfms.cars.dto.RSQRForwardDTO;
+import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
@@ -96,20 +97,87 @@ public class CARSController {
 		return "/print/.jsp";
 	}
 	
-	@RequestMapping(value="CARSInitiationList.htm")
-	public String carsInitiationList(HttpServletRequest req, HttpSession ses) throws Exception{
-		String UserId = (String) ses.getAttribute("Username");
+//	@RequestMapping(value="CARSInitiationList.htm")
+//	public String carsInitiationList(HttpServletRequest req, HttpSession ses) throws Exception{
+//		String UserId = (String) ses.getAttribute("Username");
+//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//		logger.info(new Date()+ " Inside CARSInitiationList.htm "+UserId);
+//		try {
+//			req.setAttribute("InitiationList", service.carsInitiationList(EmpId));
+//			return "cars/InitiationList";
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//			logger.error(new Date()+" Inside CARSInitiationList.htm "+UserId,e);
+//			return "static/Error";
+//		}
+//		
+//	}
+	
+	@RequestMapping(value = "CARSInitiationList.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public String carsInitiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		logger.info(new Date()+ " Inside CARSInitiationList.htm "+UserId);
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSInitiationList.htm "+UserId);
 		try {
-			req.setAttribute("InitiationList", service.carsInitiationList(EmpId));
+			String pagination = req.getParameter("pagination");
+			int pagin = Integer.parseInt(pagination!=null?pagination:"0");
+
+			/* fetching actual data */
+			List<Object[]> initiationList = service.carsInitiationList(EmpId);
+
+			// adding values to this List<Object[]>
+			List<Object[]> arrayList = new ArrayList<>();
+
+			/* search action starts */
+			String search = req.getParameter("search");
+			if(search!="" && search!=null) {
+				req.setAttribute("searchFactor", search);
+				for(Object[] obj: initiationList) {
+					for(Object value:obj) {
+						if(value instanceof String)
+							if (((String)(value)).contains(search) ) {
+								arrayList.add(obj);
+								continue;
+							}
+					}
+				}
+				if (arrayList.size()==0)req.setAttribute("resultfail", "search result is empty!");
+			}
+			else if(req.getParameter("clicked")!=null) {
+				req.setAttribute("resultfail", "search is empty!");
+			}
+
+			/* search action ends */
+			int p = initiationList.size()/6;
+			int extra = initiationList.size()%6;
+			if(arrayList.size()==0) arrayList=initiationList;
+
+			/* pagination process starts */
+
+			if(pagin>0 && pagin<(p+(extra>0?1:0)))
+			{
+				req.setAttribute("pagination", pagin);
+				arrayList = arrayList.subList(pagin*6, ((pagin*6)+6)<arrayList.size()?((pagin*6)+6):arrayList.size());
+			}
+			else
+			{
+				arrayList = arrayList.subList(0, arrayList.size()>=6?6:arrayList.size());
+				req.setAttribute("pagination", 0);
+				pagin=0;
+			}
+
+			req.setAttribute("InitiationList", arrayList);
+			req.setAttribute("maxpagin", p+(extra>0?1:0) );
+			/* pagination process ends */
+
 			return "cars/InitiationList";
-		}catch (Exception e) {
-			e.printStackTrace();
-			logger.error(new Date()+" Inside CARSInitiationList.htm "+UserId,e);
-			return "static/Error";
 		}
-		
+		catch (Exception e) {
+			logger.error(new Date() +" Inside CARSInitiationList.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		} 
 	}
 	
 	@RequestMapping(value="CARSInitiationDetails.htm")
@@ -505,7 +573,7 @@ public class CARSController {
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String carsStatusCode = cars.getCARSStatusCode();
 			
-			RSQRForwardDTO dto = new RSQRForwardDTO();
+			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
@@ -957,7 +1025,7 @@ public class CARSController {
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String statusCode = cars.getCARSStatusCode();
 			
-			RSQRForwardDTO dto = new RSQRForwardDTO();
+			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
@@ -1350,6 +1418,11 @@ public class CARSController {
 				req.setAttribute("CARSDPCSoCRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"DF"));
 				req.setAttribute("DPCSoCApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "DF"));
 				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+				
+				List<String> dpcsocexternalapprovestatus = Arrays.asList("SAD","SAI","ADG","SAJ","SAS");
+				if(dpcsocexternalapprovestatus.contains(carsInitiation.getCARSStatusCode())) {
+					req.setAttribute("LabList", service.getLabList(labcode));
+				}
 			}
 			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
 			req.setAttribute("dpcTabId", dpcTabId!=null?dpcTabId:"1");
@@ -1414,7 +1487,6 @@ public class CARSController {
 		logger.info(new Date() +"Inside DPCSoCApprovalSubmit.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
-			String remarks = req.getParameter("remarks");
 			String action = req.getParameter("Action");
 			
 			long carsini = Long.parseLong(carsInitiationId);
@@ -1422,16 +1494,19 @@ public class CARSController {
 			CARSInitiation cars = service.getCARSInitiationById(carsini);
 			String statusCode = cars.getCARSStatusCode();
 			
-			RSQRForwardDTO dto = new RSQRForwardDTO();
+			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
 			dto.setCarsinitiationid(carsini);
 			dto.setAction(action);
 			dto.setEmpId(EmpId);
-			dto.setRemarks(remarks);
+			dto.setRemarks(req.getParameter("remarks"));
 			dto.setLabcode(labcode);
+			dto.setApprovalSought(req.getParameter("approvalSought"));
+			dto.setApproverEmpId(req.getParameter("approverEmpId"));
+			dto.setApprovalDate(req.getParameter("approvalDate"));
 			long result = service.dpcSoCApprovalForward(dto);
 			
-			List<String> forwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRD");
-			List<String> approvestatus = Arrays.asList("SDF","SAD","SAI","ADG");
+			List<String> forwardstatus = Arrays.asList("SFG","SFP","SID","SGR","SPR","SRC","SRM","SRF","SRR","SRI","RDG","SRJ","SRS","SRD");
+			List<String> approvestatus = Arrays.asList("SDF","SAD","SAI","ADG","SAJ","SAS");
 
 			if(action.equalsIgnoreCase("A")) {
 				if(forwardstatus.contains(statusCode)) {
@@ -1639,12 +1714,15 @@ public class CARSController {
 	public String carsSocMoMUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
 			@RequestPart(name="MoMUpload", required = false) MultipartFile MoMFile) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CARSSoCMoMUpload.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String carsSocId = req.getParameter("carsSocId");
+			String MoMFlag = req.getParameter("MoMFlag");
 		
-			long result = service.carsSoCUploadMoM(MoMFile, carsSocId);
+			long result = service.carsSoCUploadMoM(MoMFile, labcode, carsInitiationId, EmpId, Username, MoMFlag);
 			
 			if(result!=0) {
 				redir.addAttribute("result", "MoM Uploaded Successfully");
@@ -1661,5 +1739,22 @@ public class CARSController {
 			logger.error(new Date() +" Inside CARSSoCMoMUpload.htm "+Username, e);
 			return "static/Error";
 		}
+	}
+	
+	@RequestMapping(value="GetLabcodeEmpList.htm",method=RequestMethod.GET)
+	public  @ResponseBody String  GetLabcodeEmpList(HttpServletRequest req, HttpSession ses)throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + "Inside GetLabcodeEmpList.htm"+Username);
+		Gson json = new Gson();
+		List<Object[]> GetLabcodeEmpList=null;
+		try {
+			String LabCode=(String)req.getParameter("LabCode");
+			GetLabcodeEmpList=service.getEmployeeListByLabCode(LabCode);
+			} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside GetLabcodeEmpList.htm "+Username, e);
+			}
+		return json.toJson(GetLabcodeEmpList);
+
 	}
 }

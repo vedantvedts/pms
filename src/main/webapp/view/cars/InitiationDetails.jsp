@@ -423,9 +423,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 									</select>
                         		</div>
                         		<div class="column b" style="width: 14%;">
-                            		<label class="control-label">Amount (In Rupees)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="amount" id="amount" maxlength="16" style="font-size: 15px;"
-                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=carsIni.getAmount()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                            		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
+                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="16" style="font-size: 15px;"
+                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())/100000%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -532,7 +532,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Mobile Number</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
+                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" min="10" max="10" style="font-size: 15px;"
                               		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=carsIni.getPIMobileNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
@@ -1668,7 +1668,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
@@ -1692,7 +1692,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
 														</td>
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" required="required">
+															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
@@ -2078,6 +2078,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                				<form action="CARSSoCMoMUpload.htm" method="post" enctype="multipart/form-data">
                					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                		   			<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
+               		   			<%if(carsSoC!=null && carsSoC.getMoMUpload()==null) {%>
+               		   				<input type="hidden" name="MoMFlag" value="F">
+               		   			<%} %>
                		   			<br>
                					<div class="row">
                						<div class="col-md-3"></div>
@@ -2090,6 +2093,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                             					 	value="momfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="MoM Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
+                            					 	<input type="hidden" name="MoMFlag" value="N">
                             					 <%} %>
                               		      		<input type="file" class="form-control modals" name="MoMUpload" required accept=".pdf" >
                         					</div>
@@ -2827,6 +2831,33 @@ function showEditor2(a){
 	        });
 	    }
 	});
+	
+	function checkPaymentPercentage(inputElement){
+		
+		// Traverse up the DOM to find the parent row
+	    var row = $(inputElement).closest('tr');
+		
+		var percentage = 0;
+		
+		$("input[name='paymentPercentage']").each(function() {
+			percentage = percentage+Number($(this).val());
+		});
+		
+		console.log("percentage : "+percentage);
+		if(percentage>100){
+			alert('Percentage should not exceed more than 100');
+			
+			// Set the value of the specific input in the same row to 0
+	        $(inputElement).val('0');
+	        
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	
+	
 </script>
 
 </body>

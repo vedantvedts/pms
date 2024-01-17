@@ -39,6 +39,7 @@ private static final long serialVersionUID = 1L;
 	private String DPCIntroduction;
 	private String DPCExpenditure;
 	private String DPCAdditional;
+	private String DPCApprovalSought;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

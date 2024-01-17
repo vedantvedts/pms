@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
-import com.vts.pfms.cars.dto.RSQRForwardDTO;
+import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
@@ -31,7 +31,7 @@ public interface CARSService {
 	public int removeCARSRSQRMajorReqrDetails(long carsInitiationId) throws Exception;
 	public long carsRSQRDeliverableDetailsSubmit(CARSRSQRDetailsDTO dto) throws Exception;
 	public int removeCARSRSQRDeliverableDetails(long carsInitiationId) throws Exception;
-	public long rsqrApprovalForward(RSQRForwardDTO dto,HttpServletRequest req, HttpServletResponse res, String labcode) throws Exception;
+	public long rsqrApprovalForward(CARSApprovalForwardDTO dto,HttpServletRequest req, HttpServletResponse res, String labcode) throws Exception;
 	public Object[] getEmpGDEmpId(String empId) throws Exception;
 	public Object[] getEmpPDEmpId(String projectId) throws Exception;
 	public Object[] getEmpDetailsByEmpId(String empId) throws Exception;
@@ -45,7 +45,7 @@ public interface CARSService {
 	public int invForSoODateSubmit(String carsInitiationId, String sooDate) throws Exception;
 	public CARSSoC getCARSSoCByCARSInitiationId(long carsInitiationId) throws Exception;
 	public void carsRSQRFormFreeze(HttpServletRequest req, HttpServletResponse res, long carsInitiationId) throws Exception;
-	public long socApprovalForward(RSQRForwardDTO dto) throws Exception;
+	public long socApprovalForward(CARSApprovalForwardDTO dto) throws Exception;
 	public long addCARSInitiationTransaction(CARSInitiationTrans transaction) throws Exception;
 	public long carsUserRevoke(String carsInitiationId, String username, String empId, String carsStatusCode) throws Exception;
 	public List<CARSSoCMilestones> getCARSSoCMilestonesByCARSInitiationId(long carsInitiationId) throws Exception;
@@ -53,7 +53,7 @@ public interface CARSService {
 	public int removeCARSSoCMilestonesDetails(long carsInitiationId) throws Exception;
 	public List<Object[]> carsSoCMoMUploadedList(String fromdate, String todate) throws Exception;
 	public long editCARSSoC(CARSSoC soc) throws Exception;
-	public long dpcSoCApprovalForward(RSQRForwardDTO dto) throws Exception;
+	public long dpcSoCApprovalForward(CARSApprovalForwardDTO dto) throws Exception;
 	public Object[] getApprAuthorityDataByType(String labcode, String type) throws Exception;
 	public Object[] getLabDirectorData(String labcode) throws Exception;
 	public List<Object[]> carsDPandCSoCPendingList(String empId, String labcode) throws Exception;
@@ -61,6 +61,8 @@ public interface CARSService {
 	public List<Object[]> carsDPCSoCApprovedList(String empId, String FromDate, String ToDate) throws Exception;
 	public List<Object[]> carsTransListByType(String carsInitiationId, String statusFor) throws Exception;
 	public List<Object[]> carsRemarksHistoryByType(String carsInitiationId, String remarksFor) throws Exception;
-	public long carsSoCUploadMoM(MultipartFile momFile, String carsSocId) throws Exception;
+	public long carsSoCUploadMoM(MultipartFile momFile, String labcode, String carsInitiationId, String EmpId, String UserId, String MoMFlag) throws Exception;
+	public List<Object[]> getLabList(String lab) throws Exception;
+	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
 	
 }

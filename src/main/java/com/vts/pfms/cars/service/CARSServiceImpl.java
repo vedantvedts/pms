@@ -36,7 +36,7 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
-import com.vts.pfms.cars.dto.RSQRForwardDTO;
+import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQR;
@@ -77,10 +77,14 @@ public class CARSServiceImpl implements CARSService{
 
 	@Override
 	public long addCARSInitiation(CARSInitiation initiation) throws Exception {
+		
 		long maxCARSInitiationId = dao.getMaxCARSInitiationId();
 		LocalDate now = LocalDate.now();
 		String CARSNo = "LRDE/CARS-"+(maxCARSInitiationId+1)+"/RAMD/"+now.getYear();
 		initiation.setCARSNo(CARSNo);
+		
+		double amount = Double.parseDouble(initiation.getAmount())*100000;
+		initiation.setAmount(String.valueOf(amount));
 		long carsinitiationid = dao.addCARSInitiation(initiation);
 		
 		// Transaction
@@ -97,6 +101,8 @@ public class CARSServiceImpl implements CARSService{
 
 	@Override
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception {
+		double amount = Double.parseDouble(initiation.getAmount())*100000;
+		initiation.setAmount(String.valueOf(amount));
 		
 		return dao.editCARSInitiation(initiation);
 	}
@@ -237,7 +243,7 @@ public class CARSServiceImpl implements CARSService{
 
 	// This method is to handle the approval flow for rsqr approval.
 	@Override
-	public long rsqrApprovalForward(RSQRForwardDTO dto, HttpServletRequest req,HttpServletResponse res, String labcode) throws Exception {
+	public long rsqrApprovalForward(CARSApprovalForwardDTO dto, HttpServletRequest req,HttpServletResponse res, String labcode) throws Exception {
 		try {
 			long carsinitiationid = dto.getCarsinitiationid();
 			String action = dto.getAction();
@@ -601,7 +607,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long socApprovalForward(RSQRForwardDTO dto) throws Exception {
+	public long socApprovalForward(CARSApprovalForwardDTO dto) throws Exception {
 		try {
 			long carsinitiationid = dto.getCarsinitiationid();
 			String action = dto.getAction();
@@ -772,11 +778,11 @@ public class CARSServiceImpl implements CARSService{
 		
 		// Transactions.
 		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
-										.CARSInitiationId(carsinitiationid)
-										.CARSStatusCode(carsStatusCode.equalsIgnoreCase("FWD")?"REV":"SRV")
-										.ActionBy(empId)
-										.ActionDate(sdtf.format(new Date()))
-										.build();
+										  .CARSInitiationId(carsinitiationid)
+										  .CARSStatusCode(carsStatusCode.equalsIgnoreCase("FWD")?"REV":"SRV")
+										  .ActionBy(empId)
+										  .ActionDate(sdtf.format(new Date()))
+										  .build();
 		dao.addCARSInitiationTransaction(transaction);
 		
 		return dao.editCARSInitiation(cars);
@@ -832,7 +838,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long dpcSoCApprovalForward(RSQRForwardDTO dto) throws Exception {
+	public long dpcSoCApprovalForward(CARSApprovalForwardDTO dto) throws Exception {
 		try {
 			long carsinitiationid = dto.getCarsinitiationid();
 			String action = dto.getAction();
@@ -840,6 +846,8 @@ public class CARSServiceImpl implements CARSService{
 			String UserId = dto.getUserId();
 			String remarks = dto.getRemarks();
 			String labcode = dto.getLabcode();
+			String approverEmpId = dto.getApproverEmpId();
+			String approvalDate = dto.getApprovalDate();
 
 			CARSInitiation cars = dao.getCARSInitiationById(carsinitiationid);
 			long formempid = cars.getEmpId();
@@ -860,6 +868,8 @@ public class CARSServiceImpl implements CARSService{
 					cars.setDPCSoCForwardedBy(Long.parseLong(EmpId));
 					cars.setCARSStatusCode("SFD");
 					cars.setCARSStatusCodeNext("SGD");
+					
+					dao.updateDPCApprovalSought(carsinitiationid, dto.getApprovalSought());
 
 				}else {
 					cars.setCARSStatusCode(statusCodeNext);
@@ -873,11 +883,16 @@ public class CARSServiceImpl implements CARSService{
 						cars.setCARSStatusCodeNext("SDF");
 					}
 					else if(statusCodeNext.equalsIgnoreCase("SDF")) {
-						if( (amount<=1000000) || (amount>5000000 && amount<=7500000) ) {
-							cars.setCARSStatusCodeNext("SAD");
-						}
-						else if(amount>1000000 && amount<=5000000) {
+//						if( (amount<=1000000) || (amount>5000000 && amount<=30000000) || (amount>30000000)) {
+//							cars.setCARSStatusCodeNext("SAD");
+//						}
+//						else if(amount>1000000 && amount<=5000000) {
+//							cars.setCARSStatusCodeNext("SAI");
+//						}
+						if(amount>1000000 && amount<=5000000) {
 							cars.setCARSStatusCodeNext("SAI");
+						}else {
+							cars.setCARSStatusCodeNext("SAD");
 						}
 					}
 					else if(statusCodeNext.equalsIgnoreCase("SAD")) {
@@ -885,20 +900,29 @@ public class CARSServiceImpl implements CARSService{
 							cars.setCARSStatusCodeNext("SAD");
 							cars.setDPCSoCStatus("A");
 						}
-						else if(amount>5000000 && amount<=7500000) {
+						else if(amount>5000000 && amount<=30000000) {
 							cars.setCARSStatusCodeNext("SAI");
+						}else {
+							cars.setCARSStatusCodeNext("SAJ");
 						}
 					}
 					else if(statusCodeNext.equalsIgnoreCase("SAI")) {
 						if(amount>1000000 && amount<=5000000) {
 							cars.setCARSStatusCodeNext("SAD");
 						}
-						else if(amount>5000000 && amount<=7500000) {
+						else if(amount>5000000 && amount<=30000000) {
 							cars.setCARSStatusCodeNext("ADG");
 						}
 					}
 					else if(statusCodeNext.equalsIgnoreCase("ADG")) {
 						cars.setCARSStatusCodeNext("ADG");
+						cars.setDPCSoCStatus("A");
+					}
+					else if(statusCodeNext.equalsIgnoreCase("SAJ")) {
+						cars.setCARSStatusCodeNext("SAS");
+					}
+					else if(statusCodeNext.equalsIgnoreCase("SAS")) {
+						cars.setCARSStatusCodeNext("SAS");
 						cars.setDPCSoCStatus("A");
 					}
 				}
@@ -933,6 +957,12 @@ public class CARSServiceImpl implements CARSService{
 				else if(statusCodeNext.equalsIgnoreCase("ADG")) {
 					cars.setCARSStatusCode("RDG");	
 				}
+				else if(statusCodeNext.equalsIgnoreCase("SAJ")) {
+					cars.setCARSStatusCode("SRJ");	
+				}
+				else if(statusCodeNext.equalsIgnoreCase("SAS")) {
+					cars.setCARSStatusCode("SRS");	
+				}
 
 				// Setting StatusCodeNext
 				cars.setCARSStatusCodeNext("SGD");
@@ -942,14 +972,27 @@ public class CARSServiceImpl implements CARSService{
 				if(statusCodeNext.equalsIgnoreCase("SAD")) {
 					cars.setCARSStatusCode("SDD");
 					cars.setCARSStatusCodeNext("SDD");
+					cars.setDPCSoCStatus("D");
 				}
 				else if(statusCodeNext.equalsIgnoreCase("SAI")) {
 					cars.setCARSStatusCode("SDI");
 					cars.setCARSStatusCodeNext("SDI");
+					cars.setDPCSoCStatus("D");
 				}
 				else if(statusCodeNext.equalsIgnoreCase("ADG")) {
 					cars.setCARSStatusCode("DDG");
 					cars.setCARSStatusCodeNext("DDG");
+					cars.setDPCSoCStatus("D");
+				}
+				else if(statusCodeNext.equalsIgnoreCase("SAJ")) {
+					cars.setCARSStatusCode("SDJ");
+					cars.setCARSStatusCodeNext("SDJ");
+					cars.setDPCSoCStatus("D");
+				}
+				else if(statusCodeNext.equalsIgnoreCase("SAS")) {
+					cars.setCARSStatusCode("SDS");
+					cars.setCARSStatusCodeNext("SDS");
+					cars.setDPCSoCStatus("D");
 				}
 				dao.editCARSInitiation(cars);
 			}
@@ -959,8 +1002,8 @@ public class CARSServiceImpl implements CARSService{
 											  .CARSInitiationId(carsinitiationid)
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
-											  .ActionBy(EmpId)
-											  .ActionDate(sdtf.format(new Date()))
+											  .ActionBy(approverEmpId!=null?approverEmpId:EmpId)
+											  .ActionDate(approvalDate!=null?fc.RegularToSqlDate(approvalDate):sdtf.format(new Date()))
 											  .build();
 			dao.addCARSInitiationTransaction(transaction);
 			
@@ -1106,7 +1149,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long carsSoCUploadMoM(MultipartFile momFile, String carsSocId) throws Exception {
+	public long carsSoCUploadMoM(MultipartFile momFile, String labcode, String carsInitiationId, String EmpId, String UserId, String MoMFlag) throws Exception {
 		
 		Timestamp instant = Timestamp.from(Instant.now());
 		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
@@ -1119,7 +1162,43 @@ public class CARSServiceImpl implements CARSService{
 			momupload = "MoM-" + timestampstr + "."+ FilenameUtils.getExtension(momFile.getOriginalFilename());
 			saveFile(uploadpath + path, momupload, momFile);
 		}
-		return dao.carsSoCUploadMoM(momupload, carsSocId);
+		
+		long result = dao.carsSoCUploadMoM(momupload, carsInitiationId);
+		if(MoMFlag!=null && MoMFlag.equalsIgnoreCase("F")) {
+			if(result!=0) {
+				CARSInitiation carsIni = dao.getCARSInitiationById(Long.parseLong(carsInitiationId));
+				Object[] dpandc = dao.getEmpDataByLoginType("E");
+				Object[] GHDPandC = dao.getApprAuthorityDataByType(labcode, "GH-DP&C");
+				
+				for(int i=0;i<2;i++) {
+					PfmsNotification notification2 = new PfmsNotification();
+					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
+					notification2.setNotificationUrl("CARSRSQRApprovedList.htm?PageLoad=S");
+					notification2.setNotificationMessage("MoM Uploaded for CARSNO "+carsIni.getCARSNo());
+					notification2.setNotificationby(Long.parseLong(EmpId));
+					notification2.setNotificationDate(LocalDate.now().toString());
+					notification2.setIsActive(1);
+					notification2.setCreatedBy(UserId);
+					notification2.setCreatedDate(sdtf.format(new Date()));
+
+					dao.addNotifications(notification2);
+				}
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	public List<Object[]> getLabList(String lab) throws Exception {
+		
+		return dao.getLabList(lab);
+	}
+
+	@Override
+	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception {
+		
+		return dao.getEmployeeListByLabCode(labCode);
 	}
 	
 }

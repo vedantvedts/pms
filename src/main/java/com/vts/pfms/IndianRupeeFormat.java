@@ -23,7 +23,7 @@ public class IndianRupeeFormat {
 	
 	public static String getRupeeFormat(Double amount)
 	{
-	    String salary= amount+"";
+		String salary = String.format("%.2f", amount);
 	    String[] split = salary.split("\\.");
 	    salary = split[0];
         int len = salary.length()-1;
