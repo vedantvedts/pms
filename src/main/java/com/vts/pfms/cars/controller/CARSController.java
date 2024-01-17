@@ -274,6 +274,7 @@ public class CARSController {
 					                   .PIFaxNo(req.getParameter("piFaxNo"))
 					                   .CARSStatusCode("INI")
 					                   .CARSStatusCodeNext("FWD")
+					                   .DPCSoCStatus("N")
 					                   .CreatedBy(UserId)
 					                   .CreatedDate(sdtf.format(new Date()))
 					                   .IsActive(1)
