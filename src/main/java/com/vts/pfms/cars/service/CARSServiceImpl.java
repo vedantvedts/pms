@@ -283,7 +283,7 @@ public class CARSServiceImpl implements CARSService{
 					dao.editCARSInitiation(cars);
 				}
 			}
-			// This is for return the approval form to the user or initiater. 
+			// This is for return the approval form to the user or initiator. 
 			else if(action.equalsIgnoreCase("R")){
 				if(statusCodeNext.equalsIgnoreCase("AGD")) {
 					cars.setCARSStatusCode("RGD");
@@ -646,7 +646,7 @@ public class CARSServiceImpl implements CARSService{
 				}
 				dao.editCARSInitiation(cars);
 			}
-			// This is for return the approval form to the user or initiater. 
+			// This is for return the approval form to the user or initiator. 
 			else if(action.equalsIgnoreCase("R")){
 				if(statusCodeNext.equalsIgnoreCase("SFG")) {
 					cars.setCARSStatusCode("SRG");
@@ -661,7 +661,7 @@ public class CARSServiceImpl implements CARSService{
 				}
 				
 				dao.editCARSInitiation(cars);
-			// This is for disapprove the approval form to the user or initiater.
+			// This is for disapprove the approval form to the user or initiator.
 			}else if(action.equalsIgnoreCase("D")) {
 				if(statusCodeNext.equalsIgnoreCase("SFG")) {
 					cars.setCARSStatusCode("SDG");
@@ -967,7 +967,7 @@ public class CARSServiceImpl implements CARSService{
 				// Setting StatusCodeNext
 				cars.setCARSStatusCodeNext("SGD");
 			}
-			// This is for disapprove the approval form to the user or initiater.
+			// This is for disapprove the approval form to the user or initiator.
 			else if(action.equalsIgnoreCase("D")) {
 				if(statusCodeNext.equalsIgnoreCase("SAD")) {
 					cars.setCARSStatusCode("SDD");
@@ -1055,6 +1055,12 @@ public class CARSServiceImpl implements CARSService{
 					notification.setEmpId(GHDPandCEmpId);
 				}
 				else if(cars.getCARSStatusCodeNext().equalsIgnoreCase("ADG")) {
+					notification.setEmpId(GHDPandCEmpId);
+				}
+				else if(cars.getCARSStatusCodeNext().equalsIgnoreCase("SAJ")) {
+					notification.setEmpId(GHDPandCEmpId);
+				}
+				else if(cars.getCARSStatusCodeNext().equalsIgnoreCase("SAS")) {
 					notification.setEmpId(GHDPandCEmpId);
 				}
 				

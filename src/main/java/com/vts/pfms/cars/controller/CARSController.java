@@ -934,7 +934,7 @@ public class CARSController {
 			
 			Object[] carsRSQRDetails = service.carsRSQRDetails(carsInitiationId);
 			
-			if(carsRSQRDetails[10]==null) {
+			if(carsRSQRDetails[10]==null || carsRSQRDetails[10].toString().isEmpty()) {
 				service.carsRSQRFormFreeze(req, res, Long.parseLong(carsInitiationId));
 			}
 			

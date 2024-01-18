@@ -187,6 +187,8 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 String expenditure = carsSoC.getDPCExpenditure();
 expenditure = expenditure!=null?expenditure.replace("\n", "<br>"):expenditure;
 String labcode = (String) session.getAttribute("labcode");
+
+String amount = carsIni.getAmount();
 %>
 	<table id="headertable">
 		<tr>
@@ -253,7 +255,7 @@ String labcode = (String) session.getAttribute("labcode");
 					<tr>
 						<td>4.</td>
 						<td>Estimated cost of service</td>
-						<td><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></td>
+						<td><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></td>
 					</tr>
 					<tr>
 						<td>5.</td>
@@ -285,7 +287,7 @@ String labcode = (String) session.getAttribute("labcode");
 		<h5 class="socheading"><span>3.</span> <span style="text-decoration: underline;">Description</span></h5>
 		<div class="soccontent">
 			<p style="font-size: 15px;text-indent: 21px;">
-				<%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> has submitted the &#39;Summary of Offer&#39; for Rs <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></span>
+				<%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> has submitted the &#39;Summary of Offer&#39; for Rs <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></span>
 				(inclusive of GST) for duration of <span class="textunderline"><%=carsIni.getDuration() %></span> months. Required schedule of payments is given below.
 			</p>
 			<table id="tabledata">
@@ -371,7 +373,7 @@ String labcode = (String) session.getAttribute("labcode");
 				<p style="text-indent: 21px;font-size: 15px;">
 					The case is being submitted along with the above-mentioned documents for obtaining the Concurrence cum 
 					Financial sanction and approval from Competent Financial Authority (CFA) for placement of 
-					Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsIni.getAmount())) %></span> please.
+					Contract for Acquisition of Research Services (CARS) on <%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> at a cost of Rs. <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></span> please.
 				</p>
 			<%} %>
 		</div>
@@ -421,7 +423,7 @@ String labcode = (String) session.getAttribute("labcode");
 				<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
 				<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 			<%} %>
-			<%if(carsIni.getAmount()!=null && Double.parseDouble(carsIni.getAmount())<=1000000) {%>
+			<%if(amount!=null && Double.parseDouble(amount)<=1000000) {%>
 				<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
 					<div style="font-size: 15px;"> Signature of Director</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -432,17 +434,17 @@ String labcode = (String) session.getAttribute("labcode");
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%} %>
-			<%} else if(carsIni.getAmount()!=null && (Double.parseDouble(carsIni.getAmount())>1000000 && Double.parseDouble(carsIni.getAmount())<=5000000) ) {%>
+			<%} else if(amount!=null && (Double.parseDouble(amount)>1000000 && Double.parseDouble(amount)<=5000000) ) {%>
 				<% if(apprInfo[8].toString().equalsIgnoreCase("SAI")) {%>
 					<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDI")) {%> 
 			    	<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
 			    	<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
  					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
- 					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+ 					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
   			    	<div style="font-size: 15px;"> Signature of Director</div>
   			    	<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -454,7 +456,7 @@ String labcode = (String) session.getAttribute("labcode");
  					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
  					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 				<%} %>
-			<%} else if(carsIni.getAmount()!=null && (Double.parseDouble(carsIni.getAmount())>5000000 && Double.parseDouble(carsIni.getAmount())<=7500000)) {%>
+			<%} else if(amount!=null && (Double.parseDouble(amount)>5000000 && Double.parseDouble(amount)<=30000000)) {%>
 				<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
 					<div style="font-size: 15px;"> Signature of Director</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
@@ -469,23 +471,55 @@ String labcode = (String) session.getAttribute("labcode");
 					<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDI")) {%> 
 					<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 				    <label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-				    <label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				    <label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} else if(apprInfo[8].toString().equalsIgnoreCase("ADG")) {%>
 					<div style="font-size: 15px;"> Signature of DG (ECS)</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} else if(apprInfo[8].toString().equalsIgnoreCase("DDG")) {%> 
 					<div style="font-size: 15px;"> Signature of DG (ECS)</div>
 					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
 					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
 				<%} %>
+			<%} else if(amount!=null && (Double.parseDouble(amount)>30000000)) {%>
+				<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
+					<div style="font-size: 15px;"> Signature of Director</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDD")) {%> 
+					<div style="font-size: 15px;"> Signature of Director</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAJ")) {%>
+					<div style="font-size: 15px;"> Signature of JSA</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDJ")) {%> 
+					<div style="font-size: 15px;"> Signature of JSA</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+				    <label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+				    <label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAS")) {%>
+					<div style="font-size: 15px;"> Signature of SECY</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDS")) {%> 
+					<div style="font-size: 15px;"> Signature of SECY</div>
+					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
+					<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
+					<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) %>]</label>
+				<%} %>	
 			<%} %>
  		</div>	
  	<%} %>

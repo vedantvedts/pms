@@ -482,7 +482,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		<div class="column b" style="width: 10%;">
                             		<label class="control-label">Pin Code</label><span class="mandatory">*</span>
                               		<input  class="form-control form-control" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" style="font-size: 15px;"
-                              		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=carsIni.getRSPPinCode()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                              		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=carsIni.getRSPPinCode()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validatePinCodeInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 19.4%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                             		<label class="control-label">State</label><span class="mandatory">*</span>
@@ -1099,7 +1099,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 	              					<table align="center"  >
 	               						<tr>
 	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	                							Initiater -  <%=emp[1] %>
+	                							Initiator -  <%=emp[1] %>
 	                						</td>
 	                		
                         					<td rowspan="2">
@@ -2037,7 +2037,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 	              					<table align="center"  >
 	               						<tr>
 	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
-	                							Initiater -  <%=emp[1] %>
+	                							Initiator -  <%=emp[1] %>
 	                						</td>
 	                		
                         					<td rowspan="2">
@@ -2583,6 +2583,19 @@ function validateMobileNoInput(mobileInput){
 	if (mobile.length!=10) {
 	    alert('Please Enter Valid Mobile Number');
 	    mobileInput.value="";
+	    event.preventDefault();
+	    return false;
+	  } else {
+	    return true;
+	  }
+	
+}
+
+function validatePinCodeInput(pincodeInput){
+	var pincode = pincodeInput.value.trim();
+	if (pincode.length!=6) {
+	    alert('Please Enter Valid PinCode');
+	    pincodeInput.value="";
 	    event.preventDefault();
 	    return false;
 	  } else {
