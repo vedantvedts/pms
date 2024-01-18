@@ -40,6 +40,31 @@
   
 <section class="loginpage">
   
+  
+ <!-- Button trigger modal -->
+<button type="button"  class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#staticBackdrop" id = "versionerror">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <font color="red"><h5 class="modal-title "  id="staticBackdropLabel">Version Mismatch</h5></font>
+      </div>
+      <div class="modal-body center" >
+      <p id="version">check version</p>
+        
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-primary" data-dismiss="modal">Still want to continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  
+  
 	<header id="header" class="clearfix">
  
 	
@@ -212,7 +237,7 @@
 		<div class="widget-guide clearfix">
        		<div class="footr-rt">
             	<div class="copyright-content"> 
-            		<p>Website maintained by Vedant Tech Solutions<br><b>Site best viewed at 1360 x 768 resolution in I.E 11+, Mozilla 70+, Google Chrome 79+</b>	</p> 
+            		<p>Website maintained by Vedant Tech Solutions<br><b>Site best viewed at 1360 x 768 resolution in I.E / Microsoft Edge 110+, Mozilla 110+, Google Chrome 110+</b>	</p> 
             	</div>
     		</div>
   		</div>
@@ -258,6 +283,83 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
 	    }
 
 });
+var nVer = navigator.appVersion;
+var nAgt = navigator.userAgent;
+var browserName  = navigator.appName;
+var fullVersion  = ''+parseFloat(navigator.appVersion); 
+var majorVersion = parseInt(navigator.appVersion,10);
+var nameOffset,verOffset,ix;
+
+// In Opera, the true version is after "OPR" or after "Version"
+if ((verOffset=nAgt.indexOf("OPR"))!=-1) {
+ browserName = "Opera";
+ fullVersion = nAgt.substring(verOffset+4);
+ if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+   fullVersion = nAgt.substring(verOffset+8);
+}
+// In MS Edge, the true version is after "Edg" in userAgent
+else if ((verOffset=nAgt.indexOf("Edg"))!=-1) {
+ browserName = "Microsoft Edge";
+ fullVersion = nAgt.substring(verOffset+4);
+}
+// In MSIE, the true version is after "MSIE" in userAgent
+else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
+ browserName = "Microsoft Internet Explorer";
+ fullVersion = nAgt.substring(verOffset+5);
+}
+// In Chrome, the true version is after "Chrome" 
+else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
+ browserName = "Chrome";
+ fullVersion = nAgt.substring(verOffset+7);
+}
+// In Safari, the true version is after "Safari" or after "Version" 
+else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
+ browserName = "Safari";
+ fullVersion = nAgt.substring(verOffset+7);
+ if ((verOffset=nAgt.indexOf("Version"))!=-1) 
+   fullVersion = nAgt.substring(verOffset+8);
+}
+// In Firefox, the true version is after "Firefox" 
+else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
+ browserName = "Firefox";
+ fullVersion = nAgt.substring(verOffset+8);
+}
+// In most other browsers, "name/version" is at the end of userAgent 
+else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
+          (verOffset=nAgt.lastIndexOf('/')) ) 
+{
+ browserName = nAgt.substring(nameOffset,verOffset);
+ fullVersion = nAgt.substring(verOffset+1);
+ if (browserName.toLowerCase()==browserName.toUpperCase()) {
+  browserName = navigator.appName;
+ }
+}
+// trim the fullVersion string at semicolon/space if present
+if ((ix=fullVersion.indexOf(";"))!=-1)
+   fullVersion=fullVersion.substring(0,ix);
+if ((ix=fullVersion.indexOf(" "))!=-1)
+   fullVersion=fullVersion.substring(0,ix);
+
+majorVersion = parseInt(''+fullVersion,10);
+if (isNaN(majorVersion)) {
+ fullVersion  = ''+parseFloat(navigator.appVersion); 
+ majorVersion = parseInt(navigator.appVersion,10);
+}
+
+console.log(''
+ +'Browser name  = '+browserName
+ +' Full version  = '+majorVersion
+)
+latestVersion=0;
+if(browserName=="Chrome")latestVersion=110;
+if(browserName=="Microsoft Edge")latestVersion=110;
+if(browserName=="Firefox")latestVersion=116;
+if(parseInt(fullVersion)<latestVersion){
+console.log(document.getElementById("versionerror").click());
+var element = document.getElementById("version");
+var ver = "";
+element.innerHTML=ver.concat("<b>Your current ",browserName," Browser version is not supported.</b> <br><br><b>Please ensure optimal viewing by using Internet Explorer (I.E) or Microsoft Edge 110+,<br> Mozilla 110+, or Google Chrome 110+.</b><br><br><b>Site Best viewed at a resolution of 1360 x 768.</b><br><br><b style=\"color: green;\">Thank You!</b>");
+}
 </script>
 
 </html>
