@@ -506,58 +506,58 @@ public class CARSController {
 		}
 	}
 	
-//	@RequestMapping(value="CARSRSQRDownload.htm")
-//	public void carsRSQRDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
-//		String UserId = (String) ses.getAttribute("Username");
-//		logger.info(new Date() +"Inside CARSRSQRDownload.htm "+UserId);		
-//		try {
-//			String carsInitiationId = req.getParameter("carsInitiationId");
-//			if(carsInitiationId!=null && carsInitiationId!="0") {
-//				long carsiniid = Long.parseLong(carsInitiationId);
-//				req.setAttribute("CARSInitiationData", service.getCARSInitiationById(carsiniid));
-//				req.setAttribute("RSQRMajorReqr", service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid));
-//				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
-//				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
-//			}
-//			String filename="RSQR";	
-//			String path=req.getServletContext().getRealPath("/view/temp");
-//			req.setAttribute("path",path);
-//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//			req.getRequestDispatcher("/view/print/CARSRSQRDownload.jsp").forward(req, customResponse);
-//			String html = customResponse.getOutput();
-//
-//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
-//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-//			pdfDocument.close();
-//			pdf1.close();	       
-//			pdfw.close();
-//
-//			res.setContentType("application/pdf");
-//			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-//			File f=new File(path+"/"+filename+".pdf");
-//
-//			OutputStream out = res.getOutputStream();
-//			FileInputStream in = new FileInputStream(f);
-//			byte[] buffer = new byte[4096];
-//			int length;
-//			while ((length = in.read(buffer)) > 0) {
-//				out.write(buffer, 0, length);
-//			}
-//			in.close();
-//			out.flush();
-//			out.close();
-//
-//			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
-//			Files.delete(pathOfFile2);		
-//
-//		}
-//	    catch(Exception e) {	    		
-//    		logger.error(new Date() +" Inside CARSRSQRDownload.htm "+UserId, e);
-//    		e.printStackTrace();
-//    	}		
-//	}
+	@RequestMapping(value="CARSRSQRDownloadBeforeFreeze.htm")
+	public void carsRSQRDownloadBeforeFreeze(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSRSQRDownloadBeforeFreeze.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				req.setAttribute("CARSInitiationData", service.getCARSInitiationById(carsiniid));
+				req.setAttribute("RSQRMajorReqr", service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid));
+				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
+				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
+			}
+			String filename="RSQR";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSRSQRDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSRSQRDownloadBeforeFreeze.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
 	
 	@RequestMapping(value="RSQRApprovalSubmit.htm")
 	public String rsqrApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
@@ -634,7 +634,7 @@ public class CARSController {
 	}
 	
 	@RequestMapping(value="CARSRSQRApprovals.htm")
-	public String carsRSQRApprovals(HttpServletRequest req,HttpSession ses) throws Exception{
+	public String carsApprovals(HttpServletRequest req,HttpSession ses) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -666,7 +666,7 @@ public class CARSController {
 			req.setAttribute("DPandCSoCPendingList", service.carsDPandCSoCPendingList(EmpId, labcode));
 			req.setAttribute("DPandCSoCApprovedList", service.carsDPCSoCApprovedList(EmpId, fromdate, todate));
 			
-			return "cars/RSQRApprovals";
+			return "cars/CARSApprovals";
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside CARSRSQRApprovals.htm "+Username, e);
@@ -731,6 +731,7 @@ public class CARSController {
 	@RequestMapping(value="CARSInvForSoODownload.htm")
 	public void carsInvForSoODownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CARSInvForSoODownload.htm "+UserId);		
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
@@ -739,7 +740,8 @@ public class CARSController {
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
 				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
-				req.setAttribute("DPandC", service.getEmpDataByLoginType("E"));
+				Object[] obj = service.getApprAuthorityDataByType(labcode, "DO-RTMD");
+				req.setAttribute("DPandC", service.getEmpDetailsByEmpId(obj[0].toString()));
 			}
 			req.setAttribute("lablogo", getLabLogoAsBase64());
 			String filename="Inv_for_SoO";	

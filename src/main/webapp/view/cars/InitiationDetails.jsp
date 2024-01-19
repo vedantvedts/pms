@@ -186,10 +186,26 @@ div {
 	margin-top : 1.5rem;
 	font-size: 15px;
 }
-#rsqrapprovaltable td,#socforwardtable td{
+#rsqrapprovaltable td,#socforwardtable td,#alldocstable td{
 	border : 1px solid black;
 	text-align: left;
+	padding : 3px;
+}
+#alldocstable {
+	width : 70%;
+	/* border : 1px solid black; */
+	margin-top : 1.5rem;
+	font-size: 15px;
+	margin-left: 10rem;
+}
+#alldocstable th{
+	border : 1px solid black;
+	text-align: center;
 	padding : 5px;
+}
+
+#alldocstable td:first-child,#alldocstable td:nth-child(3){ 
+	text-align: center; 
 }
 
 .trup{
@@ -218,6 +234,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData"); 
 String carsInitiationId =(String)request.getAttribute("carsInitiationId");
 carsInitiationId = carsInitiationId!=null?carsInitiationId:"0";
+String carsSoCId = carsSoC!=null?carsSoC.getCARSSoCId()+"":"0";
 List<Object[]> projectList =(List<Object[]>)request.getAttribute("ProjectList");
 
 List<Object[]> rsqrApprovalEmpData = (List<Object[]>)request.getAttribute("RSQRApprovalEmpData");
@@ -380,6 +397,15 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
               			<a class="nav-link" data-toggle="tab" href="#momupload" role="tab" >
                		<%} %>
                   		MOM Upload
+              			</a>
+            	</li>
+            	<li class="nav-item" id="nav-alldocs">
+            	     <%if(TabId!=null&&TabId.equalsIgnoreCase("9")){ %>
+              			<a class="nav-link active" data-toggle="tab" href="#alldocs" id="nav"role="tab" >
+              		<%}else{ %>
+              			<a class="nav-link" data-toggle="tab" href="#alldocs" role="tab" >
+               		<%} %>
+                  		All Docs
               			</a>
             	</li>
               </ul>
@@ -920,7 +946,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                			<div></div>
                			<div class="navigation_btn"  style="text-align: center;">
                				<form action="">
-               					<button type="submit" class="btn btn-sm submit" formaction="CARSRSQRDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" style="background-color: purple;border: none;">RSQR</button>
+               					<button type="submit" class="btn btn-sm submit" formaction="CARSRSQRDownloadBeforeFreeze.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" style="background-color: purple;border: none;">RSQR</button>
                					<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                				</form>
@@ -2068,7 +2094,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
               		</div>
                	<%} %>
                	
-               	<!-- *********** RSQR  Approval***********      --> 
+               	<!-- *********** MOM Upload ***********      --> 
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("8")){ %> 
          			<div class="tab-pane active" id="momupload" role="tabpanel">
          		<%}else{ %>
@@ -2116,11 +2142,193 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                					<h4 style="font-weight: bold;color: red;">Please get approval for SoC..!</h4>
                				</div>
                			<%} %>
+               			<div class="navigation_btn"  style="text-align: right;">
+            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+							<button class="btn btn-info btn-sm next">Next</button>
+						</div>
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("8")){ %> 
          			</div>
          		<%}else{ %>
               		</div>
                	<%} %>
+               	
+               	<!-- *********** All Documents ***********      --> 
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("9")){ %> 
+         			<div class="tab-pane active" id="alldocs" role="tabpanel">
+         		<%}else{ %>
+              		<div class="tab-pane " id="alldocs" role="tabpanel">
+               	<%} %>
+               			<%if(carsIni!=null) {%>
+               				<div class="col-md-8 mt-4">
+               					<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
+               						<div class="card-body mt-2 ml-4">
+	               						<form action="#">
+	               							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	               							<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
+	               							<input type="hidden" name="carsSocId" value="<%=carsSoCId%>">
+	               							<table id="alldocstable">
+	               								<thead>
+	               									<tr>
+	               										<th style="width: 10%;">SN</th>
+	               										<th>Subject</th>
+	               										<th style="width: 10%;">Action</th>
+	               									</tr>
+	               								</thead>
+	               								<tbody>
+	               									<%int docsslno=0; %>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>RSQR</td>
+	               										<td>
+	               											<%if(carsIni!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0) {%>
+		               											<button type="submit" class="btn btn-sm" <%if(carsIni.getInitiationApprDate()!=null) {%>formaction="CARSRSQRDownload.htm"<%} else {%>formaction="CARSRSQRDownloadBeforeFreeze.htm"<%} %>  formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" >
+																	<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																</button>
+															<%} else {%>
+                            					 				-
+                            					 			<%} %>	
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>RSQR Approval Download</td>
+	               										<td>
+	               											<%if(carsIni!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0) {%>
+		               											<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" formmethod="post" formnovalidate="formnovalidate" 
+		               											 formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="RSQR Approval Download">
+									  	 							<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																</button>
+															<%} else {%>
+                            					 				-
+                            					 			<%} %>	
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Summary of Offer</td>
+	               										<td>
+	               											<%if(carsSoC!=null && carsSoC.getSoOUpload()!=null) {%>
+		                            					 		<button type="submit" class="btn btn-sm" name="filename" formaction="CARSSoCFileDownload.htm" formmethod="post" formnovalidate="formnovalidate"
+		                            					 		  value="soofile" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
+		                            					 			<i class="fa fa-download fa-lg"></i>
+		                            					 		</button>
+                            					 			<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Feasibility Report</td>
+	               										<td>
+	               											<%if(carsSoC!=null && carsSoC.getFRUpload()!=null) {%>
+		                            					 		<button type="submit" class="btn btn-sm" name="filename" formaction="CARSSoCFileDownload.htm" formmethod="post" formnovalidate="formnovalidate"
+		                            					 		  value="frfile" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Feasibility Report Download">
+		                            					 			<i class="fa fa-download fa-lg"></i>
+		                            					 		</button>
+                            					 			<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Final RSQR ( Annexure-I )</td>
+	               										<td>
+	               											<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
+               													<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" formnovalidate="formnovalidate" 
+               													formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Final RSQR Download" >
+               														<i class="fa fa-download fa-lg"></i>
+               													</button>
+               												<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Milestones & Deliverables ( Annexure-II )</td>
+	               										<td>
+	               											<%if(milestones!=null && milestones.size()>0) {%>
+               													<button type="submit" class="btn btn-sm" formaction="CARSSoCMilestonesDownload.htm" formnovalidate="formnovalidate" 
+               													formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Milestones Download">
+               														<i class="fa fa-download fa-lg"></i>
+               													</button>
+               												<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Execution Plan ( Annexure-IV )</td>
+	               										<td>
+	               											<%if(carsSoC!=null && carsSoC.getExecutionPlan()!=null) {%>
+		                            					 		<button type="submit" class="btn btn-sm" name="filename" formaction="CARSSoCFileDownload.htm" formnovalidate="formnovalidate" formmethod="post"
+		                            					 		  value="exeplanfile" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Execution Plan Download">
+		                            					 			<i class="fa fa-download fa-lg"></i>
+		                            					 		</button>
+                            					 			<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Statement of Case ( SoC )</td>
+	               										<td>
+	               											<%if(carsSoC!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0 && milestones!=null && milestones.size()>0) {%>
+	               												<button type="submit" class="btn btn-sm" formaction="CARSSoCDownload.htm" formnovalidate="formnovalidate" formmethod="post"
+	               												  formtarget="blank" data-toggle="tooltip" data-placement="top" title="SoC Download">
+								  	 								<i class="fa fa-download fa-lg" aria-hidden="true"></i>
+																</button>
+	               											<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<tr>
+	               										<td><%=++docsslno %></td>
+	               										<td>Minutes of Meeting ( MoM )</td>
+	               										<td>
+	               											<%if(carsSoC!=null && carsSoC.getMoMUpload()!=null) {%>
+                            					 				<button type="submit" class="btn btn-sm" name="filename" formaction="CARSSoCFileDownload.htm" formmethod="post" formnovalidate="formnovalidate"
+                            					 				value="momfile" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="MoM Download">
+                            					 					<i class="fa fa-download fa-lg"></i>
+                            					 				</button>
+                            					 			<%} else {%>
+                            					 				-
+                            					 			<%} %>
+	               										</td>
+	               									</tr>
+	               									<%-- <tr>
+	               										<td><%=++docsslno %></td>
+	               										<td></td>
+	               										<td></td>
+	               									</tr> --%>
+	               									
+	               								</tbody>
+	               							</table>
+	               							<br>
+	               						</form>
+               						</div>
+               					</div>
+               				</div>
+               			<%} else{%>
+               				<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
+               					<h4 style="font-weight: bold;color: red;">Please complete atleast initiation and RSQR..!</h4>
+               				</div>
+               			<%} %>
+               			<div class="navigation_btn"  style="text-align: right;">
+            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+							<button class="btn btn-info btn-sm next">Next</button>
+						</div>
+               	<%if(TabId!=null&&TabId.equalsIgnoreCase("9")){ %> 
+         			</div>
+         		<%}else{ %>
+              		</div>
+               	<%} %>
+               	
          	</div>
          </div>
        </div>
@@ -2521,6 +2729,7 @@ $(document).ready(function(){
        $('#nav-rsqrdownload').hide();
        $('#nav-socmilestones').hide();
        $('#nav-momupload').hide();
+       $('#nav-alldocs').hide();
     <%} %>
     
     /* tabs hiding for SoC approval */
@@ -2534,6 +2743,7 @@ $(document).ready(function(){
        $('#nav-rsqrdownload').hide();
        $('#nav-socmilestones').hide();
        $('#nav-momupload').hide();
+       $('#nav-alldocs').hide();
     <%} %>
 })
 
@@ -2856,7 +3066,6 @@ function showEditor2(a){
 			percentage = percentage+Number($(this).val());
 		});
 		
-		console.log("percentage : "+percentage);
 		if(percentage>100){
 			alert('Percentage should not exceed more than 100');
 			

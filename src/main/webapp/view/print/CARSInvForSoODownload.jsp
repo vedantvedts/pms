@@ -184,7 +184,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 		<td style="text-align: right;">Sincerely,</td>
 	</tr>
 	<tr>
-		<td style="text-align: right;"><%if(dPandC!=null) {%><%=dPandC[3]+" "+dPandC[2] %> <%} %></td>
+		<td style="text-align: right;"><%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=dPandC[4] %><%} else{%><%=dPandC[5] %><%} %><%=dPandC[1] %> <%} %></td>
 	</tr>
 	<tr>
 		<td style="text-align: right;">GD-P&C</td>

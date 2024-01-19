@@ -214,7 +214,7 @@ th{
 																			</div>
 																		</div>
 																	</button>
-																	<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="RSQR Download">
+																	<button type="submit" class="btn btn-sm" formaction="CARSRSQRDownloadBeforeFreeze.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="RSQR Download">
 								  	 									<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">

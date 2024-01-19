@@ -293,6 +293,15 @@ String soctodate   = (String)request.getAttribute("soctodate");
              		<h3 class="category">All CARS Details</h3>
              		<hr style="margin: -8px 0px !important;">
              		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+            			<%-- <li class="nav-item" id="nav-dashboard">
+             				<%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+             		    		<a class="nav-link active " data-toggle="tab" href="#dashboard" id="nav" role="tab">
+             				<%}else{ %>
+              			 		<a class="nav-link  " data-toggle="tab" href="#dashboard" role="tab">
+               				<%} %>  
+                	         	Dashboard
+              			 		</a>
+            			</li> --%>
             			<li class="nav-item" id="nav-rsqrapproved">
              				<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
              		    		<a class="nav-link active " data-toggle="tab" href="#rsqrapproved" id="nav" role="tab">
@@ -318,6 +327,18 @@ String soctodate   = (String)request.getAttribute("soctodate");
          		<!-- This is for Tab Panes -->
          		<div class="card">
          			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         				<!-- *********** Dashboard  ***********      -->
+         				<%-- <%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+         					<div class="tab-pane active" id="dashboard" role="tabpanel">
+         				<%}else{ %>
+              				<div class="tab-pane " id="dashboard" role="tabpanel">
+               			<%} %>
+         				<%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+         					</div>
+         				<%}else{ %>
+              				</div>
+               			<%} %> --%>
+               			
          				<!-- *********** RSQR Approved List  ***********      -->
                			<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="rsqrapproved" role="tabpanel">
