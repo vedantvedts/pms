@@ -403,7 +403,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 						<div >
 							<input name="search" id="search" required class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="Search" />
 							<input type="submit" class="btn btn-outline-success my-2 my-sm-0" name="clicked" value="Search" />
-							<a href="CARSInitiationList.htm"><button type="submit" class="btn btn-outline-danger my-2 my-sm-0" onclick="searchInvalidate()" >Reset</button></a>
+							<a href="CARSInitiationList.htm"><button type="submit" class="btn btn-outline-danger my-2 my-sm-0" formnovalidate="formnovalidate" >Reset</button></a>
 							
 						</div>
 					</form>
@@ -453,7 +453,7 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("InitiationL
 										
 										<div class="container">
 					  						<div class="row">
-												<div class="col-xl">
+												<div class="col-xl" style="height: 45px;">
 												Title : <%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %>
 												<br/></div>
 											</div>
@@ -622,9 +622,6 @@ function verify(){
 	return true;
 }
 
-function searchInvalidate(){
-	$('#search').prop('required',false);
-}
 </script>
 </body>
 </html>

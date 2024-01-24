@@ -46,6 +46,7 @@ import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.model.LabMaster;
 
 @Service
 public class CARSServiceImpl implements CARSService{
@@ -76,11 +77,11 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	@Override
-	public long addCARSInitiation(CARSInitiation initiation) throws Exception {
+	public long addCARSInitiation(CARSInitiation initiation,String labcode) throws Exception {
 		
 		long maxCARSInitiationId = dao.getMaxCARSInitiationId();
 		LocalDate now = LocalDate.now();
-		String CARSNo = "LRDE/CARS-"+(maxCARSInitiationId+1)+"/RAMD/"+now.getYear();
+		String CARSNo = labcode+"/CARS-"+(maxCARSInitiationId+1)+"/RAMD/"+now.getYear();
 		initiation.setCARSNo(CARSNo);
 		
 		double amount = Double.parseDouble(initiation.getAmount())*100000;
@@ -555,6 +556,7 @@ public class CARSServiceImpl implements CARSService{
 			req.setAttribute("RSQRMajorReqr", dao.getCARSRSQRMajorReqrByCARSInitiationId(carsInitiationId));
 			req.setAttribute("RSQRDeliverables", dao.getCARSRSQRDeliverablesByCARSInitiationId(carsInitiationId));
 			req.setAttribute("RSQRDetails", dao.carsRSQRDetails(carsInitiationId+""));
+			req.setAttribute("CARSSoCMilestones", dao.getCARSSoCMilestonesByCARSInitiationId(carsInitiationId));
 			
 			String filename="RSQR Form";
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -1021,7 +1023,7 @@ public class CARSServiceImpl implements CARSService{
 			PfmsNotification notification = new PfmsNotification();
 			if(action.equalsIgnoreCase("A") && cars.getDPCSoCStatus().equalsIgnoreCase("A") ) {
 				notification.setEmpId(GHDPandCEmpId);
-				notification.setNotificationUrl("CARSRSQRApprovedList.htm?PageLoad=S");
+				notification.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
 				notification.setNotificationMessage("SoC request approved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
@@ -1076,7 +1078,7 @@ public class CARSServiceImpl implements CARSService{
 			}
 			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
 				notification.setEmpId(GHDPandCEmpId);
-				notification.setNotificationUrl("CARSRSQRApprovedList.htm?PageLoad=S");
+				notification.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
 				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"SoC Request Returned":"SoC Request Disapproved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
@@ -1179,7 +1181,7 @@ public class CARSServiceImpl implements CARSService{
 				for(int i=0;i<2;i++) {
 					PfmsNotification notification2 = new PfmsNotification();
 					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
-					notification2.setNotificationUrl("CARSRSQRApprovedList.htm?PageLoad=S");
+					notification2.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
 					notification2.setNotificationMessage("MoM Uploaded for CARSNO "+carsIni.getCARSNo());
 					notification2.setNotificationby(Long.parseLong(EmpId));
 					notification2.setNotificationDate(LocalDate.now().toString());
@@ -1205,6 +1207,18 @@ public class CARSServiceImpl implements CARSService{
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception {
 		
 		return dao.getEmployeeListByLabCode(labCode);
+	}
+
+	@Override
+	public LabMaster getLabDetailsByLabCode(String labcode) throws Exception {
+	
+		return dao.getLabDetailsByLabCode(labcode);
+	}
+
+	@Override
+	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception {
+		
+		return dao.carsDPCSoCFinalApprovedList(fromdate, todate);
 	}
 	
 }

@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="com.vts.pfms.cars.model.CARSRSQRDeliverables"%>
 <%@page import="com.vts.pfms.cars.model.CARSRSQRMajorRequirements"%>
 <%@page import="java.util.List"%>
@@ -167,6 +168,7 @@ p,td,th
 Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 List<CARSRSQRMajorRequirements> majorReqr = (List<CARSRSQRMajorRequirements>)request.getAttribute("RSQRMajorReqr");
 List<CARSRSQRDeliverables> deliverables = (List<CARSRSQRDeliverables>)request.getAttribute("RSQRDeliverables");
+List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("CARSSoCMilestones");
 %>
 	<div align="center">
        <h5 style="font-weight: bold;margin-top: 1.5rem;">Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle() %></h5>
@@ -248,7 +250,34 @@ List<CARSRSQRDeliverables> deliverables = (List<CARSRSQRDeliverables>)request.ge
     </div>
     <div>
     	<h4 style="margin-left: 10px;">6. Proposed Milestones & Timelines</h4>
-    	<div class="editor-data"><%if(rsqr!=null && rsqr[5]!=null) {%><%=rsqr[5]%><%}else {%><div style="text-align: center;">No Details Added!</div><%} %></div>
+    	<div>
+	   		<%if(milestones!=null && milestones.size()>0) {%>
+	   			<table id="tabledata">
+	   				<thead>
+	   					<tr>
+	   						<th style="width: 5%;">Milestone No.</th>
+	   						<th style="width: 20%;">Task Description</th>
+	   						<th style="width: 10%;">Months</th>
+	   						<th >Deliverables</th>
+	   						<th style="width: 5%;">Payment ( In %)</th>
+	   						<th style="width: 20%;">Payment Terms</th>
+	   					</tr>
+	   				</thead>
+	   				<tbody>
+	   					<%int i=0; for(CARSSoCMilestones mil : milestones) { %>
+	   						<tr>
+	   							<td style="text-align: center;width: 5%;"><%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} else{%>-<%} %></td>
+	   							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
+	   							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+mil.getMonths() %><%} else{%>-<%} %></td>
+	   							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
+	   							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
+	   							<td style="width: 20%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
+	   						</tr>
+	   					<%} %>
+	   				</tbody>
+	   			</table>
+	   		<%}else {%><div style="text-align: center;">No Details Added!</div><%} %>
+   	</div>
     </div>
     <div>
     	<h4 style="margin-left: 10px;">7. Scope of RSP</h4>

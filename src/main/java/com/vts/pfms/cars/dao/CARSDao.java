@@ -12,6 +12,7 @@ import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.master.model.Employee;
+import com.vts.pfms.model.LabMaster;
 
 public interface CARSDao {
 
@@ -60,5 +61,7 @@ public interface CARSDao {
 	public int updateDPCApprovalSought(long carsInitiationId, String approvalSought) throws Exception;
 	public List<Object[]> getLabList(String lab) throws Exception;
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
+	public LabMaster getLabDetailsByLabCode(String labcode) throws Exception;
+	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception;
 	
 }

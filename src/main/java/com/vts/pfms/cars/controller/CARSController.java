@@ -249,6 +249,7 @@ public class CARSController {
 	@RequestMapping(value="CARSInitiationAdd.htm")
 	public String carsInitiationAddSubmit(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date()+ " Inside CARSInitiationAdd.htm "+UserId);
 		try {
@@ -279,7 +280,7 @@ public class CARSController {
 					                   .CreatedDate(sdtf.format(new Date()))
 					                   .IsActive(1)
 					                   .build();
-			long result = service.addCARSInitiation(initiation);
+			long result = service.addCARSInitiation(initiation,labcode);
 			if(result!=0) {
 				redir.addAttribute("result", "CARS Initiation Added Successfully");
 			}else {
@@ -518,6 +519,7 @@ public class CARSController {
 				req.setAttribute("RSQRMajorReqr", service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 			}
 			String filename="RSQR";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -743,6 +745,7 @@ public class CARSController {
 				Object[] obj = service.getApprAuthorityDataByType(labcode, "DO-RTMD");
 				req.setAttribute("DPandC", service.getEmpDetailsByEmpId(obj[0].toString()));
 			}
+			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
 			req.setAttribute("lablogo", getLabLogoAsBase64());
 			String filename="Inv_for_SoO";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -973,6 +976,7 @@ public class CARSController {
 				req.setAttribute("RSQRMajorReqr", service.getCARSRSQRMajorReqrByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDeliverables", service.getCARSRSQRDeliverablesByCARSInitiationId(carsiniid));
 				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 			}
 			String filename="Final-RSQR";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -1200,6 +1204,8 @@ public class CARSController {
 		logger.info(new Date() +"Inside CARSSoCMilestoneSubmit.htm "+UserId);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
+			String attributes=req.getParameter("attributes");
+			String tab=req.getParameter("tab");
 			long carsiniid = Long.parseLong(carsInitiationId);
 
 			CARSRSQRDetailsDTO dto = new CARSRSQRDetailsDTO();
@@ -1225,7 +1231,8 @@ public class CARSController {
 					redir.addAttribute("resultfail", "SoC Milestone Details update Unsuccessful");
 				}
 				redir.addAttribute("carsInitiationId", carsInitiationId);
-				redir.addAttribute("TabId","6");
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+				redir.addAttribute("attributes", attributes);
 				return "redirect:/CARSInitiationDetails.htm";
 			}
 			if (result > 0) {
@@ -1234,7 +1241,8 @@ public class CARSController {
 				redir.addAttribute("resultfail", "SoC Milestone Details add Unsuccessful");
 			}
 			redir.addAttribute("carsInitiationId", carsInitiationId);
-			redir.addAttribute("TabId","6");
+			redir.addAttribute("TabId",tab!=null?tab:"2");
+			redir.addAttribute("attributes", attributes);
 			return "redirect:/CARSInitiationDetails.htm";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1302,10 +1310,44 @@ public class CARSController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() +"Inside CARSRSQRApprovedList.htm "+Username);
 		try {
-			String TabId = req.getParameter("TabId");
-			String PageLoad = req.getParameter("PageLoad");
+			String AllListTabId = req.getParameter("AllListTabId");
 
-			if(PageLoad!=null && PageLoad.equalsIgnoreCase("S")) {
+			LocalDate todaydate= LocalDate.now();
+			String fromdate = todaydate.withDayOfMonth(1).toString();
+			String todate = todaydate.toString();
+			
+			if((AllListTabId==null) || (AllListTabId!=null && AllListTabId.equalsIgnoreCase("1")) ) {
+				String rsqrfromdate = req.getParameter("rsqrfromdate");
+				String rsqrtodate = req.getParameter("rsqrtodate");
+
+				LocalDate today = LocalDate.now();
+
+				if(rsqrfromdate == null) 
+				{
+					rsqrfromdate = today.withDayOfMonth(1).toString();
+					rsqrtodate = today.toString();
+
+				}else
+				{
+					rsqrfromdate = fc.RegularToSqlDate(rsqrfromdate);
+					rsqrtodate = fc.RegularToSqlDate(rsqrtodate);
+				}
+
+				req.setAttribute("rsqrfromdate", rsqrfromdate);
+				req.setAttribute("rsqrtodate", rsqrtodate);
+				req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,rsqrfromdate,rsqrtodate,"A"));
+				
+				req.setAttribute("socfromdate", fromdate);
+				req.setAttribute("soctodate", todate);
+				req.setAttribute("MoMUploadedList", service.carsSoCMoMUploadedList(fromdate,todate));
+				
+				req.setAttribute("carsfromdate", fromdate);
+				req.setAttribute("carstodate", todate);
+				req.setAttribute("CARSFinalApprovedList", service.carsDPCSoCFinalApprovedList(fromdate,todate));
+				
+				req.setAttribute("AllListTabId", AllListTabId!=null?AllListTabId:"1");
+			}
+			if(AllListTabId!=null && AllListTabId.equalsIgnoreCase("2")) {
 				String socfromdate = req.getParameter("socfromdate");
 				String soctodate = req.getParameter("soctodate");
 
@@ -1322,42 +1364,55 @@ public class CARSController {
 					soctodate = fc.RegularToSqlDate(soctodate);
 				}
 
+				req.setAttribute("rsqrfromdate", fromdate);
+				req.setAttribute("rsqrtodate", todate);
+				req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"A"));
+				
 				req.setAttribute("socfromdate", socfromdate);
 				req.setAttribute("soctodate", soctodate);
 				req.setAttribute("MoMUploadedList", service.carsSoCMoMUploadedList(socfromdate,soctodate));
+				
+				req.setAttribute("carsfromdate", fromdate);
+				req.setAttribute("carstodate", todate);
+				req.setAttribute("CARSFinalApprovedList", service.carsDPCSoCFinalApprovedList(fromdate,todate));
 
-				req.setAttribute("TabId", TabId!=null?TabId:"2");
+				req.setAttribute("AllListTabId", AllListTabId!=null?AllListTabId:"2");
 
 			}
 
-			String fromdate = req.getParameter("fromdate");
-			String todate = req.getParameter("todate");
+			if(AllListTabId!=null && AllListTabId.equalsIgnoreCase("3")) {
+				String carsfromdate = req.getParameter("carsfromdate");
+				String carstodate = req.getParameter("carstodate");
 
-			LocalDate today = LocalDate.now();
+				LocalDate today = LocalDate.now();
 
-			if(fromdate == null) 
-			{
-				fromdate = today.withDayOfMonth(1).toString();
-				todate = today.toString();
+				if(carsfromdate == null) 
+				{
+					carsfromdate = today.withDayOfMonth(1).toString();
+					carstodate = today.toString();
 
-			}else
-			{
-				fromdate = fc.RegularToSqlDate(fromdate);
-				todate = fc.RegularToSqlDate(todate);
-			}
+				}else
+				{
+					carsfromdate = fc.RegularToSqlDate(carsfromdate);
+					carstodate = fc.RegularToSqlDate(carstodate);
+				}
 
-			req.setAttribute("fromdate", fromdate);
-			req.setAttribute("todate", todate);
-
-			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"A"));
-
-			if(PageLoad==null) {
+				req.setAttribute("rsqrfromdate", fromdate);
+				req.setAttribute("rsqrtodate", todate);
+				req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"A"));
+				
 				req.setAttribute("socfromdate", fromdate);
 				req.setAttribute("soctodate", todate);
 				req.setAttribute("MoMUploadedList", service.carsSoCMoMUploadedList(fromdate,todate));
-				req.setAttribute("TabId", TabId!=null?TabId:"1");
+				
+				req.setAttribute("carsfromdate", carsfromdate);
+				req.setAttribute("carstodate", carstodate);
+				req.setAttribute("CARSFinalApprovedList", service.carsDPCSoCFinalApprovedList(carsfromdate,carstodate));
+				
+				req.setAttribute("AllListTabId", AllListTabId!=null?AllListTabId:"3");
 			}
 
+			
 			return "cars/AllCARSList";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1542,7 +1597,7 @@ public class CARSController {
 				}
 			}
 			
-			redir.addAttribute("PageLoad", "S");
+			redir.addAttribute("AllListTabId", "2");
 			return "redirect:/CARSRSQRApprovedList.htm";
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1685,7 +1740,7 @@ public class CARSController {
 				redir.addAttribute("resultfail", "CARS SoC Revoke Unsuccessful");	
 			}	
 
-			redir.addAttribute("PageLoad", "S");
+			redir.addAttribute("AllListTabId", "2");
 			return "redirect:/CARSRSQRApprovedList.htm";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1759,5 +1814,26 @@ public class CARSController {
 			}
 		return json.toJson(GetLabcodeEmpList);
 
+	}
+	
+	@RequestMapping(value = "SoOProFormWordDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String ProFormaWordDownload(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside SoOProFormWordDownload.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null) {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+			}
+			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
+			return "cars/SoOProFormWordDownload";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside ProFormWordDownload.htm "+Username, e);
+			return "static/Error";
+		}
 	}
 }

@@ -361,7 +361,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                			<%} else if(isApproval!=null && isApproval.equalsIgnoreCase("Q") ) {%>
                				href="CARSRSQRApprovals.htm?val=app"
                			<%} else {%>
-             			    href="CARSRSQRApprovedList.htm?PageLoad=S"
+             			    href="CARSRSQRApprovedList.htm?AllListTabId=2"
              			<%} %> 
              			  style="color: white!important;float: right;">Back</a>
              		</h3>
@@ -448,7 +448,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                					</form>
                				
                					<div class="navigation_btn"  style="text-align: right;">
-            						<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSRSQRApprovedList.htm?PageLoad=S" style="color: white!important">Back</a>
+            						<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSRSQRApprovedList.htm?AllListTabId=2" style="color: white!important">Back</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>
                			<%if(dpcTabId!=null && dpcTabId.equalsIgnoreCase("1")){ %> 

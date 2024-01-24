@@ -15,12 +15,13 @@ import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
 import com.vts.pfms.cars.model.CARSSoCMilestones;
+import com.vts.pfms.model.LabMaster;
 
 public interface CARSService {
 
 	public List<Object[]> carsInitiationList(String EmpId) throws Exception;
 	public CARSInitiation getCARSInitiationById(long carsIntiationId) throws Exception;
-	public long addCARSInitiation(CARSInitiation initiation) throws Exception;
+	public long addCARSInitiation(CARSInitiation initiation,String labcode) throws Exception;
 	public long editCARSInitiation(CARSInitiation initiation) throws Exception;
 	public Object[] carsRSQRDetails(String carsinitiationid) throws Exception;
 	public long carsRSQRDetailsSubmit(String carsInitiationId, String attributes, String details, String userId) throws Exception;
@@ -64,5 +65,7 @@ public interface CARSService {
 	public long carsSoCUploadMoM(MultipartFile momFile, String labcode, String carsInitiationId, String EmpId, String UserId, String MoMFlag) throws Exception;
 	public List<Object[]> getLabList(String lab) throws Exception;
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
+	public LabMaster getLabDetailsByLabCode(String labcode) throws Exception;
+	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception;
 	
 }

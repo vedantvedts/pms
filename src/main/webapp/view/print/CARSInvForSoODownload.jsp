@@ -1,3 +1,4 @@
+<%@page import="com.vts.pfms.model.LabMaster"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
@@ -89,6 +90,7 @@ Object[] emp = (Object[])request.getAttribute("EmpData");
 Object[] dPandC = (Object[])request.getAttribute("DPandC");
 
 String lablogo=(String)request.getAttribute("lablogo");
+LabMaster labMaster = (LabMaster)request.getAttribute("LabMasterData");
 
 FormatConverter fc = new FormatConverter();
 SimpleDateFormat rdf = fc.getRegularDateFormat();
@@ -154,7 +156,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr><td></td></tr>
 	<tr><td></td></tr>
 	<tr>
-		<td>Sub : Request for Feasibility Report and Summary of Offer for DRDO CARS proposal</td>
+		<td>Sub : <b>Request for Feasibility Report and Summary of Offer for DRDO CARS proposal</b></td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -165,7 +167,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr><td></td></tr>
 	<tr>
 		<td>
-			Research Service Qualitative Requirement for <%if(carsIni!=null) {%><%=carsIni.getInitiationTitle() %> <%} %> is enclosed herewith. 
+			Research Service Qualitative Requirement for "<%if(carsIni!=null) {%><%=carsIni.getInitiationTitle() %> <%} %>" is enclosed herewith. 
 			It is requested to furnish a feasibility study report along with budgetary proposal in the enclosed format at the earliest. 
 		</td>
 	</tr>
@@ -175,7 +177,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	</tr>
 	<tr><td></td></tr>
 	<tr>
-		<td style="text-align: center;">Thank you,</td>
+		<td style="text-align: center;">Thank you</td>
 	</tr>
 	<tr><td></td></tr>
 	<tr><td></td></tr>
@@ -183,6 +185,13 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 	<tr>
 		<td style="text-align: right;">Sincerely,</td>
 	</tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
+	<tr><td></td></tr>
 	<tr>
 		<td style="text-align: right;"><%if(dPandC!=null) {%><%if(dPandC[4]!=null) {%><%=dPandC[4] %><%} else{%><%=dPandC[5] %><%} %><%=dPandC[1] %> <%} %></td>
 	</tr>

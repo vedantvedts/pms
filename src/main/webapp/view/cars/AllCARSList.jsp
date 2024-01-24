@@ -256,15 +256,19 @@ th{
 <%
 List<Object[]> ApprovedList =(List<Object[]>)request.getAttribute("ApprovedList");
 List<Object[]> MoMUploadedList =(List<Object[]>)request.getAttribute("MoMUploadedList");
-String fromdate = (String)request.getAttribute("fromdate");
-String todate   = (String)request.getAttribute("todate");
+List<Object[]> CARSFinalApprovedList =(List<Object[]>)request.getAttribute("CARSFinalApprovedList");
+String rsqrfromdate = (String)request.getAttribute("rsqrfromdate");
+String rsqrtodate   = (String)request.getAttribute("rsqrtodate");
 
 FormatConverter fc = new FormatConverter();
 
-String TabId   = (String)request.getAttribute("TabId");
+String AllListTabId   = (String)request.getAttribute("AllListTabId");
 
 String socfromdate = (String)request.getAttribute("socfromdate");
 String soctodate   = (String)request.getAttribute("soctodate");
+
+String carsfromdate = (String)request.getAttribute("carsfromdate");
+String carstodate   = (String)request.getAttribute("carstodate");
 %>
 
 <% String ses=(String)request.getParameter("result");
@@ -294,7 +298,7 @@ String soctodate   = (String)request.getAttribute("soctodate");
              		<hr style="margin: -8px 0px !important;">
              		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
             			<%-- <li class="nav-item" id="nav-dashboard">
-             				<%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+             				<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("0")){ %> 
              		    		<a class="nav-link active " data-toggle="tab" href="#dashboard" id="nav" role="tab">
              				<%}else{ %>
               			 		<a class="nav-link  " data-toggle="tab" href="#dashboard" role="tab">
@@ -303,7 +307,7 @@ String soctodate   = (String)request.getAttribute("soctodate");
               			 		</a>
             			</li> --%>
             			<li class="nav-item" id="nav-rsqrapproved">
-             				<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
+             				<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("1")){ %> 
              		    		<a class="nav-link active " data-toggle="tab" href="#rsqrapproved" id="nav" role="tab">
              				<%}else{ %>
               			 		<a class="nav-link  " data-toggle="tab" href="#rsqrapproved" role="tab">
@@ -313,12 +317,21 @@ String soctodate   = (String)request.getAttribute("soctodate");
             			</li>
 
             			<li class="nav-item" id="nav-soc">
-            	     		<%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %>
+            	     		<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("2")){ %>
               					<a class="nav-link active" data-toggle="tab" href="#soc" id="nav"role="tab" >
               				<%}else{ %>
               					<a class="nav-link" data-toggle="tab" href="#soc" role="tab" >
                				<%} %>
                   				SoC
+              					</a>
+            			</li>
+            			<li class="nav-item" id="nav-cars03">
+            	     		<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("3")){ %>
+              					<a class="nav-link active" data-toggle="tab" href="#cars03" id="nav"role="tab" >
+              				<%}else{ %>
+              					<a class="nav-link" data-toggle="tab" href="#cars03" role="tab" >
+               				<%} %>
+                  				CARS-03
               					</a>
             			</li>
             			
@@ -328,19 +341,19 @@ String soctodate   = (String)request.getAttribute("soctodate");
          		<div class="card">
          			<div class="tab-content text-center" style="margin-top : 0.2rem;">
          				<!-- *********** Dashboard  ***********      -->
-         				<%-- <%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+         				<%-- <%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("0")){ %> 
          					<div class="tab-pane active" id="dashboard" role="tabpanel">
          				<%}else{ %>
               				<div class="tab-pane " id="dashboard" role="tabpanel">
                			<%} %>
-         				<%if(TabId!=null&&TabId.equalsIgnoreCase("0")){ %> 
+         				<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("0")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
                			<%} %> --%>
                			
          				<!-- *********** RSQR Approved List  ***********      -->
-               			<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="rsqrapproved" role="tabpanel">
          				<%}else{ %>
               				<div class="tab-pane " id="rsqrapproved" role="tabpanel">
@@ -355,14 +368,14 @@ String soctodate   = (String)request.getAttribute("soctodate");
 													<tr>
 														<td> From Date :&nbsp; </td>
 												        <td> 
-															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(fromdate!=null){%>
-													        	value="<%=fc.SqlToRegularDate(fromdate)%>" <%}%> value=""  id="fromdate" name="fromdate"  required="required"   > 
+															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(rsqrfromdate!=null){%>
+													        	value="<%=fc.SqlToRegularDate(rsqrfromdate)%>" <%}%> value=""  id="rsqrfromdate" name="rsqrfromdate"  required="required"   > 
 														</td>
 														<td></td>
 														<td >To Date :&nbsp;</td>
 														<td>					
-															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(todate!=null){%>
-													        	 value="<%=fc.SqlToRegularDate(todate)%>" <%}%>  value=""  id="todate" name="todate"  required="required"  > 							
+															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(rsqrtodate!=null){%>
+													        	 value="<%=fc.SqlToRegularDate(rsqrtodate)%>" <%}%>  value=""  id="rsqrtodate" name="rsqrtodate"  required="required"  > 							
 														</td>
 													</tr>
 												</table>
@@ -442,6 +455,17 @@ String soctodate   = (String)request.getAttribute("soctodate");
 																		</div>
 																	</div>
 																</button>
+																<button type="submit" class="btn btn-sm" formaction="SoOProFormWordDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formmethod="get" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Summary Offer of Provision of Research Services Download">
+																	<div class="cc-rockmenu">
+																		<div class="rolling">
+																			<figure class="rolling_icon">
+																				<img src="view/images/worddoc.png" style="width: 28px;">
+																			</figure>
+																			<span>Pro form</span>
+																		</div>
+																	</div>
+																	<!-- <i class="fa fa-file-word-o" style="font-size:17px" title="Summary Offer of Provision of Research Services Download"></i> -->
+																</button>
 															</td>
 					                        			</tr>
 					                       			<%} }else{%>
@@ -498,14 +522,14 @@ String soctodate   = (String)request.getAttribute("soctodate");
             							<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
-               			<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("1")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
                			<%} %> 
                			
                			<!-- *********** SoC***********      --> 
-               			<%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %> 
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("2")){ %> 
          					<div class="tab-pane active" id="soc" role="tabpanel">
          				<%}else{ %>
               				<div class="tab-pane " id="soc" role="tabpanel">
@@ -532,7 +556,7 @@ String soctodate   = (String)request.getAttribute("soctodate");
 												</table>
 										 	</div>
 										</div>
-										<input type="hidden" name="PageLoad" value="S">
+										<input type="hidden" name="AllListTabId" value="2">
 									</form>	
 									<form action="" method="POST" id="circularForm">
 					            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -607,12 +631,120 @@ String soctodate   = (String)request.getAttribute("soctodate");
             						<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>
-               			<%if(TabId!=null&&TabId.equalsIgnoreCase("2")){ %> 
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("2")){ %> 
          					</div>
          				<%}else{ %>
               				</div>
                			<%} %>
                			
+               			<!-- *********** CARS-03***********      --> 
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("3")){ %> 
+         					<div class="tab-pane active" id="cars03" role="tabpanel">
+         				<%}else{ %>
+              				<div class="tab-pane " id="cars03" role="tabpanel">
+               			<%} %>
+               					<div class="card-body">
+									<form method="post" action="CARSRSQRApprovedList.htm" >
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<div class="row w-100" style="margin-top: 10px;margin-bottom: 10px;">
+											<div class="col-md-12" style="float: right;">
+												<table style="float: right;">
+													<tr>
+														<td> From Date :&nbsp; </td>
+												        <td> 
+															<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(carsfromdate!=null){%>
+													        	value="<%=fc.SqlToRegularDate(carsfromdate)%>" <%}%> value=""  id="carsfromdate" name="carsfromdate"  required="required"   > 
+														</td>
+														<td></td>
+														<td >To Date :&nbsp;</td>
+														<td>					
+															<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(carstodate!=null){%>
+													        	 value="<%=fc.SqlToRegularDate(carstodate)%>" <%}%>  value=""  id="carstodate" name="carstodate"  required="required"  > 							
+														</td>
+													</tr>
+												</table>
+										 	</div>
+										</div>
+										<input type="hidden" name="AllListTabId" value="2">
+									</form>	
+									<form action="" method="POST" id="circularForm">
+					            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					            		<div class="row w-98" style="margin: 10px;">
+											<div class="col-md-12" >
+												<div class="table-responsive" style="text-align: left;">
+							                		<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="rsqrTable" >
+														<thead style="background: #055C9D;color: white!important">
+															<tr>
+											   					<th>SN</th>
+											  					<th>Initiated By</th>
+											   					<th>CARSNo</th>
+											   					<th>Amount</th>
+						                       					<th style="width: ">Status</th>
+						                       					<th style="width: ">Action</th>
+						                  					</tr>
+														</thead>
+						                 				<tbody>
+						                      				<% 
+						                      				   if(CARSFinalApprovedList!=null && CARSFinalApprovedList.size()>0){
+						                      				   int SNA=0;
+						                          			   for(Object[] form: CARSFinalApprovedList ){
+						                       				%>
+						                        			<tr>
+						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
+						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
+						                            			<td style="text-align: center;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: center;width: 33%;">
+																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
+														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+														    		</button>
+												 				</td>
+												 				<td style="text-align: center;width: 15%;">
+						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="SoC Details" style="font-weight: 600;" >
+														   				<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/clipboard.png">
+																				</figure>
+																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+																	<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("SFD") ) {%>
+							                                       	 	<button class="editable-click" name="carsInitiationId" value="<%=form[0] %>" formaction="CARSSoCDPCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
+																			<div class="cc-rockmenu">
+																				<div class="rolling">
+																					<figure class="rolling_icon">
+																						<img src="view/images/userrevoke.png" style="width: 22px !important;">
+																					</figure>
+																					<span>Revoke</span>
+																				</div>
+																			</div>
+																	    </button>
+											   				 		<%} %>
+																</td>
+						                        			</tr>
+						                       			<%} }else{%>
+						                       				<tr>
+						                       					<td colspan="6" style="text-align: center;">No data available in table</td>
+						                       				</tr>
+						                       			<%} %>
+						                   			    </tbody>
+						                 		    </table>
+							                	</div>
+						                	</div>
+						                </div>
+						            </form>
+								</div>
+               					<div class="navigation_btn"  style="text-align: right;">
+            						<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
+									<button class="btn btn-info btn-sm next">Next</button>
+								</div>
+               			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("3")){ %> 
+         					</div>
+         				<%}else{ %>
+              				</div>
+               			<%} %>
          			</div>
          		</div>
 	   		</div>
@@ -646,14 +778,14 @@ String soctodate   = (String)request.getAttribute("soctodate");
 								<tr>
 									<td> From Date :&nbsp; </td>
 							        <td> 
-										<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(fromdate!=null){%>
-								        	value="<%=fc.SqlToRegularDate(fromdate)%>" <%}%> value=""  id="fromdate" name="fromdate"  required="required"   > 
+										<input type="text" class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly"  <%if(rsqrfromdate!=null){%>
+								        	value="<%=fc.SqlToRegularDate(rsqrfromdate)%>" <%}%> value=""  id="rsqrfromdate" name="rsqrfromdate"  required="required"   > 
 									</td>
 									<td></td>
 									<td >To Date :&nbsp;</td>
 									<td>					
-										<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(todate!=null){%>
-								        	 value="<%=fc.SqlToRegularDate(todate)%>" <%}%>  value=""  id="todate" name="todate"  required="required"  > 							
+										<input type="text"  class="form-control input-sm mydate" onchange="this.form.submit()"  readonly="readonly" <%if(rsqrtodate!=null){%>
+								        	 value="<%=fc.SqlToRegularDate(rsqrtodate)%>" <%}%>  value=""  id="rsqrtodate" name="rsqrtodate"  required="required"  > 							
 									</td>
 								</tr>
 							</table>
@@ -787,12 +919,12 @@ $("#myTable").DataTable({
     "pagingType": "simple"
 });
 
-$('#fromdate').daterangepicker({
+$('#rsqrfromdate').daterangepicker({
 	"singleDatePicker" : true,
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
-	 "startDate" : new Date('<%=fromdate%>'), 
+	 "startDate" : new Date('<%=rsqrfromdate%>'), 
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {
@@ -801,12 +933,12 @@ $('#fromdate').daterangepicker({
 });
 	
 	
-	$('#todate').daterangepicker({
+	$('#rsqrtodate').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
 		"showCustomRangeLabel" : true,
-		"startDate" : new Date('<%=todate%>'), 
-		"minDate" :$("#fromdate").val(),  
+		"startDate" : new Date('<%=rsqrtodate%>'), 
+		"minDate" :$("#rsqrfromdate").val(),  
 		"cancelClass" : "btn-default",
 		showDropdowns : true,
 		locale : {
@@ -815,7 +947,7 @@ $('#fromdate').daterangepicker({
 	});
 
 	 $(document).ready(function(){
-		   $('#fromdate, #todate').change(function(){
+		   $('#rsqrfromdate, #rsqrtodate').change(function(){
 		       $('#myform').submit();
 		    });
 		}); 
@@ -848,7 +980,7 @@ $('#fromdate').daterangepicker({
 		});
 			
 			
-			$('#soctodate').daterangepicker({
+	 $('#soctodate').daterangepicker({
 				"singleDatePicker" : true,
 				"linkedCalendars" : false,
 				"showCustomRangeLabel" : true,
@@ -859,8 +991,34 @@ $('#fromdate').daterangepicker({
 				locale : {
 					format : 'DD-MM-YYYY'
 				}
-			}); 
+		}); 
 	 
+	 $('#carsfromdate').daterangepicker({
+			"singleDatePicker" : true,
+			"linkedCalendars" : false,
+			"showCustomRangeLabel" : true,
+			/* "minDate" :datearray,   */
+			 "startDate" : new Date('<%=carsfromdate%>'), 
+			"cancelClass" : "btn-default",
+			showDropdowns : true,
+			locale : {
+				format : 'DD-MM-YYYY'
+			}
+		});
+			
+			
+	 $('#carstodate').daterangepicker({
+				"singleDatePicker" : true,
+				"linkedCalendars" : false,
+				"showCustomRangeLabel" : true,
+				"startDate" : new Date('<%=carstodate%>'), 
+				"minDate" :$("#carsfromdate").val(),  
+				"cancelClass" : "btn-default",
+				showDropdowns : true,
+				locale : {
+					format : 'DD-MM-YYYY'
+				}
+		}); 
 	 
 </script>
 

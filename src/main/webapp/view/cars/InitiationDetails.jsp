@@ -372,7 +372,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                   		Final RSQR
               			</a>
             	</li>
-            	<li class="nav-item" id="nav-socmilestones">
+            	<%-- <li class="nav-item" id="nav-socmilestones">
             	     <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
               			<a class="nav-link active" data-toggle="tab" href="#socmilestones" id="nav"role="tab" >
               		<%}else{ %>
@@ -380,7 +380,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                		<%} %>
                   		Milestones
               			</a>
-            	</li>
+            	</li> --%>
             	<li class="nav-item" id="nav-socforward">
             	     <%if(TabId!=null&&TabId.equalsIgnoreCase("7")){ %>
               			<a class="nav-link active" data-toggle="tab" href="#socforward" id="nav"role="tab" >
@@ -450,7 +450,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 14%;">
                             		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="16" style="font-size: 15px;"
+                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="6" style="font-size: 15px;"
                               		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())/100000%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
@@ -690,7 +690,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Proposed Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor6" onclick="showEditor('Proposed Milestones Timelines')">
+												id="btnEditor6" onclick="showTableMilestones('Proposed Milestones Timelines')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -937,6 +937,98 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 									</div>
 								</div>
 							</div>
+							
+							<!-- Cloning table for Milestones -->
+							<div class="col-md-8" id="col7" style="" >
+								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
+									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
+									<hr>
+									<div class="card-body bg-light mt-1">
+										<form action="CARSSoCMilestoneSubmit.htm" method="post">
+											<table style="width:100% ; " id="milestones">
+												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+													<tr>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
+												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
+												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
+												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
+														<td style="width: 5%;">
+															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+														</td>
+													</tr>
+												</thead>
+								 				<tbody>
+								 					<%if(milestones!=null && milestones.size()>0) {
+								 					   for(CARSSoCMilestones mil :milestones) {%>
+													<tr class="tr_clone_milestones">
+														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
+														</td>	
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null) {%><%=carsIni.getDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+														</td>
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
+														</td>
+														<td style="width: 5% ; ">
+															<button type="button" class=" btn btn_rem_milestones " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														</td>									
+													</tr>
+													<%} }else{%>
+													<tr class="tr_clone_milestones">
+														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
+														</td>	
+														<td style="width: 30%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
+														</td>	
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="months" min="0" max="<%if(carsIni!=null) {%><%=carsIni.getDuration() %><%} %>" required="required">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														</td>
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														</td>
+														<td style="width: 5% ; ">
+															<button type="button" class=" btn btn_rem_milestones" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														</td>									
+													</tr>
+													<%} %>
+												</tbody> 
+											</table>
+											<div align="center" style="margin-top: 15px;">
+												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
+													<%if(milestones!=null && milestones.size()>0) {%>
+														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
+													<%} else{%> 
+														<button type="submit" class="btn btn-sm submit btn-soc" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+													<%} %>
+													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
+													<input type="hidden" name="tab" value="2">
+													<input type="hidden" id="attributes" name="attributes" value="Proposed Milestones Timelines">
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												<%} %>
+											</div>
+										</form>	
+									</div>
+								</div>
+							</div>
 			
 		                </div>
 		     			<hr class="mt-2">
@@ -1018,7 +1110,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    				</tr>
 						    				<tr>
 						    					<td colspan="3" style="width: 100%;font-size: 14px;">
-						    						&emsp;<input type="checkbox"  class="TCBox" <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>checked<%} %> >&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
+						    						&emsp;<input type="checkbox"  class="TCBox" <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>checked<%} %> required>&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 						    					</td>
 						    				</tr>
                							</table>
@@ -1082,7 +1174,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm submit" id="fwd-btn" name="Action" formaction="RSQRApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" disabled="disabled">Forward</button>
+													<button type="submit" class="btn btn-sm submit" name="Action" formaction="RSQRApprovalSubmit.htm" value="A" onclick="return confirm('Are you Sure to Submit ?');">Forward</button>
 												<%} %>
 												<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
 													<div class="ml-2" align="left">
@@ -1174,8 +1266,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                			    			<div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
                			    				<!-- First row of SoC  -->
                			     				<div class="row details">
-                        						<div class="column b" style="width: 25%;border-top-left-radius: 5px;">
-                            					 	<label class="control-label">Upload SoO</label><span class="mandatory">*</span> 
+                        						<div class="column b" style="width: 30%;border-top-left-radius: 5px;">
+                            					 	<label class="control-label">Upload Summary of Offer</label><span class="mandatory">*</span> 
                             					 	<%if(carsSoC!=null && carsSoC.getSoOUpload()!=null) {%>
                             					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -20rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  value="soofile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
@@ -1184,7 +1276,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                             					 	<%} %>
                               		      			<input type="file" class="form-control modals" name="SoOUpload" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 25%;">
+                        						<div class="column b" style="width: 30%;">
                             						<label class="control-label">Upload Feasibility Report</label><span class="mandatory">*</span>
                             						<%if(carsSoC!=null && carsSoC.getFRUpload()!=null) {%>
                             					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -14rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
@@ -1204,21 +1296,29 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                             					 	<%} %>
                               						<input type="file" class="form-control modals" name="ExecutionPlan" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 14%;">
+                        						<div class="column b" style="width: 14.5%;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
                               						<input  class="form-control form-control" type="text" name="socDuration" id="socDuration" maxlength="20" style="font-size: 15px;"
                               		 					placeholder="Enter Duration" value="<%if(carsSoC!=null && carsSoC.getSoCDuration()!=null){ %><%=carsSoC.getSoCDuration()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         						</div>
-                        						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
+                        						<%-- <div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
                             					 	<select class="form-control" name="alignment" required>
                             					 		<option value="L" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>selected<%} %>>Lab charter</option>
                             					 		<option value="P" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("P")) {%>selected<%} %>>Project charter</option>
                             					 	</select>
-                        						</div>
+                        						</div> --%>
                     		 				</div>
                     		 				
                     		 				<!-- Second row of SoC  -->
+                    		 				<div class="row details">
+                    		 					<div class="column b" style="width: 94.5%;">
+                            					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
+                              		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
+                        						</div>
+                    		 				</div>
+                    		 				
+                    		 				<!-- Third row of SoC  -->
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 94.5%;">
                             					 	<label class="control-label">Justification for time reasonability</label><span class="mandatory">*</span>
@@ -1226,7 +1326,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						</div>
                     		 				</div>
                     		 				
-                    		 				<!-- Third row of SoC  -->
+                    		 				<!-- Fourth row of SoC  -->
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 94.5%;">
                             					 	<label class="control-label">Justification for cost reasonability</label><span class="mandatory">*</span>
@@ -1234,7 +1334,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						</div>
                     		 				</div>
                     		 				
-                    		 				<!-- Fourth row of SoC  -->
+                    		 				<!-- Fifth row of SoC  -->
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 94.5%;">
                             					 	<label class="control-label">Justification for selection of RSP</label><span class="mandatory">*</span>
@@ -1242,7 +1342,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         						</div>
                     		 				</div>
                     		 				
-                    		 				<!-- Fifth row of SoC  -->
+                    		 				<!-- Six row of SoC  -->
                     		 				<div class="row details">
                     		 					<div class="column b" style="width: 94.5%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
                             					 	<label class="control-label">Success / Acceptance Criterion</label><span class="mandatory">*</span>
@@ -1367,7 +1467,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Proposed Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
-												id="btnEditor16" onclick="showEditor2('Proposed Milestones Timelines')">
+												id="btnEditor16" onclick="showTableMilestones2('Proposed Milestones Timelines')">
 													<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 												</button>
 											</div>
@@ -1617,6 +1717,98 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 									</div>
 								</div>
 							</div>
+							
+							<!-- Cloning table for Milestones2 (Final) -->
+							<div class="col-md-8" id="col8" style="" >
+								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
+									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
+									<hr>
+									<div class="card-body bg-light mt-1">
+										<form action="CARSSoCMilestoneSubmit.htm" method="post">
+											<table style="width:100% ; " id="milestones2">
+												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+													<tr>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
+												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
+												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
+												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
+												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
+														<td style="width: 5%;">
+															<button type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+														</td>
+													</tr>
+												</thead>
+								 				<tbody>
+								 					<%if(milestones!=null && milestones.size()>0) {
+								 					   for(CARSSoCMilestones mil :milestones) {%>
+													<tr class="tr_clone_milestones2">
+														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
+														</td>	
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+														</td>
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
+														</td>
+														<td style="width: 5% ; ">
+															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														</td>									
+													</tr>
+													<%} }else{%>
+													<tr class="tr_clone_milestones2">
+														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
+															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="MIL-1" style="text-align: center;" required="required" readonly="readonly">
+														</td>	
+														<td style="width: 30%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
+														</td>	
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="months" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCDuration() %><%} %>" required="required">
+														</td>	
+														<td style="width: 25%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														</td>
+														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
+														</td>
+														<td style="width: 20%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														</td>
+														<td style="width: 5% ; ">
+															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														</td>									
+													</tr>
+													<%} %>
+												</tbody> 
+											</table>
+											<div align="center" style="margin-top: 15px;">
+												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
+													<%if(milestones!=null && milestones.size()>0) {%>
+														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
+													<%} else{%> 
+														<button type="submit" class="btn btn-sm submit btn-soc" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
+													<%} %>
+													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
+													<input type="hidden" name="tab" value="5">
+													<input type="hidden" id="attributes2" name="attributes" value="Proposed Milestones Timelines">
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+												<%} %>
+											</div>
+										</form>	
+									</div>
+								</div>
+							</div>
 			
 		                </div>
 		     			<hr class="mt-2">
@@ -1649,7 +1841,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
               		</div>
                	<%} %>
                	
-               	<!-- *********** Milestones &  Deliverables ***********      --> 
+               	<%-- <!-- *********** Milestones &  Deliverables ***********      --> 
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %> 
          			<div class="tab-pane active" id="socmilestones" role="tabpanel">
          		<%}else{ %>
@@ -1772,7 +1964,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
          			</div>
          		<%}else{ %>
               		</div>
-               	<%} %>
+               	<%} %> --%>
                	
                	
                	
@@ -2497,6 +2689,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 			$('#col1').show();
 			$('#col2').hide();
 			$('#col3').hide();
+			$('#col7').hide();
 			$('#editorHeading').html=a;
 			document.getElementById('editorHeading').innerHTML=a;
 			$('#attributes').val(a);
@@ -2529,11 +2722,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						$('#btn1').hide();
 						html=ajaxresult[4];
 					}
-					else if(x==="proposed milestones timelines" && ajaxresult[5]!=null){
+					/* else if(x==="proposed milestones timelines" && ajaxresult[5]!=null){
 						$('#btn2').show();
 						$('#btn1').hide();
 						html=ajaxresult[5];
-					}
+					} */
 					else if(x==="rsp scope" && ajaxresult[6]!=null){
 						$('#btn2').show();
 						$('#btn1').hide();
@@ -2591,7 +2784,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 				$('#btnEditor5').click();
 				} 
 				else if(a==="Proposed Milestones Timelines") {
-					showEditor(a);
+					showTableMilestones(a);
 				$('#btnEditor6').click();
 				}else if(a==="RSP Scope") {
 					showEditor(a);
@@ -2612,12 +2805,21 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 		  			$('#col1').hide();
 					$('#col2').show();
 					$('#col3').hide();
+					$('#col7').hide();
 		  		}
 		  		
 		  		function showTableDeliverables(b){
 		  			$('#col1').hide();
 					$('#col2').hide();
 					$('#col3').show();
+					$('#col7').hide();
+		  		}
+		  		
+		  		function showTableMilestones(b){
+		  			$('#col1').hide();
+		  			$('#col2').hide();
+		  			$('#col3').hide();
+		  			$('#col7').show();
 		  		}
 </script>	
 
@@ -2687,6 +2889,44 @@ if(cl>1){
 }
    
 });
+
+/* Cloning (Adding) the table body rows for Milestones & Deliverables */
+$("#milestones").on('click','.btn_add_milestones' ,function() {
+	
+	var $tr = $('.tr_clone_milestones').last('.tr_clone_milestones');
+	var $clone = $tr.clone();
+	
+	$tr.after($clone);
+	
+	var milestoneno = $clone.find("#milestoneno").val();
+	var splitValues = milestoneno.split("-");
+	var lastValue = splitValues[splitValues.length - 1];
+	
+	$clone.find("input").val("").end();
+	$clone.find("textarea").val("").end();
+	$clone.find("#milestoneno").val("MIL-"+(Number(lastValue)+1));
+});
+
+/* Cloning (Removing) the table body rows for Milestones & Deliverables */
+$("#milestones").on('click', '.btn_rem_milestones', function () {
+    var $rows = $('.tr_clone_milestones');
+
+    if ($rows.length > 1) {
+        var $rowToRemove = $(this).closest('.tr_clone_milestones');
+        var indexToRemove = $rows.index($rowToRemove);
+
+        // Remove the row
+        $rowToRemove.remove();
+
+        // Update the reqId2 values for the remaining rows
+        $('.tr_clone_milestones').each(function (index, row) {
+            var $currentRow = $(row);
+            var newReqId = "MIL-" + (index + 1);
+            $currentRow.find("#milestoneno").val(newReqId);
+        });
+    }
+});
+
 </script>
 
 <!-- Tab and buttond hiding. Navigation button handle -->
@@ -2727,7 +2967,7 @@ $(document).ready(function(){
        $('#nav-finalrsqr').hide();
        $('#nav-socforward').hide();
        $('#nav-rsqrdownload').hide();
-       $('#nav-socmilestones').hide();
+       /* $('#nav-socmilestones').hide(); */
        $('#nav-momupload').hide();
        $('#nav-alldocs').hide();
     <%} %>
@@ -2741,7 +2981,7 @@ $(document).ready(function(){
        $('#nav-soc').hide();
        $('#nav-finalrsqr').hide();
        $('#nav-rsqrdownload').hide();
-       $('#nav-socmilestones').hide();
+       /* $('#nav-socmilestones').hide(); */
        $('#nav-momupload').hide();
        $('#nav-alldocs').hide();
     <%} %>
@@ -2828,6 +3068,7 @@ function showEditor2(a){
 	$('#col4').show();
 	$('#col5').hide();
 	$('#col6').hide();
+	$('#col8').hide();
 	$('#editorHeading2').html=a;
 	document.getElementById('editorHeading2').innerHTML=a;
 	$('#attributes2').val(a);
@@ -2860,11 +3101,11 @@ function showEditor2(a){
 				$('#btn3').hide();
 				html=ajaxresult[4];
 			}
-			else if(x==="proposed milestones timelines" && ajaxresult[5]!=null){
+			/* else if(x==="proposed milestones timelines" && ajaxresult[5]!=null){
 				$('#btn4').show();
 				$('#btn3').hide();
 				html=ajaxresult[5];
-			}
+			} */
 			else if(x==="rsp scope" && ajaxresult[6]!=null){
 				$('#btn4').show();
 				$('#btn3').hide();
@@ -2922,7 +3163,7 @@ function showEditor2(a){
 		$('#btnEditor15').click();
 		} 
 		else if(a==="Proposed Milestones Timelines") {
-			showEditor(a);
+			showTableMilestones2(b);
 		$('#btnEditor16').click();
 		}else if(a==="RSP Scope") {
 			showEditor(a);
@@ -2951,7 +3192,14 @@ function showEditor2(a){
 			$('#col6').show();
   		}
   		
-  		/* Cloning (Adding) the table body rows for Major Requirements */
+  		function showTableMilestones2(b){
+  			$('#col4').hide();
+  			$('#col5').hide();
+  			$('#col6').hide();
+  			$('#col8').show();
+  		}
+  		
+  		/* Cloning (Adding) the table body rows for Major Requirements2 */
   		$("#majorReqrTable2").on('click','.btn_add_majorreqr2' ,function() {
   			
   			var $tr = $('.tr_clone_majorreqr2').last('.tr_clone_majorreqr2');
@@ -2967,7 +3215,7 @@ function showEditor2(a){
   			$clone.find("#reqId2").val("RTD-"+(Number(lastValue)+1));
   		});
 
-  		/* Cloning (Removing) the table body rows for Major Requirements */
+  		/* Cloning (Removing) the table body rows for Major Requirements2 */
   		$("#majorReqrTable2").on('click', '.btn_rem_majorreqr2', function () {
   		    var $rows = $('.tr_clone_majorreqr2');
 
@@ -2989,7 +3237,7 @@ function showEditor2(a){
 
 
 
-  		/* Cloning (Adding) the table body rows for Deliverables */
+  		/* Cloning (Adding) the table body rows for Deliverables2 */
   		$("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
   			
   			var $tr = $('.tr_clone_deliverables2').last('.tr_clone_deliverables2');
@@ -3001,7 +3249,7 @@ function showEditor2(a){
   		});
 
 
-  		/* Cloning (Removing) the table body rows for Deliverables */
+  		/* Cloning (Removing) the table body rows for Deliverables2 */
   		$("#deliverablesTable2").on('click','.btn_rem_deliverables2' ,function() {
   			
   		var cl=$('.tr_clone_deliverables2').length;
@@ -3014,47 +3262,48 @@ function showEditor2(a){
   		   
   		}
   		   
-  		}); 		
+  		}); 
+  		
+  		/* Cloning (Adding) the table body rows for Milestones & Deliverables2 */
+  		$("#milestones2").on('click','.btn_add_milestones2' ,function() {
+  			
+  			var $tr = $('.tr_clone_milestones2').last('.tr_clone_milestones2');
+  			var $clone = $tr.clone();
+  			
+  			$tr.after($clone);
+  			
+  			var milestoneno = $clone.find("#milestoneno2").val();
+  			var splitValues = milestoneno.split("-");
+  			var lastValue = splitValues[splitValues.length - 1];
+  			
+  			$clone.find("input").val("").end();
+  			$clone.find("textarea").val("").end();
+  			$clone.find("#milestoneno2").val("MIL-"+(Number(lastValue)+1));
+  		});
+
+  		/* Cloning (Removing) the table body rows for Milestones & Deliverables2 */
+  		$("#milestones2").on('click', '.btn_rem_milestones2', function () {
+  		    var $rows = $('.tr_clone_milestones2');
+
+  		    if ($rows.length > 1) {
+  		        var $rowToRemove = $(this).closest('.tr_clone_milestones2');
+  		        var indexToRemove = $rows.index($rowToRemove);
+
+  		        // Remove the row
+  		        $rowToRemove.remove();
+
+  		        // Update the reqId2 values for the remaining rows
+  		        $('.tr_clone_milestones2').each(function (index, row) {
+  		            var $currentRow = $(row);
+  		            var newReqId = "MIL-" + (index + 1);
+  		            $currentRow.find("#milestoneno2").val(newReqId);
+  		        });
+  		    }
+  		});
+  		
 </script>
 
 <script type="text/javascript">
-/* Cloning (Adding) the table body rows for Milestones & Deliverables */
-	$("#milestones").on('click','.btn_add_milestones' ,function() {
-		
-		var $tr = $('.tr_clone_milestones').last('.tr_clone_milestones');
-		var $clone = $tr.clone();
-		
-		$tr.after($clone);
-		
-		var milestoneno = $clone.find("#milestoneno").val();
-		var splitValues = milestoneno.split("-");
-		var lastValue = splitValues[splitValues.length - 1];
-		
-		$clone.find("input").val("").end();
-		$clone.find("textarea").val("").end();
-		$clone.find("#milestoneno").val("MIL-"+(Number(lastValue)+1));
-	});
-
-	/* Cloning (Removing) the table body rows for Milestones & Deliverables */
-	$("#milestones").on('click', '.btn_rem_milestones', function () {
-	    var $rows = $('.tr_clone_milestones');
-
-	    if ($rows.length > 1) {
-	        var $rowToRemove = $(this).closest('.tr_clone_milestones');
-	        var indexToRemove = $rows.index($rowToRemove);
-
-	        // Remove the row
-	        $rowToRemove.remove();
-
-	        // Update the reqId2 values for the remaining rows
-	        $('.tr_clone_milestones').each(function (index, row) {
-	            var $currentRow = $(row);
-	            var newReqId = "MIL-" + (index + 1);
-	            $currentRow.find("#milestoneno").val(newReqId);
-	        });
-	    }
-	});
-	
 	function checkPaymentPercentage(inputElement){
 		
 		// Traverse up the DOM to find the parent row
@@ -3077,9 +3326,7 @@ function showEditor2(a){
 			return true;
 		}
 	}
-	
-	
-	
+
 </script>
 
 </body>
