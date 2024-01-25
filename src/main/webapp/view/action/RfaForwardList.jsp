@@ -1,5 +1,3 @@
-
-
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -34,6 +32,21 @@ body{
 .returnLabel{
 font-weight: bolder;
 }
+th {
+	border: 1px solid black;
+	text-align: center;
+	padding: 5px;
+}
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
 
 </style>
 </head>
@@ -49,10 +62,11 @@ SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
 	
 List<Object[]> RfaForwardList=(List<Object[]>) request.getAttribute("RfaForwardList");
 List<Object[]> RfaForwardApprovedList=(List<Object[]>) request.getAttribute("RfaForwardApprovedList");
+List<Object[]> ModalTDList=(List<Object[]>)request.getAttribute("ModalTDList");
 String EmpId=(String)request.getAttribute("EmpId");
 String rfaCount=(String) request.getAttribute("rfaCount");
-List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
-	 
+List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AX");
+List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList"); 
 	 
 %>
 
@@ -140,7 +154,8 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 											<th>Project</th>
 											<th>Priority</th>
 											<th>Forwarded By</th>
-											<th>Action</th>
+											<th>Status</th>
+											<th style="width: 14%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -155,10 +170,16 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 											<td style="text-align: center;"><%=obj[2] %></td>
 											<td style="text-align: center;"><%=obj[5] %></td>
 											<td><%=obj[11] %></td>
+											<td style="text-align: center;">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15] %> 
+								    			</button>
+	                                       </td>
 											<td class="left width" style="text-align: center;">
-
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
+													 data-toggle="tooltip" data-placement="top" title="VIEW DOCUMENT"
 													formnovalidate="formnovalidate" name="rfaid"
 													value="<%=obj[0] %>/<%=obj[3] %>"
 													formtarget="_blank">
@@ -168,7 +189,6 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 																<img src="view/images/preview3.png">
 															</figure>
 														</div>
-
 													</div>
 
 												</button> <input type="hidden" /> <input type="hidden"
@@ -178,19 +198,36 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 												type="hidden" name="RfaStatus"
 												value="<%=obj[10].toString()%>">
 											<%%>
-												<button class="editable-click"
-													style="background-color: transparent;"
-													formaction="RfaActionForward.htm" formmethod="POST"
-													formnovalidate="formnovalidate" name="rfa"
-													value="<%=obj[0]%>"
-													onclick="return confirm('Are You Sure To Forward this RFA ?');">
+											<%if(obj[10].toString().equalsIgnoreCase("AC") || obj[10].toString().equalsIgnoreCase("AX")){%>
+												     <button class="editable-click" type="submit" formaction="RfaActionForward.htm" formmethod="POST"
+													 style="background-color: transparent;"
+													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD" name="RFAID"
+													 value="<%=obj[0]%>"
+													 onclick="return confirm('Are you sure to Submit?')">
 													<div class="cc-rockmenu">
 														<figure class="rolling_icon">
 															<img src="view/images/forward1.png">
 														</figure>
 													</div>
+												
 												</button>
-											
+													<input type="hidden" value="AV" name="rfaoptionby">
+												  <%--  <input type="hidden" value="<%=obj[9]%>" name="rfaEmpModal"> --%>
+											  <%}else{ %>
+											  
+											  		<button class="editable-click" type="button"
+													 style="background-color: transparent;"
+													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD"
+													 value="<%=obj[0]%>"
+													 onclick="forwardmodal('<%=obj[3]%>','<%=obj[0]%>')">
+													<div class="cc-rockmenu">
+														<figure class="rolling_icon">
+															<img src="view/images/forward1.png">
+														</figure>
+													</div>
+												    </button>
+												
+											  <%} %>
 												 <input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" /> 
 											
@@ -200,7 +237,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 													formaction="#" formmethod="POST"
 													formnovalidate="formnovalidate" name="rfa"
 													value="<%=obj[0]%>" id="rfaReturnBtn"
-													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[10]%>','<%=obj[14]%>');">
+													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[10]%>','<%=obj[16]%>');">
 														<i class="fa fa-backward" aria-hidden="true" style="color: red; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
 												 <%} %> 
@@ -232,7 +269,8 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 											<th>Project</th>
 											<th>Priority</th>
 											<th>Forwarded By</th>
-											<th>Action</th>
+											<th>Status</th>
+											<th style="width: 14%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -247,6 +285,12 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 											<td style="text-align: center;"><%=obj[2] %></td>
 											<td style="text-align: center;"><%=obj[5] %></td>
 											<td><%=obj[11] %></td>
+											<td style="text-align: center;">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[14] %> 
+								    			</button>
+	                                        </td>
 											<td class="left width" style="text-align: center;">
 
 												<button class="editable-click bg-transparent"
@@ -393,12 +437,12 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 		
 		<!-- -- ******************************************************************Assign  Model End ***********************************************************************************-->
 <form class="form-horizontal" role="form"
-			action="#" method="POST" id="returnFrm" autocomplete="off">
+			action="RfaActionReturnList.htm" method="POST" id="returnFrm" autocomplete="off">
 			<div class="modal fade bd-example-modal-lg" id="rfaReturnmodal"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
-				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 150%; position: relative; right: 200px;" >
+				<div class="modal-dialog modal-md">
+					<div class="modal-content addreq" style="height:20rem; width:150%; margin-left:-22%; position: relative;" >
 						<div class="modal-header" id="modalreqheader" style="background-color: #021B79">
 							<h5 class="modal-title" id="exampleModalLabel" style="color: #fff">RFA Return</h5>
 							<button type="button" class="close" data-dismiss="modal"
@@ -411,67 +455,39 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 							<div class="row" style="" id="mainrow">
 		<div class="col-md-12">
  			
-		
-        
-        		
-            <div class="row">
-		                    <div class="col-md-2">
+          <!--   <div class="row">
+                           <div class="col-md-3">
+		                        <div class="form-group">
+		                            <label class="control-label returnLabel">RFA No</label>
+			  							<input  class="form-control"   id="rfanoreturn" name="rfanoreturn"  readonly="readonly"  style="width: 100%;"  >	
+		                        </div>
+		                    </div>
+		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label returnLabel">Project</label>
-		                           
-			                         <%--    <select class="form-control selectdee " id="ProjectProgramme"  name="projectid" >
-										    <option disabled="true"  selected value="">Select...</option>
-										     <% for (Object[] obj : ProjectList) {%>
-											<option value="<%=obj[0]%>"><%=obj[4]%></option>
-											<%} %>
-			  							</select> --%>
-			  							<input  class="form-control"   id="ProjectProgramme" name="ProjectProgramme"  readonly="readonly"  style="width: 80%;"  >	
-			  							
+			  							<input  class="form-control"   id="projectname" name="projectname"  readonly="readonly"  style="width: 100%;"  >	
 		                        </div>
 		                    </div>
 
 		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label returnLabel">Priority</label>
-		                           
-		                           <%--  	<select class="custom-select"  required="required"name="priority" id="priority" >
-										    <option disabled="true"  selected value="">Choose...</option>
-											 <% for (Object[] obj : PriorityList) {%>
-											<option value="<%=obj[0]%>"><%= "(" + obj[0] + ")" + obj[1]%></option>
-											<%} %>
-		  								</select> --%>
-		  								<input  class="form-control"   id="priority" name="priority"  readonly="readonly"  style="width: 80%;" >	
+		  								<input  class="form-control"   id="priority" name="priority"  readonly="readonly"  style="width: 100%;" >	
 		                        </div>
 		                    </div>
 		                    
 		                    <div class="col-md-3">
 		                        <div class="form-group">
 		                            <label class="control-label returnLabel">Date</label>
-		                          
-						  			<input  class="form-control"   id="datepicker1" name="rfadate" readonly="readonly"   style="width: 80%;" >						
+						  			<input  class="form-control"   id="datepicker1" name="rfadate" readonly="readonly"   style="width: 100%;" >						
 		                        </div>
 		                    </div>
-		                    
-		                  <div class="col-md-4">
-		                     <div class="form-group">
-		                            <label class="control-label returnLabel">Assigned To</label>
-		                       
-		                    <%--   <select class="form-control selectdee" required="required" name="assignee" id="assignee">
-		                         <option disabled="disabled" selected value="" >Choose...</option>                            
-		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value=<%=obj[0]%>><%=obj[1]%> , <%=obj[2] %></option>
-		                         <%} %>
-		                      </select> --%>
-		                      <input  class="form-control"   id="assignee" name="assignee"   readonly="readonly" style="width: 80%;" >	
-		                  </div>
-		            </div> 
-		            
+		                     
 		          </div>
 		      
 		            <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label returnLabel"> Problem Satement</label>
-		                    
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
 		                      <textarea class="form-control" rows="1" cols="30" readonly="readonly"  name="statement" id="statement" maxlength="200"></textarea>
@@ -483,7 +499,6 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 		            <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label returnLabel">Description</label>
-		                    
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
 		                      <textarea class="form-control" rows="3" cols="30" readonly="readonly"  name="description" id="description" maxlength="500"></textarea>
@@ -495,37 +510,32 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 		            <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label returnLabel">References</label>
-		                     
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
 		                      <input class="form-control"  readonly="readonly" name="reference" id="reference" maxlength="100">
 		                  </div>
-		            </div><br>
+		            </div><br> -->
 		                <div class="row">
 		                  <div class="col-md-3" style="max-width: 18%">
 		                      <label class="control-label returnLabel">Reply</label>
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                    
 		                  </div>
 		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="replyMsg" id="replyMsg" maxlength="500"></textarea>
+		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="replyMsg" id="replyMsg" maxlength="500" required></textarea>
 		                  </div>
 		            </div>
 		           
 		             <br>
 		            
 		        <div class="form-group" align="center" >
-					<span id="btnsub"><button type="button" id="returnSubBtn" class="btn btn-primary btn-sm submit" id="submit" formaction="RfaActionReturnList.htm"  value="SUBMIT" onclick="return returnSub()">SUBMIT</button></span>
+					<span id="btnsub"><button type="submit"  class="btn btn-primary btn-sm submit" id="submit" value="SUBMIT" onclick="return confirm('Are you sure to return?')">SUBMIT</button></span>
 				</div>
 
 				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
- 		<input type="hidden" name="rfa" id="rfaHidden">
+ 		<input type="hidden" name="rfa" id="rfaHidden" >
  		<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
- 		<input type="hidden" name="userId" id="userIdHidden">
-    
-        
+ 		<input type="hidden" name="assignor" id="userIdHidden">
 
-        
         
 	</div>
 </div>
@@ -538,6 +548,62 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA");
 				</div>
 		
 		</form>
+		
+		
+			<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">RFA No : <b id="rfamodalval" ></b></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" >
+							<form name="specadd" id="specadd" action="RfaActionForward.htm" method="POST">
+				   			<div class="row">
+									  <div class="col-1"></div>
+			                          <div class="col-3">
+				                             <div class="form-group">
+				                                     <b><label> RFA By : <span class="mandatory" style="color: red;">* </span></label></b> 
+				                                       <br>
+				                                       <select class=" form-control selectdee" onchange="return rfaOptionFunc()" style="width: 100%;" name="rfaoptionby" id="rfaoptionby" required="required" style="margin-top:-5px" >
+															<option disabled="disabled"  selected value="" >Choose...</option>
+											                  <option value="AC" >Approved By</option>
+														</select>	
+				                              </div>
+			                         </div>
+			
+			                         
+									   <div class="col-6" id="selectClassModal2" style="display:none;">
+			                               <div class="form-group">
+											    <b><label>RFA Forward To : </label><br></b>
+											
+												<select class="form-control selectdee " style="width: 100%;" name="rfaEmpModal" id="modalEmpList2" required="required"  data-live-search="true"  data-placeholder="Select Assignee" >
+												    <%if(ModalTDList!=null){
+												    	for(Object[] obj : ModalTDList){
+												     %>
+												     <option value="<%= obj[0] %>"><%= obj[1]%>,<%= obj[2]%></option>
+												     <%}} %>
+												</select>
+											</div>
+									</div>
+			 				</div>  
+			 				<div  align="center">
+			 				          		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+											<input type="hidden" name="rfano1" id="rfanomodal" value="">
+			 								<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="rfaforwarding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
+											<input type="hidden" name="RFAID" id="RFAID"> 
+							</div>	
+ 	<!-- Form End -->			
+							</form>
+						</div>
+					</div>
+				</div>
+			</div><!-- model end -->
+		
+		
+		
 
 <script>
 
@@ -662,7 +728,7 @@ function returnRfa(rfaId,rfaStatus,userId) {
 	$('#RfaStatusHidden').val(rfaStatus);
 	$('#userIdHidden').val(userId);
 	
-	$.ajax({
+/* 	$.ajax({
 		
 		type:'GET',
 		url:'getRfaAddData.htm',
@@ -679,15 +745,15 @@ function returnRfa(rfaId,rfaStatus,userId) {
                         year: 'numeric',
                         }).replace(/\//g, '-');
 						   
-						   $('#ProjectProgramme').val(ajaxresult[0]);
+						   $('#rfanoreturn').val(ajaxresult[3]);
+						   $('#projectname').val(ajaxresult[0]);
 						   $('#priority').val(ajaxresult[1]);
-						   $('#datepicker1').val(formattedDate);
-						   $('#assignee').val(ajaxresult[3]);
+						   $('#datepicker1').val(formattedDate);   
 						   $('#statement').val(ajaxresult[4]);
 						   $('#description').val(ajaxresult[5]);
 						   $('#reference').val(ajaxresult[6]);
 		}
-	})
+	}) */
 	  
 }
 
@@ -722,10 +788,25 @@ $('#replyMsg').keyup(function (){
 	  $('#replyMsg').css({'-webkit-box-shadow' : 'none', '-moz-box-shadow' : 'none','background-color' : 'none', 'box-shadow' : 'none'});
 		  });
 
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip()
+	});
+	
+	
+function rfaOptionFunc(){
+	
+	 var selectValue = $("#rfaoptionby").val();
+	 
+	 document.getElementById("selectClassModal2").style.display = "block";
+}
 
-	
-	
-	
+function forwardmodal(rfanomodal,RFAID){
+    $('#rfamodalval').html(rfanomodal);
+    $('#RFAID').val(RFAID);
+
+    $('#ActionAssignfilemodal').modal('show');
+    		
+}
 	
  </script>
 

@@ -94,6 +94,7 @@ import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.RfaAssign;
+import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.milestone.dto.MileEditDto;
@@ -2888,7 +2889,7 @@ public class ActionController {
 			
 				if(fdate==null)
 				{
-					fdate=LocalDate.now().minusMonths(1).toString();
+					fdate=LocalDate.now().minusYears(1).toString();
 					Emp="A";
 					Project="A";
 				}else
@@ -2915,10 +2916,21 @@ public class ActionController {
 				req.setAttribute("LoginType", LoginType);
 				req.setAttribute("UserId", UserId);
 				req.setAttribute("Status", Status);
-				List<Object[]> RfaActionList = service.GetRfaActionList(fdate,tdate,Project,EmpId);
-				if(Status!=null && Status.equalsIgnoreCase("O")) {
+				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+				
+				List<Object[]> RfaActionList = new ArrayList<>();
+				
+				if(LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("C") || LoginType.equalsIgnoreCase("I")) {
+					RfaActionList = service.GetRfaActionList1(Project,fdate,tdate);    // admin,TD,PGD can see all rfa list
+				}else if(LoginType.equalsIgnoreCase("P")){
+					RfaActionList = service.RfaProjectwiseList(EmpId,Project,fdate,tdate);  // project wise rfa list
+				}else {
+					 RfaActionList = service.GetRfaActionList(EmpId,Project,fdate,tdate); // assignor can see only his rfa list
+				}
+				
+				if(Status!=null && Status.equalsIgnoreCase("O")) {  // for rfa open list
 					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> !e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
-				}else if ( Status!=null && Status.equalsIgnoreCase("C")) {
+				}else if ( Status!=null && Status.equalsIgnoreCase("C")) {   // for rfa close list
 					req.setAttribute("RfaActionList", RfaActionList.stream().filter(e-> e[14].toString().equalsIgnoreCase("ARC")).collect(Collectors.toList()));
 				}else {
 					req.setAttribute("RfaActionList", RfaActionList);
@@ -2934,27 +2946,26 @@ public class ActionController {
 	 		
 	 	}
 		
-
 		
 		@RequestMapping(value = "RfaInspection.htm", method = RequestMethod.GET)
 		public String RfaInspectionAction(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		      // List<String> rfaList = new ArrayList<String>();
+		       
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaInspection.htm"+UserId);		
 			try {
 				List<Object[]> RfaInspectionList = service.RfaInspectionList(EmpId);
 				List<Object[]> RfaForwardApprovedList = service.RfaForwardApprovedList(EmpId);
+				
 				for(int i=0;i<RfaInspectionList.size();i++) {
+					
 					Long rfaId = Long.parseLong(RfaInspectionList.get(i)[0].toString());
+					assignDetails = service.getAssignDetails(EmpId,rfaId);
 					
-					 assignDetails = service.getAssignDetails(EmpId,rfaId);
-					//rfaList.add(assignDetails);
-					
-				}
+			     	}
 				
 				 Gson json = new Gson();
 				
@@ -2964,6 +2975,7 @@ public class ActionController {
 				req.setAttribute("ModalTDList", json.toJson( service.getRfaTDList()));
 				req.setAttribute("EmpId", EmpId);
 				req.setAttribute("rfaCount", assignDetails);
+				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
 				
 			}
 			catch (Exception e) {
@@ -3034,8 +3046,20 @@ public class ActionController {
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
 				req.setAttribute("PriorityList", service.PriorityList());
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
-			    	
 				
+		        List<Object[]> AssigneeList =service.AssigneeEmpList();
+		        List<String> AssignEmp=new ArrayList<>();
+		        
+		        for(Object[] obj :AssigneeList) {
+		        	if(obj[0].toString().equalsIgnoreCase(rfaid)) {
+		        		AssignEmp.add(obj[3].toString());
+		        	}
+		        }
+		        
+		        Gson json = new Gson();
+		        req.setAttribute("AssignEmp", json.toJson(AssignEmp));
+		       
+		        
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error(new Date() +" Inside RfaActionEdit.htm "+UserId, e);
@@ -3104,6 +3128,7 @@ public class ActionController {
 				String description=req.getParameter("description");
 				String reference=req.getParameter("reference");
 				String rfaid=req.getParameter("rfaid");
+				String [] assignee=req.getParameterValues("assignee");
 
 				RfaActionDto rfa = new RfaActionDto();
 				
@@ -3118,7 +3143,7 @@ public class ActionController {
 				rfa.setMultipartfile(attachment);
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
 				
-				Long count=service.RfaEditSubmit(rfa);
+				Long count=service.RfaEditSubmit(rfa,assignee);
 				if (count > 0) {
 					redir.addAttribute("result", "RFA Edited Successfully");
 				} else {
@@ -3149,7 +3174,7 @@ public class ActionController {
 				String statement=req.getParameter("statement");
 				String description=req.getParameter("description");
 				String reference=req.getParameter("reference");
-				String assignee=req.getParameter("assignee");
+				String [] assignee=req.getParameterValues("assignee");
 				String rfano=req.getParameter("rfano");
 				
 				RfaActionDto rfa = new RfaActionDto();
@@ -3161,7 +3186,6 @@ public class ActionController {
 				rfa.setDescription(description);
 				rfa.setReference(reference);
 				rfa.setAssignorId(EmpId);
-				rfa.setAssigneeId(Long.parseLong(assignee));
 				rfa.setRfaNo(rfano);
 				rfa.setMultipartfile(attachment);
 				rfa.setAssignorAttachment(attachment.getOriginalFilename());
@@ -3210,8 +3234,18 @@ public class ActionController {
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			    req.setAttribute("LabDetails", service.RfaLabDetails(LabCode)); 
 			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
-			
-			   
+			    req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+			    
+			    List<String> assigneeCC=service.CCAssigneeList(rfaid); // Multiple assignee's TD/PGD list
+			    List<String> assignorCC =service.CCAssignorList(rfaid); // Only single assignor is getting but for itearate create list
+			    // Here in assignorCC adding assigneeCC because assigneeCC is multiple data and 
+			    // assignorCC is only one data so, assigneeCC is added in assignorCC.
+			    assignorCC.addAll(assigneeCC);
+			    // Here by using stream, removing duplicate names
+			    assignorCC=assignorCC.stream().distinct().collect(Collectors.toList());
+			    // Here assignorCC is sending to jsp and now assignorCC have all assignee and assignor TD/PGD list 
+			    req.setAttribute("CCTdeEmplList", assignorCC);
+			    
 			 Object[]attachmentData=service.RfaAttachmentDownload(rfaid);
 			    
 			String filename="RFA Attachment "+ printname;
@@ -3243,12 +3277,11 @@ public class ActionController {
 	        docMain.close();
 	        pdfDocMain.close();
 	        Path pathOfFileMain= Paths.get( path+File.separator+filename+".pdf");
-	        Files.delete(pathOfFileMain);	
+	        //Files.delete(pathOfFileMain);	
 	        
 	        PdfReader pdf1=new PdfReader(path+File.separator+filename+"Maintemp.pdf");
 	        PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);
 	        PdfMerger merger = new PdfMerger(pdfDocument);
-	        
 	        
 	        
 	        if(attachmentData!=null) {
@@ -3300,9 +3333,7 @@ public class ActionController {
 	        		        document5.setMargins(50, 50, 50, 50);
 	        		        Rectangle pageSize;
 	        		        PdfCanvas canvas;
-	        		        int n = pdfDocument2.getNumberOfPages();
-	        		
-	        		            PdfPage page = pdfDocument2.getPage(1);
+	        		        PdfPage page = pdfDocument2.getPage(1);
 	        		            pageSize = page.getPageSize();
 	        		            canvas = new PdfCanvas(page);
 	        		            Rectangle recta=new Rectangle(10,pageSize.getHeight()-50,40,40);
@@ -3370,36 +3401,16 @@ public class ActionController {
 		public String RfaActionForward(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 			
 		       String UserId = (String) ses.getAttribute("Username");
-		       String Logintype= (String)ses.getAttribute("LoginType");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		       List<String> rfaStatus1  = Arrays.asList("AA","RC","RV","REV","AP");
-		       List<String> rfaForward  = Arrays.asList("AF","AC");
-		       List<String> rfaInspectionStatus  = Arrays.asList("AV","RE","RR","RP");
-		       List<String> rfaInspectionApproval  = Arrays.asList("AR","RFA");
+
 			logger.info(new Date() +"Inside RfaActionForward.htm "+UserId);		
 			try {
-				//String RfaStatus = req.getParameter("RfaStatus");
+
 				String projectid=req.getParameter("projectid");
 			    String rfa=req.getParameter("RFAID");
 			    String status=req.getParameter("rfaoptionby");
 			    String rfaEmpId=req.getParameter("rfaEmpModal");
 
-//			    long assignid=0;
-//			    Object[]assign = service.getRfaAssign(rfa);
-//			    String assineeId=service. (rfa);
-//			    if(RfaStatus.equalsIgnoreCase("AV")) {
-//			    	if( assign!=null) {
-//			    		assignid=Long.parseLong(assign[0].toString());
-//			    	
-//			    	}
-//			    	if(assignid<=0) {
-//			    		
-//			    		redir.addAttribute("resultfail", "RFA Forward Unsuccessful,Please add the Details");
-//			    		return "redirect:/RfaActionForwardList.htm";
-//			    	}
-//			    	
-//			    }
-//	            long count=service.RfaActionForward(RfaStatus,projectid,UserId,rfa,EmpId,Logintype,assineeId);
 			  long count=service.RfaActionForward(status,projectid,UserId,rfa,EmpId,rfaEmpId);
 
 			  
@@ -3424,38 +3435,7 @@ public class ActionController {
 		          }
 				  
 			  }
-			  	  
-			  
-//			
-//				if (count > 0) {
-//					redir.addAttribute("result", "RFA Close Successfully");
-//					if(status.equalsIgnoreCase("AF")) {
-//						
-//					}else
-//					redir.addAttribute("result", "RFA Forwarded Successfully");
-//				} else {
-//					if(status.equalsIgnoreCase("AF")) {
-//						redir.addAttribute("resultfail", "RFA Close Unsuccessful");
-//					}else
-//					redir.addAttribute("resultfail", "RFA Forward Unsuccessful");
-//				}
-				
-//				if(rfaStatus1.contains(status)) {
-//					
-//					return "redirect:/RfaAction.htm";
-//				}else if(rfaInspectionStatus.contains(status)){
-//					
-//					return "redirect:/RfaInspection.htm";
-//				}else if(rfaForward.contains(status)){
-//					
-//					return "redirect:/RfaActionForwardList.htm";
-//				}else if(rfaInspectionApproval.contains(status)){
-//					
-//					return "redirect:/RfaInspectionApproval.htm";
-//				}else {
-//					return "redirect:/RfaAction.htm";
-//				}
-
+			  	
 			}
 			catch (Exception e) {
 					e.printStackTrace();
@@ -3473,18 +3453,18 @@ public class ActionController {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		      // List<String> rfaList = new ArrayList<String>();
+
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaActionForwardList.htm "+UserId);		
 			try {
 				List<Object[]> RfaForwardList = service.RfaForwardList(EmpId);
 				List<Object[]> RfaForwardApprovedList = service.RfaForwardApprovedList(EmpId);
+				
 				for(int i=0;i<RfaForwardList.size();i++) {
 					Long rfaId = Long.parseLong(RfaForwardList.get(i)[0].toString());
 					
 					 assignDetails = service.getAssignDetails(EmpId,rfaId);
-					//rfaList.add(assignDetails);
 					
 				}
 				req.setAttribute("RfaForwardList", RfaForwardList);
@@ -3507,7 +3487,7 @@ public class ActionController {
 			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-		      // List<String> rfaList = new ArrayList<String>();
+
 		       String assignDetails = null;
 		     
 			logger.info(new Date() +"Inside RfaInspectionApproval.htm "+UserId);		
@@ -3538,6 +3518,7 @@ public class ActionController {
 		@RequestMapping(value = "RfaAssignFormSubmit.htm", method = RequestMethod.POST)
 		public String RfaModalSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 				@RequestPart("attachment") MultipartFile attachment) throws Exception {
+			
 		       String UserId = (String) ses.getAttribute("Username");
 		       String LabCode =(String ) ses.getAttribute("labcode");
 		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -3552,20 +3533,22 @@ public class ActionController {
 				String observation = req.getParameter("observation");
 				String clarification = req.getParameter("clarification");
 				String action = req.getParameter("Rfaaction");
-				if(service.RfaAssignAjax(rfaid)==null) {
-				RfaAssign assign = new RfaAssign();
 				
-				assign.setRfaId(Long.parseLong(rfaid));
-				assign.setRfaNo(RfaNo);
-				assign.setLabCode(LabCode);
-				assign.setObservation(observation);
-				assign.setCompletionDate(new java.sql.Date(sdf2.parse(fdate).getTime()));
-				assign.setClarification(clarification);
-				assign.setActionRequired(action);
-				assign.setEmpId(Long.parseLong(EmpId));
-				assign.setRfaStatus("AAA");
-				assign.setCreatedBy(UserId);
-				assign.setIsActive(1);
+				if(service.RfaAssignAjax(rfaid)==null) {
+					
+				RfaInspection inspection = new RfaInspection();
+				
+				inspection.setRfaId(Long.parseLong(rfaid));
+				inspection.setRfaNo(RfaNo);
+				inspection.setLabCode(LabCode);
+				inspection.setObservation(observation);
+				inspection.setCompletionDate(new java.sql.Date(sdf2.parse(fdate).getTime()));
+				inspection.setClarification(clarification);
+				inspection.setActionRequired(action);
+				inspection.setEmpId(Long.parseLong(EmpId));
+				inspection.setRfaStatus("AAA");
+				inspection.setCreatedBy(UserId);
+				inspection.setIsActive(1);
 				
 				RfaActionDto rfa = new RfaActionDto();
 				rfa.setRfaId(Long.parseLong(rfaid));
@@ -3575,8 +3558,8 @@ public class ActionController {
 				rfa.setMultipartfile(attachment);
 				rfa.setAssigneAttachment(attachment.getOriginalFilename());
 				
-				 count=service.RfaModalSubmit(assign,rfa);
-				// service.RfaInspectionEdit(rfaid);
+				 count=service.RfaModalSubmit(inspection,rfa);
+
 					if (count > 0) {
 						redir.addAttribute("result", "RFA Inspection Added Successfully");
 					} else {
@@ -3584,19 +3567,19 @@ public class ActionController {
 					}
 
 				}else {
-					RfaAssign assign = new RfaAssign();
+					RfaInspection inspection = new RfaInspection();
 					
-					assign.setRfaId(Long.parseLong(rfaid));
-					assign.setRfaNo(RfaNo);
-					assign.setLabCode(LabCode);
-					assign.setObservation(observation);
-					assign.setCompletionDate(new java.sql.Date(sdf2.parse(fdate).getTime()));
-					assign.setClarification(clarification);
-					assign.setActionRequired(action);
-					assign.setEmpId(Long.parseLong(EmpId));
-					assign.setRfaStatus("AE");
-					assign.setModifiedBy(UserId);
-					assign.setIsActive(1);
+					inspection.setRfaId(Long.parseLong(rfaid));
+					inspection.setRfaNo(RfaNo);
+					inspection.setLabCode(LabCode);
+					inspection.setObservation(observation);
+					inspection.setCompletionDate(new java.sql.Date(sdf2.parse(fdate).getTime()));
+					inspection.setClarification(clarification);
+					inspection.setActionRequired(action);
+					inspection.setEmpId(Long.parseLong(EmpId));
+					inspection.setRfaStatus("AE");
+					inspection.setModifiedBy(UserId);
+					inspection.setIsActive(1);
 					
 					RfaActionDto rfa = new RfaActionDto();
 					rfa.setRfaId(Long.parseLong(rfaid));
@@ -3606,7 +3589,7 @@ public class ActionController {
 					rfa.setMultipartfile(attachment);
 					rfa.setAssigneAttachment(attachment.getOriginalFilename());
 
-					count=service.RfaModalUpdate(assign,rfa);
+					count=service.RfaModalUpdate(inspection,rfa);
 
 					
 					if (count > 0) {
@@ -3648,56 +3631,7 @@ public class ActionController {
 		   	
 		return json.toJson(RfaAssignAjax);
 		}
-		
-//		@RequestMapping(value = "RfaActionReturnList.htm", method = RequestMethod.POST)
-//		public String RfaActionReturnList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
-//			
-//		       String UserId = (String) ses.getAttribute("Username");
-//		       String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-//		     
-//		       String rfa=null;
-//		       String rfaAdding  = "AF";
-//		       List<String> rfaReturning = Arrays.asList("AC","AF","AY");
-//		       String createdBy=null;
-//		       String RfaStatus =null;
-//		       String assignorId =null;
-//			   // String inspectionAdding  = "RFA";
-//		     
-//			logger.info(new Date() +"Inside RfaActionReturnList.htm "+UserId);		
-//			try {
-//				
-//				 RfaStatus = req.getParameter("RfaStatus");
-//			     rfa=req.getParameter("rfa");
-//			     createdBy=req.getParameter("assigneed");
-//			     assignorId=req.getParameter("userId");
-//			    String replyMsg=req.getParameter("replyMsg");
-//			    
-//			  
-//				Long RfaReturnList = service.RfaReturnList(RfaStatus,UserId,rfa,EmpId,createdBy,replyMsg,assignorId);
-//				if (RfaReturnList > 0) {
-//					redir.addAttribute("result", "RFA Revoked Successfully");
-//				} else {
-//					redir.addAttribute("resultfail", "RFA Revoked Unsuccessful");
-//				}
-//				req.setAttribute("RfaReturnList", RfaReturnList);
-//
-//			}
-//			catch (Exception e) {
-//					e.printStackTrace();
-//					logger.error(new Date() +" Inside RfaActionReturnList.htm "+UserId, e);
-//			}
-//			if(RfaStatus.equalsIgnoreCase(rfaAdding) && EmpId.equalsIgnoreCase(createdBy)) {
-//			return "redirect:/RfaAction.htm";
-//			}else if(RfaStatus.equalsIgnoreCase("RFA") || RfaStatus.equalsIgnoreCase("AY") && EmpId.equalsIgnoreCase(createdBy)) {
-//				return "redirect:/RfaInspection.htm";
-//			}else if(rfaReturning.contains(RfaStatus) ) {
-//				
-//				return "redirect:/RfaActionForwardList.htm";
-//			}else {
-//				return "redirect:/RfaInspectionApproval.htm";
-//			}
-//		}
-//		
+
 		
 		@RequestMapping(value = "RfaActionReturnList.htm", method = RequestMethod.POST)
 		public String RfaActionReturnList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {	
@@ -3714,8 +3648,6 @@ public class ActionController {
 			 String rfa=req.getParameter("rfa");
 			 String replyMsg=req.getParameter("replyMsg");
 			 // for revoke
-			 
-			 
 			 
 			 if(assignor.equalsIgnoreCase(EmpId)&& status.equalsIgnoreCase("AF")) {
 				 status="REV";
@@ -3778,52 +3710,29 @@ public class ActionController {
 		return json.toJson(rfaAddData);
 		}
 		
-		@RequestMapping(value="getRfaInspectionData.htm",method=RequestMethod.GET)
-	    public @ResponseBody String getRfaInspectionData(HttpSession ses, HttpServletRequest req) throws Exception {
-			
-			 Gson json = new Gson();
-		   	 String UserId=(String)ses.getAttribute("Username");
-		   	 
-		   	logger.info(new Date() +"Inside getRfaInspectionData.htm"+UserId);
-		   	
-		   	Object[]rfaAddData=null;
-		   	try {
-		   		String rfaId=req.getParameter("rfaId");
-		   		
-		   		rfaAddData = service.getRfaInspectionData(rfaId);
-		   	}
-		   	catch (Exception e) {
-		   		e.printStackTrace();
-		   		logger.error(new Date() +"Inside getRfaInspectionData.htm"+UserId ,e);
-		   	}
-		   	
-		return json.toJson(rfaAddData);
-		}
-		
 
-
-@RequestMapping(value="getrfaRemarks.htm",method=RequestMethod.GET)
-public @ResponseBody String getrfaRemarks(HttpSession ses, HttpServletRequest req) throws Exception {
+        @RequestMapping(value="getrfaRemarks.htm",method=RequestMethod.GET)
+       public @ResponseBody String getrfaRemarks(HttpSession ses, HttpServletRequest req) throws Exception {
 	
-	 Gson json = new Gson();
-   	 String UserId=(String)ses.getAttribute("Username");
+	           Gson json = new Gson();
+   	          String UserId=(String)ses.getAttribute("Username");
    	 
-   	logger.info(new Date() +"Inside getrfaRemarks.htm"+UserId);
+          	logger.info(new Date() +"Inside getrfaRemarks.htm"+UserId);
    	
-  List<Object[]> rfaRemarkData=null;
-   	try {
-   		String rfaId=req.getParameter("rfaId");
-   		String status=req.getParameter("status");
+           List<Object[]> rfaRemarkData=null;
+    	try {
+   		     String rfaId=req.getParameter("rfaId");
+   		     String status=req.getParameter("status");
    		
-   		rfaRemarkData = service.getrfaRemarks(rfaId,status);
-   	}
-   	catch (Exception e) {
-   		e.printStackTrace();
-   		logger.error(new Date() +"Inside getrfaRemarks.htm"+UserId ,e);
-   	}
+   		     rfaRemarkData = service.getrfaRemarks(rfaId,status);
+   	        }
+       catch (Exception e) {
+   		       e.printStackTrace();
+   		      logger.error(new Date() +"Inside getrfaRemarks.htm"+UserId ,e);
+         	}
    	
-return json.toJson(rfaRemarkData);
-}
+            return json.toJson(rfaRemarkData);
+         }
 
 
               @RequestMapping(value = "MeettingActionReports.htm", method = {RequestMethod.GET, RequestMethod.POST})
@@ -4004,15 +3913,14 @@ return json.toJson(rfaRemarkData);
         	public String MobileNumberTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
         	{
         		String Username = (String) ses.getAttribute("Username");
-        		logger.info(new Date() +"Inside RFATransStatus.htm "+Username);
+        		logger.info(new Date() +"Inside RfaTransStatus.htm "+Username);
         		try {
         			String rfaTransId = req.getParameter("rfaTransId").trim();
-        			System.out.println(rfaTransId+"[[[[[");
         			req.setAttribute("RfaTransactionList", service.getRfaTransList(rfaTransId)) ;				
         			return "action/RfaTransactionStatus";
         		}catch (Exception e) {
         			e.printStackTrace();
-        			logger.error(new Date() +" Inside RFATransStatus.htm "+Username, e);
+        			logger.error(new Date() +" Inside RfaTransStatus.htm "+Username, e);
         			return "static/Error";
         		}
         	}

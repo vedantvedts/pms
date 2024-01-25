@@ -12,6 +12,7 @@ import com.vts.pfms.committee.model.ActionAssign;
 import com.vts.pfms.committee.model.ActionAttachment;
 import com.vts.pfms.committee.model.ActionMain;
 import com.vts.pfms.committee.model.RfaAssign;
+import com.vts.pfms.committee.model.RfaInspection;
 
 public interface ActionService {
 
@@ -97,30 +98,26 @@ public interface ActionService {
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
-	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String Division) throws Exception;
+	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee) throws Exception;
 	public Object[] RfaActionEdit(String rfaid) throws Exception;
 	public Object[] RfaLabDetails(String LabCode) throws Exception;
-	public Long RfaEditSubmit(RfaActionDto rfa) throws Exception;
+	public Long RfaEditSubmit(RfaActionDto rfa, String[] assignee) throws Exception;
 	public Object[] RfaPrintData(String rfaid)throws Exception;
 	public List<Object[]> RfaForwardList(String EmpId) throws Exception;
 	public List<Object[]> RfaInspectionApprovalList(String EmpId) throws Exception;
-	
 	public List<Object[]> RfaInspectionList(String EmpId) throws Exception;
-	
 	public List<Object[]> RfaForwardApprovedList(String EmpId) throws Exception;
 	public List<Object[]> RfaInspectionApprovedList(String EmpId) throws Exception;
-//	public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId,String Logintype,String assineeId)throws Exception;
 	public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId, String rfaEmpId)throws Exception;
 	public Object[] getRfaAssign(String rfa) throws Exception;
-	public Long RfaModalSubmit(RfaAssign assign,RfaActionDto rfa) throws Exception;
+	public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exception;
 	public Object[] RfaAssignAjax(String rfaId)throws Exception;
-	public Long RfaModalUpdate(RfaAssign assign,RfaActionDto rfa) throws Exception;
+	public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exception;
 	public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String EmpId,String assignee,String assignor,String replyMsg) throws Exception;
 	public String getAssignDetails(String empId, Long rfaId)throws Exception;
 	public Object[] getRfaAddData(String rfaId)throws Exception;
 	public Object[] getRfaInspectionData(String rfaId)throws Exception;
 	public List<Object[]> getrfaRemarks(String rfaId,String Status)throws Exception;
-	public String getAssineeId(String rfa)throws Exception;
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid) throws Exception;
 	public List<Object[]> MeettingCount(String committeeid, String projectid)throws Exception;
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
@@ -130,4 +127,9 @@ public interface ActionService {
 	public List<Object[]> getRfaTDList()throws Exception;
 	public List<Object[]> getRfaTransList(String rfaTransId)throws Exception;
 	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
+	public List<Object[]> AssigneeEmpList()throws Exception;
+	public List<String> CCAssigneeList(String rfaid)throws Exception;
+	public List<String> CCAssignorList(String rfaid)throws Exception;
+	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
+	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
 }

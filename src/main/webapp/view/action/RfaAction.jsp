@@ -90,7 +90,8 @@ background-color: transparent;
 
 	  SimpleDateFormat sdf2=new SimpleDateFormat("dd-MM-yyyy");
 	  SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
-		
+
+List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
 List<Object[]> RfaActionList=(List<Object[]>) request.getAttribute("RfaActionList");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 String Project=(String)request.getAttribute("Project");
@@ -212,12 +213,20 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 										int i=0;
 										for(Object[] obj:RfaActionList) { %>
 										<tr>
+										
 											<td style="text-align: center;"><%=++i %> <input type="hidden" name="createdBy" value="<%= obj[11]%>"> </td>
 											<td><%=obj[3] %></td>
 											<td style="text-align: center;"><%=sdf.format(obj[4])%></td>
 											<td style="text-align: center;"><%=obj[2] %></td>
 											<td style="text-align: center;"><%=obj[5] %></td>
-											<td><%=obj[10] %></td>
+											<td>
+											<%if(AssigneeList!=null ){ 
+												for(Object[] obj1 : AssigneeList){
+													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
+													%>
+											      <p style="margin-bottom:0px !important;"> <%=obj1[1].toString()+","+obj1[2].toString() %> </p>          
+											<% }}}%>
+											</td>
 											<td style="text-align: center;">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
@@ -237,12 +246,11 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 														</div>
 													
 													</div>
-		
+		                                                  
 												</button> 
 			 			 <%if(obj[11].toString().equalsIgnoreCase(UserId)&& toUserStatus.contains(obj[14].toString()) ){ %>
 			 			 <button class="btn bg-transparent" formaction="RfaActionEdit.htm" formmethod="post" type="submit" name="Did" value="<%=obj[0].toString() %>" onclick="" 
-			 				data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="EDIT"
-			 			 >
+			 				data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="EDIT" >
 			 			 <i class="fa fa-lg fa-pencil-square-o" style="color:orange" aria-hidden="true"></i>
 			 			 </button><%} %>
 												<input type="hidden"   /> <input
@@ -250,8 +258,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 												value="${_csrf.token}" />
 					                       <%
 					                       if(obj[11].toString().equalsIgnoreCase(UserId) && toUserStatus.contains(obj[14].toString())){%>
-				                         <button class="editable-click"  style="background-color: transparent; name="rfaa" value="<%=obj[0]%>" 
-												<%-- onclick="return frdRfa(<%=obj[0]%>,'<%=obj[14]%>');" --%>
+				                         <button class="editable-click"  style="background-color: transparent; name="rfa" value="<%=obj[0]%>" 
 											type="button"	data-toggle="tooltip" data-placement="top" id="rfaCloseBtn" 
 											onclick="forwardmodal('<%=obj[3]%>',<%=obj[0]%>)" title="" data-original-title="FORWARD RFA">
 												<div class="cc-rockmenu" >
@@ -264,16 +271,14 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 											<input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" /> 
 												
-	                                      <% }if(obj[11].toString().equalsIgnoreCase(UserId) && obj[14].toString().equalsIgnoreCase("AF")){
+	                                      <% }if(obj[11].toString().equalsIgnoreCase(UserId) && (obj[14].toString().equalsIgnoreCase("AF") || obj[14].toString().equalsIgnoreCase("AX"))){
 	                                      %>
 												<button data-original-title="REVOKE" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													formaction="RfaActionReturnList.htm" formmethod="POST"
 													formnovalidate="formnovalidate"  id="rfaRevokeBtn"
-													
 													onclick="return returnRfa(<%=obj[0]%>,'<%=obj[14]%>','<%=obj[15]%>')">
 												  <i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
-													
 												</button> 
 													<input type="hidden" name="rfa" id="rfaHidden">
  													<input type="hidden" name="RfaStatus" id="RfaStatusHidden">
@@ -285,12 +290,9 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 													formnovalidate="formnovalidate" name="rfa" id="rfaRemarksBtn"
 													value="<%=obj[0]%>"
 													onclick="return rfaRemarks(<%=obj[0]%>,'<%=obj[14]%>')">
-													
-														
-														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
-													
+													<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 												</button> 
-											 <%} if(obj[14].toString().equalsIgnoreCase("AP")){%>  
+											 <%} if(obj[14].toString().equalsIgnoreCase("AP") && obj[15].toString().equalsIgnoreCase(EmpId)){%>  
 											 	<button type="submit" class="editable-click"  style="background-color: transparent;" 
 											formaction="RfaActionForward.htm" formmethod="POST" formnovalidate="formnovalidate"
 												name="RFAID" value="<%=obj[0]%>" 
@@ -323,13 +325,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV");
 								value="${_csrf.token}" />
 								
 							<button class="btn add" type="button" formaction="RfaActionAdd.htm" name="sub" value="add" onclick="addRfa()" id="addRfaBtn">ADD</button>
-						   <%--  <%if(RfaActionList!=null){
-							  for(Object[] list:RfaActionList) {%>
-							   <%if(list[11].toString().equalsIgnoreCase(UserId)){ %>	
-						
-							  <%} %>
-							<%}}%> --%>
-								
+						  
 							<a class="btn btn-info shadow-nohover back"
 								href="MainDashBoard.htm">BACK</a>
 						</div>
@@ -478,6 +474,7 @@ $('#tdate').daterangepicker({
 		format : 'DD-MM-YYYY'
 	}
 });
+
 $(function () {
 	$('[data-toggle="tooltip"]').tooltip()
 	})

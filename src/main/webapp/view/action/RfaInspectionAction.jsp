@@ -7,8 +7,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="../static/header.jsp"></jsp:include>
 
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 
 <title>RFA Inspection</title>
 <style type="text/css">
@@ -68,6 +72,17 @@ color: #007bff;
 color: black;
 font-size: 13px;
 }
+}
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
 
 </style>
 </head>
@@ -82,11 +97,14 @@ font-size: 13px;
 	  SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
 		
 List<Object[]> RfaInspectionList=(List<Object[]>) request.getAttribute("RfaInspectionList");
+List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
+String ModalEmpList=(String)request.getAttribute("ModalEmpList");
+String ModalTDList=(String)request.getAttribute("ModalTDList");
 String EmpId=(String)request.getAttribute("EmpId");
 String UserId=(String)request.getAttribute("UserId");
 String rfaCount=(String) request.getAttribute("rfaCount");
-List<String> toAssigneRevokeStatus  = Arrays.asList("RFA");
-List<String> forwardAllow = Arrays.asList("AAA","RP","RR","RE","AV");
+List<String> toAssigneRevokeStatus  = Arrays.asList("RFA","AY");
+List<String> forwardAllow = Arrays.asList("RP","RR","RE","AAA");
 List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 %>
 
@@ -134,7 +152,8 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											<th>Project</th>
 											<th>Priority</th>
 											<th>Forwarded By</th>
-											<th>Action</th>
+											<th>Status</th>
+											<th style="width: 14%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -149,8 +168,13 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											<td style="text-align: center;"><%=obj[2] %></td>
 											<td style="text-align: center;"><%=obj[5] %></td>
 											<td><%=obj[11] %></td>
-																<td class="left width" style="text-align: center;">
-
+											<td style="text-align: center;">
+	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	                                       	  	<button type="submit" class="btn btn-sm btn-link btn-status" formaction="RfaTransStatus.htm" value="<%=obj[0] %>" name="rfaTransId"  data-toggle="tooltip" data-placement="top" title="Transaction History" 
+	                                       	  	style=" color: #E65100; font-weight: 600;" formtarget="_blank"><%=obj[15] %> 
+								    			</button>
+	                                        </td>
+											<td class="left width" style="text-align: center;">
 												<button class="editable-click bg-transparent"
 													formaction="RfaActionPrint.htm" formmethod="get"
 													formnovalidate="formnovalidate" name="rfaid"
@@ -158,7 +182,10 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													formtarget="_blank">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon">
+															<figure class="rolling_icon" style="margin: 0px;
+    outline: 0px!important;
+    background: transparent;
+    padding: 0px;">
 																<img src="view/images/preview3.png">
 															</figure>
 														</div>
@@ -166,13 +193,16 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 													</div>
 
 												</button> 
-												<%if(rfaCount.equalsIgnoreCase("0")){ %>
+												<%if(obj[10].toString().equalsIgnoreCase("AV")){ %>
 														<button title="ADD"  data-original-title="ADD" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
 													onclick="showModel('<%=obj[3].toString()%>',<%=obj[0].toString()%>)">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon" >
+															<figure class="rolling_icon"  style="margin: 0px;
+    outline: 0px!important;
+    background: transparent;
+    padding: 0px;">
 																<img src="view/images/assign.jpg">
 															</figure>
 														</div>
@@ -185,41 +215,42 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												value="<%=obj[12].toString() %>"> <input
 												type="hidden" name="RfaStatus"
 												value="<%=obj[10].toString()%>">
-											<%if(obj[9].toString().equalsIgnoreCase(EmpId) ){
-												if(forwardAllow.contains(obj[10]) && !rfaCount.equalsIgnoreCase("0")){
+											<%
+												if(forwardAllow.contains(obj[10].toString())){
 											%>
-												<button class="editable-click"
-													style="background-color: transparent;"
-													formaction="RfaActionForward.htm" formmethod="POST"
-													formnovalidate="formnovalidate" name="rfa"
-													value="<%=obj[0]%>"
-													onclick="return confirm('Are You Sure To Forward this RFA ?');">
+										
+												<button class="editable-click" type="button"
+													 style="background-color: transparent;"
+													 data-toggle="tooltip" data-placement="top" title="RFA FORWARD"
+													 value="<%=obj[0]%>"
+													 onclick="forwardmodal('<%=obj[3]%>','<%=obj[0]%>')">
 													<div class="cc-rockmenu">
-														<figure class="rolling_icon">
+														<figure class="rolling_icon" style="margin: 0px;
+    outline: 0px!important;
+    background: transparent;
+    padding: 0px;">
 															<img src="view/images/forward1.png">
 														</figure>
 													</div>
-												</button>
+												    </button>
 										
 												 <input type="hidden" name="${_csrf.parameterName}"
 												value="${_csrf.token}" /> 
-												<%
-													
-													if(rfaCount.equalsIgnoreCase("0")){
-												%>
-										
-												<%}else{ %>
+														
 												<button title="EDIT"  class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"data-original-title="EDIT"
 													onclick="showdata(<%=obj[0].toString()%>,'<%=obj[3].toString()%>')">
 													<div class="cc-rockmenu">
 														<div class="rolling">
-															<figure class="rolling_icon" >
+															<figure class="rolling_icon" style="margin: 0px;
+    outline: 0px!important;
+    background: transparent;
+    padding: 0px;" >
 																<img src="view/images/edit.png">
 															</figure>
 														</div>
 													</div>
-												</button> <%} } }%>
+												</button> <% }%>
 												 <%if(toAssigneRevokeStatus.contains(obj[10])){%> 
 												<button data-original-title="REVOKE" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
@@ -232,7 +263,8 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 														<i class="fa fa-backward" aria-hidden="true" style="color: #007bff; font-size: 24px; position: relative; top: 5px;"></i>
 													
 												</button> 
-												<%} if(obj[15]!=null){
+												<%} %>
+												<%--  if(obj[15]!=null){
 												 if(Integer.valueOf(obj[15].toString())>0){ %>  
 												 	<button title="REMARKS" class="editable-click" name="sub" type="button"
 													value="" style="background-color: transparent;"
@@ -245,7 +277,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 														<i class="fa fa-comment" aria-hidden="true" style="color: #143F6B; font-size: 24px; position: relative; top: 5px;"></i>
 													
 												</button> 
-												<% }} %>
+												<% }} %> --%>
 											</td>
 										</tr>
 										<%}} %>
@@ -263,12 +295,12 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 					</div>
 	<!-- -- ******************************************************************Assign  Model Start ***********************************************************************************-->
  		<form class="form-horizontal" role="form"
-			action="#" method="POST" id="myform1" autocomplete="off">
+			action="RfaAssignFormSubmit.htm" method="POST" id="myform1" autocomplete="off" enctype="multipart/form-data">
 			<div class="modal fade bd-example-modal-lg" id="rfamodal"
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 120%;">
+					<div class="modal-content addreq" style="width: 160%; margin-left:-30%">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">RFA Add</h5>
 							<button type="button" class="close" data-dismiss="modal"
@@ -276,18 +308,18 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div style="height: 550px; overflow: auto;">
+						<div style="height: 580px; overflow: auto;">
 							<div class="modal-body">
 							
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-5">
-											<label style="font-size: 17px; margin-top: 5%; margin-left: 4%; color: #07689f; font-weight: bold;" >RFA No. </label>
+											<label style="font-size: 17px; color: #07689f; font-weight: bold;" >RFA No. </label>
 				                            <label><input type="text" class="form-control" name="RfaNo" id="RfaNo" readonly="readonly"></label>
 										</div>
 										
-										<div class="col-md-7">
-											<label style="font-size: 17px; margin-top: 4%; margin-left: 5%; color: #07689f; font-weight: bold;" >Date of Completion : </label><span class="mandatory" style="color: red;">*</span>
+										<div class="col-md-7" style="margin-left: -15%">
+											<label style="font-size: 17px; color: #07689f; font-weight: bold;" >Date of Completion : </label><span class="mandatory" style="color: red;">*</span>
 				                            <label><input type="text"  id="fdate" name="fdate" value=""class="form-control"></label>
 										</div>
 										</div>
@@ -298,12 +330,12 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 											<div class="col-md-5">
 												<label style="font-size: 17px; margin-top: 5%; color: #07689f; margin-left: 0.1rem; font-weight: bold;">Visual Inspection and Observation<span class="mandatory" style="color: red;">*</span></label>
 											</div>
-											<div class="col-md-7" style="margin-top: 10px">
-												<div class="form-group">
+											<div class="col-md-7" style="margin-top: 10px;margin-left: -15%">
+												<div class="form-group" >
 													<input type="text" name="observation" class="form-control"
-														id="observation" maxlength="255" required="required"
-														placeholder="Maximum 250 Chararcters"
-														style="line-height: 4rem !important">
+														id="observation" maxlength="1000" required="required"
+														placeholder="Maximum 500 Chararcters"
+														style="line-height: 4rem !important; width:126%;">
 												</div>
 											</div>
 										</div>
@@ -317,7 +349,19 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="row">
+									<div class="card"  >
+	      		                    	<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;"></h5><hr>
+    			                    	<div class="card-body" >
+				                    	<div class="row">	
+			                    		<div class="col-md-12" align="left" style="margin-left: 0px; width: 100%;">
+			                     		<div id="Editor" class="center"></div>
+		                      			<textarea  name="clarification" id="clarification" required="required" style="display: none;"></textarea>
+	                    				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+		                    			</div>
+			                    		</div>
+					                    </div>
+					                    </div>
+										<!-- <div class="row">
 											<div class="col-md-12" id="textarea" >
 												<div class="form-group">
 													<textarea required="required" name="clarification"
@@ -325,7 +369,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 														rows="5" cols="53" placeholder="Maximum 1000 Chararcters"></textarea>
 												</div>
 											</div>
-										</div>
+										</div> -->
 									</div>
 									
 									<div class=col-md-12>
@@ -334,7 +378,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 												<label style="font-size: 18px; margin-top: 5%; color: #07689f; margin-left: 0.1rem ; font-weight: bold;">Action Required<span class="mandatory" style="color: red;">*</span></label>
 											</div>
 											<div class="col-md-8" style="margin-top: 10px">
-												<div class="form-group" style="width: 113%">
+												<div class="form-group" style="width: 129%; margin-left: -16%">
 													<input type="text" class="form-control" name="Rfaaction"
 														id="action" maxlength="255" required="required"
 														placeholder="Maximum 250 Chararcters"
@@ -344,13 +388,30 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 										</div>
 									</div>
 									
+									<div class=col-md-12>
+										<div class="row">
+											<div class="col-md-3">
+												<label style="font-size: 18px; margin-top: 5%; color: #07689f; margin-left: 0.1rem ; font-weight: bold;">Attachment</label>
+											</div>
+											<div class="col-md-4" style="margin-top: 5px;">
+												<div class="form-group" style="width: 80%; margin-left:-33%">
+													<input type="file" class="form-control" name="attachment">
+												</div>   
+		                                     </div>
+		                                     <div class="col-md-5" style="margin-top: 10px;display: none;" id="download">
+		                                     <button type="submit" class="btn btn-sm "  style="margin-left: -6rem; background-color: transparent;" name="filename"  formaction="RfaAttachmentDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
+											 <span id="insDownload"></span>
+											 <input type="hidden" name="type" value="ASD">
+											 </div>
+											</div>
+										</div>
 
-									<input type="hidden" name="rfaid" id="rfaidvalue"
+									<input type="hidden" name="rfaId" id="rfaidvalue"
 										value="" />
-									<div class="form-group" align="center" style="margin-top: 3%;">
+									<div class="form-group" align="center">
 										<input type="hidden" name="${_csrf.parameterName}"
 											value="${_csrf.token}" />
-										<span id="btnsub"><button type="button" id="assignSubBtn" class="btn btn-primary btn-sm submit" id="submit" formaction="RfaAssignFormSubmit.htm"  value="SUBMIT" onclick="return assignSub()">SUBMIT</button></span>
+										<span id="btnsub"><button type="submit" id="assignSubBtn" class="btn btn-primary btn-sm submit" id="submit" onclick="submitform()">SUBMIT</button></span>
 									</div>
 	
 							</div>
@@ -358,8 +419,7 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 					</div>
 
 				</div>
-			</div>
-			
+	        </div>
 		</form>
 		
 		<!-- -- ******************************************************************Assign  Model End ***********************************************************************************-->
@@ -406,6 +466,57 @@ List<String> remarksShowStatus  = Arrays.asList("RE","RFA","RR","RP","ARC");
 				</div>
 		
 		</form>
+		
+	<div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">RFA No : <b id="rfamodalval" ></b></h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+								<form name="specadd" id="specadd" action="RfaActionForward.htm" method="POST">
+						<div class="modal-body" >
+					
+				   			<div class="row">
+									 
+			                          <div class="col-3">
+				                             <div class="form-group">
+				                                     <b><label> RFA By : <span class="mandatory" style="color: red;">* </span></label></b> 
+				                                       <br>
+				                                       <select class=" form-control selectdee" onchange="return rfaOptionFunc()" style="width: 100%;" name="rfaoptionby" id="rfaoptionby" required="required" style="margin-top:-5px" >
+															<option disabled="disabled"  selected value="" >Choose...</option>
+															  <option value="RFA" >Checked By</option>	
+											                  <option value="AY" >Approved By</option>
+													  </select>	
+				                              </div>
+			                         </div>
+
+									  <div class="col-6" id="selectClassModal2">
+			                               <div class="form-group">
+											    <b><label>RFA Forward To : </label><br></b>
+												<select class="form-control selectdee " style="width: 100%;" name="rfaEmpModal" id="modalEmpList2" required="required"  data-live-search="true"  data-placeholder="Select Assignee" >
+												</select>
+											</div>
+									</div>
+									</div>
+											<div  align="center">
+			 				          		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />         				
+											<input type="hidden" name="rfano1" id="rfanomodal" value="">
+			 								<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="rfaforwarding" value="SUBMIT"  onclick="return confirm('Are you sure To Submit?')"/>
+											<input type="hidden" name="RFAID" id="RFAID"> 
+							</div>
+								
+			 				</div>  
+			 			
+ 	<!-- Form End -->			
+							</form>
+						</div>
+					</div>
+				</div>
+		
+		
 <script>
 
 $("#myTable1,#myTable2").DataTable({
@@ -438,6 +549,7 @@ $('#fdate').daterangepicker({
 function showModel(RfaNo,rfaId) {
 	  document.getElementById('RfaNo').value=RfaNo;
 	  document.getElementById('rfaidvalue').value=rfaId;
+	  $('#download').hide();
 	  $('#rfamodal').modal('show');
 	 
 }
@@ -516,26 +628,34 @@ function showdata(a,b){
                         }).replace(/\//g, '-');
 						   console.log(formattedDate)
 			$('#fdate').val(formattedDate);
-			$('#clarification').val(ajaxresult[6]);
+			 CKEDITOR.instances['Editor'].setData(ajaxresult[6]);
 			$('#observation').val(ajaxresult[5]);
 			$('#action').val(ajaxresult[7]);
+			if(ajaxresult[8]===null){
+				$('#download').hide();
+			}else{
+				$('#insDownload').text(ajaxresult[8]);
+				$('#download').show();	
+			}
 		}
 	})
 	 
   $('#rfamodal').modal('show');
 }
 function submitform(){
-	if(!confirm("Are you sure to Update")){
+	 var data =CKEDITOR.instances['Editor'].getData();
+	 $('textarea[name=clarification]').val(data);
+	 
+	if(!confirm("Are you sure to Submit")){
 		
 		event.preventDefault();
 		return false;
 	}else{
-		
 		$('#myform1').submit();
 		return true;
 	}
 }
-
+	 
 function assignSub() {
 	
 	  var observation=$('#observation').val();
@@ -575,10 +695,6 @@ $('#observation,#clarification,#action').keyup(function (){
 		  });
 
 
-
-
-
-
 function returnRfa(rfaId,RfaStatus,assignee) {
 	$('#rfaHidden').val(rfaId);
 	$('#RfaStatusHidden').val(RfaStatus);
@@ -610,12 +726,148 @@ $("textarea").on("keypress", function(e) {
     if (e.which === 32 && !this.value.length)
         e.preventDefault();
 });
+
+
+function forwardmodal(rfanomodal,RFAID){
+    $('#rfamodalval').html(rfanomodal);
+    $('#RFAID').val(RFAID);
+    $('#ActionAssignfilemodal').modal('show');
+    		
+}
+
+
+function rfaOptionFunc(){
 	
-	
+	 var selectValue = $("#rfaoptionby").val();
+	 console.log()
+	 var ModalEmpList =<%=ModalEmpList%>;
+	 var ModalTDList =<%=ModalTDList%>;
+	 if (selectValue === "AF") {
+			var html="";
+			
+			for(var i=0;i<ModalEmpList.length;i++){
+				html=html+'<option value="'+ModalEmpList[i][0]+'">'+ModalEmpList[i][1]+","+ModalEmpList[i][2]+'</option>'
+			}
+			$('#modalEmpList2').html("");
+			$('#modalEmpList2').html(html);
+			
+		  } else {
+         
+				for(var i=0;i<ModalTDList.length;i++){
+					html=html+'<option value="'+ModalTDList[i][0]+'">'+ModalTDList[i][1]+","+ModalTDList[i][2]+'</option>'
+				}
+				$('#modalEmpList2').html("");
+				$('#modalEmpList2').html(html);
+		  }
+}
+ </script>
+ 
+ <script type="text/javascript">
+ var editor_config = {
+			
+			toolbar: [{
+			          name: 'clipboard',
+			          items: ['PasteFromWord', '-', 'Undo', 'Redo']
+			        },
+			        {
+			          name: 'basicstyles',
+			          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+			        },
+			        {
+			          name: 'links',
+			          items: ['Link', 'Unlink']
+			        },
+			        {
+			          name: 'paragraph',
+			          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+			        },
+			        {
+			          name: 'insert',
+			          items: ['Image', 'Table']
+			        },
+			        {
+			          name: 'editing',
+			          items: ['Scayt']
+			        },
+			        '/',
+
+			        {
+			          name: 'styles',
+			          items: ['Format', 'Font', 'FontSize']
+			        },
+			        {
+			          name: 'colors',
+			          items: ['TextColor', 'BGColor', 'CopyFormatting']
+			        },
+			        {
+			          name: 'align',
+			          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+			        },
+			        {
+			          name: 'document',
+			          items: ['Print', 'PageBreak', 'Source']
+			        }
+			      ],
+			     
+			    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+				customConfig: '',
+
+				disallowedContent: 'img{width,height,float}',
+				extraAllowedContent: 'img[width,height,align]',
+
+				height: 250,
+
+				
+				contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
+
+				
+				bodyClass: 'document-editor',
+
+				
+				format_tags: 'p;h1;h2;h3;pre',
+
+				
+				removeDialogTabs: 'image:advanced;link:advanced',
+
+				stylesSet: [
+				
+					{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+					{ name: 'Cited Work', element: 'cite' },
+					{ name: 'Inline Quotation', element: 'q' },
+
+					
+					{
+						name: 'Special Container',
+						element: 'div',
+						styles: {
+							padding: '5px 10px',
+							background: '#eee',
+							border: '1px solid #ccc'
+						}
+					},
+					{
+						name: 'Compact table',
+						element: 'table',
+						attributes: {
+							cellpadding: '5',
+							cellspacing: '0',
+							border: '1',
+							bordercolor: '#ccc'
+						},
+						styles: {
+							'border-collapse': 'collapse'
+						}
+					},
+					{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+					{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+					{ filebrowserUploadUrl: '/path/to/upload-handler'},
+				]
+			} ;
+CKEDITOR.replace('Editor',editor_config);
  </script>
 
 </body>
 
 
 </html>
-	

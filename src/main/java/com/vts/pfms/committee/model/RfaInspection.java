@@ -12,28 +12,26 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name ="pfms_rfa_action")
-public class RfaAction {
-	
+@Table(name ="pfms_rfa_inspection")
+public class RfaInspection {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long RfaId;
+	private Long RfaInspectionId;
 	private String LabCode;
-	private Long ProjectId;
+	private Long RfaId;
 	private String RfaNo;
-	private Date RfaDate;
-	private Long PriorityId;
-	private String Statement;
-	private String Description;
-	private String Reference;
-	private String AssignorId;
+	private Date CompletionDate;
+	private String Observation;
+	private String Clarification;
+	private String ActionRequired;
+	private Long EmpId;
 	private String RfaStatus;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private int IsActive;
-	
-	
+
 	
 }

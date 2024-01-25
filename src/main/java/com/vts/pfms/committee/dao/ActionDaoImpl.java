@@ -25,6 +25,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
+import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
 
 
@@ -961,7 +962,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String RFAACTIONLIST="SELECT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,CONCAT (e.empname,',' ,c.designation)AS emp,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND a.assigneeid=e.empid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
+	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
 	@Override
 	public List<Object[]> GetRfaActionList(String fdate, String tdate, String ProjectId,String EmpId) throws Exception 
 	{
@@ -1021,7 +1022,7 @@ public class ActionDaoImpl implements ActionDao{
 		return RfaCount;
 	}
 	
-	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,assigneeid,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive FROM pfms_rfa_action WHERE rfaid=:rfaid";
+	private static final String RFAEDITDATA="SELECT rfaid,labcode,projectid,rfano,rfadate,priorityid,statement,description,reference,rfastatus,createdby,createddate,modifiedby,modifieddate,isactive FROM pfms_rfa_action WHERE rfaid=:rfaid";
 	@Override
 	public Object[] RfaActionEdit(String rfaid) throws Exception {
 		
@@ -1030,7 +1031,6 @@ public class ActionDaoImpl implements ActionDao{
 		return (Object[])query.getSingleResult();
 	}
 
-	
 
 	private static final String RFAEDITSUBMIT="UPDATE pfms_rfa_action SET rfadate=:rfadate,priorityid=:priority,statement=:statement,description=:description,reference=:reference,ModifiedBy=:modifiedby , ModifiedDate=:modidifeddate WHERE rfaid=:rfaid";
 	@Override
@@ -1068,8 +1068,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (Object[])query.getSingleResult();
 	}
     
-  //  private static final String RFAFORWARDLIST="CALL pfms_RfaForward_List(:EmpId)";
-	private static final String RFAFORWARDLIST="CALL pfms_RfaForward_List_New(:EmpId)";
+	private static final String RFAFORWARDLIST="CALL pfms_RfaForward_List(:EmpId)";
 	@Override
 	public List<Object[]> RfaForwardList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAFORWARDLIST);
@@ -1077,8 +1076,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 	
-//	private static final String RFAINSPECTIONAPPROVALLIST="CALL pfms_RfaInspectionForward_List(:EmpId)"; 
-	private static final String RFAINSPECTIONAPPROVALLIST="CALL pfms_RfaInspectionForward_List_New(:EmpId)";
+	private static final String RFAINSPECTIONAPPROVALLIST="CALL pfms_RfaInspectionForward_List(:EmpId)";
 	@Override
 	public List<Object[]> RfaInspectionApprovalList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAINSPECTIONAPPROVALLIST);
@@ -1087,8 +1085,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	//private static final String RFAINSPECTIONLIST="CALL pfms_RfaInspection_List(:EmpId)"; 
-	private static final String RFAINSPECTIONLIST="CALL pfms_RfaInspection_List_New(:EmpId)"; 
+	private static final String RFAINSPECTIONLIST="CALL pfms_RfaInspection_List(:EmpId)"; 
 	@Override
 	public List<Object[]> RfaInspectionList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAINSPECTIONLIST);
@@ -1097,7 +1094,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String RFAFORWARDAPPROVALLIST="CALL pfms_RfaForwardApproved_List_New(:EmpId)"; 
+	private static final String RFAFORWARDAPPROVALLIST="CALL pfms_RfaForwardApproved_List(:EmpId)"; 
 	@Override
 	public List<Object[]> RfaForwardApprovedList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAFORWARDAPPROVALLIST);
@@ -1105,8 +1102,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 	
-//	private static final String RFAINSPECTIONAPPROVEDLIST="CALL pfms_RfaInspectionApproved_List(:EmpId)"; 
-	private static final String RFAINSPECTIONAPPROVEDLIST="CALL pfms_RfaInspectionApproved_List_New(:EmpId)"; 
+	private static final String RFAINSPECTIONAPPROVEDLIST="CALL pfms_RfaInspectionApproved_List(:EmpId)"; 
 	@Override
 	public List<Object[]> RfaInspectionApprovedList(String EmpId) throws Exception {
 		Query query = manager.createNativeQuery(RFAINSPECTIONAPPROVEDLIST);
@@ -1135,17 +1131,19 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final String UPDATESTATUS="UPDATE pfms_rfa_action SET rfastatus=:rfastatus WHERE rfaid=:rfa AND isactive=1 ";
 	@Override
-	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, RfaTransaction tr, String rfa)throws Exception {
+	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, List<RfaTransaction> trans, String rfa)throws Exception {
 	
 		for(PfmsNotification notification:x) {
 			manager.persist(notification);
 		}
-		manager.persist(tr);
+		for(RfaTransaction rfaTransaction:trans) {
+			manager.persist(rfaTransaction);
+		}
 		Query query = manager.createNativeQuery(UPDATESTATUS);
 		query.setParameter("rfastatus", rf.getRfaStatus());
 		query.setParameter("rfa", rfa);
-		query.executeUpdate();
-		return tr.getRfaTransactionId();
+		long a= query.executeUpdate();
+		return a;
 	}
 
 	private static final String RFALIST="SELECT a.rfaid,a.labcode,a.rfano,a.rfadate,a.rfastatus,(SELECT CONCAT(e.empname,',' ,c.designation) FROM employee e, employee_desig c WHERE empid=:EmpId AND e.desigid=c.desigid)AS emp FROM pfms_rfa_action a WHERE rfaid=:rfa";
@@ -1203,7 +1201,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String RFAACTION="SELECT RfaAssignId,LabCode,RfaId,RfaNo,CompletionDate,Observation,Clarification,ActionRequired,EmpId,RfaStatus,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate FROM pfms_rfa_assign WHERE rfaid=:rfa AND isactive=1";	
+	private static final String RFAACTION="SELECT RfaAssignId,LabCode,RfaId,RfaNo,CompletionDate,Observation,Clarification,ActionRequired,EmpId,RfaStatus,CreatedBy,CreatedDate,ModifiedBy,ModifiedDate FROM pfms_rfa_inspection WHERE rfaid=:rfa AND isactive=1";	
 	@Override
 	public Object[] getRfaAssign(String rfa) throws Exception {
 		
@@ -1220,15 +1218,15 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	@Override
-	public Long RfaModalSubmit(RfaAssign assign) throws Exception {
+	public Long RfaModalSubmit(RfaInspection inspection) throws Exception {
 		
-		manager.persist(assign);
+		manager.persist(inspection);
 		
-		return assign.getRfaAssignId();
+		return inspection.getRfaInspectionId();
 	}
 	
 	
-	private static final String RFAASSIGNDATA="SELECT rfaassignid,labcode,rfaid,rfano,completiondate,observation,clarification,actionrequired,(SELECT AssigneeAttachment FROM pfms_rfa_attachment WHERE rfaid=:rfaid AND isactive='1')AS 'Assigneeattach'  FROM pfms_rfa_assign WHERE rfaid=:rfaid AND isactive=1";
+	private static final String RFAASSIGNDATA="SELECT rfainspectionid,labcode,rfaid,rfano,completiondate,observation,clarification,actionrequired,(SELECT AssigneeAttachment FROM pfms_rfa_attachment WHERE rfaid=:rfaid AND isactive='1')AS 'Assigneeattach'  FROM pfms_rfa_inspection WHERE rfaid=:rfaid AND isactive=1";
 	@Override
 	public Object[] RfaAssignAjax(String rfaId) throws Exception {
 		
@@ -1246,19 +1244,19 @@ public class ActionDaoImpl implements ActionDao{
 		return RfaAssignAjax;
 	}
 	
-	private static final String ASSIGNUPDATE="UPDATE pfms_rfa_assign SET completiondate=:fdate , observation=:observation , clarification=:clarification , actionrequired=:Rfaaction,ModifiedBy=:ModifiedBy ,ModifiedDate=:ModifiedDate WHERE rfaid=:rfaid";
+	private static final String ASSIGNUPDATE="UPDATE pfms_rfa_inspection SET completiondate=:fdate , observation=:observation , clarification=:clarification , actionrequired=:Rfaaction,ModifiedBy=:ModifiedBy ,ModifiedDate=:ModifiedDate WHERE rfaid=:rfaid";
 	@Override
-	public Long RfaModalUpdate(RfaAssign assign) throws Exception {
+	public Long RfaModalUpdate(RfaInspection inspection) throws Exception {
 		
 		
 		Query query = manager.createNativeQuery(ASSIGNUPDATE);
-		query.setParameter("rfaid", assign.getRfaId());
-		query.setParameter("fdate", assign.getCompletionDate());
-		query.setParameter("observation", assign.getObservation());
-		query.setParameter("clarification", assign.getClarification());
-		query.setParameter("Rfaaction", assign.getActionRequired());
-		query.setParameter("ModifiedBy", assign.getModifiedBy());
-		query.setParameter("ModifiedDate", assign.getModifiedDate());
+		query.setParameter("rfaid", inspection.getRfaId());
+		query.setParameter("fdate", inspection.getCompletionDate());
+		query.setParameter("observation", inspection.getObservation());
+		query.setParameter("clarification", inspection.getClarification());
+		query.setParameter("Rfaaction", inspection.getActionRequired());
+		query.setParameter("ModifiedBy", inspection.getModifiedBy());
+		query.setParameter("ModifiedDate", inspection.getModifiedDate());
 		
 		
 		return Long.valueOf(query.executeUpdate());
@@ -1278,8 +1276,8 @@ public class ActionDaoImpl implements ActionDao{
 		query.executeUpdate();
 		return tr.getRfaTransactionId();
 	}
-	private static final String GETASSIGNRFAID =  "SELECT COUNT(RfaId) FROM pfms_rfa_assign WHERE RfaId=:rfaId AND EmpId=:empId AND IsActive='1'";
-
+	
+	private static final String GETASSIGNRFAID ="SELECT COUNT(RfaId) FROM pfms_rfa_inspection WHERE RfaId=:rfaId AND IsActive='1'";
 	@Override
 	public String getAssignDetails(String empId, Long rfaId) throws Exception {
 		logger.info( "Inside DAO getAssignDetails");
@@ -1287,7 +1285,7 @@ public class ActionDaoImpl implements ActionDao{
 		try {
 		Query query=manager.createNativeQuery(GETASSIGNRFAID);
 		
-		query.setParameter("empId", empId);
+		//query.setParameter("empId", empId);
 		query.setParameter("rfaId", rfaId);
 		Object executeUpdate = query.getSingleResult();
 		return  executeUpdate.toString();
@@ -1297,8 +1295,8 @@ public class ActionDaoImpl implements ActionDao{
 			return "0";
 		}
 	}
-	private static final String GETRFAADDDATA = "SELECT pm.ProjectCode,CONCAT('(',pp.PriorityId,')',pp.Priority) AS priority,pa.RfaDate,CONCAT (e.empname,',' ,c.designation)AS emp,pa.Statement,pa.Description,pa.Reference FROM pfms_rfa_action pa,pfms_rfa_priority pp,employee e,project_master pm,employee_desig c WHERE pa.RfaId=:rfaId AND pa.IsActive='1' AND pa.PriorityId=pp.PriorityId AND pa.AssigneeId=e.EmpId AND e.desigid=c.desigid AND pm.ProjectId=pa.ProjectId;";
-
+	
+	private static final String GETRFAADDDATA = "SELECT DISTINCT pm.ProjectCode,CONCAT('(',pp.PriorityId,')',pp.Priority) AS priority,pa.RfaDate,pa.rfano,pa.Statement,pa.Description,pa.Reference FROM pfms_rfa_action pa,pfms_rfa_priority pp,employee e,project_master pm,employee_desig c WHERE pa.RfaId=:rfaId AND pa.IsActive='1' AND pa.PriorityId=pp.PriorityId AND e.desigid=c.desigid AND pm.ProjectId=pa.ProjectId;";
 	@Override
 	public Object[] getRfaAddData(String rfaId) throws Exception {
 		logger.info( "Inside DAO getRfaAddData");
@@ -1315,8 +1313,7 @@ public class ActionDaoImpl implements ActionDao{
 		}
 	}
 	
-	private static final String GETRFAINSPECTIONDATA = "SELECT RfaNo,CompletionDate,Observation,Clarification,ActionRequired FROM pfms_rfa_assign WHERE RfaId=:rfaId";
-
+	private static final String GETRFAINSPECTIONDATA = "SELECT RfaNo,CompletionDate,Observation,Clarification,ActionRequired FROM pfms_rfa_inspection WHERE RfaId=:rfaId";
 	@Override
 	public Object[] getRfaInspectionData(String rfaId) throws Exception {
 		logger.info( "Inside DAO getRfaAddData");
@@ -1334,9 +1331,7 @@ public class ActionDaoImpl implements ActionDao{
 	}
 	
 	
-	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId AND CASE WHEN 'user'=:status THEN t.RfaStatus IN ('RC','RV') WHEN 'assigner'=:status THEN t.RfaStatus IN ('RR','RP') END  AND t.EmpId=e.EmpId AND e.desigid=c.desigid";
-
-	
+	private static final String GETRFAREMARKS = "SELECT CONCAT (e.empname,',' ,c.designation) AS emp,t.Remarks,t.ActionDate FROM pfms_rfa_action_transaction t,employee e,employee_desig c WHERE t.RfaId=:rfaId AND CASE WHEN 'user'=:status THEN t.RfaStatus IN ('RC','RV') WHEN 'assigner'=:status THEN t.RfaStatus IN ('RR','RP') END  AND t.actionby=e.EmpId AND e.desigid=c.desigid";
 	@Override
 	public List<Object[]> getrfaRemarks(String rfaId,String status) throws Exception {
 		Query query=manager.createNativeQuery(GETRFAREMARKS);
@@ -1345,24 +1340,7 @@ public class ActionDaoImpl implements ActionDao{
 		List<Object[]> remarksList=(List<Object[]>)query.getResultList();	
 		return remarksList;
 	}
-	private static final String GETASSINEEID = "SELECT AssigneeId FROM pfms_rfa_action WHERE RfaId=:rfa";
-	@Override
-	public String getAssineId(String rfa) throws Exception {
-	logger.info( "Inside DAO getAssineId");
-		
-		try {
-		Query query=manager.createNativeQuery(GETASSINEEID);
-		
-		query.setParameter("rfa", rfa);
-		Object executeUpdate = query.getSingleResult();
-		return  executeUpdate.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Inside DaoImpl getAssineId", e);
-			return "0";
-		}
-	}
-
+	
 	public static final String PROJECTAPPLICABLECOMMITTEELIST="SELECT  b.committeeid,a.projectid, a.autoschedule,b.committeeshortname,b.committeename,b.projectapplicable FROM committee_project a,committee b WHERE a.committeeid=b.committeeid AND b.projectapplicable='P' AND a.projectid=:projectid";
 	@Override
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
@@ -1427,7 +1405,6 @@ public class ActionDaoImpl implements ActionDao{
 			return allEmployees;
 		}
 		
-	
 	}
 
 	
@@ -1446,7 +1423,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 
-	public static final String RFATRANSACTIONLIST="SELECT a.rfatransactionid,c.rfano,e.empid,e.empname,d.designation,a.actiondate,a.remarks,b.rfastatusdetails,b.rfastatuscolor FROM pfms_rfa_action_transaction a,pfms_rfa_status b,pfms_rfa_action c,employee_desig d,employee e WHERE c.rfaid=a.rfaid AND a.rfastatus=b.rfastatus AND a.actionby=e.empid AND e.desigid = d.desigid AND c.rfaid=:rfaTransId ORDER BY a.actiondate ";
+	public static final String RFATRANSACTIONLIST="SELECT a.rfatransactionid,c.rfano,e.empid,e.empname,d.designation,a.actiondate,a.remarks,b.rfastatusdetails,b.rfastatuscolor,a.rfastatus FROM pfms_rfa_action_transaction a,pfms_rfa_status b,pfms_rfa_action c,employee_desig d,employee e WHERE c.rfaid=a.rfaid AND a.rfastatus=b.rfastatus AND a.actionby=e.empid AND e.desigid = d.desigid AND c.rfaid=:rfaTransId GROUP BY a.rfastatus ORDER BY a.rfatransactionid";
 	@Override
 	public List<Object[]> getRfaTransList(String rfaTransId) throws Exception {
 		try {
@@ -1462,14 +1439,14 @@ public class ActionDaoImpl implements ActionDao{
 	@Override
 	public Long RfaAttachment(RfaAttachment rfaAttach)throws Exception{
 		
-		logger.info( "Inside Service RfaAttachment");
+		logger.info( "Inside DaoImpl RfaAttachment");
 		try {
 		manager.persist(rfaAttach);
 		manager.flush();
 		return rfaAttach.getRfaAttachmentId();
 	} catch (Exception e) {
 		e.printStackTrace();
-		logger.error( "Inside Service RfaAttachment", e);
+		logger.error( "Inside DaoImpl RfaAttachment", e);
 		return null;
 	}
 		
@@ -1510,5 +1487,119 @@ public class ActionDaoImpl implements ActionDao{
 		query.setParameter("modifieddate", rfaAttach.getModifiedDate());
 		return query.executeUpdate();
 	}
+
+	@Override
+	public long RfaAssignInsert(RfaAssign assign) throws Exception {
+
+		logger.info( "Inside DaoImpl RfaAssignInsert");
+		try {
+		manager.persist(assign);
+		manager.flush();
+		return assign.getRfaAssignId();
+	} catch (Exception e) {
+		e.printStackTrace();
+		logger.error( "Inside DaoImpl RfaAssignInsert", e);
+		return 0;
+	}
+	}
+
+	public static final String ASSIGNEEEMPLIST="SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation,a.assigneeid FROM  pfms_rfa_assign a,pfms_rfa_action b,employee e,employee_desig d WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.empid AND e.desigid=d.desigid AND a.isactive='1'";
+	@Override
+	public List<Object[]> AssigneeEmpList() throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(ASSIGNEEEMPLIST);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String UPDATEASSIGNEEDATA="UPDATE pfms_rfa_assign SET isactive='0' WHERE rfaid=:rfaid";
+	@Override
+	public Long UpdateAssigneeData(String rfaid) throws Exception {
+		
+		Query query = manager.createNativeQuery(UPDATEASSIGNEEDATA);
+		query.setParameter("rfaid", rfaid);
+		
+		return (long) query.executeUpdate();
+	}
+
+	private static final String CCASSIGNEELIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' FROM employee e WHERE e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_assign a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assigneeid=em.empid AND a.rfaid=:rfaid)";
+	@Override
+	public List<String> CCAssigneeList(String rfaid) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(CCASSIGNEELIST);
+			query.setParameter("rfaid", rfaid);
+			return (List<String>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	private static final String CCASSIGNORLIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' FROM employee e WHERE e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_action a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assignorid=em.empid AND a.rfaid=:rfaid)";
+	@Override
+	public List<String> CCAssignorList(String rfaid) throws Exception {
+		
+		try {
+			Query query = manager.createNativeQuery(CCASSIGNORLIST);
+			query.setParameter("rfaid", rfaid);
+			return (List<String>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private static final String RFAACTIONUPDATE="UPDATE pfms_rfa_action SET rfastatus='AAA' WHERE rfaid=:rfaId";
+	@Override
+	public int RfaActionUpdate(String rfaId) throws Exception {
+		Query query = manager.createNativeQuery(RFAACTIONUPDATE);
+		query.setParameter("rfaId", rfaId);
+		return query.executeUpdate();
+	}
+	
+	
+	@Override
+	public Long updateRfaTransaction(RfaTransaction tr) throws Exception {
+		
+		logger.info( "Inside DaoImpl updateRfaTransaction");
+		try {
+		manager.persist(tr);
+		manager.flush();
+		return tr.getRfaTransactionId();
+	} catch (Exception e) {
+		e.printStackTrace();
+		logger.error( "Inside DaoImpl updateRfaTransaction", e);
+		return 0l;
+	}
+	}
+	
+	
+	private static final String RFAACTIONLIST1="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.rfastatus=g.rfastatus AND CASE WHEN 'A'=:projectid THEN 1=1 ELSE a.projectid=:projectid END AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
+	@Override
+	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
+		
+		Query query = manager.createNativeQuery(RFAACTIONLIST1);
+		query.setParameter("projectid", Project);
+		query.setParameter("fdate", fdate);
+		query.setParameter("tdate", tdate);
+		return (List<Object[]>)query.getResultList();
+	}
+	
+	
+	private static final String RFAPROJECTWISE="CALL pfms_RfaProjectWise_List(:empId,:Project,:fdate,:tdate)";
+	@Override
+	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate) throws Exception {
+		
+		Query query = manager.createNativeQuery(RFAPROJECTWISE);
+		query.setParameter("empId", empId);
+		query.setParameter("Project", Project);
+		query.setParameter("fdate", fdate);
+		query.setParameter("tdate", tdate);
+		return (List<Object[]>)query.getResultList();
+	}
 }

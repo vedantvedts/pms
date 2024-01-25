@@ -14,6 +14,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
+import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
 
 public interface ActionDao {
@@ -120,7 +121,7 @@ public interface ActionDao {
 	public List<Object[]> RfaForwardApprovedList(String EmpId)throws Exception;
 	public List<Object[]> RfaInspectionApprovedList(String EmpId)throws Exception;
 	public List<String> ListEmps(String user,String projectid) throws Exception;
-	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, RfaTransaction tr, String rfa) throws Exception;
+	public long RfaActionForward(List<PfmsNotification> x, RfaAction rf, List<RfaTransaction> trans, String rfa) throws Exception;
 	public Object[] RfaList(String rfa,String EmpId) throws Exception;
 	public BigInteger GetDhTdList(String EmpId) throws Exception;
 	public BigInteger GetGhTdList(String EmpId) throws Exception;
@@ -128,15 +129,14 @@ public interface ActionDao {
 	public String getAssineeId(String rfa) throws Exception;
 	public BigInteger GetPdTdList(String EmpId) throws Exception;
 	public Object[] getRfaAssign(String rfa) throws Exception;
-	public Long RfaModalSubmit(RfaAssign assign)throws Exception;
+	public Long RfaModalSubmit(RfaInspection inspection)throws Exception;
 	public Object[] RfaAssignAjax(String rfaId) throws Exception;
-	public Long RfaModalUpdate(RfaAssign assign) throws Exception;
+	public Long RfaModalUpdate(RfaInspection inspection) throws Exception;
 	public Long RfaReturnList(List<PfmsNotification> x, RfaAction rf, RfaTransaction tr, String rfa)throws Exception;
 	public String getAssignDetails(String empId, Long rfaId)throws Exception;
 	public Object[] getRfaAddData(String rfaId)throws Exception;
 	public Object[] getRfaInspectionData(String rfaId)throws Exception;
 	public List<Object[]> getrfaRemarks(String rfaId,String Status)throws Exception;
-	public String getAssineId(String rfa)throws Exception;
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid) throws Exception;
 	public List<Object[]> MeettingCount(String committeeid, String projectid)throws Exception;
 	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
@@ -149,4 +149,14 @@ public interface ActionDao {
 	public Object[] RfaAttachmentDownload(String rfaid)throws Exception;
 	public int deleterfaAttachment(Long rfaId) throws Exception;
 	public long updateRfaAttachment(RfaAttachment rfaAttach)throws Exception;
+	public long RfaAssignInsert(RfaAssign assign)throws Exception;
+	public List<Object[]> AssigneeEmpList()throws Exception;
+	public Long UpdateAssigneeData(String string)throws Exception;
+	public List<String> CCAssigneeList(String rfaid)throws Exception;
+	public List<String> CCAssignorList(String rfaid)throws Exception;
+	public int RfaActionUpdate(String rfaId)throws Exception;
+	public Long updateRfaTransaction(RfaTransaction tr)throws Exception;
+	public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate)throws Exception;
+	public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate)throws Exception;
+
 }

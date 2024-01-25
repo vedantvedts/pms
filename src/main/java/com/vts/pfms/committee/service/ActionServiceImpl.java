@@ -38,6 +38,7 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.RfaAction;
 import com.vts.pfms.committee.model.RfaAssign;
 import com.vts.pfms.committee.model.RfaAttachment;
+import com.vts.pfms.committee.model.RfaInspection;
 import com.vts.pfms.committee.model.RfaTransaction;
 
 @Service
@@ -1398,8 +1399,10 @@ public class ActionServiceImpl implements ActionService {
 		return dao.PriorityList();
 	}
 	@Override
-	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String Division) throws Exception {
+	public Long RfaActionSubmit(RfaActionDto rfa,String LabCode,String UserId,String[] assignee) throws Exception {
+		
 		logger.info(new Date() + "Inside Service RfaActionSubmit");
+		
 		try {
 			
 //		String project = dao.ProjectCode(rfa.getProjectId().toString());
@@ -1417,7 +1420,6 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setRfaNo(rfa.getRfaNo());
 		rfa1.setProjectId(rfa.getProjectId());
 		rfa1.setPriorityId(rfa.getPriorityId());
-		rfa1.setAssigneeId(rfa.getAssigneeId());
 		rfa1.setStatement(rfa.getStatement());
 		rfa1.setDescription(rfa.getDescription());
 		rfa1.setReference(rfa.getReference());
@@ -1428,9 +1430,21 @@ public class ActionServiceImpl implements ActionService {
 		rfa1.setIsActive(1);
 		
 		long rfaIdAttach= dao.RfaActionSubmit(rfa1);
- 
+		
+		for(int i=0;i<assignee.length;i++) {
+
+			RfaAssign assign = new RfaAssign();
+			assign.setAssigneeid(Long.parseLong(assignee[i]));
+			assign.setLabCode(LabCode);
+			assign.setRfaId(rfaIdAttach);
+			assign.setCreatedBy(UserId);
+			assign.setCreatedDate(sdf.format(new Date()));
+			assign.setIsActive(1);
+			
+			dao.RfaAssignInsert(assign);
+		}
+ if(!rfa.getAssignorAttachment().isEmpty()) {
 		RfaAttachment rfaAttach=new RfaAttachment();
-				
 		rfaAttach.setRfaId(rfaIdAttach);
 		rfaAttach.setFilesPath(Path);
 		rfaAttach.setAssignorAttachment(rfa.getMultipartfile().getOriginalFilename());
@@ -1439,14 +1453,16 @@ public class ActionServiceImpl implements ActionService {
 		rfaAttach.setCreatedDate(sdf.format(new Date()));
 		rfaAttach.setIsActive(1);
 		
-		return dao.RfaAttachment(rfaAttach);
-		
+	 dao.RfaAttachment(rfaAttach);
+ }
+		return rfaIdAttach;
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() + "Inside Service RfaActionSubmit", e);
 			return null;
 		}
+
 	}
 
 	@Override
@@ -1454,12 +1470,6 @@ public class ActionServiceImpl implements ActionService {
 		
 		return dao.RfaActionEdit(rfaid);
 	}
-//	@Override
-//	public int RfaInspectionEdit(String rfaid) throws Exception {
-//		
-//		return dao.RfaInspectionEdit(rfaid);
-//	}
-	
 
 	@Override
 	public Object[] RfaLabDetails(String LabCode) throws Exception {
@@ -1468,7 +1478,7 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public Long RfaEditSubmit(RfaActionDto rfa) throws Exception {
+	public Long RfaEditSubmit(RfaActionDto rfa,String[] assignee) throws Exception {
 		
 		String LabCode = rfa.getLabCode();
 		String Path = LabCode + "\\RFAFiles\\";
@@ -1488,6 +1498,7 @@ public class ActionServiceImpl implements ActionService {
 		RfaAttachment rfaAttach=new RfaAttachment();
 		
 		Object[] obj = dao.RfaAttachmentDownload(rfa.getRfaId()+"");
+		
 		if(obj!=null) {// if already attachment is there 
 			if(!rfa.getAssignorAttachment().isEmpty()) {
 				
@@ -1517,7 +1528,23 @@ public class ActionServiceImpl implements ActionService {
 		}
 		
 		}
+		
+		Long result=dao.UpdateAssigneeData(rfa.getRfaId()+"");
 
+		for(int i=0;i<assignee.length;i++) {
+
+			RfaAssign assign = new RfaAssign();
+			assign.setAssigneeid(Long.parseLong(assignee[i]));
+			assign.setLabCode(LabCode);
+			assign.setRfaId(rfa.getRfaId());
+			assign.setCreatedBy(rfa.getModifiedBy());
+			assign.setCreatedDate(sdf.format(new Date()));
+			assign.setIsActive(1);
+			
+			dao.RfaAssignInsert(assign);
+		}
+		
+		
 		return count;
 	}
 
@@ -1555,302 +1582,6 @@ public class ActionServiceImpl implements ActionService {
 		return dao.RfaInspectionApprovedList(EmpId);
 	}
 	
-	
-
-//
-//@Override
-//public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa,String EmpId,String Logintype,String assineeId) throws Exception {
-//	
-//	Object[] obj = dao.RfaList(rfa,EmpId);
-//	List<String> assigneFwd  = Arrays.asList("AV","RE","RR","RP");
-//	List<String> userFwd  = Arrays.asList("AA","REV","RC","RV");
-//	RfaAction rf= new RfaAction();
-//	
-//	RfaTransaction tr= new RfaTransaction();
-//	
-//	
-//	if(rfaStatus.equalsIgnoreCase("AA")) {
-//		rf.setRfaStatus("AF");
-//	}else if(rfaStatus.equalsIgnoreCase("AF")) {
-//		rf.setRfaStatus("AC");
-//	}else if(rfaStatus.equalsIgnoreCase("AC")) {
-//		rf.setRfaStatus("AV");
-//	}else if(rfaStatus.equalsIgnoreCase("AV")) {
-//		rf.setRfaStatus("RFA");
-//	}else if(rfaStatus.equalsIgnoreCase("AE")) {
-//		rf.setRfaStatus("AR");
-//	}else if(rfaStatus.equalsIgnoreCase("AR")) {
-//		rf.setRfaStatus("AP");
-//	}else if(rfaStatus.equalsIgnoreCase("REV")) {
-//		rf.setRfaStatus("AF");
-//	}else if(rfaStatus.equalsIgnoreCase("RC")) {
-//		rf.setRfaStatus("AF");
-//	}else if(rfaStatus.equalsIgnoreCase("RV")) {
-//		rf.setRfaStatus("AF");
-//	}else if(rfaStatus.equalsIgnoreCase("RE")) {
-//		rf.setRfaStatus("RFA");
-//	}else if(rfaStatus.equalsIgnoreCase("RFA")) {
-//		rf.setRfaStatus("AR");
-//	}else if(rfaStatus.equalsIgnoreCase("RR")) {
-//		rf.setRfaStatus("RFA");
-//	}else if(rfaStatus.equalsIgnoreCase("RP")) {
-//		rf.setRfaStatus("RFA");
-//	}else if(rfaStatus.equalsIgnoreCase("AP")) {
-//		rf.setRfaStatus("ARC");
-//	}
-//	
-//	if(rfaStatus.equalsIgnoreCase("AA")) {
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AF");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));
-//	}else if(rfaStatus.equalsIgnoreCase("AF")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AC");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("REV")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AF");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RV")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AF");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RC")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AF");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("AC")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AV");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("AV")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("RFA");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("AE")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AR");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("AR")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AP");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RE")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("RFA");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RFA")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("AR");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RR")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("RFA");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("RP")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("RFA");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}else if(rfaStatus.equalsIgnoreCase("AP")){
-//		tr.setRfaId(Long.parseLong(rfa));
-//		tr.setRfaStatus("ARC");
-//		tr.setEmpId(Long.parseLong(EmpId));
-//		tr.setActionBy(UserId);
-//		tr.setActionDate(sdf1.format(new Date()));	
-//	}
-//	
-//	List<PfmsNotification> x = new ArrayList<>();
-//	
-//	List<String>emps= new ArrayList<>();
-//	emps = dao.ListEmps(UserId,projectid);
-//	
-//	if(userFwd.contains(rfaStatus) ) {
-//		for(int i=0;i<emps.size();i++) {
-//			
-//			PfmsNotification pf = new PfmsNotification();
-//			pf.setEmpId(Long.parseLong(emps.get(i).toString()));
-//			pf.setStatus("MAR");
-//			pf.setNotificationUrl("RfaActionForwardList.htm");
-//			pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//			pf.setIsActive(1);
-//			pf.setNotificationby(Long.parseLong(EmpId));
-//			pf.setNotificationDate(sdf1.format(new Date()));
-//			pf.setCreatedBy(UserId);
-//			pf.setCreatedDate(sdf1.format(new Date()));
-//			x.add(pf);
-//		}
-//	}else if(rfaStatus.equalsIgnoreCase("AF")) {
-//		
-//		String EmpTd="";
-//		if(Logintype.equalsIgnoreCase("D")) {
-//			EmpTd=dao.GetGhTdList(EmpId) + "";
-//			
-//		}else if(Logintype.equalsIgnoreCase("T")) {
-//			EmpTd=dao.GetDhTdList(EmpId) + "";
-//			
-//		}else if (Logintype.equalsIgnoreCase("P")) {
-//			EmpTd=dao.GetPdTdList(EmpId) + "";
-//		}
-//		PfmsNotification pf = new PfmsNotification();
-//		pf.setEmpId(Long.parseLong(EmpTd));
-//		pf.setStatus("MAR");
-//		pf.setNotificationUrl("RfaActionForwardList.htm");
-//		pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//		pf.setIsActive(1);
-//		pf.setNotificationby(Long.parseLong(EmpId));
-//		pf.setNotificationDate(sdf1.format(new Date()));
-//		pf.setCreatedBy(UserId);
-//		pf.setCreatedDate(sdf1.format(new Date()));
-//		x.add(pf);
-//	
-//	}else if(rfaStatus.equalsIgnoreCase("AC")) {
-//		Object[] assign = dao.RfaActionEdit(rfa);
-//		
-//		PfmsNotification pf = new PfmsNotification();
-//		pf.setEmpId(Long.parseLong(assign[9].toString()));
-//		pf.setStatus("MAR");
-//		pf.setNotificationUrl("RfaInspection.htm");
-//		pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//		pf.setIsActive(1);
-//		pf.setNotificationby(Long.parseLong(EmpId));
-//		pf.setNotificationDate(sdf1.format(new Date()));
-//		pf.setCreatedBy(UserId);
-//		pf.setCreatedDate(sdf1.format(new Date()));
-//		x.add(pf);
-//	
-//	}else if(assigneFwd.contains(rfaStatus)) {
-//		
-//            for(int i=0;i<emps.size();i++) {
-//			
-//			PfmsNotification pf = new PfmsNotification();
-//			pf.setEmpId(Long.parseLong(emps.get(i).toString()));
-//			pf.setStatus("MAR");
-//			pf.setNotificationUrl("RfaInspectionApproval.htm");
-//			pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//			pf.setIsActive(1);
-//			pf.setNotificationby(Long.parseLong(EmpId));
-//			pf.setNotificationDate(sdf1.format(new Date()));
-//			pf.setCreatedBy(UserId);
-//			pf.setCreatedDate(sdf1.format(new Date()));
-//			x.add(pf);
-//            }}
-//		else if(rfaStatus.equalsIgnoreCase("RFA")) {
-//			String EmpTd="";
-//			if(Logintype.equalsIgnoreCase("D")) {
-//				
-//				EmpTd=dao.GetGhTdList(EmpId) + "";
-//				
-//			}else if(Logintype.equalsIgnoreCase("T")) {
-//				
-//				EmpTd=dao.GetDhTdList(assineeId) + "";
-//				
-//			}else if (Logintype.equalsIgnoreCase("P")) {
-//				
-//				EmpTd=dao.GetPdTdList(EmpId) + "";
-//			}
-//			
-//			PfmsNotification pf = new PfmsNotification();
-//			pf.setEmpId(Long.parseLong(EmpTd));
-//			pf.setStatus("MAR");
-//			pf.setNotificationUrl("RfaInspectionApproval.htm");
-//			pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//			pf.setIsActive(1);
-//			pf.setNotificationby(Long.parseLong(EmpId));
-//			pf.setNotificationDate(sdf1.format(new Date()));
-//			pf.setCreatedBy(UserId);
-//			pf.setCreatedDate(sdf1.format(new Date()));
-//			x.add(pf);
-//		}else if(rfaStatus.equalsIgnoreCase("AR")) {
-//            	String empTd=null;
-//            	empTd=	dao.getUserId(rfa);
-//			PfmsNotification pf = new PfmsNotification();
-//			pf.setEmpId(Long.parseLong(empTd));
-//			pf.setStatus("MAR");
-//			pf.setNotificationUrl("RfaAction.htm");
-//			pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Approved By"+" "+obj[5]);
-//			pf.setIsActive(1);
-//			pf.setNotificationby(Long.parseLong(EmpId));
-//			pf.setNotificationDate(sdf1.format(new Date()));
-//			pf.setCreatedBy(UserId);
-//			pf.setCreatedDate(sdf1.format(new Date()));
-//			x.add(pf);
-//		}else if(rfaStatus.equalsIgnoreCase("Ap")) {
-//		
-//            for(int i=0;i<emps.size();i++) {
-//			
-//			PfmsNotification pf = new PfmsNotification();
-//			pf.setEmpId(Long.parseLong(emps.get(i).toString()));
-//			pf.setStatus("MAR");
-//			pf.setNotificationUrl("RfaInspectionApproval.htm");
-//			pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//			pf.setIsActive(1);
-//			pf.setNotificationby(Long.parseLong(EmpId));
-//			pf.setNotificationDate(sdf1.format(new Date()));
-//			pf.setCreatedBy(UserId);
-//			pf.setCreatedDate(sdf1.format(new Date()));
-//			x.add(pf);
-//		}
-//		
-//	}else if(rfaStatus.equalsIgnoreCase("AE")) {
-//		
-//		String EmpTd="";
-//		if(Logintype.equalsIgnoreCase("D")) {
-//			
-//			EmpTd=dao.GetGhTdList(EmpId) + "";
-//			
-//		}else if(Logintype.equalsIgnoreCase("T")) {
-//			
-//			EmpTd=dao.GetDhTdList(assineeId) + "";
-//			
-//		}else if (Logintype.equalsIgnoreCase("P")) {
-//			
-//			EmpTd=dao.GetPdTdList(EmpId) + "";
-//		}
-//		
-//		PfmsNotification pf = new PfmsNotification();
-//		pf.setEmpId(Long.parseLong(EmpTd));
-//		pf.setStatus("MAR");
-//		pf.setNotificationUrl("RfaActionForwardList.htm");
-//		pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
-//		pf.setIsActive(1);
-//		pf.setNotificationby(Long.parseLong(EmpId));
-//		pf.setNotificationDate(sdf1.format(new Date()));
-//		pf.setCreatedBy(UserId);
-//		pf.setCreatedDate(sdf1.format(new Date()));
-//		x.add(pf);
-//	
-//	}
-//	
-//	long count=dao.RfaActionForward(x,rf,tr,rfa);
-//	
-//	return count;
-//}
 
 @Override
 public Object[] getRfaAssign(String rfa) throws Exception {
@@ -1859,9 +1590,9 @@ public Object[] getRfaAssign(String rfa) throws Exception {
 }
 
 @Override
-public Long RfaModalSubmit(RfaAssign assign,RfaActionDto rfa) throws Exception {
+public Long RfaModalSubmit(RfaInspection inspection,RfaActionDto rfa) throws Exception {
 	
-	assign.setCreatedDate(sdf1.format(new Date()));
+	inspection.setCreatedDate(sdf1.format(new Date()));
 	
 	String LabCode = rfa.getLabCode();
 	String Path = LabCode + "\\RFAFiles\\";
@@ -1896,8 +1627,17 @@ public Long RfaModalSubmit(RfaAssign assign,RfaActionDto rfa) throws Exception {
 	}
 	
  }
+	RfaTransaction tr = new RfaTransaction();
+	tr.setRfaId(rfa.getRfaId());
+	tr.setRfaStatus("AAA");
+	tr.setEmpId(inspection.getEmpId());
+	tr.setActionBy(inspection.getEmpId()+"");
+	tr.setActionDate(sdf1.format(new Date()));
+	dao.updateRfaTransaction(tr);
 	
-	return dao.RfaModalSubmit(assign);
+	int result=dao.RfaActionUpdate(rfa.getRfaId().toString());
+	
+	return dao.RfaModalSubmit(inspection);
 }
 
 @Override
@@ -1907,8 +1647,8 @@ public Object[] RfaAssignAjax(String rfaId) throws Exception {
 }
 
 @Override
-public Long RfaModalUpdate(RfaAssign assign,RfaActionDto rfa) throws Exception {
-	assign.setModifiedDate(sdf1.format(new Date()));
+public Long RfaModalUpdate(RfaInspection inspection,RfaActionDto rfa) throws Exception {
+	inspection.setModifiedDate(sdf1.format(new Date()));
 
 	String LabCode = rfa.getLabCode();
 	String Path = LabCode + "\\RFAFiles\\";
@@ -1944,7 +1684,7 @@ public Long RfaModalUpdate(RfaAssign assign,RfaActionDto rfa) throws Exception {
 	
  }
 	
-     long count=dao.RfaModalUpdate(assign);
+     long count=dao.RfaModalUpdate(inspection);
 	
 	 return count;
 
@@ -2002,7 +1742,7 @@ public Long RfaReturnList(String rfaStatus, String UserId, String rfa,String Emp
 	
 	rf.setRfaStatus(newstatus);   // for rfa action table
 	
-	tr.setEmpId(Long.parseLong(SetEmployee));  // transaction table
+	tr.setEmpId(Long.parseLong(SetEmployee));  // for rfa transaction table
 	tr.setRfaStatus(newstatus);
 	tr.setRfaId(Long.parseLong(rfa));
 	tr.setRemarks(replyMsg);
@@ -2051,10 +1791,6 @@ public List<Object[]> getrfaRemarks(String rfaId,String Status) throws Exception
 	return dao.getrfaRemarks(rfaId,Status);
 }
 
-@Override
-public String getAssineeId(String rfa) throws Exception {
-	return dao.getAssineId(rfa);
-}
 
 @Override
 public List<Object[]> ProjectApplicableCommitteeList(String projectid)throws Exception
@@ -2102,29 +1838,82 @@ public List<Object[]> getRfaTDList() throws Exception {
 public long RfaActionForward(String rfaStatus, String projectid, String UserId, String rfa, String EmpId, String rfaEmpId) throws Exception {
 	
    Object[] obj = dao.RfaList(rfa,EmpId);
+   
+   String Url="";
+   
+   List<String> Status1  = Arrays.asList("AF","AX","AC");
+   List<String> Status2  = Arrays.asList("RFA","AY","AR");
+   String Status3 ="AV";
 	
+	
+	if(Status1.contains(rfaStatus)) {
+		Url="RfaActionForwardList.htm";
+	}if(Status2.contains(rfaStatus)) {
+		Url="RfaInspectionApproval.htm";
+	}if(Status3.contains(rfaStatus)) {
+		Url="RfaInspection.htm";
+	}
+ 
 	RfaAction rf = new RfaAction();
 	rf.setRfaStatus(rfaStatus);
 
-	RfaTransaction tr = new RfaTransaction();
 	
 	if(rfaStatus.equalsIgnoreCase("ARC")) {
 		rfaEmpId=EmpId;
 	}
-	tr.setRfaId(Long.parseLong(rfa));
-	tr.setRfaStatus(rfaStatus);
-	tr.setEmpId(Long.parseLong(rfaEmpId));
-	tr.setActionBy(EmpId);
-	tr.setActionDate(sdf1.format(new Date()));
+	
+	List<String> assignId = new ArrayList<String>(); // For storing multiple assigneeid 
+
+	for(Object[]Assignee:AssigneeEmpList()) {  
+		if(Assignee[0].toString().equalsIgnoreCase(rfa)) {  // comparing with rfaid
+			assignId.add(Assignee[3].toString());           // add all multiple assigneeid in assignId
+		}
+	}
+	
+	List<RfaTransaction> trans = new ArrayList<RfaTransaction>();//
+	
+	
+	if(rfaStatus.equalsIgnoreCase("AV")){
+	  for(int i=0;i<assignId.size();i++) {
+		  
+	    RfaTransaction tr = new RfaTransaction();
+	    
+		tr.setRfaId(Long.parseLong(rfa));
+		tr.setRfaStatus(rfaStatus);
+		tr.setEmpId(Long.parseLong(assignId.get(i))); // Here multiple assigneeid store in transaction
+		tr.setActionBy(EmpId);
+		tr.setActionDate(sdf1.format(new Date()));
+		trans.add(tr);
+	  }
+	}else {
+		
+		RfaTransaction tr = new RfaTransaction();
+		
+		tr.setRfaId(Long.parseLong(rfa));
+		tr.setRfaStatus(rfaStatus);
+		tr.setEmpId(Long.parseLong(rfaEmpId));
+		tr.setActionBy(EmpId);
+		tr.setActionDate(sdf1.format(new Date()));
+		trans.add(tr);
+	}
 	
 	List<PfmsNotification> x = new ArrayList<>();
 	
+	List<String> employee= new ArrayList<String>();
+	
+	if(rfaEmpId==null) {
+		employee.addAll(assignId);
+	}else {
+		 employee.add(rfaEmpId);
+	}
+	
+	
 	if(!rfaStatus.equalsIgnoreCase("ARC")) {
+	   for(String empId : employee) {
 	PfmsNotification pf = new PfmsNotification();
-
-	pf.setEmpId(Long.parseLong(rfaEmpId));	
+	pf.setEmpId(Long.parseLong(empId));	
 	pf.setStatus("MAR");
-	pf.setNotificationUrl("RfaActionForwardList.htm");
+	pf.setNotificationUrl(Url);
 	pf.setNotificationMessage("RFA No"+" "+obj[2]+" "+"Forwarded By"+" "+obj[5]);
 	pf.setIsActive(1);
 	pf.setNotificationby(Long.parseLong(EmpId));
@@ -2132,8 +1921,10 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 	pf.setCreatedBy(UserId);
 	pf.setCreatedDate(sdf1.format(new Date()));
 	x.add(pf);
+	  }
 	}
-	long count=dao.RfaActionForward(x,rf,tr,rfa);
+	
+	long count=dao.RfaActionForward(x,rf,trans,rfa);
 
 	return count;
 }
@@ -2150,6 +1941,34 @@ public Object[] RfaAttachmentDownload(String rfaid) throws Exception {
 	return dao.RfaAttachmentDownload(rfaid);
 }
 
+@Override
+public List<Object[]> AssigneeEmpList() throws Exception {
+	
+	return dao.AssigneeEmpList();
+}
 
+@Override
+public List<String> CCAssigneeList(String rfaid) throws Exception {
+	
+	return dao.CCAssigneeList(rfaid);
+}
+
+@Override
+public List<String> CCAssignorList(String rfaid) throws Exception {
+	
+	return dao.CCAssignorList(rfaid);
+}
+
+@Override
+public List<Object[]> GetRfaActionList1(String Project, String fdate, String tdate) throws Exception {
+
+	return dao.GetRfaActionList1(Project,fdate,tdate);
+}
+
+@Override
+public List<Object[]> RfaProjectwiseList(String empId, String Project, String fdate, String tdate) throws Exception {
+	
+	return dao.RfaProjectwiseList(empId,Project,fdate,tdate);
+}
 
 }

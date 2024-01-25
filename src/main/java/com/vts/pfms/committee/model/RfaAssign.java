@@ -20,13 +20,7 @@ public class RfaAssign {
 	private Long RfaAssignId;
 	private String LabCode;
 	private Long RfaId;
-	private String RfaNo;
-	private Date CompletionDate;
-	private String Observation;
-	private String Clarification;
-	private String ActionRequired;
-	private Long EmpId;
-	private String RfaStatus;
+	private Long Assigneeid;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

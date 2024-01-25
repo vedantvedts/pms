@@ -6,9 +6,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="../static/header.jsp"></jsp:include>
 
-<title>Rfa Action Add</title>
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
+<spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
+
+<title>RFA Action Add</title>
 
 <style type="text/css">
 
@@ -48,12 +53,9 @@ String EmpId=(String)request.getAttribute("EmpId");
 
 
 
-<div class="container">
-	<form action="#" method="POST" name="myfrm" id="myfrm" autocomplete="off">
-	
-	<div class="row" style="" id="mainrow">
-		<div class="col-md-12">
- 			<div class="card shadow-nohover" style="margin-top: 10px">		
+<div class="container-fluid">
+	<form action="RfaActionSubmit.htm" method="POST" name="myfrm" id="myfrm" autocomplete="off" enctype="multipart/form-data" >
+		<div class="card shadow-nohover" style="margin-top:0px">		
 				<div class="row card-header">
 			   			<div class="col-md-6">
 							<h4>RFA ADD</h4>
@@ -65,7 +67,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 					 </div>
         
         		<div class="card-body">
-            <div class="row">
+                     <div class="row">
 		                    <div class="col-md-2">
 		                        <div class="form-group">
 		                            <label class="control-label">Project</label>
@@ -80,7 +82,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                        </div>
 		                    </div>
 
-		                    <div class="col-md-3">
+		                    <div class="col-md-2">
 		                        <div class="form-group">
 		                            <label class="control-label">Priority</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -93,142 +95,121 @@ String EmpId=(String)request.getAttribute("EmpId");
 		                        </div>
 		                    </div>
 		                    
-		                    <div class="col-md-3">
-		                        <div class="form-group">
-		                            <label class="control-label">Date</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required"  style="width: 100%;" >						
-		                        </div>
-		                    </div>
-		                    
-		                  <div class="col-md-4">
+		                  <div class="col-md-3">
 		                     <div class="form-group">
 		                            <label class="control-label">Assigned To</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                      <select class="form-control selectdee" required="required" name="assignee" id="assignee">
-		                         <option disabled="disabled" selected value="" >Choose...</option>                            
+		                      <select class="form-control selectdee" required="required" name="assignee" id="assignee" multiple="multiple" data-placeholder= "Select Employees">                   
 		                         <% for(Object[] obj : EmployeeList) { %>
-		                         <option value=<%=obj[0]%>><%=obj[1]%> , <%=obj[2] %></option>
+		                         <option value="<%=obj[0]%>"><%=obj[1]%> , <%=obj[2]%></option>
 		                         <%} %>
 		                      </select>
 		                  </div>
-		            </div> 
+		                </div> 
+		                
+		                 <div class="col-md-3">
+		                     <div class="form-group">
+		                            <label class="control-label"> RFA No.</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <input  class="form-control"  name="rfano" id="rfano"  required="required"  placeholder="Enter RFA Number" >	
+		                  </div>
+		                </div> 
+		                
+		                  <div class="col-md-2">
+		                       <div class="form-group">
+		                            <label class="control-label">RFA Date</label>
+		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+						  			<input  class="form-control form-control date"  data-date-format="dd-mm-yyyy" id="datepicker1" name="rfadate"  required="required">						
+		                        </div>
+		                  </div>   
 		            
 		          </div>
+		                   
+		            <br>
 		      
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label"> Problem Satement</label>
+		                  <div class="col-md-2" >
+		                      <label class="control-label"> Problem Statement</label>
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="1" cols="30" placeholder="Max 200 Characters" name="statement" id="statement" maxlength="200"></textarea>
+		                  <div class="col-md-10" >
+		                      <textarea class="form-control" rows="2" cols="30" placeholder="Max 500 Characters" name="statement" id="statement" maxlength="500" required="required"></textarea>
 		                  </div>
 		            </div>
 		            
 		            <br>
 		            
-		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
-		                      <label class="control-label">Description</label>
-		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
-		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <textarea class="form-control" rows="3" cols="30" placeholder="Max 500 Characters" name="description" id="description" maxlength="500"></textarea>
-		                  </div>
-		            </div>
+		          <div class="row">
+		             <div class="col-md-2">
+		                 <label class="control-label">Description</label>
+		                   <span class="mandatory" style="color: #cd0a0a;">*</span>
+		              </div>
+		            <div class="col-md-10">
+	      			<div class="card"  >
+	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;"></h5><hr>
+    				<div class="card-body" >
+					<div class="row">	
+					<div class="col-md-12" align="left" style="margin-left: 0px; width: 100%;">
+					<div id="Editor" class="center"></div>
+					<textarea name="description" id="description" style="display: none;"></textarea>
+					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+					</div>
+					</div>
+					</div>
+					</div>
+	         		</div>
+		         </div>
+		          
+		            
 		            
 		            <br>
 		            
 		            <div class="row">
-		                  <div class="col-md-3" style="max-width: 18%">
+		                  <div class="col-md-2">
 		                      <label class="control-label">References</label>
 		                      <span class="mandatory" style="color: #cd0a0a;">*</span>
 		                  </div>
-		                  <div class="col-md-10" style="max-width: 82%">
-		                      <input class="form-control" placeholder="Max 100 Characters" name="reference" id="reference" maxlength="100">
+		                  <div class="col-md-10">
+		                       <textarea class="form-control" rows="2" cols="30" placeholder="Max 500 Characters" name="reference" id="reference" maxlength="500" required="required"></textarea>
+		                      
 		                  </div>
 		            </div>
 		            
-		           
-		             <br>
+		            <br>
 		            
+		            <div class="row">
+		                  <div class="col-md-2">
+		                      <label class="control-label">Attachment</label>
+		                  </div>
+		                  <div class="col-md-4">
+		                      <input class="form-control" type="file" name="attachment"  id="attachment" accept="application/pdf , image/* "  onchange=" editcheck('systemconfig',1)" >
+		                  </div>
+		            </div>
+		             <br>
 		        <div class="form-group" align="center" >
-					 <input type="button" class="btn btn-primary btn-sm submit " onclick="return add()" value="SUBMIT" id="rfaAddSubBtn" formaction="RfaActionSubmit.htm" > 
+					 <button type="submit" class="btn btn-primary btn-sm submit "  value="SUBMIT" id="rfaAddSubBtn" onclick ="return confirm('Are you sure to submnit?')">SUBMIT </button>
 					 <a class="btn btn-info btn-sm  shadow-nohover back" href="RfaAction.htm" >Back</a>
 				</div>
 
-				<input type="hidden" name="${_csrf.parameterName}"		value="${_csrf.token}" /> 
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
  		
    </div>    
         
 
         
         </div>
-	</div>
-</div>
+
 <input type="hidden" value="<%=EmpId %>" name="EmpId">
 </form>
 </div>
   
-  
   <script type="text/javascript">
-  
-  function add() {
-	  
-	  var ProjectProgramme=$('#ProjectProgramme').val();
-	  var priority=$('#priority').val();
-	  var assignee=$('#assignee').val();
-	  var statement=$('#statement').val();
-	  var description=$('#description').val();
-	  var reference=$('#reference').val();
-	  
-		if(ProjectProgramme==""||ProjectProgramme==null ||ProjectProgramme=="null" ){
-			   alert('Please Select ProjectProgramme');
-			   return false;
-		   }else if(priority==""||priority==null || priority=="null"){
-				 alert('Please Select priority');
-				   return false;
-		   }else if(assignee==""||assignee==null || assignee=="null"){
-				 alert('Please Select assignee');
-				   return false;
-		   }else if(statement==""||statement==null || statement=="null"){
-				 alert('Please Enter statement');
-				 document.getElementById("statement").style.boxShadow = "rgb(239, 7, 7) 0px 0px 1px 1px";
-				   return false;
-		   }else if(description==""||description==null || description=="null"){
-				 alert('Please Enter description');
-				 document.getElementById("description").style.boxShadow = "rgb(239, 7, 7) 0px 0px 1px 1px";
-				   return false;
-		   }else if(reference==""||reference==null || reference=="null"){
-				 alert('Please Enter reference');
-				 document.getElementById("reference").style.boxShadow = "rgb(239, 7, 7) 0px 0px 1px 1px";
-				   return false;}
-	  var confirmation = confirm('Are you sure you want to add the RFA?');
-	  if(confirmation){
-		  var form = document.getElementById("myfrm");
-		   
-          if (form) {
-           var rfaAddSubBtn = document.getElementById("rfaAddSubBtn");
-              if (rfaAddSubBtn) {
-                  var formactionValue = rfaAddSubBtn.getAttribute("formaction");
-                  
-                   form.setAttribute("action", formactionValue);
-                    form.submit();
-                }
-           }
-	  } else{
-    	  return false;
-	  }
-	
-}
+
   $('#reference,#description,#statement').keyup(function (){
 	  $('#reference,#description,#statement').css({'-webkit-box-shadow' : 'none', '-moz-box-shadow' : 'none','background-color' : 'none', 'box-shadow' : 'none'});
 		  });
 	  
   
-
-	
 	$('#datepicker1').daterangepicker({
 		"singleDatePicker" : true,
 		"linkedCalendars" : false,
@@ -240,6 +221,7 @@ String EmpId=(String)request.getAttribute("EmpId");
 			format : 'DD-MM-YYYY'
 		}
 	});
+	
 	 $("input").on("keypress", function(e) {
 		    if (e.which === 32 && !this.value.length)
 		        e.preventDefault();
@@ -250,6 +232,116 @@ String EmpId=(String)request.getAttribute("EmpId");
 		        e.preventDefault();
 		});
 
+	 
+	 
+ var editor_config = {
+				
+				toolbar: [{
+				          name: 'clipboard',
+				          items: ['PasteFromWord', '-', 'Undo', 'Redo']
+				        },
+				        {
+				          name: 'basicstyles',
+				          items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'Subscript', 'Superscript']
+				        },
+				        {
+				          name: 'links',
+				          items: ['Link', 'Unlink']
+				        },
+				        {
+				          name: 'paragraph',
+				          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+				        },
+				        {
+				          name: 'insert',
+				          items: ['Image', 'Table']
+				        },
+				        {
+				          name: 'editing',
+				          items: ['Scayt']
+				        },
+				        '/',
+
+				        {
+				          name: 'styles',
+				          items: ['Format', 'Font', 'FontSize']
+				        },
+				        {
+				          name: 'colors',
+				          items: ['TextColor', 'BGColor', 'CopyFormatting']
+				        },
+				        {
+				          name: 'align',
+				          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+				        },
+				        {
+				          name: 'document',
+				          items: ['Print', 'PageBreak', 'Source']
+				        }
+				      ],
+				     
+				    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
+
+					customConfig: '',
+
+					disallowedContent: 'img{width,height,float}',
+					extraAllowedContent: 'img[width,height,align]',
+
+					height: 250,
+
+					
+					contentsCss: [CKEDITOR.basePath +'mystyles.css' ],
+
+					
+					bodyClass: 'document-editor',
+
+					
+					format_tags: 'p;h1;h2;h3;pre',
+
+					
+					removeDialogTabs: 'image:advanced;link:advanced',
+
+					stylesSet: [
+					
+						{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+						{ name: 'Cited Work', element: 'cite' },
+						{ name: 'Inline Quotation', element: 'q' },
+
+						
+						{
+							name: 'Special Container',
+							element: 'div',
+							styles: {
+								padding: '5px 10px',
+								background: '#eee',
+								border: '1px solid #ccc'
+							}
+						},
+						{
+							name: 'Compact table',
+							element: 'table',
+							attributes: {
+								cellpadding: '5',
+								cellspacing: '0',
+								border: '1',
+								bordercolor: '#ccc'
+							},
+							styles: {
+								'border-collapse': 'collapse'
+							}
+						},
+						{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+						{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } },
+						{ filebrowserUploadUrl: '/path/to/upload-handler'},
+					]
+				} ;
+CKEDITOR.replace('Editor',editor_config);
+	 
+$('#myfrm').submit(function() {
+	 var data =CKEDITOR.instances['Editor'].getData();
+	 $('textarea[name=description]').val(data);
+	 });
+	 
 	</script> 
   
   
