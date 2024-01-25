@@ -49,6 +49,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
 public interface ProjectDao {
@@ -326,5 +327,9 @@ public interface ProjectDao {
 	public long RequirementParaEdit(RequirementparaModel rpm) throws Exception;
 	public Long insertRequirement(PfmsOtherReq pr)throws Exception;
 	public Long insertReqType(ProjectRequirementType pt)throws Exception;
+	public List<Object[]> getVerificationList(String initiationid)throws Exception;
+	public long insertRequirementVerification(RequirementVerification rv)throws Exception;
+	public Long updateRequirementVerification(RequirementVerification rv)throws Exception;
+	public long updateRequirementVerificationDetails(RequirementVerification rv)throws Exception;
 	
 }

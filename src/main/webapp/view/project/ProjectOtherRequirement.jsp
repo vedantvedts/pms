@@ -353,7 +353,7 @@ String MainId=(String)request.getAttribute("MainId");
 		</div>
 	</div>
 	<%} %>
-	<%if(!RequirementList.isEmpty()){%>
+	<%if(!RequirementList.isEmpty()){ %>
 <div class="container-fluid">          
 <div class="row"> 
 <div class="col-md-5" >
@@ -556,7 +556,7 @@ function showSubpoint(a){
 		 }
 	 });
 }
- function hideSubpoint(a){
+ function hideSubpoint(a) { 
 	 $('#subdiv'+a).css("display","none");
 	 $('#inputDiv'+a).css("display","none");
 	 $('#span'+a).html('<button class="btn btn-sm bg-transparent" id="btn'+a+'" onclick="showSubpoint('+a+')"><i class="fa fa-plus" aria-hidden="true"></</button>');

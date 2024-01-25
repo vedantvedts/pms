@@ -1046,30 +1046,34 @@ Map<Integer,String> mapEB=(Map<Integer,String>)request.getAttribute("mapEB");
 								<%}%>
 									</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
-									<td  style="text-align: center;" >
-									<span style="color:green"><%	String actionstatus = obj[9].toString();
-											int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
-											LocalDate pdcorg = LocalDate.parse(obj[3].toString());
-											LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
-											LocalDate today = LocalDate.now();
-										%> 
-											<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+									<td style="text-align: center;">
+									<%	String actionstatus = obj[9].toString();
+										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
+										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
+										LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
+										LocalDate today = LocalDate.now();
+										LocalDate endPdc=LocalDate.parse(obj[4].toString());
+									%> 
+					 				<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
 											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 											<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
 											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
 											<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
-												<%} %>	
-											<%}else{ %>
-													-									
-											<%} %>
-										</span>	<br>
-										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %>
-										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %>
-										
-										<%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %>
-										<span><%=sdf.format(sdf1.parse(obj[3].toString()))%></span>
-									</td>
-								
+											<%} %>	
+										<%}else{ %>
+												-									
+										<%} %>
+									<br>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<%=sdf.format(sdf1.parse(endPdc.toString())) %>
+									</span>	
+									<%if(!pdcorg.equals(endPdc)) {%>
+									<br>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<%=sdf.format(sdf1.parse(pdcorg.toString())) %>
+									</span>	
+									<%} %>
+								</td>	
 									<td> 
 										<%=obj[11] %>, <%=obj[12] %> </td>
 										<td  style="text-align: center;" > 

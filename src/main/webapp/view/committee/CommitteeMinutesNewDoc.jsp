@@ -261,9 +261,9 @@ p{
 	<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 	
 		  <div class="firstpage" id="firstpage"> 	
-			<br>
+		
 			<div align="center" ><h1>MINUTES OF MEETING</h1></div>
-			<br>
+			
 			<div align="center" ><h2 style="margin-bottom: 2px;"><%=committeescheduleeditdata[7].toString().toUpperCase()%>  (<%=committeescheduleeditdata[8].toString().toUpperCase() %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>) </h2></div>				
 				<%if(Integer.parseInt(projectid)>0){ %>					
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
@@ -275,9 +275,9 @@ p{
 					<h3 style="margin-top: 5px; margin-bottom: 5px">For</h3>	  
 				    <h2 style="margin-top: 3px">Pre-Project  : &nbsp;<%=initiationdetails[2] %>  (<%=initiationdetails[1]%>)</h2>
 				<%}else{%>
-					<br><br><br><br><br>
+					<br><br>
 				<%} %>
-				<br>
+				
 				<table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px"  border="0">
 					<tr style="margin-top: 10px">
 						 <th  style="text-align: center; width: 650px;font-size: 20px "> <u>Meeting Id </u> </th></tr><tr>
@@ -285,7 +285,7 @@ p{
 					 </tr>
 				</table>
 				
-				<br><br>
+				
 		 <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px"  border="0">
 			 <tr>
 				 <th  style="text-align: center; width: 650px;font-size: 20px "> <u> Meeting Date </u></th>
@@ -304,15 +304,13 @@ p{
 						 <th  style="text-align: center;  width: 650px;font-size: 20px  "> <% if(committeescheduleeditdata[12]!=null){ %><%=committeescheduleeditdata[12] %> <%}else{ %> - <%} %></th>				
 					 </tr>
 				</table>
-		<br><br>
 			<figure><img style="width: 4cm; height: 4cm"  src="data:image/png;base64,<%=lablogo%>"></figure>   
-						<br><br><br>
-			<div align="center" ><h3><%=labdetails[2] %> (<%=labdetails[1]%>)</h3></div>
+			<p align="center" ><h3><%=labdetails[2] %> (<%=labdetails[1]%>)</h3></p>
 			
 			<div align="center" ><h3><%=labdetails[4] %>, &nbsp;<%=labdetails[5] %>, &nbsp;<%=labdetails[6] %></h3></div>
 		</div>  
-		
- <h1 class="break"></h1> 
+		<div class="break" style="page-break-before: always;"> <p>&nbsp</p></div>
+
 <!-- ------------------------------------------------------- members --------------------------------- -->
 <%-- 	<div align="center">
 		<table style="align: center; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px">
@@ -356,7 +354,6 @@ for(Object[] temp : invitedlist){
 
 
 <div style="align : center;">
-<br/><br/><br/><br/><br/>
 <h2>ATTENDANCE</h2>
 <table style="margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;">
 	
@@ -565,7 +562,7 @@ for(Object[] temp : invitedlist){
 <%} %>
 	
 
-<div class="break" style="page-break-before: always;"> <p>&nbsp</p></div>
+
 <!-- -------------------------------------------------------members----------------------------- -->
 		<% for (Object[] committeemin : committeeminutes) { %>
 		<% if (committeemin[0].toString().equals("1") ) { %>

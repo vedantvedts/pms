@@ -371,7 +371,7 @@ public class MilestoneController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MilestoneActivitySubAdd.htm "+UserId);		
 		try {
-			
+			System.out.println("Hiiii------"+req.getParameter("ValidTo"));
 		
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));

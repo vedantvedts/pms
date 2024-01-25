@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-	
+	<%@page import="com.vts.pfms.FormatConverter"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
@@ -20,6 +20,75 @@
 .control-label{
 	font-weight: bold !important;
 }
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px; 
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+} 
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+#scrollclass::-webkit-scrollbar {
+	width: 7px;
+}
+
+#scrollclass::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+}
+
+#scrollclass::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	/*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: #fff;
+}
+
+#scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+	transition: 0.5s;
+}
+
+
+.meetingsp{
+  width:75%;
+  transition: background-color 3s ease;
+  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+  color:black;
+  padding:10px;
+  border-radius: 8px;
+  display: block;
+  font-weight: 600;
+  margin:1%;
+  margin-left:12%;
+}
+.meetingsp:hover{
+ 	/*  background-color: green;
+	 background-image: linear-gradient(to right, green, blue); */
+	 color:white;
+ background-position: 0 0;
+ box-shadow: 3px 3px 3px gray;
+	/* background-color:red; */
+color:white;
+font-weight: 600;	
+}
+#span{
+background: blue;
+}
 </style>
 
 </head>
@@ -27,6 +96,9 @@
 
 
 <%
+FormatConverter fc=new FormatConverter(); 
+SimpleDateFormat sdf2=fc.getRegularDateFormat();
+SimpleDateFormat sdf3=fc.getSqlDateFormat();
 	SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 List<Object[]> CommitteList=(List<Object[]>) request.getAttribute("CommitteeList");
@@ -88,7 +160,7 @@ if(ses1!=null){
 				<div class="card shadow-nohover">
 					<div class="card-header">
 					
-					<div class="row">
+					<div class="row" style="margin-top:-10px;">
 					
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm" id="myfrm" > 
 					
@@ -128,7 +200,22 @@ if(ses1!=null){
 					
 					</div>
 					<div class="card-body">
-						<div id="calendar"></div>
+						<div id="calendar" style="width:79%;float:left"></div>
+						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;float: right">
+						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">Meetings</div>
+						<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
+						<%if(!committeeschedulelist.isEmpty()){
+							for(Object[]obj:committeeschedulelist){
+							%>
+						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+						&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
+							</a>
+						<%}}else{ %>
+						<p class="meetingsp ml-3 mr-3"> No Meetings Listed !</p>
+						<%} %>
+						</div>
+						</div>
+					</div>
 					</div>
 					
 				</div>

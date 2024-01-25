@@ -91,6 +91,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
 @Service
@@ -3144,5 +3145,20 @@ public Long insertRequirement(PfmsOtherReq pr) throws Exception {
 public Long insertReqType(ProjectRequirementType pt) throws Exception {
 	return dao.insertReqType(pt);
 }
-
+@Override
+public List<Object[]> getVerificationList(String initiationid) throws Exception {
+	return dao.getVerificationList(initiationid);
+}
+@Override
+public long insertRequirementVerification(RequirementVerification rv) throws Exception {
+	return dao.insertRequirementVerification(rv);
+}
+	@Override
+	public Long updateRequirementVerification(RequirementVerification rv) throws Exception {
+		return dao.updateRequirementVerification(rv);
+	}
+@Override
+public long updateRequirementVerificationDetails(RequirementVerification rv) throws Exception {
+	return dao.updateRequirementVerificationDetails(rv);
+}
 }
