@@ -70,7 +70,7 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title</label><br>
+			                <label>Rank/Salutation</label><br>
 			                 <select class="form-control selectdee"  id="title" name="title" data-container="body" data-live-search="true"  style="font-size: 5px;">
 								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof." <%if(OfficerEditData[10]!=null && OfficerEditData[10].toString().equalsIgnoreCase("Prof.")){%> selected="selected" <%}%>>  Prof.</option>
@@ -82,7 +82,7 @@ String seslabid=(String)session.getAttribute("labid");
 </div>
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation</label><br>
+			                <label>Title</label><br>
 			                 <select class="form-control selectdee" id="salutation" name="salutation" data-container="body" data-live-search="true"  style="font-size: 5px;">
 								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr."    <%if(OfficerEditData[11]!=null && OfficerEditData[11].toString().equalsIgnoreCase("Mr.")){%>    selected="selected" <%}%>> Mr.</option>

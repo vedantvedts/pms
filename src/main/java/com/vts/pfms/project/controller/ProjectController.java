@@ -96,6 +96,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.utils.PMSLogoUtil;
@@ -6137,6 +6138,7 @@ public class ProjectController
 		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
 		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
 		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
+		  	req.setAttribute("Verifications", service.getVerificationList(initiationid));
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
 			//req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
 			String html = customResponse.getOutput();
@@ -7600,7 +7602,113 @@ public class ProjectController
 		return json.toJson(count);
 	}
 	
-
+	@RequestMapping(value = "RequirementVerify.htm" , method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementVerify(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementVerify.htm"+UserId);
+		try {
+			String initiationid= req.getParameter("initiationid");
+			String pdd = req.getParameter("pdd");
+			String projectcode = req.getParameter("projectcode");
+			String project = req.getParameter("project");
+			Gson json=new Gson();
+			List<Object[]>Verifications=service.getVerificationList(initiationid);
+			String Verification=json.toJson(Verifications);
+			req.setAttribute("Verifications", Verifications);
+			req.setAttribute("project", project);
+			req.setAttribute("pdd",pdd);
+			req.setAttribute("initiationid", initiationid);
+			req.setAttribute("Verification", Verification);
+			req.setAttribute("verificationId",req.getParameter("verificationId"));
+		}catch (Exception e) {
+			
+		}
+		return "project/ProjectVerification";
+	}
+	
+	@RequestMapping(value = "RequirementVerificationAdd.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementVerificationAdd(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementVerificationAdd.htm"+UserId);
+		
+		try {
+			
+			RequirementVerification rv = new RequirementVerification();
+			
+			rv.setProvisions(req.getParameter("Provisions").trim());
+			rv.setInitiationId(Long.parseLong(req.getParameter("initiationid")));
+			rv.setCreatedBy(UserId);
+			rv.setCreatedDate(sdf1.format(new Date()));
+			rv.setIsActive(1);
+			long count=service.insertRequirementVerification(rv);
+			if (count > 0) {
+				redir.addAttribute("result", "Provision Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Data add Unsuccessful");
+			}
+			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+			redir.addAttribute("project", req.getParameter("project"));
+			List<Object[]>Verifications=service.getVerificationList(req.getParameter("initiationid"));
+			redir.addAttribute("Verifications", Verifications);
+			redir.addAttribute("verificationId",count+"");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:/RequirementVerify.htm";
+	}
+	@RequestMapping(value="RequirementProvisionUpdate.htm",method= {RequestMethod.GET, RequestMethod.POST})
+	 public @ResponseBody String RequirementProvisionUpdate(HttpSession ses, HttpServletRequest req) throws Exception {
+		Gson json=new Gson();
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementProvisionUpdate.htm"+UserId);
+		Long count=0l;
+		try {
+			RequirementVerification rv = new RequirementVerification();
+			rv.setProvisions(req.getParameter("value"));
+			rv.setVerificationId(Long.parseLong(req.getParameter("VerificationId")));;
+			count=service.updateRequirementVerification(rv);
+		}
+		catch(Exception e) {
+			logger.error(new Date()+"Inside insertRequirement.htm"+UserId);
+			e.printStackTrace();
+		}
+		
+		return json.toJson(count);
+	}
+	@RequestMapping(value = "RequirementProvisionDetailsUpdate.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String RequirementProvisionDetailsUpdate(HttpServletRequest req, HttpSession ses,HttpServletResponse res, RedirectAttributes redir)throws Exception {
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date()+ "Inside RequirementProvisionDetailsUpdate.htm"+UserId);
+		
+		try {
+			
+			RequirementVerification rv = new RequirementVerification();
+			System.out.println(req.getParameter("Details"));
+			
+			rv.setProvisionsDetails(req.getParameter("Details"));
+			rv.setVerificationId(Long.parseLong(req.getParameter("verificationId")));;
+			long count=service.updateRequirementVerificationDetails(rv);
+			if (count > 0) {
+				redir.addAttribute("result", "Provision Details Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Data add Unsuccessful");
+			}
+			redir.addAttribute("initiationid", req.getParameter("initiationid"));
+			redir.addAttribute("project", req.getParameter("project"));
+			Gson json=new Gson();
+			List<Object[]>Verifications=service.getVerificationList(req.getParameter("initiationid"));
+			String Verification=json.toJson(Verifications);		
+			redir.addAttribute("Verifications", Verifications);
+			redir.addAttribute("Verification", Verification);
+			redir.addAttribute("verificationId",req.getParameter("verificationId"));
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:/RequirementVerify.htm";
+	}
 //package com.vts.pfms.project.controller;
 
 //import java.io.ByteArrayInputStream;

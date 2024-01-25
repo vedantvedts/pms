@@ -2,6 +2,7 @@
 <%@page import="java.util.stream.Collector"%>
 <%@page import="java.time.LocalTime"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
+<%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
@@ -35,7 +36,7 @@
 #scrollclass::-webkit-scrollbar-thumb {
 	border-radius: 5px; 
 	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
+	background-color: #fff;
 } 
 
 #scrollclass::-webkit-scrollbar-thumb:hover {
@@ -55,33 +56,54 @@
 #scrollclass::-webkit-scrollbar-thumb {
 	border-radius: 5px;
 	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
+	background-color: #fff;
 }
 
 #scrollclass::-webkit-scrollbar-thumb:hover {
 	-webkit-box-shadow: inset 0 0 6px black;
 	transition: 0.5s;
 }
- .meetingsp:hover{
-padding:10px;
-padding-bottom:13px;
-background: #f7be16;
-color:black;
-border-radius: 5px;
-box-shadow: 0px 0px 1px 1px gray;
-}
-.meetingsp a:hover{
-color:black;
-}
+
 
 .meetingsp{
-position: relative;
-font-size: 18px;
-font-weight: 500;
-color:#fff;
-text-align: center;
+  width:75%;
+  transition: background-color 3s ease;
+  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transition: background-position 0.5s ease;
+  color:black;
+  padding:10px;
+  border-radius: 8px;
+  display: block;
+  font-weight: 600;
+  margin:1%;
+  margin-left:12%;
 }
-	
+.meetingsp:hover{
+ 	/*  background-color: green;
+	 background-image: linear-gradient(to right, green, blue); */
+	 color:white;
+ background-position: 0 0;
+ box-shadow: 3px 3px 3px gray;
+	/* background-color:red; */
+color:white;
+font-weight: 600;	
+}
+#span{
+background: blue;
+}
+#span1{
+font-size: 10px;
+margin-left:10px
+}
+
+#span2{
+float:right;
+font-size: 10px;
+margin-right:10px
+}
+
 </style>
 
 </head>
@@ -101,13 +123,16 @@ Object[] committeedetails=(Object[])request.getAttribute("committeedetails");
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 
-List<Object[]>meetingList= new ArrayList<>();
+String today=LocalDate.now().toString();
+List<Object[]>PreviousmeetingList= new ArrayList<>();
 
 if(!Projectschedulelist.isEmpty()){
 	if(committeeid.equalsIgnoreCase("all")){
-		meetingList=Projectschedulelist;
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())).collect(Collectors.toList());
+		
 	}else{
-		meetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid)).collect(Collectors.toList());
+		PreviousmeetingList=Projectschedulelist.stream().filter(i -> i[1].toString().equalsIgnoreCase(committeeid) &&  LocalDate.parse(i[3].toString()).isBefore(LocalDate.now())    ).collect(Collectors.toList());
+	
 	}
 }
 %>
@@ -138,14 +163,14 @@ if(ses1!=null){
 	<%Object[] Projectdetails=(Object[])request.getAttribute("Projectdetails");%>
 
 <div class="container-fluid">
-		
+
 		<div class="row">
 			<div class="col-md-12">	
 				
 				<div class="card shadow-nohover">
 					<div class="card-header">
 					
-					<div class="row">
+					<div class="row" >
 					
 					<div class="col" style="margin-top: -8px;">	
 			
@@ -225,18 +250,22 @@ if(ses1!=null){
 					
 					</div>
 					<div class="card-body" style="display: flex;justify-content: space-around;">
-						<div id="calendar" style="width:80%;float:left"></div>
-						<div id="meetings" style="background-color: #216583;;width:20%">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">Earlier Meetings</div>
-						<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
-						<%if(!meetingList.isEmpty()){
-							for(Object[]obj:meetingList){
+						<div id="calendar" style="width:79%;float:left"></div>
+						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
+						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
+						<!-- <span class="badge badge-info p-2 " id="span1" onclick="showPreviousMeetings();">Previous Meetings</span>
+						<span class="badge badge-info p-2 " id="span2" >Future Meetings</span> -->
+						Earlier Meetings
+						</div>
+						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+						<%if(!PreviousmeetingList.isEmpty()){
+							for(Object[]obj:PreviousmeetingList){
 							%>
-						 <p class="meetingsp ml-3 mr-3"><a id="tag" style="color:white;text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
 						&nbsp;&nbsp; Date: <%= sdf2.format(sdf3.parse(obj[3].toString())) %>
-							</a></p> 
+							</a>
 						<%}}else{ %>
-						<p class="meetingsp ml-3 mr-3"> No Meetings Listed !</p>
+						<p class="meetingsp ml-3 mr-3"> No Previous Meetings held !</p>
 						<%} %>
 						</div>
 						</div>

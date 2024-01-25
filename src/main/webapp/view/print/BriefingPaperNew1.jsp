@@ -806,9 +806,9 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<%=obj[12] %><%-- , <%=obj[13] %> --%>
 								<%}else { %> <!-- <span class="notassign">NA</span>  --> <span class="">Not Assigned</span> <%} %> 
 							</td>
-<%-- 							<td  style="text-align: center; ">
-								<%if(obj[4]!= null){ %> 
-									<%	String actionstatus = obj[10].toString();
+						<%--<td  style="text-align: center; ">
+										<%if(obj[4]!= null){ %> 
+										<%	String actionstatus = obj[10].toString();
 										int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
 										LocalDate pdcorg = LocalDate.parse(obj[6].toString());
 										LocalDate lastdate = obj[14]!=null ? LocalDate.parse(obj[14].toString()): null;
@@ -839,7 +839,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<span class="notassign">NA</span>
 								<%} %>
 						</td> --%>
-						<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
+				<td ><%if(obj[19]!=null){%><%=obj[19] %><%} %></td>
 					</tr>		
 					<%i++;}
 						}%>
@@ -908,7 +908,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<%}%> 
 								</td>
 									<td  style="text-align: justify ;"><%=obj[2] %></td>
-									<td  style="text-align: center;" >
+									<%-- <td  style="text-align: center;" >
 									<%int adc_count=0;	
 									String actionstatus = obj[9].toString();
 									int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -929,7 +929,30 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) {  %><span style="color: black; font-weight: bold"><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br> <% } %>
 										<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) {  %><span <%if(obj[6]==null){ %>style="color: black; font-weight: bold"<%} %>><%=sdf.format(sdf1.parse(obj[5].toString()))%></span><br> <% } %>
 										<span <%if(obj[6]==null && obj[5]==null){ %>style="color: black; font-weight: bold"<%} %>><%=sdf.format(sdf1.parse(obj[3].toString()))%></span>
-									</td>
+									</td> --%>
+																	<td style="text-align: center;">
+									<%	String actionstatus = obj[9].toString();
+										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
+										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
+										LocalDate lastdate = obj[13]!=null ? LocalDate.parse(obj[13].toString()): null;
+										LocalDate today = LocalDate.now();
+										LocalDate endPdc=LocalDate.parse(obj[4].toString());
+									%> 
+					 				<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
+											<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+											<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+											<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%} %>	
+										<%}else{ %>
+												-									
+										<%} %>
+									<br>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:green;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<%=endPdc %>
+									</span>
+									
+								</td>
 								<!-- 	<td   style="text-align: center;"> 
 		
 									</td> -->

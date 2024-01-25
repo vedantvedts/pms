@@ -1,5 +1,8 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@page import="java.text.DecimalFormat"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.Month"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
@@ -30,6 +33,11 @@
 	List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	String projectName="";
 	String classification="";
+	
+	LocalDate d = LocalDate.now();
+
+	Month months= d.getMonth();
+	int years=d.getYear();
 	Object[]LabList=(Object[])request.getAttribute("LabList");
 	%>
 <style type="text/css">
@@ -135,7 +143,7 @@
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showIntroudction()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Scope</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badge2" onclick="showSystemRequirements()"><img alt="" src="view/images/requirement.png" >&nbsp;System Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span> 
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
@@ -179,7 +187,7 @@
 					</tr>
 				    <tr >
 					<td class="text-primary">4.&nbsp; Document Number:</td>
-					<td class="text-primary">5.&nbsp; Month Year:</td>
+					<td class="text-primary">5.&nbsp; Month Year: <span style="color:black;"><%=months.toString().substring(0,3) %>&nbsp;&nbsp;<%=years %></span></td>
 					</tr>
 					<tr>
 					<td class="text-primary">6.&nbsp; Number of Pages:</td>
@@ -284,12 +292,12 @@
 					if(!DocumentApprovalFlowData.isEmpty()){
 					%>
 					<form action="RequirementForward.htm" method="post">
-					<input type="hidden" name="status" value="<%=RequirementStatus[1].toString()%>">
-					<input type="hidden" name="initiationid" value="<%=initiationid%>">
-					<input type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
-					<input type="hidden" name="projectcode" value="<%=ProjectDetailes[6].toString()%>" >
-					<input type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<input  type="hidden" name="status" value="<%=RequirementStatus[1].toString()%>">
+					<input  type="hidden" name="initiationid" value="<%=initiationid%>">
+					<input  type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
+					<input  type="hidden" name="projectcode" value="<%=ProjectDetailes[6].toString()%>" >
+					<input  type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
+					<input  type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<button type="submit" name="option" value="A" class="btn btn-sm btn-success submit" onclick="return confirm('Are You Sure To Forward this Project Requirement?');" >Forward</button>
 					</form>
 					<%}}}%>
@@ -304,6 +312,20 @@
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<button type="submit" id="sub" style="display:none"></button>
 					</form>
+					
+					
+					<!-- Verification Provision -->
+					
+					<form action="RequirementVerify.htm" method="GET" id="myStatus1">
+					<input type="hidden" name="initiationid" value="<%=initiationid%>">
+					<input type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
+					<input type="hidden" name="projectcode" value="<%=ProjectDetailes[6].toString()%>" >
+					<input type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="verification" style="display:none"></button>
+					</form>
+					
+					<!--  -->
 					
 					<form action="RequirementPara.htm" method="GET" id="">
 					<input type="hidden" name="initiationid" value="<%=initiationid%>">
@@ -535,6 +557,9 @@
 				$('#DistributionModal').modal('show');
 			}
 			
+			function showVerification(){
+				$('#verification').click();
+			}
 	</script>
 </body>
 </html>

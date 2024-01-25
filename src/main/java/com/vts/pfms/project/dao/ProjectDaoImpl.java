@@ -67,6 +67,7 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
 @Transactional
@@ -3510,6 +3511,41 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 		manager.persist(pt);
 		return pt.getReqTypeId();
 	}
+	
+	private static final String VERIFICATIONLIST="select VerificationId,Provisions,InitiationId,ProvisionsDetails from pfms_initiation_verification where InitiationId=:InitiationId and isactive='1'";
+	@Override
+	public List<Object[]> getVerificationList(String initiationid) throws Exception {
+		
+		Query query=manager.createNativeQuery(VERIFICATIONLIST);
+		query.setParameter("InitiationId", initiationid);
+		List<Object[]> verificationList=(List<Object[]>)query.getResultList();
+		return verificationList;
+	}
+	@Override
+	public long insertRequirementVerification(RequirementVerification rv) throws Exception {
+		manager.persist(rv);
+		return rv.getVerificationId();
+	}
+	
+		private static final String UPDATEVER="UPDATE pfms_initiation_verification SET Provisions=:Provisions WHERE VerificationId=:VerificationId AND isactive='1'";
+		@Override
+		public Long updateRequirementVerification(RequirementVerification rv) throws Exception {
+		
+			Query query= manager.createNativeQuery(UPDATEVER);
+			query.setParameter("Provisions", rv.getProvisions());
+			query.setParameter("VerificationId", rv.getVerificationId());
+			return (long) query.executeUpdate();
+	}
+		private static final String UPDATEVERDE="UPDATE pfms_initiation_verification SET ProvisionsDetails=:ProvisionsDetails WHERE VerificationId=:VerificationId AND isactive='1'";
+	
+		@Override
+		public long updateRequirementVerificationDetails(RequirementVerification rv) throws Exception {
+			// TODO Auto-generated method stub
+			Query query= manager.createNativeQuery(UPDATEVERDE);
+			query.setParameter("ProvisionsDetails", rv.getProvisionsDetails());
+			query.setParameter("VerificationId", rv.getVerificationId());
+			return (long) query.executeUpdate();
+		}
 }
 
 

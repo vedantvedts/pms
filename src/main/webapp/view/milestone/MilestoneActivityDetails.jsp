@@ -633,7 +633,7 @@ div {
 																																</label> <input class="form-control "
 																																	name="ValidTo" required="required"
 																																	id="DateCompletionA2<%=obj[0]%><%=obj1[0]%><%=obj2[0]%><%=obj3[0]%>"
-																																	disabled="disabled"
+																																	
 																																	value="<%=sdf.format(obj3[3])%>"
 																																	readonly>
 																															</div>
@@ -827,7 +827,7 @@ $( document ).ready(function() {
 																												<input class="form-control " name="ValidTo"
 																													required="required"
 																													id="DateCompletionA2<%=obj[0]%><%=obj1[0]%><%=obj2[0]%>"
-																													disabled="disabled"
+																													
 																													value="<%=sdf.format(obj2[3])%>" readonly>
 																											</div>
 																										</div>
@@ -1016,7 +1016,7 @@ $( document ).ready(function() {
 																								<input class="form-control " name="ValidTo"
 																									required="required"
 																									id="DateCompletionA2<%=obj[0]%><%=obj1[0]%>"
-																									disabled="disabled"
+																									
 																									value="<%=sdf.format(obj1[3])%>" readonly>
 																							</div>
 																						</div>
@@ -1204,7 +1204,7 @@ $( document ).ready(function() {
 																					class="form-control " name="ValidTo"
 																					required="required"
 																					id="DateCompletionA2<%=obj[0]%>"
-																					disabled="disabled" value="<%=sdf.format(obj[3])%>"
+																					value="<%=sdf.format(obj[3])%>"
 																					readonly>
 																			</div>
 																		</div>

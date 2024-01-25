@@ -1214,20 +1214,8 @@ td {
 												</div> <%}else{%>
 												<div align="center">-</div> <%}%>
 											</td>
-											<%-- <td style="text-align: left; width: 6%;">
-												<form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
-					                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
-				 									<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
-													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
-									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
-									                <input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" /> 
-									                <input type="hidden" name="ActionAttachid" value="<%=obj[5]%>"> 
-											        </form>
-												</td> --%>
 											<td><%=obj[7].toString() %>
 											<%if(count==SubList.size()) {%>
-											<button class="btn bg-transparent" style="float:right;display: none" onclick = "showModal()"><i class="fa fa-lg fa-pencil-square-o" aria-hidden="true" style="color:Orange"></i></button>
-											<button class="btn bg-transparent" style="float:right" onclick = "removeProgress(<%=obj[0].toString()%>)"><i class="fa fa-lg fa-trash" aria-hidden="true" style="color:Red"></i></button>
 											<%} %>
 											</td>
 										</tr>
