@@ -1610,7 +1610,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 		logger.info(new Date() +"Inside SERVICE KickOffMeeting ");
 		String CommitteeMainId=req.getParameter("committeemainid");
 		String CommitteeScheduleId=req.getParameter("committeescheduleid");
-		System.out.println(CommitteeMainId+"@@@@@@@@@@@@@"+CommitteeScheduleId);
 		String Option=req.getParameter("sub");
 		SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -1641,31 +1640,24 @@ public class CommitteeServiceImpl implements CommitteeService{
 			List<Object[]> Email=dao.ChaipersonEmailId(CommitteeMainId);
 			Random random = new Random(); 
 			int otp=random.nextInt(9000) + 1000;
-			System.out.println(otp);
 			CharSequence cs = String.valueOf(otp);
 			String Otp=encoder.encode(cs);
 			CommitteeSchedule committeeschedule=new CommitteeSchedule(); 
 			committeeschedule.setKickOffOtp(Otp);
 			committeeschedule.setScheduleId(Long.parseLong(CommitteeScheduleId));
 			committeeschedule.setScheduleFlag("MKO");
-			
-			 	
-//			MimeMessage msg = javaMailSender.createMimeMessage();
-			
 			ArrayList<String> emails= new ArrayList<String>();
 			for(Object[] obj : Email)
 			{
 			if(obj[0]!=null) {
-					
-				emails.add(obj[0].toString());
-				}
+			emails.add(obj[0].toString());
 			}
-			     
+			}
 			if(Email.get(0)[1].toString().equalsIgnoreCase("0")) 
 			{
 				Object[] RtmddoEmail=dao.RtmddoEmail();
-					if(RtmddoEmail!=null) {
-						emails.add(RtmddoEmail[0].toString());
+				if(RtmddoEmail!=null) {
+				emails.add(RtmddoEmail[0].toString());
 				}
 			}
 			
@@ -1674,15 +1666,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 			
 			if (ToEmail.length>0) 
 			{
+				int count=0;
 				String subject=req.getParameter("committeeshortname") + " Meeting OTP ";
 				String message=String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone.";
 				for(String email:ToEmail) {
-					cm.sendScheduledEmailAsync(email, subject, message, true);
+				count = count +	cm.sendMessage(email, subject, message);
 				}
-//				MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-//				helper.setTo(ToEmail);
-//				helper.setSubject(req.getParameter("committeeshortname") + " Meeting OTP ");
-//				helper.setText(String.valueOf(otp) + " is the OTP for Verification of Meeting ( " + req.getParameter("meetingid") +" ) which is Scheduled at " + sdf1.format(sdf.parse(req.getParameter("meetingdate"))) + "(" + req.getParameter("meetingtime") + "). Kindly Do Not Share the OTP with Anyone." , true);				
 			try
 			{
 //					javaMailSender.send(msg);
@@ -1720,7 +1709,6 @@ public class CommitteeServiceImpl implements CommitteeService{
 					}	
 				 	
 			 	}else {
-			 		
 			 		redir.addAttribute("resultfail", " OTP Not Matched");
 			 	}
 			 }

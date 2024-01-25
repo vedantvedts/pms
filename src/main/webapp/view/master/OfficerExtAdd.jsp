@@ -86,7 +86,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 
 <div class="col-md-3">
 					 <div class="form-group">
-			                <label>Title</label><br>
+			                <label>Rank/Salutation</label><br>
 			                 <select class="form-control selectdee"  id="title" name="title" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value=""  selected="selected"	hidden="true">--Select--</option>
 								<option value="Prof.">Prof.</option>
@@ -98,7 +98,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
 </div>
 	<div class="col-md-3">
 					 <div class="form-group">
-			                <label>Rank/Salutation</label><br>
+			                <label>Title</label><br>
 			                 <select class="form-control selectdee" id="salutation" name="salutation" data-container="body" data-live-search="true"   style="font-size: 5px;">
 								<option value="" selected="selected"	hidden="true">--Select--</option>
 								<option value="Mr.">Mr.</option>

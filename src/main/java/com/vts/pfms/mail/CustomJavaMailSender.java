@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.lang3.text.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -31,6 +32,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.mail.MailConfigurationDto;
@@ -44,6 +48,18 @@ public class CustomJavaMailSender {
 	CommitteeService committeeService;
 	@Autowired
 	MailService mailService;
+	
+	@Value("${Email}")
+	private String Email;
+
+	@Value("${password}")
+	private String mailPassword;
+
+	@Value("${port}")
+	private String port;
+
+	@Value("${host}")
+	private String host;
 	
 	private static final Logger logger=LogManager.getLogger(CustomJavaMailSender.class);
 //    public HttpSession MyScheduledTasks(HttpSession httpSession) {
@@ -197,4 +213,61 @@ public class CustomJavaMailSender {
 			    }
 			  }
 	    }
+	 	
+		public int sendMessage(String toEmail, String subject, String msg) {
+			// change accordingly
+			String to = toEmail;
+			// change accordingly
+			String from = Email;
+			// or IP address
+			String hostAddress = host;
+			// mail id from which mail will go
+			final String username = Email;
+			// correct password for gmail id
+			final String password = mailPassword;
+			System.out.println("Sending Mail to" + toEmail);
+			// Get the session object
+			// Get system properties
+			Properties properties = System.getProperties();
+			// Setup mail server
+			properties.setProperty("mail.smtp.host", host);
+			properties.put("mail.smtp.starttls.enable", "true");
+			// SSL Port
+			properties.put("mail.smtp.port", port);
+			// enable authentication
+			properties.put("mail.smtp.auth", "true");
+			// SSL Factory
+			properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			// creating Session instance referenced to
+			// Authenticator object to pass in
+			// Session.getInstance argument
+			Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+				// override the getPasswordAuthentication
+				// method
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password);
+				}
+			});
+			int mailSendresult = 0;
+			// compose the message
+			try {
+				// javax.mail.internet.MimeMessage class is mostly
+				// used for abstraction.
+				MimeMessage message = new MimeMessage(session);
+				// header field of the header.
+				message.setFrom(new InternetAddress(from));
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+				message.setSubject(subject);
+				message.setText(msg);
+				message.setContent(msg, "text/html");// this code is used to make the message in HTML formatting
+				// Send message
+				Transport.send(message);
+				System.out.println("Message Sent");
+				mailSendresult++;
+			} catch (MessagingException mex) {
+				mex.printStackTrace();
+			}
+			return mailSendresult;
+		}
+
 }

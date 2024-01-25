@@ -77,7 +77,7 @@
         			</div>
       			</div>
      			<div class="logo">
-     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM</span></a>
+     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.5)</span></a>
      			</div>
      		
      			

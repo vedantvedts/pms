@@ -2411,15 +2411,15 @@ public class CommitteeController {
 		
 		 try {
 				
-			String ret = pt.freezeBriefingPaper(req, res, ses, redir);
+			//String ret = pt.freezeBriefingPaper(req, res, ses, redir);
 			Object[] obj= service.KickOffMeeting(req, redir);
 		    req=(HttpServletRequest)obj[0];
 		    redir=(RedirectAttributes)obj[1];
 		    
-		    if(ret.equalsIgnoreCase("static/Error"))
-		    {
-		    	redir.addAttribute("resultfail", "Briefing Paper Freezing Failed !!");
-		    }
+//		    if(ret.equalsIgnoreCase("static/Error"))
+//		    {
+//		    	redir.addAttribute("resultfail", "Briefing Paper Freezing Failed !!");
+//		    }
 		    
 		 }catch (Exception e) {			
 		 	e.printStackTrace(); 
@@ -4054,7 +4054,6 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside SendFormationLetter.htm "+UserId);
 		try
 		{
-			System.out.println("Method2");
 			String committeemainid=req.getParameter("committeemainid");	
 			Object[] committeemaindata= service.CommitteMainData(committeemainid);
 			String committeeid=committeemaindata[1].toString();
@@ -4105,20 +4104,17 @@ public class CommitteeController {
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
 			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
-			
-			if(Email!=null && Email.length>0) {
-				
-				for(String email:Email) {
-					cm.sendScheduledEmailAsync(email, subject, Message, true);
-				}
+			int count=0;
+			if(Email!=null && Email.length>0){
+			for(String email:Email) {
+			count= count +	cm.sendMessage(email, subject, Message);
 			}
-			if (Email.length>0) 
+			}
+			if (count>0) 
 			{
-				redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
+			redir.addAttribute("result", " Committee Formation Letter Sent Successfully !! ");
 			}
-		
-		redir.addFlashAttribute("committeemainid",committeemaindata[0].toString());
-		
+			redir.addFlashAttribute("committeemainid",committeemaindata[0].toString());
 		}
 		catch (Exception e) 
 		{
@@ -4272,14 +4268,16 @@ public class CommitteeController {
 			if (Email.length>0) {
 				
 				try{
+					int count=0;
 					String subject=scheduledata[8] + " " +" Committee Invitation Letter";
 					for(String email:Email) {
-						cm.sendScheduledEmailAsync(email, subject, Message, true);
+					count= count +	cm.sendMessage(email, subject, Message);
+					}
+					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
+					if(count>0) {
+						redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
 					}
 					
-					
-					service.UpdateCommitteeInvitationEmailSent(committeescheduleid);
-					redir.addAttribute("result", " Committee Invitation Letter Sent Successfully !! ");
 				}catch (MailAuthenticationException e) {
 					redir.addAttribute("resultfail", " Host Email Authentication Failed, Unable to Send Invitations !!");
 				}
