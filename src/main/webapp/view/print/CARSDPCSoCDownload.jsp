@@ -188,7 +188,7 @@ String expenditure = carsSoC.getDPCExpenditure();
 expenditure = expenditure!=null?expenditure.replace("\n", "<br>"):expenditure;
 String labcode = (String) session.getAttribute("labcode");
 
-String amount = carsIni.getAmount();
+String amount = carsSoC.getSoCAmount();
 %>
 	<table id="headertable">
 		<tr>
@@ -260,7 +260,7 @@ String amount = carsIni.getAmount();
 					<tr>
 						<td>5.</td>
 						<td>CARS PDC</td>
-						<td><%=carsIni.getDuration() %></td>
+						<td><%=carsSoC.getSoCDuration() %></td>
 					</tr>
 					<tr>
 						<td>6.</td>
@@ -288,7 +288,7 @@ String amount = carsIni.getAmount();
 		<div class="soccontent">
 			<p style="font-size: 15px;text-indent: 21px;">
 				<%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> has submitted the &#39;Summary of Offer&#39; for Rs <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></span>
-				(inclusive of GST) for duration of <span class="textunderline"><%=carsIni.getDuration() %></span> months. Required schedule of payments is given below.
+				(inclusive of GST) for duration of <span class="textunderline"><%=carsSoC.getSoCDuration() %></span> months. Required schedule of payments is given below.
 			</p>
 			<table id="tabledata">
 				<thead>
@@ -298,7 +298,8 @@ String amount = carsIni.getAmount();
 					  <th style="width: 10%;">Months</th>
 					  <th style="">Deliverables</th>
 					  <th style="width: 5%;">Payment <br>( In % )</th>
-					  <th style="width: 20%;">Payment Terms</th>
+					  <th style="width: 10%;">Amount</th>
+					  <th style="width: 10%;">Remarks</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -312,7 +313,8 @@ String amount = carsIni.getAmount();
 							<td style="text-align: center;width: 10%;"><%=mil.getMonths() %></td>
 							<td style=""><%=mil.getDeliverables() %></td>
 							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
-							<td style="width: 20%;"><%=mil.getPaymentTerms() %></td>
+							<td style="width: 10%;text-align: right;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
+							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
 						</tr>
 					<%}} %>
 				</tbody>

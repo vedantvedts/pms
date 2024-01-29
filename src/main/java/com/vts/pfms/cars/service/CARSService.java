@@ -9,6 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
 import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
+import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
+import com.vts.pfms.cars.model.CARSContract;
+import com.vts.pfms.cars.model.CARSContractConsultants;
+import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
@@ -67,5 +71,12 @@ public interface CARSService {
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
 	public LabMaster getLabDetailsByLabCode(String labcode) throws Exception;
 	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception;
-	
+	public CARSContract getCARSContractByCARSInitiationId(long carsInitiationId) throws Exception;
+	public List<CARSContractConsultants> getCARSContractConsultantsByCARSInitiationId(long carsInitiationId) throws Exception;
+	public List<CARSContractEquipment> getCARSContractEquipmentByCARSInitiationId(long carsInitiationId) throws Exception;
+	public long addCARSContractDetails(CARSContract contract) throws Exception;
+	public long editCARSContractDetails(CARSContract contract) throws Exception;
+	public long addCARSContractConsultantsDetails(CARSContractDetailsDTO dto) throws Exception;
+	public long addCARSContractEquipmentDetails(CARSContractDetailsDTO dto) throws Exception;
+	public long carsFinalReportEditSubmit(CARSContract contract, String firstTime,String labcode) throws Exception;
 }

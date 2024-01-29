@@ -324,7 +324,7 @@ String EmpId = ((Long) session.getAttribute("EmpId")).toString();
 
 String statuscode = carsIni.getCARSStatusCode();
 String statuscodeNext = carsIni.getCARSStatusCodeNext();
-String amount = carsIni.getAmount();
+String amount = carsSoC.getSoCAmount();
 String carsInitiationId = carsIni!=null?carsIni.getCARSInitiationId()+"":"0";
 String carsSoCId = carsSoC!=null?carsSoC.getCARSSoCId()+"":"0";
 
@@ -522,7 +522,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 						               		   						<tr>
 						               		   							<td>6.</td>
 						               		   							<td>CARS PDC</td>
-						               		   							<td><%=carsIni.getDuration() %></td>
+						               		   							<td><%=carsSoC.getSoCDuration() %></td>
 						               		   						</tr>
 						               		   						<tr>
 						               		   							<td>7.</td>
@@ -548,7 +548,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 				               		   						<div class="soccontent">
 				               		   							<p style="font-size: 15px;">
 				               		   								<%=carsIni.getRSPInstitute()+", "+carsIni.getRSPCity() %> has submitted the &#39;Summary of Offer&#39; for Rs <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></span>
-				               		   								(inclusive of GST) for duration of <span class="textunderline"><%=carsIni.getDuration() %></span> months. Required schedule of payments is given below.
+				               		   								(inclusive of GST) for duration of <span class="textunderline"><%=carsSoC.getSoCDuration() %></span> months. Required schedule of payments is given below.
 				               		   							</p>
 				               		   							<table id="milestonestable">
 				               		   								<tr>
@@ -557,7 +557,8 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 				               		   								  <th style="width: 5%;">Months</th>
 				               		   								  <th style="width: 25%;">Deliverables</th>
 				               		   								  <th style="width: 5%;">Payment <br>( In % )</th>
-				               		   								  <th style="width: 25%;">Payment Terms</th>
+				               		   								  <th style="width: 10%;">Amount</th>
+				               		   								  <th style="width: 15%;">Remarks</th>
 				               		   								</tr>
 				               		   								<%if(milestones!=null && milestones.size()>0) {
 				               		   									for(CARSSoCMilestones mil : milestones){
@@ -569,7 +570,8 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 					               		   									<td style="width: 5%;text-align: center;"><%="T0 + "+mil.getMonths() %></td>
 					               		   									<td style="width: 25%;"><%=mil.getDeliverables() %></td>
 					               		   									<td style="width: 5%;text-align: center;"><%=mil.getPaymentPercentage() %></td>
-					               		   									<td style="width: 25%;"><%=mil.getPaymentTerms() %></td>
+					               		   									<td style="width: 10%;text-align: right;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
+					               		   									<td style="width: 15%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
 					               		   								</tr>
 				               		   								<%}} %>
 				               		   								

@@ -1,3 +1,6 @@
+<%@page import="com.vts.pfms.cars.model.CARSContractEquipment"%>
+<%@page import="com.vts.pfms.cars.model.CARSContractConsultants"%>
+<%@page import="com.vts.pfms.cars.model.CARSContract"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="java.util.Date"%>
@@ -248,6 +251,9 @@ List<CARSRSQRMajorRequirements> majorReqr = (List<CARSRSQRMajorRequirements>)req
 List<CARSRSQRDeliverables> deliverables = (List<CARSRSQRDeliverables>)request.getAttribute("RSQRDeliverables");
 List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("CARSSoCMilestones");
 
+CARSContract carsContract =(CARSContract)request.getAttribute("CARSContractData"); 
+List<CARSContractConsultants> consultants = (List<CARSContractConsultants>)request.getAttribute("CARSContractConsultants");
+List<CARSContractEquipment> equipment = (List<CARSContractEquipment>)request.getAttribute("CARSContractEquipment");
 
 List<String> rsqrforward = Arrays.asList("INI","RGD","RPD","REV");
 List<String> socforward = Arrays.asList("AGD","APD","SRG","SRP","SRV");
@@ -450,8 +456,8 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 14%;">
                             		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="6" style="font-size: 15px;"
-                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())/100000%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
+                              		<input  class="form-control form-control" type="number" name="amount" id="amount" maxlength="6" style="font-size: 15px;"  step=".1"
+                              		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=Double.parseDouble(carsIni.getAmount())/100000%><%} %>" required> 
                         		</div>
                         		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
@@ -558,7 +564,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         		</div>
                         		<div class="column b" style="width: 12%;">
                             		<label class="control-label">Mobile Number</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" min="10" max="10" style="font-size: 15px;"
+                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
                               		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=carsIni.getPIMobileNo()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
                         		</div>
                         		<div class="column b" style="width: 12%;">
@@ -948,12 +954,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 											<table style="width:100% ; " id="milestones">
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Mil No.</th>
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
+												    	<!-- <th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
+												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th> -->
 														<td style="width: 5%;">
 															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 														</td>
@@ -970,17 +976,17 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null) {%><%=carsIni.getDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<%-- <td style="width: 5%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
-														</td>
+														</td> --%>
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_milestones " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 														</td>									
@@ -999,12 +1005,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
 														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<!-- <td style="width: 5%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
-														</td>
+														</td> -->
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_milestones" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
 														</td>									
@@ -1068,7 +1074,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                						<form action="">
                							<div class="mt-2" align="center">
                								<h5 style="font-weight: bold;margin-top: 1.5rem;">RSQR Approval
-               									&emsp;<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+               									&emsp;<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download" formnovalidate="formnovalidate">
 								  	 				<i class="fa fa-download" aria-hidden="true"></i>
 												</button>
 											</h5>
@@ -1254,6 +1260,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
          		<%}else{ %>
               		<div class="tab-pane" id="soc" role="tabpanel">
               	<%} %>
+              		<div class="col-md-12">
+               				<div class="card" style="border: 1px solid rgba(0,0,0,.125);max-height: 550px;overflow-y: auto;">
+               					<div class="card-body mt-2 ml-4">
               			<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
               				<%if(carsSoC!=null) {%>
                		 			<form action="CARSSoCEdit.htm" method="POST" name="soceditform" id="soceditform" enctype="multipart/form-data">
@@ -1266,17 +1275,17 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                			    			<div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
                			    				<!-- First row of SoC  -->
                			     				<div class="row details">
-                        						<div class="column b" style="width: 30%;border-top-left-radius: 5px;">
+                        						<div class="column b" style="width: 25%;border-top-left-radius: 5px;">
                             					 	<label class="control-label">Upload Summary of Offer</label><span class="mandatory">*</span> 
                             					 	<%if(carsSoC!=null && carsSoC.getSoOUpload()!=null) {%>
-                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -20rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  value="soofile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
                             					 			<i class="fa fa-download fa-lg"></i>
                             					 		</button>
                             					 	<%} %>
                               		      			<input type="file" class="form-control modals" name="SoOUpload" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 30%;">
+                        						<div class="column b" style="width: 25%;">
                             						<label class="control-label">Upload Feasibility Report</label><span class="mandatory">*</span>
                             						<%if(carsSoC!=null && carsSoC.getFRUpload()!=null) {%>
                             					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -14rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
@@ -1296,7 +1305,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                             					 	<%} %>
                               						<input type="file" class="form-control modals" name="ExecutionPlan" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 14.5%;">
+                        						<div class="column b" style="width: 14%;">
+				                            		<label class="control-label">Amount (In Lakhs, &#8377;)</label><span class="mandatory">*</span>
+				                              		<input  class="form-control form-control" type="number" name="socAmount" id="socAmount" maxlength="6" style="font-size: 15px;" step=".1"
+				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=Double.parseDouble(carsSoC.getSoCAmount())/100000%><%} %>" required> 
+			                        			</div>
+                        						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
                               						<input  class="form-control form-control" type="text" name="socDuration" id="socDuration" maxlength="20" style="font-size: 15px;"
                               		 					placeholder="Enter Duration" value="<%if(carsSoC!=null && carsSoC.getSoCDuration()!=null){ %><%=carsSoC.getSoCDuration()%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
@@ -1312,41 +1326,189 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                     		 				
                     		 				<!-- Second row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 94.5%;">
+                    		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
                         						</div>
-                    		 				</div>
-                    		 				
-                    		 				<!-- Third row of SoC  -->
-                    		 				<div class="row details">
-                    		 					<div class="column b" style="width: 94.5%;">
+                    		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for time reasonability</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=carsSoC.getTimeReasonability() %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
-                    		 				<!-- Fourth row of SoC  -->
+                    		 				<!-- Third row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 94.5%;">
+                    		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for cost reasonability</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=carsSoC.getCostReasonability() %><%} %></textarea>
                         						</div>
-                    		 				</div>
-                    		 				
-                    		 				<!-- Fifth row of SoC  -->
-                    		 				<div class="row details">
-                    		 					<div class="column b" style="width: 94.5%;">
+                    		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Justification for selection of RSP</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=carsSoC.getRSPSelection() %><%} %></textarea>
                         						</div>
                     		 				</div>
                     		 				
-                    		 				<!-- Six row of SoC  -->
+                    		 				<!-- Fourth row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 94.5%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                    		 					<div class="column b" style="width: 47.25%;">
                             					 	<label class="control-label">Success / Acceptance Criterion</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=carsSoC.getSoCCriterion() %><%} %></textarea>
+                        						</div>
+                    		 					<div class="column b" style="width: 37.25%;">
+                            					 	<label class="control-label">RSP's Offer Ref:</label><span class="mandatory">*</span>
+                              		      			<textarea class="form-control" name="rspOfferRef" placeholder="Enter RSP`s Offer Ref" cols="" rows="2" maxlength="1000" required><%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=carsContract.getRSPOfferRef() %><%} %></textarea>
+                        						</div>
+                    		 					<div class="column b" style="width: 10%;">
+                            					 	<label class="control-label">RSP's Offer Date:</label><span class="mandatory">*</span>
+                              		      			<input class="form-control form-control" type="text" name="rspOfferDate" id="rspOfferDate"
+                              		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=carsContract.getRSPOfferDate()%><%} %>" required>
+                        						</div>
+                    		 					 
+                    		 				</div>
+                    		 				
+                    		 				<!-- Fifth row of SoC  -->
+                    		 				<div class="row details">
+                    		 					<div class="column b" style="width: 47.25%;">
+                            					 	<label class="control-label">Key Professional-1 Details:</label><span class="mandatory">*</span>
+                              		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="1000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %><%} %></textarea>
+                        						</div>
+                    		 					<div class="column b" style="width: 47.25%;">
+                            					 	<label class="control-label">Key Professional-2 Details:</label><span class="mandatory">*</span>
+                              		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="1000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %><%} %></textarea>
+                        						</div>
+                    		 				</div>
+                    		 				
+                    		 				<!-- Six row of SoC  -->
+                    		 				<div class="row details">
+                    		 					<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;">
+                            					 	<label class="control-label">Research Consultants:</label>
+                            					 	<table style="width: 90%; " id="consultants">
+														<thead style = "background-color: #055C9D; color: white;text-align: center;">
+															<tr>
+																<th style="padding: 0px 5px 0px 5px;">Name</th>
+													    		<th style="padding: 0px 5px 0px 5px;">Institute / Company</th>
+																<td style="width:10%;">
+																	<button type="button" class="btn btn-sm btn_add_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																</td>
+															</tr>
+														</thead>
+									 					<tbody>
+									 						<%if(consultants!=null && consultants.size()>0) {
+									 					   	for(CARSContractConsultants con :consultants) {%>
+									 						<tr class="tr_clone_consultants">
+																<td style="padding: 10px 5px 0px 5px;width: 40%;">
+																	<input type="text" class="form-control item" name="consultantName" id="consultantName" placeholder="Enter Consultant Name" 
+																	value="<%if(con.getConsultantName()!=null) {%><%=con.getConsultantName() %><%} %>" maxlength="500" >
+																</td>	
+																<td style="padding: 10px 5px 0px 5px;">
+																	<input type="text" class="form-control item" name="consultantCompany" placeholder="Enter Consultant Company"
+																	value="<%if(con.getConsultantCompany()!=null) {%><%=con.getConsultantCompany() %><%} %>" maxlength="500" >
+																</td>	
+															
+																<td style="width: 5% ; ">
+																	<button type="button" class=" btn btn-sm btn_rem_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																</td>									
+															</tr>
+									 						<%} }else{%>
+															<tr class="tr_clone_consultants">
+																<td style="padding: 10px 5px 0px 5px;width: 40%;" >
+																	<input type="text" class="form-control item" name="consultantName" id="consultantName" placeholder="Enter Consultant Name" maxlength="500" >
+																</td>	
+																<td style="padding: 10px 5px 0px 5px;">
+																	<input type="text" class="form-control item" name="consultantCompany" placeholder="Enter Consultant Company" maxlength="500" >
+																</td>	
+																
+																<td style="width:5% ; ">
+																	<button type="button" class=" btn btn-sm btn_rem_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																</td>									
+															</tr>
+															<%} %>
+														</tbody> 
+													</table>
+                        						</div>
+                    		 					<div class="column b" style="width: 47.25%;border-bottom-right-radius: 5px;">
+                            					 	<label class="control-label">DRDO-owned Equipment:</label>
+                            					 	<table style="width: 90%; " id="equipment">
+														<thead style = "background-color: #055C9D; color: white;text-align: center;">
+															<tr>
+																<th style="padding: 0px 5px 0px 5px;">Description</th>
+																<td style="width:10%;">
+																	<button type="button" class="btn btn-sm btn_add_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																</td>
+															</tr>
+														</thead>
+									 					<tbody>
+									 						<%if(equipment!=null && equipment.size()>0) {
+									 					   	for(CARSContractEquipment eq :equipment) {%>
+									 						<tr class="tr_clone_equipment">
+																<td style="padding: 10px 5px 0px 5px;width: 40%;">
+																	<input type="text" class="form-control item" name="equipmentDescription" placeholder="Enter Equipment Description" maxlength="1000"
+																	 value="<%if(eq.getDescription()!=null) {%><%=eq.getDescription() %><%} %>">
+																</td>	
+															
+																<td style="width: 5% ; ">
+																	<button type="button" class=" btn btn-sm btn_rem_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																</td>									
+															</tr>
+									 						<%} }else{%>
+															<tr class="tr_clone_equipment">
+																<td style="padding: 10px 5px 0px 5px;width: 40%;" >
+																	<input type="text" class="form-control item" name="equipmentDescription" placeholder="Enter Equipment Description" maxlength="1000">
+																</td>	
+																
+																<td style="width:5% ; ">
+																	<button type="button" class=" btn btn-sm btn_rem_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																</td>									
+															</tr>
+															<%} %>
+														</tbody> 
+													</table>
+                        						</div>
+                    		 				</div>
+                    		 				
+                    		 				<!-- Seventh row of SoC  -->
+                    		 				<div class="row details">
+				                    		    <div class="col-md-6" style="text-align: left;">
+				                    		    	<label class="control-label" style="color: black;">Expenditure on items :</label>
+				                    		    </div>
+                    				 	    </div>
+                    				 	    
+                    				 	    <!-- Eighth row of SoC  -->
+                    		 				<div class="row details">
+                    		 					<div class="column b" style="width: 10%;border-bottom-left-radius: 5px;border-top-left-radius: 5px;">
+                            					 	<label class="control-label">(a) Personnel:</label><span class="mandatory">*</span>
+                              		      			<input class="form-control form-control" type="number" name="expndPersonnelCost" id="expndPersonnelCost" placeholder="Personnel Cost"
+                              		      			  <%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%> value="<%=carsContract.getExpndPersonnelCost()%>"<%} %> required>
+                        						</div>
+                    		 					<div class="column b" style="width: 10%;">
+                            					 	<label class="control-label">(b) Equipment:</label><span class="mandatory">*</span>
+                            					 	<input class="form-control form-control" type="number" name="expndEquipmentCost" id="expndEquipmentCost" placeholder="Equipment Cost"
+                              		      			  <%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%> value="<%=carsContract.getExpndEquipmentCost()%>"<%} %> required>
+                        						</div>
+                    		 					<div class="column b" id="othersdiv" style="width: 12%;text-align: left;">
+                            					 	<label class="control-label">(c) Others: <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
+                            					 	&nbsp;<span id="othersInfoContent" style="color: darkblue;"> (Travel, Contingency, Consultancy, Institution Head) </span>
+                            					 	<input class="form-control form-control" type="number" name="expndOthersCost" id="expndOthersCost" placeholder="Others Cost"
+                              		      			  <%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%> value="<%=carsContract.getExpndOthersCost()%>"<%} %> >
+                        						</div>
+                    		 					<div class="column b" style="width: 10%;">
+                            					 	<label class="control-label">Sub-Total:</label><span class="mandatory">*</span>
+                            					 	<input class="form-control form-control" type="number" name="expndSubTotalCost" id="expndSubTotalCost"
+                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null && carsContract.getExpndGST()!=null) {%> 
+                            					 		value="<%= String.format("%.2f" ,( Double.parseDouble(carsContract.getExpndTotalCost())-Double.parseDouble(carsContract.getExpndGST()) ) )%>"
+                            					 		<%} %> 
+                            					 		
+                            					 		readonly required style="background: #fff;">
+                        						</div>
+                    		 					<div class="column b" style="width: 10%;">
+                            					 	<label class="control-label">GST:</label><span class="mandatory">*</span>
+                            					 	<input class="form-control form-control" type="number" name="expndGST" id="expndGST" placeholder="Enter GST"
+                              		      				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%> value="<%=carsContract.getExpndGST()%>"<%} %> required>
+                        						</div> 
+                        						<div class="column b" style="width: 10%;border-bottom-right-radius: 5px;border-top-right-radius: 5px;">
+                            					 	<label class="control-label">Total :</label><span class="mandatory">*</span>
+                            					 	<input class="form-control form-control" type="number" name="expndTotalCost" id="expndTotalCost"
+                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=carsContract.getExpndTotalCost()%>"<%} %> readonly required style="background: #fff;">
                         						</div>
                     		 				</div>
                     					</div>
@@ -1355,9 +1517,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                						<div align="center">
 										<%if(carsSoC!=null){ %>
 							    			<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
-											<button type="submit" class="btn btn-sm btn-warning edit btn-soc" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure to Update?')" >UPDATE</button>
+											<button type="submit" class="btn btn-sm btn-warning edit btn-soc" formmethod="post" onclick="return confirm('Are you sure to Update?')" >UPDATE</button>
 										<%}else{ %>
-											<button type="submit" class="btn btn-sm btn-success submit btn-soc" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
+											<button type="submit" class="btn btn-sm btn-success submit btn-soc" formmethod="post" onclick="return confirm('Are you sure to Submit?')" >SUBMIT</button>
 										<%} %>
 									</div>
                		 		<%if(carsSoC!=null) {%>
@@ -1370,7 +1532,9 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                				<h4 style="font-weight: bold;color: red;">This window will open after RSQR Approval..!</h4>
                			</div>
               			<%} %>
-              			
+              			</div>
+              			</div>
+              			</div>
               			<div class="navigation_btn"  style="text-align: right;">
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
@@ -1728,12 +1892,13 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 											<table style="width:100% ; " id="milestones2">
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Mil No.</th>
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Amount</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Remarks</th>
 														<td style="width: 5%;">
 															<button type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
 														</td>
@@ -1750,7 +1915,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
+															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=carsSoC.getSoCDuration() %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
 														</td>	
 														<td style="width: 25%;padding: 10px 5px 0px 5px;">
 															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
@@ -1758,8 +1923,11 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 														<td style="width: 5%;padding: 10px 5px 0px 5px;">
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
+														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=carsSoC.getSoCAmount() %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=mil.getActualAmount() %><%} %>" required="required" oninput="return checkActualAmount(this)">
+														</td>
+														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
 														</td>
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -1783,7 +1951,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
 														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ></textarea>
 														</td>
 														<td style="width: 5% ; ">
 															<button type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
@@ -2319,7 +2487,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
                         			</div>
                         			<div class="col-md-4">
                         				<div align="left" style="margin-top: 2.2rem;">
-											<%if(carsSoC!=null){ %>
+											<%if(carsSoC!=null && carsIni.getDPCSoCForwardedBy()==0){ %>
 							    				<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
 												<button type="submit" class="btn btn-sm btn-success submit btn-momupload" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure to Upload?')" >UPLOAD</button>
 											<%} %>
@@ -3326,8 +3494,171 @@ function showEditor2(a){
 			return true;
 		}
 	}
+	
+	function checkActualAmount(inputElement){
+		
+		// Traverse up the DOM to find the parent row
+	    var row = $(inputElement).closest('tr');
+		
+		var actualAmount = 0;
+		
+		$("input[name='actualAmount']").each(function() {
+			actualAmount = actualAmount+Number($(this).val());
+		});
+		var amount = 0;
+		<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null) {%>
+			amount = <%=carsSoC.getSoCAmount() %>
+		<%} %>
+		if(actualAmount>Number(amount)){
+			alert('Amount should not exceed more than '+amount/100000+' Lakhs');
+			
+			// Set the value of the specific input in the same row to 0
+	        $(inputElement).val('0');
+	        
+			return false;
+		}else{
+			return true;
+		}
+	}
 
 </script>
 
+<script type="text/javascript">
+$('#rspOfferDate').daterangepicker({
+	"singleDatePicker" : true,
+	"linkedCalendars" : false,
+	"showCustomRangeLabel" : true,
+	/* "minDate" :datearray,   */
+	 "startDate" : new Date(),
+	"cancelClass" : "btn-default",
+	showDropdowns : true,
+	locale : {
+		format : 'DD-MM-YYYY'
+	}
+});	
+
+	/* Cloning (Adding) the table body rows for Consultants */
+	$("#consultants").on('click','.btn_add_consultants' ,function() {
+		
+		var $tr = $('.tr_clone_consultants').last('.tr_clone_consultants');
+		var $clone = $tr.clone();
+		$tr.after($clone);
+		
+		$clone.find("input").val("").end();
+		
+	});
+
+
+	/* Cloning (Removing) the table body rows for Consultants */
+	$("#consultants").on('click','.btn_rem_consultants' ,function() {
+		
+	var cl=$('.tr_clone_consultants').length;
+		
+	if(cl>1){
+	   var $tr = $(this).closest('.tr_clone_consultants');
+	  
+	   var $clone = $tr.remove();
+	   $tr.after($clone);
+	   
+	}
+	   
+	}); 
+	
+	/* Cloning (Adding) the table body rows for Consultants */
+	$("#equipment").on('click','.btn_add_equipment' ,function() {
+		
+		var $tr = $('.tr_clone_equipment').last('.tr_clone_equipment');
+		var $clone = $tr.clone();
+		$tr.after($clone);
+		
+		$clone.find("input").val("").end();
+		
+	});
+
+
+	/* Cloning (Removing) the table body rows for Consultants */
+	$("#equipment").on('click','.btn_rem_equipment' ,function() {
+		
+	var cl=$('.tr_clone_equipment').length;
+		
+	if(cl>1){
+	   var $tr = $(this).closest('.tr_clone_equipment');
+	  
+	   var $clone = $tr.remove();
+	   $tr.after($clone);
+	   
+	}
+	   
+	}); 
+</script>
+<script type="text/javascript">
+
+//On page load hiding all the content of info
+$(document).ready(function(){
+	
+	$('#othersInfoContent').hide();
+	
+});
+
+// Onclick showing / Closing the info content
+
+/* For Others Content */
+$( "#othersInfo" ).on( "click", function() {
+	var othersInfo = $('#othersInfo').val();
+	if(othersInfo=="0"){
+		$('#othersInfo').val('1');
+		$('#othersInfoContent').show();
+		document.getElementById("othersdiv").style.width = "30%";
+		/* document.getElementById("expndOthersCost").style.width = "46.6%"; */
+		/* document.getElementById("expndOthersCost").style.cssText = `
+			width : 46.6%;
+			position : relative;
+			left : -20%;
+			top : 11%;
+		`; */
+	}else{
+		$('#othersInfo').val('0');
+		$('#othersInfoContent').hide();
+		document.getElementById("othersdiv").style.width = "12%";
+		/* document.getElementById("expndOthersCost").style.width = "100%"; */
+		/* document.getElementById("expndOthersCost").style.cssText = `
+			width : 100%;
+			position : static;
+			left : 0px;
+			top : 0px;
+			`;  */
+		}
+} );
+
+
+$(document).ready(function(){
+	
+	 function calculateTotal() {
+        var expndPersonnelCost = parseFloat($('#expndPersonnelCost').val()) || 0;
+        var expndEquipmentCost = parseFloat($('#expndEquipmentCost').val()) || 0;
+        var expndOthersCost = parseFloat($('#expndOthersCost').val()) || 0;
+        var expndGST = parseFloat($('#expndGST').val()) || 0;
+        var subtotal = expndPersonnelCost + expndEquipmentCost + expndOthersCost;
+        $('#expndSubTotalCost').val(subtotal);
+        var total = subtotal + expndGST;
+        $('#expndTotalCost').val(total);
+        var socAmount = parseFloat($('#socAmount').val()) || 0;
+        var amount = socAmount*100000;
+        if(Math.floor(total)>amount){
+        	alert('Expenditure should not exceed the actual amount '+socAmount+" Lakhs");
+        	$('#expndPersonnelCost').val('0');
+        	$('#expndEquipmentCost').val('0');
+        	$('#expndOthersCost').val('0');
+        	$('#expndGST').val('0');
+        	$('#expndSubTotalCost').val('0');
+        	$('#expndTotalCost').val('0');
+        }
+      }
+
+      // Call the calculateTotal function whenever any of the input fields change
+      $('#expndPersonnelCost, #expndEquipmentCost, #expndOthersCost, #expndGST').on('input', calculateTotal);
+});
+
+</script>
 </body>
 </html>

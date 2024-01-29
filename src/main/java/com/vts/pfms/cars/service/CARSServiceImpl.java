@@ -37,6 +37,10 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dao.CARSDao;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
 import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
+import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
+import com.vts.pfms.cars.model.CARSContract;
+import com.vts.pfms.cars.model.CARSContractConsultants;
+import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQR;
@@ -81,7 +85,7 @@ public class CARSServiceImpl implements CARSService{
 		
 		long maxCARSInitiationId = dao.getMaxCARSInitiationId();
 		LocalDate now = LocalDate.now();
-		String CARSNo = labcode+"/CARS-"+(maxCARSInitiationId+1)+"/RAMD/"+now.getYear();
+		String CARSNo = labcode+"/CARS-"+(maxCARSInitiationId+1)+"/RTMD/"+now.getYear();
 		initiation.setCARSNo(CARSNo);
 		
 		double amount = Double.parseDouble(initiation.getAmount())*100000;
@@ -211,6 +215,7 @@ public class CARSServiceImpl implements CARSService{
 	}
 
 	public int removeCARSRSQRMajorReqrDetails(long carsInitiationId) throws Exception{
+		
 		return dao.removeCARSRSQRMajorReqrDetails(carsInitiationId);
 	}
 
@@ -498,6 +503,10 @@ public class CARSServiceImpl implements CARSService{
 			soc.setExecutionPlan(null);
 		}
 		
+		// Converting amount from lakhs to rupees
+		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
+		soc.setSoCAmount(String.valueOf(amount));
+		
 		long carsSoCId = dao.addCARSSoC(soc);
 	
 		return carsSoCId;
@@ -532,6 +541,10 @@ public class CARSServiceImpl implements CARSService{
 			saveFile(uploadpath + path, soc.getExecutionPlan(), executionPlan);
 		}
 	
+		// Converting amount from lakhs to rupees
+		double amount = Double.parseDouble(soc.getSoCAmount())*100000;
+		soc.setSoCAmount(String.valueOf(amount));
+		
 		return dao.editCARSSoC(soc);
 	}
 
@@ -806,8 +819,9 @@ public class CARSServiceImpl implements CARSService{
 				mil.setTaskDesc(dto.getTaskDesc()[i]);
 				mil.setMonths(dto.getMonths()[i]);
 				mil.setDeliverables(dto.getDeliverables()[i]);
-				mil.setPaymentPercentage(dto.getPaymentPercentage()[i]);
-				mil.setPaymentTerms(dto.getPaymentTerms()[i]);
+				mil.setPaymentPercentage(dto.getPaymentPercentage()!=null?dto.getPaymentPercentage()[i]:"0");
+				mil.setPaymentTerms(dto.getPaymentTerms()!=null?dto.getPaymentTerms()[i]:null);
+				mil.setActualAmount(dto.getActualAmount()!=null?dto.getActualAmount()[i]:"0.00");
 				mil.setCreatedBy(dto.getUserId());
 				mil.setCreatedDate(sdtf.format(new Date()));
 				mil.setIsActive(1);
@@ -1219,6 +1233,109 @@ public class CARSServiceImpl implements CARSService{
 	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception {
 		
 		return dao.carsDPCSoCFinalApprovedList(fromdate, todate);
+	}
+
+	@Override
+	public CARSContract getCARSContractByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.getCARSContractByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public List<CARSContractConsultants> getCARSContractConsultantsByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.getCARSContractConsultantsByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public List<CARSContractEquipment> getCARSContractEquipmentByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.getCARSContractEquipmentByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public long addCARSContractDetails(CARSContract contract) throws Exception {
+		
+		return dao.addCARSContractDetails(contract);
+	}
+
+	@Override
+	public long editCARSContractDetails(CARSContract contract) throws Exception {
+		
+		return dao.editCARSContractDetails(contract);
+	}
+
+	@Override
+	public long addCARSContractConsultantsDetails(CARSContractDetailsDTO dto) throws Exception {
+		try {
+			dao.removeCARSContractConsultantsDetails(dto.getCARSInitiationId());
+			
+			for(int i=0;i<dto.getConsultantName().length;i++) {
+				CARSContractConsultants consultants = new CARSContractConsultants();
+				consultants.setCARSInitiationId(dto.getCARSInitiationId());
+				consultants.setConsultantName(dto.getConsultantName()[i]);
+				consultants.setConsultantCompany(dto.getConsultantCompany()!=null?dto.getConsultantCompany()[i]:null);
+				consultants.setCreatedBy(dto.getUserId());
+				consultants.setCreatedDate(sdtf.format(new Date()));
+				consultants.setIsActive(1);
+				if( (dto.getConsultantName()[i]!=null && !dto.getConsultantName()[i].isEmpty()) || (dto.getConsultantCompany()[i]!=null && !dto.getConsultantCompany()[i].isEmpty()) ) {
+					dao.addCARSContractConsultantsDetails(consultants);
+				}
+			
+			}
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CARSServiceImpl addCARSContractConsultantsDetails "+e);
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public long addCARSContractEquipmentDetails(CARSContractDetailsDTO dto) throws Exception {
+		try {
+			dao.removeCARSContractEquipmentDetails(dto.getCARSInitiationId());
+			
+			for(int i=0;i<dto.getEquipmentDescription().length ;i++) {
+				CARSContractEquipment equipment = new CARSContractEquipment();
+				equipment.setCARSInitiationId(dto.getCARSInitiationId());
+				equipment.setDescription(dto.getEquipmentDescription()[i]);
+				equipment.setCreatedBy(dto.getUserId());
+				equipment.setCreatedDate(sdtf.format(new Date()));
+				equipment.setIsActive(1);
+				if(dto.getEquipmentDescription()[i]!=null && !dto.getEquipmentDescription()[i].isEmpty()) {
+					dao.addCARSContractEquipmentDetails(equipment);
+				}
+				
+			}
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CARSServiceImpl addCARSContractEquipmentDetails "+e);
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public long carsFinalReportEditSubmit(CARSContract contract, String firstTime,String labcode) throws Exception {
+		try {
+			if(firstTime!=null && firstTime.equalsIgnoreCase("Y")) {
+				String maxCARSContractNo = dao.getMaxCARSContractNo();
+				String[] split = maxCARSContractNo!=null?maxCARSContractNo.split("/"):null;
+				String CARSContractId = split!=null?split[0]:"0";
+				LocalDate now = LocalDate.now();
+				String ContractNo = labcode+"/CARS-"+(Long.parseLong(CARSContractId)+1)+"/CONT/"+now.getYear();
+				contract.setContractNo(ContractNo);
+			}
+			dao.editCARSContractDetails(contract);
+			return 1;
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CARSServiceImpl carsFinalReportEditSubmit  "+e);
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	
 }

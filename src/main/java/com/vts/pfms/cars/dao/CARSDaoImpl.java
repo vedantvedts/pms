@@ -17,6 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.model.LabMaster;
+import com.vts.pfms.cars.model.CARSContract;
+import com.vts.pfms.cars.model.CARSContractConsultants;
+import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQR;
@@ -788,5 +791,158 @@ public class CARSDaoImpl implements CARSDao{
 			return new ArrayList<>();
 		}
 
+	}
+	
+	private static final String CARSCONTRACTBYINITIATIONID = "FROM CARSContract WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public CARSContract getCARSContractByCARSInitiationId(long carsInitiationId) throws Exception{
+		try {
+			Query query = manager.createQuery(CARSCONTRACTBYINITIATIONID);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			List<CARSContract> list =(List<CARSContract>) query.getResultList();
+			if(list.size()>0) {
+				return list.get(0);
+			}else {
+				return null;
+			}
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getCARSContractByCARSInitiationId "+e);
+			return null;
+		}
+	}
+	
+	private static final String CARSCONTRACTCONSULTANTSLIST = "FROM CARSContractConsultants WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public List<CARSContractConsultants> getCARSContractConsultantsByCARSInitiationId(long carsInitiationId) throws Exception{
+		try {
+			Query query = manager.createQuery(CARSCONTRACTCONSULTANTSLIST);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return (List<CARSContractConsultants>)query.getResultList();
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getCARSContractConsultantsByCARSInitiationId "+e);
+			return null;
+		}
+	}
+	
+	private static final String CARSCONTRACTEQUIPMENTLIST = "FROM CARSContractEquipment WHERE CARSInitiationId=:CARSInitiationId AND IsActive=1";
+	@Override
+	public List<CARSContractEquipment> getCARSContractEquipmentByCARSInitiationId(long carsInitiationId) throws Exception{
+		try {
+			Query query = manager.createQuery(CARSCONTRACTEQUIPMENTLIST);
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return (List<CARSContractEquipment>)query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO getCARSContractEquipmentByCARSInitiationId "+e);
+			return null;
+		}
+	}
+	
+	@Override
+	public long addCARSContractDetails(CARSContract contract) throws Exception{
+		try {
+			manager.persist(contract);
+			manager.flush();
+			return contract.getCARSContractId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addCARSContractDetails "+e);
+			return 0;
+		}
+	}
+
+	@Override
+	public long editCARSContractDetails(CARSContract contract) throws Exception{
+		try {
+			manager.merge(contract);
+			manager.flush();
+			return contract.getCARSContractId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO editCARSContractDetails "+e);
+			return 0;
+		}
+	}
+	
+	@Override
+	public long addCARSContractConsultantsDetails(CARSContractConsultants consultants) throws Exception{
+		try {
+			manager.persist(consultants);
+			manager.flush();
+			return consultants.getConsultantId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addCARSContractConsultantsDetails "+e);
+			return 0;
+		}
+	}
+	
+	@Override
+	public long addCARSContractEquipmentDetails(CARSContractEquipment equipment) throws Exception{
+		try {
+			manager.persist(equipment);
+			manager.flush();
+			return equipment.getEquipmentId();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO addCARSContractEquipmentDetails "+e);
+			return 0;
+		}
+	}
+	
+	private static final String REMOVECARSCONTRACTCONSULTANTSDETAILS = "UPDATE pfms_cars_contract_consultants SET IsActive=:IsActive WHERE CARSInitiationId=:CARSInitiationId";
+	@Override
+	public int removeCARSContractConsultantsDetails(long carsInitiationId) throws Exception{
+		try {
+			Query query = manager.createNativeQuery(REMOVECARSCONTRACTCONSULTANTSDETAILS);
+			query.setParameter("IsActive", "0");
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO removeCARSContractConsultantsDetails "+e);
+			return 0;
+		}
+
+	}
+	
+	private static final String REMOVECARSCONTRACTEQUIPMENTDETAILS = "UPDATE pfms_cars_contract_equipment SET IsActive=:IsActive WHERE CARSInitiationId=:CARSInitiationId";
+	@Override
+	public int removeCARSContractEquipmentDetails(long carsInitiationId) throws Exception{
+		try {
+			Query query = manager.createNativeQuery(REMOVECARSCONTRACTEQUIPMENTDETAILS);
+			query.setParameter("IsActive", "0");
+			query.setParameter("CARSInitiationId", carsInitiationId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside DAO removeCARSContractEquipmentDetails "+e);
+			return 0;
+		}
+
+	}
+	
+	private static final String MAXCARSFINALCONTRACTNO="SELECT IFNULL(SUBSTR(a.ContractNo,11),0) AS ContractNo FROM pfms_cars_contract a WHERE a.CARSContractId IN (SELECT IFNULL(MAX(con.CARSContractId),0) FROM pfms_cars_contract con WHERE ContractNo IS NOT NULL)";
+	@Override
+	public String getMaxCARSContractNo() throws Exception {
+
+		try {
+			Query query =  manager.createNativeQuery(MAXCARSFINALCONTRACTNO);
+			List<String> list = (List<String>)query.getResultList();
+			if(list!=null && list.size()>0) {
+				list.get(0);
+			}else {
+				return null;
+			}
+		}catch ( Exception e ) {
+			logger.error(new Date() +"Inside DAO getMaxCARSContractNo "+ e);
+			return null;
+		}
+		return null;
 	}
 }

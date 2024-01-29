@@ -53,6 +53,8 @@ import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.cars.dto.CARSRSQRDetailsDTO;
 import com.vts.pfms.cars.dto.CARSApprovalForwardDTO;
+import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
+import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
@@ -89,6 +91,17 @@ public class CARSController {
 	public String getLabLogoAsBase64() throws IOException {
 
 		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo.png";
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+		} catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path " + path);
+		}
+		return "/print/.jsp";
+	}
+	
+	public String getSecondLabLogoAsBase64() throws IOException {
+		
+		String path = LabLogoPath + "\\images\\lablogos\\lrdelogo2.png";
 		try {
 			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
 		} catch (FileNotFoundException e) {
@@ -224,6 +237,10 @@ public class CARSController {
 				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
 				req.setAttribute("CARSSoCRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"SF"));
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractConsultants", service.getCARSContractConsultantsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractEquipment", service.getCARSContractEquipmentByCARSInitiationId(carsiniid));
 			}else {
 				req.setAttribute("ProjectList", projectservice.LoginProjectDetailsList(EmpId,Logintype,LabCode));
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
@@ -817,8 +834,10 @@ public class CARSController {
 		logger.info(new Date() +"Inside CARSSoCAdd.htm "+Username);
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
+			long carsiniid = Long.parseLong(carsInitiationId);
 			CARSSoC soc = new CARSSoC();
-			soc.setCARSInitiationId(Long.parseLong(carsInitiationId));
+			soc.setCARSInitiationId(carsiniid);
+			soc.setSoCAmount(req.getParameter("socAmount"));
 			soc.setSoCDuration(req.getParameter("socDuration"));
 			soc.setAlignment(req.getParameter("alignment"));
 			soc.setTimeReasonability(req.getParameter("timeReasonability"));
@@ -831,8 +850,37 @@ public class CARSController {
 			
 			long result = service.addCARSSoC(soc, SoOFile, FRFile, ExecutionPlanFile);
 			
-			if(result!=0) {
-				redir.addAttribute("result", "CARS SoC Added Successfully");
+			String rspOfferDate = req.getParameter("rspOfferDate");
+			CARSContract contract = new CARSContract();
+			contract.setCARSInitiationId(carsiniid);
+			contract.setRSPOfferRef(req.getParameter("rspOfferRef"));
+			contract.setRSPOfferDate(rspOfferDate!=null?fc.RegularToSqlDate(rspOfferDate):null);
+			contract.setKP1Details(req.getParameter("kp1Details"));
+			contract.setKP2Details(req.getParameter("kp2Details"));
+			contract.setExpndPersonnelCost(req.getParameter("expndPersonnelCost"));
+			contract.setExpndEquipmentCost(req.getParameter("expndEquipmentCost"));
+			contract.setExpndOthersCost(req.getParameter("expndOthersCost"));
+			contract.setExpndGST(req.getParameter("expndGST"));
+			contract.setExpndTotalCost(req.getParameter("expndTotalCost"));
+			contract.setCreatedBy(Username);
+			contract.setCreatedDate(sdtf.format(new Date()));
+			contract.setIsActive(1);
+			
+			long contractResult = service.addCARSContractDetails(contract);
+			
+			CARSContractDetailsDTO dto = new CARSContractDetailsDTO();
+			dto.setCARSInitiationId(carsiniid);
+			dto.setConsultantName(req.getParameterValues("consultantName"));
+			dto.setConsultantCompany(req.getParameterValues("consultantCompany"));
+			dto.setEquipmentDescription(req.getParameterValues("equipmentDescription"));
+			dto.setUserId(Username);
+			
+			long consultantsResult = service.addCARSContractConsultantsDetails(dto);
+			
+			long equipmentResult = service.addCARSContractEquipmentDetails(dto); 
+			 
+			if(result!=0 && contractResult!=0 && consultantsResult!=0 && equipmentResult!=0) {
+				redir.addAttribute("result", "CARS SoC Details Added Successfully");
 				
 				// Transactions happend in the approval flow.
 				CARSInitiationTrans transaction = CARSInitiationTrans.builder()
@@ -843,7 +891,7 @@ public class CARSController {
 												  .build();
 				service.addCARSInitiationTransaction(transaction);
 			}else {
-				redir.addAttribute("resultfail", "CARS SoC Add UnSuccessful");
+				redir.addAttribute("resultfail", "CARS SoC Details Add UnSuccessful");
 			}
 			
 			redir.addAttribute("carsInitiationId", carsInitiationId);
@@ -867,8 +915,10 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String carsSocId = req.getParameter("carsSocId");
+			long carsiniid = Long.parseLong(carsInitiationId);
 			
 			CARSSoC soc = service.getCARSSoCById(Long.parseLong(carsSocId));
+			soc.setSoCAmount(req.getParameter("socAmount"));
 			soc.setSoCDuration(req.getParameter("socDuration"));
 			soc.setAlignment(req.getParameter("alignment"));
 			soc.setTimeReasonability(req.getParameter("timeReasonability"));
@@ -880,10 +930,37 @@ public class CARSController {
 			
 			long result = service.editCARSSoC(soc, SoOFile, FRFile, ExecutionPlanFile);
 			
-			if(result!=0) {
-				redir.addAttribute("result", "CARS SoC Edit Successfully");
+			String rspOfferDate = req.getParameter("rspOfferDate");
+			CARSContract contract = service.getCARSContractByCARSInitiationId(carsiniid);
+			contract.setRSPOfferRef(req.getParameter("rspOfferRef"));
+			contract.setRSPOfferDate(rspOfferDate!=null?fc.RegularToSqlDate(rspOfferDate):null);
+			contract.setKP1Details(req.getParameter("kp1Details"));
+			contract.setKP2Details(req.getParameter("kp2Details"));
+			contract.setExpndPersonnelCost(req.getParameter("expndPersonnelCost"));
+			contract.setExpndEquipmentCost(req.getParameter("expndEquipmentCost"));
+			contract.setExpndOthersCost(req.getParameter("expndOthersCost"));
+			contract.setExpndGST(req.getParameter("expndGST"));
+			contract.setExpndTotalCost(req.getParameter("expndTotalCost"));
+			contract.setModifiedBy(Username);
+			contract.setModifiedDate(sdtf.format(new Date()));
+			
+			long contractResult = service.editCARSContractDetails(contract);
+			
+			CARSContractDetailsDTO dto = new CARSContractDetailsDTO();
+			dto.setCARSInitiationId(carsiniid);
+			dto.setConsultantName(req.getParameterValues("consultantName"));
+			dto.setConsultantCompany(req.getParameterValues("consultantCompany"));
+			dto.setEquipmentDescription(req.getParameterValues("equipmentDescription"));
+			dto.setUserId(Username);
+			
+			long consultantsResult = service.addCARSContractConsultantsDetails(dto);
+			
+			long equipmentResult = service.addCARSContractEquipmentDetails(dto); 
+			 
+			if(result!=0 && contractResult!=0 && consultantsResult!=0 && equipmentResult!=0) {
+				redir.addAttribute("result", "CARS SoC Details Edit Successfully");
 			}else {
-				redir.addAttribute("resultfail", "CARS SoC Edit UnSuccessful");
+				redir.addAttribute("resultfail", "CARS SoC Details Edit UnSuccessful");
 			}
 			
 			redir.addAttribute("carsInitiationId", carsInitiationId);
@@ -1216,6 +1293,7 @@ public class CARSController {
 			dto.setDeliverables(req.getParameterValues("deliverables"));
 			dto.setPaymentPercentage(req.getParameterValues("paymentPercentage"));
 			dto.setPaymentTerms(req.getParameterValues("paymentTerms"));
+			dto.setActualAmount(req.getParameterValues("actualAmount"));
 			dto.setUserId(UserId);
 			
 			List<CARSSoCMilestones> milestones = service.getCARSSoCMilestonesByCARSInitiationId(carsiniid);
@@ -1263,6 +1341,7 @@ public class CARSController {
 				req.setAttribute("CARSInitiationData", carsInitiation);
 				req.setAttribute("EmpData", service.getEmpDetailsByEmpId(carsInitiation.getEmpId()+""));
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
 			}
 			String filename="CARS-SoC-Milestones";	
 			String path=req.getServletContext().getRealPath("/view/temp");
@@ -1833,6 +1912,93 @@ public class CARSController {
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside ProFormWordDownload.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSDPCFinalReportDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsDPCFinalReportDetails(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSDPCFinalReportDetails.htm "+Username);
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		try {
+			
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));				
+			}
+			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
+			
+			return "cars/DPCFinalReportDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSDPCFinalReportDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "CARSFinalFormWordDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsFinalFormWordDownload(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside CARSFinalFormWordDownload.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null) {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractConsultants", service.getCARSContractConsultantsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractEquipment", service.getCARSContractEquipmentByCARSInitiationId(carsiniid));
+			}
+			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
+			req.setAttribute("lablogo", getSecondLabLogoAsBase64());
+			return "cars/CARSFinalFormWordDownload";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSFinalFormWordDownload.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSFinalReportEditSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsFinalReportEditSubmit(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside CARSFinalReportEditSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String firstTime = req.getParameter("firstTime");
+			
+			CARSContract contract = service.getCARSContractByCARSInitiationId(Long.parseLong(carsInitiationId));
+			String contractDate = req.getParameter("contractDate");
+			String t0Date = req.getParameter("t0Date");
+			System.out.println(contractDate+" "+t0Date);
+			contract.setContractDate(fc.RegularToSqlDate(contractDate));
+			contract.setT0Date(fc.RegularToSqlDate(t0Date));
+			contract.setT0Remarks(req.getParameter("t0Remarks"));
+			System.out.println(contract.getContractDate()+" "+contract.getT0Date());
+			long result = service.carsFinalReportEditSubmit(contract, firstTime, labcode);
+			if (result > 0) {
+				redir.addAttribute("result", "CARS Contract Details Submitted Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "CARS Contract Details Submit Unsuccessful");	
+			}	
+			redir.addAttribute("carsInitiationId",carsInitiationId);
+			return "redirect:/CARSDPCFinalReportDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSFinalReportEditSubmit.htm "+Username, e);
 			return "static/Error";
 		}
 	}

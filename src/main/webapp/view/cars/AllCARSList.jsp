@@ -381,6 +381,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 												</table>
 										 	</div>
 										</div>
+										<input type="hidden" name="AllListTabId" value="1">
 									</form>	
 									<form action="" method="POST" id="circularForm">
 					            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -637,7 +638,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
               				</div>
                			<%} %>
                			
-               			<!-- *********** CARS-03***********      --> 
+               			<!-- *********** CARS-03 ***********      --> 
                			<%if(AllListTabId!=null&&AllListTabId.equalsIgnoreCase("3")){ %> 
          					<div class="tab-pane active" id="cars03" role="tabpanel">
          				<%}else{ %>
@@ -665,7 +666,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 												</table>
 										 	</div>
 										</div>
-										<input type="hidden" name="AllListTabId" value="2">
+										<input type="hidden" name="AllListTabId" value="3">
 									</form>	
 									<form action="" method="POST" id="circularForm">
 					            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -700,7 +701,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 														    		</button>
 												 				</td>
 												 				<td style="text-align: center;width: 15%;">
-						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCSoCDetails.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="SoC Details" style="font-weight: 600;" >
+						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSDPCFinalReportDetails.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="CARS-03 Details" style="font-weight: 600;" >
 														   				<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -710,18 +711,6 @@ String carstodate   = (String)request.getAttribute("carstodate");
 																			</div>
 																		</div>
 																	</button>
-																	<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("SFD") ) {%>
-							                                       	 	<button class="editable-click" name="carsInitiationId" value="<%=form[0] %>" formaction="CARSSoCDPCRevoke.htm" formmethod="post" onclick="return confirm('Are you sure to revoke?')">
-																			<div class="cc-rockmenu">
-																				<div class="rolling">
-																					<figure class="rolling_icon">
-																						<img src="view/images/userrevoke.png" style="width: 22px !important;">
-																					</figure>
-																					<span>Revoke</span>
-																				</div>
-																			</div>
-																	    </button>
-											   				 		<%} %>
 																</td>
 						                        			</tr>
 						                       			<%} }else{%>
@@ -957,7 +946,8 @@ $('#rsqrfromdate').daterangepicker({
 			"linkedCalendars" : false,
 			"showCustomRangeLabel" : true,
 			/* "minDate" :datearray,   */
-			 "startDate" : new Date(), 
+			 "startDate" : new Date(),
+			 "maxDate" : new Date(),
 			"cancelClass" : "btn-default",
 			showDropdowns : true,
 			locale : {

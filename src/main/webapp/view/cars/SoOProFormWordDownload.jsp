@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Summary Offer of Provision of Research Services</title>
+<title>CARS-02</title>
 <script src="./webjars/jquery/3.4.0/jquery.min.js"></script>
 <spring:url value="/resources/js/FileSaver.min.js" var="FileSaver" />
 <script src="${FileSaver}"></script>
@@ -84,7 +84,7 @@ FormatConverter fc = new FormatConverter();
 		<div id="container pageborder" align="center"  class="firstpage" id="firstpage">
 			<div class="firstpage" id="firstpage"> 	
 				<div style="text-align: right;">
-					<h5 style="font-weight: bold;margin-right: 2rem;">LRDE : CARS-02</h5>
+					<h5 style="font-weight: bold;margin-right: 2rem;"><%=labcode %> : CARS-02</h5>
 				</div>
 				<div class="center">
 			       <h4 style="font-weight: bold;margin-top: 1.5rem;">Summary Offer of Provision of Research Services</h4>
@@ -251,29 +251,29 @@ FormatConverter fc = new FormatConverter();
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align: center;border-right: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">[ Inclusive of Service Tax if applicable ]</td>
+			    			<td colspan="2" style="text-align: center;border-right: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">[Inclusive of Service Tax if applicable]</td>
 			    			<td colspan="1" style="text-align: right;border-left: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> Total&nbsp;&#11162;&nbsp;</td>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
 			    		</tr>
 			    		<tr>
 			    			<td rowspan="2" colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
-			    				10. References to R&D work being performed by RSP for Armed Services / DRDO / other S&T (including foreign) agencies : <br><br><br><br><br><br><br> </td>
+			    				10. References to R&D work being performed by RSP for Armed Services / DRDO / other S&T (including foreign) agencies: <br><br><br><br><br><br></td>
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
-			    				11. Offer as above valid till (date) : </td>
+			    				11. Offer as above valid till (date): </td>
 			    		</tr>
 			    		<tr>
 			    			<td rowspan="1" colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
-			    			 12. Signature of the competent authority of RSP : <br> 
-			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name : <br>
-			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Designation : 
+			    			 12. Signature of the competent authority of RSP: <br> 
+			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name: <br>
+			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Designation: 
 			    			</td>
 			    		</tr>
 			    	</tbody>
 			    </table>
-			    <br> <br><br> <br>
+			    
 			</div>
 		</div>
-		<h1 class="break"></h1> 
+			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 		<div id="container pageborder" align="center"  class="secondpage" id="secondpage">
 			<div class="secondpage" id="secondpage"> 	
 				<div class="center">
@@ -391,7 +391,7 @@ FormatConverter fc = new FormatConverter();
 <script>
   jQuery(document).ready(function($) {
    	  $("#btn-export").click(function(event) {
-   	    $("#source-html").wordExport("Summary Offer of Provision of Research Service");
+   	    $("#source-html").wordExport("CARS-02");
    	  });
    	});
    

@@ -8,26 +8,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name="pfms_cars_soc_milestones")
-public class CARSSoCMilestones implements Serializable{
-
+@Table(name="pfms_cars_contract_equipment")
+public class CARSContractEquipment implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long CARSSoCMilestoneId;
+	private long EquipmentId;
 	private long CARSInitiationId;
-	private String MilestoneNo;
-	private String TaskDesc;
-	private String Months;
-	private String Deliverables;
-	private String PaymentPercentage;
-	private String PaymentTerms;
-	private String ActualAmount;
+	private String Description;
 	private String CreatedBy;
 	private String CreatedDate;
 	private int IsActive;

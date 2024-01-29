@@ -1,3 +1,5 @@
+<%@page import="com.vts.pfms.cars.model.CARSSoC"%>
+<%@page import="com.vts.pfms.IndianRupeeFormat"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@page import="java.util.List"%>
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
@@ -172,6 +174,7 @@ p,td,th
 <%
 Object[] emp = (Object[])request.getAttribute("EmpData");
 List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("CARSSoCMilestones");
+CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData"); 
 %>
 
 <div align="center">
@@ -193,8 +196,11 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
    						<th style="width: 20%;">Task Description</th>
    						<th style="width: 10%;">Months</th>
    						<th >Deliverables</th>
-   						<th style="width: 5%;">Payment ( In %)</th>
-   						<th style="width: 20%;">Payment Terms</th>
+   						<%if(carsSoC!=null) {%>
+   						<th style="width: 5%;">Payment <br> ( In %)</th>
+   						<th style="width: 10%;">Amount <!-- (In Lakhs, &#8377;) --></th>
+   						<th style="width: 10%;">Remarks</th>
+   						<%} %>
    					</tr>
    				</thead>
    				<tbody>
@@ -204,8 +210,11 @@ List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribu
    							<td style="width: 20%;"><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} else{%>-<%} %></td>
    							<td style="text-align: center;width: 10%;"><%if(mil.getMonths()!=null) {%><%="T0 + "+mil.getMonths() %><%} else{%>-<%} %></td>
    							<td style=""><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} else{%>-<%} %></td>
+   							<%if(carsSoC!=null) {%>
    							<td style="text-align: center;width: 5%;"><%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} else{%>-<%} %></td>
-   							<td style="width: 20%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
+   							<td style="width: 10%;text-align: right;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
+   							<td style="width: 10%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
+   							<%} %>
    						</tr>
    					<%} %>
    				</tbody>

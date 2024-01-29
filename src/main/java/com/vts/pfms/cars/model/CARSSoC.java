@@ -28,6 +28,7 @@ private static final long serialVersionUID = 1L;
 	private String SoOUpload;
 	private String FRUpload;
 	private String SoCDate;
+	private String SoCAmount;
 	private String SoCDuration;
 	private String Alignment;
 	private String TimeReasonability;

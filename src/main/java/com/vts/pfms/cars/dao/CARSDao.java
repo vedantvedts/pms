@@ -2,7 +2,9 @@ package com.vts.pfms.cars.dao;
 
 import java.util.List;
 
-
+import com.vts.pfms.cars.model.CARSContract;
+import com.vts.pfms.cars.model.CARSContractConsultants;
+import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
 import com.vts.pfms.cars.model.CARSRSQR;
@@ -63,5 +65,15 @@ public interface CARSDao {
 	public List<Object[]> getEmployeeListByLabCode(String labCode) throws Exception;
 	public LabMaster getLabDetailsByLabCode(String labcode) throws Exception;
 	public List<Object[]> carsDPCSoCFinalApprovedList(String fromdate, String todate) throws Exception;
+	public CARSContract getCARSContractByCARSInitiationId(long carsInitiationId) throws Exception;
+	public List<CARSContractConsultants> getCARSContractConsultantsByCARSInitiationId(long carsInitiationId) throws Exception;
+	public List<CARSContractEquipment> getCARSContractEquipmentByCARSInitiationId(long carsInitiationId) throws Exception;
+	public long addCARSContractDetails(CARSContract contract) throws Exception;
+	public long editCARSContractDetails(CARSContract contract) throws Exception;
+	public long addCARSContractConsultantsDetails(CARSContractConsultants consultants) throws Exception;
+	public long addCARSContractEquipmentDetails(CARSContractEquipment equipment) throws Exception;
+	public int removeCARSContractConsultantsDetails(long carsInitiationId) throws Exception;
+	public int removeCARSContractEquipmentDetails(long carsInitiationId) throws Exception;
+	public String getMaxCARSContractNo() throws Exception;
 	
 }
