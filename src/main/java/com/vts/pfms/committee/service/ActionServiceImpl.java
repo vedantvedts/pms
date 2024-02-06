@@ -1386,10 +1386,10 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<Object[]> GetRfaActionList(String fdate, String tdate, String ProjectId,String EmpId) throws Exception 
+	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception 
 	{
 		
-		return dao.GetRfaActionList(fdate,tdate,ProjectId,EmpId);
+		return dao.GetRfaActionList(EmpId,ProjectId,fdate,tdate);
 	}
 
 	

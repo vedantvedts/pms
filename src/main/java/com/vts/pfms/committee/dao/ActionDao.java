@@ -103,7 +103,7 @@ public interface ActionDao {
 	public Long AddFavouriteList(FavouriteList fav) throws Exception;	
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
 	public ActionAssign getActionAssign(String actionassignId) throws Exception;
-	public List<Object[]> GetRfaActionList(String fdate, String tdate, String ProjectId,String EmpId) throws Exception;
+	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception;
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	public Long RfaActionSubmit(RfaAction rfa) throws Exception;

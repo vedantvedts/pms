@@ -345,7 +345,7 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 				tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog modal-lg">
-					<div class="modal-content addreq" style="width: 150%; position: relative; right: 200px;">
+					<div class="modal-content addreq" style="width: 110%; position: relative; right: 50px;">
 						<div class="modal-header" id="modalreqheader">
 							<h5 class="modal-title" id="exampleModalLabel">RFA Return</h5>
 							<button type="button" class="close" data-dismiss="modal"
@@ -362,11 +362,11 @@ List<String> toAssigneRevokeStatus  = Arrays.asList("AF","AC","RFA","AR","AY");
 												<label style="font-size: 18px; margin-top: 5%; color: #07689f; margin-left: 0.1rem ; font-weight: bold;">Reply<span class="mandatory" style="color: red;">*</span></label>
 											</div>
 											<div class="col-md-8" style="margin-top: 10px">
-												<div class="form-group" style="width: 113%">
+												<div class="form-group" style="width: 135%;margin-left: -24%">
 													<input type="text" class="form-control" name="replyMsg"
 														id="replyMsg" maxlength="255" required="required"
 														placeholder="Maximum 250 Chararcters"
-														style="line-height: 3rem !important">
+														style="line-height: 4rem !important">
 												</div>
 											</div>
 										</div>

@@ -964,7 +964,7 @@ public class ActionDaoImpl implements ActionDao{
 	
 	private static final String RFAACTIONLIST="SELECT DISTINCT a.rfaid,a.labcode,d.projectcode,a.rfano,a.rfadate,b.priority,f.classification AS category, a.statement,a.description,a.reference,a.isactive,a.createdby,a.createddate,a.projectid,a.rfastatus,a.AssignorId,(SELECT COUNT(Remarks) FROM pfms_rfa_action_transaction trans WHERE a.RfaId=trans.RfaId) AS Remarks,g.rfastatusdetails FROM pfms_rfa_action a, pfms_rfa_priority b, employee_desig c ,project_master d, employee e, pfms_security_classification f, pfms_rfa_status g WHERE a.priorityid=b.priorityid AND d.projectid=a.projectid AND CASE WHEN 'A'=:ProjectId THEN 1=1 ELSE a.projectid=:ProjectId END AND e.desigid=c.desigid AND d.projectcategory=f.classificationid AND a.assignorid=:EmpId AND a.rfastatus=g.rfastatus AND a.rfadate BETWEEN :fdate AND :tdate ORDER BY rfaid DESC";
 	@Override
-	public List<Object[]> GetRfaActionList(String fdate, String tdate, String ProjectId,String EmpId) throws Exception 
+	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception 
 	{
 		Query query = manager.createNativeQuery(RFAACTIONLIST);
 		query.setParameter("fdate", fdate);

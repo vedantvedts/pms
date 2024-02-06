@@ -94,7 +94,7 @@ public interface ActionService {
 	public Long AddFavouriteList(String[] favoriteid , Long empid ,String userid)throws Exception;
 	public List<Object[]> GetFavouriteList(String empid)throws Exception;
 	public ActionAssign getActionAssign(String actionassignId) throws Exception;
-	public List<Object[]> GetRfaActionList(String fdate,String tdate, String ProjectId,String EmpId) throws Exception;
+	public List<Object[]> GetRfaActionList(String EmpId,String ProjectId,String fdate,String tdate) throws Exception;
 	public List<Object[]> ProjectTypeList() throws Exception;
 	public List<Object[]> PriorityList() throws Exception;
 	
