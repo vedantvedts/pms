@@ -49,11 +49,11 @@ public class CustomJavaMailSender {
 	@Autowired
 	MailService mailService;
 	
-	@Value("${Email}")
-	private String Email;
-
-	@Value("${password}")
-	private String mailPassword;
+//	@Value("${Email}")
+//	private String Email;
+//
+//	@Value("${password}")
+//	private String mailPassword;
 
 	@Value("${port}")
 	private String port;
@@ -160,7 +160,7 @@ public class CustomJavaMailSender {
 	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email, String subject, String message, boolean isHtml) {
 		 
 	 		System.out.println("email "+email);
-	        String typeOfHost = "M";
+	        String typeOfHost = "L";
 			MailConfigurationDto mailAuthentication;
 			
 			try {
@@ -214,24 +214,33 @@ public class CustomJavaMailSender {
 			  }
 	    }
 	 	
-		public int sendMessage(String toEmail, String subject, String msg) {
+		public int sendMessage(String toEmail, String subject, String msg)  {
+			
+			String typeOfHost = "L";
+			MailConfigurationDto mailAuthentication=null;
+			try {
+				mailAuthentication = mailService.getMailConfigByTypeOfHost(typeOfHost);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			// change accordingly
 			String to = toEmail;
 			// change accordingly
-			String from = Email;
+			String from = mailAuthentication.getUsername().toString();
 			// or IP address
-			String hostAddress = host;
+			String hostAddress = mailAuthentication.getHost().toString();
 			// mail id from which mail will go
-			final String username = Email;
+			final String username = mailAuthentication.getUsername().toString();
 			// correct password for gmail id
-			final String password = mailPassword;
+			final String password = mailAuthentication.getPassword().toString();
 			System.out.println("Sending Mail to" + toEmail);
 			// Get the session object
 			// Get system properties
 			Properties properties = System.getProperties();
 			// Setup mail server
 			properties.setProperty("mail.smtp.host", host);
-			properties.put("mail.smtp.starttls.enable", "true");
+			//properties.put("mail.smtp.starttls.enable", "true");
 			// SSL Port
 			properties.put("mail.smtp.port", port);
 			// enable authentication

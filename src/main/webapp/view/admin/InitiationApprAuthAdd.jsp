@@ -48,7 +48,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 
 String action = (String)request.getAttribute("action");
 
-List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","Chairman RPB","MMFD AG","GD DF&MM");
+List<String> apprTypes = Arrays.asList("AD","DO-RTMD","GH-DP&C","AD-P&C","Chairman RPB","MMFD AG","GD DF&MM","Chairperson (CARS Committee)");
 %>
 
 <% String ses=(String)request.getParameter("result"); 

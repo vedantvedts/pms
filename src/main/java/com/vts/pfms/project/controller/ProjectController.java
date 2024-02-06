@@ -6129,6 +6129,7 @@ public class ProjectController
 			String path=req.getServletContext().getRealPath("/view/temp");
 		  	req.setAttribute("path",path);
 		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
+		  	req.setAttribute("LabImage",  LogoUtil.getLabImageAsBase64String(LabCode)); 
 		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
 		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
 		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));

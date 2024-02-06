@@ -19,6 +19,10 @@ import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
+import com.vts.pfms.model.PfmsCommitteSmsTracking;
+import com.vts.pfms.model.PfmsCommitteSmsTrackingInsights;
+import com.vts.pfms.model.PfmsSmsTracking;
+import com.vts.pfms.model.PfmsSmsTrackingInsights;
 import com.vts.pfms.model.ProjectHoaChanges;
 import com.vts.pfms.project.model.ProjectHealth;
 
@@ -601,6 +605,323 @@ public class RfpMainDaoImpl implements RfpMainDao {
 		Object[] ProMaster =(Object[])query.getSingleResult();
 		return ProMaster ;
 	}
+
+	private static final String SMSINTIATEDCOUNT="SELECT COUNT(*) FROM pfms_sms_track WHERE CreatedDate = CURDATE() AND SmsTrackingType=:smsTrackingType";
+	@Override
+	public long GetSMSInitiatedCount(String smsTrackingType) throws Exception {
+		logger.info(new Date() + "Inside GetSMSInitiatedCount");
+		try {
+		Query query = manager.createNativeQuery(SMSINTIATEDCOUNT);
+	    query.setParameter("smsTrackingType", smsTrackingType);
+	    BigInteger countResult = (BigInteger) query.getSingleResult();
+        return countResult.longValue();
+	  } catch (Exception e) {
+		 e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetSMSInitiatedCount", e);
+			return 0;
+	    }
+	}
 	
+	private static final String DAILYEXPECTEDPENDINGREPLYCOUNT="SELECT COUNT(DISTINCT m.Assignee) FROM action_assign m JOIN action_main a ON m.ActionMainId = a.ActionMainId WHERE m.ActionStatus='A' AND m.IsActive=1";
+	@Override
+	public long GetDailyExpectedPendingReplyCount() throws Exception {
+		logger.info(new Date() + "Inside GetDailyExpectedPendingReplyCount");
+		try {
+		 Query query = manager.createNativeQuery(DAILYEXPECTEDPENDINGREPLYCOUNT);
+		 BigInteger countResult = (BigInteger) query.getSingleResult();
+	        return countResult.longValue();
+		 } catch (Exception e) {
+		    e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetDailyExpectedPendingReplyCount", e);
+			return 0;
+		}
+	}
+	
+	
+	@Override
+	public long InsertSmsTrackRow(PfmsSmsTracking model) throws Exception {
+		logger.info(new Date() + "Inside DAO InsertSmsTrackRow");
+		try {
+			manager.persist(model);
+			manager.flush();
+			return model.getSmsTrackingId();
+        } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl InsertSmsTrackRow", e);
+			return 0;
+		}
+	}
+	
+	
+	private static final String DAILYPENDINGASSIGNEMPDATA="SELECT a.ActionAssignId,a.Assignee,empData.EmpName,empData.Email,empData.MobileNo,b.ActionItem,a.EndDate FROM action_assign a LEFT JOIN employee empData ON empData.EmpId=a.Assignee JOIN action_main b ON a.ActionMainId=b.ActionMainId WHERE a.ActionStatus='A' AND a.IsActive=1";
+	@Override
+	public List<Object[]> GetDailyPendingAssigneeEmpData() throws Exception {
+		logger.info(new Date() + "Inside DAO GetDailyPendingAssigneeEmpData");
+		try {
+		Query query = manager.createNativeQuery(DAILYPENDINGASSIGNEMPDATA);
+		List<Object[]> GetDailyPendingReplyEmpData = query.getResultList();
+		return GetDailyPendingReplyEmpData;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetDailyPendingAssigneeEmpData", e);
+			return null;
+		}
+	}
+	
+	private static final String ACTIONASSIGNCOUNTS="SELECT(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress=0 AND a.Assignee=:empId AND a.IsActive=1) AS 'ActivityAssigned',(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress>0 AND a.EndDate>=:PdcDate AND a.Assignee=:empId AND a.IsActive=1) AS 'ActivityOnGoing',(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress>0 AND a.EndDate<:PdcDate AND a.Assignee=:empId AND a.IsActive=1) AS 'ActivityDelayOnGoing'";
+	@Override
+	public Object[] ActionAssignCounts(long empId, String PdcDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(ACTIONASSIGNCOUNTS);
+			query.setParameter("empId", empId);
+			query.setParameter("PdcDate", PdcDate);
+			return (Object[])query.getSingleResult();
+			
+		}
+		catch(Exception e) {
+			logger.error(new Date()  + "Inside DAO DakCounts " + e);
+			return null;
+		}
+	}
+	
+	@Override
+	public long InsertSmsTrackInsights(PfmsSmsTrackingInsights insights) throws Exception {
+		logger.info(new Date() + "Inside DAO PfmsSmsTrackingInsights");
+		try {
+			manager.persist(insights);
+			manager.flush();
+			return insights.getSmsTrackingInsightsId();
+        } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl PfmsSmsTrackingInsights", e);
+			return 0;
+		}
+	}
+	
+	private static final String UPDATEPARTICULAREMPSMSSTATUS="UPDATE pfms_sms_track_insights SET SmsStatus=:smsStatus,SmsSentDate= CAST(CURRENT_TIMESTAMP AS DATETIME),Message=:message WHERE SmsPurpose=:smsPurpose AND EmpId=:empId AND SmsTrackingId=:effectivelyFinalSmsTrackingId";
+	@Override
+	public long UpdateParticularEmpSmsStatus(String smsPurpose, String smsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception {
+		logger.info(new Date() + "Inside DaoImpl UpdateParticularEmpSmsStatus");
+		try {
+			Query query = manager.createNativeQuery(UPDATEPARTICULAREMPSMSSTATUS);
+		    query.setParameter("smsPurpose", smsPurpose);
+		    query.setParameter("smsStatus", smsStatus);
+		    query.setParameter("empId", empId);
+		    query.setParameter("effectivelyFinalSmsTrackingId", effectivelyFinalSmsTrackingId);
+		    query.setParameter("message", message);
+			return query.executeUpdate();
+			
+		 } catch (Exception e) {
+			 e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl UpdateParticularEmpSmsStatus", e);
+				return 0;
+		    }
+	}
+	
+	private static final String UPADTEACTIONSMSTRACKROW="UPDATE pfms_sms_track SET SmsSentCount=:successCount,SmsSentStatus='S',SmsSentDateTime= CAST(CURRENT_TIMESTAMP AS DATETIME) WHERE SmsTrackingId=:smsTrackingId AND CreatedDate=CURDATE() AND SmsTrackingType=:trackingType ";
+	@Override
+	public long UpdateDakActionTrackRow(long smsTrackingId, int successCount, String trackingType) throws Exception {
+		logger.info(new Date() + "Inside DAO UpdateDakSmsTrackRow");
+		try {
+			Query query = manager.createNativeQuery(UPADTEACTIONSMSTRACKROW);
+			 query.setParameter("smsTrackingId", smsTrackingId);
+		    query.setParameter("successCount", successCount);
+		    query.setParameter("trackingType", trackingType);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl UpdateDakSmsTrackRow", e);
+			return 0;
+		}
+	}
+	
+	private static final String UPDATENOSMSPENDINGREPLY="UPDATE pfms_sms_track SET SmsSentCount=0 AND SmsSentStatus='NA' WHERE CreatedDate=CURDATE() AND SmsTrackingType=:trackingType ";
+	@Override
+	public long UpdateNoSmsPendingReply(String trackingType) throws Exception {
+		logger.info(new Date() + "Inside DAO UpdateNoSmsPendingReply");
+		try {
+			Query query = manager.createNativeQuery(UPDATENOSMSPENDINGREPLY);
+		    query.setParameter("trackingType", trackingType);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl UpdateNoSmsPendingReply", e);
+			return 0;
+
+		}
+	}
+	
+	private static final String DIRECTORDAILYPENDINGASSIGNEMPDATA="SELECT  e.empid,e.mobileno FROM employee e,lab_master b WHERE b.labcode=:Lab AND e.empid=b.LabAuthorityId AND e.isactive='1'";
+	@Override
+	public List<Object[]> GetDirectorDailyPendingAssignEmpData(String lab) throws Exception {
+		logger.info(new Date() + "Inside DAO GetDirectorDailyPendingAssignEmpData");
+		try {
+		Query query = manager.createNativeQuery(DIRECTORDAILYPENDINGASSIGNEMPDATA);
+		query.setParameter("Lab", lab);
+		List<Object[]> GetDailyPendingReplyEmpData = query.getResultList();
+		return GetDailyPendingReplyEmpData;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetDirectorDailyPendingAssignEmpData", e);
+			return null;
+		}
+	}
+	
+	private static final String DIRECTORACTIONASSIGNCOUNTS="SELECT(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress=0 AND a.IsActive=1) AS 'ActivityAssigned',(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress>0 AND a.EndDate>=:pdcDate AND a.IsActive=1) AS 'ActivityOnGoing',(SELECT COUNT(*) FROM action_assign a WHERE a.ActionStatus='A' AND a.Progress>0 AND a.EndDate<:pdcDate AND a.IsActive=1) AS 'ActivityDelayOnGoing'";
+	@Override
+	public Object[] DirectorActionAssignCounts(String pdcDate) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(DIRECTORACTIONASSIGNCOUNTS);
+			query.setParameter("pdcDate", pdcDate);
+			return (Object[])query.getSingleResult();
+		}
+		catch(Exception e) {
+			logger.error(new Date()  + "Inside DAO DirectorDakCounts " + e);
+			return null;
+		}
+	}
+	
+	private static final String COMMITTESMSINTIATEDCOUNT="SELECT COUNT(*) FROM pfms_committe_sms_track WHERE CreatedDate = CURDATE() AND SmsTrackingType=:smsTrackingType";
+	@Override
+	public long GetCommitteSMSInitiatedCount(String smsTrackingType) throws Exception {
+		logger.info(new Date() + "Inside GetCommitteSMSInitiatedCount");
+		try {
+		Query query = manager.createNativeQuery(COMMITTESMSINTIATEDCOUNT);
+	    query.setParameter("smsTrackingType", smsTrackingType);
+	    BigInteger countResult = (BigInteger) query.getSingleResult();
+        return countResult.longValue();
+	  } catch (Exception e) {
+		 e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetCommitteSMSInitiatedCount", e);
+			return 0;
+	    }
+	}
+	
+	
+	private static final String DAILYCOMMITTECOUNT="SELECT COUNT(DISTINCT a.EmpId) FROM committee_schedules_invitation a, committee_schedule b ,committee c WHERE a.CommitteeScheduleId=b.ScheduleId AND b.CommitteeId=c.CommitteeId AND b.ScheduleDate=:ScheduleDate AND b.IsActive=1";
+	@Override
+	public long dailyCommitteCount(String ScheduleDate) throws Exception {
+		logger.info(new Date() + "Inside dailyCommitteCount");
+		try {
+		 Query query = manager.createNativeQuery(DAILYCOMMITTECOUNT);
+		 query.setParameter("ScheduleDate", ScheduleDate);
+		 BigInteger countResult = (BigInteger) query.getSingleResult();
+	        return countResult.longValue();
+		 } catch (Exception e) {
+			 e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl dailyCommitteCount", e);
+				return 0;
+		    }
+	}
+	
+	@Override
+	public long InsertCommitteSmsTrackRow(PfmsCommitteSmsTracking model) throws Exception {
+		logger.info(new Date() + "Inside DAO InsertCommitteSmsTrackRow");
+		try {
+			manager.persist(model);
+			manager.flush();
+			return model.getCommitteSmsTrackingId();
+        } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl InsertCommitteSmsTrackRow", e);
+			return 0;
+		}
+	}
+	
+	private static final String COMMITTEDETAILSTOSENDSMS="SELECT DISTINCT a.EmpId,e.MobileNo FROM committee_schedules_invitation a, committee_schedule b ,committee c ,employee e WHERE a.CommitteeScheduleId=b.ScheduleId AND b.CommitteeId=c.CommitteeId AND b.ScheduleDate=CURDATE() AND a.EmpId=e.EmpId AND b.IsActive=1 ";
+	@Override
+	public List<Object[]> GetCommitteEmpsDetailstoSendSms() throws Exception {
+		logger.info(new Date() + "Inside DAO GetCommitteEmpsDetailstoSendSms");
+		try {
+		Query query = manager.createNativeQuery(COMMITTEDETAILSTOSENDSMS);
+		List<Object[]> GetCommitteEmpsDetailstoSendSms = query.getResultList();
+		return GetCommitteEmpsDetailstoSendSms;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl GetCommitteEmpsDetailstoSendSms", e);
+			return null;
+		}
+	}
+	
+	private static final String GETCOMMITTEDATA="SELECT a.CommitteeScheduleId,b.ProjectId,c.CommitteeShortName,e.EmpName,e.MobileNo,b.ScheduleDate,b.ScheduleStartTime,c.ProjectApplicable FROM committee_schedules_invitation a,committee_schedule b,committee c,employee e WHERE a.CommitteeScheduleId=b.ScheduleId AND b.CommitteeId=c.CommitteeId AND b.ScheduleDate=CURDATE() AND a.EmpId=e.EmpId AND a.EmpId=:empId AND b.IsActive='1'";
+	@Override
+	public List<Object[]> getCommittedata(long empId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(GETCOMMITTEDATA);
+			query.setParameter("empId", empId);
+			List<Object[]> getCommittedata = (List<Object[]>)query.getResultList();
+			return getCommittedata;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public long InsertCommitteSmsTrackInsights(PfmsCommitteSmsTrackingInsights insights) throws Exception {
+		logger.info(new Date() + "Inside DAO DakSmsTrackingInsights");
+		try {
+			manager.persist(insights);
+			manager.flush();
+			return insights.getCommitteSmsTrackingInsightsId();
+        } catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl DakSmsTrackingInsights", e);
+			return 0;
+		}
+	}
+	
+	private static final String UPDATEPARTICULARCOMMITTEEMPSMSSTATUS="UPDATE pfms_committe_sms_track_insights SET SmsStatus=:smsStatus,SmsSentDate= CAST(CURRENT_TIMESTAMP AS DATETIME),Message=:message WHERE SmsPurpose=:smsPurpose AND EmpId=:empId AND CommitteSmsTrackingId=:effectivelyFinalSmsTrackingId";
+	@Override
+	public long UpdateParticularCommitteEmpSmsStatus(String smsPurpose, String smsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception {
+		logger.info(new Date() + "Inside UpdateParticularCommitteEmpSmsStatus");
+		try {
+			Query query = manager.createNativeQuery(UPDATEPARTICULARCOMMITTEEMPSMSSTATUS);
+		    query.setParameter("smsPurpose", smsPurpose);
+		    query.setParameter("smsStatus", smsStatus);
+		    query.setParameter("empId", empId);
+		    query.setParameter("effectivelyFinalSmsTrackingId", effectivelyFinalSmsTrackingId);
+		    query.setParameter("message", message);
+			return query.executeUpdate();
+			
+		 } catch (Exception e) {
+			 e.printStackTrace();
+				logger.error(new Date() + "Inside DaoImpl UpdateParticularCommitteEmpSmsStatus", e);
+				return 0;
+		    }
+	}
+	
+	private static final String UPADTECOMMITTESMSTRACKROW="UPDATE pfms_committe_sms_track SET SmsSentCount=:successCount,SmsSentStatus='S',SmsSentDateTime= CAST(CURRENT_TIMESTAMP AS DATETIME) WHERE CommitteSmsTrackingId=:smsTrackingId AND CreatedDate=CURDATE() AND SmsTrackingType=:trackingType";
+	@Override
+	public long UpdateCommitteSmsTrackRow(long committeSmsTrackingId, int successCount, String trackingType) throws Exception {
+		logger.info(new Date() + "Inside DAO UpdateCommitteSmsTrackRow");
+		try {
+			Query query = manager.createNativeQuery(UPADTECOMMITTESMSTRACKROW);
+			 query.setParameter("smsTrackingId", committeSmsTrackingId);
+		    query.setParameter("successCount", successCount);
+		    query.setParameter("trackingType", trackingType);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl UpdateCommitteSmsTrackRow", e);
+			return 0;
+		}
+	}
+	
+	private static final String UPDATECOMMITTENOSMSPENDING="UPDATE pfms_committe_sms_track SET SmsSentCount=0 AND SmsSentStatus='NA' WHERE CreatedDate=CURDATE() AND SmsTrackingType=:trackingType ";
+	@Override
+	public long UpdateCommitteNoSmsPending(String trackingType) throws Exception {
+		logger.info(new Date() + "Inside DAO UpdateCommitteNoSmsPending");
+		try {
+			Query query = manager.createNativeQuery(UPDATECOMMITTENOSMSPENDING);
+		    query.setParameter("trackingType", trackingType);
+			return query.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside DaoImpl UpdateCommitteNoSmsPending", e);
+			return 0;
+
+		}
+	}
 }
 

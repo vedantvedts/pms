@@ -1,3 +1,4 @@
+<%@page import="org.hibernate.internal.build.AllowSysOut"%>
 <%@page import="java.net.URL"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -71,6 +72,9 @@ String classification=PfmsInitiationList[5].toString();
 String projectshortName=PfmsInitiationList[6].toString();
 List<Object[]>Verifications=(List<Object[]>)request.getAttribute("Verifications");
 List<Object[]>ParaDetails=(List<Object[]>)request.getAttribute("ParaDetails");
+String labImg=(String)request.getAttribute("LabImage");
+
+
 int maincount=0;
 int port=new URL( request.getRequestURL().toString()).getPort();
 String path=request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath()+"/";
@@ -177,8 +181,47 @@ span {
 				style="color: green;"></i>
 		</button>
 	</div>
-	<div class="source-html-outer">
+	<div class="source-html-outer"></div>
 		<div id="source-html">
+<table style="width: 98%;border-collapse: collapse;margin-left: 5px;">
+	<tr>
+		<td style="text-align: left;">
+			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
+	            <tr>
+	                <td style="text-align: center; padding: 5px;">
+	                    <span style="text-decoration: underline;">RESTRICTED</span>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td style="padding: 5px;">
+	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
+	                </td>
+	            </tr>
+        	</table>
+		</td>
+		<td style="text-align: right;">
+			<table style="width: 23%; border: none; border-collapse: collapse;">
+            	<tr>
+          			<td style="padding: 10px;">
+    					<h4 style="margin: 0; padding: 0;">
+    					
+    				<%
+				if(LabList[0] != null) {
+				%>
+				<%=LabList[0].toString()%>:SyRD:....................</h4>
+  						<h6 style="margin: 0; padding: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
+						<%
+				}else {
+				%>-<%
+				}
+				%>
+					</td>
+            	</tr>
+        	</table>
+        	<br> <br> <br> <br> <br><br>
+		</td>
+	</tr>
+</table>
 			<div align="center"></div>
 			<div style="text-align: center; margin-top: 75px;">
 				<h1 style="font-size: 30px !important;" class="heading-color">SYSTEM
@@ -196,7 +239,7 @@ span {
 					<%} else {%>-<%}%>
 				</h3>
 					<div align="center" >
-						<img class="logo" style="width: 20px; height: 20px; margin-bottom: 5px"
+						<img class="logo" style="width: 80px; height: 80px; margin-bottom: 5px"
 							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
 							<%} else {%> alt="File Not Found" <%}%>>
 				</div>
@@ -232,7 +275,193 @@ span {
 			<br> <br>
 			<br>
 			<br>
+				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+					
+	<!------------------------ page 2 -------Starts----------------------->
+
+ <div class="heading-container" style="text-align: center; position: relative;">
+    <h6 class="heading-color top-center" style="font-size: 14px !important; text-decoration: underline; display: inline-block; padding-bottom: 5px; position: absolute; top: 0; left: 50%; transform: translateX(-50%);">RESTRICTED</h6>
+  </div>
+	
+
+	
+					<table style="width: 98%;border-collapse: collapse;margin-left: 10px;">
+	<tr>
+		<td style="text-align: left;">
+			<table style="width: 85%; border: 1px solid black; border-collapse: collapse;">
+	            <tr>
+	                <td style="text-align: center; padding: 5px;">
+	                    <span style="text-decoration: underline;">RESTRICTED</span>
+	                </td>
+	            </tr>
+	            <tr>
+	                <td style="padding: 5px;">
+	                    <p>The information given in this document is not to be published or communicated, either directly or indirectly, to the press or to any personnel not authorized to receive it.</p>
+	                </td>
+	            </tr>
+        	</table>
+		</td>
+		<td style="text-align: right;">
+			<table style="width: 23%; border: none; border-collapse: collapse;">
+            	<tr>
+          			<td style="padding: 10px;">
+    					<h4 style="margin: 0; padding: 0;">	<%
+				if(LabList[0] != null) {
+				%>
+				<%=LabList[0].toString()%>:SyRD:....................</h4>
+				<h6 style="margin: 0; padding: 0;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copy No.01</h6>
+				<%
+				}else {
+				%>-<%
+				}
+				%>
+  						
+					</td>
+            	</tr>
+        	</table>
+        	<br> <br> <br> 
+		</td>
+	</tr>
+</table>
+<br>
+		<div align="center" >
+						<img class="logo" style="width: 50px; height: 50px; margin-bottom: 5px"
+							<%if (lablogo != null) {%> src="data:image/png;base64,<%=lablogo%>" alt="Configuration"
+							<%} else {%> alt="File Not Found" <%}%>>
+				</div>
+				<br><br><br><br>
+					<div align="center" >
+						<img class="logo" style="width: 100px; height: 100px; margin-bottom: 10px"
+							<%if (labImg != null) {%> src="data:image/png;base64,<%=labImg%>" alt="Configuration"
+							<%} else {%> alt="File Not Found" <%}%>>
+				</div>
+			<div align="center"></div>
+			<div style="text-align: center; margin-top: 75px;">
+				<h4 style="font-size: 14px !important;" class="heading-color">SYSTEM
+					REQUIREMENTS</h4>
+				<h4 style="font-size: 14px;">For</h4>
+				<h4 style="">
+					Project:
+					<%=PfmsInitiationList[7].toString()%>
+					<%="( " + PfmsInitiationList[6].toString() + " )"%>
+				</h4>
+				<h4 style="font-size: 14px; text-decoration: underline">Requirement
+					No.</h4>
+				<h3>
+					<%if (reqStatus!=null && reqStatus[3] != null) {%><%=reqStatus[3].toString()%>
+					<%} else {%>-<%}%>
+				</h3>
+				<div align="center">
+					<h4 style="font-size: 14px;">
+				<%
+				if(LabList[1] != null) {
+				%>
+				<%=LabList[1].toString()+"("+LabList[0].toString()+")"%>
+				<%
+				}else {
+				%>-<%
+				}
+				%>
+					</h4>
+					<h4>
+						Government of India, Ministry of Defence<br>Defence Research
+						& Development Organization
+					</h4>
+
+				</div>
+
+				<h4>
+					<%if(LabList[2]!=null && LabList[3]!=null && LabList[5]!=null){ %>
+					<%=LabList[2]+" , "+LabList[3].toString()+", PIN-"+LabList[5].toString() %>
+					<%}else{ %>
+					-
+					<%} %>
+				</h4>
+
+			</div>
+			<p style="page-break-after: always;">&nbsp;</p>
+				
+					<!-- Page to ends -->
+					
+					<div style="text-align: center;">
+				<h4  class="heading-color">AMENDMENT / REVISION HISTORY PAGE
+				</h4>
+				
+			</div>
+			<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+				
+					<tr >
+					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Amendment No.</span></td>
+					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Particulars of Amendment.</span></td>
+					<td class="text-dark" rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Page No.</span></td>
+					<td class="text-dark"  rowspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Para No.</span></td>
+					<td class="text-dark"  rowspan="2"style="border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Issue Date</span></td>
+					<td class="text-dark"  colspan="2" style="border:1px solid black; text-align: center;"><span class="text-dark">Incorporated by</span></td>
+					</tr>
+					<tr >
+					<td class="text-dark" style="border:1px solid black; width: 100px; text-align: center;">Name</td>
+					<td class="text-dark" style="border:1px solid black; width: 80px; text-align: center;">Date</td>
+
+					</tr>
+								
+		<tbody id="blankRowsBody"></tbody>
+
+  <script>
+    // JavaScript loop to generate 10 blank rows
+    for (let i = 0; i < 15; i++) {
+      document.getElementById('blankRowsBody').innerHTML += `
+        <tr>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black; width: 100px;"><span class="text-dark"></span></td>
+        </tr>
+      `;
+    }
+  </script>
+					</table>
+						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 			<div align="center">
+			
+			<div style="text-align: center;">
+				<h4  class="heading-color">DISTRIBUTION LIST
+				</h4>
+				
+			</div>
+						<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
+				
+					<tr >
+					<td class="text-dark"  style="border:1px solid black; width: 20px;text-align: center;"><span class="text-dark">S.No</span></td>
+					<td class="text-dark"   style="border:1px solid black; width: 150px;text-align: center;"><span class="text-dark">NAME</span></td>
+					<td class="text-dark"  style="border:1px solid black; text-align: center;width: 100px;"><span class="text-dark">Designation</span></td>
+					<td class="text-dark"   style="border:1px solid black;width: 100px; text-align: center;"><span class="text-dark">Division/Lab</span></td>
+					<td class="text-dark"  style="border:1px solid black; text-align: center;width: 80px;"><span class="text-dark">Remarks</span></td>
+					</tr>
+					
+								
+		<tbody id="blankRowsBody1"></tbody>
+
+  <script>
+    // JavaScript loop to generate 10 blank rows
+    for (let i = 0; i < 15; i++) {
+      document.getElementById('blankRowsBody1').innerHTML += `
+        <tr>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+          <td class="text-dark" style="border:1px solid black;"><span class="text-dark"></span></td>
+            </tr>
+      `;
+    }
+  </script>
+					</table>
+				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+			
+			
 				<h4>CONTENTS</h4>
 			</div>
 			<%if(ReqIntro!=null) {%>
@@ -254,6 +483,7 @@ span {
 			for(Object[]obj:OtherRequirements){%>
 				<h6 style="margin-left: 20px"><%if(obj[2].toString().equalsIgnoreCase("0")) {%> <%=obj[3].toString() %><%} %></h6>
 			<%}}%>
+				<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 			<div style="text-align: center;">
 				<h1 style="font-size: 20px !important;" class="heading-color">DOCUMENT SUMMARY
 				</h1>
@@ -265,6 +495,7 @@ span {
 			<td>1.Title: System Requirement Document Template</td>
 			</tr>
 			</table> -->
+			
 					<table style="width: 650px; margin-top: 10px; margin-bottom: 5px;border:1px solid black;border-collapse: collapse;">
 					<tr>
 					<td  class="text-dark" colspan="2" style="border:1px solid black;">1.&nbsp; Title: <span class="text-dark">System Requirements Document Template</span></td>
@@ -343,6 +574,7 @@ span {
 			
 			<%if(ReqIntro!=null) {%>
 			<div style="page-break-before: always"></div>
+			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 			<div style="text-align: center;">
 				<h1 style="font-size: 20px !important;" class="heading-color"><%=++maincount %>.&nbsp;Introduction
 				</h1>
@@ -584,7 +816,8 @@ span {
 				<div align="center">
 					<h1 style="font-size: 20px !important; color:;"
 						class="heading-color">
-						<br><%=++maincount %>.&nbsp;Other System Requirements
+						<br><%=++maincount %>.&nbsp;		
+						<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>Other System Requirements
 					</h1>
 					<hr style="width: 80%;">
 				</div>

@@ -55,4 +55,24 @@ public interface RfpMainService {
 	public List<Object[]> DashboardFinance(String LoginType, String EmpId, String LabCode, String ClusterId) throws Exception;
 	public List<Object[]> DashboardProjectFinanceCashOutGo(String projectcode) throws Exception;
 	public Object[] ProjectAttributes(String projectcode) throws Exception;
+	public long GetSMSInitiatedCount(String SmsTrackingType) throws Exception;
+	public long InsertSmsTrackInitiator(String TrackingType) throws Exception;
+	public List<Object[]> GetDailyPendingAssigneeEmpData() throws Exception;
+	public long InsertDailySmsPendingInsights(long smsTrackingId) throws Exception;
+	public Object[] ActionAssignCounts(long EmpId, String actionDate) throws Exception;
+	public long UpdateParticularEmpSmsStatus(String SmsPurpose, String SmsStatus, long EmpId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
+	public long updateSmsSuccessCount(long smsTrackingId, int SuccessCount, String TrackingType) throws Exception;
+	public long UpdateNoSmsPendingReply(String TrackingType) throws Exception;
+	public long DirectorInsertSmsTrackInitiator(String TrackingType) throws Exception;
+	public List<Object[]> GetDirectorDailyPendingAssignEmpData(String Lab) throws Exception;
+	public long DirectorInsertDailySmsPendingInsights(long smsTrackingId) throws Exception;
+	public Object[] DirectorActionAssignCounts(String PdcDate) throws Exception;
+	public long GetCommitteSMSInitiatedCount(String SmsTrackingType) throws Exception;
+	public long InsertCommitteSmsTrackInitiator(String TrackingType) throws Exception;
+	public List<Object[]> GetCommitteEmpsDetailstoSendSms() throws Exception;
+	public long InsertDailyCommitteSmsInsights(long committeSmsTrackingId) throws Exception;
+	public List<Object[]> getCommittedata(long EmpId) throws Exception;
+	public long UpdateParticularCommitteEmpSmsStatus(String SmsPurpose, String SmsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
+	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, int SuccessCount, String TrackingType) throws Exception;
+	public long UpdateCommitteNoSmsPending(String TrackingType) throws Exception;
 }

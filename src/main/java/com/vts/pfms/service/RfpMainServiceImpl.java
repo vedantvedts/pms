@@ -2,10 +2,17 @@ package com.vts.pfms.service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +29,10 @@ import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
+import com.vts.pfms.model.PfmsCommitteSmsTracking;
+import com.vts.pfms.model.PfmsCommitteSmsTrackingInsights;
+import com.vts.pfms.model.PfmsSmsTracking;
+import com.vts.pfms.model.PfmsSmsTrackingInsights;
 import com.vts.pfms.model.ProjectHoaChanges;
 import com.vts.pfms.project.model.ProjectHealth;
 @Service
@@ -602,4 +613,232 @@ public class RfpMainServiceImpl implements RfpMainService {
 		return dao.ProjectAttributes(projectcode);
 	}
 	
+
+	@Override
+	public long GetSMSInitiatedCount(String SmsTrackingType) throws Exception {
+		return dao.GetSMSInitiatedCount(SmsTrackingType);
+	}
+	
+	@Override
+	public long InsertSmsTrackInitiator(String TrackingType) throws Exception {
+		long rowAddResult = 0;
+		PfmsSmsTracking Model  = new PfmsSmsTracking();
+		Model.setSmsTrackingType(TrackingType);
+	    long dailyPendingCount = dao.GetDailyExpectedPendingReplyCount();
+	    Model.setSmsExpectedCount(dailyPendingCount);
+		Model.setSmsSentCount(0);
+		Model.setSmsSentStatus("N");
+		Model.setCreatedDate(sdf2.format(new Date()));
+		Model.setCreatedTime(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+		
+	    rowAddResult = dao.InsertSmsTrackRow(Model);
+		
+		return rowAddResult;
+	}
+	
+	
+	@Override
+	public List<Object[]> GetDailyPendingAssigneeEmpData() throws Exception {
+		return dao.GetDailyPendingAssigneeEmpData();
+	}
+	
+	@Override
+	public long InsertDailySmsPendingInsights(long smsTrackingId) throws Exception {
+		 long TrackingInsightsResult = 0;
+
+		    List<Object[]> PendingAssingEmpsDetailstoSendSms = dao.GetDailyPendingAssigneeEmpData();
+		    if (PendingAssingEmpsDetailstoSendSms != null && PendingAssingEmpsDetailstoSendSms.size() > 0) {
+		        Map<Integer, Set<String>> empActionItemMap = new HashMap();
+
+		        for (Object[] rowData : PendingAssingEmpsDetailstoSendSms) {
+		            int empId = Integer.parseInt(rowData[1].toString());
+		            String ActionItem = rowData[5].toString();
+		            
+		            if (!empActionItemMap.containsKey(empId)) {
+		            	empActionItemMap.put(empId, new HashSet<>());
+		            }
+
+		            empActionItemMap.get(empId).add(ActionItem);
+		        }
+
+		        for (Map.Entry<Integer, Set<String>> entry : empActionItemMap.entrySet()) {
+		            int empId = entry.getKey();
+		            Set<String> ActionItemSet = entry.getValue();
+		            
+		            Object[] ActionAssignCounts =dao.ActionAssignCounts(empId,LocalDate.now().toString());
+		            
+		            System.out.println("empId"+empId);
+		            System.out.println("ActionAssignCounts[0]"+ActionAssignCounts[0].toString());
+		            System.out.println("ActionAssignCounts[1]"+ActionAssignCounts[1].toString());
+		            System.out.println("ActionAssignCounts[2]"+ActionAssignCounts[2].toString());
+		            // Create a new instance of DakMailTrackingInsights for each entry
+		            PfmsSmsTrackingInsights Insights = new PfmsSmsTrackingInsights();
+		            Insights.setSmsTrackingId(smsTrackingId);
+		            Insights.setSmsPurpose("D");
+		            Insights.setSmsStatus("N");
+		            Insights.setSmsActivityAssigned(Long.parseLong(ActionAssignCounts[0].toString()));
+		            Insights.setSmsOnGoing(Long.parseLong(ActionAssignCounts[1].toString()));
+		            Insights.setSmsDelayOnGoing(Long.parseLong(ActionAssignCounts[2].toString()));
+		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setEmpId(empId);
+
+		            // Insert the row into the table for this entry
+		            long result = dao.InsertSmsTrackInsights(Insights);
+		            System.out.println("result:"+result);
+		            TrackingInsightsResult = result;
+		        }
+		    }
+
+		    return TrackingInsightsResult;
+	}
+	
+	@Override
+	public Object[] ActionAssignCounts(long EmpId, String actionDate) throws Exception {
+		return dao.ActionAssignCounts(EmpId, actionDate);
+	}
+	
+	@Override
+	public long UpdateParticularEmpSmsStatus(String SmsPurpose, String SmsStatus, long EmpId,long effectivelyFinalSmsTrackingId, String message) throws Exception {
+		return dao.UpdateParticularEmpSmsStatus(SmsPurpose,SmsStatus,EmpId,effectivelyFinalSmsTrackingId,message);
+	}
+	
+	@Override
+	public long updateSmsSuccessCount(long smsTrackingId, int SuccessCount, String TrackingType) throws Exception {
+		long rowUpdateResult = dao.UpdateDakActionTrackRow(smsTrackingId,SuccessCount,TrackingType);
+	    return rowUpdateResult;
+	}
+	
+	@Override
+	public long UpdateNoSmsPendingReply(String TrackingType) throws Exception {
+		return dao.UpdateNoSmsPendingReply(TrackingType);
+	}
+	
+	@Override
+	public long DirectorInsertSmsTrackInitiator(String TrackingType) throws Exception {
+		long rowAddResult = 0;
+		PfmsSmsTracking Model  = new PfmsSmsTracking();
+		Model.setSmsTrackingType(TrackingType);
+	    Model.setSmsExpectedCount(1);
+		Model.setSmsSentCount(0);
+		Model.setSmsSentStatus("N");
+		Model.setCreatedDate(sdf2.format(new Date()));
+		Model.setCreatedTime(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+		
+	    rowAddResult = dao.InsertSmsTrackRow(Model);
+		
+		return rowAddResult;
+	}
+
+
+	@Override
+	public List<Object[]> GetDirectorDailyPendingAssignEmpData(String Lab) throws Exception {
+		return dao.GetDirectorDailyPendingAssignEmpData(Lab);
+	}
+	
+	@Override
+	public long DirectorInsertDailySmsPendingInsights(long smsTrackingId) throws Exception {
+		 long TrackingInsightsResult = 0;
+
+		 List<Object[]> DirectorPendingAssignEmpsDetailstoSendSms = dao.GetDirectorDailyPendingAssignEmpData("LRDE");
+		    if (DirectorPendingAssignEmpsDetailstoSendSms != null && DirectorPendingAssignEmpsDetailstoSendSms.size() > 0) {
+
+		        for (Object[] rowData : DirectorPendingAssignEmpsDetailstoSendSms) {
+		            int empId = Integer.parseInt(rowData[0].toString());
+		            Object[] DirectorActionAssignCounts =dao.DirectorActionAssignCounts(LocalDate.now().toString());
+		            // Create a new instance of DakMailTrackingInsights for each entry
+		            PfmsSmsTrackingInsights Insights = new PfmsSmsTrackingInsights();
+		            Insights.setSmsTrackingId(smsTrackingId);
+		            Insights.setSmsPurpose("D");
+		            Insights.setSmsStatus("N");
+		            Insights.setSmsActivityAssigned(Long.parseLong(DirectorActionAssignCounts[0].toString()));
+		            Insights.setSmsOnGoing(Long.parseLong(DirectorActionAssignCounts[1].toString()));
+		            Insights.setSmsDelayOnGoing(Long.parseLong(DirectorActionAssignCounts[2].toString()));
+		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setEmpId(empId);
+
+		            // Insert the row into the table for this entry
+		            long result = dao.InsertSmsTrackInsights(Insights);
+		            TrackingInsightsResult = result;
+		        }
+		    }
+
+		    return TrackingInsightsResult;
+	}
+	
+	@Override
+	public Object[] DirectorActionAssignCounts(String PdcDate) throws Exception {
+		return dao.DirectorActionAssignCounts(PdcDate);
+	}
+	
+	@Override
+	public long GetCommitteSMSInitiatedCount(String SmsTrackingType) throws Exception {
+		return dao.GetCommitteSMSInitiatedCount(SmsTrackingType);
+	}
+	
+	@Override
+	public long InsertCommitteSmsTrackInitiator(String TrackingType) throws Exception {
+		long rowAddResult = 0;
+		PfmsCommitteSmsTracking Model  = new PfmsCommitteSmsTracking();
+		Model.setSmsTrackingType(TrackingType);
+	    long dailyCommitteCount = dao.dailyCommitteCount(LocalDate.now().toString());
+	    Model.setSmsExpectedCount(dailyCommitteCount);
+		Model.setSmsSentCount(0);
+		Model.setSmsSentStatus("N");
+		Model.setCreatedDate(sdf2.format(new Date()));
+		Model.setCreatedTime(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+		
+	    rowAddResult = dao.InsertCommitteSmsTrackRow(Model);
+		
+		return rowAddResult;
+	}
+
+
+	@Override
+	public List<Object[]> GetCommitteEmpsDetailstoSendSms() throws Exception {
+		return dao.GetCommitteEmpsDetailstoSendSms();
+	}
+	
+	@Override
+	public long InsertDailyCommitteSmsInsights(long committeSmsTrackingId) throws Exception {
+		 long TrackingInsightsResult = 0;
+
+		    List<Object[]> CommitteEmpsDetailstoSendSms = dao.GetCommitteEmpsDetailstoSendSms();
+		    if (CommitteEmpsDetailstoSendSms != null && CommitteEmpsDetailstoSendSms.size() > 0) {
+
+		        for (Object[] rowData : CommitteEmpsDetailstoSendSms) {
+		            int empId = Integer.parseInt(rowData[0].toString());
+		            PfmsCommitteSmsTrackingInsights Insights = new PfmsCommitteSmsTrackingInsights();
+		            Insights.setCommitteSmsTrackingId(committeSmsTrackingId);
+		            Insights.setSmsPurpose("D");
+		            Insights.setSmsStatus("N");
+		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setEmpId(empId);
+
+		            // Insert the row into the table for this entry
+		            long result = dao.InsertCommitteSmsTrackInsights(Insights);
+		            TrackingInsightsResult = result;
+		        }
+		  }
+		    return TrackingInsightsResult;
+	}
+	
+	public List<Object[]> getCommittedata(long EmpId) throws Exception{
+		return dao.getCommittedata(EmpId);
+	}
+	
+	@Override
+	public long UpdateParticularCommitteEmpSmsStatus(String SmsPurpose, String SmsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception {
+		return dao.UpdateParticularCommitteEmpSmsStatus(SmsPurpose,SmsStatus,empId,effectivelyFinalSmsTrackingId,message);
+	}
+	
+	@Override
+	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, int SuccessCount, String TrackingType)throws Exception {
+		long rowUpdateResult = dao.UpdateCommitteSmsTrackRow(committeSmsTrackingId,SuccessCount,TrackingType);
+	    return rowUpdateResult;
+	}
+	
+	@Override
+	public long UpdateCommitteNoSmsPending(String TrackingType) throws Exception {
+		return dao.UpdateCommitteNoSmsPending(TrackingType);
+	}
 }

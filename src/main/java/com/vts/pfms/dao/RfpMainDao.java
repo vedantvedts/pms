@@ -8,6 +8,10 @@ import com.vts.pfms.login.ProjectHoa;
 import com.vts.pfms.model.LabMaster;
 import com.vts.pfms.model.LoginStamping;
 import com.vts.pfms.model.Notice;
+import com.vts.pfms.model.PfmsCommitteSmsTracking;
+import com.vts.pfms.model.PfmsCommitteSmsTrackingInsights;
+import com.vts.pfms.model.PfmsSmsTracking;
+import com.vts.pfms.model.PfmsSmsTrackingInsights;
 import com.vts.pfms.model.ProjectHoaChanges;
 import com.vts.pfms.project.model.ProjectHealth;
 
@@ -64,5 +68,25 @@ public interface RfpMainDao {
 	public List<Object[]> DashboardFinance(String LoginType, String EmpId, String LabCode, String ClusterId) throws Exception;
 	public List<Object[]> DashboardProjectFinanceCashOutGo(String projectcode) throws Exception;
 	public Object[] ProjectAttributes(String projectcode) throws Exception;
+	public long GetSMSInitiatedCount(String smsTrackingType) throws Exception;
+	public long GetDailyExpectedPendingReplyCount() throws Exception;
+	public long InsertSmsTrackRow(PfmsSmsTracking model) throws Exception;
+	public List<Object[]> GetDailyPendingAssigneeEmpData() throws Exception;
+	public Object[] ActionAssignCounts(long empId, String PdcDate) throws Exception;
+	public long InsertSmsTrackInsights(PfmsSmsTrackingInsights insights) throws Exception;
+	public long UpdateParticularEmpSmsStatus(String smsPurpose, String smsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
+	public long UpdateDakActionTrackRow(long smsTrackingId, int successCount, String trackingType) throws Exception;
+	public long UpdateNoSmsPendingReply(String trackingType) throws Exception;
+	public List<Object[]> GetDirectorDailyPendingAssignEmpData(String lab) throws Exception;
+	public Object[] DirectorActionAssignCounts(String pdcDate) throws Exception;
+	public long GetCommitteSMSInitiatedCount(String smsTrackingType) throws Exception;
+	public long dailyCommitteCount(String ScheduleDate) throws Exception;
+	public long InsertCommitteSmsTrackRow(PfmsCommitteSmsTracking model) throws Exception;
+	public List<Object[]> GetCommitteEmpsDetailstoSendSms() throws Exception;
+	public List<Object[]> getCommittedata(long empId) throws Exception;
+	public long InsertCommitteSmsTrackInsights(PfmsCommitteSmsTrackingInsights insights) throws Exception;
+	public long UpdateParticularCommitteEmpSmsStatus(String smsPurpose, String smsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
+	public long UpdateCommitteSmsTrackRow(long committeSmsTrackingId, int successCount, String trackingType) throws Exception;
+	public long UpdateCommitteNoSmsPending(String trackingType) throws Exception;
 
 }
