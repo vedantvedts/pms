@@ -38,6 +38,23 @@ public class PMSLogoUtil
 		}
 	}
 	
+	public String getLabImageAsBase64String(String LabCode) throws IOException
+	{
+		String path = LabLogoPath+"/images/lablogos/"+LabCode.trim().toLowerCase()+".jpg";
+		try {
+			return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(new File(path)));
+		}catch (FileNotFoundException e) {
+			System.err.println("File Not Found at Path "+path);
+			File lablogo = new File(LabLogoPath+"/images/lablogos/"+"lrdeImg.jpg");
+			if(lablogo.exists()) {
+				return Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(lablogo));
+			}
+			else
+			{
+				return null;
+			}
+		}
+	}
 	
 	public String getDRDOLogoAsBase64String() throws IOException
 	{
