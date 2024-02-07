@@ -1526,7 +1526,7 @@ public class ActionDaoImpl implements ActionDao{
 		return (long) query.executeUpdate();
 	}
 
-	private static final String CCASSIGNEELIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' FROM employee e WHERE e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_assign a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assigneeid=em.empid AND a.rfaid=:rfaid)";
+	private static final String CCASSIGNEELIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation FROM employee e,employee_desig d WHERE e.desigid=d.desigid AND e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_assign a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assigneeid=em.empid AND a.rfaid=:rfaid)";
 	@Override
 	public List<String> CCAssigneeList(String rfaid) throws Exception {
 		
@@ -1540,7 +1540,7 @@ public class ActionDaoImpl implements ActionDao{
 		}
 	}
 	
-	private static final String CCASSIGNORLIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname' FROM employee e WHERE e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_action a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assignorid=em.empid AND a.rfaid=:rfaid)";
+	private static final String CCASSIGNORLIST="SELECT CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation FROM employee e,employee_desig d WHERE e.desigid=d.desigid AND e.empid IN (SELECT c.tdheadid FROM employee em,division_td c,pfms_rfa_action a,division_master dm,division_group dg WHERE a.isactive='1' AND em.divisionid=dm.divisionid AND dm.groupid=dg.groupid AND dg.tdid=c.tdid AND a.assignorid=em.empid AND a.rfaid=:rfaid)";
 	@Override
 	public List<String> CCAssignorList(String rfaid) throws Exception {
 		

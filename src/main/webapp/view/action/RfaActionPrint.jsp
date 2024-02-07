@@ -72,28 +72,28 @@ String lablogo=(String)request.getAttribute("lablogo");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] RfaPrint=(Object[]) request.getAttribute("RfaPrint");
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
-List<String> CCTdeEmplList=(List<String>) request.getAttribute("CCTdeEmplList");
+List<Object[]>  CCTdeEmplList=(List<Object[]>) request.getAttribute("CCTdeEmplList");
 
 PMSLogoUtil pLU=new PMSLogoUtil();
 String raisedBy2=null;
 String risedDateFormatted=null;
 if(RfaPrint[16]!=null){
 String[] raisedBy =RfaPrint[16].toString().split(",");
- raisedBy2=raisedBy[0]+raisedBy[1];
+ raisedBy2=raisedBy[0]+", "+raisedBy[1];
 risedDateFormatted=pLU.formatD(raisedBy[2]);
 }
 String checkedBy2=null;
 String checkedDateFormatted=null;
 if(RfaPrint[17]!=null){
 String[] checkedBy =RfaPrint[17].toString().split(",");
- checkedBy2=checkedBy[0]+checkedBy[1];
+ checkedBy2=checkedBy[0]+", "+checkedBy[1];
  checkedDateFormatted=pLU.formatD(checkedBy[2]);
 }
 String approvedBy2=null;
 String approvedDateFormatted=null;
 if(RfaPrint[18]!=null){
 String[] approvedBy =RfaPrint[18].toString().split(",");
-approvedBy2=approvedBy[0]+approvedBy[1];
+approvedBy2=approvedBy[0]+", "+approvedBy[1];
 approvedDateFormatted=pLU.formatD(approvedBy[2]);
 }
 
@@ -101,14 +101,14 @@ String preparedBy2=null;
 String preparedByDateFormatted=null;
 if(RfaPrint[19]!=null){
 String[] preparedBy =RfaPrint[19].toString().split(",");
-preparedBy2 = preparedBy[0]+preparedBy[1];
+preparedBy2 = preparedBy[0]+", "+preparedBy[1];
 preparedByDateFormatted=pLU.formatD(preparedBy[2]);
 }
 String receivedBy2=null;
 String receivedBy2ByDateFormatted=null;
 if(RfaPrint[20]!=null){
 String[] receivedBy =RfaPrint[20].toString().split(",");
-receivedBy2 = receivedBy[0]+receivedBy[1];
+receivedBy2 = receivedBy[0]+", "+receivedBy[1];
 receivedBy2ByDateFormatted=pLU.formatD(receivedBy[2]);
 }
 
@@ -116,7 +116,7 @@ String approvedBy=null;
 String approvedByByDateFormatted=null;
 if(RfaPrint[21]!=null){
 String[] approvedBy3 =RfaPrint[21].toString().split(",");
-approvedBy = approvedBy3[0]+approvedBy3[1];
+approvedBy = approvedBy3[0]+", "+approvedBy3[1];
 approvedByByDateFormatted=pLU.formatD(approvedBy3[2]);
 }
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
@@ -169,7 +169,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 65px">
                 <%for(Object[] obj1 : AssigneeList){
                 	if(obj1[0].toString().equalsIgnoreCase(RfaPrint[0].toString())){%>
-                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1].toString()+","+obj1[2].toString() %> </div>
+                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1].toString()+", "+obj1[2].toString() %> </div>
                 <%} }%>  
                 </td>        
               </tr> 
@@ -179,8 +179,10 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
               <td colspan="8" style="border: 1px solid black; text-align: left; ;height: 64px;">
               <%
               if(!CCTdeEmplList.isEmpty()){
-              for (String ccList: CCTdeEmplList) {%>
-             <div >&nbsp;&nbsp;<%=ccList %></div> 
+              for (Object[] ccList: CCTdeEmplList) {
+              String desig=" "+ccList[1].toString();
+              %>
+             <div >&nbsp;&nbsp;<%=ccList[0]%>,<%=desig%></div> 
               <%}}%>
               </td>
               </tr>
