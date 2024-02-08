@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Data
-@Table(name = "pfms_committe_sms_track")
+@Table(name = "pfms_sms_committe_track")
 public class PfmsCommitteSmsTracking {
 
 	

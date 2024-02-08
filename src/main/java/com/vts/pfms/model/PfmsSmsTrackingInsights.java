@@ -23,9 +23,15 @@ public class PfmsSmsTrackingInsights {
 	private String Message;
 	private String SmsPurpose;
 	private String SmsStatus;
-	private long SmsActivityAssigned;
-	private long SmsOnGoing;
-	private long SmsDelayOnGoing;
+	private long ActionItemP;
+	private long ActionItemTP;
+	private long ActionItemDP;
+	private long MilestoneActionP;
+	private long MilestoneActionTP;
+	private long MilestoneActionDP;
+	private long MeetingActionP;
+	private long MeetingActionTP;
+	private long MeetingActionDP;
 	private String SmsSentDate;
 	private String CreatedDate;
 }

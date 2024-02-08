@@ -645,51 +645,95 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Override
 	public long InsertDailySmsPendingInsights(long smsTrackingId) throws Exception {
 		 long TrackingInsightsResult = 0;
-
+		 long count=0;
 		    List<Object[]> PendingAssingEmpsDetailstoSendSms = dao.GetDailyPendingAssigneeEmpData();
 		    if (PendingAssingEmpsDetailstoSendSms != null && PendingAssingEmpsDetailstoSendSms.size() > 0) {
 		        Map<Integer, Set<String>> empActionItemMap = new HashMap();
 
 		        for (Object[] rowData : PendingAssingEmpsDetailstoSendSms) {
 		            int empId = Integer.parseInt(rowData[1].toString());
-		            String ActionItem = rowData[5].toString();
+		            String Mobileno = rowData[4].toString();
 		            
 		            if (!empActionItemMap.containsKey(empId)) {
 		            	empActionItemMap.put(empId, new HashSet<>());
 		            }
 
-		            empActionItemMap.get(empId).add(ActionItem);
+		            empActionItemMap.get(empId).add(Mobileno);
 		        }
 
 		        for (Map.Entry<Integer, Set<String>> entry : empActionItemMap.entrySet()) {
 		            int empId = entry.getKey();
-		            Set<String> ActionItemSet = entry.getValue();
+		            Set<String> Mobileno = entry.getValue();
 		            
-		            Object[] ActionAssignCounts =dao.ActionAssignCounts(empId,LocalDate.now().toString());
-		            
-		            System.out.println("empId"+empId);
-		            System.out.println("ActionAssignCounts[0]"+ActionAssignCounts[0].toString());
-		            System.out.println("ActionAssignCounts[1]"+ActionAssignCounts[1].toString());
-		            System.out.println("ActionAssignCounts[2]"+ActionAssignCounts[2].toString());
+		            String mobileNumber = Mobileno.isEmpty() ? null : Mobileno.iterator().next();
+		           // Object[] ActionAssignCounts =dao.ActionAssignCounts(empId,LocalDate.now().toString());
+		            if(mobileNumber != null && !mobileNumber.equalsIgnoreCase("0") && mobileNumber.trim().length()>0 && mobileNumber.trim().length()==10) {
+		            List<Object[]> ActionAssignCount=dao.ActionAssignedCounts(empId);
 		            // Create a new instance of DakMailTrackingInsights for each entry
 		            PfmsSmsTrackingInsights Insights = new PfmsSmsTrackingInsights();
 		            Insights.setSmsTrackingId(smsTrackingId);
 		            Insights.setSmsPurpose("D");
-		            Insights.setSmsStatus("N");
-		            Insights.setSmsActivityAssigned(Long.parseLong(ActionAssignCounts[0].toString()));
-		            Insights.setSmsOnGoing(Long.parseLong(ActionAssignCounts[1].toString()));
-		            Insights.setSmsDelayOnGoing(Long.parseLong(ActionAssignCounts[2].toString()));
+		            Insights.setSmsStatus("S");
+		            String message=null;
+		            String Action=null;
+		            String Meeting=null;
+		            String Milestone=null;
+		            
+		            System.out.println("Mobileno:"+mobileNumber);
+		            for(Object[] obj:ActionAssignCount) {
+		            	if(obj[0].toString().equalsIgnoreCase("ActionItems")) {
+				            Insights.setActionItemP(Long.parseLong(obj[2].toString()));
+				            Insights.setActionItemTP(Long.parseLong(obj[3].toString()));
+				            Insights.setActionItemDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+				            Action=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString()) +" / "+ Long.parseLong(obj[3].toString())+"";
+				            }
+		            	}else if(obj[0].toString().equalsIgnoreCase("MeetingActions")) {
+		            		Insights.setMeetingActionP(Long.parseLong(obj[2].toString()));
+				            Insights.setMeetingActionTP(Long.parseLong(obj[3].toString()));
+				            Insights.setMeetingActionDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+				            Meeting=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            }
+		            	}else {
+		            		Insights.setMilestoneActionP(Long.parseLong(obj[2].toString()));
+				            Insights.setMilestoneActionTP(Long.parseLong(obj[3].toString()));
+				            Insights.setMilestoneActionDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+				            Milestone=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+				            }
+		            	}
+		            //	message="Good Morning,\nPMS P / D / T  \n" +(Action != null ? "AI  "+ Action : "") + "\n"+ (Meeting != null ?"MS  "+ Meeting : "") +"\n"+(Milestone != null ?"MT  "+ Milestone : "")+"\n-PMS Team.";
+		            	message = "Good Morning,\nPMS P  / D  / T  \n" ;
+		            	if(Action!=null) {
+		            		 message += "AI  " + Action + "\n";
+		            	}
+		            	if (Milestone != null) {
+		            	    message += "MS  " + Milestone + "\n";
+		            	}
+		            	if (Meeting != null) {
+		            	    message += "MT  " + Meeting + "\n";
+		            	}
+		            	message += "-PMS Team.";
+
+		            	Insights.setMessage(message);
+		            	System.out.println("message:12343524"+message);
+		            }
 		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setSmsSentDate(sdf1.format(new Date()));
 		            Insights.setEmpId(empId);
 
 		            // Insert the row into the table for this entry
 		            long result = dao.InsertSmsTrackInsights(Insights);
-		            System.out.println("result:"+result);
 		            TrackingInsightsResult = result;
+		            if(TrackingInsightsResult>0) {
+		            	count++;
+		            }
+		        }
 		        }
 		    }
 
-		    return TrackingInsightsResult;
+		    return count;
 	}
 	
 	@Override
@@ -703,7 +747,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long updateSmsSuccessCount(long smsTrackingId, int SuccessCount, String TrackingType) throws Exception {
+	public long updateSmsSuccessCount(long smsTrackingId, long SuccessCount, String TrackingType) throws Exception {
 		long rowUpdateResult = dao.UpdateDakActionTrackRow(smsTrackingId,SuccessCount,TrackingType);
 	    return rowUpdateResult;
 	}
@@ -738,31 +782,78 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Override
 	public long DirectorInsertDailySmsPendingInsights(long smsTrackingId) throws Exception {
 		 long TrackingInsightsResult = 0;
-
+		 long count=0;
 		 List<Object[]> DirectorPendingAssignEmpsDetailstoSendSms = dao.GetDirectorDailyPendingAssignEmpData("LRDE");
 		    if (DirectorPendingAssignEmpsDetailstoSendSms != null && DirectorPendingAssignEmpsDetailstoSendSms.size() > 0) {
 
 		        for (Object[] rowData : DirectorPendingAssignEmpsDetailstoSendSms) {
 		            int empId = Integer.parseInt(rowData[0].toString());
-		            Object[] DirectorActionAssignCounts =dao.DirectorActionAssignCounts(LocalDate.now().toString());
+		           // Object[] DirectorActionAsssignCounts =dao.DirectorActionAssignCounts(LocalDate.now().toString());
 		            // Create a new instance of DakMailTrackingInsights for each entry
+		            String Mobileno=rowData[1].toString();
+		            if( Mobileno != null && !Mobileno.toString().equalsIgnoreCase("0") && Mobileno.toString().trim().length()>0 && Mobileno.toString().trim().length()==10) {
+		            List<Object[]> DirectorActionAssignCounts=dao.DirectorActionAssignedCounts();
 		            PfmsSmsTrackingInsights Insights = new PfmsSmsTrackingInsights();
 		            Insights.setSmsTrackingId(smsTrackingId);
 		            Insights.setSmsPurpose("D");
-		            Insights.setSmsStatus("N");
-		            Insights.setSmsActivityAssigned(Long.parseLong(DirectorActionAssignCounts[0].toString()));
-		            Insights.setSmsOnGoing(Long.parseLong(DirectorActionAssignCounts[1].toString()));
-		            Insights.setSmsDelayOnGoing(Long.parseLong(DirectorActionAssignCounts[2].toString()));
+		            Insights.setSmsStatus("S");
+		            String message=null;
+		            String Action=null;
+		            String Meeting=null;
+		            String Milestone=null;
+		            for(Object[] obj:DirectorActionAssignCounts) {
+		            	if(obj[0].toString().equalsIgnoreCase("ActionItems")) {
+				            Insights.setActionItemP(Long.parseLong(obj[2].toString()));
+				            Insights.setActionItemTP(Long.parseLong(obj[3].toString()));
+				            Insights.setActionItemDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+					            Action=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString()) +" / "+ Long.parseLong(obj[3].toString())+"";
+					        }
+		            	}else if(obj[0].toString().equalsIgnoreCase("MeetingActions")) {
+		            		Insights.setMeetingActionP(Long.parseLong(obj[2].toString()));
+				            Insights.setMeetingActionTP(Long.parseLong(obj[3].toString()));
+				            Insights.setMeetingActionDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+					            Meeting=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+					        }
+		            	}else {
+		            		Insights.setMilestoneActionP(Long.parseLong(obj[2].toString()));
+				            Insights.setMilestoneActionTP(Long.parseLong(obj[3].toString()));
+				            Insights.setMilestoneActionDP(Long.parseLong(obj[4].toString()));
+				            if(Long.parseLong(obj[2].toString())>0) {
+					            Milestone=""+Long.parseLong(obj[2].toString()) +" / "+ Long.parseLong(obj[4].toString())+ " / "+Long.parseLong(obj[3].toString())+"";
+					        }
+		            	}
+		            	message = "Good Morning,\nPMS P  / D  / T  \n" ;
+		            	if(Action!=null) {
+		            		 message += "AI  " + Action + "\n";
+		            	}
+		            	if (Milestone != null) {
+		            	    message += "MS  " + Milestone + "\n";
+		            	}
+		            	if (Meeting != null) {
+		            	    message += "MT  " + Meeting + "\n";
+		            	}
+		            	message += "-PMS Team.";
+
+		            	Insights.setMessage(message);
+		            	System.out.println("message:12343524"+message);
+		            }
 		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setSmsSentDate(sdf1.format(new Date()));
 		            Insights.setEmpId(empId);
 
 		            // Insert the row into the table for this entry
 		            long result = dao.InsertSmsTrackInsights(Insights);
 		            TrackingInsightsResult = result;
+		            if(TrackingInsightsResult>0) {
+		            	count++;
+		            }
+		            }
 		        }
 		    }
 
-		    return TrackingInsightsResult;
+		    return count;
 	}
 	
 	@Override
@@ -801,25 +892,52 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Override
 	public long InsertDailyCommitteSmsInsights(long committeSmsTrackingId) throws Exception {
 		 long TrackingInsightsResult = 0;
-
+		 long count=0;
 		    List<Object[]> CommitteEmpsDetailstoSendSms = dao.GetCommitteEmpsDetailstoSendSms();
 		    if (CommitteEmpsDetailstoSendSms != null && CommitteEmpsDetailstoSendSms.size() > 0) {
 
 		        for (Object[] rowData : CommitteEmpsDetailstoSendSms) {
 		            int empId = Integer.parseInt(rowData[0].toString());
+		            String Mobileno=rowData[1].toString();
+		            String message="";
+		            if(Mobileno != null && !Mobileno.toString().equalsIgnoreCase("0") && Mobileno.toString().trim().length()>0 && Mobileno.toString().trim().length()==10) {
+               	    List<Object[]> committedata=dao.getCommittedata(empId);
 		            PfmsCommitteSmsTrackingInsights Insights = new PfmsCommitteSmsTrackingInsights();
 		            Insights.setCommitteSmsTrackingId(committeSmsTrackingId);
 		            Insights.setSmsPurpose("D");
-		            Insights.setSmsStatus("N");
+		            Insights.setSmsStatus("S");
+		            for(Object[] str:committedata) {
+						LocalTime time = LocalTime.parse(str[6].toString());
+				        
+				        // Format the time as "HH:mm Hrs"
+				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm 'Hrs'");
+				        String formattedTime = time.format(formatter);
+				        message="Good Morning,\n";
+						if(str[7]!=null && str[7].toString().equalsIgnoreCase("P")) {
+							message+="Today Status: P"+str[1].toString()+" - "+str[2].toString() +" @ " +formattedTime+"\n";
+						}else if(str[7]!=null && str[7].toString().equalsIgnoreCase("N")){
+							message+="Today Status: NP - "+str[2].toString() +" @ " +formattedTime+"\n";
+						}else{
+							message+="Today Status: GEN - "+str[2].toString() +" @ " +formattedTime+"\n";
+						}
+						
+					}
+					message+="\n-PMS Team.";
+					Insights.setMessage(message);
 		            Insights.setCreatedDate(sdf1.format(new Date()));
+		            Insights.setSmsSentDate(sdf1.format(new Date()));
 		            Insights.setEmpId(empId);
 
 		            // Insert the row into the table for this entry
 		            long result = dao.InsertCommitteSmsTrackInsights(Insights);
 		            TrackingInsightsResult = result;
+		            if(TrackingInsightsResult>0) {
+		            	count++;
+		            }
+		            }
 		        }
 		  }
-		    return TrackingInsightsResult;
+		    return count;
 	}
 	
 	public List<Object[]> getCommittedata(long EmpId) throws Exception{
@@ -832,7 +950,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 	}
 	
 	@Override
-	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, int SuccessCount, String TrackingType)throws Exception {
+	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, long SuccessCount, String TrackingType)throws Exception {
 		long rowUpdateResult = dao.UpdateCommitteSmsTrackRow(committeSmsTrackingId,SuccessCount,TrackingType);
 	    return rowUpdateResult;
 	}
@@ -840,5 +958,20 @@ public class RfpMainServiceImpl implements RfpMainService {
 	@Override
 	public long UpdateCommitteNoSmsPending(String TrackingType) throws Exception {
 		return dao.UpdateCommitteNoSmsPending(TrackingType);
+	}
+	
+	@Override
+	public List<Object[]> ActionAssignedCounts(long empId) throws Exception {
+		return dao.ActionAssignedCounts(empId);
+	}
+	
+	@Override
+	public List<Object[]> SmsReportList(String fromDate, String toDate) throws Exception {
+		return dao.SmsReportList(fromDate,toDate);
+	}
+	
+@Override
+	public List<Object[]> SmsCommitteReportList(String fromDate, String toDate) throws Exception {
+		return dao.SmsCommitteReportList(fromDate,toDate);
 	}
 }

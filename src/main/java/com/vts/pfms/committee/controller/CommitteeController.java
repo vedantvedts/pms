@@ -4093,14 +4093,19 @@ public class CommitteeController {
 			
 
 			
-			ArrayList<String> emails= new ArrayList<String>();			
-			
+			ArrayList<String> emails= new ArrayList<String>();	
 			for(Object[] obj : committeeallmemberslist ) 
 			{				
 				if(obj[6]!=null && obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW")) 
 				{				 
 					emails.add(obj[6].toString());				 
 				}
+				
+				if(obj[10]!=null && obj[8].toString().equals("CC") || obj[8].toString().equals("CS") || obj[8].toString().equals("CI") || obj[8].toString().equals("CW")) 
+				{				 
+					emails.add(obj[10].toString());				 
+				}
+				
 			}
 			String [] Email = emails.toArray(new String[emails.size()]);
 			String subject=committeemaindata[8] + " " +" Committee Formation Letter";
@@ -4236,6 +4241,10 @@ public class CommitteeController {
 				{
 					if(obj[8]!=null) {
 						emails.add(obj[8].toString());
+					}
+					
+					if(obj[13]!=null) {
+						emails.add(obj[13].toString());
 					}
 				}
 			}

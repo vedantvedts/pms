@@ -11,6 +11,7 @@ public class MeetingMailDto {
 	private String empname;
 	private String scheduleid;
 	private String email;
+	private String DronaEmail;
 	private String projectid;
 	private String InitiationId;
 	private String CommitteeShortName;

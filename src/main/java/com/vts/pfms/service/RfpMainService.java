@@ -61,7 +61,7 @@ public interface RfpMainService {
 	public long InsertDailySmsPendingInsights(long smsTrackingId) throws Exception;
 	public Object[] ActionAssignCounts(long EmpId, String actionDate) throws Exception;
 	public long UpdateParticularEmpSmsStatus(String SmsPurpose, String SmsStatus, long EmpId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
-	public long updateSmsSuccessCount(long smsTrackingId, int SuccessCount, String TrackingType) throws Exception;
+	public long updateSmsSuccessCount(long smsTrackingId, long SuccessCount, String TrackingType) throws Exception;
 	public long UpdateNoSmsPendingReply(String TrackingType) throws Exception;
 	public long DirectorInsertSmsTrackInitiator(String TrackingType) throws Exception;
 	public List<Object[]> GetDirectorDailyPendingAssignEmpData(String Lab) throws Exception;
@@ -73,6 +73,9 @@ public interface RfpMainService {
 	public long InsertDailyCommitteSmsInsights(long committeSmsTrackingId) throws Exception;
 	public List<Object[]> getCommittedata(long EmpId) throws Exception;
 	public long UpdateParticularCommitteEmpSmsStatus(String SmsPurpose, String SmsStatus, long empId,long effectivelyFinalSmsTrackingId, String message) throws Exception;
-	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, int SuccessCount, String TrackingType) throws Exception;
+	public long updateCommitteSmsSuccessCount(long committeSmsTrackingId, long SuccessCount, String TrackingType) throws Exception;
 	public long UpdateCommitteNoSmsPending(String TrackingType) throws Exception;
+	public List<Object[]> ActionAssignedCounts(long empId) throws Exception;
+	public List<Object[]> SmsReportList(String fromDate, String toDate) throws Exception;
+	public List<Object[]> SmsCommitteReportList(String fromDate, String toDate) throws Exception;
 }

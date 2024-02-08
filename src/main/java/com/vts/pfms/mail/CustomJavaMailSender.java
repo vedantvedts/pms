@@ -1,6 +1,5 @@
 package com.vts.pfms.mail;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,33 +12,23 @@ import java.util.stream.Collectors;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.commons.lang3.text.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 
 import com.vts.pfms.committee.service.CommitteeService;
-import com.vts.pfms.mail.MailConfigurationDto;
-import com.vts.pfms.mail.MailService;
-import com.vts.pfms.mail.MeetingMailDto;
 
 @Controller
 @EnableScheduling
@@ -98,6 +87,7 @@ public class CustomJavaMailSender {
 					m.setMeetingVenue(obj[5].toString());
 					m.setProjectCode(obj[7].toString());
 					m.setProjectname(obj[8].toString());
+					m.setDronaEmail(obj[13].toString());
 					meetingMailDtoData.add(m);
 				}
 			}
@@ -140,8 +130,9 @@ public class CustomJavaMailSender {
 //					helper.setText( message , true);
 //					javaMailSender.send(msg); 
 				  String email=meetingMailDtoSubData.get(0).getEmail();
+				  String DronaEmail=meetingMailDtoData.get(0).getDronaEmail();
 				  String subject="Tommorrow's Meeting Schedule";
-				  CompletableFuture<Integer> sendResult = sendScheduledEmailAsync(email, subject, message, true);
+				  CompletableFuture<Integer> sendResult = sendScheduledEmailAsync(email,DronaEmail, subject, message, true);
 				  
 				  
 					meetingMailDtoData=meetingMailDtoData.stream().filter( e -> !e.getEmpid().equalsIgnoreCase(empid)).collect(Collectors.toList());
@@ -157,7 +148,7 @@ public class CustomJavaMailSender {
 				}
 	
 	 	@Async
-	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email, String subject, String message, boolean isHtml) {
+	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email,String DronaEmail, String subject, String message, boolean isHtml) {
 		 
 	 		System.out.println("email "+email);
 	        String typeOfHost = "L";
@@ -194,6 +185,7 @@ public class CustomJavaMailSender {
 			    try {
 			        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 			        helper.setTo(email);
+			        helper.setTo(DronaEmail);
 			        helper.setSubject(subject);
 			        helper.setText(message, isHtml);
 			        mailSender.send(mimeMessage);
