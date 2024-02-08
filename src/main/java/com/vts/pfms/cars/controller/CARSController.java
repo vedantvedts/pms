@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +58,7 @@ import com.vts.pfms.cars.dto.CARSContractDetailsDTO;
 import com.vts.pfms.cars.model.CARSContract;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
+import com.vts.pfms.cars.model.CARSOtherDocDetails;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
 import com.vts.pfms.cars.model.CARSSoC;
@@ -71,6 +73,8 @@ public class CARSController {
 	
 	FormatConverter fc = new FormatConverter();
 	private SimpleDateFormat sdtf = fc.getSqlDateAndTimeFormat();
+	private SimpleDateFormat sdf = fc.getSqlDateFormat();
+	
 	
 //	@Autowired
 //	RestTemplate restTemplate;
@@ -193,7 +197,7 @@ public class CARSController {
 		} 
 	}
 	
-	@RequestMapping(value="CARSInitiationDetails.htm")
+	@RequestMapping(value="CARSInitiationDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsInitiationDetails(HttpServletRequest req, HttpSession ses) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -263,7 +267,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSInitiationAdd.htm")
+	@RequestMapping(value="CARSInitiationAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsInitiationAddSubmit(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
@@ -290,6 +294,7 @@ public class CARSController {
 					                   .PIMobileNo(req.getParameter("piMobileNo"))
 					                   .PIEmail(req.getParameter("piEmail"))
 					                   .PIFaxNo(req.getParameter("piFaxNo"))
+					                   .DPCSoCForwardedBy(0)
 					                   .CARSStatusCode("INI")
 					                   .CARSStatusCodeNext("FWD")
 					                   .DPCSoCStatus("N")
@@ -314,7 +319,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSInitiationEdit.htm")
+	@RequestMapping(value="CARSInitiationEdit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsInitiationEditSubmit(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date()+ " Inside CARSInitiationEdit.htm "+UserId);
@@ -524,7 +529,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSRSQRDownloadBeforeFreeze.htm")
+	@RequestMapping(value="CARSRSQRDownloadBeforeFreeze.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsRSQRDownloadBeforeFreeze(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSRSQRDownloadBeforeFreeze.htm "+UserId);		
@@ -578,7 +583,7 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="RSQRApprovalSubmit.htm")
+	@RequestMapping(value="RSQRApprovalSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String rsqrApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
 		String UserId =(String)ses.getAttribute("Username");
 		String labcode =(String)ses.getAttribute("labcode");
@@ -652,7 +657,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSRSQRApprovals.htm")
+	@RequestMapping(value="CARSRSQRApprovals.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsApprovals(HttpServletRequest req,HttpSession ses) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -684,6 +689,10 @@ public class CARSController {
 			req.setAttribute("ApprovedList", service.carsRSQRApprovedList(EmpId,fromdate,todate,"B"));
 			req.setAttribute("DPandCSoCPendingList", service.carsDPandCSoCPendingList(EmpId, labcode));
 			req.setAttribute("DPandCSoCApprovedList", service.carsDPCSoCApprovedList(EmpId, fromdate, todate));
+			req.setAttribute("CSPendingList", service.carsCSPendingList(EmpId, labcode));
+			req.setAttribute("CSApprovedList", service.carsCSApprovedList(EmpId, fromdate, todate));
+			req.setAttribute("MPPendingList", service.carsMPPendingList(EmpId, labcode));
+			req.setAttribute("MPApprovedList", service.carsMPApprovedList(EmpId, fromdate, todate));
 			
 			return "cars/CARSApprovals";
 		}catch (Exception e) {
@@ -693,7 +702,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSRSQRApprovalDownload.htm")
+	@RequestMapping(value="CARSRSQRApprovalDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsRSQRApprovalDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSRSQRApprovalDownload.htm "+UserId);		
@@ -747,7 +756,7 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="CARSInvForSoODownload.htm")
+	@RequestMapping(value="CARSInvForSoODownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsInvForSoODownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String) ses.getAttribute("labcode");
@@ -824,7 +833,7 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="CARSSoCAdd.htm")
+	@RequestMapping(value="CARSSoCAdd.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsSocAddSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
 			@RequestPart(name="SoOUpload", required = false) MultipartFile SoOFile,
 			@RequestPart(name="FRUpload", required = false) MultipartFile FRFile,
@@ -885,6 +894,7 @@ public class CARSController {
 				// Transactions happend in the approval flow.
 				CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 												  .CARSInitiationId(soc.getCARSInitiationId())
+												  .MilestoneNo("0")
 												  .CARSStatusCode("SIN")
 												  .ActionBy(EmpId)
 												  .ActionDate(sdtf.format(new Date()))
@@ -905,7 +915,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSSoCEdit.htm")
+	@RequestMapping(value="CARSSoCEdit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsSocEditSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
 			@RequestPart(name="SoOUpload", required = false) MultipartFile SoOFile,
 			@RequestPart(name="FRUpload", required = false) MultipartFile FRFile,
@@ -974,7 +984,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value = {"CARSSoCFileDownload.htm"})
+	@RequestMapping(value = {"CARSSoCFileDownload.htm"}, method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsSoCFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
@@ -1007,7 +1017,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSRSQRDownload.htm")
+	@RequestMapping(value="CARSRSQRDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsRSQRDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSRSQRDownload.htm "+UserId);		
@@ -1041,7 +1051,7 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="CARSFinalRSQRDownload.htm")
+	@RequestMapping(value="CARSFinalRSQRDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsFinalRSQRDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSFinalRSQRDownload.htm "+UserId);		
@@ -1095,7 +1105,7 @@ public class CARSController {
     	}		
 	}
 	
-	@RequestMapping(value="SoCApprovalSubmit.htm")
+	@RequestMapping(value="SoCApprovalSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String socApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
 		String UserId=(String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -1127,9 +1137,9 @@ public class CARSController {
 					return "redirect:/CARSInitiationList.htm";
 				}else if(statusCode.equalsIgnoreCase("SFU")) {
 					if(result!=0) {
-						redir.addAttribute("result","SoC form Approved Successfully");
+						redir.addAttribute("result","SoC form Recommended Successfully");
 					}else {
-						redir.addAttribute("resultfail","SoC form Approve Unsuccessful");
+						redir.addAttribute("resultfail","SoC form Recommend Unsuccessful");
 					}
 					return "redirect:/CARSRSQRApprovals.htm";
 				}
@@ -1186,7 +1196,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSSoCDownload.htm")
+	@RequestMapping(value="CARSSoCDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsSoCDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSSoCDownload.htm "+UserId);		
@@ -1329,7 +1339,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSSoCMilestonesDownload.htm")
+	@RequestMapping(value="CARSSoCMilestonesDownload.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public void carsSoCMilestonesDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSSoCMilestonesDownload.htm "+UserId);		
@@ -1343,7 +1353,7 @@ public class CARSController {
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
 			}
-			String filename="CARS-SoC-Milestones";	
+			String filename="CARS-Milestones";	
 			String path=req.getServletContext().getRealPath("/view/temp");
 			req.setAttribute("path",path);
 			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
@@ -1383,7 +1393,7 @@ public class CARSController {
     	}		
 	}
 
-	@RequestMapping(value="CARSRSQRApprovedList.htm")
+	@RequestMapping(value="CARSRSQRApprovedList.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsRSQRApprovedList(HttpServletRequest req,HttpSession ses) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -1500,7 +1510,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="InvForSoODateSubmit.htm")
+	@RequestMapping(value="InvForSoODateSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String invForSoODateSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside InvForSoODateSubmit.htm "+Username);
@@ -1521,7 +1531,7 @@ public class CARSController {
 		}
 	}
 	
-	@RequestMapping(value="CARSDPCSoCDetails.htm")
+	@RequestMapping(value="CARSDPCSoCDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
 	public String carsDPCSoCDetails(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
 		String Username = (String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -1795,7 +1805,7 @@ public class CARSController {
 
 		}
 	    catch(Exception e) {	    		
-    		logger.error(new Date() +" Inside CARSTransactionDownload.htm "+UserId, e);
+    		logger.error(new Date() +" Inside CARSDPCSoCDownload.htm "+UserId, e);
     		e.printStackTrace();
     	}		
 	}
@@ -1906,6 +1916,7 @@ public class CARSController {
 				long carsiniid = Long.parseLong(carsInitiationId);
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
 				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
 			}
 			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
 			return "cars/SoOProFormWordDownload";
@@ -1955,6 +1966,8 @@ public class CARSController {
 				long carsiniid = Long.parseLong(carsInitiationId);
 				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
 				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("RSQRDetails", service.carsRSQRDetails(carsInitiationId));
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
 				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
 				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));
 				req.setAttribute("CARSContractConsultants", service.getCARSContractConsultantsByCARSInitiationId(carsiniid));
@@ -1982,11 +1995,9 @@ public class CARSController {
 			CARSContract contract = service.getCARSContractByCARSInitiationId(Long.parseLong(carsInitiationId));
 			String contractDate = req.getParameter("contractDate");
 			String t0Date = req.getParameter("t0Date");
-			System.out.println(contractDate+" "+t0Date);
 			contract.setContractDate(fc.RegularToSqlDate(contractDate));
 			contract.setT0Date(fc.RegularToSqlDate(t0Date));
 			contract.setT0Remarks(req.getParameter("t0Remarks"));
-			System.out.println(contract.getContractDate()+" "+contract.getT0Date());
 			long result = service.carsFinalReportEditSubmit(contract, firstTime, labcode);
 			if (result > 0) {
 				redir.addAttribute("result", "CARS Contract Details Submitted Successfully");
@@ -2001,5 +2012,890 @@ public class CARSController {
 			logger.error(new Date() +" Inside CARSFinalReportEditSubmit.htm "+Username, e);
 			return "static/Error";
 		}
+	}
+	
+	@RequestMapping(value="CARSFinalFormPdfDownload.htm")
+	public void carsFinalFormPdfDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSFinalFormPdfDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			if(carsInitiationId!=null) {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractConsultants", service.getCARSContractConsultantsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractEquipment", service.getCARSContractEquipmentByCARSInitiationId(carsiniid));
+			}
+			req.setAttribute("LabMasterData", service.getLabDetailsByLabCode(labcode));
+			req.setAttribute("lablogo", getLabLogoAsBase64());
+			req.setAttribute("pdfFlag", "Y");;
+			String filename="CARS-03";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/cars/CARSFinalFormWordDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSFinalFormPdfDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+
+	@RequestMapping(value="CARSOtherDocsList.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsOtherDocsList(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside carsOtherDocsList.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSStatusDetails", service.carsStatusDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSMPStatusDetails", service.carsMPStatusDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+			}
+			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
+			
+			return "cars/CARSOtherDocsList";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSContractSignatureDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsContractSignatureDetails(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside CARSOtherDocsDetails.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String csDocsTabId = req.getParameter("csDocsTabId");
+			String isApproval = req.getParameter("isApproval");
+			if(carsInitiationId==null) {
+				String fromapprovals = req.getParameter("carsInitiationIdCSDocApprovals");
+				if(fromapprovals!=null) {
+					String[] split = fromapprovals.split("/");
+					carsInitiationId = split[0];
+					if(isApproval==null) {
+						isApproval = split[1];
+					}
+					if(csDocsTabId==null) {
+						csDocsTabId = split[2];
+					}
+				}
+				
+			}
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSStatusDetails", service.carsStatusDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOthersCSRemarksHistory", service.carsRemarksHistoryByType(carsInitiationId,"CF"));
+				req.setAttribute("OthersCSApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "CF"));
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+				
+			}
+			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
+			req.setAttribute("csDocsTabId", csDocsTabId!=null?csDocsTabId:"1");
+			
+			req.setAttribute("GHDPandC", service.getApprAuthorityDataByType(labcode, "GH-DP&C"));
+			req.setAttribute("GDDPandC", service.getApprAuthorityDataByType(labcode, "DO-RTMD"));
+			req.setAttribute("ADDPandC", service.getApprAuthorityDataByType(labcode, "AD-P&C"));
+			req.setAttribute("Director", service.getLabDirectorData(labcode));
+			
+			req.setAttribute("isApproval", isApproval);
+			
+			return "cars/CARSContractSignatureDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSCSDocDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsCSDocDetailsSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
+			@RequestPart(name="attatchFlagA", required = false) MultipartFile attatchFlagA,
+			@RequestPart(name="attatchFlagB", required = false) MultipartFile attatchFlagB,
+			@RequestPart(name="attatchFlagC", required = false) MultipartFile attatchFlagC) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside CARSOtherDocsDetails.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String Action = req.getParameter("Action");
+			String csOtherDocDate = req.getParameter("csOtherDocDate");
+			
+			long carsiniid = Long.parseLong(carsInitiationId);
+			List<CARSOtherDocDetails> otherdocdetails = service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid);
+			List<CARSOtherDocDetails> csdetailslist = otherdocdetails.stream().filter(e-> "C".equalsIgnoreCase(e.getOtherDocType())).collect(Collectors.toList());
+			CARSOtherDocDetails csdetails = csdetailslist!=null && csdetailslist.size()>0?csdetailslist.get(0):null;
+			
+			CARSOtherDocDetails doc = Action!=null && Action.equalsIgnoreCase("Add")?new CARSOtherDocDetails():csdetails;
+			doc.setCARSInitiationId(carsiniid);
+			doc.setOtherDocType("C");
+			doc.setOtherDocDate(fc.RegularToSqlDate(csOtherDocDate));
+			doc.setForwardedBy(0);
+			long result=0l;
+			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				doc.setCreatedBy(Username);
+				doc.setCreatedDate(sdtf.format(new Date()));
+				doc.setIsActive(1);
+				result=service.CARSCSDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId);
+			}else {
+				doc.setModifiedBy(Username);
+				doc.setModifiedDate(sdtf.format(new Date()));
+				result=service.CARSCSDocDetailsUpdate(doc, attatchFlagA, attatchFlagB, attatchFlagC);
+				if (result > 0) {
+					redir.addAttribute("result", "Contract Signature Details Updated Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Contract Signature Details Update Unsuccessful");
+				}
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("csDocsTabId","2");
+				return "redirect:/CARSContractSignatureDetails.htm";
+			}
+			if (result > 0) {
+				redir.addAttribute("result", "Contract Signature Details Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Contract Signature Details Add Unsuccessful");
+			}
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("csDocsTabId","2");
+			
+			return "redirect:/CARSContractSignatureDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSOtherDocsDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "CARSCSTransStatus.htm" , method={RequestMethod.POST,RequestMethod.GET})
+	public String carsCSTransStatus(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+	{
+		String Username = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSCSTransStatus.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			req.setAttribute("TransactionList", service.carsTransListByType(carsInitiationId,"C")) ;
+			req.setAttribute("TransFlag", "C");
+			req.setAttribute("carsInitiationId", carsInitiationId);
+			return "cars/CARSTransactionStatus";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSCSTransStatus.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value = {"CARSOtherDocAttachedFileDownload.htm"})
+	public void carsOtherDocAttachedFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSOtherDocAttachedFileDownload.htm "+UserId);
+		try
+		{
+			String ftype=req.getParameter("filename");
+			String otherDocDetailsId=req.getParameter("otherDocDetailsId");
+			String otherDocType=req.getParameter("otherDocType");
+			res.setContentType("Application/octet-stream");	
+			
+			CARSOtherDocDetails doc = service.getCARSOtherDocDetailsById(Long.parseLong(otherDocDetailsId));
+			File my_file=null;
+			String file = ftype.equalsIgnoreCase("flagAFile")?doc.getAttachFlagA():
+			         	  (ftype.equalsIgnoreCase("flagBFile")?doc.getAttachFlagB():
+			         	  (ftype.equalsIgnoreCase("flagCFile")?doc.getAttachFlagC(): doc.getUploadOtherDoc() ) );
+			my_file = new File(LabLogoPath+"CARS\\Other Docs\\"+File.separator+file); 
+	        res.setHeader("Content-disposition","attachment; filename="+file); 
+	        OutputStream out = res.getOutputStream();
+	        FileInputStream in = new FileInputStream(my_file);
+	        byte[] buffer = new byte[4096];
+	        int length;
+	        while ((length = in.read(buffer)) > 0){
+	           out.write(buffer, 0, length);
+	        }
+	        in.close();
+	        out.flush();
+	        out.close();
+		}catch (Exception e) {
+				e.printStackTrace(); 
+				logger.error(new Date() +"Inside CARSOtherDocAttachedFileDownload.htm "+UserId,e);
+		}
+	}
+	
+	@RequestMapping(value="OthersCSApprovalSubmit.htm")
+	public String othersCSApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
+		String UserId =(String)ses.getAttribute("Username");
+		String labcode =(String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside OthersCSApprovalSubmit.htm "+UserId);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+			long carsini = Long.parseLong(carsInitiationId);
+			
+			CARSInitiation cars = service.getCARSInitiationById(carsini);
+			String carsStatusCode = cars.getCARSStatusCode();
+			
+			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
+			dto.setCarsinitiationid(carsini);
+			dto.setAction(action);
+			dto.setEmpId(EmpId);
+			dto.setRemarks(remarks);
+			
+			long result = service.othersCSApprovalForward(dto,labcode);
+			
+			if(action.equalsIgnoreCase("A")) {
+				if(carsStatusCode.equalsIgnoreCase("CIN") || carsStatusCode.equalsIgnoreCase("CRA") || 
+				   carsStatusCode.equalsIgnoreCase("CRD") || carsStatusCode.equalsIgnoreCase("CRV")) {
+					if(result!=0) {
+						redir.addAttribute("result","Contract Signature form forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","Contract Signature form forward Unsuccessful");
+					}
+					redir.addAttribute("carsInitiationId",carsInitiationId);
+					return "redirect:/CARSOtherDocsList.htm";
+				}else if(carsStatusCode.equalsIgnoreCase("CFA")) {
+					if(result!=0) {
+						redir.addAttribute("result","Contract Signature form Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Contract Signature form Approve Unsuccessful");
+					}
+					
+					return "redirect:/CARSRSQRApprovals.htm";
+				}else {
+					if(result!=0) {
+						redir.addAttribute("result","Contract Signature form Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","Contract Signature form Recommend Unsuccessful");
+					}
+					
+					return "redirect:/CARSRSQRApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Contract Signature form Returned Successfully":"Contract Signature form Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Contract Signature form Return Unsuccessful":"Contract Signature form Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/CARSRSQRApprovals.htm";
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside OthersCSApprovalSubmit.htm "+UserId,e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CARSCSDocRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String carsCSDoCRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSCSDocRevoke.htm "+UserId);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+		
+			long count = service.carsCSDoCRevoke(carsInitiationId, UserId, EmpId);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "CARS Contract Signature form Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "CARS Contract Signature form Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			return "redirect:/CARSOtherDocsList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSCSDocRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+
+	@RequestMapping(value="CARSCSDownload.htm")
+	public void carsCSDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSCSDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("OthersCSApprovalEmpData", service.carsTransApprovalData(carsInitiationId, "CF"));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+			}
+			
+			String filename="CARS-Contract Signature";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSCSDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSCSDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+	
+	@RequestMapping(value="CARSCSDocUpload.htm")
+	public String carsCSDocUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
+			@RequestPart(name="uploadOtherDoc", required = false) MultipartFile uploadOtherDoc) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSCSDocUpload.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
+		
+			long result = service.carsCSDocUpload(uploadOtherDoc, otherDocDetailsId);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "CARS Contract Signature form Uploaded Successfully");
+			}else {
+				redir.addAttribute("resultfail", "CARS Contract Signature form Upload UnSuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("csDocsTabId","3");
+			return "redirect:/CARSContractSignatureDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSCSDocUpload.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CARSMilestonePaymentDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsMilestonePaymentDetails(HttpServletRequest req, HttpServletResponse res, HttpSession ses,RedirectAttributes redir) throws Exception {
+		String Username = (String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside CARSMilestonePaymentDetails.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String mpDocsTabId = req.getParameter("mpDocsTabId");
+			String isApproval = req.getParameter("isApproval");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+			if(carsInitiationId==null) {
+				String fromapprovals = req.getParameter("carsInitiationIdMPDocApprovals");
+				if(fromapprovals!=null) {
+					String[] split = fromapprovals.split("/");
+					carsInitiationId = split[0];
+					if(isApproval==null) {
+						isApproval = split[1];
+					}
+					if(mpDocsTabId==null) {
+						mpDocsTabId = split[2];
+					}
+					if(MilestoneNo==null) {
+						MilestoneNo = split[3];
+					}
+				}
+				
+			}
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSSoCData", service.getCARSSoCByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSStatusDetails", service.carsStatusDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOthersMPRemarksHistory", service.carsRemarksHistoryByMilestoneNo(carsInitiationId,MilestoneNo));
+				req.setAttribute("OthersMPApprovalEmpData", service.carsTransApprovalDataByMilestoneNo(carsInitiationId, MilestoneNo));
+				req.setAttribute("PDEmpIds", service.getEmpPDEmpId(carsInitiation.getFundsFrom()));
+				
+			}
+			req.setAttribute("EmpData", service.getEmpDetailsByEmpId(EmpId));
+			req.setAttribute("mpDocsTabId", mpDocsTabId!=null?mpDocsTabId:"1");
+			req.setAttribute("MilestoneNo", MilestoneNo);
+			
+			req.setAttribute("GHDPandC", service.getApprAuthorityDataByType(labcode, "GH-DP&C"));
+			req.setAttribute("GDDPandC", service.getApprAuthorityDataByType(labcode, "DO-RTMD"));
+			req.setAttribute("ADDPandC", service.getApprAuthorityDataByType(labcode, "AD-P&C"));
+			req.setAttribute("Chairperson", service.getApprAuthorityDataByType(labcode, "Chairperson (CARS Committee)"));
+			req.setAttribute("Director", service.getLabDirectorData(labcode));
+			
+			req.setAttribute("isApproval", isApproval);
+			
+			return "cars/CARSMilestonePaymentDetails";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMilestonePaymentDetails.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSMPDocDetailsSubmit.htm", method = { RequestMethod.POST, RequestMethod.GET })
+	public String carsMPDocDetailsSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
+			@RequestPart(name="attatchFlagA", required = false) MultipartFile attatchFlagA,
+			@RequestPart(name="attatchFlagB", required = false) MultipartFile attatchFlagB,
+			@RequestPart(name="attatchFlagC", required = false) MultipartFile attatchFlagC) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() + " Inside CARSMPDocDetailsSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String Action = req.getParameter("Action");
+			String mpOtherDocDate = req.getParameter("mpOtherDocDate");
+			String invoiceDate = req.getParameter("invoiceDate");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+			
+			long carsiniid = Long.parseLong(carsInitiationId);
+			List<CARSOtherDocDetails> otherdocdetails = service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid);
+			List<CARSOtherDocDetails> csdetailslist = otherdocdetails.stream().filter(e-> "M".equalsIgnoreCase(e.getOtherDocType()) && MilestoneNo.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+			CARSOtherDocDetails csdetails = csdetailslist!=null && csdetailslist.size()>0?csdetailslist.get(0):null;
+			
+			CARSOtherDocDetails doc = Action!=null && Action.equalsIgnoreCase("Add")?new CARSOtherDocDetails():csdetails;
+			doc.setCARSInitiationId(carsiniid);
+			doc.setOtherDocType("M");
+			doc.setOtherDocDate(fc.RegularToSqlDate(mpOtherDocDate));
+			doc.setInvoiceNo(req.getParameter("invoiceNo"));
+			doc.setInvoiceDate(fc.RegularToSqlDate(invoiceDate));
+			doc.setMilestoneNo(MilestoneNo);
+			doc.setForwardedBy(0);
+			
+			long result=0l;
+			if(Action!=null && Action.equalsIgnoreCase("Add")) {
+				doc.setOthersStatusCode("MIN");
+				doc.setOthersStatusCodeNext("MFA");
+				doc.setCreatedBy(Username);
+				doc.setCreatedDate(sdtf.format(new Date()));
+				doc.setIsActive(1);
+				result=service.CARSMPDocDetailsSubmit(doc, attatchFlagA, attatchFlagB, attatchFlagC, EmpId);
+			}else {
+				doc.setModifiedBy(Username);
+				doc.setModifiedDate(sdtf.format(new Date()));
+				result=service.CARSMPDocDetailsUpdate(doc, attatchFlagA, attatchFlagB, attatchFlagC);
+				if (result > 0) {
+					redir.addAttribute("result", "Payment Details Updated Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Payment Details Update Unsuccessful");
+				}
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("MilestoneNo",MilestoneNo);
+				redir.addAttribute("mpDocsTabId","2");
+				return "redirect:/CARSMilestonePaymentDetails.htm";
+			}
+			if (result > 0) {
+				redir.addAttribute("result", "Payment Details Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Payment Details Add Unsuccessful");
+			}
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("MilestoneNo",MilestoneNo);
+			redir.addAttribute("mpDocsTabId","2");
+			
+			return "redirect:/CARSMilestonePaymentDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMPDocDetailsSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="OthersMPApprovalSubmit.htm")
+	public String othersMPApprovalSubmit(HttpServletRequest req, HttpSession ses, HttpServletResponse res, RedirectAttributes redir) throws Exception{
+		String UserId =(String)ses.getAttribute("Username");
+		String labcode =(String)ses.getAttribute("labcode");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside OthersMPApprovalSubmit.htm "+UserId);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String action = req.getParameter("Action");
+			String remarks = req.getParameter("remarks");
+			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
+			
+			long carsini = Long.parseLong(carsInitiationId);
+			
+//			CARSInitiation cars = service.getCARSInitiationById(carsini);
+//			String carsStatusCode = cars.getCARSStatusCode();
+			
+			CARSOtherDocDetails docDetails = service.getCARSOtherDocDetailsById(Long.parseLong(otherDocDetailsId));
+			String statusCode = docDetails.getOthersStatusCode();
+			
+			CARSApprovalForwardDTO dto = new CARSApprovalForwardDTO();
+			dto.setCarsinitiationid(carsini);
+			dto.setAction(action);
+			dto.setEmpId(EmpId);
+			dto.setRemarks(remarks);
+			dto.setOtherDocDetailsId(otherDocDetailsId);
+			dto.setMilestoneNo(req.getParameter("MilestoneNo"));
+			long result = service.othersMPApprovalForward(dto,labcode);
+			
+			if(action.equalsIgnoreCase("A")) {
+				if(statusCode.equalsIgnoreCase("MIN") || statusCode.equalsIgnoreCase("MRA") || statusCode.equalsIgnoreCase("MRC") ||
+				   statusCode.equalsIgnoreCase("MRD") || statusCode.equalsIgnoreCase("MRV")) {
+					if(result!=0) {
+						redir.addAttribute("result","Payment Approval form forwarded Successfully");
+					}else {
+						redir.addAttribute("resultfail","Payment Approval form forward Unsuccessful");
+					}
+					redir.addAttribute("carsInitiationId",carsInitiationId);
+					return "redirect:/CARSOtherDocsList.htm";
+				}else if(statusCode.equalsIgnoreCase("MFC")) {
+					if(result!=0) {
+						redir.addAttribute("result","Payment Approval form Approved Successfully");
+					}else {
+						redir.addAttribute("resultfail","Payment Approval form Approve Unsuccessful");
+					}
+					
+					return "redirect:/CARSRSQRApprovals.htm";
+				}else {
+					if(result!=0) {
+						redir.addAttribute("result","Payment Approval form Recommended Successfully");
+					}else {
+						redir.addAttribute("resultfail","Payment Approval form Recommend Unsuccessful");
+					}
+					
+					return "redirect:/CARSRSQRApprovals.htm";
+				}
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")) {
+				if(result!=0) {
+					redir.addAttribute("result",action.equalsIgnoreCase("R")?"Payment Approval form Returned Successfully":"Payment Approval form Disapproved Successfully");
+				}else {
+					redir.addAttribute("resultfail",action.equalsIgnoreCase("R")?"Payment Approval form Return Unsuccessful":"Payment Approval form Disapprove Unsuccessful");
+				}
+			}
+			return "redirect:/CARSRSQRApprovals.htm";
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date()+" Inside OthersMPApprovalSubmit.htm "+UserId,e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CARSMPDocRevoke.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String carsMPDocRevoke(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception 
+	{
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		logger.info(new Date() +"Inside CARSMPDocRevoke.htm "+UserId);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+		
+			long count = service.carsMPDoCRevoke(carsInitiationId, UserId, EmpId,MilestoneNo);
+			
+			if (count > 0) {
+				redir.addAttribute("result", "CARS Payment Approval form Revoked Successfully");
+			}
+			else {
+				redir.addAttribute("resultfail", "CARS Payment Approval form Revoke Unsuccessful");	
+			}	
+
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			return "redirect:/CARSOtherDocsList.htm";
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMPDocRevoke.htm "+UserId, e);
+			return "static/Error";			
+		}
+
+	}
+	
+	@RequestMapping(value="CARSMPDownload.htm")
+	public void carsMPDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSMPDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+
+			if(carsInitiationId==null) {
+				String fromapprovals = req.getParameter("carsInitiationIdMPDocDownload");
+				if(fromapprovals!=null) {
+					String[] split = fromapprovals.split("/");
+					carsInitiationId = split[0];
+					
+					if(MilestoneNo==null) {
+						MilestoneNo = split[1];
+					}
+				}
+				
+			}
+			
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("OthersMPApprovalEmpData", service.carsTransApprovalDataByMilestoneNo(carsInitiationId, MilestoneNo));
+				req.setAttribute("MilestoneNo", MilestoneNo);
+			}
+			
+			String filename="CARS-Payment Approval";	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSMPDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSMPDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
+	}
+
+	@RequestMapping(value="CARSMPDocUpload.htm")
+	public String carsMPDocUpload(HttpServletRequest req,HttpSession ses,RedirectAttributes redir,
+			@RequestPart(name="uploadOtherDoc", required = false) MultipartFile uploadOtherDoc) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSMPDocUpload.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+		
+			long result = service.carsMPDocUpload(uploadOtherDoc, otherDocDetailsId);
+			
+			if(result!=0) {
+				redir.addAttribute("result", "CARS Payment Approval form Uploaded Successfully");
+			}else {
+				redir.addAttribute("resultfail", "CARS Payment Approval form Upload UnSuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			redir.addAttribute("MilestoneNo", MilestoneNo);
+			redir.addAttribute("mpDocsTabId","3");
+			return "redirect:/CARSMilestonePaymentDetails.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSMPDocUpload.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value="CARSPaymentDocDetailsSubmit.htm", method= {RequestMethod.POST,RequestMethod.GET})
+	public String carsPaymentDocDetailsSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception{
+		String Username = (String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CARSPaymentDocDetailsSubmit.htm "+Username);
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+			String ptcOtherDocDate = req.getParameter("ptcOtherDocDate");
+			
+			long carsiniid = Long.parseLong(carsInitiationId);
+			CARSOtherDocDetails ptcdetails = service.getCARSOtherDocDetailsById(Long.parseLong(otherDocDetailsId));
+			CARSOtherDocDetails doc = otherDocDetailsId!=null && otherDocDetailsId.equalsIgnoreCase("0")?new CARSOtherDocDetails():ptcdetails;
+			
+			doc.setCARSInitiationId(carsiniid);
+			doc.setOtherDocType("P");
+			doc.setOtherDocDate(fc.RegularToSqlDate(ptcOtherDocDate));
+			doc.setMilestoneNo(MilestoneNo);
+			
+			long result=0l;
+			if(otherDocDetailsId!=null && otherDocDetailsId.equalsIgnoreCase("0")) {
+				doc.setInitiationDate(sdf.format(new Date()));
+				doc.setCreatedBy(Username);
+				doc.setCreatedDate(sdtf.format(new Date()));
+				doc.setIsActive(1);
+				result=service.CARSPTCDocDetailsSubmit(doc);
+			}else {
+				doc.setModifiedBy(Username);
+				doc.setModifiedDate(sdtf.format(new Date()));
+				result=service.CARSPTCDocDetailsUpdate(doc);
+				if (result > 0) {
+					redir.addAttribute("result", "Payment Details Updated Successfully");
+				} else {
+					redir.addAttribute("resultfail", "Payment Details Update Unsuccessful");
+				}
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				return "redirect:/CARSOtherDocsList.htm";
+			}
+			if (result > 0) {
+				redir.addAttribute("result", "Payment Details Added Successfully");
+			} else {
+				redir.addAttribute("resultfail", "Payment Details Add Unsuccessful");
+			}
+			
+			redir.addAttribute("carsInitiationId", carsInitiationId);
+			return "redirect:/CARSOtherDocsList.htm";
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside CARSPaymentDocDetailsSubmit.htm "+Username, e);
+			return "static/Error";
+		}
+	}
+
+	@RequestMapping(value="CARSMilestonePaymentLetterDownload.htm")
+	public void carsMilestonePaymentLetterDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception{
+		String UserId = (String) ses.getAttribute("Username");
+		String labcode = (String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside CARSMilestonePaymentLetterDownload.htm "+UserId);		
+		try {
+			String carsInitiationId = req.getParameter("carsInitiationId");
+			String MilestoneNo = req.getParameter("MilestoneNo");
+
+			if(carsInitiationId!=null && carsInitiationId!="0") {
+				long carsiniid = Long.parseLong(carsInitiationId);
+				CARSInitiation carsInitiation = service.getCARSInitiationById(carsiniid);
+				req.setAttribute("CARSInitiationData", carsInitiation);
+				req.setAttribute("CARSContractData", service.getCARSContractByCARSInitiationId(carsiniid));	
+				req.setAttribute("CARSSoCMilestones", service.getCARSSoCMilestonesByCARSInitiationId(carsiniid));
+				req.setAttribute("CARSOtherDocDetailsData", service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid));
+				req.setAttribute("MilestoneNo", MilestoneNo);
+				Object[] obj = service.getApprAuthorityDataByType(labcode, "DO-RTMD");
+				req.setAttribute("DPandC", service.getEmpDetailsByEmpId(obj[0].toString()));
+			}
+			
+			String filename="CARS-Payment towards"+MilestoneNo;	
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/CARSMilestonePaymentLetterDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+	    catch(Exception e) {	    		
+    		logger.error(new Date() +" Inside CARSMilestonePaymentLetterDownload.htm "+UserId, e);
+    		e.printStackTrace();
+    	}		
 	}
 }

@@ -27,6 +27,7 @@ private static final long serialVersionUID = 1L;
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long CARSInitiationTransId;
 	private long CARSInitiationId;
+	private String MilestoneNo;
 	private String CARSStatusCode;
 	private String Remarks;
 	private String ActionBy;

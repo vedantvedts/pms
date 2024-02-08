@@ -23,6 +23,7 @@ public class CARSRSQR implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long CARSRSQRId;
 	private long CARSInitiationId;
+	private String CARSRSQRNo;
 	private String RSQRFreeze;
 	private String Introduction;
 	private String ResearchOverview;

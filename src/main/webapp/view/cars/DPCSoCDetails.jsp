@@ -204,6 +204,7 @@ div {
 	border : 1px solid black;
 	text-align: left;
 	padding : 3px;
+	vertical-align: top;
 }
 
 #socforwardtable th, #milestonestable th, #desctable th{
@@ -280,6 +281,7 @@ margin-left: -30%;
 	border : 1px solid black;
 	text-align: left;
 	padding : 3px;
+	vertical-align: top;
 }
 #alldocstable td:first-child,#alldocstable td:nth-child(3){ 
 	text-align: center; 
@@ -353,8 +355,48 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 120px;">
-             		<h3 class="category">D-P&C SoC Details
+         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 150px;">
+             		<h3 class="category">D-P&C SoC Details - 
+             		
+             			<button type="button" class="btn btn-sm btn-info" style="text-align: left;width: 70%;background: blueviolet;border: blueviolet;">
+             				<div>
+					        	<div class="row">
+					            	<div class="col-md-12">
+					                	<span class="cssideheading">Title:</span>
+					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                </div>
+					            </div>
+					                	
+					            <div class="row">
+					            	<div class="col-md-4">
+					                	<span class="cssideheading">CARS. No:</span>
+					                	&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %> <%} else{%>-<%} %></span>
+					            	</div>
+					            <div class="col-md-1"></div>
+					            <div class="col-md-3">
+					            	<span class="cssideheading">Funds from:</span>
+					                &emsp;<span class="cssideheadingdata">
+					                	<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
+					                		Buildup
+					                	<%} else{%>
+					                		<%if(PDs!=null && PDs[4]!=null) {%><%=PDs[4] %><%} %>
+					                	<%} %>
+					                	</span>
+					            </div>
+					            <div class="col-md-1"></div>
+					            	<div class="col-md-3">
+					                	<span class="cssideheading">Amount:</span>
+					                		&emsp;<span class="cssideheadingdata">
+					                		<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null) {%>
+					                			<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(carsSoC.getSoCAmount())) %>
+					                		<%} else{%>-<%} %>
+					                	</span>
+					                </div>
+					            </div>
+					                		
+					        </div>
+             			</button>
+             			
              			<a class="btn btn-info btn-sm  shadow-nohover back"
              			<%if(isApproval!=null && isApproval.equalsIgnoreCase("P") ) {%>
                				href="CARSRSQRApprovals.htm"

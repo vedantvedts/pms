@@ -106,6 +106,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 }
 #tabledata td{
  text-align : left;
+ vertical-align: top;
 }
 #tabledata td,th{
  border : 1px solid black;
@@ -193,12 +194,12 @@ int socforwardslno=0;
 	</tr>
 	<tr>
 		<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-		<td style="width: 20.5%;">Alignment with Lab / Project charter</td>
+		<td style="width: 20.5%;">Alignment with </td>
 		<td style="width: 73%;">
-			<%if(carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>
-				Lab
+			<%if(carsSoC.getAlignment()!=null) {%>
+				<%=carsSoC.getAlignment() %>
 			<%} else {%>
-				Project charter
+				-
 			<%} %>
 		</td>
 	</tr>

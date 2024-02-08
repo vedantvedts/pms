@@ -78,6 +78,8 @@ String labcode = (String)session.getAttribute("labcode");
 LabMaster labMaster = (LabMaster)request.getAttribute("LabMasterData");
 
 FormatConverter fc = new FormatConverter();
+
+Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 %>
 	<div  align="center" ><button class="btn btn-lg bg-transparent" id="btn-export" onclick=exportHTML() ><i class="fa fa-lg fa-download" aria-hidden="true"style="color:green"></i></button></div>
 	<div id="source-html">
@@ -92,11 +94,11 @@ FormatConverter fc = new FormatConverter();
 			    <table style="margin-left : 10px;border-collapse : collapse;border : 1px solid black;width : 98.5%;">
 			    	<tbody>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				1. Title of DRDO's Research Service Qualitative Requirement (RSQR):&nbsp;
 			    			 	<%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%> <%=carsIni.getInitiationTitle() %> <%} else {%>-<%} %> <br><br><br><br>
 			    			</td>
-			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 				    			Offer Number: <br>
 				    			Date received: <br>
 				    			Revised on:
@@ -106,10 +108,10 @@ FormatConverter fc = new FormatConverter();
 			    			</td>
 			    		</tr>
 			    		<tr>
-			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 
-			    				RSQR Document Ref. No. :&nbsp;<%if(carsIni!=null && carsIni.getCARSNo()!=null) {%><%=carsIni.getCARSNo() %><%} else{%>-<%} %> <br><br> <!-- <br><br><br><br> --> 
+			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 
+			    				RSQR Document Ref. No. :&nbsp;<%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11] %><%} else{%>-<%} %> <br><br> <!-- <br><br><br><br> --> 
 			    			</td>
-			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Date of issue :&nbsp;<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%><%=fc.SqlToRegularDate(carsIni.getInitiationApprDate()) %><%} else{%>-<%} %><br><br>
 			    				<!-- <table style="border-collapse: collapse;width: 103%;border: none;margin: -5px -5px -5px -5px;">
 				    				<tbody>
@@ -129,7 +131,7 @@ FormatConverter fc = new FormatConverter();
 				    				</tbody>
 			    				</table> -->
 			    			</td>
-			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 								Issuing DRDO Estt :&nbsp;
 								<%if(labMaster!=null) {%>
 									<%if(labMaster.getLabCode()!=null) {%><%=labMaster.getLabCode() %><%} else{%>-<%} %>
@@ -140,12 +142,12 @@ FormatConverter fc = new FormatConverter();
 								<%} %>
 								 <br><br><!-- <br><br><br><br> --> 
 							</td>
-			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 
+			    			<td  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 
 			    				Remarks of RSQR initiator : <br><br><!-- <br><br><br><br> --> 
 			    			</td>
 			    		</tr>
 			    		<tr>
-			    			<td rowspan="2" colspan="2"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td rowspan="2" colspan="2"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				3. Name of Research Service Provider (RSP) making this offer:&nbsp;
 			    					<%if(carsIni!=null) {%><%=carsIni.getPITitle()+". "+carsIni.getPIName()+", "+carsIni.getPIDesig() %> <%} else{%>-<%} %> <br>
 			    				3. (a) RSP's address for correspondence:&nbsp;
@@ -156,17 +158,17 @@ FormatConverter fc = new FormatConverter();
 			    				&nbsp;&nbsp;&nbsp;&nbsp;Email :&nbsp;<%if(carsIni!=null) {%><%=carsIni.getPIEmail() %> <%} else{%>-<%} %> <br>
 			    				<br><br><br><br>
 			    			</td>
-			    			<td rowspan="1"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td rowspan="1"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				4. RSP's Ref.
 			    				<br><br><br><br>
 			    				Date : 
 			    			</td>
-			    			<td rowspan="1"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td rowspan="1"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Judgment of OEC <br><br><br><br><br><br><br>
 			    			</td>
 			    		</tr>
 			    		<tr>
-			    			<td rowspan="1" colspan="3"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td rowspan="1" colspan="3"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				5. (a) Key personnel of RSP to be deployed: <br><br>
 			    				5. (b) RSP'S sub-contractors / consultants: <br>
 			    				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (i) Name: <br>
@@ -174,12 +176,12 @@ FormatConverter fc = new FormatConverter();
 			    			</td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="5"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td colspan="5"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    			 6. Principal technical features of offer as related to RSQR As per Annexure I
 			    			</td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="5"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td colspan="5"  style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    			 7. DRDO-owned equipment that RSP requires to be positioned by DRDO: 
 			    			</td>
 			    		</tr>
@@ -189,80 +191,80 @@ FormatConverter fc = new FormatConverter();
 			    <table style="margin-left : 10px;border-collapse : collapse;width : 98.5%;">
 			    	<tbody>
 			    		<tr>
-			    			<td colspan="3" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 8. Estimated time to complete provision of professional services and submit Final Report </td>
-			    			<td colspan="2" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> Months:  </td>
+			    			<td colspan="3" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 8. Estimated time to complete provision of professional services and submit Final Report </td>
+			    			<td colspan="2" style="border-top: 0 !important;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Months:  </td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 9.1 Estimated expenditure (as elaborated on reverse) on: </td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 9.1 Estimated expenditure (as elaborated on reverse) on: </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Personnel</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Personnel</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(b) Equipment</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(b) Equipment</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(c) Others</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(c) Others</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub-Total</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub-Total</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TAX</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TAX</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="3" style="text-align: right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">Total&nbsp;&#11162;&nbsp;</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="3" style="text-align: right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">Total&nbsp;&#11162;&nbsp;</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="border-top: 0;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> 9.2. Required Schedule of payments (Rs. in Lakhs) </td>
-			    			<td colspan="1" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> Date / Duration  </td>
-			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> Payment </td>
+			    			<td colspan="2" style="border-top: 0;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> 9.2. Required Schedule of payments (Rs. in Lakhs) </td>
+			    			<td colspan="1" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Date / Duration  </td>
+			    			<td colspan="2" style="text-align: center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Payment </td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">T0</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(b) at Performance Milestone I of RSQR &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">T0+</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(b) at Performance Milestone I of RSQR &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">&nbsp;&nbsp;&nbsp;&nbsp;(c) at Performance Milestone II of RSQR &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">T0+</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(c) at Performance Milestone II of RSQR &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0+</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> &nbsp;&nbsp; </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> &nbsp;&nbsp; </td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align: center;border-right: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">[Inclusive of Service Tax if applicable]</td>
-			    			<td colspan="1" style="text-align: right;border-left: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"> Total&nbsp;&#11162;&nbsp;</td>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;"></td>
+			    			<td colspan="2" style="text-align: center;border-right: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">[Inclusive of Service Tax if applicable]</td>
+			    			<td colspan="1" style="text-align: right;border-left: 0;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"> Total&nbsp;&#11162;&nbsp;</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td rowspan="2" colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
+			    			<td rowspan="2" colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				10. References to R&D work being performed by RSP for Armed Services / DRDO / other S&T (including foreign) agencies: <br><br><br><br><br><br></td>
 			    			<td colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal ;">
 			    				11. Offer as above valid till (date): </td>
 			    		</tr>
 			    		<tr>
-			    			<td rowspan="1" colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td rowspan="1" colspan="3" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    			 12. Signature of the competent authority of RSP: <br> 
 			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name: <br>
 			    			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Designation: 
@@ -273,7 +275,7 @@ FormatConverter fc = new FormatConverter();
 			    
 			</div>
 		</div>
-			<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+		<p style="text-align: center; page-break-before: always;">&nbsp;&nbsp;&nbsp;&nbsp;</p>
 		<div id="container pageborder" align="center"  class="secondpage" id="secondpage">
 			<div class="secondpage" id="secondpage"> 	
 				<div class="center">
@@ -282,31 +284,31 @@ FormatConverter fc = new FormatConverter();
 			    <table style="margin-left : 10px;border-collapse : collapse;width : 98.5%;">
 			    	<tbody>
 			    		<tr>
-			    			<td style="width: 15%;">Item 5(a) <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 5(a)  </td>
 			    			<td>: In offers whose expected time of completion is more than 18 months, RSP shall identify at least two key personnel who will engage in the work.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 5(b) <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 5(b)  </td>
 			    			<td>: Consultants who are non-Indian citizens (whether or not of Indian origin) will require prior approval of DRDO.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 6 <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 6  </td>
 			    			<td>: Highlight investigation methodology and/or experimental design intended to be followed.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 7 <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 7 </td>
 			    			<td>: Identify equipment. Detail in Attachment B, including proposed country of origin.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 9.1(a) <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 9.1(a)  </td>
 			    			<td>: Indicate below categories, and numbers in each category, of personnel proposed to be engaged and their monthly total emoluments.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 9.1(b) <br><br> </td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 9.1(b)  </td>
 			    			<td>: List below all equipment required. Prior approval of L/E/P will be required to order any equipment for which the potential supplier asks for an end-use or end-user certificate.</td>
 			    		</tr>
 			    		<tr>
-			    			<td style="width: 15%;">Item 9.1(c) <br></td>
+			    			<td style="width: 15%;word-wrap: break-word;word-break: normal;vertical-align: top;">Item 9.1(c) </td>
 			    			<td>: Enter total of expected other expenses listed below:</td>
 			    		</tr>
 			    	</tbody>
@@ -314,73 +316,73 @@ FormatConverter fc = new FormatConverter();
 			    <table style="margin-left : 10px;border-collapse : collapse;border : 1px solid black;width : 98.5%;border-bottom: 0 !important;border-left: 0;">
 			    	<tbody>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">Expected other expenses on:</td>
-			    			<td style="text-align: center;width: 20%;">Rs. in lakhs</td>
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">Expected other expenses on:</td>
+			    			<td style="text-align: center;width: 20%;vertical-align: top;">Rs. in lakhs</td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Sub-contracts (Details to be provided in separate sheet
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Operation and maintenance of equipment required for provision of the Research Service
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Expendables/Consumables
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Travel
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Contingencies
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Visiting Faculty or Research Consultants
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Technical support services procured from outside the RSP
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Fees for use of intellectual assets (including royalties for legally protected IPR)
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;">
+			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				Overheads <br>
 									&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Overheads (fixed amount till completion of provision of Research Services) for Contracts which are successfully concluded. <br>
 									&nbsp;&nbsp;&#x2022;&nbsp;&nbsp;Overheads will be charged on actual for all Contracts which are either short or stage closed.  
 			    			</td>
-			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan="1" style="text-align: left;padding : 3px;word-wrap: break-word;word-break: normal;border-left: 0 !important;border-bottom: 0 !important;">
+			    			<td colspan="1" style="text-align: left;padding : 3px;word-wrap: break-word;word-break: normal;border-left: 0 !important;border-bottom: 0 !important;vertical-align: top;">
 			    				# Will not be changed notwithstanding variations in actual expenditure under other heads in Item 9.
 			    			</td>
-			    			<td colspan="1" style="text-align: right;padding : 3px;word-wrap: break-word;word-break: normal;border-left: 0 !important;border-bottom: 0 !important;">
+			    			<td colspan="1" style="text-align: right;padding : 3px;word-wrap: break-word;word-break: normal;border-left: 0 !important;border-bottom: 0 !important;vertical-align: top;">
 			    				Total&nbsp;&#11162;&nbsp;
 			    			</td>
-			    			<td colspan="1" style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;"></td>
+			    			<td colspan="1" style="width: 20%;text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    	</tbody>
 			    </table>

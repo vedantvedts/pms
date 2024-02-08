@@ -409,7 +409,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 					                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
 					                            			<td style="text-align: left;width: 20%;"><%=form[2]+" ("+form[1]+"), "+form[3]%></td>
 					                            			<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
-					                            			<td style="text-align: center;width: 10%;"><%=form[11] %> </td>
+					                            			<td style="text-align: right;width: 10%;"><%=form[11] %> </td>
 					                            			<td style="text-align: center;width: 28%;">
 																<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSRSQRTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
 													    			<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
@@ -585,7 +585,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
 						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
 						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
-						                            			<td style="text-align: center;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: right;width: 10%;"><%=form[15] %> </td>
 						                            			<td style="text-align: center;width: 33%;">
 																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
 														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
@@ -694,7 +694,7 @@ String carstodate   = (String)request.getAttribute("carstodate");
 						                            			<td style="text-align: center;width: 5%;"><%=++SNA%></td>
 						                            			<td style="text-align: left;width: 20%;"><%=form[9]+" ("+form[13]+"), "+form[14]%></td>
 						                            			<td style="text-align: center;width: 15%;"><%=form[2] %> </td>
-						                            			<td style="text-align: center;width: 10%;"><%=form[15] %> </td>
+						                            			<td style="text-align: right;width: 10%;"><%=form[15] %> </td>
 						                            			<td style="text-align: center;width: 33%;">
 																	<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[0] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[11] %>; font-weight: 600;" formtarget="_blank">
 														    			<%=form[10] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
@@ -708,6 +708,16 @@ String carstodate   = (String)request.getAttribute("carstodate");
 																					<img src="view/images/clipboard.png">
 																				</figure>
 																				<span>Details</span>
+																			</div>
+																		</div>
+																	</button>
+						                            				<button type="submit" class="btn btn-sm view-icon" formaction="CARSOtherDocsList.htm" name="carsInitiationId" value="<%=form[0]%>" data-toggle="tooltip" data-placement="top" title="Other Documents Details" style="font-weight: 600;" >
+														   				<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/multipledocs.png" style="width: 30px;">
+																				</figure>
+																				<span>Other Docs</span>
 																			</div>
 																		</div>
 																	</button>

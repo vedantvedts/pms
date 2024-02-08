@@ -111,7 +111,8 @@ FormatConverter fc = new FormatConverter();
 	    				<br>
 					    <div style="text-align: center;">
 					    	<%if(carsContract!=null && carsContract.getContractNo()!=null){ %>
-					    		<a class="btn btn-info btn-sm prints shadow-nohover" href="CARSFinalFormWordDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">Generate CARS-03 &nbsp;<img src="view/images/worddoc.png" style="width: 23px;"></a>
+					    		<a class="btn btn-info btn-sm prints shadow-nohover" href="CARSFinalFormWordDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">Download CARS-03 Word&nbsp;<img src="view/images/worddoc.png" style="width: 23px;"></a>
+					    		<a class="btn btn-info btn-sm prints shadow-nohover" href="CARSFinalFormPdfDownload.htm?carsInitiationId=<%=carsIni.getCARSInitiationId()%>" target="_blank">Download CARS-03 Pdf</a>
 					    	<%} %>
 					    	
 						</div>
@@ -126,7 +127,7 @@ $('#contractDate').daterangepicker({
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
-	 "maxDate" : new Date(),
+	 /* "maxDate" : new Date(), */
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {
@@ -139,7 +140,7 @@ $('#t0Date').daterangepicker({
 	"linkedCalendars" : false,
 	"showCustomRangeLabel" : true,
 	/* "minDate" :datearray,   */
-	 "maxDate" : new Date(),
+	 /* "maxDate" : new Date(), */
 	"cancelClass" : "btn-default",
 	showDropdowns : true,
 	locale : {

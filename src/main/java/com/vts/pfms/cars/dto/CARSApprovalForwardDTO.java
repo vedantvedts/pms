@@ -14,5 +14,6 @@ public class CARSApprovalForwardDTO {
 	private String approvalSought;
 	private String approverEmpId;
 	private String approvalDate;
-	
+	private String otherDocDetailsId;
+	private String milestoneNo;
 }
