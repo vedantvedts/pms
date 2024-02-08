@@ -56,7 +56,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 
  @page  {             
           size: 790px 1120px;
-          margin-top: 140px;
+          margin-top: 160px;
           margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
@@ -112,6 +112,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 }
 #tabledata td{
  text-align : left;
+ vertical-align: top;
 }
 #tabledata td,th{
  border : 1px solid black;

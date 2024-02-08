@@ -107,6 +107,12 @@ th{
 	
 	List<Object[]> DPandCSoCPendingList =(List<Object[]>)request.getAttribute("DPandCSoCPendingList");
 	List<Object[]> DPandCSoCApprovedList =(List<Object[]>)request.getAttribute("DPandCSoCApprovedList");
+	
+	List<Object[]> CSPendingList =(List<Object[]>)request.getAttribute("CSPendingList");
+	List<Object[]> CSApprovedList =(List<Object[]>)request.getAttribute("CSApprovedList");
+	
+	List<Object[]> MPPendingList =(List<Object[]>)request.getAttribute("MPPendingList"); 
+	List<Object[]> MPApprovedList =(List<Object[]>)request.getAttribute("MPApprovedList");
 
 %>
 
@@ -145,10 +151,10 @@ th{
 		    							<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   								<span>Pending</span> 
 											<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 						<%if(PendingList.size() + DPandCSoCPendingList.size()>99){ %>
+				   		 						<%if((PendingList.size() + DPandCSoCPendingList.size() + CSPendingList.size() + MPPendingList.size() )>99 ){ %>
 				   									99+
 				   								<%}else{ %>
-				   								<%=PendingList.size() + DPandCSoCPendingList.size()%>
+				   								<%=PendingList.size() + DPandCSoCPendingList.size() + CSPendingList.size() + MPPendingList.size() %>
 												<%} %>			   			
 				  							</span> 
 		    							</div>
@@ -157,10 +163,10 @@ th{
 		    							<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 							<span>Approved</span> 
 		    	 							<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
-				   		 						<%if(ApprovedList.size() + DPandCSoCApprovedList.size()>99){ %>
+				   		 						<%if((ApprovedList.size() + DPandCSoCApprovedList.size() + CSApprovedList.size() + MPApprovedList.size() )>99){ %>
 				   									99+
 				   								<%}else{ %>
-				   								<%=ApprovedList.size() + DPandCSoCApprovedList.size()%>
+				   								<%=ApprovedList.size() + DPandCSoCApprovedList.size() + CSApprovedList.size() + MPApprovedList.size()%>
 												<%} %>			   			
 				  							</span> 
 		    							</div>
@@ -175,7 +181,7 @@ th{
 								<div class="container-fluid" >
            							<div class="tab-content" id="pills-tabContent">
             							<div class="tab-pane fade show active" id="pills-mov-property" role="tabpanel" aria-labelledby="pills-mov-property-tab">
-		    								<form action="" method="POST" id="">
+		    								<form action="#" method="POST" id="">
             									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
              									<div class="table-responsive">
               										<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable">
@@ -275,7 +281,7 @@ th{
                        										
                        										<!-- D-P&C SoC Pending List -->
                        										<%
-                       											if(PendingList!=null && DPandCSoCPendingList.size()>0){
+                       											if(DPandCSoCPendingList!=null && DPandCSoCPendingList.size()>0){
                          							 			for(Object[] form:DPandCSoCPendingList ){
                        										%>
                        										<tr>
@@ -309,6 +315,83 @@ th{
                             									</td>
                        										</tr>
                        										<%} }%>
+                       										
+                       										<!-- Contract Signature Pending List -->
+                       										<%
+                       											if(CSPendingList!=null && CSPendingList.size()>0){
+                         							 			for(Object[] form: CSPendingList ){
+                       										%>
+                       										<tr>
+                       											<td style="text-align: center;width: 5%;"><%=++SN%></td>
+                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="text-align: center;width: 20%;">
+                            										<button type="submit" class="btn btn-sm view-icon" formaction="CARSContractSignatureDetails.htm" name="carsInitiationIdCSDocApprovals" value="<%=form[4]%>/C/2" data-toggle="tooltip" data-placement="top" title="CARS Contract Signature" style="font-weight: 600;" >
+								   										<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Preview</span>
+																			</div>
+																		</div>
+																	</button>
+																	<button type="submit" class="btn btn-sm" formaction="CARSCSDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/document.png">
+																				</figure>
+																				<span>Contract Signature</span>
+																			</div>
+																		</div>
+																	</button>
+                            										
+                            									</td>
+                       										</tr>
+                       										<%} }%>
+                       										
+                       										<!-- Milestone Payment Pending List -->
+                       										<%
+                       											if(MPPendingList!=null && MPPendingList.size()>0){
+                         							 			for(Object[] form: MPPendingList ){
+                       										%>
+                       										<tr>
+                       											<td style="text-align: center;width: 5%;"><%=++SN%></td>
+                            									<td style="width: 30%;"><%=form[9]+", "+form[10]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[8]%></td>
+                            									<td style="text-align: center;width: 15%;"><%=form[6]%></td>
+                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td style="text-align: center;width: 10%;"><%=form[7]%></td>
+                            									<td style="text-align: center;width: 20%;">
+                            										<button type="submit" class="btn btn-sm view-icon" formaction="CARSMilestonePaymentDetails.htm" name="carsInitiationIdMPDocApprovals" value="<%=form[4]%>/M/2/<%=form[11] %>" data-toggle="tooltip" data-placement="top" title="CARS Payment Approval" style="font-weight: 600;" >
+								   										<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/preview3.png">
+																				</figure>
+																				<span>Preview</span>
+																			</div>
+																		</div>
+																	</button>
+																	<button type="submit" class="btn btn-sm" formaction="CARSMPDownload.htm" name="carsInitiationIdMPDocDownload" value="<%=form[4]%>/<%=form[11] %>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 									<div class="cc-rockmenu">
+																			<div class="rolling">
+																				<figure class="rolling_icon">
+																					<img src="view/images/document.png">
+																				</figure>
+																				<span>Payment Approval</span>
+																			</div>
+																		</div>
+																	</button>
+                            										
+                            									</td>
+                       										</tr>
+                       										<%} }%>
+                       										
                  										</tbody>  
             										</table>
           										</div>
@@ -450,6 +533,7 @@ th{
 						 														</td>
                         													</tr>
                        													 	<%} }%>
+                       													 	
                        													 	<!-- D-P&C SoC Approved List -->
                        													 	<%
                       													    	if(DPandCSoCApprovedList!= null && DPandCSoCApprovedList.size()>0) {
@@ -490,6 +574,89 @@ th{
 						 														</td>
                         													</tr>
                        													 	<%} }%>
+                       													 	
+                       													 	<!-- Contract Signature Approved List -->
+                       													 	<%
+                      													    	if(CSApprovedList!= null && CSApprovedList.size()>0) {
+                          															for(Object[] form:CSApprovedList ) {
+                       													    %>
+                        													<tr>
+                            													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: center;width: 30%;">
+								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												</button>
+						 														</td>
+						 														<td style="text-align: center;width: 15%;">
+						 															<button type="submit" class="btn btn-sm view-icon" formaction="CARSContractSignatureDetails.htm" name="carsInitiationIdCSDocApprovals" value="<%=form[4]%>/D/2" data-toggle="tooltip" data-placement="top" title="CARS Contract Signature" style="font-weight: 600;" >
+								   														<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/preview3.png">
+																								</figure>
+																								<span>Preview</span>
+																							</div>
+																						</div>
+																					</button>
+																					<button type="submit" class="btn btn-sm" formaction="CARSCSDownload.htm" name="carsInitiationId" value="<%=form[4]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 													<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/document.png">
+																								</figure>
+																								<span>Contract Signature</span>
+																							</div>
+																						</div>
+																					</button>
+						 														</td>
+                        													</tr>
+                       													 	<%} }%>
+                       													 	
+                       													 	<!-- Milestone Payment Approved List -->
+                       													 	<%
+                      													    	if(MPApprovedList!= null && MPApprovedList.size()>0) {
+                          															for(Object[] form:MPApprovedList ) {
+                       													    %>
+                        													<tr>
+                            													<td style="text-align: center;width: 5%;"><%=++SNA%></td>
+                            													<td style="text-align: left;width: 22%;"><%=form[14]+", "+form[15]%></td>
+                            													<td style="text-align: center;width: 5%;"><%=form[13] %> </td>
+                            													<td style="text-align: center;width: 15%;"><%=form[6] %> </td>
+                            													<td style="text-align: center;width: 8%;"><%=form[12] %> </td>
+                            													<td style="text-align: center;width: 30%;">
+								    												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="CARSTransStatus.htm" value="<%=form[4] %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
+								    													<%=form[8] %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+								    												</button>
+						 														</td>
+						 														<td style="text-align: center;width: 15%;">
+						 															<button type="submit" class="btn btn-sm view-icon" formaction="CARSMilestonePaymentDetails.htm" name="carsInitiationIdMPDocApprovals" value="<%=form[4]%>/N/2/<%=form[16] %>" data-toggle="tooltip" data-placement="top" title="CARS Payment Approval" style="font-weight: 600;" >
+								   														<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/preview3.png">
+																								</figure>
+																								<span>Preview</span>
+																							</div>
+																						</div>
+																					</button>
+																					<button type="submit" class="btn btn-sm" formaction="CARSMPDownload.htm" name="carsInitiationIdMPDocDownload" value="<%=form[4]%>/<%=form[16]%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
+								  	 													<div class="cc-rockmenu">
+																							<div class="rolling">
+																								<figure class="rolling_icon">
+																									<img src="view/images/document.png">
+																								</figure>
+																								<span>Payment Approval</span>
+																							</div>
+																						</div>
+																					</button>
+						 														</td>
+                        													</tr>
+                       													 	<%} }%>
+                       													 	
                    														</tbody>
                  													</table>
                 												</div> 

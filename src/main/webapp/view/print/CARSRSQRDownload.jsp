@@ -15,6 +15,7 @@
 
 <%
 CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData");
+Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 %>
 <style>
 
@@ -89,7 +90,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
           
           @top-left {
           	margin-top: 30px;
-            content: "<%=carsIni.getCARSNo()%>";
+            content: "<%if(rsqr!=null && rsqr[11]!=null) {%><%=rsqr[11]%><%}%>";
             font-size: 13px;
           }               
           
@@ -147,6 +148,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 }
 #tabledata td{
  text-align : left;
+ vertical-align: top;
 }
 #tabledata td,th{
  border : 1px solid black;
@@ -167,7 +169,7 @@ p,td,th
 </head>
 <body>
 <%
-Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
+
 List<CARSRSQRMajorRequirements> majorReqr = (List<CARSRSQRMajorRequirements>)request.getAttribute("RSQRMajorReqr");
 List<CARSRSQRDeliverables> deliverables = (List<CARSRSQRDeliverables>)request.getAttribute("RSQRDeliverables");
 List<CARSSoCMilestones> milestones = (List<CARSSoCMilestones>)request.getAttribute("CARSSoCMilestones");

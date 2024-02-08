@@ -145,6 +145,7 @@ CARSInitiation carsIni =(CARSInitiation)request.getAttribute("CARSInitiationData
 }
 #tabledata td{
  text-align : left;
+ vertical-align: top;
 }
 #tabledata td,th{
  border : 1px solid black;
@@ -231,7 +232,7 @@ CARSSoC carsSoC =(CARSSoC)request.getAttribute("CARSSoCData");
     			<div style="font-size: 15px;margin-bottom: 10px;">Signature of the initiating officer</div>
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[1]!=null){%> <%=emp[1]%><%} %>,
-				</label><br>
+				</label><!-- <br> -->
 				<label style="text-transform: capitalize;">
 					<%if(emp!=null && emp[2]!=null){%> <%=emp[2]%><%} %>
 				</label><br>

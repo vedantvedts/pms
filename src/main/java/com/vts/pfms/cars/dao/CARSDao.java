@@ -7,6 +7,7 @@ import com.vts.pfms.cars.model.CARSContractConsultants;
 import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
+import com.vts.pfms.cars.model.CARSOtherDocDetails;
 import com.vts.pfms.cars.model.CARSRSQR;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
@@ -75,5 +76,21 @@ public interface CARSDao {
 	public int removeCARSContractConsultantsDetails(long carsInitiationId) throws Exception;
 	public int removeCARSContractEquipmentDetails(long carsInitiationId) throws Exception;
 	public String getMaxCARSContractNo() throws Exception;
+	public List<CARSOtherDocDetails> getCARSOtherDocDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
+	public long addCARSOtherDocDetails(CARSOtherDocDetails doc) throws Exception;
+	public long editCARSOtherDocDetails(CARSOtherDocDetails doc) throws Exception;
+	public int updateCARSInitiationStatusCodes(long carsInitiationId, String CARSStatusCode, String CARSStatusCodeNext) throws Exception;
+	public Object[] carsStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
+	public CARSOtherDocDetails getCARSOtherDocDetailsById(long otherDocDetailsId) throws Exception;
+	public List<Object[]> carsCSPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> carsCSApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public long carsOtherDocUpload(String uploadOtherDoc, String otherDocDetailsId) throws Exception;
+	public List<Object[]> carsRemarksHistoryByMilestoneNo(String carsInitiationId, String milestoneNo) throws Exception;
+	public List<Object[]> carsTransApprovalDataByMilestoneNo(String carsInitiationId, String milestoneNo);
+	public long updateOtherDocForwardDetails(String forwardedBy, String forwardedDate, String otherDocDetailsId) throws Exception;
+	public List<Object[]> carsMPPendingList(String empId, String labcode) throws Exception;
+	public List<Object[]> carsMPApprovedList(String empId, String FromDate, String ToDate) throws Exception;
+	public List<Object[]> carsMPStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception;
+	public int updateCARSOtherDocStatusCodes(long carsInitiationId, String othersStatusCode, String othersStatusCodeNext, String milestoneNo) throws Exception;
 	
 }

@@ -193,6 +193,7 @@ div {
 	border : 1px solid black;
 	text-align: left;
 	padding : 3px;
+	vertical-align: top;
 }
 #alldocstable {
 	width : 70%;
@@ -954,7 +955,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 											<table style="width:100% ; " id="milestones">
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Mil No.</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
@@ -1892,7 +1893,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 											<table style="width:100% ; " id="milestones2">
 												<thead style = "background-color: #055C9D; color: white;text-align: center;">
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Mil No.</th>
+												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
 												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
 												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
 												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
@@ -2142,7 +2143,7 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
          		<%}else{ %>
               		<div class="tab-pane " id="socforward" role="tabpanel">
                	<%} %>
-               		<%if(carsSoC!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0 && milestones!=null && milestones.size()>0) {%>
+               		<%if(carsSoC!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0 && milestones!=null && milestones.size()>0 && carsContract!=null) {%>
                			<%int socforwardslno=0; %>
                			<div class="col-md-8 mt-4">
                				<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;max-height: 500px;overflow-y: auto;">
@@ -2198,12 +2199,12 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						    				</tr>
 						    				<tr>
 						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Alignment with Lab / Project charter</td>
+						    					<td style="width: 20%;">Alignment with </td>
 						    					<td style="width: 73%;color: blue;">
-						    						<%if(carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>
-						    							Lab
+						    						<%if(carsSoC.getAlignment()!=null) {%>
+						    							<%=carsSoC.getAlignment() %>
 						    						<%} else {%>
-						    							Project charter
+						    							-
 						    						<%} %>
 						    					</td>
 						    				</tr>
@@ -2380,15 +2381,32 @@ String statuscode = carsIni!=null?carsIni.getCARSStatusCode():null;
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="SoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
+					         						<%
+					         							double socamount = carsSoC.getSoCAmount()!=null?Double.parseDouble(carsSoC.getSoCAmount()):0.00;
+					         							double expndtotal = carsContract.getExpndTotalCost()!=null?Double.parseDouble(carsContract.getExpndTotalCost()):0.00;
+					         							double totalamount = 0.0;
+					         							if(milestones!=null && milestones.size()>0) {
+					         							
+					         							for(CARSSoCMilestones mil:milestones) {
+					         								totalamount+=Double.parseDouble(mil.getActualAmount());
+					         							}
+					         							%>
+					         						<%} %>
+					         						<%if(  (totalamount == socamount )  &&  (totalamount == expndtotal ) ) {%>
+														<button type="submit" class="btn btn-sm submit" id="" name="Action" formaction="SoCApprovalSubmit.htm" formnovalidate="formnovalidate" value="A" onclick="return confirm('Are you Sure to Submit ?');" >Forward</button>
+													<%}else if(socamount < expndtotal) {%>
+														<button type="button" class="btn btn-sm submit" formnovalidate="formnovalidate" onclick="alert('Cost of project should be equal to Total Cost of Expenditure')">Forward</button>
+													<%} else{%>
+														<button type="button" class="btn btn-sm submit" formnovalidate="formnovalidate" onclick="alert('Cost of project should be equal to Total Cost \n of Proposed Milestone and Deliverables')">Forward</button>
+													<%} %>
 												<%} %>
 												<%if(isApproval!=null && isApproval.equalsIgnoreCase("S")) {%>
 													<div class="ml-2" align="left">
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
-							    						Forward	
+													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+							    						Recommend	
 						      						</button>
 						      						
 						      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">

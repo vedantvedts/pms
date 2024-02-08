@@ -43,6 +43,7 @@ import com.vts.pfms.cars.model.CARSContractConsultants;
 import com.vts.pfms.cars.model.CARSContractEquipment;
 import com.vts.pfms.cars.model.CARSInitiation;
 import com.vts.pfms.cars.model.CARSInitiationTrans;
+import com.vts.pfms.cars.model.CARSOtherDocDetails;
 import com.vts.pfms.cars.model.CARSRSQR;
 import com.vts.pfms.cars.model.CARSRSQRDeliverables;
 import com.vts.pfms.cars.model.CARSRSQRMajorRequirements;
@@ -95,8 +96,8 @@ public class CARSServiceImpl implements CARSService{
 		// Transaction
 		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 										  .CARSInitiationId(carsinitiationid)
+										  .MilestoneNo("0")
 										  .CARSStatusCode("INI")
-										  .Remarks("")
 										  .ActionBy(initiation.getEmpId()+"")
 										  .ActionDate(sdtf.format(new Date()))
 										  .build();
@@ -140,8 +141,10 @@ public class CARSServiceImpl implements CARSService{
 		}else if(attributes.equalsIgnoreCase("Literature Reference")) {
 			rsqr.setLiteratureRef(details);
 		}
+		LocalDate now = LocalDate.now();
 		
 		rsqr.setCARSInitiationId(Long.parseLong(carsInitiationId));
+		rsqr.setCARSRSQRNo("LRDE/CARS/RSQR-"+carsInitiationId+"/"+now.getYear());
 		rsqr.setCreatedBy(userId);
 		rsqr.setCreatedDate(sdtf.format(new Date()));
 		rsqr.setIsActive(1);
@@ -319,6 +322,7 @@ public class CARSServiceImpl implements CARSService{
 			// Transactions happend in the approval flow.
 			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
 											  .ActionBy(EmpId)
@@ -337,7 +341,7 @@ public class CARSServiceImpl implements CARSService{
 			if(action.equalsIgnoreCase("A") && (cars.getCARSStatusCode().equalsIgnoreCase("AGD") || cars.getCARSStatusCode().equalsIgnoreCase("APD"))) {
 				notification.setEmpId(emp.getEmpId());
 				notification.setNotificationUrl("CARSInitiationList.htm");
-				notification.setNotificationMessage("RSQR request approved");
+				notification.setNotificationMessage("CARS RSQR request approved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -353,7 +357,7 @@ public class CARSServiceImpl implements CARSService{
 					PfmsNotification notification2 = new PfmsNotification();
 					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
 					notification2.setNotificationUrl("CARSRSQRApprovedList.htm");
-					notification2.setNotificationMessage("RSQR request approved for<br>"+emp.getEmpName());
+					notification2.setNotificationMessage("CARS RSQR request approved for "+emp.getEmpName());
 					notification2.setNotificationby(Long.parseLong(EmpId));
 					notification2.setNotificationDate(LocalDate.now().toString());
 					notification2.setIsActive(1);
@@ -374,7 +378,7 @@ public class CARSServiceImpl implements CARSService{
 				}
 				
 				notification.setNotificationUrl("CARSRSQRApprovals.htm");
-				notification.setNotificationMessage("RSQR forwarded by "+emp.getEmpName());
+				notification.setNotificationMessage("CARS RSQR forwarded by "+emp.getEmpName());
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -387,7 +391,7 @@ public class CARSServiceImpl implements CARSService{
 			{
 				notification.setEmpId(emp.getEmpId());
 				notification.setNotificationUrl("CARSInitiationList.htm");
-				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"RSQR Request Returned":"RSQR Request Disapproved");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"CARS RSQR Request Returned":"CARS RSQR Request Disapproved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -692,6 +696,7 @@ public class CARSServiceImpl implements CARSService{
 			// Transactions happend in the approval flow.
 			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
 											  .ActionBy(EmpId)
@@ -710,7 +715,7 @@ public class CARSServiceImpl implements CARSService{
 			if(action.equalsIgnoreCase("A") && (cars.getCARSStatusCode().equalsIgnoreCase("SFG") || cars.getCARSStatusCode().equalsIgnoreCase("SFP"))) {
 				notification.setEmpId(emp.getEmpId());
 				notification.setNotificationUrl("CARSInitiationList.htm");
-				notification.setNotificationMessage("SoC request approved");
+				notification.setNotificationMessage("CARS SoC request approved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -743,7 +748,7 @@ public class CARSServiceImpl implements CARSService{
 				}
 				
 				notification.setNotificationUrl("CARSRSQRApprovals.htm");
-				notification.setNotificationMessage("SoC forwarded by "+emp.getEmpName());
+				notification.setNotificationMessage("CARS SoC forwarded by "+emp.getEmpName());
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -756,7 +761,7 @@ public class CARSServiceImpl implements CARSService{
 			{
 				notification.setEmpId(emp.getEmpId());
 				notification.setNotificationUrl("CARSInitiationList.htm");
-				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"SoC Request Returned":"SoC Request Disapproved");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"CARS SoC Request Returned":"CARS SoC Request Disapproved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -794,6 +799,7 @@ public class CARSServiceImpl implements CARSService{
 		// Transactions.
 		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 										  .CARSInitiationId(carsinitiationid)
+										  .MilestoneNo("0")
 										  .CARSStatusCode(carsStatusCode.equalsIgnoreCase("FWD")?"REV":"SRV")
 										  .ActionBy(empId)
 										  .ActionDate(sdtf.format(new Date()))
@@ -1016,6 +1022,7 @@ public class CARSServiceImpl implements CARSService{
 			// Transactions happend in the approval flow.
 			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo("0")
 											  .CARSStatusCode(cars.getCARSStatusCode())
 											  .Remarks(remarks)
 											  .ActionBy(approverEmpId!=null?approverEmpId:EmpId)
@@ -1038,7 +1045,7 @@ public class CARSServiceImpl implements CARSService{
 			if(action.equalsIgnoreCase("A") && cars.getDPCSoCStatus().equalsIgnoreCase("A") ) {
 				notification.setEmpId(GHDPandCEmpId);
 				notification.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
-				notification.setNotificationMessage("SoC request approved");
+				notification.setNotificationMessage("CARS SoC request approved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -1081,7 +1088,7 @@ public class CARSServiceImpl implements CARSService{
 				}
 				
 				notification.setNotificationUrl("CARSRSQRApprovals.htm");
-				notification.setNotificationMessage("SoC forwarded by D-P&C "+GHDPandC[1].toString());
+				notification.setNotificationMessage("CARS SoC forwarded by D-P&C "+GHDPandC[1].toString());
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -1093,7 +1100,7 @@ public class CARSServiceImpl implements CARSService{
 			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D")){
 				notification.setEmpId(GHDPandCEmpId);
 				notification.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
-				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"SoC Request Returned":"SoC Request Disapproved");
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"CARS SoC Request Returned":"CARS SoC Request Disapproved");
 				notification.setNotificationby(Long.parseLong(EmpId));
 				notification.setNotificationDate(LocalDate.now().toString());
 				notification.setIsActive(1);
@@ -1143,6 +1150,7 @@ public class CARSServiceImpl implements CARSService{
 		// Transactions.
 		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
 										  .CARSInitiationId(carsinitiationid)
+										  .MilestoneNo("0")
 										  .CARSStatusCode("SRD")
 										  .ActionBy(empId)
 										  .ActionDate(sdtf.format(new Date()))
@@ -1196,7 +1204,7 @@ public class CARSServiceImpl implements CARSService{
 					PfmsNotification notification2 = new PfmsNotification();
 					notification2.setEmpId(Long.parseLong(i==0?dpandc[0].toString():GHDPandC[0].toString()));
 					notification2.setNotificationUrl("CARSRSQRApprovedList.htm?AllListTabId=2");
-					notification2.setNotificationMessage("MoM Uploaded for CARSNO "+carsIni.getCARSNo());
+					notification2.setNotificationMessage("CARS MoM Uploaded for CARSNO "+carsIni.getCARSNo());
 					notification2.setNotificationby(Long.parseLong(EmpId));
 					notification2.setNotificationDate(LocalDate.now().toString());
 					notification2.setIsActive(1);
@@ -1337,5 +1345,620 @@ public class CARSServiceImpl implements CARSService{
 			return 0;
 		}
 	}
+
+	@Override
+	public List<CARSOtherDocDetails> getCARSOtherDocDetailsByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.getCARSOtherDocDetailsByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public long CARSCSDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		long carsInitiationId = doc.getCARSInitiationId();
+		// To upload file path for Flag-A
+		if (!attatchFlagA.isEmpty()) {
+			doc.setAttachFlagA("CSFlagA-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+		} else {
+			doc.setAttachFlagA(null);
+		}
+		
+		// To upload file path for Flag-B
+		if (!attatchFlagB.isEmpty()) {
+			doc.setAttachFlagB("CSFlagB-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+		} else {
+			doc.setAttachFlagB(null);
+		}
+		
+		// To upload file path for Flag-C
+		if (!attatchFlagC.isEmpty()) {
+			doc.setAttachFlagC("CSFlagC-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+		} else {
+			doc.setAttachFlagC(null);
+		}
+		
+		doc.setInitiationDate(sdf.format(new Date()));
+//		doc.setOtherDocFileNo("LRDE/CARS/CS-"+doc.getCARSInitiationId()+"/2024");
+		
+		long otherDocId = dao.addCARSOtherDocDetails(doc);
+		if(otherDocId>0) {
+			
+			dao.updateCARSInitiationStatusCodes(carsInitiationId, "CIN", "CFW");
+			
+		// Transaction
+		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+										  .CARSInitiationId(doc.getCARSInitiationId())
+										  .MilestoneNo("0")
+										  .CARSStatusCode("CIN")
+										  .ActionBy(EmpId)
+										  .ActionDate(sdtf.format(new Date()))
+										  .build();
+		dao.addCARSInitiationTransaction(transaction);
+		}
+		
+		return otherDocId;
+	}
+
+	@Override
+	public long CARSCSDocDetailsUpdate(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB,MultipartFile attatchFlagC) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		// To upload file path for Flag-A
+		if (!attatchFlagA.isEmpty()) {
+			doc.setAttachFlagA("CSFlagA-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+		} 
+		
+		// To upload file path for Flag-B
+		if (!attatchFlagB.isEmpty()) {
+			doc.setAttachFlagB("CSFlagB-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+		}
+		
+		// To upload file path for Flag-C
+		if (!attatchFlagC.isEmpty()) {
+			doc.setAttachFlagC("CSFlagC-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+		}
+		
+		return dao.editCARSOtherDocDetails(doc);
+	}
+
+	@Override
+	public Object[] carsStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.carsStatusDetailsByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public CARSOtherDocDetails getCARSOtherDocDetailsById(long otherDocDetailsId) throws Exception {
+		
+		return dao.getCARSOtherDocDetailsById(otherDocDetailsId);
+	}
 	
+	// This method is to handle the approval flow for Contract Signature approval.
+	@Override
+	public long othersCSApprovalForward(CARSApprovalForwardDTO dto,String labcode) throws Exception {
+		try {
+			long carsinitiationid = dto.getCarsinitiationid();
+			String action = dto.getAction();
+			String EmpId = dto.getEmpId();
+			String UserId = dto.getUserId();
+			String remarks = dto.getRemarks();
+			String otherDocDetailsId = dto.getOtherDocDetailsId();
+
+			CARSInitiation cars = dao.getCARSInitiationById(carsinitiationid);
+			long formempid = cars.getEmpId();
+			Employee emp = dao.getEmpData(formempid+"");
+			String statusCode = cars.getCARSStatusCode();
+			String statusCodeNext = cars.getCARSStatusCodeNext();
+			String carsNo = cars.getCARSNo();
+
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(statusCode.equalsIgnoreCase("CIN") || statusCode.equalsIgnoreCase("CRA") || 
+					statusCode.equalsIgnoreCase("CRD") || statusCode.equalsIgnoreCase("CRV")) {
+
+					if(statusCode.equalsIgnoreCase("CIN")) {
+						dao.updateOtherDocForwardDetails(EmpId, sdf.format(new Date()), otherDocDetailsId);
+					}
+					cars.setCARSStatusCode("CFW");
+					cars.setCARSStatusCodeNext("CFA");
+					
+				}else {
+					cars.setCARSStatusCode(statusCodeNext);
+					if(statusCodeNext.equalsIgnoreCase("CFA")) {
+						cars.setCARSStatusCodeNext("CAD");
+					}else if(statusCodeNext.equalsIgnoreCase("CAD")) {
+						cars.setCARSStatusCodeNext(statusCodeNext);
+					}
+					
+				}
+				dao.editCARSInitiation(cars);
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("CFA")) {
+					cars.setCARSStatusCode("CRA");
+				}else if(statusCodeNext.equalsIgnoreCase("CAD")) {
+					cars.setCARSStatusCode("CRD");
+				}
+
+				cars.setCARSStatusCodeNext("CFA");
+
+				dao.editCARSInitiation(cars);
+			}
+
+			// Transactions happend in the approval flow.
+			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo("0")
+											  .CARSStatusCode(cars.getCARSStatusCode())
+											  .Remarks(remarks)
+											  .ActionBy(EmpId)
+											  .ActionDate(sdtf.format(new Date()))
+											  .build();
+			dao.addCARSInitiationTransaction(transaction);
+
+			// Approval Authority Data to send notifications
+			Object[] GHDPandC = dao.getApprAuthorityDataByType(labcode, "GH-DP&C");
+			Object[] GDDPandC = dao.getApprAuthorityDataByType(labcode, "DO-RTMD");
+			Object[] ADPandC = dao.getApprAuthorityDataByType(labcode, "AD-P&C");
+			Object[] Director = dao.getLabDirectorData(labcode);
+						
+			// Notification
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A") && cars.getCARSStatusCode().equalsIgnoreCase("CAD") ) {
+				notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
+				notification.setNotificationUrl("CARSOtherDocsList.htm?carsInitiationId="+carsinitiationid);
+				notification.setNotificationMessage("CARS Contract Signature request approved <br> for "+carsNo);
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+
+			}
+			else if(action.equalsIgnoreCase("A")) {
+
+				if(cars.getCARSStatusCodeNext().equalsIgnoreCase("CFA")) {
+					notification.setEmpId(Long.parseLong(ADPandC[0].toString()));
+				}
+				else if(cars.getCARSStatusCodeNext().equalsIgnoreCase("CAD")) {
+					notification.setEmpId(Long.parseLong(Director[0].toString()));
+				}
+
+				notification.setNotificationUrl("CARSRSQRApprovals.htm");
+				notification.setNotificationMessage("CARS Contract Signature request forwarded <br> by "+GDDPandC[1].toString());
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D"))
+			{
+				notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
+				notification.setNotificationUrl("CARSOtherDocsList.htm?carsInitiationId="+carsinitiationid);
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"CARS Contract Signature Request Returned":"CARS Contract Signature Request Disapproved");
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+			}
+
+			return 1;	
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CARSServiceImpl "+e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Object[]> carsCSPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.carsCSPendingList(empId, labcode);
+	}
+
+	@Override
+	public List<Object[]> carsCSApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.carsCSApprovedList(empId, FromDate, ToDate);
+	}
+
+	@Override
+	public long carsCSDoCRevoke(String carsInitiationId, String userId, String empId) throws Exception {
+		
+		try {
+			long carsinitiationid = Long.parseLong(carsInitiationId);
+			
+			dao.updateCARSInitiationStatusCodes(carsinitiationid, "CRV", "CFW");
+			
+			// Transactions.
+			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo("0")
+											  .CARSStatusCode("CRV")
+											  .ActionBy(empId)
+											  .ActionDate(sdtf.format(new Date()))
+											  .build();
+			dao.addCARSInitiationTransaction(transaction);
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public long carsCSDocUpload(MultipartFile otherdocfile, String otherDocDetailsId) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		String otherdocupload = null;
+		// To upload file path for Contract Signature form
+		if (!otherdocfile.isEmpty()) {
+			otherdocupload = "Contract Signature-" + timestampstr + "."+ FilenameUtils.getExtension(otherdocfile.getOriginalFilename());
+			saveFile(uploadpath + path, otherdocupload, otherdocfile);
+		}
+		
+		long result = dao.carsOtherDocUpload(otherdocupload, otherDocDetailsId);
+		
+		return result;
+	}
+
+	@Override
+	public List<Object[]> carsRemarksHistoryByMilestoneNo(String carsInitiationId, String milestoneNo) throws Exception {
+	
+		return dao.carsRemarksHistoryByMilestoneNo(carsInitiationId, milestoneNo);
+	}
+
+	@Override
+	public List<Object[]> carsTransApprovalDataByMilestoneNo(String carsInitiationId, String milestoneNo) {
+		
+		return dao.carsTransApprovalDataByMilestoneNo(carsInitiationId, milestoneNo);
+	}
+
+	@Override
+	public long CARSMPDocDetailsSubmit(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB, MultipartFile attatchFlagC, String EmpId) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		long carsInitiationId = doc.getCARSInitiationId();
+		// To upload file path for Flag-A
+		if (attatchFlagA!=null && !attatchFlagA.isEmpty()) {
+			doc.setAttachFlagA("PaymentFlagA-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+		} else {
+			doc.setAttachFlagA(null);
+		}
+		
+		// To upload file path for Flag-B
+		if (attatchFlagB!=null && !attatchFlagB.isEmpty()) {
+			doc.setAttachFlagB("PaymentFlagB-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+		} else {
+			doc.setAttachFlagB(null);
+		}
+		
+		// To upload file path for Flag-C
+		if (attatchFlagC!=null && !attatchFlagC.isEmpty()) {
+			doc.setAttachFlagC("PaymentFlagC-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+		} else {
+			doc.setAttachFlagC(null);
+		}
+		
+		doc.setInitiationDate(sdf.format(new Date()));
+//		doc.setOtherDocFileNo("LRDE/CARS/"+doc.getMilestoneNo()+"/"+doc.getCARSInitiationId()+"/2024");
+		
+		long otherDocId = dao.addCARSOtherDocDetails(doc);
+		if(otherDocId>0) {
+			
+			dao.updateCARSInitiationStatusCodes(carsInitiationId, "MIN", "MFW");
+			
+		// Transaction
+		CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+										  .CARSInitiationId(doc.getCARSInitiationId())
+										  .MilestoneNo(doc.getMilestoneNo())
+										  .CARSStatusCode("MIN")
+										  .ActionBy(EmpId)
+										  .ActionDate(sdtf.format(new Date()))
+										  .build();
+		dao.addCARSInitiationTransaction(transaction);
+		}
+		
+		return otherDocId;
+	}
+
+	@Override
+	public long CARSMPDocDetailsUpdate(CARSOtherDocDetails doc, MultipartFile attatchFlagA, MultipartFile attatchFlagB,MultipartFile attatchFlagC) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		// To upload file path for Flag-A
+		if (attatchFlagA!=null && !attatchFlagA.isEmpty()) {
+			doc.setAttachFlagA("PaymentFlagA-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagA.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagA(), attatchFlagA);
+		} 
+		
+		// To upload file path for Flag-B
+		if (attatchFlagB!=null && !attatchFlagB.isEmpty()) {
+			doc.setAttachFlagB("PaymentFlagB-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagB.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagB(), attatchFlagB);
+		}
+		
+		// To upload file path for Flag-C
+		if (attatchFlagC!=null && !attatchFlagC.isEmpty()) {
+			doc.setAttachFlagC("PaymentFlagC-" + timestampstr + "."
+					+ FilenameUtils.getExtension(attatchFlagC.getOriginalFilename()));
+			saveFile(uploadpath + path, doc.getAttachFlagC(), attatchFlagC);
+		}
+		
+		return dao.editCARSOtherDocDetails(doc);
+	}
+	
+	// This method is to handle the approval flow for Milestone Payment approval.
+	@Override
+	public long othersMPApprovalForward(CARSApprovalForwardDTO dto,String labcode) throws Exception {
+		try {
+			long carsinitiationid = dto.getCarsinitiationid();
+			String action = dto.getAction();
+			String EmpId = dto.getEmpId();
+			String UserId = dto.getUserId();
+			String remarks = dto.getRemarks();
+			String otherDocDetailsId = dto.getOtherDocDetailsId();
+			String milestoneNo = dto.getMilestoneNo();
+
+			CARSInitiation cars = dao.getCARSInitiationById(carsinitiationid);
+			
+			CARSOtherDocDetails doc = dao.getCARSOtherDocDetailsById(Long.parseLong(otherDocDetailsId));
+			String statusCode = doc.getOthersStatusCode();
+			String statusCodeNext = doc.getOthersStatusCodeNext();
+//			long formempid = cars.getEmpId();
+//			Employee emp = dao.getEmpData(formempid+"");
+//			String statusCode = cars.getCARSStatusCode();
+//			String statusCodeNext = cars.getCARSStatusCodeNext();
+			String carsNo = cars.getCARSNo();
+
+			// This is for the moving the approval flow in forward direction.
+			if(action.equalsIgnoreCase("A")) {
+				if(statusCode.equalsIgnoreCase("MIN") || statusCode.equalsIgnoreCase("MRA") || statusCode.equalsIgnoreCase("MRC") ||
+				   statusCode.equalsIgnoreCase("MRD") || statusCode.equalsIgnoreCase("MRV")) {
+
+					
+					doc.setForwardedBy(Long.parseLong(EmpId));
+					doc.setForwardedDate(sdf.format(new Date()));
+					doc.setOthersStatusCode("MFW");
+					doc.setOthersStatusCodeNext("MFA");
+					
+				}else {
+					doc.setOthersStatusCode(statusCodeNext);
+					if(statusCodeNext.equalsIgnoreCase("MFA")) {
+						doc.setOthersStatusCodeNext("MFC");
+					}else if(statusCodeNext.equalsIgnoreCase("MFC")) {
+						doc.setOthersStatusCodeNext("MAD");
+					}else if(statusCodeNext.equalsIgnoreCase("MAD")) {
+						doc.setOthersStatusCodeNext(statusCodeNext);
+					}
+					
+				}
+				
+				dao.editCARSOtherDocDetails(doc);
+				
+				dao.updateCARSInitiationStatusCodes(carsinitiationid, doc.getOthersStatusCode(), doc.getOthersStatusCodeNext());
+			}
+			// This is for return the approval form to the user or initiator. 
+			else if(action.equalsIgnoreCase("R")){
+				if(statusCodeNext.equalsIgnoreCase("MFA")) {
+					doc.setOthersStatusCode("MRA");
+				}else if(statusCodeNext.equalsIgnoreCase("MFC")) {
+					doc.setOthersStatusCode("MRC");
+				}else if(statusCodeNext.equalsIgnoreCase("MAD")) {
+					doc.setOthersStatusCode("MRD");
+				}
+
+				doc.setOthersStatusCodeNext("MFA");
+
+				dao.editCARSOtherDocDetails(doc);
+				dao.updateCARSInitiationStatusCodes(carsinitiationid, doc.getOthersStatusCode(), doc.getOthersStatusCodeNext());
+			}
+
+			// Transactions happend in the approval flow.
+			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo(milestoneNo)
+											  .CARSStatusCode(doc.getOthersStatusCode())
+											  .Remarks(remarks)
+											  .ActionBy(EmpId)
+											  .ActionDate(sdtf.format(new Date()))
+											  .build();
+			dao.addCARSInitiationTransaction(transaction);
+
+			// Approval Authority Data to send notifications
+			Object[] GHDPandC = dao.getApprAuthorityDataByType(labcode, "GH-DP&C");
+			Object[] GDDPandC = dao.getApprAuthorityDataByType(labcode, "DO-RTMD");
+			Object[] ADPandC = dao.getApprAuthorityDataByType(labcode, "AD-P&C");
+			Object[] Chairperson = dao.getApprAuthorityDataByType(labcode, "Chairperson (CARS Committee)");
+			Object[] Director = dao.getLabDirectorData(labcode);
+						
+			// Notification
+			PfmsNotification notification = new PfmsNotification();
+			if(action.equalsIgnoreCase("A") && doc.getOthersStatusCode().equalsIgnoreCase("MAD") ) {
+				notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
+				notification.setNotificationUrl("CARSOtherDocsList.htm?carsInitiationId="+carsinitiationid);
+				notification.setNotificationMessage("CARS Payment Approval request approved <br> for "+carsNo);
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+
+			}
+			else if(action.equalsIgnoreCase("A")) {
+
+				if(doc.getOthersStatusCodeNext().equalsIgnoreCase("MFA")) {
+					notification.setEmpId(Long.parseLong(ADPandC[0].toString()));
+				}
+				else if(doc.getOthersStatusCodeNext().equalsIgnoreCase("MFC")) {
+					notification.setEmpId(Long.parseLong(Chairperson[0].toString()));
+				}
+				else if(doc.getOthersStatusCodeNext().equalsIgnoreCase("MAD")) {
+					notification.setEmpId(Long.parseLong(Director[0].toString()));
+				}
+
+				notification.setNotificationUrl("CARSRSQRApprovals.htm");
+				notification.setNotificationMessage("CARS Payment Approval request forwarded <br> by "+GDDPandC[1].toString());
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+			}
+			else if(action.equalsIgnoreCase("R") || action.equalsIgnoreCase("D"))
+			{
+				notification.setEmpId(Long.parseLong(GDDPandC[0].toString()));
+				notification.setNotificationUrl("CARSOtherDocsList.htm?carsInitiationId="+carsinitiationid);
+				notification.setNotificationMessage(action.equalsIgnoreCase("R")?"CARS Payment Approval Request Returned":"CARS Payment Approval Request Disapproved");
+				notification.setNotificationby(Long.parseLong(EmpId));
+				notification.setNotificationDate(LocalDate.now().toString());
+				notification.setIsActive(1);
+				notification.setCreatedBy(UserId);
+				notification.setCreatedDate(sdtf.format(new Date()));
+
+				dao.addNotifications(notification);
+			}
+
+			return 1;	
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside CARSServiceImpl "+e);
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public List<Object[]> carsMPPendingList(String empId, String labcode) throws Exception {
+		
+		return dao.carsMPPendingList(empId, labcode);
+	}
+
+	@Override
+	public List<Object[]> carsMPApprovedList(String empId, String FromDate, String ToDate) throws Exception {
+		
+		return dao.carsMPApprovedList(empId, FromDate, ToDate);
+	}
+
+	@Override
+	public List<Object[]> carsMPStatusDetailsByCARSInitiationId(long carsInitiationId) throws Exception {
+		
+		return dao.carsMPStatusDetailsByCARSInitiationId(carsInitiationId);
+	}
+
+	@Override
+	public long carsMPDoCRevoke(String carsInitiationId, String userId, String empId, String milestoneNo) throws Exception {
+		
+		try {
+			long carsinitiationid = Long.parseLong(carsInitiationId);
+			
+			dao.updateCARSInitiationStatusCodes(carsinitiationid, "MRV", "MFW");
+			
+			dao.updateCARSOtherDocStatusCodes(carsinitiationid, "MRV", "MFW", milestoneNo);
+			
+			// Transactions.
+			CARSInitiationTrans transaction = CARSInitiationTrans.builder()
+											  .CARSInitiationId(carsinitiationid)
+											  .MilestoneNo(milestoneNo)
+											  .CARSStatusCode("MRV")
+											  .ActionBy(empId)
+											  .ActionDate(sdtf.format(new Date()))
+											  .build();
+			dao.addCARSInitiationTransaction(transaction);
+			
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public long carsMPDocUpload(MultipartFile otherdocfile, String otherDocDetailsId) throws Exception {
+		
+		Timestamp instant = Timestamp.from(Instant.now());
+		String timestampstr = instant.toString().replace(" ", "").replace(":", "").replace("-", "").replace(".", "");
+		
+		String path = "CARS\\Other Docs\\";
+		
+		String otherdocupload = null;
+		// To upload file path for Contract Signature form
+		if (!otherdocfile.isEmpty()) {
+			otherdocupload = "Payment Approval-" + timestampstr + "."+ FilenameUtils.getExtension(otherdocfile.getOriginalFilename());
+			saveFile(uploadpath + path, otherdocupload, otherdocfile);
+		}
+		
+		long result = dao.carsOtherDocUpload(otherdocupload, otherDocDetailsId);
+		
+		return result;
+	}
+
+	@Override
+	public long CARSPTCDocDetailsSubmit(CARSOtherDocDetails doc) throws Exception {
+		
+		return dao.addCARSOtherDocDetails(doc);
+	}
+
+	@Override
+	public long CARSPTCDocDetailsUpdate(CARSOtherDocDetails doc) throws Exception {
+		
+		return dao.editCARSOtherDocDetails(doc);
+	}
+
 }
