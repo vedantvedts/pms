@@ -9,10 +9,6 @@ import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import javax.mail.AuthenticationFailedException;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +51,26 @@ public class CustomJavaMailSender {
 //        this.httpSession = httpSession;
 //    }
 	private final SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-	@Scheduled(cron = "0 45 10 * * *")
+	@Scheduled(cron = "0 0 17 * * *")
 	public void reportCurrentTime() throws Exception {
-		asyncMethodforSendingMail();
+		asyncMethodforSendingMail("tommarrow");
+		}
+	
+	@Scheduled(cron = "0 0 7 * * *")
+	public void reporttodayCurrentTime() throws Exception {
+		asyncMethodforSendingMail("today");
 		}
 	@Async
-	public void asyncMethodforSendingMail() {
+	public void asyncMethodforSendingMail(String day) {
 		logger.info(LocalDate.now().toString()+" insdide asyncMethodforSendingMail ");
 		List<MeetingMailDto>meetingMailDtoData=new ArrayList<>();
 		List<String>membertypes=Arrays.asList("CC","CS","PS","CI","P","I");
-		String date=LocalDate.now().plusDays(1).toString();
+		String date=null;
+		if(day.equalsIgnoreCase("tommarrow")) {
+		date=LocalDate.now().plusDays(1).toString();
+		}else {
+			date=LocalDate.now().toString();
+		}
 		System.out.println(date+"tommorrows Date");
 		try {
 			List<Object[]>todayMeetings=mailService.getTodaysMeetings(date);
@@ -99,7 +105,7 @@ public class CustomJavaMailSender {
 			String empid=meetingMailDtoData.get(0).getEmpid();
 			meetingMailDtoSubData=meetingMailDtoData.stream().filter( e -> e.getEmpid().equalsIgnoreCase(empid))
 							  .collect(Collectors.toList());
-			String message="Sir/Madam<br><p>&emsp;&emsp;This is to inform you that you have "+meetingMailDtoSubData.size()+" meetings scheduled tomorrow. </p><table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >";
+			String message="Sir/Madam<br><p>&emsp;&emsp;This is to inform you that you have "+meetingMailDtoSubData.size()+" meetings scheduled "+day+".</p><table style=\"align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;\" >";
 			for(MeetingMailDto m:meetingMailDtoSubData) {
 				  message=message
 						 +"<tr><th colspan=\"2\" style=\"text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px\">Meeting Details </th></tr>"
@@ -148,7 +154,7 @@ public class CustomJavaMailSender {
 				}
 	
 	 	@Async
-	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email,String DronaEmail, String subject, String message, boolean isHtml) {
+	    public CompletableFuture<Integer> sendScheduledEmailAsync(String email,String DronaEmail, String subject, String msg, boolean isHtml) {
 		 
 	 		System.out.println("email "+email);
 	        String typeOfHost = "L";
@@ -172,26 +178,44 @@ public class CustomJavaMailSender {
 			  JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
 			    // Set mail configuration from the database
-			    mailSender.setHost(mailAuthentication.getHost());
-			    mailSender.setPort(Integer.parseInt(mailAuthentication.getPort()));
-			    mailSender.setUsername(mailAuthentication.getUsername());
-			    mailSender.setPassword(mailAuthentication.getPassword());
+			    mailSender.setHost(mailAuthentication.getHost().toString());
+			    mailSender.setPort(Integer.parseInt(mailAuthentication.getPort().toString()));
+			    mailSender.setUsername(mailAuthentication.getUsername().toString());
+			    mailSender.setPassword(mailAuthentication.getPassword().toString());
 
-			    Properties properties = new Properties();
-			    // Enable TLS
-				 properties.put("mail.smtp.starttls.enable", "true");
-				 mailSender.setJavaMailProperties(properties);
-			    MimeMessage mimeMessage = mailSender.createMimeMessage();
+			    Properties properties = System.getProperties();
+				// Setup mail server
+				properties.setProperty("mail.smtp.host", mailSender.getHost());
+				//properties.put("mail.smtp.starttls.enable", "true");
+				// SSL Port
+				properties.put("mail.smtp.port", mailSender.getPort());
+				// enable authentication
+				properties.put("mail.smtp.auth", "true");
+				// SSL Factory
+				properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			    
+				//properties.put("mail.smtp.starttls.enable", "true");
+
+			    Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
+					// override the getPasswordAuthentication
+					// method
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(mailSender.getUsername(), mailSender.getPassword());
+					}
+				});
+			    int mailSendresult = 0;
 			    try {
-			        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-			        helper.setTo(email);
-			        helper.setTo(DronaEmail);
-			        helper.setSubject(subject);
-			        helper.setText(message, isHtml);
-			        mailSender.send(mimeMessage);
-			        // If the email is sent successfully, complete the CompletableFuture with 1
-			        System.out.println("SUCCESS ");
-			        return CompletableFuture.completedFuture(1);
+			    	MimeMessage message = new MimeMessage(session);
+			    	message.setFrom(new InternetAddress(mailSender.getUsername()));
+		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+		            message.addRecipient(Message.RecipientType.TO, new InternetAddress(DronaEmail));
+					message.setSubject(subject);
+					message.setText(msg);
+					message.setContent(msg, "text/html");// this code is used to make the message in HTML formatting
+					// Send message
+					Transport.send(message);
+					System.out.println("Message Sent");
+					mailSendresult++;
 			    } catch (AuthenticationFailedException e) {
 			        // Handle authentication failure (wrong password) and complete the CompletableFuture with -2
 			        e.printStackTrace();
@@ -203,6 +227,7 @@ public class CustomJavaMailSender {
 			        System.out.println("ERORRRR -1");
 			        return CompletableFuture.completedFuture(-1);
 			    }
+			    return CompletableFuture.completedFuture(mailSendresult);
 			  }
 	    }
 	 	
