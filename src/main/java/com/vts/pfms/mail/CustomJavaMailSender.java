@@ -53,7 +53,7 @@ public class CustomJavaMailSender {
 	private final SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	@Scheduled(cron = "0 0 17 * * *")
 	public void reportCurrentTime() throws Exception {
-		asyncMethodforSendingMail("tommarrow");
+		asyncMethodforSendingMail("tommorrow");
 		}
 	
 	@Scheduled(cron = "0 0 7 * * *")
@@ -66,7 +66,7 @@ public class CustomJavaMailSender {
 		List<MeetingMailDto>meetingMailDtoData=new ArrayList<>();
 		List<String>membertypes=Arrays.asList("CC","CS","PS","CI","P","I");
 		String date=null;
-		if(day.equalsIgnoreCase("tommarrow")) {
+		if(day.equalsIgnoreCase("tommorrow")) {
 		date=LocalDate.now().plusDays(1).toString();
 		}else {
 			date=LocalDate.now().toString();
