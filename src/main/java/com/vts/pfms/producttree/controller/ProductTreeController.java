@@ -147,15 +147,12 @@ public class ProductTreeController {
 				String arr[] = split.split("#");
 	        String ProjectId=arr[0];
 	        String LevelId=arr[1];
-	       
 	        String ParentLevelId=arr[2];
 	        
 	        
 	        String LevelName=req.getParameter("LevelName");
 	        
-	        System.out.println("ParentLevelId----"+ParentLevelId);
-	        
-	        
+	       
 	        ProductTreeDto dto=new ProductTreeDto();
 	        dto.setProjectId(Long.parseLong(ProjectId));
 	        dto.setParentLevelId(Long.parseLong(ParentLevelId));

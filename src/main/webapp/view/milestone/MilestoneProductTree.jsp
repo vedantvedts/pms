@@ -265,7 +265,7 @@ font-size:2rem;
                             		</div>
                             		<div class="col-md-2" style="margin-top: -7px;">
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
-    									<option disabled="true"  selected value="">Choose...</option>
+    									<option disabled selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
     										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
     										%>
@@ -325,23 +325,13 @@ if(ses1!=null){	%>
 			                         			 
 										</div>
 										
-			                    <!--    <div class="action-box-body" style="cursor: pointer;background-color:#FFFF;color: #FFFFFF;font-size: 1.0em;"> -->
-			                          	
-			                          	<%-- <span style="font-weight: 600;color:black;"> 
-							                <%=Director[0] %>,&nbsp;<%=Director[1] %>	
-							                		
-									    </span > 
-			                          	<% if(dgmlist!=null && dgmlist.size()>0) {%>
-			                          	 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:#428bca;;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
-			                          	 <%}%>	 --%>
-			                          	 
-			                   <!-- </div> -->
-			                         
+			                           
 			                </div>
 			          </div>
 			               
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
-			           <ul class="active">	                
+			           <ul class="active">
+			           	                
 			                <% for(Object[] level1 : ProductTreeList){
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
@@ -354,7 +344,15 @@ if(ses1!=null){	%>
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 										           <%=level1[3] %>
 										                
-										             </span> 	
+										             </span> 
+										             <br>
+										             
+										             <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" > 
+													
+													       <button type="submit"  style="font-size:8px"><i class="fa fa-pencil"></i></button>
+													         <button type="submit"  style="font-size:8px"><i class="fa fa-trash"></i></button>
+													
+													</div>  -->	
 										                
 			                          		   </div>
 													
@@ -388,7 +386,7 @@ if(ses1!=null){	%>
 												   <% List<Object[]> Level2 =ProductTreeList.stream().filter(e-> level2[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 												    
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
-										                  <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >	                
+										             <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >	                
 										                	  <%for(Object[] level3 : ProductTreeList){
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
@@ -422,7 +420,7 @@ if(ses1!=null){	%>
 										                	 <%for(Object[] level4 : ProductTreeList){
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
-										                 { %>    
+										                     { %>    
 																  <li>      
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -449,7 +447,7 @@ if(ses1!=null){	%>
 														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
 										                	<%for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
-								                          {%> 
+								                             {%> 
 																  <li>      
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -646,8 +644,7 @@ if(ses1!=null){	%>
                 	   <% } %>
                 	<% } %>
 					
-					
-					<%---------------------------------------Level 1 Add---------------------------------------------------------%>
+			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
                     <li>
                 
                          <div class="member-view-box action-view-box">
@@ -726,12 +723,12 @@ if(ses1!=null){	%>
 	     var children = $(this).parent().parent().parent().find('> ul');
 	        if (children.is(":visible")) {
 	        	children.hide('fast').removeClass('active');
-	        	$(this).find('i').removeClass('fa fa-caret-down');
-	        	$(this).find('i').addClass('fa fa-caret-up');
+	        	//$(this).find('i').removeClass('fa fa-caret-down');
+	        	//$(this).find('i').addClass('fa fa-caret-up');
 	        } else {
 	        	children.show('fast').addClass('active');
-	        	$(this).find('i').removeClass('fa fa-caret-up');
-	        	$(this).find('i').addClass('fa fa-caret-down');
+	        	//$(this).find('i').removeClass('fa fa-caret-up');
+	        	//$(this).find('i').addClass('fa fa-caret-down');
 	    	}
 	        e.stopPropagation(); 
 	    });
