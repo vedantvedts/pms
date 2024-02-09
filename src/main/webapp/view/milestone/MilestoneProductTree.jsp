@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@page import="java.util.stream.Collectors"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +33,7 @@ h6{
     white-space: nowrap;
     overflow-y: hidden;
     padding: 50px;
-     min-height: 600px; 
+     min-height: 800px; 
     padding-top: 10px;
     text-align: center;
 }
@@ -136,7 +138,7 @@ h6{
 {
      width: fit-content ; 
      height: fit-content;
-     
+     /* min-width:190px; */
    /*   min-width:190px; */
     border: 1px solid black;
 }
@@ -242,10 +244,11 @@ font-size:2rem;
   <%
   
   List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
-  List<Object[]> MilestoneList=(List<Object[]>)request.getAttribute("MilestoneActivityList");
+  List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
   String ProjectId=(String)request.getAttribute("ProjectId");
+
   
   
  %>
@@ -275,10 +278,33 @@ font-size:2rem;
  </div>
 </form>
 
+
 	
 	<%---------------------------------------- Main Level -------------------------------------------------%>
 
-		<div style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+<!-- <form  method="GET" action="LevelNameAdd.htm" id="myForm"> -->
+	<div style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+	
+	
+	<%String ses=(String)request.getParameter("result"); 
+ String ses1=(String)request.getParameter("resultfail");
+if(ses1!=null){	%>
+	<div align="center">
+		<div class="alert alert-danger" role="alert" >
+	    <%=ses1 %>
+	     <br />
+	    </div>
+	</div>
+	<%}if(ses!=null){ %>
+	<div align="center">
+		<div class="alert alert-success" role="alert"  >
+	    	<%=ses %>
+	    	 <br />
+	    </div>
+	</div>
+<%} %>
+	
+	
 	    <div class="genealogy-tree">
 	        
 	  		<ul>
@@ -315,94 +341,58 @@ font-size:2rem;
 			          </div>
 			               
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->
-			                 <ul class="active">	                
-			                <%   int count=1;
-			                     for(Object[] obj :MilestoneList ){%>
+			           <ul class="active">	                
+			                <% for(Object[] level1 : ProductTreeList){
+			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
+			              
 			                	<li>	 		    
-									           
-											<div class="member-view-box action-view-box">
-												<div class=" action-box" >
+									    <div class="member-view-box action-view-box">
+											 <div class="action-box" > 
 												
-												<div  class="action-box-header" >
+												<div  class="action-box-header" > 
 												
-										  <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;width:100px;"  >
-										      <%=obj[4]  %>   
-			                          		 </span> 
-												
-											   </div>
+										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+										           <%=level1[3] %>
+										                
+										             </span> 	
+										                
+			                          		   </div>
 													
 													
-													<%-- <div  <% if(level1!=null && level1.size()>0){%> class="action-box-body" <%} %>  align="center" style="cursor: pointer ;" >
 													
-													<span style="font-weight: 600;color:black;" ><%=dgm[3] %>, <br><%=dgm[4]%></span>
-													
-													<% if(level1!=null && level1.size()>0) {%>
-												       <div style="margin-top:-2px;"><i class="fa fa-caret-up " aria-hidden="true" style="font-size: 1.2rem;color:#FF6347;;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
-			                          	            <%} 
-													else{%><div style="margin-top:22px;" ></div><%} %>
-			                          	            
-														
-													
-													</div> --%>
-													
-												</div>
+												 </div> 
 											</div> 
-	
-									    
+											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
+											
+											
 								<!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->
-						                <ul class="">	
-						                 <% 
-						                 int countA=1;
-						                 List<Object[]> MilestoneA=(List<Object[]>)request.getAttribute(count+"MilestoneActivityA");
-										 	if(MilestoneA!=null&&MilestoneA.size()>0){
-											for(Object[] objA: MilestoneA){
-                                             List<Object[]> MilestoneB=(List<Object[]>)request.getAttribute(count+"MilestoneActivityB"+countA);
-
-												
-						                	
-						                  %>
+						                <ul  <% if(Level1!=null && Level1.size()>0){%> class="active" <%}%> >	
+						                <%for(Object[] level2 : ProductTreeList){
+						                  if(level2[2].toString().equalsIgnoreCase("2") && level1[0].toString().equalsIgnoreCase(level2[1].toString()))
+							                { %>
 							             
 												<li>	
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
-															
-															
-															
-															<div class="action-box-header" >
+															  <div class="action-box-header" >
 														
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-			                          			                              <%=objA[4] %>
-			                          			            </span>
+															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+			                          			                              <%=level2[3] %>
+			                          			                   </span>
 												             
 			                          			             </div>
-													              
-																<%-- <div    
-																
-																<% if(level2!=null && level2.size()>0){%> class="action-box-body" <%} %> align="center" style="cursor: pointer ;">
-																
-																	<span style="font-weight: 600;color:black;" ><%=division[3] %>,<br><%=division[5] %></span>
-																	
-																	<% if(level2!=null && level2.size()>0){%>
-									                          			  <div style="margin-top:-2px;"  style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size: 1.2rem;color:#116D6E;"></i></div>
-									                               <%} else{%>
-																	
-																	<div style="margin-top:22px;" ></div>
-																	<%} %>
-																	
-																  </div>
-																			 --%>
-																					
-																</div>
-															</div> 
+													     </div>
+												   </div> 
+												   
+												   
+												   <% List<Object[]> Level2 =ProductTreeList.stream().filter(e-> level2[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 												    
 												    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->
-										                 <ul class="">	                
-										                	 <% int countB=1;
-														 	if(MilestoneB!=null&&MilestoneB.size()>0){
-															for(Object[] objB: MilestoneB){
-	                                                            List<Object[]> MilestoneC=(List<Object[]>)request.getAttribute(count+"MilestoneActivityC"+countA+countB);
-	
-																%>    
+										                  <ul <% if(Level2!=null && Level2.size()>0){%> class="active" <%}%> >	                
+										                	  <%for(Object[] level3 : ProductTreeList){
+										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
+										                
+										                  { %>
 																  <li>      
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -412,31 +402,27 @@ font-size:2rem;
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=objB[4] %>
+			                          			                                <%=level3[3] %>
 			                          			                                
 			                          			                          </span>
 												                                              			
 													                        </div>
 													                       
-																			<%-- 	<div class="action-box-body"  align="center" style="cursor: pointer ;">
-																				
-																					<span style="font-weight: 600;color:black;" ><%=group[4] %>,<br><%=group[5] %></span>
-																					
-																				 </div> --%>
+																			
 																			                     
 																			</div>
-																	</div>
+																	</div> 
+															
+															
+															 <% List<Object[]> Level3 =ProductTreeList.stream().filter(e-> level3[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 															
 										                <%------------------------------------------------------LEVEL 4 -------------------------------------------------------%>
 										                
-										              <ul class="">	                
-										                	 <%  int countC=1;
-															 	if(MilestoneC!=null&&MilestoneC.size()>0){
-																	for(Object[] objC: MilestoneC){
-															         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
-																		
-	
-																%>    
+										               <ul <% if(Level3!=null && Level3.size()>0){%> class="active" <%}%> >	                
+										                	 <%for(Object[] level4 : ProductTreeList){
+															                 
+										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
+										                 { %>    
 																  <li>      
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -446,31 +432,26 @@ font-size:2rem;
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=objC[4] %>
+			                          			                                <%=level4[3] %>
 			                          			                                
 			                          			                          </span>
 												                                              			
 													                        </div>
 													                       
-																			<%-- 	<div class="action-box-body"  align="center" style="cursor: pointer ;">
 																				
-																					<span style="font-weight: 600;color:black;" ><%=group[4] %>,<br><%=group[5] %></span>
-																					
-																				 </div> --%>
 																			                     
 																			</div>
-																	</div>
+																	</div> 
 																	
+																	
+																	<% List<Object[]> Level4 =ProductTreeList.stream().filter(e-> level4[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
 																	
-																	<ul class="">	                
-										                	 <% int countD=1;
-														 	if(MilestoneD!=null&&MilestoneD.size()>0){
-															for(Object[] objD: MilestoneD){
-	                                                            List<Object[]> MilestoneE=(List<Object[]>)request.getAttribute(count+"MilestoneActivityE"+countA+countB+countC+countD);
-	
-																%>   
+														 <ul <% if(Level4!=null && Level4.size()>0){%> class="active" <%}%> >	                
+										                	<%for(Object[] level5 : ProductTreeList){%>
+								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
+								                          {%> 
 																  <li>      
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
@@ -480,27 +461,21 @@ font-size:2rem;
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
-			                          			                                <%=objD[4] %>
+			                          			                                <%=level5[3] %>
 			                          			                                
 			                          			                          </span>
 												                                              			
 													                        </div>
-													                       
-																			<%-- 	<div class="action-box-body"  align="center" style="cursor: pointer ;">
-																				
-																					<span style="font-weight: 600;color:black;" ><%=group[4] %>,<br><%=group[5] %></span>
-																					
-																				 </div> --%>
-																			                     
-																			</div>
-																	</div>
+													                        
+													                       </div>
+																	</div> 
 																	
 																	
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	
 																	
-																	<ul class="">	                
+																	<%-- <ul class="">	                
 										                	 <% int countE=1;
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
 															for(Object[] objE: MilestoneE){ %>
@@ -519,11 +494,11 @@ font-size:2rem;
 												                                              			
 													                        </div>
 													                       
-																			<%-- 	<div class="action-box-body"  align="center" style="cursor: pointer ;">
+																				<div class="action-box-body"  align="center" style="cursor: pointer ;">
 																				
 																					<span style="font-weight: 600;color:black;" ><%=group[4] %>,<br><%=group[5] %></span>
 																					
-																				 </div> --%>
+																				 </div>
 																			                     
 																			</div>
 																	</div>
@@ -533,67 +508,200 @@ font-size:2rem;
 															
 														    <% countE++;} %>
 														<% } %>
-										                </ul> 
+										                </ul>  --%>
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	   
-																  </li>
+																   </li>
 															
-														    <% countD++;} %>
+														    <% } %>
 														<% } %>
-										                </ul>     
+														
+														
+														 <%---------------------------------------Level 5 Add---------------------------------------------------------%>
+														
+												   <li>
+				                                       <div class="member-view-box action-view-box">
+															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															
+															<form action="LevelNameAdd.htm" method="get">
+													            <input type="text" name="LevelName" required >
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													             
+													         </form>    
+													             
+													                
+													        </span> 	
+													    </div> 
+				                
+				                               </li>
+														
+												 <%---------------------------------------Level 5 Add---------------------------------------------------------%>		
+														
+													</ul>      
 																	
-																   	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%> 
+														<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%> 
 																    
-																  </li>
+														 </li>
 															
-														    <% countC++;} %>
-														<% } %>
+												    <% } %>
+												<% } %>
+														
+														
+														 <%---------------------------------------Level 4 Add---------------------------------------------------------%>
+														
+														  <li>
+				                                       <div class="member-view-box action-view-box">
+															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															
+															<form action="LevelNameAdd.htm" method="get">
+													            <input type="text" name="LevelName" required >
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													             
+													         </form>    
+													             
+													             
+													                 <%-- <input type="hidden" name="LevelId" value="2">
+													                 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+													                 <input type="hidden" name="ParentLevelId" value="<%=level1[0]%>"> --%>
+													                
+													        </span> 	
+													    </div> 
+				                
+				                               </li>
+														
+												 <%---------------------------------------Level 4 Add---------------------------------------------------------%>		
 										                </ul>     
 																    
 																    
 																    
-														    <!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->  		    														    
+														<!-- --------------------------------------------------------   LEVEL 4 ---------------------------------------------------- -->  		    														    
 																    
-																 
-							                		</li>
+															 
+							                		    </li>
 												
-											    <% countB++;} %>
-											<% } %>
-							                </ul>   
+													    <% } %>
+													<% } %>
+											
+											
+											 <%---------------------------------------Level 3 Add---------------------------------------------------------%>
+                	        
+				                	            <li>
+				                                       <div class="member-view-box action-view-box">
+															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															
+															<form action="LevelNameAdd.htm" method="get">
+													            <input type="text" name="LevelName" required >
+													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+													             
+													         </form>    
+													             
+													             
+													                 <%-- <input type="hidden" name="LevelId" value="2">
+													                 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+													                 <input type="hidden" name="ParentLevelId" value="<%=level1[0]%>"> --%>
+													                
+													        </span> 	
+													    </div> 
+				                
+				                               </li>
+                	        
+                	          <%---------------------------------------Level 3 Add---------------------------------------------------------%>
+											
+							                </ul>    
 										                
 										                   
-										        <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
+										    <!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  
 												
-									 </li>
-									
-								<%  countA++; } %>
-					         <% } %> 
-							
-			                </ul> 
-						                 
+								 	 </li>
+								 <% } %>
+                	        <% } %>
+                	        
+                	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+                	        
+                	            <li>
+                                       <div class="member-view-box action-view-box">
+											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+											
+											<form action="LevelNameAdd.htm" method="get">
+									            <input type="text" name="LevelName" required >
+									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									             
+									         </form>    
+									             
+									             
+									                 <%-- <input type="hidden" name="LevelId" value="2">
+									                 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
+									                 <input type="hidden" name="ParentLevelId" value="<%=level1[0]%>"> --%>
+									                
+									        </span> 	
+									    </div> 
+                
+                               </li>
+                	        
+                	          <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+			                </ul>  
+						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
-								    
-                		</li>
-                		
-                		<% count++;} %>
-				    
-                </ul> 
-			                
+						 		    
+                		 </li>
+                	   <% } %>
+                	<% } %>
+					
+					
+					<%---------------------------------------Level 1 Add---------------------------------------------------------%>
+                    <li>
+                
+                         <div class="member-view-box action-view-box">
+							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+					            <form action="LevelNameAdd.htm" method="get">
+						            <input type="text" name="LevelName" required>
+						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0" onclick="return confirm('Are You Sure To Submit')"> Add</button>
+									             
+							   </form>    
+					             
+					               
+					                
+					        </span> 	
+					    </div> 
+                
+                    </li>
+                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
+				 </ul> 
+                
+                         
 			        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->        
 			           		
 						
 	        		</li>
+	        		
 		        </ul>
 	
 	    </div>
 	</div>
-	
+<!-- 	</form> -->
 
 
 <!-- ------------------------------- tree script ------------------------------- -->
   <script type="text/javascript">
 
+  
+  
+  function setValueAndSubmit() {
+      // Get the value of the input field
+      var levelName = document.getElementById("levelNameInput").value;
+      
+      // Set the value of the button
+      var button = document.querySelector('button[name="Split"]');
+      button.value = '<%=ProjectId%>#2#' + levelName;
+      
+      // Ask for confirmation
+      if (confirm('Are You Sure To Submit')) {
+          // Submit the form
+          document.getElementById("myForm").submit();
+      }
+  }
+  
   
   
   $(document).ready(function() {
