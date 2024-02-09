@@ -437,9 +437,7 @@ if(ses1!=null){	%>
 			                          			                          </span>
 												                                              			
 													                        </div>
-													                       
-																				
-																			                     
+													                                            
 																			</div>
 																	</div> 
 																	
