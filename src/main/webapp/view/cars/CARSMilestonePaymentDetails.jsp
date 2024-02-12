@@ -258,6 +258,16 @@ hr{
     margin-bottom: 1rem;
 }
 
+.cssideheading{
+	font-size: 17px;
+}
+
+.cssideheadingdata{
+	font-size: 16px !important;
+	color: white;
+	font
+}
+
 </style>
 
 </head>
@@ -283,8 +293,6 @@ CARSSoCMilestones milestonedetails = milestonedetailsbymilestoneno!=null && mile
 
 List<CARSOtherDocDetails> mpdetailslist = otherdocdetails.stream().filter(e-> "M".equalsIgnoreCase(e.getOtherDocType()) && MilestoneNo.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
 CARSOtherDocDetails mpdetails = mpdetailslist!=null && mpdetailslist.size()>0?mpdetailslist.get(0):null;
-
-
 
 List<String> mpforwardstatus = Arrays.asList("CAD","MIN","MRA","MRC","MRD","MRV");
 
@@ -329,16 +337,19 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 150px;">
+         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
              		<h3 class="category">Payment Details - 
              		
-             			<button type="button" class="btn btn-sm btn-info" style="text-align: left;width: 70%;background: blueviolet;border: blueviolet;">
+             			<button type="button" class="btn btn-sm btn-info" style="text-align: left;min-width: 80%;max-width: 80%;background: darkcyan;border: darkcyan;white-space: normal;">
              				<div>
 					        	<div class="row">
-					            	<div class="col-md-12">
-					                	<span class="cssideheading">Title:</span>
-					                			&emsp;<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					        		<div class="col-md-1">
+					        			<span class="cssideheading">Title:</span>
 					                </div>
+					            	<div class="col-md-11" style="margin-left: -5%;">
+					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
+					                </div>
+					                
 					            </div>
 					                	
 					            <div class="row">
@@ -353,7 +364,7 @@ String statuscode = mpdetails!=null?mpdetails.getOthersStatusCode():"N";
 					                	<%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 					                		Buildup
 					                	<%} else{%>
-					                		<%if(PDs!=null && PDs[4]!=null) {%><%=PDs[4] %><%} %>
+					                		<%if(PDs!=null && PDs[3]!=null) {%><%=PDs[3]+" ("+PDs[0]+")" %><%} %>
 					                	<%} %>
 					                	</span>
 					            </div>

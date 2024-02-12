@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@page import="com.vts.pfms.cars.model.CARSSoC"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -618,11 +619,13 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 						            	<!-- <th style="width: 10%;color: #055C9D;">Milestone No.</th> -->
 						            	<!-- <th style="width: 28%;">Task Description</th> -->
 						            	<th style="width: 10%;color: #055C9D;">Months</th>
+						            	<th style="width: 10%;color: #055C9D;">EDP</th>
 						            	<!-- <th style="width: 25%;">Deliverables</th> -->
 						             	<!-- <th style="width: 10%;color: #055C9D;">Payment ( In % )</th> -->
 						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377; )</th>
 						            	<!-- <th style="width: 15%;">Remarks</th> -->
 						            	<!-- <th style="color: #055C9D;">Status</th> -->
+						            	<th style="color: #055C9D;">Status</th>
 						            	<th style="width: 20%;color: #055C9D;">Action</th>
 						            </tr>
 					            </thead>
@@ -646,7 +649,10 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    		<tr>
 							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get(0).getMilestoneNo() %></td> --%>
-							    			<td style="text-align : center;vertical-align: top;">T0</td>
+							    			<td style="text-align : center;vertical-align: top;">T0*</td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(carsContract.getT0Date()) %><%} %> 
+							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
@@ -664,6 +670,18 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 													</button>
 							    				</form>
 							    			</td> --%>
+							    			<td style="text-align: center;">
+							    				<%
+												  	ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(0).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+													ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+												    	
+												%>
+												<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
+							    			</td>
 							    			<td style="text-align: center;">
 							    				<form action="#" method="post">
 		                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -696,12 +714,9 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 												    <%} %>
 												    <%if(mpstatus!=null && mpstatus[1]!=null && mpstatus[1].toString().equalsIgnoreCase("MAD") ) {%>
 												    	<%
-												    	ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(0).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
-												    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
-												    	long otherdocdetailsid = ptcdetails!=null?ptcdetails.getOtherDocDetailsId():0;
-												    	String otherdocdate = ptcdetails!=null?ptcdetails.getOtherDocDate():null;
-												    	otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
-												    	
+												    		long otherdocdetailsid = ptcdetails!=null?ptcdetails.getOtherDocDetailsId():0;
+												    		String otherdocdate = ptcdetails!=null?ptcdetails.getOtherDocDate():null;
+												    		otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
 												    	%>
 												    	<button type="button" class="btn btn-sm" data-toggle="modal" onclick="openCalendar('<%=carsInitiationId%>','<%=otherdocdetailsid%>','<%=milestones.get(0).getMilestoneNo() %>','<%=otherdocdate %>')" style="margin-top: -0.8rem;">
 													  		<div class="cc-rockmenu">
@@ -713,7 +728,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 																</div>
 															</div>
 														</button>
-												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Download"
+												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Payment Letter Download"
 												    	  <%if(ptcdetails==null) {%>type="button" onclick="return alert('Please fill date of payment')"<%} %>>
 															<div class="cc-rockmenu">
 																<div class="rolling">
@@ -733,6 +748,13 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i+1) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get((i)).getMilestoneNo() %> </td> --%>
 							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract.getT0Date()!=null) {
+							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
+							    				%>
+							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
+							    				<%} %>	
+							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(i).getActualAmount())) %>
@@ -751,6 +773,18 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    				</form>
 							    			</td> --%>
 							    			<td style="text-align: center;">
+							    				<%
+							    					String mil = milestones.get(i).getMilestoneNo();
+							    					ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && mil.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+										    		ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+							    				%>
+							    				<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
+							    			</td>
+							    			<td style="text-align: center;">
 							    				<form action="#" method="post">
 		                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		                                        	<input type="hidden" name="MilestoneNo" value="<%=milestones.get(i).getMilestoneNo()%>">
@@ -765,7 +799,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 														</div>
 												    </button>
 												    <%
-												    String mil = milestones.get(i).getMilestoneNo();
+												    
 												    mpstatusdetails = mpstatusdetailslist.stream().filter(e-> e[4].toString().equalsIgnoreCase(mil)).collect(Collectors.toList());
 												    mpstatus = mpstatusdetails!=null&& mpstatusdetails.size()>0?mpstatusdetails.get(0):null;
 												    %>
@@ -784,8 +818,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 												    
 												    <%if(mpstatus!=null && mpstatus[1]!=null && mpstatus[1].toString().equalsIgnoreCase("MAD") ) {%>
 												    	<%
-												    	ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && mil.equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
-												    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+												    	
 												    	long otherdocdetailsid = ptcdetails!=null?ptcdetails.getOtherDocDetailsId():0;
 												    	String otherdocdate = ptcdetails!=null?ptcdetails.getOtherDocDate():null;
 												    	otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
@@ -801,7 +834,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 																</div>
 															</div>
 														</button>
-												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Download"
+												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Payment Letter Download"
 												    	  <%if(ptcdetails==null) {%>type="button" onclick="return alert('Please fill date of payment')"<%} %>>
 															<div class="cc-rockmenu">
 																<div class="rolling">
@@ -822,6 +855,13 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
 							    			<%-- <td style="text-align : center;vertical-align: top;"><%=milestones.get(milestones.size()-1).getMilestoneNo() %> </td> --%>
 							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+							    			<td style="text-align : center;vertical-align: top;">
+							    				<%if(carsContract.getT0Date()!=null) {
+							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
+							    				%>
+							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
+							    				<%} %>	
+							    			</td>
 							    			<td style="text-align : right;vertical-align: top;">
 							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(milestones.size()-1).getActualAmount())) %>
@@ -839,6 +879,17 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 													</button>
 							    				</form>
 							    			</td> --%>
+							    			<td style="text-align: center;">
+							    				<%
+							    				ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(milestones.size()-1).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
+										    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+							    				%>
+							    				<%if(ptcdetails!=null) {%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-success" style="text-align: center !important;font-weight: bold;">Paid</button>
+												<%} else{%>
+													<button type="button" class="btn btn-sm w-50 btn-status btn-danger" style="text-align: center !important;font-weight: bold;">Pending</button>
+												<%} %>
+							    			</td>
 							    			<td style="text-align: center;">
 							    				<form action="#" method="post">
 		                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -872,8 +923,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 												    
 												    <%if(mpstatus!=null && mpstatus[1]!=null && mpstatus[1].toString().equalsIgnoreCase("MAD") ) {%>
 												    	<%
-												    	ptcdetailslist = otherdocdetails.stream().filter(e-> "P".equalsIgnoreCase(e.getOtherDocType()) && milestones.get(milestones.size()-1).getMilestoneNo().equalsIgnoreCase(e.getMilestoneNo())).collect(Collectors.toList());
-												    	ptcdetails = ptcdetailslist!=null && ptcdetailslist.size()>0 ? ptcdetailslist.get(0): null;
+												    	
 												    	long otherdocdetailsid = ptcdetails!=null?ptcdetails.getOtherDocDetailsId():0;
 												    	String otherdocdate = ptcdetails!=null?ptcdetails.getOtherDocDate():null;
 												    	otherdocdate = otherdocdate!=null?fc.SqlToRegularDate(otherdocdate):rdf.format(new Date());
@@ -889,7 +939,7 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 																</div>
 															</div>
 														</button>
-												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Download"
+												    	<button class="editable-clicko" name="carsInitiationId" value="<%=carsInitiationId %>" formaction="CARSMilestonePaymentLetterDownload.htm"  formtarget="blank" formmethod="post" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Payment Letter Download"
 												    	  <%if(ptcdetails==null) {%>type="button" onclick="return alert('Please fill date of payment')"<%} %>>
 															<div class="cc-rockmenu">
 																<div class="rolling">
@@ -911,6 +961,12 @@ Object[] PDs = (Object[])request.getAttribute("PDEmpIds");
 						</div>
 					</div>
 				</div>  
+				<div class="row" style="margin-left: 5rem;">
+					<div class="col-md-11" align="left" style="margin-left: 20px;">
+						<label style="font-size: 17px;">*EDP</label> - <span>Expected Date of Payment</span>
+					</div>
+				</div>
+				
 				<form action="">
 					<div class="container">
 												

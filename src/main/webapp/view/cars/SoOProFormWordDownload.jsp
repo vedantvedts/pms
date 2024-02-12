@@ -229,7 +229,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		</tr>
 			    		<tr>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;<span style="text-decoration: underline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>% </td>
-			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0</td>
+			    			<td colspan="1" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0*</td>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;"></td>
 			    		</tr>
 			    		<tr>

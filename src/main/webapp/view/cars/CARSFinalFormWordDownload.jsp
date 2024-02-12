@@ -333,7 +333,7 @@ Object[] rsqr =(Object[])request.getAttribute("RSQRDetails");
 			    		<%if(milestones!=null && milestones.size()>0) { char a='a';%>
 			    		<tr>
 			    			<td colspan="2" style="text-align : left;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;&nbsp;&nbsp;&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage() %>%) </td>
-			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0</td>
+			    			<td colspan="1" style="text-align : center;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">T0*</td>
 			    			<td colspan="2" style="text-align : right;border : 1px solid black;padding : 3px;word-wrap: break-word;word-break: normal;vertical-align: top;">
 			    				<%if(milestones.get(0).getActualAmount()!=null) {%>
 			    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(milestones.get(0).getActualAmount())) %>
