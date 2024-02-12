@@ -50,8 +50,10 @@ import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
+import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
+import com.vts.pfms.project.model.PfmsInitiationAppendix;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -91,6 +93,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -3160,5 +3164,39 @@ public long insertRequirementVerification(RequirementVerification rv) throws Exc
 @Override
 public long updateRequirementVerificationDetails(RequirementVerification rv) throws Exception {
 	return dao.updateRequirementVerificationDetails(rv);
+}
+
+@Override
+public List<Object[]> getAbbreviationDetails(String initiationid) throws Exception {
+	return dao.getAbbreviationDetails(initiationid);
+}
+@Override
+public long addAbbreviation(List<InitiationAbbreviations> iaList) throws Exception {
+	return dao.addAbbreviation(iaList);
+}
+@Override
+public long addReqAppendix(PfmsInitiationAppendix pia) throws Exception {
+	return dao.addReqAppendix(pia);
+}
+@Override
+public List<Object[]> AppendixList(String initiationid) throws Exception {
+	
+	return dao.AppendixList(initiationid);
+}
+@Override
+public long addReqAcronyms(List<RequirementAcronyms> raList) throws Exception {
+	return dao.addReqAcronyms(raList);
+}
+@Override
+public List<Object[]> AcronymsList(String initiationid) throws Exception {
+	return dao.getAcronymsList(initiationid);
+}
+@Override
+public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList) throws Exception {
+	return dao.addReqPerformanceParameters(raList);
+}
+@Override
+public List<Object[]> getPerformanceList(String initiationid) throws Exception {
+	return dao.getPerformanceList(initiationid);
 }
 }

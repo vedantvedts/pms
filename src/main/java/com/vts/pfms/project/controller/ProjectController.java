@@ -24,11 +24,23 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -54,6 +66,7 @@ import com.itextpdf.kernel.utils.PdfMerger;
 import com.itextpdf.layout.font.FontProvider;
 import com.vts.pfms.CharArrayWriterResponse;
 import com.vts.pfms.FormatConverter;
+import com.vts.pfms.admin.model.DivisionMaster;
 import com.vts.pfms.committee.service.ActionService;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.print.service.PrintService;
@@ -78,7 +91,9 @@ import com.vts.pfms.project.dto.ProjectMajorWorkPackagesDto;
 import com.vts.pfms.project.dto.ProjectMasterAttachDto;
 import com.vts.pfms.project.dto.ProjectOtherReqDto;
 import com.vts.pfms.project.dto.ProjectScheduleDto;
+import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsInitiation;
+import com.vts.pfms.project.model.PfmsInitiationAppendix;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthorityFile;
 import com.vts.pfms.project.model.PfmsInitiationChecklistData;
@@ -96,6 +111,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 import com.vts.pfms.project.service.ProjectService;
@@ -241,101 +258,28 @@ public class ProjectController
 			String projectTitle=project[2];
 			req.setAttribute("initiationid", initiationid);
 			req.setAttribute("projectshortName",projectshortName );
-			req.setAttribute("projectTitle", projectTitle);
 			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
 			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
 			req.setAttribute("ProjectDetailes", ProjectDetailes);
 			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
 			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
 			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-			//Converting the pdf into Base64
-//			Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-//			String filename="ProjectRequirement";
-//			String path=req.getServletContext().getRealPath("/view/temp");
-//		  	req.setAttribute("path",path);
-//		  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-//		  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
-//		  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-//		  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-//		  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-//		  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-//		  	req.setAttribute("uploadpath", uploadpath);
-//		  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-//		  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
-//		  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-//			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//			req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-//			String html = customResponse.getOutput();
-//
-//			ConverterProperties converterProperties = new ConverterProperties();
-//	    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-//	    	converterProperties.setFontProvider(dfp);
-//
-//			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-//			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-//			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-//			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-//			pdfDocument.close();
-//			pdf1.close();	       
-//	        pdfw.close();
-//			res.setContentType("application/pdf");
-//	        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-//	        File f=new File(path+"/"+filename+".pdf");
-//	        
-//	        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
-//	        req.setAttribute("pdf", pdf);
-			//
-			
-			
+			req.setAttribute("project", Project);
+			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 			}else {
 				if(service.ProjectIntiationList(EmpId,LoginType,LabCode).size()>0) {
 					String projectshortName=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[4].toString();
 					String initiationid=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[0].toString();
 					req.setAttribute("initiationid", initiationid);
 					req.setAttribute("projectshortName",projectshortName);
+				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
 					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
 					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
 					req.setAttribute("ProjectDetailes", ProjectDetailes);
 					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
 					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
 					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-					//convert pdf to base64
-//					Object[] PfmsInitiationList= service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-//					String filename="ProjectRequirement";
-//					String path=req.getServletContext().getRealPath("/view/temp");
-//				  	req.setAttribute("path",path);
-//				  	req.setAttribute("lablogo",  LogoUtil.getLabLogoAsBase64String(LabCode)); 
-//				  	req.setAttribute("PfmsInitiationList", PfmsInitiationList);
-//				  	req.setAttribute("LabList", service.LabListDetails(LabCode));
-//				  	req.setAttribute("reqStatus", service.reqStatus(Long.parseLong(initiationid)));
-//				  	req.setAttribute("RequirementList", service.RequirementList(initiationid));
-//				  	req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
-//				  	req.setAttribute("uploadpath", uploadpath);
-//				  	req.setAttribute("OtherRequirements", service.getAllOtherrequirementsByInitiationId(initiationid));
-//				  	req.setAttribute("ReqIntro", service.RequirementIntro(initiationid));
-//				  	req.setAttribute("ParaDetails",service.ReqParaDetails(initiationid) );
-//					CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
-//					req.getRequestDispatcher("/view/print/RequirementDownload.jsp").forward(req, customResponse);
-//					String html = customResponse.getOutput();
-//
-//					ConverterProperties converterProperties = new ConverterProperties();
-//			    	FontProvider dfp = new DefaultFontProvider(true, true, true);
-//			    	converterProperties.setFontProvider(dfp);
-//
-//					HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
-//					PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
-//					PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
-//					PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
-//					pdfDocument.close();
-//					pdf1.close();	       
-//			        pdfw.close();
-//					res.setContentType("application/pdf");
-//			        res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
-//			        File f=new File(path+"/"+filename+".pdf");
-//			        
-//			        String pdf=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(f));
-//			        req.setAttribute("pdf", pdf);
-					//					
+					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 				}
 			}
 			req.setAttribute("LabList", service.LabListDetails(LabCode));
@@ -382,6 +326,7 @@ public class ProjectController
 			req.setAttribute("RequirementFiles", service.requirementFiles(initiationid,1));
 			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
 			req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid));
+			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 			}
 			else {
 				if(ProjectIntiationList.size()>0) {
@@ -395,6 +340,7 @@ public class ProjectController
 				if(!service.RequirementList(initiationid).isEmpty()) {
 					req.setAttribute("initiationReqId", service.RequirementList(initiationid).get(0)[0].toString());
 					}
+				req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
 				req.setAttribute("ParaDetails", service.ReqParaDetails(initiationid));
 				req.setAttribute("RequirementList", service.RequirementList(initiationid) );
 				req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,Logintype,LabCode));
@@ -7710,6 +7656,444 @@ public class ProjectController
 		}
 		return "redirect:/RequirementVerify.htm";
 	}
+	
+	
+	
+	
+	 @RequestMapping(value="ExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	 public String DivisionmasterExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+			String project= req.getParameter("project");
+			 try{
+				String action = req.getParameter("Action"); 
+				String initiationId=req.getParameter("initiationid");
+		
+				if("GenerateExcel".equalsIgnoreCase(action)) {
+						XSSFWorkbook workbook = new XSSFWorkbook();
+						XSSFSheet sheet =  workbook.createSheet("Abbreviation Details");
+						XSSFRow row=sheet.createRow(0);
+						
+						CellStyle unlockedCellStyle = workbook.createCellStyle();
+						unlockedCellStyle.setLocked(true);
+						
+						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+						row.createCell(1).setCellValue("Abbreviation");sheet.setColumnWidth(1, 5000);
+						row.createCell(2).setCellValue("Meaning");sheet.setColumnWidth(2, 5000);
+
+						int r=0;
+					
+						row=sheet.createRow(++r);
+						row.createCell(0).setCellValue(String.valueOf(r));
+						row.createCell(1).setCellValue("");
+						row.createCell(2).setCellValue("");
+
+					    res.setContentType("application/vnd.ms-excel");
+			            res.setHeader("Content-Disposition", "attachment; filename=Abbreviation Details.xls");	
+			            workbook.write(res.getOutputStream());
+						}else if("UploadExcel".equalsIgnoreCase(action)) {
+						if(ServletFileUpload.isMultipartContent(req)) {
+							List<FileItem> multiparts = new ServletFileUpload( new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req));
+							Part filePart = req.getPart("filename");
+							List<InitiationAbbreviations>iaList=new ArrayList<>();
+							InputStream fileData = filePart.getInputStream();
+							Workbook workbook = new XSSFWorkbook(fileData);
+						     Sheet sheet  = workbook.getSheetAt(0);
+						     int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+						
+						     for (int i=1;i<=rowCount;i++) {
+						    	
+						    	 int cellcount= sheet.getRow(i).getLastCellNum();
+						    	 InitiationAbbreviations iA= new InitiationAbbreviations();
+						    	 
+						    	 for(int j=1;j<cellcount;j++) {
+						    		
+						    		 if(sheet.getRow(i).getCell(j)!=null) {
+						    			 if(j==1) {
+						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
+						    				 case Cell.CELL_TYPE_BLANK:break;
+						    				 case Cell.CELL_TYPE_NUMERIC:
+						    					 iA.setAbbreviations(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+						    					 break;
+						    				 case Cell.CELL_TYPE_STRING:
+					                            	iA.setAbbreviations(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;	 
+						    				 }
+						    			 }
+						    			 
+						    			 if(j==2) {
+						    				 switch(sheet.getRow(i).getCell(j).getCellType()) {
+						    				 case Cell.CELL_TYPE_BLANK:break;
+						    				 case Cell.CELL_TYPE_NUMERIC:
+						    					 iA.setMeaning(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+						    					 break;
+						    				 case Cell.CELL_TYPE_STRING:
+					                            	iA.setMeaning(sheet.getRow(i).getCell(j).getStringCellValue());
+					                            	break;	 
+						    				 }
+						    			 
+						    			 
+						    			 }	 
+						    		 }
+						    	 }
+						    	 
+						    	iA.setInitiationId(Long.parseLong(initiationId));
+						    	
+						    if(iA.getAbbreviations()!=null && iA.getMeaning()!=null) {
+						    	iaList.add(iA);
+						    }
+						    	
+						     }
+						     
+						    long Count= service.addAbbreviation(iaList); 
+						    if(Count>0) {
+						    	redir.addFlashAttribute("project",project);
+						    	redir.addAttribute("result","Abbreviations Added Successfully");
+						    	
+						    }
+						    
+						}
+					}
+					
+				}catch(Exception e){
+					e.printStackTrace();
+				
+					redir.addAttribute("resultfail", " Adding Unsuccessfully");
+					logger.error(new Date() +"Inside ExcelUpload.htm "+UserId,e);
+				}
+			 redir.addFlashAttribute("project",project);
+				return "redirect:/ProjectOverAllRequirement.htm";
+		 
+	 }
+	 
+	 
+	 @RequestMapping(value ="RequirementAppendix.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	 public String RequirementAppendix( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception{
+		 
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside RequirementAppendix.htm "+UserId);
+		 try {
+				String initiationid = req.getParameter("initiationid");
+				String projectcode=req.getParameter("projectcode");
+				String project=req.getParameter("project");
+				req.setAttribute("initiationid", initiationid);
+				req.setAttribute("project", project);
+				
+				List<Object[]>AppendixList= service.AppendixList(initiationid);
+				req.setAttribute("AppendixList", AppendixList);
+				
+				List<Object[]>AcronymsList= service.AcronymsList(initiationid);
+				req.setAttribute("AcronymsList", AcronymsList);
+				
+				req.setAttribute("PerformanceList", service.getPerformanceList(initiationid));;
+		 }
+		 catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside RequirementAppendix.htm "+UserId,e);
+		 }
+		 return "project/RequirementAppendices";
+	 }
+	 
+	 @RequestMapping(value ="ReqAppendixAdd.htm",method = {RequestMethod.POST,RequestMethod.GET})
+	 public String ReqAppendixAdd( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception{
+		 
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside ReqAppendixAdd.htm "+UserId);
+		 try {
+				String initiationid = req.getParameter("initiationid");
+				String projectcode=req.getParameter("projectcode");
+				String project=req.getParameter("project");
+			
+				String AppendixName= req.getParameter("AppendixName");
+				
+				
+				PfmsInitiationAppendix pia= new PfmsInitiationAppendix();
+				pia.setAppendixName(AppendixName);
+				pia.setInitiationId(Long.parseLong(initiationid));
+				pia.setCreatedBy(UserId);
+				pia.setCreatedDate(sdf1.format(new Date()));
+				pia.setIsActive(1);
+				
+				long count = service.addReqAppendix(pia);
+				if(count>0) {
+					redir.addAttribute("result","Data Added Successfully");
+				}else {
+					redir.addAttribute("result","Data Add Unsuccessful");
+				}
+				redir.addAttribute("initiationid", initiationid);
+				redir.addAttribute("project", project);
+				 return "redirect:/RequirementAppendix.htm";
+		 }
+		 catch(Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +"Inside ReqAppendixAdd.htm "+UserId,e);
+		 }
+		
+		 return "redirect:/RequirementAppendix.htm";
+	 }
+	 
+	 
+	 @RequestMapping(value="AccronymsExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	 public String AccronymsExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+			String project= req.getParameter("project");
+			 try{
+					String action = req.getParameter("Action"); 
+					String initiationId=req.getParameter("initiationid");
+			
+					if("GenerateExcel".equalsIgnoreCase(action)) {
+						XSSFWorkbook workbook = new XSSFWorkbook();
+						XSSFSheet sheet =  workbook.createSheet("Acronyms");
+						XSSFRow row=sheet.createRow(0);
+						
+						CellStyle unlockedCellStyle = workbook.createCellStyle();
+						unlockedCellStyle.setLocked(true);
+						
+						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+						row.createCell(1).setCellValue("Acronyms");sheet.setColumnWidth(1, 5000);
+						row.createCell(2).setCellValue("Definition");sheet.setColumnWidth(2, 5000);
+
+						int r=0;
+						
+							row=sheet.createRow(++r);
+							row.createCell(0).setCellValue(String.valueOf(r));
+							row.createCell(1).setCellValue("");
+							row.createCell(2).setCellValue("");
+
+						    res.setContentType("application/vnd.ms-excel");
+				            res.setHeader("Content-Disposition", "attachment; filename=Acronyms.xls");	
+				            workbook.write(res.getOutputStream());
+					}
+					
+					else if("UploadExcel".equalsIgnoreCase(action)) {
+						
+						if(ServletFileUpload.isMultipartContent(req)) {
+							try {
+							List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
+							Part filePart = req.getPart("filenameA");
+							
+							List<RequirementAcronyms> raList = new ArrayList<>();
+							InputStream fileData = filePart.getInputStream();
+							
+							Workbook workbook = new XSSFWorkbook(fileData);
+							
+							Sheet sheet = workbook.getSheetAt(0);
+							
+							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();
+							
+							for(int i=1;i<=rowCount;i++) {
+								
+								int cellCount= sheet.getRow(i).getLastCellNum();
+								RequirementAcronyms ra = new RequirementAcronyms();
+								
+								for(int j=1;j<cellCount;j++) {
+									
+									if(sheet.getRow(i).getCell(j)!=null) {
+										
+										if(j==1) {
+											switch (sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												ra.setAcronyms(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+												break;
+											case Cell.CELL_TYPE_STRING:
+												ra.setAcronyms(sheet.getRow(i).getCell(j).getStringCellValue());
+												break;
+											}
+										}
+										if(j==2) {
+											switch (sheet.getRow(i).getCell(j).getCellType()){
+				                            case Cell.CELL_TYPE_BLANK:
+				                            	break;
+				                            case Cell.CELL_TYPE_NUMERIC:
+				                            	 ra.setDefinition(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+				                            	 break;
+				                            case Cell.CELL_TYPE_STRING:
+				                            	 ra.setDefinition(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+				                            	 break;
+						                	}
+										}
+										
+										
+									}
+									
+									ra.setInitiationId(Long.parseLong(initiationId));
+									ra.setIsActive(1);
+									
+									if(ra.getAcronyms()!=null && ra.getDefinition()!=null) {
+									raList.add(ra);
+									}
+									
+								}
+							}
+							
+							System.out.println(raList.size()+"---");
+							
+							long count = service.addReqAcronyms(raList);
+							
+							if(count>0) {
+								redir.addAttribute("result","Acronyms added Successfully");
+								redir.addAttribute("initiationid", initiationId);
+								redir.addAttribute("project", project);
+								 return "redirect:/RequirementAppendix.htm";
+							}else {
+								redir.addAttribute("resultfail","Acronyms add Unsuccessful");
+								redir.addAttribute("initiationid", initiationId);
+								redir.addAttribute("project", project);
+								 return "redirect:/RequirementAppendix.htm";
+							}
+							
+							}
+							catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+			 }
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+			
+			 return "redirect:/RequirementAppendix.htm";
+	 }		
+	 
+
+	 @RequestMapping(value="PerformanceExcelUpload.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+	 public String PerformanceExcelUpload( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+	 {
+		 String UserId=(String)ses.getAttribute("Username");
+		 String LabCode =(String) ses.getAttribute("labcode");
+		 logger.info(new Date() +"Inside ExcelUpload.htm "+UserId);
+			String project= req.getParameter("project");
+			 try{
+					String action = req.getParameter("Action"); 
+					String initiationId=req.getParameter("initiationid");
+			
+					if("GenerateExcel".equalsIgnoreCase(action)) {
+						XSSFWorkbook workbook = new XSSFWorkbook();
+						XSSFSheet sheet =  workbook.createSheet("PerformanceParameters");
+						XSSFRow row=sheet.createRow(0);
+						
+						CellStyle unlockedCellStyle = workbook.createCellStyle();
+						unlockedCellStyle.setLocked(true);
+						
+						row.createCell(0).setCellValue("SN");sheet.setColumnWidth(0, 5000);
+						row.createCell(1).setCellValue("Key MOE'S");sheet.setColumnWidth(1, 5000);
+						row.createCell(2).setCellValue("Values");sheet.setColumnWidth(2, 5000);
+
+						int r=0;
+						
+							row=sheet.createRow(++r);
+							row.createCell(0).setCellValue(String.valueOf(r));
+							row.createCell(1).setCellValue("");
+							row.createCell(2).setCellValue("");
+
+						    res.setContentType("application/vnd.ms-excel");
+				            res.setHeader("Content-Disposition", "attachment; filename=PerformanceParameters.xls");	
+				            workbook.write(res.getOutputStream());
+					}
+
+		else if("UploadExcel".equalsIgnoreCase(action)) {
+						
+						if(ServletFileUpload.isMultipartContent(req)) {
+							try {
+							List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(req))	;
+							Part filePart = req.getPart("filenameB");
+							
+							List<RequirementPerformanceParameters> raList = new ArrayList<>();
+							InputStream fileData = filePart.getInputStream();
+							
+							Workbook workbook = new XSSFWorkbook(fileData);
+							
+							Sheet sheet = workbook.getSheetAt(0);
+							
+							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum();
+							
+							for(int i=1;i<=rowCount;i++) {
+								
+								int cellCount= sheet.getRow(i).getLastCellNum();
+								RequirementPerformanceParameters ra = new RequirementPerformanceParameters();
+								
+								for(int j=1;j<cellCount;j++) {
+									
+									if(sheet.getRow(i).getCell(j)!=null) {
+										
+										if(j==1) {
+											switch (sheet.getRow(i).getCell(j).getCellType()) {
+											case Cell.CELL_TYPE_BLANK:
+												break;
+											case Cell.CELL_TYPE_NUMERIC:
+												ra.setKeyEffectiveness(String.valueOf((long)sheet.getRow(i).getCell(j).getNumericCellValue()));
+												break;
+											case Cell.CELL_TYPE_STRING:
+												ra.setKeyEffectiveness(sheet.getRow(i).getCell(j).getStringCellValue());
+												break;
+											}
+										}
+										if(j==2) {
+											switch (sheet.getRow(i).getCell(j).getCellType()){
+				                            case Cell.CELL_TYPE_BLANK:
+				                            	break;
+				                            case Cell.CELL_TYPE_NUMERIC:
+				                            	 ra.setKeyValues(String.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+				                            	 break;
+				                            case Cell.CELL_TYPE_STRING:
+				                            	 ra.setKeyValues(sheet.getRow(i).getCell(j).getStringCellValue().toString());
+				                            	 break;
+						                	}
+										}
+										
+										
+									}
+									
+									ra.setInitiationId(Long.parseLong(initiationId));
+									ra.setIsActive(1);
+									
+									if(ra.getKeyEffectiveness()!=null && ra.getKeyValues()!=null) {
+									raList.add(ra);
+									}
+									
+								}
+							}
+							
+							System.out.println(raList.size()+"---");
+							
+							long count = service.addReqPerformanceParameters(raList);
+							
+							if(count>0) {
+								redir.addAttribute("result","Performance Parameters added Successfully");
+								redir.addAttribute("initiationid", initiationId);
+								redir.addAttribute("project", project);
+								 return "redirect:/RequirementAppendix.htm";
+							}else {
+								redir.addAttribute("resultfail","Performance Parameters add Unsuccessful");
+								redir.addAttribute("initiationid", initiationId);
+								redir.addAttribute("project", project);
+								 return "redirect:/RequirementAppendix.htm";
+							}
+							
+							}
+							catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+			 }
+					catch (Exception e) {
+						e.printStackTrace();
+					}
+			
+		return null;	
+	 }		 
+	 
 //package com.vts.pfms.project.controller;
 
 //import java.io.ByteArrayInputStream;

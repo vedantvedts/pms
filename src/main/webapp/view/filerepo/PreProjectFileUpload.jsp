@@ -378,7 +378,7 @@ h6 {
 								<div class="col-md-12" style="margin-top: 2%">
 									<div class="row">
 										<div class="col-md-4">
-											<label id="filedesc">Document Dscription:</label><span
+											<label id="filedesc">Document Description:</label><span
 												class="mandatory" style="color: red;">*</span>
 										</div>
 										<div class="values"></div>
@@ -470,7 +470,7 @@ h6 {
 						<div class="col-md-12" style="margin-top: 2%">
 							<div class="row">
 								<div class="col-md-4">
-									<label id="filedesc">Document Dscription:</label><span
+									<label id="filedesc">Document Description:</label><span
 										class="mandatory" style="color: red;">*</span>
 								</div>
 								<div class="col-md-5">

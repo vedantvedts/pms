@@ -26,8 +26,10 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
+import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
+import com.vts.pfms.project.model.PfmsInitiationAppendix;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -67,6 +69,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -159,7 +163,8 @@ public class ProjectDaoImpl implements ProjectDao {
     private static final String PROJECTDATAREVDATA="SELECT ppdr.projectdatarevid,ppdr.projectid,ppdr.filespath,ppdr.systemconfigimgname,ppdr.SystemSpecsFileName,ppdr.ProductTreeImgName,ppdr.PEARLImgName,ppdr.CurrentStageId,ppdr.RevisionNo,pps.projectstagecode,pps.projectstage,ppdr.revisiondate FROM pfms_project_data_rev ppdr, pfms_project_stage pps WHERE ppdr.CurrentStageId=pps.projectstageid AND  ppdr.projectdatarevid=:projectdatarevid";
     private static final String STATUSDETAILS="SELECT statusdetail FROM pfms_project_authority_actionlist WHERE status=:status ";
     private static final String INTEMPID="select empid from pfms_initiation where initiationid=:id";
-    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid  END"; 
+   // private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId  ,aas.actionassignid FROM action_main am , action_assign aas WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND  CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid  END"; 
+    private static final String PROJECTRISKDATALIST="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,am.scheduleminutesId,aas.actionassignid,aas.actionno,aas.enddate,CONCAT(IFNULL(CONCAT(b.title,' '),''), b.empname) AS 'empname',c.designation,am.actionlinkid,aas.assignee,aas.assignor,am.actionlevel FROM action_main am,action_assign aas,employee b ,employee_desig c WHERE aas.actionmainid=am.actionmainid AND am.type='K' AND c.desigid=b.desigid AND aas.assignee=b.empid AND CASE WHEN :projectid > 0 THEN am.projectid=:projectid ELSE aas.assignorlabcode=:LabCode AND am.projectid=:projectid END"; 
 	private static final String PROJECTRISKDATA ="SELECT DISTINCT am.actionmainid, am.actionitem, am.projectid, aas.actionstatus,am.type,aas.pdcorg,aas.enddate FROM action_main am ,action_assign aas WHERE aas.actionmainid=am.actionmainid AND  am.type='K' AND am.actionmainid=:actionmainid";
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.empname,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.empid AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
@@ -3545,6 +3550,89 @@ public List<Object[]> ApprovalStutusList(String AuthoId) throws Exception {
 			query.setParameter("ProvisionsDetails", rv.getProvisionsDetails());
 			query.setParameter("VerificationId", rv.getVerificationId());
 			return (long) query.executeUpdate();
+		}
+		
+		
+private static final String ABBREVIATIONS="SELECT AbbreviationsId,Abbreviations,Meaning FROM pfms_initiation_req_abbreviations WHERE InitiationId =:InitiationId";
+		
+		@Override
+		public List<Object[]> getAbbreviationDetails(String initiationid) throws Exception {
+			Query query = manager.createNativeQuery(ABBREVIATIONS);
+			query.setParameter("InitiationId", initiationid);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public long addAbbreviation(List<InitiationAbbreviations> iaList) throws Exception {
+			// TODO Auto-generated method stub
+			
+			Long l=0l;
+			
+			for(InitiationAbbreviations ia:iaList) {
+				manager.persist(ia);
+				l++;
+			}
+			
+			return l;
+		}
+		
+		@Override
+		public long addReqAppendix(PfmsInitiationAppendix pia) throws Exception {
+			manager.persist(pia);
+			manager.flush();
+			return pia.getAppendixId();
+		}
+		private static final String APPENDIXLIST="SELECT AppendixId,AppendixName,AppendixDetails,InitiationId FROM pfms_initiation_req_appendix WHERE InitiationId=:InitiationId AND IsActive='1'";
+		@Override
+		public List<Object[]> AppendixList(String initiationid) throws Exception {
+			
+			Query query = manager.createNativeQuery(APPENDIXLIST);
+			query.setParameter("InitiationId", initiationid);
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public Long addReqAcronyms(List<RequirementAcronyms> raList) throws Exception {
+			 
+			long count=0l;
+			 
+			for(RequirementAcronyms ra:raList) {
+				manager.persist(ra);
+				count++;
+			}
+			return count;
+		}
+		
+		private static final String ACRONYMLIST="SELECT AcronymsId , Acronyms , Definition , InitiationId FROM pfms_initiation_req_acronyms WHERE InitiationId = :InitiationId AND isActive='1'";
+		@Override
+		public List<Object[]> getAcronymsList(String initiationid) throws Exception {
+			Query query = manager.createNativeQuery(ACRONYMLIST);
+			query.setParameter("InitiationId", initiationid);
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		@Override
+		public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList) throws Exception {
+
+			Long count =0l;
+			
+			for(RequirementPerformanceParameters rpp : raList) {
+				manager.persist(rpp);
+				count++;
+			}
+			return count;
+		}
+		
+		private static final String PERFORMANCELIST ="SELECT PerformanceId , KeyEffectiveness , KeyValues , InitiationId FROM pfms_initiation_req_performance WHERE InitiationId = :InitiationId AND isactive='1'";
+		@Override
+		public List<Object[]> getPerformanceList(String initiationid) throws Exception {
+			
+			Query query = manager.createNativeQuery(PERFORMANCELIST);
+			
+			query.setParameter("InitiationId", initiationid);
+			
+			return (List<Object[]>)query.getResultList();
 		}
 }
 

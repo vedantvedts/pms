@@ -42,6 +42,7 @@
 	jQuery(document).ready(function($) {
 		$("#btn-export").click(function(event) {
 			$("#source-html").wordExport("System-Requirement");
+			 window.close();
 		});
 	});
 </script>
@@ -171,6 +172,17 @@ span {
 	border: 1px solid black;
 	border-collapse: collapse;
 }
+
+@page {
+    @top-center {
+        content: "Header content";
+    }
+    @bottom-center {
+        content: "Footer content";
+    }
+}
+
+
 </style>
 </head>
 <body>

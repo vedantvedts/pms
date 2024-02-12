@@ -161,9 +161,11 @@ if(ses1!=null){
 							<thead>
 								<tr>
 									<th style="width: 10%;" data-field="0" tabindex="0" >SN</th>
-									<th style="width: 50%;">Risk Description</th>
-									<th style="width: 20%;">Progress</th>
-									<th style="width: 20%;">View Or Add</th>
+									<th style="width: 20%;">Risk Id</th>
+									<th style="width: 40%;">Risk Description</th>
+									<th style="width: 10%;">PDC</th>
+									<th style="width: 10%;">Status</th>
+									<th style="width: 10%;">View Or Add</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -173,7 +175,9 @@ if(ses1!=null){
 					%>
 							<tr>
 								<td class="center"><%=i+1 %></td>
+								<td class="center"><%=riskdatalist.get(i)[7]%></td>
 								<td class="center"><%=riskdatalist.get(i)[1] %></td>
+								<td class="center"><%=sdf.format(riskdatalist.get(i)[8])%></td>
 								<td class="center">
 									<%if(riskdatalist.get(i)[3].toString().equals("I")){ %>
 										In Progress
@@ -183,8 +187,9 @@ if(ses1!=null){
 										Closed
 										<%} %>
 								</td>
-								<td class="center">
-									<form action="ProjectRiskData.htm" method="post">
+								<td> 
+								<div  style="display:flex;">
+								<form action="ProjectRiskData.htm" method="post">
 										<%if(riskdatapresentlist.contains(riskdatalist.get(i)[0])){%>
 											<button type="submit" class="btn"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>											
 										<%}else{%>
@@ -195,6 +200,29 @@ if(ses1!=null){
 										<input type="hidden" name="projectid" value="<%=projectid%>">
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
+									
+								<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
+																	>
+
+											<button class="btn btn-sm editable-click" name="sub">
+													<div class="cc-rockmenu">
+															<div class="rolling">
+																	<figure class="rolling_icon">
+																			<img src="view/images/preview3.png">
+																	</figure>	
+															</div>
+													</div>
+											</button>
+											 <input type="hidden" name="Assigner" value="<%=riskdatalist.get(i)[9]%>,<%=riskdatalist.get(i)[10]%>"/>													
+                                             <input type="hidden" name="ActionLinkId" value="<%=riskdatalist.get(i)[11]%>"/>
+											 <input type="hidden" name="ActionMainId" value="<%=riskdatalist.get(i)[0]%>"/>
+											 <input type="hidden" name="ActionNo" value="<%=riskdatalist.get(i)[7]%>"/>
+											 <input type="hidden" name="ActionAssignid" value="<%=riskdatalist.get(i)[6]%>"/>
+											 <input type="hidden" name="ProjectId" value="<%=riskdatalist.get(i)[2]%>"/>
+											 <input type="hidden" name="flag" value="risk">
+ 											 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								   </form> 		
+									</div>
 								</td>	
 							</tr>														
 						<%}

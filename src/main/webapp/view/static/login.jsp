@@ -40,11 +40,12 @@
   
 <section class="loginpage">
   
-  
+
+
+<%if(request.getAttribute("version").equals("yes")){ %>
  <!-- Button trigger modal -->
 <button type="button"  class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#staticBackdrop" id = "versionerror">
 </button>
-
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-lg">
@@ -52,9 +53,9 @@
       <div class="modal-header">
         <font color="red"><h5 class="modal-title "  id="staticBackdropLabel">Version Mismatch</h5></font>
       </div>
-      <div class="modal-body center" >
-      <p id="version">check version</p>
-        
+      <div class="modal-body center" ><b>
+      <p id="version"></p>
+        </b>
       </div>
       <div class="modal-footer">
       <button type="button" class="btn btn-primary" data-dismiss="modal">Still want to continue</button>
@@ -62,7 +63,19 @@
     </div>
   </div>
 </div>
-  
+<script>
+document.getElementById("versionerror").click();
+const paragraphElement = document.getElementById("version");
+const originalText = paragraphElement.textContent; // Store original text for backup
+
+// Choose the new word:
+const replacementWord = "<%= request.getAttribute("browser")%>";
+
+paragraphElement.innerHTML="<b>Your current Browser version is not supported.<br><br>Please ensure optimal viewing by using Internet Explorer (I.E) or Microsoft Edge 110+,<br> Mozilla 110+, or Google Chrome 110+.</b><br><br><b>Site Best viewed at a resolution of 1360 x 768.</b><br><br><b style=\"color: green;\">Thank You!</b>"
+console.log("browser name: "+replacementWord);
+console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint") %>");
+</script>
+  <%} %>
   
   
 	<header id="header" class="clearfix">
@@ -73,7 +86,8 @@
       			<div class="header-right clearfix">
         			<div class="float-element">
         				<a class="" href="" target="_blank">
-        					<img  class ="drdologo" src="view/images/drdologo.png"alt=""></a>
+        					<img  class ="drdologo" src="view/images/drdologo.png"alt="">
+        				</a>
         			</div>
       			</div>
      			<div class="logo">
@@ -274,7 +288,15 @@ $("#error-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
         }, 250);
     }); 
 </script>
+<% if( request.getAttribute("version").equals("no")){%>
+<script>
+const replacementWord = "<%= request.getAttribute("browser")%>";
+console.log("browser name: "+replacementWord);
+console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint") %>");
+</script>
+<%}%>
 <script type="text/javascript">
+
 $("#myTable1,#myTable2,#myTable3").DataTable({
     "lengthMenu": [10,20, 50, 75, 100],
     "pagingType": "simple",
@@ -283,83 +305,7 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
 	    }
 
 });
-var nVer = navigator.appVersion;
-var nAgt = navigator.userAgent;
-var browserName  = navigator.appName;
-var fullVersion  = ''+parseFloat(navigator.appVersion); 
-var majorVersion = parseInt(navigator.appVersion,10);
-var nameOffset,verOffset,ix;
 
-// In Opera, the true version is after "OPR" or after "Version"
-if ((verOffset=nAgt.indexOf("OPR"))!=-1) {
- browserName = "Opera";
- fullVersion = nAgt.substring(verOffset+4);
- if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-   fullVersion = nAgt.substring(verOffset+8);
-}
-// In MS Edge, the true version is after "Edg" in userAgent
-else if ((verOffset=nAgt.indexOf("Edg"))!=-1) {
- browserName = "Microsoft Edge";
- fullVersion = nAgt.substring(verOffset+4);
-}
-// In MSIE, the true version is after "MSIE" in userAgent
-else if ((verOffset=nAgt.indexOf("MSIE"))!=-1) {
- browserName = "Microsoft Internet Explorer";
- fullVersion = nAgt.substring(verOffset+5);
-}
-// In Chrome, the true version is after "Chrome" 
-else if ((verOffset=nAgt.indexOf("Chrome"))!=-1) {
- browserName = "Chrome";
- fullVersion = nAgt.substring(verOffset+7);
-}
-// In Safari, the true version is after "Safari" or after "Version" 
-else if ((verOffset=nAgt.indexOf("Safari"))!=-1) {
- browserName = "Safari";
- fullVersion = nAgt.substring(verOffset+7);
- if ((verOffset=nAgt.indexOf("Version"))!=-1) 
-   fullVersion = nAgt.substring(verOffset+8);
-}
-// In Firefox, the true version is after "Firefox" 
-else if ((verOffset=nAgt.indexOf("Firefox"))!=-1) {
- browserName = "Firefox";
- fullVersion = nAgt.substring(verOffset+8);
-}
-// In most other browsers, "name/version" is at the end of userAgent 
-else if ( (nameOffset=nAgt.lastIndexOf(' ')+1) < 
-          (verOffset=nAgt.lastIndexOf('/')) ) 
-{
- browserName = nAgt.substring(nameOffset,verOffset);
- fullVersion = nAgt.substring(verOffset+1);
- if (browserName.toLowerCase()==browserName.toUpperCase()) {
-  browserName = navigator.appName;
- }
-}
-// trim the fullVersion string at semicolon/space if present
-if ((ix=fullVersion.indexOf(";"))!=-1)
-   fullVersion=fullVersion.substring(0,ix);
-if ((ix=fullVersion.indexOf(" "))!=-1)
-   fullVersion=fullVersion.substring(0,ix);
-
-majorVersion = parseInt(''+fullVersion,10);
-if (isNaN(majorVersion)) {
- fullVersion  = ''+parseFloat(navigator.appVersion); 
- majorVersion = parseInt(navigator.appVersion,10);
-}
-
-console.log(''
- +'Browser name  = '+browserName
- +' Full version  = '+majorVersion
-)
-latestVersion=0;
-if(browserName=="Chrome")latestVersion=110;
-if(browserName=="Microsoft Edge")latestVersion=110;
-if(browserName=="Firefox")latestVersion=116;
-if(parseInt(fullVersion)<latestVersion){
-console.log(document.getElementById("versionerror").click());
-var element = document.getElementById("version");
-var ver = "";
-element.innerHTML=ver.concat("<b>Your current ",browserName," Browser version is not supported.</b> <br><br><b>Please ensure optimal viewing by using Internet Explorer (I.E) or Microsoft Edge 110+,<br> Mozilla 110+, or Google Chrome 110+.</b><br><br><b>Site Best viewed at a resolution of 1360 x 768.</b><br><br><b style=\"color: green;\">Thank You!</b>");
-}
 </script>
 
 </html>

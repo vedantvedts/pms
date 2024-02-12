@@ -8,8 +8,10 @@ import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.print.model.ProjectTechnicalWorkData;
 import com.vts.pfms.project.dto.PfmsInitiationRequirementDto;
 import com.vts.pfms.project.dto.PfmsRiskDto;
+import com.vts.pfms.project.model.InitiationAbbreviations;
 import com.vts.pfms.project.model.PfmsApproval;
 import com.vts.pfms.project.model.PfmsInitiation;
+import com.vts.pfms.project.model.PfmsInitiationAppendix;
 import com.vts.pfms.project.model.PfmsInitiationAttachment;
 import com.vts.pfms.project.model.PfmsInitiationAttachmentFile;
 import com.vts.pfms.project.model.PfmsInitiationAuthority;
@@ -49,6 +51,8 @@ import com.vts.pfms.project.model.ProjectMasterRev;
 import com.vts.pfms.project.model.ProjectOtherReqModel;
 import com.vts.pfms.project.model.ProjectRequirementType;
 import com.vts.pfms.project.model.ProjectSqrFile;
+import com.vts.pfms.project.model.RequirementAcronyms;
+import com.vts.pfms.project.model.RequirementPerformanceParameters;
 import com.vts.pfms.project.model.RequirementVerification;
 import com.vts.pfms.project.model.RequirementparaModel;
 
@@ -331,5 +335,13 @@ public interface ProjectDao {
 	public long insertRequirementVerification(RequirementVerification rv)throws Exception;
 	public Long updateRequirementVerification(RequirementVerification rv)throws Exception;
 	public long updateRequirementVerificationDetails(RequirementVerification rv)throws Exception;
+	public List<Object[]> getAbbreviationDetails(String initiationid) throws Exception;
+	public long addAbbreviation(List<InitiationAbbreviations> iaList) throws Exception;
+	public long addReqAppendix(PfmsInitiationAppendix pia)throws Exception;
+	public List<Object[]> AppendixList(String initiationid)throws Exception;
+	public Long addReqAcronyms(List<RequirementAcronyms> raList)throws Exception;
+	public List<Object[]> getAcronymsList(String initiationid) throws Exception;
+	public long addReqPerformanceParameters(List<RequirementPerformanceParameters> raList) throws Exception;
+	public List<Object[]> getPerformanceList(String initiationid) throws Exception;
 	
 }

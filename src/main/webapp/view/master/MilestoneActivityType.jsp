@@ -209,7 +209,7 @@ text-align:center;
 	 </thead>
     <tbody>
 	    <tr><td colspan="4">
-			<input class="form-control" type="text" id="activitytype" name="activitytype">	
+			<input class="form-control" type="text" id="activitytype" name="activitytype" >	
 	    </td>
 	    </tr>
 	    </tbody>
@@ -245,8 +245,13 @@ text-align:center;
    
    function AddActivityCheck(myfrm){
 	   var count=0;
-		var atype=$('#activitytype').val();
-	        
+		var atype=$('#activitytype').val().trim();
+	    if(atype.length==0){
+	    	alert("Please fill the type !");
+	    	return false;
+	    }
+	    else{
+		
         $.ajax({
         	
          	   type:"GET",
@@ -277,7 +282,8 @@ text-align:center;
          
          		
          	 }
-        });  	    
+        });  
+	    }
    } 
 </script>
  <script type="text/javascript">

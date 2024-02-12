@@ -30,6 +30,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -96,28 +97,81 @@ public class LoginController {
 //	@Value("${ibasV3_uri}")
 //    private String ibasV3Uri;
 
-	 @RequestMapping(value = "/login", method = RequestMethod.GET)
-	    public String login(Model model, String error, String logout,HttpServletRequest req,HttpSession ses,HttpServletResponse response) {
-	
-		 logger.info(new Date() +"Inside login ");
-	    	if (error != null) 
-	            model.addAttribute("error", "Your username and password is invalid.");
-
-	    	if (logout != null)
-	             model.addAttribute("message", "You have been logged out successfully.");
-	    	
-	    	try {
-	    	
-	    	}
-				catch(Exception e) {
-	    		e.printStackTrace();
-	    		logger.error(new Date() +" Inside login.htm "+ e);
-	    	}
-	        return "static/login";
-	    }
+//	 @RequestMapping(value = "/login", method = RequestMethod.GET)
+//	    public String login(Model model, String error, String logout,HttpServletRequest req,HttpSession ses,HttpServletResponse response) {
+//	
+//		 logger.info(new Date() +"Inside login ");
+//	    	if (error != null) 
+//	            model.addAttribute("error", "Your username and password is invalid.");
+//
+//	    	if (logout != null)
+//	             model.addAttribute("message", "You have been logged out successfully.");
+//	    	
+//	    	try {
+//	    	
+//	    	}
+//				catch(Exception e) {
+//	    		e.printStackTrace();
+//	    		logger.error(new Date() +" Inside login.htm "+ e);
+//	    	}
+//	        return "static/login";
+//	    }
 
     
-  
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(@RequestHeader(name = "User-Agent") String userAgent, Model model, String error, String logout,
+			HttpServletRequest req, HttpSession ses, HttpServletResponse response) {
+		String browser = req.getHeader("user-agent");
+		String[] br = browser.split("\\)");
+		String version = "";
+		userAgent=br[br.length-1];
+		if (userAgent.contains("Chrome")) {
+			browser = "Chrome";
+			version = userAgent.substring(userAgent.indexOf("Chrome/") + 7);
+		} else if (userAgent.contains("Firefox")) {
+			browser = "Firefox";
+			version = userAgent.substring(userAgent.indexOf("Firefox/") + 8);
+		} else if (userAgent.contains("MSIE")) {
+			browser = "Internet Explorer";
+			version = userAgent.substring(userAgent.indexOf("MSIE") + 5);
+		} else if (userAgent.contains("Trident")) {
+			browser = "Internet Explorer";
+			version = userAgent.substring(userAgent.indexOf("rv:") + 3);
+		} else if (userAgent.contains("Edge")) {
+			browser = "Edge";
+			version = userAgent.substring(userAgent.indexOf("Edge/") + 5);
+		} else if (userAgent.contains("Safari")) {
+			browser = "Safari";
+			version = userAgent.substring(userAgent.indexOf("Version/") + 8);
+		}
+		
+		if (Integer.parseInt(version.substring(0, version.indexOf('.'))) < 110) {
+			System.out.println(Integer.parseInt(version.substring(0, version.indexOf('.'))));
+			req.setAttribute("browser", browser);
+			req.setAttribute("version", "yes");
+			req.setAttribute("versionint", Integer.parseInt(version.substring(0, version.indexOf('.'))));
+		} else {
+			System.out.println(Integer.parseInt(version.substring(0, version.indexOf('.'))));
+			req.setAttribute("browser", browser);
+			req.setAttribute("version", "no");
+			req.setAttribute("versionint", Integer.parseInt(version.substring(0, version.indexOf('.'))));
+		}
+
+		logger.info(new Date() + "Inside login ");
+		if (error != null)
+			model.addAttribute("error", "Your username and password is invalid.");
+
+		if (logout != null)
+			model.addAttribute("message", "You have been logged out successfully.");
+
+		try {
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside login.htm " + e);
+		}
+		return "static/login";
+	}
     
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model,HttpServletRequest req,HttpSession ses) throws Exception {

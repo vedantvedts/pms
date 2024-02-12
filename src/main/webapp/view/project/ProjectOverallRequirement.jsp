@@ -15,13 +15,15 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/css/Overall.css" var="StyleCSS" />
 <link href="${StyleCSS}" rel="stylesheet" />
+<spring:url value="/resources/js/excel.js" var="excel" />
+<script src="${excel}"></script>
 	<%
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	List<Object[]> ProjectIntiationList = (List<Object[]>) request.getAttribute("ProjectIntiationList");
 	String projectshortName = (String) request.getAttribute("projectshortName");
 	String initiationid = (String) request.getAttribute("initiationid");
-	String projectTitle = (String) request.getAttribute("projectTitle");
 	DecimalFormat df = new DecimalFormat("0.00");
+	String project = (String)request.getAttribute("project");
 	NFormatConvertion nfc = new NFormatConvertion();
 	List<Object[]> RequirementList = (List<Object[]>) request.getAttribute("RequirementList");
 	Object[] ProjectDetailes = (Object[]) request.getAttribute("ProjectDetailes");
@@ -33,7 +35,7 @@
 	List<Object[]>EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 	String projectName="";
 	String classification="";
-	
+	List<Object[]>AbbreviationDetails=(List<Object[]>)request.getAttribute("AbbreviationDetails");
 	LocalDate d = LocalDate.now();
 
 	Month months= d.getMonth();
@@ -57,7 +59,6 @@
 </style>
 </head>
 <body>
-
 	<%
 	if (ProjectIntiationList .isEmpty()) {
 	%>
@@ -145,10 +146,10 @@
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showOtherRequirements()"><img alt="" src="view/images/clipboard.png">&nbsp;Additional Requirements</span> 
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showVerification()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Verification provisions</span>
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Requirement Traceability</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
-					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
-				    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span> 
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAbbreviations()"><img alt="" src="view/images/requirements.png" >&nbsp;&nbsp;Abbreviations</span>
+					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="showAppendices()"><img alt="" src="view/images/requirements.png"  >&nbsp;&nbsp; Appendices</span>
+				<span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="badgePara" onclick="showParaPage()" ><img alt="" src="view/images/Approval-check.png" >&nbsp;QR para</span> 
+		<!-- 			    <span class="badge badge-light mt-2 sidebar pt-2 pb-2" id="showstatus" onclick="showStatus()"><img alt="" src="view/images/status.png" >&nbsp;Status</span>  -->
 					<span class="badge badge-light mt-2 sidebar pt-2 pb-2" onclick="DownloadDoc()"><img alt="" src="view/images/pdf.png" >&nbsp;Requirement Document</span> 
 				<!-- 	<span class="badge badge-light mt-2 sidebar pt-2 pb-2"><img alt="" src="view/images/requirement.png">&nbsp;System Requirements</span>  -->
 					 
@@ -327,6 +328,20 @@
 					
 					<!--  -->
 					
+					<!--  Appedices-->
+					
+					<form action="RequirementAppendix.htm" method="GET" id="myStatus">
+					<input type="hidden" name="initiationid" value="<%=initiationid%>">
+					<input type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
+					<input type="hidden" name="projectcode" value="<%=ProjectDetailes[6].toString()%>" >
+					<input type="hidden" name="project" value="<%=ProjectDetailes[0] + "/" + ProjectDetailes[6] + "/" + ProjectDetailes[7]%>">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<button type="submit" id="Appendix" style="display:none"></button>
+					</form>
+					
+					
+					<!--  -->
+					
 					<form action="RequirementPara.htm" method="GET" id="">
 					<input type="hidden" name="initiationid" value="<%=initiationid%>">
 					<input type="hidden" name="pdd" value="<%=ProjectDetailes[1].toString() %>" >
@@ -502,6 +517,53 @@
   </div>
 </div>
 	
+	
+	<!-- Modal  for Abbreviations-->
+	
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="AbbreviationsModal">
+ <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="width:135%;margin-left:-20%;">
+      <div class="modal-header" id="ModalHeader" style="background: #055C9D;color:white;">
+        <h5 class="modal-title" >Upload Abbreviations</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-light">&times;</span>
+        </button>
+      </div>
+        <div class="modal-body">
+        <form action ="ExcelUpload.htm" method="post" enctype="multipart/form-data">
+      <div class="row">
+	<div class="col-md-8">
+	
+	<input class="form-control" type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">						
+		</div>
+	<div class="col-md-4">
+	<span class="text-primary">Download format</span>
+	<button class="btn btn-sm" type="submit" name="Action" value="GenerateExcel" formaction="ExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button>
+	</div>
+	
+
+	</div>
+	<div class="row mt-2">
+	<div class="col-md-12">
+	<div style="overflow-y:auto" id="myDiv">
+	<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;"> </table>
+	</div>
+	</div>
+	</div>
+	<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" /> <input id="submit" type="submit"
+								name="submit" value="Submit" hidden="hidden">
+	<input type="hidden" name="project" value="<%=project%>">
+	<input type="hidden" name="initiationid" value="<%=initiationid%>"> 					
+	<div align="center" class="mt-2" id="uploadDiv" style="display:none;">
+	<button type="submit" name="Action" value="UploadExcel" class="btn btn-sm btn-info"  onclick="return confirm('Are you sure to submit?')">Upload</button>
+	</div>
+	</form>
+	</div>
+    </div>
+  </div>
+</div>
+	
 	<!--  -->
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -560,6 +622,152 @@
 			function showVerification(){
 				$('#verification').click();
 			}
+	
+		function showAbbreviations(){
+			$('#AbbreviationsModal').modal('show');
+		}
+		
+		function showAppendices(){
+			$('#Appendix').click();
+		}
+			
+		const excel_file = document.getElementById('excel_file');
+		
+		excel_file.addEventListener('change', (event) => {
+		   
+			
+			var reader = new FileReader();
+		    reader.readAsArrayBuffer(event.target.files[0]);
+	
+		    reader.onload = function (event){
+		    
+		    	var data = new Uint8Array(reader.result);
+		    	
+		    	var work_book = XLSX.read(data, {type:'array'});
+		    	
+		    	 var sheet_name = work_book.SheetNames;
+		    	
+		    	var sheet_data = XLSX.utils.sheet_to_json(work_book.Sheets[sheet_name[0]],{header:1});
+		    	
+		    	const code = [];
+		    	const gname = [];
+		    	const abbreviationname1 = [];
+		    	var checkExcel = 0;
+		    	
+		    	if(sheet_data.length > 0){
+		    		var table_output = '<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1" style="overflow: scroll;" > '
+		    		
+		    		table_output +='<thead><tr><th style=" text-align: center;width:10%;">SN</th><th style="text-align:center;width:30%;">Abbreviations</th><th style="text-align:center;">Meaning</th></tr>'
+		    		
+ 		    		for(var row = 0; row < sheet_data.length ; row ++){
+		    			table_output += '<tbody><tr>'
+		    			
+		    			if(row>0){
+		    				table_output += '<td>'+row+'</td>';}
+		    				for(var cell = 0; cell <3;cell++)
+		    				{
+		    					
+		    					if(row==0){
+		    						if(cell==1 && "Abbreviation" != sheet_data[row][cell]){  checkExcel++;}
+		            				if(cell==2 && "Meaning" != sheet_data[row][cell]){  checkExcel++;}
+		            				console.log(sheet_data[row][cell]+cell)
+		            				
+		            			}	
+		    				
+		    				if(row>0 && cell == 2){
+		    			
+		    					table_output+='<td>'+sheet_data[row][cell]+'</td>';
+		    					var abbreviationnames = ""+sheet_data[row][cell]+"";
+		    					
+		    					if(abbreviationnames.trim().length>250){
+		    						gname.push(row);
+		    					}
+		    					if(abbreviationnames.trim()=='' || abbreviationnames.trim()=='undefined'){abbreviationname1.push(row);}	
+		    					
+		    				}
+		    				if(row>0 && cell == 1){
+		    					table_output += '<td>'+sheet_data[row][cell]+'</td>' 
+		    					var x = ""+sheet_data[row][cell]+"";
+		    					
+		    					if(x=='' ){
+		    						code.push(row)
+		    					}
+		    				}
+		    				
+		    				}
+		    		
+		    			
+		    		}  
+		    		 table_output += '</tr> <tbody></table>';
+		    		 
+		    		 
+		    		 
+		    		if(checkExcel>0){
+		    			$('#uploadDiv').hide();
+		    			console.log(AbbreviationDetailsList+"---")
+		    			alert("Please Upload  Abbreviation Excel ");
+		     			excel_file.value = '';
+		     			document.getElementById('myTable1').innerHTML = "";
+		    		}
+		    		else{
+		    			
+	    		var AbbreviationDetailsList=[<%int i=0; for (Object [] obj:AbbreviationDetails ) {%> "<%= obj[1] %>"<%= i+1 < AbbreviationDetails.size() ? ",":""%><%}%>];	
+	    		
+	    		var AbbreDetails = [];
+	    		
+	    		for(var i in sheet_data){
+	    			AbbreDetails.push(sheet_data[i][1]+"");
+	    		}
+	    		const duplicates = AbbreDetails.filter((item,index) => index !== AbbreDetails.indexOf(item));
+	    		const indexval = []             
+	            for(var i in duplicates){
+	             indexval.push(AbbreDetails.indexOf(duplicates[i]))
+	             }
+	    		 var dbDuplicate = [];
+	    		 AbbreviationDetailsList.forEach(function (item){ 
+	    			 var isPresent = AbbreDetails.indexOf(item);
+	            	  if(isPresent !== -1){
+	            		  dbDuplicate.push(isPresent); 
+	            	  }
+	    		 });
+	    			var msg=""
+	    			 if(indexval.length>0){
+	    	       	 msg+="Duplicate Abbreviation Existed in Excel file at Serial No :"+ indexval+"\n";
+	    	 		$('#uploadDiv').hide();
+	    			console.log(AbbreviationDetailsList+"---")
+	    			alert(msg);
+	     			excel_file.value = '';
+	     			document.getElementById('myTable1').innerHTML = "";
+	    			 }
+	    			 else if(dbDuplicate.length>0){
+	    		       	 msg+=" Abbreviation already Existed in Excel file at Serial No :"+ dbDuplicate+"\n";
+	 	    	 		$('#uploadDiv').hide();
+	 	    			console.log(AbbreviationDetailsList+"---")
+	 	    			alert(msg);
+	 	     			excel_file.value = '';
+	 	     			document.getElementById('myTable1').innerHTML = "";  
+	    			 }
+	    			 
+	    			 else{
+	    				 if(sheet_data.length>20){
+	    		    		 var myDiv = document.getElementById("myDiv");
+	    		    		  myDiv.style.height = "400px";
+	    		    }
+					$('#uploadDiv').show();		    			
+		    		document.getElementById('myTable1').innerHTML = table_output;
+	    	         }
+		    		}
+		    	}
+		    }
+		});
+		$(document).ready(function(){
+			 $("#myTable1").DataTable({
+			 "lengthMenu": [ 5, 10,25, 50, 75, 100 ],
+			 "pagingType": "simple",
+			 "pageLength": 5
+		});
+		});
 	</script>
+	
 </body>
 </html>
