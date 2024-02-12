@@ -10,4 +10,6 @@ public interface ProductTreeService {
 
 	public List<Object[]> getProductTreeList(String projectId) throws Exception;
 
+	public long LevelNameEdit(ProductTreeDto dto,String Action) throws Exception;
+
 }

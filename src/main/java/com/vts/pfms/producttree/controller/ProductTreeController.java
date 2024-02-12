@@ -186,7 +186,7 @@ public class ProductTreeController {
 	}
 	
 	@RequestMapping(value = "ProductTreeEditDelete.htm")
-	public String MilestoneActivityList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	public String ProductTreeEditDelete(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		
 		String UserId = (String) ses.getAttribute("Username");
@@ -224,12 +224,56 @@ public class ProductTreeController {
 			req.setAttribute("ProjectId", ProjectId);
 			if(ProjectId!=null) {
 				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
-				
-			
 			}else {
-				
 				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
 			}
+			
+			String Action=req.getParameter("Action");
+			
+			
+			if(Action!=null && Action.equalsIgnoreCase("E")) {
+
+			
+			 ProductTreeDto dto=new ProductTreeDto();
+			 dto.setLevelName(req.getParameter("LevelName"));
+			 dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
+			 dto.setStage(req.getParameter("Stage"));
+			 dto.setModule(req.getParameter("Module"));
+			 dto.setModifiedBy(UserId);
+			
+			 
+			 long update = service.LevelNameEdit(dto,Action);
+			 if(update!=0) {
+				 redir.addAttribute("result", "Level Name Updated Successfully");
+				 redir.addAttribute("ProjectId", ProjectId);
+				 return "redirect:/ProductTreeEditDelete.htm";
+				 
+			 }else {
+				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
+				 redir.addAttribute("ProjectId", ProjectId);
+				 return "redirect:/ProductTreeEditDelete.htm";
+			 }
+			
+	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
+	    	  
+	    	  
+	    	  ProductTreeDto dto=new ProductTreeDto();
+	    	  dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
+	    	  long delete = service.LevelNameEdit(dto,Action);
+	    	  if(delete!=0) {
+					 redir.addAttribute("result", "Level Deleted Successfully");
+					 redir.addAttribute("ProjectId", ProjectId);
+					 return "redirect:/ProductTreeEditDelete.htm";
+					 
+				 }else {
+					 redir.addAttribute("resultfail", "Level Delete  Unsuccessful");
+					 redir.addAttribute("ProjectId", ProjectId);
+					 return "redirect:/ProductTreeEditDelete.htm";
+				 }
+	    	  
+	    	  
+	      }
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -239,5 +283,9 @@ public class ProductTreeController {
 		}
 		return "producttree/ProductTreeEditDelete";
 	}
+	
+	
+	
+	
 	
 }

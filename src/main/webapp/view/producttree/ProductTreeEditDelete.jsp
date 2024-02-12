@@ -151,9 +151,12 @@ if(ses1!=null){	%>
    <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
+				<form action="##" >
 				<div class="card shadow-nohover" style="margin-top: -0px;">
+			
+		
 				<div class="row card-header">
-			     <div class="col-md-10">
+			     <div class="col-md-11">
 					<h5 ><%if(ProjectId!=null){
 						Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
 						%>
@@ -162,7 +165,10 @@ if(ses1!=null){	%>
 					</h5>
 					</div>
 					
+					  <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="ProductTree.htm"> 
+					
 					 </div>
+				
 					<div class="card-body">
                         <div class="table-responsive"> 
 									<table class="table  table-hover table-bordered">
@@ -181,16 +187,14 @@ if(ses1!=null){	%>
 														</tr>
 													</thead>
 													<tbody>
-														<%int  count=1;
+														<% int  count=1;
 															
 														 	if(ProductTreeList!=null&&ProductTreeList.size()>0){
 															for(Object[] level1: ProductTreeList){
 																 if(level1[2].toString().equalsIgnoreCase("1")) { %>	
 																
 														<tr>
-															<td style="width:2% !important; " class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
-															
-															
+															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td>
 															
 															<td style="">Level-1</td>
 															
@@ -198,10 +202,10 @@ if(ses1!=null){	%>
 															
 															
 															<td  style="width:20% !important; text-align: center;">		
-																<form action="" method="POST" name="myfrm"  style="display: inline">
+																	
 																	
 																	 
-		                                                              <button  class="editable-click" name="sub" value="E" >
+		                                                              <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -210,8 +214,10 @@ if(ses1!=null){	%>
 													                     </div>
 													                  </button> 
 													                  
-													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													                 
+													                  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+																    <input type="hidden" name="Mainid" value="<%=level1[0]%>"/>
+													                  <button  class="editable-click" name="Action" value="D" formaction="ProductTreeEditDelete.htm" formmethod="get" onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')">
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -219,14 +225,9 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button> 
-		                                                            
-													                  
-		                                                             
-		                                                            <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-																    <input type="hidden" name="MainId" value="<%=level1[0]%>"/>
-																    <input type="hidden" name="projectid" value="<%=ProjectId%>"/>
-															 </form> 
-															 
+													                 
+													                 
+		                                                   	 
 															 	
 															</td>
 														</tr>
@@ -254,7 +255,7 @@ if(ses1!=null){	%>
 														 	<td class="width-30px" style="text-align: center;">
 														 	
 														 	
-														 	<button  class="editable-click" name="sub" value="E" >
+														 	 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -293,7 +294,7 @@ if(ses1!=null){	%>
 															<td class="width-30px"  style="text-align: center;">
 															
 															
-															<button  class="editable-click" name="sub" value="E" >
+															 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -331,8 +332,7 @@ if(ses1!=null){	%>
 															<td class="width-30px"  style="text-align: center;">
 															
 															
-															
-															<button  class="editable-click" name="sub" value="E" >
+														 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -373,8 +373,7 @@ if(ses1!=null){	%>
 																<td class="width-30px">
 															
 															
-															
-															<button  class="editable-click" name="sub" value="E" >
+																 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -382,6 +381,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button> 
+														
 													                  
 													                  
 													                  <button  class="editable-click" name="sub" value="D" >
@@ -415,8 +415,7 @@ if(ses1!=null){	%>
 														    <td class="width-30px">
 															
 															
-															
-															<button  class="editable-click" name="sub" value="E" >
+																 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
@@ -424,6 +423,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button> 
+														
 													                  
 													                  
 													                  <button  class="editable-click" name="sub" value="D" >
@@ -459,59 +459,162 @@ if(ses1!=null){	%>
 												
 												</tbody>
 												</table>
-												</div>
-							
-
-
 											</div>
+							   </div>
 							
 						</div>
-
+						<input type="hidden"  name="ProjectId" value="<%=ProjectId %>" >
+						
+						
+                   </form>
 					</div>
+					
 		
 				</div>
+        </div>
 
-	
-			</div>
 
+
+<div class="modal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" align="center">
+        <form action="ProductTreeEditDelete.htm" method="post">
+        	<table style="width: 100%;">
+        		<tr>
+        			<th>Level Name : &nbsp; </th>
+        			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
+        		</tr>
+        		
+        		
+        		<tr>
+        			<th >Stage : &nbsp; </th>
+        			<td >
+        			
+        			<select class="form select selectdee " name="Stage"  id="stage" style="width:100%;">
+        			
+        			        <option value="Design">Design</option>
+		      				<option value="Realisation">Realisation</option>
+		      				<option value="Testing & Evaluation">Testing & Evaluation</option>
+		      				<option value="Ready for Closure">Ready for Closure</option>
+        			
+        			</select>
+        			
+        			</td>
+        		</tr>
+        		
+        		
+        			<tr>
+        			     <th >Module : &nbsp; </th>
+        			<td >
+        			
+        			<select class="form select selectdee" id="module" name="Module"  style="width:100%;">
+        			
+        			        <option value="In-House-Development">In-House-Development</option>
+		      				<option value="BTP">BTP</option>
+		      				<option value="BTS">BTS</option>
+		      				<option value="COTS">COTS</option>
+        			
+        			</select>
+        			
+        			</td>
+        		</tr>
+        		
+        		
+        		<tr>
+        			<td colspan="2" style="text-align: center;">
+        				<br>
+        				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
+        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        			</td>
+        		</tr>
+        	</table>
+        	
+        	<input type="hidden" id="Mainid" name="Mainid" value="" >
+        	<input type="hidden" id="" name="Action" value="E" >
+        	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
+        	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
 
 
 
 
 	
 <script type="text/javascript">
-function MainDOCEditModal(mainid, DOC)
+
+function EditModal(mainid,levelname,stage,module)
 {
-	$('#MSMainid').val(mainid);			
-	$('#MainDOCDate').daterangepicker({
-		"singleDatePicker" : true,
-		"linkedCalendars" : false,
-		"showCustomRangeLabel" : true,
-		"startDate" : new Date(DOC),
-		"cancelClass" : "btn-default",
-		showDropdowns : true,
-		locale : {
-			format : 'DD-MM-YYYY'
-		}
-	});
-	$('#MainDOCEditModal').modal('toggle');
+	$('#Mainid').val(mainid);			
+	$('#levelname').val(levelname);
+	$('#stage').val(stage);
+	$('#module').val(module);
+
 	
+/* var selectedModule = module;
+console.log("selectedModule---"+selectedModule);
+	
+var p='';
+	
+	 if (selectedModule === 'In-House-Development') {
+		 
+		    p +='<option value="In-House-Development" selected="selected">'+In-House-Development+'</option>';
+			p +='<option value="BTP" selected="selected">'+BTP+'</option>';
+			p +='<option value="BTS">'+BTS+'</option>';
+			p +='<option value="COTS">'+COTS+'</option>'; 
+		 
+	       
+    } 
+	
+	
+	  if (selectedModule === 'BTP') {
+		
+		
+		  console.log("BTP");
+		p +='<option value="In-House-Development">'+In-House-Development+'</option>';
+		p +='<option value="BTP" selected="selected">'+BTP+'</option>';
+		p +='<option value="BTS">'+BTS+'</option>';
+		p +='<option value="COTS">'+COTS+'</option>';
+		
+        // Set the value of the select tag to 'BTP'
+       
+    }  if (selectedModule === 'BTS') {
+        
+        
+    	p +='<option value="In-House-Development">'+In-House-Development+'</option>';
+		p +='<option value="BTP">'+BTP+'</option>';
+		p +='<option value="BTS" selected="selected" >'+BTS+'</option>';
+		p +='<option value="COTS" >'+COTS+'</option>';
+       
+    }  if (selectedModule === 'COTS') {
+       
+        
+           
+    	p +='<option value="In-House-Development">'+In-House-Development+'</option>';
+		p +='<option value="BTP">'+BTP+'</option>';
+		p +='<option value="BTS">'+BTS+'</option>';
+		p +='<option value="COTS" selected="selected" >'+COTS+'</option>';
+        
+        
+       
+    } 
+	
+	 $('#module').html(p);	
+	 */
+	
+	$('#EditModal').modal('toggle');	
 }
-															 
-</script>  
-
-  
-<script>
-
-
-$(document).ready(function() {
-	   $('#ProjectId').on('change', function() {
-	     $('#submit').click();
-
-	   });
-	});
 	
-	 
 function ChangeButton(id) {
 	console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
 	if($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString()=='true'){
@@ -524,62 +627,12 @@ function ChangeButton(id) {
 }
 
 
-</script>
 
 
-
-
-<script>
-	$('#DateCompletion').daterangepicker({
-			"singleDatePicker" : true,
-			"linkedCalendars" : false,
-			"showCustomRangeLabel" : true,
-			"minDate" : new Date(),
-			"cancelClass" : "btn-default",
-			showDropdowns : true,
-			locale : {
-				format : 'DD-MM-YYYY'
-			}
-		});
-
-	$('#DateCompletion2').daterangepicker({
-		"singleDatePicker" : true,
-		"linkedCalendars" : false,
-		"showCustomRangeLabel" : true,
-		"minDate" : new Date(),
-		"cancelClass" : "btn-default",
-		showDropdowns : true,
-		locale : {
-			format : 'DD-MM-YYYY'
-		}
-	});
-	
-	
-	function updateBpPoints(ele){
-		var a=ele.value;
-		var value1=a.split("/")[0];
-		var value2=a.split("/")[1];
-		var value3=a.split("/")[2]
-		console.log(value1+"-"+value2+"-"+value3);
-		$.ajax({
-			type:'GET',
-			url:'BriefingPointsUpdate.htm',
-			datatype:'json',
-			data:{
-				ActivityId:value1,
-				point:value3,
-				status:value2,
-			}
-		});
-		
-		
-		if(value2==="Y"){
-		ele.value=value1+"/N/"+value3
-		}else{
-			ele.value=value1+"/Y/"+value3
-		}
-	}
 </script>  
+
+
+
 
 
 </body>

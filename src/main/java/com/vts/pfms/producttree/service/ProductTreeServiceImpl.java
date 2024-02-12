@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.vts.pfms.FormatConverter;
 import com.vts.pfms.producttree.dao.ProductTreeDao;
 import com.vts.pfms.producttree.dto.ProductTreeDto;
@@ -44,6 +45,34 @@ public class ProductTreeServiceImpl implements ProductTreeService {
 	public List<Object[]> getProductTreeList(String projectId) throws Exception {
 		
 		return dao.getProductTreeList(projectId);
+	}
+
+	@Override
+	public long LevelNameEdit(ProductTreeDto dto,String Action) throws Exception {
+		
+		ProductTree pt=dao.getLevelNameById(dto.getMainId());
+		
+		
+		if(Action.equalsIgnoreCase("E")) {
+		pt.setMainId(dto.getMainId());
+		pt.setLevelName(dto.getLevelName());
+		pt.setStage(dto.getStage());
+		pt.setModule(dto.getModule());
+		pt.setModifiedBy(dto.getModifiedBy());
+		pt.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		
+		return dao.LevelNameEdit(pt);
+		
+		}
+		else if(Action.equalsIgnoreCase("D")) {
+			
+			pt.setMainId(dto.getMainId());
+			return dao.LevelNameDelete(pt);
+			
+		}
+		return 0;
+		
+		
 	}
 	
 	

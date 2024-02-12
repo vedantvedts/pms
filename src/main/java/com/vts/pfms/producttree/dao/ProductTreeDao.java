@@ -10,4 +10,10 @@ public interface ProductTreeDao {
 
 	public List<Object[]> getProductTreeList(String projectId) throws Exception;
 
+	public ProductTree getLevelNameById(long mainId)  throws Exception;
+
+	public long LevelNameEdit(ProductTree pt) throws Exception;
+
+	public long LevelNameDelete(ProductTree pt) throws Exception;
+
 }

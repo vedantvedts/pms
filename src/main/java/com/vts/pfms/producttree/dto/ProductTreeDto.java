@@ -14,6 +14,8 @@ public class ProductTreeDto {
 		private long ParentLevelId;
 		private String LevelId;
 		private String LevelName;
+		private String Stage;
+		private String Module;
 		private String CreatedBy;
 		private String CreatedDate;
 		private String ModifiedBy;
