@@ -126,7 +126,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "milestone/MilestoneProductTree";
+		return "producttree/ProductTreeAdd";
 	}
 
 	
@@ -185,5 +185,59 @@ public class ProductTreeController {
 		
 	}
 	
+	@RequestMapping(value = "ProductTreeEditDelete.htm")
+	public String MilestoneActivityList(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	{
+		
+		String UserId = (String) ses.getAttribute("Username");
+		String Logintype= (String)ses.getAttribute("LoginType");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside ProductTreeEditDelete.htm "+UserId);		
+		try {
+	        String ProjectId=req.getParameter("ProjectId");
+	        if(ProjectId==null)  {
+				Map md=model.asMap();
+				ProjectId=(String)md.get("ProjectId");
+			}	
+	        List<Object[] > projlist= milservice.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+	        
+	        if(projlist.size()==0) 
+	        {				
+				redir.addAttribute("resultfail", "No Project is Assigned to you.");
+				return "redirect:/MainDashBoard.htm";
+			}
+	        
+	        
+	        
+	        if(ProjectId==null) {
+	        	try {
+	        		Object[] pro=projlist.get(0);
+	        		ProjectId=pro[0].toString();
+	        	}catch (Exception e) {
+					
+				}
+	        }
+	        List<Object[]> main=service.getProductTreeList(ProjectId);
+			req.setAttribute("ProductTreeList",main );
+			req.setAttribute("ProjectList",projlist);
+			req.setAttribute("ProjectId", ProjectId);
+			if(ProjectId!=null) {
+				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId).get(0));
+				
+			
+			}else {
+				
+				req.setAttribute("ProjectDetails", milservice.ProjectDetails(ProjectId));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +" Inside ProductTreeEditDelete.htm "+UserId, e); 
+			return "static/Error";
+			
+		}
+		return "producttree/ProductTreeEditDelete";
+	}
 	
 }

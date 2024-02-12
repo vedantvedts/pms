@@ -701,9 +701,9 @@ if(ses1!=null){	%>
 	        		
 		        </ul>
 		        
-		        
-		        
-		     <button class="btn btn-sm add" id="">Update / Delete</button>   
+		   <form action="ProductTreeEditDelete.htm" method="get">
+		            <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
+		     </form>
 	
 	    </div>
 	    
