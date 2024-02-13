@@ -105,28 +105,6 @@ input[type=checkbox] {
  %>
 
 
-    
-  <%-- <div class="row W-100" style="width: 100%;">
-
- 
-	
-                                    <div class="col-md-2">
-                            		<label class="control-label">Project Name :</label>
-                            		</div>
-                            		<div class="col-md-2" style="margin-top: -7px;">
-                              		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
-    									<option disabled="true"  selected value="">Choose...</option>
-    										<% for (Object[] obj : ProjectList) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-    										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
-											<%} %>
-  									</select>
-  									</div>
-<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
- <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
- </div> --%>
-
 
 
 <%String ses=(String)request.getParameter("result"); 
@@ -151,7 +129,7 @@ if(ses1!=null){	%>
    <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<form action="##" >
+				
 				<div class="card shadow-nohover" style="margin-top: -0px;">
 			
 		
@@ -165,7 +143,7 @@ if(ses1!=null){	%>
 					</h5>
 					</div>
 					
-					  <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="ProductTree.htm"> 
+					      <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="ProductTree.htm"> 
 					
 					 </div>
 				
@@ -204,7 +182,7 @@ if(ses1!=null){	%>
 															<td  style="width:20% !important; text-align: center;">		
 																	
 																	
-																	 
+															
 		                                                              <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
@@ -214,10 +192,11 @@ if(ses1!=null){	%>
 													                     </div>
 													                  </button> 
 													                  
-													                 
-													                  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-																    <input type="hidden" name="Mainid" value="<%=level1[0]%>"/>
-													                  <button  class="editable-click" name="Action" value="D" formaction="ProductTreeEditDelete.htm" formmethod="get" onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')">
+													             
+													           <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													               <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+													                  <button  class="editable-click" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')">
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -225,7 +204,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button> 
-													                 
+													               </form>
 													                 
 		                                                   	 
 															 	
@@ -255,17 +234,19 @@ if(ses1!=null){	%>
 														 	<td class="width-30px" style="text-align: center;">
 														 	
 														 	
-														 	 <button  class="editable-click" name="sub" value="E" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')">  
+														 	 <button class="editable-click" name="sub" value="E" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')">  
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/edit.png" ></figure>
 													                        <span>Edit</span>
 													                      </div>
 													                     </div>
-													                  </button> 
+													             </button> 
 													                  
-													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													            <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+													                  <button class="editable-click" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -273,6 +254,8 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button>
+													                  
+													               </form>
 														 	
 														 	
 														 	
@@ -304,7 +287,11 @@ if(ses1!=null){	%>
 													                  </button> 
 													                  
 													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													                  
+													             <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+													                 <button class="editable-click" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -312,7 +299,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button>
-															
+															     </form>
 															
 															
 															</td>
@@ -342,7 +329,10 @@ if(ses1!=null){	%>
 													                  </button> 
 													                  
 													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+													                 <button class="editable-click" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -350,7 +340,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button>
-															
+															      </form>
 															
 															
 															
@@ -384,7 +374,10 @@ if(ses1!=null){	%>
 														
 													                  
 													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													               <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                  <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																      <input type="hidden" name="Action" value="D"/>
+													                  <button class="editable-click" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -392,6 +385,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button>
+													                </form>
 															
 															
 															
@@ -426,7 +420,10 @@ if(ses1!=null){	%>
 														
 													                  
 													                  
-													                  <button  class="editable-click" name="sub" value="D" >
+													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																    <input type="hidden" name="Action" value="D"/>
+													                 <button class="editable-click" name="Mainid" value="<%=level6[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"> 
 																		<div class="cc-rockmenu">
 																		 <div class="rolling">	
 													                        <figure class="rolling_icon"><img src="view/images/delete.png" ></figure>
@@ -434,7 +431,7 @@ if(ses1!=null){	%>
 													                      </div>
 													                     </div>
 													                  </button>
-															
+															     </form>
 															
 															
 															
@@ -461,12 +458,14 @@ if(ses1!=null){	%>
 												</table>
 											</div>
 							   </div>
+							   
+							  
 							
 						</div>
-						<input type="hidden"  name="ProjectId" value="<%=ProjectId %>" >
+					
 						
 						
-                   </form>
+                  
 					</div>
 					
 		
@@ -485,7 +484,7 @@ if(ses1!=null){	%>
         </button>
       </div>
       <div class="modal-body" align="center">
-        <form action="ProductTreeEditDelete.htm" method="post">
+        <form action="" method="get">
         	<table style="width: 100%;">
         		<tr>
         			<th>Level Name : &nbsp; </th>
@@ -557,21 +556,24 @@ function EditModal(mainid,levelname,stage,module)
 {
 	$('#Mainid').val(mainid);			
 	$('#levelname').val(levelname);
-	$('#stage').val(stage);
-	$('#module').val(module);
+	//$('#stage').val(stage);
+	//$('#module').val(module);
 
 	
-/* var selectedModule = module;
+	
+	
+ var selectedModule = module;
 console.log("selectedModule---"+selectedModule);
 	
 var p='';
+$('#module').html("");	
 	
 	 if (selectedModule === 'In-House-Development') {
 		 
-		    p +='<option value="In-House-Development" selected="selected">'+In-House-Development+'</option>';
-			p +='<option value="BTP" selected="selected">'+BTP+'</option>';
-			p +='<option value="BTS">'+BTS+'</option>';
-			p +='<option value="COTS">'+COTS+'</option>'; 
+		    p +='<option value="In-House-Development" selected="selected">InHouseDevelopment</option>';
+			p +='<option value="BTP" >BTP</option>';
+			p +='<option value="BTS">BTS</option>';
+			p +='<option value="COTS">COTS</option>'; 
 		 
 	       
     } 
@@ -580,13 +582,13 @@ var p='';
 	  if (selectedModule === 'BTP') {
 		
 		
-		  console.log("BTP");
-		p +='<option value="In-House-Development">'+In-House-Development+'</option>';
-		p +='<option value="BTP" selected="selected">'+BTP+'</option>';
-		p +='<option value="BTS">'+BTS+'</option>';
-		p +='<option value="COTS">'+COTS+'</option>';
+		 
+		p +='<option value="In-House-Development">InHouseDevelopment</option>';
+		p +='<option value="BTP" selected="selected">BTP</option>';
+		p +='<option value="BTS">BTS</option>';
+		p +='<option value="COTS">COTS</option>';
 		
-        // Set the value of the select tag to 'BTP'
+      
        
     }  if (selectedModule === 'BTS') {
         
@@ -610,7 +612,7 @@ var p='';
     } 
 	
 	 $('#module').html(p);	
-	 */
+	
 	
 	$('#EditModal').modal('toggle');	
 }

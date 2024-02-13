@@ -256,7 +256,7 @@ public class ProductTreeController {
 			
 	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
 	    	  
-	    	  
+	    	  System.out.println("Mainid---"+req.getParameter("Mainid")); 
 	    	  ProductTreeDto dto=new ProductTreeDto();
 	    	  dto.setMainId(Long.parseLong(req.getParameter("Mainid")));
 	    	  long delete = service.LevelNameEdit(dto,Action);
@@ -283,9 +283,5 @@ public class ProductTreeController {
 		}
 		return "producttree/ProductTreeEditDelete";
 	}
-	
-	
-	
-	
 	
 }

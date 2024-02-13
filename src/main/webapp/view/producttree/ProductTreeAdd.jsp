@@ -306,6 +306,12 @@ if(ses1!=null){	%>
 	
 	
 	    <div class="genealogy-tree">
+	    
+	    
+	    
+	     <form action="ProductTreeEditDelete.htm" method="get">
+		            <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
+		     </form>
 	        
 	  		<ul>
 				<li>      
@@ -701,9 +707,7 @@ if(ses1!=null){	%>
 	        		
 		        </ul>
 		        
-		   <form action="ProductTreeEditDelete.htm" method="get">
-		            <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
-		     </form>
+		  
 	
 	    </div>
 	    
@@ -719,22 +723,7 @@ if(ses1!=null){	%>
   <script type="text/javascript">
 
   
-  
-  function setValueAndSubmit() {
-      // Get the value of the input field
-      var levelName = document.getElementById("levelNameInput").value;
-      
-      // Set the value of the button
-      var button = document.querySelector('button[name="Split"]');
-      button.value = '<%=ProjectId%>#2#' + levelName;
-      
-      // Ask for confirmation
-      if (confirm('Are You Sure To Submit')) {
-          // Submit the form
-          document.getElementById("myForm").submit();
-      }
-  }
-  
+
   
   
   $(document).ready(function() {
