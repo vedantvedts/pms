@@ -29,6 +29,59 @@ h6{
 	text-decoration: none !important;
 }
 
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 80px;
+	height: 22px;
+	text-align: left;
+	overflow: hidden;
+	 transition: all 0.3s ease-out; 
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+
 .genealogy-body{
     white-space: nowrap;
     overflow-y: hidden;
@@ -273,9 +326,19 @@ font-size:2rem;
 											<%} %>
   									</select>
   									</div>
+  									<div class="col-md-2" style="margin-left: 75px;margin-top:-7px;">
+  										<!-- <input type="hidden" name="" value="Y" > -->
+  									    <button type="submit"  class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree" data-toggle="tooltip" data-placement="top"  >
+										
+										     <img src="view/images/tree.png"  >
+										               
+                                       </button> 
+                                   </div>
+  									
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
  <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
  </div>
+ 
 </form>
 
 
@@ -308,10 +371,13 @@ if(ses1!=null){	%>
 	    <div class="genealogy-tree">
 	    
 	    
-	    
+	   <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
 	     <form action="ProductTreeEditDelete.htm" method="get">
-		            <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
+	     
+	                <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
 		     </form>
+		     
+		     <%} %>
 	        
 	  		<ul>
 				<li>      

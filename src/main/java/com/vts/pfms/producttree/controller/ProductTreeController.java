@@ -45,6 +45,14 @@ public class ProductTreeController {
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProductTree.htm "+UserId);		
 		try {
+			
+			
+			
+		        
+			
+			
+			
+			
 	        String ProjectId=req.getParameter("ProjectId");
 	        if(ProjectId==null)  {
 				Map md=model.asMap();
@@ -58,8 +66,6 @@ public class ProductTreeController {
 				return "redirect:/MainDashBoard.htm";
 			}
 	        
-	        
-	        
 	        if(ProjectId==null) {
 	        	try {
 	        		Object[] pro=projlist.get(0);
@@ -69,6 +75,10 @@ public class ProductTreeController {
 				}
 	        }
 	        
+	        String viewmode=req.getParameter("view_mode");
+	        
+	        System.out.println("viewmode---"+viewmode);
+	       
 	        req.setAttribute("ProjectList",projlist);
 			req.setAttribute("ProjectId", ProjectId);
 	        
@@ -82,42 +92,18 @@ public class ProductTreeController {
 			}
 			
 			req.setAttribute("ProductTreeList",service.getProductTreeList(ProjectId) );
+
 			
-//	        List<Object[]> main=service.MilestoneActivityList(ProjectId);
-//			req.setAttribute("MilestoneActivityList",main );
 			
-//			if(ProjectId!=null) {
-//				req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
-//				int MainCount=1;
-//				for(Object[] objmain:main ) {
-//				 int countA=1;
-//					List<Object[]>  MilestoneActivityA=service.MilestoneActivityLevel(objmain[0].toString(),"1");
-//					req.setAttribute(MainCount+"MilestoneActivityA", MilestoneActivityA);
-//					for(Object[] obj:MilestoneActivityA) {
-//						List<Object[]>  MilestoneActivityB=service.MilestoneActivityLevel(obj[0].toString(),"2");
-//						req.setAttribute(MainCount+"MilestoneActivityB"+countA, MilestoneActivityB);
-//						int countB=1;
-//						for(Object[] obj1:MilestoneActivityB) {
-//							List<Object[]>  MilestoneActivityC=service.MilestoneActivityLevel(obj1[0].toString(),"3");
-//							req.setAttribute(MainCount+"MilestoneActivityC"+countA+countB, MilestoneActivityC);
-//							int countC=1;
-//							for(Object[] obj2:MilestoneActivityC) {
-//								List<Object[]>  MilestoneActivityD=service.MilestoneActivityLevel(obj2[0].toString(),"4");
-//								req.setAttribute(MainCount+"MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
-//								int countD=1;
-//								for(Object[] obj3:MilestoneActivityD) {
-//									List<Object[]>  MilestoneActivityE=service.MilestoneActivityLevel(obj3[0].toString(),"5");
-//									req.setAttribute(MainCount+"MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
-//									countD++;
-//								}
-//								countC++;
-//							}
-//							countB++;
-//						}
-//						countA++;
-//					}
-//					MainCount++;
-//				}
+			 if(viewmode!=null && viewmode.toString().equalsIgnoreCase("Y")) {
+				 
+				 return "producttree/ProductTreeView";
+			 }
+			 else {
+				 return "producttree/ProductTreeAdd";
+				 
+			 }
+			
 			
 		}
 		catch (Exception e) {
@@ -126,7 +112,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "producttree/ProductTreeAdd";
+		
 	}
 
 	

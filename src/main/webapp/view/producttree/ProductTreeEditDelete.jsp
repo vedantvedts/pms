@@ -142,9 +142,9 @@ if(ses1!=null){	%>
 					<%} %>
 					</h5>
 					</div>
-					
+					<form>
 					      <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="ProductTree.htm"> 
-					
+					</form>
 					 </div>
 				
 					<div class="card-body">
@@ -513,7 +513,7 @@ if(ses1!=null){	%>
         			     <th >Module : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee" id="module" name="Module"  style="width:100%;">
+        			<select class="form select selectdee" id="Module" name="Module"  style="width:100%;">
         			
         			        <option value="In-House-Development">In-House-Development</option>
 		      				<option value="BTP">BTP</option>
@@ -561,61 +561,138 @@ function EditModal(mainid,levelname,stage,module)
 
 	
 	
-	
+var selectedstage=stage	
  var selectedModule = module;
-console.log("selectedModule---"+selectedModule);
+
+
+
+$('#EditModal').modal('toggle');
+	
+	
+	
+var s='';
+$('#stage').html("");
+
+
+	
+	 if (selectedstage =='Design') {
+		 
+		 
+		    s +='<option value="Design" selected="selected">Design</option>';
+			s +='<option value="Realisation" >Realisation</option>';
+			s +='<option value="Testing & Evaluation">Testing & Evaluation</option>';
+			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+		 
+	       
+    }  if (selectedstage == 'Realisation') {
+		
+		
+		 
+    	    s +='<option value="Design" >Design</option>';
+			s +='<option value="Realisation" selected="selected">Realisation</option>';
+			s +='<option value="Testing & Evaluation">Testing & Evaluation</option>';
+			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+      
+       
+    }   if (selectedstage == 'Testing & Evaluation') {
+        
+        
+    	    s +='<option value="Design" >Design</option>';
+			s +='<option value="Realisation" >Realisation</option>';
+			s +='<option value="Testing & Evaluation" selected="selected" >Testing & Evaluation</option>';
+			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+       
+    }  if (selectedstage == 'Ready for Closure') {
+       
+        
+           
+    	    s +='<option value="Design" >Design</option>';
+			s +='<option value="Realisation" >Realisation</option>';
+			s +='<option value="Testing & Evaluation"  >Testing & Evaluation</option>';
+			s +='<option value="Ready for Closure" selected="selected" >Ready for Closure</option>'; 
+       
+    } 
+    
+    
+    
+    if (selectedstage == 'null') {
+        
+        
+        
+	    s +='<option value="Design" >Design</option>';
+		s +='<option value="Realisation" >Realisation</option>';
+		s +='<option value="Testing & Evaluation"  >Testing & Evaluation</option>';
+		s +='<option value="Ready for Closure" >Ready for Closure</option>'; 
+   
+} 
+	
+	 $('#stage').html(s);		
+	
+	
+	
+	
+	
 	
 var p='';
-$('#module').html("");	
+$('#Module').html("");
+
+
 	
-	 if (selectedModule === 'In-House-Development') {
+	 if (selectedModule =='In-House Development') {
 		 
-		    p +='<option value="In-House-Development" selected="selected">InHouseDevelopment</option>';
+		    p +='<option value="In-House Development" selected="selected">In-House Development</option>';
 			p +='<option value="BTP" >BTP</option>';
 			p +='<option value="BTS">BTS</option>';
 			p +='<option value="COTS">COTS</option>'; 
 		 
 	       
-    } 
-	
-	
-	  if (selectedModule === 'BTP') {
+    }  if (selectedModule == 'BTP') {
 		
 		
 		 
-		p +='<option value="In-House-Development">InHouseDevelopment</option>';
+		p +='<option value="In-House Development">In-House Development</option>';
 		p +='<option value="BTP" selected="selected">BTP</option>';
 		p +='<option value="BTS">BTS</option>';
 		p +='<option value="COTS">COTS</option>';
 		
       
        
-    }  if (selectedModule === 'BTS') {
+    }   if (selectedModule == 'BTS') {
         
         
-    	p +='<option value="In-House-Development">'+In-House-Development+'</option>';
-		p +='<option value="BTP">'+BTP+'</option>';
-		p +='<option value="BTS" selected="selected" >'+BTS+'</option>';
-		p +='<option value="COTS" >'+COTS+'</option>';
+    	p +='<option value="In-House Development">In-House Development</option>';
+		p +='<option value="BTP">BTP</option>';
+		p +='<option value="BTS" selected="selected" >BTS</option>';
+		p +='<option value="COTS" >COTS</option>';
        
-    }  if (selectedModule === 'COTS') {
+    }  if (selectedModule == 'COTS') {
        
         
            
-    	p +='<option value="In-House-Development">'+In-House-Development+'</option>';
-		p +='<option value="BTP">'+BTP+'</option>';
-		p +='<option value="BTS">'+BTS+'</option>';
-		p +='<option value="COTS" selected="selected" >'+COTS+'</option>';
-        
-        
+    	p +='<option value="In-House Development">In-House Development</option>';
+		p +='<option value="BTP">BTP</option>';
+		p +='<option value="BTS">BTS</option>';
+		p +='<option value="COTS" selected="selected" >COTS</option>';
        
     } 
+    
+    if (selectedModule == 'null') {
+        
+        
+        
+    	p +='<option value="In-House Development">In-House Development</option>';
+		p +='<option value="BTP">BTP</option>';
+		p +='<option value="BTS">BTS</option>';
+		p +='<option value="COTS" >COTS</option>';
+   
+     } 
 	
-	 $('#module').html(p);	
-	
-	
-	$('#EditModal').modal('toggle');	
+	 $('#Module').html(p);	
+	 
+
 }
+
+
 	
 function ChangeButton(id) {
 	console.log($( "#btn"+id ).hasClass( "btn btn-sm btn-success" ).toString());
