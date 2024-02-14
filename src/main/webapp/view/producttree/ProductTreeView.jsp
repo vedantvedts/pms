@@ -197,42 +197,7 @@ table,td{
 	<!-- <div style="margin-left:-19rem;">
 		<h3>PRODUCT TREE</h3>
 	</div> -->	
-	
-<div align="right">
-     <div style="float: right;padding:0px;margin-top:0px;">
-     
-         <table >
 
-                  <tr>
-						<td style="font-weight:bold;">Stage (Upper corner)</td>
-						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
-						<td style="background-color:#E9B824;color:black">Realisation</td>
-						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
-						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
-                  </tr>
-
-
-
-                 <tr>
-						<td style="font-weight:bold;">Module (Lower corner)</td>
-						<td style="background-color:#FF8911;color:black">In-House Development</td>
-						<td style="background-color:#FDE767;color:black">BTP</td>
-						<td style="background-color:#B67352;color:black">BTS</td>
-						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
-                 </tr>
-
-       </table>     
-           
-     
-     </div>
-   
-
-</div>
-
-
-<br>
-<br>
-<br>
 
 		
 	    <div class="genealogy-tree">
@@ -592,9 +557,43 @@ table,td{
 	        		
 		        </ul>
 		        
-		  
+			  
 	
 	    </div>
+	    
+	    
+	    
+	    <div align="right">
+     <div style="float: right;padding:0px;margin-top:330px;">
+     
+         <table >
+
+                  <tr>
+						<td style="font-weight:bold;">Stage (Upper corner)</td>
+						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
+						<td style="background-color:#E9B824;color:black">Realisation</td>
+						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
+						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
+                  </tr>
+
+
+
+                 <tr>
+						<td style="font-weight:bold;">Module (Lower corner)</td>
+						<td style="background-color:#FF8911;color:black">In-House Development</td>
+						<td style="background-color:#FDE767;color:black">BTP</td>
+						<td style="background-color:#B67352;color:black">BTS</td>
+						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
+                 </tr>
+
+       </table>     
+           
+     
+     </div>
+  </div>
+	    
+	    
+	    
 
 
 
