@@ -143,7 +143,8 @@ if(ses1!=null){	%>
 					</h5>
 					</div>
 					<form>
-					      <input type="submit" class="btn btn-primary btn-sm back " id="sub" value="Back" name="sub" onclick="SubmitBack()"  formaction="ProductTree.htm"> 
+					      <input type="hidden"  value="<%=ProjectId %>" name="ProjectId"> 
+					      <input type="submit" class="btn btn-primary btn-sm back "  value="Back"  onclick="SubmitBack()"  formaction="ProductTree.htm"> 
 					</form>
 					 </div>
 				

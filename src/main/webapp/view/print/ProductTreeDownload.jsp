@@ -1,100 +1,49 @@
-<%@page import="com.ibm.icu.text.DecimalFormat"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@page import="org.apache.logging.log4j.core.pattern.EqualsIgnoreCaseReplacementConverter"%>
+<%@page import="java.math.BigDecimal"%>
 
-<%@page import="java.util.stream.Collectors"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.LinkedHashMap"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List , java.util.stream.Collectors, java.text.DecimalFormat,java.text.NumberFormat"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<jsp:include page="../static/header.jsp"></jsp:include>
+<title>Product Tree </title>
 
  
 
-<title>Product Tree</title>
+<!-- ------------------------------- tree css ------------------------------- -->
 <style type="text/css">
-label{
-font-weight: bold;
-  font-size: 14px;
-}
-.table thead tr,tbody tr{
-    font-size: 14px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 80px;
-	height: 22px;
-	text-align: left;
-	overflow: hidden;
-	 transition: all 0.3s ease-out; 
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
 
 
-.genealogy-body{
+
+@page {
+	size: 1120px 790px;
+	
+	border: 1px solid black; 
+	
+   }
+
+/*----------------genealogy-tree----------*/
+ .genealogy-body{
     white-space: nowrap;
     overflow-y: hidden;
-    padding: 50px;
-     min-height: 800px; 
+    padding: 0px;
+    min-height: 10px;
     padding-top: 10px;
     text-align: center;
 }
 .genealogy-tree{
-  display: inline-block;
+  margin-top:0px;
 } 
 .genealogy-tree ul {
-    padding-top: 20px; 
+    padding-top: 5px; 
     position: relative;
     padding-left: 0px;
     display: flex;
@@ -104,8 +53,9 @@ h6{
     float: left; text-align: center;
     list-style-type: none;
     position: relative;
-    padding: 20px 26px 0 12px;
+    padding: 00px 0px 0 0px;
 }
+
 .genealogy-tree li::before, .genealogy-tree li::after{
     content: '';
     position: absolute; 
@@ -119,32 +69,9 @@ h6{
     right: auto; left: 50%;
     border-left: 2px solid #ccc;
 }
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-}
-.genealogy-tree li:last-child::before{
-     border-right: 2px solid #ccc;
-     border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    border-left: 2px solid #ccc;
-    width: 0; height: 20px;
-}
+
+
+
 .genealogy-tree li .action-view-box{
      text-decoration: none;
      /* font-family: arial, verdana, tahoma; */
@@ -155,31 +82,15 @@ h6{
     -moz-border-radius: 5px;
 }
 
-.genealogy-tree li a:hover+ul li::after, 
-.genealogy-tree li a:hover+ul li::before, 
-.genealogy-tree li a:hover+ul::before, 
-.genealogy-tree li a:hover+ul ul::before{
-    border-color:  #fbba00;
-}
 
 /*--------------memeber-card-design----------*/
 .member-view-box{
-    padding:0px 15px;
+    padding:0px 100px;
     text-align: center;
     border-radius: 4px;
     position: relative;
 }
-.member-image{
-    width: 60px;
-    position: relative;
-}
-.member-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-    background-color :#000;
-    z-index: 1;
-}
+
 
 
 </style>
@@ -189,28 +100,28 @@ h6{
 <style type="text/css">
 .action-box
 {
-     width: fit-content ; 
-     height: fit-content;
-     /* min-width:190px; */
+    
+      
    /*   min-width:190px; */
     border: 1px solid black;
+    /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
+    
 }
+
 
 .action-box-header
 {
-	
- 	padding:3px;
+	padding:0px;
  	text-align: center;
+ 	overflow: hidden;
  	/* color: #3468C0; */
-	/* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
-	
+	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
 }
-
 
 
 .action-box-body
 {
-	padding:0px;
+   padding:0px;
 	text-align: center;
 	background-color:#FFFFFF ;
 	display: block;
@@ -222,181 +133,86 @@ h6{
 
 
 
+table,td{
 
-.card-body-table
-{
-	width:100%;
-}
 
-.card-body-table  td
-{
-	border:0px;
-	text-align: left;
-}	
-	
-.card-body-table th
-{
-	border:0px;
-}
-
-.Q1
-{
-	background-color: #428bca;
-	color: #FFFFFF;
-}
-
-.Q2
-{
-	background-color: #EA5455;
-	color: #FFFFFF;
-}
-
-.Q3
-{
-	background-color: #116D6E;
-	color: #000000;
-}
-
-.Q4
-{
-	background-color: #643A6B;
-	color: #FFFFFF;
-}
-
-th
-{
- 	text-align: left;
- 	overflow-wrap: break-word;
-}
-
-td
-{
- 	text-align: justify;
-  	text-justify: inter-word;
-    
-}
-
-.tabledata
-{
- 	white-space: -o-pre-wrap; 
-    word-wrap: break-word;
-    white-space: pre-wrap; 
-    white-space: -moz-pre-wrap; 
-    white-space: -pre-wrap; 
-}
-
-.h3{
-font-size:2rem;
+      border: 1px solid black;
+      border-collapse:collapse;
+      padding: 3px;
+      text-align:left;
 }
 
 
 </style>
+
 </head>
- 
 
   <%
   
-  List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
+  
   List<Object[]> ProductTreeList=(List<Object[]>)request.getAttribute("ProductTreeList");
-  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-  SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-  String ProjectId=(String)request.getAttribute("ProjectId");
 
-  
-  
+  String ProjectId=(String)request.getAttribute("ProjectId");
+  Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");
+  System.out.println(ProjectDetail[1].toString());
+
  %>
 
-<body>
-
- <form class="form-inline"  method="POST" action="ProductTree.htm">
-  <div class="row W-100" style="width: 100%;">
-
-  
-	
-                                    <div class="col-md-2">
-                            		<label class="control-label">Project Name :</label>
-                            		</div>
-                            		<div class="col-md-2" style="margin-top: -7px;">
-                              		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
-    									<option disabled selected value="">Choose...</option>
-    										<% for (Object[] obj : ProjectList) {
-    										String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
-    										%>
-											<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>> <%=obj[4]+projectshortName%>  </option>
-											<%} %>
-  									</select>
-  									</div>
-  									<div class="col-md-2" style="margin-left: 75px;margin-top:-7px;">
-  										<!-- <input type="hidden" name="" value="Y" > -->
-  									    <button type="submit"  class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree" data-toggle="tooltip" data-placement="top"  >
-										
-										     <img src="view/images/tree.png"  >
-										               
-                                       </button> 
-                                       
-                                       <button  type="submit" class="btn btn-sm "  style="margin-left: 1rem;" name="ProjectId" value="<%=ProjectId %>"  formaction="ProductTreeDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
-                                       
-                                   </div>
-  									
-<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
- <input id="submit" type="submit" name="submit" value="Submit" hidden="hidden">
- </div>
- 
-</form>
-
+<body style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body">
 
 	
-	<%---------------------------------------- Main Level -------------------------------------------------%>
+<!-- <div align="right">
+     <div style="float: right;padding:0px;margin-top:0px;">
+     
+         <table >
 
-<!-- <form  method="GET" action="LevelNameAdd.htm" id="myForm"> -->
-	<div style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+                  <tr>
+						<td style="font-weight:bold;">Stage (Upper corner)</td>
+						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
+						<td style="background-color:#E9B824;color:black">Realisation</td>
+						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
+						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
+                  </tr>
+
+
+
+                 <tr>
+						<td style="font-weight:bold;">Module (Lower corner)</td>
+						<td style="background-color:#FF8911;color:black">In-House Development</td>
+						<td style="background-color:#FDE767;color:black">BTP</td>
+						<td style="background-color:#B67352;color:black">BTS</td>
+						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
+                 </tr>
+
+       </table>     
+           
+     
+     </div>
+   
+
+</div> -->
 	
 	
-	<%String ses=(String)request.getParameter("result"); 
- String ses1=(String)request.getParameter("resultfail");
-if(ses1!=null){	%>
-	<div align="center">
-		<div class="alert alert-danger" role="alert" >
-	    <%=ses1 %>
-	     <br />
-	    </div>
-	</div>
-	<%}if(ses!=null){ %>
-	<div align="center">
-		<div class="alert alert-success" role="alert"  >
-	    	<%=ses %>
-	    	 <br />
-	    </div>
-	</div>
-<%} %>
-	
-	
+	<br>
+	<br>
 	    <div class="genealogy-tree">
-	    
-	    
-	   <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
-	     <form action="ProductTreeEditDelete.htm" method="get">
-	     
-	                <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
-		     </form>
-		     
-		     <%} %>
+	  
 	        
 	  		<ul>
 				<li>      
 	
 						 <div class="member-view-box action-view-box">
 			                    
-			                         <div class=" action-box" style="border:-1px;" > 
+			                         <div class="action-box" style="border:-1px;" > 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
+			                         	
 	                          			        <%if(ProjectId!=null){	
-				                                       Object[] ProjectDetail=(Object[])request.getAttribute("ProjectDetails");%>  
+				                                      %>  
 			                                              <%=ProjectDetail[1] %>
 	                          			               <%} %>
-			                          		 </span>
+			                          		 
 			                         			 
 										</div>
 										
@@ -440,21 +256,20 @@ if(ses1!=null){	%>
 										           <%=level1[3] %>
 										                
 										             </span> 
-										             <br>
+										            
 										             
-										              <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+										             
+										             <!--   <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
 													
 													      
 													          <div style="margin-top:-5px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													<!-- </div>  -->
+													<!-- </div> -->  
+										             
 										                
 			                          		   </div>
-													
-													
-													
-												 </div> 
-											</div> 
+			                          	 </div> 
+									</div> 
 											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 											
 											
@@ -467,9 +282,9 @@ if(ses1!=null){	%>
 												<li>	
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
-															  <div class="action-box-header"
+															  <div class="action-box-header" 
 															  
-															  style="background: linear-gradient(to bottom right, 
+															      style="background: linear-gradient(to bottom right, 
 																<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
 																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
 																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
@@ -488,18 +303,18 @@ if(ses1!=null){	%>
 																<%} %>
 																 
 																 );" >
-															  
+														
 															       <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
 			                          			                   
-			                          			                    <!-- <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                   <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
 													
 													      
 													                           <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													                <!-- </div>  -->
+													              <!--   </div>  -->
 												             
 			                          			             </div>
 													     </div>
@@ -518,10 +333,9 @@ if(ses1!=null){	%>
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header" 
+																		<div class="action-box-header"
 																		
-																		
-									                                      style="background: linear-gradient(to bottom right, 
+																		  style="background: linear-gradient(to bottom right, 
 																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
 																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
 																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
@@ -539,8 +353,7 @@ if(ses1!=null){	%>
 																			<%}else { %> white 5%, white 10% 
 																			<%} %>
 																			 
-																			 );" >									
-																		
+																			 );" >
 																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
@@ -548,12 +361,12 @@ if(ses1!=null){	%>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                       <!--     <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
 													
 													      
-													                             <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
+													                             <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													                      <!--   </div>  -->
+													                       <!--  </div>  -->
 			                          			                          
 												                                              			
 													                 </div>
@@ -576,7 +389,8 @@ if(ses1!=null){	%>
 																		
 																		<div class="action-box-header"
 																		
-																		style="background: linear-gradient(to bottom right, 
+																		 
+																		  style="background: linear-gradient(to bottom right, 
 																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
 																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
 																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
@@ -604,12 +418,10 @@ if(ses1!=null){	%>
 			                          			                          </span>
 			                          			                          
 			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													
-													      
+			                          			                         <!--   <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
 													                              <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													                      <!--  </div>  -->
+													                     <!--   </div>  -->
 												                                              			
 													                    </div>
 													                                            
@@ -631,7 +443,7 @@ if(ses1!=null){	%>
 																		
 																		<div class="action-box-header"
 																		
-																		style="background: linear-gradient(to bottom right, 
+																		 style="background: linear-gradient(to bottom right, 
 																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
 																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
 																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
@@ -651,6 +463,7 @@ if(ses1!=null){	%>
 																			 
 																			 );" >
 																		
+																		
 																		<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;" >
 			                          			                             
 			                          			                                <%=level5[3] %>
@@ -661,9 +474,9 @@ if(ses1!=null){	%>
 			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
 													
 													      
-													                               <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
+													                               <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													                       <!-- </div>  -->
+													                      <!--  </div>  -->
 												                                              			
 													                        </div>
 													                        
@@ -671,33 +484,16 @@ if(ses1!=null){	%>
 																	</div> 
 																	
 																	
-																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
+																	
+																	<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
+																	
+																
 																	   
 																   </li>
 															
 														    <% } %>
 														<% } %>
 														
-														
-														 <%---------------------------------------Level 5 Add---------------------------------------------------------%>
-														
-												   <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#5#<%=level4[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													             
-													                
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-														
-												 <%---------------------------------------Level 5 Add---------------------------------------------------------%>		
 														
 													</ul>      
 																	
@@ -708,26 +504,7 @@ if(ses1!=null){	%>
 												    <% } %>
 												<% } %>
 														
-														
-														 <%---------------------------------------Level 4 Add---------------------------------------------------------%>
-														
-														  <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#4#<%=level3[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													                  
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-														
-												 <%---------------------------------------Level 4 Add---------------------------------------------------------%>		
-										                </ul>     
+													 </ul>     
 																    
 																    
 																    
@@ -740,25 +517,7 @@ if(ses1!=null){	%>
 													<% } %>
 											
 											
-											 <%---------------------------------------Level 3 Add---------------------------------------------------------%>
-                	        
-				                	            <li>
-				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-															
-															<form action="LevelNameAdd.htm" method="get">
-													            <input type="text" name="LevelName" required >
-													            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#3#<%=level2[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-													             
-													         </form>    
-													          
-													                
-													        </span> 	
-													    </div> 
-				                
-				                               </li>
-                	        
-                	          <%---------------------------------------Level 3 Add---------------------------------------------------------%>
+											 
 											
 							                </ul>    
 										                
@@ -769,25 +528,7 @@ if(ses1!=null){	%>
 								 <% } %>
                 	        <% } %>
                 	        
-                	        <%---------------------------------------Level 2 Add---------------------------------------------------------%>
-                	        
-                	            <li>
-                                       <div class="member-view-box action-view-box">
-											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-											
-											<form action="LevelNameAdd.htm" method="get">
-									            <input type="text" name="LevelName" required >
-									            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#2#<%=level1[0]%>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
-									         </form>    
-									          
-									                
-									        </span> 	
-									    </div> 
-                
-                               </li>
-                	        
-                	          <%---------------------------------------Level 2 Add---------------------------------------------------------%>
+                	       
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->    
@@ -796,24 +537,8 @@ if(ses1!=null){	%>
                 	   <% } %>
                 	<% } %>
 					
-			<%----------------------------------------------------------------------Level 1 Add---------------------------------------------------------%>
-                    <li>
-                
-                         <div class="member-view-box action-view-box">
-							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
-					            <form action="LevelNameAdd.htm" method="get">
-						            <input type="text" name="LevelName" required>
-						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0" onclick="return confirm('Are You Sure To Submit')"> Add</button>
-									             
-							   </form>    
-					             
-					               
-					                
-					        </span> 	
-					    </div> 
-                
-                    </li>
-                	<%---------------------------------------Level 1 Add------------------------------------------------------------%>
+			
+                	
 				 </ul> 
                 
                          
@@ -823,33 +548,16 @@ if(ses1!=null){	%>
 	        		</li>
 	        		
 		        </ul>
-		  
-	    </div>
-	    
-	  
 		        
-	</div>
+		  
 	
-	  
-<!-- 	</form> -->
+	    </div>
+
 
 
 <!-- ------------------------------- tree script ------------------------------- -->
   <script type="text/javascript">
 
-  
-
-  
-  
-  $(document).ready(function() {
-	   $('#ProjectId').on('change', function() {
-	     $('#submit').click();
-
-	   });
-	});
-  
-  
-  
   $(function () {
 	    $('.genealogy-tree ul').hide();
 	    $('.genealogy-tree>ul').show();
@@ -857,20 +565,15 @@ if(ses1!=null){	%>
 	    
 	    $('.genealogy-tree li .action-box-header').on('click', function (e) {
 			
-	    	 /* var children = $(this).parent().parent().parent().find('> ul');
-		        if (children.is(":visible")) children.hide('fast').removeClass('active');
-		        else children.show('fast').addClass('active');
-		        e.stopPropagation(); */
+	   
 	        
 	     var children = $(this).parent().parent().parent().find('> ul');
 	        if (children.is(":visible")) {
 	        	children.hide('fast').removeClass('active');
-	        	$(this).find('i').removeClass('fa fa-caret-down');
-	        	$(this).find('i').addClass('fa fa-caret-up');
+	        	
 	        } else {
 	        	children.show('fast').addClass('active');
-	        	$(this).find('i').removeClass('fa fa-caret-up');
-	        	$(this).find('i').addClass('fa fa-caret-down');
+	        	
 	    	}
 	        e.stopPropagation(); 
 	    });
@@ -879,13 +582,6 @@ if(ses1!=null){	%>
 </script> 
 
 
+
 </body>
 </html>
-
-
-
-
-
-
-   
-   
