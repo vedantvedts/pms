@@ -241,12 +241,12 @@ public class ProductTreeController {
 			 if(update!=0) {
 				 redir.addAttribute("result", "Level Name Updated Successfully");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTreeEditDelete.htm";
+				 return "redirect:/ProductTree.htm";
 				 
 			 }else {
 				 redir.addAttribute("resultfail", "Level Name Update Unsuccessful");
 				 redir.addAttribute("ProjectId", ProjectId);
-				 return "redirect:/ProductTreeEditDelete.htm";
+				 return "redirect:/ProductTree.htm";
 			 }
 			
 	      } else if(Action!=null && Action.equalsIgnoreCase("D")) {
@@ -258,12 +258,12 @@ public class ProductTreeController {
 	    	  if(delete!=0) {
 					 redir.addAttribute("result", "Level Deleted Successfully");
 					 redir.addAttribute("ProjectId", ProjectId);
-					 return "redirect:/ProductTreeEditDelete.htm";
+					 return "redirect:/ProductTree.htm";
 					 
 				 }else {
 					 redir.addAttribute("resultfail", "Level Delete  Unsuccessful");
 					 redir.addAttribute("ProjectId", ProjectId);
-					 return "redirect:/ProductTreeEditDelete.htm";
+					 return "redirect:/ProductTree.htm";
 				 }
 	    	  
 	    	  
@@ -276,7 +276,7 @@ public class ProductTreeController {
 			return "static/Error";
 			
 		}
-		return "producttree/ProductTreeEditDelete";
+		return "redirect:/ProductTree.htm";
 	}
 	
 	

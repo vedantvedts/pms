@@ -181,11 +181,17 @@ table,td{
 
       border: 1px solid black;
       border-collapse:collapse;
-      padding: 5px;
+      padding: 3px;
       /* width:50%; */
 
 }
 
+.bottom-div {
+    position: fixed;
+    bottom: 0;
+    left: -20px;
+    width: 100%; /* Ensures the div stretches across the entire width of the page */
+}
 
 
 
@@ -276,7 +282,7 @@ table,td{
 										             </span>  
 										            
 													          
-											 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+											 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													      
 			                          		    </div> 
 			                          	 </div> 
@@ -319,7 +325,7 @@ table,td{
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
-			                          			                  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
 													             
 												             
@@ -368,7 +374,7 @@ table,td{
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                      <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                      <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
 													                   
 			                          			                          
@@ -421,7 +427,7 @@ table,td{
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
 													                     
 												                                              			
@@ -474,7 +480,7 @@ table,td{
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.0rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
 													                   
 												                                              			
@@ -554,9 +560,9 @@ table,td{
 	    </div>
 	    
 	    
-	    
+	   <div class="bottom-div">  
 	    <div align="right">
-     <div style="float: right;padding:0px;margin-top:330px;">
+    
      
          <table >
 
@@ -581,7 +587,8 @@ table,td{
        </table>     
            
      
-     </div>
+    
+   </div> 
   </div>
 	    
 	    

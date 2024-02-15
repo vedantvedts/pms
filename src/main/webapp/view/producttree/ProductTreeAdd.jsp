@@ -18,69 +18,11 @@ label{
 font-weight: bold;
   font-size: 14px;
 }
-.table thead tr,tbody tr{
-    font-size: 14px;
-}
+
 body{
 background-color: #f2edfa;
 overflow-x:hidden !important; 
 }
-h6{
-	text-decoration: none !important;
-}
-
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 80px;
-	height: 22px;
-	text-align: left;
-	overflow: hidden;
-	 transition: all 0.3s ease-out; 
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
 
 .genealogy-body{
     white-space: nowrap;
@@ -201,12 +143,9 @@ h6{
 	
  	padding:3px;
  	text-align: center;
- 	/* color: #3468C0; */
-	/* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
+ 	
 	
 }
-
-
 
 .action-box-body
 {
@@ -219,75 +158,68 @@ h6{
 	border-bottom-left-radius: 7px;
 }
 
-
-
-
-
-.card-body-table
-{
-	width:100%;
-}
-
-.card-body-table  td
-{
-	border:0px;
-	text-align: left;
-}	
-	
-.card-body-table th
-{
-	border:0px;
-}
-
-.Q1
-{
-	background-color: #428bca;
-	color: #FFFFFF;
-}
-
-.Q2
-{
-	background-color: #EA5455;
-	color: #FFFFFF;
-}
-
-.Q3
-{
-	background-color: #116D6E;
-	color: #000000;
-}
-
-.Q4
-{
-	background-color: #643A6B;
-	color: #FFFFFF;
-}
-
 th
 {
- 	text-align: left;
- 	overflow-wrap: break-word;
+
+  text-align: left;
+ 	
 }
 
-td
-{
- 	text-align: justify;
-  	text-justify: inter-word;
-    
+
+.action-view-box {
+    position: relative;
 }
 
-.tabledata
-{
- 	white-space: -o-pre-wrap; 
-    word-wrap: break-word;
-    white-space: pre-wrap; 
-    white-space: -moz-pre-wrap; 
-    white-space: -pre-wrap; 
+.actions {
+    position: absolute;
+    top: 0;
+    right: -20px; /* initially hide the actions */
+    visibility: hidden;
+    transition: right 0.3s;
 }
 
-.h3{
-font-size:2rem;
+.action-view-box:hover .actions {
+    right: 0; /* show the actions on hover */
+    visibility: visible;
 }
+
+.update,
+.delet {
+    display: block; /* Change display to block to stack the icons and text */
+    padding: 5px 5px;
+    margin-right: -18px;
+    text-align: left; /* Align text to the left */
+    border: none; /* This line removes the border */
+    cursor:pointer;
+}
+
+img{
+width:18px;
+height:18px;
+
+}
+/* .update i,
+.delet i {
+    margin-right: 20px; /* Add some space between the icon and text */
+} */
+
+/* .edit:hover,
+.delete:hover {
+    background-color: #ccc;
+} */
+
+
+
+
+
+
+.bottom-div {
+    position: fixed;
+    bottom: 0;
+    left: -20px;
+    width: 100%; /* Ensures the div stretches across the entire width of the page */
+}
+
 
 
 </style>
@@ -327,8 +259,8 @@ font-size:2rem;
   									</select>
   									</div>
   									<div class="col-md-2" style="margin-left: 75px;margin-top:-7px;">
-  										<!-- <input type="hidden" name="" value="Y" > -->
-  									    <button type="submit"  class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree" data-toggle="tooltip" data-placement="top"  >
+  										
+  									    <button type="submit" class="btn btn-sm btn-link" name="view_mode" value="Y" formtarget="blank" title="Product Tree View" data-toggle="tooltip" data-placement="top"  >
 										
 										     <img src="view/images/tree.png"  >
 										               
@@ -374,13 +306,13 @@ if(ses1!=null){	%>
 	    <div class="genealogy-tree">
 	    
 	    
-	   <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
+	<%--    <% if(ProductTreeList!=null && ProductTreeList.size()>0){ %> 
 	     <form action="ProductTreeEditDelete.htm" method="get">
 	     
 	                <button class="btn btn-sm add" type="submit" name="ProjectId" value="<%=ProjectId%>" >Update / Delete</button> 
 		     </form>
 		     
-		     <%} %>
+		     <%} %> --%>
 	        
 	  		<ul>
 				<li>      
@@ -432,29 +364,33 @@ if(ses1!=null){	%>
 												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
 												
 												<%}else { %> white 5%, white 10% 
-												<%} %>
+												<%} %> );" > 
 												 
-												 );" > 
+												 
 												
 										             <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
 										           <%=level1[3] %>
 										                
 										             </span> 
-										             <br>
 										             
-										              <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													
-													      
-													          <div style="margin-top:-5px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													<!-- </div>  -->
-										                
+										             
+										            
+										               <div style="margin-top:-5px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+												         
 			                          		   </div>
-													
-													
-													
-												 </div> 
-											</div> 
+										</div> 
+									 
+												<div class="actions">
+												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>')" ><img src="view/images/edit.png" ></button>
+												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+													     <input type="hidden" name="Action" value="D">
+												            <button class="delet" name="Mainid" value="<%=level1[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+												      </form> 
+												   </div>
+									</div>
+									
+									
 											<% List<Object[]> Level1 =ProductTreeList.stream().filter(e-> level1[0].toString().equalsIgnoreCase(e[1].toString()) ).collect(Collectors.toList());%>
 											
 											
@@ -493,16 +429,20 @@ if(ses1!=null){	%>
 			                          			                              <%=level2[3] %>
 			                          			                   </span>
 			                          			                   
-			                          			                   
-			                          			                    <!-- <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													
-													      
-													                           <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													                <!-- </div>  -->
-												             
+			                          			                    <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+													 
 			                          			             </div>
 													     </div>
+													     
+													      
+													              <div class="actions">
+																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																			     <input type="hidden" name="Action" value="D">
+																		            <button class="delet" name="Mainid" value="<%=level2[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																	        </form> 
+												                     </div>
 												   </div> 
 												   
 												   
@@ -548,16 +488,21 @@ if(ses1!=null){	%>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
-													
-													      
-													                             <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
-													
-													                      <!--   </div>  -->
-			                          			                          
-												                                              			
+			                          			                            <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
+													                         			
 													                 </div>
 													              </div>
+													              
+													              <div class="actions">
+																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																			     <input type="hidden" name="Action" value="D">
+																		            <button class="delet" name="Mainid" value="<%=level3[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																	        </form> 
+												                     </div>
+													              
+													              
 														   </div> 
 															
 															
@@ -603,17 +548,24 @@ if(ses1!=null){	%>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
 													
-													      
-													                              <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
-													
-													                      <!--  </div>  -->
+													                     
 												                                              			
 													                    </div>
 													                                            
 																</div>
+																
+																 
+													              <div class="actions">
+																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>')" ><img src="view/images/edit.png" ></button>
+																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																			     <input type="hidden" name="Action" value="D">
+																		            <button class="delet" name="Mainid" value="<%=level4[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																	        </form> 
+												                     </div>
+																
 														</div> 
 																	
 																	
@@ -657,17 +609,25 @@ if(ses1!=null){	%>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          
-			                          			                          <!--  <div class="action-box-body" align="center" style="cursor: pointer ;" >  -->
+													                               <!-- <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> -->
 													
-													      
-													                               <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
-													
-													                       <!-- </div>  -->
+													                    
 												                                              			
 													                        </div>
 													                        
 													                       </div>
+													                       
+													                        
+																              <div class="actions">
+																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>')" ><img src="view/images/edit.png" ></button>
+																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
+																						     <input type="hidden" name="Action" value="D">
+																					            <button class="delet" name="Mainid" value="<%=level5[0]%>"  onclick="return confirm ('Are you sure you want to delete? Once deleted, all sub-levels will be deleted as well.')"><img src="view/images/delete.png" ></button>
+																				        </form> 
+															                     </div>
+													                       
+													                       
 																	</div> 
 																	
 																	
@@ -823,12 +783,128 @@ if(ses1!=null){	%>
 	        		</li>
 	        		
 		        </ul>
-		  
-	    </div>
 	    
-	  
-		        
+ </div>	    
+	    
+	 <!-- 	 <div class="bottom-div">  
+	    <div align="right">
+    
+     
+         <table style="border: 1px solid black;padding: 3px;">
+
+                  <tr>
+						<td style="font-weight:bold;">Stage (Upper corner)</td>
+						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
+						<td style="background-color:#E9B824;color:black">Realisation</td>
+						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
+						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
+                  </tr>
+
+
+
+                 <tr>
+						<td style="font-weight:bold;">Module (Lower corner)</td>
+						<td style="background-color:#FF8911;color:black">In-House Development</td>
+						<td style="background-color:#FDE767;color:black">BTP</td>
+						<td style="background-color:#B67352;color:black">BTS</td>
+						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
+                 </tr>
+
+       </table>     
+           
+     
+    
+   </div> 
+  </div> -->
+	        
+	    
+	    
+	 	        
 	</div>
+	
+	
+	
+	<div class="modal" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Level Name</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" align="center">
+        <form action="ProductTreeEditDelete.htm" method="get">
+        	<table style="width: 100%;">
+        		<tr>
+        			<th>Level Name : &nbsp; </th>
+        			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
+        		</tr>
+        		
+        		
+        		<tr>
+        			<th >Stage : &nbsp; </th>
+        			<td >
+        			
+        			<select class="form select selectdee " name="Stage"  id="stage"  required style="width:100%;">
+        			
+        			        <option value="Design">Design</option>
+		      				<option value="Realisation">Realisation</option>
+		      				<option value="Testing & Evaluation">Testing & Evaluation</option>
+		      				<option value="Ready for Closure">Ready for Closure</option>
+        			
+        			</select>
+        			
+        			</td>
+        		</tr>
+        		
+        		
+        		
+        			<tr>
+        			     <th >Module : &nbsp; </th>
+        			<td >
+        			
+        			<select class="form select selectdee" id="Module" name="Module"  required style="width:100%;">
+        			
+        			        <option value="In-House-Development">In-House-Development</option>
+		      				<option value="BTP">BTP</option>
+		      				<option value="BTS">BTS</option>
+		      				<option value="COTS">COTS</option>
+        			
+        			</select>
+        			
+        			</td>
+        		</tr>
+        		
+        		
+        		
+        		
+        		<tr>
+        			<td colspan="2" style="text-align: center;">
+        				<br>
+        				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
+        				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
+        			</td>
+        		</tr>
+        	</table>
+        	
+        	<input type="hidden" id="Mainid" name="Mainid" value="" >
+        	<input type="hidden" id="" name="Action" value="E" >
+        	<input type="hidden" id="" name="ProjectId" value="<%=ProjectId %>" >
+        	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
+        </form>
+      </div>
+     
+    </div>
+  </div>
+</div>
+	
+	
+	
+
+	
+	
+	
 	
 	  
 <!-- 	</form> -->
@@ -856,11 +932,7 @@ if(ses1!=null){	%>
 	    $('.genealogy-tree ul.active').show();
 	    
 	    $('.genealogy-tree li .action-box-header').on('click', function (e) {
-			
-	    	 /* var children = $(this).parent().parent().parent().find('> ul');
-		        if (children.is(":visible")) children.hide('fast').removeClass('active');
-		        else children.show('fast').addClass('active');
-		        e.stopPropagation(); */
+		
 	        
 	     var children = $(this).parent().parent().parent().find('> ul');
 	        if (children.is(":visible")) {
@@ -876,6 +948,139 @@ if(ses1!=null){	%>
 	    });
 	});
 
+  
+  function EditModal(mainid,levelname,stage,module)
+  {
+  	$('#Mainid').val(mainid);			
+  	$('#levelname').val(levelname);
+
+  	
+  var selectedstage=stage	
+  var selectedModule = module;
+
+
+
+  $('#EditModal').modal('toggle');
+  	
+  var s='';
+  $('#stage').html("");
+
+
+  	
+  	 if (selectedstage =='Design') {
+  		 
+  		 
+  		    s +='<option value="Design" selected="selected">Design</option>';
+  			s +='<option value="Realisation" >Realisation</option>';
+  			s +='<option value="Testing & Evaluation">Testing & Evaluation</option>';
+  			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+  		 
+  	       
+      }  if (selectedstage == 'Realisation') {
+  		
+  		
+  		 
+      	    s +='<option value="Design" >Design</option>';
+  			s +='<option value="Realisation" selected="selected">Realisation</option>';
+  			s +='<option value="Testing & Evaluation">Testing & Evaluation</option>';
+  			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+        
+         
+      }   if (selectedstage == 'Testing & Evaluation') {
+          
+          
+      	    s +='<option value="Design" >Design</option>';
+  			s +='<option value="Realisation" >Realisation</option>';
+  			s +='<option value="Testing & Evaluation" selected="selected" >Testing & Evaluation</option>';
+  			s +='<option value="Ready for Closure">Ready for Closure</option>'; 
+         
+      }  if (selectedstage == 'Ready for Closure') {
+         
+          
+             
+      	    s +='<option value="Design" >Design</option>';
+  			s +='<option value="Realisation" >Realisation</option>';
+  			s +='<option value="Testing & Evaluation"  >Testing & Evaluation</option>';
+  			s +='<option value="Ready for Closure" selected="selected" >Ready for Closure</option>'; 
+         
+      } 
+      
+      
+      
+      if (selectedstage == 'null') {
+          
+          
+    	s +='<option value="" selected="eslected" disabled="disabled" >Select</option>'; 
+  	    s +='<option value="Design" >Design</option>';
+  		s +='<option value="Realisation" >Realisation</option>';
+  		s +='<option value="Testing & Evaluation"  >Testing & Evaluation</option>';
+  		s +='<option value="Ready for Closure" >Ready for Closure</option>'; 
+     
+  } 
+  	
+  	 $('#stage').html(s);		
+  	
+  var p='';
+  $('#Module').html("");
+
+
+  	
+  	 if (selectedModule =='In-House Development') {
+  		 
+  		    p +='<option value="In-House Development" selected="selected">In-House Development</option>';
+  			p +='<option value="BTP" >BTP</option>';
+  			p +='<option value="BTS">BTS</option>';
+  			p +='<option value="COTS">COTS</option>'; 
+  		 
+  	       
+      }  if (selectedModule == 'BTP') {
+  		
+  		
+  		 
+  		p +='<option value="In-House Development">In-House Development</option>';
+  		p +='<option value="BTP" selected="selected">BTP</option>';
+  		p +='<option value="BTS">BTS</option>';
+  		p +='<option value="COTS">COTS</option>';
+  		
+        
+         
+      }   if (selectedModule == 'BTS') {
+          
+          
+      	p +='<option value="In-House Development">In-House Development</option>';
+  		p +='<option value="BTP">BTP</option>';
+  		p +='<option value="BTS" selected="selected" >BTS</option>';
+  		p +='<option value="COTS" >COTS</option>';
+         
+      }  if (selectedModule == 'COTS') {
+         
+          
+             
+      	p +='<option value="In-House Development">In-House Development</option>';
+  		p +='<option value="BTP">BTP</option>';
+  		p +='<option value="BTS">BTS</option>';
+  		p +='<option value="COTS" selected="selected" >COTS</option>';
+         
+      } 
+      
+      if (selectedModule == 'null') {
+          
+          
+        p +='<option value="" selected="eslected" disabled="disabled" >Select</option>'; 
+      	p +='<option value="In-House Development">In-House Development</option>';
+  		p +='<option value="BTP">BTP</option>';
+  		p +='<option value="BTS">BTS</option>';
+  		p +='<option value="COTS" >COTS</option>';
+     
+       } 
+  	
+  	 $('#Module').html(p);	
+  	 
+
+  }
+  
+  
+  
 </script> 
 
 

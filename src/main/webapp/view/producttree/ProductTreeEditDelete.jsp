@@ -557,19 +557,14 @@ function EditModal(mainid,levelname,stage,module)
 {
 	$('#Mainid').val(mainid);			
 	$('#levelname').val(levelname);
-	//$('#stage').val(stage);
-	//$('#module').val(module);
 
 	
-	
 var selectedstage=stage	
- var selectedModule = module;
+var selectedModule = module;
 
 
 
 $('#EditModal').modal('toggle');
-	
-	
 	
 var s='';
 $('#stage').html("");
@@ -628,11 +623,6 @@ $('#stage').html("");
 } 
 	
 	 $('#stage').html(s);		
-	
-	
-	
-	
-	
 	
 var p='';
 $('#Module').html("");

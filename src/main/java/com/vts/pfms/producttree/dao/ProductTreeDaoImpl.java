@@ -35,7 +35,7 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 			+ "LEFT JOIN pfms_product_tree AS t3 ON t2.mainid = t3.parentlevelid\r\n"
 			+ "LEFT JOIN pfms_product_tree AS t4 ON t3.mainid = t4.parentlevelid\r\n"
 			+ "SET t1.isActive = 0,t2.isActive = 0,t3.isActive = 0,t4.isActive = 0\r\n"
-			+ "WHERE t1.mainid = :mainid OR t1.parentlevelid = :mainid OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid";
+			+ "WHERE t1.mainid = :mainid  OR t2.mainid = :mainid OR t3.mainid = :mainid OR t4.mainid = :mainid";
 	
 	@Override
 	public long AddLevelName(ProductTree prod) throws Exception {
@@ -84,9 +84,6 @@ public class ProductTreeDaoImpl implements ProductTreeDao{
 
 	@Override
 	public long LevelNameDelete(ProductTree pt) throws Exception {
-		
-		
-		
 		
 		Query query=manager.createNativeQuery(LEVELNAMEDELETE);
 		
