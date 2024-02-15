@@ -1426,6 +1426,13 @@ if(formname!=null){
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2] %></td>
+										<td><%if(minutesattachmentlist.get(0)[2].toString().endsWith(".pdf")) {%>
+											<div  align="center">
+												<a  href="MinutesAttachDownloadprotected.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>"  data-toggle="tooltip" data-placement="top" title="Protected PDF"
+												  target="_blank" data-trigger="hover"  ><i class="fa fa-download" style="color:#DF4646;"></i></a>
+											</div>
+											<%} %>
+										</td>
 										<td>
 											<div  align="center">
 												<a  href="MinutesAttachDownload.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>" 
@@ -1712,6 +1719,7 @@ if(formname!=null){
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2] %></td>
 										<td>
+											
 											<div  align="center">
 												<a  href="MinutesAttachDownload.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>" 
 												  target="_blank"><i class="fa fa-download"></i></a>

@@ -3204,6 +3204,71 @@ public class CommitteeController {
 				e.printStackTrace(); logger.error(new Date() +"Inside MinutesAttachDownload.htm"+UserId,e);
 		}
 	}
+	
+	
+	@RequestMapping(value = "MinutesAttachDownloadprotected.htm", method = RequestMethod.GET)
+	public void MinutesAttachDownloadprotected(HttpServletRequest req, HttpSession ses, HttpServletResponse res)
+			throws Exception 
+	{
+			 String UserId = (String) ses.getAttribute("Username");
+				logger.info(new Date() +"Inside MinutesAttachDownloadprotected.htm "+UserId);		
+				 try {
+					 String attachmentId = req.getParameter("attachmentid");
+			            String userId = (String) req.getSession().getAttribute("Username");
+			            String EmpName = (String) req.getSession().getAttribute("EmpName");
+			            String EmpNo = (String) req.getSession().getAttribute("EmpNo");
+
+			            CommitteeMinutesAttachment attachment = service.MinutesAttachDownload(attachmentId);
+
+			            String inputFilePath = uploadpath + attachment.getFilePath() + File.separator + attachment.getAttachmentName();
+
+			            System.out.println(inputFilePath+"----path");
+			            
+			            String encryptedOutputPath = uploadpath + attachment.getFilePath() + File.separator +
+			                    "Encrypted_" + attachment.getAttachmentName();
+			            
+			            String password = "lrde123";
+
+			            PdfReader pdfReader = new PdfReader(inputFilePath);
+			            
+			            pdfReader.setUnethicalReading(true);
+			            		
+	                    PdfWriter pdfWriter = new PdfWriter(encryptedOutputPath,
+	                            new WriterProperties().setStandardEncryption(password.getBytes(),
+	                            		password.getBytes(),
+	                                    EncryptionConstants.ALLOW_PRINTING, EncryptionConstants.ENCRYPTION_AES_128));
+	                    
+	                    
+	                    PdfDocument pdfDocument = new PdfDocument(pdfReader, pdfWriter);
+	                    
+	                    PMSFileUtils.addWatermarktoPdf(pdfDocument, EmpName , EmpNo );
+	                    
+	                    pdfDocument.close();
+	                    pdfWriter.close();
+	                    pdfReader.close();
+
+			           File pdfFile = new File(encryptedOutputPath);
+			            res.setContentType("application/pdf");
+			            res.setHeader("Content-disposition", "inline; filename=" + attachment.getAttachmentName());
+
+			            try (FileInputStream in = new FileInputStream(pdfFile);
+			                 OutputStream out = res.getOutputStream()) {
+
+			                byte[] buffer = new byte[4096];
+			                int length;
+			                while ((length = in.read(buffer)) > 0) {
+			                    out.write(buffer, 0, length);
+			                }
+
+			            } finally {
+			                pdfFile.delete();
+			            }
+
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			            logger.error("Inside MinutesAttachDownloadprotected.htm", e);
+			        }
+			    }
 
 	
 	@RequestMapping(value="MeetingMinutesApproval.htm", method=RequestMethod.POST)
